@@ -1,6 +1,5 @@
-import { RadioGroup } from '@headlessui/react'
 import { classed } from '@tw-classed/react'
-import { ReactNode, useRef, useState } from 'react'
+import { InputHTMLAttributes, ReactNode, useRef, useState } from 'react'
 import { Button } from '../Button/Button'
 import { QueryClientProvider, useMutation } from '@tanstack/react-query'
 import { DEFAULT_QUERY_CLIENT_OPTIONS } from '../constants'
@@ -24,6 +23,7 @@ type TabHeaderProps = Pick<TabProps, 'title' | 'description'> & {
   open: boolean
   tabNumber: number
   scrollIntoView: () => void
+  disabled?: boolean
 }
 const TabContainer = classed.div(
   'grid grid-cols-[48px_1fr] items-start gap-4 w-full'
@@ -51,9 +51,19 @@ const TabHeader = ({
   open,
   tabNumber,
   scrollIntoView,
-}: TabHeaderProps) => {
+  disabled = false,
+  ...props
+}: TabHeaderProps &
+  Omit<
+    InputHTMLAttributes<HTMLDivElement>,
+    'size' | 'id' | 'children' | 'title'
+  >) => {
   return (
-    <TabContainer className="cursor-pointer" onClick={scrollIntoView}>
+    <TabContainer
+      className={`${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+      onClick={scrollIntoView}
+      {...props}
+    >
       <TabNumber active={open}>{tabNumber}</TabNumber>
       <div className="flex flex-col gap-2 text-left">
         <TabTitle>{title}</TabTitle>
@@ -62,6 +72,15 @@ const TabHeader = ({
     </TabContainer>
   )
 }
+
+const TabContent = classed.div('grid grid-cols-[48px_1fr] gap-4', {
+  variants: {
+    open: {
+      false: 'hidden',
+      true: 'visible',
+    },
+  },
+})
 
 const Tab = ({
   title,
@@ -74,13 +93,17 @@ const Tab = ({
   showButton = true,
   isLast = false,
   setTab,
+  isOpen,
+  onChange, // handle on change
 }: TabProps & {
   tabIndex: number
   isLast: boolean
   setTab?: any
+  isOpen: boolean
+  onChange?: (tab: number) => void
 }) => {
   const tabNumber = tabIndex + 1 // incrementing number of the tab
-  const tabRef = useRef<HTMLElement | null>(null)
+  const tabRef = useRef<HTMLDivElement | null>(null)
 
   const scrollIntoView = () => {
     // force scroll start of tab
@@ -100,66 +123,73 @@ const Tab = ({
 
     // go to next tab if is not the last one
     if (!isLast) {
-      setTab(tabNumber + 1)
+      const tab = tabNumber + 1
+      handleChange(tab)
     }
 
     scrollIntoView()
   }
 
+  const handleChange = (tab: number) => {
+    if (disabled) return // handle disabled
+    setTab(tab)
+    onChange?.(tab)
+  }
+
   const handleNextMutation = useMutation(handleNext)
 
   return (
-    <RadioGroup.Option
-      className={`${disabled ? 'opacity-50' : ''}`}
-      disabled={disabled}
-      value={tabNumber}
+    <div
+      className={`${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
       data-tab-index={tabNumber}
       ref={tabRef}
     >
-      {({ checked }) => (
-        <>
-          <TabHeader
-            tabNumber={tabNumber}
-            title={title}
-            description={description}
-            open={checked}
-            scrollIntoView={scrollIntoView}
-          />
-          {checked && (
-            <div className="grid grid-cols-[48px_1fr] gap-4">
-              <div className="relative flex justify-center w-12 h-full">
-                <div className="w-[2px] bg-gray-300 h-full"></div>
-              </div>
-              <div className="flex flex-col w-full gap-10 mt-10">
-                {children}
-                {showButton && (
-                  <Button
-                    loading={handleNextMutation.isLoading}
-                    className="w-full"
-                    onClick={() => {
-                      handleNextMutation.mutateAsync()
-                    }}
-                  >
-                    {onNextLabel}
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-        </>
-      )}
-    </RadioGroup.Option>
+      <>
+        <TabHeader
+          disabled={disabled}
+          tabNumber={tabNumber}
+          title={title}
+          description={description}
+          open={isOpen}
+          scrollIntoView={scrollIntoView}
+          onClick={() => {
+            handleChange(tabNumber)
+          }}
+        />
+        <TabContent open={isOpen}>
+          <div className="relative flex justify-center w-12 h-full">
+            <div className="w-[2px] bg-gray-300 h-full"></div>
+          </div>
+          <div className="flex flex-col w-full gap-10 mt-10">
+            {children}
+            {showButton && (
+              <Button
+                loading={handleNextMutation.isLoading}
+                className="w-full"
+                onClick={() => {
+                  handleNextMutation.mutateAsync()
+                }}
+                disabled={disabled}
+              >
+                {onNextLabel}
+              </Button>
+            )}
+          </div>
+        </TabContent>
+      </>
+    </div>
   )
 }
 
 export function Tabs({ defaultTab = 1, tabs }: TabsProps) {
-  const [tab, setTab] = useState(defaultTab)
+  const [tab, setTab] = useState<number>(defaultTab)
 
   return (
     <QueryClientProvider client={DEFAULT_QUERY_CLIENT_OPTIONS}>
-      <RadioGroup onChange={setTab} value={tab} className="grid gap-8">
-        {tabs?.map((tab, tabIndex) => {
+      <div className="grid gap-8">
+        {tabs?.map((tabItem, tabIndex) => {
           const isLast = tabIndex + 1 === tabs?.length
+          const isOpen = tab === tabIndex + 1
 
           return (
             <Tab
@@ -167,11 +197,13 @@ export function Tabs({ defaultTab = 1, tabs }: TabsProps) {
               tabIndex={tabIndex}
               isLast={isLast}
               setTab={setTab}
-              {...tab}
+              isOpen={isOpen}
+              onChange={setTab}
+              {...tabItem}
             />
           )
         })}
-      </RadioGroup>
+      </div>
     </QueryClientProvider>
   )
 }
