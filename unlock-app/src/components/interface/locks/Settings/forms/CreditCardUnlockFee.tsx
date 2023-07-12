@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
@@ -21,15 +22,11 @@ export default function CreditCardUnlockFee({
   const { isLoading } = useQuery(
     ['getLockSettings', lockAddress, network],
     async () => {
-      const { unlockFeeChargedToUser } = (
-        await storage.getLockSettings(network, lockAddress)
-      ).data
-      const unlockPaidByLockManager = !unlockFeeChargedToUser
-      return unlockPaidByLockManager
+      return (await storage.getLockSettings(network, lockAddress)).data
     },
     {
-      onSuccess: (unlockPaidByLockManager: boolean) => {
-        setUnlockFeePaidByLockManager(unlockPaidByLockManager)
+      onSuccess: ({ unlockFeeChargedToUser }) => {
+        setUnlockFeePaidByLockManager(!unlockFeeChargedToUser)
       },
     }
   )
@@ -42,6 +39,7 @@ export default function CreditCardUnlockFee({
       network,
       unlockFeeChargedToUser: !feePaidByLockManager,
     })
+    ToastHelper.success('Option successfully changed.')
   }
 
   if (isLoading) {
