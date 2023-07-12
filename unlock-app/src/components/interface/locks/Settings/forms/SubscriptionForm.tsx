@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Badge, Button, ToggleSwitch } from '@unlock-protocol/ui'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { MAX_UINT } from '~/constants'
 import useLock from '~/hooks/useLock'
