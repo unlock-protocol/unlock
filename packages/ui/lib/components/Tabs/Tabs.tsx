@@ -1,6 +1,6 @@
 import { classed } from '@tw-classed/react'
 import { InputHTMLAttributes, ReactNode, useRef, useState } from 'react'
-import { Button } from '../Button/Button'
+import { Button, Props as ButtonProps } from '../Button/Button'
 import { QueryClientProvider, useMutation } from '@tanstack/react-query'
 import { DEFAULT_QUERY_CLIENT_OPTIONS } from '../constants'
 
@@ -12,6 +12,7 @@ interface TabProps {
   onNext?: () => Promise<any> | void
   onNextLabel?: string
   showButton?: boolean
+  button?: ButtonProps
 }
 
 interface TabsProps {
@@ -95,6 +96,7 @@ const Tab = ({
   setTab,
   isOpen,
   onChange, // handle on change
+  button,
 }: TabProps & {
   tabIndex: number
   isLast: boolean
@@ -125,9 +127,8 @@ const Tab = ({
     if (!isLast) {
       const tab = tabNumber + 1
       handleChange(tab)
+      scrollIntoView() // scroll into view only when tab is changed
     }
-
-    scrollIntoView()
   }
 
   const handleChange = (tab: number) => {
@@ -169,7 +170,8 @@ const Tab = ({
                 onClick={() => {
                   handleNextMutation.mutateAsync()
                 }}
-                disabled={disabled}
+                disabled={disabled || button?.disabled}
+                {...button}
               >
                 {onNextLabel}
               </Button>
