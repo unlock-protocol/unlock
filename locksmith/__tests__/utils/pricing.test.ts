@@ -323,7 +323,13 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase.unlockServiceFee).toBe(0)
+      // total without unlockFees
+      const total =
+        pricingForPurchase.gasCost +
+        pricingForPurchase.subtotal +
+        pricingForPurchase.creditCardProcessingFee
+
+      expect(pricingForPurchase.total).toBe(total)
     })
 
     it('return pricing for purchase with unlockFees', async () => {
@@ -336,12 +342,19 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase.unlockServiceFee).not.toBe(0)
+      // total with unlockFees
+      const total =
+        pricingForPurchase.gasCost +
+        pricingForPurchase.subtotal +
+        pricingForPurchase.creditCardProcessingFee +
+        pricingForPurchase.unlockServiceFee
+
+      expect(pricingForPurchase.total).toBe(total)
     })
   })
 
   describe('getFees', () => {
-    it('should not include unlockFees', async () => {
+    it('should not have unlockServiceFee to zero', async () => {
       expect.assertions(1)
       const fees = await getFees(
         {
@@ -354,7 +367,7 @@ describe('pricing', () => {
           recipients: ['0x'],
         }
       )
-      expect(fees.unlockServiceFee).toBe(0)
+      expect(fees.unlockServiceFee).not.toBe(0)
     })
     it('should include unlockFees', async () => {
       expect.assertions(1)
