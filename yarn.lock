@@ -14815,7 +14815,7 @@ __metadata:
     express-winston: 4.2.0
     fuse.js: 6.6.2
     geoip-country: 4.1.59
-    graphile-worker: ^0.13.0
+    graphile-worker: 0.13.0
     graphql: 16.6.0
     graphql-tag: 2.12.6
     html-template-tag: 4.0.1
@@ -27546,7 +27546,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphile-worker@npm:^0.13.0":
+"graphile-worker@npm:0.13.0":
   version: 0.13.0
   resolution: "graphile-worker@npm:0.13.0"
   dependencies:
