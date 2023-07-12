@@ -39,6 +39,7 @@ interface CreditCardPricingBreakdownProps {
   gasCosts?: number
   loading?: boolean
   symbol?: string
+  unlockFeeChargedToUser?: boolean
 }
 
 export function CreditCardPricingBreakdown({
@@ -48,6 +49,7 @@ export function CreditCardPricingBreakdown({
   gasCosts,
   loading,
   symbol = '$',
+  unlockFeeChargedToUser = true,
 }: CreditCardPricingBreakdownProps) {
   return (
     <div className="flex flex-col gap-2 pt-4 text-sm">
@@ -63,7 +65,7 @@ export function CreditCardPricingBreakdown({
         </a>
       </h3>
       <div className="divide-y">
-        {unlockServiceFee > 0 && !loading && (
+        {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
             className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
@@ -182,10 +184,11 @@ export function ConfirmCard({
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
-  const { data: { creditCardPrice } = {} } = useGetLockSettings({
-    network: lock!.network,
-    lockAddress: lock!.address,
-  })
+  const { data: { creditCardPrice, unlockFeeChargedToUser } = {} } =
+    useGetLockSettings({
+      network: lock!.network,
+      lockAddress: lock!.address,
+    })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData

@@ -16,6 +16,7 @@ import { CreditCardPricingBreakdown } from './ConfirmCard'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUniversalCardPrice } from '~/hooks/useUniversalCardPrice'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
+import { useGetLockSettings } from '~/hooks/useLockSettings'
 
 interface Props {
   injectedProvider: unknown
@@ -60,6 +61,11 @@ export function ConfirmUniversalCard({
     recipients,
     purchaseData: purchaseData!,
     enabled: !isInitialDataLoading,
+  })
+
+  const { data: { unlockFeeChargedToUser } = {} } = useGetLockSettings({
+    network: lock!.network,
+    lockAddress: lock!.address,
   })
 
   const createOnRampSession = useMutation(
@@ -190,6 +196,7 @@ export function ConfirmUniversalCard({
                 creditCardProcessingFee={cardPricing?.creditCardProcessingFee}
                 unlockServiceFee={cardPricing?.unlockServiceFee}
                 gasCosts={cardPricing?.gasCost}
+                unlockFeeChargedToUser={unlockFeeChargedToUser}
               />
             </div>
           </main>
