@@ -184,11 +184,6 @@ export function ConfirmCard({
       config.networks[lock!.network].nativeCurrency.symbol
     ),
   })
-  const { data: { creditCardPrice, unlockFeeChargedToUser } = {} } =
-    useGetLockSettings({
-      network: lock!.network,
-      lockAddress: lock!.address,
-    })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
@@ -202,6 +197,17 @@ export function ConfirmCard({
     lockAddress,
     network: lock!.network,
     purchaseData: purchaseData || [],
+  })
+
+  const {
+    data: {
+      creditCardPrice,
+      unlockFeeChargedToUser = true,
+      creditCardCurrency = 'usd ',
+    } = {},
+  } = useGetLockSettings({
+    lockAddress,
+    network: lock!.network,
   })
 
   // show gas cost only when custom credit card price is present
@@ -280,11 +286,6 @@ export function ConfirmCard({
     }
     setIsConfirming(false)
   }
-
-  const { data: { creditCardCurrency = 'usd ' } = {} } = useGetLockSettings({
-    lockAddress,
-    network: lock!.network,
-  })
 
   const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
 
