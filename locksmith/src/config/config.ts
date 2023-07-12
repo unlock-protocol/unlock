@@ -5,6 +5,10 @@ export const isProduction = ['prod'].includes(
   process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
 )
 
+export const isStaging = ['staging'].includes(
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
+)
+
 const stagingConfig = {
   storage: {
     publicHost: 'https://staging-storage.unlock-protocol.com',
@@ -59,6 +63,7 @@ const config = {
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '30s',
+  databaseUrl: '',
 }
 
 if (process.env.ON_HEROKU) {
@@ -86,5 +91,9 @@ if (process.env.DATABASE_URL) {
   config.database.database = process.env.DB_NAME
   config.database.host = process.env.DB_HOSTNAME
 }
+
+const connectionString = `postgresql://${config.database.username}:${config.database.password}@${config.database.host}/${config.database.database}`
+
+config.databaseUrl = connectionString
 
 export default config
