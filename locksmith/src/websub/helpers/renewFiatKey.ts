@@ -9,7 +9,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
 interface RenewKeyReturned {
-  keyId?: number
+  keyId?: string
   lockAddress: string
   network: number
   tx?: string
@@ -19,7 +19,7 @@ interface RenewKeyReturned {
 interface Options {
   lockAddress: string
   userAddress: string
-  keyId: number
+  keyId: string
   network: number
 }
 

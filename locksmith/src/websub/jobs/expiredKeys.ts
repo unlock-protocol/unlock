@@ -8,7 +8,7 @@ import {
 import { logger } from '../../logger'
 import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'
 import { sendEmail } from '../../operations/wedlocksOperations'
-import * as userMetadataOperations from './../../operations/userMetadataOperations'
+import * as userMetadataOperations from '../../operations/userMetadataOperations'
 import * as Normalizer from '../../utils/normalizer'
 
 /**

@@ -36,7 +36,7 @@ jobs:
       bypass_diff_check: bypass
       service: locksmith-websub
       build-dir: locksmith
-      command: 'yarn websub:prod'
+      command: 'yarn worker'
       container-type: worker
       app-name: locksmith-websub-production
     secrets:
