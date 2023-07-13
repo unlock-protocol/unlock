@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-query'
 import { Tabs } from './Tabs'
 import { Meta, StoryFn } from '@storybook/react'
+import { Input } from '../Form'
 
 const meta = {
   component: Tabs,
@@ -27,10 +28,14 @@ export const DefaultTab: StoryFn<typeof meta> = () => {
             title: 'Choose a configuration',
             description:
               'Create a new configuration or continue enhance the existing one for your checkout modal',
-            children: <span>step 1 content</span>,
+            children: (
+              <span>
+                <Input placeholder="test" />
+              </span>
+            ),
             onNext: () =>
               // go to next tab after promise is resolved
-              new Promise((res) => setTimeout(() => res('resolve'), 22000)),
+              new Promise((res) => setTimeout(() => res('resolve'), 2000)),
           },
           {
             title: 'Configure the basics',

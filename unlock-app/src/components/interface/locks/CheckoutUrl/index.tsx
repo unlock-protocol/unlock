@@ -153,24 +153,20 @@ export const CheckoutUrlPage = () => {
     checkoutConfigList,
   ])
 
-  const onConfigSave = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    async (event) => {
-      event.preventDefault()
-      const updated = await updateConfig({
-        config: checkoutConfig.config,
-        name: checkoutConfig.name,
-        id: checkoutConfig.id,
-      })
-      setCheckoutConfig({
-        id: updated.id,
-        name: updated.name,
-        config: updated.config as PaywallConfig,
-      })
-      ToastHelper.success('Configuration updated.')
-      await refetchConfigList()
-    },
-    [checkoutConfig, updateConfig, refetchConfigList]
-  )
+  const onConfigSave = useCallback(async () => {
+    const updated = await updateConfig({
+      config: checkoutConfig.config,
+      name: checkoutConfig.name,
+      id: checkoutConfig.id,
+    })
+    setCheckoutConfig({
+      id: updated.id,
+      name: updated.name,
+      config: updated.config as PaywallConfig,
+    })
+    ToastHelper.success('Configuration updated.')
+    await refetchConfigList()
+  }, [checkoutConfig, updateConfig, refetchConfigList])
 
   const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
     async (event) => {
@@ -257,6 +253,9 @@ export const CheckoutUrlPage = () => {
       </Button>
     )
   }
+
+  const hasRecurringPlaceholder =
+    !!lockAddress && !!network && isRecurringSettingPlaceholder
 
   return (
     <>
@@ -347,7 +346,13 @@ export const CheckoutUrlPage = () => {
                     locks={checkoutConfig.config?.locks}
                   />
                 ),
-                showButton: false,
+                button: {
+                  loading: isConfigUpdating,
+                  disabled: hasRecurringPlaceholder,
+                  iconLeft: <SaveIcon />,
+                },
+                onNextLabel: 'Save',
+                onNext: async () => await onConfigSave(),
               },
             ]}
           />
