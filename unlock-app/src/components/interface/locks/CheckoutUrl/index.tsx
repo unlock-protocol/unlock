@@ -316,11 +316,23 @@ export const CheckoutUrlPage = () => {
                               config: response.config as PaywallConfig,
                               name: response.name,
                             })
-                            //await refetchConfigList()
+                            await refetchConfigList()
                           }
                         }}
                         value={checkoutConfig}
                       />
+                      <Button
+                        className="ml-auto"
+                        disabled={!checkoutConfig.id}
+                        iconLeft={<TrashIcon />}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          setDeleteConfirmation(true)
+                        }}
+                        size="small"
+                      >
+                        Delete
+                      </Button>
                     </div>
                   </div>
                 ),
