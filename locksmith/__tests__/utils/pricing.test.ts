@@ -15,6 +15,7 @@ const data = ['0x', '0x']
 const lockAddressWithSettings = '0xbd55144a3a30907e080595cabf652bc079728b2f'
 const lockWithEurCurrency = '0x1a1d8b22555521d9e664981af56438e8ace2134e'
 const currencyContractAddress = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
+const cabinDaoLock = '0x45accac0e5c953009cda713a3b722f87f2907f86'
 
 const lockAddress = '0x551c6ecdf819Dc90c5287971072B4651119accD3'
 const network = 5
@@ -36,6 +37,15 @@ vi.mock('../../src/operations/lockSettingOperations', () => {
           sendEmail: true,
           creditCardPrice: 5532, // 55.32$ in basis points
           creditCardCurrency: 'eur',
+        })
+      }
+
+      if ([cabinDaoLock].includes(lock)) {
+        return Promise.resolve({
+          sendEmail: true,
+          creditCardPrice: 4444, // 44.44$ in basis points
+          creditCardCurrency: 'eur',
+          unlockFeeChargedToUser: false,
         })
       }
 
@@ -323,7 +333,13 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase.unlockServiceFee).toBe(0)
+      // total without unlockFees
+      const total =
+        pricingForPurchase.gasCost +
+        pricingForPurchase.subtotal +
+        pricingForPurchase.creditCardProcessingFee
+
+      expect(pricingForPurchase.total).toBe(total)
     })
 
     it('return pricing for purchase with unlockFees', async () => {
@@ -336,12 +352,19 @@ describe('pricing', () => {
         data,
       })
 
-      expect(pricingForPurchase.unlockServiceFee).not.toBe(0)
+      // total with unlockFees
+      const total =
+        pricingForPurchase.gasCost +
+        pricingForPurchase.subtotal +
+        pricingForPurchase.creditCardProcessingFee +
+        pricingForPurchase.unlockServiceFee
+
+      expect(pricingForPurchase.total).toBe(total)
     })
   })
 
   describe('getFees', () => {
-    it('should not include unlockFees', async () => {
+    it('should not have unlockServiceFee to zero', async () => {
       expect.assertions(1)
       const fees = await getFees(
         {
@@ -354,7 +377,7 @@ describe('pricing', () => {
           recipients: ['0x'],
         }
       )
-      expect(fees.unlockServiceFee).toBe(0)
+      expect(fees.unlockServiceFee).not.toBe(0)
     })
     it('should include unlockFees', async () => {
       expect.assertions(1)
@@ -373,19 +396,37 @@ describe('pricing', () => {
     })
 
     it('should return cabinDao unlockFess', async () => {
-      expect.assertions(1)
+      expect.assertions(2)
+
       const fees = await getFees(
         {
           subtotal: 1430,
           gasCost: 10,
         },
         {
-          lockAddress: '0x45accac0e5c953009cda713a3b722f87f2907f86',
+          lockAddress: cabinDaoLock,
           network: 5,
           recipients: ['0x'],
         }
       )
-      expect(fees.unlockServiceFee).toBe(2000)
+
+      expect(fees.unlockServiceFee).toBe(2000) // should not be zero
+
+      const pricingForPurchase = await createPricingForPurchase({
+        lockAddress: cabinDaoLock,
+        network,
+        recipients,
+        referrers: [],
+        data,
+      })
+
+      // total without unlockFees
+      const total =
+        pricingForPurchase.gasCost +
+        pricingForPurchase.subtotal +
+        pricingForPurchase.creditCardProcessingFee
+
+      expect(pricingForPurchase.total).toBe(total)
     })
   })
 })
