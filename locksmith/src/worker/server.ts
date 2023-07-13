@@ -5,6 +5,7 @@ import { notifyOfKeys, notifyOfLocks } from './jobs'
 import { logger } from '../logger'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
+import { startWorker } from './worker'
 
 logger.info('Websub server started.')
 
@@ -36,12 +37,15 @@ const run = async () => {
   }
 }
 
-run()
-
 cron.schedule(FREQUENT_CRON_SCHEDULE, run)
 
 cron.schedule(DAY_CRON_SCHEDULE, async () => {
   // Send "expired" and "expiring" email notification
   await notifyExpiringKeysForNetwork()
   await notifyExpiredKeysForNetwork()
+})
+
+startWorker().catch((err) => {
+  console.error(err)
+  process.exit(1)
 })

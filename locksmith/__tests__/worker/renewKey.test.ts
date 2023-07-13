@@ -2,7 +2,7 @@
 import { BigNumber } from 'ethers'
 import { KeyRenewal } from '../../src/models'
 import { vi } from 'vitest'
-import { renewKey, isWorthRenewing } from '../../src/websub/helpers/renewKey'
+import { renewKey, isWorthRenewing } from '../../src/worker/helpers/renewKey'
 
 const renewalInfo = {
   network: 11297108109,

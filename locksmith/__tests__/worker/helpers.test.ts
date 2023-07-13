@@ -1,4 +1,4 @@
-import { createSignature } from '../../src/websub/helpers'
+import { createSignature } from '../../src/worker/helpers'
 
 describe('Test helpers', () => {
   it('Create signature test', () => {
