@@ -10,6 +10,7 @@ import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmail } from './tasks/sendEmail'
+import { Pool } from 'pg'
 
 const crontabProduction = `
 */5 * * * * addRenewalJobs
@@ -29,7 +30,11 @@ const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
 async function main() {
   const runner = await run({
-    connectionString: config.databaseUrl,
+    pgPool: new Pool({
+      connectionString: config.databaseUrl,
+      // @ts-expect-error - type is not defined properly
+      ssl: config.database?.dialectOptions?.ssl,
+    }),
     crontab,
     concurrency: 5,
     noHandleSignals: false,
