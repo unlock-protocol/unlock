@@ -282,7 +282,7 @@ export function ConfirmSwapAndPurchase({
             }
             usdPrice={
               usdTotalPricing
-                ? `~${formatNumber(usdTotalPricing).toLocaleString()}`
+                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
                 : ''
             }
           />
