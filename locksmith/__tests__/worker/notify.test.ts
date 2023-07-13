@@ -1,5 +1,5 @@
-import { handler } from '../../__mocks__/websub/subscriber'
-import { notify } from '../../src/websub/helpers'
+import { handler } from '../../__mocks__/worker/subscriber'
+import { notify } from '../../src/worker/helpers'
 import { Hook, HookEvent } from '../../src/models'
 import { vi } from 'vitest'
 

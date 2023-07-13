@@ -28,7 +28,7 @@ const cronTabTesting = `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
-async function main() {
+export async function startWorker() {
   const runner = await run({
     pgPool: new Pool({
       connectionString: config.databaseUrl,
@@ -39,6 +39,7 @@ async function main() {
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
+
     taskList: {
       addRenewalJobs,
       addRenewalJobsWeekly,
@@ -53,8 +54,3 @@ async function main() {
 
   await runner.promise
 }
-
-main().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
