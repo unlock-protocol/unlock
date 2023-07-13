@@ -221,6 +221,10 @@ export function ConfirmSwapAndPurchase({
     buttonLabel = 'Pay using crypto'
   }
 
+  const usdTotalPricing = totalPricing?.total
+    ? totalPricing?.total / 100
+    : undefined
+
   return (
     <Fragment>
       <ReCaptcha
@@ -277,8 +281,8 @@ export function ConfirmSwapAndPurchase({
                   ).toLocaleString()} ${symbol}`
             }
             usdPrice={
-              totalPricing?.total
-                ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
+              usdTotalPricing
+                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
                 : ''
             }
           />

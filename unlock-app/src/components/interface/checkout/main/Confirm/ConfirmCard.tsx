@@ -290,6 +290,10 @@ export function ConfirmCard({
 
   const isError = isPricingDataError
 
+  const usdTotalPricing = totalPricing?.total
+    ? totalPricing?.total / 100
+    : undefined
+
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
@@ -342,8 +346,8 @@ export function ConfirmCard({
                   ).toLocaleString()} ${symbol}`
             }
             usdPrice={
-              totalPricing?.total
-                ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
+              usdTotalPricing
+                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
                 : ''
             }
             isCardEnabled={!!creditCardEnabled}
