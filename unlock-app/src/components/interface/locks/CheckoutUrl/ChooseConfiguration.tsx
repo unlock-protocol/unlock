@@ -1,10 +1,19 @@
 import { classed } from '@tw-classed/react'
 import { PaywallConfig } from '~/unlockTypes'
-import React, { useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { Input, Select } from '@unlock-protocol/ui'
+import { Input, Placeholder, Select } from '@unlock-protocol/ui'
+import { useController } from 'react-hook-form'
+import { ConnectForm } from './elements/DynamicForm'
+import { Configuration } from '.'
 
-const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2')
+const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
+  variants: {
+    disabled: {
+      true: 'opacity-50 pointer-events-none',
+    },
+  },
+})
 
 export interface CheckoutConfig {
   id: string | null
@@ -12,14 +21,23 @@ export interface CheckoutConfig {
   config: PaywallConfig
 }
 
+interface ConfigurationOptions {
+  label: string
+  key: Configuration
+  disabled?: boolean
+  children?: ReactNode
+}
 interface ChooseConfigurationProps {
   items: CheckoutConfig[]
   onChange(config: CheckoutConfig): void
+  configuration: Configuration
+  setConfiguration: (config: any) => void
   value: CheckoutConfig
   disabled?: boolean
+  control: any
+  name: string
+  loading?: boolean
 }
-
-type Configuration = 'new' | 'existing'
 
 const Radio = ({ checked }: any) => {
   return (
@@ -31,13 +49,44 @@ const Radio = ({ checked }: any) => {
   )
 }
 
+const ChooseConfigurationPlaceholder = () => {
+  return (
+    <Placeholder.Root className="grid gap-4">
+      <Placeholder.Root>
+        <Placeholder.Line size="sm" />
+        <Placeholder.Line size="md" />
+      </Placeholder.Root>
+      <Placeholder.Root>
+        <Placeholder.Line size="sm" />
+        <Placeholder.Line size="md" />
+      </Placeholder.Root>
+    </Placeholder.Root>
+  )
+}
 export function ChooseConfiguration({
   items,
   onChange,
   value,
   disabled,
+  control,
+  name,
+  configuration,
+  setConfiguration,
+  loading,
 }: ChooseConfigurationProps) {
-  const [configuration, setConfiguration] = useState<Configuration>('new')
+  const {
+    fieldState: { error },
+  } = useController({
+    name,
+    control,
+    rules: {
+      required: {
+        value: configuration === 'new',
+        message: 'This field is required.',
+      },
+    },
+  })
+
   const [selectedConfig, setSelectedConfig] = useState<
     CheckoutConfig | undefined
   >(undefined)
@@ -57,50 +106,87 @@ export function ChooseConfiguration({
       onChange(config)
     }
   }
+
+  if (loading) {
+    return <ChooseConfigurationPlaceholder />
+  }
+
+  const configs: ConfigurationOptions[] = [
+    {
+      key: 'new',
+      label: 'Create a new one',
+      children: (
+        <ConnectForm>
+          {({ register }: any) => {
+            return (
+              <Input
+                placeholder="Enter name"
+                type="text"
+                {...register('configName')}
+                error={error?.message}
+                onKeyDown={(e) => {
+                  // Prevent the `RadioGroup` itself from "eating" characters
+                  e.stopPropagation()
+                }}
+              />
+            )
+          }}
+        </ConnectForm>
+      ),
+    },
+    {
+      key: 'existing',
+      label: 'Choose existing',
+      children: (
+        <Select
+          disabled={items?.length === 0}
+          options={configOptions}
+          onChange={(value) => {
+            onSelectConfig(value?.toString())
+          }}
+          defaultValue={selectedConfig?.id || value?.id}
+        />
+      ),
+    },
+  ]
+
   return (
-    <RadioGroup
-      className="grid gap-6"
-      value={configuration}
-      onChange={setConfiguration}
-      disabled={disabled}
-    >
-      <RadioGroup.Option value="new">
-        {({ checked }) => (
-          <div className="flex flex-col gap-2">
-            <RadioContentWrapper className="items-center">
-              <Radio checked={checked} />
-              <span>Create a new one</span>
-            </RadioContentWrapper>
-            <RadioContentWrapper>
-              <div className="col-start-2">
-                <Input placeholder="Enter name" />
-              </div>
-            </RadioContentWrapper>
-          </div>
-        )}
-      </RadioGroup.Option>
-      <RadioGroup.Option value="existing">
-        {({ checked }) => (
-          <div className="flex flex-col gap-2">
-            <RadioContentWrapper className="items-center">
-              <Radio checked={checked} />
-              <span>Choose existing</span>
-            </RadioContentWrapper>
-            <RadioContentWrapper>
-              <div className="col-start-2">
-                <Select
-                  disabled={!checked}
-                  options={configOptions}
-                  onChange={(value) => {
-                    onSelectConfig(value?.toString())
-                  }}
-                  defaultValue={selectedConfig?.id}
-                />
-              </div>
-            </RadioContentWrapper>
-          </div>
-        )}
-      </RadioGroup.Option>
-    </RadioGroup>
+    <>
+      <RadioGroup
+        className="grid gap-6"
+        value={configuration}
+        onChange={setConfiguration}
+        disabled={disabled}
+      >
+        {configs?.map(({ key: value, label, children, disabled }) => {
+          const isSelected = configuration === value
+          return (
+            <div className="w-full" key={value}>
+              <RadioGroup.Option value={value} disabled={disabled}>
+                {({ checked }) => (
+                  <>
+                    <RadioGroup.Label>
+                      <div className="flex flex-col gap-2">
+                        <RadioContentWrapper
+                          className={`${
+                            disabled ? '' : 'cursor-pointer'
+                          } items-center `}
+                        >
+                          <Radio checked={checked} />
+                          <span>{label}</span>
+                        </RadioContentWrapper>
+                      </div>
+                    </RadioGroup.Label>
+                  </>
+                )}
+              </RadioGroup.Option>
+              <RadioContentWrapper className="mt-2" disabled={!isSelected}>
+                <div className="col-start-2">{children}</div>
+              </RadioContentWrapper>
+            </div>
+          )
+        })}
+      </RadioGroup>
+    </>
   )
 }
