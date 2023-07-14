@@ -55,7 +55,7 @@ export const CheckoutUrlPage = () => {
     },
   })
 
-  const { control, trigger, watch } = methods
+  const { control, trigger, watch, setValue } = methods
 
   const {
     isPlaceholderData: isRecurringSettingPlaceholder,
@@ -294,17 +294,18 @@ export const CheckoutUrlPage = () => {
         config: response.config as PaywallConfig,
         name: response.name,
       })
+      setValue('configName', '') // reset field after new configuration is set
       await refetchConfigList()
     }
   }
+
+  const isNewConfiguration = configuration === 'new'
 
   const onSubmitConfiguration = async () => {
     const isValid = await trigger()
     if (!isValid) return Promise.reject() // pass rejected promise to block skip to next step
 
-    const isNew = configuration === 'new'
-
-    if (isNew) {
+    if (isNewConfiguration) {
       // this is a new config, let's pass an empty config
       return handleSetConfiguration({
         id: null,
@@ -314,13 +315,16 @@ export const CheckoutUrlPage = () => {
     }
 
     if (!checkoutConfig?.id) {
-      ToastHelper.error('Please select or create a configuration to proceed.')
+      ToastHelper.error('Please select a configuration or create a new one.')
       return Promise.reject() // no config selected, prevent skip to next step
     }
   }
 
   const hasRecurringPlaceholder =
     !!lockAddress && !!network && isRecurringSettingPlaceholder
+
+  const hasSelectedConfig =
+    configuration === 'existing' && checkoutConfig?.id !== undefined
 
   return (
     <>
@@ -413,7 +417,7 @@ export const CheckoutUrlPage = () => {
                   title: 'Configure the basics',
                   description:
                     'Customize the checkout modal interaction & additional behavior',
-                  disabled: !checkoutConfig?.id,
+                  disabled: !hasSelectedConfig,
                   children: (
                     <BasicConfigForm
                       onChange={onBasicConfigChange}
@@ -425,7 +429,7 @@ export const CheckoutUrlPage = () => {
                   title: 'Configured locks',
                   description:
                     'Select the locks that you would like to featured in this configured checkout modal',
-                  disabled: !checkoutConfig?.id,
+                  disabled: !hasSelectedConfig,
                   children: (
                     <LocksForm
                       onChange={onAddLocks}
