@@ -148,6 +148,7 @@ export const SIWEProvider = ({ children }: Props) => {
 
       const { data: nonce } = await storage.nonce()
       const siweResult = await siweSign(nonce, '')
+
       if (siweResult) {
         const { message, signature } = siweResult
         const response = await storage.login({
