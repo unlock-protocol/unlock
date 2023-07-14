@@ -7,6 +7,7 @@ import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { UpdateTransferFee } from '../forms/UpdateTransferFee'
 import { SettingCard } from './SettingCard'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
+import { UpdateGasRefundForm } from '../forms/UpdateGasRefundForm'
 
 interface SettingTermsProps {
   lockAddress: string
@@ -46,6 +47,17 @@ export const SettingTerms = ({
           isManager={isManager}
           disabled={!isManager}
           unlimitedDuration={unlimitedDuration}
+        />
+      ),
+    },
+    {
+      label: 'Gas Refunds',
+      description: 'Set up how gas refunds are handled for renewals.',
+      children: (
+        <UpdateGasRefundForm
+          lockAddress={lockAddress}
+          network={network}
+          disabled={!isManager}
         />
       ),
     },
