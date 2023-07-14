@@ -341,6 +341,7 @@ export const CheckoutUrlPage = () => {
                 title: 'Configure the basics',
                 description:
                   'Customize the checkout modal interaction & additional behavior',
+                disabled: !checkoutConfig?.id,
                 children: (
                   <BasicConfigForm
                     onChange={onBasicConfigChange}
@@ -352,6 +353,7 @@ export const CheckoutUrlPage = () => {
                 title: 'Configured locks',
                 description:
                   'Select the locks that you would like to featured in this configured checkout modal',
+                disabled: !checkoutConfig?.id,
                 children: (
                   <LocksForm
                     onChange={onAddLocks}
