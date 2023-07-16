@@ -251,6 +251,9 @@ export function ConfirmCrypto({
       buttonLabel = 'Pay using crypto'
     }
   }
+  const usdTotalPricing = totalPricing?.total
+    ? totalPricing?.total / 100
+    : undefined
 
   return (
     <Fragment>
@@ -306,8 +309,8 @@ export function ConfirmCrypto({
                   ).toLocaleString()} ${symbol}`
             }
             usdPrice={
-              totalPricing?.total
-                ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
+              usdTotalPricing
+                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
                 : ''
             }
             isCardEnabled={!!creditCardEnabled}

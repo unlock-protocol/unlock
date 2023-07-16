@@ -10,6 +10,7 @@ import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmail } from './tasks/sendEmail'
+import { Pool } from 'pg'
 
 const crontabProduction = `
 */5 * * * * addRenewalJobs
@@ -27,13 +28,18 @@ const cronTabTesting = `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
-async function main() {
+export async function startWorker() {
   const runner = await run({
-    connectionString: config.databaseUrl,
+    pgPool: new Pool({
+      connectionString: config.databaseUrl,
+      // @ts-expect-error - type is not defined properly
+      ssl: config.database?.dialectOptions?.ssl,
+    }),
     crontab,
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
+
     taskList: {
       addRenewalJobs,
       addRenewalJobsWeekly,
@@ -48,8 +54,3 @@ async function main() {
 
   await runner.promise
 }
-
-main().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})

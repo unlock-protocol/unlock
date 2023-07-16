@@ -31,7 +31,8 @@ export const createAddRenewalJobs = (within: number) => {
               userAddress: key.owner,
             },
             {
-              jobKey: `${key.tokenId}-${key.lock.address}-${network.id}`,
+              jobKey: `fiat-renewal-${key.tokenId}-${key.lock.address}-${network.id}`,
+              maxAttempts: 3,
             }
           )
         }
@@ -45,7 +46,8 @@ export const createAddRenewalJobs = (within: number) => {
               userAddress: key.owner,
             },
             {
-              jobKey: `${key.tokenId}-${key.lock.address}-${network.id}`,
+              jobKey: `crypto-renewal-${key.tokenId}-${key.lock.address}-${network.id}`,
+              maxAttempts: 3,
             }
           )
         }

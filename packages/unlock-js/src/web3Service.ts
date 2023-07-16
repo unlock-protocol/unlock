@@ -1115,9 +1115,8 @@ export default class Web3Service extends UnlockService {
     const gasRefund = await lockContract.gasRefundValue()
     let decimals = this.networks[network].nativeCurrency.decimals
     const erc20Address = await lockContract.tokenAddress()
-
     if (erc20Address !== ethers.constants.AddressZero) {
-      decimals = await getErc20Decimals(erc20Address, this.provider)
+      decimals = await getErc20Decimals(erc20Address, provider)
     }
     return ethers.utils.formatUnits(gasRefund, decimals)
   }
