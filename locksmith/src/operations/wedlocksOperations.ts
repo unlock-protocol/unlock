@@ -21,10 +21,12 @@ import {
   DEFAULT_LOCK_SETTINGS,
   LockSettingProps,
 } from '../controllers/v2/lockSettingController'
-import { getLockMetadata } from './metadataOperations'
+import { getLockMetadata, generateKeyMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
-import { createCertificate } from '../utils/certification'
+import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
 import { svgStringToDataURI } from '../utils/image'
+import { createCertificate } from '../utils/certification'
+
 dayjs.extend(utc)
 dayjs.extend(timezone)
 
@@ -84,7 +86,10 @@ export const sendEmail = async ({
   } = await getLockSettings(params.lockAddress, network)
 
   if (!canSendEmail) {
-    return
+    logger.info('Email sending disabled for', {
+      lockAddress: params.lockAddress,
+    })
+    return `Email sending disabled for ${params.lockAddress}`
   }
 
   const payload = {
@@ -105,15 +110,19 @@ export const sendEmail = async ({
       },
       body: JSON.stringify(payload),
     })
-    if (response.status === 200) {
+    if (response.status !== 204) {
+      const reason = await response.text()
       logger.info(
         'Wedlocks returned unexpected status code',
         response.status,
-        await response.text()
+        reason
       )
+      return reason
     }
+    return true
   } catch (error: any) {
-    logger.error(error)
+    logger.error(`Sending email to ${config.services.wedlocks} failed`, error)
+    return `Sending email to ${config.services.wedlocks} failed`
   }
 }
 
@@ -364,7 +373,8 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   })
 
   if (!recipient) {
-    return
+    logger.info('No recipient found for', { lockAddress, ownerAddress })
+    return `No recipient found for owner ${ownerAddress} on lock ${lockAddress}`
   }
 
   const airdroppedRecipient = keyManager.createTransferAddress({
@@ -409,10 +419,26 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
     eventDetail = await getEventDetail(lockAddress, network)
   }
 
-  if (isCertification) {
-    const certificationUrl = `${config.unlockApp}/certification?lockAddress=${lockAddress}&network=${network}&tokenId=${tokenId}`
-    certificationDetail = {
-      certificationUrl,
+  if (isCertification && tokenId) {
+    const hostUrl = new URL(config.unlockApp)
+    const keyData = await generateKeyMetadata(
+      lockAddress,
+      tokenId,
+      true, // include protected data
+      hostUrl.host, // host
+      network
+    )
+    const certificationUrl = getCertificateLinkedinShareUrl({
+      lockAddress,
+      network,
+      tokenId,
+      metadata: keyData,
+    })
+
+    if (certificationUrl) {
+      certificationDetail = {
+        certificationUrl,
+      }
     }
   }
 
@@ -446,7 +472,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   const keychainUrl = `${config.unlockApp}/keychain`
   const transactionReceiptUrl = getTransactionHashUrl(key, network)
 
-  await sendEmail({
+  return sendEmail({
     network: network!,
     template: templates[0],
     failoverTemplate: templates[1],

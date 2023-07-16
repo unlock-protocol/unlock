@@ -6,6 +6,8 @@ import {
 } from '../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../utils/middlewares/lockManager'
 import lockController from '../controllers/lockController'
+import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
+
 const router = express.Router({ mergeParams: true })
 
 const connectStripeConfiguration = {
@@ -20,7 +22,11 @@ const changeLockIconConfiguration = {
   signee: 'lockManager',
 }
 
-router.get('/lock/:lockAddress/icon', lockController.lockIcon)
+router.get(
+  '/lock/:lockAddress/icon',
+  createCacheMiddleware(),
+  lockController.lockIcon
+)
 
 router.get(
   '/image/:network/:lockAddress/:keyId?',

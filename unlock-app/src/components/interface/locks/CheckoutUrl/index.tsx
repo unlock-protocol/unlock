@@ -1,4 +1,4 @@
-import { Button, Modal } from '@unlock-protocol/ui'
+import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import {
   MouseEventHandler,
@@ -8,7 +8,6 @@ import {
   useState,
 } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
-import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import ConfigComboBox, { CheckoutConfig } from './ComboBox'
@@ -21,6 +20,8 @@ import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
 import { useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { BasicConfigForm } from './elements/BasicConfigForm'
+import { LocksForm } from './elements/LocksForm'
 
 const Header = () => {
   return (
@@ -152,24 +153,20 @@ export const CheckoutUrlPage = () => {
     checkoutConfigList,
   ])
 
-  const onConfigSave = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    async (event) => {
-      event.preventDefault()
-      const updated = await updateConfig({
-        config: checkoutConfig.config,
-        name: checkoutConfig.name,
-        id: checkoutConfig.id,
-      })
-      setCheckoutConfig({
-        id: updated.id,
-        name: updated.name,
-        config: updated.config as PaywallConfig,
-      })
-      ToastHelper.success('Configuration updated.')
-      await refetchConfigList()
-    },
-    [checkoutConfig, updateConfig, refetchConfigList]
-  )
+  const onConfigSave = useCallback(async () => {
+    const updated = await updateConfig({
+      config: checkoutConfig.config,
+      name: checkoutConfig.name,
+      id: checkoutConfig.id,
+    })
+    setCheckoutConfig({
+      id: updated.id,
+      name: updated.name,
+      config: updated.config as PaywallConfig,
+    })
+    ToastHelper.success('Configuration updated.')
+    await refetchConfigList()
+  }, [checkoutConfig, updateConfig, refetchConfigList])
 
   const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
     async (event) => {
@@ -257,6 +254,49 @@ export const CheckoutUrlPage = () => {
     )
   }
 
+  const SelectConfiguration = () => {
+    return (
+      <div className="flex items-center w-full gap-4 p-2">
+        <div className="w-full">
+          <ConfigComboBox
+            disabled={isConfigUpdating}
+            items={
+              (checkoutConfigList as unknown as CheckoutConfig[]) ||
+              ([] as CheckoutConfig[])
+            }
+            onChange={async ({ config, ...rest }) => {
+              const option = {
+                ...rest,
+                config: config || DEFAULT_CONFIG,
+              }
+              setCheckoutConfig(option)
+              if (!option.id) {
+                const response = await updateConfig(option)
+                setCheckoutConfig({
+                  id: response.id,
+                  config: response.config as PaywallConfig,
+                  name: response.name,
+                })
+                await refetchConfigList()
+              }
+            }}
+            value={checkoutConfig}
+          />
+        </div>
+        <Button
+          disabled={!checkoutConfig.id}
+          iconLeft={<TrashIcon />}
+          onClick={(event) => {
+            event.preventDefault()
+            setDeleteConfirmation(true)
+          }}
+          size="small"
+        >
+          Delete
+        </Button>
+      </div>
+    )
+  }
   const hasRecurringPlaceholder =
     !!lockAddress && !!network && isRecurringSettingPlaceholder
 
@@ -282,68 +322,53 @@ export const CheckoutUrlPage = () => {
         </div>
       </Modal>
       <TopBar />
-      <div className="z-[1] flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
+      <div className="z-[1] flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row relative">
         <div className="z-0 order-2 md:w-1/2 md:order-1">
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
           />
         </div>
-        <div className="z-0 flex flex-col order-1 gap-4 md:w-1/2 md:order-2">
+        <div className="z-0 flex flex-col order-1 gap-5 md:gap-10 md:w-1/2 md:order-2">
           <Header />
-          <div className="flex items-center w-full gap-4 p-2">
-            <div className="w-full">
-              <ConfigComboBox
-                disabled={isConfigUpdating}
-                items={
-                  (checkoutConfigList as unknown as CheckoutConfig[]) ||
-                  ([] as CheckoutConfig[])
-                }
-                onChange={async ({ config, ...rest }) => {
-                  const option = {
-                    ...rest,
-                    config: config || DEFAULT_CONFIG,
-                  }
-                  setCheckoutConfig(option)
-                  if (!option.id) {
-                    const response = await updateConfig(option)
-                    setCheckoutConfig({
-                      id: response.id,
-                      config: response.config as PaywallConfig,
-                      name: response.name,
-                    })
-                    await refetchConfigList()
-                  }
-                }}
-                value={checkoutConfig}
-              />
-            </div>
-            <Button
-              loading={isConfigUpdating}
-              disabled={hasRecurringPlaceholder}
-              iconLeft={<SaveIcon />}
-              onClick={onConfigSave}
-              size="small"
-            >
-              Save
-            </Button>
-            <Button
-              disabled={!checkoutConfig.id}
-              iconLeft={<TrashIcon />}
-              onClick={(event) => {
-                event.preventDefault()
-                setDeleteConfirmation(true)
-              }}
-              size="small"
-            >
-              Delete
-            </Button>
-          </div>
-          <CheckoutForm
-            key={checkoutConfig.id}
-            onAddLocks={onAddLocks}
-            onBasicConfigChange={onBasicConfigChange}
-            paywallConfig={checkoutConfig.config}
+          <Tabs
+            tabs={[
+              {
+                title: 'Choose a configuration',
+                description:
+                  'Create a new configuration or continue enhance the existing one for your checkout modal',
+                children: <SelectConfiguration />,
+              },
+              {
+                title: 'Configure the basics',
+                description:
+                  'Customize the checkout modal interaction & additional behavior',
+                children: (
+                  <BasicConfigForm
+                    onChange={onBasicConfigChange}
+                    defaultValues={checkoutConfig.config}
+                  />
+                ),
+              },
+              {
+                title: 'Configured locks',
+                description:
+                  'Select the locks that you would like to featured in this configured checkout modal',
+                children: (
+                  <LocksForm
+                    onChange={onAddLocks}
+                    locks={checkoutConfig.config?.locks}
+                  />
+                ),
+                button: {
+                  loading: isConfigUpdating,
+                  disabled: hasRecurringPlaceholder,
+                  iconLeft: <SaveIcon />,
+                },
+                onNextLabel: 'Save',
+                onNext: async () => await onConfigSave(),
+              },
+            ]}
           />
         </div>
       </div>

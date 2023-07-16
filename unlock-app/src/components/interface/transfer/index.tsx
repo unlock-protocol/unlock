@@ -104,7 +104,7 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const { transferDone } = useTransferDone()
 
   const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
-    const walletService = await getWalletService()
+    const walletService = await getWalletService(network)
 
     const signer = walletService.signer
     const transferSignature = [

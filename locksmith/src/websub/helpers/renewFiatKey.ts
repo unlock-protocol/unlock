@@ -1,4 +1,5 @@
 import { getStripeConnectForLock } from '../../operations/stripeOperations'
+import { getSettings } from '../../operations/lockSettingOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { logger } from '../../logger'
 import { Charge, KeyRenewal, KeySubscription } from '../../models'
@@ -8,7 +9,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
 interface RenewKeyReturned {
-  keyId?: number
+  keyId?: string
   lockAddress: string
   network: number
   tx?: string
@@ -18,7 +19,7 @@ interface RenewKeyReturned {
 interface Options {
   lockAddress: string
   userAddress: string
-  keyId: number
+  keyId: string
   network: number
 }
 
@@ -101,10 +102,16 @@ export async function renewFiatKey({
 
     const fulfillmentDispatcher = new Dispatcher()
 
+    // retrieve lock currency
+    const { creditCardCurrency = 'usd' } = await getSettings({
+      lockAddress,
+      network,
+    })
+
     const paymentIntent = await stripe.paymentIntents.create(
       {
         amount: subscription.amount,
-        currency: 'USD',
+        currency: creditCardCurrency,
         capture_method: 'manual',
         // Confirm the payment off-session automatically.
         confirm: true,

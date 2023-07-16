@@ -1,4 +1,5 @@
-import WalletConnectProvider from '@walletconnect/web3-provider'
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
+
 import WalletLink from 'walletlink'
 import { useConfig } from '../utils/withConfig'
 import { useAuth } from '../contexts/AuthenticationContext'
@@ -46,6 +47,7 @@ interface AuthenticateProps {
 
 export enum WALLET_PROVIDER {
   METAMASK,
+  DELEGATED_PROVIDER,
   WALLET_CONNECT,
   COINBASE,
   UNLOCK,
@@ -59,6 +61,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const { authenticate } = useAuth()
   const { setStorage, removeKey } = useAppStorage()
   const { send } = useConnectModal()
+
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
   const handleInjectProvider = useCallback(async () => {
@@ -72,11 +75,35 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     [authenticate]
   )
 
+  const handleDelegatedProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
+
   const handleWalletConnectProvider = useCallback(async () => {
-    const walletConnectProvider = new WalletConnectProvider({
-      rpc: rpcForWalletConnect(config),
+    // requires @walletconnect/modal for showQrModal:true
+    const client = await EthereumProvider.init({
+      projectId: config.walletConnectApiKey,
+      showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
+      qrModalOptions: {
+        chainImages: [],
+        themeMode: 'light',
+      },
+      chains: [1],
+      optionalChains: Object.keys(config.networks).map((key) => {
+        return parseInt(key)
+      }),
     })
-    return authenticate(walletConnectProvider)
+
+    // Todo" consider handling this in our modal directly
+    // client.on('display_uri', (uri: string) => {
+    //   console.log(uri)
+    // })
+
+    await client.connect()
+    return authenticate(client)
   }, [authenticate, config])
 
   const handleCoinbaseWalletProvider = useCallback(async () => {
@@ -92,6 +119,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const walletHandlers: {
     [key in WalletProvider]: (provider?: any) => Promise<any | void>
   } = {
+    DELEGATED_PROVIDER: handleDelegatedProvider,
     METAMASK: handleInjectProvider,
     WALLET_CONNECT: handleWalletConnectProvider,
     COINBASE: handleCoinbaseWalletProvider,
@@ -100,12 +128,13 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
 
   const authenticateWithProvider = useCallback(
     async (providerType: WalletProvider, provider?: any) => {
-      if (!walletHandlers[providerType]) {
-        removeKey('provider')
-      }
-      const connectedProvider = walletHandlers[providerType](provider)
+      try {
+        if (!walletHandlers[providerType]) {
+          removeKey('provider')
+        }
+        const connectedProvider = walletHandlers[providerType](provider)
 
-      connectedProvider.then((p) => {
+        const p = await connectedProvider
         if (!p?.account) {
           return console.error('Unable to get provider')
         }
@@ -116,9 +145,12 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
         }
         localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
         setStorage('provider', providerType)
-      })
-      send(connectedProvider)
-      return connectedProvider
+        send(connectedProvider)
+        return connectedProvider
+      } catch (error) {
+        console.error('We could not connect to the provider', error)
+        return null
+      }
     },
     [setStorage, removeKey, send]
   )

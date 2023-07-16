@@ -174,6 +174,8 @@ export const useProvider = (config: any) => {
           await provider.enable()
         } catch {
           console.error('Please check your wallet and try again to connect.')
+          setLoading(false)
+          return
         }
       }
       const ethersProvider = new ethers.providers.Web3Provider(provider)
@@ -258,6 +260,7 @@ export const useProvider = (config: any) => {
     watchAsset,
     providerSend,
     connected,
+    provider,
     displayAccount,
   }
 }

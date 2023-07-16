@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
+import { useProvider } from './useProvider'
+import { config as AppConfig } from '~/config/app'
 export interface UserInfo {
   address?: string
   signedMessage?: string
@@ -11,6 +13,8 @@ export interface UserInfo {
 export interface TransactionInfo {
   hash: string
   lock?: string
+  metadata?: any
+  tokenIds?: string[]
 }
 
 export enum CheckoutEvents {
@@ -21,9 +25,11 @@ export enum CheckoutEvents {
   metadata = 'checkout.metadata',
   methodCall = 'checkout.methodCall',
   onEvent = 'checkout.onEvent',
+  resolveMethodCall = 'checkout.resolveMethodCall',
+  resolveOnEventCall = 'checkout.resolveOnEventCall',
 }
 
-type Payload = UserInfo | TransactionInfo | MethodCall | string
+type Payload = UserInfo | TransactionInfo | MethodCall | any
 
 interface BufferedEvent {
   kind: CheckoutEvents
@@ -33,7 +39,7 @@ interface BufferedEvent {
 export interface MethodCall {
   method: string
   params: any
-  id: number
+  id: string
 }
 
 export interface MethodCallResult {
@@ -62,7 +68,7 @@ export type AsyncSendable = {
 // iframe are held here, once the parent iframe has resolved the call
 // it will trigger the callback and remove it from the table.
 export const waitingMethodCalls: {
-  [id: number]: (error: any, response: any) => void
+  [id: string]: (error: any, response: any) => void
 } = {}
 // TODO: see if we can support multiple handlers for same event name
 export const eventHandlers: {
@@ -114,23 +120,66 @@ export const useCheckoutCommunication = () => {
   const [oauthConfig, setOauthConfig] = useState<OAuthConfig | undefined>(
     undefined
   )
+  const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
+
+  // @ts-expect-error - attach to window
+  window.px = provider
 
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setPaywallConfig(config)
+      setOauthConfig(undefined)
     },
-    authenticate: () => {
+    authenticate: (config: any) => {
       setOauthConfig({
-        clientId: window.parent.location.host,
-        responseType: '',
-        state: '',
-        redirectUri: '',
+        clientId: config?.clientId,
+        responseType: config?.responseType ?? '',
+        state: config?.state ?? '',
+        redirectUri: config?.redirectUri ?? '',
       })
+      setPaywallConfig(undefined)
     },
     resolveMethodCall,
     resolveOnEvent,
     resolveOnEnable,
+    handleMethodCallEvent: async ({ id, params, method }: MethodCall) => {
+      // @ts-expect-error but we know it's there
+      const px = window.px
+      if (px?.send) {
+        return px
+          .send(method, params)
+          .then((response: unknown) => {
+            pushOrEmit(CheckoutEvents.resolveMethodCall, {
+              id,
+              error: null,
+              response,
+            })
+          })
+          .catch((error: Error) => {
+            pushOrEmit(CheckoutEvents.resolveMethodCall, {
+              id,
+              error,
+              response: null,
+            })
+          })
+      } else {
+        pushOrEmit(CheckoutEvents.resolveMethodCall, {
+          id,
+          error:
+            'unknown method to call provider! Please make sure you use and EIP1193 provider!',
+          response: null,
+        })
+      }
+    },
+    handleOnEvent: async (eventName: string) => {
+      if (!provider) {
+        return
+      }
+      return provider.on(eventName, () => {
+        pushOrEmit(CheckoutEvents.resolveOnEventCall, eventName)
+      })
+    },
   })
 
   let insideIframe = false
@@ -208,7 +257,7 @@ export const useCheckoutCommunication = () => {
       },
       sendAsync: (request: MethodCall, callback) => {
         if (!request.id) {
-          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+          request.id = window.crypto.randomUUID()
         }
         waitingMethodCalls[request.id] = (error: any, response: any) => {
           callback(error, response)
@@ -218,7 +267,7 @@ export const useCheckoutCommunication = () => {
       request: async (request: MethodCall) => {
         if (!request.id) {
           // Assigning an id because they may be returned in a different order
-          request.id = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)
+          request.id = window.crypto.randomUUID()
         }
         return new Promise((resolve, reject) => {
           waitingMethodCalls[request.id] = (error: any, response: any) => {

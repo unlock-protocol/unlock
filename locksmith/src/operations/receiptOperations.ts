@@ -66,6 +66,8 @@ const getPurchaserDetails = async ({
       fullname = purchaserMetadata.fullname
     } else if (purchaserMetadata?.firstname && purchaserMetadata?.lastname) {
       fullname = `${purchaserMetadata?.firstname} ${purchaserMetadata?.lastname}`
+    } else if (purchaserMetadata?.name) {
+      fullname = purchaserMetadata?.name
     }
 
     return {

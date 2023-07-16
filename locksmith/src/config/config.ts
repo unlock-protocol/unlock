@@ -1,8 +1,12 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 
-const isProduction = ['prod'].includes(
-  process.env.NODE_ENV?.toLowerCase().trim() ?? ''
+export const isProduction = ['prod'].includes(
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
+)
+
+export const isStaging = ['staging'].includes(
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
 )
 
 const stagingConfig = {
@@ -44,7 +48,7 @@ const config = {
   unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
-    wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || defaultConfig.services.wedlocks,
     locksmith: defaultConfig.services.locksmith,
   },
   storage: {
@@ -60,6 +64,7 @@ const config = {
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '30s',
   defenderRelaySecret: process.env.DEFENDER_RELAY_SECRET,
+  databaseUrl: process.env.DATABASE_URL || '',
 }
 
 if (process.env.ON_HEROKU) {
@@ -88,12 +93,8 @@ if (process.env.DATABASE_URL) {
   config.database.host = process.env.DB_HOSTNAME
 }
 
-if (process.env.UNLOCK_ENV === 'prod') {
-  config.services.wedlocks =
-    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
-} else if (process.env.UNLOCK_ENV === 'staging') {
-  config.services.wedlocks =
-    'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler'
-}
+const connectionString = `postgresql://${config.database.username}:${config.database.password}@${config.database.host}/${config.database.database}`
+
+config.databaseUrl = connectionString
 
 export default config

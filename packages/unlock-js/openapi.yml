@@ -401,6 +401,11 @@ components:
         hookGuildId:
           type: string
           nullable: true
+        unlockFeeChargedToUser:
+          type: boolean
+        creditCardCurrency:
+          type: string
+          default: 'usd'
 
   parameters:
     Network:
@@ -1254,13 +1259,13 @@ paths:
         - $ref: '#/components/parameters/LockAddress'
         - in: query
           name: query
-          required: false
+          required: true
           schema:
             type: string
           description: Query you want to search for.
         - in: query
           name: filterKey
-          required: false
+          required: true
           schema:
             type: string
           description: The key you want to search on.
