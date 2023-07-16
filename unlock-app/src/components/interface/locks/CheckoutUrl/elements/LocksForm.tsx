@@ -17,7 +17,6 @@ import {
   Tooltip,
   minifyAddress,
 } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { FiTrash as DeleteIcon, FiPlus as PlusIcon } from 'react-icons/fi'
 import { BiCog as CogICon } from 'react-icons/bi'
 import { RiArrowGoBackLine as GoBackLineIcon } from 'react-icons/ri'

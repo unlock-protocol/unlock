@@ -99,12 +99,12 @@ export const EventLandingPageCallToAction = ({
     )
   }
   return (
-    <>
-      <PastEventsByManager manager={account}></PastEventsByManager>
+    <div className="flex flex-col">
+      <PastEventsByManager manager={account} />
       <Button onClick={handleCreateEvent} className="my-8">
         Get started for free
       </Button>
-    </>
+    </div>
   )
 }
 
@@ -120,13 +120,9 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
             backgroundImage:
               'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
           }}
-          className="text-6xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+          className="text-5xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text break-words"
         >
-          Easy-peasy
-          <br />
-          event tickets
-          <br />
-          and registration
+          Easy-peasy event tickets and registration
         </h1>
       }
       actions={
