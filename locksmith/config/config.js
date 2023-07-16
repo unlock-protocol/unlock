@@ -19,6 +19,7 @@ const config = {
   logtailSourceToken: process.env.LOGTAIL,
   requestTimeout: '25s',
   defenderRelaySecrets: {
+    80001: process.env.DEFENDER_RELAY_SECRET_80001,
     137: process.env.DEFENDER_RELAY_SECRET_137,
     5: process.env.DEFENDER_RELAY_SECRET_5,
   },
