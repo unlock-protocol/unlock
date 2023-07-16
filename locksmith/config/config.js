@@ -18,10 +18,19 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
   requestTimeout: '25s',
-  defenderRelaySecrets: {
-    80001: process.env.DEFENDER_RELAY_SECRET_80001,
-    137: process.env.DEFENDER_RELAY_SECRET_137,
-    5: process.env.DEFENDER_RELAY_SECRET_5,
+  defenderRelayCredentials: {
+    80001: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_80001 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_80001 || '',
+    },
+    137: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_137 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_137 || '',
+    },
+    5: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_5 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_5 || '',
+    },
   },
 }
 

@@ -34,13 +34,26 @@ const prodConfig = {
 
 const defaultConfig = isProduction ? prodConfig : stagingConfig
 
-interface DefenderRelaySecrets {
-  [network: number]: string | undefined
+interface DefenderRelayCredentials {
+  [network: number]: {
+    apiKey: string
+    apiSecret: string
+  }
 }
 
-const defenderRelaySecrets: DefenderRelaySecrets = {
-  137: process.env.DEFENDER_RELAY_SECRET_137,
-  5: process.env.DEFENDER_RELAY_SECRET_5,
+const defenderRelayCredentials: DefenderRelayCredentials = {
+  80001: {
+    apiKey: process.env.DEFENDER_RELAY_KEY_80001 || '',
+    apiSecret: process.env.DEFENDER_RELAY_SECRET_80001 || '',
+  },
+  137: {
+    apiKey: process.env.DEFENDER_RELAY_KEY_137 || '',
+    apiSecret: process.env.DEFENDER_RELAY_SECRET_137 || '',
+  },
+  5: {
+    apiKey: process.env.DEFENDER_RELAY_KEY_5 || '',
+    apiSecret: process.env.DEFENDER_RELAY_SECRET_5 || '',
+  },
 }
 
 const config = {
@@ -72,7 +85,7 @@ const config = {
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '30s',
-  defenderRelaySecrets,
+  defenderRelayCredentials,
   databaseUrl: process.env.DATABASE_URL || '',
 }
 
