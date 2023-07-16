@@ -38,10 +38,11 @@ export const getProviderForNetwork = async function (network = 1) {
  */
 export const getPurchaser = async function (network = 1) {
   const { defenderRelay } = networks[network]
-  if (defenderRelay?.apiKey && config.defenderRelaySecret) {
+  const relaySecret = config.defenderRelaySecrets[network]
+  if (defenderRelay?.apiKey && relaySecret) {
     const credentials = {
       apiKey: defenderRelay?.apiKey,
-      apiSecret: config.defenderRelaySecret,
+      apiSecret: relaySecret,
     }
     const provider = new DefenderRelayProvider(credentials)
     const wallet = new DefenderRelaySigner(credentials, provider, {

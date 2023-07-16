@@ -34,6 +34,15 @@ const prodConfig = {
 
 const defaultConfig = isProduction ? prodConfig : stagingConfig
 
+interface DefenderRelaySecrets {
+  [network: number]: string | undefined
+}
+
+const defenderRelaySecrets: DefenderRelaySecrets = {
+  137: process.env.DEFENDER_RELAY_SECRET_137,
+  5: process.env.DEFENDER_RELAY_SECRET_5,
+}
+
 const config = {
   isProduction,
   database: {
@@ -63,7 +72,7 @@ const config = {
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '30s',
-  defenderRelaySecret: process.env.DEFENDER_RELAY_SECRET,
+  defenderRelaySecrets,
   databaseUrl: process.env.DATABASE_URL || '',
 }
 
