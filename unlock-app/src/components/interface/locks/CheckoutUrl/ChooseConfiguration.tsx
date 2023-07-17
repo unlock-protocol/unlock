@@ -1,6 +1,6 @@
 import { classed } from '@tw-classed/react'
 import { PaywallConfig } from '~/unlockTypes'
-import React, { ReactNode, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { Input, Placeholder, Select } from '@unlock-protocol/ui'
 import { useController } from 'react-hook-form'
@@ -63,6 +63,7 @@ const ChooseConfigurationPlaceholder = () => {
     </Placeholder.Root>
   )
 }
+
 export function ChooseConfiguration({
   items,
   onChange,
@@ -90,6 +91,15 @@ export function ChooseConfiguration({
   const [selectedConfig, setSelectedConfig] = useState<
     CheckoutConfig | undefined
   >(undefined)
+
+  const [defaultValue, setDefaultValue] = useState<string | null>(
+    selectedConfig?.id || value?.id
+  )
+
+  useEffect(() => {
+    if (!value?.id) return
+    setDefaultValue(value?.id)
+  }, [value?.id, value.name])
 
   const configOptions = items?.map((config) => {
     return {
@@ -144,7 +154,7 @@ export function ChooseConfiguration({
           onChange={(value) => {
             onSelectConfig(value?.toString())
           }}
-          defaultValue={selectedConfig?.id || value?.id}
+          defaultValue={defaultValue}
         />
       ),
     },
@@ -155,7 +165,12 @@ export function ChooseConfiguration({
       <RadioGroup
         className="grid gap-6"
         value={configuration}
-        onChange={setConfiguration}
+        onChange={(config) => {
+          setConfiguration(config)
+          if (config === 'new') {
+            setSelectedConfig(undefined)
+          }
+        }}
         disabled={disabled}
       >
         {configs?.map(({ key: value, label, children, disabled }) => {

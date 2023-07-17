@@ -1,12 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutPreview } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
@@ -17,7 +11,7 @@ import {
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
@@ -190,31 +184,27 @@ export const CheckoutUrlPage = () => {
     await refetchConfigList()
   }, [checkoutConfig, updateConfig, refetchConfigList])
 
-  const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    async (event) => {
-      event.preventDefault()
-      if (!checkoutConfig.id) {
-        setDeleteConfirmation(false)
-        return
-      }
-      await removeConfig(checkoutConfig.id)
-      const { data: list } = await refetchConfigList()
-      const result = list?.[0]
-      setCheckoutConfig({
-        id: result?.id || null,
-        name: result?.name || 'config',
-        config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
-      })
+  const onConfigRemove = useCallback(async () => {
+    if (!checkoutConfig.id) {
       setDeleteConfirmation(false)
-    },
-    [
-      checkoutConfig,
-      removeConfig,
-      refetchConfigList,
-      DEFAULT_CONFIG,
-      setDeleteConfirmation,
-    ]
-  )
+      return
+    }
+    await removeConfig(checkoutConfig.id)
+    const { data: list } = await refetchConfigList()
+    const result = list?.[0]
+    setCheckoutConfig({
+      id: result?.id || null,
+      name: result?.name || 'config',
+      config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
+    })
+    setDeleteConfirmation(false)
+  }, [
+    checkoutConfig,
+    removeConfig,
+    refetchConfigList,
+    DEFAULT_CONFIG,
+    setDeleteConfirmation,
+  ])
   useEffect(() => {
     const checkout = checkoutConfigList?.[0]
     if (!checkout) return
@@ -307,7 +297,7 @@ export const CheckoutUrlPage = () => {
 
     if (isNewConfiguration) {
       // this is a new config, let's pass an empty config
-      return handleSetConfiguration({
+      await handleSetConfiguration({
         id: null,
         name: configName,
         config: DEFAULT_CONFIG,
@@ -319,6 +309,9 @@ export const CheckoutUrlPage = () => {
       return Promise.reject() // no config selected, prevent skip to next step
     }
   }
+
+  const submitConfigurationMutation = useMutation(onSubmitConfiguration)
+  const deleteConfigurationMutation = useMutation(onConfigRemove)
 
   const hasRecurringPlaceholder =
     !!lockAddress && !!network && isRecurringSettingPlaceholder
@@ -340,7 +333,9 @@ export const CheckoutUrlPage = () => {
             <Button
               loading={isConfigRemoving}
               iconLeft={<TrashIcon />}
-              onClick={onConfigRemove}
+              onClick={() => {
+                deleteConfigurationMutation.mutateAsync()
+              }}
             >
               Delete {checkoutConfig.name}
             </Button>
@@ -368,7 +363,11 @@ export const CheckoutUrlPage = () => {
                     <div className="flex items-center w-full gap-4 p-2">
                       <div className="w-full">
                         <ChooseConfiguration
-                          loading={isLoadingConfigList}
+                          loading={
+                            isLoadingConfigList ||
+                            submitConfigurationMutation.isLoading ||
+                            deleteConfigurationMutation.isLoading
+                          }
                           name="configName"
                           control={control}
                           disabled={isConfigUpdating}
@@ -376,22 +375,9 @@ export const CheckoutUrlPage = () => {
                             (checkoutConfigList as unknown as CheckoutConfig[]) ||
                             ([] as CheckoutConfig[])
                           }
-                          onChange={async ({ config, ...rest }) => {
-                            const option = {
-                              ...rest,
-                              config: config || DEFAULT_CONFIG,
-                            }
-                            setCheckoutConfig(option)
-                            if (!option.id) {
-                              const response = await updateConfig(option)
-                              setCheckoutConfig({
-                                id: response.id,
-                                config: response.config as PaywallConfig,
-                                name: response.name,
-                              })
-                              await refetchConfigList()
-                            }
-                          }}
+                          onChange={async ({ config, ...rest }) =>
+                            await handleSetConfiguration({ config, ...rest })
+                          }
                           setConfiguration={setConfiguration}
                           configuration={configuration}
                           value={checkoutConfig}
@@ -411,7 +397,8 @@ export const CheckoutUrlPage = () => {
                       </div>
                     </div>
                   ),
-                  onNext: onSubmitConfiguration,
+                  onNext: async () =>
+                    await submitConfigurationMutation.mutateAsync(),
                 },
                 {
                   title: 'Configure the basics',
