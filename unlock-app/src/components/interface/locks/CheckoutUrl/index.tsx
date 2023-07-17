@@ -8,7 +8,10 @@ import {
   useState,
 } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
-import { CheckoutPreview } from './elements/CheckoutPreview'
+import {
+  CheckoutPreview,
+  CheckoutShareOrDownload,
+} from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import ConfigComboBox, { CheckoutConfig } from './ComboBox'
 import {
@@ -38,6 +41,7 @@ const Header = () => {
 export const CheckoutUrlPage = () => {
   const router = useRouter()
   const query = router.query
+  const [checkoutUrl, setCheckoutUrl] = useState('')
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const { getIsRecurringPossible } = useLockSettings()
@@ -327,6 +331,8 @@ export const CheckoutUrlPage = () => {
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
+            setCheckoutUrl={setCheckoutUrl}
+            checkoutUrl={checkoutUrl}
           />
         </div>
         <div className="z-0 flex flex-col order-1 gap-5 md:gap-10 md:w-1/2 md:order-2">
@@ -334,26 +340,27 @@ export const CheckoutUrlPage = () => {
           <Tabs
             tabs={[
               {
-                title: 'Choose a configuration',
+                title: 'Choose or create a checkout flow',
                 description:
-                  'Create a new configuration or continue enhance the existing one for your checkout modal',
+                  'Create a new checkout flow or edit a previously-saved checkout experience',
                 children: <SelectConfiguration />,
               },
               {
                 title: 'Configure the basics',
                 description:
-                  'Customize the checkout modal interaction & additional behavior',
+                  'Customize the checkout modal interaction & additional behaviors',
                 children: (
                   <BasicConfigForm
                     onChange={onBasicConfigChange}
                     defaultValues={checkoutConfig.config}
                   />
                 ),
+                disabled: !checkoutConfig?.id,
               },
               {
-                title: 'Configured locks',
+                title: 'Configure locks',
                 description:
-                  'Select the locks that you would like to featured in this configured checkout modal',
+                  'Select the locks you would like to include in this checkout flow',
                 children: (
                   <LocksForm
                     onChange={onAddLocks}
@@ -367,6 +374,22 @@ export const CheckoutUrlPage = () => {
                 },
                 onNextLabel: 'Save',
                 onNext: async () => await onConfigSave(),
+                disabled: !checkoutConfig?.id,
+              },
+              {
+                title: 'Share the checkout link or download the configuration',
+                description:
+                  'Copy the checkout URL to share, or download a JSON file for your implementation',
+                children: (
+                  <CheckoutShareOrDownload
+                    paywallConfig={checkoutConfig.config}
+                    checkoutUrl={checkoutUrl}
+                    setCheckoutUrl={setCheckoutUrl}
+                    size="medium"
+                  />
+                ),
+                showButton: false,
+                disabled: !checkoutConfig?.id,
               },
             ]}
           />
