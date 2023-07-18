@@ -23,6 +23,9 @@ export const DefaultTab: StoryFn<typeof meta> = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Tabs
+        onTabChange={(tab) => {
+          console.log(`change to new tab ${tab}`)
+        }}
         tabs={[
           {
             title: 'Choose a configuration',
