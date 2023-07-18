@@ -2,6 +2,9 @@ import { Button } from '@unlock-protocol/ui'
 import Image from 'next/image'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useConnectModal } from '~/hooks/useConnectModal'
+import { PastEventsByManager } from './PastEventsByManager'
 
 const customers = [
   {
@@ -78,11 +81,37 @@ const faqs = [
   },
 ]
 
-interface LandingPage {
+interface EventLandingPageCallToActionProps {
   handleCreateEvent: () => void
 }
 
-export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
+export const EventLandingPageCallToAction = ({
+  handleCreateEvent,
+}: EventLandingPageCallToActionProps) => {
+  const { account } = useAuth()
+  const { openConnectModal } = useConnectModal()
+
+  if (!account) {
+    return (
+      <Button onClick={() => openConnectModal()} className="my-8">
+        Connect your wallet
+      </Button>
+    )
+  }
+  return (
+    <div className="flex flex-col">
+      <PastEventsByManager manager={account} />
+      <Button onClick={handleCreateEvent} className="my-8">
+        Get started for free
+      </Button>
+    </div>
+  )
+}
+
+interface LandingPageProps {
+  handleCreateEvent: () => void
+}
+export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
   return (
     <LockTypeLandingPage
       title={
@@ -91,19 +120,13 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
             backgroundImage:
               'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
           }}
-          className="text-6xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+          className="text-5xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text break-words"
         >
-          Easy-peasy
-          <br />
-          event tickets
-          <br />
-          and registration
+          Easy-peasy event tickets and registration
         </h1>
       }
       actions={
-        <Button onClick={handleCreateEvent} className="my-8">
-          Get started for free
-        </Button>
+        <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
       }
       illustration={
         <Image

@@ -79,18 +79,22 @@ export const LockTypeLandingPage = ({
     <div>
       <section className="flex flex-col my-8 md:flex-row">
         {/* masthead */}
-        <div className="flex flex-col py-0 md:pr-10">
+        <div className="flex flex-col py-0 ">
           {title}
           <h2 className="mt-4 text-3xl font-bold">{subtitle}</h2>
           <p className="my-6">{description}</p>
-          <p className="flex justify-center md:justify-start">{actions}</p>
+          {actions && (
+            <div className="flex justify-center md:justify-start">
+              {actions}
+            </div>
+          )}
         </div>
-        <div className="justify-center hidden md:flex justify-items-center">
+        <div className="w-96 justify-center hidden md:flex justify-items-center items-start shrink-0">
           {illustration}
         </div>
       </section>
       <div className="flex flex-col items-center content-center justify-center justify-items-center">
-        <Image alt="cover image" width="1440" height="320" src={coverImage} />
+        <Image alt="cover image" width="770" height="160" src={coverImage} />
       </div>
 
       <section className="absolute left-0 flex flex-col items-center content-center justify-center w-screen py-8 text-white bg-black justify-items-center">
@@ -144,9 +148,9 @@ export const LockTypeLandingPage = ({
       </section>
       <section className="flex flex-col items-center content-center justify-center mt-8 justify-items-center">
         {actions}
-        <p className="text-xs text-center md:w-1/3">
+        <div className="text-xs text-center md:w-1/3">
           {callToAction?.description}
-        </p>
+        </div>
       </section>
       {(faqs || [])?.length > 0 && (
         <section className="my-32">
