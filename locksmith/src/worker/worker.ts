@@ -3,6 +3,7 @@ import config from '../config/config'
 import {
   addRenewalJobs,
   addRenewalJobsWeekly,
+  addRenewalJobsDaily,
 } from './tasks/renewal/addRenewalJobs'
 import { cryptoRenewalJob } from './tasks/renewal/cryptoRenewalJob'
 import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
@@ -14,6 +15,7 @@ import { Pool } from 'pg'
 
 const crontabProduction = `
 */5 * * * * addRenewalJobs
+0 0 * * * addRenewalJobsDaily
 0 0 * * 0 addRenewalJobsWeekly
 */5 * * * * addKeyJobs
 */5 * * * * addHookJobs
@@ -21,6 +23,7 @@ const crontabProduction = `
 
 const cronTabTesting = `
 */1 * * * * addRenewalJobs
+0 0 * * * addRenewalJobsDaily
 0 0 * * * addRenewalJobsWeekly
 */1 * * * * addKeyJobs
 */1 * * * * addHookJobs
@@ -39,9 +42,9 @@ export async function startWorker() {
     concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
-
     taskList: {
       addRenewalJobs,
+      addRenewalJobsDaily,
       addRenewalJobsWeekly,
       addKeyJobs,
       addHookJobs,
