@@ -1,7 +1,4 @@
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-
-import { config } from '~/config/app'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 export const getLocksByNetwork = async ({ account: owner, network }: any) => {
@@ -23,7 +20,6 @@ export const getLocksByNetwork = async ({ account: owner, network }: any) => {
 
 const useLocksByManagerOnNetworks = (manager: string, networkItems: any[]) => {
   const queries: QueriesOptions<any>[] = networkItems.map(([network]) => {
-    const networkName = config.networks[network]?.name
     if (manager && network) {
       return {
         queryKey: ['getLocks', network, manager],
@@ -33,9 +29,6 @@ const useLocksByManagerOnNetworks = (manager: string, networkItems: any[]) => {
             network,
           }),
         refetchInterval: false,
-        onError: () => {
-          ToastHelper.error(`Can't load locks from ${networkName} network.`)
-        },
       }
     }
   })

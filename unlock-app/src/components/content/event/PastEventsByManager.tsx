@@ -14,27 +14,40 @@ const getPastEventsByManager = async (account: string) => {
   const events: Partial<Metadata>[] = []
   await Promise.all(
     Object.keys(config.networks).map(async (network) => {
-      const locks = await getLocksByNetwork({
-        account,
-        network,
-      })
-      if (locks.length > 0) {
-        return Promise.all(
-          locks.map(async (lock) => {
-            // TODO: replace with a method to get the event data from a lock
-            // especially once we have an "event" object
-            const metadata = await getMetadata(lock.address, lock.network)
-            const { isEvent } = await getLockTypeByMetadata(metadata)
-            if (isEvent) {
-              const eventData = toFormData(metadata!)
-              events.push({
-                ...eventData,
-                lockAddress: lock.address,
-                network: lock.network,
-              })
-            }
-          })
-        )
+      try {
+        const locks = await getLocksByNetwork({
+          account,
+          network,
+        })
+        if (locks.length > 0) {
+          return Promise.all(
+            locks.map(async (lock) => {
+              try {
+                // TODO: replace with a method to get the event data from a lock
+                // especially once we have an "event" object
+                const metadata = await getMetadata(lock.address, lock.network)
+                const { isEvent } = await getLockTypeByMetadata(metadata)
+                if (isEvent) {
+                  const eventData = toFormData(metadata!)
+                  events.push({
+                    ...eventData,
+                    lockAddress: lock.address,
+                    network: lock.network,
+                  })
+                }
+              } catch (error) {
+                console.error(
+                  'We could not get the metadata for this lock',
+                  lock.address
+                )
+                console.log(error)
+              }
+            })
+          )
+        }
+      } catch (error) {
+        console.error('We could not retrieve locks from network', { network })
+        console.error(error)
       }
     })
   )
