@@ -76,7 +76,7 @@ export const LockTypeLandingPage = ({
   callToAction,
 }: LockTypeLandingPageProps) => {
   return (
-    <div>
+    <div className="w-full">
       <section className="flex flex-col my-8 md:flex-row">
         {/* masthead */}
         <div className="flex flex-col py-0 md:pr-10">
@@ -120,27 +120,31 @@ export const LockTypeLandingPage = ({
         </ul>
       </section>
       <section className="flex flex-col items-center content-center justify-center mt-96 justify-items-center">
-        <h3 className="text-5xl font-semibold text-center md:w-2/3">
-          {callToAction?.title}
-        </h3>
-        <p className="mt-4 text-center md:w-1/2">{callToAction?.subtitle}</p>
-        <ul className="grid md:grid-cols-[300px_300px_300px] gap-8 my-8">
-          {features?.map(({ image, name, description }) => {
-            return (
-              <li key={name}>
-                <Image
-                  className="border rounded-lg border-1 border-ui-main-100"
-                  width="400"
-                  height="300"
-                  alt="No-code"
-                  src={image}
-                ></Image>
-                <h3 className="mt-2 mb-2 text-xl font-bold">{name}</h3>
-                <p className="text-sm">{description}</p>
-              </li>
-            )
-          })}
-        </ul>
+        <div className="flex flex-col justify-center">
+          <div className="flex flex-col gap-4 text-center">
+            <span className="text-3xl font-semibold text-brand-ui-primary">
+              {callToAction?.title}
+            </span>
+            <span className="text-3xl font-bold text-black md:text-5xl ">
+              {callToAction?.subtitle}
+            </span>
+          </div>
+          <ul className="grid gap-8 my-10 md:grid-cols-3">
+            {features?.map(({ image, description }, index) => {
+              return (
+                <li className="flex flex-col gap-8" key={index}>
+                  <Image
+                    width="400"
+                    height="300"
+                    alt="problem-image"
+                    src={image}
+                  />
+                  <p className="text-sm">{description}</p>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </section>
       <section className="flex flex-col items-center content-center justify-center mt-8 justify-items-center">
         {actions}
