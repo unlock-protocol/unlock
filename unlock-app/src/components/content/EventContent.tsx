@@ -18,7 +18,9 @@ export const EventContent = () => {
     useRouterQueryForLockAddressAndNetworks()
 
   const handleCreateEvent = () => {
-    router.push('/event/new')
+    router.push(
+      'http://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
+    )
   }
 
   if (isLoading) {
