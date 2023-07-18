@@ -1,4 +1,4 @@
-import { createSignature } from '../../src/websub/helpers'
+import { createSignature } from '../../src/worker/helpers'
 import { Request } from 'express'
 
 export const handler = (req: Request) => {
