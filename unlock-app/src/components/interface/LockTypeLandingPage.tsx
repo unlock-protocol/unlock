@@ -157,7 +157,7 @@ export const LockTypeLandingPage = ({
                       width="400"
                       height="300"
                       alt="problem-image"
-                      className="h-full max-h-80"
+                      className="h-full mx-auto max-h-40 md:max-h-80"
                       src={image}
                     />
                     <p className="mt-8 text-sm">{description}</p>
