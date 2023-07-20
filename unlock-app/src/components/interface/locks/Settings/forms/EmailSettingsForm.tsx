@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
@@ -25,8 +24,7 @@ export const EmailSettingsForm = ({
   disabled,
   lockSettings,
 }: EmailReplyToFormProps) => {
-  const [enabled, setEnabled] = useState(false)
-  const { handleSubmit, register, setValue } = useForm<FormProps>({
+  const { handleSubmit, register } = useForm<FormProps>({
     defaultValues: {
       replyTo: lockSettings?.replyTo,
       emailSender: lockSettings?.emailSender,
@@ -53,51 +51,31 @@ export const EmailSettingsForm = ({
     ToastHelper.success('Email settings updated.')
   }
 
-  useEffect(() => {
-    const replyTo = lockSettings?.replyTo ?? ''
-    setValue('replyTo', replyTo, {
-      shouldDirty: true,
-    })
-    setEnabled(replyTo?.length > 0)
-  }, [lockSettings, setValue])
-
   return (
     <div className="relative">
       {isManager && (
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <ToggleSwitch
-              title="Enable Reply-to"
+          <div className="flex flex-col gap-1">
+            <Input
+              type="email"
+              placeholder="your@email.com"
+              label="Reply-to:"
               disabled={disabledInput}
-              enabled={enabled}
-              setEnabled={(enabled) => {
-                setEnabled(enabled)
-                setValue('replyTo', enabled ? lockSettings?.replyTo : '', {
-                  shouldDirty: true,
-                })
-              }}
+              {...register('replyTo')}
             />
-            <div className="flex flex-col gap-1">
-              <Input
-                type="email"
-                placeholder="your@email.com"
-                label="Reply-to"
-                disabled={disabledInput || !enabled}
-                {...register('replyTo')}
-              />
-              <span className="text-sm text-gray-600">
-                Set the email address that will appear on the Reply-To: field.
-              </span>
-            </div>
+            <span className="text-sm text-gray-600">
+              Set the email address that will appear on the Reply-To field when
+              users respond to the email we send.
+            </span>
           </div>
           <div className="flex flex-col gap-1">
             <Input
               type="text"
-              placeholder="Example Name"
-              label="Email sender"
+              placeholder="Your name"
+              label="Email sender name:"
               disabled={disabledInput}
               autoComplete="off"
-              description="Set the email sender that will appear on the email sent."
+              description="Set the email sender name that will appear on the email sent. Emails will be sent from the address hello@unlock-protocol.com."
               {...register('emailSender')}
             />
           </div>
