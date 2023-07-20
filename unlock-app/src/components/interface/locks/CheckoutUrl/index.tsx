@@ -2,7 +2,10 @@ import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
-import { CheckoutPreview } from './elements/CheckoutPreview'
+import {
+  CheckoutPreview,
+  CheckoutShareOrDownload,
+} from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import {
   useCheckoutConfigRemove,
@@ -38,6 +41,7 @@ const Header = () => {
 export const CheckoutUrlPage = () => {
   const router = useRouter()
   const query = router.query
+  const [checkoutUrl, setCheckoutUrl] = useState('')
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const { getIsRecurringPossible } = useLockSettings()
@@ -348,6 +352,8 @@ export const CheckoutUrlPage = () => {
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
+            setCheckoutUrl={setCheckoutUrl}
+            checkoutUrl={checkoutUrl}
           />
         </div>
         <div className="z-0 flex flex-col order-1 gap-5 md:gap-10 md:w-1/2 md:order-2">
@@ -430,6 +436,22 @@ export const CheckoutUrlPage = () => {
                   },
                   onNextLabel: 'Save',
                   onNext: async () => await onConfigSave(),
+                },
+                {
+                  title:
+                    'Share the checkout link or download the configuration',
+                  description:
+                    'Copy the checkout URL to share, or download a JSON file for your implementation',
+                  children: (
+                    <CheckoutShareOrDownload
+                      paywallConfig={checkoutConfig.config}
+                      checkoutUrl={checkoutUrl}
+                      setCheckoutUrl={setCheckoutUrl}
+                      size="medium"
+                    />
+                  ),
+                  showButton: false,
+                  disabled: !hasSelectedConfig,
                 },
               ]}
             />
