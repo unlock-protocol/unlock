@@ -121,7 +121,7 @@ export const LockTypeLandingPage = ({
           </ul>
         </div>
       </section>
-      <section className="flex flex-col items-center content-center justify-center mt-96 justify-items-center">
+      <section className="flex flex-col items-center content-center justify-center mt-60 justify-items-center">
         <h3 className="text-5xl font-semibold text-center md:w-2/3">
           {callToAction?.title}
         </h3>
