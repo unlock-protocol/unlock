@@ -18,6 +18,7 @@ interface TabProps {
 interface TabsProps {
   defaultTab?: number // the position of the tab
   tabs?: TabProps[]
+  onTabChange?: (tab: number) => void
 }
 
 type TabHeaderProps = Pick<TabProps, 'title' | 'description'> & {
@@ -183,7 +184,7 @@ const Tab = ({
   )
 }
 
-export function Tabs({ defaultTab = 1, tabs }: TabsProps) {
+export function Tabs({ defaultTab = 1, onTabChange, tabs }: TabsProps) {
   const [tab, setTab] = useState<number>(defaultTab)
 
   return (
@@ -200,7 +201,10 @@ export function Tabs({ defaultTab = 1, tabs }: TabsProps) {
               isLast={isLast}
               setTab={setTab}
               isOpen={isOpen}
-              onChange={setTab}
+              onChange={(tab: number) => {
+                onTabChange?.(tab) // pass current tab index
+                setTab(tab)
+              }}
               {...tabItem}
             />
           )
