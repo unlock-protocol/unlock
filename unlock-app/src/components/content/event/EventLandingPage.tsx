@@ -26,22 +26,19 @@ const customers = [
 
 const features = [
   {
-    image: '/images/illustrations/events/easy.svg',
+    image: '/images/illustrations/events/img-stuck.svg',
     name: 'No-code smart contract deployment',
-    description:
-      'Simply fill up the form and hit the deploy button. All the metadata information will automatically be included in the NFT tickets. You can always add and modify other properties at later date.',
+    description: `Your web3 or crypto event isn't walking the walk, and is using a legacy ticketing solution like Eventbrite, Meetup or Luma instead of embracing the very technology your attendees expect you to champion.`,
   },
   {
-    image: '/images/illustrations/events/qr.svg',
+    image: '/images/illustrations/events/img-wallet.svg',
     name: 'QR codes and proof of purchase ticketing',
-    description:
-      'The easiest way to authenticate tickets. Once an attendee purchases a ticket, they will receive an email along with a QR code to check in at the venue.',
+    description: `You're losing money on ticket sales because of upsells, hidden fees, and slow payouts from your existing ticketing provider.`,
   },
   {
-    image: '/images/illustrations/events/verifier.svg',
+    image: '/images/illustrations/events/img-goodvibe.svg',
     name: 'Check-ins at the venue are a breeze',
-    description:
-      'Volunteers or door staff can check attendees in with just a smartphone, and ensure tickets aren’t transferred or reused once someone has come through the door.',
+    description: `Your attendees stop engaging the moment the event is over, and are not continuing conversations as an ongoing, connected community.`,
   },
 ]
 
@@ -147,9 +144,8 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
       faqs={faqs}
       features={features}
       callToAction={{
-        title: 'Ticketing events with Unlock is simple.',
-        subtitle:
-          'From creating the event description to selling tickets to check-in, Unlock built the tools you need.',
+        title: 'The Problem',
+        subtitle: `Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers`,
         description:
           'Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization.',
       }}
