@@ -1,17 +1,16 @@
 import { Disclosure } from '@headlessui/react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { BsPlusLg as PlusIcon } from 'react-icons/bs'
 import { ReactNode } from 'react'
 import { Icon } from '@unlock-protocol/ui'
 
 interface AccordionProps {
-  title: string
+  title?: string
   children: React.ReactNode
 }
 
 interface Customer {
-  link: string
+  link?: string
   image: string
   name: string
 }
@@ -55,7 +54,10 @@ interface LockTypeLandingPageProps {
   actions?: ReactNode
   faqs?: Faq[]
   features?: Feature[]
-  customers?: Customer[]
+  customers?: {
+    title?: string
+    items?: Customer[]
+  }
   callToAction?: {
     title: ReactNode
     subtitle: ReactNode
@@ -70,9 +72,11 @@ export const LockTypeLandingPage = ({
   actions,
   faqs,
   illustration,
-  coverImage,
   features,
-  customers,
+  customers = {
+    title: '',
+    items: [],
+  },
   callToAction,
 }: LockTypeLandingPageProps) => {
   return (
@@ -89,35 +93,33 @@ export const LockTypeLandingPage = ({
           {illustration}
         </div>
       </section>
-      <div className="flex flex-col items-center content-center justify-center justify-items-center">
-        <Image alt="cover image" width="1440" height="320" src={coverImage} />
-      </div>
 
-      <section className="absolute left-0 flex flex-col items-center content-center justify-center w-screen py-8 text-white bg-black justify-items-center">
-        <h1 className="text-xl font-semibold">Used by</h1>
-        <ul className="flex gap-4 my-8 md:gap-0 md:flex-row">
-          {customers?.map(({ link, image, name }: Customer) => {
-            return (
-              <li
-                key={name}
-                className="flex flex-col items-center h-24 max-w-xs gap-4 mx-2 text-center rounded-full md:mx-12"
-              >
-                <Link target="_blank" href={link}>
-                  <div className="flex h-10 md:h-20">
+      <section className="flex flex-col items-center content-center justify-center pt-8 text-whit justify-items-center">
+        <div className="flex flex-col gap-10 text-center">
+          <span className="font-bold text-gray-700">
+            {customers?.title || 'Used by'}
+          </span>
+          <ul className="flex flex-row flex-wrap justify-around gap-4 md:mx-10">
+            {customers?.items?.map(({ image, name }, index) => {
+              return (
+                <li
+                  key={index}
+                  className="flex items-center text-center rounded-full md:mx-2"
+                >
+                  <div>
                     <Image
-                      width={100}
-                      height={100}
-                      className="object-contain w-full h-full mx-auto"
+                      width={60}
+                      height={60}
+                      className="object-contain w-full h-full mx-auto max-h-24"
                       src={image}
                       alt={name}
                     />
                   </div>
-                </Link>
-                <h4 className="mt-auto text-xs md:text-base">{name}</h4>
-              </li>
-            )
-          })}
-        </ul>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       </section>
       <section className="flex flex-col items-center content-center justify-center mt-96 justify-items-center">
         <h3 className="text-5xl font-semibold text-center md:w-2/3">

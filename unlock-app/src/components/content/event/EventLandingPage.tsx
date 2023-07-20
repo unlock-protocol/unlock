@@ -5,19 +5,44 @@ import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 
 const customers = [
   {
-    link: 'https://ethcc.io/',
-    image: '/images/illustrations/events/ethcc.svg',
-    name: 'EthCC',
+    image: '/images/partners/berchain.svg',
+    name: 'Berchain',
   },
   {
-    link: 'https://www.dappcon.io/',
-    image: '/images/illustrations/events/dappcon.png',
-    name: 'Dappcon',
-  },
-  {
-    link: 'https://www.metacartel.org/',
-    image: '/images/illustrations/events/metacartel.png',
+    image: '/images/partners/metacartel-full.svg',
     name: 'Metacartel',
+  },
+  {
+    image: '/images/partners/ethcc.svg',
+    name: 'ETHcc',
+  },
+  {
+    image: '/images/partners/polygonnyc-logo.png',
+    name: 'Polygon NYC',
+  },
+  {
+    image: '/images/partners/ethwarsaw.svg',
+    name: 'Eth Warsaw',
+  },
+  {
+    image: '/images/partners/ethchi.svg',
+    name: 'EthChi',
+  },
+  {
+    image: '/images/partners/womeninweb3.svg',
+    name: 'Women in Web3',
+  },
+  {
+    image: '/images/partners/spruceID.svg',
+    name: 'SpruceID logo',
+  },
+  {
+    image: '/images/partners/dappcon.svg',
+    name: 'DappCon logo',
+  },
+  {
+    image: '/images/partners/ethsafari.svg',
+    name: 'EthSafari',
   },
 ]
 
@@ -91,7 +116,7 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
             backgroundImage:
               'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
           }}
-          className="text-6xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+          className="text-5xl font-extrabold text-transparent uppercase break-words md:text-8xl bg-clip-text"
         >
           Easy-peasy
           <br />
@@ -120,7 +145,11 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
       description="Create events in the easiest possible way. Set up
        your event landing page, sell or airdrop tickets as NFTs and via email,
         and perform check-in with a dedicated QR code. Easy."
-      customers={customers}
+      customers={{
+        title:
+          'Trusted by event organizers and community meetups around the world',
+        items: customers,
+      }}
       faqs={faqs}
       features={features}
       callToAction={{
