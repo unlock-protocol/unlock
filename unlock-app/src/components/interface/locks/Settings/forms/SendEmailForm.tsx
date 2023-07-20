@@ -71,7 +71,7 @@ export const SendEmailForm = ({
           <span className="mt-2 text-base font-semibold text-black">
             {!sendEmailValue
               ? 'Emails are disabled, Unlock Labs will not send emails to users.'
-              : 'Email are enabled, Unlock Labs will send emails to user when their membership status changes.'}
+              : 'Emails are enabled, Unlock Labs will send emails to user when their membership status changes.'}
           </span>
         }
         setEnabled={(enabled: boolean) => {
