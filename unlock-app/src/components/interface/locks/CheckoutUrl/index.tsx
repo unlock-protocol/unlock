@@ -1,19 +1,12 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import {
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
   CheckoutShareOrDownload,
 } from './elements/CheckoutPreview'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import ConfigComboBox, { CheckoutConfig } from './ComboBox'
 import {
   useCheckoutConfigRemove,
   useCheckoutConfigUpdate,
@@ -21,10 +14,17 @@ import {
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
+import { ChooseConfiguration, CheckoutConfig } from './ChooseConfiguration'
+import { FormProvider, useForm } from 'react-hook-form'
+
+export type Configuration = 'new' | 'existing'
+interface ConfigurationFormProps {
+  configName: string
+}
 
 const Header = () => {
   return (
@@ -45,6 +45,16 @@ export const CheckoutUrlPage = () => {
   const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
   const { getIsRecurringPossible } = useLockSettings()
+  const [configuration, setConfiguration] = useState<Configuration>('new')
+  const methods = useForm<ConfigurationFormProps>({
+    mode: 'onChange',
+    defaultValues: {
+      configName: '',
+    },
+  })
+
+  const { control, trigger, watch, setValue } = methods
+
   const {
     isPlaceholderData: isRecurringSettingPlaceholder,
     data: recurringSetting,
@@ -157,6 +167,12 @@ export const CheckoutUrlPage = () => {
     checkoutConfigList,
   ])
 
+  useEffect(() => {
+    if ((checkoutConfigList?.length ?? 0) > 0) {
+      setConfiguration('existing')
+    }
+  }, [checkoutConfigList?.length])
+
   const onConfigSave = useCallback(async () => {
     const updated = await updateConfig({
       config: checkoutConfig.config,
@@ -172,31 +188,27 @@ export const CheckoutUrlPage = () => {
     await refetchConfigList()
   }, [checkoutConfig, updateConfig, refetchConfigList])
 
-  const onConfigRemove = useCallback<MouseEventHandler<HTMLButtonElement>>(
-    async (event) => {
-      event.preventDefault()
-      if (!checkoutConfig.id) {
-        setDeleteConfirmation(false)
-        return
-      }
-      await removeConfig(checkoutConfig.id)
-      const { data: list } = await refetchConfigList()
-      const result = list?.[0]
-      setCheckoutConfig({
-        id: result?.id || null,
-        name: result?.name || 'config',
-        config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
-      })
+  const onConfigRemove = useCallback(async () => {
+    if (!checkoutConfig.id) {
       setDeleteConfirmation(false)
-    },
-    [
-      checkoutConfig,
-      removeConfig,
-      refetchConfigList,
-      DEFAULT_CONFIG,
-      setDeleteConfirmation,
-    ]
-  )
+      return
+    }
+    await removeConfig(checkoutConfig.id)
+    const { data: list } = await refetchConfigList()
+    const result = list?.[0]
+    setCheckoutConfig({
+      id: result?.id || null,
+      name: result?.name || 'config',
+      config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
+    })
+    setDeleteConfirmation(false)
+  }, [
+    checkoutConfig,
+    removeConfig,
+    refetchConfigList,
+    DEFAULT_CONFIG,
+    setDeleteConfirmation,
+  ])
   useEffect(() => {
     const checkout = checkoutConfigList?.[0]
     if (!checkout) return
@@ -258,51 +270,58 @@ export const CheckoutUrlPage = () => {
     )
   }
 
-  const SelectConfiguration = () => {
-    return (
-      <div className="flex items-center w-full gap-4 p-2">
-        <div className="w-full">
-          <ConfigComboBox
-            disabled={isConfigUpdating}
-            items={
-              (checkoutConfigList as unknown as CheckoutConfig[]) ||
-              ([] as CheckoutConfig[])
-            }
-            onChange={async ({ config, ...rest }) => {
-              const option = {
-                ...rest,
-                config: config || DEFAULT_CONFIG,
-              }
-              setCheckoutConfig(option)
-              if (!option.id) {
-                const response = await updateConfig(option)
-                setCheckoutConfig({
-                  id: response.id,
-                  config: response.config as PaywallConfig,
-                  name: response.name,
-                })
-                await refetchConfigList()
-              }
-            }}
-            value={checkoutConfig}
-          />
-        </div>
-        <Button
-          disabled={!checkoutConfig.id}
-          iconLeft={<TrashIcon />}
-          onClick={(event) => {
-            event.preventDefault()
-            setDeleteConfirmation(true)
-          }}
-          size="small"
-        >
-          Delete
-        </Button>
-      </div>
-    )
+  const configName = watch('configName')
+
+  const handleSetConfiguration = async ({
+    config,
+    ...rest
+  }: CheckoutConfig) => {
+    const option = {
+      ...rest,
+      config: config || DEFAULT_CONFIG,
+    }
+    setCheckoutConfig(option)
+    if (!option.id) {
+      const response = await updateConfig(option)
+      setCheckoutConfig({
+        id: response.id,
+        config: response.config as PaywallConfig,
+        name: response.name,
+      })
+      setValue('configName', '') // reset field after new configuration is set
+      await refetchConfigList()
+    }
   }
+
+  const isNewConfiguration = configuration === 'new'
+
+  const onSubmitConfiguration = async () => {
+    const isValid = await trigger()
+    if (!isValid) return Promise.reject() // pass rejected promise to block skip to next step
+
+    if (isNewConfiguration) {
+      // this is a new config, let's pass an empty config
+      await handleSetConfiguration({
+        id: null,
+        name: configName,
+        config: DEFAULT_CONFIG,
+      })
+    }
+
+    if (!checkoutConfig?.id) {
+      ToastHelper.error('Please select a configuration or create a new one.')
+      return Promise.reject() // no config selected, prevent skip to next step
+    }
+  }
+
+  const submitConfigurationMutation = useMutation(onSubmitConfiguration)
+  const deleteConfigurationMutation = useMutation(onConfigRemove)
+
   const hasRecurringPlaceholder =
     !!lockAddress && !!network && isRecurringSettingPlaceholder
+
+  const hasSelectedConfig =
+    configuration === 'existing' && checkoutConfig?.id !== undefined
 
   return (
     <>
@@ -318,7 +337,9 @@ export const CheckoutUrlPage = () => {
             <Button
               loading={isConfigRemoving}
               iconLeft={<TrashIcon />}
-              onClick={onConfigRemove}
+              onClick={() => {
+                deleteConfigurationMutation.mutateAsync()
+              }}
             >
               Delete {checkoutConfig.name}
             </Button>
@@ -337,62 +358,104 @@ export const CheckoutUrlPage = () => {
         </div>
         <div className="z-0 flex flex-col order-1 gap-5 md:gap-10 md:w-1/2 md:order-2">
           <Header />
-          <Tabs
-            tabs={[
-              {
-                title: 'Choose or create a checkout flow',
-                description:
-                  'Create a new checkout flow or edit a previously-saved checkout experience',
-                children: <SelectConfiguration />,
-              },
-              {
-                title: 'Configure the basics',
-                description:
-                  'Customize the checkout modal interaction & additional behaviors',
-                children: (
-                  <BasicConfigForm
-                    onChange={onBasicConfigChange}
-                    defaultValues={checkoutConfig.config}
-                  />
-                ),
-                disabled: !checkoutConfig?.id,
-              },
-              {
-                title: 'Configure locks',
-                description:
-                  'Select the locks you would like to include in this checkout flow',
-                children: (
-                  <LocksForm
-                    onChange={onAddLocks}
-                    locks={checkoutConfig.config?.locks}
-                  />
-                ),
-                button: {
-                  loading: isConfigUpdating,
-                  disabled: hasRecurringPlaceholder,
-                  iconLeft: <SaveIcon />,
+          <FormProvider {...methods}>
+            <Tabs
+              tabs={[
+                {
+                  title: 'Choose a configuration',
+                  description:
+                    'Create a new configuration or continue enhance the existing one for your checkout modal',
+                  children: (
+                    <div className="flex items-center w-full gap-4 p-2">
+                      <div className="w-full">
+                        <ChooseConfiguration
+                          loading={
+                            isLoadingConfigList ||
+                            submitConfigurationMutation.isLoading ||
+                            deleteConfigurationMutation.isLoading
+                          }
+                          name="configName"
+                          control={control}
+                          disabled={isConfigUpdating}
+                          items={
+                            (checkoutConfigList as unknown as CheckoutConfig[]) ||
+                            ([] as CheckoutConfig[])
+                          }
+                          onChange={async ({ config, ...rest }) =>
+                            await handleSetConfiguration({ config, ...rest })
+                          }
+                          setConfiguration={setConfiguration}
+                          configuration={configuration}
+                          value={checkoutConfig}
+                        />
+                        <Button
+                          className="ml-auto"
+                          disabled={!checkoutConfig.id}
+                          iconLeft={<TrashIcon />}
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setDeleteConfirmation(true)
+                          }}
+                          size="small"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  ),
+                  onNext: async () =>
+                    await submitConfigurationMutation.mutateAsync(),
                 },
-                onNextLabel: 'Save',
-                onNext: async () => await onConfigSave(),
-                disabled: !checkoutConfig?.id,
-              },
-              {
-                title: 'Share the checkout link or download the configuration',
-                description:
-                  'Copy the checkout URL to share, or download a JSON file for your implementation',
-                children: (
-                  <CheckoutShareOrDownload
-                    paywallConfig={checkoutConfig.config}
-                    checkoutUrl={checkoutUrl}
-                    setCheckoutUrl={setCheckoutUrl}
-                    size="medium"
-                  />
-                ),
-                showButton: false,
-                disabled: !checkoutConfig?.id,
-              },
-            ]}
-          />
+                {
+                  title: 'Configure the basics',
+                  description:
+                    'Customize the checkout modal interaction & additional behavior',
+                  disabled: !hasSelectedConfig,
+                  children: (
+                    <BasicConfigForm
+                      onChange={onBasicConfigChange}
+                      defaultValues={checkoutConfig.config}
+                    />
+                  ),
+                },
+                {
+                  title: 'Configured locks',
+                  description:
+                    'Select the locks that you would like to featured in this configured checkout modal',
+                  disabled: !hasSelectedConfig,
+                  children: (
+                    <LocksForm
+                      onChange={onAddLocks}
+                      locks={checkoutConfig.config?.locks}
+                    />
+                  ),
+                  button: {
+                    loading: isConfigUpdating,
+                    disabled: hasRecurringPlaceholder,
+                    iconLeft: <SaveIcon />,
+                  },
+                  onNextLabel: 'Save',
+                  onNext: async () => await onConfigSave(),
+                },
+                {
+                  title:
+                    'Share the checkout link or download the configuration',
+                  description:
+                    'Copy the checkout URL to share, or download a JSON file for your implementation',
+                  children: (
+                    <CheckoutShareOrDownload
+                      paywallConfig={checkoutConfig.config}
+                      checkoutUrl={checkoutUrl}
+                      setCheckoutUrl={setCheckoutUrl}
+                      size="medium"
+                    />
+                  ),
+                  showButton: false,
+                  disabled: !hasSelectedConfig,
+                },
+              ]}
+            />
+          </FormProvider>
         </div>
       </div>
     </>
