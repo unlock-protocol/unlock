@@ -5,7 +5,6 @@ import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { PastEventsByManager } from './PastEventsByManager'
-import { ReactNode } from 'react'
 
 const customers = [
   {
