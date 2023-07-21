@@ -5,6 +5,7 @@ import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { PastEventsByManager } from './PastEventsByManager'
+import { ReactNode } from 'react'
 
 const customers = [
   {
@@ -126,10 +127,12 @@ const faqs = [
 
 interface EventLandingPageCallToActionProps {
   handleCreateEvent: () => void
+  showManagerEvents?: boolean
 }
 
 export const EventLandingPageCallToAction = ({
   handleCreateEvent,
+  showManagerEvents = false,
 }: EventLandingPageCallToActionProps) => {
   const { account } = useAuth()
   const { openConnectModal } = useConnectModal()
@@ -143,7 +146,7 @@ export const EventLandingPageCallToAction = ({
   }
   return (
     <div className="flex flex-col">
-      <PastEventsByManager manager={account} />
+      {showManagerEvents && <PastEventsByManager manager={account} />}
       <Button onClick={handleCreateEvent} className="my-8">
         Get started for free
       </Button>
@@ -169,7 +172,10 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
         </h1>
       }
       actions={
-        <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
+        <EventLandingPageCallToAction
+          handleCreateEvent={handleCreateEvent}
+          showManagerEvents={true}
+        />
       }
       illustration={
         <Image
@@ -204,6 +210,9 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
           'From creating the event description to selling tickets to check-in, Unlock built the tools you need.',
         description:
           'Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization.',
+        actions: (
+          <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
+        ),
       }}
     />
   )

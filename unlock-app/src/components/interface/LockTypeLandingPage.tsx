@@ -73,6 +73,7 @@ interface LockTypeLandingPageProps {
     title: ReactNode
     subtitle: ReactNode
     description: ReactNode
+    actions?: ReactNode
   }
 }
 
@@ -196,7 +197,7 @@ export const LockTypeLandingPage = ({
       </section>
 
       <section className="flex flex-col items-center content-center justify-center mt-8 justify-items-center">
-        {actions}
+        {callToAction?.actions}
         <div className="text-xs text-center md:w-1/3">
           {callToAction?.description}
         </div>

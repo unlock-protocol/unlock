@@ -112,6 +112,11 @@ export const CertificationLanding = ({
           'Issue transparent, provable credentials for professional certifications, continuing education credits, industry expertise, and more.',
         description:
           'Since the certifications and credentials are represented as NFTs, they can also be as visually appealing as you would like them to be and can support your brand and marketing strategy.',
+        actions: (
+          <Button onClick={handleCreateCertification} className="my-8">
+            Create your certification now
+          </Button>
+        ),
       }}
       features={features}
       customers={{
