@@ -12,17 +12,17 @@ const customers = [
   {
     name: 'Web3 Academy',
     link: 'https://w3academy.io',
-    image: '/images/illustrations/certifications/logo-web3-academy.svg',
+    image: '/images/illustrations/certifications/logo-web3-academy.png',
   },
   {
     name: 'CDAA',
     link: 'https://unlock-protocol.com/blog/cdaa-unlock-case-study',
-    image: '/images/illustrations/certifications/logo-cdaa.svg',
+    image: '/images/illustrations/certifications/logo-cdaa.png',
   },
   {
     name: 'Hay There Social Media',
     link: 'https://haytheresocialmedia.com/',
-    image: '/images/illustrations/certifications/logo-heytheresocialmedia.svg',
+    image: '/images/illustrations/certifications/logo-heytheresocialmedia.png',
   },
 ]
 
@@ -112,9 +112,16 @@ export const CertificationLanding = ({
           'Issue transparent, provable credentials for professional certifications, continuing education credits, industry expertise, and more.',
         description:
           'Since the certifications and credentials are represented as NFTs, they can also be as visually appealing as you would like them to be and can support your brand and marketing strategy.',
+        actions: (
+          <Button onClick={handleCreateCertification} className="my-8">
+            Create your certification now
+          </Button>
+        ),
       }}
       features={features}
-      customers={customers}
+      customers={{
+        items: customers,
+      }}
     />
   )
 }

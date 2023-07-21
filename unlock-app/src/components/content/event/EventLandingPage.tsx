@@ -8,23 +8,69 @@ import { PastEventsByManager } from './PastEventsByManager'
 
 const customers = [
   {
-    link: 'https://ethcc.io/',
-    image: '/images/illustrations/events/ethcc.svg',
-    name: 'EthCC',
+    image: '/images/partners/berchain.svg',
+    name: 'Berchain',
   },
   {
-    link: 'https://www.dappcon.io/',
-    image: '/images/illustrations/events/dappcon.png',
-    name: 'Dappcon',
-  },
-  {
-    link: 'https://www.metacartel.org/',
-    image: '/images/illustrations/events/metacartel.png',
+    image: '/images/partners/metacartel-full.svg',
     name: 'Metacartel',
+  },
+  {
+    image: '/images/partners/ethcc.svg',
+    name: 'ETHcc',
+  },
+  {
+    image: '/images/partners/polygonnyc-logo.png',
+    name: 'Polygon NYC',
+  },
+  {
+    image: '/images/partners/ethwarsaw.svg',
+    name: 'Eth Warsaw',
+  },
+  {
+    image: '/images/partners/ethchi.svg',
+    name: 'EthChi',
+  },
+  {
+    image: '/images/partners/womeninweb3.svg',
+    name: 'Women in Web3',
+  },
+  {
+    image: '/images/partners/spruceID.svg',
+    name: 'SpruceID logo',
+  },
+  {
+    image: '/images/partners/dappcon.svg',
+    name: 'DappCon logo',
+  },
+  {
+    image: '/images/partners/ethsafari.svg',
+    name: 'EthSafari',
   },
 ]
 
 const features = [
+  {
+    image: '/images/illustrations/events/easy.svg',
+    name: 'No-code smart contract deployment',
+    description:
+      'Simply fill up the form and hit the deploy button. All the metadata information will automatically be included in the NFT tickets. You can always add and modify other properties at later date.',
+  },
+  {
+    image: '/images/illustrations/events/qr.svg',
+    name: 'QR codes and proof of purchase ticketing',
+    description:
+      'The easiest way to authenticate tickets. Once an attendee purchases a ticket, they will receive an email along with a QR code to check in at the venue.',
+  },
+  {
+    image: '/images/illustrations/events/verifier.svg',
+    name: 'Check-ins at the venue are a breeze',
+    description:
+      'Volunteers or door staff can check attendees in with just a smartphone, and ensure tickets aren’t transferred or reused once someone has come through the door.',
+  },
+]
+
+const problems = [
   {
     image: '/images/illustrations/events/img-stuck.svg',
     name: 'No-code smart contract deployment',
@@ -80,10 +126,12 @@ const faqs = [
 
 interface EventLandingPageCallToActionProps {
   handleCreateEvent: () => void
+  showManagerEvents?: boolean
 }
 
 export const EventLandingPageCallToAction = ({
   handleCreateEvent,
+  showManagerEvents = false,
 }: EventLandingPageCallToActionProps) => {
   const { account } = useAuth()
   const { openConnectModal } = useConnectModal()
@@ -97,7 +145,7 @@ export const EventLandingPageCallToAction = ({
   }
   return (
     <div className="flex flex-col">
-      <PastEventsByManager manager={account} />
+      {showManagerEvents && <PastEventsByManager manager={account} />}
       <Button onClick={handleCreateEvent} className="my-8">
         Get started for free
       </Button>
@@ -117,13 +165,16 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
             backgroundImage:
               'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
           }}
-          className="text-5xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text break-words"
+          className="text-5xl font-extrabold text-transparent uppercase break-words md:text-8xl bg-clip-text"
         >
           Easy-peasy event tickets and registration
         </h1>
       }
       actions={
-        <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
+        <EventLandingPageCallToAction
+          handleCreateEvent={handleCreateEvent}
+          showManagerEvents={true}
+        />
       }
       illustration={
         <Image
@@ -140,14 +191,27 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
       description="Create events in the easiest possible way. Set up
        your event landing page, sell or airdrop tickets as NFTs and via email,
         and perform check-in with a dedicated QR code. Easy."
-      customers={customers}
+      customers={{
+        title:
+          'Trusted by event organizers and community meetups around the world',
+        items: customers,
+      }}
       faqs={faqs}
       features={features}
-      callToAction={{
+      problemSection={{
         title: 'The Problem',
         subtitle: `Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers`,
+        items: problems,
+      }}
+      callToAction={{
+        title: 'Ticketing events with Unlock is simple.',
+        subtitle:
+          'From creating the event description to selling tickets to check-in, Unlock built the tools you need.',
         description:
           'Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization.',
+        actions: (
+          <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
+        ),
       }}
     />
   )

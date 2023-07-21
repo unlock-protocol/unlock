@@ -1,21 +1,26 @@
 import { Disclosure } from '@headlessui/react'
-import Link from 'next/link'
 import Image from 'next/image'
 import { BsPlusLg as PlusIcon } from 'react-icons/bs'
 import { ReactNode } from 'react'
 import { Icon } from '@unlock-protocol/ui'
 
 interface AccordionProps {
-  title: string
+  title?: string
   children: React.ReactNode
 }
 
 interface Customer {
-  link: string
+  link?: string
   image: string
   name: string
 }
 interface Feature {
+  image: string
+  name: string
+  description: string
+}
+
+interface Problem {
   image: string
   name: string
   description: string
@@ -55,11 +60,20 @@ interface LockTypeLandingPageProps {
   actions?: ReactNode
   faqs?: Faq[]
   features?: Feature[]
-  customers?: Customer[]
+  customers?: {
+    title?: string
+    items?: Customer[]
+  }
+  problemSection?: {
+    title: string
+    subtitle?: string
+    items?: Problem[]
+  }
   callToAction?: {
     title: ReactNode
     subtitle: ReactNode
     description: ReactNode
+    actions?: ReactNode
   }
 }
 
@@ -70,10 +84,13 @@ export const LockTypeLandingPage = ({
   actions,
   faqs,
   illustration,
-  coverImage,
   features,
-  customers,
+  customers = {
+    title: '',
+    items: [],
+  },
   callToAction,
+  problemSection,
 }: LockTypeLandingPageProps) => {
   return (
     <div className="w-full">
@@ -89,73 +106,103 @@ export const LockTypeLandingPage = ({
             </div>
           )}
         </div>
-        <div className="w-96 justify-center hidden md:flex justify-items-center items-start shrink-0">
+        <div className="items-start justify-center hidden w-96 md:flex justify-items-center shrink-0">
           {illustration}
         </div>
       </section>
-      <div className="flex flex-col items-center content-center justify-center justify-items-center">
-        <Image alt="cover image" width="770" height="160" src={coverImage} />
-      </div>
 
-      <section className="absolute left-0 flex flex-col items-center content-center justify-center w-screen py-8 text-white bg-black justify-items-center">
-        <h1 className="text-xl font-semibold">Used by</h1>
-        <ul className="flex gap-4 my-8 md:gap-0 md:flex-row">
-          {customers?.map(({ link, image, name }: Customer) => {
-            return (
-              <li
-                key={name}
-                className="flex flex-col items-center h-24 max-w-xs gap-4 mx-2 text-center rounded-full md:mx-12"
-              >
-                <Link target="_blank" href={link}>
-                  <div className="flex h-10 md:h-20">
+      <section className="flex flex-col items-center content-center justify-center pt-8 text-whit justify-items-center">
+        <div className="flex flex-col gap-10 text-center">
+          <span className="font-bold text-gray-700">
+            {customers?.title || 'Used by'}
+          </span>
+          <ul className="flex flex-row flex-wrap justify-around gap-4 md:mx-10">
+            {customers?.items?.map(({ image, name }, index) => {
+              return (
+                <li
+                  key={index}
+                  className="flex items-center text-center rounded-full md:mx-2"
+                >
+                  <div>
                     <Image
-                      width={100}
-                      height={100}
-                      className="object-contain w-full h-full mx-auto"
+                      width={60}
+                      height={60}
+                      className="object-contain w-full h-full mx-auto max-h-24"
                       src={image}
                       alt={name}
                     />
                   </div>
-                </Link>
-                <h4 className="mt-auto text-xs md:text-base">{name}</h4>
-              </li>
-            )
-          })}
-        </ul>
-      </section>
-      <section className="flex flex-col items-center content-center justify-center mt-96 justify-items-center">
-        <div className="flex flex-col justify-center">
-          <div className="flex flex-col gap-4 text-center">
-            <span className="text-3xl font-semibold text-brand-ui-primary">
-              {callToAction?.title}
-            </span>
-            <span className="text-3xl font-bold text-black md:text-5xl ">
-              {callToAction?.subtitle}
-            </span>
-          </div>
-          <ul className="grid gap-8 my-10 md:grid-cols-3">
-            {features?.map(({ image, description }, index) => {
-              return (
-                <li className="flex flex-col gap-8" key={index}>
-                  <Image
-                    width="400"
-                    height="300"
-                    alt="problem-image"
-                    src={image}
-                  />
-                  <p className="text-sm">{description}</p>
                 </li>
               )
             })}
           </ul>
         </div>
       </section>
+
+      {problemSection && (
+        <section className="flex flex-col items-center content-center justify-center mt-60 justify-items-center">
+          <div className="flex flex-col justify-center">
+            <div className="flex flex-col gap-4 text-center">
+              <span className="text-3xl font-semibold text-brand-ui-primary">
+                {problemSection?.title}
+              </span>
+              <span className="text-3xl font-bold text-black md:text-5xl ">
+                {problemSection?.subtitle}
+              </span>
+            </div>
+            <ul className="grid gap-8 my-10 md:grid-cols-3">
+              {problemSection?.items?.map(({ image, description }, index) => {
+                return (
+                  <li key={index}>
+                    <Image
+                      width="400"
+                      height="300"
+                      alt="problem-image"
+                      className="h-full mx-auto max-h-40 md:max-h-80"
+                      src={image}
+                    />
+                    <p className="mt-8 text-sm">{description}</p>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      <section className="flex flex-col items-center content-center justify-center mt-60 justify-items-center">
+        <h3 className="text-5xl font-semibold text-center md:w-2/3">
+          {callToAction?.title}
+        </h3>
+        {callToAction?.subtitle && (
+          <p className="mt-4 text-center md:w-1/2">{callToAction?.subtitle}</p>
+        )}
+        <ul className="grid md:grid-cols-[300px_300px_300px] gap-8 my-8">
+          {features?.map(({ image, name, description }) => {
+            return (
+              <li key={name}>
+                <Image
+                  className="border rounded-lg border-1 border-ui-main-100"
+                  width="400"
+                  height="300"
+                  alt="No-code"
+                  src={image}
+                ></Image>
+                <h3 className="mt-2 mb-2 text-xl font-bold">{name}</h3>
+                <p className="text-sm">{description}</p>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+
       <section className="flex flex-col items-center content-center justify-center mt-8 justify-items-center">
-        {actions}
+        {callToAction?.actions}
         <div className="text-xs text-center md:w-1/3">
           {callToAction?.description}
         </div>
       </section>
+
       {(faqs || [])?.length > 0 && (
         <section className="my-32">
           <h3 className="my-12 text-3xl font-bold text-center">
