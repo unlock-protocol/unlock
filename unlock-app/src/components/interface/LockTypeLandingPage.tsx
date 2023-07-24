@@ -109,7 +109,7 @@ export const LockTypeLandingPage = ({
         <div className="relative col-span-1 md:block">{illustration}</div>
       </section>
 
-      <section className="flex flex-col items-center content-center justify-center pt-8 text-whit justify-items-center">
+      <section className="flex flex-col items-center content-center justify-center pt-8 mt-40 text-whit justify-items-center">
         <div className="flex flex-col gap-10 text-center">
           <span className="font-bold text-gray-700">
             {customers?.title || 'Used by'}
