@@ -382,6 +382,10 @@ export const MetadataCard = ({
         onEmailChange={onEmailChange}
       />
       <div className="flex flex-col gap-3 md:flex-row">
+        <Button variant="outlined-primary" size="small">
+          <Link href={metadataPageUrl}>Edit token properties</Link>
+        </Button>
+
         {!isCheckedIn && (
           <Button
             variant="outlined-primary"
@@ -390,7 +394,7 @@ export const MetadataCard = ({
             disabled={markAsCheckInMutation.isLoading}
             loading={markAsCheckInMutation.isLoading}
           >
-            Mark as Checked-in
+            Mark as checked-in
           </Button>
         )}
 
@@ -409,9 +413,6 @@ export const MetadataCard = ({
             </Link>
           </Button>
         )}
-        <Button variant="outlined-primary" size="small">
-          <Link href={metadataPageUrl}>Edit token metadata</Link>
-        </Button>
       </div>
 
       <div className="pt-6">

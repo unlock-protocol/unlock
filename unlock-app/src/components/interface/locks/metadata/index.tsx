@@ -23,6 +23,8 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { CertificationMetadataForm } from './CertificationMetadataForm'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
+import { addressMinify } from '~/utils/strings'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 interface Props {
   lockAddress?: string
   network?: number
@@ -90,6 +92,8 @@ export const Form = ({
     }
   }
 
+  const { isEvent } = getLockTypeByMetadata(defaultValues)
+
   const errorFields = Object.keys(errors)
   return (
     <FormProvider {...methods}>
@@ -101,11 +105,13 @@ export const Form = ({
             network={network}
             disabled={isMetadataUpdating}
           />
-          <CertificationMetadataForm
-            lockAddress={lockAddress}
-            network={network}
-            disabled={isMetadataUpdating}
-          />
+          {!isEvent && (
+            <CertificationMetadataForm
+              lockAddress={lockAddress}
+              network={network}
+              disabled={isMetadataUpdating}
+            />
+          )}
           <AdvancedForm />
           <LockCustomForm />
           <div className="flex flex-col justify-center gap-6">
@@ -198,6 +204,7 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
   const isLockSelected = selected.lockAddress && selected.network
 
   const isTokenURIEditable = useMemo(() => {
+    return true
     if (!tokenURI || isTokenURILoading) {
       return false
     }
@@ -210,51 +217,74 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
     }
   }, [tokenURI, isTokenURILoading])
 
+  let title = `Edit default properties`
+  let description = (
+    <>
+      You are editing the default properties for all the tokens from the
+      contract {addressMinify(lockAddress!)}.
+    </>
+  )
+
+  // AddressLink
+  if (selected.keyId) {
+    title = `Edit properties for #${selected.keyId}`
+    description = (
+      <>
+        You are editing the specific properties for the token #{selected.keyId}{' '}
+        from the contract {addressMinify(lockAddress!)}.
+      </>
+    )
+  }
+
   return (
     <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
       <div className="pt-2 pb-6 space-y-2">
-        <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
+        <h1 className="text-xl font-bold sm:text-3xl">{title}</h1>
         <div>
           <p className="text-lg text-gray-700">
-            Add rich properties and data to your NFT memberships.
+            {description}
+            <a
+              href="https://docs.opensea.io/docs/metadata-standards"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
+            >
+              Learn about the OpenSea metadata.
+              <ExternalLinkIcon />
+            </a>
           </p>
-          <a
-            href="https://docs.opensea.io/docs/metadata-standards"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
-          >
-            Learn about the OpenSea metadata.
-            <ExternalLinkIcon />
-          </a>
         </div>
       </div>
-      <Card variant="secondary">
-        <div className="grid gap-6">
-          <div className="space-y-1">
-            <h3 className="text-lg font-bold">Metadata</h3>
-            <p className="text-gray-600">
-              Select the Lock or Key you want to edit properties for. If you
-              save metadata for lock only, it will be used for all keys which do
-              not have any metadata set.
-            </p>
+
+      {!lockAddress && (
+        <Card variant="secondary">
+          <div className="grid gap-6">
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold">Metadata</h3>
+              <p className="text-gray-600">
+                Select the Lock or Key you want to edit properties for. If you
+                save metadata for lock only, it will be used for all keys which
+                do not have any metadata set.
+              </p>
+            </div>
+            <Picker
+              userAddress={account!}
+              lockAddress={lockAddress}
+              network={network}
+              keyId={keyId}
+              collect={{
+                lockAddress: true,
+                network: true,
+                key: true,
+              }}
+              onChange={(selected) => {
+                setSelected(selected)
+              }}
+            />
           </div>
-          <Picker
-            userAddress={account!}
-            lockAddress={lockAddress}
-            network={network}
-            keyId={keyId}
-            collect={{
-              lockAddress: true,
-              network: true,
-              key: true,
-            }}
-            onChange={(selected) => {
-              setSelected(selected)
-            }}
-          />
-        </div>
-      </Card>
+        </Card>
+      )}
+
       {isLoading && <LoadingIcon />}
       {!isLoading && !isTokenURIEditable && isLockSelected && (
         <Card variant="danger">
