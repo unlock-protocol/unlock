@@ -139,7 +139,7 @@ export const EventLandingPageCallToAction = ({
   if (!account) {
     return (
       <Button onClick={() => openConnectModal()} className="my-8">
-        Connect your wallet
+        Get started for free
       </Button>
     )
   }
