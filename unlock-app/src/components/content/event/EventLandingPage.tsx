@@ -177,12 +177,10 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
         />
       }
       illustration={
-        <Image
-          className=""
-          width="769"
-          height="978"
-          alt="Out Metaverse"
-          src="/images/illustrations/events/outmetaverse.svg"
+        <object
+          className="md:h-[70vh] h-auto md:w-auto w-full 4xl:right-0 md:absolute md:top-0"
+          type="image/svg+xml"
+          data="/images/illustrations/events/dappcon-screenshot-hero.svg"
         />
       }
       coverImage="/images/illustrations/events/party.svg"

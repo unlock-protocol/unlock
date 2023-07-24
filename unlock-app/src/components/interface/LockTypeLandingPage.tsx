@@ -94,9 +94,9 @@ export const LockTypeLandingPage = ({
 }: LockTypeLandingPageProps) => {
   return (
     <div className="w-full">
-      <section className="flex flex-col my-8 md:flex-row">
+      <section className="relative gap-2 my-8 md:grid md:grid-cols-3 ">
         {/* masthead */}
-        <div className="flex flex-col py-0 ">
+        <div className="block col-span-1 py-0 md:flex md:flex-col md:col-span-2">
           {title}
           <h2 className="mt-4 text-3xl font-bold">{subtitle}</h2>
           <p className="my-6">{description}</p>
@@ -106,9 +106,7 @@ export const LockTypeLandingPage = ({
             </div>
           )}
         </div>
-        <div className="items-start justify-center hidden w-96 md:flex justify-items-center shrink-0">
-          {illustration}
-        </div>
+        <div className="relative col-span-1 md:block">{illustration}</div>
       </section>
 
       <section className="flex flex-col items-center content-center justify-center pt-8 text-whit justify-items-center">
