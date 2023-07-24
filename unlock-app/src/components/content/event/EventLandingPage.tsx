@@ -1,5 +1,4 @@
 import { Button } from '@unlock-protocol/ui'
-import Image from 'next/image'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
