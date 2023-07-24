@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -20,6 +20,7 @@ import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
 import { ChooseConfiguration, CheckoutConfig } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useDebounce } from 'react-use'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -39,6 +40,7 @@ const Header = () => {
 }
 
 export const CheckoutUrlPage = () => {
+  const firstRender = useRef(false)
   const router = useRouter()
   const query = router.query
   const [checkoutUrl, setCheckoutUrl] = useState('')
@@ -174,6 +176,7 @@ export const CheckoutUrlPage = () => {
   }, [checkoutConfigList?.length])
 
   const onConfigSave = useCallback(async () => {
+    if (!checkoutConfig?.id) return // prevent save if not config is set
     const updated = await updateConfig({
       config: checkoutConfig.config,
       name: checkoutConfig.name,
@@ -184,8 +187,14 @@ export const CheckoutUrlPage = () => {
       name: updated.name,
       config: updated.config as PaywallConfig,
     })
-    ToastHelper.success('Configuration updated.')
-    await refetchConfigList()
+
+    // Show toast message when configuration is changed after first render
+    if (!firstRender.current) {
+      firstRender.current = true
+    } else {
+      ToastHelper.success('Configuration updated.')
+      await refetchConfigList()
+    }
   }, [checkoutConfig, updateConfig, refetchConfigList])
 
   const onConfigRemove = useCallback(async () => {
@@ -220,7 +229,7 @@ export const CheckoutUrlPage = () => {
     })
   }, [checkoutConfigList])
 
-  const onAddLocks = (locks: any) => {
+  const onAddLocks = async (locks: any) => {
     setCheckoutConfig((state) => {
       return {
         ...state,
@@ -232,7 +241,7 @@ export const CheckoutUrlPage = () => {
     })
   }
 
-  const onBasicConfigChange = (fields: Partial<PaywallConfig>) => {
+  const onBasicConfigChange = async (fields: Partial<PaywallConfig>) => {
     const hasDefaultLock =
       Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
 
@@ -260,6 +269,9 @@ export const CheckoutUrlPage = () => {
       }
     })
   }
+
+  const addLockMutation = useMutation(onAddLocks)
+  const onBasicConfigChangeMutation = useMutation(onBasicConfigChange)
 
   const TopBar = () => {
     return (
@@ -296,6 +308,8 @@ export const CheckoutUrlPage = () => {
     }
   }
 
+  const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
+
   const isNewConfiguration = configuration === 'new'
 
   const onSubmitConfiguration = async () => {
@@ -325,6 +339,20 @@ export const CheckoutUrlPage = () => {
 
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
+
+  /**
+   * Save checkout config when fields have changed, This is done with delays invoking a function until after wait milliseconds have passed
+   * to avoid calling the endpoint multiple times.
+   */
+  const [_isReady] = useDebounce(
+    () => {
+      onConfigSave()
+    },
+    1000,
+    [addLockMutation.isSuccess, onBasicConfigChangeMutation.isSuccess]
+  )
+  const loading =
+    isLoadingConfigList || handleSetConfigurationMutation.isLoading
 
   return (
     <>
@@ -385,7 +413,10 @@ export const CheckoutUrlPage = () => {
                             ([] as CheckoutConfig[])
                           }
                           onChange={async ({ config, ...rest }) =>
-                            await handleSetConfiguration({ config, ...rest })
+                            await handleSetConfigurationMutation.mutateAsync({
+                              config,
+                              ...rest,
+                            })
                           }
                           setConfiguration={setConfiguration}
                           configuration={configuration}
@@ -414,9 +445,13 @@ export const CheckoutUrlPage = () => {
                   description:
                     'Customize the checkout modal interaction & additional behavior',
                   disabled: !hasSelectedConfig,
+                  loading: loading,
                   children: (
                     <BasicConfigForm
-                      onChange={onBasicConfigChange}
+                      onChange={(fields: any, isValid = true) => {
+                        if (!isValid) return // trigger update form only when is valid to prevent update auto-update with invalid values
+                        onBasicConfigChangeMutation.mutateAsync(fields)
+                      }}
                       defaultValues={checkoutConfig.config}
                     />
                   ),
@@ -426,9 +461,13 @@ export const CheckoutUrlPage = () => {
                   description:
                     'Select the locks that you would like to featured in this configured checkout modal',
                   disabled: !hasSelectedConfig,
+                  loading: loading,
                   children: (
                     <LocksForm
-                      onChange={onAddLocks}
+                      onChange={(fields: any, isValid = true) => {
+                        if (!isValid) return // trigger update form only when is valid to prevent update auto-update with invalid values
+                        addLockMutation.mutateAsync(fields)
+                      }}
                       locks={checkoutConfig.config?.locks}
                     />
                   ),
@@ -437,8 +476,7 @@ export const CheckoutUrlPage = () => {
                     disabled: hasRecurringPlaceholder,
                     iconLeft: <SaveIcon />,
                   },
-                  onNextLabel: 'Save',
-                  onNext: async () => await onConfigSave(),
+                  showButton: false,
                 },
                 {
                   title:
