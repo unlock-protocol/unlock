@@ -19,7 +19,7 @@ export const EventContent = () => {
 
   const handleCreateEvent = () => {
     router.push(
-      'http://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
+      'https://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
     )
   }
 
