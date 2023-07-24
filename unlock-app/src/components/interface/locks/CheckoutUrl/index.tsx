@@ -445,7 +445,7 @@ export const CheckoutUrlPage = () => {
                   description:
                     'Customize the checkout modal interaction & additional behavior',
                   disabled: !hasSelectedConfig,
-                  loading: loading,
+                  loading,
                   children: (
                     <BasicConfigForm
                       onChange={(fields: any, isValid = true) => {
@@ -461,7 +461,7 @@ export const CheckoutUrlPage = () => {
                   description:
                     'Select the locks that you would like to featured in this configured checkout modal',
                   disabled: !hasSelectedConfig,
-                  loading: loading,
+                  loading,
                   children: (
                     <LocksForm
                       onChange={(fields: any, isValid = true) => {
