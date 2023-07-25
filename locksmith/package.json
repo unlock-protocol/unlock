@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "prod": "tsx -r ./config/envLoader.js ./src/server.ts",
-    "start": "yarn build && tsx -r ./config/envLoader.js ./src/server.ts",
+    "start": "./scripts/start.sh",
     "dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js src/server.ts",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
