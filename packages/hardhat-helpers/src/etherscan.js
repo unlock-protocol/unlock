@@ -16,7 +16,9 @@ const etherscan = {
     celo: '6KBKUFYV3NQR4Y1BQN3Q34S2U7NTZBBPQZ',
     palm: 'abc',
     baseGoerli: 'YourApiKeyToken',
+    base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
   },
+  // TODO : generate from networks package!
   customChains: [
     {
       network: 'celo',
@@ -40,6 +42,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api-goerli.basescan.org/api',
         browserURL: 'https://goerli.basescan.org/',
+      },
+    },
+    {
+      network: 'base',
+      chainId: 8453,
+      urls: {
+        apiURL: 'https://api.basescan.org/api',
+        browserURL: 'https://basescan.org/',
       },
     },
   ],

@@ -54,6 +54,7 @@ const getHardhatNetwork = () => {
     networks[name] = {
       ...networksConfigs[name],
       accounts: getAccounts(name),
+      gasPrice: 150000000,
     }
   })
   return networks

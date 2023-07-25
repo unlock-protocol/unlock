@@ -12,4 +12,5 @@ export interface Env {
   POLYGON_PROVIDER: string
   PALM_PROVIDER: string
   BASE_GOERLI_PROVIDER: string
+  BASE_PROVIDER: string
 }
