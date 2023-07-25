@@ -466,11 +466,8 @@ export const CheckoutUrlPage = () => {
                     />
                   ),
                   button: {
-                    loading: isConfigUpdating,
                     disabled: hasRecurringPlaceholder,
-                    iconLeft: <SaveIcon />,
                   },
-                  showButton: false,
                 },
                 {
                   title:
