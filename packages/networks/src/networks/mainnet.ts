@@ -63,7 +63,7 @@ export const mainnet: NetworkConfig = {
     oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
     universalRouterAddress: '0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B',
   },
-  swapPurchaser: '0x7039d2BB4CfC5f5DA49E6b4b9c40400bccb0d1E8',
+  swapPurchaser: '0x02415541c7F4c976722493181cFdb0b46E1c94fb',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
