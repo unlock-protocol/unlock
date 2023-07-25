@@ -1,5 +1,4 @@
 import { Button, Size } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
 import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
@@ -65,7 +64,7 @@ export const CheckoutShareOrDownload = ({
   }, [paywallConfig, id, setCheckoutUrl])
 
   return paywallConfig ? (
-    <div className="flex gap-3">
+    <div className="flex flex-col gap-3 md:flex-row">
       <Button
         size={size}
         variant={buttonVariant}
