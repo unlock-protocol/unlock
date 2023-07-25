@@ -56,7 +56,7 @@ interface DynamicFormProps {
   schema: z.Schema
   title?: string
   description?: React.ReactNode
-  onChange: (fields: any, isValid?: boolean) => void
+  onChange: (fields: any) => void
   onSubmit?: (fields: any) => void
   submitLabel?: string
   defaultValues?: any
@@ -355,8 +355,17 @@ export const DynamicForm = ({
           onSubmit={methods.handleSubmit(onSubmit)}
           onChange={async () => {
             const fields = await methods.getValues()
-            const isValid = await methods.formState.isValid
-            onChange(fields, isValid)
+            const isValid = methods.formState.isValid
+
+            if (!isValid) {
+              console.error(
+                'form is not valid, please check that every field passes the validation.',
+                fields
+              )
+              return
+            }
+
+            onChange(fields)
           }}
         >
           {Object.entries(properties ?? {}).map(([fieldName, props], index) => {
