@@ -90,13 +90,15 @@ export const CertificationLanding = ({
       }
       faqs={faqs}
       illustration={
-        <Image
-          className=""
-          width="486"
-          height="652"
-          alt="Hand off doc"
-          src="/images/illustrations/certifications/img-handoffDoc.svg"
-        ></Image>
+        <div className="items-start justify-center hidden w-96 md:flex justify-items-center shrink-0">
+          <Image
+            className=""
+            width="486"
+            height="652"
+            alt="Hand off doc"
+            src="/images/illustrations/certifications/img-handoffDoc.svg"
+          />
+        </div>
       }
       coverImage="/images/illustrations/certifications/img-professionals.svg"
       subtitle="Bring your certification or credentialing program onchain with Unlock."
