@@ -449,7 +449,13 @@ export const CheckoutUrlPage = () => {
                   children: (
                     <BasicConfigForm
                       onChange={(fields: any, isValid = true) => {
-                        if (!isValid) return // trigger update form only when is valid to prevent update auto-update with invalid values
+                        if (!isValid) {
+                          console.error(
+                            'BasicConfigForm is not valid, please check that every field passes the validation.'
+                          )
+                          return
+                        }
+                        // trigger update form only when is valid to prevent update auto-update with invalid values
                         onBasicConfigChangeMutation.mutateAsync(fields)
                       }}
                       defaultValues={checkoutConfig.config}
@@ -465,7 +471,13 @@ export const CheckoutUrlPage = () => {
                   children: (
                     <LocksForm
                       onChange={(fields: any, isValid = true) => {
-                        if (!isValid) return // trigger update form only when is valid to prevent update auto-update with invalid values
+                        if (!isValid) {
+                          console.error(
+                            'LocksForm is not valid, please check that every field passes the validation.'
+                          )
+                          return
+                        }
+                        // trigger update form only when is valid to prevent update auto-update with invalid values
                         addLockMutation.mutateAsync(fields)
                       }}
                       locks={checkoutConfig.config?.locks}
