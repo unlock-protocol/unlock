@@ -1,5 +1,4 @@
 import { Button } from '@unlock-protocol/ui'
-import Image from 'next/image'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -177,12 +176,10 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
         />
       }
       illustration={
-        <Image
-          className=""
-          width="769"
-          height="978"
-          alt="Out Metaverse"
-          src="/images/illustrations/events/outmetaverse.svg"
+        <object
+          className="w-full 4xl:right-0 md:absolute md:top-0"
+          type="image/svg+xml"
+          data="/images/illustrations/events/dappcon-screenshot-hero.svg"
         />
       }
       coverImage="/images/illustrations/events/party.svg"
