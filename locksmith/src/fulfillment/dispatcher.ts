@@ -64,7 +64,18 @@ export default class Dispatcher {
         try {
           const { wallet, provider } = await getPurchaser(network.id)
           const address = await wallet.getAddress()
-          const balance = await provider.getBalance(address)
+          const balance: ethers.BigNumberish =
+            await Promise.race<ethers.BigNumberish>([
+              new Promise((resolve) =>
+                setTimeout(() => {
+                  console.log(
+                    `Could not retrieve balance on network ${network.id}`
+                  )
+                  resolve(0)
+                }, 3000)
+              ),
+              provider.getBalance(address),
+            ])
           return [
             network.id,
             {
@@ -74,7 +85,10 @@ export default class Dispatcher {
             },
           ]
         } catch (error) {
-          logger.error(error)
+          logger.error('Could not retrieve balance on network', {
+            network,
+            error,
+          })
           return [network.id, {}]
         }
       })

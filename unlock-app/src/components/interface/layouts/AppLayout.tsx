@@ -182,7 +182,7 @@ export const AppLayout = ({
   const showTermsModal = !termsLoading && !termsAccepted
 
   return (
-    <div className="bg-ui-secondary-200">
+    <div className="overflow-hidden bg-ui-secondary-200">
       <Modal
         isOpen={showTermsModal}
         setIsOpen={() => {

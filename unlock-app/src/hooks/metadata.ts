@@ -54,6 +54,28 @@ export const useUpdateMetadata = ({
   )
 }
 
+export const getMetadata = async (
+  lockAddress: string,
+  network: number,
+  keyId?: string
+): Promise<Partial<Metadata>> => {
+  try {
+    if (keyId) {
+      const keyResponse = await storage.keyMetadata(
+        network!,
+        lockAddress!,
+        keyId
+      )
+      return keyResponse.data as Metadata
+    } else {
+      const lockResponse = await storage.lockMetadata(network!, lockAddress!)
+      return lockResponse.data as Metadata
+    }
+  } catch (error) {
+    return {} as Metadata
+  }
+}
+
 export const useMetadata = ({
   lockAddress,
   network,
@@ -61,25 +83,11 @@ export const useMetadata = ({
 }: Partial<Options>) => {
   return useQuery(
     ['metadata', network, lockAddress, keyId],
-    async (): Promise<Partial<Metadata>> => {
-      try {
-        if (keyId) {
-          const keyResponse = await storage.keyMetadata(
-            network!,
-            lockAddress!,
-            keyId
-          )
-          return keyResponse.data as Metadata
-        } else {
-          const lockResponse = await storage.lockMetadata(
-            network!,
-            lockAddress!
-          )
-          return lockResponse.data as Metadata
-        }
-      } catch (error) {
-        return {} as Metadata
+    () => {
+      if (lockAddress && network) {
+        return getMetadata(lockAddress, network, keyId)
       }
+      return {} as Metadata
     },
     {
       enabled: !!lockAddress && !!network,

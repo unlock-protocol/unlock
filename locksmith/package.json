@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "prod": "tsx -r ./config/envLoader.js ./src/server.ts",
-    "start": "yarn build && tsx -r ./config/envLoader.js ./src/server.ts",
+    "start": "./scripts/start.sh server",
     "dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js src/server.ts",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
@@ -23,7 +23,7 @@
     "dist": "yarn build && sh ./scripts/dist.sh",
     "fulfillment:prepare": "tsx -r ./config/envLoader.js ./scripts/fulfillment_prepare",
     "authorize": "./scripts/authorize-lock",
-    "worker:start": "tsx -r ./config/envLoader.js  ./src/worker/server.ts",
+    "worker:start": "./scripts/start.sh worker",
     "worker:dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js  ./src/worker/server.ts",
     "worker:prod": "tsx -r ./src/utils/envLoader ./src/worker/server.ts",
     "send:email": "tsx -r ./config/envLoader.js  ./scripts/send_email.ts",
