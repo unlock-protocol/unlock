@@ -34,7 +34,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.44.0",
-    "tsup": "6.7.0",
+    "tsup": "7.1.0",
     "typescript": "5.1.6",
     "vite": "4.3.9",
     "vite-plugin-css-injected-by-js": "3.1.2",
