@@ -12,7 +12,7 @@ import {
   useCheckoutConfigUpdate,
   useCheckoutConfigsByUser,
 } from '~/hooks/useCheckoutConfig'
-import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
+import { FaTrash as TrashIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
