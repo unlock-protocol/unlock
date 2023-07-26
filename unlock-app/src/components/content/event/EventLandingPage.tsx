@@ -2,7 +2,6 @@ import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useConnectModal } from '~/hooks/useConnectModal'
 import { PastEventsByManager } from './PastEventsByManager'
 
 const customers = [
@@ -133,7 +132,6 @@ export const EventLandingPageCallToAction = ({
   showManagerEvents = false,
 }: EventLandingPageCallToActionProps) => {
   const { account } = useAuth()
-  const { openConnectModal } = useConnectModal()
 
   if (!account) {
     return (
