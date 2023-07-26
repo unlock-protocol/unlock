@@ -146,7 +146,7 @@ const queueProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
   })
-  const descriptionHash = web3.utils.keccak256(description)
+  const descriptionHash = ethers.utils.keccak256(description)
   const { proposerAddress } = proposal
   let voterWallet
   if (!proposerAddress) {
@@ -169,7 +169,7 @@ const executeProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
   })
-  const descriptionHash = web3.utils.keccak256(description)
+  const descriptionHash = ethers.utils.keccak256(description)
   let voterWallet
   if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()

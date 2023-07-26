@@ -7,9 +7,10 @@ const {
   ZERO_ADDRESS,
   MAX_UINT256,
 } = require('@openzeppelin/test-helpers/src/constants')
+const { ethers } = require('ethers')
 
 const BASIS_POINT_DENOMINATOR = 10000
-const someDai = new BigNumber(web3.utils.toWei('10', 'ether'))
+const someDai = ethers.utils.formatUnits('10', 'ether')
 
 const scenarios = [false, true]
 
@@ -48,7 +49,7 @@ contract('Lock / setReferrerFee', (accounts) => {
         getBalance = async (account) =>
           isErc20
             ? new BigNumber(await dai.balanceOf(account))
-            : new BigNumber(await web3.eth.getBalance(account))
+            : new BigNumber(await ethers.provider.getBalance(account))
       })
 
       it('has a default fee of 0%', async () => {

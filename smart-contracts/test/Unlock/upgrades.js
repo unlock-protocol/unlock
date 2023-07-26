@@ -129,7 +129,7 @@ contract('Unlock / upgrades', async (accounts) => {
               keyPrice,
               5, // maxNumberOfKeys
               `UpgradeTestingLock ${versionNumber}`,
-              web3.utils.randomHex(12)
+              ethers.utils.hexlify(ethers.utils.randomBytes(12))
             )
           } else if (versionNumber >= 3) {
             // Version 3 added a lock name
@@ -454,9 +454,13 @@ contract('Unlock / upgrades', async (accounts) => {
 
         return await lock
           .connect(keyOwner)
-          .purchaseFor(keyOwner.address, web3.utils.toHex('Julien'), {
-            value: keyPrice,
-          })
+          .purchaseFor(
+            keyOwner.address,
+            ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Julien')),
+            {
+              value: keyPrice,
+            }
+          )
       }
     })
   }

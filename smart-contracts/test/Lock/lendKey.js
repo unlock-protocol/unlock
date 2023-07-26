@@ -1,3 +1,4 @@
+const { ethers } = require('ethers')
 const {
   reverts,
   ADDRESS_ZERO,
@@ -180,7 +181,7 @@ contract('Lock / lendKey', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.formatUnits('0.01', 'ether'),
           from,
         }
       )
@@ -197,7 +198,7 @@ contract('Lock / lendKey', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.formatUnits('0.01', 'ether'),
             from: accounts[8],
           }
         ),

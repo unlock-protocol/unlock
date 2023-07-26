@@ -55,7 +55,7 @@ contract('Scripts/deploy:lock', () => {
             Locks[name].keyPrice,
             Locks[name].maxNumberOfKeys,
             Locks[name].lockName,
-            web3.utils.randomHex(12),
+            ethers.utils.hexlify(ethers.utils.randomBytes(12)),
           ]
           const tx = await unlock.createLock(...lockArgs)
           const { events } = await tx.wait()
@@ -79,7 +79,7 @@ contract('Scripts/deploy:lock', () => {
         unlockAddress,
         unlockVersion: 8,
         serializedLock: serialized,
-        salt: web3.utils.randomHex(12),
+        salt: ethers.utils.hexlify(ethers.utils.randomBytes(12)),
       })
 
       // make sure values are identical
@@ -103,7 +103,7 @@ contract('Scripts/deploy:lock', () => {
       unlockAddress,
       unlockVersion: 8,
       serializedLock: serialized,
-      salt: web3.utils.randomHex(12),
+      salt: ethers.utils.hexlify(ethers.utils.randomBytes(12)),
     })
 
     // make sure values are identical

@@ -44,7 +44,7 @@ contract('Lock / transferFee', (accounts) => {
       // Mine a transaction in order to ensure the block.timestamp has updated
       await purchaseKey(lock, accounts[8])
 
-      const nowAfter = (await web3.eth.getBlock('latest')).timestamp
+      const nowAfter = (await ethers.provider.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenId)
       )

@@ -43,7 +43,7 @@ contract('UnlockProtocolGovernor', () => {
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
     // get params
-    const descriptionHash = web3.utils.keccak256(
+    const descriptionHash = ethers.utils.keccak256(
       proposal.slice(-1).find(Boolean)
     )
     const [targets, values, calldatas] = proposal
