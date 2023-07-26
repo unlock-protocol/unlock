@@ -53,7 +53,6 @@ task('verify-template', 'Verify the PublicLock at specific version')
   .addParam('publicLockVersion', 'the PublicLock version to verify')
   .setAction(async ({ publicLockAddress, publicLockVersion }, { run }) => {
     if (publicLockVersion) {
-      console.log('older version!')
       const contractPath = `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${publicLockVersion}.sol`
 
       await fs.copy(
