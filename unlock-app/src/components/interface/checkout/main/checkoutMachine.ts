@@ -251,6 +251,8 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'METADATA',
               cond: (_, event) => {
+                // For expired memberships we do not offer the ability
+                // to change the metadadata and recipient...
                 return !event.skipRecipient && !event.expiredMember
               },
             },
