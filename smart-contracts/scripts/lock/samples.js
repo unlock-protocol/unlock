@@ -3,6 +3,7 @@ const Locks = require('../../test/fixtures/locks')
 const createLock = require('../deployments/lock.js')
 const contracts = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
+const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
 
 const { AddressZero } = ethers.constants
 
@@ -40,7 +41,7 @@ async function main({
       unlockAddress,
       serializedLock,
       lockVersion,
-      salt: web3.utils.randomHex(12),
+      salt: ethers.utils.hexlify(ethers.utils.randomBytes(12)),
     })
 
     // get correct versio  of the lock abi
@@ -65,8 +66,8 @@ async function main({
     const tx = await lock.purchase(
       [],
       purchasers.map(({ address }) => address),
-      purchasers.map(() => web3.utils.padLeft(0, 40)),
-      purchasers.map(() => web3.utils.padLeft(0, 40)),
+      purchasers.map(() => ZERO_ADDRESS),
+      purchasers.map(() => ZERO_ADDRESS),
       purchasers.map(() => []),
       { value }
     )

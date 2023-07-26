@@ -22,7 +22,7 @@ async function main({
     serializedLock,
     unlockAddress,
     unlockVersion,
-    salt: web3.utils.randomHex(12),
+    salt: ethers.utils.hexlify(ethers.utils.randomBytes(12)),
   })
 
   console.log('CLONE LOCK > add key owners...')
