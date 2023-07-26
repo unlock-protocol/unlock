@@ -1,13 +1,13 @@
 import { ethers } from 'ethers'
-import randomWords from 'random-words'
+import { generate } from 'random-words'
 
 export class DecoyUser {
   recoveryPhrase(): string {
-    return randomWords(5).join(' ')
+    return generate(5).join(' ')
   }
 
   async encryptedPrivateKey() {
-    return ethers.Wallet.createRandom().encrypt(randomWords(5).join(' '))
+    return ethers.Wallet.createRandom().encrypt(generate(5).join(' '))
   }
 }
 
