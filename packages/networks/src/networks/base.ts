@@ -13,9 +13,9 @@ export const base: NetworkConfig = {
   subgraph: {
     networkName: 'base',
     endpoint:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
     endpointV2:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
   },
   explorer: {
     name: 'Basescan',
