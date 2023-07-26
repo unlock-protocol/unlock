@@ -35,7 +35,7 @@ export const base: NetworkConfig = {
     decimals: 18,
     coingecko: 'ethereum',
   },
-  startBlock: 0,
+  startBlock: 1750000,
   isTestNetwork: false,
   fullySubsidizedGas: false,
   maxFreeClaimCost: 10,
