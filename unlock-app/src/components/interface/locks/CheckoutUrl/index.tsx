@@ -348,7 +348,7 @@ export const CheckoutUrlPage = () => {
     () => {
       onConfigSave()
     },
-    5000, // 5 seconds of delay after edit's to trigger auto-save
+    2000, // 2 seconds of delay after edit's to trigger auto-save
     [addLockMutation.isSuccess, onBasicConfigChangeMutation.isSuccess]
   )
   const loading =
