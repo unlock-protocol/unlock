@@ -7,10 +7,10 @@ const {
   ZERO_ADDRESS,
   MAX_UINT256,
 } = require('@openzeppelin/test-helpers/src/constants')
-const { ethers } = require('ethers')
+const { ethers } = require('hardhat')
 
 const BASIS_POINT_DENOMINATOR = 10000
-const someDai = ethers.utils.formatUnits('10', 'ether')
+const someDai = ethers.utils.parseUnits('10', 'ether')
 
 const scenarios = [false, true]
 

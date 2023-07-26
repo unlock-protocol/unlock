@@ -181,7 +181,7 @@ contract('Lock / lendKey', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.formatUnits('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
           from,
         }
       )
@@ -198,7 +198,7 @@ contract('Lock / lendKey', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: ethers.utils.formatUnits('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
             from: accounts[8],
           }
         ),

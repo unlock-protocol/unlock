@@ -44,7 +44,7 @@ contract('UnlockProtocolGovernor', () => {
 
     // get params
     const descriptionHash = ethers.utils.keccak256(
-      proposal.slice(-1).find(Boolean)
+      ethers.utils.toUtf8Bytes(proposal.slice(-1).find(Boolean))
     )
     const [targets, values, calldatas] = proposal
 
