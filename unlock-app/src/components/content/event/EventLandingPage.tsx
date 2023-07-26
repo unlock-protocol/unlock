@@ -137,7 +137,7 @@ export const EventLandingPageCallToAction = ({
 
   if (!account) {
     return (
-      <Button onClick={() => openConnectModal()} className="my-8">
+      <Button onClick={handleCreateEvent} className="my-8">
         Get started for free
       </Button>
     )
