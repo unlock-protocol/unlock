@@ -16,7 +16,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
   let lock
   let lockFree
   const denominator = 10000
-  const keyPrice = ethers.utils.formatUnits('0.01', 'ether')
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const lockCreator = accounts[0]
 
   const keyOwners = [
