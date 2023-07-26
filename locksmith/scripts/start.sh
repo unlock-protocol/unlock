@@ -1,23 +1,25 @@
 #!/bin/bash
 
-# Check if the environment argument is provided, otherwise use NODE_ENV as a fallback
+# Check if the argument is provided
 if [ $# -eq 0 ]; then
-    if [ -z "$NODE_ENV" ]; then
-        echo "No environment specified. Set NODE_ENV or provide 'prod' or 'staging' as an argument."
-        exit 1
-    fi
-    environment="$NODE_ENV"
-else
-    environment="$1"
-fi
-
-# Check if the provided environment is valid
-if [ "$environment" != "prod" ] && [ "$environment" != "staging" ]; then
-    echo "Invalid environment. Available options are 'prod' or 'staging'."
+    echo "No argument provided. Please specify 'worker' or 'server'."
     exit 1
 fi
 
-# Define the environment file path based on the provided argument
+# Check if the argument is 'worker' or 'server'
+if [ "$1" != "worker" ] && [ "$1" != "server" ]; then
+    echo "Invalid argument. Available options are 'worker' or 'server'."
+    exit 1
+fi
+
+# Set the environment based on NODE_ENV or fallback to 'prod'
+if [ -z "$NODE_ENV" ]; then
+    environment="prod"
+else
+    environment="$NODE_ENV"
+fi
+
+# Define the environment file path based on the provided argument and environment
 env_file="./.op.env.$environment"
 
 # Check if the environment file exists
@@ -26,7 +28,12 @@ if [ ! -f "$env_file" ]; then
     exit 1
 fi
 
-# Run the command with the appropriate environment file
-command="op run --env-file=\"$env_file\" -- yarn tsx ./src/server.ts"
+# Prepare the command based on the argument
+if [ "$1" == "worker" ]; then
+    command="op run --env-file=\"$env_file\" -- yarn tsx ./src/worker/server.ts"
+else
+    command="op run --env-file=\"$env_file\" -- yarn tsx ./src/server.ts"
+fi
+
 echo "Running command: $command"
 eval "$command"
