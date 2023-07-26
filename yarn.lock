@@ -12119,10 +12119,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:1.54.0":
-  version: 1.54.0
-  resolution: "@stripe/stripe-js@npm:1.54.0"
-  checksum: b5108ac03e367212d584fe5fde2fe56909c968eb04f616fcfd983378bcd0903209e40fd37866cbea1337d231ac9291419d600b5146334c6bd49d3b6bb71a84f2
+"@stripe/stripe-js@npm:1.54.1":
+  version: 1.54.1
+  resolution: "@stripe/stripe-js@npm:1.54.1"
+  checksum: eb54054edea3d3f9a8c18e8442cc05b46f7afbe5bd85863121737f268875d30aab6de16ee84d467853ad9d983bf69f922f45daeee6f13134ca138f7e862c9eb4
   languageName: node
   linkType: hard
 
@@ -15221,7 +15221,7 @@ __metadata:
     "@sentry/nextjs": 7.54.0
     "@stripe/crypto": 0.0.4
     "@stripe/react-stripe-js": 2.1.1
-    "@stripe/stripe-js": 1.54.0
+    "@stripe/stripe-js": 1.54.1
     "@tanstack/react-query": 4.29.12
     "@testing-library/react": 14.0.0
     "@testing-library/react-hooks": 8.0.1
