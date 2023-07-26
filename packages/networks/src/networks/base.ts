@@ -4,7 +4,7 @@ export const base: NetworkConfig = {
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://developer-access-mainnet.base.org',
   provider: 'https://rpc.unlock-protocol.com/8453',
-  unlockAddress: '',
+  unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
   multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
   keyManagerAddress: '',
   id: 8453,

@@ -2,9 +2,6 @@ const { task } = require('hardhat/config')
 const fs = require('fs-extra')
 const path = require('path')
 
-// files path
-const LATEST_PUBLIC_LOCK_VERSION = 13
-
 const contractsPath = path.resolve(
   __dirname,
   '..',
@@ -53,9 +50,10 @@ task('verify-proxy', 'Deploy and verify the TransparentProxy used by locks')
 
 task('verify-template', 'Verify the PublicLock at specific version')
   .addParam('publicLockAddress', 'the PublicLock template address')
-  .addOptionalParam('publicLockVersion', 'the PublicLock version to verify')
+  .addParam('publicLockVersion', 'the PublicLock version to verify')
   .setAction(async ({ publicLockAddress, publicLockVersion }, { run }) => {
-    if (publicLockVersion != LATEST_PUBLIC_LOCK_VERSION) {
+    if (publicLockVersion) {
+      console.log('older version!')
       const contractPath = `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${publicLockVersion}.sol`
 
       await fs.copy(
@@ -67,7 +65,7 @@ task('verify-template', 'Verify the PublicLock at specific version')
       address: publicLockAddress,
     })
 
-    if (publicLockVersion != LATEST_PUBLIC_LOCK_VERSION) {
+    if (publicLockVersion) {
       await fs.remove(contractsPath)
       await fs.remove(artifactsPath)
     }
