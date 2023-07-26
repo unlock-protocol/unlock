@@ -1,6 +1,6 @@
 # Networks
 
-Contains useful addresses and info about Unlock on different networks
+Contains useful addresses and info about Unlock on different networks.
 
 ## Usage
 

@@ -1,23 +1,50 @@
 import { Button } from '@unlock-protocol/ui'
-import Image from 'next/image'
 import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useConnectModal } from '~/hooks/useConnectModal'
+import { PastEventsByManager } from './PastEventsByManager'
 
 const customers = [
   {
-    link: 'https://ethcc.io/',
-    image: '/images/illustrations/events/ethcc.svg',
-    name: 'EthCC',
+    image: '/images/partners/berchain.svg',
+    name: 'Berchain',
   },
   {
-    link: 'https://www.dappcon.io/',
-    image: '/images/illustrations/events/dappcon.png',
-    name: 'Dappcon',
-  },
-  {
-    link: 'https://www.metacartel.org/',
-    image: '/images/illustrations/events/metacartel.png',
+    image: '/images/partners/metacartel-full.svg',
     name: 'Metacartel',
+  },
+  {
+    image: '/images/partners/ethcc.svg',
+    name: 'ETHcc',
+  },
+  {
+    image: '/images/partners/polygonnyc-logo.png',
+    name: 'Polygon NYC',
+  },
+  {
+    image: '/images/partners/ethwarsaw.svg',
+    name: 'Eth Warsaw',
+  },
+  {
+    image: '/images/partners/ethchi.svg',
+    name: 'EthChi',
+  },
+  {
+    image: '/images/partners/womeninweb3.svg',
+    name: 'Women in Web3',
+  },
+  {
+    image: '/images/partners/spruceID.svg',
+    name: 'SpruceID logo',
+  },
+  {
+    image: '/images/partners/dappcon.svg',
+    name: 'DappCon logo',
+  },
+  {
+    image: '/images/partners/ethsafari.svg',
+    name: 'EthSafari',
   },
 ]
 
@@ -39,6 +66,24 @@ const features = [
     name: 'Check-ins at the venue are a breeze',
     description:
       'Volunteers or door staff can check attendees in with just a smartphone, and ensure tickets aren’t transferred or reused once someone has come through the door.',
+  },
+]
+
+const problems = [
+  {
+    image: '/images/illustrations/events/img-stuck.svg',
+    name: 'No-code smart contract deployment',
+    description: `Your web3 or crypto event isn't walking the walk, and is using a legacy ticketing solution like Eventbrite, Meetup or Luma instead of embracing the very technology your attendees expect you to champion.`,
+  },
+  {
+    image: '/images/illustrations/events/img-wallet.svg',
+    name: 'QR codes and proof of purchase ticketing',
+    description: `You're losing money on ticket sales because of upsells, hidden fees, and slow payouts from your existing ticketing provider.`,
+  },
+  {
+    image: '/images/illustrations/events/img-goodvibe.svg',
+    name: 'Check-ins at the venue are a breeze',
+    description: `Your attendees stop engaging the moment the event is over, and are not continuing conversations as an ongoing, connected community.`,
   },
 ]
 
@@ -78,11 +123,39 @@ const faqs = [
   },
 ]
 
-interface LandingPage {
+interface EventLandingPageCallToActionProps {
   handleCreateEvent: () => void
+  showManagerEvents?: boolean
 }
 
-export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
+export const EventLandingPageCallToAction = ({
+  handleCreateEvent,
+  showManagerEvents = false,
+}: EventLandingPageCallToActionProps) => {
+  const { account } = useAuth()
+  const { openConnectModal } = useConnectModal()
+
+  if (!account) {
+    return (
+      <Button onClick={() => openConnectModal()} className="my-8">
+        Get started for free
+      </Button>
+    )
+  }
+  return (
+    <div className="flex flex-col">
+      {showManagerEvents && <PastEventsByManager manager={account} />}
+      <Button onClick={handleCreateEvent} className="my-8">
+        Get started for free
+      </Button>
+    </div>
+  )
+}
+
+interface LandingPageProps {
+  handleCreateEvent: () => void
+}
+export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
   return (
     <LockTypeLandingPage
       title={
@@ -91,27 +164,22 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
             backgroundImage:
               'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
           }}
-          className="text-6xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+          className="text-5xl font-extrabold text-transparent uppercase break-words md:text-8xl bg-clip-text"
         >
-          Easy-peasy
-          <br />
-          event tickets
-          <br />
-          and registration
+          Easy-peasy event tickets and registration
         </h1>
       }
       actions={
-        <Button onClick={handleCreateEvent} className="my-8">
-          Get started for free
-        </Button>
+        <EventLandingPageCallToAction
+          handleCreateEvent={handleCreateEvent}
+          showManagerEvents={true}
+        />
       }
       illustration={
-        <Image
-          className=""
-          width="769"
-          height="978"
-          alt="Out Metaverse"
-          src="/images/illustrations/events/outmetaverse.svg"
+        <object
+          className="w-full 4xl:right-0 md:absolute md:top-0"
+          type="image/svg+xml"
+          data="/images/illustrations/events/dappcon-screenshot-hero.svg"
         />
       }
       coverImage="/images/illustrations/events/party.svg"
@@ -120,15 +188,27 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPage) => {
       description="Create events in the easiest possible way. Set up
        your event landing page, sell or airdrop tickets as NFTs and via email,
         and perform check-in with a dedicated QR code. Easy."
-      customers={customers}
+      customers={{
+        title:
+          'Trusted by event organizers and community meetups around the world',
+        items: customers,
+      }}
       faqs={faqs}
       features={features}
+      problemSection={{
+        title: 'The Problem',
+        subtitle: `Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers`,
+        items: problems,
+      }}
       callToAction={{
         title: 'Ticketing events with Unlock is simple.',
         subtitle:
           'From creating the event description to selling tickets to check-in, Unlock built the tools you need.',
         description:
           'Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization.',
+        actions: (
+          <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
+        ),
       }}
     />
   )

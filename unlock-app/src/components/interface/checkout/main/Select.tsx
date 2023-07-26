@@ -105,32 +105,38 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
             <div className="w-full space-y-2">
               <div className="flex justify-between w-full place-items-center">
                 <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-                  <LabeledItem
-                    label="Duration"
-                    icon={DurationIcon}
-                    value={formattedData?.formattedDuration}
-                  />
-                  <LabeledItem
-                    label="Quantity"
-                    icon={QuantityIcon}
-                    value={
-                      formattedData?.isSoldOut
-                        ? 'Sold out'
-                        : formattedData?.formattedKeysAvailable
-                    }
-                  />
-                  {!!lock.recurringPayments &&
-                    parseInt(lock.recurringPayments.toString()) > 1 && (
+                  {formattedData?.formattedDuration !== 'Forever' && (
+                    <>
                       <LabeledItem
-                        label="Renew"
-                        icon={RecurringIcon}
-                        value={
-                          typeof lock.recurringPayments === 'number'
-                            ? `${lock.recurringPayments} times`
-                            : lock.recurringPayments
-                        }
+                        label="Duration"
+                        icon={DurationIcon}
+                        value={formattedData?.formattedDuration}
                       />
-                    )}
+                      {!!lock.recurringPayments &&
+                        parseInt(lock.recurringPayments.toString()) > 1 && (
+                          <LabeledItem
+                            label="Renew"
+                            icon={RecurringIcon}
+                            value={
+                              typeof lock.recurringPayments === 'number'
+                                ? `${lock.recurringPayments} times`
+                                : lock.recurringPayments
+                            }
+                          />
+                        )}
+                    </>
+                  )}
+                  {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
+                    <LabeledItem
+                      label="Quantity"
+                      icon={QuantityIcon}
+                      value={
+                        formattedData?.isSoldOut
+                          ? 'Sold out'
+                          : formattedData?.formattedKeysAvailable
+                      }
+                    />
+                  )}
                 </div>
                 <div>
                   {checked ? (

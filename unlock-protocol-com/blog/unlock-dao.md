@@ -23,7 +23,7 @@ For the Unlock DAO, the participants are anyone who owns our governance token (o
 
 Similarly, the goal is the development of the protocol. This includes the technical aspects (writing new features in the core contracts), but also the marketing aspects (promoting the protocol), or even operational ones around the DAO itself.
 
-The tools we use are the UDT tokens to get started, as the way to establish voting, but also a [brand new Governance contract](https://etherscan.io/address/0x7757f7f21f5fa9b1fd168642b79416051cd0bb94). The Governance Contract uses OpenZeppelin's libraries ([see our code](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/UnlockProtocolGovernor.sol)) and sets the process through which the DAO makes decision. To get started, we set a few defaults for these rules, but they can be altered by the community.
+The tools we use are the UDT tokens to get started, as the way to establish voting, but also a [brand new Governance contract](https://etherscan.io/address/0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591). The Governance Contract uses OpenZeppelin's libraries ([see our code](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/UnlockProtocolGovernor.sol)) and sets the process through which the DAO makes decision. To get started, we set a few defaults for these rules, but they can be altered by the community.
 
 ## Making decisions
 
