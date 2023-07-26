@@ -3,7 +3,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 export const baseGoerli: NetworkConfig = {
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://goerli.base.org',
-  provider: 'https://goerli.base.org', //'https://rpc.unlock-protocol.com/84531',
+  provider: 'https://rpc.unlock-protocol.com/84531',
   unlockAddress: '0x51A1ceB83B83F1985a81C295d1fF28Afef186E02',
   multisig: '',
   keyManagerAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',

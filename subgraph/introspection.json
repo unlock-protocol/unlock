@@ -138,7 +138,17 @@
         {
           "kind": "SCALAR",
           "name": "Int",
-          "description": null,
+          "description": "4 bytes signed integer\n",
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": null,
+          "possibleTypes": null
+        },
+        {
+          "kind": "SCALAR",
+          "name": "Int8",
+          "description": "8 bytes signed integer\n",
           "fields": null,
           "inputFields": null,
           "interfaces": null,
@@ -9725,7 +9735,11 @@
         {
           "name": "skip",
           "description": null,
-          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+          "locations": [
+            "FIELD",
+            "FRAGMENT_SPREAD",
+            "INLINE_FRAGMENT"
+          ],
           "args": [
             {
               "name": "if",
@@ -9746,7 +9760,11 @@
         {
           "name": "include",
           "description": null,
-          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
+          "locations": [
+            "FIELD",
+            "FRAGMENT_SPREAD",
+            "INLINE_FRAGMENT"
+          ],
           "args": [
             {
               "name": "if",
@@ -9767,13 +9785,17 @@
         {
           "name": "entity",
           "description": "Marks the GraphQL type as indexable entity.  Each type that should be an entity is required to be annotated with this directive.",
-          "locations": ["OBJECT"],
+          "locations": [
+            "OBJECT"
+          ],
           "args": []
         },
         {
           "name": "subgraphId",
           "description": "Defined a Subgraph ID for an object type",
-          "locations": ["OBJECT"],
+          "locations": [
+            "OBJECT"
+          ],
           "args": [
             {
               "name": "id",
@@ -9794,7 +9816,9 @@
         {
           "name": "derivedFrom",
           "description": "creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API.",
-          "locations": ["FIELD_DEFINITION"],
+          "locations": [
+            "FIELD_DEFINITION"
+          ],
           "args": [
             {
               "name": "field",
