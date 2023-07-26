@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - op-use-heroku
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
