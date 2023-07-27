@@ -1,4 +1,5 @@
 import { Button, Size } from '@unlock-protocol/ui'
+import { useEffect } from 'react'
 import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
