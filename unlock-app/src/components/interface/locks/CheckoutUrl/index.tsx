@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -40,7 +40,6 @@ const Header = () => {
 }
 
 export const CheckoutUrlPage = () => {
-  const firstRender = useRef(false)
   const router = useRouter()
   const query = router.query
   const [checkoutUrl, setCheckoutUrl] = useState('')

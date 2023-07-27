@@ -7,7 +7,6 @@ import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import FileSaver from 'file-saver'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
-import { useEffect } from 'react'
 interface CheckoutPreviewProps {
   paywallConfig?: PaywallConfig
   id?: string | null
