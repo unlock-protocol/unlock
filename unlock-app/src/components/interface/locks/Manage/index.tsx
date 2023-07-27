@@ -1,16 +1,14 @@
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React, { Fragment, useCallback, useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
@@ -99,23 +97,6 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     })
   }
 
-  const onDownloadReceipts = useCallback(async () => {
-    const response = await storage.getReceipts(network, lockAddress)
-    const cols: string[] = []
-    response?.data?.items?.map((item) => {
-      Object.keys(item).map((key: string) => {
-        if (!cols.includes(key)) {
-          cols.push(key) // add key once only if not present in list
-        }
-      })
-    })
-    downloadAsCSV({
-      cols,
-      metadata: response?.data?.items || [],
-      fileName: 'receipts.csv',
-    })
-  }, [lockAddress, network])
-
   const { isManager } = useLockManager({
     lockAddress,
     network: network!,
@@ -124,12 +105,6 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const onDownloadMutation = useMutation(onDownloadCsv, {
     meta: {
       errorMessage: 'Failed to download members list',
-    },
-  })
-
-  const onDownloadReceiptsMutation = useMutation(onDownloadReceipts, {
-    meta: {
-      errorMessage: 'Failed to download receipts',
     },
   })
 
@@ -150,16 +125,6 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
               onClick={() => onDownloadMutation.mutate()}
             >
               Download {isEvent ? 'attendee' : 'member'} list
-            </Button>
-            <Button
-              variant="outlined-primary"
-              size="small"
-              disabled={isLoadingMetadata}
-              loading={onDownloadReceiptsMutation.isLoading}
-              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-              onClick={() => onDownloadReceiptsMutation.mutate()}
-            >
-              Download Receipts
             </Button>
           </div>
         )}
