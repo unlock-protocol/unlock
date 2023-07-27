@@ -354,8 +354,18 @@ export const DynamicForm = ({
           className="grid grid-cols-1 gap-3 outline-none"
           onSubmit={methods.handleSubmit(onSubmit)}
           onChange={async () => {
-            const values = await methods.getValues()
-            onChange(values)
+            const fields = await methods.getValues()
+            const isValid = methods.formState.isValid
+
+            if (!isValid) {
+              console.error(
+                'form is not valid, please check that every field passes the validation.',
+                fields
+              )
+              return
+            }
+
+            onChange(fields)
           }}
         >
           {Object.entries(properties ?? {}).map(([fieldName, props], index) => {
