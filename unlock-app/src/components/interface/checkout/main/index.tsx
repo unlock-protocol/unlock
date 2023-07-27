@@ -178,6 +178,7 @@ export function Checkout({
           <MessageToSign
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
+            communication={communication}
           />
         )
       }
