@@ -31,18 +31,38 @@ interface CheckoutShareOrDownloadProps {
   checkoutUrl: string
   setCheckoutUrl: (value: string) => void
   size?: Size
+  id?: string | null
 }
 
 export const CheckoutShareOrDownload = ({
   paywallConfig,
   checkoutUrl,
   size = 'small',
+  setCheckoutUrl,
+  id,
 }: CheckoutShareOrDownloadProps) => {
   const [_isCopied, setCopied] = useClipboard(checkoutUrl, {
     successDuration: 2000,
   })
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
   const buttonVariant = hasLocks ? 'primary' : 'outlined-primary'
+
+  useEffect(() => {
+    const url = new URL(`${window.location.origin}/checkout`)
+
+    // remove redirectUri if not valorized
+    if (paywallConfig?.redirectUri?.length === 0) {
+      delete paywallConfig.redirectUri
+    }
+
+    if (id) {
+      url.searchParams.append('id', id)
+    } else {
+      url.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
+    }
+
+    setCheckoutUrl(url.toString())
+  }, [paywallConfig, id, setCheckoutUrl])
 
   return paywallConfig ? (
     <div className="flex gap-3">
@@ -69,32 +89,10 @@ export const CheckoutShareOrDownload = ({
   ) : null
 }
 
-export const CheckoutPreview = ({
-  paywallConfig,
-  id,
-  checkoutUrl,
-  setCheckoutUrl,
-}: CheckoutPreviewProps) => {
+export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   const config = useConfig()
 
   const injectedProvider = selectProvider(config)
-
-  useEffect(() => {
-    const url = new URL(`${window.location.origin}/checkout`)
-
-    // remove redirectUri if not valorized
-    if (paywallConfig?.redirectUri?.length === 0) {
-      delete paywallConfig.redirectUri
-    }
-
-    if (id) {
-      url.searchParams.append('id', id)
-    } else {
-      url.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
-    }
-
-    setCheckoutUrl(url.toString())
-  }, [paywallConfig, id])
 
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
@@ -113,11 +111,6 @@ export const CheckoutPreview = ({
                   ? ' This checkout modal is ready for you to use.'
                   : 'A Lock is required in order to see the full preview.'}
               </span>
-              <CheckoutShareOrDownload
-                paywallConfig={paywallConfig}
-                checkoutUrl={checkoutUrl}
-                setCheckoutUrl={setCheckoutUrl}
-              />
             </div>
           </div>
         )}

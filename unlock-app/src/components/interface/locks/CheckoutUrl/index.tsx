@@ -236,10 +236,13 @@ export const CheckoutUrlPage = () => {
     const hasDefaultLock =
       Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
 
+    const { locks, ...rest } = fields
+
     if (hasDefaultLock) {
       fields = {
-        ...fields,
+        ...rest,
         locks: {
+          ...locks,
           [lockAddress as string]: {
             network: parseInt(`${network!}`),
           },
@@ -252,7 +255,7 @@ export const CheckoutUrlPage = () => {
         ...state,
         config: {
           ...state.config,
-          ...fields,
+          ...rest,
         },
       }
     })
@@ -448,6 +451,7 @@ export const CheckoutUrlPage = () => {
                       checkoutUrl={checkoutUrl}
                       setCheckoutUrl={setCheckoutUrl}
                       size="medium"
+                      id={checkoutConfig.id}
                     />
                   ),
                   showButton: false,
