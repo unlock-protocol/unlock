@@ -220,7 +220,7 @@ export const CheckoutUrlPage = () => {
     })
   }, [checkoutConfigList])
 
-  const onAddLocks = (locks: any) => {
+  const onAddLocks = async (locks: any) => {
     setCheckoutConfig((state) => {
       return {
         ...state,
@@ -232,7 +232,7 @@ export const CheckoutUrlPage = () => {
     })
   }
 
-  const onBasicConfigChange = (fields: Partial<PaywallConfig>) => {
+  const onBasicConfigChange = async (fields: Partial<PaywallConfig>) => {
     const hasDefaultLock =
       Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
 
@@ -260,6 +260,9 @@ export const CheckoutUrlPage = () => {
       }
     })
   }
+
+  const addLockMutation = useMutation(onAddLocks)
+  const onBasicConfigChangeMutation = useMutation(onBasicConfigChange)
 
   const TopBar = () => {
     return (
@@ -296,6 +299,8 @@ export const CheckoutUrlPage = () => {
     }
   }
 
+  const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
+
   const isNewConfiguration = configuration === 'new'
 
   const onSubmitConfiguration = async () => {
@@ -325,6 +330,9 @@ export const CheckoutUrlPage = () => {
 
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
+
+  const loading =
+    isLoadingConfigList || handleSetConfigurationMutation.isLoading
 
   return (
     <>
@@ -385,7 +393,10 @@ export const CheckoutUrlPage = () => {
                             ([] as CheckoutConfig[])
                           }
                           onChange={async ({ config, ...rest }) =>
-                            await handleSetConfiguration({ config, ...rest })
+                            await handleSetConfigurationMutation.mutateAsync({
+                              config,
+                              ...rest,
+                            })
                           }
                           setConfiguration={setConfiguration}
                           configuration={configuration}
@@ -414,9 +425,10 @@ export const CheckoutUrlPage = () => {
                   description:
                     'Customize the checkout modal interaction & additional behavior',
                   disabled: !hasSelectedConfig,
+                  loading,
                   children: (
                     <BasicConfigForm
-                      onChange={onBasicConfigChange}
+                      onChange={onBasicConfigChangeMutation.mutateAsync}
                       defaultValues={checkoutConfig.config}
                     />
                   ),
@@ -426,9 +438,10 @@ export const CheckoutUrlPage = () => {
                   description:
                     'Select the locks that you would like to featured in this configured checkout modal',
                   disabled: !hasSelectedConfig,
+                  loading,
                   children: (
                     <LocksForm
-                      onChange={onAddLocks}
+                      onChange={addLockMutation.mutateAsync}
                       locks={checkoutConfig.config?.locks}
                     />
                   ),
