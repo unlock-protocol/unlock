@@ -175,28 +175,6 @@ export const CheckoutUrlPage = () => {
     }
   }, [checkoutConfigList?.length])
 
-  const onConfigSave = useCallback(async () => {
-    if (!checkoutConfig?.id) return // prevent save if not config is set
-    const updated = await updateConfig({
-      config: checkoutConfig.config,
-      name: checkoutConfig.name,
-      id: checkoutConfig.id,
-    })
-    setCheckoutConfig({
-      id: updated.id,
-      name: updated.name,
-      config: updated.config as PaywallConfig,
-    })
-
-    // Show toast message when configuration is changed after first render
-    if (!firstRender.current) {
-      firstRender.current = true
-    } else {
-      ToastHelper.success('Configuration updated.')
-      await refetchConfigList()
-    }
-  }, [checkoutConfig, updateConfig, refetchConfigList])
-
   const onConfigRemove = useCallback(async () => {
     if (!checkoutConfig.id) {
       setDeleteConfirmation(false)
@@ -218,6 +196,7 @@ export const CheckoutUrlPage = () => {
     DEFAULT_CONFIG,
     setDeleteConfirmation,
   ])
+
   useEffect(() => {
     const checkout = checkoutConfigList?.[0]
     if (!checkout) return
@@ -269,9 +248,6 @@ export const CheckoutUrlPage = () => {
       }
     })
   }
-
-  const addLockMutation = useMutation(onAddLocks)
-  const onBasicConfigChangeMutation = useMutation(onBasicConfigChange)
 
   const TopBar = () => {
     return (
@@ -345,11 +321,16 @@ export const CheckoutUrlPage = () => {
    * to avoid calling the endpoint multiple times.
    */
   const [_isReady] = useDebounce(
-    () => {
-      onConfigSave()
+    async () => {
+      if (!checkoutConfig?.id) return // prevent save if not config is set
+      await updateConfig({
+        config: checkoutConfig.config,
+        name: checkoutConfig.name,
+        id: checkoutConfig.id,
+      })
     },
     2000, // 2 seconds of delay after edit's to trigger auto-save
-    [addLockMutation.isSuccess, onBasicConfigChangeMutation.isSuccess]
+    [checkoutConfig, updateConfig, refetchConfigList]
   )
   const loading =
     isLoadingConfigList || handleSetConfigurationMutation.isLoading
@@ -448,7 +429,7 @@ export const CheckoutUrlPage = () => {
                   loading,
                   children: (
                     <BasicConfigForm
-                      onChange={onBasicConfigChangeMutation.mutateAsync}
+                      onChange={onBasicConfigChange}
                       defaultValues={checkoutConfig.config}
                     />
                   ),
@@ -461,7 +442,7 @@ export const CheckoutUrlPage = () => {
                   loading,
                   children: (
                     <LocksForm
-                      onChange={addLockMutation.mutateAsync}
+                      onChange={onAddLocks}
                       locks={checkoutConfig.config?.locks}
                     />
                   ),
