@@ -4,6 +4,7 @@ import { ReceiptBaseForm } from '../forms/ReceiptBaseForm'
 import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { SettingCard } from './SettingCard'
+import { UpdateGasRefundForm } from '../forms/UpdateGasRefundForm'
 
 interface SettingPaymentsProps {
   lockAddress: string
@@ -49,6 +50,16 @@ export const SettingPayments = ({
         />
       </SettingCard>
 
+      <SettingCard
+        label="Gas Refunds"
+        description="Set up a gas refund. This is required for renewals."
+      >
+        <UpdateGasRefundForm
+          lockAddress={lockAddress}
+          network={network}
+          disabled={!isManager}
+        />
+      </SettingCard>
       <SettingCard
         label="Renewals"
         description="Automatically renew memberships when they expire. Users will need to have the previously approved the renewals, as well as have a sufficient amount of tokens in their wallets."

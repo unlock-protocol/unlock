@@ -45,7 +45,7 @@ export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
 
   useEffect(() => {
     if (!isLoading && gasRefundValue) {
-      setValue('amount', Number(gasRefundValue).toFixed(0))
+      setValue('amount', gasRefundValue)
     }
   }, [gasRefundValue, isLoading, setValue])
 
@@ -69,8 +69,12 @@ export function UpdateGasRefundForm({ lockAddress, network, disabled }: Props) {
         {...register('amount', {
           valueAsNumber: true,
         })}
+        type="number"
+        placeholder="0.00"
+        step="any"
+        min={0}
         error={errors.amount?.message}
-        description="The amount of tokens to refund when someone sends a renewal transaction for users."
+        description="The amount of tokens to refund when someone sends a renewal transaction for users. This is paid using the currency of the lock."
       />
       <div></div>
       <Button disabled={disabled} loading={isSubmitting} type="submit">
