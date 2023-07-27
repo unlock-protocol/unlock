@@ -145,7 +145,7 @@ export const LocksForm = ({
           network,
         }),
       {
-        enabled: !!(account && network),
+        enabled: !!account,
       }
     )
 
