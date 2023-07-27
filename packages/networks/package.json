@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/networks",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -30,7 +30,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.44.0",
-    "tsup": "6.7.0",
+    "tsup": "7.1.0",
     "typescript": "5.1.6"
   },
   "files": [

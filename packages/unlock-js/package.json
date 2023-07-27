@@ -49,12 +49,12 @@
     "eslint": "8.36.0",
     "hardhat": "2.13.0",
     "prettier": "2.8.8",
-    "tsup": "6.7.0",
+    "tsup": "7.1.0",
     "typescript": "5.0.4",
     "vitest": "0.27.0"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "3.2.3",
+    "@uniswap/sdk-core": "4.0.6",
     "@uniswap/smart-order-router": "3.10.1",
     "graphql": "16.6.0",
     "graphql-request": "6.1.0",
