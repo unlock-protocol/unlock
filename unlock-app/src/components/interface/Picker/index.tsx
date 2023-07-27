@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Input, Select, minifyAddress } from '@unlock-protocol/ui'
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
@@ -69,10 +69,6 @@ export function Picker({
     }
   )
 
-  useEffect(() => {
-    onChange(state)
-  }, [state, onChange])
-
   const networkOptions = Object.entries(config.networks).map(
     ([id, { name: label }]: [string, any]) => ({
       label,
@@ -97,17 +93,28 @@ export function Picker({
   const lockExists = locksOptions.length > 0
 
   const onChangeFn = (lockAddress: string) => {
-    setState((state) => ({
+    const props = {
       network: state.network,
       lockAddress: lockAddress.toString(),
       name: locksOptions.find(
         (item) =>
           item.value?.toLowerCase() === lockAddress.toString().toLowerCase()
       )?.label,
-    }))
+    }
+    handleChange(props)
   }
 
-  const handleOnChange = (lockAddress: string) => {
+  const handleChange = (newState: PickerState) => {
+    const current = state
+    const props = {
+      ...current,
+      ...newState,
+    }
+    setState(props)
+    onChange(props)
+  }
+
+  const handleLockChange = (lockAddress: string) => {
     if (!collect?.lockAddress) return // no need to check if 'lockAddress' is not required
 
     const addressIsValid = lockAddress
@@ -142,7 +149,7 @@ export function Picker({
           options={networkOptions}
           defaultValue={currentNetwork}
           onChange={(id: any) => {
-            setState({
+            handleChange({
               network: Number(id),
             })
           }}
@@ -157,7 +164,7 @@ export function Picker({
           defaultValue={lockAddress}
           loading={isLoadingLocks}
           onChange={(lockAddress: any) => {
-            handleOnChange(lockAddress)
+            handleLockChange(lockAddress)
           }}
           customOption={customOption}
           description="Select the lock you want to use."
@@ -206,10 +213,9 @@ export function Picker({
           onChange={(event: any) => {
             event.preventDefault()
             const { value } = event.target
-            setState((state) => ({
-              ...state,
+            handleChange({
               keyId: value,
-            }))
+            })
           }}
         />
       )}
