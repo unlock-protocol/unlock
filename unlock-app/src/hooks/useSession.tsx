@@ -37,12 +37,14 @@ export const useSessionUser = () => {
 }
 
 interface SessionContextType {
+  isInitialLoading: boolean
   session?: string | null
   refetchSession: () => Promise<UseQueryResult<string | null | undefined>>
 }
 
 export const SessionContext = createContext<SessionContextType>({
   session: null,
+  isInitialLoading: false,
   refetchSession: async () => {
     throw new Error('Session context not initialized')
   },
@@ -53,9 +55,11 @@ interface Props {
 }
 
 export const SessionProvider = ({ children }: Props) => {
-  const { data: session, refetch } = useSessionUser()
+  const { data: session, refetch, isInitialLoading } = useSessionUser()
   return (
-    <SessionContext.Provider value={{ session, refetchSession: refetch }}>
+    <SessionContext.Provider
+      value={{ session, refetchSession: refetch, isInitialLoading }}
+    >
       {children}
     </SessionContext.Provider>
   )

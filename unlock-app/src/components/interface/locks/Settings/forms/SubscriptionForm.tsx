@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
 import { Badge, Button, ToggleSwitch } from '@unlock-protocol/ui'
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { MAX_UINT } from '~/constants'
 import useLock from '~/hooks/useLock'
 import { useLockSettings } from '~/hooks/useLockSettings'
+import { useTabSettings } from '..'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -24,7 +24,7 @@ export const SubscriptionForm = ({
   const [isLoading, setLoading] = useState(false)
   const [recurring, setRecurring] = useState(false)
   const [isRecurring, setIsRecurring] = useState(false)
-
+  const { setTab } = useTabSettings()
   const { getIsRecurringPossible } = useLockSettings()
 
   const {
@@ -84,8 +84,6 @@ export const SubscriptionForm = ({
   }
 
   const RecurringDescription = () => {
-    const termsSettingsUrl = `/locks/settings?address=${lockAddress}&network=${network}&defaultTab=terms`
-
     if (isLoading) return null
     if (isRecurringPossible) return null
 
@@ -93,20 +91,23 @@ export const SubscriptionForm = ({
       return (
         <div className="grid  gap-1.5">
           <small className="text-sm text-brand-dark">
-            Recurring memberships are only available for locks that are using
-            and ERC20 currency for which a gas refund value is set.
+            Recurring memberships are only available for locks that are using an
+            ERC20 currency for which a gas refund value is set.
           </small>
           <ul className="ml-2 list-disc">
-            {gasRefund === 0 && (
+            {gasRefund <= 0 && (
               <li>
                 <span className="text-red-500">
                   Gas refund value is not set. You can change it from{' '}
-                  <Link
-                    href={termsSettingsUrl}
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setTab(1)
+                    }}
                     className="font-semibold text-brand-ui-primary hover:underline"
                   >
                     Membership terms settings.
-                  </Link>{' '}
+                  </button>
                 </span>
               </li>
             )}
@@ -115,12 +116,15 @@ export const SubscriptionForm = ({
                 <span className="text-red-500">
                   The memberships on this lock do not expire, so they cannot be
                   renewed. You can change it from{' '}
-                  <Link
-                    href={termsSettingsUrl}
+                  <button
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setTab(1)
+                    }}
                     className="font-semibold text-brand-ui-primary hover:underline"
                   >
                     Membership terms settings.
-                  </Link>
+                  </button>
                 </span>
               </li>
             )}
@@ -160,7 +164,7 @@ export const SubscriptionForm = ({
           disabled={disabledInput}
           className="w-full md:w-1/2"
           onClick={handleApproveRecurring}
-          loading={isLoading || isLoadingRefund}
+          loading={isLoading}
         >
           Apply
         </Button>

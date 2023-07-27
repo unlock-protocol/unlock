@@ -1,5 +1,11 @@
 import { Tab } from '@headlessui/react'
-import { ReactNode, useEffect, useState } from 'react'
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
 import { SettingTerms } from './elements/SettingTerms'
 
 import { SettingRoles } from './elements/SettingRoles'
@@ -31,6 +37,18 @@ const NotManagerBanner = () => {
       lock manager.
     </div>
   )
+}
+
+export const SettingsContext = createContext<{
+  setTab: (tab: number) => void
+}>({
+  setTab: () => {
+    throw new Error('setTab is not passed')
+  },
+})
+
+export const useTabSettings = () => {
+  return useContext(SettingsContext)
 }
 
 const LockSettingsPage = ({
@@ -183,7 +201,11 @@ const LockSettingsPage = ({
   ]
 
   return (
-    <>
+    <SettingsContext.Provider
+      value={{
+        setTab: setSelectedIndex,
+      }}
+    >
       {!isManager && !isLoading && (
         <div className="mb-2">
           <NotManagerBanner />
@@ -246,7 +268,7 @@ const LockSettingsPage = ({
           </div>
         </div>
       </Tab.Group>
-    </>
+    </SettingsContext.Provider>
   )
 }
 

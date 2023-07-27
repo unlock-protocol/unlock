@@ -132,17 +132,15 @@ export const getFees = async (
 ) => {
   const { lockAddress, network } = options ?? {}
   let unlockServiceFee = getUnlockServiceFee(subtotal)
+  let unlockFeeChargedToUser = true
 
   // fees can be ignored if disabled by lockManager
   if (lockAddress && network) {
-    const { unlockFeeChargedToUser } = await getLockSettings({
+    const data = await getLockSettings({
       lockAddress,
       network,
     })
-
-    if (!unlockFeeChargedToUser) {
-      unlockServiceFee = 0
-    }
+    unlockFeeChargedToUser = data?.unlockFeeChargedToUser ?? true
   }
 
   if (
@@ -157,11 +155,13 @@ export const getFees = async (
     subtotal + gasCost,
     unlockServiceFee
   )
+
+  const feePaidByUser = unlockFeeChargedToUser ? unlockServiceFee : 0
   return {
     unlockServiceFee,
     creditCardProcessingFee,
     gasCost,
-    total: unlockServiceFee + creditCardProcessingFee + subtotal + gasCost,
+    total: feePaidByUser + creditCardProcessingFee + subtotal + gasCost,
   }
 }
 
@@ -183,6 +183,7 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   return {
     ...fees,
     recipients,
+    subtotal,
     gasCost,
     isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }

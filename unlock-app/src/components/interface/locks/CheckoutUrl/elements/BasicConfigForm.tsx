@@ -27,7 +27,7 @@ export const BasicConfigForm = ({
       <div>
         <DynamicForm
           name={'locks'}
-          title="Headers"
+          title="Modal Header"
           schema={HeaderSchema}
           onChange={onChange}
           onSubmit={onSubmit}

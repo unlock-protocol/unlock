@@ -8,6 +8,11 @@ export const MetadataInput = z.object({
   name: z.string({
     description: 'Name of the attribute to collect.',
   }),
+  label: z
+    .string({
+      description: 'Label displayed to users. Defaults to the name field.',
+    })
+    .optional(),
   required: z
     .boolean({
       description:
@@ -107,6 +112,12 @@ export const PaywallLockConfig = z.object({
         'When set to true, the checkout flow will not let the user customize the recipient of the NFT membership.',
     })
     .default(true)
+    .optional(),
+  recipient: z
+    .string({
+      description:
+        'Hardcoded address for the recipient of the NFT. Can be used with skipRecipient.',
+    })
     .optional(),
 })
 
@@ -232,7 +243,6 @@ export const PaywallConfig = z
       })
       .default(true)
       .optional(),
-
     skipSelect: z
       .boolean({
         description:
@@ -240,7 +250,6 @@ export const PaywallConfig = z
       })
       .default(false)
       .optional(),
-
     expectedAddress: z
       .string({
         description: 'Expected wallet address for user.',
@@ -252,6 +261,12 @@ export const PaywallConfig = z
           '(Advanced): forces the use the provider from the parent window when the checkout is embeded as an iframe.',
       })
       .default(false)
+      .optional(),
+    recipient: z
+      .string({
+        description:
+          'Hardcoded address for the recipient of the NFT. Can be used with skipRecipient.',
+      })
       .optional(),
   })
   .passthrough()
