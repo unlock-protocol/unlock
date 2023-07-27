@@ -33,16 +33,25 @@ export const allReceipts: RequestHandler = async (request, response) => {
     {}
   )
 
-  const items = receipts.map((item) => {
-    const receiptData = receiptsDataMap[item.id]
-    return {
-      ...item,
-      fullName: receiptData.fullname,
-      vat: receiptBaseData?.vat,
-      service: receiptBaseData?.servicePerformed,
-      supplier: receiptBaseData?.supplierName,
-      supplierAddress: `${receiptBaseData?.addressLine1}\n${receiptBaseData}`,
-    }
-  })
+  const items = receipts
+    .map((item) => {
+      const receiptData = receiptsDataMap[item.id]
+      return {
+        ...item,
+        fullName: receiptData?.fullname,
+        vat: receiptBaseData?.vat,
+        service: receiptBaseData?.servicePerformed,
+        supplier: receiptBaseData?.supplierName,
+        supplierAddress:
+          receiptBaseData?.addressLine1 && receiptBaseData?.addressLine2
+            ? `${receiptBaseData?.addressLine1}\n${receiptBaseData}`
+            : receiptBaseData?.addressLine1 ||
+              receiptBaseData?.addressLine2 ||
+              '',
+      }
+    })
+    .sort((a, b) => {
+      return Number(a.timestamp) - Number(b.timestamp)
+    })
   return response.json({ items })
 }

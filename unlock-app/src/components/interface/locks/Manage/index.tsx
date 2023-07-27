@@ -1,6 +1,6 @@
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useCallback, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
@@ -46,13 +46,22 @@ interface TopActionBarProps {
   network: number
 }
 
-export function downloadAsCSV(cols: string[], metadata: any[]) {
+interface DownloadOptions {
+  fileName?: string
+  cols: string[]
+  metadata: any[]
+}
+export function downloadAsCSV({
+  cols,
+  metadata,
+  fileName = 'members.csv',
+}: DownloadOptions) {
   const csv = buildCSV(cols, metadata)
 
   const blob = new Blob([csv], {
     type: 'data:text/csv;charset=utf-8',
   })
-  FileSaver.saveAs(blob, 'members.csv')
+  FileSaver.saveAs(blob, fileName)
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
@@ -84,8 +93,28 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         }
       })
     })
-    downloadAsCSV(cols, members)
+    downloadAsCSV({
+      cols,
+      metadata: members,
+    })
   }
+
+  const onDownloadReceipts = useCallback(async () => {
+    const response = await storage.getReceipts(network, lockAddress)
+    const cols: string[] = []
+    response?.data?.items?.map((item) => {
+      Object.keys(item).map((key: string) => {
+        if (!cols.includes(key)) {
+          cols.push(key) // add key once only if not present in list
+        }
+      })
+    })
+    downloadAsCSV({
+      cols,
+      metadata: response?.data?.items || [],
+      fileName: 'receipts.csv',
+    })
+  }, [lockAddress, network])
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -93,15 +122,16 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   })
 
   const onDownloadMutation = useMutation(onDownloadCsv, {
-    onSuccess: () => {
-      ToastHelper.success('CSV downloaded')
-    },
-    onError: () => {
-      ToastHelper.error(`Unexpected issue on CSV download, please try it again`)
+    meta: {
+      errorMessage: 'Failed to download members list',
     },
   })
 
-  const isLoading = onDownloadMutation.isLoading || isLoadingMetadata
+  const onDownloadReceiptsMutation = useMutation(onDownloadReceipts, {
+    meta: {
+      errorMessage: 'Failed to download receipts',
+    },
+  })
 
   return (
     <>
@@ -114,22 +144,22 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={isLoading}
+              disabled={isLoadingMetadata}
+              loading={onDownloadMutation.isLoading}
+              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
               onClick={() => onDownloadMutation.mutate()}
             >
-              <div className="flex items-center gap-2">
-                {isLoading ? (
-                  <SpinnerIcon
-                    className="text-brand-ui-primary animate-spin"
-                    size={16}
-                  />
-                ) : (
-                  <CsvIcon className="text-brand-ui-primary" size={16} />
-                )}
-                <span className="text-brand-ui-primary">
-                  Download {isEvent ? 'attendee' : 'member'} list
-                </span>
-              </div>
+              Download {isEvent ? 'attendee' : 'member'} list
+            </Button>
+            <Button
+              variant="outlined-primary"
+              size="small"
+              disabled={isLoadingMetadata}
+              loading={onDownloadReceiptsMutation.isLoading}
+              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
+              onClick={() => onDownloadReceiptsMutation.mutate()}
+            >
+              Download Receipts
             </Button>
           </div>
         )}

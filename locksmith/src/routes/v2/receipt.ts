@@ -12,8 +12,8 @@ const receiptController = new ReceiptController()
 
 router.get(
   '/:network/:lockAddress/all',
-  authenticatedMiddleware,
-  lockManagerMiddleware,
+  // authenticatedMiddleware,
+  // lockManagerMiddleware,
   allReceipts
 )
 
