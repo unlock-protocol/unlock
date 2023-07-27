@@ -50,7 +50,7 @@ export const CheckoutShareOrDownload = ({
   useEffect(() => {
     const url = new URL(`${window.location.origin}/checkout`)
 
-    // remove redirectUri if not valorized
+    // remove redirectUri if not applicable
     if (paywallConfig?.redirectUri?.length === 0) {
       delete paywallConfig.redirectUri
     }
