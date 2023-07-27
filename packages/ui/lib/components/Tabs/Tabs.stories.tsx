@@ -23,6 +23,9 @@ export const DefaultTab: StoryFn<typeof meta> = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Tabs
+        onTabChange={(tab) => {
+          console.log(`change to new tab ${tab}`)
+        }}
         tabs={[
           {
             title: 'Choose a configuration',
@@ -165,6 +168,55 @@ export const TabComponentHideButton: StoryFn<typeof meta> = () => {
             onNext: () => void 0,
             onNextLabel: 'Save',
             showButton: false,
+          },
+        ]}
+      />
+    </QueryClientProvider>
+  )
+}
+
+export const TabWithLoading: StoryFn<typeof meta> = () => {
+  const queryCache = new QueryCache()
+  const queryClient = new QueryClient({
+    queryCache,
+  })
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Tabs
+        onTabChange={(tab) => {
+          console.log(`change to new tab ${tab}`)
+        }}
+        defaultTab={2}
+        tabs={[
+          {
+            title: 'Choose a configuration',
+            description:
+              'Create a new configuration or continue enhance the existing one for your checkout modal',
+            children: (
+              <span>
+                <Input placeholder="test" />
+              </span>
+            ),
+            onNext: () =>
+              // go to next tab after promise is resolved
+              new Promise((res) => setTimeout(() => res('resolve'), 2000)),
+          },
+          {
+            title: 'Configure the basics',
+            description:
+              'Customize the checkout modal interaction & additional behavior',
+            children: <span>step 2 content</span>,
+            loading: true,
+          },
+          {
+            title: 'Configured locks',
+            description:
+              'Select the locks that you would like to featured in this configured checkout modal',
+            children: <span>step 3 content</span>,
+            onNext: () => void 0,
+            onNextLabel: 'Save',
+            loading: true,
           },
         ]}
       />

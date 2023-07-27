@@ -47,15 +47,20 @@ interface RecipientInputProps {
   id: number
   hideFirstRecipient?: boolean
   lock: Lock
+  checkoutService: CheckoutService
 }
 
 export const MetadataInputs = ({
+  checkoutService,
   metadataInputs,
   disabled,
   id,
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
+  const [state] = useActor(checkoutService)
+  const { paywallConfig } = state.context
+
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -69,6 +74,7 @@ export const MetadataInputs = ({
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
+
   const onRecipientChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value
@@ -105,16 +111,22 @@ export const MetadataInputs = ({
       'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
   )
 
+  let recipient = account
+  // The first recipient could be hardcoded
+  if (id == 0 && paywallConfig.recipient) {
+    recipient = paywallConfig.recipient
+  }
+
   return (
     <div className="grid gap-2">
       {hideRecipientAddress ? (
         <div className="space-y-1">
           <div className="ml-1 text-sm">
-            {isUnlockAccount ? 'Email' : 'Wallet'}
+            {isUnlockAccount ? 'Email:' : 'Wallet:'}
           </div>
           <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
             <div className="w-32 text-sm truncate">
-              {isUnlockAccount ? email : account}
+              {isUnlockAccount ? email : recipient}
             </div>
             <Button
               type="button"
@@ -395,6 +407,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 >
                   <FormProvider {...methods}>
                     <MetadataInputs
+                      checkoutService={checkoutService}
                       hideFirstRecipient={hideRecipient}
                       disabled={isSubmitting}
                       metadataInputs={metadataInputs}
