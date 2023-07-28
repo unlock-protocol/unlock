@@ -1,3 +1,5 @@
+// TODO: remove, some part related to old checkout (callToAction)
+
 import isURL from 'validator/lib/isURL'
 import isDataURI from 'validator/lib/isDataURI'
 import isDecimal from 'validator/lib/isDecimal'
@@ -394,7 +396,7 @@ export const isValidBalance = (balance) => {
   }, true)
 }
 
-const allowedInputTypes = ['text', 'date', 'color', 'email', 'url']
+const allowedInputTypes = ['text', 'date', 'color', 'email', 'url', 'hidden']
 
 /**
  * A valid metadata field looks like:

@@ -65,12 +65,14 @@ contract('Lock / GasRefund', (accounts) => {
           await lock.setGasRefundValue(gasRefundAmount)
           assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
         })
-        
+
         it('emits an event', async () => {
           const tx = await lock.setGasRefundValue(gasRefundAmount)
-          const { args } = tx.logs.find(({event}) => event === 'GasRefundValueChanged')
+          const { args } = tx.logs.find(
+            ({ event }) => event === 'GasRefundValueChanged'
+          )
           assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
-          assert.equal((args.refundValue).eq(gasRefundAmount), true)
+          assert.equal(args.refundValue.eq(gasRefundAmount), true)
         })
 
         it('can not be set if caller is not lock manager', async () => {

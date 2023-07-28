@@ -3,9 +3,7 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol";
 
-contract UnlockProtocolTimelock is
-  TimelockControllerUpgradeable
-{
+contract UnlockProtocolTimelock is TimelockControllerUpgradeable {
   function initialize(
     uint256 minDelay,
     address[] memory proposers,
@@ -14,7 +12,8 @@ contract UnlockProtocolTimelock is
     __TimelockController_init(
       minDelay,
       proposers,
-      executors
+      executors,
+      msg.sender // param added when buymping to OZ 4.8.2 - not present in Unlock's deployed version
     );
   }
 }

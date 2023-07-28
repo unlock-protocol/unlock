@@ -8,6 +8,7 @@ import { Button } from '../Button/Button'
 import { FieldLayout, Input } from '../Form'
 import { Tooltip } from '../Tooltip/Tooltip'
 import { HiQuestionMarkCircle as QuestionMark } from 'react-icons/hi'
+import { Placeholder } from '../Placeholder'
 export interface Option {
   label: string
   value: string | number
@@ -16,7 +17,7 @@ export interface Option {
   disabled?: boolean
 }
 
-interface SelectProps<T> {
+export interface SelectProps<T> {
   label?: string
   description?: ReactNode
   tooltip?: ReactNode
@@ -26,6 +27,7 @@ interface SelectProps<T> {
   defaultValue?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
+  loading?: boolean
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -37,7 +39,7 @@ const SIZE_STYLES: SizeStyleProp = {
 
 const CUSTOM_VALUE = 'custom'
 
-interface SelectOptionProps {
+export interface SelectOptionProps {
   selected?: boolean
   disabled?: boolean
   size?: Size
@@ -97,6 +99,7 @@ export const Select = <T extends unknown>({
   defaultValue,
   customOption = false,
   disabled: fieldDisabled = false,
+  loading = false,
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
@@ -136,15 +139,23 @@ export const Select = <T extends unknown>({
 
   const inputClass = twMerge(
     'box-border flex-1 block w-full text-base text-left transition-all bg-white border border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none',
+    fieldDisabled ? 'opacity-50' : '',
     inputSizeStyle
   )
 
   // Set default value if present
   useEffect(() => {
+    if (loading) return
+    if (defaultValue && selected?.value) return
+
     onChangeOption(defaultValue as string)
-  }, [defaultValue])
+  }, [defaultValue, loading, selected])
 
   const disableConfirm = customValue?.length === 0 || !enableCustomConfirm
+
+  if (loading) {
+    return <Placeholder.Line size="xl" />
+  }
 
   return (
     <FieldLayout
@@ -177,7 +188,11 @@ export const Select = <T extends unknown>({
         )
       }
     >
-      <Listbox value={selected?.value || ''} onChange={onChangeOption}>
+      <Listbox
+        disabled={fieldDisabled}
+        value={selected?.value || ''}
+        onChange={onChangeOption}
+      >
         <div className="relative">
           {label?.length > 0 && (
             <label className="block px-1 mb-1 text-base" htmlFor="">

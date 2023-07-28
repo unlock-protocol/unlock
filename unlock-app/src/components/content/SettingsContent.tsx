@@ -4,38 +4,27 @@ import Head from 'next/head'
 import { pageTitle } from '../../constants'
 import AccountInfo from '../interface/user-account/AccountInfo'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import { useAuth } from '../../contexts/AuthenticationContext'
 import { loadStripe } from '@stripe/stripe-js'
 import { useConfig } from '~/utils/withConfig'
-import { useQuery } from '@tanstack/react-query'
-import { useWalletService } from '~/utils/withWalletService'
 import { Card } from '../interface/checkout/Card'
-import { deleteCardForAddress } from '~/hooks/useCards'
 import { SetupForm } from '../interface/checkout/main/CardPayment'
 import { Button } from '@unlock-protocol/ui'
 import { AppLayout } from '../interface/layouts/AppLayout'
-import { storage } from '~/config/storage'
+import {
+  usePaymentMethodList,
+  useRemovePaymentMethods,
+} from '~/hooks/usePaymentMethods'
 
 export const PaymentSettings = () => {
-  const { account } = useAuth()
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
-  const walletService = useWalletService()
   const [isSaving, setIsSaving] = useState(false)
+  const { mutateAsync: removePaymentMethods } = useRemovePaymentMethods()
   const {
     data: methods,
     isInitialLoading: isMethodLoading,
-    refetch,
-  } = useQuery(
-    ['listCards', account],
-    async () => {
-      const response = await storage.listPaymentMethods()
-      return response.data.methods || []
-    },
-    {
-      enabled: !!account,
-    }
-  )
+    refetch: refetchPaymentMethodList,
+  } = usePaymentMethodList()
 
   const payment = methods?.[0]
   const card = payment?.card
@@ -52,8 +41,8 @@ export const PaymentSettings = () => {
       exp_year={card.exp_year!}
       country={card.country!}
       onChange={async () => {
-        await deleteCardForAddress(config, walletService, account!)
-        await refetch()
+        await removePaymentMethods()
+        await refetchPaymentMethodList()
       }}
     />
   ) : (
@@ -63,8 +52,11 @@ export const PaymentSettings = () => {
         onSubmit={() => {
           setIsSaving(true)
         }}
+        onError={() => {
+          setIsSaving(false)
+        }}
         onSuccess={async () => {
-          await refetch()
+          await refetchPaymentMethodList()
           setIsSaving(false)
         }}
       />

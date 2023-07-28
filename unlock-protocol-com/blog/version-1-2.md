@@ -1,5 +1,5 @@
 ---
-title: "Smart Contract Upgrade: Version 1.2"
+title: 'Smart Contract Upgrade: Version 1.2'
 subTitle: We shipped a large upgrade to our Unlock contract and the new locks have new features!
 authorName: Julien Genestoux
 publishDate: January 10, 2020
@@ -32,7 +32,6 @@ More importantly, you can interact with the Unlock smart contract itself. For ex
 Another very important element that you can view is the _Gross Network Product_ which is the total sum of ethereum spent to purchase lock keys, as long as the key was priced in Eth, DAI, SAI or BAT. We use Uniswap to get a price feed when we need to convert to Ether, but that's for another post ;) Measuring the Gross Network Product is a critical piece of the [Unlock Discount Token](https://github.com/unlock-protocol/unlock/wiki/The-Unlock-Discount-Tokens) model that we are working on to incentivize membership referrals.
 
 By using Etherscan you can also deploy locks, without having to go through [our Dashboard](https://app.unlock-protocol.com/dashboard/), using the `createLock` method directly. The new version deployed on Monday uses the new Ethereum `create2` and leverages [eip-1014](https://eips.ethereum.org/EIPS/eip-1014) under the hood. This allows creators to deploy locks at only 15% of the cost that it took before that! In order to achieve this, we had to deploy a so [called `template` contract](https://etherscan.io/address/0x2d5487420fbeb5ba74eadf51084d4f71e1733983) which provides the reference implementation for locks to leverage.
-
 
 # The new public locks
 
@@ -75,13 +74,3 @@ Our smart contracts are the "lowest" point of integration. Once a lock has been 
 We also publish [unlock-js](https://www.npmjs.com/package/@unlock-protocol/unlock-js) which is another npm module. This one provides a higher level abstraction for all locks, while also having currently less granularity. It abstracts away versions, which means that it can be used to interact with any lock, regardless of its version.
 
 Like always, [all of our code is open source](https://github.com/unlock-protocol/unlock/), and we take pull requests, as well as [grant bounties](https://github.com/unlock-protocol/unlock/issues?q=is%3Aissue+is%3Aopen+label%3A%F0%9F%92%B0gitcoin) to people who help us move forward!
-
-
-
-
-
-
-
-
-
-

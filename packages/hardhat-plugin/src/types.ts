@@ -8,12 +8,7 @@ type PartialPick<T, K extends keyof T> = {
 // make network info optional
 export type UnlockNetworkConfig = PartialPick<
   NetworkConfig,
-  | 'id'
-  | 'name'
-  | 'subgraph'
-  | 'locksmithUri'
-  | 'unlockAddress'
-  | 'serializerAddress'
+  'id' | 'name' | 'subgraph' | 'unlockAddress' | 'serializerAddress'
 >
 
 export interface UnlockNetworkConfigs {

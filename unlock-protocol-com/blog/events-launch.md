@@ -6,7 +6,7 @@ description: Events by Unlock is a free and easy way to create tickets and share
 image: /images/blog/events-by-unlock/events-subbrand-share.png
 ---
 
-Events and projects around the world have created their ticketing and membership infrastructure using Unlock Protocol. 
+Events and projects around the world have created their ticketing and membership infrastructure using Unlock Protocol.
 
 Now, for events that want to get up and running rapidly, the Unlock Labs team has created a quickstart tool: **Events by Unlock**.
 

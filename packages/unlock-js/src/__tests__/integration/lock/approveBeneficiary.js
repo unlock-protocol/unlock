@@ -3,21 +3,24 @@ import {
   versionEqualOrBelow,
   versionEqualOrAbove,
 } from '../../helpers/integration'
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
+import { describe, expect, beforeAll } from 'vitest'
 
 let web3Service, chainId, walletService, lock, lockAddress, ERC20
 
-export default ({ isERC20, publicLockVersion }) =>
-  () => {
-    // only v8+ and removed in v12
-    if (
-      versionEqualOrAbove(publicLockVersion, 'v8') &&
-      versionEqualOrBelow(publicLockVersion, 'v11')
-    ) {
+export default ({ isERC20, publicLockVersion }) => {
+  // only v8+ and removed in v12
+  if (
+    versionEqualOrAbove(publicLockVersion, 'v8') &&
+    versionEqualOrBelow(publicLockVersion, 'v11')
+  ) {
+    describe('approveBeneficiary', () => {
       let spender
       let receiver
       let receiverBalanceBefore
       let transactionHash
+
+      const { ethers } = hre
 
       beforeAll(async () => {
         ;({ web3Service, chainId, walletService, lock, lockAddress, ERC20 } =
@@ -97,5 +100,6 @@ export default ({ isERC20, publicLockVersion }) =>
           )
         }
       )
-    }
+    })
   }
+}

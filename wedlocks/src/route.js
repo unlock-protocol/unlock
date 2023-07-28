@@ -58,8 +58,12 @@ export const route = async (args) => {
   const [template, templateParams] = await getTemplateAndParams(args)
 
   const email = {
-    from: config.sender,
+    from: {
+      name: args?.emailSender || 'Unlock Labs',
+      address: config.sender,
+    },
     to: args.recipient,
+    replyTo: args?.replyTo || undefined,
     subject: await template.subject(templateParams),
     text: template.text ? await template.text(templateParams) : undefined,
     html: template.html ? await template.html(templateParams) : undefined,
@@ -67,6 +71,7 @@ export const route = async (args) => {
       .concat(args.attachments, template.attachments)
       .filter((x) => !!x),
   }
+
   const transporter = nodemailer.createTransport(config)
   return transporter.sendMail(email)
 }

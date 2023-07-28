@@ -1,7 +1,7 @@
 import Postmate from 'postmate'
 import { renderHook } from '@testing-library/react-hooks'
 import { usePostmateParent } from '../../hooks/usePostmateParent'
-import { vi } from 'vitest'
+import { vi, expect, describe, it } from 'vitest'
 
 let emit = vi.fn()
 

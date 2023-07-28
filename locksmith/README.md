@@ -8,7 +8,7 @@ Among these services, locksmith provides the following:
 - membership metadata hosting
 - Unlock accounts
 
-The locksmith application has several entry points. By default it provides an API server, but could also be run for our `websub` worker. For the latter, prefix all commands with `websub:` (for example: `yarn run websub:dev`)
+The locksmith application has several entry points. By default it provides an API server, but could also be run for our `worker` worker. For the latter, prefix all commands with `worker:` (for example: `yarn run worker:dev`)
 
 ## Getting Started
 
@@ -30,8 +30,6 @@ Alternatively, you could set these variables:
 - `DB_PASSWORD` - Password of User
 - `DB_NAME` - Database Name
 - `DB_HOSTNAME` - Database Host
-
-You will also need to add the following env var: `DEFAULT_NETWORK=1`
 
 ### Configure file storage
 

@@ -1,10 +1,11 @@
-let walletService, web3Service, chainId, lockAddress
+import { describe, it, expect, beforeAll } from 'vitest'
 import { ZERO } from '../../../constants'
 import { versionEqualOrAbove } from '../../helpers/integration'
+let walletService, web3Service, chainId, lockAddress
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+    describe('setEventHooks', () => {
       let transactionHash
       let keyPurchaseHook
       let keyCancelHook
@@ -48,5 +49,6 @@ export default ({ publicLockVersion }) =>
         expect(keyCancelHook).toEqual(ZERO)
         expect(keyPurchaseHook).toEqual(ZERO)
       })
-    }
+    })
   }
+}

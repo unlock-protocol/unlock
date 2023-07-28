@@ -38,7 +38,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   // see https://github.com/ethers-io/ethers.js/issues/2828
   if (network === 137) {
     try {
-      const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
+      const resp = await fetch('https://gasstation.polygon.technology/v2')
       const data = await resp.json()
 
       const maxFeePerGas = ethers.utils.parseUnits(
@@ -62,7 +62,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
 
   // get fees from network provider
   const provider = new ethers.providers.JsonRpcBatchProvider(
-    networks[network]?.publicProvider
+    networks[network]?.provider
   )
 
   let feedata

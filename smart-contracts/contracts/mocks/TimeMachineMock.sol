@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.5.17 <=0.8.7;
+pragma solidity >=0.5.17 <=0.8.17;
 
 import "../mixins/MixinKeys.sol";
 
@@ -14,19 +14,10 @@ contract TimeMachineMock is MixinKeys {
     address _keyManager,
     uint _expirationTimestamp
   ) public returns (uint) {
-    return
-      _createNewKey(
-        _recipient,
-        _keyManager,
-        _expirationTimestamp
-      );
+    return _createNewKey(_recipient, _keyManager, _expirationTimestamp);
   }
 
-  function timeMachine(
-    uint _tokenId,
-    uint256 _deltaT,
-    bool _addTime
-  ) public {
+  function timeMachine(uint _tokenId, uint256 _deltaT, bool _addTime) public {
     _timeMachine(_tokenId, _deltaT, _addTime);
   }
 }

@@ -1,11 +1,7 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from '@tanstack/react-query'
-import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
-import { useWalletService } from '~/utils/withWalletService'
 import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Card, CardPlaceholder } from '../Card'
 import {
@@ -22,10 +18,13 @@ import {
 } from '@stripe/stripe-js'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
+import {
+  usePaymentMethodList,
+  useRemovePaymentMethods,
+} from '~/hooks/usePaymentMethods'
 
 interface Props {
   injectedProvider: unknown
@@ -33,35 +32,23 @@ interface Props {
 }
 
 export function CardPayment({ checkoutService, injectedProvider }: Props) {
-  const { account } = useAuth()
   const config = useConfig()
-  const walletService = useWalletService()
   const stripe = loadStripe(config.stripeApiKey, {})
   const [isSaving, setIsSaving] = useState(false)
 
   const {
     data: methods,
     isInitialLoading: isMethodLoading,
-    refetch,
-  } = useQuery(
-    ['listCards', account],
-    async () => {
-      const response = await storage.listPaymentMethods()
-      return response.data.methods || []
-    },
-    {
-      enabled: !!account,
-    }
-  )
-
-  const stepItems = useCheckoutSteps(checkoutService)
+    refetch: refetchPaymentMethods,
+  } = usePaymentMethodList()
+  const { mutateAsync: removePaymentMethods } = useRemovePaymentMethods()
 
   const payment = methods?.[0]
   const card = payment?.card
 
   return (
     <Fragment>
-      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isMethodLoading ? (
           <CardPlaceholder />
@@ -71,9 +58,12 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
             onSubmit={() => {
               setIsSaving(true)
             }}
+            onError={() => {
+              setIsSaving(false)
+            }}
             onSuccess={async () => {
               setIsSaving(false)
-              await refetch()
+              await refetchPaymentMethods()
             }}
           />
         ) : (
@@ -84,16 +74,8 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
             exp_year={card.exp_year!}
             country={card.country!}
             onChange={async () => {
-              const succeeeded = await deleteCardForAddress(
-                config,
-                walletService,
-                account!
-              )
-              if (succeeeded) {
-                await refetch()
-              } else {
-                ToastHelper.error('Failed to remove the card.')
-              }
+              await removePaymentMethods()
+              await refetchPaymentMethods()
             }}
           />
         )}
@@ -119,8 +101,11 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
               disabled={!card}
               onClick={() => {
                 checkoutService.send({
-                  type: 'SELECT_CARD_TO_CHARGE',
-                  cardId: payment.id!,
+                  type: 'SELECT_PAYMENT_METHOD',
+                  payment: {
+                    method: 'card',
+                    cardId: payment!.id!,
+                  },
                 })
               }}
             >
@@ -137,10 +122,16 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
 interface SetupFormProps {
   onSubmit(): void
   onSuccess(intent?: SetupIntentResult): void
+  onError?(error: StripeError): void
   stripe: Promise<Stripe | null>
 }
 
-export function SetupForm({ onSubmit, stripe, onSuccess }: SetupFormProps) {
+export function SetupForm({
+  onSubmit,
+  stripe,
+  onSuccess,
+  onError: onErrorHandler,
+}: SetupFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const fetchSetupIntent = useCallback(async () => {
     const response = await storage.setupPayment()
@@ -161,6 +152,7 @@ export function SetupForm({ onSubmit, stripe, onSuccess }: SetupFormProps) {
   const onError = async (error: StripeError) => {
     ToastHelper.error(error.message!)
     await fetchSetupIntent()
+    onErrorHandler?.(error)
   }
 
   return (

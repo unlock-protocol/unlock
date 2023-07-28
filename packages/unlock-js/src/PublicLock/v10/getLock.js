@@ -6,8 +6,8 @@ import { getAllowance } from '../../erc20'
  * We use the block version
  * @return Promise<Lock>
  */
-export default async function (address, provider) {
-  const update = await parseLockGetters.bind(this)(address, provider)
+export default async function (address, provider, options = {}) {
+  const update = await parseLockGetters.bind(this)(address, provider, options)
 
   if (update.currencyContractAddress) {
     // get lock allowance of itself (for v10 recurring)

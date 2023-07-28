@@ -15,8 +15,10 @@ import updateLockName from './updateLockName'
 import updateLockSymbol from './updateLockSymbol'
 import setBaseTokenURI from './setBaseTokenURI'
 import updateRefundPenalty from './updateRefundPenalty'
+import getPurchaseKeysArguments from './getPurchaseKeysArguments'
 
 export default {
+  getPurchaseKeysArguments,
   purchaseKey,
   purchaseKeys,
   grantKey,

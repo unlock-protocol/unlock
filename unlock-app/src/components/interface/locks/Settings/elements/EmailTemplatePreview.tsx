@@ -18,6 +18,7 @@ interface EmailTemplatePreviewProps {
   disabled: boolean
   network: number
   lockAddress: string
+  isManager: boolean
 }
 
 const FormSchema = z.object({
@@ -49,6 +50,7 @@ export const EmailTemplatePreview = ({
   disabled,
   network,
   lockAddress,
+  isManager,
 }: EmailTemplatePreviewProps) => {
   const config = useConfig()
   const [showPreview, setShowPreview] = useState(false)
@@ -94,13 +96,21 @@ export const EmailTemplatePreview = ({
 
     const params = {
       lockName: 'Email Preview',
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      keychainUrl: `${config.unlockApp}/keychain`,
       keyId: 5,
       network,
       openSeaUrl: '',
       transferUrl: '',
       lockImage,
       customContent: customContentHtml,
+      // event details
+      eventName: '{Event name}',
+      eventDescription: '{Email description}',
+      eventDate: '{Event date}',
+      eventTime: '{Event time}',
+      eventAddress: '{Event address}',
+      // certificate details
+      certificationDetail: '{Certification detail}',
     }
 
     return params
@@ -108,11 +118,21 @@ export const EmailTemplatePreview = ({
 
   const onSubmit = async (form: FormSchemaProps) => {
     const params = await emailPreviewData()
+
+    const { data: lockSettings } = await storage.getLockSettings(
+      network,
+      lockAddress
+    )
+
     const promise = wedlocksService.sendEmail(
       templateId as any,
       form.email,
-      params,
-      [] // attachments
+      {
+        ...params,
+      },
+      [], // attachments
+      lockSettings?.replyTo,
+      lockSettings?.emailSender
     )
     await ToastHelper.promise(promise, {
       loading: 'Sending email preview...',
@@ -177,6 +197,7 @@ export const EmailTemplatePreview = ({
           <TextBox
             placeholder="## Example content"
             rows={8}
+            disabled={disabled}
             {...register('customContent')}
           />
           <div className="pb-2 text-sm text-gray-700">
@@ -191,28 +212,30 @@ export const EmailTemplatePreview = ({
             is supported for custom email content
           </div>
         </div>
-        <div className="flex gap-2 ml-auto">
-          <Button
-            size="small"
-            onClick={async () => {
-              await saveCustomContent.mutateAsync()
-            }}
-            loading={saveCustomContent.isLoading}
-            disabled={loading}
-          >
-            Save
-          </Button>
-          <Button
-            size="small"
-            variant="outlined-primary"
-            onClick={async () => {
-              setShowPreview(true)
-            }}
-            disabled={disableShowPreview}
-          >
-            Show email preview
-          </Button>
-        </div>
+        {isManager && (
+          <div className="flex gap-2 ml-auto">
+            <Button
+              size="small"
+              onClick={async () => {
+                await saveCustomContent.mutateAsync()
+              }}
+              loading={saveCustomContent.isLoading}
+              disabled={loading}
+            >
+              Save
+            </Button>
+            <Button
+              size="small"
+              variant="outlined-primary"
+              onClick={async () => {
+                setShowPreview(true)
+              }}
+              disabled={disableShowPreview}
+            >
+              Show email preview
+            </Button>
+          </div>
+        )}
         {showPreview && (
           <Modal empty isOpen={showPreview} setIsOpen={setShowPreview}>
             <div className="fixed inset-0 z-10 flex justify-center overflow-y-auto bg-white">
@@ -244,7 +267,7 @@ export const EmailTemplatePreview = ({
                   ></div>
                   <div className="flex flex-col gap-2">
                     <Input
-                      placeholder="example@email.com"
+                      placeholder="your@email.com"
                       type="email"
                       disabled={disabled}
                       className="w-full"
@@ -257,7 +280,7 @@ export const EmailTemplatePreview = ({
                       error={errors?.email?.message}
                     />
                     <Button type="submit" disabled={disabled}>
-                      Send email Preview
+                      Send email preview
                     </Button>
                   </div>
                 </form>

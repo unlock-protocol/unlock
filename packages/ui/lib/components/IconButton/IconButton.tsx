@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import { forwardRef } from 'react'
 
 // Once we have a design system or language, we should omit className so user doesn't end up deviating too much.
-interface Props
+export interface Props
   extends Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,
     'size' | 'ref' | 'children'

@@ -1,16 +1,15 @@
-import { Language } from 'prism-react-renderer'
 import { CodeBox } from './CodeBox'
 import { Tab } from '@headlessui/react'
 import { UnlockPrismTheme } from './theme'
 import { twMerge } from 'tailwind-merge'
 
-interface CodeBlock {
+export interface CodeBlock {
   code: string
   name: string
-  lang: Language
+  lang: any
 }
 
-interface Props {
+export interface Props {
   blocks: CodeBlock[]
 }
 

@@ -5,7 +5,6 @@ import lockRouter from './lock'
 import userRouter from './user'
 import purchaseRouter from './purchase'
 import claimRouter from './claim'
-import priceRouter from './price'
 import metadataRouter from './metadata'
 import authRouter from './auth'
 import captchaRouter from './captcha'
@@ -30,13 +29,19 @@ import receiptBaseRouter from './v2/receiptBase'
 import emailRouter from './v2/email'
 import checkoutConfigRouter from './v2/checkoutConfigs'
 import config from '../config/config'
+import stripeRouter from './v2/stripe'
+import lockSettingsRouter from './v2/lock-settings'
+import certificateRouter from './v2/certificate'
+import ogRouter from './v2/og'
+import hooksRooter from './v2/hooks'
+import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 
 const router = express.Router({ mergeParams: true })
 
 // Set the chain!
 router.use((request, _, next) => {
   const match = request.path.match(/^\/([0-9]*)\/.*/)
-  let chain = parseInt(config.defaultNetwork || '31337')
+  let chain = config.defaultNetwork || 1
   if (match) {
     // When the route starts with the chain (deprecated?)
     chain = parseInt(match[1])
@@ -50,16 +55,30 @@ router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
 router.use('/claim', claimRouter)
-router.use('/price', priceRouter)
-router.use('/api/key/:chain([0-9]{1,6})/', metadataRouter)
+
+// Redirects for broken base URLs
+router.use(
+  '/api/key/:chain([0-9]{1,12}):lock(0x[0-9A-Fa-f]{40}):rest(/[0-9]{0,12})?',
+  (req, res) => {
+    return res.redirect(
+      `/api/key/${req.params.chain}/${req.params.lock}${req.params.rest || ''}`
+    )
+  }
+)
+
+router.use(
+  '/api/key/:chain([0-9]{1,12})/',
+  createCacheMiddleware(),
+  metadataRouter
+)
 router.use('/api/key', metadataRouter)
 router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
 router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
 router.use('/v2', authMiddleware)
-router.use('/v2/images', imagesRouter)
 router.use('/v2/auth', authRouterV2)
+router.use('/v2/images', imagesRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
 router.use('/v2/api/verifier', verifierRouter)
 router.use('/v2/api/grant', grantKeysRouter)
@@ -76,6 +95,11 @@ router.use('/v2/receipts', receiptRouter)
 router.use('/v2/receipts-base', receiptBaseRouter)
 router.use('/v2/email', emailRouter)
 router.use('/v2/checkout', checkoutConfigRouter)
+router.use('/v2/stripe', stripeRouter)
+router.use('/v2/lock-settings', lockSettingsRouter)
+router.use('/v2/certificate', certificateRouter)
+router.use('/v2/og', ogRouter)
+router.use('/v2/hooks', hooksRooter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

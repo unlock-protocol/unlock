@@ -1,27 +1,43 @@
-import { Button, Badge, Input, Modal, Detail } from '@unlock-protocol/ui'
-import { useState } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import {
+  Button,
+  Badge,
+  Input,
+  Modal,
+  Detail,
+  AddressInput,
+  isAddressOrEns,
+  Tooltip,
+} from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
+import { Controller, FieldValues, useForm } from 'react-hook-form'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { LoadingIcon } from '../../../Loading'
 import { ethers } from 'ethers'
-import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
-import { useGetReceiptsPageUrl } from '~/hooks/receipts'
+import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { addressMinify } from '~/utils/strings'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useUpdateUserMetadata } from '~/hooks/useUserMetadata'
+import { onResolveName } from '~/utils/resolvers'
+import { useMetadata } from '~/hooks/metadata'
+import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { FiInfo as InfoIcon } from 'react-icons/fi'
+import { TransferKeyDrawer } from '~/components/interface/keychain/TransferKeyDrawer'
 
 interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
   expirationDuration?: string
+  lockSettings?: Record<string, any>
 }
 
 const keysToIgnore = [
@@ -29,6 +45,7 @@ const keysToIgnore = [
   'lockName',
   'expiration',
   'keyholderAddress',
+  'keyManager',
   'lockAddress',
   'checkedInAt',
   'email',
@@ -87,20 +104,165 @@ const MembershipRenewal = ({
   )
 }
 
+const ChangeManagerModal = ({
+  lockAddress,
+  network,
+  manager,
+  tokenId,
+  onChange,
+  label,
+}: {
+  label?: string
+  lockAddress: string
+  network: number
+  manager: string
+  tokenId: string
+  onChange?: (keyManager: string) => void
+}) => {
+  const { getWalletService } = useAuth()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const {
+    setValue,
+    handleSubmit,
+    watch,
+    formState: { isValid },
+    control,
+  } = useForm<{
+    newManager: string
+  }>({
+    defaultValues: {
+      newManager: '',
+    },
+  })
+
+  const newManager = watch('newManager', manager)
+
+  const setKeyManagerForKey = async (newManager: string) => {
+    const walletService = await getWalletService(network)
+    return walletService.setKeyManagerOf({
+      lockAddress,
+      managerAddress: newManager,
+      tokenId,
+    })
+  }
+
+  const changeManagerMutation = useMutation(setKeyManagerForKey, {
+    onSuccess: () => {
+      if (typeof onChange === 'function') {
+        onChange(newManager)
+      }
+      ToastHelper.success('Key Manager updated')
+      setIsOpen(false)
+    },
+  })
+
+  const onSubmit = async ({ newManager }: any) => {
+    await changeManagerMutation.mutateAsync(newManager)
+  }
+
+  const managerUnchanged = newManager?.toLowerCase() === manager?.toLowerCase()
+
+  const fieldDisabled =
+    managerUnchanged || changeManagerMutation.isLoading || !isValid
+
+  useEffect(() => {
+    if (isOpen) {
+      setValue('newManager', '') // reset when modal opens
+    }
+  }, [isOpen, setValue])
+
+  return (
+    <>
+      <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+        <div className="flex flex-col w-full gap-5">
+          <div className="text-left">
+            <h3 className="text-xl font-semibold text-left text-black-500">
+              Change Key Manager
+            </h3>
+            <span className="text-sm leading-tight text-gray-500">
+              Update the address of the Key Manager.
+            </span>
+          </div>
+          <form className="grid w-full gap-3" onSubmit={handleSubmit(onSubmit)}>
+            <Controller
+              name="newManager"
+              control={control}
+              rules={{
+                required: true,
+                validate: isAddressOrEns,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      label="New Manager"
+                      value={newManager}
+                      disabled={changeManagerMutation.isLoading}
+                      onChange={(value: any) => {
+                        setValue('newManager', value, {
+                          shouldValidate: true,
+                        })
+                      }}
+                      onResolveName={onResolveName}
+                    />
+                    {managerUnchanged && (
+                      <span className="text-sm text-red-500">
+                        This address is already the current manager for this
+                        key.
+                      </span>
+                    )}
+                  </>
+                )
+              }}
+            />
+
+            <Button
+              disabled={fieldDisabled}
+              type="submit"
+              loading={changeManagerMutation.isLoading}
+            >
+              Update
+            </Button>
+          </form>
+        </div>
+      </Modal>
+      <Button
+        className="w-full md:w-auto"
+        size="small"
+        onClick={() => setIsOpen(true)}
+      >
+        {label ?? 'Change'}
+      </Button>
+    </>
+  )
+}
 export const MetadataCard = ({
   metadata,
   owner,
   network,
   expirationDuration,
+  lockSettings,
 }: MetadataCardProps) => {
+  const [showTransferKey, setShowTransferKey] = useState(false)
   const [data, setData] = useState(metadata)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
     null
   )
+
   const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
+
+  const { data: lockMetadata } = useMetadata({
+    lockAddress: metadata.lockAddress,
+    network,
+  })
+
+  const types = getLockTypeByMetadata(lockMetadata)
+  const [eventType] =
+    Object.entries(types ?? {}).find(([, value]) => value === true) ?? []
 
   const { lockAddress, token: tokenId } = data ?? {}
 
@@ -108,6 +270,9 @@ export const MetadataCard = ({
     lockAddress,
     network,
   })
+
+  // defaults to the owner when the manager is not set
+  const manager = data?.keyManager ?? data?.keyholderAddress
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
     useGetReceiptsPageUrl({
@@ -135,7 +300,7 @@ export const MetadataCard = ({
       return response.data.subscriptions?.[0] ?? null
     },
     {
-      onError(error) {
+      onError(error: any) {
         console.error(error)
       },
     }
@@ -150,9 +315,9 @@ export const MetadataCard = ({
   const onSendQrCode = async () => {
     if (!network) return
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
-      success: 'QR-code sent by email',
-      loading: 'Sending QR-code by email',
-      error: 'We could not send the QR-code.',
+      success: 'Email sent',
+      loading: 'Sending email...',
+      error: 'We could not send email.',
     })
   }
 
@@ -191,8 +356,20 @@ export const MetadataCard = ({
     },
   })
 
+  const ownerIsManager = owner?.toLowerCase() === manager?.toLowerCase()
+  const showManager = !ownerIsManager && manager !== ADDRESS_ZERO
+
   return (
     <>
+      <TransferKeyDrawer
+        isOpen={showTransferKey}
+        setIsOpen={setShowTransferKey}
+        lockAddress={lockAddress}
+        network={network}
+        tokenId={tokenId}
+        lockName={lockMetadata?.name}
+        owner={data?.keyholderAddress}
+      />
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
@@ -267,7 +444,7 @@ export const MetadataCard = ({
                   <span>Email:</span>
                   {hasEmail ? (
                     <div className="flex flex-col w-full gap-3 md:flex-row">
-                      <span className="block font-semibold text-black ">
+                      <span className="block text-base font-semibold text-black">
                         {data?.email}
                       </span>
                       <Button
@@ -277,19 +454,27 @@ export const MetadataCard = ({
                       >
                         Edit email
                       </Button>
-                      <Button
-                        size="tiny"
-                        variant="outlined-primary"
-                        onClick={onSendQrCode}
-                        disabled={
-                          sendEmailMutation.isLoading ||
-                          sendEmailMutation.isSuccess
-                        }
-                      >
-                        {sendEmailMutation.isSuccess
-                          ? 'QR-code sent by email'
-                          : 'Send QR-code by email'}
-                      </Button>
+                      {lockSettings?.sendEmail ? (
+                        SendEmailMapping[eventType as keyof LockType] && (
+                          <Button
+                            size="tiny"
+                            variant="outlined-primary"
+                            onClick={onSendQrCode}
+                            disabled={
+                              sendEmailMutation.isLoading ||
+                              sendEmailMutation.isSuccess
+                            }
+                          >
+                            {sendEmailMutation.isSuccess
+                              ? 'Email sent'
+                              : SendEmailMapping[eventType as keyof LockType]}
+                          </Button>
+                        )
+                      ) : (
+                        <Button size="tiny" variant="outlined-primary" disabled>
+                          Email are disabled
+                        </Button>
+                      )}
                     </div>
                   ) : (
                     <Button
@@ -318,34 +503,134 @@ export const MetadataCard = ({
             })}
             <Detail
               className="py-2"
+              justify={false}
               label={
-                <div className="flex items-center gap-2">
-                  <span>Key Holder:</span>
-                  {/* show full address on desktop */}
-                  <div className="text-base font-bold break-words">
-                    <span className="hidden md:block">{owner}</span>
-                    {/* show minified address on mobile */}
-                    <span className="block md:hidden">
-                      {addressMinify(owner)}
-                    </span>
-                  </div>
-                  <Button
-                    className="p-0 outline-none text-brand-ui-primary ring-0"
-                    variant="transparent"
-                    aria-label="blockscan link"
-                  >
-                    <a
-                      href={`https://blockscan.com/address/${owner}`}
-                      target="_blank"
-                      rel="noreferrer"
+                <div className="flex flex-col justify-between w-full gap-2 md:items-center md:flex-row">
+                  <div>
+                    <Tooltip
+                      tip="Address of the owner of the NFT."
+                      label="Address of the owner of the NFT."
+                      side="bottom"
                     >
-                      <ExternalLinkIcon size={20} />
-                    </a>
-                  </Button>
+                      <div className="flex items-center gap-2">
+                        <span>Key Owner </span>
+                        <InfoIcon />:
+                        <div className="flex gap-2">
+                          {/* show full address on desktop */}
+                          <div className="text-base font-semibold text-black break-words">
+                            <span className="hidden md:block">{owner}</span>
+                            {/* show minified address on mobile */}
+                            <span className="block md:hidden">
+                              {addressMinify(owner)}
+                            </span>
+                          </div>
+                          <Button
+                            className="p-0 outline-none text-brand-ui-primary ring-0"
+                            variant="transparent"
+                            aria-label="blockscan link"
+                          >
+                            <a
+                              href={`https://blockscan.com/address/${owner}`}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              <ExternalLinkIcon size={20} />
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </Tooltip>
+                  </div>
+                  <div className="md:ml-auto">
+                    <div className="flex flex-col gap-2 md:flex-row md:items-center">
+                      {isLockManager && (
+                        <Button
+                          size="small"
+                          onClick={() => setShowTransferKey(true)}
+                          className="w-full md:w-auto"
+                        >
+                          Transfer ownership
+                        </Button>
+                      )}
+                      {ownerIsManager && (
+                        <div className="md:ml-auto">
+                          <ChangeManagerModal
+                            lockAddress={lockAddress}
+                            network={network}
+                            manager={manager}
+                            tokenId={tokenId}
+                            label="Set key manager"
+                            onChange={(keyManager) => {
+                              setData({
+                                ...data,
+                                keyManager,
+                              })
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
               }
             />
-            {isSubscriptionLoading && <LoadingIcon />}
+            {showManager && (
+              <div className="w-full">
+                <Detail
+                  className="py-2"
+                  label={
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Tooltip
+                          label="Address of the manager of the NFT. This address has the transfer rights for this NFT which cannot be transferred by its owner."
+                          tip="Address of the manager of the NFT. This address has the transfer rights for this NFT which cannot be transferred by its owner."
+                          side="right"
+                        >
+                          <div className="flex items-center gap-1">
+                            <span>Key Manager </span>
+                            <InfoIcon />:
+                          </div>
+                        </Tooltip>
+                        {/* show full address on desktop */}
+                        <div className="text-base font-semibold text-black break-words">
+                          <span className="hidden md:block">{manager}</span>
+                          {/* show minified address on mobile */}
+                          <span className="block md:hidden">
+                            {addressMinify(manager)}
+                          </span>
+                        </div>
+                        <Button
+                          className="p-0 outline-none text-brand-ui-primary ring-0"
+                          variant="transparent"
+                          aria-label="blockscan link"
+                        >
+                          <a
+                            href={`https://blockscan.com/address/${manager}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            <ExternalLinkIcon size={20} />
+                          </a>
+                        </Button>
+                      </div>
+                      <ChangeManagerModal
+                        lockAddress={lockAddress}
+                        network={network}
+                        manager={manager}
+                        tokenId={tokenId}
+                        label="Change key manager"
+                        onChange={(keyManager) => {
+                          setData({
+                            ...data,
+                            keyManager,
+                          })
+                        }}
+                      />
+                    </div>
+                  }
+                />
+              </div>
+            )}
             {!isSubscriptionLoading && subscription && (
               <>
                 <Detail
@@ -380,6 +665,11 @@ export const MetadataCard = ({
   )
 }
 
+const SendEmailMapping: Record<keyof LockType, string> = {
+  isCertification: 'Send Certificate by email',
+  isEvent: 'Send QR-code by email',
+  isStamp: 'Send Stamp by email',
+}
 const UpdateEmailModal = ({
   isOpen,
   setIsOpen,
@@ -388,7 +678,6 @@ const UpdateEmailModal = ({
   lockAddress,
   network,
   hasEmail,
-  extraDataItems,
   onEmailChange,
 }: {
   isOpen: boolean
@@ -407,6 +696,11 @@ const UpdateEmailModal = ({
       email: '',
     },
   })
+  const { mutateAsync: updateUserMetadata } = useUpdateUserMetadata({
+    lockAddress,
+    userAddress,
+    network,
+  })
 
   const updateData = (formFields: FieldValues) => {
     reset() // reset form state
@@ -418,16 +712,7 @@ const UpdateEmailModal = ({
   }
 
   const updateMetadata = async (params: any, callback?: () => void) => {
-    const updateMetadataPromise = storage.updateUserMetadata(
-      network,
-      lockAddress,
-      userAddress,
-      {
-        metadata: {
-          protected: params.metadata,
-        },
-      }
-    )
+    const updateMetadataPromise = updateUserMetadata(params)
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
       success: 'Email successfully added to member',
@@ -445,31 +730,18 @@ const UpdateEmailModal = ({
     if (!isLockManager) return
     try {
       setLoading(true)
-      let metadata = {}
 
-      extraDataItems.map(([key, value]: [string, string | number]) => {
-        metadata = {
-          ...metadata,
-          [key]: value,
+      updateMetadata(
+        {
+          protected: {
+            email: formFields.email,
+          },
+          public: {},
+        },
+        () => {
+          updateData(formFields)
         }
-      })
-
-      // merge old metadata with new one to prevent data lost
-      metadata = {
-        ...metadata,
-        ...formFields,
-      }
-
-      const params = {
-        lockAddress,
-        userAddress,
-        network,
-        metadata,
-      }
-
-      updateMetadata(params, () => {
-        updateData(formFields)
-      })
+      )
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }

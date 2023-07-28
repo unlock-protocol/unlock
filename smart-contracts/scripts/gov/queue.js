@@ -20,7 +20,7 @@ async function main({ proposal, govAddress }) {
 
   // contract instance
   const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
-  let state = await getProposalState(proposalId)
+  let state = await getProposalState(proposalId, govAddress)
 
   // close voting period
   if (isDev && state === 'Active') {
@@ -36,7 +36,7 @@ async function main({ proposal, govAddress }) {
     }
   }
 
-  const votes = await getProposalVotes(proposalId)
+  const votes = await getProposalVotes(proposalId, govAddress)
   // eslint-disable-next-line no-console
   console.log(
     `GOV QUEUE > Current proposal ${state} - votes (against, for, abstain): ${votes}`
@@ -44,7 +44,7 @@ async function main({ proposal, govAddress }) {
 
   // queue proposal
   if (state === 'Succeeded') {
-    const tx = await queueProposal({ proposalId })
+    const tx = await queueProposal({ proposal, govAddress })
     const { events, transactionHash } = await tx.wait()
     const evt = events.find((v) => v.event === 'ProposalQueued')
     const { eta } = evt.args

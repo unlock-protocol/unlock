@@ -1,6 +1,13 @@
 import supportedNetworks from './supportedNetworks'
 import { Env } from './types'
 
+interface RpcRequest {
+  id: number
+  jsonrpc: string
+  method: string
+  params: string[]
+}
+
 const handler = async (request: Request, env: Env): Promise<Response> => {
   // Handling CORS
   if (request.method === 'OPTIONS') {
@@ -22,6 +29,11 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   const headers = {
     'access-control-allow-origin': '*',
   }
+
+  if (pathname === '/throw') {
+    throw new Error('Test Error')
+  }
+
   if (pathname === '/resolve-redirect' && queryURL) {
     const endpoint = new URL(queryURL)
     const result = await fetch(endpoint.toString(), {
@@ -70,23 +82,10 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     })
   }
 
-  // Reject requests that are not POST
-  if (request.method !== 'POST') {
-    console.error(`Method ${request.method} not supported`)
-    return Response.json(
-      { message: `Method ${request.method} not supported` },
-      {
-        status: 400,
-        headers,
-      }
-    )
-  }
-
   const matched = pathname.match(/\/([0-9]*)/)
 
   // Missing network
-  if (!matched) {
-    console.error('Bad Request, missing chain id')
+  if (!pathname || pathname === '/' || !matched) {
     return Response.json(
       { message: 'Bad Request, missing chain id' },
       {
@@ -102,7 +101,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
 
   // Network not supported
   if (!supportedNetwork) {
-    console.error(`Unsupported network ID: ${networkId}`)
     return Response.json(
       { message: `Unsupported network ID: ${networkId}` },
       {
@@ -112,10 +110,40 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
     )
   }
 
+  // Reject requests that are not POST
+  if (request.method !== 'POST') {
+    return Response.json(
+      { message: `Method ${request.method} not supported` },
+      {
+        status: 400,
+        headers,
+      }
+    )
+  }
+
+  const body: RpcRequest = await request.json()
+
+  // Handling chainId locally
+  if (
+    body?.method?.toLocaleLowerCase().trim() ===
+    'eth_chainId'.toLocaleLowerCase()
+  ) {
+    return Response.json(
+      {
+        id: body.id || 42,
+        jsonrpc: '2.0',
+        result: `0x${parseInt(networkId).toString(16)}`,
+      },
+      {
+        headers,
+      }
+    )
+  }
+
   // Make JSON RPC request
   const response = await fetch(supportedNetwork, {
     method: 'POST',
-    body: request.body,
+    body: JSON.stringify(body),
     headers: new Headers({
       Accept: '*/*',
       Origin: 'https://rpc.unlock-protocol.com/', // required to add this to allowlists

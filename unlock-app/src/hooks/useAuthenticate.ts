@@ -1,8 +1,11 @@
-import WalletConnectProvider from '@walletconnect/web3-provider'
+import { EthereumProvider } from '@walletconnect/ethereum-provider'
+
 import WalletLink from 'walletlink'
 import { useConfig } from '../utils/withConfig'
 import { useAuth } from '../contexts/AuthenticationContext'
 import { useAppStorage } from './useAppStorage'
+import { useConnectModal } from './useConnectModal'
+import { useCallback } from 'react'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
@@ -44,6 +47,7 @@ interface AuthenticateProps {
 
 export enum WALLET_PROVIDER {
   METAMASK,
+  DELEGATED_PROVIDER,
   WALLET_CONNECT,
   COINBASE,
   UNLOCK,
@@ -56,25 +60,53 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const config = useConfig()
   const { authenticate } = useAuth()
   const { setStorage, removeKey } = useAppStorage()
+  const { send } = useConnectModal()
 
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
-  const handleInjectProvider = async () => {
+  const handleInjectProvider = useCallback(async () => {
     return authenticate(injectedOrDefaultProvider)
-  }
+  }, [authenticate, injectedOrDefaultProvider])
 
-  const handleUnlockProvider = async (provider: any) => {
-    return authenticate(provider)
-  }
+  const handleUnlockProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
 
-  const handleWalletConnectProvider = async () => {
-    const walletConnectProvider = new WalletConnectProvider({
-      rpc: rpcForWalletConnect(config),
+  const handleDelegatedProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
+
+  const handleWalletConnectProvider = useCallback(async () => {
+    // requires @walletconnect/modal for showQrModal:true
+    const client = await EthereumProvider.init({
+      projectId: config.walletConnectApiKey,
+      showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
+      qrModalOptions: {
+        chainImages: [],
+        themeMode: 'light',
+      },
+      chains: [1],
+      optionalChains: Object.keys(config.networks).map((key) => {
+        return parseInt(key)
+      }),
     })
-    return authenticate(walletConnectProvider)
-  }
 
-  const handleCoinbaseWalletProvider = async () => {
+    // Todo" consider handling this in our modal directly
+    // client.on('display_uri', (uri: string) => {
+    //   console.log(uri)
+    // })
+
+    await client.connect()
+    return authenticate(client)
+  }, [authenticate, config])
+
+  const handleCoinbaseWalletProvider = useCallback(async () => {
     const walletLink = new WalletLink({
       appName: 'Unlock',
       appLogoUrl: '/static/images/svg/default-lock-logo.svg',
@@ -82,40 +114,46 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
 
     const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
     return authenticate(ethereum)
-  }
+  }, [authenticate, config])
 
   const walletHandlers: {
     [key in WalletProvider]: (provider?: any) => Promise<any | void>
   } = {
+    DELEGATED_PROVIDER: handleDelegatedProvider,
     METAMASK: handleInjectProvider,
     WALLET_CONNECT: handleWalletConnectProvider,
     COINBASE: handleCoinbaseWalletProvider,
     UNLOCK: handleUnlockProvider,
   }
 
-  async function authenticateWithProvider(
-    providerType: WalletProvider,
-    provider?: any
-  ) {
-    if (!walletHandlers[providerType]) {
-      removeKey('provider')
-    }
-    const connectedProvider = walletHandlers[providerType](provider)
+  const authenticateWithProvider = useCallback(
+    async (providerType: WalletProvider, provider?: any) => {
+      try {
+        if (!walletHandlers[providerType]) {
+          removeKey('provider')
+        }
+        const connectedProvider = walletHandlers[providerType](provider)
 
-    connectedProvider.then((p) => {
-      if (!p?.account) {
-        return console.error('Unable to get provider')
+        const p = await connectedProvider
+        if (!p?.account) {
+          return console.error('Unable to get provider')
+        }
+        if (p?.isUnlock && p?.email) {
+          setStorage('email', p.email)
+        } else {
+          removeKey('email')
+        }
+        localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
+        setStorage('provider', providerType)
+        send(connectedProvider)
+        return connectedProvider
+      } catch (error) {
+        console.error('We could not connect to the provider', error)
+        return null
       }
-      if (p?.isUnlock && p?.email) {
-        setStorage('email', p.email)
-      } else {
-        removeKey('email')
-      }
-      localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
-      setStorage('provider', providerType)
-    })
-    return connectedProvider
-  }
+    },
+    [setStorage, removeKey, send]
+  )
 
   return {
     handleUnlockProvider,

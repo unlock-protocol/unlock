@@ -12,6 +12,9 @@ export const isUnlocked = async (
   networks: NetworkConfigs
 ): Promise<string[]> => {
   const unlockedLocks: string[] = []
+  if (!paywallConfig?.locks) {
+    return []
+  }
   await Promise.all(
     // For each lock
     Object.entries(paywallConfig.locks).map(async ([lockAddress]) => {
@@ -25,9 +28,6 @@ export const isUnlocked = async (
       )
       if (isValidMember) {
         // This lock is unlocked!
-        unlockedLocks.push(lockAddress)
-      } else if (!paywallConfig.pessimistic) {
-        // This lock is not unlocked, but we are optimistic
         unlockedLocks.push(lockAddress)
       }
     })

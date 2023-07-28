@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@unlock-protocol/ui'
 import { useActor } from '@xstate/react'
-import { ReactNode, useMemo, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify, minifyEmail } from '~/utils/strings'
@@ -10,11 +10,13 @@ import { ConnectService } from './Connect/connectMachine'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../DownloadWallet'
 import { detectInjectedProvider } from '~/utils/wallet'
+import { useSIWE } from '~/hooks/useSIWE'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
   email?: string
   account?: string
+  isDisconnecting?: boolean
 }
 
 export function SignedIn({
@@ -22,6 +24,7 @@ export function SignedIn({
   isUnlockAccount,
   email,
   account,
+  isDisconnecting,
 }: SignedInProps) {
   let userText: string
   let signOutText: string
@@ -38,20 +41,21 @@ export function SignedIn({
     <div className="flex items-center justify-between text-sm">
       <p> {userText}</p>
       <Tooltip
-        delay={50}
         side="top"
         tip={`${
           isUnlockAccount ? 'Signing out' : 'Disconnecting'
         } will reset the flow`}
       >
         {onDisconnect && (
-          <button
-            className="font-medium text-gray-600 hover:text-black"
+          <Button
+            variant="borderless"
+            size="small"
+            loading={isDisconnecting}
             onClick={onDisconnect}
             type="button"
           >
             {signOutText}
-          </button>
+          </Button>
         )}
       </Tooltip>
     </div>
@@ -60,7 +64,12 @@ export function SignedIn({
 
 interface SignedOutProps {
   authenticateWithProvider(
-    provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
+    provider:
+      | 'METAMASK'
+      | 'UNLOCK'
+      | 'WALLET_CONNECT'
+      | 'COINBASE'
+      | 'DELEGATED_PROVIDER'
   ): Promise<void>
   onUnlockAccount(): void
   injectedProvider: any
@@ -171,28 +180,81 @@ export function Connected({
   children,
 }: ConnectedCheckoutProps) {
   const [state, send] = useActor<CheckoutService>(service as CheckoutService)
-  const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
+  const { account, email, isUnlockAccount, deAuthenticate, connected } =
+    useAuth()
+  const [signing, setSigning] = useState(false)
+
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
+  const { signIn, signOut, isSignedIn } = useSIWE()
+  const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const useDelegatedProvider =
+    state.context?.paywallConfig?.useDelegatedProvider
 
-  if (state.context?.paywallConfig?.autoconnect) {
+  useEffect(() => {
+    const autoSignIn = async () => {
+      if (
+        !isSignedIn &&
+        !signing &&
+        connected &&
+        (isUnlockAccount || useDelegatedProvider)
+      ) {
+        setSigning(true)
+        await signIn()
+        setSigning(false)
+      }
+    }
+    autoSignIn()
+  }, [
+    connected,
+    useDelegatedProvider,
+    isUnlockAccount,
+    signIn,
+    signing,
+    isSignedIn,
+  ])
+
+  useEffect(() => {
+    if (!account) {
+      console.debug('Not connected')
+    } else console.debug(`Connected as ${account}`)
+  }, [account])
+
+  if (useDelegatedProvider) {
     return <div className="space-y-2">{children}</div>
   }
 
-  const onDisconnect = () => {
+  const onDisconnect = async () => {
+    setIsDisconnecting(true)
+    await signOut()
+    await deAuthenticate()
     send('DISCONNECT')
-    deAuthenticate()
+    setIsDisconnecting(false)
   }
+
   return account ? (
     <div className="space-y-2">
       {children}
       <SignedIn
+        isDisconnecting={isDisconnecting}
         account={account}
         email={email}
         isUnlockAccount={!!isUnlockAccount}
         onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
       />
+    </div>
+  ) : connected ? (
+    <div className="grid">
+      <Button
+        loading={status === 'loading'}
+        onClick={(event) => {
+          event.preventDefault()
+          signIn()
+        }}
+      >
+        Sign message to Continue
+      </Button>
     </div>
   ) : (
     <div>

@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class ReceiptBase extends Model<
   InferAttributes<ReceiptBase>,
@@ -15,6 +15,7 @@ export class ReceiptBase extends Model<
   declare lockAddress: string
 
   // receipts details
+  declare vatBasisPointsRate?: number | null
   declare supplierName?: string
   declare vat?: string
   declare servicePerformed?: string
@@ -42,7 +43,7 @@ ReceiptBase.init(
       allowNull: true,
     },
     network: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
       allowNull: true,
     },
     supplierName: {
@@ -52,6 +53,11 @@ ReceiptBase.init(
     vat: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    vatBasisPointsRate: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null,
     },
     servicePerformed: {
       type: DataTypes.STRING,

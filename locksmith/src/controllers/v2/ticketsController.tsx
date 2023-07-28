@@ -6,7 +6,6 @@ import { SubgraphService, Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode, generateQrCodeUrl } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
-import { Lock } from '@unlock-protocol/types'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
@@ -109,29 +108,39 @@ export class TicketsController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const keyId = request.params.keyId.toLowerCase()
-
-      const keyOwner = await this.web3Service.ownerOf(
-        lockAddress,
-        keyId,
-        network
+      const subgraph = new SubgraphService()
+      const key = await subgraph.key(
+        {
+          where: {
+            lock: lockAddress.toLowerCase(),
+            tokenId: keyId,
+          },
+        },
+        {
+          network,
+        }
       )
 
-      const lock: Lock = await this.web3Service.getLock(lockAddress, network)
+      if (!key) {
+        return response.status(404).send({
+          message: 'No key found for this lock and keyId',
+        })
+      }
 
-      await notifyNewKeyToWedlocks(
+      const sent = await notifyNewKeyToWedlocks(
         {
           tokenId: keyId,
           lock: {
             address: lockAddress,
-            name: lock.name,
+            name: key.lock.name || 'Unlock Lock',
           },
-          owner: keyOwner,
+          manager: key.manager,
+          owner: key.owner,
         },
-        network,
-        true
+        network
       )
       return response.status(200).send({
-        sent: true,
+        sent,
       })
     } catch (err) {
       logger.error(err.message)
@@ -246,8 +255,9 @@ export const getTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const tokenId = request.params.keyId.toLowerCase().trim()
-  const userAdress = request.user?.walletAddress
+  const userAddress = request.user?.walletAddress
   const subgraph = new SubgraphService()
+
   const [key, verifiers] = await Promise.all([
     subgraph.key(
       {
@@ -276,7 +286,7 @@ export const getTicket: RequestHandler = async (request, response) => {
     publicLockVersion: key.lock.version,
   }
 
-  if (!userAdress) {
+  if (!userAddress) {
     const keyData = await generateKeyMetadata(
       lockAddress,
       tokenId,
@@ -305,16 +315,16 @@ export const getTicket: RequestHandler = async (request, response) => {
 
   const isManager = key.lock.lockManagers
     .map((item: string) => item.toLowerCase().trim())
-    .includes(userAdress.toLowerCase().trim())
+    .includes(userAddress.toLowerCase().trim())
 
   const isVerifier = verifiers
     ?.map((item) => item.address.toLowerCase().trim())
-    .includes(userAdress.toLowerCase().trim())
+    .includes(userAddress.toLowerCase().trim())
 
   const includeProtected =
     isManager ||
     isVerifier ||
-    key.owner.toLowerCase() === userAdress.toLowerCase().trim()
+    key.owner.toLowerCase() === userAddress.toLowerCase().trim()
 
   const keyData = await generateKeyMetadata(
     lockAddress,

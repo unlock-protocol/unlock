@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const optimism: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   featured: true,
   publicProvider: 'https://mainnet.optimism.io',
   provider: 'https://rpc.unlock-protocol.com/10',
@@ -10,7 +11,6 @@ export const optimism: NetworkConfig = {
   id: 10,
   name: 'Optimism',
   chain: 'optimism',
-  blockTime: 8000,
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
@@ -34,25 +34,24 @@ export const optimism: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/optimism/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  baseCurrencySymbol: 'Eth',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
-    name: 'Eth',
-    symbol: 'Eth',
+    name: 'Ether',
+    symbol: 'ETH',
     decimals: 18,
     coingecko: 'ethereum',
   },
-  description: 'Layer 2 network. Cheaper transaction cost.',
+  description:
+    'Optimism is a Layer 2 Optimistic Rollup network designed to utilize the strong security guarantees of Ethereum while reducing its cost and latency.',
+  url: 'https://www.optimism.io/',
   isTestNetwork: false,
   maxFreeClaimCost: 10,
-  teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+    universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
   },
-  swapPurchaser: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+  swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
     symbol: 'WETH',
@@ -91,6 +90,16 @@ export const optimism: NetworkConfig = {
         id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0xF6a9138b4ebEd2AcF651Cbd40B45584B4c625e87',
+      },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0x1402D55BF0D6566ca8F569041000a8015b608632',
       },
       {
         id: HookType.PROMOCODE,

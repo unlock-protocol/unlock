@@ -22,26 +22,64 @@
  * can be picked up by the block explorer
  */
 const { ethers, run } = require('hardhat')
+const { networks } = require('@unlock-protocol/networks')
 const createLockCalldata = require('../test/helpers/createLockCalldata')
 const Locks = require('../test/fixtures/locks')
 
 async function main({
+  calldata,
+  unlockAddress,
+  lockVersion,
   publicLockAddress,
   proxyAdminAddress,
   transparentProxyAddress,
 }) {
-  const name = 'FIRST'
-  const args = [
-    Locks[name].expirationDuration,
-    ethers.constants.AddressZero,
-    Locks[name].keyPrice,
-    Locks[name].maxNumberOfKeys,
-    Locks[name].lockName,
-  ]
+  if (!calldata) {
+    const name = 'FIRST'
+    const args = [
+      Locks[name].expirationDuration,
+      ethers.constants.AddressZero,
+      Locks[name].keyPrice,
+      Locks[name].maxNumberOfKeys,
+      Locks[name].lockName,
+    ]
+    calldata = await createLockCalldata({ args })
+  }
 
-  const calldata = await createLockCalldata({ args })
+  const { chainId } = await ethers.provider.getNetwork()
+  if (transparentProxyAddress) {
+    const lock = await ethers.getContractAt(
+      'PublicLock',
+      transparentProxyAddress
+    )
+    unlockAddress = await lock.unlockProtocol()
+  } else {
+    ;({ unlockAddress } = networks[chainId])
+  }
 
-  console.log(calldata)
+  if (lockVersion) {
+    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    publicLockAddress = await unlock.publicLockImpls(lockVersion)
+  }
+
+  if (!publicLockAddress) {
+    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    publicLockAddress = await unlock.publicLockAddress()
+  }
+
+  if (!proxyAdminAddress) {
+    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+    proxyAdminAddress = await unlock.proxyAdminAddress()
+  }
+
+  console.table({
+    chainId,
+    unlockAddress,
+    lockVersion,
+    publicLockAddress,
+    proxyAdminAddress,
+    calldata,
+  })
 
   if (!transparentProxyAddress) {
     const TransparentProxy = await ethers.getContractFactory(

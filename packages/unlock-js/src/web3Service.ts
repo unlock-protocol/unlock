@@ -11,6 +11,15 @@ import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 
+import {
+  CurrencyAmount,
+  NativeCurrency,
+  Percent,
+  Token,
+  TradeType,
+} from '@uniswap/sdk-core'
+import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
+import { networks } from '@unlock-protocol/networks'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -106,7 +115,13 @@ export default class Web3Service extends UnlockService {
    * We use the block version
    * @return Promise<Lock>
    */
-  async getLock(address: string, network: number) {
+  async getLock(
+    address: string,
+    network: number,
+    options = {
+      fields: [] as string[],
+    }
+  ) {
     const networkConfig = this.networks[network]
     if (!(networkConfig && networkConfig.unlockAddress)) {
       throw new Error(
@@ -123,7 +138,8 @@ export default class Web3Service extends UnlockService {
 
     const lock = await version.getLock.bind(this)(
       address,
-      this.providerForNetwork(network)
+      this.providerForNetwork(network),
+      options
     )
     // Add the lock address
     lock.address = address
@@ -133,7 +149,7 @@ export default class Web3Service extends UnlockService {
     )
 
     const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
-      (d) => ethers.utils.getAddress(d.unlockAddress)
+      (d: any) => ethers.utils.getAddress(d.unlockAddress)
     )
     const isPreviousUnlockContract = previousDeployAddresses.includes(
       lock.unlockContractAddress
@@ -969,43 +985,159 @@ export default class Web3Service extends UnlockService {
   /**
    * Get signer for `Password hook contract`
    */
-  async getPasswordHookSigners(
-    params: {
-      lockAddress: string
-      contractAddress: string
-      network: number
-    },
-    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
-  ) {
+  async getPasswordHookSigners(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+  }) {
     const { lockAddress, contractAddress, network } = params ?? {}
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
       abi: passwordHookAbi,
-      signer,
     })
     return contract.signers(lockAddress)
+  }
+
+  async getUniswapRoute({
+    params: { tokenOut, amountOut, recipient, tokenIn, network },
+  }: {
+    params: {
+      tokenIn: Token | NativeCurrency
+      tokenOut: Token | NativeCurrency
+      amountOut: string
+      recipient: string
+      network: number
+    }
+  }) {
+    const provider: any = this.providerForNetwork(network)
+    const networkConfig = this.networks[network]
+    const router = new AlphaRouter({
+      chainId: network,
+      provider,
+    })
+    const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, amountOut)
+    const routeArgs = [
+      outputAmount,
+      tokenIn,
+      TradeType.EXACT_OUTPUT,
+      {
+        type: SwapType.UNIVERSAL_ROUTER,
+        recipient,
+        slippageTolerance: new Percent(15, 100),
+        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
+      },
+    ] as const
+    // call router
+    const swapResponse = await router.route(...routeArgs)
+
+    if (!swapResponse) {
+      throw new Error('No route found')
+    }
+
+    const {
+      methodParameters,
+      quote,
+      quoteGasAdjusted,
+      estimatedGasUsedUSD,
+      trade,
+    } = swapResponse
+    // parse quote as BigNumber
+    const amountInMax = utils.currencyAmountToBigNumber(quote)
+    const { calldata: swapCalldata, value, to: swapRouter } = methodParameters!
+    const ratio = 1 / Number(trade.executionPrice.toFixed(6))
+
+    const convertToQuoteToken = (value: string) => {
+      return Number(value) * ratio
+    }
+
+    return {
+      swapCalldata,
+      value,
+      amountInMax,
+      swapRouter:
+        // use hard coded router when available
+        networkConfig?.uniswapV3?.universalRouterAddress || swapRouter,
+      quote,
+      trade,
+      convertToQuoteToken,
+      quoteGasAdjusted,
+      estimatedGasUsedUSD,
+    }
+  }
+
+  async getTokenIdsFromTx({
+    params: { hash, network, lockAddress },
+  }: {
+    params: {
+      hash: string
+      network: number
+      lockAddress: string
+    }
+  }) {
+    const provider = this.providerForNetwork(network)
+    const lockContract = await this.getLockContract(lockAddress, provider)
+    const txReceipt = await provider.getTransactionReceipt(hash)
+    const parser = lockContract.interface
+    const events = txReceipt.logs.map((log) => {
+      if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Filter events not emitted by the lock contract
+      return parser.parseLog(log)
+    })
+
+    const purchaseItems = events.filter((event) => {
+      return event && event.name === 'Transfer'
+    })
+
+    if (purchaseItems.length) {
+      return purchaseItems.map((item) => item?.args?.tokenId?.toString())
+    }
+
+    const extendItems = events.filter((event) => {
+      return event && event.name === 'KeyExtended'
+    })
+
+    if (extendItems.length) {
+      return extendItems.map((item) => item?.args?.tokenId?.toString())
+    }
+    return null
+  }
+
+  async getGasRefundValue({
+    network,
+    lockAddress,
+  }: {
+    network: number
+    lockAddress: string
+  }) {
+    const provider = this.providerForNetwork(network)
+    const lockContract = await this.getLockContract(lockAddress, provider)
+    if (!lockContract.gasRefundValue) {
+      return '0'
+    }
+    const gasRefund = await lockContract.gasRefundValue()
+    let decimals = this.networks[network].nativeCurrency.decimals
+    const erc20Address = await lockContract.tokenAddress()
+    if (erc20Address !== ethers.constants.AddressZero) {
+      decimals = await getErc20Decimals(erc20Address, provider)
+    }
+    return ethers.utils.formatUnits(gasRefund, decimals)
   }
 
   /**
    * Get signer for `Password hook contract`
    */
-  async getDiscountHookValues(
-    params: {
-      lockAddress: string
-      contractAddress: string
-      network: number
-      signerAddress: string
-    },
-    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
-  ) {
+  async getDiscountHookValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
     const { lockAddress, contractAddress, network, signerAddress } =
       params ?? {}
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
       abi: discountCodeHookAbi,
-      signer,
     })
     const discountForSigner = await contract.discounts(
       lockAddress,

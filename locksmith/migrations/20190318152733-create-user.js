@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
@@ -6,11 +6,11 @@ module.exports = {
         type: Sequelize.STRING,
         primaryKey: true,
         allowNull: false,
-        unique: true
+        unique: true,
       },
       recoveryPhrase: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       passwordEncryptedPrivateKey: {
         type: Sequelize.JSON,
@@ -18,15 +18,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
-    });
+        type: Sequelize.DATE,
+      },
+    })
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
-  }
-};
+    return queryInterface.dropTable('Users')
+  },
+}

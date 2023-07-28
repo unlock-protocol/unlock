@@ -46,3 +46,35 @@ export const useGetPrice = ({
     }
   })
 }
+
+interface GetTotalChargesProps {
+  lockAddress: string
+  network: number
+  recipients: string[]
+  purchaseData: string[]
+  enabled?: boolean
+}
+export const useGetTotalCharges = ({
+  lockAddress,
+  network,
+  purchaseData,
+  recipients,
+  enabled = true,
+}: GetTotalChargesProps) => {
+  return useQuery(
+    ['getTotalChargesForLock', lockAddress, network],
+    async () => {
+      const pricing = await storage.getChargesForLock(
+        network,
+        lockAddress,
+        purchaseData,
+        recipients
+      )
+
+      return pricing.data
+    },
+    {
+      enabled,
+    }
+  )
+}

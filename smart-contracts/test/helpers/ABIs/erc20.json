@@ -1,9 +1,7 @@
 [
   {
     "constant": true,
-    "inputs": [
-      
-    ],
+    "inputs": [],
     "name": "name",
     "outputs": [
       {
@@ -40,9 +38,7 @@
   },
   {
     "constant": true,
-    "inputs": [
-      
-    ],
+    "inputs": [],
     "name": "totalSupply",
     "outputs": [
       {
@@ -83,9 +79,7 @@
   },
   {
     "constant": true,
-    "inputs": [
-      
-    ],
+    "inputs": [],
     "name": "decimals",
     "outputs": [
       {
@@ -118,9 +112,7 @@
   },
   {
     "constant": true,
-    "inputs": [
-      
-    ],
+    "inputs": [],
     "name": "symbol",
     "outputs": [
       {

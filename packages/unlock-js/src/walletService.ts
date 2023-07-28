@@ -1,9 +1,12 @@
 import { ethers } from 'ethers'
-import { Lock, WalletServiceCallback, TransactionOptions } from './types'
+import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
+import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import { signTransferAuthorization } from './erc20'
+import { CardPurchaser } from './CardPurchaser'
 
 interface CreateLockOptions {
   publicLockVersion?: number | string
@@ -13,6 +16,69 @@ interface CreateLockOptions {
   currencyContractAddress?: string | null
   keyPrice?: string | number
   creator?: string
+}
+
+interface PurchaseKeyParams {
+  lockAddress: string
+  owner?: string
+  keyPrice?: string
+  data?: string | null
+  erc20Address?: string
+  decimals?: number
+  recurringPayments?: number
+  referrer?: string
+  totalApproval?: string
+  keyManager?: string
+  swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface PurchaseKeysParams {
+  lockAddress: string
+  owners: string[]
+  keyPrices?: string[]
+  data?: string[] | null
+  erc20Address?: string
+  decimals?: number
+  referrers?: (string | null)[]
+  recurringPayments?: number[] | string[]
+  totalApproval?: string
+  keyManagers?: string[]
+  swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface SwapOptions {
+  srcTokenAddress?: string
+  amountInMax: ethers.BigNumberish
+  uniswapRouter: string
+  swapCallData: string
+  callData: string
+  value: ethers.BigNumberish
+}
+
+interface ExtendKeyParams {
+  lockAddress: string
+  tokenId?: string
+  owner?: string
+  referrer?: string
+  data?: string
+  decimals?: number
+  erc20Address?: string
+  keyPrice?: string
+  recurringPayment?: string | number
+  totalApproval?: string
+  swap?: Omit<SwapOptions, 'callData'>
+}
+
+interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
+  amount: string // this is in cents
+  lockAddress: string
+  network: number
+}
+
+interface PurchaseWithCardPurchaserParams {
+  transfer: any
+  purchase: any
+  callData: string
 }
 
 /**
@@ -32,7 +98,6 @@ export default class WalletService extends UnlockService {
     } else {
       this.signer = this.provider.getSigner(0)
     }
-
     const { chainId: networkId } = await this.provider.getNetwork()
 
     if (this.networkId !== networkId) {
@@ -182,17 +247,7 @@ export default class WalletService extends UnlockService {
    * @param {function} callback : callback invoked with the transaction hash
    */
   async purchaseKey(
-    params: {
-      lockAddress: string
-      owner?: string
-      keyPrice?: string
-      data?: string | null
-      erc20Address?: string
-      decimals?: number
-      recurringPayments?: number
-      referrer?: string
-      totalApproval?: string
-    },
+    params: PurchaseKeyParams,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
@@ -213,18 +268,7 @@ export default class WalletService extends UnlockService {
    * @param {function} callback : callback invoked with the transaction hash
    */
   async purchaseKeys(
-    params: {
-      lockAddress: string
-      owners?: string[]
-      keyPrices?: string[]
-      data?: string[] | null
-      erc20Address?: string
-      decimals?: number
-      referrers?: (string | null)[]
-      recurringPayments?: number[] | string[]
-      totalApproval?: string
-      keyManagers?: string[]
-    },
+    params: PurchaseKeysParams,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
@@ -262,25 +306,39 @@ export default class WalletService extends UnlockService {
    * @param {*} callback
    */
   async extendKey(
-    params: {
-      lockAddress: string
-      tokenId: string
-      referrer?: string
-      data?: string
-      decimals?: number
-      erc20Address?: string
-      keyPrice?: string
-      recurringPayment?: string | number
-      totalApproval?: string
-    },
+    params: ExtendKeyParams,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.extendKey) {
-      throw new Error('Lock version not supported')
+    const lockContract = await this.getLockContract(params.lockAddress)
+
+    if (!(params.tokenId || params.owner)) {
+      throw new Error('Missing tokenId or owner')
     }
+
+    // if the lock is not v10+, we need to purchase a key to extend it.
+    if (!version.extendKey) {
+      const owner = params.owner
+        ? params.owner
+        : lockContract.ownerOf(params.tokenId)
+
+      return this.purchaseKey.bind(this)(
+        {
+          owner,
+          ...params,
+        },
+        transactionOptions,
+        callback
+      )
+    }
+
+    if (!params.tokenId && params.owner) {
+      const id = await lockContract.tokenOfOwnerByIndex(params.owner, 0)
+      params.tokenId = id.toString()
+    }
+
     return version.extendKey.bind(this)(params, transactionOptions, callback)
   }
 
@@ -680,25 +738,6 @@ export default class WalletService extends UnlockService {
     return this.provider.send(method, [firstParam, secondParam])
   }
 
-  async signDataPersonal(
-    account: string,
-    data: any,
-    callback: WalletServiceCallback
-  ) {
-    try {
-      let method = 'eth_sign'
-      if (this.web3Provider || this.provider.isUnlock) {
-        method = 'personal_sign'
-      }
-      const signature = await this.signMessage(data, method)
-      callback(null, Buffer.from(signature).toString('base64'))
-    } catch (error) {
-      if (error instanceof Error) {
-        callback(error, null)
-      }
-    }
-  }
-
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
@@ -751,7 +790,11 @@ export default class WalletService extends UnlockService {
       throw new Error('Missing lockAddress')
     }
 
-    if (params.expirationDuration && params.expirationDuration < 1) {
+    if (
+      params.expirationDuration &&
+      typeof params.expirationDuration === 'number' &&
+      params.expirationDuration < 1
+    ) {
       throw new Error('Expiration duration must be greater than 0')
     }
 
@@ -966,25 +1009,215 @@ export default class WalletService extends UnlockService {
       network,
       address: contractAddress,
       abi: passwordHookAbi,
-      signer,
     })
-    const tx = await contract.setSigner(lockAddress, signerAddress)
+    const tx = await contract
+      .connect(this.signer)
+      .setSigner(lockAddress, signerAddress)
     return tx
+  }
+
+  /**
+   * Change lock manager for a specific key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setKeyManagerOf(
+    params: {
+      lockAddress: string
+      managerAddress: string
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.managerAddress) throw new Error('Missing managerAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setKeyManagerOf) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setKeyManagerOf.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Returns the ethers contract object for the UnlockSwapPurchaser contract
+   * @param param0
+   * @returns
+   */
+  getUnlockSwapPurchaserContract({
+    params: { network },
+  }: {
+    params: { network: number }
+  }) {
+    const networkConfig = this.networks[network]
+    const unlockSwapPurchaserAddress = networkConfig?.swapPurchaser
+    if (!unlockSwapPurchaserAddress) {
+      throw new Error('SwapPurchaser not available for this network')
+    }
+    const provider = this.providerForNetwork(network)
+    const swapPurchaserContract = new ethers.Contract(
+      unlockSwapPurchaserAddress,
+      UnlockSwapPurchaserABI,
+      provider
+    )
+    return swapPurchaserContract.connect(this.signer)
+  }
+
+  /**
+   * This yields the authorizations required to spend USDC on behalf of the user
+   * to buy a key from a specific lock. This is mostly used for the universal
+   * card support!
+   * @param param0
+   * @returns
+   */
+  async getAndSignAuthorizationsForTransferAndPurchase({
+    amount,
+    lockAddress,
+    network,
+  }: GetAndSignAuthorizationsForTransferAndPurchaseParams) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
+    }
+
+    let usdcContractAddress
+    if (networkConfig?.tokens) {
+      usdcContractAddress = networkConfig.tokens.find(
+        (token: any) => token.symbol === 'USDC'
+      )?.address
+    }
+
+    if (!usdcContractAddress) {
+      throw new Error('USDC not available for this network')
+    }
+
+    // first, get the authorization to spend USDC
+    // 6 decimals for USDC - 2 as amount is in cents
+    const value = ethers.utils.parseUnits(amount, 4).toHexString()
+    const now = Math.floor(new Date().getTime() / 1000)
+    const transferMessage = {
+      from: await this.signer.getAddress(),
+      to: ethers.utils.getAddress(cardPurchaserAddress),
+      value,
+      validAfter: 0,
+      validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
+      nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // 32 byte hex string
+    }
+
+    const transferSignature = await signTransferAuthorization(
+      usdcContractAddress,
+      transferMessage,
+      this.provider,
+      this.signer
+    )
+
+    // then, get the authorization to buy a key
+    const cardPurchaser = new CardPurchaser()
+    const { signature: purchaseSignature, message: purchaseMessage } =
+      await cardPurchaser.getPurchaseAuthorizationSignature(
+        network,
+        lockAddress,
+        this.signer
+      )
+
+    return {
+      transferSignature,
+      transferMessage,
+      purchaseSignature,
+      purchaseMessage,
+    }
+  }
+
+  /**
+   * Performs a purchase using the CardPurchaser contract
+   * @param param0
+   * @returns
+   */
+  async purchaseWithCardPurchaser({
+    transfer,
+    purchase,
+    callData,
+  }: PurchaseWithCardPurchaserParams) {
+    const networkConfig = this.networks[this.networkId]
+    const cardPurchaserAddress =
+      networkConfig?.universalCard?.cardPurchaserAddress
+
+    if (!cardPurchaserAddress) {
+      throw new Error('CardPurchaser not available for this network')
+    }
+
+    const cardPurchaser = new CardPurchaser()
+    return cardPurchaser.purchase(
+      this.networkId,
+      transfer,
+      purchase,
+      callData,
+      this.signer
+    )
+  }
+
+  /**
+   * Transfers a specific NFT  from one account to another
+   * @returns
+   */
+  async transferFrom(
+    params: {
+      keyOwner: string
+      to: string
+      tokenId: string
+      lockAddress: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.keyOwner) throw new Error('Missing keyOwner')
+    if (!params.to) throw new Error('Missing to')
+    if (!params.tokenId) throw new Error('Missing tokenId')
+
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.transferFrom) {
+      throw new Error('Lock version not supported')
+    }
+    return version.transferFrom.bind(this)(params, transactionOptions, callback)
+  }
+
+  async setGasRefund(
+    params: {
+      lockAddress: string
+      gasRefundValue: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setGasRefundValue) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setGasRefundValue.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
    * Set signer for `Discount code` hook contract
    */
-  async setDiscountCodeHookSigner(
-    params: {
-      lockAddress: string
-      signerAddress: string
-      contractAddress: string
-      network: number
-      discountPercentage: number
-    },
-    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
-  ) {
+  async setDiscountCodeHookSigner(params: {
+    lockAddress: string
+    signerAddress: string
+    contractAddress: string
+    network: number
+    discountPercentage: number
+  }) {
     const {
       lockAddress,
       signerAddress,
@@ -996,7 +1229,6 @@ export default class WalletService extends UnlockService {
       network,
       address: contractAddress,
       abi: discountCodeHookAbi,
-      signer,
     })
 
     const discountBasisPoints = discountPercentage * 100

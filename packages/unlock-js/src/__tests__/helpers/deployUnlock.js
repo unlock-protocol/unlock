@@ -1,4 +1,4 @@
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
 import * as abis from '@unlock-protocol/contracts'
 import fs from 'fs-extra'
 import path from 'path'
@@ -8,6 +8,7 @@ import path from 'path'
  * This will call the callback twice, once for each transaction
  */
 export default async (version, transactionOptions = {}, callback) => {
+  const { ethers } = hre
   const [signer] = await ethers.getSigners()
   const versionNumber = parseInt(version.replace('v', ''))
 

@@ -26,35 +26,35 @@ The PublicLock contract is highly programmable through the use of [hooks](https:
 Tales of Elatora's avatar contract uses a hook to airdrop a weapon to anyone who buys an avatar automatically! Here is the code:
 
 ```solidity
-  function onKeyPurchase(
-    address, /*from*/
-    address recipient,
-    address, /*referrer*/
-    bytes calldata, /*data*/
-    uint256, /*minKeyPrice*/
-    uint256 /*pricePaid*/
-  ) external {
-    if (msg.sender == _avatarLock) {
-      // If the sender is the avatar lock
-      IPublicLock avatar = IPublicLock(_avatarLock);
-      uint id = avatar.totalSupply();
+function onKeyPurchase(
+  address /*from*/,
+  address recipient,
+  address /*referrer*/,
+  bytes calldata /*data*/,
+  uint256 /*minKeyPrice*/,
+  uint256 /*pricePaid*/
+) external {
+  if (msg.sender == _avatarLock) {
+    // If the sender is the avatar lock
+    IPublicLock avatar = IPublicLock(_avatarLock);
+    uint id = avatar.totalSupply();
 
-      address[] memory recipients = new address[](1);
-      recipients[0] = recipient;
+    address[] memory recipients = new address[](1);
+    recipients[0] = recipient;
 
-      uint[] memory expirations = new uint[](1);
-      expirations[0] = type(uint256).max; // Not expiring!
+    uint[] memory expirations = new uint[](1);
+    expirations[0] = type(uint256).max; // Not expiring!
 
-      address[] memory managers = new address[](1);
-      managers[0] = recipient;
+    address[] memory managers = new address[](1);
+    managers[0] = recipient;
 
-      if (id % 2 == 0) {
-        IPublicLock(_buntaiLock).grantKeys(recipients, expirations, managers);
-      } else {
-        IPublicLock(_gundanLock).grantKeys(recipients, expirations, managers);
-      }
+    if (id % 2 == 0) {
+      IPublicLock(_buntaiLock).grantKeys(recipients, expirations, managers);
+    } else {
+      IPublicLock(_gundanLock).grantKeys(recipients, expirations, managers);
     }
   }
+}
 ```
 
 The Avatars are such that every even number is a Buntai and every odd is a Gundan. The hook calls the `grantKeys` function on the right contract based on that.
@@ -98,15 +98,15 @@ The hook implements its own `tokenURI` method.
 
 ```solidity
 function tokenURI(
-    address lockAddress,
-    address operator, // We could alter the rendering based on _who_ is viewing!
-    address owner,
-    uint256 keyId,
-    uint256 expirationTimestamp // a cool trick could be to render based on how far the expiration is
+  address lockAddress,
+  address operator, // We could alter the rendering based on _who_ is viewing!
+  address owner,
+  uint256 keyId,
+  uint256 expirationTimestamp // a cool trick could be to render based on how far the expiration is
 ) external view returns (string memory) {
-   // ...
-   // custom implementation
-   /// ...
+  // ...
+  // custom implementation
+  /// ...
 }
 ```
 

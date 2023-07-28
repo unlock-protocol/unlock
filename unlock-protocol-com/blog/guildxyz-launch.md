@@ -7,7 +7,7 @@ description: Unlock Protocol and Guild.xyz now seamlessly integrate, enabling th
 image: /images/blog/guildxyz-launch/unlock-protocol-guildxyz.gif
 ---
 
-[Guild.xyz](https://guild.xyz) creates token-gated access into online communities based on NFTs, NFT attributes, tokens, and more. Guild is a place for internet communities to come together and form guilds or groups to manage these private communities and start working together better. [Guild.xyz](http://Guild.xyz) is a project from [Agora](https://agora.xyz), which builds essential tools for internet communities. 
+[Guild.xyz](https://guild.xyz) creates token-gated access into online communities based on NFTs, NFT attributes, tokens, and more. Guild is a place for internet communities to come together and form guilds or groups to manage these private communities and start working together better. [Guild.xyz](http://Guild.xyz) is a project from [Agora](https://agora.xyz), which builds essential tools for internet communities.
 
 Today we’re announcing Guild now has **native support** for Unlock Protocol membership NFTs!
 
@@ -15,7 +15,7 @@ Today we’re announcing Guild now has **native support** for Unlock Protocol me
 
 With Guild, you can control access and create membership layers for your Discord or Telegram community, with more platforms coming soon.
 
-The Unlock integration with Guild is seamless, and you can set up token-gated roles for a community in minutes. (And the Guild UI is * chef’s kiss *.)
+The Unlock integration with Guild is seamless, and you can set up token-gated roles for a community in minutes. (And the Guild UI is _ chef’s kiss _.)
 
 ![unlock-protocol-guildxyz.gif](/images/blog/guildxyz-launch/unlock-protocol-guildxyz.gif)
 

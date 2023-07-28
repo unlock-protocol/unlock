@@ -1,6 +1,14 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 
+export const isProduction = ['prod'].includes(
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
+)
+
+export const isStaging = ['staging'].includes(
+  process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
+)
+
 const stagingConfig = {
   storage: {
     publicHost: 'https://staging-storage.unlock-protocol.com',
@@ -24,23 +32,23 @@ const prodConfig = {
   unlockApp: 'https://app.unlock-protocol.com',
 }
 
-const defaultConfig =
-  process.env.UNLOCK_ENV === 'prod' ? prodConfig : stagingConfig
+const defaultConfig = isProduction ? prodConfig : stagingConfig
 
 const config = {
+  isProduction,
   database: {
     logging: false,
     dialect: 'postgres',
   } as Options,
   stripeSecret: process.env.STRIPE_SECRET,
-  defaultNetwork: process.env.DEFAULT_NETWORK,
+  defaultNetwork: 1,
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   unlockApp: process.env.UNLOCK_APP || defaultConfig.unlockApp,
   logging: false,
   services: {
-    wedlocks: 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || defaultConfig.services.wedlocks,
     locksmith: defaultConfig.services.locksmith,
   },
   storage: {
@@ -53,6 +61,9 @@ const config = {
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
+  sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
+  requestTimeout: '30s',
+  databaseUrl: '',
 }
 
 if (process.env.ON_HEROKU) {
@@ -81,12 +92,8 @@ if (process.env.DATABASE_URL) {
   config.database.host = process.env.DB_HOSTNAME
 }
 
-if (process.env.UNLOCK_ENV === 'prod') {
-  config.services.wedlocks =
-    'https://wedlocks.unlock-protocol.com/.netlify/functions/handler'
-} else if (process.env.UNLOCK_ENV === 'staging') {
-  config.services.wedlocks =
-    'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler'
-}
+const connectionString = `postgresql://${config.database.username}:${config.database.password}@${config.database.host}/${config.database.database}`
+
+config.databaseUrl = connectionString
 
 export default config

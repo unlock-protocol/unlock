@@ -1,4 +1,3 @@
-import 'setimmediate' // polyfill to prevent jest from crashing
 import cors from 'cors'
 import express from 'express'
 import expressWinston from 'express-winston' // TODO: use a single logger!
@@ -7,8 +6,15 @@ import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
 import router from './routes'
+import { errorHandler } from './utils/middlewares/error'
+import timeout from 'connect-timeout'
+import config from './config/config'
 
 const app = express()
+
+if (config.requestTimeout) {
+  app.use(timeout(config.requestTimeout))
+}
 
 // Enable proxy support
 app.enable('trust proxy')
@@ -33,7 +39,11 @@ Sentry.init({
 })
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
-app.use(Sentry.Handlers.requestHandler())
+app.use(
+  Sentry.Handlers.requestHandler({
+    ip: true,
+  })
+)
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler())
 
@@ -77,5 +87,7 @@ app.use(
     ),
   })
 )
+
+app.use(errorHandler)
 
 export default app

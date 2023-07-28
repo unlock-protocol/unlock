@@ -6,17 +6,18 @@ const config = {
     dialect: 'postgres',
   },
   stripeSecret: process.env.STRIPE_SECRET,
-  defaultNetwork: process.env.DEFAULT_NETWORK,
+  defaultNetwork: 1,
   purchaserCredentials:
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   unlockApp: process.env.UNLOCK_APP || 'https://app.unlock-protocol.com',
   logging: false,
   services: {
-    wedlocks: 'http://localhost:1337',
+    wedlocks: process.env.WEDLOCKS || 'http://localhost:1337',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
+  requestTimeout: '25s',
 }
 
 if (process.env.ON_HEROKU) {

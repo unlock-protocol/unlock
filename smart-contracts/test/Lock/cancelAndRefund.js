@@ -16,7 +16,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
   let lock
   let lockFree
   const denominator = 10000
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const lockCreator = accounts[0]
 
   const keyOwners = [
@@ -127,7 +127,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
       const isValid = await lock.getHasValidKey(keyOwners[0])
       assert.equal(isValid, false)
     })
-    
+
     it('should retain ownership info', async () => {
       assert.equal(await lock.ownerOf(tokenIds[0]), keyOwners[0])
     })

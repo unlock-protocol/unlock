@@ -1,6 +1,5 @@
 const rulesToIgnore = [
   'import/extensions',
-  'jest/prefer-expect-assertions',
   'no-param-reassign',
   'import/no-extraneous-dependencies',
 ]

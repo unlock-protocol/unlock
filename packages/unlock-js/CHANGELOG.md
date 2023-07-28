@@ -1,9 +1,71 @@
 # Changes
 
-# 0.33.5
+# 0.39.1
 
 - add `getDiscountHookValues` to web3Service
 - add `setDiscountCodeHookSigner` to walletService
+
+# 0.39.0
+
+- Add support for setGasRefundValue to walletService and getGasRefundValue to web3Service
+
+# 0.38.2
+
+- Add `getTokenIdFromTx` method to retrieve the tokenId from a transaction hash
+
+# 0.38.1
+
+- Add `transferFrom` to walletService
+
+# 0.38.0
+
+- Add support for swap and purchase in key extension
+
+# 0.37.2
+
+- USDC on Polygon does not have a version function
+
+# 0.37.1
+
+- fixing swap and purchase
+
+# 0.37.0
+
+- adding support for actual purchase through CardPurchaser
+
+# 0.36.1
+
+- fix decimals for withdrawFromLock
+
+# 0.36.0
+
+- adding support functions for Transfer With Authorization
+- adding support for CardPurchaser contract
+
+# 0.35.5
+
+- Removed signDataPersonal
+
+# 0.35.4
+
+- Adding missing implementations for v13: addKeyGranter, isKeyGranter
+
+# 0.35.3
+
+- Expose more fields such as `symbol`, `maxKeysPerAddress` and `maxNumberOfKeys` in subgraph service for locks fields.
+
+# 0.35.1
+
+- fixed upgrade function
+
+# 0.35.0
+
+- Add support for `swap` param in `purchaseKey` and `purchaseKeys` for swap and pay.
+- add support for Unlock v12
+
+# 0.34.1
+
+- add support for `setKeyManagerOf` to walletService
 
 # 0.33.4
 

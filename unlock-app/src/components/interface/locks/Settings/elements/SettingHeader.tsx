@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Placeholder } from '@unlock-protocol/ui'
 import { IoMdClose as CloseIcon } from 'react-icons/io'
 import { useConfig } from '~/utils/withConfig'
 import { Lock } from '@unlock-protocol/types'
@@ -10,25 +10,6 @@ interface SettingHeaderProps {
   network: number
   isLoading: boolean
   lock: Lock
-}
-
-const SettingHeaderPlaceholder = () => {
-  return (
-    <div className="flex gap-4">
-      <div className="w-16 h-16 overflow-hidden bg-cover rounded-2xl bg-slate-200 animate-pulse"></div>
-      <div className="flex flex-col gap-1">
-        <div className="w-56 h-6 bg-slate-200 animate-pulse"></div>
-        <div className="flex gap-4">
-          <div className="w-16 h-8 bg-slate-200 animate-pulse rounded-2xl "></div>
-          <div className="flex items-center gap-3">
-            <span className="h-5 w-44 bg-slate-200 animate-pulse"></span>
-            <div className="w-5 h-5 bg-slate-200 animate-pulse"></div>
-            <div className="w-5 h-5 bg-slate-200 animate-pulse"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
 }
 
 export const SettingHeader = ({
@@ -54,7 +35,13 @@ export const SettingHeader = ({
         </Button>
       </Link>
       {isLoading ? (
-        <SettingHeaderPlaceholder />
+        <Placeholder.Root spaced="sm" className="w-full max-w-sm">
+          <Placeholder.Line size="md" />
+          <Placeholder.Root spaced="sm" inline>
+            <Placeholder.Line size="sm" width="sm" />
+            <Placeholder.Line size="sm" width="md" />
+          </Placeholder.Root>
+        </Placeholder.Root>
       ) : (
         <div className="flex gap-4">
           <div className="w-16 h-16 overflow-hidden bg-cover rounded-2xl">

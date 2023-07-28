@@ -1,9 +1,11 @@
-let walletService, web3Service, lockAddress, accounts, chainId
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+let walletService, web3Service, lockAddress, accounts, chainId
+
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    describe('extendKey', () => {
       let keyOwner
       let tokenId
       let transactionHash
@@ -19,7 +21,6 @@ export default ({ publicLockVersion }) =>
           lockAddress,
           owners: keyOwner,
         })
-
         // expire key
         await walletService.expireAndRefundFor({
           lockAddress,
@@ -42,12 +43,15 @@ export default ({ publicLockVersion }) =>
             transactionHash = hash
           }
         )
-
-        key = await web3Service.getKeyByLockForOwner(
-          lockAddress,
-          keyOwner,
-          chainId
-        )
+        const tokenIds = await web3Service.getTokenIdsFromTx({
+          params: {
+            network: chainId,
+            lockAddress,
+            hash: transactionHash,
+          },
+        })
+        tokenId = tokenIds.pop()
+        key = await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
       })
 
       it('should have yielded a transaction hash', () => {
@@ -63,5 +67,6 @@ export default ({ publicLockVersion }) =>
         const now = Math.floor(new Date().getTime() / 1000)
         expect(key.expiration).toBeGreaterThan(now)
       })
-    }
+    })
   }
+}

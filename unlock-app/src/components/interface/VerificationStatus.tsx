@@ -8,7 +8,6 @@ import { ToastHelper } from '../helpers/toast.helper'
 import { MembershipVerificationConfig } from '~/utils/verification'
 import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
-import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
@@ -16,6 +15,7 @@ import { useLocksmithGranterAddress, useTicket } from '~/hooks/useTicket'
 import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
+import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -104,7 +104,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
-  const router = useRouter()
+  const { openConnectModal } = useConnectModal()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
   const [showWarning, setShowWarning] = useState(false)
 
@@ -199,9 +199,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
         <Button
           onClick={(event) => {
             event.preventDefault()
-            router.push(
-              `/login?redirect=${encodeURIComponent(window.location.href)}`
-            )
+            openConnectModal()
           }}
           variant="primary"
         >

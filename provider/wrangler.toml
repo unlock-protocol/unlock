@@ -2,3 +2,5 @@ name = "rpc-provider"
 main = "src/index.ts"
 compatibility_date = "2022-08-17"
 
+[vars]
+SENTRY_DSN = "https://aaff7faa0a6a46378c53d2414ed9d7c4@o555569.ingest.sentry.io/4504487269171200"

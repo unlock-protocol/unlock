@@ -6,34 +6,61 @@ import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
-import { LandingPage } from './event/LandingPage'
+import { EventLandingPage } from './event/EventLandingPage'
+import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
+import { NextSeo } from 'next-seo'
+import { config } from '~/config/app'
 
 export const EventContent = () => {
   const router = useRouter()
-  if (!router.query) {
-    return <LoadingIcon></LoadingIcon>
-  }
 
-  const { lockAddress, network } = router.query
-  const showDetails = lockAddress && network
+  const { lockAddress, network, isLoading } =
+    useRouterQueryForLockAddressAndNetworks()
 
   const handleCreateEvent = () => {
-    router.push('/event/new')
+    router.push(
+      'https://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
+    )
   }
 
+  if (isLoading) {
+    return <LoadingIcon />
+  }
+
+  const showDetails = lockAddress && network
+
+  const locksmithEventOG = new URL(
+    `/v2/og/event/${network}/locks/${lockAddress}`,
+    config.locksmithHost
+  ).toString()
+
   return (
-    <AppLayout showLinks={false} authRequired={false} title="">
+    <AppLayout
+      showLinks={false}
+      authRequired={false}
+      logoRedirectUrl="/event"
+      logoImageUrl="/images/svg/logo-unlock-events.svg"
+    >
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-      {!showDetails && <LandingPage handleCreateEvent={handleCreateEvent} />}
-      {showDetails && (
-        <div className="md:w-3/4 m-auto">
-          <EventDetails
-            lockAddress={lockAddress.toString()}
-            network={parseInt(network.toString(), 10)}
-          />
-        </div>
+      <NextSeo
+        title="Unlock Events"
+        description="Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered."
+        openGraph={{
+          images: [
+            {
+              alt: 'Event',
+              url: locksmithEventOG,
+            },
+          ],
+        }}
+      />
+      {!showDetails && (
+        <EventLandingPage handleCreateEvent={handleCreateEvent} />
+      )}
+      {showDetails && lockAddress && network && (
+        <EventDetails lockAddress={lockAddress} network={network} />
       )}
     </AppLayout>
   )

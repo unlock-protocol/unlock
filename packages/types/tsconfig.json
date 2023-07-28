@@ -1,11 +1,8 @@
 {
-    "extends": "@unlock-protocol/tsconfig",
-    "compilerOptions": {
-        "declaration": true,
-        "outDir": "dist"
-    },
-    "exclude": [
-        "dist",
-        "node_modules"
-    ]
+  "extends": "@unlock-protocol/tsconfig",
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "dist"
+  },
+  "exclude": ["dist", "node_modules"]
 }

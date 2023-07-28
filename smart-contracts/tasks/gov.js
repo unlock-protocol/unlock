@@ -16,11 +16,11 @@ task('gov', 'Submit (and validate) a proposal to UDT Governor contract')
 task('gov:submit', 'Submit a proposal to UDT Governor contract')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
-  .setAction(async ({ proposal, govAddress }) => {
+  .setAction(async ({ proposal: proposalPath, govAddress }) => {
+    const { loadProposal } = require('../helpers/gov')
+    const proposal = await loadProposal(resolve(proposalPath))
     const submitProposal = require('../scripts/gov/submit')
-
-    const prop = require(resolve(proposal))
-    return await submitProposal({ ...prop, govAddress })
+    return await submitProposal({ proposal, govAddress })
   })
 
 task('gov:vote', 'Vote for a proposal on UDT Governor contract')
@@ -29,9 +29,8 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   .addOptionalParam('voter', 'The address of the voter')
   .setAction(async ({ proposal: proposalPath, voter, govAddress }) => {
     const voteProposal = require('../scripts/gov/vote')
-    const { getProposalId } = require('../helpers/gov')
-
-    const proposal = require(resolve(proposalPath))
+    const { loadProposal, getProposalId } = require('../helpers/gov')
+    const proposal = await loadProposal(resolve(proposalPath))
     const proposalId =
       proposal.proposalId || (await getProposalId(proposal, govAddress))
 
@@ -43,7 +42,8 @@ task('gov:queue', 'Queue proposal in timelock')
   .addParam('govAddress', 'The address of the Governor contract')
   .setAction(async ({ proposal: proposalPath, govAddress }) => {
     const queueProposal = require('../scripts/gov/queue')
-    const proposal = require(resolve(proposalPath))
+    const { loadProposal } = require('../helpers/gov')
+    const proposal = await loadProposal(resolve(proposalPath))
     return await queueProposal({ proposal, govAddress })
   })
 
@@ -52,7 +52,8 @@ task('gov:execute', 'Closing vote period and execute a proposal (local only)')
   .addParam('govAddress', 'The address of the Governor contract')
   .setAction(async ({ proposal: proposalPath, govAddress }) => {
     const executeProposal = require('../scripts/gov/execute')
-    const proposal = require(resolve(proposalPath))
+    const { loadProposal } = require('../helpers/gov')
+    const proposal = await loadProposal(resolve(proposalPath))
     return await executeProposal({ proposal, govAddress })
   })
 
@@ -69,8 +70,8 @@ task('gov:votes', 'Show votes for a specific proposal')
       getQuorum,
     } = require('../helpers/gov')
 
-    const proposal = require(resolve(proposalPath))
-
+    const { loadProposal } = require('../helpers/gov')
+    const proposal = await loadProposal(resolve(proposalPath))
     const proposalId =
       proposal.proposalId || (await getProposalId(proposal, govAddress))
     const { againstVotes, forVotes, abstainVotes } = await getProposalVotes(
@@ -106,9 +107,10 @@ task('gov:id', 'Retrieve proposal ID')
   .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
   .setAction(async ({ proposal }) => {
-    const { getProposalId } = require('../helpers/gov')
+    const { loadProposal } = require('../helpers/gov')
+    const prop = await loadProposal(resolve(proposal))
 
-    const prop = require(resolve(proposal))
+    const { getProposalId } = require('../helpers/gov')
     const proposalId = await getProposalId(prop)
 
     // eslint-disable-next-line no-console

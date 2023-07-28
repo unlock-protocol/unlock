@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { SOCIAL_LINKS } from '../constants'
-import LogoUrl from './../../assets/unlock-footer-logo.svg'
+import LogoUrl from './../../assets/unlock-footer-logo.svg?url'
 
 import { Icon } from '../Icon/Icon'
 import { Link } from '../Link/Link'
@@ -9,18 +9,18 @@ import {
   EmailSubscriptionFormProps,
 } from './EmailSubscriptionForm'
 
-interface FooterItem {
+export interface FooterItem {
   label: ReactNode
   url: string
   target?: HTMLAnchorElement['target']
 }
 
-interface MenuItemsProps {
+export interface MenuItemsProps {
   title: string
   options: FooterItem[]
 }
 
-type ActionsProps =
+export type ActionsProps =
   | {
       label: string
       url: string
@@ -30,7 +30,7 @@ type ActionsProps =
       onClick: () => void
     }
 
-interface FooterProps {
+export interface FooterProps {
   logo: {
     url: string // url of the website to redirect when logo is clicked
     src?: string // custom logo image
@@ -143,7 +143,7 @@ export const Footer = ({
       </div>
       <div className="flex flex-col w-full gap-6 py-4 border-t border-gray-400 md:gap-0 md:items-center md:justify-between md:flex-row">
         <span className="text-xs text-brand-dark">
-          &copy; Unlock Lab, {new Date().getFullYear()}
+          &copy; Unlock Labs, {new Date().getFullYear()}
         </span>
         <div className="flex gap-8">
           {privacyUrl && (

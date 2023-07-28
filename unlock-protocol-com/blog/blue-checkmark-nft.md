@@ -13,13 +13,10 @@ Yesterday, we deployed a lock which lets anyone purchase a Blue Checkmark. [Get 
 
 ![Dani, Verified](/images/blog/blue-checkmark-nft/dani-verified.png)
 
-
 At Unlock, we believe that Non Fungible Tokens can be badges to show "membership", and yes, the Twitter Checkmark is an identifier for, as Vitalik calls it _the blue checkmark class_.
 
 It turns out that Twitter's system is very much broken right now. Nobody knows what it really means to have a checkmark but we can't argue that in the days of deep fakes, having some kind of "labels" on the social web is a very useful pattern to identify people (or bots!) based on their affiliations for example.
 
-
 Our Blue Checkmark Lock is obviously a joke and a fun experiment, but it shows the power of NFT which exist "outside" of the space for which they're created. Using Non Fungible Tokens, rather than records on Twitter's databases means that other applications could re-use these labels and maybe expand them. For example, wouldn't it be useful for Github to show some of the tags from StackOverflow? I'd love [my RSS creds](https://stackoverflow.com/help/badges/4540/rss?userid=73987) to be visible on my Github profile!
-
 
 What other kinds of memberships would you want to see represented as Non Fungible Tokens?

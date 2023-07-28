@@ -1,5 +1,3 @@
 {
-  "extends": [
-    "@unlock-protocol/eslint-config/next"
-  ]
+  "extends": ["@unlock-protocol/eslint-config/next"]
 }

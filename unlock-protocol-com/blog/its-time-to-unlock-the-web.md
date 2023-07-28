@@ -6,6 +6,7 @@ publishDate: April 27, 2018
 description: The web needs a better business model — and we believe the technology is finally here to do it.
 image: /images/blog/itstimetounlocktheweb/unlocklegacy.jpg
 ---
+
 It’s become dangerously clear in the last few years that the business model we thought would support a vibrant, open web just isn’t going to work any more. Driving more and more eyeballs to ads was always considered ethically and morally borderline, but today, monetizing clickbait isn’t just economically fragile: it’s feeding our democracies with more misinformation and fake news.
 
 The thing is, plenty of publishers and creators have been ahead of the curve on this one, even if we don’t give them much credit for it. They knew that free content can, in fact, be very costly and that **real freedom comes from knowledge that’s expensive to produce**. They understood that when Stewart Brand famously said that [“information wants to be free”](https://en.wikipedia.org/wiki/Information_wants_to_be_free) he meant free as in “speech” (_libre_), not free as in “beer” (_gratis_).

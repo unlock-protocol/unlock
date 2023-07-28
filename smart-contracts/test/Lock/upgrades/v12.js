@@ -9,7 +9,7 @@ const keyPrice = ethers.utils.parseEther('0.01')
 const previousVersionNumber = 11
 const nextVersionNumber = 12
 
-describe('PublicLock upgrade v11 > v12', () => {
+describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`, () => {
   let lock
   let PublicLockLatest
   let PublicLockPast

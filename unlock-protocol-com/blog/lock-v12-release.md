@@ -7,17 +7,17 @@ description: New capabilities and improvements come to Unlock’s template smart
 image: /images/blog/lock-v12-release/lock-v12-release-share.png
 ---
 
-We are pleased to announce that a new version of the Unlock protocol template contract is now available. 
+We are pleased to announce that a new version of the Unlock protocol template contract is now available.
 
 ### Whats is the PublicLock template?
 
-In the Unlock Protocol, a “lock” is a standalone smart contract that can issue (mint) and manage membership NFTs (”keys”). Once deployed, each lock exists as an entirely separate and independent contract. Even if the protocol changes, lock contracts remain as they were when created. Since version 10, a lock can be [upgraded](./upgradeable-patterns) to a newer version which may change some of the features, without affecting the existing data. 
+In the Unlock Protocol, a “lock” is a standalone smart contract that can issue (mint) and manage membership NFTs (”keys”). Once deployed, each lock exists as an entirely separate and independent contract. Even if the protocol changes, lock contracts remain as they were when created. Since version 10, a lock can be [upgraded](./upgradeable-patterns) to a newer version which may change some of the features, without affecting the existing data.
 
 Each new lock created is a “copy” of the main template contract, called `PublicLock`. The template contract defines the inner workings and the logic (functions, variables, etc.) of each new lock contract that is deployed. The template evolves as new use cases and features are added to the protocol.
 
 ### What changed in v12?
 
-The version 12 contract consolidates the new features and approaches that were introduced in versions 10 and 11. The various features to set metadata (name, symbol and tokenURIs) have been regrouped into a single function called `setLockMetadata`. The configuration for a key’s default duration and available quantity (both per user and in aggregate) have also been grouped in a single `updateLockConfig` function. Additionally, several events are now fired when changes to the contract state are made — so those events are now easier to track using our [new subgraph](./subgraph-v2). Also, version 12 contains bug fixes related to locks with cancelled keys. 
+The version 12 contract consolidates the new features and approaches that were introduced in versions 10 and 11. The various features to set metadata (name, symbol and tokenURIs) have been regrouped into a single function called `setLockMetadata`. The configuration for a key’s default duration and available quantity (both per user and in aggregate) have also been grouped in a single `updateLockConfig` function. Additionally, several events are now fired when changes to the contract state are made — so those events are now easier to track using our [new subgraph](./subgraph-v2). Also, version 12 contains bug fixes related to locks with cancelled keys.
 
 You can see a full list of related [issues and pull requests](https://github.com/unlock-protocol/unlock/issues?q=+label%3A%22publicLock+v12%22+) here.
 

@@ -69,6 +69,9 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
 })
 
 const nextConfig = {
+  images: {
+    unoptimized: true,
+  },
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({

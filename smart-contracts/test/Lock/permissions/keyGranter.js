@@ -1,4 +1,9 @@
-const { deployLock, reverts, KEY_GRANTER_ROLE, LOCK_MANAGER_ROLE } = require('../../helpers')
+const {
+  deployLock,
+  reverts,
+  KEY_GRANTER_ROLE,
+  LOCK_MANAGER_ROLE,
+} = require('../../helpers')
 
 let lock
 let result
@@ -19,14 +24,16 @@ contract('Permissions / KeyGranter', (accounts) => {
     it('should add the lock creator to the keyGranter role', async () => {
       assert.equal(await lock.hasRole(KEY_GRANTER_ROLE, lockCreator), true)
       // lock creator is also added to the LockManager role by default
-      assert.equal(await lock.hasRole(LOCK_MANAGER_ROLE, lockCreator),true)
+      assert.equal(await lock.hasRole(LOCK_MANAGER_ROLE, lockCreator), true)
     })
   })
   describe('modifying permissions on an existing lock', () => {
     it('should allow a lockManager to add a KeyGranter', async () => {
       result = await lock.isLockManager(lockCreator)
       assert.equal(result, true)
-      await lock.grantRole(KEY_GRANTER_ROLE, newKeyGranter, { from: lockCreator })
+      await lock.grantRole(KEY_GRANTER_ROLE, newKeyGranter, {
+        from: lockCreator,
+      })
       result = await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter)
       assert.equal(result, true)
     })
@@ -42,10 +49,14 @@ contract('Permissions / KeyGranter', (accounts) => {
 
     it('should only allow a lockManager to remove a KeyGranter', async () => {
       await reverts(
-        lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter, { from: notAuthorized }),
+        lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter, {
+          from: notAuthorized,
+        }),
         `is missing role ${LOCK_MANAGER_ROLE}`
       )
-      await lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter, { from: lockCreator })
+      await lock.revokeRole(KEY_GRANTER_ROLE, newKeyGranter, {
+        from: lockCreator,
+      })
       result = await lock.hasRole(KEY_GRANTER_ROLE, newKeyGranter)
       assert.equal(result, false)
     })

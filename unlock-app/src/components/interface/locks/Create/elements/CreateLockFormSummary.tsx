@@ -88,7 +88,7 @@ export function AnimationContent({ status }: { status: DeployStatus }) {
 export const CreateLockFormSummary = ({
   formData,
   showStatus = false,
-  transactionHash,
+  transactionHash = '',
   lockAddress,
 }: CreateLockFormSummaryProps) => {
   const { network } = useAuth()
@@ -101,7 +101,7 @@ export const CreateLockFormSummary = ({
   const {
     name: networkName,
     explorer,
-    baseCurrencySymbol,
+    nativeCurrency,
   } = networks[formData.network!] ?? {}
 
   const transactionDetailUrl = transactionHash
@@ -118,6 +118,7 @@ export const CreateLockFormSummary = ({
       return getTransactionDetails(transactionHash!)
     },
     {
+      enabled: !!transactionHash,
       refetchInterval: 5000,
     }
   )
@@ -134,7 +135,7 @@ export const CreateLockFormSummary = ({
 
   const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]
-  const symbol = formData?.symbol || baseCurrencySymbol
+  const symbol = formData?.symbol || nativeCurrency.symbol
 
   const durationAsText = formData?.expirationDuration
     ? durationsAsTextFromSeconds(

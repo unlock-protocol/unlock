@@ -30,7 +30,7 @@ async function main({
   const [deployer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
-  // get unlock instance
+  // get unlock instance (TODO: do not use code version but packaged version)
   const Unlock = await ethers.getContractFactory('Unlock')
   const unlock = Unlock.attach(unlockAddress)
 
@@ -38,15 +38,34 @@ async function main({
     ? 'http://127.0.0.1:3000'
     : 'https://locksmith.unlock-protocol.com'
 
+  if (!estimatedGasForPurchase) {
+    estimatedGasForPurchase = 200000
+  }
+
+  const symbol = 'KEY'
+
+  if (!locksmithURI) {
+    locksmithURI = `${hostname}/api/key/${chainId}/`
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(`UNLOCK CONFIG > Configuring Unlock with the following:
+      - udtAddress: ${udtAddress}
+      - wethAddress: ${wethAddress}
+      - estimatedGasForPurchase: ${estimatedGasForPurchase}
+      - symbol: ${symbol}
+      - locksmithURI: ${locksmithURI}
+      - chainId: ${chainId}
+  `)
   // set lock config
   const tx = await unlock
     .connect(deployer)
     .configUnlock(
       udtAddress,
       wethAddress,
-      estimatedGasForPurchase || 200000,
-      'KEY',
-      locksmithURI || `${hostname}/api/key/${chainId}/`,
+      estimatedGasForPurchase,
+      symbol,
+      locksmithURI,
       chainId
     )
 

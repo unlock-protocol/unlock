@@ -6,7 +6,7 @@ import {
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
-import { GAS_COST } from '../utils/keyPricer'
+import { GAS_COST } from '../utils/constants'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
 import executeAndRetry from './retries'
@@ -52,7 +52,19 @@ export default class Dispatcher {
       Object.values(networks).map(async (network: any) => {
         try {
           const { wallet, provider } = await this.getPurchaser(network.id)
-          const balance = await provider.getBalance(wallet.address)
+
+          const balance: ethers.BigNumberish =
+            await Promise.race<ethers.BigNumberish>([
+              new Promise((resolve) =>
+                setTimeout(() => {
+                  console.log(
+                    `Could not retrieve balance on network ${network.id}`
+                  )
+                  resolve(0)
+                }, 3000)
+              ),
+              provider.getBalance(wallet.address),
+            ])
           return [
             network.id,
             {
@@ -62,7 +74,10 @@ export default class Dispatcher {
             },
           ]
         } catch (error) {
-          logger.error(error)
+          logger.error('Could not retrieve balance on network', {
+            network,
+            error,
+          })
           return [network.id, {}]
         }
       })
@@ -182,10 +197,11 @@ export default class Dispatcher {
       owner: string
       network: number
       data?: string
+      keyManager?: string
     },
-    cb?: any
+    cb?: (error: any, hash: string | null) => Promise<unknown>
   ) {
-    const { network, lockAddress, owner, data } = options
+    const { network, lockAddress, owner, data, keyManager } = options
     const walletService = new WalletService(networks)
 
     const { wallet, provider } = await this.getPurchaser(network)
@@ -200,6 +216,7 @@ export default class Dispatcher {
           lockAddress,
           owner,
           data,
+          keyManager,
         },
         { maxFeePerGas, maxPriorityFeePerGas },
         cb
@@ -219,7 +236,7 @@ export default class Dispatcher {
 
     await walletService.connect(provider, wallet)
 
-    const referrer = networks[network]?.teamMultisig
+    const referrer = networks[network]?.multisig
 
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
     return executeAndRetry(
@@ -264,6 +281,36 @@ export default class Dispatcher {
   }
 
   /**
+   * Extends an existing NFT membership
+   * @param lockAddress
+   * @param keyId
+   * @param network
+   * @param callback
+   */
+  async extendKey(
+    lockAddress: string,
+    keyId: number,
+    network: number,
+    data: string,
+    callback: (error: any, hash: string | null) => Promise<unknown>
+  ) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getPurchaser(network)
+    await walletService.connect(provider, wallet)
+    return executeAndRetry(
+      walletService.extendKey(
+        {
+          lockAddress,
+          tokenId: keyId.toString(),
+          data,
+        },
+        {} /** TransactionOptions */,
+        callback
+      )
+    )
+  }
+
+  /**
    * Called to grant key to user!
    */
   async grantKeys(
@@ -278,7 +325,7 @@ export default class Dispatcher {
 
     const transactionOptions = await getGasSettings(network)
 
-    const teamMultisig = networks[network]?.teamMultisig
+    const teamMultisig = networks[network]?.multisig
 
     const recipients: string[] = []
     const keyManagers: string[] = []
@@ -328,5 +375,52 @@ export default class Dispatcher {
         callback
       )
     )
+  }
+
+  async buyWithCardPurchaser(
+    network: number,
+    lockAddress: string,
+    recipients: string[],
+    transfer: any,
+    purchase: any,
+    purchaseData: any
+  ) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getPurchaser(network)
+    await walletService.connect(provider, wallet)
+
+    const referrer = networks[network]?.multisig
+    const teamMultisig = networks[network]?.multisig
+
+    // Construct the transaction
+    // ! We should ideally do that in  unlock-js!
+    const lockContract = await walletService.getLockContract(lockAddress)
+    const keyPrices = await Promise.all(
+      recipients.map(async (recipient, index) => {
+        return lockContract.purchasePriceFor(
+          recipient,
+          referrer,
+          purchaseData[index] || []
+        )
+      })
+    )
+
+    const transaction = await lockContract.populateTransaction.purchase(
+      keyPrices,
+      recipients,
+      recipients.map(() => referrer),
+      recipients.map(() => teamMultisig),
+      purchaseData
+    )
+
+    if (!transaction.data) {
+      throw new Error('Missing transaction data')
+    }
+
+    return walletService.purchaseWithCardPurchaser({
+      transfer,
+      purchase,
+      callData: transaction.data,
+    })
   }
 }

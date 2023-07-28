@@ -7,7 +7,7 @@ description: In an effort to provide more support to our community builders, mem
 image: /images/blog/launching-unlock-discount-tokens/decentralized-unlock.jpg
 ---
 
-In an effort to provide more support to our community builders, members and supporters, we're launching a retroactive funding campaign. The short and sweet is that we want to support the supporters of the protocol in a way that is decentralized and open to the entire community to vote to decide who gets rewarded for their *past* participation.
+In an effort to provide more support to our community builders, members and supporters, we're launching a retroactive funding campaign. The short and sweet is that we want to support the supporters of the protocol in a way that is decentralized and open to the entire community to vote to decide who gets rewarded for their _past_ participation.
 
 Unlock Inc is allocating 100 UDT each month to the community and, more importantly, we want to let the community decide who should get them, with the hopes that the community will allocate them to whoever had the biggest impact on the protocol in the previous month.
 

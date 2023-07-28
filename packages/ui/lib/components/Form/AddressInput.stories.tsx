@@ -8,6 +8,8 @@ import {
 } from '@tanstack/react-query'
 import { Button } from '../Button/Button'
 import { isAddressOrEns } from '~/utils'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { networks } from '@unlock-protocol/networks'
 
 const meta = {
   component: AddressInput,
@@ -43,6 +45,12 @@ export const Default: StoryFn<typeof meta> = () => {
     // on error code
   }
 
+  const onResolveName = async (address: string) => {
+    if (address.length === 0) return
+    const web3Service = new Web3Service(networks)
+    return await web3Service.resolveName(address)
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <form
@@ -68,6 +76,7 @@ export const Default: StoryFn<typeof meta> = () => {
                   onChange={(value: any) => {
                     setValue('address', value)
                   }}
+                  onResolveName={onResolveName}
                 />
               </>
             )

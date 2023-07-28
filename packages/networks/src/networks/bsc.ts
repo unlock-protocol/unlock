@@ -1,14 +1,14 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const bsc: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   publicProvider: 'https://bsc-dataseed.binance.org/',
   provider: 'https://rpc.unlock-protocol.com/56',
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   keyManagerAddress: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
   id: 56,
-  name: 'Binance Smart Chain',
+  name: 'BNB Chain',
   chain: 'bsc',
-  blockTime: 1000,
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
@@ -28,15 +28,14 @@ export const bsc: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'BNB',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'BNB',
     symbol: 'BNB',
     decimals: 18,
     coingecko: 'binancecoin',
+  },
+  uniswapV3: {
+    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   startBlock: 13079000, // 12368889,
   previousDeploys: [
@@ -45,10 +44,12 @@ export const bsc: NetworkConfig = {
       startBlock: 12396000,
     },
   ],
-  description: 'EVM compatible network. Cheaper transaction cost.',
+  description:
+    'The best-performing EVM compatible layer 1. Fully compatible tooling for EVM with up to 35 times of capacity.',
+  url: 'https://www.bnbchain.org/en',
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  teamMultisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
+  swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',
   tokens: [
     {
       name: 'Ethereum',
@@ -81,6 +82,16 @@ export const bsc: NetworkConfig = {
         id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x80E085D7591C61153D876b5171dc25756a7A3254',
+      },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xF6963D3c395A7914De77f771C2fC44b47B8379AC',
       },
     ],
   },

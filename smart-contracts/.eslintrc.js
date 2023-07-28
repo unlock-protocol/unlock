@@ -18,7 +18,6 @@ const rulesToIgnore = [
 
 module.exports = {
   extends: ['@unlock-protocol/eslint-config'],
-  plugins: ['mocha'],
   globals: {
     it: true,
     artifacts: true,
@@ -37,7 +36,6 @@ module.exports = {
     'import/extensions': 0,
     'no-unused-vars': 'error',
     'mocha/no-exclusive-tests': 'error',
-    'jest/prefer-expect-assertions': 0, // Smart contract tests are using mocha...
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }
     }, {}),

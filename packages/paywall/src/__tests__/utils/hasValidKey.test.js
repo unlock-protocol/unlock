@@ -1,3 +1,5 @@
+import { it, describe, expect } from 'vitest'
+
 import hasValidKey from '../../utils/hasValidKey'
 
 const jsonRpcEndpoint = 'https://eth-mainnet.alchemyapi.io/jsonrpc/'

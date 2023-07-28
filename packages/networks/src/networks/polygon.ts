@@ -1,6 +1,7 @@
 import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const polygon: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   featured: true,
   publicProvider: 'https://polygon-rpc.com/',
   provider: 'https://rpc.unlock-protocol.com/137',
@@ -8,9 +9,13 @@ export const polygon: NetworkConfig = {
   multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   serializerAddress: '0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9',
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
+  universalCard: {
+    cardPurchaserAddress: '0xAB355a589CFbBA7a21b91E5B6063bF822dCc0016',
+    stripeDestinationNetwork: 'polygon',
+    stripeDestinationCurrency: 'usdc',
+  },
   id: 137,
   name: 'Polygon',
-  blockTime: 1000,
   chain: 'polygon',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
@@ -18,6 +23,7 @@ export const polygon: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
     networkName: 'matic',
   },
+  url: 'https://polygon.technology/',
   explorer: {
     name: 'Polygonscan',
     urls: {
@@ -34,10 +40,6 @@ export const polygon: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/matic/${lockAddress}`,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'Matic',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'Matic',
     symbol: 'MATIC',
@@ -51,10 +53,10 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
-  description: 'Popular side chain network. Cheaper transaction cost.',
+  description:
+    "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",
   isTestNetwork: false,
   maxFreeClaimCost: 100,
-  teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   uniswapV2: {
     oracle: '0xE20ef269CE3ac2Af8107E706FC2Ec6E1831e3125',
   },
@@ -62,8 +64,9 @@ export const polygon: NetworkConfig = {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
+    universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },
-  swapPurchaser: '0x073C188bFFC8DE384eee702Cd590fB22a7BaE67B',
+  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
     symbol: 'WMATIC',
@@ -109,6 +112,16 @@ export const polygon: NetworkConfig = {
         id: HookType.PASSWORD,
         name: 'Password required',
         address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x64bDe27046F915e2BAb6339Ce4f737E34474344d',
+      },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xBfF080aB4600554c1e8c390d2e070CF423767B64',
       },
       {
         id: HookType.PROMOCODE,

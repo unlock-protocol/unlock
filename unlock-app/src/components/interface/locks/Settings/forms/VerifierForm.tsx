@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   AddressInput,
   Button,
+  Placeholder,
   isAddressOrEns,
   minifyAddress,
 } from '@unlock-protocol/ui'
@@ -11,6 +12,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { storage } from '~/config/storage'
+import { onResolveName } from '~/utils/resolvers'
 
 interface VerifierProps {
   address: string
@@ -40,14 +42,6 @@ interface VerifierFormDataProps {
   verifier: string
 }
 
-const VerifierCardPlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-4">
-      <div className="border border-gray-200 rounded-lg bg-slate-200 animate-pulse h-14"></div>
-    </div>
-  )
-}
-
 const VerifierCard = ({
   verifier,
   onDeleteVerifier,
@@ -71,14 +65,16 @@ const VerifierCard = ({
           </span>
         )}
       </div>
-      <Button
-        size="small"
-        variant="outlined-primary"
-        onClick={() => onDeleteVerifier(address)}
-        disabled={isLoading || disabled}
-      >
-        Remove
-      </Button>
+      {isCurrentAccount && (
+        <Button
+          size="small"
+          variant="outlined-primary"
+          onClick={() => onDeleteVerifier(address)}
+          disabled={isLoading || disabled}
+        >
+          Remove
+        </Button>
+      )}
     </div>
   )
 }
@@ -195,17 +191,25 @@ export const VerifierForm = ({
               : 'Only lock manager can access verifiers list.'}
           </span>
         )}
-        {(verifiers ?? [])?.map((verifier: VerifierProps) => (
-          <VerifierCard
-            verifier={verifier}
-            key={verifier.id}
-            onDeleteVerifier={onDeleteVerifier}
-            isLoading={deleteVerifierMutation.isLoading}
-            disabled={disabled}
-          />
-        ))}
+        {!noVerifiers && !isLoading && (
+          <div className="grid gap-1">
+            <span className="font-semibold">Verifiers</span>
+            <div className="grid gap-2">
+              {(verifiers ?? [])?.map((verifier: VerifierProps) => (
+                <VerifierCard
+                  verifier={verifier}
+                  key={verifier.id}
+                  onDeleteVerifier={onDeleteVerifier}
+                  isLoading={deleteVerifierMutation.isLoading}
+                  disabled={disabled}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         {(isLoadingItems || addVerifierMutation.isLoading) &&
-          !deleteVerifierMutation.isLoading && <VerifierCardPlaceholder />}
+          !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
       </div>
       {isManager && (
         <form
@@ -227,11 +231,12 @@ export const VerifierForm = ({
                       withIcon
                       value={verifier}
                       disabled={disabled}
-                      label="Add verifier, please enter the wallet address of theirs."
+                      label="To add a verifier, please enter their wallet address or ENS name"
                       autoComplete="off"
                       onChange={(value: any) => {
                         setValue('verifier', value)
                       }}
+                      onResolveName={onResolveName}
                     />
                   </>
                 )

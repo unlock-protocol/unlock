@@ -6,6 +6,7 @@ publishDate: March 20, 2019
 description: We’re building an open protocol to allow anyone on the web to earn money from their work. The possibilities are endless. Here are some of them.
 image: /images/blog/waystounlocktheweb/hero.jpg
 ---
+
 ![ocean scene](/images/blog/waystounlocktheweb/hero.jpg)
 
 Imagine if paying for content had been built into the web from day one.

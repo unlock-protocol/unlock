@@ -58,7 +58,7 @@ const CallToAction = ({ network }: { network: number }) => {
 
   if (!info) return null
 
-  const currency = config.networks[network!].baseCurrencySymbol
+  const currency = config.networks[network!].nativeCurrency.symbol
   const networkName = config.networks[network!].name
   return (
     <WarningBar>

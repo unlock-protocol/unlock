@@ -3,8 +3,7 @@ import {
   useAuthenticate,
 } from '~/hooks/useAuthenticate'
 import SvgComponents from '../svg'
-import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
-import { ConnectButton, CustomAnchorButton } from './Custom'
+import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
 import { MouseEventHandler, useState } from 'react'
 interface ConnectWalletProps {
@@ -29,14 +28,17 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
   return (
     <div className="space-y-6 divide-y divide-gray-100">
       <div className="grid gap-4 px-6">
-        <ConnectButton
-          icon={<SvgComponents.Metamask width={40} height={40} />}
-          highlight={recentlyUsedProvider === 'METAMASK'}
-          loading={isConnecting === 'METAMASK'}
-          onClick={createOnConnectHandler('METAMASK')}
-        >
-          Metamask
-        </ConnectButton>
+        {window.ethereum && (
+          <ConnectButton
+            icon={<SvgComponents.Metamask width={40} height={40} />}
+            highlight={recentlyUsedProvider === 'METAMASK'}
+            loading={isConnecting === 'METAMASK'}
+            onClick={createOnConnectHandler('METAMASK')}
+          >
+            Metamask
+          </ConnectButton>
+        )}
+
         <ConnectButton
           icon={<SvgComponents.WalletConnect width={40} height={40} />}
           highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
@@ -45,6 +47,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
         >
           WalletConnect
         </ConnectButton>
+
         <ConnectButton
           icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
           highlight={recentlyUsedProvider === 'COINBASE'}
@@ -53,14 +56,6 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
         >
           Coinbase Wallet
         </ConnectButton>
-        <CustomAnchorButton
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://ethereum.org/en/wallets/find-wallet/"
-        >
-          I don&apos;t have a wallet
-          <WalletIcon size={26} className="mr-2" />
-        </CustomAnchorButton>
       </div>
       <div className="grid gap-4 p-6">
         <div className="px-2 text-sm text-center text-gray-600">

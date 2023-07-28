@@ -1,4 +1,4 @@
-pragma solidity 0.5.17;
+pragma solidity 0.8.17;
 
 import "../interfaces/hooks/ILockKeyPurchaseHook.sol";
 import "../interfaces/hooks/ILockKeyCancelHook.sol";
@@ -27,12 +27,7 @@ contract TestEventHooks is
     uint pricePaid
   );
 
-  event OnKeyCancel(
-    address lock,
-    address operator,
-    address to,
-    uint refund
-  );
+  event OnKeyCancel(address lock, address operator, address to, uint refund);
 
   event OnKeyExtend(
     uint tokenId,
@@ -62,10 +57,7 @@ contract TestEventHooks is
   uint public discount;
   bool public isPurchaseSupported;
 
-  function configure(
-    bool _isPurchaseSupported,
-    uint _discount
-  ) public {
+  function configure(bool _isPurchaseSupported, uint _discount) public {
     isPurchaseSupported = _isPurchaseSupported;
     discount = _discount;
   }
@@ -97,13 +89,7 @@ contract TestEventHooks is
     address _keyManager,
     uint _expiration
   ) external {
-    emit OnKeyGranted(
-      _tokenId,
-      _from,
-      _recipient,
-      _keyManager,
-      _expiration
-    );
+    emit OnKeyGranted(_tokenId, _from, _recipient, _keyManager, _expiration);
   }
 
   function keyPurchasePrice(
@@ -112,10 +98,7 @@ contract TestEventHooks is
     address /*referrer*/,
     bytes calldata /*data*/
   ) external view returns (uint minKeyPrice) {
-    require(
-      isPurchaseSupported,
-      "PURCHASE_BLOCKED_BY_HOOK"
-    );
+    require(isPurchaseSupported, "PURCHASE_BLOCKED_BY_HOOK");
     minKeyPrice = IPublicLock(msg.sender).keyPrice();
     if (discount < minKeyPrice) {
       minKeyPrice -= discount;
@@ -124,11 +107,7 @@ contract TestEventHooks is
     }
   }
 
-  function onKeyCancel(
-    address _operator,
-    address _to,
-    uint _refund
-  ) external {
+  function onKeyCancel(address _operator, address _to, uint _refund) external {
     emit OnKeyCancel(msg.sender, _operator, _to, _refund);
   }
 
@@ -179,15 +158,12 @@ contract TestEventHooks is
     address _lockAddress,
     address, // operator
     uint, // tokenId
-    uint, // 
+    uint, //
     address _from,
     bool _hasValidKey
   ) external view returns (bool isValidKey) {
     // special members should always have access to content, even when the key is expired or they don't have one
-    if (
-      !_hasValidKey &&
-      (specialMembers[_lockAddress] == _from)
-    ) {
+    if (!_hasValidKey && (specialMembers[_lockAddress] == _from)) {
       isValidKey = true;
     } else {
       isValidKey = _hasValidKey;
@@ -207,8 +183,7 @@ contract TestEventHooks is
     string memory lockAddress = _lockAddress.address2Str();
     string memory operator = _operator.address2Str();
     string memory owner = _owner.address2Str();
-    string memory expirationTimestamp = _expirationTimestamp
-      .uint2Str();
+    string memory expirationTimestamp = _expirationTimestamp.uint2Str();
 
     if (_tokenId != 0) {
       tokenId = _tokenId.uint2Str();
@@ -220,13 +195,7 @@ contract TestEventHooks is
       string(
         abi.encodePacked(
           baseURI,
-          abi.encodePacked(
-            lockAddress,
-            "/",
-            owner,
-            "/",
-            operator
-          ),
+          abi.encodePacked(lockAddress, "/", owner, "/", operator),
           "/",
           expirationTimestamp,
           "/",

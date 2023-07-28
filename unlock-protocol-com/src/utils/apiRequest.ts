@@ -5,7 +5,29 @@ import { networks } from '@unlock-protocol/networks'
 async function getGdpForNetwork(provider, network) {
   const abi = ['function grossNetworkProduct() constant view returns (uint256)']
   const contract = new ethers.Contract(network.unlockAddress, abi, provider)
-  const gnp = await contract.grossNetworkProduct()
+  let gnp = await contract.grossNetworkProduct()
+  if (network.id === 1) {
+    // temp fix until we fix GNP on mainnet!
+    gnp = 0
+  }
+  if (network.previousDeploys) {
+    for (let i = 0; i < network.previousDeploys.length; i++) {
+      try {
+        const previousContract = new ethers.Contract(
+          network.previousDeploys[i].unlockAddress,
+          abi,
+          provider
+        )
+        const previousGnp = await previousContract.grossNetworkProduct()
+        gnp = previousGnp.add(gnp)
+      } catch (error) {
+        console.error(
+          `Error retrieving GNP for ${network.name} at ${network.previousDeploys[i].name}`,
+          error
+        )
+      }
+    }
+  }
   return gnp
 }
 

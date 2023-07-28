@@ -3,8 +3,10 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
-import { PaywallConfig } from '~/unlockTypes'
+import { Lock, PaywallConfig } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
+import { storage } from '~/config/storage'
+import { getCurrencySymbol } from './currency'
 
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
@@ -13,14 +15,18 @@ interface LockKeysAvailableLock {
   outstandingKeys?: number
 }
 
-interface LockFiatPricing {
-  [currency: string]: any
-}
 interface LockTickerSymbolLock {
+  network: number
+  address: string
   keyPrice?: string
   currencyContractAddress: string | null
   currencySymbol?: string
-  fiatPricing?: LockFiatPricing
+  fiatPricing?: Record<
+    string,
+    {
+      amount: number
+    }
+  >
 }
 
 interface LockPriceLock {
@@ -56,7 +62,7 @@ export const lockKeysAvailable = ({
 }
 
 export const lockTickerSymbol = (
-  lock: LockTickerSymbolLock,
+  lock: Partial<Lock>,
   baseCurrencySymbol: string
 ) => {
   if (lock.currencyContractAddress) {
@@ -81,16 +87,31 @@ export const userCanAffordKey = (
   return keyPrice <= _balance
 }
 
-export const convertedKeyPrice = (
+export const convertedKeyPrice = async (
   lock: LockTickerSymbolLock,
   numberOfRecipients = 1
 ) => {
-  const keyPrice = lock?.fiatPricing?.usd?.keyPrice
+  const { creditCardPrice, creditCardCurrency = 'usd' } = (
+    await storage.getLockSettings(lock.network, lock.address)
+  ).data
 
-  if (!keyPrice) {
+  const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
+
+  // priority to credit card price if present
+  if (creditCardPrice) {
+    // format price with selected currency for lock
+    const priceInUsd = `~${creditCardCurrencySymbol}${(
+      parseFloat(`${creditCardPrice / 100}`) * numberOfRecipients
+    ).toFixed(2)}`
+    return priceInUsd
+  }
+
+  const price = lock?.fiatPricing?.usd?.amount
+
+  if (!price) {
     return ''
   }
-  return `~$${((parseFloat(keyPrice) * numberOfRecipients) / 100).toFixed(2)}`
+  return `~$${(parseFloat(`${price}`) * numberOfRecipients).toFixed(2)}`
 }
 
 export const formattedKeyPrice = (

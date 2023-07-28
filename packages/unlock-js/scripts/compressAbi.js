@@ -11,8 +11,18 @@ const fs = require('fs')
 const path = require('path')
 const abis = require('@unlock-protocol/contracts')
 
-const unlockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11']
-const publicLockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11', 'v12']
+const unlockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11', 'v12']
+const publicLockVersions = [
+  'v4',
+  'v6',
+  'v7',
+  'v8',
+  'v9',
+  'v10',
+  'v11',
+  'v12',
+  'v13',
+]
 
 const data = {
   PublicLock: publicLockVersions.reduce(

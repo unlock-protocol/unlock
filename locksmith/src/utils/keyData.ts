@@ -5,6 +5,7 @@ import { Attribute } from '../types'
 
 interface Key {
   expiration?: number
+  minted?: number
   tokenId: string
   owner: string
 }
@@ -39,6 +40,8 @@ export default class KeyData {
         expiration: keyExpiration ? parseInt(keyExpiration) : undefined,
         tokenId: key?.tokenId,
         owner: key?.owner,
+        // @ts-expect-error Remove me once we have a createdAt in the Key object on the subgraph
+        minted: key?.createdAt ? parseInt(key.createdAt) : undefined,
       }
 
       return data
@@ -58,6 +61,13 @@ export default class KeyData {
         trait_type: 'Expiration',
         display_type: 'date',
         value: data.expiration,
+      })
+    }
+    if (data.minted) {
+      attributes.push({
+        trait_type: 'Minted',
+        display_type: 'date',
+        value: data.minted,
       })
     }
     return {

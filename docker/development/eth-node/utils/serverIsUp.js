@@ -17,7 +17,7 @@ const serverIsUp = (host, port, delay, maxAttempts) =>
         return socket.end() // clean-up
       })
 
-      socket.on('error', error => {
+      socket.on('error', (error) => {
         if (error.code === 'ECONNREFUSED') {
           if (attempts < maxAttempts) {
             attempts += 1

@@ -1,6 +1,4 @@
-import UnlockAssets from '@unlock-protocol/unlock-assets'
-
-const { SvgComponents } = UnlockAssets
+import { Images } from '@unlock-protocol/ui'
 
 export function PoweredByUnlock() {
   return (
@@ -12,11 +10,7 @@ export function PoweredByUnlock() {
         rel="noopener noreferrer"
       >
         Powered by{' '}
-        <SvgComponents.UnlockWordMark
-          className="fill-black"
-          fill="#000"
-          height={14}
-        />
+        <Images.UnlockWordMark className="fill-black" fill="#000" height={14} />
       </a>
     </div>
   )

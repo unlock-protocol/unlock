@@ -1,4 +1,4 @@
-import Stripe from 'stripe'
+import stripe from '../config/stripe'
 import { Op } from 'sequelize'
 import { ethereumAddress, UserCreationInput } from '../types'
 import * as Normalizer from '../utils/normalizer'
@@ -6,7 +6,6 @@ import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
 import { User, UserReference } from '../models'
 import RecoveryPhrase from '../utils/recoveryPhrase'
-import config from '../config/config'
 
 export const createUser = async (
   input: UserCreationInput
@@ -131,7 +130,7 @@ export const updatePaymentDetails = async (
   token: string,
   publicKey: string
 ): Promise<boolean> => {
-  const paymentProcessor = new PaymentProcessor(config.stripeSecret!)
+  const paymentProcessor = new PaymentProcessor()
   return await paymentProcessor.updateUserPaymentDetails(token, publicKey)
 }
 
@@ -167,10 +166,6 @@ export const getCards = async (emailAddress: string): Promise<any[]> => {
 export const getCardDetailsFromStripe = async (
   customer_id: any
 ): Promise<any[]> => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
   try {
     const cardsResponse = await stripe.customers.listPaymentMethods(
       customer_id,

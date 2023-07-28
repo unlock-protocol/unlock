@@ -1,7 +1,8 @@
-import { ethers } from 'hardhat'
+import hre from 'hardhat'
+import { it } from 'vitest'
+
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
-
 import { deployUnlock, deployTemplate } from '.'
 
 export const chainId = 31337
@@ -15,7 +16,7 @@ export const setupTest = async (unlockVersion) => {
   let web3Service
   let accounts
 
-  const [signer] = await ethers.getSigners()
+  const [signer] = await hre.ethers.getSigners()
   const ethersProvider = signer.provider
 
   // pass hardhat ethers provider

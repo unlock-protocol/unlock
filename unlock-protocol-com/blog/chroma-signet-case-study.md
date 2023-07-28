@@ -7,7 +7,7 @@ description: Chroma Signet uses Unlock Protocol and cuts six months off the dev 
 image: /images/blog/chroma-signet-unlock-case-study/chroma-signet-150h.png
 ---
 
-Chroma Signet uses blockchain-based solutions to provide supply chain transparency and provenance across the entire consumer packaged goods (CPG) industry. When brands want to share seed-to-sale supply chain data, in-depth ingredient details, or their brand story with customers, they choose Chroma Signet. 
+Chroma Signet uses blockchain-based solutions to provide supply chain transparency and provenance across the entire consumer packaged goods (CPG) industry. When brands want to share seed-to-sale supply chain data, in-depth ingredient details, or their brand story with customers, they choose Chroma Signet.
 
 When Chroma Signet wanted to enhance their offering and additionally offer a digital twin for every instance of every product in the supply chain in the form of an NFT, they went searching for a solution and found their answer in the Unlock Protocol.
 

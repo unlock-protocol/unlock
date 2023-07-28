@@ -31,6 +31,8 @@ import { IconType } from 'react-icons'
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
+import { useMetadata } from '~/hooks/metadata'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface ActionBarProps {
   lockAddress: string
@@ -54,6 +56,13 @@ export function downloadAsCSV(cols: string[], metadata: any[]) {
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+  const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
+    lockAddress,
+    network,
+  })
+
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
   const getMembers = async () => {
     const response = await storage.keys(
       network,
@@ -92,20 +101,24 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     },
   })
 
+  const isLoading = onDownloadMutation.isLoading || isLoadingMetadata
+
   return (
     <>
       <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-brand-ui-primary">Members</span>
+        <span className="text-xl font-bold text-brand-ui-primary">
+          {isEvent ? 'Attendees' : 'Members'}
+        </span>
         {isManager && (
           <div className="flex gap-2">
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={onDownloadMutation.isLoading}
+              disabled={isLoading}
               onClick={() => onDownloadMutation.mutate()}
             >
               <div className="flex items-center gap-2">
-                {onDownloadMutation?.isLoading ? (
+                {isLoading ? (
                   <SpinnerIcon
                     className="text-brand-ui-primary animate-spin"
                     size={16}
@@ -113,7 +126,9 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
                 ) : (
                   <CsvIcon className="text-brand-ui-primary" size={16} />
                 )}
-                <span className="text-brand-ui-primary">CSV</span>
+                <span className="text-brand-ui-primary">
+                  Download {isEvent ? 'attendee' : 'member'} list
+                </span>
               </div>
             </Button>
           </div>
@@ -123,35 +138,19 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   )
 }
 
-const PopoverItemPlaceholder = () => {
-  return (
-    <div className="flex w-full gap-2">
-      <div className="w-6 h-6 bg-slate-200 animate-pulse"></div>
-      <div className="flex flex-col w-full gap-2">
-        <div className="w-1/2 h-3 bg-slate-200 animate-pulse"></div>
-        <div className="w-full h-3 bg-slate-200 animate-pulse"></div>
-        <div className="w-1/3 h-3 bg-slate-200 animate-pulse"></div>
-      </div>
-    </div>
-  )
-}
-
 interface PopoverItemProps {
   label: string
   description?: string
   icon?: IconType
-  isLoading?: boolean
   onClick?: any
 }
 
 const PopoverItem = ({
   label,
   description,
-  isLoading,
   icon,
   ...props
 }: PopoverItemProps) => {
-  if (isLoading) return <PopoverItemPlaceholder />
   return (
     <>
       <div className="flex gap-3 cursor-pointer" {...props}>
@@ -198,7 +197,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
         <Popover className="relative">
           <>
             <Popover.Button className="outline-none ring-0">
-              <Button>
+              <Button as="div" role="button">
                 <div className="flex items-center gap-2">
                   <Icon icon={ToolsIcon} size={20} />
                   <span>Tools</span>
@@ -268,6 +267,11 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
 
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
   return (
     <>
       <div className="flex items-center justify-between">
@@ -279,18 +283,20 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
           />
         </Button>
         <div className="flex gap-3">
-          <Button
-            onClick={() => {
-              router.push(
-                `/locks/settings?address=${lockAddress}&network=${network}`
-              )
-            }}
-          >
-            <div className="flex items-center gap-2">
-              <Icon icon={SettingsIcon} size={20} />
-              <span>Settings</span>
-            </div>
-          </Button>
+          {isManager && (
+            <Button
+              onClick={() => {
+                router.push(
+                  `/locks/settings?address=${lockAddress}&network=${network}`
+                )
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Icon icon={SettingsIcon} size={20} />
+                <span>Settings</span>
+              </div>
+            </Button>
+          )}
 
           <ToolsMenu lockAddress={lockAddress} network={network} />
         </div>
@@ -325,7 +331,8 @@ export const ManageLockPage = () => {
 
   const lockNetwork = network ? parseInt(network as string) : undefined
 
-  const withoutParams = !lockAddress && !lockNetwork
+  const withoutParams =
+    !query?.lockAddress && !query.network && !(lockAddress && network)
 
   const { isManager, isLoading: isLoadingLockManager } = useLockManager({
     lockAddress,
@@ -349,13 +356,6 @@ export const ManageLockPage = () => {
     setAirdropKeys(!airdropKeys)
   }
 
-  const onLockPick = (lockAddress?: string, network?: string | number) => {
-    if (lockAddress && network) {
-      setLockAddress(lockAddress)
-      setNetwork(`${network}`)
-    }
-  }
-
   const LockSelection = () => {
     const resetLockSelection = () => {
       setLockAddress('')
@@ -371,13 +371,16 @@ export const ManageLockPage = () => {
         {withoutParams ? (
           <>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-              Select a lock to start manage it
+              Select a lock to start manage it s
             </h2>
             <div className="w-1/2">
               <Picker
                 userAddress={owner!}
-                onChange={(state) => {
-                  onLockPick(state.lockAddress, state.network)
+                onChange={({ lockAddress, network }) => {
+                  if (lockAddress && network) {
+                    setLockAddress(lockAddress)
+                    setNetwork(`${network}`)
+                  }
                 }}
               />
             </div>

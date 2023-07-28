@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { IconButton } from '../IconButton/IconButton'
 import { AiOutlineClose as CloseIcon } from 'react-icons/ai'
 
-interface DrawerProps {
+export interface DrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   children: React.ReactNode
@@ -34,7 +34,7 @@ export const Drawer = ({
     <Transition.Root show={isOpen} as={React.Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 overflow-y-auto"
+        className="fixed inset-0 overflow-y-auto z-[2]"
         onClose={setIsOpen}
       >
         <div className="absolute inset-0 overflow-y-auto">

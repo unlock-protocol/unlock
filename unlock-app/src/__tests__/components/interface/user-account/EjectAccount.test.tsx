@@ -6,7 +6,7 @@ import {
 } from '../../../../components/interface/user-account/EjectAccount'
 import { EncryptedPrivateKey } from '../../../../unlockTypes'
 import { vi } from 'vitest'
-import { describe, it } from 'vitest'
+import { describe, it, expect } from 'vitest'
 const passwordEncryptedPrivateKey: EncryptedPrivateKey = {
   address: '51eb293d64dd50182a087583bf5c94455b323a83',
   id: '0bace22e-28c9-4e58-a89f-2fd85ca3dcaf',

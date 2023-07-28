@@ -1,5 +1,6 @@
 import { networks } from '@unlock-protocol/networks'
 import { minifyAddress } from '@unlock-protocol/ui'
+import { config } from '~/config/app'
 import { storage } from '~/config/storage'
 
 export enum Platform {
@@ -7,9 +8,23 @@ export enum Platform {
   GOOGLE = 'google',
 }
 
+interface PassRequest {
+  signature: string
+  signatureMessage: string
+  pass: any
+  platform: Platform
+  templateId: string
+  chain: { network: number; name: string }
+  nft?: { contractAddress: string; tokenId: string }
+  barcode: { redirect: { url: string } }
+  image: string
+}
+
 export const isEthPassSupported = (network: number) => {
   // Check `chain` param on https://docs.ethpass.xyz/api-reference#tag/passes
-  return [1, 5, 137, 80001, 10, 69, 42161, 421611].indexOf(network) > -1
+  return [
+    1, 5, 137, 80001, 10, 56, 100, 69, 84531, 42161, 421611, 11155111,
+  ].includes(network)
 }
 
 export const applePass = (
@@ -59,6 +74,7 @@ export const createWalletPass = async ({
   name,
   image,
   signatureMessage,
+  signedByOwner,
   network,
   platform,
 }: any) => {
@@ -123,7 +139,7 @@ export const createWalletPass = async ({
     throw new Error('Failed to retrieve verification URL')
   }
 
-  const body = JSON.stringify({
+  const passRequest: PassRequest = {
     signature,
     signatureMessage,
     pass, // customize me?
@@ -143,15 +159,19 @@ export const createWalletPass = async ({
       },
     },
     image,
-  })
+  }
+  if (!signedByOwner) {
+    // If not signed by the owner, we can't send the nft to ethpass as it would verify ownership
+    delete passRequest.nft
+  }
 
   const opts = {
     method: 'POST',
     headers: {
-      'X-API-KEY': 'sk_live_kCHr20HfJ73Xe3Nfmzr83Yqe4qoxxDwX',
+      'X-API-KEY': config.ethPassApiKey,
       'Content-Type': 'application/json',
     },
-    body,
+    body: JSON.stringify(passRequest),
   }
   const response = await fetch('https://api.ethpass.xyz/api/v0/passes', opts)
   if (response.ok) {

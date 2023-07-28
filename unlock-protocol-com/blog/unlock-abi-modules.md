@@ -19,14 +19,6 @@ We verify all of our contract on Etherscan, which means that creators and consum
 
 3rd party developers can use our ABIs directly, but, for convenience, we also provide npm modules. These modules can be used inside of JavaScript applications, either front-end or backend! The module can also be used with other Solidity applications since several solidity developer tools, such as Truffle! For example, you can look at [our very own smart contract extensions](https://github.com/unlock-protocol/unlock/tree/master/smart-contract-extensions)!
 
-We publish each and every ABI as module for every version that we publish!
-
-- [unlock-abi-1](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-1)
-- [unlock-abi-2](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-2)
-- [unlock-abi-3](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-3)
-- [unlock-abi-4](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-4)
-- [unlock-abi-5](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-5)
-- [unlock-abi-6](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-6)
-- [unlock-abi-7](https://www.npmjs.com/package/@unlock-protocol/unlock-abi-7)
+We publish [each and every Unlock ABI](https://docs.unlock-protocol.com/core-protocol/) as module for every version that we publish: `@unlock-protocol/contracts`
 
 The Unlock contract, which is a factory contract will always deploy locks from the _latest_ version, but older locks are, by design, not updagradable by us, which means that they will remain on the version at the time of their deployment. You should use etherscan to inspect which version a specific lock uses!

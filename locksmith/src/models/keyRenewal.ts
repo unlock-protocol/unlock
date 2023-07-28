@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
 import { Model, DataTypes, CreationOptional } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class KeyRenewal extends Model<
   InferAttributes<KeyRenewal>,
@@ -26,7 +26,7 @@ KeyRenewal.init(
     },
     network: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     lockAddress: {
       type: DataTypes.STRING,

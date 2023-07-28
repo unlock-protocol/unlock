@@ -1,7 +1,7 @@
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button, Detail, Tooltip } from '@unlock-protocol/ui'
+import { Button, Detail, Placeholder, Tooltip } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import React, { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -15,6 +15,7 @@ import useLock from '~/hooks/useLock'
 import Link from 'next/link'
 import { storage } from '~/config/storage'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useLockManager } from '~/hooks/useLockManager'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
@@ -26,18 +27,6 @@ interface LockInfoCardProps {
   network: number
   loading?: boolean
   version?: string
-}
-
-const LockInfoCardPlaceholder = () => {
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="w-full h-10 animate-pulse bg-slate-200"></div>
-      <div className="flex gap-3">
-        <div className="w-40 h-4 animate-pulse bg-slate-200"></div>
-        <div className="w-5 h-4 animate-pulse bg-slate-200"></div>
-      </div>
-    </div>
-  )
 }
 
 const LockInfoCard = ({
@@ -61,7 +50,18 @@ const LockInfoCard = ({
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
 
-  if (loading) return <LockInfoCardPlaceholder />
+  if (loading)
+    return (
+      <>
+        <Placeholder.Root spaced="sm">
+          <Placeholder.Line size="lg" />
+          <Placeholder.Root inline>
+            <Placeholder.Line size="sm" width="md" />
+            <Placeholder.Line size="sm" width="sm" />
+          </Placeholder.Root>
+        </Placeholder.Root>
+      </>
+    )
 
   return (
     <>
@@ -106,6 +106,11 @@ export const LockDetailCard = ({
 
   const [isRecurring, setIsRecurring] = useState(false)
 
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
   const { isStripeConnected } = useLock({ address: lockAddress }, network)
 
   const getLock = async () => {
@@ -139,7 +144,7 @@ export const LockDetailCard = ({
 
   const { keyPrice, maxNumberOfKeys, expirationDuration } = lock ?? {}
 
-  const { name: networkName, baseCurrencySymbol } = networks?.[network] ?? {}
+  const { name: networkName, nativeCurrency } = networks?.[network] ?? {}
   const numbersOfKeys =
     maxNumberOfKeys === UNLIMITED_KEYS_COUNT ? 'Unlimited' : maxNumberOfKeys
   const duration =
@@ -151,7 +156,7 @@ export const LockDetailCard = ({
 
   const loading = isLoading || isLoadingStripe
 
-  const symbol = lock?.currencySymbol || baseCurrencySymbol
+  const symbol = lock?.currencySymbol || nativeCurrency.symbol
   const priceLabel =
     keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
 
@@ -183,15 +188,17 @@ export const LockDetailCard = ({
               network={network}
               loading={loading}
             />
-            <p className="p-2 text-sm leading-tight text-gray-500 ">
-              Need to update the icon? Use the{' '}
-              <Link
-                href={metadataPageUrl}
-                className="capitalize text-brand-ui-primary hover:underline"
-              >
-                Metadata Editor
-              </Link>
-            </p>
+            {isManager && (
+              <p className="p-2 text-sm leading-tight text-gray-500 ">
+                Need to update the icon? Use the{' '}
+                <Link
+                  href={metadataPageUrl}
+                  className="text-brand-ui-primary hover:underline"
+                >
+                  Metadata Editor
+                </Link>
+              </p>
+            )}
           </div>
           <LockInfoCard
             lockAddress={lockAddress}
@@ -229,7 +236,7 @@ export const LockDetailCard = ({
               </Detail>
             </div>
             <div className="py-2">
-              <Detail label="Key Quantity" loading={loading} inline>
+              <Detail label="Keys for sale" loading={loading} inline>
                 {numbersOfKeys}
               </Detail>
             </div>
@@ -252,17 +259,19 @@ export const LockDetailCard = ({
               </Detail>
             </div>
           </div>
-          <div className="mt-8">
-            <span className="text-sm leading-tight text-gray-500">
-              Need to update terms?{' '}
-              <Link href={settingsPageUrl}>
-                <span className="font-semibold cursor-pointer text-brand-ui-primary">
-                  Click here
-                </span>
-              </Link>{' '}
-              to update your contract&apos;s settings.
-            </span>
-          </div>
+          {isManager && (
+            <div className="mt-8">
+              <span className="text-sm leading-tight text-gray-500">
+                Need to update terms?{' '}
+                <Link href={settingsPageUrl}>
+                  <span className="font-semibold cursor-pointer text-brand-ui-primary">
+                    Click here
+                  </span>
+                </Link>{' '}
+                to update your contract&apos;s settings.
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </>

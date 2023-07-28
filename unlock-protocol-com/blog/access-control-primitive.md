@@ -24,7 +24,7 @@ Internet is of course, powered by dozens of protocols. Do you know about `TCP`, 
 
 # Access Control
 
-As we've seen above *identity is a core primitive of any operating system*, including Internet. It is critical to another very important primitive called **Access Control**. _This primitive enforces which user gets access to what resources inside of the Operating System._
+As we've seen above _identity is a core primitive of any operating system_, including Internet. It is critical to another very important primitive called **Access Control**. _This primitive enforces which user gets access to what resources inside of the Operating System._
 
 For example, on a computer or a server, when a user creates a file, they can determine which other user can access it. Each application has a set of users who can run it... etc.
 
@@ -35,7 +35,3 @@ Each creator, whether they [compose music](http://phunkstatik.zplit.eth.link/), 
 It is already happening: Google, Facebook, Apple and Amazon **already own identities** and the logical next step is to own access control. Apple made the first move with the AppStore, and later, Apple Pay. Google follows very closely. As more and more people get online and purchase access to content or software, these 2 companies increasingly act as gatekeepers. Creators don't decide of the terms: Apple and Google do. It's pretty clear that Facebook and Amazon are pursuing similar strategies, the first by building Libra, a currency for the internet, and the second one by owning more and more of the internet's underlying architecture, including users' wallets.
 
 At Unlock, we strongly believe that a _healthy web is one where creators are rewarded by their fans_, not through them. We also believe that the web needs to be decentralized to remain useful: permissionless innovation has been the main driver of progress and we do not want to accept a world where a few tech companies decide what content is "worth" being produced, distributed or even monetized!
-
-
-
-

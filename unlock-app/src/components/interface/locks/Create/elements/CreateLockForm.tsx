@@ -34,30 +34,31 @@ interface CreateLockFormProps {
 }
 
 export const networkDescription = (network: number) => {
-  if (network === 5) {
-    return (
-      <>
-        Need some Test ETH?{' '}
-        <a
-          className="underline"
-          target="_blank"
-          href="https://goerlifaucet.com/"
-          rel="noreferrer"
-        >
-          Check this faucet.
-        </a>
-      </>
-    )
-  } else if (network === 1) {
-    return (
-      <>
-        Gas fees on the <em>Ethereum mainnet are expensive</em>. Please consider
-        using another network like Polygon, Gnosis Chain or Optimism.
-      </>
-    )
-  } else {
-    return <>{networks[network!].description}</>
-  }
+  const { description, url, faucet, nativeCurrency } = networks[network!]
+  return (
+    <>
+      {description}{' '}
+      {url && (
+        <>
+          <Link className="underline" href={url} target="_blank">
+            Learn more
+          </Link>
+          .
+        </>
+      )}
+      {faucet && (
+        <>
+          {' '}
+          <br />
+          Need some {nativeCurrency.name} to pay for gas?{' '}
+          <Link className="underline" href={faucet} target="_blank">
+            Try this faucet
+          </Link>
+          .
+        </>
+      )}
+    </>
+  )
 }
 
 export const CreateLockForm = ({
@@ -100,7 +101,7 @@ export const CreateLockForm = ({
     control,
   })
 
-  const { baseCurrencySymbol } = networks[selectedNetwork!] ?? {}
+  const baseCurrencySymbol = networks[selectedNetwork!].nativeCurrency.symbol
 
   const getBalance = async () => {
     const balance = await getAccountTokenBalance(
@@ -258,7 +259,7 @@ export const CreateLockForm = ({
                 <Input
                   tabIndex={-1}
                   autoComplete="off"
-                  step={0.01}
+                  step="any"
                   disabled={unlimitedDuration}
                   {...register('expirationDuration', {
                     min: 0,
@@ -347,7 +348,7 @@ export const CreateLockForm = ({
                     type="number"
                     autoComplete="off"
                     placeholder="0.00"
-                    step={0.01}
+                    step="any"
                     disabled={isFree}
                     {...register('keyPrice', {
                       required: !isFree,

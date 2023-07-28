@@ -1,4 +1,5 @@
 import { getWeb3Provider } from '../providers'
+import { describe, it, expect } from 'vitest'
 
 describe('web3 provider creator', () => {
   it('getWeb3Provider returns the URL it is given', () => {

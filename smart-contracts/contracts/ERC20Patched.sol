@@ -16,28 +16,16 @@ library Roles {
   /**
    * @dev Give an account access to this role.
    */
-  function add(
-    Role storage role,
-    address account
-  ) internal {
-    require(
-      !has(role, account),
-      "Roles: account already has role"
-    );
+  function add(Role storage role, address account) internal {
+    require(!has(role, account), "Roles: account already has role");
     role.bearer[account] = true;
   }
 
   /**
    * @dev Remove an account's access to this role.
    */
-  function remove(
-    Role storage role,
-    address account
-  ) internal {
-    require(
-      has(role, account),
-      "Roles: account does not have role"
-    );
+  function remove(Role storage role, address account) internal {
+    require(has(role, account), "Roles: account does not have role");
     role.bearer[account] = false;
   }
 
@@ -49,10 +37,7 @@ library Roles {
     Role storage role,
     address account
   ) internal view returns (bool) {
-    require(
-      account != address(0),
-      "Roles: account is the zero address"
-    );
+    require(account != address(0), "Roles: account is the zero address");
     return role.bearer[account];
   }
 }
@@ -106,18 +91,13 @@ interface IERC20PermitUpgradeable {
    * Every successful call to {permit} increases ``owner``'s nonce by one. This
    * prevents a signature from being used multiple times.
    */
-  function nonces(
-    address owner
-  ) external view returns (uint256);
+  function nonces(address owner) external view returns (uint256);
 
   /**
    * @dev Returns the domain separator used in the encoding of the signature for {permit}, as defined by {EIP712}.
    */
   // solhint-disable-next-line func-name-mixedcase
-  function DOMAIN_SEPARATOR()
-    external
-    view
-    returns (bytes32);
+  function DOMAIN_SEPARATOR() external view returns (bytes32);
 }
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.2.0
@@ -134,9 +114,7 @@ interface IERC20Upgradeable {
   /**
    * @dev Returns the amount of tokens owned by `account`.
    */
-  function balanceOf(
-    address account
-  ) external view returns (uint256);
+  function balanceOf(address account) external view returns (uint256);
 
   /**
    * @dev Moves `amount` tokens from the caller's account to `recipient`.
@@ -145,10 +123,7 @@ interface IERC20Upgradeable {
    *
    * Emits a {Transfer} event.
    */
-  function transfer(
-    address recipient,
-    uint256 amount
-  ) external returns (bool);
+  function transfer(address recipient, uint256 amount) external returns (bool);
 
   /**
    * @dev Returns the remaining number of tokens that `spender` will be
@@ -176,10 +151,7 @@ interface IERC20Upgradeable {
    *
    * Emits an {Approval} event.
    */
-  function approve(
-    address spender,
-    uint256 amount
-  ) external returns (bool);
+  function approve(address spender, uint256 amount) external returns (bool);
 
   /**
    * @dev Moves `amount` tokens from `sender` to `recipient` using the
@@ -202,21 +174,13 @@ interface IERC20Upgradeable {
    *
    * Note that `value` may be zero.
    */
-  event Transfer(
-    address indexed from,
-    address indexed to,
-    uint256 value
-  );
+  event Transfer(address indexed from, address indexed to, uint256 value);
 
   /**
    * @dev Emitted when the allowance of a `spender` for an `owner` is set by
    * a call to {approve}. `value` is the new allowance.
    */
-  event Approval(
-    address indexed owner,
-    address indexed spender,
-    uint256 value
-  );
+  event Approval(address indexed owner, address indexed spender, uint256 value);
 }
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20MetadataUpgradeable.sol@v4.2.0
@@ -308,26 +272,13 @@ abstract contract ContextUpgradeable is Initializable {
     __Context_init_unchained();
   }
 
-  function __Context_init_unchained()
-    internal
-    initializer
-  {}
+  function __Context_init_unchained() internal initializer {}
 
-  function _msgSender()
-    internal
-    view
-    virtual
-    returns (address)
-  {
+  function _msgSender() internal view virtual returns (address) {
     return msg.sender;
   }
 
-  function _msgData()
-    internal
-    view
-    virtual
-    returns (bytes calldata)
-  {
+  function _msgData() internal view virtual returns (bytes calldata) {
     return msg.data;
   }
 
@@ -368,8 +319,7 @@ abstract contract ERC20Upgradeable is
 {
   mapping(address => uint256) private _balances;
 
-  mapping(address => mapping(address => uint256))
-    private _allowances;
+  mapping(address => mapping(address => uint256)) private _allowances;
 
   uint256 private _totalSupply;
 
@@ -429,26 +379,14 @@ abstract contract ERC20Upgradeable is
    * no way affects any of the arithmetic of the contract, including
    * {IERC20-balanceOf} and {IERC20-transfer}.
    */
-  function decimals()
-    public
-    view
-    virtual
-    override
-    returns (uint8)
-  {
+  function decimals() public view virtual override returns (uint8) {
     return 18;
   }
 
   /**
    * @dev See {IERC20-totalSupply}.
    */
-  function totalSupply()
-    public
-    view
-    virtual
-    override
-    returns (uint256)
-  {
+  function totalSupply() public view virtual override returns (uint256) {
     return _totalSupply;
   }
 
@@ -522,19 +460,13 @@ abstract contract ERC20Upgradeable is
   ) public virtual override returns (bool) {
     _transfer(sender, recipient, amount);
 
-    uint256 currentAllowance = _allowances[sender][
-      _msgSender()
-    ];
+    uint256 currentAllowance = _allowances[sender][_msgSender()];
     require(
       currentAllowance >= amount,
       "ERC20: transfer amount exceeds allowance"
     );
     unchecked {
-      _approve(
-        sender,
-        _msgSender(),
-        currentAllowance - amount
-      );
+      _approve(sender, _msgSender(), currentAllowance - amount);
     }
 
     return true;
@@ -582,19 +514,13 @@ abstract contract ERC20Upgradeable is
     address spender,
     uint256 subtractedValue
   ) public virtual returns (bool) {
-    uint256 currentAllowance = _allowances[_msgSender()][
-      spender
-    ];
+    uint256 currentAllowance = _allowances[_msgSender()][spender];
     require(
       currentAllowance >= subtractedValue,
       "ERC20: decreased allowance below zero"
     );
     unchecked {
-      _approve(
-        _msgSender(),
-        spender,
-        currentAllowance - subtractedValue
-      );
+      _approve(_msgSender(), spender, currentAllowance - subtractedValue);
     }
 
     return true;
@@ -619,22 +545,13 @@ abstract contract ERC20Upgradeable is
     address recipient,
     uint256 amount
   ) internal virtual {
-    require(
-      sender != address(0),
-      "ERC20: transfer from the zero address"
-    );
-    require(
-      recipient != address(0),
-      "ERC20: transfer to the zero address"
-    );
+    require(sender != address(0), "ERC20: transfer from the zero address");
+    require(recipient != address(0), "ERC20: transfer to the zero address");
 
     _beforeTokenTransfer(sender, recipient, amount);
 
     uint256 senderBalance = _balances[sender];
-    require(
-      senderBalance >= amount,
-      "ERC20: transfer amount exceeds balance"
-    );
+    require(senderBalance >= amount, "ERC20: transfer amount exceeds balance");
     unchecked {
       _balances[sender] = senderBalance - amount;
     }
@@ -654,14 +571,8 @@ abstract contract ERC20Upgradeable is
    *
    * - `account` cannot be the zero address.
    */
-  function _mint(
-    address account,
-    uint256 amount
-  ) internal virtual {
-    require(
-      account != address(0),
-      "ERC20: mint to the zero address"
-    );
+  function _mint(address account, uint256 amount) internal virtual {
+    require(account != address(0), "ERC20: mint to the zero address");
 
     _beforeTokenTransfer(address(0), account, amount);
 
@@ -683,22 +594,13 @@ abstract contract ERC20Upgradeable is
    * - `account` cannot be the zero address.
    * - `account` must have at least `amount` tokens.
    */
-  function _burn(
-    address account,
-    uint256 amount
-  ) internal virtual {
-    require(
-      account != address(0),
-      "ERC20: burn from the zero address"
-    );
+  function _burn(address account, uint256 amount) internal virtual {
+    require(account != address(0), "ERC20: burn from the zero address");
 
     _beforeTokenTransfer(account, address(0), amount);
 
     uint256 accountBalance = _balances[account];
-    require(
-      accountBalance >= amount,
-      "ERC20: burn amount exceeds balance"
-    );
+    require(accountBalance >= amount, "ERC20: burn amount exceeds balance");
     unchecked {
       _balances[account] = accountBalance - amount;
     }
@@ -727,14 +629,8 @@ abstract contract ERC20Upgradeable is
     address spender,
     uint256 amount
   ) internal virtual {
-    require(
-      owner != address(0),
-      "ERC20: approve from the zero address"
-    );
-    require(
-      spender != address(0),
-      "ERC20: approve to the zero address"
-    );
+    require(owner != address(0), "ERC20: approve from the zero address");
+    require(spender != address(0), "ERC20: approve to the zero address");
 
     _allowances[owner][spender] = amount;
     emit Approval(owner, spender, amount);
@@ -891,17 +787,11 @@ library ECDSAUpgradeable {
         0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E7357A4501DDFE92F46681B20A0,
       "ECDSA: invalid signature 's' value"
     );
-    require(
-      v == 27 || v == 28,
-      "ECDSA: invalid signature 'v' value"
-    );
+    require(v == 27 || v == 28, "ECDSA: invalid signature 'v' value");
 
     // If the signature is valid (and not malleable), return the signer address
     address signer = ecrecover(hash, v, r, s);
-    require(
-      signer != address(0),
-      "ECDSA: invalid signature"
-    );
+    require(signer != address(0), "ECDSA: invalid signature");
 
     return signer;
   }
@@ -920,12 +810,7 @@ library ECDSAUpgradeable {
     // 32 is the length in bytes of hash,
     // enforced by the type signature above
     return
-      keccak256(
-        abi.encodePacked(
-          "\x19Ethereum Signed Message:\n32",
-          hash
-        )
-      );
+      keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
   }
 
   /**
@@ -941,14 +826,7 @@ library ECDSAUpgradeable {
     bytes32 domainSeparator,
     bytes32 structHash
   ) internal pure returns (bytes32) {
-    return
-      keccak256(
-        abi.encodePacked(
-          "\x19\x01",
-          domainSeparator,
-          structHash
-        )
-      );
+    return keccak256(abi.encodePacked("\x19\x01", domainSeparator, structHash));
   }
 }
 
@@ -1026,11 +904,7 @@ abstract contract EIP712Upgradeable is Initializable {
   /**
    * @dev Returns the domain separator for the current chain.
    */
-  function _domainSeparatorV4()
-    internal
-    view
-    returns (bytes32)
-  {
+  function _domainSeparatorV4() internal view returns (bytes32) {
     return
       _buildDomainSeparator(
         _TYPE_HASH,
@@ -1074,11 +948,7 @@ abstract contract EIP712Upgradeable is Initializable {
   function _hashTypedDataV4(
     bytes32 structHash
   ) internal view virtual returns (bytes32) {
-    return
-      ECDSAUpgradeable.toTypedDataHash(
-        _domainSeparatorV4(),
-        structHash
-      );
+    return ECDSAUpgradeable.toTypedDataHash(_domainSeparatorV4(), structHash);
   }
 
   /**
@@ -1087,12 +957,7 @@ abstract contract EIP712Upgradeable is Initializable {
    * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
    * are a concern.
    */
-  function _EIP712NameHash()
-    internal
-    view
-    virtual
-    returns (bytes32)
-  {
+  function _EIP712NameHash() internal view virtual returns (bytes32) {
     return _HASHED_NAME;
   }
 
@@ -1102,12 +967,7 @@ abstract contract EIP712Upgradeable is Initializable {
    * NOTE: This function reads from storage by default, but can be redefined to return a constant value if gas costs
    * are a concern.
    */
-  function _EIP712VersionHash()
-    internal
-    view
-    virtual
-    returns (bytes32)
-  {
+  function _EIP712VersionHash() internal view virtual returns (bytes32) {
     return _HASHED_VERSION;
   }
 
@@ -1132,9 +992,7 @@ library CountersUpgradeable {
     uint256 _value; // default: 0
   }
 
-  function current(
-    Counter storage counter
-  ) internal view returns (uint256) {
+  function current(Counter storage counter) internal view returns (uint256) {
     return counter._value;
   }
 
@@ -1177,8 +1035,7 @@ abstract contract ERC20PermitUpgradeable is
 {
   using CountersUpgradeable for CountersUpgradeable.Counter;
 
-  mapping(address => CountersUpgradeable.Counter)
-    private _nonces;
+  mapping(address => CountersUpgradeable.Counter) private _nonces;
 
   // solhint-disable-next-line var-name-mixedcase
   bytes32 private _PERMIT_TYPEHASH;
@@ -1188,9 +1045,7 @@ abstract contract ERC20PermitUpgradeable is
    *
    * It's a good idea to use the same `name` that is defined as the ERC20 token name.
    */
-  function __ERC20Permit_init(
-    string memory name
-  ) internal initializer {
+  function __ERC20Permit_init(string memory name) internal initializer {
     __Context_init_unchained();
     __EIP712_init_unchained(name, "1");
     __ERC20Permit_init_unchained(name);
@@ -1204,9 +1059,7 @@ abstract contract ERC20PermitUpgradeable is
     );
   }
 
-  function __ERC20Permit_init_unsafe(
-    string memory name
-  ) internal {
+  function __ERC20Permit_init_unsafe(string memory name) internal {
     _PERMIT_TYPEHASH = keccak256(
       "Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)"
     );
@@ -1224,10 +1077,7 @@ abstract contract ERC20PermitUpgradeable is
     bytes32 r,
     bytes32 s
   ) public virtual override {
-    require(
-      block.timestamp <= deadline,
-      "ERC20Permit: expired deadline"
-    );
+    require(block.timestamp <= deadline, "ERC20Permit: expired deadline");
 
     bytes32 structHash = keccak256(
       abi.encode(
@@ -1242,16 +1092,8 @@ abstract contract ERC20PermitUpgradeable is
 
     bytes32 hash = _hashTypedDataV4(structHash);
 
-    address signer = ECDSAUpgradeable.recover(
-      hash,
-      v,
-      r,
-      s
-    );
-    require(
-      signer == owner,
-      "ERC20Permit: invalid signature"
-    );
+    address signer = ECDSAUpgradeable.recover(hash, v, r, s);
+    require(signer == owner, "ERC20Permit: invalid signature");
 
     _approve(owner, spender, value);
   }
@@ -1269,12 +1111,7 @@ abstract contract ERC20PermitUpgradeable is
    * @dev See {IERC20Permit-DOMAIN_SEPARATOR}.
    */
   // solhint-disable-next-line func-name-mixedcase
-  function DOMAIN_SEPARATOR()
-    external
-    view
-    override
-    returns (bytes32)
-  {
+  function DOMAIN_SEPARATOR() external view override returns (bytes32) {
     return _domainSeparatorV4();
   }
 
@@ -1283,12 +1120,8 @@ abstract contract ERC20PermitUpgradeable is
    *
    * _Available since v4.1._
    */
-  function _useNonce(
-    address owner
-  ) internal virtual returns (uint256 current) {
-    CountersUpgradeable.Counter storage nonce = _nonces[
-      owner
-    ];
+  function _useNonce(address owner) internal virtual returns (uint256 current) {
+    CountersUpgradeable.Counter storage nonce = _nonces[owner];
     current = nonce.current();
     nonce.increment();
   }
@@ -1305,20 +1138,14 @@ library MathUpgradeable {
   /**
    * @dev Returns the largest of two numbers.
    */
-  function max(
-    uint256 a,
-    uint256 b
-  ) internal pure returns (uint256) {
+  function max(uint256 a, uint256 b) internal pure returns (uint256) {
     return a >= b ? a : b;
   }
 
   /**
    * @dev Returns the smallest of two numbers.
    */
-  function min(
-    uint256 a,
-    uint256 b
-  ) internal pure returns (uint256) {
+  function min(uint256 a, uint256 b) internal pure returns (uint256) {
     return a < b ? a : b;
   }
 
@@ -1326,10 +1153,7 @@ library MathUpgradeable {
    * @dev Returns the average of two numbers. The result is rounded towards
    * zero.
    */
-  function average(
-    uint256 a,
-    uint256 b
-  ) internal pure returns (uint256) {
+  function average(uint256 a, uint256 b) internal pure returns (uint256) {
     // (a + b) / 2 can overflow, so we distribute.
     return (a / 2) + (b / 2) + (((a % 2) + (b % 2)) / 2);
   }
@@ -1340,10 +1164,7 @@ library MathUpgradeable {
    * This differs from standard division with `/` in that it rounds up instead
    * of rounding down.
    */
-  function ceilDiv(
-    uint256 a,
-    uint256 b
-  ) internal pure returns (uint256) {
+  function ceilDiv(uint256 a, uint256 b) internal pure returns (uint256) {
     // (a + b - 1) / b can overflow on addition, so we distribute.
     return a / b + (a % b == 0 ? 0 : 1);
   }
@@ -1377,9 +1198,7 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 224 bits
    */
-  function toUint224(
-    uint256 value
-  ) internal pure returns (uint224) {
+  function toUint224(uint256 value) internal pure returns (uint224) {
     require(
       value <= type(uint224).max,
       "SafeCast: value doesn't fit in 224 bits"
@@ -1397,9 +1216,7 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 128 bits
    */
-  function toUint128(
-    uint256 value
-  ) internal pure returns (uint128) {
+  function toUint128(uint256 value) internal pure returns (uint128) {
     require(
       value <= type(uint128).max,
       "SafeCast: value doesn't fit in 128 bits"
@@ -1417,9 +1234,7 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 96 bits
    */
-  function toUint96(
-    uint256 value
-  ) internal pure returns (uint96) {
+  function toUint96(uint256 value) internal pure returns (uint96) {
     require(
       value <= type(uint96).max,
       "SafeCast: value doesn't fit in 96 bits"
@@ -1437,9 +1252,7 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 64 bits
    */
-  function toUint64(
-    uint256 value
-  ) internal pure returns (uint64) {
+  function toUint64(uint256 value) internal pure returns (uint64) {
     require(
       value <= type(uint64).max,
       "SafeCast: value doesn't fit in 64 bits"
@@ -1457,9 +1270,7 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 32 bits
    */
-  function toUint32(
-    uint256 value
-  ) internal pure returns (uint32) {
+  function toUint32(uint256 value) internal pure returns (uint32) {
     require(
       value <= type(uint32).max,
       "SafeCast: value doesn't fit in 32 bits"
@@ -1477,9 +1288,7 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 16 bits
    */
-  function toUint16(
-    uint256 value
-  ) internal pure returns (uint16) {
+  function toUint16(uint256 value) internal pure returns (uint16) {
     require(
       value <= type(uint16).max,
       "SafeCast: value doesn't fit in 16 bits"
@@ -1497,13 +1306,8 @@ library SafeCastUpgradeable {
    *
    * - input must fit into 8 bits.
    */
-  function toUint8(
-    uint256 value
-  ) internal pure returns (uint8) {
-    require(
-      value <= type(uint8).max,
-      "SafeCast: value doesn't fit in 8 bits"
-    );
+  function toUint8(uint256 value) internal pure returns (uint8) {
+    require(value <= type(uint8).max, "SafeCast: value doesn't fit in 8 bits");
     return uint8(value);
   }
 
@@ -1514,9 +1318,7 @@ library SafeCastUpgradeable {
    *
    * - input must be greater than or equal to 0.
    */
-  function toUint256(
-    int256 value
-  ) internal pure returns (uint256) {
+  function toUint256(int256 value) internal pure returns (uint256) {
     require(value >= 0, "SafeCast: value must be positive");
     return uint256(value);
   }
@@ -1534,12 +1336,9 @@ library SafeCastUpgradeable {
    *
    * _Available since v3.1._
    */
-  function toInt128(
-    int256 value
-  ) internal pure returns (int128) {
+  function toInt128(int256 value) internal pure returns (int128) {
     require(
-      value >= type(int128).min &&
-        value <= type(int128).max,
+      value >= type(int128).min && value <= type(int128).max,
       "SafeCast: value doesn't fit in 128 bits"
     );
     return int128(value);
@@ -1558,9 +1357,7 @@ library SafeCastUpgradeable {
    *
    * _Available since v3.1._
    */
-  function toInt64(
-    int256 value
-  ) internal pure returns (int64) {
+  function toInt64(int256 value) internal pure returns (int64) {
     require(
       value >= type(int64).min && value <= type(int64).max,
       "SafeCast: value doesn't fit in 64 bits"
@@ -1581,9 +1378,7 @@ library SafeCastUpgradeable {
    *
    * _Available since v3.1._
    */
-  function toInt32(
-    int256 value
-  ) internal pure returns (int32) {
+  function toInt32(int256 value) internal pure returns (int32) {
     require(
       value >= type(int32).min && value <= type(int32).max,
       "SafeCast: value doesn't fit in 32 bits"
@@ -1604,9 +1399,7 @@ library SafeCastUpgradeable {
    *
    * _Available since v3.1._
    */
-  function toInt16(
-    int256 value
-  ) internal pure returns (int16) {
+  function toInt16(int256 value) internal pure returns (int16) {
     require(
       value >= type(int16).min && value <= type(int16).max,
       "SafeCast: value doesn't fit in 16 bits"
@@ -1627,9 +1420,7 @@ library SafeCastUpgradeable {
    *
    * _Available since v3.1._
    */
-  function toInt8(
-    int256 value
-  ) internal pure returns (int8) {
+  function toInt8(int256 value) internal pure returns (int8) {
     require(
       value >= type(int8).min && value <= type(int8).max,
       "SafeCast: value doesn't fit in 8 bits"
@@ -1644,9 +1435,7 @@ library SafeCastUpgradeable {
    *
    * - input must be less than or equal to maxInt256.
    */
-  function toInt256(
-    uint256 value
-  ) internal pure returns (int256) {
+  function toInt256(uint256 value) internal pure returns (int256) {
     // Note: Unsafe cast below is okay because `type(int256).max` is guaranteed to be positive
     require(
       value <= uint256(type(int256).max),
@@ -1679,25 +1468,16 @@ abstract contract ERC20VotesUpgradeable is
   Initializable,
   ERC20PermitUpgradeable
 {
-  function __ERC20Votes_init_unchained()
-    internal
-    initializer
-  {}
+  function __ERC20Votes_init_unchained() internal initializer {}
 
   function __ERC20Votes_init_unsafe() internal {
     if (
       _totalSupplyCheckpoints.length == 0 ||
-      _totalSupplyCheckpoints[
-        _totalSupplyCheckpoints.length - 1
-      ].votes !=
+      _totalSupplyCheckpoints[_totalSupplyCheckpoints.length - 1].votes !=
       totalSupply()
     ) {
       delete _totalSupplyCheckpoints;
-      _writeCheckpoint(
-        _totalSupplyCheckpoints,
-        _add,
-        totalSupply()
-      );
+      _writeCheckpoint(_totalSupplyCheckpoints, _add, totalSupply());
     }
   }
 
@@ -1707,9 +1487,7 @@ abstract contract ERC20VotesUpgradeable is
   }
 
   bytes32 private constant _DELEGATION_TYPEHASH =
-    keccak256(
-      "Delegation(address delegatee,uint256 nonce,uint256 expiry)"
-    );
+    keccak256("Delegation(address delegatee,uint256 nonce,uint256 expiry)");
 
   mapping(address => address) private _delegates;
   mapping(address => Checkpoint[]) private _checkpoints;
@@ -1749,30 +1527,22 @@ abstract contract ERC20VotesUpgradeable is
   function numCheckpoints(
     address account
   ) public view virtual returns (uint32) {
-    return
-      SafeCastUpgradeable.toUint32(
-        _checkpoints[account].length
-      );
+    return SafeCastUpgradeable.toUint32(_checkpoints[account].length);
   }
 
   /**
    * @dev Get the address `account` is currently delegating to.
    */
-  function delegates(
-    address account
-  ) public view virtual returns (address) {
+  function delegates(address account) public view virtual returns (address) {
     return _delegates[account];
   }
 
   /**
    * @dev Gets the current votes balance for `account`
    */
-  function getVotes(
-    address account
-  ) public view returns (uint256) {
+  function getVotes(address account) public view returns (uint256) {
     uint256 pos = _checkpoints[account].length;
-    return
-      pos == 0 ? 0 : _checkpoints[account][pos - 1].votes;
+    return pos == 0 ? 0 : _checkpoints[account][pos - 1].votes;
   }
 
   /**
@@ -1786,15 +1556,8 @@ abstract contract ERC20VotesUpgradeable is
     address account,
     uint256 blockNumber
   ) public view returns (uint256) {
-    require(
-      blockNumber < block.number,
-      "ERC20Votes: block not yet mined"
-    );
-    return
-      _checkpointsLookup(
-        _checkpoints[account],
-        blockNumber
-      );
+    require(blockNumber < block.number, "ERC20Votes: block not yet mined");
+    return _checkpointsLookup(_checkpoints[account], blockNumber);
   }
 
   /**
@@ -1808,15 +1571,8 @@ abstract contract ERC20VotesUpgradeable is
   function getPastTotalSupply(
     uint256 blockNumber
   ) public view returns (uint256) {
-    require(
-      blockNumber < block.number,
-      "ERC20Votes: block not yet mined"
-    );
-    return
-      _checkpointsLookup(
-        _totalSupplyCheckpoints,
-        blockNumber
-      );
+    require(blockNumber < block.number, "ERC20Votes: block not yet mined");
+    return _checkpointsLookup(_totalSupplyCheckpoints, blockNumber);
   }
 
   /**
@@ -1869,51 +1625,30 @@ abstract contract ERC20VotesUpgradeable is
     bytes32 r,
     bytes32 s
   ) public virtual {
-    require(
-      block.timestamp <= expiry,
-      "ERC20Votes: signature expired"
-    );
+    require(block.timestamp <= expiry, "ERC20Votes: signature expired");
     address signer = ECDSAUpgradeable.recover(
       _hashTypedDataV4(
-        keccak256(
-          abi.encode(
-            _DELEGATION_TYPEHASH,
-            delegatee,
-            nonce,
-            expiry
-          )
-        )
+        keccak256(abi.encode(_DELEGATION_TYPEHASH, delegatee, nonce, expiry))
       ),
       v,
       r,
       s
     );
-    require(
-      nonce == _useNonce(signer),
-      "ERC20Votes: invalid nonce"
-    );
+    require(nonce == _useNonce(signer), "ERC20Votes: invalid nonce");
     return _delegate(signer, delegatee);
   }
 
   /**
    * @dev Maximum token supply. Defaults to `type(uint224).max` (2^224^ - 1).
    */
-  function _maxSupply()
-    internal
-    view
-    virtual
-    returns (uint224)
-  {
+  function _maxSupply() internal view virtual returns (uint224) {
     return type(uint224).max;
   }
 
   /**
    * @dev Snapshots the totalSupply after it has been increased.
    */
-  function _mint(
-    address account,
-    uint256 amount
-  ) internal virtual override {
+  function _mint(address account, uint256 amount) internal virtual override {
     super._mint(account, amount);
     require(
       totalSupply() <= _maxSupply(),
@@ -1926,17 +1661,10 @@ abstract contract ERC20VotesUpgradeable is
   /**
    * @dev Snapshots the totalSupply after it has been decreased.
    */
-  function _burn(
-    address account,
-    uint256 amount
-  ) internal virtual override {
+  function _burn(address account, uint256 amount) internal virtual override {
     super._burn(account, amount);
 
-    _writeCheckpoint(
-      _totalSupplyCheckpoints,
-      _subtract,
-      amount
-    );
+    _writeCheckpoint(_totalSupplyCheckpoints, _subtract, amount);
   }
 
   /**
@@ -1951,11 +1679,7 @@ abstract contract ERC20VotesUpgradeable is
   ) internal virtual override {
     super._afterTokenTransfer(from, to, amount);
 
-    _moveVotingPower(
-      delegates(from),
-      delegates(to),
-      amount
-    );
+    _moveVotingPower(delegates(from), delegates(to), amount);
   }
 
   /**
@@ -1963,63 +1687,34 @@ abstract contract ERC20VotesUpgradeable is
    *
    * Emits events {DelegateChanged} and {DelegateVotesChanged}.
    */
-  function _delegate(
-    address delegator,
-    address delegatee
-  ) internal virtual {
+  function _delegate(address delegator, address delegatee) internal virtual {
     address currentDelegate = delegates(delegator);
     uint256 delegatorBalance = balanceOf(delegator);
     _delegates[delegator] = delegatee;
 
-    emit DelegateChanged(
-      delegator,
-      currentDelegate,
-      delegatee
-    );
+    emit DelegateChanged(delegator, currentDelegate, delegatee);
 
-    _moveVotingPower(
-      currentDelegate,
-      delegatee,
-      delegatorBalance
-    );
+    _moveVotingPower(currentDelegate, delegatee, delegatorBalance);
   }
 
-  function _moveVotingPower(
-    address src,
-    address dst,
-    uint256 amount
-  ) private {
+  function _moveVotingPower(address src, address dst, uint256 amount) private {
     if (src != dst && amount > 0) {
       if (src != address(0)) {
-        (
-          uint256 oldWeight,
-          uint256 newWeight
-        ) = _writeCheckpoint(
-            _checkpoints[src],
-            _subtract,
-            amount
-          );
-        emit DelegateVotesChanged(
-          src,
-          oldWeight,
-          newWeight
+        (uint256 oldWeight, uint256 newWeight) = _writeCheckpoint(
+          _checkpoints[src],
+          _subtract,
+          amount
         );
+        emit DelegateVotesChanged(src, oldWeight, newWeight);
       }
 
       if (dst != address(0)) {
-        (
-          uint256 oldWeight,
-          uint256 newWeight
-        ) = _writeCheckpoint(
-            _checkpoints[dst],
-            _add,
-            amount
-          );
-        emit DelegateVotesChanged(
-          dst,
-          oldWeight,
-          newWeight
+        (uint256 oldWeight, uint256 newWeight) = _writeCheckpoint(
+          _checkpoints[dst],
+          _add,
+          amount
         );
+        emit DelegateVotesChanged(dst, oldWeight, newWeight);
       }
     }
   }
@@ -2033,35 +1728,23 @@ abstract contract ERC20VotesUpgradeable is
     oldWeight = pos == 0 ? 0 : ckpts[pos - 1].votes;
     newWeight = op(oldWeight, delta);
 
-    if (
-      pos > 0 && ckpts[pos - 1].fromBlock == block.number
-    ) {
-      ckpts[pos - 1].votes = SafeCastUpgradeable.toUint224(
-        newWeight
-      );
+    if (pos > 0 && ckpts[pos - 1].fromBlock == block.number) {
+      ckpts[pos - 1].votes = SafeCastUpgradeable.toUint224(newWeight);
     } else {
       ckpts.push(
         Checkpoint({
-          fromBlock: SafeCastUpgradeable.toUint32(
-            block.number
-          ),
+          fromBlock: SafeCastUpgradeable.toUint32(block.number),
           votes: SafeCastUpgradeable.toUint224(newWeight)
         })
       );
     }
   }
 
-  function _add(
-    uint256 a,
-    uint256 b
-  ) private pure returns (uint256) {
+  function _add(uint256 a, uint256 b) private pure returns (uint256) {
     return a + b;
   }
 
-  function _subtract(
-    uint256 a,
-    uint256 b
-  ) private pure returns (uint256) {
+  function _subtract(uint256 a, uint256 b) private pure returns (uint256) {
     return a - b;
   }
 
@@ -2093,17 +1776,12 @@ abstract contract ERC20VotesCompUpgradeable is
   Initializable,
   ERC20VotesUpgradeable
 {
-  function __ERC20VotesComp_init_unchained()
-    internal
-    initializer
-  {}
+  function __ERC20VotesComp_init_unchained() internal initializer {}
 
   /**
    * @dev Comp version of the {getVotes} accessor, with `uint96` return type.
    */
-  function getCurrentVotes(
-    address account
-  ) external view returns (uint96) {
+  function getCurrentVotes(address account) external view returns (uint96) {
     return SafeCastUpgradeable.toUint96(getVotes(account));
   }
 
@@ -2114,22 +1792,13 @@ abstract contract ERC20VotesCompUpgradeable is
     address account,
     uint256 blockNumber
   ) external view returns (uint96) {
-    return
-      SafeCastUpgradeable.toUint96(
-        getPastVotes(account, blockNumber)
-      );
+    return SafeCastUpgradeable.toUint96(getPastVotes(account, blockNumber));
   }
 
   /**
    * @dev Maximum token supply. Reduced to `type(uint96).max` (2^96^ - 1) to fit COMP interface.
    */
-  function _maxSupply()
-    internal
-    view
-    virtual
-    override
-    returns (uint224)
-  {
+  function _maxSupply() internal view virtual override returns (uint224) {
     return type(uint96).max;
   }
 
@@ -2140,10 +1809,7 @@ abstract contract ERC20VotesCompUpgradeable is
 
 // import '@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol';
 
-abstract contract MinterRoleUpgradeable is
-  Initializable,
-  ContextUpgradeable
-{
+abstract contract MinterRoleUpgradeable is Initializable, ContextUpgradeable {
   using Roles for Roles.Role;
 
   event MinterAdded(address indexed account);
@@ -2151,9 +1817,7 @@ abstract contract MinterRoleUpgradeable is
 
   Roles.Role private _minters;
 
-  function initialize(
-    address sender
-  ) public virtual initializer {
+  function initialize(address sender) public virtual initializer {
     if (!isMinter(sender)) {
       _addMinter(sender);
     }
@@ -2167,9 +1831,7 @@ abstract contract MinterRoleUpgradeable is
     _;
   }
 
-  function isMinter(
-    address account
-  ) public view returns (bool) {
+  function isMinter(address account) public view returns (bool) {
     return _minters.has(account);
   }
 
@@ -2194,10 +1856,7 @@ abstract contract MinterRoleUpgradeable is
   uint256[50] private ______gap;
 }
 
-abstract contract ERC20DetailedUpgradeable is
-  Initializable,
-  IERC20Upgradeable
-{
+abstract contract ERC20DetailedUpgradeable is Initializable, IERC20Upgradeable {
   string private _name;
   string private _symbol;
   uint8 private _decimals;
@@ -2212,21 +1871,11 @@ abstract contract ERC20DetailedUpgradeable is
     _decimals = decimals;
   }
 
-  function name()
-    public
-    view
-    virtual
-    returns (string memory)
-  {
+  function name() public view virtual returns (string memory) {
     return _name;
   }
 
-  function symbol()
-    public
-    view
-    virtual
-    returns (string memory)
-  {
+  function symbol() public view virtual returns (string memory) {
     return _symbol;
   }
 
@@ -2242,9 +1891,7 @@ abstract contract ERC20MintableUpgradeable is
   ERC20Upgradeable,
   MinterRoleUpgradeable
 {
-  function initialize(
-    address sender
-  ) public virtual override initializer {
+  function initialize(address sender) public virtual override initializer {
     MinterRoleUpgradeable.initialize(sender);
   }
 

@@ -6,6 +6,7 @@ publishDate: January 25, 2019
 description: We’re changing the business model for the web. It starts here, today.
 image: /images/blog/announcingv0/paywalldemo.png
 ---
+
 [Targeted advertising was the original sin of the web](https://www.theatlantic.com/technology/archive/2014/08/advertising-is-the-internets-original-sin/376041/). For years, the accepted business model for consumer startups was to grow exponentially at breakneck speed. Their services were optimized to lure users into spending as much time on them as possible, as regularly as possible: an addictive behavior euphemistically referred to as “engagement”. And because highly targeted advertisements were worth more, those same services were incentivized to collect as much intimate information about their users as possible.
 
 It’s called surveillance capitalism. The bad news is that most modern internet services have been built this way. But the good news is that [the pendulum is swinging](https://medium.com/unlock-protocol/the-end-of-the-ad-supported-web-d4d093fb462f).

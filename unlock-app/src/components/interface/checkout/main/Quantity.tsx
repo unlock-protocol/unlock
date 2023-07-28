@@ -2,7 +2,6 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
-import { getLockProps } from '~/utils/lock'
 import { Button } from '@unlock-protocol/ui'
 import {
   RiTimer2Line as DurationIcon,
@@ -13,9 +12,10 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { Pricing } from '../Lock'
 import { ViewContract } from '../ViewContract'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+import { useGetLockProps } from '~/hooks/useGetLockProps'
 
 interface Props {
   injectedProvider: unknown
@@ -43,29 +43,33 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
   const quantity = Number(quantityInput)
 
-  const formattedData = getLockProps(
-    lock,
-    lock!.network,
-    config.networks[lock!.network].baseCurrencySymbol,
-    lock!.name,
-    quantity
-  )
+  const { isLoading: isLoadingFormattedData, data: formattedData } =
+    useGetLockProps({
+      lock: lock,
+      baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
+      numberOfRecipients: quantity,
+    })
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
 
   const isDisabled = quantity < 1
-  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">
             <h3 className="text-xl font-bold"> {lock?.name}</h3>
             <div className="grid text-right">
               <Pricing
-                keyPrice={formattedData.formattedKeyPrice}
-                usdPrice={formattedData.convertedKeyPrice}
-                isCardEnabled={formattedData.cardEnabled}
+                keyPrice={formattedData?.formattedKeyPrice}
+                usdPrice={formattedData?.convertedKeyPrice}
+                isCardEnabled={!!creditCardEnabled}
+                loading={isLoadingFormattedData}
               />
             </div>
           </div>
@@ -75,15 +79,15 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                 <LabeledItem
                   label="Duration"
                   icon={DurationIcon}
-                  value={formattedData.formattedDuration}
+                  value={formattedData?.formattedDuration}
                 />
                 <LabeledItem
                   label="Quantity"
                   icon={QuantityIcon}
                   value={
-                    formattedData.isSoldOut
+                    formattedData?.isSoldOut
                       ? 'Sold out'
-                      : formattedData.formattedKeysAvailable
+                      : formattedData?.formattedKeysAvailable
                   }
                 />
               </div>

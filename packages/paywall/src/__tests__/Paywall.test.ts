@@ -1,4 +1,4 @@
-import 'jest-fetch-mock'
+import { vi } from 'vitest'
 import { Enabler } from '../utils/enableInjectedProvider'
 import * as isUnlockedUtil from '../utils/isUnlocked'
 import { Paywall } from '../Paywall'
@@ -31,29 +31,23 @@ describe('Paywall object', () => {
 
   beforeEach(() => {
     localStorage.clear()
-    jest.resetAllMocks()
+    vi.resetAllMocks()
     paywall = new Paywall(paywallConfig, networkConfigs)
-    paywall.unlockPage = jest.fn()
-    paywall.lockPage = jest.fn()
+    paywall.unlockPage = vi.fn()
+    paywall.lockPage = vi.fn()
   })
 
-  it('is constructed with one call in the buffer to set the config', () => {
-    expect.assertions(2)
-
-    expect(paywall.childCallBuffer).toHaveLength(1)
-
-    // Constuctor will update config with provider info
-    const expectedConfig = paywallScriptUtils.injectProviderInfo(paywallConfig)
-
-    expect(paywall.childCallBuffer[0]).toEqual(['setConfig', expectedConfig])
+  it('is constructed with with no buffered call', () => {
+    expect.assertions(1)
+    expect(paywall.childCallBuffer).toHaveLength(0)
   })
 
   describe('userInfo event', () => {
     it('caches the user key info and checks the status', async () => {
       expect.assertions(3)
 
-      paywall.cacheUserInfo = jest.fn()
-      paywall.checkKeysAndLock = jest.fn()
+      paywall.cacheUserInfo = vi.fn()
+      paywall.checkKeysAndLock = vi.fn()
 
       await paywall.handleUserInfoEvent({ address: '0xtheaddress' })
       expect(paywall.cacheUserInfo).toHaveBeenCalledWith({
@@ -66,9 +60,9 @@ describe('Paywall object', () => {
     it('should dispatch an event', async () => {
       expect.assertions(1)
 
-      jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+      vi.spyOn(paywallScriptUtils, 'dispatchEvent')
 
-      paywall.unlockPage = jest.fn()
+      paywall.unlockPage = vi.fn()
 
       await paywall.handleUserInfoEvent({ address: '0xtheaddress' })
       expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
@@ -85,8 +79,8 @@ describe('Paywall object', () => {
       expect.assertions(1)
 
       const provider = {
-        enable: jest.fn(),
-        sendAsync: jest.fn(),
+        enable: vi.fn(),
+        sendAsync: vi.fn(),
       }
 
       paywall.provider = provider as Enabler
@@ -111,10 +105,10 @@ describe('Paywall object', () => {
   describe('checkKeysAndLock', () => {
     let paywall: Paywall
     beforeEach(() => {
-      jest.resetAllMocks()
+      vi.resetAllMocks()
       paywall = new Paywall(paywallConfig, networkConfigs)
-      paywall.unlockPage = jest.fn()
-      paywall.lockPage = jest.fn()
+      paywall.unlockPage = vi.fn()
+      paywall.lockPage = vi.fn()
     })
 
     it('should return without locking or unlocking if the account is not set', async () => {
@@ -129,7 +123,7 @@ describe('Paywall object', () => {
     it('should call isUnlocked and unlockPage the page if it yields a lock address', async () => {
       expect.assertions(2)
       paywall.userAccountAddress = '0xUser'
-      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([testLock])
+      vi.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([testLock])
 
       await paywall.checkKeysAndLock()
       expect(paywall.unlockPage).toHaveBeenCalledWith([testLock])
@@ -138,7 +132,7 @@ describe('Paywall object', () => {
 
     it('should call isUnlocked and lockPage the page if it yields no lock address', async () => {
       expect.assertions(2)
-      jest.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([])
+      vi.spyOn(isUnlockedUtil, 'isUnlocked').mockResolvedValueOnce([])
       paywall.userAccountAddress = '0xUser'
 
       await paywall.checkKeysAndLock()
@@ -152,7 +146,7 @@ describe('Paywall object', () => {
       expect.assertions(1)
       paywall.userAccountAddress = '0xtheaddress'
 
-      paywall.unlockPage = jest.fn()
+      paywall.unlockPage = vi.fn()
 
       await paywall.handleTransactionInfoEvent({
         hash: '0xhash',
@@ -165,9 +159,9 @@ describe('Paywall object', () => {
     it('should dispatch an event', async () => {
       expect.assertions(1)
 
-      jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+      vi.spyOn(paywallScriptUtils, 'dispatchEvent')
 
-      paywall.unlockPage = jest.fn()
+      paywall.unlockPage = vi.fn()
 
       await paywall.handleTransactionInfoEvent({
         hash: '0xhash',
@@ -190,7 +184,7 @@ describe('Paywall object', () => {
 
     it('should dispatch an event for lock status', async () => {
       expect.assertions(1)
-      jest.spyOn(paywallScriptUtils, 'dispatchEvent')
+      vi.spyOn(paywallScriptUtils, 'dispatchEvent')
       paywall.unlockPage([testLock])
       expect(paywallScriptUtils.dispatchEvent).toHaveBeenCalledWith(
         paywallScriptUtils.unlockEvents.status,

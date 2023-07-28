@@ -13,6 +13,7 @@ export type PaywallConfig = PaywallConfigType
 
 export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   redirectUri: true,
+  endingCallToAction: true,
   title: true,
   icon: true,
   persistentCheckout: true,
@@ -21,6 +22,7 @@ export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   pessimistic: true,
   hideSoldOut: true,
   skipRecipient: true,
+  skipSelect: true,
 })
 
 export enum TransactionType {
@@ -121,6 +123,9 @@ export interface Lock {
   expirationDuration: number
   key: Key
   currencyContractAddress: string | null
+  currencyDecimals?: number | null
+  currencySymbol?: string | null
+  currencyName?: string | null
   asOf?: number
   maxNumberOfKeys?: number
   outstandingKeys?: number
@@ -203,4 +208,5 @@ export interface OAuthConfig {
   responseType: string
   state: string
   redirectUri: string
+  useDelegatedProvider?: boolean
 }

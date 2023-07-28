@@ -1,8 +1,9 @@
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>
-  () => {
+  describe('purchaseKeys', () => {
     let tokenIds
     let keys
     let keyOwners
@@ -51,7 +52,7 @@ export default ({ publicLockVersion }) =>
         )
       }
 
-      tokenIds = await walletService.purchaseKeys(
+      const ids = await walletService.purchaseKeys(
         {
           lockAddress,
           owners: keyOwners,
@@ -66,6 +67,22 @@ export default ({ publicLockVersion }) =>
           transactionHashes.push(hash)
         }
       )
+
+      const items = transactionHashes
+        .map((hash) => {
+          return web3Service.getTokenIdsFromTx({
+            params: {
+              network: chainId,
+              lockAddress,
+              hash,
+            },
+          })
+        })
+        .flat()
+
+      const tokenIdsArray = await Promise.all(items)
+
+      tokenIds = tokenIdsArray.flat()
 
       keys = await Promise.all(
         keyOwners.map(async (owner) =>
@@ -182,4 +199,4 @@ export default ({ publicLockVersion }) =>
           Math.floor(lock.expirationDuration + latestBlock.timestamp)
       ).toBeLessThan(60)
     })
-  }
+  })

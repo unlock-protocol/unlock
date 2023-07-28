@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.2;
+pragma solidity ^0.8.17;
 
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV9.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -13,14 +13,8 @@ contract ERC20BalanceOfHook {
     address _tokenAddress,
     uint _minAmount // minimum amount to hold
   ) external {
-    require(
-      _lockAddress != address(0),
-      "Lock address can not be zero"
-    );
-    require(
-      _tokenAddress != address(0),
-      "ERC20 address can not be zero"
-    );
+    require(_lockAddress != address(0), "Lock address can not be zero");
+    require(_tokenAddress != address(0), "ERC20 address can not be zero");
     require(_minAmount != 0, "minAmount can not be zero");
 
     // make sure lock manager

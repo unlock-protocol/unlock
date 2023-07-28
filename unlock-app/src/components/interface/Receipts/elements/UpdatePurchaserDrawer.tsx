@@ -1,9 +1,9 @@
 import { Button, Drawer, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
-import { PurchaserBodyProps } from '../../../../../../locksmith/src/controllers/v2/receiptController'
-import { useUpdateReceipt } from '~/hooks/receipts'
+import { useUpdateReceipt } from '~/hooks/useReceipts'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
+type PurchaserBodyProps = any
 export interface Props {
   lockAddress: string
   hash: string

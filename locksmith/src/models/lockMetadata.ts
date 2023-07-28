@@ -4,7 +4,7 @@ import type {
   InferCreationAttributes,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class LockMetadata extends Model<
   InferAttributes<LockMetadata>,
@@ -30,7 +30,7 @@ LockMetadata.init(
     },
     chain: {
       allowNull: false,
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
     },
     createdAt: {
       allowNull: false,

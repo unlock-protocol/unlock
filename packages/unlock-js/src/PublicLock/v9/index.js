@@ -4,7 +4,8 @@ import purchaseKeys from './purchaseKeys'
 import setMaxNumberOfKeys from './setMaxNumberOfKeys'
 import setExpirationDuration from './setExpirationDuration'
 import setEventHooks from './setEventHooks'
-
+import transferFrom from './transferFrom'
+import setGasRefundValue from './setGasRefundValue'
 import v8 from '../v8'
 
 const {
@@ -33,6 +34,7 @@ const {
   renounceLockManager,
   updateRefundPenalty,
   updateTransferFee,
+  setKeyManagerOf,
 } = v8
 
 export default {
@@ -69,4 +71,7 @@ export default {
   updateRefundPenalty,
   setEventHooks,
   updateTransferFee,
+  setKeyManagerOf,
+  transferFrom,
+  setGasRefundValue,
 }

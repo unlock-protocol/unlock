@@ -1,4 +1,5 @@
 /* eslint import/prefer-default-export: 0 */ // This file does not have a default export
+import { ethers } from 'ethers'
 import { config } from '~/config/app'
 
 export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {}
@@ -12,6 +13,7 @@ export const EMAIL_SUBSCRIPTION_FORM = {
   formGuid: '868101be-ae3e-422e-bc86-356c96939187',
 }
 
+export const ADDRESS_ZERO = ethers.constants.AddressZero.toString()
 /**
  * Returns a page title to be used within HTML <title> tags.
  * @param title
@@ -26,10 +28,14 @@ export const pageTitle = (title?: string): string => {
 // used in defining the helpers for LOCK_PATH_NAME_REGEXP and ACCOUNT_REGEXP
 const accountRegex = '0x[a-fA-F0-9]{40}'
 
+// regex for slug eg. demo-test-22
+const slugRegex = '[a-z0-9]+(?:-[a-z0-9]+)*'
+
 /**
  * Matches any valid ethereum account address
  */
 export const ACCOUNT_REGEXP = new RegExp(`^${accountRegex}$`)
+export const SLUG_REGEXP = new RegExp(`^${slugRegex}$`)
 
 // helpers for the LOCK_PATH_NAME_REGEXP
 const prefix = '[a-z0-9]+'
@@ -77,6 +83,13 @@ export const MONTH_NAMES = [
   'Dec',
 ]
 
+// mapping of min price by currency https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
+export const CREDIT_CARD_MIN_PRICE_BY_CURRENCY: Record<string, number> = {
+  USD: 0.5,
+  EUR: 0.5,
+}
+
+export const CREDIT_CARD_MIN_USD_PRICE = 0.5
 export const INFINITY = '∞'
 export const UNLIMITED_KEYS_COUNT = -1
 export const UNLIMITED_KEYS_DURATION = -1

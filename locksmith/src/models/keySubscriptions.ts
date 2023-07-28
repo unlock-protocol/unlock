@@ -1,6 +1,6 @@
 import type { InferAttributes, InferCreationAttributes } from 'sequelize'
 import { Model, DataTypes, CreationOptional } from 'sequelize'
-import { sequelize } from './sequelize'
+import { LocksmithDataTypes, sequelize } from './sequelize'
 
 export class KeySubscription extends Model<
   InferAttributes<KeySubscription>,
@@ -41,7 +41,7 @@ KeySubscription.init(
       allowNull: false,
     },
     network: {
-      type: DataTypes.INTEGER,
+      type: LocksmithDataTypes.NETWORK_ID,
       allowNull: false,
     },
     stripeCustomerId: {
@@ -76,6 +76,13 @@ KeySubscription.init(
   },
   {
     sequelize,
+    indexes: [
+      {
+        unique: true,
+        name: 'network_lockAddress_keyId_userAddress_index',
+        fields: ['network', 'lockAddress', 'keyId', 'userAddress'],
+      },
+    ],
     modelName: 'KeySubscriptions',
   }
 )

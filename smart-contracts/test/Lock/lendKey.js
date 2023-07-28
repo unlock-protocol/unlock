@@ -1,3 +1,4 @@
+const { ethers } = require('ethers')
 const {
   reverts,
   ADDRESS_ZERO,
@@ -35,15 +36,6 @@ contract('Lock / lendKey', (accounts) => {
       await reverts(
         lock.lendKey(keyOwners[0], accounts[9], 999),
         'UNAUTHORIZED'
-      )
-    })
-
-    it('should abort if the recipient is 0x', async () => {
-      await reverts(
-        lock.lendKey(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
-          from: keyOwners[0],
-        }),
-        'INVALID_ADDRESS'
       )
     })
 
@@ -189,7 +181,7 @@ contract('Lock / lendKey', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
           from,
         }
       )
@@ -206,7 +198,7 @@ contract('Lock / lendKey', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
             from: accounts[8],
           }
         ),

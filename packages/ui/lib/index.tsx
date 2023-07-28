@@ -21,6 +21,18 @@ export { Footer } from '~/components/Footer/Footer'
 export { Placeholder } from '~/components/Placeholder'
 export { Toggle } from '~/components/Toggle/Toggle'
 export { Detail } from '~/components/Detail/Detail'
+export { Certificate } from '~/components/Certificate/Certificate'
+export { Card } from '~/components/Card/Card'
+export { Tabs } from '~/components/Tabs/Tabs'
 export * from './types'
 export { ImageUpload } from '~/components/ImageUpload/ImageUpload'
 export * from './utils'
+export {
+  UnlockUIProvider,
+  useUnlockUI,
+  UnlockUIContext,
+} from '~/components/Provider'
+export { Images } from '~/components/Images/Images'
+
+export { GuidesHeader, GuidesFooter } from '~/configs/guides'
+export { ShowcaseHeader, ShowcaseFooter } from '~/configs/showcase'

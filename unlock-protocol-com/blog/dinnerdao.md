@@ -3,7 +3,7 @@ title: Dinner DAO
 subTitle: 'Dinner DAO: How to Have Your NFTs & Eat Them Too!'
 authorName: Amber Case
 publishDate: September 9, 2021
-description: "Unlock Grantee Austin Robey recently concocted one of the most practical applications of NFTs I’ve ever seen using Unlock’s protocol: Meeting IRL over a great meal."
+description: 'Unlock Grantee Austin Robey recently concocted one of the most practical applications of NFTs I’ve ever seen using Unlock’s protocol: Meeting IRL over a great meal.'
 image: /images/blog/dinnerdao/dinnerdao.png
 ---
 
@@ -17,19 +17,17 @@ Inspired by the logic and tooling of DAOs (decentralized autonomous organization
 
 Here’s how the Dinner DAO works:
 
-* Members join a chapter by purchasing a season pass NFT, created by clicking the App button and connecting your Metamask wallet on [Unlock](https://unlock-protocol.com/)
-* Funds are pooled in a shared treasury ([dinnerdao.eth](https://etherscan.io/address/dinnerdao.eth))
-* The Unlock NFT allows for gated access to the Dinner DAO’s private Discord channels
-* Members vote on dinner proposals on [snapshot](https://snapshot.org/#/dinnerdao.eth)
-* For the meal itself, one member pays the restaurant with USD through a Coinbase card; he or she is then reimbursed with from the Dinner DAO’s collective treasury.
-
+- Members join a chapter by purchasing a season pass NFT, created by clicking the App button and connecting your Metamask wallet on [Unlock](https://unlock-protocol.com/)
+- Funds are pooled in a shared treasury ([dinnerdao.eth](https://etherscan.io/address/dinnerdao.eth))
+- The Unlock NFT allows for gated access to the Dinner DAO’s private Discord channels
+- Members vote on dinner proposals on [snapshot](https://snapshot.org/#/dinnerdao.eth)
+- For the meal itself, one member pays the restaurant with USD through a Coinbase card; he or she is then reimbursed with from the Dinner DAO’s collective treasury.
 
 ![DinnerDAO](/images/blog/dinnerdao/dashboard.png)
 
 Building a lock and checkout page on Unlock!
 
 For Austin’s first Dinner DAO, his group shared a fantastic Mediterranean meal together at [Shoo Shoo Nolita](https://shooshoonolita.com/) in New York. I’m helping launch a Portland chapter, and Austin is expanding the DAO to other cities around the world.
-
 
 ![DinnerDAO](/images/blog/dinnerdao/photo.jpg)
 

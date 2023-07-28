@@ -1,11 +1,12 @@
-import Stripe from 'stripe'
 import { StripeConnectLock } from '../models/stripeConnectLock'
 import { ethereumAddress } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 import { StripeCustomer } from '../models/stripeCustomer'
 import Sequelize from 'sequelize'
-import config from '../config/config'
+import stripe from '../config/stripe'
+import logger from '../logger'
+import Stripe from 'stripe'
 
 const { Op } = Sequelize
 
@@ -13,9 +14,6 @@ export const createStripeCustomer = async (
   stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
   const customer = await stripe.customers.create({
     source: stripeToken,
     metadata: {
@@ -25,6 +23,7 @@ export const createStripeCustomer = async (
   await saveStripeCustomerIdForAddress(publicKey, customer.id)
   return customer.id
 }
+
 /**
  * Method, which, given a publicKey, returns the stripe token id
  * This does a double look up as we changed how stripe token ids are stored (used to be in UserReferences and are now in their own table)
@@ -59,12 +58,13 @@ export const saveStripeCustomerIdForAddress = async (
       StripeCustomerId: stripeCustomerId,
     })
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     return false
   }
 }
 
 /**
+ * @deprecated
  * Method which delets the stripe customer id for an address
  */
 export const deletePaymentDetailsForAddress = async (
@@ -103,10 +103,6 @@ export const disconnectStripe = async ({
   lockAddress: string
   chain: number
 }) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
     where: { lock },
   })
@@ -132,22 +128,20 @@ export const disconnectStripe = async ({
   return deletedItems > 0
 }
 
-/**
- * Connects a Stripe account to a lock
- * Do we want to store this?
- */
-export const connectStripe = async (
-  lockManager: string,
-  lock: string,
-  chain: number,
+/** Create a Stripe Account link that where user is redirected to connect stripe to the lock */
+export const createStripeAccountLink = async ({
+  baseUrl,
+  network,
+  lockAddress,
+  lockManager,
+}: {
   baseUrl: string
-) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-
+  network: number
+  lockAddress: string
+  lockManager: string
+}): Promise<any> => {
   const stripeConnectLockDetails = await StripeConnectLock.findOne({
-    where: { lock },
+    where: { lock: lockAddress },
   })
 
   let account
@@ -156,17 +150,15 @@ export const connectStripe = async (
     account = await stripe.accounts.create({
       type: 'standard',
       metadata: {
-        lock,
         manager: lockManager,
-        chain,
       },
     })
 
     await StripeConnectLock.create({
-      lock,
+      lock: lockAddress,
       manager: lockManager,
       stripeAccount: account.id,
-      chain,
+      chain: network,
     })
   } else {
     // Retrieve it from Stripe!
@@ -175,41 +167,117 @@ export const connectStripe = async (
     )
   }
 
-  return await stripe.accountLinks.create({
+  return stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=0&defaultTab=payments`,
-    return_url: `${baseUrl}/locks/settings?address=${lock}&network=${chain}&stripe=1&defaultTab=payments`,
+    refresh_url: `${baseUrl}/locks/settings?address=${lockAddress}&network=${network}&stripe=0&defaultTab=payments`,
+    return_url: `${baseUrl}/locks/settings?address=${lockAddress}&network=${network}&stripe=1&defaultTab=payments`,
     type: 'account_onboarding',
   })
 }
 
 /**
- * Get stripe connect account to lock
- * Returns -1 if no Stripe is connected
- * Return 0 if a Stripe account is connected, but not ready to process charges
- * Returns the stripeAccount if all fully enabled
+ * Connects a Stripe account to a lock
+ * Do we want to store this?
  */
-export const getStripeConnectForLock = async (lock: string, chain: number) => {
-  const stripe = new Stripe(config.stripeSecret!, {
-    apiVersion: '2020-08-27',
-  })
-  const stripeConnectLockDetails = await StripeConnectLock.findOne({
-    where: { lock, chain },
-  })
-
-  if (!stripeConnectLockDetails?.stripeAccount) {
-    return -1
+export const connectStripe = async (
+  lockManager: string,
+  lock: string,
+  chain: number,
+  baseUrl: string,
+  stripeAccount?: string
+) => {
+  if (stripeAccount) {
+    // Check the validity!
+    const account = await stripeConnection(stripeAccount)
+    if (account?.charges_enabled) {
+      await StripeConnectLock.create({
+        lock,
+        manager: lockManager,
+        stripeAccount,
+        chain,
+      })
+    } else if (account) {
+      // account connected but charges not enabled, need to return  link to resume stripe setup
+      return await createStripeAccountLink({
+        baseUrl,
+        network: chain,
+        lockAddress: lock,
+        lockManager,
+      })
+    } else {
+      // no valid account
+      throw new Error('Invalid Stripe Account')
+    }
+    // Nothing expected!
+    return
+  } else {
+    return await createStripeAccountLink({
+      baseUrl,
+      network: chain,
+      lockAddress: lock,
+      lockManager,
+    })
   }
+}
 
-  const account = await stripe.accounts.retrieve(
-    stripeConnectLockDetails.stripeAccount
+/**
+ * Lists the connects by a lock manager
+ * @param manager
+ */
+export const getConnectionsForManager = async (manager: string) => {
+  return StripeConnectLock.findAll({
+    where: { manager },
+  })
+}
+
+export const getStripeConnectLockDetails = async (
+  lockAddress: string,
+  network: number
+) => {
+  const stripeConnectLockDetails = await StripeConnectLock.findOne({
+    where: { lock: lockAddress, chain: network },
+  })
+  return stripeConnectLockDetails
+}
+
+/**
+ * Get stripe connect account to lock & enabled status
+ * Returns `stripeEnable` as true when connection details is present
+ * Returns `stripeAccount` only when connection details are present
+ */
+export const getStripeConnectForLock = async (
+  lock: string,
+  chain: number
+): Promise<{ stripeAccount?: string; stripeEnabled: boolean }> => {
+  const stripeConnectLockDetails = await getStripeConnectLockDetails(
+    lock,
+    chain
   )
 
-  if (account.charges_enabled) {
-    return stripeConnectLockDetails.stripeAccount
+  if (!stripeConnectLockDetails?.stripeAccount) {
+    return {
+      stripeEnabled: false,
+    }
   }
 
-  return 0
+  const account = await stripeConnection(stripeConnectLockDetails.stripeAccount)
+
+  return {
+    stripeEnabled: !!account?.charges_enabled,
+    stripeAccount: stripeConnectLockDetails.stripeAccount,
+  }
+}
+
+export const stripeConnection = async (
+  stripeAccount: string
+): Promise<Stripe.Account | null> => {
+  let account = null
+  try {
+    account = await stripe.accounts.retrieve(stripeAccount)
+  } catch (error) {
+    console.error(error)
+  }
+  return account
 }
 
 export default {
@@ -219,4 +287,5 @@ export default {
   connectStripe,
   getStripeConnectForLock,
   disconnectStripe,
+  getConnectionsForManager,
 }

@@ -1,13 +1,18 @@
 import { z } from 'zod'
 
 export const MetadataInput = z.object({
-  type: z.enum(['text', 'date', 'color', 'email', 'url'], {
+  type: z.enum(['text', 'date', 'color', 'email', 'url', 'hidden'], {
     description:
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
   }),
   name: z.string({
     description: 'Name of the attribute to collect.',
   }),
+  label: z
+    .string({
+      description: 'Label displayed to users. Defaults to the name field.',
+    })
+    .optional(),
   required: z
     .boolean({
       description:
@@ -18,6 +23,11 @@ export const MetadataInput = z.object({
   placeholder: z
     .string({
       description: 'Placeholder displayed to users.',
+    })
+    .optional(),
+  value: z
+    .string({
+      description: 'Value to use for hidden metadata inputs.',
     })
     .optional(),
   defaultValue: z
@@ -73,20 +83,21 @@ export const PaywallLockConfig = z.object({
         'If enabled, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager on the dashboard. Additionaly a confirmation email will be sent to the user once the NFT membership has been minted.',
     })
     .optional(),
-  minRecipients: z
+  minRecipients: z.coerce
     .number({
       description:
         'During checkout, users can buy multiple memberships at once. You can set a minimum number they can buy.',
     })
     .int()
-    .positive()
+    .nullable()
     .optional(),
-  maxRecipients: z
+  maxRecipients: z.coerce
     .number({
       description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
     })
     .int()
     .positive()
+    .nullable()
     .optional(),
   default: z.boolean().optional(),
   dataBuilder: z
@@ -101,6 +112,12 @@ export const PaywallLockConfig = z.object({
         'When set to true, the checkout flow will not let the user customize the recipient of the NFT membership.',
     })
     .default(true)
+    .optional(),
+  recipient: z
+    .string({
+      description:
+        'Hardcoded address for the recipient of the NFT. Can be used with skipRecipient.',
+    })
     .optional(),
 })
 
@@ -119,7 +136,6 @@ export const PaywallConfig = z
           'The URL for a icon to display in the top left corner of the modal.',
       })
       .optional(),
-    callToAction: z.any().optional(),
     locks: z.record(PaywallLockConfig),
     metadataInputs: z.array(MetadataInput).optional(),
     persistentCheckout: z
@@ -149,6 +165,12 @@ export const PaywallConfig = z
           '(Optional) If supplied, the user is prompted to sign this message using their wallet. Your application needs to handle the signature to identify the user.',
       })
       .optional(),
+    endingCallToAction: z
+      .string({
+        description:
+          'Show a custom text on the final button that triggers a redirect',
+      })
+      .optional(),
     pessimistic: z
       .boolean({
         description:
@@ -162,18 +184,21 @@ export const PaywallConfig = z
           'If set true, the users will be prompted to go through a captcha during the checkout process. This is better used in conjunction with a purchase hook that verifies that captcha is valid.',
       })
       .optional(),
-    minRecipients: z
+    minRecipients: z.coerce
       .number({
         description:
           'Set the minimum number of memberships a user needs to purchase.',
       })
       .int()
+      .nullable()
       .optional(),
-    maxRecipients: z
+    maxRecipients: z.coerce
       .number({
         description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
       })
       .int()
+      .positive()
+      .nullable()
       .optional(),
     hideSoldOut: z
       .boolean({
@@ -218,6 +243,13 @@ export const PaywallConfig = z
       })
       .default(true)
       .optional(),
+    skipSelect: z
+      .boolean({
+        description:
+          'When set to true and there is only one lock, the checkout flow will skip the lock selection step.',
+      })
+      .default(false)
+      .optional(),
     expectedAddress: z
       .string({
         description: 'Expected wallet address for user.',
@@ -229,6 +261,12 @@ export const PaywallConfig = z
           '(Advanced): forces the use the provider from the parent window when the checkout is embeded as an iframe.',
       })
       .default(false)
+      .optional(),
+    recipient: z
+      .string({
+        description:
+          'Hardcoded address for the recipient of the NFT. Can be used with skipRecipient.',
+      })
       .optional(),
   })
   .passthrough()

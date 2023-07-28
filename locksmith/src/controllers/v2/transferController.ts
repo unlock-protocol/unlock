@@ -41,13 +41,13 @@ export const createTransferCode: RequestHandler = async (request, response) => {
   })
 
   const userData = user?.data?.userMetadata?.protected
-  const email = Object.entries(userData || {}).find(([key]) => {
+  const recipient = Object.entries(userData || {}).find(([key]) => {
     return ['email', 'emailaddress', 'email_address', 'email-address'].includes(
       key.toLowerCase()
     )
   })?.[1] as string
 
-  if (!email) {
+  if (!recipient) {
     return response.status(404).send({
       message: 'No email address found for this user',
     })
@@ -74,12 +74,20 @@ export const createTransferCode: RequestHandler = async (request, response) => {
 
   const [part1, part2] = [transferCode.slice(0, 12), transferCode.slice(12)]
 
-  await sendEmail('transferCode', 'transferCode', email, {
-    lockName: key.lock.name || 'Unlock Lock',
-    network: network.toString(),
-    transferCode: part1,
-    keyId,
-    validPeriod: '15 minutes',
+  await sendEmail({
+    network,
+    template: 'transferCode',
+    failoverTemplate: 'transferCode',
+    recipient,
+    params: {
+      lockAddress: key.lock.address,
+      lockName: key.lock.name || 'Unlock Lock',
+      network: network.toString(),
+      transferCode: part1,
+      keyId,
+      validPeriod: '15 minutes',
+    },
+    attachments: [],
   })
 
   const responseBody = {

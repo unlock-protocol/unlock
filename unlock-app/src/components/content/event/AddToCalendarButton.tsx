@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { BsCalendarDate } from 'react-icons/bs'
 import { FaRegCalendarPlus } from 'react-icons/fa'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
-import { getEventDate } from './utils'
+import { getEventDate, getEventEndDate } from './utils'
 
 import {
   SiGooglecalendar,
@@ -21,6 +21,8 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
   const [isOpen, setOpen] = useState(false)
   const eventDate = getEventDate(event.ticket)
 
+  const endDate = getEventEndDate(event.ticket)
+
   // We can only add events with a date and name
   if (!eventDate || !event.name) {
     return null
@@ -32,7 +34,8 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
     description: event.description || '',
     // https://github.com/AnandChowdhary/calendar-link#options
     allDay: false, // default for now... change once we have metadata for it (or for end)
-    end: new Date(eventDate.getTime() + 1000 * 60 * 60),
+    // fallback to 1 hour duration for the events that's to have end date
+    end: endDate ? endDate : new Date(eventDate.getTime() + 1000 * 60 * 60),
     url: event.url,
   }
 
@@ -48,7 +51,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
                 className="hover:underline"
                 href={google(calendarEvent)}
               >
-                <SiGooglecalendar className="w-8 h-8 inline mr-3" />
+                <SiGooglecalendar className="inline w-8 h-8 mr-3" />
                 Google Calendar
               </Link>
             </li>
@@ -58,7 +61,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
                 className="hover:underline"
                 href={outlook(calendarEvent)}
               >
-                <SiMicrosoftoutlook className="w-8 h-8 inline mr-3" />
+                <SiMicrosoftoutlook className="inline w-8 h-8 mr-3" />
                 Microsoft Outlook
               </Link>
             </li>
@@ -68,7 +71,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
                 className="hover:underline"
                 href={office365(calendarEvent)}
               >
-                <SiMicrosoftoffice className="w-8 h-8 inline mr-3" />
+                <SiMicrosoftoffice className="inline w-8 h-8 mr-3" />
                 Microsoft Office 365
               </Link>
             </li>
@@ -78,7 +81,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
                 className="hover:underline"
                 href={ics(calendarEvent)}
               >
-                <BsCalendarDate className="w-8 h-8 inline mr-3" />
+                <BsCalendarDate className="inline w-8 h-8 mr-3" />
                 ICS file
               </Link>
             </li>
@@ -94,7 +97,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
       >
         <button
           onClick={() => setOpen(true)}
-          className="w-12 h-12 flex justify-center items-center"
+          className="flex items-center justify-center w-12 h-12"
         >
           <FaRegCalendarPlus className="w-6 h-6" />
         </button>

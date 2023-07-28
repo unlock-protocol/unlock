@@ -1,9 +1,10 @@
+import { describe, it, expect, beforeAll } from 'vitest'
 import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, chainId
 
-export default ({ publicLockVersion }) =>
-  () => {
-    if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+export default ({ publicLockVersion }) => {
+  if (versionEqualOrAbove(publicLockVersion, 'v7')) {
+    describe('expireAndRefundFor', () => {
       let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
       let expiration
       let tokenId
@@ -45,5 +46,6 @@ export default ({ publicLockVersion }) =>
 
         expect(expiration).toBeGreaterThan(key.expiration)
       })
-    }
+    })
   }
+}

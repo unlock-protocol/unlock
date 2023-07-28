@@ -10,8 +10,6 @@ import { Stepper } from '../Stepper'
 import { useQuery } from '@tanstack/react-query'
 import { Fragment, useState, useMemo, useEffect } from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { getLockProps } from '~/utils/lock'
-import { getFiatPricing } from '~/hooks/useCards'
 import {
   RiCheckboxBlankCircleLine as CheckBlankIcon,
   RiCheckboxCircleFill as CheckIcon,
@@ -24,9 +22,14 @@ import { Badge, Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { ViewContract } from '../ViewContract'
+import { useCheckoutHook } from './useCheckoutHook'
+import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
+import { getLockUsdPrice } from '~/hooks/useUSDPricing'
+import { shouldSkip } from './utils'
+import { AiFillWarning as WarningIcon } from 'react-icons/ai'
+import { useGetLockProps } from '~/hooks/useGetLockProps'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -39,6 +42,18 @@ interface LockOptionProps {
 
 const LockOption = ({ disabled, lock }: LockOptionProps) => {
   const config = useConfig()
+
+  const { data: creditCardEnabled } = useCreditCardEnabled({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
+
+  const { isLoading: isLoadingFormattedData, data: formattedData } =
+    useGetLockProps({
+      lock: lock,
+      baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
+    })
+
   return (
     <RadioGroup.Option
       disabled={disabled}
@@ -51,12 +66,6 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
       }
     >
       {({ checked }) => {
-        const formattedData = getLockProps(
-          lock,
-          lock.network,
-          config.networks[lock.network].baseCurrencySymbol,
-          lock.name
-        )
         const lockImageURL = `${config.services.storage.host}/lock/${lock?.address}/icon`
 
         return (
@@ -85,9 +94,10 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                 </div>
 
                 <Pricing
-                  keyPrice={formattedData.formattedKeyPrice}
-                  usdPrice={formattedData.convertedKeyPrice}
-                  isCardEnabled={formattedData.cardEnabled}
+                  keyPrice={formattedData?.formattedKeyPrice}
+                  usdPrice={formattedData?.convertedKeyPrice}
+                  isCardEnabled={!!creditCardEnabled}
+                  loading={isLoadingFormattedData}
                 />
               </div>
             </div>
@@ -95,28 +105,35 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
             <div className="w-full space-y-2">
               <div className="flex justify-between w-full place-items-center">
                 <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-                  <LabeledItem
-                    label="Duration"
-                    icon={DurationIcon}
-                    value={formattedData.formattedDuration}
-                  />
-                  <LabeledItem
-                    label="Quantity"
-                    icon={QuantityIcon}
-                    value={
-                      formattedData.isSoldOut
-                        ? 'Sold out'
-                        : formattedData.formattedKeysAvailable
-                    }
-                  />
-                  {lock.recurringPayments && (
+                  {formattedData?.formattedDuration !== 'Forever' && (
+                    <>
+                      <LabeledItem
+                        label="Duration"
+                        icon={DurationIcon}
+                        value={formattedData?.formattedDuration}
+                      />
+                      {!!lock.recurringPayments &&
+                        parseInt(lock.recurringPayments.toString()) > 1 && (
+                          <LabeledItem
+                            label="Renew"
+                            icon={RecurringIcon}
+                            value={
+                              typeof lock.recurringPayments === 'number'
+                                ? `${lock.recurringPayments} times`
+                                : lock.recurringPayments
+                            }
+                          />
+                        )}
+                    </>
+                  )}
+                  {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
                     <LabeledItem
-                      label="Renew"
-                      icon={RecurringIcon}
+                      label="Quantity"
+                      icon={QuantityIcon}
                       value={
-                        typeof lock.recurringPayments === 'number'
-                          ? `${lock.recurringPayments} times`
-                          : lock.recurringPayments
+                        formattedData?.isSoldOut
+                          ? 'Sold out'
+                          : formattedData?.formattedKeysAvailable
                       }
                     />
                   )}
@@ -150,6 +167,14 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   </Badge>
                 </div>
               )}
+              {lock.isExpired && (
+                <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
+                  Your membership is expired.{' '}
+                  <Badge size="tiny" iconRight={<WarningIcon />} variant="red">
+                    Expired
+                  </Badge>
+                </div>
+              )}
             </div>
           </Fragment>
         )
@@ -168,10 +193,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
           const networkId: number = props.network || paywallConfig.network || 1
-          const [lockData, fiatPricing] = await Promise.all([
-            web3Service.getLock(lock, networkId),
-            getFiatPricing(config, lock, networkId),
-          ])
+
+          const lockData = await web3Service.getLock(lock, networkId)
+          const fiatPricing = await getLockUsdPrice({
+            network: networkId,
+            currencyContractAddress: lockData?.currencyContractAddress,
+            amount: Number(lockData.keyPrice),
+          })
+
           return {
             ...props,
             ...lockData,
@@ -216,23 +245,19 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }))
   }, [paywallConfig.locks, paywallConfig.network])
 
-  const skipQuantity = useMemo(() => {
-    const maxRecipients = lock?.maxRecipients || paywallConfig.maxRecipients
-    const minRecipients = lock?.minRecipients || paywallConfig.minRecipients
-    const hasMaxRecipients = maxRecipients && maxRecipients > 1
-    const hasMinRecipients = minRecipients && minRecipients > 1
-    return !(hasMaxRecipients || hasMinRecipients)
-  }, [lock, paywallConfig])
+  const { skipQuantity, skipRecipient } = useMemo(
+    () =>
+      shouldSkip({
+        lock,
+        paywallConfig,
+      }),
+    [lock, paywallConfig]
+  )
 
-  const skipRecipient = useMemo(() => {
-    const skip = lock?.skipRecipient || paywallConfig.skipRecipient
-    const collectsMetadadata =
-      lock?.metadataInputs ||
-      paywallConfig.metadataInputs ||
-      paywallConfig.emailRequired ||
-      lock?.emailRequired
-    return skip && !collectsMetadadata
-  }, [lock, paywallConfig])
+  const skipSelect = useMemo(() => {
+    const skip = paywallConfig.skipSelect
+    return skip && Object.keys(paywallConfig.locks).length === 1
+  }, [paywallConfig])
 
   const config = useConfig()
   const { account, isUnlockAccount } = useAuth()
@@ -276,6 +301,16 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     )
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
+  const { isLoading: isLoadingHook, lockHookMapping } =
+    useCheckoutHook(checkoutService)
+
+  const hookType = useMemo(() => {
+    if (!lock) return undefined
+
+    const hook =
+      lockHookMapping?.[lock?.address?.trim()?.toLowerCase()] ?? undefined
+    return hook
+  }, [lockHookMapping, lock])
 
   const isDisabled =
     isLocksLoading ||
@@ -283,9 +318,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     !lock ||
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
-    isNotExpectedAddress
-
-  const stepItems = useCheckoutSteps(checkoutService)
+    isNotExpectedAddress ||
+    isLoadingHook
 
   useEffect(() => {
     if (locks?.length) {
@@ -295,11 +329,47 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
   }, [locks])
 
+  const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
+
+  useEffect(() => {
+    if (!(lock && skipSelect && account && !isLoading)) {
+      return
+    }
+
+    send({
+      type: 'SELECT_LOCK',
+      lock,
+      existingMember: !!membership?.member,
+      skipQuantity,
+      skipRecipient,
+      // unlock account are unable to renew : wut?
+      expiredMember: isUnlockAccount ? false : !!membership?.expired,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }, [
+    lock,
+    membership,
+    account,
+    hookType,
+    skipQuantity,
+    skipRecipient,
+    isUnlockAccount,
+    send,
+    skipSelect,
+    isLoading,
+  ])
+
   return (
     <Fragment>
-      <Stepper position={1} service={checkoutService} items={stepItems} />
+      <Stepper
+        service={checkoutService}
+        hookType={hookType}
+        existingMember={!!membership?.member}
+        isRenew={!!membership?.expired}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isLocksLoading ? (
+        {isLoading ? (
           <div className="mt-6 space-y-4">
             {Array.from({ length: lockOptions.length }).map((_, index) => (
               <LockOptionPlaceholder key={index} />
@@ -330,11 +400,15 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                       </p>
                     )}
                     {locks.map((lock) => {
-                      const disabled = lock.isSoldOut && !lock.isMember
-                      const isMember = memberships?.find(
+                      const isMember = !!memberships?.find(
                         (m) => m.lock === lock.address
                       )?.member
+                      const isExpired = !!memberships?.find(
+                        (m) => m.lock === lock.address
+                      )?.expired
+                      const disabled = lock.isSoldOut && !lock.isMember
                       lock.isMember = lock.isMember ?? isMember
+                      lock.isExpired = lock.isExpired ?? isExpired
                       return (
                         <LockOption
                           key={lock.address}
@@ -373,14 +447,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                 send({
                   type: 'SELECT_LOCK',
                   lock,
-                  existingMember: !!membership?.member,
+                  existingMember: lock.isMember,
+                  expiredMember: lock.isExpired,
                   skipQuantity,
                   skipRecipient,
-                  // unlock account are unable to renew : wut?
-                  expiredMember: isUnlockAccount
-                    ? false
-                    : !!membership?.expired,
                   recipients: account ? [account] : [],
+                  hook: hookType,
                 })
               }}
             >

@@ -5,10 +5,12 @@ import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useSIWE } from '~/hooks/useSIWE'
+import { generateNonce } from 'siwe'
 
 interface Props {
   paywallConfig?: PaywallConfig
@@ -16,6 +18,7 @@ interface Props {
   connectService: ConnectService
   injectedProvider: unknown
   onClose(params?: Record<string, string>): void
+  communication: ReturnType<typeof useCheckoutCommunication>
 }
 
 export function ConfirmConnect({
@@ -24,31 +27,45 @@ export function ConfirmConnect({
   connectService,
   paywallConfig,
   onClose,
+  communication,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network = 1, signMessage, isUnlockAccount } = useAuth()
+  const { siweSign } = useSIWE()
+  const { account, isUnlockAccount } = useAuth()
+
   const onSignIn = async () => {
     try {
       setLoading(true)
-      const message = createMessageToSignIn({
-        clientId: oauthConfig.clientId,
-        statement: paywallConfig?.messageToSign || '',
-        address: account!,
-        chainId: network,
-      })
 
-      const signature = await signMessage(message)
-      const code = Buffer.from(
-        JSON.stringify({
-          d: message,
-          s: signature,
+      const result = await siweSign(
+        generateNonce(),
+        paywallConfig?.messageToSign || '',
+        {
+          resources: [new URL('https://' + oauthConfig.clientId).toString()],
+        }
+      )
+
+      if (result) {
+        const { message, signature } = result
+        const code = Buffer.from(
+          JSON.stringify({
+            d: message,
+            s: signature,
+          })
+        ).toString('base64')
+        communication?.emitUserInfo({
+          address: account,
+          message: message,
+          signedMessage: signature,
         })
-      ).toString('base64')
-      setLoading(false)
-      onClose({
-        code,
-        state: oauthConfig.state,
-      })
+        onClose({
+          code,
+          state: oauthConfig.state,
+        })
+        setLoading(false)
+      } else {
+        setLoading(false)
+      }
     } catch (error: any) {
       setLoading(false)
       console.error(error)
@@ -91,7 +108,7 @@ export function ConfirmConnect({
                 <a
                   target="_blank"
                   href="https://ethereum.org/en/wallets/"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                 >
                   crypto wallet
                 </a>{' '}

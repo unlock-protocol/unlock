@@ -43,10 +43,7 @@ contract MixinRefunds is
    * @param _tokenId The id of the key to expire
    * @param _amount The amount to refund
    */
-  function expireAndRefundFor(
-    uint _tokenId,
-    uint _amount
-  ) external {
+  function expireAndRefundFor(uint _tokenId, uint _amount) external {
     _isKey(_tokenId);
     _isValidKey(_tokenId);
     _onlyLockManager();
@@ -73,10 +70,7 @@ contract MixinRefunds is
     uint _refundPenaltyBasisPoints
   ) external {
     _onlyLockManager();
-    emit RefundPenaltyChanged(
-      _freeTrialLength,
-      _refundPenaltyBasisPoints
-    );
+    emit RefundPenaltyChanged(_freeTrialLength, _refundPenaltyBasisPoints);
 
     freeTrialLength = _freeTrialLength;
     refundPenaltyBasisPoints = _refundPenaltyBasisPoints;
@@ -86,10 +80,7 @@ contract MixinRefunds is
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
    * @notice this deletes ownership info and expire the key, but doesnt 'burn' it
    */
-  function _cancelAndRefund(
-    uint _tokenId,
-    uint refund
-  ) internal {
+  function _cancelAndRefund(uint _tokenId, uint refund) internal {
     address payable keyOwner = payable(ownerOf(_tokenId));
 
     // expire the key without affecting the ownership record
@@ -108,11 +99,7 @@ contract MixinRefunds is
 
     // inform the hook if there is one registered
     if (address(onKeyCancelHook) != address(0)) {
-      onKeyCancelHook.onKeyCancel(
-        msg.sender,
-        keyOwner,
-        refund
-      );
+      onKeyCancelHook.onKeyCancel(msg.sender, keyOwner, refund);
     }
   }
 
@@ -134,17 +121,11 @@ contract MixinRefunds is
     }
 
     // substract free trial value
-    uint timeRemaining = keyExpirationTimestampFor(
-      _tokenId
-    ) - block.timestamp;
-    if (
-      timeRemaining + freeTrialLength >= expirationDuration
-    ) {
+    uint timeRemaining = keyExpirationTimestampFor(_tokenId) - block.timestamp;
+    if (timeRemaining + freeTrialLength >= expirationDuration) {
       refund = keyPrice;
     } else {
-      refund =
-        (keyPrice * timeRemaining) /
-        expirationDuration;
+      refund = (keyPrice * timeRemaining) / expirationDuration;
     }
 
     // Apply the penalty if this is not a free trial
@@ -152,8 +133,7 @@ contract MixinRefunds is
       freeTrialLength == 0 ||
       timeRemaining + freeTrialLength < expirationDuration
     ) {
-      uint penalty = (keyPrice * refundPenaltyBasisPoints) /
-        BASIS_POINTS_DEN;
+      uint penalty = (keyPrice * refundPenaltyBasisPoints) / BASIS_POINTS_DEN;
       if (refund > penalty) {
         refund -= penalty;
       } else {

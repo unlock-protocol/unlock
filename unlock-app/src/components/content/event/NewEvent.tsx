@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { useConfig } from '~/utils/withConfig'
 import { Form, NewEventForm } from './Form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { LockDeploying } from './LockDeploying'
 import { storage } from '~/config/storage'
+import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 export interface TransactionDetails {
   hash: string
@@ -15,20 +16,25 @@ export interface TransactionDetails {
 }
 
 export const NewEvent = () => {
-  const config = useConfig()
   const [transactionDetails, setTransactionDetails] =
     useState<TransactionDetails>()
+  const [slug, setSlug] = useState<string | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
+
+  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
+
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
+
     try {
       lockAddress = await walletService.createLock(
         {
           ...formData.lock,
           name: formData.lock.name,
-          publicLockVersion: config.publicLockVersion,
+          publicLockVersion:
+            networks[formData.network].publicLockVersionToDeploy,
         },
         {} /** transactionParams */,
         async (createLockError, transactionHash) => {
@@ -55,18 +61,36 @@ export const NewEvent = () => {
           ...formData.metadata,
         }),
       })
+
+      // Save slug for URL if present
+      setSlug(formData?.metadata?.slug)
+
+      const slug = formData?.metadata.slug
+      if (slug) {
+        await saveSettingsMutation({
+          lockAddress,
+          network: formData.network,
+          slug,
+        })
+      }
       // Finally
       setLockAddress(lockAddress)
     }
   }
 
   return (
-    <AppLayout showLinks={false} authRequired={true}>
+    <AppLayout
+      showLinks={false}
+      authRequired={true}
+      logoRedirectUrl="/event"
+      logoImageUrl="/images/svg/logo-unlock-events.svg"
+    >
       <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
         {transactionDetails && (
           <LockDeploying
             transactionDetails={transactionDetails}
             lockAddress={lockAddress}
+            slug={slug}
           />
         )}
         {!transactionDetails && <Form onSubmit={onSubmit} />}

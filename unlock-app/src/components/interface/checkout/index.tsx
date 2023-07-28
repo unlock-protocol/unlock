@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { selectProvider } from '~/hooks/useAuthenticate'
+import { selectProvider, useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
@@ -11,19 +11,52 @@ import { Container } from './Container'
 import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
+import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
+import { PaywallConfig } from '~/unlockTypes'
+import { ethers } from 'ethers'
 
 export function CheckoutPage() {
   const { query } = useRouter()
   const config = useConfig()
+  const { authenticateWithProvider } = useAuthenticate({})
+
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
+  const { isInitialLoading, data: checkout } = useCheckoutConfig({
+    id: query.id?.toString(),
+  })
 
+  const referrerAddress = query?.referrerAddress?.toString()
   // Get paywallConfig or oauthConfig from the query parameters.
   const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
-  const oauthConfig = getOauthConfigFromQuery(query)
+  const oauthConfigFromQuery = getOauthConfigFromQuery(query)
 
-  const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
+  const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
+  const paywallConfig =
+    (checkout?.config as PaywallConfig) ||
+    communication.paywallConfig ||
+    paywallConfigFromQuery
 
+  // If the referrer address is valid, override the paywall config referrer with it.
+  if (
+    referrerAddress &&
+    paywallConfig &&
+    ethers.utils.isAddress(referrerAddress)
+  ) {
+    paywallConfig.referrer = referrerAddress
+  }
+
+  // Autoconnect, provider might change (we could receive the provider from the parent with a delay!)
+  useEffect(() => {
+    if (communication.providerAdapter) {
+      authenticateWithProvider(
+        'DELEGATED_PROVIDER',
+        communication.providerAdapter
+      )
+    }
+  }, [authenticateWithProvider, communication.providerAdapter])
+
+  // TODO: do we need to pass it down?
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
 
@@ -44,7 +77,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig)) {
+  if (!(paywallConfig || oauthConfig) || isInitialLoading) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />
@@ -59,7 +92,6 @@ export function CheckoutPage() {
           injectedProvider={injectedProvider}
           communication={communication}
           oauthConfig={oauthConfig}
-          paywallConfig={paywallConfig}
         />
       </Container>
     )

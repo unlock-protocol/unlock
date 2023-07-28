@@ -9,11 +9,11 @@ image: /images/blog/referral-fees/header-affiliate.png
 
 The latest version of Unlock Protocol introduces a whole new feature: referrer fees.
 
-The main idea behind this is to enable revenue sharing between the lock (the membership smart contract) and the *distributor* of memberships.
+The main idea behind this is to enable revenue sharing between the lock (the membership smart contract) and the _distributor_ of memberships.
 
 ## How do Unlock Protocol referrer fees work?
 
-The Unlock Protocol *purchase*, *extend*, and *renew* functions include a *referrer* parameter. This parameter is an address that is expected to be the address of the entity that “triggered” the purchase by the user.
+The Unlock Protocol _purchase_, _extend_, and _renew_ functions include a _referrer_ parameter. This parameter is an address that is expected to be the address of the entity that “triggered” the purchase by the user.
 
 <blockquote>
 Example: Let's imagine that an indie developer created a Ghost plugin to add support for Unlock. It would be perfectly acceptable in that scenario for the Ghost plugin author to set their own address as the referrer address in the plugin.
@@ -26,17 +26,17 @@ With this new version of the protocol, each lock manager can additionally decide
 
 ## Setting referrer or affiliate fees
 
-To set the referrer fee for a lock, the lock manager sets a custom referrer fee on their lock contract for a specific referrer address by calling *setReferrerFee* and passing both the address of the referrer they want to share the proceeds with, as well the the percentage of the sale price (in basis points) they will share. By default, the referrerFee is 0 for any address.
+To set the referrer fee for a lock, the lock manager sets a custom referrer fee on their lock contract for a specific referrer address by calling _setReferrerFee_ and passing both the address of the referrer they want to share the proceeds with, as well the the percentage of the sale price (in basis points) they will share. By default, the referrerFee is 0 for any address.
 
-In addition to setting referrer fees for specific addresses, lock managers can also use the zero address (0x0) to set a default fee that will be paid to *any* address that refers in a paid membership.
+In addition to setting referrer fees for specific addresses, lock managers can also use the zero address (0x0) to set a default fee that will be paid to _any_ address that refers in a paid membership.
 
 ## Platforms
 
 We believe that the emergence of web3 will not replace platforms, but will instead “unbundle” them and remove lock-in. For example, we think that platforms like Substack, YouTube or Patreon should offer the ability to their creators to use the Unlock Protocol as a way to offer memberships, and, optionally, lock content so that only members can access it.
 
-With the referrer fee mechanism, each platform could, for instance, choose to enable that feature for a creator and their locks *only* if the lock has a specific referrer fee for them. In essence, the platform would be explicitly compensated for promotion and distribution of the creator's content.
+With the referrer fee mechanism, each platform could, for instance, choose to enable that feature for a creator and their locks _only_ if the lock has a specific referrer fee for them. In essence, the platform would be explicitly compensated for promotion and distribution of the creator's content.
 
-This mechanism opens the door for incentivized distribution by platforms or other affiliates *who get paid* for bringing new members to the creators using their products!
+This mechanism opens the door for incentivized distribution by platforms or other affiliates _who get paid_ for bringing new members to the creators using their products!
 
 ## A visual walkthrough of Unlock referrer and affiliate scenarios
 

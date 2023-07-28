@@ -17,7 +17,6 @@ export default class PriceConversion {
    */
   async convertToUSD(currency: string, lockPriceAmount: number) {
     const cached = cache[currency]
-
     let rate
     // Cache is valid for 5 minutes!
     if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {

@@ -21,7 +21,7 @@ We created a lock on the Unlock dashboard …
 
 ![The NFT events lock on the dashboard.](/images/blog/multiuselocks/nft-lock-dashboard.jpg)
 
- We used that lock to create a ticket page …
+We used that lock to create a ticket page …
 
 ![Creating an event page with the lock.](/images/blog/multiuselocks/nft-event-creation.jpg)
 
@@ -29,6 +29,6 @@ We created a lock on the Unlock dashboard …
 
 ![The lock's embed code.](/images/blog/multiuselocks/nft-lock-embed.jpg)
 
-Checkout the [tickets page](https://tickets.unlock-protocol.com/event/0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4) and [the locked blog post](https://unlock-protocol.com/blog/nft-dev-meetup/) with the event video. Want to really try it out? You can still buy a ticket to unlock the video (disclaimer: the sound isn’t great  – and it mostly serves as proof of concept for locking the page).
+Checkout the [tickets page](https://tickets.unlock-protocol.com/event/0x5865Ff2CBd045Ef1cfE19739df19E83B32b783b4) and [the locked blog post](https://unlock-protocol.com/blog/nft-dev-meetup/) with the event video. Want to really try it out? You can still buy a ticket to unlock the video (disclaimer: the sound isn’t great – and it mostly serves as proof of concept for locking the page).
 
 Want to do this for your event or content? [We’re all ears!](mailto:hello@unlock-protocol.com)

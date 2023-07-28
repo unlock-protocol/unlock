@@ -1,6 +1,5 @@
 pragma solidity ^0.5.0;
 
-
 /**
  * @title Initializable
  *
@@ -14,7 +13,6 @@ pragma solidity ^0.5.0;
  * because this is not dealt with automatically as with constructors.
  */
 contract Initializable {
-
   /**
    * @dev Indicates that the contract has been initialized.
    */
@@ -29,7 +27,10 @@ contract Initializable {
    * @dev Modifier to use in the initializer function of a contract.
    */
   modifier initializer() {
-    require(initializing || isConstructor() || !initialized, "Contract instance has already been initialized");
+    require(
+      initializing || isConstructor() || !initialized,
+      "Contract instance has already been initialized"
+    );
 
     bool isTopLevelCall = !initializing;
     if (isTopLevelCall) {
@@ -53,7 +54,9 @@ contract Initializable {
     // under construction or not.
     address self = address(this);
     uint256 cs;
-    assembly { cs := extcodesize(self) }
+    assembly {
+      cs := extcodesize(self)
+    }
     return cs == 0;
   }
 
@@ -71,65 +74,88 @@ contract Initializable {
  * For an implementation, see {ERC165}.
  */
 interface IERC165 {
-    /**
-     * @dev Returns true if this contract implements the interface defined by
-     * `interfaceId`. See the corresponding
-     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]
-     * to learn more about how these ids are created.
-     *
-     * This function call must use less than 30 000 gas.
-     */
-    function supportsInterface(bytes4 interfaceId) external view returns (bool);
+  /**
+   * @dev Returns true if this contract implements the interface defined by
+   * `interfaceId`. See the corresponding
+   * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]
+   * to learn more about how these ids are created.
+   *
+   * This function call must use less than 30 000 gas.
+   */
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
  */
 contract IERC721 is Initializable, IERC165 {
-    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);
-    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);
-    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
+  event Transfer(
+    address indexed from,
+    address indexed to,
+    uint256 indexed tokenId
+  );
+  event Approval(
+    address indexed owner,
+    address indexed approved,
+    uint256 indexed tokenId
+  );
+  event ApprovalForAll(
+    address indexed owner,
+    address indexed operator,
+    bool approved
+  );
 
-    /**
-     * @dev Returns the number of NFTs in `owner`'s account.
-     */
-    function balanceOf(address owner) public view returns (uint256 balance);
+  /**
+   * @dev Returns the number of NFTs in `owner`'s account.
+   */
+  function balanceOf(address owner) public view returns (uint256 balance);
 
-    /**
-     * @dev Returns the owner of the NFT specified by `tokenId`.
-     */
-    function ownerOf(uint256 tokenId) public view returns (address owner);
+  /**
+   * @dev Returns the owner of the NFT specified by `tokenId`.
+   */
+  function ownerOf(uint256 tokenId) public view returns (address owner);
 
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     *
-     *
-     * Requirements:
-     * - `from`, `to` cannot be zero.
-     * - `tokenId` must be owned by `from`.
-     * - If the caller is not `from`, it must be have been allowed to move this
-     * NFT by either {approve} or {setApprovalForAll}.
-     */
-    function safeTransferFrom(address from, address to, uint256 tokenId) public;
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - If the caller is not `from`, it must be approved to move this NFT by
-     * either {approve} or {setApprovalForAll}.
-     */
-    function transferFrom(address from, address to, uint256 tokenId) public;
-    function approve(address to, uint256 tokenId) public;
-    function getApproved(uint256 tokenId) public view returns (address operator);
+  /**
+   * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+   * another (`to`).
+   *
+   *
+   *
+   * Requirements:
+   * - `from`, `to` cannot be zero.
+   * - `tokenId` must be owned by `from`.
+   * - If the caller is not `from`, it must be have been allowed to move this
+   * NFT by either {approve} or {setApprovalForAll}.
+   */
+  function safeTransferFrom(address from, address to, uint256 tokenId) public;
 
-    function setApprovalForAll(address operator, bool _approved) public;
-    function isApprovedForAll(address owner, address operator) public view returns (bool);
+  /**
+   * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+   * another (`to`).
+   *
+   * Requirements:
+   * - If the caller is not `from`, it must be approved to move this NFT by
+   * either {approve} or {setApprovalForAll}.
+   */
+  function transferFrom(address from, address to, uint256 tokenId) public;
 
+  function approve(address to, uint256 tokenId) public;
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public;
+  function getApproved(uint256 tokenId) public view returns (address operator);
+
+  function setApprovalForAll(address operator, bool _approved) public;
+
+  function isApprovedForAll(
+    address owner,
+    address operator
+  ) public view returns (bool);
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes memory data
+  ) public;
 }
 
 // import '@openzeppelin/contracts-ethereum-package/contracts/token/ERC721/IERC721Enumerable.sol';
@@ -138,28 +164,28 @@ contract IERC721 is Initializable, IERC165 {
  * @dev See https://eips.ethereum.org/EIPS/eip-721
  */
 contract IERC721Enumerable is Initializable, IERC721 {
-    function totalSupply() public view returns (uint256);
-    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256 tokenId);
+  function totalSupply() public view returns (uint256);
 
-    function tokenByIndex(uint256 index) public view returns (uint256);
+  function tokenOfOwnerByIndex(
+    address owner,
+    uint256 index
+  ) public view returns (uint256 tokenId);
+
+  function tokenByIndex(uint256 index) public view returns (uint256);
 }
 
 /**
-* @title The PublicLock Interface
+ * @title The PublicLock Interface
  */
 
 contract IPublicLockV5 is IERC721Enumerable {
-
-// See indentationissue description here:
-// https://github.com/duaraghav8/Ethlint/issues/268
-// solium-disable indentation
+  // See indentationissue description here:
+  // https://github.com/duaraghav8/Ethlint/issues/268
+  // solium-disable indentation
 
   ///===================================================================
   /// Events
-  event Destroy(
-    uint balance,
-    address indexed owner
-  );
+  event Destroy(uint balance, address indexed owner);
 
   event Disable();
 
@@ -182,26 +208,17 @@ contract IPublicLockV5 is IERC721Enumerable {
     uint refundPenaltyBasisPoints
   );
 
-  event PriceChanged(
-    uint oldKeyPrice,
-    uint keyPrice
-  );
+  event PriceChanged(uint oldKeyPrice, uint keyPrice);
 
   event ExpireKey(uint indexed tokenId);
 
-  event NewLockSymbol(
-    string symbol
-  );
+  event NewLockSymbol(string symbol);
 
-  event TransferFeeChanged(
-    uint transferFeeBasisPoints
-  );
+  event TransferFeeChanged(uint transferFeeBasisPoints);
 
   /// @notice emits anytime the nonce used for off-chain approvals changes.
-  event NonceChanged(
-    address indexed keyOwner,
-    uint nextAvailableNonce
-  );
+  event NonceChanged(address indexed keyOwner, uint nextAvailableNonce);
+
   ///===================================================================
 
   /// Functions
@@ -216,36 +233,35 @@ contract IPublicLockV5 is IERC721Enumerable {
   ) external;
 
   /**
-  * @notice The version number of the current implementation on this network.
-  * @return The current version number.
-  */
+   * @notice The version number of the current implementation on this network.
+   * @return The current version number.
+   */
   function publicLockVersion() public pure returns (uint);
 
   /**
-  * @notice Gets the current balance of the account provided.
-  * @param _tokenAddress The token type to retrieve the balance of.
-  * @param _account The account to get the balance of.
-  * @return The number of tokens of the given type for the given address, possibly 0.
-  */
+   * @notice Gets the current balance of the account provided.
+   * @param _tokenAddress The token type to retrieve the balance of.
+   * @param _account The account to get the balance of.
+   * @return The number of tokens of the given type for the given address, possibly 0.
+   */
   function getBalance(
     address _tokenAddress,
     address _account
-  ) external view
-    returns (uint);
+  ) external view returns (uint);
 
   /**
-  * @notice Used to disable lock before migrating keys and/or destroying contract.
-  * @dev Throws if called by other than the owner.
-  * @dev Throws if lock contract has already been disabled.
-  */
+   * @notice Used to disable lock before migrating keys and/or destroying contract.
+   * @dev Throws if called by other than the owner.
+   * @dev Throws if lock contract has already been disabled.
+   */
   function disableLock() external;
 
   /**
-  * @notice Used to clean up old lock contracts from the blockchain.
-  * TODO: add a check to ensure all keys are INVALID!
-  * @dev Throws if called by other than owner.
-  * @dev Throws if lock has not yet been disabled.
-  */
+   * @notice Used to clean up old lock contracts from the blockchain.
+   * TODO: add a check to ensure all keys are INVALID!
+   * @dev Throws if called by other than owner.
+   * @dev Throws if lock has not yet been disabled.
+   */
   function destroyLock() external;
 
   /**
@@ -258,10 +274,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `fullRefund`
    * use cases.
    */
-  function withdraw(
-    address _tokenAddress,
-    uint _amount
-  ) external;
+  function withdraw(address _tokenAddress, uint _amount) external;
 
   /**
    * A function which lets the owner of the lock to change the price for future purchases.
@@ -269,7 +282,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @dev Throws if lock has been disabled
    * @param _keyPrice The new price to set for keys
    */
-  function updateKeyPrice( uint _keyPrice ) external;
+  function updateKeyPrice(uint _keyPrice) external;
 
   /**
    * A function which lets the owner of the lock update the beneficiary account,
@@ -278,7 +291,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @dev Throws if _beneficiary is address(0)
    * @param _beneficiary The new address to set as the beneficiary
    */
-  function updateBeneficiary( address _beneficiary ) external;
+  function updateBeneficiary(address _beneficiary) external;
 
   /**
    * A function which lets the owner of the lock expire a users' key.
@@ -286,32 +299,28 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @dev Throws if key owner does not have a valid key
    * @param _owner The address of the key owner
    */
-  function expireKeyFor( address _owner ) external;
+  function expireKeyFor(address _owner) external;
 
-    /**
+  /**
    * Checks if the user has a non-expired key.
    * @param _owner The address of the key owner
    */
-  function getHasValidKey(
-    address _owner
-  ) external view returns (bool);
+  function getHasValidKey(address _owner) external view returns (bool);
 
   /**
    * @notice Find the tokenId for a given user
    * @return The tokenId of the NFT, else revert
    * @dev Throws if key owner does not have a valid key
    * @param _account The address of the key owner
-  */
-  function getTokenIdFor(
-    address _account
-  ) external view returns (uint);
+   */
+  function getTokenIdFor(address _account) external view returns (uint);
 
   /**
-  * A function which returns a subset of the keys for this Lock as an array
-  * @param _page the page of key owners requested when faceted by page size
-  * @param _pageSize the number of Key Owners requested per page
-  * @dev Throws if there are no key owners yet
-  */
+   * A function which returns a subset of the keys for this Lock as an array
+   * @param _page the page of key owners requested when faceted by page size
+   * @param _pageSize the number of Key Owners requested per page
+   * @dev Throws if there are no key owners yet
+   */
   function getOwnersByPage(
     uint _page,
     uint _pageSize
@@ -328,10 +337,10 @@ contract IPublicLockV5 is IERC721Enumerable {
   ) external view returns (bool);
 
   /**
-  * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _owner address of the user for whom we search the key
-  * @dev Throws if owner has never owned a key for this lock
-  */
+   * @dev Returns the key's ExpirationTimestamp field for a given owner.
+   * @param _owner address of the user for whom we search the key
+   * @dev Throws if owner has never owned a key for this lock
+   */
   function keyExpirationTimestampFor(
     address _owner
   ) external view returns (uint timestamp);
@@ -347,35 +356,27 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @param _lockName The new name for the lock
    * @dev Throws if called by other than the lock owner
    */
-  function updateLockName(
-    string calldata _lockName
-  ) external;
+  function updateLockName(string calldata _lockName) external;
 
   /**
    * Allows the Lock owner to assign a Symbol for this Lock.
    * @param _lockSymbol The new Symbol for the lock
    * @dev Throws if called by other than the lock owner
    */
-  function updateLockSymbol(
-    string calldata _lockSymbol
-  ) external;
+  function updateLockSymbol(string calldata _lockSymbol) external;
 
   /**
-    * @dev Gets the token symbol
-    * @return string representing the token symbol
-    */
-  function symbol()
-    external view
-    returns(string memory);
+   * @dev Gets the token symbol
+   * @return string representing the token symbol
+   */
+  function symbol() external view returns (string memory);
 
-    /**
+  /**
    * Allows the Lock owner to update the baseTokenURI for this Lock.
    * @dev Throws if called by other than the lock owner
    * @param _baseTokenURI String representing the base of the URI for this lock.
    */
-  function setBaseTokenURI(
-    string calldata _baseTokenURI
-  ) external;
+  function setBaseTokenURI(string calldata _baseTokenURI) external;
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC
@@ -385,9 +386,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @param _tokenId The tokenID we're inquiring about
    * @return String representing the URI for the requested token
    */
-  function tokenURI(
-    uint256 _tokenId
-  ) external view returns(string memory);
+  function tokenURI(uint256 _tokenId) external view returns (string memory);
 
   /**
    * Allows the Lock owner to give a collection of users a key with no charge.
@@ -402,17 +401,17 @@ contract IPublicLockV5 is IERC721Enumerable {
   ) external;
 
   /**
-  * @dev Purchase function
-  * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
-  * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the purchased key
-  * @param _referrer address of the user making the referral
-  * @param _data arbitrary data populated by the front-end which initiated the sale
-  * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
-  * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
-  * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
-  * than keyPrice is approved for spending).
-  */
+   * @dev Purchase function
+   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
+   * (_value is ignored when using ETH)
+   * @param _recipient address of the recipient of the purchased key
+   * @param _referrer address of the user making the referral
+   * @param _data arbitrary data populated by the front-end which initiated the sale
+   * @dev Throws if lock is disabled. Throws if lock is sold-out. Throws if _recipient == address(0).
+   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
+   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
+   * than keyPrice is approved for spending).
+   */
   function purchase(
     uint256 _value,
     address _recipient,
@@ -426,9 +425,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @param _transferFeeBasisPoints The new transfer fee in basis-points(bps).
    * Ex: 200 bps = 2%
    */
-  function updateTransferFee(
-    uint _transferFeeBasisPoints
-  ) external;
+  function updateTransferFee(uint _transferFeeBasisPoints) external;
 
   /**
    * Determines how much of a fee a key owner would need to pay in order to
@@ -451,10 +448,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    * @dev Throws if called by other than owner
    * @dev Throws if _keyOwner does not have a valid key
    */
-  function fullRefund(
-    address _keyOwner,
-    uint amount
-  ) external;
+  function fullRefund(address _keyOwner, uint amount) external;
 
   /**
    * @notice Destroys the msg.sender's key and sends a refund based on the amount of time remaining.
@@ -476,9 +470,7 @@ contract IPublicLockV5 is IERC721Enumerable {
    * senders account.
    * @dev This can be used to invalidate a previously signed message.
    */
-  function invalidateOffchainApproval(
-    uint _nextAvailableNonce
-  ) external;
+  function invalidateOffchainApproval(uint _nextAvailableNonce) external;
 
   /**
    * Allow the owner to change the refund penalty.
@@ -502,7 +494,7 @@ contract IPublicLockV5 is IERC721Enumerable {
     address _owner
   ) external view returns (uint refund);
 
-  function keyOwnerToNonce(address ) external view returns (uint256 );
+  function keyOwnerToNonce(address) external view returns (uint256);
 
   /**
    * @dev returns the hash to sign in order to allow another user to cancel on your behalf.
@@ -518,72 +510,70 @@ contract IPublicLockV5 is IERC721Enumerable {
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
-  function beneficiary() external view returns (address );
+  function beneficiary() external view returns (address);
 
-  function erc1820() external view returns (address );
+  function erc1820() external view returns (address);
 
-  function expirationDuration() external view returns (uint256 );
+  function expirationDuration() external view returns (uint256);
 
-  function freeTrialLength() external view returns (uint256 );
+  function freeTrialLength() external view returns (uint256);
 
-  function isAlive() external view returns (bool );
+  function isAlive() external view returns (bool);
 
-  function keyCancelInterfaceId() external view returns (bytes32 );
+  function keyCancelInterfaceId() external view returns (bytes32);
 
-  function keySoldInterfaceId() external view returns (bytes32 );
+  function keySoldInterfaceId() external view returns (bytes32);
 
-  function keyPrice() external view returns (uint256 );
+  function keyPrice() external view returns (uint256);
 
-  function maxNumberOfKeys() external view returns (uint256 );
+  function maxNumberOfKeys() external view returns (uint256);
 
-  function owners(uint256 ) external view returns (address );
+  function owners(uint256) external view returns (address);
 
-  function refundPenaltyBasisPoints() external view returns (uint256 );
+  function refundPenaltyBasisPoints() external view returns (uint256);
 
-  function tokenAddress() external view returns (address );
+  function tokenAddress() external view returns (address);
 
-  function transferFeeBasisPoints() external view returns (uint256 );
+  function transferFeeBasisPoints() external view returns (uint256);
 
-  function unlockProtocol() external view returns (address );
+  function unlockProtocol() external view returns (address);
 
-  function BASIS_POINTS_DEN() external view returns (uint256 );
+  function BASIS_POINTS_DEN() external view returns (uint256);
+
   ///===================================================================
 
   /**
-  * @notice Allows the key owner to safely share their key (parent key) by
-  * transferring a portion of the remaining time to a new key (child key).
-  * @dev Throws if key is not valid.
-  * @dev Throws if `_to` is the zero address
-  * @param _to The recipient of the shared key
-  * @param _tokenId the key to share
-  * @param _timeShared The amount of time shared
-  * checks if `_to` is a smart contract (code size > 0). If so, it calls
-  * `onERC721Received` on `_to` and throws if the return value is not
-  * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
-  * @dev Emit Transfer event
-  */
-  function shareKey(
-    address _to,
-    uint _tokenId,
-    uint _timeShared
-  ) external;
+   * @notice Allows the key owner to safely share their key (parent key) by
+   * transferring a portion of the remaining time to a new key (child key).
+   * @dev Throws if key is not valid.
+   * @dev Throws if `_to` is the zero address
+   * @param _to The recipient of the shared key
+   * @param _tokenId the key to share
+   * @param _timeShared The amount of time shared
+   * checks if `_to` is a smart contract (code size > 0). If so, it calls
+   * `onERC721Received` on `_to` and throws if the return value is not
+   * `bytes4(keccak256('onERC721Received(address,address,uint,bytes)'))`.
+   * @dev Emit Transfer event
+   */
+  function shareKey(address _to, uint _tokenId, uint _timeShared) external;
 
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
+
   ///===================================================================
 
   /// From Openzeppelin's Ownable.sol
-  function owner() external view returns (address );
+  function owner() external view returns (address);
 
-  function isOwner() external view returns (bool );
+  function isOwner() external view returns (bool);
 
   function renounceOwnership() external;
 
   function transferOwnership(address newOwner) external;
+
   ///===================================================================
 
   /// From ERC165.sol
-  function supportsInterface(bytes4 interfaceId) external view returns (bool );
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
   ///===================================================================
-
 }

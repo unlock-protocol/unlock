@@ -6,9 +6,8 @@ const { reverts } = require('../helpers')
 let keyManager
 
 contract('KeyManager / locksmiths', (accounts) => {
-
   beforeEach(async () => {
-    [keyManager] = await setup()
+    ;[keyManager] = await setup()
   })
 
   it('should let the owner add signer', async () => {
@@ -22,7 +21,9 @@ contract('KeyManager / locksmiths', (accounts) => {
     expect(await keyManager.locksmiths(accounts[1])).to.equal(false)
 
     await reverts(
-      keyManager.connect(newOwner).addLocksmith(newOwner.address), `Ownable: caller is not the owner`)
+      keyManager.connect(newOwner).addLocksmith(newOwner.address),
+      `Ownable: caller is not the owner`
+    )
 
     expect(await keyManager.locksmiths(accounts[1])).to.equal(false)
   })
@@ -40,9 +41,10 @@ contract('KeyManager / locksmiths', (accounts) => {
 
     const [, newOwner] = await ethers.getSigners()
     await reverts(
-      keyManager.connect(newOwner).removeLocksmith(newOwner.address), `Ownable: caller is not the owner`)
+      keyManager.connect(newOwner).removeLocksmith(newOwner.address),
+      `Ownable: caller is not the owner`
+    )
 
     expect(await keyManager.locksmiths(accounts[1])).to.equal(true)
   })
-
 })

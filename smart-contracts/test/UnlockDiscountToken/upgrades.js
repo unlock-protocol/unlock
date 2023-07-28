@@ -33,8 +33,8 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-const UnlockDiscountTokenV1 = require.resolve(
-  '@unlock-protocol/contracts/dist/UnlockDiscountToken/UnlockDiscountToken.sol'
+const UnlockDiscountTokenV2 = require.resolve(
+  '@unlock-protocol/contracts/dist/UnlockDiscountToken/UnlockDiscountTokenV2.sol'
 )
 
 // helper function
@@ -60,8 +60,8 @@ contract('UnlockDiscountToken upgrade', async () => {
 
     // copy previous UDT version over
     await fs.copy(
-      UnlockDiscountTokenV1,
-      path.resolve(contractsPath, 'UnlockDiscountTokenV1.sol')
+      UnlockDiscountTokenV2,
+      path.resolve(contractsPath, 'UnlockDiscountTokenV2.sol')
     )
 
     // re-compile contract using hardhat
@@ -69,7 +69,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
     // deploy udt
     const UnlockDiscountToken = await ethers.getContractFactory(
-      'contracts/past-versions/UnlockDiscountTokenV1.sol:UnlockDiscountToken'
+      'contracts/past-versions/UnlockDiscountTokenV2.sol:UnlockDiscountTokenV2'
     )
 
     const [deployer] = await ethers.getSigners()
@@ -172,7 +172,9 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       const { events } = await tx.wait()
       const evt = events.find((v) => v.event === 'NewLock')
-      const PublicLock = await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
@@ -226,7 +228,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         weth.address
       )
 
-       // Give unlock contract some tokens
+      // Give unlock contract some tokens
       await udt.mint(
         unlock.address,
         ethers.utils.parseUnits('1000000', 'ether')
@@ -261,7 +263,7 @@ contract('UnlockDiscountToken upgrade', async () => {
             value: await lock.keyPrice(),
           }
         )
-        
+
         assert.equal((await lock.balanceOf(keyBuyer.address)).toString(), '1')
 
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented

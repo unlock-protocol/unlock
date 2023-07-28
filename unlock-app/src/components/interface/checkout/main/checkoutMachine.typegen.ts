@@ -10,42 +10,27 @@ export interface Typegen0 {
     actions: never
     delays: never
     guards: never
-    services: 'unlockAccount'
+    services: never
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
-    confirmRenew: 'CONFIRM_RENEW'
-    disconnect: 'DISCONNECT'
-    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
+    disconnect: 'DISCONNECT' | 'RESET_CHECKOUT'
     selectLock: 'SELECT_LOCK'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
-    solveCaptcha: 'SOLVE_CAPTCHA'
     submitData: 'SUBMIT_DATA'
-    submitPassword: 'SUBMIT_PASSWORD'
-    submitPromo: 'SUBMIT_PROMO'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
   eventsCausingDelays: {}
   eventsCausingGuards: {
-    requireCaptcha:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-    requireMessageToSign:
-      | 'BACK'
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-    requirePassword:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
-    requirePromo:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SIGN_MESSAGE'
+    isCardPayment: 'BACK'
+    requireCaptcha: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireGuild: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireMessageToSign: 'BACK' | 'SELECT_LOCK' | 'SELECT_RECIPIENTS'
+    requirePassword: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requirePromo: 'BACK' | 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
   }
   eventsCausingServices: {
     unlockAccount: 'UNLOCK_ACCOUNT'
@@ -54,6 +39,7 @@ export interface Typegen0 {
     | 'CAPTCHA'
     | 'CARD'
     | 'CONFIRM'
+    | 'GUILD'
     | 'MESSAGE_TO_SIGN'
     | 'METADATA'
     | 'MINTING'
@@ -61,8 +47,6 @@ export interface Typegen0 {
     | 'PAYMENT'
     | 'PROMO'
     | 'QUANTITY'
-    | 'RENEW'
-    | 'RENEWED'
     | 'RETURNING'
     | 'SELECT'
     | 'UNLOCK_ACCOUNT'

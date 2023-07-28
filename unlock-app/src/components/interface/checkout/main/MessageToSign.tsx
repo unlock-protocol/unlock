@@ -7,16 +7,21 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function MessageToSign({ checkoutService, injectedProvider }: Props) {
+export function MessageToSign({
+  communication,
+  checkoutService,
+  injectedProvider,
+}: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account, signMessage } = useAuth()
+  const { account, getWalletService } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
   const { paywallConfig } = state.context
   const { messageToSign } = paywallConfig
@@ -24,12 +29,22 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
   const onSign = async () => {
     setIsSigning(true)
     try {
-      const signature = await signMessage(messageToSign!)
+      const walletService = await getWalletService()
+
+      const signature = await walletService.signMessage(
+        messageToSign,
+        'personal_sign'
+      )
       setIsSigning(false)
       send({
         type: 'SIGN_MESSAGE',
         signature,
         address: account!,
+      })
+      communication?.emitUserInfo({
+        address: account,
+        message: messageToSign,
+        signedMessage: signature,
       })
     } catch (error) {
       if (error instanceof Error) {
@@ -39,11 +54,9 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
-
   return (
     <Fragment>
-      <Stepper position={5} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <pre className="whitespace-pre-wrap text-brand-gray">
           {messageToSign}

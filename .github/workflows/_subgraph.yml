@@ -13,7 +13,6 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      BLOCKTIME: 0
       SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
     steps:
       - uses: actions/checkout@v3

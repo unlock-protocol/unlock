@@ -4,7 +4,7 @@ import { networks } from '@unlock-protocol/networks'
 import app from '../../app'
 
 const networkIds = Object.values(networks)
-  .filter((network) => ![31337, 4, 69].includes(network.id))
+  .filter((network) => !!network.tokens)
   .map((item) => item.id)
 
 describe.each(networkIds)('Test the price on each network', async (id) => {

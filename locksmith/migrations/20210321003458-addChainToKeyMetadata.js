@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
 const config = require('../config/config')
 
 const table = 'KeyMetadata'
-
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -18,20 +17,24 @@ module.exports = {
     })
 
     // And now let's set the right value!
-    await queryInterface.bulkUpdate(table, {
-      chain: parseInt(config.defaultNetwork),
-    }, {
-      chain: null,
-    });
+    await queryInterface.bulkUpdate(
+      table,
+      {
+        chain: parseInt(config.defaultNetwork),
+      },
+      {
+        chain: null,
+      }
+    )
 
     // And make sure we never allow for any null one
     await queryInterface.changeColumn(table, 'chain', {
       type: Sequelize.INTEGER,
-      allowNull: false
+      allowNull: false,
     })
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.removeColumn(table, 'chain')
-  }
-};
+  },
+}

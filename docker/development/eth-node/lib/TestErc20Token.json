@@ -368,20 +368,14 @@
   "ast": {
     "absolutePath": "/Users/akeem/projects/unlock/smart-contracts/contracts/test-artifacts/TestErc20Token.sol",
     "exportedSymbols": {
-      "TestErc20Token": [
-        3255
-      ]
+      "TestErc20Token": [3255]
     },
     "id": 3256,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 3239,
-        "literals": [
-          "solidity",
-          "0.5",
-          ".9"
-        ],
+        "literals": ["solidity", "0.5", ".9"],
         "nodeType": "PragmaDirective",
         "src": "0:22:19"
       },
@@ -446,25 +440,12 @@
             "src": "410:13:19"
           }
         ],
-        "contractDependencies": [
-          3562,
-          4424,
-          4482,
-          4510,
-          4681
-        ],
+        "contractDependencies": [3562, 4424, 4482, 4510, 4681],
         "contractKind": "contract",
         "documentation": "This is an implementation of an ERC20 token to be used in tests.\nIt's a standard ERC20 implementation + `mint` (for testing).\n * This contract should not be used in production.",
         "fullyImplemented": true,
         "id": 3255,
-        "linearizedBaseContracts": [
-          3255,
-          4482,
-          4510,
-          3562,
-          4424,
-          4681
-        ],
+        "linearizedBaseContracts": [3255, 4482, 4510, 3562, 4424, 4681],
         "name": "TestErc20Token",
         "nodeType": "ContractDefinition",
         "nodes": [
@@ -585,20 +566,14 @@
   "legacyAST": {
     "absolutePath": "/Users/akeem/projects/unlock/smart-contracts/contracts/test-artifacts/TestErc20Token.sol",
     "exportedSymbols": {
-      "TestErc20Token": [
-        3255
-      ]
+      "TestErc20Token": [3255]
     },
     "id": 3256,
     "nodeType": "SourceUnit",
     "nodes": [
       {
         "id": 3239,
-        "literals": [
-          "solidity",
-          "0.5",
-          ".9"
-        ],
+        "literals": ["solidity", "0.5", ".9"],
         "nodeType": "PragmaDirective",
         "src": "0:22:19"
       },
@@ -663,25 +638,12 @@
             "src": "410:13:19"
           }
         ],
-        "contractDependencies": [
-          3562,
-          4424,
-          4482,
-          4510,
-          4681
-        ],
+        "contractDependencies": [3562, 4424, 4482, 4510, 4681],
         "contractKind": "contract",
         "documentation": "This is an implementation of an ERC20 token to be used in tests.\nIt's a standard ERC20 implementation + `mint` (for testing).\n * This contract should not be used in production.",
         "fullyImplemented": true,
         "id": 3255,
-        "linearizedBaseContracts": [
-          3255,
-          4482,
-          4510,
-          3562,
-          4424,
-          4681
-        ],
+        "linearizedBaseContracts": [3255, 4482, 4510, 3562, 4424, 4681],
         "name": "TestErc20Token",
         "nodeType": "ContractDefinition",
         "nodes": [

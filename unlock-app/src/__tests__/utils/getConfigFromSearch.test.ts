@@ -1,5 +1,7 @@
+// TODO: remove, some part related to old checkout (callToAction)
+
 import { getPaywallConfigFromQuery } from '../../utils/paywallConfig'
-import { vi } from 'vitest'
+import { vi, beforeAll, afterAll, it, describe, expect } from 'vitest'
 
 let originalConsole: any
 let error = vi.fn()

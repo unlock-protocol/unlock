@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 import { networks } from '@unlock-protocol/networks'
 import { minifyAddress } from '~/utils'
 
-interface Props {
+export interface Props {
   id: string
   recipient: string
   title: string
@@ -261,7 +261,7 @@ export function TicketLabel({ label, value }: TicketLabelProps) {
   )
 }
 
-interface TicketItemProps {
+export interface TicketItemProps {
   icon: ReactNode
   value: string
 }

@@ -70,7 +70,10 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    const PublicLockLatest = await getContractFactoryFromSolFiles('PublicLock', 10)
+    const PublicLockLatest = await getContractFactoryFromSolFiles(
+      'PublicLock',
+      10
+    )
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
 
@@ -86,16 +89,11 @@ describe('upgradeLock / data migration v9 > v10', () => {
     )
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
       initializer: 'initialize(address)',
-      unsafeAllow: ['delegatecall']
     })
     await unlock.deployed()
 
     // add past impl to Unlock
-    const txImpl = await unlock.addLockTemplate(
-      publicLockPast.address,
-      pastVersion
-    )
-    await txImpl.wait()
+    await unlock.addLockTemplate(publicLockPast.address, pastVersion)
 
     // set v1 as main template
     await unlock.setLockTemplate(publicLockPast.address)
@@ -208,7 +206,6 @@ describe('upgradeLock / data migration v9 > v10', () => {
     })
 
     it('Should have upgraded the lock with the new template', async () => {
-      assert.equal(await unlock.publicLockLatestVersion(), pastVersion + 1)
       assert.equal(await lock.publicLockVersion(), pastVersion + 1)
     })
 

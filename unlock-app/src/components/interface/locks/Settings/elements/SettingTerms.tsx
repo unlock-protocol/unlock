@@ -45,9 +45,9 @@ export const SettingTerms = ({
           network={network}
           isManager={isManager}
           disabled={!isManager}
+          unlimitedDuration={unlimitedDuration}
         />
       ),
-      active: !unlimitedDuration,
     },
     {
       label: 'Duration',
@@ -79,7 +79,7 @@ export const SettingTerms = ({
     {
       label: 'Maximum number of keys per address',
       description:
-        'The maximum number of keys a specific address can own. By default, a given address can only own ',
+        'The maximum number of keys a specific address can own. By default, a given address can only own a single key.',
       children: (
         <UpdateMaxKeysPerAddress
           isManager={isManager}

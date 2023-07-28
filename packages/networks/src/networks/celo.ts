@@ -1,6 +1,7 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const celo: NetworkConfig = {
+  publicLockVersionToDeploy: 13,
   publicProvider: 'https://forno.celo.org',
   provider: 'https://rpc.unlock-protocol.com/42220',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
@@ -10,8 +11,8 @@ export const celo: NetworkConfig = {
   name: 'Celo',
   chain: 'celo',
   description:
-    'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
-  blockTime: 1000,
+    'Celo is the carbon-negative, mobile-first, EVM-compatible blockchain ecosystem leading a thriving new digital economy for all.',
+  url: 'https://celo.org',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
     endpointV2:
@@ -30,10 +31,6 @@ export const celo: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  requiredConfirmations: 12,
-  erc20: null,
-  baseCurrencySymbol: 'CELO',
-  locksmithUri: 'https://locksmith.unlock-protocol.com',
   nativeCurrency: {
     name: 'CELO',
     symbol: 'CELO',
@@ -44,13 +41,13 @@ export const celo: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    universalRouterAddress: '0xC73d61d192FB994157168Fb56730FdEc64C9Cb8F',
   },
-  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
+  swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   wrappedNativeCurrency: {
     name: 'Celo native asset',
     symbol: 'CELO',
@@ -73,6 +70,20 @@ export const celo: NetworkConfig = {
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
     },
   ],
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x1Bc951F8ed90F6c135F01Fe62CA348F4c3F43D00',
+      },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xdd753E08BB09F22593537f29100F0eD98AfA57FA',
+      },
+    ],
+  },
 }
 
 export default celo

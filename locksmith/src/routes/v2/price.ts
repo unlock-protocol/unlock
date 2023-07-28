@@ -1,12 +1,21 @@
 import express from 'express'
-import { PriceController } from '../../controllers/v2/priceController'
+import {
+  amount,
+  isCardPaymentEnabledForLock,
+  universalCard,
+  total,
+  getTotalChargesForLock,
+} from '../../controllers/v2/priceController'
 
 const router = express.Router({ mergeParams: true })
 
-const priceController = new PriceController()
-
-router.get('/:network/price', async (req, res) => {
-  await priceController.amount(req, res)
-})
+router.get('/charges/:network/locks/:lockAddress', getTotalChargesForLock)
+router.get('/:network/price', amount)
+router.get('/purchase/total', total)
+router.get('/price/:network/:lock/card', universalCard)
+router.get(
+  '/credit-card-details/:network/locks/:lockAddress',
+  isCardPaymentEnabledForLock
+)
 
 export default router

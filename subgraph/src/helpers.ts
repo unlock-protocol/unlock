@@ -75,3 +75,16 @@ export function loadOrCreateUnlockDailyData(
 
   return unlockDailyData
 }
+
+export function getKeyManagerOf(
+  lockAddress: Address,
+  tokenId: BigInt,
+  owner: Address
+): Address {
+  const lockContract = PublicLockV7.bind(lockAddress)
+  const response = lockContract.try_keyManagerOf(tokenId)
+  if (!response.reverted) {
+    return response.value
+  }
+  return owner // fallback to owner when lockManager is null
+}

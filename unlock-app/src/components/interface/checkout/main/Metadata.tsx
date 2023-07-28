@@ -20,19 +20,18 @@ import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
-import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { useCheckoutSteps } from './useCheckoutItems'
 import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
 import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -48,15 +47,20 @@ interface RecipientInputProps {
   id: number
   hideFirstRecipient?: boolean
   lock: Lock
+  checkoutService: CheckoutService
 }
 
 export const MetadataInputs = ({
+  checkoutService,
   metadataInputs,
   disabled,
   id,
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
+  const [state] = useActor(checkoutService)
+  const { paywallConfig } = state.context
+
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -70,6 +74,7 @@ export const MetadataInputs = ({
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
+
   const onRecipientChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value
@@ -106,16 +111,22 @@ export const MetadataInputs = ({
       'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
   )
 
+  let recipient = account
+  // The first recipient could be hardcoded
+  if (id == 0 && paywallConfig.recipient) {
+    recipient = paywallConfig.recipient
+  }
+
   return (
     <div className="grid gap-2">
       {hideRecipientAddress ? (
         <div className="space-y-1">
           <div className="ml-1 text-sm">
-            {isUnlockAccount ? 'Email' : 'Wallet'}
+            {isUnlockAccount ? 'Email:' : 'Wallet:'}
           </div>
           <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
             <div className="w-32 text-sm truncate">
-              {isUnlockAccount ? email : account}
+              {isUnlockAccount ? email : recipient}
             </div>
             <Button
               type="button"
@@ -188,6 +199,7 @@ export const MetadataInputs = ({
                   }}
                   ref={ref}
                   onBlur={onBlur}
+                  autoComplete={useEmail ? 'email' : label}
                 />
                 {description && !error && (
                   <p className="text-xs text-gray-600"> {description} </p>
@@ -208,23 +220,35 @@ export const MetadataInputs = ({
             )
           )
         })
-        .map((metadataInputItem) => (
-          <Input
-            key={metadataInputItem.name}
-            label={metadataInputItem.name}
-            defaultValue={metadataInputItem.defaultValue}
-            size="small"
-            disabled={disabled}
-            placeholder={metadataInputItem.placeholder}
-            type={metadataInputItem.type}
-            error={errors?.metadata?.[id]?.[metadataInputItem.name]?.message}
-            {...register(`metadata.${id}.${metadataInputItem.name}`, {
-              required:
-                metadataInputItem.required &&
-                `${metadataInputItem.name} is required`,
-            })}
-          />
-        ))}
+        .map((metadataInputItem) => {
+          const {
+            name,
+            label,
+            defaultValue,
+            placeholder,
+            type,
+            required,
+            value,
+          } = metadataInputItem ?? {}
+          const inputLabel = label || name
+          return (
+            <Input
+              key={name}
+              label={inputLabel}
+              autoComplete={inputLabel}
+              defaultValue={defaultValue}
+              size="small"
+              disabled={disabled}
+              placeholder={placeholder}
+              type={type}
+              error={errors?.metadata?.[id]?.[name]?.message}
+              {...register(`metadata.${id}.${name}`, {
+                required: required && `${inputLabel} is required`,
+                value,
+              })}
+            />
+          )
+        })}
     </div>
   )
 }
@@ -239,7 +263,6 @@ const emailInput: MetadataInput = {
 export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
-  const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
@@ -259,6 +282,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     isEmailRequired,
   ])
 
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
   const methods = useForm<FormData>({
     shouldUnregister: false,
     shouldFocusError: true,
@@ -322,14 +346,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           }
         })
       )
-      const users = await Promise.all(
-        data.metadata.map(async ({ recipient, keyManager, ...props }) => {
+      const metadata = await Promise.all(
+        data.metadata.map(({ recipient, keyManager, ...props }) => {
           const formattedMetadata = formResultToMetadata(
             props,
             metadataInputs || []
           )
           return {
             userAddress: recipient,
+            network: lock!.network,
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -343,11 +368,12 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       const keyManagers = data.metadata.map(
         (item) => item.keyManager || item.recipient
       )
-      await storage.submitMetadata(users, lock!.network)
+      await updateUsersMetadata(metadata)
       send({
         type: 'SELECT_RECIPIENTS',
         recipients,
         keyManagers,
+        metadata,
       })
     } catch (error) {
       if (error instanceof Error) {
@@ -356,11 +382,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   }
   const isLoading = isSubmitting
-  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
-      <Stepper position={3} service={checkoutService} items={stepItems} />
+      <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isMemberLoading ? (
           <Placeholder.Root>
@@ -382,6 +407,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 >
                   <FormProvider {...methods}>
                     <MetadataInputs
+                      checkoutService={checkoutService}
                       hideFirstRecipient={hideRecipient}
                       disabled={isSubmitting}
                       metadataInputs={metadataInputs}

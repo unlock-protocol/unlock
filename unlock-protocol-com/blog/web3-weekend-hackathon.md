@@ -10,7 +10,7 @@ image: /images/blog/web3-weekend/web3-weekend-hackathon.png
 
 On May 28-30th, 2021, Unlock participated in [Web3Weekend](https://web3.ethglobal.co/), in partnership with Protocol Labs and EthGlobal. We added UDT Tokens to the $50K+ prize bounty shared by all of the sponsors and community.
 
-At the end of the weekend, we were excited to see that there were 19 submissions using Unlock for part of their application! *Unlock Protocol was the second most used technology* during the hackathon. We were excited and impressed by all of the submissions, and it was very difficult to choose our top three. We gave away a total of 11 UDT to three submissions, which we'll include below.
+At the end of the weekend, we were excited to see that there were 19 submissions using Unlock for part of their application! _Unlock Protocol was the second most used technology_ during the hackathon. We were excited and impressed by all of the submissions, and it was very difficult to choose our top three. We gave away a total of 11 UDT to three submissions, which we'll include below.
 
 Thanks so much to everyone who tried out Unlock this weekend! We are looking forward to sponsoring future events!
 
@@ -18,7 +18,7 @@ Thanks so much to everyone who tried out Unlock this weekend! We are looking for
 
 ## BlockFood - 5 UDT
 
-A decentralized restaurant reservation app  for restaurant owners and customers using Unlock
+A decentralized restaurant reservation app for restaurant owners and customers using Unlock
 
 <iframe width="100%" height="410px"  src="https://www.youtube.com/embed/3ptHEtkYjQg?start=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -40,25 +40,27 @@ If the guest does not check in at the designated time (+ a configurable margin o
 This project uses Unlock to create the posibility for users to create a reservation for a Restaurant by depositing a fee.
 
 FrontEnd:
+
 - latest version of Angular
 - Ethers.js
 - Angular material
 
 BackEnd:
+
 - Solidity Smart Contract
 - Unlock Protocol
 
 Unfinished Topics:
-* Reservation on a specific time (date and timepicker in the FrontEnd does not submit values to the SmartContract).
-* Withdraw function in the FrontEnd.
-* Refund of multiple reservations ( purchase -> purchase -> refund -> refund)
 
+- Reservation on a specific time (date and timepicker in the FrontEnd does not submit values to the SmartContract).
+- Withdraw function in the FrontEnd.
+- Refund of multiple reservations ( purchase -> purchase -> refund -> refund)
 
 🛠 [https://github.com/sudojanuc/BlockFood](https://github.com/sudojanuc/BlockFood)
 
 🎥 [https://showcase.ethglobal.co/web3weekend/blockfood](https://showcase.ethglobal.co/web3weekend/blockfood)
 
-## ****ContentStream -**** 3 UDT
+## \***\*ContentStream -\*\*** 3 UDT
 
 ContentStream is a broadcast platform and marketplace allowing content creators to sell streams as bundles and NFT's.
 
@@ -106,7 +108,7 @@ With the rise in popularity of these sorts of marketplaces, video content is sta
 - UDT: Paywalls for asset purchasing. Representation of the stream as a purchase
 - The graph: Reporting and health of ecosystem. Volume indicators for using LivePeer. Indexing of contentstream transactions in the future.
 
-## ****Cross Chain Wallet Dashboard****  - 3 UDT
+## \***\*Cross Chain Wallet Dashboard\*\*** - 3 UDT
 
 This projects helps you to keep track of your liquidity across chains.
 
@@ -121,6 +123,7 @@ The whole dashboard is hosted in TEXTILE Buckets on IPFS and we use Cloudfront t
 **How it's made**
 
 - Allow to connect multiple wallets from different EVM powered chains like Ethereum, Polygon, BSC, DAI,..
+
 * Get current balances from each chain's RPC
 * Get current USD prices from Coingecko and multiply it with each balance to get the real value of our portfolio
 * Unlock premium features (adding multiple wallets) via UNLOCK-PROTOCOL - that way we can monetize our dashboard in a classic freemium fashion

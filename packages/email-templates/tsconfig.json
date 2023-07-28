@@ -6,11 +6,11 @@
     /* Modules */
     "module": "ESNext" /* Specify what module code is generated. */,
     "rootDir": "./src" /* Specify the root folder within your source files. */,
-    
+
     /* JavaScript Support */
     "allowJs": false /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */,
     "checkJs": false /* Enable error reporting in type-checked JavaScript files. */,
-    
+
     // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
     "outDir": "dist" /* Specify an output folder for all emitted files. */,
     "baseUrl": ".",
@@ -22,7 +22,7 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    
+
     /* Type Checking */
     "strict": true /* Enable all strict type-checking options. */,
     "alwaysStrict": true /* Ensure 'use strict' is always emitted. */,

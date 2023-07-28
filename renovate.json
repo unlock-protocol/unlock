@@ -29,12 +29,6 @@
     },
     {
       "minor": {
-        "groupName": "packages/jest-config"
-      },
-      "matchPaths": ["packages/jest-config/**"]
-    },
-    {
-      "minor": {
         "groupName": "packages/networks"
       },
       "matchPaths": ["packages/networks/**"]
@@ -62,12 +56,6 @@
         "groupName": "packages/ui"
       },
       "matchPaths": ["packages/ui/**"]
-    },
-    {
-      "minor": {
-        "groupName": "packages/unlock-assets"
-      },
-      "matchPaths": ["packages/unlock-assets/**"]
     },
     {
       "minor": {

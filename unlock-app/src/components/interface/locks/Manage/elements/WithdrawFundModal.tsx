@@ -15,11 +15,13 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import { useState } from 'react'
+import { onResolveName } from '~/utils/resolvers'
 
 interface WithdrawFundModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   lockAddress: string
+  currencyContractAddress?: string
   dismiss?: () => void
   balance: number
   network: number
@@ -49,6 +51,7 @@ export const WithdrawFundModal = ({
   dismiss,
   symbol,
   network,
+  currencyContractAddress,
 }: WithdrawFundModalProps) => {
   const web3Service = useWeb3Service()
   const { account, getWalletService } = useAuth()
@@ -83,6 +86,7 @@ export const WithdrawFundModal = ({
       lockAddress,
       beneficiary,
       amount: form.amount.toString(),
+      erc20Address: currencyContractAddress,
     })
   }
 
@@ -208,6 +212,7 @@ export const WithdrawFundModal = ({
                         onChange={(value: any) => {
                           setValue('beneficiary', value)
                         }}
+                        onResolveName={onResolveName}
                       />
                     </>
                   )

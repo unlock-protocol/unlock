@@ -7,9 +7,9 @@ description: Over two dozen teams built memberships into their projects using Un
 image: /images/blog/ethsf22/palace-of-fine-arts-min.png
 ---
 
-[ETHSanFrancisco](https://sf.ethglobal.com) was the largest in-person hackathon to date from ETHGlobal, and the hackers delivered! Over 1700(!) hackers from around the globe showed up in force to meet, learn, and build new projects. 
+[ETHSanFrancisco](https://sf.ethglobal.com) was the largest in-person hackathon to date from ETHGlobal, and the hackers delivered! Over 1700(!) hackers from around the globe showed up in force to meet, learn, and build new projects.
 
-The Unlock team showed up in a big way, and had an incredible time meeting hundred of hackers, having great conversations, and getting a chance to bond together as well! 
+The Unlock team showed up in a big way, and had an incredible time meeting hundred of hackers, having great conversations, and getting a chance to bond together as well!
 
 ![unlock team selfie](/images/blog/ethsf22/unlock-team-selfie.jpeg)
 photo: @julien51
@@ -18,12 +18,11 @@ More pictures and thoughts below, but first...the winners of prizes in the Unloc
 
 The most incredible part of ETHSanFrancisco was getting the opportunity to connect with the incredible group of hackers, learners, and new friends who stopped by for conversations in the booth over the course of the three days of the hackathon. There were over two dozen projects submitted and, when the dust cleared and the entries were judged, three projects stood out. They were...
 
-
 ## First Prize Winner — Smart Coupons
 
 ![smart coupons image](https://storage.googleapis.com/ethglobal-api-production/projects%2Foh282%2Fimages%2FScreenshot_2022-11-06_at_6.50.26_AM.png)
 
-**Description:** This project is a frontend + plugin into the Salesforce (SFDC) ecosystem to manage Web3-based marketing campaigns to enable an on-ramp for web2 companies to engage their communities within their existing marketing toolset. Our frontend is a sample implementation of how a client (in this case Adidas) would implement the solution. Within their existing web2 channels, the client would offer gamified incentives for users to connect their wallet details. After connecting their wallet, the users would be able to complete additional data enrichment challenges to earn Web3-based rewards. These rewards would be generated from SFDC directly based on specified campaign goals. Once the wallet data is within Salesforce, we enrich the database with on-chain information, tied to the individual lead profile created for the user. This enables a more robust view of the customer, with the ability to create insights and make more informed decisions about campaign targeting. 
+**Description:** This project is a frontend + plugin into the Salesforce (SFDC) ecosystem to manage Web3-based marketing campaigns to enable an on-ramp for web2 companies to engage their communities within their existing marketing toolset. Our frontend is a sample implementation of how a client (in this case Adidas) would implement the solution. Within their existing web2 channels, the client would offer gamified incentives for users to connect their wallet details. After connecting their wallet, the users would be able to complete additional data enrichment challenges to earn Web3-based rewards. These rewards would be generated from SFDC directly based on specified campaign goals. Once the wallet data is within Salesforce, we enrich the database with on-chain information, tied to the individual lead profile created for the user. This enables a more robust view of the customer, with the ability to create insights and make more informed decisions about campaign targeting.
 
 **Demo:** [https://ethglobal.com/showcase/smart-coupons-oh282](https://ethglobal.com/showcase/smart-coupons-oh282)
 
@@ -35,7 +34,6 @@ The most incredible part of ETHSanFrancisco was getting the opportunity to conne
 
 **Demo:** [https://ethglobal.com/showcase/hndshk-bgqfn](https://ethglobal.com/showcase/hndshk-bgqfn)
 
-
 ## Third Prize Winner — Alexandria
 
 ![alexandria image](https://storage.googleapis.com/ethglobal-api-production/projects%2F3db0q%2Fimages%2Fscreenshot_3.png)
@@ -46,7 +44,7 @@ The most incredible part of ETHSanFrancisco was getting the opportunity to conne
 
 ## Fun and learning for everyone
 
-Hackathons are one of our favorite ways to connect with our frens in the web3 community who are creating and building the next layer of internet infrastructure. 
+Hackathons are one of our favorite ways to connect with our frens in the web3 community who are creating and building the next layer of internet infrastructure.
 
 We say a giant THANK YOU to all of the winners and every single team that deployed Unlock to bring their vision to life.
 
