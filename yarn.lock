@@ -17366,6 +17366,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/docs@workspace:docs":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/docs@workspace:docs"
+  dependencies:
+    "@babel/helper-get-function-arity": 7.16.7
+    "@docusaurus/core": 2.4.1
+    "@docusaurus/plugin-client-redirects": 2.4.1
+    "@docusaurus/plugin-content-docs": 2.4.1
+    "@flockler/react-flockler-embed": 1.0.4
+    "@mdx-js/react": 1.6.22
+    "@unlock-protocol/networks": 0.0.15
+    clsx: 1.2.1
+    docusaurus-gtm-plugin: 0.0.2
+    docusaurus-node-polyfills: 1.0.0
+    docusaurus-preset-openapi: 0.6.4
+    prism-react-renderer: 2.0.6
+    react: 18.2.0
+    react-dom: 18.2.0
+    react-icons: 4.10.1
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/email-templates@workspace:packages/email-templates":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/email-templates@workspace:packages/email-templates"
@@ -26045,28 +26067,6 @@ __metadata:
   checksum: 01381da98f98a3236b735fb2bb2a66f521da39200a2a11b83777cee3b104b32966ba7dfeb93f3fa8ab85b5e639265842d66f576e7db9562b1049564c2af6ec84
   languageName: node
   linkType: hard
-
-"docs@workspace:docs":
-  version: 0.0.0-use.local
-  resolution: "docs@workspace:docs"
-  dependencies:
-    "@babel/helper-get-function-arity": 7.16.7
-    "@docusaurus/core": 2.4.1
-    "@docusaurus/plugin-client-redirects": 2.4.1
-    "@docusaurus/plugin-content-docs": 2.4.1
-    "@flockler/react-flockler-embed": 1.0.4
-    "@mdx-js/react": 1.6.22
-    "@unlock-protocol/networks": 0.0.15
-    clsx: 1.2.1
-    docusaurus-gtm-plugin: 0.0.2
-    docusaurus-node-polyfills: 1.0.0
-    docusaurus-preset-openapi: 0.6.4
-    prism-react-renderer: 2.0.6
-    react: 18.2.0
-    react-dom: 18.2.0
-    react-icons: 4.10.1
-  languageName: unknown
-  linkType: soft
 
 "doctrine@npm:^2.1.0":
   version: 2.1.0
