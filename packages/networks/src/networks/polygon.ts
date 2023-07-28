@@ -7,7 +7,6 @@ export const polygon: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/137',
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
   multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
-  serializerAddress: '0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9',
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
   universalCard: {
     cardPurchaserAddress: '0xAB355a589CFbBA7a21b91E5B6063bF822dCc0016',

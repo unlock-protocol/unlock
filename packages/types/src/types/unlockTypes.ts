@@ -72,7 +72,6 @@ export interface NetworkConfig {
   provider: string
   publicProvider: string
   unlockAddress?: string
-  serializerAddress?: string
   multisig?: string
   keyManagerAddress?: string
   universalCard?: {
