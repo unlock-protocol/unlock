@@ -1,5 +1,5 @@
 {
-  "name": "docs",
+  "name": "@unlock-protocol/docs",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
