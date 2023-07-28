@@ -12,8 +12,10 @@ import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
 import { GuildContractHook } from './hooksComponents/GuildContractHook'
+import { DiscountContractHook } from './hooksComponents/DiscountContractHook'
 
 import { useCustomHook } from '~/hooks/useCustomHooks'
+import { ethers } from 'ethers'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -64,6 +66,16 @@ const GENERAL_OPTIONS: OptionProps[] = [
     component: (args) => <CustomContractHook {...args} />,
   },
 ]
+
+export const getSignatureForValue = (value: string) => {
+  const encoded = ethers.utils.defaultAbiCoder.encode(
+    ['bytes32'],
+    [ethers.utils.id(value)]
+  )
+  const privateKey = ethers.utils.keccak256(encoded)
+  const privateKeyAccount = new ethers.Wallet(privateKey)
+  return privateKeyAccount.address
+}
 
 export const HookMapping: Record<FormPropsKey, HookValueProps> = {
   keyPurchase: {
