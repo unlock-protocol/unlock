@@ -7,10 +7,8 @@ import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
@@ -46,13 +44,22 @@ interface TopActionBarProps {
   network: number
 }
 
-export function downloadAsCSV(cols: string[], metadata: any[]) {
+interface DownloadOptions {
+  fileName?: string
+  cols: string[]
+  metadata: any[]
+}
+export function downloadAsCSV({
+  cols,
+  metadata,
+  fileName = 'members.csv',
+}: DownloadOptions) {
   const csv = buildCSV(cols, metadata)
 
   const blob = new Blob([csv], {
     type: 'data:text/csv;charset=utf-8',
   })
-  FileSaver.saveAs(blob, 'members.csv')
+  FileSaver.saveAs(blob, fileName)
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
@@ -84,7 +91,10 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         }
       })
     })
-    downloadAsCSV(cols, members)
+    downloadAsCSV({
+      cols,
+      metadata: members,
+    })
   }
 
   const { isManager } = useLockManager({
@@ -93,15 +103,10 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   })
 
   const onDownloadMutation = useMutation(onDownloadCsv, {
-    onSuccess: () => {
-      ToastHelper.success('CSV downloaded')
-    },
-    onError: () => {
-      ToastHelper.error(`Unexpected issue on CSV download, please try it again`)
+    meta: {
+      errorMessage: 'Failed to download members list',
     },
   })
-
-  const isLoading = onDownloadMutation.isLoading || isLoadingMetadata
 
   return (
     <>
@@ -114,22 +119,12 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={isLoading}
+              disabled={isLoadingMetadata}
+              loading={onDownloadMutation.isLoading}
+              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
               onClick={() => onDownloadMutation.mutate()}
             >
-              <div className="flex items-center gap-2">
-                {isLoading ? (
-                  <SpinnerIcon
-                    className="text-brand-ui-primary animate-spin"
-                    size={16}
-                  />
-                ) : (
-                  <CsvIcon className="text-brand-ui-primary" size={16} />
-                )}
-                <span className="text-brand-ui-primary">
-                  Download {isEvent ? 'attendee' : 'member'} list
-                </span>
-              </div>
+              Download {isEvent ? 'attendee' : 'member'} list
             </Button>
           </div>
         )}

@@ -5,6 +5,10 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/useReceipts'
 import { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import { downloadAsCSV } from '../../Manage'
+import { storage } from '~/config/storage'
+import { FaFileCsv as CsvIcon } from 'react-icons/fa'
 
 const SupplierSchema = z.object({
   vat: z.string().optional(),
@@ -78,6 +82,31 @@ export const ReceiptBaseForm = ({
     isManager,
   })
 
+  const onDownloadReceiptsMutation = useMutation(
+    async () => {
+      const response = await storage.getReceipts(network, lockAddress)
+      const cols: string[] = []
+      response?.data?.items?.map((item) => {
+        Object.keys(item).map((key: string) => {
+          if (!cols.includes(key)) {
+            cols.push(key) // add key once only if not present in list
+          }
+        })
+      })
+      downloadAsCSV({
+        cols,
+        metadata: response?.data?.items || [],
+        fileName: 'receipts.csv',
+      })
+    },
+    {
+      mutationKey: ['downloadReceipts', lockAddress, network],
+      meta: {
+        errorMessage: 'Failed to download receipts',
+      },
+    }
+  )
+
   const onHandleSubmit = async (data: SupplierBodyProps) => {
     if (isValid) {
       await ToastHelper.promise(receiptBaseMutation(data), {
@@ -105,96 +134,113 @@ export const ReceiptBaseForm = ({
   }
 
   return (
-    <form
-      className="grid grid-cols-1 gap-6 text-left"
-      onSubmit={handleSubmit(onHandleSubmit)}
-    >
-      <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2">
-        <Input
-          disabled={disabledInput}
-          label="Supplier name"
-          {...register('supplierName')}
-        />
-        <div className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
-          <div className="mt-1">
-            <Input
-              disabled={disabledInput}
-              label="VAT number"
-              {...register('vat')}
-            />
-          </div>
-          <div>
-            <div className="flex items-center justify-between">
-              <label className="px-1 text-base" htmlFor="">
-                VAT rate (%)
-              </label>
-              <ToggleSwitch
-                title="Enable"
-                enabled={vatPercentage}
-                setEnabled={setVatPercentage}
-                onChange={(enabled) => {
-                  if (!enabled) {
-                    setValue('vatRatePercentage', null, {
-                      shouldValidate: true,
-                    })
-                  }
-                }}
+    <div className="space-y-2">
+      <div className="flex items-center">
+        <Button
+          variant="outlined-primary"
+          size="small"
+          loading={onDownloadReceiptsMutation.isLoading}
+          iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
+          onClick={() => onDownloadReceiptsMutation.mutate()}
+        >
+          Download Receipts
+        </Button>
+      </div>
+      <form
+        className="grid grid-cols-1 gap-6 pt-6 text-left"
+        onSubmit={handleSubmit(onHandleSubmit)}
+      >
+        <div className="grid grid-cols-1 gap-2 md:gap-4 md:grid-cols-2">
+          <Input
+            disabled={disabledInput}
+            label="Supplier name"
+            {...register('supplierName')}
+          />
+          <div className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
+            <div className="mt-1">
+              <Input
+                disabled={disabledInput}
+                label="VAT number"
+                {...register('vat')}
               />
             </div>
-            <Input
-              type="number"
-              min={0}
-              max={100}
-              step="any"
-              disabled={disabledInput || !vatPercentage}
-              error={errors?.vatRatePercentage?.message}
-              {...register('vatRatePercentage', {
-                valueAsNumber: true,
-                required: {
-                  value: vatPercentage,
-                  message: 'This value is required.',
-                },
-              })}
+            <div>
+              <div className="flex items-center justify-between">
+                <label className="px-1 text-base" htmlFor="">
+                  VAT rate (%)
+                </label>
+                <ToggleSwitch
+                  title="Enable"
+                  enabled={vatPercentage}
+                  setEnabled={setVatPercentage}
+                  onChange={(enabled) => {
+                    if (!enabled) {
+                      setValue('vatRatePercentage', null, {
+                        shouldValidate: true,
+                      })
+                    }
+                  }}
+                />
+              </div>
+              <Input
+                type="number"
+                min={0}
+                max={100}
+                step="any"
+                disabled={disabledInput || !vatPercentage}
+                error={errors?.vatRatePercentage?.message}
+                {...register('vatRatePercentage', {
+                  valueAsNumber: true,
+                  required: {
+                    value: vatPercentage,
+                    message: 'This value is required.',
+                  },
+                })}
+              />
+            </div>
+          </div>
+          <Input
+            disabled={disabledInput}
+            label="Address line 1"
+            {...register('addressLine1')}
+          />
+          <Input
+            disabled={disabledInput}
+            label="Address line 2"
+            {...register('addressLine2')}
+          />
+          <Input disabled={disabledInput} label="City" {...register('city')} />
+          <Input
+            disabled={disabledInput}
+            label="State"
+            {...register('state')}
+          />
+          <Input disabled={disabledInput} label="Zip" {...register('zip')} />
+          <Input
+            disabled={disabledInput}
+            label="Country"
+            {...register('country')}
+          />
+          <div className="col-span-2">
+            <TextBox
+              disabled={disabledInput}
+              label="Service performed"
+              {...register('servicePerformed')}
             />
           </div>
         </div>
-        <Input
-          disabled={disabledInput}
-          label="Address line 1"
-          {...register('addressLine1')}
-        />
-        <Input
-          disabled={disabledInput}
-          label="Address line 2"
-          {...register('addressLine2')}
-        />
-        <Input disabled={disabledInput} label="City" {...register('city')} />
-        <Input disabled={disabledInput} label="State" {...register('state')} />
-        <Input disabled={disabledInput} label="Zip" {...register('zip')} />
-        <Input
-          disabled={disabledInput}
-          label="Country"
-          {...register('country')}
-        />
-        <div className="col-span-2">
-          <TextBox
-            disabled={disabledInput}
-            label="Service performed"
-            {...register('servicePerformed')}
-          />
-        </div>
-      </div>
 
-      {isManager && (
-        <Button
-          type="submit"
-          className="w-full md:w-1/3"
-          disabled={disabledInput}
-          loading={isReceiptsBaseUpdating}
-        >
-          Update
-        </Button>
-      )}
-    </form>
+        {isManager && (
+          <Button
+            type="submit"
+            className="w-full md:w-1/3"
+            disabled={disabledInput}
+            loading={isReceiptsBaseUpdating}
+          >
+            Update
+          </Button>
+        )}
+      </form>
+    </div>
   )
 }

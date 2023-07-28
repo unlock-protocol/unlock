@@ -1977,6 +1977,69 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/receipts/{network}/{lockAddress}/all:
+    get:
+      operationId: getReceipts
+      security:
+        - User: []
+      description: Get all receipts for a lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully retrieved receipts.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        receiptNumber:
+                          type: string
+                        timestamp:
+                          type: string
+                        sender:
+                          type: string
+                        payer:
+                          type: string
+                        lockAddress:
+                          type: string
+                        tokenAddress:
+                          type: string
+                        gasTotal:
+                          type: string
+                        amountTransferred:
+                          type: string
+                        network:
+                          type: number
+                        supplierAddress:
+                          type: string
+
+        500:
+          description: Failed to retrieve receipt details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Impossible to retrieve receipt details.
+
   /v2/receipts/{network}/{lockAddress}/{hash}:
     get:
       operationId: getReceipt
