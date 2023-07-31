@@ -7,9 +7,10 @@ import { logger } from '../logger'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { startWorker } from './worker'
+import config from '../config/config'
 
 Sentry.init({
-  dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+  ...config.sentry,
   integrations: [],
   enabled: true, // process.env.NODE_ENV === 'production',
   environment: process.env.NODE_ENV,
