@@ -24,6 +24,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
+    "deploy": "yarn build",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
