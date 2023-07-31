@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/node'
 import cron from 'node-cron'
 import { Op } from 'sequelize'
 import { Hook } from '../models'
@@ -6,6 +7,15 @@ import { logger } from '../logger'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { startWorker } from './worker'
+import config from '../config/config'
+
+Sentry.init({
+  ...config.sentry,
+  integrations: [],
+  enabled: true, // process.env.NODE_ENV === 'production',
+  environment: process.env.NODE_ENV,
+})
+const monitorSlug = 'workers-running'
 
 logger.info('Websub server started.')
 
@@ -45,7 +55,33 @@ cron.schedule(DAY_CRON_SCHEDULE, async () => {
   await notifyExpiredKeysForNetwork()
 })
 
-startWorker().catch((err) => {
-  console.error(err)
-  process.exit(1)
+// 🟡 Notify Sentry your job is running:
+const checkInId = Sentry.captureCheckIn({
+  monitorSlug,
+  status: 'in_progress',
 })
+
+startWorker()
+  .then(async () => {
+    // 🟢 Notify Sentry your job has completed successfully:
+    Sentry.captureCheckIn({
+      checkInId,
+      monitorSlug,
+      status: 'ok',
+    })
+
+    // Notify better stack as well.
+    await fetch(
+      'https://uptime.betterstack.com/api/v1/heartbeat/eLZGiSavyu8jFXhibk4zHfHd'
+    )
+  })
+  .catch((err) => {
+    console.error(err)
+    // 🔴 Notify Sentry your job has failed:
+    Sentry.captureCheckIn({
+      checkInId,
+      monitorSlug,
+      status: 'error',
+    })
+    process.exit(1)
+  })
