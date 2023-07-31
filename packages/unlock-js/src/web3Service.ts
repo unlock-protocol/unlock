@@ -9,6 +9,8 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
+
 import {
   CurrencyAmount,
   NativeCurrency,
@@ -1119,5 +1121,28 @@ export default class Web3Service extends UnlockService {
       decimals = await getErc20Decimals(erc20Address, provider)
     }
     return ethers.utils.formatUnits(gasRefund, decimals)
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getDiscountHookValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeHookAbi,
+    })
+    const discountForSigner = await contract.discounts(
+      lockAddress,
+      signerAddress
+    )
+    return ethers.BigNumber.from(discountForSigner).toNumber()
   }
 }
