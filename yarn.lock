@@ -9453,7 +9453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-relay-client@npm:^1.47.1":
+"@openzeppelin/defender-relay-client@npm:1.47.1":
   version: 1.47.1
   resolution: "@openzeppelin/defender-relay-client@npm:1.47.1"
   dependencies:
@@ -14963,7 +14963,7 @@ __metadata:
     "@logtail/node": 0.4.0
     "@logtail/winston": 0.4.1
     "@nuintun/qrcode": 3.3.5
-    "@openzeppelin/defender-relay-client": ^1.47.1
+    "@openzeppelin/defender-relay-client": 1.47.1
     "@resvg/resvg-js": 2.4.1
     "@sentry/node": 7.54.0
     "@sentry/tracing": 7.54.0
