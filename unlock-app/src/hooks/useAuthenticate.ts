@@ -88,7 +88,6 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       projectId: config.walletConnectApiKey,
       showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
       qrModalOptions: {
-        chainImages: [],
         themeMode: 'light',
       },
       chains: [1],
