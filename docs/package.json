@@ -26,10 +26,12 @@
     "swizzle": "docusaurus swizzle",
     "deploy": "yarn build",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "ci": "yarn build",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
-    "write-heading-ids": "docusaurus write-heading-ids"
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "test": "echo \"No test specified\""
   },
   "browserslist": {
     "production": [
