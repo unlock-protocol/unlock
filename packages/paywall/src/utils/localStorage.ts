@@ -1,8 +1,9 @@
 // copied from the MDN docs as the best way to detect localStorage presence
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API#Testing_for_availability
 export default function localStorageAvailable(): boolean {
-  const storage = localStorage
+  let storage
   try {
+    storage = window['localStorage']
     const x = '__storage_test__'
     storage.setItem(x, x)
     storage.removeItem(x)
@@ -20,6 +21,7 @@ export default function localStorageAvailable(): boolean {
         // Firefox
         e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
       // acknowledge QuotaExceededError only if there's something already stored
+      storage &&
       storage.length !== 0
     )
   }
