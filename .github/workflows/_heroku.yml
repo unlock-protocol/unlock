@@ -32,6 +32,8 @@ on:
         required: true
       HEROKU_API_KEY:
         required: true
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: true
 
 jobs:
   deploy-to-heroku:
@@ -58,6 +60,18 @@ jobs:
           echo "::set-output name=changed::$changed"
         shell: bash
         id: check_changes
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.2.0
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          DEFENDER_RELAY_KEY_80001: op://secrets/open-zeppelin-relay/mumbai-key
+          DEFENDER_RELAY_SECRET_80001: op://secrets/open-zeppelin-relay/mumbai-secret
+          DEFENDER_RELAY_KEY_137: op://secrets/open-zeppelin-relay/polygon-key
+          DEFENDER_RELAY_SECRET_137: op://secrets/open-zeppelin-relay/polygon-secret
+          DEFENDER_RELAY_KEY_5: op://secrets/open-zeppelin-relay/goerli-key
+          DEFENDER_RELAY_SECRET_5: op://secrets/open-zeppelin-relay/goerli-secret
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |

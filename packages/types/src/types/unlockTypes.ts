@@ -139,6 +139,9 @@ export interface NetworkConfig {
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean
+  defenderRelay?: {
+    apiKey: string
+  }
 }
 
 export interface NetworkConfigs {

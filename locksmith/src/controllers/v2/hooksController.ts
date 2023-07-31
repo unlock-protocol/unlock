@@ -4,7 +4,7 @@ import * as z from 'zod'
 import normalizer from '../../utils/normalizer'
 import { getSettings } from '../../operations/lockSettingOperations'
 import { ethers } from 'ethers'
-import config from '../../config/config'
+import { getPurchaser } from '../../fulfillment/dispatcher'
 
 const guildHookQuery = z.object({
   network: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number()),
@@ -30,9 +30,7 @@ export const guildHook: RequestHandler = async (request, response) => {
   }
   const hookGuildId = settings.hookGuildId
 
-  const { purchaserCredentials } = config
-
-  const wallet = new ethers.Wallet(purchaserCredentials)
+  const { wallet } = await getPurchaser()
   const accesses = await Promise.all(
     recipients.map(async (recipient: string) => {
       const roles = await guild.getUserAccess(hookGuildId, recipient)
