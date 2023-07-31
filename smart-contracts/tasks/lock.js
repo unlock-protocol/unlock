@@ -1,6 +1,5 @@
 const { task } = require('hardhat/config')
 
-
 task('lock:managers', 'List all managers for a lock')
   .addParam('lockAddress', 'The lock address')
   .setAction(async ({ lockAddress }) => {
@@ -8,7 +7,6 @@ task('lock:managers', 'List all managers for a lock')
     const listManagers = require('../scripts/lock/listManagers')
     await listManagers({ lockAddress })
   })
-
 
 task('lock:samples', 'Deploy a sample lock')
   .addOptionalParam('unlockAddress', 'The Unlock contract address')
