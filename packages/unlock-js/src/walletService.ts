@@ -3,6 +3,7 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
@@ -1205,5 +1206,37 @@ export default class WalletService extends UnlockService {
       transactionOptions,
       callback
     )
+  }
+
+  /**
+   * Set signer for `Discount code` hook contract
+   */
+  async setDiscountCodeHookSigner(params: {
+    lockAddress: string
+    signerAddress: string
+    contractAddress: string
+    network: number
+    discountPercentage: number
+  }) {
+    const {
+      lockAddress,
+      signerAddress,
+      contractAddress,
+      network,
+      discountPercentage = 0,
+    } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeHookAbi,
+    })
+
+    const discountBasisPoints = discountPercentage * 100
+    const tx = await contract.setDiscountForLock(
+      lockAddress,
+      signerAddress,
+      discountBasisPoints
+    )
+    return tx
   }
 }

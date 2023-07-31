@@ -123,6 +123,11 @@ export const polygon: NetworkConfig = {
         name: 'Guild',
         address: '0xBfF080aB4600554c1e8c390d2e070CF423767B64',
       },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x93E160838c529873cB7565106bBb79a3226FE07A',
+      },
     ],
   },
 }

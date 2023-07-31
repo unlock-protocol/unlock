@@ -1,5 +1,10 @@
 # Changes
 
+# 0.39.1
+
+- add `getDiscountHookValues` to web3Service
+- add `setDiscountCodeHookSigner` to walletService
+
 # 0.39.0
 
 - Add support for setGasRefundValue to walletService and getGasRefundValue to web3Service

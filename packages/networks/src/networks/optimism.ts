@@ -101,6 +101,11 @@ export const optimism: NetworkConfig = {
         name: 'Guild',
         address: '0x1402D55BF0D6566ca8F569041000a8015b608632',
       },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x8e0B46ec3B95c81355175693dA0083b00fCc1326',
+      },
     ],
   },
 }
