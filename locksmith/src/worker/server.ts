@@ -61,13 +61,18 @@ const checkInId = Sentry.captureCheckIn({
 })
 
 startWorker()
-  .then(() => {
+  .then(async () => {
     // 🟢 Notify Sentry your job has completed successfully:
     Sentry.captureCheckIn({
       checkInId,
       monitorSlug,
       status: 'ok',
     })
+
+    // Notify better stack as well.
+    await fetch(
+      'https://uptime.betterstack.com/api/v1/heartbeat/eLZGiSavyu8jFXhibk4zHfHd'
+    )
   })
   .catch((err) => {
     console.error(err)
