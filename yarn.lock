@@ -15188,7 +15188,6 @@ __metadata:
     multer: 1.4.5-lts.1
     multer-s3: 3.0.1
     nock: 13.3.1
-    node-cron: 3.0.2
     node-mocks-http: 1.12.2
     p-retry: 5.1.2
     parse-data-uri: 0.2.0
@@ -35595,15 +35594,6 @@ __metadata:
   dependencies:
     clone: 2.x
   checksum: b0bdd81a6fee4754fb984a05246b510bb35dc54721116d465899bf4229ee3287fdafb47da526900ee9924fb402ed5c7d8050049d37d8bf2d26dbafc23a2c3205
-  languageName: node
-  linkType: hard
-
-"node-cron@npm:3.0.2":
-  version: 3.0.2
-  resolution: "node-cron@npm:3.0.2"
-  dependencies:
-    uuid: 8.3.2
-  checksum: dd21585c0d4069a0752022dad9b8380a4393c4783ec78355ffa99ff32b018c3743a35d4ebf9d7c7863949e94e302b440f58c884eb4960e71c7260d817e2d3f25
   languageName: node
   linkType: hard
 

@@ -17,7 +17,8 @@ describe('Test notify helpers', () => {
       hook.callback = 'http://localhost:4000/callback'
       hook.secret = 'websub'
       const response = await notify({
-        hook,
+        hookCallback: hook.callback,
+        hookSecret: hook.secret,
         body: {
           test: true,
         },
@@ -32,7 +33,8 @@ describe('Test notify helpers', () => {
       // Change signature here
       hook.secret = 'websu'
       const response = await notify({
-        hook,
+        hookCallback: hook.callback,
+        hookSecret: hook.secret,
         body: {
           test: true,
         },
@@ -46,7 +48,8 @@ describe('Test notify helpers', () => {
       hook.callback = 'http://localhost:4000/callback'
 
       const response = await notify({
-        hook,
+        hookCallback: hook.callback,
+        hookSecret: hook.secret,
         body: {
           test: true,
         },
