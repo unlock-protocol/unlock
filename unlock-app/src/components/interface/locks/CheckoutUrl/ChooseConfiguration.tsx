@@ -146,7 +146,7 @@ export function ChooseConfiguration({
     },
     {
       key: 'existing',
-      label: 'Choose existing',
+      label: 'Edit existing',
       children: (
         <Select
           disabled={items?.length === 0}

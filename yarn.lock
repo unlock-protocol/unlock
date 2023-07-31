@@ -14515,9 +14515,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:3.2.3":
-  version: 3.2.3
-  resolution: "@uniswap/sdk-core@npm:3.2.3"
+"@uniswap/sdk-core@npm:4.0.6":
+  version: 4.0.6
+  resolution: "@uniswap/sdk-core@npm:4.0.6"
   dependencies:
     "@ethersproject/address": ^5.0.2
     big.js: ^5.2.2
@@ -14525,7 +14525,7 @@ __metadata:
     jsbi: ^3.1.4
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
-  checksum: a19367c7e1d7b391b1664f59b808836cbaed9a12880bdf6b9a31e6c3b63f2edce2966bdda65144a3003e4c3cd96085b86129c174971330a9766194c404263346
+  checksum: 0dd876d117c2d359a09047fafb5e80e8312b4db2cb0078a968d0ebbdb0a294558e8a0ea13678b113a9c2026f7c394193eb56650a250fd0c52ec51680c8aed3bc
   languageName: node
   linkType: hard
 
@@ -14986,7 +14986,7 @@ __metadata:
     parse-data-uri: 0.2.0
     path-to-regexp: 6.2.1
     pg: 8.11.1
-    random-words: 1.3.0
+    random-words: 2.0.0
     rate-limiter-flexible: 2.4.1
     react: 18.2.0
     remark-html: 15.0.2
@@ -15116,7 +15116,6 @@ __metadata:
     prompt: 1.3.0
     solhint: 3.4.1
     solidity-coverage: 0.8.2
-    web3: 1.10.0
     yesno: 0.4.0
   languageName: unknown
   linkType: soft
@@ -15233,7 +15232,7 @@ __metadata:
     "@types/react": 18.2.0
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
-    "@uniswap/sdk-core": 3.2.3
+    "@uniswap/sdk-core": 4.0.6
     "@uniswap/smart-order-router": 3.12.1
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -15330,7 +15329,7 @@ __metadata:
     "@graphql-codegen/typescript-operations": 4.0.1
     "@nomiclabs/hardhat-ethers": 2.2.3
     "@openapitools/openapi-generator-cli": 2.5.2
-    "@uniswap/sdk-core": 3.2.3
+    "@uniswap/sdk-core": 4.0.6
     "@uniswap/smart-order-router": 3.10.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -38554,12 +38553,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"random-words@npm:1.3.0":
-  version: 1.3.0
-  resolution: "random-words@npm:1.3.0"
+"random-words@npm:2.0.0":
+  version: 2.0.0
+  resolution: "random-words@npm:2.0.0"
   dependencies:
     seedrandom: ^3.0.5
-  checksum: d88733816b81651b7ea23e4ce1f305ce7d350ae470d5fd6219a3a672d9468255b16522716f89cd3519e577029e9872c99b26bddb3f1b8ac34698a0b7f02bbee4
+  checksum: d574955cc5f38700a2394d67457673f811866db3dd818431e7f73e31f739f9e1bb2861cc679d83538f7ac87cad95f101a609dbb916019e6c2e18432db220c5eb
   languageName: node
   linkType: hard
 

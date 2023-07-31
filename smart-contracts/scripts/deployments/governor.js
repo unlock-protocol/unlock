@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 
 const { getNetworkName } = require('../../helpers/network')
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
+const ZERO_ADDRESS = ethers.constants.AddressZero
 
 const TIMELOCK_ADMIN_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('TIMELOCK_ADMIN_ROLE')

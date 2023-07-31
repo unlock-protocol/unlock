@@ -39,7 +39,7 @@ interface LockListItemProps {
   hasEdit?: boolean
 }
 
-type LocksProps = Record<string, PaywallLockConfigType>
+type LocksProps = Record<string, Partial<PaywallLockConfigType>>
 
 interface LocksFormProps {
   onChange: (locks: LocksProps) => void
@@ -145,7 +145,7 @@ export const LocksForm = ({
           network,
         }),
       {
-        enabled: !!(account && network),
+        enabled: !!account,
       }
     )
 
