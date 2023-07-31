@@ -32,11 +32,6 @@ const networkConfigs = {
   },
   // etc
 }
-
-// Pass a provider. You can also use a provider from a library such as Magic.link or privy.io
-// If no provider is set, the library uses window.ethereum
-const provider = window.ethereum
-
 const paywall = new Paywall(networks)
 
 // Loads the checkout UI
