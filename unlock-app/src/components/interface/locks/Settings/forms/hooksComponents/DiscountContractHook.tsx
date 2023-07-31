@@ -1,11 +1,12 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 import { CustomComponentProps, getSignatureForValue } from '../UpdateHooksForm'
 import { ChangeEvent, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useForm } from 'react-hook-form'
+import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 
 export const DiscountContractHook = ({
   name,
@@ -19,9 +20,20 @@ export const DiscountContractHook = ({
   const [discountCode, setDiscountCode] = useState('')
   const [signer, setSigner] = useState('')
   const [hasDiscountCode, setHasDiscountCode] = useState(false)
-  const [discountPercentage, setDiscountPercentage] = useState<
-    number | undefined
-  >(undefined)
+  const {
+    register,
+    formState: { errors },
+    watch,
+    trigger,
+  } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      discountCode: '',
+      discountPercentage: undefined,
+    },
+  })
+
+  const discountPercentage = watch('discountPercentage')
 
   const getDiscounts = async () => {
     const walletService = await getWalletService(network)
@@ -73,6 +85,10 @@ export const DiscountContractHook = ({
   const saveDiscountMutation = useMutation(onSaveDiscountCode)
 
   const handleSaveDiscountCode = async () => {
+    const isValid = await trigger()
+
+    if (!isValid) return // form is not valid
+
     const promise = saveDiscountMutation.mutateAsync()
 
     await ToastHelper.promise(promise, {
@@ -92,13 +108,12 @@ export const DiscountContractHook = ({
     <ConnectForm>
       {({ getValues, setValue }: any) => {
         const value = getValues(name)
-
         return (
           <div className="flex flex-col gap-2">
             <Input
               label="Discount code"
               type="text"
-              value={discountCode}
+              {...register('discountCode')}
               onChange={onDiscountChange}
               description={
                 hasDiscountCode && (
@@ -110,25 +125,30 @@ export const DiscountContractHook = ({
               }
             />
             <Input
-              label="Discount percentage"
+              label="Discount percentage (%)"
               type="number"
-              value={discountPercentage}
-              min={0}
-              max={100}
-              step={0.01}
-              onChange={(e) => {
-                setDiscountPercentage(parseFloat(e?.target?.value))
-              }}
+              step="any"
+              {...register('discountPercentage', {
+                max: {
+                  value: 100,
+                  message: 'Max value allowed is 100.',
+                },
+                min: {
+                  value: 0,
+                  message: 'Min value allowed is 0.',
+                },
+              })}
+              error={errors?.discountPercentage?.message}
             />
             <div className="ml-auto">
               <Button
                 type="button"
-                size="small"
-                disabled={disableInput}
                 onClick={async () => {
                   await handleSaveDiscountCode()
                   setValue(name, value)
                 }}
+                size="small"
+                disabled={disableInput}
               >
                 {hasDiscountCode
                   ? 'Update discount code'

@@ -98,6 +98,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         value: HookType.GUILD,
         component: (args) => <GuildContractHook {...args} />,
       },
+      {
+        label: 'Discount code',
+        value: HookType.PROMOCODE,
+        component: (args) => <DiscountContractHook {...args} />,
+      },
     ],
   },
   keyCancel: {
