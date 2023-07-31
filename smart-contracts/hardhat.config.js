@@ -72,6 +72,7 @@ if (process.env.RUN_FORK) {
 
   // set the correct chainId to use with local node over RPC
   networks.localhost.chainId = chainId
+  networks.localhost.url = 'http://localhost:8545'
 
   // replace localhost manifest by mainnet one
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
