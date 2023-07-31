@@ -1,7 +1,7 @@
 import {
   DefenderRelaySigner,
   DefenderRelayProvider,
-} from 'defender-relay-client/lib/ethers'
+} from '@openzeppelin/defender-relay-client/lib/ethers'
 
 import {
   KeyManager,
@@ -38,7 +38,7 @@ export const getProviderForNetwork = async function (network = 1) {
  */
 export const getPurchaser = async function (network = 1) {
   const defenderRelayCredential = config.defenderRelayCredentials[network]
-  if (defenderRelayCredential) {
+  if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
     const provider = new DefenderRelayProvider(defenderRelayCredential)
     const wallet = new DefenderRelaySigner(defenderRelayCredential, provider, {
       speed: 'fast',
