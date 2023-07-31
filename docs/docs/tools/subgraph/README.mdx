@@ -1,0 +1,53 @@
+---
+sidebar_position: 1
+title: Subgraph
+description: >-
+  Querying smart contracts directly from your application is always an option,
+  but, when your application needs to retrieve large collections or multiple
+  elements from a contract, use our subgraph!
+---
+
+import { networks } from "@unlock-protocol/networks";
+
+# Unlock Subgraph Introduction
+
+Unlock has a GraphQL API Endpoint hosted by [The Graph](https://thegraph.com/docs/about/introduction#what-the-graph-is) called a subgraph for indexing and organizing data from the Unlock smart contracts.
+
+Unlock leverages the [Graph Protocol](https://thegraph.com) to simplify the process of making meaningful applications leveraging the Unlock Smart Contracts and associated data.
+
+### Endpoints
+
+The links below provide a rudimentary tool to build and test your queries.
+
+<ul>
+  {Object.keys(networks).map((network) => {
+    if (network !== "localhost") {
+      const endpoint = networks[network].subgraph.endpointV2;
+      const m = endpoint.match(/unlock\-protocol\/(.*)/)
+      if (m && m[1]) {
+        return (
+          <li>
+            <a href={`https://thegraph.com/hosted-service/subgraph/unlock-protocol/${m[1]}`}>
+              {networks[network].name}
+            </a>
+          </li>
+        );
+      } else {
+        return null
+      }
+    }
+  })}
+</ul>
+
+## Ethereum Decentralized Mainnet
+
+- [Explorer Page](https://thegraph.com/explorer/subgraphs/8u7KcVRxjtTDRgEJup3UuPJk6YoRDTHNpSMk5BEpdw42?view=Overview)
+- Graphql Endpoint: https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock
+- [Code Repo](https://github.com/unlock-protocol/unlock/tree/master/subgraph)
+
+## Helpful Resources
+
+- [Video Tutorial on creating an API Key](https://www.youtube.com/watch?v=UrfIpm-Vlgs)
+- [Managing your API Key & setting your indexer preferences](https://thegraph.com/docs/en/studio/managing-api-keys/)
+- [Querying from an application](https://thegraph.com/docs/en/developer/querying-from-your-app/)
+- [How to use the explorer and playground to query on-chain data](https://medium.com/@chidubem_/how-to-query-on-chain-data-with-the-graph-f8507488215)
