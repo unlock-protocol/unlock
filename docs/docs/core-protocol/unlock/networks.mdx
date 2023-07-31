@@ -1,0 +1,36 @@
+---
+sidebar_position: 1
+title: Networks
+description: >-
+  Networks on which the Unlock Protocol has been deployed.
+---
+
+import { networks } from "@unlock-protocol/networks";
+
+# Networks
+
+You should **not need to deploy an Unlock contract yourself**. Here are the addresses of contracts deployed on respective networks and you can call them directly using the block explorer.
+
+The core team has built a `networks` [npm module](https://www.npmjs.com/package/@unlock-protocol/networks) that includes all the networks' addresses as well as [rpc endpoints](../../tools/rpc-provider.md) that you can use for debugging purposes: `@unlock-protocol/networks`.
+
+<>
+{
+Object.values(networks).map((network) => {
+  if (network.name === 'localhost') {
+    return null
+  }
+return (
+<div key={network.id}>
+<h2>{network.name}</h2>
+<p>{network.description}</p>
+<ul>
+  <li>chain id: {network.id}</li>
+  <li>native currency: {network.nativeCurrency.name} ({network.nativeCurrency.symbol})</li>
+  <li>Unlock address: <code><a href={network.explorer.urls.address(network.unlockAddress)}>{network.unlockAddress}</a></code></li>
+</ul>
+</div>
+);
+})
+}
+</>
+

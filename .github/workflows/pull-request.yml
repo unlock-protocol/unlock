@@ -19,7 +19,8 @@ jobs:
         "unlock-protocol-com",
         "wedlocks",
         "unlock-app",
-        "packages/core"
+        "packages/core",
+        "docs"
         ]'
       # run all tests if PR contains the 'run-all-tests' tag
       bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
@@ -77,3 +78,13 @@ jobs:
       NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
+
+  deploy-docs:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: docs
+      target-env: staging
+    secrets:
+      SITE_ID: d6588eac-a04f-43dc-8341-f85d830bff49
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}

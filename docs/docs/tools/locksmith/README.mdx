@@ -1,0 +1,57 @@
+---
+title: Introduction
+description: Summary of the Locksmith service, a development tool for Unlock Protocol.
+---
+
+Locksmith is a hosted API service providing an array of functionality which are not part of the core protocol, but are useful for onboarding. These tools can (and should!) be replaced by 3rd party applications who want to implement the protocol natively.
+
+Locksmith powers the following functionality at the moment.
+
+- Store metadata for locks, keys, and users
+- Automated NFT membership renewals
+- Fiat payment integration
+- Ticket management
+- Webhooks triggered when keys and locks are created
+- Sending emails, generating QR codes, and other miscellanous tasks.
+
+## Authorization Strategy
+
+We use signed [SIWE](https://docs.login.xyz/general-information/siwe-overview/eip-4361) message to issue token for authentication. You will need to sign message using [siwe](https://docs.ssx.id/) library and send the signed message to the server. The server will verify the signature and issue a token for the user. You will receive a token with short expiry duration which needs to be passed in the header as bearer token for all subsequent requests. The other is refresh token which is used to get a new token when the current token expires.
+
+You can use LocksmithService to interact with Locksmith API. The following is an example of how to use it to send a login request.
+
+```ts
+import { LocksmithService } from "@unlock-protocol/unlock-js";
+
+const service = new LocksmithService();
+
+// Creates a SIWE message to be signed
+const siwe = LocksmithService.createSiweMessage({
+  // ...
+});
+
+// Get message text to be signed
+const message = siwe.prepareMessage();
+
+// Sign the message
+const signature = wallet.signMessage(message);
+
+const loginResponse = await service.login({
+  message,
+  signature,
+});
+
+// Use the token to make subsequent requests in the header as bearer token using axios middleware and refresh or re-login when the session expires.
+const { accessToken, walletAddress, refreshToken } = loginResponse.data;
+
+// Get key metadata from locksmith. If the request is authenticated, you will also receive protected metadata for the key and associated user.
+const keyResponse = await storage.keyMetadata(5, "0x", "1", {
+  headers: {
+    Authorization: `Bearer ${accessToken}`,
+  },
+});
+
+console.log(keyResponse.data);
+```
+
+To see this in action, you can check out [useAuth](https://github.com/unlock-protocol/flocker/blob/main/src/hooks/useAuth.tsx) and [login](https://github.com/unlock-protocol/flocker/blob/main/src/config/storage.ts) files in [Flocker codebase](https://github.com/unlock-protocol/flocker).

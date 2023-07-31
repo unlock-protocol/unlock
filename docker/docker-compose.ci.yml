@@ -211,6 +211,21 @@ services:
     command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn websub:start'
     depends_on:
       - postgres
+      
+  docs:
+    # Container for the static site
+    env_file:
+      - ./${UNLOCK_ENV}.env
+    image: docs
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: docs
+    ports:
+      - 3003:3003
 
   #############
   # Overrides #
