@@ -15,7 +15,6 @@ Sentry.init({
   enabled: true, // process.env.NODE_ENV === 'production',
   environment: process.env.NODE_ENV,
 })
-const monitorSlug = 'workers-running'
 
 logger.info('Websub server started.')
 
@@ -55,33 +54,11 @@ cron.schedule(DAY_CRON_SCHEDULE, async () => {
   await notifyExpiredKeysForNetwork()
 })
 
-// 🟡 Notify Sentry your job is running:
-const checkInId = Sentry.captureCheckIn({
-  monitorSlug,
-  status: 'in_progress',
-})
-
 startWorker()
   .then(async () => {
-    // 🟢 Notify Sentry your job has completed successfully:
-    Sentry.captureCheckIn({
-      checkInId,
-      monitorSlug,
-      status: 'ok',
-    })
-
-    // Notify better stack as well.
-    await fetch(
-      'https://uptime.betterstack.com/api/v1/heartbeat/eLZGiSavyu8jFXhibk4zHfHd'
-    )
+    logger.info('Websub server done!')
   })
   .catch((err) => {
     console.error(err)
-    // 🔴 Notify Sentry your job has failed:
-    Sentry.captureCheckIn({
-      checkInId,
-      monitorSlug,
-      status: 'error',
-    })
     process.exit(1)
   })
