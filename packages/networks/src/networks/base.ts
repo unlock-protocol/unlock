@@ -1,44 +1,64 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const base: NetworkConfig = {
-  publicLockVersionToDeploy: 13,
-  publicProvider: 'https://developer-access-mainnet.base.org',
-  provider: 'https://rpc.unlock-protocol.com/8453',
-  unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
-  multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
-  keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
-  id: 8453,
-  name: 'Base',
+  blockScan: {
+    url: (address: string) => `https://blockscan.com/address/${address}`,
+  },
   chain: 'base',
+  description:
+    'Base is a secure, low-cost, builder-friendly Ethereum L2 built to bring the next billion users onchain.  ',
+  explorer: {
+    name: 'Basescan',
+    urls: {
+      address: (address: string) => `https://basescan.org/address/${address}`,
+      base: `https://basescan.org/`,
+      token: (address: string, holder: string) =>
+        `https://basescan.org/token/${address}?a=${holder}`,
+      transaction: (hash: string) => `https://basescan.org/tx/${hash}`,
+    },
+  },
+  featured: false,
+  fullySubsidizedGas: false,
+  id: 8453,
+  isTestNetwork: false,
+  keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
+  maxFreeClaimCost: 10,
+  multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
+  name: 'Base',
+  nativeCurrency: {
+    coingecko: 'ethereum',
+    decimals: 18,
+    name: 'ETH',
+    symbol: 'ETH',
+  },
+  opensea: {
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/base/${lockAddress}`,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://opensea.io/assets/base/${_lockAddress}/${_tokenId}`,
+  },
+
+  previousDeploys: [],
+
+  provider: 'https://rpc.unlock-protocol.com/8453',
+
+  publicLockVersionToDeploy: 13,
+
+  publicProvider: 'https://developer-access-mainnet.base.org',
+
+  startBlock: 1750000,
+
   subgraph: {
-    networkName: 'base',
     endpoint:
       'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
     endpointV2:
       'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
+    networkName: 'base',
   },
-  explorer: {
-    name: 'Basescan',
-    urls: {
-      base: `https://basescan.org/`,
-      address: (address: string) => `https://basescan.org/address/${address}`,
-      transaction: (hash: string) => `https://basescan.org/tx/${hash}`,
-      token: (address: string, holder: string) =>
-        `https://basescan.org/token/${address}?a=${holder}`,
-    },
-  },
-  description:
-    'Base is a secure, low-cost, builder-friendly Ethereum L2 built to bring the next billion users onchain.  ',
-  nativeCurrency: {
-    name: 'ETH',
-    symbol: 'ETH',
-    decimals: 18,
-    coingecko: 'ethereum',
-  },
-  startBlock: 1750000,
-  isTestNetwork: false,
-  fullySubsidizedGas: false,
-  maxFreeClaimCost: 10,
+
+  unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
+
+  url: 'https://base.org/',
 }
 
 export default base

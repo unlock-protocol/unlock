@@ -30,11 +30,6 @@ export default class UnlockService {
       throw new Error(`Missing config for ${networkId}`)
     }
 
-    // for convenience, pass directly an ethers provider in the `networks` contructor
-    if (this.networks[networkId].ethersProvider) {
-      return this.networks[networkId]
-        .ethersProvider as ethers.providers.Provider
-    }
     return new ethers.providers.JsonRpcBatchProvider(
       this.networks[networkId].provider,
       networkId
