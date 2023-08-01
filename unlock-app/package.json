@@ -5,7 +5,7 @@
   "dependencies": {
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "1.1.1",
-    "@headlessui/react": "1.7.15",
+    "@headlessui/react": "1.7.16",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.1.1",
     "@radix-ui/react-avatar": "1.0.3",
