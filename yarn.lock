@@ -18026,7 +18026,7 @@ __metadata:
     vitest-fetch-mock: 0.2.2
     vitest-localstorage-mock: 0.0.1
     walletlink: 2.5.0
-    xstate: 4.38.1
+    xstate: 4.38.2
     zod: 3.21.4
     zod-to-json-schema: 3.21.3
   languageName: unknown
@@ -55148,10 +55148,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xstate@npm:4.38.1":
-  version: 4.38.1
-  resolution: "xstate@npm:4.38.1"
-  checksum: 9dc40ebd22730f58750ad112c03d592c959425a5c5a83ccd7cdea7f6b49d745b95d45d614902888bf592980a90812ab099568867d25bab82dc2c75ebdab99a52
+"xstate@npm:4.38.2":
+  version: 4.38.2
+  resolution: "xstate@npm:4.38.2"
+  checksum: 04cc8a5ab40f85e2dc46c72c0737dec028ef5733e4d4074962d701632895b3208e1031be79e6e26b32667fcb161ed85da5a73c6f759430c9642144e696291e5f
   languageName: node
   linkType: hard
 
