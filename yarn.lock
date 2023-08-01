@@ -6331,6 +6331,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@decent.xyz/the-box-dev@npm:^0.0.40":
+  version: 0.0.40
+  resolution: "@decent.xyz/the-box-dev@npm:0.0.40"
+  peerDependencies:
+    ethers: ^5.7.2
+    react: ^18
+    react-dom: ^18
+    wagmi: ^0.12.13
+  checksum: 4413bf9eed544c73d95f8940ae6dca52cb626bc89cac4c4f0a1004efe6cb2d3bc9f5d3507bbeb6d04f9676a256442364149be4a43a3aeb986664ec3d8240d244
+  languageName: node
+  linkType: hard
+
 "@dependents/detective-less@npm:^4.1.0":
   version: 4.1.0
   resolution: "@dependents/detective-less@npm:4.1.0"
@@ -17941,6 +17953,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
+    "@decent.xyz/the-box-dev": ^0.0.40
     "@enzoferey/ethers-error-parser": 0.2.3
     "@guildxyz/sdk": 1.1.1
     "@headlessui/react": 1.7.15
