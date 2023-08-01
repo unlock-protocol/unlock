@@ -19,6 +19,7 @@ jobs:
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   deploy-locksmith-websub-staging:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -34,6 +35,7 @@ jobs:
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # Netlify Deployments
   # The unlock-protocol-com site is built from `master` as we don't use a staging site for it.

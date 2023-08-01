@@ -27,6 +27,7 @@ jobs:
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   deploy-locksmith-websub-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -42,6 +43,7 @@ jobs:
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   # Netlify Deployments
   deploy-paywall-app-production:
