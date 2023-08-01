@@ -267,7 +267,12 @@ export const useCheckoutCommunication = () => {
       request: async (request: MethodCall) => {
         if (!request.id) {
           // Assigning an id because they may be returned in a different order
-          request.id = window.crypto.randomUUID()
+          try {
+            request.id = window.crypto.randomUUID()
+          } catch (error) {
+            console.error(error)
+            request.id = Math.floor(Math.random() * 100000000).toString() // fallback
+          }
         }
         return new Promise((resolve, reject) => {
           waitingMethodCalls[request.id] = (error: any, response: any) => {

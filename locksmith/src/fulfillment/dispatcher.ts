@@ -1,4 +1,9 @@
 import {
+  DefenderRelaySigner,
+  DefenderRelayProvider,
+} from '@openzeppelin/defender-relay-client/lib/ethers'
+
+import {
   KeyManager,
   WalletService,
   Web3Service,
@@ -17,32 +22,38 @@ interface KeyToGrant {
   expiration?: number
 }
 
+/**
+ * Helper function to return a provider for a network id
+ * @param network
+ * @returns
+ */
+export const getProviderForNetwork = async function (network = 1) {
+  return new ethers.providers.JsonRpcProvider(networks[network].publicProvider)
+}
+
+/**
+ * Helper function that yields a provider and connected wallet based on the config
+ * @param network
+ * @returns
+ */
+export const getPurchaser = async function (network = 1) {
+  const defenderRelayCredential = config.defenderRelayCredentials[network]
+  if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
+    const provider = new DefenderRelayProvider(defenderRelayCredential)
+    const wallet = new DefenderRelaySigner(defenderRelayCredential, provider, {
+      speed: 'fast',
+    })
+    return { wallet, provider }
+  }
+  const provider = await getProviderForNetwork(network)
+  const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+  return {
+    wallet,
+    provider,
+  }
+}
+
 export default class Dispatcher {
-  /**
-   * Helper function to return a provider for a network id
-   * @param network
-   * @returns
-   */
-  getProviderForNetwork(network: number) {
-    return new ethers.providers.JsonRpcProvider(
-      networks[network].publicProvider
-    )
-  }
-
-  /**
-   * Helper function that yields a provider and connected wallet based on the config
-   * @param network
-   * @returns
-   */
-  async getPurchaser(network: number) {
-    const provider = this.getProviderForNetwork(network)
-    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
-    return {
-      wallet,
-      provider,
-    }
-  }
-
   /**
    * Return the purchaser's balances for each network
    * @returns
@@ -51,8 +62,8 @@ export default class Dispatcher {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const { wallet, provider } = await this.getPurchaser(network.id)
-
+          const { wallet, provider } = await getPurchaser(network.id)
+          const address = await wallet.getAddress()
           const balance: ethers.BigNumberish =
             await Promise.race<ethers.BigNumberish>([
               new Promise((resolve) =>
@@ -63,12 +74,12 @@ export default class Dispatcher {
                   resolve(0)
                 }, 3000)
               ),
-              provider.getBalance(wallet.address),
+              provider.getBalance(address),
             ])
           return [
             network.id,
             {
-              address: wallet.address,
+              address,
               name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
@@ -93,16 +104,14 @@ export default class Dispatcher {
    * @returns
    */
   async hasFundsForTransaction(network: number): Promise<boolean> {
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
 
     const gasPrice = await provider.getGasPrice()
-
-    const balance = await provider.getBalance(wallet.address)
+    const address = await wallet.getAddress()
+    const balance = await provider.getBalance(address)
     if (balance.lt(gasPrice.mul(GAS_COST))) {
       logger.warn(
-        `Purchaser ${
-          wallet.address
-        } does not have enough coins (${ethers.utils.formatUnits(
+        `Purchaser ${address} does not have enough coins (${ethers.utils.formatUnits(
           balance,
           '18'
         )}) to pay for gas (${ethers.utils.formatUnits(
@@ -140,7 +149,7 @@ export default class Dispatcher {
       timestamp: Date.now(),
     })
 
-    const { wallet } = await this.getPurchaser(network)
+    const { wallet } = await getPurchaser(network)
 
     return [payload, await wallet.signMessage(payload)]
   }
@@ -157,7 +166,7 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
-    const { wallet } = await this.getPurchaser(network)
+    const { wallet } = await getPurchaser(network)
     const keyManager = new KeyManager()
     const transferCode = await keyManager.createTransferSignature({
       params,
@@ -176,16 +185,17 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['getSignerForTransferSignature']
     >[0]['params']
   ) {
-    const { wallet } = await this.getPurchaser(network)
+    const { wallet } = await getPurchaser(network)
 
     const keyManager = new KeyManager()
     const transferSignerAddress = keyManager.getSignerForTransferSignature({
       network,
       params,
     })
+    const walletAddress = await wallet.getAddress()
     const isSignedByLocksmith =
       transferSignerAddress.trim().toLowerCase() ===
-      wallet.address.trim().toLowerCase()
+      walletAddress.trim().toLowerCase()
 
     return isSignedByLocksmith
   }
@@ -204,7 +214,7 @@ export default class Dispatcher {
     const { network, lockAddress, owner, data, keyManager } = options
     const walletService = new WalletService(networks)
 
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
 
     await walletService.connect(provider, wallet)
 
@@ -232,7 +242,7 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
 
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
 
     await walletService.connect(provider, wallet)
 
@@ -265,7 +275,7 @@ export default class Dispatcher {
     callback: (error: any, hash: string | null) => Promise<void>
   ) {
     const walletService = new WalletService(networks)
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
     await walletService.connect(provider, wallet)
     return executeAndRetry(
       walletService.grantKeyExtension(
@@ -295,7 +305,7 @@ export default class Dispatcher {
     callback: (error: any, hash: string | null) => Promise<unknown>
   ) {
     const walletService = new WalletService(networks)
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
     await walletService.connect(provider, wallet)
     return executeAndRetry(
       walletService.extendKey(
@@ -321,7 +331,7 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
 
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
 
     const transactionOptions = await getGasSettings(network)
 
@@ -363,7 +373,7 @@ export default class Dispatcher {
     options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
     callback: (error: any, hash: string | null) => Promise<void> | void
   ) {
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
     const walletService = new WalletService(networks)
     await walletService.connect(provider, wallet)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
@@ -386,7 +396,7 @@ export default class Dispatcher {
     purchaseData: any
   ) {
     const walletService = new WalletService(networks)
-    const { wallet, provider } = await this.getPurchaser(network)
+    const { wallet, provider } = await getPurchaser(network)
     await walletService.connect(provider, wallet)
 
     const referrer = networks[network]?.multisig

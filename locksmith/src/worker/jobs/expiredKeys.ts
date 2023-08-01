@@ -10,6 +10,7 @@ import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOp
 import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from '../../operations/userMetadataOperations'
 import * as Normalizer from '../../utils/normalizer'
+import { Task } from 'graphile-worker'
 
 /**
  * Send email notification for expired key
@@ -65,7 +66,7 @@ async function notifyExpiredKey(key: any, network: number) {
   }
 }
 
-export async function notifyExpiredKeysForNetwork() {
+export const notifyExpiredKeysForNetwork: Task = async () => {
   const now = new Date()
 
   const yesterday = new Date(now.getTime())

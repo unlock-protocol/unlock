@@ -64,7 +64,7 @@ export const CheckoutShareOrDownload = ({
   }, [paywallConfig, id, setCheckoutUrl])
 
   return paywallConfig ? (
-    <div className="flex gap-3">
+    <div className="flex flex-col gap-3 md:flex-row">
       <Button
         size={size}
         variant={buttonVariant}

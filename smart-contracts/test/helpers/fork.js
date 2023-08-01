@@ -42,7 +42,9 @@ const impersonate = async (address) => {
   await addSomeETH(address) // give some ETH just in case
 
   // return signer
-  return provider.getSigner(address)
+  const signer = provider.getSigner(address)
+  signer.address = signer._address
+  return signer
 }
 
 const stopImpersonate = async (address) => {
@@ -91,12 +93,15 @@ const addUDT = async (recipientAddress, amount = 1000) => {
   await ethers.provider.send('evm_mine', [])
 }
 
-const getDictator = async () => {
-  // main UDT holder on mainnet
-  const udtHolder = '0xa39b44c4affbb56b76a1bf1d19eb93a5dfc2eba9'
-  await impersonate(udtHolder)
-  const dictator = await ethers.getSigner(udtHolder)
-  return dictator
+const delegates = [
+  '0x0d8410643ae7a4d833c7219e5c6fadfa5ce912cd',
+  '0x6aec5228fda60525f59afc773ada7df6a6d8e43f',
+  '0xde22DE740609532FC0F48287b7F258776bE814FD',
+]
+
+// main UDT holders on mainnet
+const getDelegates = async () => {
+  return await Promise.all(delegates.map((delegate) => impersonate(delegate)))
 }
 
 const getUnlockMainnet = async () => {
@@ -131,11 +136,12 @@ module.exports = {
   resetNodeState,
   impersonate,
   stopImpersonate,
-  getDictator,
+  getDelegates,
   getUnlockMainnet,
   getUDTMainnet,
   addUDT,
   addSomeETH,
   addSomeUSDC,
   addERC20,
+  delegates,
 }

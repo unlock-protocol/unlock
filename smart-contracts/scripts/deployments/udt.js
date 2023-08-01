@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 
 async function main() {
-  const [, minter] = await ethers.getSigners()
+  const [minter] = await ethers.getSigners()
 
   const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
   const udt = await upgrades.deployProxy(UDT, [minter.address], {
