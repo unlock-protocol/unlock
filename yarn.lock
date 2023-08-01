@@ -12764,17 +12764,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/core@npm:7.28.1"
-  dependencies:
-    "@sentry/types": 7.28.1
-    "@sentry/utils": 7.28.1
-    tslib: ^1.9.3
-  checksum: 8c9e89f8a4efe84a925b5e626828dd90a714b7c017503b04d7bf754fd7e402f0ed6449250d3c03a40493b6fc2323f804f172c6b792fe2003531afdc578f1587a
-  languageName: node
-  linkType: hard
-
 "@sentry/core@npm:7.52.1":
   version: 7.52.1
   resolution: "@sentry/core@npm:7.52.1"
@@ -12797,6 +12786,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/core@npm:7.60.0":
+  version: 7.60.0
+  resolution: "@sentry/core@npm:7.60.0"
+  dependencies:
+    "@sentry/types": 7.60.0
+    "@sentry/utils": 7.60.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 33d5c69f9507a49ac22d36bfe772625b328cd75a4b5c9d64af8b2d8635b3e502e1e98e0eaab51458e4d8b55739daa1c34294aa4179eeb6fe4f285c03b08e6328
+  languageName: node
+  linkType: hard
+
 "@sentry/core@npm:7.60.1":
   version: 7.60.1
   resolution: "@sentry/core@npm:7.60.1"
@@ -12816,6 +12816,18 @@ __metadata:
     "@sentry/utils": 5.30.0
     tslib: ^1.9.3
   checksum: 09f778cc78765213f1e35a3ee6da3a8e02a706e8a7e5b7f84614707f4b665c7297b700a1849ab2ca1f02ede5884fd9ae893e58dc65f04f35ccdfee17e99ee93d
+  languageName: node
+  linkType: hard
+
+"@sentry/integrations@npm:7.60.0":
+  version: 7.60.0
+  resolution: "@sentry/integrations@npm:7.60.0"
+  dependencies:
+    "@sentry/types": 7.60.0
+    "@sentry/utils": 7.60.0
+    localforage: ^1.8.1
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 234d1e45cf5e51eb4b074888b8678d77825db04e528bb50f3ac34390053ff032d0bb2d50fbc966e178d4f97a520e7ef151b613ac825b6d9a9b1836784437b336
   languageName: node
   linkType: hard
 
@@ -12989,13 +13001,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/types@npm:7.28.1"
-  checksum: 57dcd5737e29990b15c1d723c47b125d325ead0766e2729c3bd0f499f6e034a9ff81b9474546ea6ecd2216b4956dbdcf342ecc13ef5a202468fd732ffb687cbf
-  languageName: node
-  linkType: hard
-
 "@sentry/types@npm:7.52.1":
   version: 7.52.1
   resolution: "@sentry/types@npm:7.52.1"
@@ -13007,6 +13012,13 @@ __metadata:
   version: 7.54.0
   resolution: "@sentry/types@npm:7.54.0"
   checksum: a2f37a9fcc283e6b9c27ec12163bbeded0e6c34d9e55ca6d3d96f5ce270cb287fa308c19358dda6ab8fa6f8bba3dabdbf58cc6ed31219d712a3306e5005e8a14
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.60.0":
+  version: 7.60.0
+  resolution: "@sentry/types@npm:7.60.0"
+  checksum: c145704ef188121df0f19e195026b6be22840f56c92e914b54063a2c2241ab09e7c3863530efd70bbb6d1152237b3b99f22a3d9cded06ac25e089121c2890dd7
   languageName: node
   linkType: hard
 
@@ -13027,16 +13039,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/utils@npm:7.28.1"
-  dependencies:
-    "@sentry/types": 7.28.1
-    tslib: ^1.9.3
-  checksum: 83a6b66b879a827f5656db02cdd23362f3158746a8da42c1683d8d5d0e5ff8ba8e74058ff8d3dea8924a9f307b74c3e021e26167b9296707f7afe08971c7f4ae
-  languageName: node
-  linkType: hard
-
 "@sentry/utils@npm:7.52.1":
   version: 7.52.1
   resolution: "@sentry/utils@npm:7.52.1"
@@ -13054,6 +13056,16 @@ __metadata:
     "@sentry/types": 7.54.0
     tslib: ^1.9.3
   checksum: 8daadba6b0cbe3dc4c42284dbc14ada730f3dd75a050cb3827ef7e173a9f7e06cdbe52ab1e20941841320c6c4cc3d8c969f0da78650e8426e161707450087717
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.60.0":
+  version: 7.60.0
+  resolution: "@sentry/utils@npm:7.60.0"
+  dependencies:
+    "@sentry/types": 7.60.0
+    tslib: ^2.4.1 || ^1.9.3
+  checksum: 3dd3dd2d7c33e011db700032d1a81f8c7c95f6b212f9685fd614e976fae1ff259dd98340e5ccca52bf251387e7f02949850edb5879a35da842e1b71a1e975331
   languageName: node
   linkType: hard
 
@@ -43538,7 +43550,7 @@ __metadata:
     "@types/node": 18.16.3
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
-    toucan-js: 3.1.0
+    toucan-js: 3.2.0
     typescript: 5.1.6
     vitest: 0.31.4
     wrangler: 3.4.0
@@ -49733,14 +49745,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"toucan-js@npm:3.1.0":
-  version: 3.1.0
-  resolution: "toucan-js@npm:3.1.0"
+"toucan-js@npm:3.2.0":
+  version: 3.2.0
+  resolution: "toucan-js@npm:3.2.0"
   dependencies:
-    "@sentry/core": 7.28.1
-    "@sentry/types": 7.28.1
-    "@sentry/utils": 7.28.1
-  checksum: 34128ccf6febdb56250bd6ab4bcda42e5feec8a2a5f02932c977b6fcaaff67ce19a4e8d3137fcffd1e88e9d1d9ea5ae24904fc5bd1bbe10ae8018a4f5e5b619e
+    "@sentry/core": 7.60.0
+    "@sentry/integrations": 7.60.0
+    "@sentry/types": 7.60.0
+    "@sentry/utils": 7.60.0
+  checksum: 999c217fe580e2f3b5e23ea965a82132aefb6aaec32b64877251458333188e31eab0136887eebe1e3fd8befdac607aff84312a75ec03b4bfff4b205c1360956e
   languageName: node
   linkType: hard
 
