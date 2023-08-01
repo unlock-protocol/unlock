@@ -94,6 +94,17 @@ jobs:
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
 
+  deploy-docs-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      bypass_diff_check: bypass
+      service: docs
+      target-env: prod
+    secrets:
+      SITE_ID: d6588eac-a04f-43dc-8341-f85d830bff49
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
+
   cache_deps:
     uses: ./.github/workflows/_docker-cache.yml
     needs: run-all-tests

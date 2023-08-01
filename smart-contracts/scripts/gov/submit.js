@@ -9,7 +9,7 @@ async function main({ proposal, proposerAddress, govAddress }) {
 
   // log what is happening
   console.log(
-    `GOV SUBMIT > Proposed (${proposal.calls} calls):\n${proposal.calls
+    `GOV SUBMIT > Proposed (${proposal.calls.length} calls):\n${proposal.calls
       .map(
         ({ contractName, functionName, functionArgs }) =>
           `- ${contractName} ${functionName} ${functionArgs}`
@@ -40,10 +40,13 @@ async function main({ proposal, proposerAddress, govAddress }) {
 
   // success
   const { proposalId } = evt.args
-  // eslint-disable-next-line no-console
+  const currentBlock = await ethers.provider.getBlockNumber()
+
   console.log(
-    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
+    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash}, block: ${currentBlock})`
   )
+
+  return proposalId
 }
 
 // execute as standalone

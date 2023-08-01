@@ -12,7 +12,7 @@ import {
   useCheckoutConfigUpdate,
   useCheckoutConfigsByUser,
 } from '~/hooks/useCheckoutConfig'
-import { FaTrash as TrashIcon, FaSave as SaveIcon } from 'react-icons/fa'
+import { FaTrash as TrashIcon } from 'react-icons/fa'
 import { useLockSettings } from '~/hooks/useLockSettings'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -20,6 +20,7 @@ import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
 import { ChooseConfiguration, CheckoutConfig } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useDebounce } from 'react-use'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -173,21 +174,6 @@ export const CheckoutUrlPage = () => {
     }
   }, [checkoutConfigList?.length])
 
-  const onConfigSave = useCallback(async () => {
-    const updated = await updateConfig({
-      config: checkoutConfig.config,
-      name: checkoutConfig.name,
-      id: checkoutConfig.id,
-    })
-    setCheckoutConfig({
-      id: updated.id,
-      name: updated.name,
-      config: updated.config as PaywallConfig,
-    })
-    ToastHelper.success('Configuration updated.')
-    await refetchConfigList()
-  }, [checkoutConfig, updateConfig, refetchConfigList])
-
   const onConfigRemove = useCallback(async () => {
     if (!checkoutConfig.id) {
       setDeleteConfirmation(false)
@@ -209,6 +195,7 @@ export const CheckoutUrlPage = () => {
     DEFAULT_CONFIG,
     setDeleteConfirmation,
   ])
+
   useEffect(() => {
     const checkout = checkoutConfigList?.[0]
     if (!checkout) return
@@ -260,9 +247,6 @@ export const CheckoutUrlPage = () => {
       }
     })
   }
-
-  const addLockMutation = useMutation(onAddLocks)
-  const onBasicConfigChangeMutation = useMutation(onBasicConfigChange)
 
   const TopBar = () => {
     return (
@@ -331,6 +315,22 @@ export const CheckoutUrlPage = () => {
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
 
+  /**
+   * Save checkout config when fields have changed, This is done with delays invoking a function until after wait milliseconds have passed
+   * to avoid calling the endpoint multiple times.
+   */
+  const [_isReady] = useDebounce(
+    async () => {
+      if (!checkoutConfig?.id) return // prevent save if not config is set
+      await updateConfig({
+        config: checkoutConfig.config,
+        name: checkoutConfig.name,
+        id: checkoutConfig.id,
+      })
+    },
+    2000, // 2 seconds of delay after edit's to trigger auto-save
+    [checkoutConfig, updateConfig, refetchConfigList]
+  )
   const loading =
     isLoadingConfigList || handleSetConfigurationMutation.isLoading
 
@@ -428,7 +428,7 @@ export const CheckoutUrlPage = () => {
                   loading,
                   children: (
                     <BasicConfigForm
-                      onChange={onBasicConfigChangeMutation.mutateAsync}
+                      onChange={onBasicConfigChange}
                       defaultValues={checkoutConfig.config}
                     />
                   ),
@@ -441,17 +441,13 @@ export const CheckoutUrlPage = () => {
                   loading,
                   children: (
                     <LocksForm
-                      onChange={addLockMutation.mutateAsync}
+                      onChange={onAddLocks}
                       locks={checkoutConfig.config?.locks}
                     />
                   ),
                   button: {
-                    loading: isConfigUpdating,
                     disabled: hasRecurringPlaceholder,
-                    iconLeft: <SaveIcon />,
                   },
-                  onNextLabel: 'Save',
-                  onNext: async () => await onConfigSave(),
                 },
                 {
                   title:

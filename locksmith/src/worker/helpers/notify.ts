@@ -7,11 +7,17 @@ import { logger } from '../../logger'
 
 interface NotifyOptions {
   timeout?: number
-  hook: Hook
+  hookSecret?: string
+  hookCallback: string
   body: unknown
 }
 
-export async function notify({ timeout = 1000, hook, body }: NotifyOptions) {
+export async function notify({
+  timeout = 1000,
+  hookSecret,
+  hookCallback,
+  body,
+}: NotifyOptions) {
   const headers: Record<string, string> = {}
   const content = JSON.stringify(body)
   const ac = new AbortController()
@@ -21,16 +27,16 @@ export async function notify({ timeout = 1000, hook, body }: NotifyOptions) {
   }, timeout)
 
   headers['Content-Type'] = 'application/json'
-  if (hook.secret) {
+  if (hookSecret) {
     const algorithm = 'sha256'
     const signature = createSignature({
       content,
       algorithm,
-      secret: hook.secret,
+      secret: hookSecret,
     })
     headers['X-Hub-Signature'] = `${algorithm}=${signature}`
   }
-  const response = await fetch(hook.callback, {
+  const response = await fetch(hookCallback, {
     headers: headers,
     method: 'POST',
     body: content,
@@ -59,14 +65,17 @@ export function createSignature({
   return signature
 }
 
-export async function notifyHook(hook: Hook, body: unknown) {
+export async function notifyHook(
+  { network, id, lock, topic, updatedAt, secret, callback }: Hook,
+  body: unknown
+) {
   const hookEvent = new HookEvent()
-  hookEvent.network = hook.network
-  hookEvent.hookId = hook.id
-  hookEvent.lock = hook.lock
+  hookEvent.network = network
+  hookEvent.hookId = id
+  hookEvent.lock = lock
   hookEvent.state = 'pending'
   hookEvent.attempts = 0
-  hookEvent.topic = hook.topic
+  hookEvent.topic = topic
   hookEvent.body = JSON.stringify(body)
 
   try {
@@ -76,9 +85,9 @@ export async function notifyHook(hook: Hook, body: unknown) {
     // Get last 3 HookEvents created after last hook update.
     const previousHookEventsForCurrentHook = await HookEvent.findAll({
       where: {
-        hookId: hook.id,
+        hookId: id,
         updatedAt: {
-          [Op.gte]: hook.updatedAt,
+          [Op.gte]: updatedAt,
         },
       },
       order: [['createdAt', 'DESC']],
@@ -92,12 +101,13 @@ export async function notifyHook(hook: Hook, body: unknown) {
     await pRetry(
       async () => {
         const response = await notify({
-          hook,
+          hookSecret: secret,
+          hookCallback: callback,
           body,
         })
 
         if (!response.ok) {
-          logger.error(`${hook.id}: ${response.statusText}`)
+          logger.error(`${id}: ${response.statusText}`)
           throw new Error(response.statusText)
         }
         return response
@@ -107,11 +117,11 @@ export async function notifyHook(hook: Hook, body: unknown) {
           hookEvent.attempts += 1
           hookEvent.state = 'failed'
           hookEvent.lastError = error.message
-          logger.error(`${hook.id}: ${error.message}`)
+          logger.error(`${id}: ${error.message}`)
           await hookEvent.save()
           if (checkBadHealth) {
             throw new AbortError(
-              `Not retrying because hook: ${hook.id} has not been very responsive.`
+              `Not retrying because hook: ${id} has not been very responsive.`
             )
           }
         },
