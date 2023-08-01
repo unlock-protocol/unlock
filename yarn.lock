@@ -18840,7 +18840,7 @@ __metadata:
     gray-matter: 4.0.3
     next: 13.4.7
     next-seo: 6.1.0
-    next-transpile-modules: 10.0.0
+    next-transpile-modules: 10.0.1
     numeral: 2.0.6
     path-match: 1.2.4
     postcss: 8.4.24
@@ -40689,12 +40689,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-transpile-modules@npm:10.0.0":
-  version: 10.0.0
-  resolution: "next-transpile-modules@npm:10.0.0"
+"next-transpile-modules@npm:10.0.1":
+  version: 10.0.1
+  resolution: "next-transpile-modules@npm:10.0.1"
   dependencies:
     enhanced-resolve: ^5.10.0
-  checksum: 3300fc7081f63b2c9487588db7cbe718f209dfd2111adec22d9c8af0e3c8ade2d95fd45f91e045546d78d98cafc78a49431de9a623360d33831b5e694bf007c9
+  checksum: 6cfffd165769a04b153e60f49f4f3896d16aa688304616f66c7b94299e2229b04db368217e6a7300d3110fe988a6c6e68025bb2cbda3edf49e9b29109ff671bd
   languageName: node
   linkType: hard
 
