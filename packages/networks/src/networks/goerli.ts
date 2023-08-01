@@ -108,7 +108,15 @@ export const goerli: NetworkConfig = {
         name: 'Guild',
         address: '0x1AC9271D271b8E50537CAd54b330424C52A84822',
       },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x850c015A6A88756a59Dc025fca988494fF90DBB7',
+      },
     ],
+  },
+  defenderRelay: {
+    apiKey: 'ABoZPmooUbZNrMxjLfK5ZjAc3ojNtS9L',
   },
 }
 

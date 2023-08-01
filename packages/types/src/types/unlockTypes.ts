@@ -41,6 +41,7 @@ export interface Token {
 export enum HookType {
   CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
+  PROMOCODE = 'PROMOCODE',
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
 }
@@ -138,6 +139,9 @@ export interface NetworkConfig {
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean
+  defenderRelay?: {
+    apiKey: string
+  }
 }
 
 export interface NetworkConfigs {
