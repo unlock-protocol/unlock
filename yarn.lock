@@ -18469,7 +18469,7 @@ __metadata:
     eslint-plugin-mocha: 10.1.0
     hardhat: 2.14.1
     mocha: 10.2.0
-    prettier: 2.8.8
+    prettier: 3.0.0
     ts-mocha: 10.0.0
     ts-node: 10.9.1
     tslint: 5.20.1
@@ -18596,7 +18596,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: 8.44.0
     next: 13.4.7
-    prettier: 2.8.8
+    prettier: 3.0.0
     typescript: 5.1.6
     vite: 4.3.9
     vite-plugin-node-polyfills: 0.9.0
@@ -18672,7 +18672,7 @@ __metadata:
     hardhat-tracer: 2.4.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    prettier: 2.8.8
+    prettier: 3.0.0
     prettier-plugin-solidity: 1.1.3
     prompt: 1.3.0
     solhint: 3.4.1
@@ -18830,7 +18830,7 @@ __metadata:
     parse-domain: 7.0.1
     postcss: 8.4.24
     postmate: 1.5.2
-    prettier: 2.8.8
+    prettier: 3.0.0
     prop-types: 15.8.1
     qr-scanner: 1.4.2
     qrcode.react: 3.1.0
@@ -18868,10 +18868,9 @@ __metadata:
   resolution: "@unlock-protocol/unlock-express@workspace:packages/unlock-express"
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    eslint: 8.46.0
     ethers: 5.7.2
     passport-custom: 1.1.1
-    prettier: 2.8.8
+    prettier: 3.0.0
   peerDependencies:
     passport: ^0.6.x
   languageName: unknown
@@ -18900,7 +18899,7 @@ __metadata:
     graphql: 16.6.0
     graphql-request: 6.1.0
     hardhat: 2.13.0
-    prettier: 2.8.8
+    prettier: 3.0.0
     react-to-print: 2.14.13
     siwe: 2.1.4
     tsup: 7.1.0
@@ -18948,7 +18947,7 @@ __metadata:
     numeral: 2.0.6
     path-match: 1.2.4
     postcss: 8.4.24
-    prettier: 2.8.8
+    prettier: 3.0.0
     raw-loader: 4.0.2
     react: 18.2.0
     react-apexcharts: 1.4.1
@@ -18991,7 +18990,7 @@ __metadata:
     netlify-cli: 15.4.1
     node-forge: 1.3.1
     nodemailer: 6.9.4
-    prettier: 2.8.8
+    prettier: 3.0.0
     regenerator-runtime: 0.13.11
     typescript: 5.1.6
     vitest: 0.31.4
@@ -28757,21 +28756,6 @@ __metadata:
   peerDependencies:
     prettier: ">= 0.11.0"
   checksum: 6cb6440d0cac858e65c3bb9c82cc3e257118d1631eaa69b5caa10b39e70af39053dc696a2f431d40e1f8912b98311c8154fc1dbfde9f1b85fe82f6d6533e9f30
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-prettier@npm:latest":
-  version: 4.2.1
-  resolution: "eslint-plugin-prettier@npm:4.2.1"
-  dependencies:
-    prettier-linter-helpers: ^1.0.0
-  peerDependencies:
-    eslint: ">=7.28.0"
-    prettier: ">=2.0.0"
-  peerDependenciesMeta:
-    eslint-config-prettier:
-      optional: true
-  checksum: b9e839d2334ad8ec7a5589c5cb0f219bded260839a857d7a486997f9870e95106aa59b8756ff3f37202085ebab658de382b0267cae44c3a7f0eb0bcc03a4f6d6
   languageName: node
   linkType: hard
 
@@ -44424,7 +44408,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.8.8, prettier@npm:^2.3.1, prettier@npm:^2.8.0, prettier@npm:^2.8.3":
+"prettier@npm:3.0.0":
+  version: 3.0.0
+  resolution: "prettier@npm:3.0.0"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: 6a832876a1552dc58330d2467874e5a0b46b9ccbfc5d3531eb69d15684743e7f83dc9fbd202db6270446deba9c82b79d24383d09924c462b457136a759425e33
+  languageName: node
+  linkType: hard
+
+"prettier@npm:^2.3.1, prettier@npm:^2.8.0, prettier@npm:^2.8.3":
   version: 2.8.8
   resolution: "prettier@npm:2.8.8"
   bin:
@@ -52380,11 +52373,11 @@ __metadata:
     "@typescript-eslint/parser": 6.2.1
     babel-plugin-polyfill-corejs2: 0.4.3
     eslint: 8.44.0
-    eslint-plugin-prettier: latest
+    eslint-plugin-prettier: 5.0.0
     eslint-plugin-vitest: 0.2.8
     husky: 8.0.3
     lint-staged: 13.2.3
-    prettier: 2.8.8
+    prettier: 3.0.0
     typescript: 5.1.6
   languageName: unknown
   linkType: soft
