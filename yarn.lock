@@ -7518,7 +7518,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^2.0.1, @eslint/eslintrc@npm:^2.0.2, @eslint/eslintrc@npm:^2.0.3":
+"@eslint/eslintrc@npm:^2.0.2, @eslint/eslintrc@npm:^2.0.3":
   version: 2.0.3
   resolution: "@eslint/eslintrc@npm:2.0.3"
   dependencies:
@@ -7569,13 +7569,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.36.0":
-  version: 8.36.0
-  resolution: "@eslint/js@npm:8.36.0"
-  checksum: b7d6b84b823c8c7784be390741196617565527b1f7c0977fde9455bfb57fd88f81c074a03dd878757d2c33fa29f24291e9ecbc1425710f067917324b55e1bf3a
-  languageName: node
-  linkType: hard
-
 "@eslint/js@npm:8.39.0":
   version: 8.39.0
   resolution: "@eslint/js@npm:8.39.0"
@@ -7583,24 +7576,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.40.0":
-  version: 8.40.0
-  resolution: "@eslint/js@npm:8.40.0"
-  checksum: e84936b8ebd1c8fd90e860182e95d1404006da4cbca722b14950b298aeeca102b080aa9b62c8e69f90824ec54e19f1ba79b239046223624d1414ee82e8e628ac
-  languageName: node
-  linkType: hard
-
 "@eslint/js@npm:8.41.0":
   version: 8.41.0
   resolution: "@eslint/js@npm:8.41.0"
   checksum: af013d70fe8d0429cdf5cd8b5dcc6fc384ed026c1eccb0cfe30f5849b968ab91645111373fd1b83282b38955b1bdfbe667c1a7dbda3b06cae753521223cad775
-  languageName: node
-  linkType: hard
-
-"@eslint/js@npm:8.42.0":
-  version: 8.42.0
-  resolution: "@eslint/js@npm:8.42.0"
-  checksum: 750558843ac458f7da666122083ee05306fc087ecc1e5b21e7e14e23885775af6c55bcc92283dff1862b7b0d8863ec676c0f18c7faf1219c722fe91a8ece56b6
   languageName: node
   linkType: hard
 
@@ -18658,7 +18637,7 @@ __metadata:
     bignumber.js: 9.1.1
     chai: 4.3.7
     debug: 4.3.4
-    eslint: 8.42.0
+    eslint: 8.46.0
     eslint-plugin-mocha: 10.1.0
     eth-gas-reporter: 0.2.25
     eth-sig-util: 3.0.1
@@ -18816,7 +18795,7 @@ __metadata:
     dayjs: 1.11.9
     deep-object-diff: 1.1.9
     dotenv: 16.3.1
-    eslint: 8.45.0
+    eslint: 8.46.0
     ethers: 5.7.2
     file-saver: 2.0.5
     font-color-contrast: 11.1.0
@@ -18895,7 +18874,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
-    eslint: 8.36.0
+    eslint: 8.46.0
     graphql: 16.6.0
     graphql-request: 6.1.0
     hardhat: 2.13.0
@@ -18935,7 +18914,7 @@ __metadata:
     dotenv: 16.3.1
     embla-carousel-autoplay: 7.1.0
     embla-carousel-react: 7.1.0
-    eslint: 8.44.0
+    eslint: 8.46.0
     eslint-config-next: 13.4.7
     eslint-plugin-mocha: 10.1.0
     ethers: 5.7.2
@@ -18985,7 +18964,7 @@ __metadata:
     babel-loader: 9.1.3
     babel-plugin-wildcard: 7.0.0
     dotenv: 16.1.3
-    eslint: 8.42.0
+    eslint: 8.46.0
     handlebars: 4.7.7
     netlify-cli: 15.4.1
     node-forge: 1.3.1
@@ -28876,56 +28855,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.36.0":
-  version: 8.36.0
-  resolution: "eslint@npm:8.36.0"
-  dependencies:
-    "@eslint-community/eslint-utils": ^4.2.0
-    "@eslint-community/regexpp": ^4.4.0
-    "@eslint/eslintrc": ^2.0.1
-    "@eslint/js": 8.36.0
-    "@humanwhocodes/config-array": ^0.11.8
-    "@humanwhocodes/module-importer": ^1.0.1
-    "@nodelib/fs.walk": ^1.2.8
-    ajv: ^6.10.0
-    chalk: ^4.0.0
-    cross-spawn: ^7.0.2
-    debug: ^4.3.2
-    doctrine: ^3.0.0
-    escape-string-regexp: ^4.0.0
-    eslint-scope: ^7.1.1
-    eslint-visitor-keys: ^3.3.0
-    espree: ^9.5.0
-    esquery: ^1.4.2
-    esutils: ^2.0.2
-    fast-deep-equal: ^3.1.3
-    file-entry-cache: ^6.0.1
-    find-up: ^5.0.0
-    glob-parent: ^6.0.2
-    globals: ^13.19.0
-    grapheme-splitter: ^1.0.4
-    ignore: ^5.2.0
-    import-fresh: ^3.0.0
-    imurmurhash: ^0.1.4
-    is-glob: ^4.0.0
-    is-path-inside: ^3.0.3
-    js-sdsl: ^4.1.4
-    js-yaml: ^4.1.0
-    json-stable-stringify-without-jsonify: ^1.0.1
-    levn: ^0.4.1
-    lodash.merge: ^4.6.2
-    minimatch: ^3.1.2
-    natural-compare: ^1.4.0
-    optionator: ^0.9.1
-    strip-ansi: ^6.0.1
-    strip-json-comments: ^3.1.0
-    text-table: ^0.2.0
-  bin:
-    eslint: bin/eslint.js
-  checksum: e9a961fc3b3de5cff5a1cb2c92eeffaa7e155a715489e30b3e1e76f186bd1255e0481e09564f2094733c0b1dbd3453499fb72ae7c043c83156e11e6d965b2304
-  languageName: node
-  linkType: hard
-
 "eslint@npm:8.39.0":
   version: 8.39.0
   resolution: "eslint@npm:8.39.0"
@@ -29025,55 +28954,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.42.0":
-  version: 8.42.0
-  resolution: "eslint@npm:8.42.0"
-  dependencies:
-    "@eslint-community/eslint-utils": ^4.2.0
-    "@eslint-community/regexpp": ^4.4.0
-    "@eslint/eslintrc": ^2.0.3
-    "@eslint/js": 8.42.0
-    "@humanwhocodes/config-array": ^0.11.10
-    "@humanwhocodes/module-importer": ^1.0.1
-    "@nodelib/fs.walk": ^1.2.8
-    ajv: ^6.10.0
-    chalk: ^4.0.0
-    cross-spawn: ^7.0.2
-    debug: ^4.3.2
-    doctrine: ^3.0.0
-    escape-string-regexp: ^4.0.0
-    eslint-scope: ^7.2.0
-    eslint-visitor-keys: ^3.4.1
-    espree: ^9.5.2
-    esquery: ^1.4.2
-    esutils: ^2.0.2
-    fast-deep-equal: ^3.1.3
-    file-entry-cache: ^6.0.1
-    find-up: ^5.0.0
-    glob-parent: ^6.0.2
-    globals: ^13.19.0
-    graphemer: ^1.4.0
-    ignore: ^5.2.0
-    import-fresh: ^3.0.0
-    imurmurhash: ^0.1.4
-    is-glob: ^4.0.0
-    is-path-inside: ^3.0.3
-    js-yaml: ^4.1.0
-    json-stable-stringify-without-jsonify: ^1.0.1
-    levn: ^0.4.1
-    lodash.merge: ^4.6.2
-    minimatch: ^3.1.2
-    natural-compare: ^1.4.0
-    optionator: ^0.9.1
-    strip-ansi: ^6.0.1
-    strip-json-comments: ^3.1.0
-    text-table: ^0.2.0
-  bin:
-    eslint: bin/eslint.js
-  checksum: 07105397b5f2ff4064b983b8971e8c379ec04b1dfcc9d918976b3e00377189000161dac991d82ba14f8759e466091b8c71146f602930ca810c290ee3fcb3faf0
-  languageName: node
-  linkType: hard
-
 "eslint@npm:8.44.0":
   version: 8.44.0
   resolution: "eslint@npm:8.44.0"
@@ -29120,53 +29000,6 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: d06309ce4aafb9d27d558c8e5e5aa5cba3bbec3ce8ceccbc7d4b7a35f2b67fd40189159155553270e2e6febeb69bd8a3b60d6241c8f5ddc2ef1702ccbd328501
-  languageName: node
-  linkType: hard
-
-"eslint@npm:8.45.0":
-  version: 8.45.0
-  resolution: "eslint@npm:8.45.0"
-  dependencies:
-    "@eslint-community/eslint-utils": ^4.2.0
-    "@eslint-community/regexpp": ^4.4.0
-    "@eslint/eslintrc": ^2.1.0
-    "@eslint/js": 8.44.0
-    "@humanwhocodes/config-array": ^0.11.10
-    "@humanwhocodes/module-importer": ^1.0.1
-    "@nodelib/fs.walk": ^1.2.8
-    ajv: ^6.10.0
-    chalk: ^4.0.0
-    cross-spawn: ^7.0.2
-    debug: ^4.3.2
-    doctrine: ^3.0.0
-    escape-string-regexp: ^4.0.0
-    eslint-scope: ^7.2.0
-    eslint-visitor-keys: ^3.4.1
-    espree: ^9.6.0
-    esquery: ^1.4.2
-    esutils: ^2.0.2
-    fast-deep-equal: ^3.1.3
-    file-entry-cache: ^6.0.1
-    find-up: ^5.0.0
-    glob-parent: ^6.0.2
-    globals: ^13.19.0
-    graphemer: ^1.4.0
-    ignore: ^5.2.0
-    imurmurhash: ^0.1.4
-    is-glob: ^4.0.0
-    is-path-inside: ^3.0.3
-    js-yaml: ^4.1.0
-    json-stable-stringify-without-jsonify: ^1.0.1
-    levn: ^0.4.1
-    lodash.merge: ^4.6.2
-    minimatch: ^3.1.2
-    natural-compare: ^1.4.0
-    optionator: ^0.9.3
-    strip-ansi: ^6.0.1
-    text-table: ^0.2.0
-  bin:
-    eslint: bin/eslint.js
-  checksum: 3e6dcce5cc43c5e301662db88ee26d1d188b22c177b9f104d7eefd1191236980bd953b3670fe2fac287114b26d7c5420ab48407d7ea1c3a446d6313c000009da
   languageName: node
   linkType: hard
 
@@ -29217,57 +29050,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.23.0":
-  version: 8.40.0
-  resolution: "eslint@npm:8.40.0"
-  dependencies:
-    "@eslint-community/eslint-utils": ^4.2.0
-    "@eslint-community/regexpp": ^4.4.0
-    "@eslint/eslintrc": ^2.0.3
-    "@eslint/js": 8.40.0
-    "@humanwhocodes/config-array": ^0.11.8
-    "@humanwhocodes/module-importer": ^1.0.1
-    "@nodelib/fs.walk": ^1.2.8
-    ajv: ^6.10.0
-    chalk: ^4.0.0
-    cross-spawn: ^7.0.2
-    debug: ^4.3.2
-    doctrine: ^3.0.0
-    escape-string-regexp: ^4.0.0
-    eslint-scope: ^7.2.0
-    eslint-visitor-keys: ^3.4.1
-    espree: ^9.5.2
-    esquery: ^1.4.2
-    esutils: ^2.0.2
-    fast-deep-equal: ^3.1.3
-    file-entry-cache: ^6.0.1
-    find-up: ^5.0.0
-    glob-parent: ^6.0.2
-    globals: ^13.19.0
-    grapheme-splitter: ^1.0.4
-    ignore: ^5.2.0
-    import-fresh: ^3.0.0
-    imurmurhash: ^0.1.4
-    is-glob: ^4.0.0
-    is-path-inside: ^3.0.3
-    js-sdsl: ^4.1.4
-    js-yaml: ^4.1.0
-    json-stable-stringify-without-jsonify: ^1.0.1
-    levn: ^0.4.1
-    lodash.merge: ^4.6.2
-    minimatch: ^3.1.2
-    natural-compare: ^1.4.0
-    optionator: ^0.9.1
-    strip-ansi: ^6.0.1
-    strip-json-comments: ^3.1.0
-    text-table: ^0.2.0
-  bin:
-    eslint: bin/eslint.js
-  checksum: b79eba37f52f517a420eec99a80ae9f284d2cbe73afc0d4d3d4d5ed1cce0b06f21badc0374bfb7ac239efd2d49a1fd7c6111d6c3d52888521f377ba33de77e61
-  languageName: node
-  linkType: hard
-
-"espree@npm:^9.4.0, espree@npm:^9.5.0, espree@npm:^9.5.1, espree@npm:^9.5.2":
+"espree@npm:^9.4.0, espree@npm:^9.5.1, espree@npm:^9.5.2":
   version: 9.5.2
   resolution: "espree@npm:9.5.2"
   dependencies:
@@ -50492,7 +50275,7 @@ __metadata:
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     apollo-link-http: ^1.5.17
     chai: ^4.2.0
-    eslint: ^8.23.0
+    eslint: 8.46.0
     ethers: ^5.4.7
     graphql: ^16.6.0
     hardhat: 2.12.6
@@ -53134,6 +52917,46 @@ __metadata:
     vite:
       optional: true
   checksum: 73a8467de72d7ac502328454fd00c19571cd4bad2dd5982643b24718bb95e449a3f4153cfc2d58a358bfc8f37e592fb442fc10884b59ae82138c1329160cd952
+  languageName: node
+  linkType: hard
+
+"vite@npm:4.4.7":
+  version: 4.4.7
+  resolution: "vite@npm:4.4.7"
+  dependencies:
+    esbuild: ^0.18.10
+    fsevents: ~2.3.2
+    postcss: ^8.4.26
+    rollup: ^3.25.2
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 787c4d891da18d0a0545bee07dec73c3201979dcf2b1ea3dc13fdd2d3b9ad76d413bcc0e68502183e309007a612c1f4116adefe0093d95fbbb9cf1c1755f7e41
   languageName: node
   linkType: hard
 
