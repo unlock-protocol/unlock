@@ -76,7 +76,7 @@ router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
 router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
-router.use('/v2', authMiddleware) // Add user to any request
+router.use('/v2', authMiddleware)
 router.use('/v2/auth', authRouterV2)
 router.use('/v2/images', imagesRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
