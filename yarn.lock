@@ -18009,7 +18009,7 @@ __metadata:
     react-dropzone: 14.2.3
     react-google-recaptcha: 3.1.0
     react-gtm-module: 2.0.11
-    react-hook-form: 7.45.2
+    react-hook-form: 7.44.3
     react-hot-toast: 2.4.1
     react-icons: 4.10.1
     react-jwt: 1.2.0
@@ -44439,21 +44439,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-hook-form@npm:7.44.3":
+  version: 7.44.3
+  resolution: "react-hook-form@npm:7.44.3"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 8dc97e705d28d842c60fd79b0f07b8b045c458c234e3bf422baab87a844d0ebecbdf3e349538eaaa5c12366cd85169f60a52ed84dd31cdd99729899e424548bf
+  languageName: node
+  linkType: hard
+
 "react-hook-form@npm:7.45.1":
   version: 7.45.1
   resolution: "react-hook-form@npm:7.45.1"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
   checksum: 3abe1dcf449a3d438b4e5403d93d1502f6dab05afd5c5215f0fc88a32f3d06e7f4b77bee75479359c22a418af6ea0f52711478c73773cb5fd0f43da50669aa17
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:7.45.2":
-  version: 7.45.2
-  resolution: "react-hook-form@npm:7.45.2"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 023ca091f2bb1f3117d8a694871874c4a344f02c795c6a08b8f78b09b78444451375fbe921d7db4ba7cd78909b1fa5e92d19efd2bfedc43124fdc44540ac036c
   languageName: node
   linkType: hard
 
