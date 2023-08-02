@@ -89,7 +89,7 @@
     "jsdom": "22.1.0",
     "postcss": "8.4.24",
     "react-test-renderer": "18.2.0",
-    "tailwindcss": "3.3.2",
+    "tailwindcss": "3.3.3",
     "vitest": "0.33.0",
     "vitest-fetch-mock": "0.2.2",
     "vitest-localstorage-mock": "0.0.1"
