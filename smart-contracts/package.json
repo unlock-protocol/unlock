@@ -37,7 +37,7 @@
     "babel-register": "6.26.0",
     "bignumber.js": "9.1.1",
     "debug": "4.3.4",
-    "eslint": "8.42.0",
+    "eslint": "8.46.0",
     "eslint-plugin-mocha": "10.1.0",
     "eth-gas-reporter": "0.2.25",
     "eth-sig-util": "3.0.1",
