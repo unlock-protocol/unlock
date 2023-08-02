@@ -65,9 +65,7 @@ export function LockCustomForm() {
             <div className="flex flex-wrap gap-6 mt-6">
               {properties
                 ?.filter((item) => item.trait_type && item.value)
-                .map((item, index) => (
-                  <Property {...item} key={index} />
-                ))}
+                .map((item, index) => <Property {...item} key={index} />)}
             </div>
           </div>
           <div className="py-2 border-b border-gray-300">
@@ -94,9 +92,7 @@ export function LockCustomForm() {
                 ?.filter(
                   (item) => item.trait_type && item.value && item.max_value
                 )
-                .map((item, index) => (
-                  <Level {...item} key={index} />
-                ))}
+                .map((item, index) => <Level {...item} key={index} />)}
             </div>
           </div>
           <div className="py-2 border-b border-gray-300">
@@ -123,9 +119,7 @@ export function LockCustomForm() {
                 ?.filter(
                   (item) => item.trait_type && item.value && item.max_value
                 )
-                .map((item, index) => (
-                  <Stat {...item} key={index} />
-                ))}
+                .map((item, index) => <Stat {...item} key={index} />)}
             </div>
           </div>
         </div>
