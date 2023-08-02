@@ -1,7 +1,6 @@
 import express from 'express'
 import { PurchaseController } from '../controllers/purchaseController'
 import { createGeoRestriction } from '../utils/middlewares/geoRestriction'
-import { captchaMiddleware } from '../utils/middlewares/recaptchaMiddleware'
 
 const purchaseController = new PurchaseController()
 const router = express.Router({ mergeParams: true })
@@ -12,7 +11,6 @@ const geoRestriction = createGeoRestriction(['RU', 'UA'])
 router.post(
   '/:network/locks/:lockAddress',
   geoRestriction,
-  captchaMiddleware,
   async (req, res) => await purchaseController.canClaim(req, res)
 )
 
