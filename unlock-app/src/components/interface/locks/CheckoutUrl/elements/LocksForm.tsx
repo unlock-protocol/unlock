@@ -368,7 +368,7 @@ export const LocksForm = ({
           {Object.entries(locks ?? {})?.map(
             ([address, values]: [
               string,
-              z.infer<typeof PaywallLockConfig>
+              z.infer<typeof PaywallLockConfig>,
             ]) => {
               const hasEdit =
                 lockAddress?.toLowerCase() === address?.toLowerCase()

@@ -229,7 +229,7 @@ export const updateUsersMetadata: RequestHandler = async (
       ({
         ...item,
         by: loggedInUser,
-      } as UserMetadataInputs)
+      }) as UserMetadataInputs
   )
 
   const { updated, error } = await upsertUsersMetadata(users)
