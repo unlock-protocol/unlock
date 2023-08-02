@@ -237,6 +237,7 @@ export function Checkout({
       case 'RETURNING': {
         return (
           <Returning
+            communication={communication}
             onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
