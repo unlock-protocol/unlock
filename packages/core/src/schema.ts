@@ -5,9 +5,14 @@ export const MetadataInput = z.object({
     description:
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
   }),
-  name: z.string({
-    description: 'Name of the attribute to collect.',
-  }),
+  name: z
+    .string({
+      description: 'Name of the attribute to collect.',
+    })
+    .regex(
+      /^[A-Za-z-]+$/,
+      'Only letters and dashes are allowed in the name. No spaces, special characters, or separators.'
+    ),
   label: z
     .string({
       description: 'Label displayed to users. Defaults to the name field.',

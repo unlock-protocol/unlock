@@ -25,6 +25,8 @@ import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
 import { useLockSettings } from '~/hooks/useLockSettings'
 import { getLocksByNetwork } from '~/hooks/useLocksByManager'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 const LockSchema = PaywallLockConfig.omit({
   network: true, // network will managed with a custom input with the lock address
 })
@@ -86,6 +88,102 @@ type RecurringByLock = Record<
   }
 >
 
+interface LockMetadataProps {
+  onSubmit(data: Omit<z.infer<typeof MetadataInput>, 'defaultValue'>): void
+}
+
+export const LockMetadataForm = ({ onSubmit }: LockMetadataProps) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<Omit<z.infer<typeof MetadataInput>, 'defaultValue'>>({
+    resolver: zodResolver(
+      MetadataInput.omit({
+        defaultValue: true,
+      })
+    ),
+  })
+
+  return (
+    <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        {...register('name')}
+        size="small"
+        label="Name"
+        description={MetadataInput.shape.name.description}
+        error={errors?.name?.message}
+      />
+      <Input
+        {...register('label')}
+        label="Label"
+        size="small"
+        description={MetadataInput.shape.label.description}
+        error={errors?.label?.message}
+      />
+      <Input
+        {...register('placeholder')}
+        label="Placeholder"
+        size="small"
+        description={MetadataInput.shape.placeholder.description}
+        error={errors?.placeholder?.message}
+      />
+      <Input
+        {...register('value')}
+        label="Value"
+        size="small"
+        description={MetadataInput.shape.value.description}
+        error={errors?.value?.message}
+      />
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="required"
+            className="cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent"
+            {...register('required')}
+          />
+          <label htmlFor="required"> Required </label>
+        </div>
+        <p className="text-xs text-gray-600 ">
+          {MetadataInput.shape.required.description}
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="public"
+            className="cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent"
+            {...register('public')}
+          />
+          <label htmlFor="public"> Public </label>
+        </div>
+        <p className="text-xs text-gray-600 ">
+          {MetadataInput.shape.public.description}
+        </p>
+      </div>
+      <div className="space-y-2">
+        <select
+          className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100 pl-2.5 py-1.5 text-sm"
+          {...register('type')}
+        >
+          {Object.values(MetadataInput.shape.type._def.values)?.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+        <p className="text-xs text-gray-600 ">
+          {MetadataInput.shape.type.description}
+        </p>
+      </div>
+      <Button type="submit">Add Field</Button>
+    </form>
+  )
+}
 export const LocksForm = ({
   onChange,
   locks: locksDefault = {},
@@ -496,16 +594,7 @@ export const LocksForm = ({
                             <MetadataList />
                           ) : (
                             <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
-                              <DynamicForm
-                                name={'metadata'}
-                                schema={MetadataInput.omit({
-                                  defaultValue: true, // default value is not needed
-                                })}
-                                onChange={() => void 0}
-                                onSubmit={onAddMetadata}
-                                submitLabel={'Add'}
-                                showSubmit={true}
-                              />
+                              <LockMetadataForm onSubmit={onAddMetadata} />
                             </div>
                           )}
                           <Button onClick={() => reset()}>Done</Button>
