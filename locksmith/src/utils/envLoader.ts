@@ -31,7 +31,6 @@ const requiredEnvVars = [
   'STORAGE_ACCESS_KEY_ID',
   'STORAGE_SECRET_ACCESS_KEY',
   'RECAPTCHA_SECRET',
-  'DEFENDER_RELAY_SECRET',
 ]
 
 requiredEnvVars.forEach((envVar) => {
