@@ -15,8 +15,12 @@ Here are the key items.
 
 ## There is an email field on the airdrop screen
 
+You can go into the Tools menu to airdrop.
+![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/airdrop-screenshot-2023-1-min.png)
+
 An "email" field is included on the airdrop screen.
-![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/email-airdrop-screenshot1.png)
+![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/airdrop-screenshot-2023-2-min.png)
+
 
 ## Additional email actions on the "Members" page
 
@@ -26,7 +30,6 @@ In addition to airdropping the NFT via email, lock managers have addtional membe
 - Send QR-code by email
 
 ![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/email-airdrop-screenshot2.png)
-![airdrop screenshot with new email field](/images/blog/email-airdrop-nft/email-airdrop-screenshot3.png)
 
 Want to go into the details and see a step-by-step walkthrough? Check out the Unlock Protocol Guide *[How to Airdrop NFTs by Email](https://unlock-protocol.com/guides/airdrop-nft-email/)* in the Unlock Guides.
 
