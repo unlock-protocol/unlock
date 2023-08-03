@@ -5,3 +5,6 @@ export const TOPIC_KEYS_ON_LOCK = pathToRegexp(
   '/api/hooks/:network/locks/:lock/keys'
 )
 export const TOPIC_KEYS_ON_NETWORK = pathToRegexp('/api/hooks/:network/keys')
+export const TOPIC_EXPIRED_KEYS_ON_NETWORK = pathToRegexp(
+  '/api/hooks/:network/expired-keys'
+)

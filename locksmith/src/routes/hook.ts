@@ -1,6 +1,6 @@
 import express from 'express'
 import { HookController } from '../controllers/hookController'
-import { HubPublisherController } from '../controllers/hubPublisherController'
+import { handlePublisher } from '../controllers/hubPublisherController'
 
 const hookController = new HookController({
   leaseSeconds: {
@@ -10,37 +10,37 @@ const hookController = new HookController({
   },
 })
 
-const hubPublisherController = new HubPublisherController()
-
 const router = express.Router({ mergeParams: true })
 
-router.post('/:network/locks', (req, res) => hookController.handle(req, res))
-
-router.post('/:network/locks/:lock/keys', (req, res) =>
-  hookController.handle(req, res)
+router.post(
+  '/:network/locks',
+  async (req, res) => await hookController.handle(req, res)
 )
 
-router.post('/:network/keys', (req, res) => hookController.handle(req, res))
-
-router.get('/:network/locks', (req, res) =>
-  hubPublisherController.handle(req, res)
-)
-router.get('/:network/locks/:lock/keys', (req, res) =>
-  hubPublisherController.handle(req, res)
-)
-router.get('/:network/keys', (req, res) =>
-  hubPublisherController.handle(req, res)
+router.post(
+  '/:network/locks/:lock/keys',
+  async (req, res) => await hookController.handle(req, res)
 )
 
-router.head('/:network/locks', (req, res) =>
-  hubPublisherController.handle(req, res)
-)
-router.head('/:network/locks/:lock/keys', (req, res) =>
-  hubPublisherController.handle(req, res)
+router.post(
+  '/:network/keys',
+  async (req, res) => await hookController.handle(req, res)
 )
 
-router.head('/:network/keys', (req, res) =>
-  hubPublisherController.handle(req, res)
+router.post(
+  '/:network/expired-keys',
+  async (req, res) => await hookController.handle(req, res)
 )
+
+router.route('/:network/locks').get(handlePublisher).head(handlePublisher)
+router.route('/:network/keys').get(handlePublisher).head(handlePublisher)
+router
+  .route('/:network/expired-keys')
+  .get(handlePublisher)
+  .head(handlePublisher)
+router
+  .route('/:network/locks/:lock/keys')
+  .get(handlePublisher)
+  .head(handlePublisher)
 
 export default router
