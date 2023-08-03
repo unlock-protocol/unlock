@@ -35,23 +35,24 @@ if ! command -v heroku &>/dev/null; then
     curl https://cli-assets.heroku.com/install.sh | sh
 fi
 
-# build image
+# build web image
 docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE --build-arg COMMAND="$COMMAND" .
 
-# push image to Heroku registry
+# push web image to Heroku registry
 docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
 docker push registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE
 
-#make sure we are logged in
+# build release image
+docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/release --build-arg COMMAND="yarn db:migrate" .
+
+# push release image to Heroku registry
+docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
+docker push registry.heroku.com/$HEROKU_APP_NAME/release
+
+# make sure we are logged in
 heroku container:login
 
-# release on heroku
-heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE
+# release on heroku (both the web|worker and release)
+# In THEORY if the release phase fails, the web|worker will not be released (TO CHECK!)
+heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE release
 
-# migrate the database
-heroku run --app $HEROKU_APP_NAME --type $HEROKU_CONTAINER_TYPE --env BUILD_DIR="$BUILD_DIRECTORY" yarn db:migrate 
-
-if [ $? -ne 0 ]; then
-    echo "Migration failed. Exiting."
-    exit 1
-fi
