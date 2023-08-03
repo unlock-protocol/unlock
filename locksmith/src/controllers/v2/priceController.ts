@@ -105,12 +105,15 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   const network = Number(request.params.network)
 
   const web3Service = new Web3Service(networks)
-  const lock = await web3Service.getLock(lockAddress, network)
+
+  const lock = await web3Service.getLock(lockAddress, network, {
+    fields: ['keyPrice', 'currencyContractAddress'],
+  })
 
   const [defiLammaPricing, settingsPricing] = await Promise.all([
     pricingOperations.getDefiLammaPrice({
       network,
-      erc20Address: lock?.currencyContractAddress,
+      erc20Address: lock.currencyContractAddress,
       amount: Number(`${lock.keyPrice}`),
     }),
     lockSettingOperations.getSettings({
