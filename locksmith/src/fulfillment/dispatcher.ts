@@ -72,7 +72,7 @@ export default class Dispatcher {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const provider = await getPublicProviderForNetwork(network.id)
+          const provider = await getProviderForNetwork(network.id)
           const { wallet } = await getPurchaser(network.id)
           const address = await wallet.getAddress()
           const balance: ethers.BigNumberish =
