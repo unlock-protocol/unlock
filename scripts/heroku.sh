@@ -8,6 +8,11 @@ HEROKU_CONTAINER_TYPE=web
 COMMAND="yarn prod"
 BUILD_DIRECTORY=$1
 
+echo $1
+echo $2
+echo $3
+echo $4
+
 # if container type is provided, use it instead of default
 if [ -n "${3}" ]; then
     HEROKU_CONTAINER_TYPE=$3
@@ -25,10 +30,6 @@ fi
 
 echo "Using $BUILD_DIRECTORY as build directory"
 
-echo "Using $COMMAND as the start command for container"
-
-echo "Deploying $SERVICE to Heroku $HEROKU_APP_NAME ..."
-
 # install heroku client
 if ! command -v heroku &>/dev/null; then
     echo "installing heroku"
@@ -36,23 +37,30 @@ if ! command -v heroku &>/dev/null; then
 fi
 
 # build web image
-docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE --build-arg COMMAND="$COMMAND" .
+docker build --rm=false --progress=plain  -t locksmith/web --build-arg COMMAND="yarn start" .
 
-# push web image to Heroku registry
-docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
-docker push registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE
+# build worker image
+docker build --rm=false --progress=plain  -t locksmith/worker --build-arg COMMAND="yarn worker:start" .
 
 # build release image
-docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/release --build-arg COMMAND="yarn db:migrate" .
+docker build --rm=false --progress=plain  -t locksmith/release --build-arg COMMAND="yarn release" .
 
-# push release image to Heroku registry
 docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
+
+docker tag locksmith/web registry.heroku.com/$HEROKU_APP_NAME/web
+docker push registry.heroku.com/$HEROKU_APP_NAME/web
+docker tag locksmith/web registry.heroku.com/$HEROKU_APP_NAME/worker
+docker push registry.heroku.com/$HEROKU_APP_NAME/worker
+docker tag locksmith/web registry.heroku.com/$HEROKU_APP_NAME/release
 docker push registry.heroku.com/$HEROKU_APP_NAME/release
 
-# make sure we are logged in
-heroku container:login
+ # # push image to Heroku registry
+ # docker push registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE
 
-# release on heroku (both the web|worker and release)
-# In THEORY if the release phase fails, the web|worker will not be released (TO CHECK!)
-heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE release
+ # # make sure we are logged in
+ # heroku container:login
+
+ # # release on heroku (both the web|worker and release)
+ # # In THEORY if the release phase fails, the web|worker will not be released (TO CHECK!)
+ # heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE release
 
