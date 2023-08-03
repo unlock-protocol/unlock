@@ -8,15 +8,19 @@ import { ConnectButton, CustomAnchorButton } from './Custom'
 import { useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useSIWE } from '~/hooks/useSIWE'
 
 interface UnlockAccountSignInProps {
   onSignUp(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
+  signedInBefore?: boolean
 }
 
 export const UnlockAccountSignIn = ({
   onSignUp,
   signIn,
+  signedInBefore = false,
 }: UnlockAccountSignInProps) => {
   const {
     register,
@@ -24,6 +28,7 @@ export const UnlockAccountSignIn = ({
     setError,
     formState: { isSubmitting, errors },
   } = useForm<UserDetails>()
+  const { email } = useAuth()
   const onSubmit = async (data: UserDetails) => {
     try {
       await signIn(data)
@@ -46,10 +51,11 @@ export const UnlockAccountSignIn = ({
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
         <Input
-          label="email"
+          label="Email"
           placeholder="your@email.com"
           {...register('email', {
             required: 'Email is required',
+            value: email ? email : undefined,
           })}
           error={errors.email?.message}
         />
@@ -77,20 +83,22 @@ export const UnlockAccountSignIn = ({
             />
           }
         >
-          Sign in
+          {signedInBefore ? 'Confirm' : 'Sign In'}
         </ConnectButton>
       </form>
-      <div className="flex items-center justify-end px-6">
-        <button
-          onClick={(event) => {
-            event.preventDefault()
-            onSignUp()
-          }}
-          className="hover:text-ui-main-600"
-        >
-          No account?
-        </button>
-      </div>
+      {!signedInBefore && (
+        <div className="flex items-center justify-end px-6">
+          <button
+            onClick={(event) => {
+              event.preventDefault()
+              onSignUp()
+            }}
+            className="hover:text-ui-main-600"
+          >
+            No account?
+          </button>
+        </div>
+      )}
     </div>
   )
 }
@@ -143,7 +151,7 @@ export const UnlockAccountSignUp = ({
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="email"
-          label="email"
+          label="Email"
           placeholder="your@email.com"
           {...register('email', {
             required: {
@@ -225,7 +233,11 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
+  const { account, connected } = useAuth()
   const config = useConfig()
+  const { signOut } = useSIWE()
+
+  const requireSignIn = account && !connected
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -251,6 +263,7 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
       {isSignIn && (
         <UnlockAccountSignIn
           signIn={signIn}
+          signedInBefore={!!requireSignIn}
           onSignUp={() => {
             setIsSignIn(false)
           }}
@@ -265,22 +278,36 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
         />
       )}
       <div className="grid gap-4 p-6">
-        <CustomAnchorButton
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://ethereum.org/en/wallets/find-wallet/"
-        >
-          Get a crypto wallet
-        </CustomAnchorButton>
-        <ConnectButton
-          icon={<WalletIcon size={24} />}
-          onClick={(event) => {
-            event.preventDefault()
-            onExit()
-          }}
-        >
-          <span>Back to using your crypto wallet</span>
-        </ConnectButton>
+        {requireSignIn ? (
+          <ConnectButton
+            onClick={(event) => {
+              event.preventDefault()
+              signOut()
+            }}
+            icon={<WalletIcon size={24} />}
+          >
+            Disconnect
+          </ConnectButton>
+        ) : (
+          <div className="grid gap-2">
+            <CustomAnchorButton
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://ethereum.org/en/wallets/find-wallet/"
+            >
+              Get a crypto wallet
+            </CustomAnchorButton>
+            <ConnectButton
+              icon={<WalletIcon size={24} />}
+              onClick={(event) => {
+                event.preventDefault()
+                onExit()
+              }}
+            >
+              <span>Back to using your crypto wallet</span>
+            </ConnectButton>
+          </div>
+        )}
       </div>
     </div>
   )
