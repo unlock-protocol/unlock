@@ -23,7 +23,6 @@ import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
-import { AnyZodTuple } from 'zod'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
