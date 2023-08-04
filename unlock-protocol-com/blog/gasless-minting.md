@@ -43,6 +43,6 @@ Gasless or gas-free minting solutions are beneficial as they can make blockchain
 
 Gas fees are often exorbitant on Ethereum mainnet. However, as an open, EVM-compatible protocol, Unlock Protocol runs on a number of EVM-compatible networks where Unlock can support gas-free minting of memberships, event tickets, certifications, and other mintable memberships and subscriptions.
 
-Currently, Unlock supports gasless minting on Polygon and Gnosis Chain, and may support gas-free minting on other chains in the future. 
+Currently, Unlock supports gasless minting on Polygon and Gnosis Chain, and additionally may support gasless minting on other chains in the future. 
 
 To see our full guide to implementing gasless minting, check out the [*How To Set Up Gas-free NFT Minting with Unlock Protocol*](https://unlock-protocol.com/guides/gas-free-nft-minting/) guide in Unlock Guides.
