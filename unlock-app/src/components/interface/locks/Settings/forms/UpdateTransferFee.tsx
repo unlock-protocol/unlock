@@ -113,6 +113,7 @@ export const UpdateTransferFee = ({
             placeholder="10%"
             disabled={disabledInput || !allowTransfer}
             {...register('transferFeePercentage', {
+              valueAsNumber: true,
               min: 0,
               max: 100,
             })}

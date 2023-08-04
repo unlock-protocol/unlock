@@ -262,6 +262,7 @@ export const CreateLockForm = ({
                   step="any"
                   disabled={unlimitedDuration}
                   {...register('expirationDuration', {
+                    valueAsNumber: true,
                     min: 0,
                     required: !unlimitedDuration,
                   })}
@@ -302,6 +303,7 @@ export const CreateLockForm = ({
                   step={1}
                   disabled={unlimitedQuantity}
                   {...register('maxNumberOfKeys', {
+                    valueAsNumber: true,
                     min: 0,
                     required: !unlimitedQuantity,
                   })}
@@ -351,6 +353,7 @@ export const CreateLockForm = ({
                     step="any"
                     disabled={isFree}
                     {...register('keyPrice', {
+                      valueAsNumber: true,
                       required: !isFree,
                     })}
                   />

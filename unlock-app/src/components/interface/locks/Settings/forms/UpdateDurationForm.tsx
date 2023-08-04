@@ -118,6 +118,7 @@ export const UpdateDurationForm = ({
             step={1}
             disabled={unlimitedDuration || disabledInput}
             {...register('expirationDuration', {
+              valueAsNumber: true,
               required: !unlimitedDuration,
               min: 0,
             })}
