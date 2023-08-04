@@ -16,4 +16,7 @@ As an L2, Base benefits from the “security” budget of Ethereum, while also l
 
 Deploying a membership contract to Base follows the same process as deploying to any other of networks supported by Unlock Protocol. You can deploy your lock(s) using the Unlock Protocol Dashboard (or do it through code) and then use any of the tools available in the Unlock Protocol ecosystem, including using our checkout to sell your NFT memberships, airdrop them, or tap into any of the other capabilities available to the community.
 
-(links to other resources TBD)
+## Related resources
+- [Base docs on Unlock Protocol](https://docs.unlock-protocol.com/core-protocol/unlock/networks)
+- [How to deploy a Base smart contract for memberships](https://www.youtube.com/watch?v=_0pmdFUpJdY)
+- [How to create event tickets on Base](https://www.youtube.com/watch?v=_0pmdFUpJdY&t=97s)
