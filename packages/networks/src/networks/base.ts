@@ -17,8 +17,11 @@ export const base: NetworkConfig = {
       transaction: (hash: string) => `https://basescan.org/tx/${hash}`,
     },
   },
-  featured: false,
+  featured: true,
   fullySubsidizedGas: false,
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 8453,
   isTestNetwork: false,
   keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
@@ -31,6 +34,7 @@ export const base: NetworkConfig = {
     name: 'ETH',
     symbol: 'ETH',
   },
+
   opensea: {
     collectionUrl: (lockAddress) =>
       `https://opensea.io/assets/base/${lockAddress}`,
@@ -47,7 +51,6 @@ export const base: NetworkConfig = {
   publicProvider: 'https://developer-access-mainnet.base.org',
 
   startBlock: 1750000,
-
   subgraph: {
     endpoint:
       'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
@@ -55,9 +58,22 @@ export const base: NetworkConfig = {
       'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
     networkName: 'base',
   },
+  tokens: [
+    {
+      address: '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
+      decimals: 18,
+      name: 'Dai Stablecoin',
+      symbol: 'DAI',
+    },
+    {
+      address: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+      decimals: 6,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+  ],
 
   unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
-
   url: 'https://base.org/',
 }
 

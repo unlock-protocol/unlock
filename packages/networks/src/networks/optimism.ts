@@ -36,6 +36,11 @@ export const optimism: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x8e0B46ec3B95c81355175693dA0083b00fCc1326',
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+      },
     ],
   },
   id: 10,
@@ -99,29 +104,6 @@ export const optimism: NetworkConfig = {
     oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
-  hooks: {
-    onKeyPurchaseHook: [
-      {
-        id: HookType.PASSWORD,
-        name: 'Password required',
-        address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
-      },
-      {
-        id: HookType.CAPTCHA,
-        name: 'Captcha',
-        address: '0xF6a9138b4ebEd2AcF651Cbd40B45584B4c625e87',
-      },
-      {
-        id: HookType.GUILD,
-        name: 'Guild',
-        address: '0x1402D55BF0D6566ca8F569041000a8015b608632',
-      },
-      {
-        id: HookType.PROMOCODE,
-        name: 'Discount code',
-        address: '0x8e0B46ec3B95c81355175693dA0083b00fCc1326',
-      },
-    ],
   },
   unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
   url: 'https://www.optimism.io/',
