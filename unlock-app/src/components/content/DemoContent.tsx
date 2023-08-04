@@ -11,7 +11,10 @@ const usePaywall = () => {
   const [error, setError] = useState<string | null>(null)
 
   const unlock = () => {
-    window?.unlockProtocol?.loadCheckoutModal()
+    window?.unlockProtocol?.loadCheckoutModal(
+      window.unlockProtocolConfig,
+      window.location.origin
+    )
   }
 
   useEffect(() => {

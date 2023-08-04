@@ -17,6 +17,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "clean": "rm -rf ./dist",
+    "check": "tsx ./bin/keys",
     "prepublish": "yarn build",
     "doc": "node ./bin/doc.js",
     "version:show": "echo $npm_package_version"
@@ -35,5 +36,9 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "eslint-plugin-sort-keys-fix": "1.1.2",
+    "tsx": "3.12.7"
+  }
 }

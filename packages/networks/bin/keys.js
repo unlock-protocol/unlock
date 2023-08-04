@@ -1,10 +1,21 @@
-const { networks } = require('../dist')
+import networks from '../src'
 
 const keys = Object.keys(networks['1'])
-keys.forEach((key) => {
-  Object.keys(networks).forEach((network) => {
-    if (!networks[network][key] && network !== '31337') {
-      console.error(`Missing property ${key} on ${network}`)
+Object.keys(networks).forEach((network) => {
+  if (network !== '31337') {
+    const missingProperties = []
+    keys.forEach((key) => {
+      if (!(key in networks[network])) {
+        missingProperties.push(key)
+      }
+    })
+    if (missingProperties.length === 0) {
+      console.log(`\nNetwork: ${networks[network].name} ✅`)
+    } else {
+      console.log(`\nNetwork: ${networks[network].name}:`)
+      missingProperties.forEach((missingProperty) => {
+        console.error(` ❌ Missing property ${missingProperty}`)
+      })
     }
-  })
+  }
 })
