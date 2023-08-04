@@ -11,27 +11,32 @@ if ! command -v heroku &>/dev/null; then
   curl https://cli-assets.heroku.com/install.sh | sh
 fi
 
-# build web image
-docker build --rm=false --progress=plain -t $SERVICE/web --build-arg COMMAND="yarn start" .
+rm Dockerfile.web Dockerfile.worker Dockerfile.release
+cp Dockerfile Dockerfile.web
+cp Dockerfile Dockerfile.worker
+cp Dockerfile Dockerfile.release
 
-# build worker image
-docker build --rm=false --progress=plain -t $SERVICE/worker --build-arg COMMAND="yarn worker:start" .
+# # build web image
+# docker build --rm=false --progress=plain -t $SERVICE/web --build-arg COMMAND="yarn start" .
 
-# build release image
-docker build --rm=false --progress=plain -t $SERVICE/release --build-arg COMMAND="yarn release" .
+# # build worker image
+# docker build --rm=false --progress=plain -t $SERVICE/worker --build-arg COMMAND="yarn worker:start" .
 
-docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
+# # build release image
+# docker build --rm=false --progress=plain -t $SERVICE/release --build-arg COMMAND="yarn release" .
 
-docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/web
-docker push registry.heroku.com/$HEROKU_APP_NAME/web
-docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/worker
-docker push registry.heroku.com/$HEROKU_APP_NAME/worker
-docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/release
-docker push registry.heroku.com/$HEROKU_APP_NAME/release
+# docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
 
-# make sure we are logged in to Heroku
-heroku container:login
+# docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/web
+# docker push registry.heroku.com/$HEROKU_APP_NAME/web
+# docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/worker
+# docker push registry.heroku.com/$HEROKU_APP_NAME/worker
+# docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/release
+# docker push registry.heroku.com/$HEROKU_APP_NAME/release
 
-# Release 
-heroku container:release -a $HEROKU_APP_NAME web worker release
+# # make sure we are logged in to Heroku
+# heroku container:login
+
+# # Release 
+# heroku container:release -a $HEROKU_APP_NAME web worker release
 
