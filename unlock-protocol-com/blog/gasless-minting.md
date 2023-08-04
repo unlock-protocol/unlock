@@ -6,6 +6,8 @@ description: Unlock supports gasless minting on a number of EVM-compatible netwo
 image: /images/blog/gasless-minting/gasless-minting.png
 ---
 
+![gasless minting image](/images/blog/gasless-minting/gasless-minting.png)
+
 Gas fees in blockchain transactions refer to the cost associated with performing operations or executing smart contracts on a blockchain network. Blockchain networks, such as Ethereum, are decentralized and rely on a consensus mechanism to validate and execute transactions. To prevent spam and ensure that the network resources are used efficiently, a small fee in the form of cryptocurrency (usually in the native currency of the blockchain) must be paid for each transaction.
 
 The term "gas" in this context refers to the unit used to measure the computational effort required to execute a specific operation or smart contract. Each operation on the blockchain network consumes a certain amount of gas, and the gas fee is calculated based on the complexity and resource requirements of the transaction.
