@@ -230,7 +230,6 @@ export const WithdrawFundModal = ({
                 {...register('amount', {
                   validate: (value) => {
                     const formattedValue = parseFloat(`${value}`)
-                    console.log(formattedValue)
 
                     if (formattedValue <= 0) {
                       return 'The amount to withdraw should be greater than 0.'
