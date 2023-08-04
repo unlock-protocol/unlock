@@ -54,13 +54,9 @@ docker push registry.heroku.com/$HEROKU_APP_NAME/worker
 docker tag locksmith/web registry.heroku.com/$HEROKU_APP_NAME/release
 docker push registry.heroku.com/$HEROKU_APP_NAME/release
 
- # # push image to Heroku registry
- # docker push registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE
+# make sure we are logged in to Heroku
+heroku container:login
 
- # # make sure we are logged in
- # heroku container:login
-
- # # release on heroku (both the web|worker and release)
- # # In THEORY if the release phase fails, the web|worker will not be released (TO CHECK!)
- # heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE release
+# Release 
+heroku container:release -a $HEROKU_APP_NAME web worker release
 
