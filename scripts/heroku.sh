@@ -3,7 +3,7 @@ set -e
 
 # two args
 SERVICE=$1 # locksmith
-HEROKU_APP_NAME=$2
+HEROKU_APP_NAME=$2 # unlock-locksmith-staging or unlock-locksmith-production
 
 # install heroku client
 if ! command -v heroku &>/dev/null; then
