@@ -446,6 +446,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       step="any"
                       disabled={isFree}
                       {...register('lock.keyPrice', {
+                        valueAsNumber: true,
                         required: !isFree,
                       })}
                     />
@@ -456,6 +457,7 @@ export const Form = ({ onSubmit }: FormProps) => {
               <Input
                 {...register('lock.maxNumberOfKeys', {
                   min: 0,
+                  valueAsNumber: true,
                   required: {
                     value: true,
                     message: 'Capacity is required. ',

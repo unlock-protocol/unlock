@@ -228,6 +228,7 @@ export const WithdrawFundModal = ({
                 step="any"
                 disabled={withdrawMutation.isLoading}
                 {...register('amount', {
+                  valueAsNumber: true,
                   validate: (value) => {
                     const formattedValue = parseFloat(`${value}`)
 

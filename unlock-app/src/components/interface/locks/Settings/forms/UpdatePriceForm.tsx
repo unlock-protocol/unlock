@@ -173,6 +173,7 @@ export const UpdatePriceForm = ({
                 step="any"
                 disabled={isFree || disabledInput}
                 {...register('keyPrice', {
+                  valueAsNumber: true,
                   required: !isFree,
                   min: 0,
                 })}

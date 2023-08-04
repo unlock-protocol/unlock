@@ -189,6 +189,7 @@ export default function CreditCardCustomPrice({
                   description="Set a fixed price in fiat currency that is charged for card payments."
                   error={errors?.creditCardPrice?.message}
                   {...register('creditCardPrice', {
+                    valueAsNumber: true,
                     required: {
                       value: toggleActive,
                       message: 'This field is required.',

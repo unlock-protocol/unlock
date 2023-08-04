@@ -118,6 +118,7 @@ export const UpdateQuantityForm = ({
               'Please choose a number of memberships for sale for your lock.'
             }
             {...register('maxNumberOfKeys', {
+              valueAsNumber: true,
               min: 0,
               required: !unlimitedQuantity,
             })}

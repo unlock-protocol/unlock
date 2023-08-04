@@ -122,7 +122,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
                   setQuantityInput(count)
                 }}
-                pattern="[0-9]{0,2}"
+                pattern="\d+"
                 value={quantityInput}
                 type="text"
                 className="w-16 text-sm border-2 border-gray-300 rounded-lg focus:ring-0 focus:border-brand-ui-primary"

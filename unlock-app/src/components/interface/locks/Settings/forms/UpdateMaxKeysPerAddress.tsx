@@ -108,6 +108,7 @@ export const UpdateMaxKeysPerAddress = ({
               'Please enter a positive numeric value'
             }
             {...register('maxKeysPerAddress', {
+              valueAsNumber: true,
               min: 1,
             })}
           />
