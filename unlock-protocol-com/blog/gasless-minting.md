@@ -20,9 +20,9 @@ Gas fees play a vital role in the security and stability of blockchain networks,
 
 High gas fees on the Ethereum mainnet can lead to several significant problems for users and developers. Some of the main issues caused by high gas fees include:
 
-- **Transaction Costs:** High gas fees increase the cost of executing transactions on the Ethereum network. For users who are making simple transfers or interacting with decentralized applications, gas fees can become prohibitively expensive, discouraging everyday use of the network.
-- **Economic Barriers:** High gas fees create economic barriers for smaller users or those from economically disadvantaged regions. It can prevent individuals from participating in certain protocols, memberships, or events, limiting their access to opportunities and online mintable services.
-- **Reduced Adoption:** High gas fees can discourage developers from building or migrating their applications to the Ethereum mainnet.
+- **Transaction costs:** High gas fees increase the cost of executing transactions on the Ethereum network. For users who are making simple transfers or interacting with decentralized applications, gas fees can become prohibitively expensive, discouraging everyday use of the network.
+- **Economic barriers:** High gas fees create economic barriers for smaller users or those from economically disadvantaged regions. It can prevent individuals from participating in certain protocols, memberships, or events, limiting their access to opportunities and online mintable services.
+- **Reduced adoption:** High gas fees can discourage developers from building or migrating their applications to the Ethereum mainnet.
 
 To address these issues, the Ethereum community has been actively working on scaling solutions (such as EVM-compatible layer 2 blockchains) that have lower gas fees. These improvements are crucial for Ethereum's long-term sustainability and continued growth as a leading blockchain ecosystem.
 
