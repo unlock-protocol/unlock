@@ -40,6 +40,7 @@ export interface Token {
 export enum HookType {
   CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
+  PROMOCODE = 'PROMOCODE',
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
 }

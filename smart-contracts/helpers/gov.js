@@ -198,7 +198,8 @@ const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
   } else {
     proposer = await ethers.getSigner(proposerAddress)
   }
-  return await gov.connect(proposer).propose(...proposal)
+  const parsed = await parseProposal(proposal)
+  return await gov.connect(proposer).propose(...parsed)
 }
 
 const getProposalVotes = async (proposalId, govAddress) => {
@@ -212,6 +213,11 @@ const getQuorum = async (govAddress) => {
 
   const currentBlock = await ethers.provider.getBlockNumber()
   return await gov.quorum(currentBlock - 1)
+}
+
+const getGovTokenAddress = async (govAddress) => {
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  return await gov.token()
 }
 
 const getProposalState = async (proposalId, govAddress) => {
@@ -231,10 +237,10 @@ const getProposalState = async (proposalId, govAddress) => {
   return states[state]
 }
 
-const loadProposal = async (proposalPath) => {
+const loadProposal = async (proposalPath, params = []) => {
   const prop = require(proposalPath)
   if (typeof prop === 'function') {
-    return await prop()
+    return await prop(params)
   } else {
     return prop
   }
@@ -244,6 +250,7 @@ module.exports = {
   loadProposal,
   getProposalVotes,
   getQuorum,
+  getGovTokenAddress,
   getProposalState,
   getProposalId,
   getProposalIdFromContract,

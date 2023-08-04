@@ -110,6 +110,29 @@ export const polygon: NetworkConfig = {
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        id: HookType.PASSWORD,
+        name: 'Password required',
+        address: '0x9F4AE507d7E91Ab37CF35f792940fE079bd4E24d',
+      },
+      {
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+        address: '0x64bDe27046F915e2BAb6339Ce4f737E34474344d',
+      },
+      {
+        id: HookType.GUILD,
+        name: 'Guild',
+        address: '0xBfF080aB4600554c1e8c390d2e070CF423767B64',
+      },
+      {
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+        address: '0x93E160838c529873cB7565106bBb79a3226FE07A',
+      },
+    ],
   },
   universalCard: {
     cardPurchaserAddress: '0xAB355a589CFbBA7a21b91E5B6063bF822dCc0016',

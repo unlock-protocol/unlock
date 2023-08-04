@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.39.0",
+  "version": "0.39.1",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -46,9 +46,9 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "eslint": "8.36.0",
+    "eslint": "8.46.0",
     "hardhat": "2.13.0",
-    "prettier": "2.8.8",
+    "prettier": "3.0.0",
     "tsup": "7.1.0",
     "typescript": "5.0.4",
     "vitest": "0.27.0"

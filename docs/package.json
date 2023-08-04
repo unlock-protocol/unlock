@@ -1,0 +1,48 @@
+{
+  "name": "@unlock-protocol/docs",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@babel/helper-get-function-arity": "7.16.7",
+    "@docusaurus/core": "2.4.1",
+    "@docusaurus/plugin-client-redirects": "2.4.1",
+    "@docusaurus/plugin-content-docs": "2.4.1",
+    "@flockler/react-flockler-embed": "1.0.4",
+    "@mdx-js/react": "1.6.22",
+    "@unlock-protocol/networks": "0.0.15",
+    "clsx": "2.0.0",
+    "docusaurus-gtm-plugin": "0.0.2",
+    "docusaurus-node-polyfills": "1.0.0",
+    "docusaurus-preset-openapi": "0.6.4",
+    "prism-react-renderer": "2.0.6",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "4.10.1"
+  },
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "yarn build",
+    "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "ci": "yarn build",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "test": "echo \"No test specified\""
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
