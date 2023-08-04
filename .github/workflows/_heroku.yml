@@ -11,10 +11,6 @@ on:
         description: 'The Heroku app name to which the application should be deployed'
         type: string
         required: true
-      command:
-        description: 'The start command to run the container with'
-        type: string
-        required: false
       bypass_diff_check:
         description: 'Bypass the monorepo diff check'
         required: false
@@ -67,7 +63,7 @@ jobs:
       - name: Build & deploy to heroku
         if: ${{ steps.check_changes.outputs.changed == 'changed' }}
         run: |
-          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} "${{ inputs.command }}"
+          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }}
         env:
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
