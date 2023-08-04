@@ -15642,18 +15642,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.32.0":
-  version: 4.32.0
-  resolution: "@tanstack/query-core@npm:4.32.0"
-  checksum: 7b3d965d634ff7e754d5f36fe2e4bd9a34548c1d7b13161a2f1a84c8eaafa835f8193e9494952ae20d330f3b56680a5ef516228b2d85b5bc5a34a49947223e58
+"@tanstack/query-core@npm:4.32.1":
+  version: 4.32.1
+  resolution: "@tanstack/query-core@npm:4.32.1"
+  checksum: 7676e367219bfddb3e153ac3771c40b47a5bd2609699351a3342c03e5c17dd5d39dc24c4a27e64a0b2628d5fff99b22d9f29ef19b0eb693ee8f1f86ddfb28b0b
   languageName: node
   linkType: hard
 
-"@tanstack/react-query@npm:4.32.0":
-  version: 4.32.0
-  resolution: "@tanstack/react-query@npm:4.32.0"
+"@tanstack/react-query@npm:4.32.1":
+  version: 4.32.1
+  resolution: "@tanstack/react-query@npm:4.32.1"
   dependencies:
-    "@tanstack/query-core": 4.32.0
+    "@tanstack/query-core": 4.32.1
     use-sync-external-store: ^1.2.0
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -15664,7 +15664,7 @@ __metadata:
       optional: true
     react-native:
       optional: true
-  checksum: fe9c9573a6132961d0437ca3b8d9e379553e0ddd1e884d75dd34c98d5e64e4305e45119d95aec4a7d56aae7bf09cb2792fd9e75da731f5c14db5e43b36732d48
+  checksum: 31cdf93896ea0a5903c62e60fee937495cd3db1a1e3220b36012337e026c967034b5cfdd5b522339a5cc982fbb0000dad700991690e992e13f67cae41a72a589
   languageName: node
   linkType: hard
 
@@ -18639,7 +18639,7 @@ __metadata:
     "@tailwindcss/forms": 0.5.4
     "@tailwindcss/line-clamp": 0.4.4
     "@tailwindcss/typography": 0.5.9
-    "@tanstack/react-query": 4.32.0
+    "@tanstack/react-query": 4.32.1
     "@tw-classed/react": 1.5.1
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.1
@@ -18689,7 +18689,7 @@ __metadata:
     "@stripe/crypto": 0.0.4
     "@stripe/react-stripe-js": 2.1.1
     "@stripe/stripe-js": 1.54.2
-    "@tanstack/react-query": 4.32.0
+    "@tanstack/react-query": 4.32.1
     "@testing-library/react": 14.0.0
     "@testing-library/react-hooks": 8.0.1
     "@tw-classed/react": 1.5.1
