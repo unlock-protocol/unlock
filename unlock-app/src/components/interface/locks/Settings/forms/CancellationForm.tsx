@@ -192,6 +192,7 @@ export const CancellationForm = ({
             step={1}
             error={errors?.freeTrialLength && 'This field is required'}
             {...register('freeTrialLength', {
+              valueAsNumber: true,
               required: true,
               min: 0,
             })}
@@ -221,6 +222,7 @@ export const CancellationForm = ({
               'This field accept percentage value between 0 and 100.'
             }
             {...register('refundPenaltyPercentage', {
+              valueAsNumber: true,
               required: true,
               min: 0,
               max: 100,

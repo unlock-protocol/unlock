@@ -244,8 +244,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   </div>
                   <Input
                     disabled={forever}
+                    type="number"
                     error={errors.lock?.expirationDuration?.message as string}
                     {...register('lock.expirationDuration', {
+                      valueAsNumber: true,
                       required: {
                         value: !forever,
                         message: 'Please add a duration',
@@ -368,6 +370,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                             step="any"
                             disabled={isFree}
                             {...register('lock.keyPrice', {
+                              valueAsNumber: true,
                               required: {
                                 value: !isFree,
                                 message: 'This value is required',
@@ -403,6 +406,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     </div>
                     <Input
                       {...register('lock.maxNumberOfKeys', {
+                        valueAsNumber: true,
                         min: 0,
                         required: {
                           value: !unlimitedQuantity,

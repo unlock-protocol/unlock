@@ -224,7 +224,7 @@ export function AirdropForm({
         />
       )}
       <Input
-        pattern="[0-9]+"
+        pattern="\d+"
         label="Number of keys to airdrop"
         {...register('count', {
           valueAsNumber: true,
