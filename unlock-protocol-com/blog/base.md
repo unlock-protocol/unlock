@@ -1,7 +1,7 @@
 ---
 title: Unlock Protocol has been deployed to the Base L2 🔵
 authorName: Julien Genestoux
-publishDate: August 2, 2023
+publishDate: August 9, 2023
 description: You can use any of the tools available in the Unlock Protocol ecosystem to create membership smart contracts or ticket events on Base.
 image: https://docs.base.org/img/logo.svg
 ---
