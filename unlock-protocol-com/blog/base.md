@@ -1,5 +1,5 @@
 ---
-title: Base
+title: Unlock Protocol has been deployed to the Base L2 🔵
 subTitle: Unlock is now available on Coinbase's Base L2.
 authorName: Julien Genestoux
 publishDate: August 2, 2023
