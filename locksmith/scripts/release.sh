@@ -1,8 +1,32 @@
 #!/bin/bash
 
+# Set the environment based on NODE_ENV or fallback to 'prod'
+if [ -z "$NODE_ENV" ]; then
+    environment="prod"
+else
+    environment="$NODE_ENV"
+fi
 
-echo "I was released!"
+# Define the environment file path based on the provided argument and environment
+env_file="./.op.env.$environment"
 
-# Perform migration
+# Check if the environment file exists
+if [ ! -f "$env_file" ]; then
+    echo "Environment file $env_file not found."
+    exit 1
+fi
 
+# First: run the migrations!
+
+# Prepare the command based on the argument
+if [ "$1" == "worker" ]; then
+    command="op run --env-file=\"$env_file\" -- yarn run db:migrate"
+else
+    command="op run --env-file=\"$env_file\" -- yarn run db:migrate"
+fi
+
+echo "Running command: $command"
+eval "$command"
+
+# TODO:
 # Check that locksmith is up and running
