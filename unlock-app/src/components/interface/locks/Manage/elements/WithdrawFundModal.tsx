@@ -220,18 +220,18 @@ export const WithdrawFundModal = ({
               />
 
               <Input
-                label={`Balance to transfer: ${amountToTransfer} ${symbol}`}
+                label={`Balance to transfer: ${amountToTransfer} of ${balance} ${symbol}`}
                 size="small"
-                type="range"
+                type="number"
                 min={0}
                 max={balance}
-                step={balance / 100}
+                step="any"
                 disabled={withdrawMutation.isLoading}
                 {...register('amount', {
                   validate: (value) => {
                     const formattedValue = parseFloat(`${value}`)
 
-                    if (formattedValue === 0) {
+                    if (formattedValue <= 0) {
                       return 'The amount to withdraw should be greater than 0.'
                     }
 
