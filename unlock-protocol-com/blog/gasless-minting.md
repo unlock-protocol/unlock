@@ -1,5 +1,5 @@
 ---
-title: Unlock Protocol supports gasless minting
+title: Unlock Protocol Supports Gasless Minting
 authorName: Christopher Carfi
 publishDate: July 15, 2023
 description: Unlock supports gasless minting on a number of EVM-compatible networks.
