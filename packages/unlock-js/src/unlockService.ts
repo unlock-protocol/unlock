@@ -30,6 +30,12 @@ export default class UnlockService {
       throw new Error(`Missing config for ${networkId}`)
     }
 
+    // for convenience, pass directly an ethers provider in the `networks` contructor
+    // @ts-expect-error Property 'ethersProvider' does not exist on type 'NetworkConfig'.
+    const ethersProvider = this.networks[networkId].ethersProvider
+    if (ethersProvider) {
+      return ethersProvider as ethers.providers.Provider
+    }
     return new ethers.providers.JsonRpcBatchProvider(
       this.networks[networkId].provider,
       networkId

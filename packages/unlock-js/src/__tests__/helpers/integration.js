@@ -17,6 +17,7 @@ export const setupTest = async (unlockVersion) => {
   let accounts
 
   const [signer] = await hre.ethers.getSigners()
+  const ethersProvider = signer.provider
 
   // pass hardhat ethers provider
   const networks = {
@@ -24,6 +25,7 @@ export const setupTest = async (unlockVersion) => {
       provider: 'http://localhost:8545',
     },
   }
+  networks[chainId].ethersProvider = ethersProvider
 
   // deploy Unlock
   const unlockAddress = await deployUnlock(unlockVersion)
@@ -31,7 +33,7 @@ export const setupTest = async (unlockVersion) => {
 
   walletService = new WalletService(networks)
 
-  await walletService.connect(signer.provider, signer)
+  await walletService.connect(ethersProvider, signer)
   web3Service = new Web3Service(networks)
 
   accounts = await walletService.provider.listAccounts()
