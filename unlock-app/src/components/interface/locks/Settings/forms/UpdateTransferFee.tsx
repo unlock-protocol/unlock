@@ -91,7 +91,6 @@ export const UpdateTransferFee = ({
       <ToggleSwitch
         enabled={allowTransfer}
         setEnabled={(enabled) => {
-          console.log(enabled)
           setAllowTransfer(enabled)
           setValue('transferFeePercentage', 0)
         }}
