@@ -1,9 +1,8 @@
 ---
-title: Base
-subTitle: Unlock is now available on Coinbase's Base L2.
+title: Unlock Protocol Has Been Deployed to the Base L2 🔵
 authorName: Julien Genestoux
-publishDate: August 2, 2023
-description: The Unlock Protocol has been deployed to the Base L2 🔵
+publishDate: August 9, 2023
+description: You can use any of the tools available in the Unlock Protocol ecosystem to create membership smart contracts or ticket events on Base.
 image: /images/blog/base/base-logo.svg
 ---
 
@@ -17,4 +16,8 @@ As an L2, Base benefits from the “security” budget of Ethereum, while also l
 
 Deploying a membership contract to Base follows the same process as deploying to any other of networks supported by Unlock Protocol. You can deploy your lock(s) using the Unlock Protocol Dashboard (or do it through code) and then use any of the tools available in the Unlock Protocol ecosystem, including using our checkout to sell your NFT memberships, airdrop them, or tap into any of the other capabilities available to the community.
 
-(links to other resources TBD)
+## Related resources
+
+- [Base docs on Unlock Protocol](https://docs.unlock-protocol.com/core-protocol/unlock/networks)
+- [How to deploy a Base smart contract for memberships](https://www.youtube.com/watch?v=_0pmdFUpJdY)
+- [How to create event tickets on Base](https://www.youtube.com/watch?v=_0pmdFUpJdY&t=97s)
