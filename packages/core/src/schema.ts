@@ -94,6 +94,7 @@ export const PaywallLockConfig = z.object({
         'During checkout, users can buy multiple memberships at once. You can set a minimum number they can buy.',
     })
     .int()
+    .default(1)
     .nullable()
     .optional(),
   maxRecipients: z.coerce
@@ -101,7 +102,7 @@ export const PaywallLockConfig = z.object({
       description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
     })
     .int()
-    .positive()
+    .default(1)
     .nullable()
     .optional(),
   default: z.boolean().optional(),
