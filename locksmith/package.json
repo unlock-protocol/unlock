@@ -4,6 +4,7 @@
   "description": "an unlock storage service",
   "main": "server.js",
   "scripts": {
+    "release": "./scripts/release.sh",
     "prod": "tsx -r ./config/envLoader.js ./src/server.ts",
     "start": "./scripts/start.sh server",
     "dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js src/server.ts",

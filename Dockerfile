@@ -103,7 +103,7 @@ RUN rm -rf .yarn/cache/
 FROM dev as prod
 
 # default values
-ARG COMMAND="yarn prod"
+ARG COMMAND="echo 'no command specified'"
 ENV BUILD_DIR='locksmith'
 ENV COMMAND=${COMMAND}
 
