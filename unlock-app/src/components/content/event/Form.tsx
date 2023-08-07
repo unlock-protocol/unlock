@@ -20,12 +20,12 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { SLUG_REGEXP, UNLIMITED_KEYS_DURATION } from '~/constants'
+import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { storage } from '~/config/storage'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
+import { useAvailableNetworks } from '~/utils/networks'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -108,14 +108,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     details.metadata?.ticket?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
 
-  const networkOptions = Object.values(networks || {})?.map(
-    ({ name, id }: any) => {
-      return {
-        label: name,
-        value: id,
-      }
-    }
-  )
+  const networkOptions = useAvailableNetworks()
 
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', account, details.network],
@@ -228,7 +221,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   error={errors.metadata?.description?.message as string}
                 />
 
-                <Input
+                {/* <Input
                   {...register('metadata.slug', {
                     pattern: {
                       value: SLUG_REGEXP,
@@ -249,7 +242,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   label="Custom URL"
                   error={errors?.metadata?.slug?.message as string}
                   description="Custom URL that will be used for the page."
-                />
+                /> */}
 
                 <Select
                   onChange={(newValue) => {

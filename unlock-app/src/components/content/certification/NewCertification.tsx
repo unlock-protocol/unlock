@@ -10,6 +10,7 @@ import { CertificationDeploying } from './CertificationDeploying'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 import { getSlugForName } from '~/utils/slugs'
+import { storage } from '~/config/storage'
 
 export interface TransactionDetails {
   hash: string
