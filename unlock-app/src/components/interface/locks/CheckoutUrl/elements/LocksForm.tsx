@@ -552,13 +552,13 @@ export const LocksForm = ({
                               password: true,
                               captcha: true,
                             })}
-                            onChange={(fields: any) =>
+                            onChange={(fields: any) => {
                               onAddLock({
                                 lockAddress,
                                 network,
                                 fields,
                               })
-                            }
+                            }}
                           />
                         </div>
                       </div>
