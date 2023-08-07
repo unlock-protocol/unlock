@@ -17,13 +17,7 @@ if [ ! -f "$env_file" ]; then
 fi
 
 # First: run the migrations!
-
-# Prepare the command based on the argument
-if [ "$1" == "worker" ]; then
-    command="op run --env-file=\"$env_file\" -- yarn run db:migrate"
-else
-    command="op run --env-file=\"$env_file\" -- yarn run db:migrate"
-fi
+command="op run --env-file=\"$env_file\" -- yarn run db:migrate"
 
 echo "Running command: $command"
 eval "$command"

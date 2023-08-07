@@ -24,9 +24,9 @@ docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.
 
 docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/web
 docker push registry.heroku.com/$HEROKU_APP_NAME/web
-docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/worker
+docker tag $SERVICE/worker registry.heroku.com/$HEROKU_APP_NAME/worker
 docker push registry.heroku.com/$HEROKU_APP_NAME/worker
-docker tag $SERVICE/web registry.heroku.com/$HEROKU_APP_NAME/release
+docker tag $SERVICE/release registry.heroku.com/$HEROKU_APP_NAME/release
 docker push registry.heroku.com/$HEROKU_APP_NAME/release
 
 # make sure we are logged in to Heroku
