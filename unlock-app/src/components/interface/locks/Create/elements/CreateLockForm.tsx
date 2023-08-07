@@ -262,7 +262,6 @@ export const CreateLockForm = ({
                   step="any"
                   disabled={unlimitedDuration}
                   {...register('expirationDuration', {
-                    valueAsNumber: true,
                     min: 0,
                     required: !unlimitedDuration,
                   })}
