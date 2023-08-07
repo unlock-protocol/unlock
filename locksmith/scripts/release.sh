@@ -24,3 +24,4 @@ eval "$command"
 
 # TODO:
 # Check that locksmith is up and running
+# And fail if not... if this script fails, the whole release fails
