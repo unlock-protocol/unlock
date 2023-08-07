@@ -1,15 +1,22 @@
 import { JobHelpers, Task } from 'graphile-worker'
 
-const rejectAfter = (duration: number) =>
+const rejectAfter = (duration: number, message = 'Timeout') =>
   new Promise((_, reject) => {
     setTimeout(() => {
-      reject(new Error('Timeout'))
+      reject(new Error(message))
     }, duration)
   })
 
-export const timeout = (duration: number, callback: Task) => {
+export const timeout = (
+  duration: number,
+  callback: Task,
+  message = 'Timeout'
+) => {
   return async (payload: unknown, helpers: JobHelpers) => {
-    await Promise.race([rejectAfter(duration), callback(payload, helpers)])
+    await Promise.race([
+      rejectAfter(duration, message),
+      callback(payload, helpers),
+    ])
     return
   }
 }
