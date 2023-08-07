@@ -4,7 +4,7 @@ subTitle: Unlock is now available on Coinbase's Base L2.
 authorName: Julien Genestoux
 publishDate: August 2, 2023
 description: The Unlock Protocol has been deployed to the Base L2 🔵
-image: https://docs.base.org/img/logo.svg
+image: /images/blog/base/base-logo.svg
 ---
 
 The Unlock Protocol has been deployed to the [Base L2 🔵](https://docs.base.org/)! Our goal at Unlock has always been to support any ecosystem where developers, event organizers, creators, or brands want to deploy **their** membership contracts.
