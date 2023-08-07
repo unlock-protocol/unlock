@@ -24,7 +24,7 @@ An "email" field is included on the airdrop screen.
 
 ## Additional email actions on the "Members" page
 
-In addition to airdropping the NFT via email, lock managers have addtional membership actions they can perform on the "Members" page of the dashboard:
+In addition to airdropping the NFT via email, lock managers have additional membership actions they can perform on the "Members" page of the dashboard:
 
 - Add or edit the email for a specific key
 - Send QR-code by email
