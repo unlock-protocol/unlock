@@ -84,7 +84,7 @@ const TextInput = ({ props, name, type, ...rest }: FieldProps) => {
   const hasOptions = enumList?.length
   const isNumericField =
     (Array.isArray(type) && props.type.includes('number')) || type === 'number'
-  const inputType = isNumericField ? 'number' : type
+  const inputType = isNumericField ? 'text' : type
 
   if (!hasOptions) {
     return (
@@ -95,7 +95,12 @@ const TextInput = ({ props, name, type, ...rest }: FieldProps) => {
             <Input
               type={inputType}
               {...register(name, {
-                valueAsNumber: isNumericField,
+                setValueAs: (value: unknown) => {
+                  if (isNumericField) {
+                    return value === '' ? 1 : Number(value)
+                  }
+                  return value
+                },
               })}
               {...rest}
               error={error}
