@@ -46,7 +46,7 @@ export default {
   {{/if}}
 </div>
 
-<p>You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print the ticket to this email.</p>
+<p>You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print the ticket attached to this email.</p>
 
 {{links txUrl openSeaUrl true}}
 `,
