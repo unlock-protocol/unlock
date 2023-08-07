@@ -5,9 +5,11 @@ import config from '../../config/config'
 /**
  * A list of authenticated users who are making calls for which we should bypass the captcha veification
  */
-const allowList = ['0x61be315032235Ac365e39705c11c47fdaee698Ee'].map(
-  (address: string) => address.toLowerCase()
-)
+const allowList = [
+  '0xFac55e21630b08B58119C58AA5a7f808424D777e', // Protocol Labs
+  '0xEedb7dd2D6317F31E4ECB60ED5f4c8971e2E4FF9', // Protocol Labs
+  '0xAA5E881Ca7c2d4e0253b61A89D0086E71ce9cb1e', // Protocol Labs
+].map((address: string) => address.toLowerCase())
 
 export const captchaMiddleware: RequestHandler = async (
   request,
