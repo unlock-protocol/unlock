@@ -18868,6 +18868,7 @@ __metadata:
     react-device-detect: 2.2.3
     react-dom: 18.2.0
     react-dropzone: 14.2.3
+    react-google-autocomplete: 2.7.3
     react-google-recaptcha: 3.1.0
     react-gtm-module: 2.0.11
     react-hook-form: 7.44.3
@@ -45233,6 +45234,18 @@ __metadata:
     prop-types: ^15.6.0
     react: ^15.6.2 || ^16.0 || ^17 || ^18
   checksum: 3026976d0249fbf80e7b5dad7707964198064d7ac460f3397de40524e76dd6c29dead0900f850e2bd3135a86a9b083af8cda9cfa087f195852bf8d2b17c1fcfb
+  languageName: node
+  linkType: hard
+
+"react-google-autocomplete@npm:2.7.3":
+  version: 2.7.3
+  resolution: "react-google-autocomplete@npm:2.7.3"
+  dependencies:
+    lodash.debounce: ^4.0.8
+    prop-types: ^15.5.0
+  peerDependencies:
+    react: ">=16.8.0"
+  checksum: 2da6d59a6a87bc318de9757c51fe17bfee2ef50f22ec90b0ba903103ad4e0a72a18003e8a2135700beaec0bc1e3785afefa78dffdc55a8af41bde16d9e3e8222
   languageName: node
   linkType: hard
 
