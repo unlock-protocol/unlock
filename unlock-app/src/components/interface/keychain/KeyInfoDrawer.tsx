@@ -316,7 +316,7 @@ export const KeyInfo = ({
 
       {!isUserInfoNotAvailable && (
         <div>
-          <h3 className="text-lg font-bold"> User information </h3>
+          <h3 className="text-lg font-bold"> User Information </h3>
           <div className="divide-y divide-brand-dark">
             {Object.entries(keyMetadata?.userMetadata?.public || {}).map(
               ([key, value]: any) => (

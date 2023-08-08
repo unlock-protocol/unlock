@@ -37,7 +37,7 @@ export const LockDeploying = ({
 
   if (lockAddress) {
     status = 'deployed'
-    title = '🚀​ Contract is successfully deployed'
+    title = '🚀​ Your contract was successfully deployed'
     message =
       'Did you know that you can airdrop tickets to your fren by sending them email?'
   }

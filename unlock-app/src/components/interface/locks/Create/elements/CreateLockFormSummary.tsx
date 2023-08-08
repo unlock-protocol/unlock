@@ -40,7 +40,7 @@ const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
     nextUrl: () => '/locks',
   },
   deployed: {
-    title: '🚀​ Lock has successfully been deployed',
+    title: '🚀​ Your lock was successfully deployed',
     description: "Let's start configuring it!",
     status: 'Completed!',
     nextNext: 'Start managing it!',
