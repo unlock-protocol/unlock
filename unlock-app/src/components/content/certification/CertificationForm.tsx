@@ -23,6 +23,7 @@ import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
+import { useAvailableNetworks } from '~/utils/networks'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -108,14 +109,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     }
   )
 
-  const networkOptions = Object.values(networks || {})?.map(
-    ({ name, id }: any) => {
-      return {
-        label: name,
-        value: id,
-      }
-    }
-  )
+  const networkOptions = useAvailableNetworks()
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
 
