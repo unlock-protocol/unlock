@@ -1,7 +1,9 @@
+import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
 import { useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
+import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
 import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
 import { FormProvider, useForm, Controller, useWatch } from 'react-hook-form'
 import {
@@ -35,6 +37,29 @@ export interface NewEventForm {
   metadata: Partial<MetadataFormData>
 }
 
+interface GoogleMapsAutoCompleteProps {
+  onChange: (value: string) => void
+}
+
+const GoogleMapsAutoComplete = ({ onChange }: GoogleMapsAutoCompleteProps) => {
+  const { ref } = usePlacesWidget({
+    options: {
+      types: ['address'],
+    },
+    apiKey: config.googleMapsApiKey,
+    onPlaceSelected: (place) => onChange(place.formatted_address),
+  })
+
+  return (
+    <Input
+      // @ts-expect-error Type 'RefObject<null>' is not assignable to type 'Ref<HTMLInputElement> | undefined'.
+      ref={ref}
+      type="text"
+      placeholder="123 1st street, 11217 Springfield, US"
+    />
+  )
+}
+
 interface FormProps {
   onSubmit: (data: NewEventForm) => void
 }
@@ -42,12 +67,14 @@ interface FormProps {
 export const Form = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
   const { network, account } = useAuth()
-
+  const [isInPerson, setIsInPerson] = useState(true)
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
   const web3Service = useWeb3Service()
+
+  const today = dayjs().format('YYYY-MM-DD')
 
   const methods = useForm<NewEventForm>({
     mode: 'onChange',
@@ -65,7 +92,7 @@ export const Form = ({ onSubmit }: FormProps) => {
       metadata: {
         description: '',
         ticket: {
-          event_start_date: '',
+          event_start_date: today,
           event_start_time: '',
           event_end_date: '',
           event_end_time: '',
@@ -90,20 +117,6 @@ export const Form = ({ onSubmit }: FormProps) => {
     control,
   })
 
-  const DescDescription = () => (
-    <p>
-      Enter a description for your event.{' '}
-      <a
-        className="text-brand-ui-primary hover:underline"
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://www.markdownguide.org/cheat-sheet"
-      >
-        Markdown is supported.
-      </a>
-    </p>
-  )
-
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     details.metadata?.ticket?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
@@ -121,16 +134,8 @@ export const Form = ({ onSubmit }: FormProps) => {
       )
     }
   )
-  const noBalance = balance === 0 && !isLoadingBalance
 
-  const NetworkDescription = () => {
-    return (
-      <p>
-        This is the network on which your ticketing contract will be deployed.{' '}
-        {details.network && <>{networkDescription(details.network)}</>}
-      </p>
-    )
-  }
+  const noBalance = balance === 0 && !isLoadingBalance
 
   const ticket = details?.metadata?.ticket
 
@@ -140,12 +145,9 @@ export const Form = ({ onSubmit }: FormProps) => {
     'day'
   )
 
-  const today = dayjs().format('YYYY-MM-DD')
-
   const minEndTime = isSameDay ? ticket?.event_start_time : undefined
-  const minEndDate = ticket?.event_start_date
-    ? dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
-    : today
+  const minEndDate = dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
+
   const router = useRouter()
 
   return (
@@ -216,7 +218,19 @@ export const Form = ({ onSubmit }: FormProps) => {
                   })}
                   label="Description"
                   placeholder="Write description here."
-                  description={<DescDescription />}
+                  description={
+                    <p>
+                      Enter a description for your event.{' '}
+                      <a
+                        className="text-brand-ui-primary hover:underline"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href="https://www.markdownguide.org/cheat-sheet"
+                      >
+                        Markdown is supported.
+                      </a>
+                    </p>
+                  }
                   rows={4}
                   error={errors.metadata?.description?.message as string}
                 />
@@ -233,7 +247,15 @@ export const Form = ({ onSubmit }: FormProps) => {
                   options={networkOptions}
                   label="Network"
                   defaultValue={network}
-                  description={<NetworkDescription />}
+                  description={
+                    <p>
+                      This is the network on which your ticketing contract will
+                      be deployed.{' '}
+                      {details.network && (
+                        <>{networkDescription(details.network)}</>
+                      )}
+                    </p>
+                  }
                 />
                 <div className="mb-4">
                   {noBalance && (
@@ -248,7 +270,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           </Disclosure>
 
           <Disclosure label="Location, date and time" defaultOpen>
-            <div className="grid gap-6">
+            <div className="grid">
               <p className="mb-5">
                 This information will be public and included on each of the NFT
                 tickets. There again, it can be adjusted later.
@@ -256,7 +278,18 @@ export const Form = ({ onSubmit }: FormProps) => {
               <div className="grid items-center gap-4 align-top sm:grid-cols-2">
                 <div className="flex flex-col self-start gap-4 justify-top">
                   <div className="h-80">
-                    <iframe width="100%" height="300" src={mapAddress}></iframe>
+                    {isInPerson && (
+                      <iframe
+                        width="100%"
+                        height="350"
+                        src={mapAddress}
+                      ></iframe>
+                    )}
+                    {!isInPerson && (
+                      <div className="flex h-80 items-center justify-center">
+                        <ZoomIcon size="5rem" color={'rgb(96 61 235)'} />
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-col self-start gap-2 justify-top">
@@ -274,6 +307,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                             'metadata.ticket.event_end_date',
                             event.target.value
                           )
+                          setValue('metadata.ticket.event_start_time', '12:00')
                         }
                       }}
                       min={today}
@@ -297,6 +331,14 @@ export const Form = ({ onSubmit }: FormProps) => {
                         // @ts-expect-error Property 'event_start_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_start_time?.message || ''
                       }
+                      onChange={(event) => {
+                        if (!details.metadata?.ticket?.event_end_time) {
+                          setValue(
+                            'metadata.ticket.event_end_time',
+                            event.target.value
+                          )
+                        }
+                      }}
                     />
                   </div>
 
@@ -362,19 +404,47 @@ export const Form = ({ onSubmit }: FormProps) => {
                     }}
                   />
 
-                  <Input
-                    {...register('metadata.ticket.event_address')}
-                    type="text"
-                    placeholder="123 1st street, 11217 Springfield, US"
-                    label="Address for in person event"
-                  />
+                  <div className="mt-6">
+                    <div className="flex items-center justify-between">
+                      <label className="px-1 mb-2 text-base" htmlFor="">
+                        Location
+                      </label>
+                      <ToggleSwitch
+                        title="In person"
+                        enabled={isInPerson}
+                        setEnabled={setIsInPerson}
+                        onChange={() => {
+                          // reset the value
+                          setValue('metadata.ticket.event_address', undefined)
+                        }}
+                      />
+                    </div>
+
+                    {!isInPerson && (
+                      <Input
+                        {...register('metadata.ticket.event_address')}
+                        type="text"
+                        placeholder={'Zoom or Google Meet Link'}
+                      />
+                    )}
+
+                    {isInPerson && (
+                      <Controller
+                        name="metadata.ticket.event_timezone"
+                        control={control}
+                        render={({ field: { onChange } }) => {
+                          return <GoogleMapsAutoComplete onChange={onChange} />
+                        }}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           </Disclosure>
 
           <Disclosure label="Price and capacity" defaultOpen>
-            <div className="grid gap-6">
+            <div className="grid ">
               <p>
                 These settings can also be changed, but only by sending on-chain
                 transactions.
