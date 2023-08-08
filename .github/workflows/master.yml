@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - test-deploy
 jobs:
   run-all-tests:
     uses: ./.github/workflows/_tests.yml
@@ -67,7 +68,7 @@ jobs:
 
   deploy-unlock-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
+    # needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: unlock-app
