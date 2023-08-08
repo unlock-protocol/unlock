@@ -221,29 +221,6 @@ export const Form = ({ onSubmit }: FormProps) => {
                   error={errors.metadata?.description?.message as string}
                 />
 
-                {/* <Input
-                  {...register('metadata.slug', {
-                    pattern: {
-                      value: SLUG_REGEXP,
-                      message: 'Slug format is not valid',
-                    },
-                    validate: async (slug: string | undefined) => {
-                      if (slug) {
-                        const data = (await storage.getLockSettingsBySlug(slug))
-                          ?.data
-                        return data
-                          ? 'Slug already used, please use another one'
-                          : true
-                      }
-                      return true
-                    },
-                  })}
-                  type="text"
-                  label="Custom URL"
-                  error={errors?.metadata?.slug?.message as string}
-                  description="Custom URL that will be used for the page."
-                /> */}
-
                 <Select
                   onChange={(newValue) => {
                     setValue('network', Number(newValue))
@@ -291,6 +268,14 @@ export const Form = ({ onSubmit }: FormProps) => {
                           message: 'Add a start date to your event',
                         },
                       })}
+                      onChange={(event) => {
+                        if (!details.metadata?.ticket?.event_end_date) {
+                          setValue(
+                            'metadata.ticket.event_end_date',
+                            event.target.value
+                          )
+                        }
+                      }}
                       min={today}
                       type="date"
                       label="Start date"
