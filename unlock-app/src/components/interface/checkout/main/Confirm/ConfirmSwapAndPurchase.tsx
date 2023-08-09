@@ -19,7 +19,6 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { PricingData } from './PricingData'
 
 interface Props {
@@ -109,18 +108,7 @@ export function ConfirmSwapAndPurchase({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: Number(route.convertToQuoteToken(amountToConvert).toFixed()),
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
-
-  const isLoading =
-    isPricingDataLoading || isInitialDataLoading || isTotalPricingDataLoading
+  const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const symbol = route.trade.inputAmount.currency.symbol
 
@@ -218,10 +206,6 @@ export function ConfirmSwapAndPurchase({
   } else {
     buttonLabel = 'Pay using crypto'
   }
-
-  const usdTotalPricing = totalPricing?.total
-    ? totalPricing?.total / 100
-    : undefined
 
   return (
     <Fragment>
