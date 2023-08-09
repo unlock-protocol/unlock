@@ -109,11 +109,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
-  const enableClaim =
+  const enableClaim: boolean = !!(
     canClaim &&
     !isCanClaimLoading &&
     isReceiverAccountOnly &&
     !balance?.isPayable
+  )
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
