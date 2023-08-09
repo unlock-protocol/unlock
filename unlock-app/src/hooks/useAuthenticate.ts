@@ -137,8 +137,8 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
         if (!p?.account) {
           return console.error('Unable to get provider')
         }
-        if (p?.isUnlock && p?.email) {
-          setStorage('email', p.email)
+        if (p?.provider?.isUnlock && p?.provider?.emailAddress) {
+          setStorage('email', p?.provider?.emailAddress)
         } else {
           removeKey('email')
         }
