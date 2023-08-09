@@ -71,10 +71,9 @@ jobs:
           VERCEL_PROJECT_ID: op://secrets/vercel/project-id
           VERCEL_ORG_ID: op://secrets/vercel/org-id
           VERCEL_TOKEN: op://secrets/vercel/deployment-token
-
       - name: Deploy to Vercel
         run: |
           # show args
-          echo "${{ inputs.target-env }} ${{ inputs.service }} vercel $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
+          echo "${{ inputs.target-env }} ${{ inputs.service }} vercel (project-id: $VERCEL_PROJECT_ID) $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
           # run command
           scripts/deploy.sh ${{ inputs.target-env }} ${{ inputs.service }} vercel "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
