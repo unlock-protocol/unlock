@@ -127,8 +127,8 @@ export const getUnlockServiceFee = (
   options?: KeyPricingOptions
 ) => {
   if (
-    options?.lockAddress.toLowerCase() ===
-    '0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B'.toLowerCase()
+    options?.lockAddress.toLowerCase().trim() ===
+    '0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B'.toLowerCase().trim()
   ) {
     // For EthVietname, the fee is 5%
     return Math.ceil(cost * 0.05)
