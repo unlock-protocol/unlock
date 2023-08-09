@@ -19,7 +19,7 @@ contract CardPurchaser is Ownable, EIP712 {
   error SIGNER_DOES_NOT_MATCH();
 
   // Unlock address on current chain
-  address public unlockAddress;
+  address public immutable unlockAddress;
 
   // Address of USDC contract
   address public usdc;
