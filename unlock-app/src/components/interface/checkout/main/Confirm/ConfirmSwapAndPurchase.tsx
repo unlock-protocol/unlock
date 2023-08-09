@@ -163,7 +163,6 @@ export function ConfirmSwapAndPurchase({
           onConfirmed(lockAddress, hash)
         }
       }
-      console.log('OK GO!')
       const swap = {
         srcTokenAddress: currencyContractAddress,
         uniswapRouter: route.swapRouter,
@@ -171,9 +170,7 @@ export function ConfirmSwapAndPurchase({
         value: route.value,
         amountInMax: ethers.utils
           .parseUnits(
-            route
-              .convertToQuoteToken(pricingData.total.toString())
-              .toFixed(route.trade.inputAmount.currency.decimals), // Total Amount
+            route!.quote.toFixed(),
             route.trade.inputAmount.currency.decimals
           )
           // 1% slippage buffer
