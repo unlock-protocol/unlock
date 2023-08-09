@@ -7,6 +7,7 @@ import {
 import networks from '@unlock-protocol/networks'
 import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
+import normalizer from '../utils/normalizer'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -55,7 +56,8 @@ export const buildKeysWithMetadata = (
         const { userMetadata, extraMetadata } =
           metadataItems?.find(
             (metadata) =>
-              metadata?.userAddress?.toLowerCase() === key?.owner?.toLowerCase()
+              normalizer.ethereumAddress(metadata?.userAddress) ===
+              normalizer.ethereumAddress(key?.owner)
           )?.data ?? {}
 
         const metadata = {
