@@ -100,6 +100,7 @@
     "build": "next build --no-lint",
     "export": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
+    "deploy-vercel": "./scripts/deploy-vercel.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
     "test": "UNLOCK_ENV=test vitest run --coverage --environment=jsdom",
