@@ -122,7 +122,18 @@ export const getCreditCardProcessingFee = (
 }
 
 // Fee denominated in cents
-export const getUnlockServiceFee = (cost: number) => {
+export const getUnlockServiceFee = (
+  cost: number,
+  options?: KeyPricingOptions
+) => {
+  if (
+    options?.lockAddress.toLowerCase() ===
+    '0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B'.toLowerCase()
+  ) {
+    // For EthVietname, the fee is 5%
+    return Math.ceil(cost * 0.05)
+  }
+
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 
@@ -131,7 +142,7 @@ export const getFees = async (
   options?: KeyPricingOptions
 ) => {
   const { lockAddress, network } = options ?? {}
-  let unlockServiceFee = getUnlockServiceFee(subtotal)
+  let unlockServiceFee = getUnlockServiceFee(subtotal, options)
   let unlockFeeChargedToUser = true
 
   // fees can be ignored if disabled by lockManager
