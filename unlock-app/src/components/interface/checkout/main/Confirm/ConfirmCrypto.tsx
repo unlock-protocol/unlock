@@ -308,11 +308,6 @@ export function ConfirmCrypto({
                     pricingData.total
                   ).toLocaleString()} ${symbol}`
             }
-            usdPrice={
-              usdTotalPricing
-                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
-                : ''
-            }
             isCardEnabled={!!creditCardEnabled}
           />
         )}

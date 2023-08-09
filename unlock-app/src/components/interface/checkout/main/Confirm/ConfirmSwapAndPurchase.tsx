@@ -103,6 +103,7 @@ export function ConfirmSwapAndPurchase({
       lock as Lock,
       config.networks[lock!.network].nativeCurrency.symbol
     ),
+    payment,
   })
 
   const isPricingDataAvailable =
@@ -162,7 +163,7 @@ export function ConfirmSwapAndPurchase({
           onConfirmed(lockAddress, hash)
         }
       }
-
+      console.log('OK GO!')
       const swap = {
         srcTokenAddress: currencyContractAddress,
         uniswapRouter: route.swapRouter,
@@ -279,11 +280,6 @@ export function ConfirmSwapAndPurchase({
                 : `${formatNumber(
                     pricingData.total
                   ).toLocaleString()} ${symbol}`
-            }
-            usdPrice={
-              usdTotalPricing
-                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
-                : ''
             }
           />
         )}
