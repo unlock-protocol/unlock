@@ -385,9 +385,10 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
   })
 
   const isAirdroppedRecipient =
-    airdroppedRecipient?.toLowerCase() === ownerAddress?.toLowerCase() ||
-    manager?.toLowerCase()?.trim() ===
-      networks[network!]?.keyManagerAddress?.toLowerCase()?.trim()
+    Normalizer.ethereumAddress(airdroppedRecipient) ===
+      Normalizer.ethereumAddress(ownerAddress) ||
+    Normalizer.ethereumAddress(manager) ===
+      Normalizer.ethereumAddress(networks[network!]?.keyManagerAddress)
 
   logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
