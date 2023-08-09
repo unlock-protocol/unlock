@@ -1,9 +1,7 @@
-import { kebabCase } from 'lodash'
 import { networks } from '@unlock-protocol/networks'
 import { useState } from 'react'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { storage } from '~/config/storage'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -11,28 +9,12 @@ import { CertificationForm, NewCertificationForm } from './CertificationForm'
 import { CertificationDeploying } from './CertificationDeploying'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
+import { getSlugForName } from '~/utils/slugs'
+import { storage } from '~/config/storage'
 
 export interface TransactionDetails {
   hash: string
   network: number
-}
-
-/**
- * recusively creates slugs for names
- * @param name
- * @param number
- * @returns
- */
-export const getSlugForName = async (
-  name: string,
-  number?: number
-): Promise<string> => {
-  const slug = kebabCase([name, number].join('-'))
-  const data = (await storage.getLockSettingsBySlug(slug)).data
-  if (data) {
-    return getSlugForName(name, number ? number + 1 : 1)
-  }
-  return slug
 }
 
 export const NewCertification = () => {

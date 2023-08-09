@@ -99,7 +99,7 @@ const RenounceModal = ({
                     </div>
                     <div className="flex flex-col gap-4">
                       <h3 className="text-4xl font-bold text-brand-dark">
-                        Hold Your Horse
+                        Hold Your Horses
                       </h3>
                       <span className="text-base text-brand-dark">
                         You are about to permanently renounce yourself as Lock
@@ -108,7 +108,7 @@ const RenounceModal = ({
                       </span>
                     </div>
                     <Input
-                      placeholder="Renounce"
+                      placeholder="renounce"
                       {...register('confirm')}
                       autoComplete="off"
                     />

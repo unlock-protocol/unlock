@@ -241,7 +241,9 @@ export const eject = async (req: Request, res: Response) => {
   const address = req.params.ethereumAddress
   const ejected = await UserOperations.ejectionStatusByAddress(address)
 
-  if (address.toLowerCase() != req.owner.toLowerCase()) {
+  if (
+    Normalizer.ethereumAddress(address) != Normalizer.ethereumAddress(req.owner)
+  ) {
     return res.sendStatus(401)
   }
 
