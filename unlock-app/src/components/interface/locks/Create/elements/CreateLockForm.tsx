@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
-import { Token, NetworkConfig } from '@unlock-protocol/types'
+import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -14,6 +14,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { useAvailableNetworks } from '~/utils/networks'
 
 export interface LockFormProps {
   name: string
@@ -148,20 +149,7 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
 
-  const networkOptions = Object.values<NetworkConfig>(networks || {})
-    ?.filter(({ featured }: NetworkConfig) => !!featured)
-    .map(({ name, id }: NetworkConfig) => {
-      return {
-        label: name,
-        value: id,
-      }
-    })
-  if (networks[network!] && !networks[network!].featured) {
-    networkOptions.push({
-      label: networks[network!].name,
-      value: networks[network!].id,
-    })
-  }
+  const networkOptions = useAvailableNetworks()
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
@@ -239,7 +227,7 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  Memberships duration (days):
+                  Membership duration (in days):
                 </label>
                 <ToggleSwitch
                   title="Unlimited"

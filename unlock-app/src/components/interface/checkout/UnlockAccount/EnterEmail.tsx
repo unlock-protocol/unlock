@@ -6,6 +6,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService } from './unlockAccountMachine'
 import Link from 'next/link'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   unlockAccountService: UnlockAccountService
@@ -19,6 +20,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
     formState: { errors },
     setError,
   } = useForm()
+  const { email } = useAuth()
   const storageService = useStorageService()
   const [isContinuing, setIsContinuing] = useState(false)
 
@@ -45,8 +47,8 @@ export function EnterEmail({ unlockAccountService }: Props) {
   }
 
   return (
-    <div className="h-full flex flex-col justify-between">
-      <main className="px-6 pb-2 space-y-2 overflow-auto h-full flex flex-col">
+    <div className="flex flex-col justify-between h-full">
+      <main className="flex flex-col h-full px-6 pb-2 space-y-2 overflow-auto">
         <h3 className="font-bold ml-0.5">
           Login or create your Unlock account
         </h3>
@@ -60,6 +62,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
             error={errors?.email?.message as unknown as string}
             {...register('email', {
               required: true,
+              value: email ? email : undefined,
             })}
           />
         </form>
@@ -84,7 +87,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
           </p>{' '}
         </section>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Button
           loading={isContinuing}
           form="enter-email"

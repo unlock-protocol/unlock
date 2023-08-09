@@ -109,11 +109,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
-  const enableClaim =
+  const enableClaim: boolean = !!(
     canClaim &&
     !isCanClaimLoading &&
     isReceiverAccountOnly &&
     !balance?.isPayable
+  )
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
@@ -124,6 +125,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
+    false && // disabled for now
     window.top === window &&
     !enableCreditCard &&
     networkConfig.universalCard?.cardPurchaserAddress &&
