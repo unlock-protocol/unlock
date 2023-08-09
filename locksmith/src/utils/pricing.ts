@@ -16,6 +16,7 @@ import {
   KeyPricing,
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
+import normalizer from './normalizer'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -127,8 +128,8 @@ export const getUnlockServiceFee = (
   options?: KeyPricingOptions
 ) => {
   if (
-    options?.lockAddress.toLowerCase() ===
-    '0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B'.toLowerCase()
+    normalizer.ethereumAddress(options?.lockAddress) ===
+    normalizer.ethereumAddress('0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B')
   ) {
     // For EthVietname, the fee is 5%
     return Math.ceil(cost * 0.05)
