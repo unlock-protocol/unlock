@@ -143,7 +143,7 @@ export async function getDefiLammaPrice({
   const mainnetTokenAddress = networkConfig.tokens?.find(
     (item) =>
       normalizer.ethereumAddress(item.address) ===
-      normalizer.ethereumAddress(erc20Address || '')
+      normalizer.ethereumAddress(erc20Address)
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {
