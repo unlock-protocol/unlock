@@ -39,7 +39,7 @@ UPCASE_SERVICE="${SERVICE^^}"
 TARGET_PREFIX="${UPCASE_SERVICE//-/_}_${TARGET^^}_$ENV_PREFIX"
 ENV_VARS=`env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
 
-echo "SETTING $ENV_VARS INSIDE THE CONTAINER"
+echo "SETTING ALL ENV VARS STARTNG WITH $TARGET_PREFIX: $ENV_VARS INSIDE THE CONTAINER"
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
