@@ -22,8 +22,6 @@ on:
         type: string
     secrets:
       # all vercel deployments
-      NEXT_PUBLIC_UNLOCK_ENV:
-        required: true
       NEXT_PUBLIC_STRIPE_KEY:
         required: false
       NEXT_PUBLIC_ETHPASS_KEY:
