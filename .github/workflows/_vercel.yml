@@ -24,6 +24,10 @@ on:
       # all vercel deployments
       NEXT_PUBLIC_UNLOCK_ENV:
         required: false
+      NEXT_PUBLIC_STRIPE_KEY:
+        required: false
+      NEXT_PUBLIC_ETHPASS_KEY:
+        required: false
 
 jobs:
   check-changes:
