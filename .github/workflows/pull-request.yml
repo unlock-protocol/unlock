@@ -91,6 +91,7 @@ jobs:
     secrets:
       NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
+      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
   deploy-docs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}

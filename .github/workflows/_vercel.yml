@@ -23,11 +23,13 @@ on:
     secrets:
       # all vercel deployments
       NEXT_PUBLIC_UNLOCK_ENV:
-        required: false
+        required: true
       NEXT_PUBLIC_STRIPE_KEY:
         required: false
       NEXT_PUBLIC_ETHPASS_KEY:
         required: false
+      OP_SERVICE_ACCOUNT_TOKEN:
+        required: true
 
 jobs:
   check-changes:
