@@ -82,7 +82,7 @@ jobs:
 
   deploy-unlock-app-vercel:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: run-tests
+    # needs: run-tests
     uses: ./.github/workflows/_vercel.yml
     with:
       service: unlock-app

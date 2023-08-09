@@ -24,12 +24,14 @@ if [ "$DEPLOY_ENV" = "prod" ]; then
   PROD="--prod"
 fi
 
-if [ -n "$VERCEL_TOKEN" ]; then
+echo "READY TO DEPLOY TO VERCEL $VERCEL_PROJECT_ID $VERCEL_ORG_ID"
+
+if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ]  && [ -n "$VERCEL_ORG_ID" ]; then
   # And ship!
   export UNLOCK_ENV="$DEPLOY_ENV" 
   npx -y vercel build -y --cwd . --token $VERCEL_TOKEN $PROD
   npx -y vercel deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD
 else
-  echo "Failed to deploy to Vercel because we're missing VERCEL_TOKEN"
+  echo "Failed to deploy to Vercel because we're missing VERCEL_TOKEN, VERCEL_PROJECT_ID and/or VERCEL_ORG_ID"
   exit 1
 fi
