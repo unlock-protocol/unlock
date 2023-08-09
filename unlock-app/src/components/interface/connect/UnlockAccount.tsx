@@ -10,6 +10,7 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
+import BlockiesSvg from 'blockies-react-svg'
 
 interface UnlockAccountSignInProps {
   onSignUp(): void
@@ -28,8 +29,11 @@ export const UnlockAccountSignIn = ({
     setError,
     formState: { isSubmitting, errors },
   } = useForm<UserDetails>()
-  const { email } = useAuth()
+  const { email, account } = useAuth()
   const onSubmit = async (data: UserDetails) => {
+    if (!data.email && email) {
+      data.email = email
+    }
     try {
       await signIn(data)
     } catch (error) {
@@ -49,18 +53,32 @@ export const UnlockAccountSignIn = ({
   }
   return (
     <div className="grid gap-2">
+      {/* <div className="text-sm text-center text-gray-700">
+        Please confirm your <span className="font-medium">password again.</span>{' '}
+      </div> */}
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+        {email ? (
+          <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
+            <BlockiesSvg
+              address={account || '0x'}
+              size={6}
+              className="rounded-full"
+            />
+            <div className="text-center">Signed in as {email}</div>
+          </div>
+        ) : (
+          <Input
+            label="Email"
+            placeholder="your@email.com"
+            {...register('email', {
+              required: 'Email is required',
+              value: email ? email : undefined,
+            })}
+            error={errors.email?.message}
+          />
+        )}
         <Input
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: 'Email is required',
-            value: email ? email : undefined,
-          })}
-          error={errors.email?.message}
-        />
-        <Input
-          label="Password"
+          label={signedInBefore ? 'Confirm your password' : 'Password'}
           type="password"
           placeholder="Password"
           {...register('password', {
