@@ -233,7 +233,10 @@ export const createOnRampSession: RequestHandler = async (
     provider
   )
 
-  if (recovered.toLowerCase() !== userAddress.toLowerCase()) {
+  if (
+    Normalizer.ethereumAddress(recovered) !==
+    Normalizer.ethereumAddress(userAddress)
+  ) {
     return response.status(400).send({ message: 'Signatures do not match' })
   }
 

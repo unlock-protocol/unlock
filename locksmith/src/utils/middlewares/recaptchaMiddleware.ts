@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express'
 import fetch from 'isomorphic-fetch'
 import config from '../../config/config'
+import normalizer from '../normalizer'
 
 /**
  * A list of authenticated users who are making calls for which we should bypass the captcha veification
@@ -9,7 +10,7 @@ const allowList = [
   '0xFac55e21630b08B58119C58AA5a7f808424D777e', // Protocol Labs
   '0xEedb7dd2D6317F31E4ECB60ED5f4c8971e2E4FF9', // Protocol Labs
   '0xAA5E881Ca7c2d4e0253b61A89D0086E71ce9cb1e', // Protocol Labs
-].map((address: string) => address.toLowerCase())
+].map((address: string) => normalizer.ethereumAddress(address))
 
 export const captchaMiddleware: RequestHandler = async (
   request,
@@ -18,7 +19,8 @@ export const captchaMiddleware: RequestHandler = async (
 ) => {
   if (
     request.user?.walletAddress &&
-    allowList.indexOf(request.user?.walletAddress.toLowerCase()) > -1
+    allowList.indexOf(normalizer.ethereumAddress(request.user?.walletAddress)) >
+      -1
   ) {
     return next()
   }

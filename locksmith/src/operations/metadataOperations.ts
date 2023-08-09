@@ -145,7 +145,10 @@ const defaultMappings = (address: string, host: string, keyId: string) => {
   // Custom mappings
   // TODO: move that to a datastore at some point...
   metadata.forEach((lockMetadata) => {
-    if (address.toLowerCase() == lockMetadata.address.toLowerCase()) {
+    if (
+      Normalizer.ethereumAddress(address) ==
+      Normalizer.ethereumAddress(lockMetadata.address)
+    ) {
       defaultResponse.name = lockMetadata.name
       defaultResponse.description = lockMetadata.description
       defaultResponse.image = lockMetadata.image || defaultResponse.image
