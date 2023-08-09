@@ -131,8 +131,8 @@ export const getUnlockServiceFee = (
     normalizer.ethereumAddress(options?.lockAddress) ===
     normalizer.ethereumAddress('0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B')
   ) {
-    // For EthVietname, the fee is 5%
-    return Math.ceil(cost * 0.05)
+    // For EthVietnam, the fee is 2%
+    return Math.ceil(cost * 0.02)
   }
 
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
