@@ -83,7 +83,7 @@
   "packageManager": "yarn@3.5.1",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
-    "*.{js,ts,tsx,sol,css,md}": "prettier --write",
+    "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",
     "*.sol": "yarn lint:contracts"
   }
 }
