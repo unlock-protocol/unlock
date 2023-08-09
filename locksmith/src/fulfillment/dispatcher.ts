@@ -15,6 +15,7 @@ import { GAS_COST } from '../utils/constants'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
 import executeAndRetry from './retries'
+import normalizer from '../utils/normalizer'
 
 interface KeyToGrant {
   recipient: string
@@ -205,8 +206,8 @@ export default class Dispatcher {
     })
     const walletAddress = await wallet.getAddress()
     const isSignedByLocksmith =
-      transferSignerAddress.trim().toLowerCase() ===
-      walletAddress.trim().toLowerCase()
+      normalizer.ethereumAddress(transferSignerAddress) ===
+      normalizer.ethereumAddress(walletAddress)
 
     return isSignedByLocksmith
   }

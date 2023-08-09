@@ -16,6 +16,7 @@ import {
   KeyPricing,
 } from '../operations/pricingOperations'
 import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
+import normalizer from './normalizer'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -122,7 +123,18 @@ export const getCreditCardProcessingFee = (
 }
 
 // Fee denominated in cents
-export const getUnlockServiceFee = (cost: number) => {
+export const getUnlockServiceFee = (
+  cost: number,
+  options?: KeyPricingOptions
+) => {
+  if (
+    normalizer.ethereumAddress(options?.lockAddress) ===
+    normalizer.ethereumAddress('0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B')
+  ) {
+    // For EthVietnam, the fee is 2%
+    return Math.ceil(cost * 0.02)
+  }
+
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 
@@ -131,7 +143,7 @@ export const getFees = async (
   options?: KeyPricingOptions
 ) => {
   const { lockAddress, network } = options ?? {}
-  let unlockServiceFee = getUnlockServiceFee(subtotal)
+  let unlockServiceFee = getUnlockServiceFee(subtotal, options)
   let unlockFeeChargedToUser = true
 
   // fees can be ignored if disabled by lockManager
