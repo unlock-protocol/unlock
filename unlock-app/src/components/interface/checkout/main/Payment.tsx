@@ -308,7 +308,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   >
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold">
-                        {' '}
                         Pay with {route!.trade.inputAmount.currency.symbol}
                       </h3>
                       <AmountBadge
