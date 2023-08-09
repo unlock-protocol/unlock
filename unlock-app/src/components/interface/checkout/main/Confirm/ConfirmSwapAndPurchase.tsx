@@ -19,7 +19,6 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { PricingData } from './PricingData'
 
 interface Props {
@@ -103,23 +102,13 @@ export function ConfirmSwapAndPurchase({
       lock as Lock,
       config.networks[lock!.network].nativeCurrency.symbol
     ),
+    payment,
   })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: Number(route.convertToQuoteToken(amountToConvert).toFixed()),
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
-
-  const isLoading =
-    isPricingDataLoading || isInitialDataLoading || isTotalPricingDataLoading
+  const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const symbol = route.trade.inputAmount.currency.symbol
 
@@ -162,7 +151,6 @@ export function ConfirmSwapAndPurchase({
           onConfirmed(lockAddress, hash)
         }
       }
-
       const swap = {
         srcTokenAddress: currencyContractAddress,
         uniswapRouter: route.swapRouter,
@@ -170,9 +158,7 @@ export function ConfirmSwapAndPurchase({
         value: route.value,
         amountInMax: ethers.utils
           .parseUnits(
-            route
-              .convertToQuoteToken(pricingData.total.toString())
-              .toFixed(route.trade.inputAmount.currency.decimals), // Total Amount
+            route!.quote.toFixed(),
             route.trade.inputAmount.currency.decimals
           )
           // 1% slippage buffer
@@ -220,10 +206,6 @@ export function ConfirmSwapAndPurchase({
   } else {
     buttonLabel = 'Pay using crypto'
   }
-
-  const usdTotalPricing = totalPricing?.total
-    ? totalPricing?.total / 100
-    : undefined
 
   return (
     <Fragment>
@@ -279,11 +261,6 @@ export function ConfirmSwapAndPurchase({
                 : `${formatNumber(
                     pricingData.total
                   ).toLocaleString()} ${symbol}`
-            }
-            usdPrice={
-              usdTotalPricing
-                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
-                : ''
             }
           />
         )}

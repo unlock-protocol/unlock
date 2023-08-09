@@ -14,6 +14,7 @@ interface Options {
   data: string[]
   paywallConfig: PaywallConfig
   enabled?: boolean
+  payment?: any
 }
 
 export const usePricing = ({
@@ -25,6 +26,7 @@ export const usePricing = ({
   currencyContractAddress,
   symbol,
   enabled = true,
+  payment,
 }: Options) => {
   const web3Service = useWeb3Service()
   return useQuery(
@@ -54,9 +56,15 @@ export const usePricing = ({
           }
         })
       )
+
+      // Totals needs to be expressed in the currency of the payment if applicable
+      let total = prices.reduce((acc, item) => acc + item.amount, 0)
+      if (payment) {
+        total = payment.route!.quote.toFixed()
+      }
       const item = {
         prices,
-        total: prices.reduce((acc, item) => acc + item.amount, 0),
+        total,
       }
       return item
     },

@@ -20,7 +20,6 @@ import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 
@@ -114,16 +113,6 @@ export function ConfirmCrypto({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: amountToConvert,
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
-
   // TODO: run full estimate so we can catch all errors, rather just check balances
   const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
     ['canAfford', account, lock, pricingData],
@@ -158,10 +147,7 @@ export function ConfirmCrypto({
     !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
 
   const isLoading =
-    isPricingDataLoading ||
-    isInitialDataLoading ||
-    isPayableLoading ||
-    isTotalPricingDataLoading
+    isPricingDataLoading || isInitialDataLoading || isPayableLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -251,9 +237,6 @@ export function ConfirmCrypto({
       buttonLabel = 'Pay using crypto'
     }
   }
-  const usdTotalPricing = totalPricing?.total
-    ? totalPricing?.total / 100
-    : undefined
 
   return (
     <Fragment>
@@ -307,11 +290,6 @@ export function ConfirmCrypto({
                 : `${formatNumber(
                     pricingData.total
                   ).toLocaleString()} ${symbol}`
-            }
-            usdPrice={
-              usdTotalPricing
-                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
-                : ''
             }
             isCardEnabled={!!creditCardEnabled}
           />
