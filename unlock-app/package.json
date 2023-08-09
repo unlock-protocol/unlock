@@ -55,7 +55,6 @@
     "react-device-detect": "2.2.3",
     "react-dom": "18.2.0",
     "react-dropzone": "14.2.3",
-    "react-google-autocomplete": "2.7.3",
     "react-google-recaptcha": "3.1.0",
     "react-gtm-module": "2.0.11",
     "react-hook-form": "7.44.3",
@@ -98,7 +97,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build --no-lint",
-    "export": "yarn build && next export -o out",
+    "deploy": "yarn build && next export -o out",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
