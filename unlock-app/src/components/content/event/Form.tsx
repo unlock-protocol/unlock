@@ -455,6 +455,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     }}
                   />
                 </div>
+
                 <div className="relative">
                   <SelectCurrencyModal
                     isOpen={isCurrencyModalOpen}
@@ -492,6 +493,20 @@ export const Form = ({ onSubmit }: FormProps) => {
                 </div>
               </div>
 
+              <div className="flex items-center justify-between">
+                <label className="px-1 mb-2 text-base" htmlFor="">
+                  Capacity
+                </label>
+                <ToggleSwitch
+                  title="Unlimited"
+                  enabled={isUnlimitedCapacity}
+                  setEnabled={setIsUnlimiedCapacity}
+                  onChange={() => {
+                    // reset the value
+                    setValue('metadata.ticket.event_address', undefined)
+                  }}
+                />
+              </div>
               <Input
                 {...register('lock.maxNumberOfKeys', {
                   min: 0,
