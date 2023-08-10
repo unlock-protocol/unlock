@@ -83,7 +83,7 @@ jobs:
   deploy-unlock-app-vercel:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     runs-on: ubuntu-22.04
-    needs: run-tests
+    # needs: run-tests
     steps:
       - uses: actions/checkout@v3
         with:
