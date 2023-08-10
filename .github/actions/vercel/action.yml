@@ -29,6 +29,7 @@ runs:
     - run: echo Deploying ${{ inputs.service }}.
       shell: bash
     - name: Deploy to Vercel
+      shell: bash
       run: |
         # show args
         echo "${{ inputs.target-env }} ${{ inputs.service }} vercel (project-id: $VERCEL_PROJECT_ID) $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"

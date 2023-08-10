@@ -81,10 +81,10 @@ jobs:
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
 
   deploy-unlock-app-vercel:
-    needs: check-changes
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
-    runs-on: ubuntu-22.04
+    # needs: check-changes
     # needs: run-tests
+    # if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
