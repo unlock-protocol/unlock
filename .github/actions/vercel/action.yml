@@ -1,0 +1,36 @@
+name: Deploy ${{ inputs.service }} on Vercel ${{ inputs.target-env }}
+
+inputs:
+  service:
+    description: 'The service/app to deploy'
+    type: string
+    required: true
+  target-env:
+    description: 'The target environment (staging/production)'
+    type: string
+    required: true
+  is_forked:
+    description: 'That PR is a fork (or not)'
+    type: string
+    required: false
+    default: 'false'
+secrets:
+  # all vercel deployments
+  NEXT_PUBLIC_STRIPE_KEY:
+    required: false
+  NEXT_PUBLIC_ETHPASS_KEY:
+    required: false
+  OP_SERVICE_ACCOUNT_TOKEN:
+    required: true
+
+runs:
+  env:
+    DOCKER_BUILDKIT: 1
+    BUILDKIT_PROGRESS: plain
+  steps:
+    - name: Deploy to Vercel
+      run: |
+        # show args
+        echo "${{ inputs.target-env }} ${{ inputs.service }} vercel (project-id: $VERCEL_PROJECT_ID) $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
+        # run command
+        scripts/deploy.sh ${{ inputs.target-env }} ${{ inputs.service }} vercel "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}
