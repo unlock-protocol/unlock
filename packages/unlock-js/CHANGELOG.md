@@ -1,5 +1,9 @@
 # Changes
 
+# 0.39.2
+
+- add `createLock` accepts keyPrice as number
+
 # 0.39.1
 
 - add `getDiscountHookValues` to web3Service

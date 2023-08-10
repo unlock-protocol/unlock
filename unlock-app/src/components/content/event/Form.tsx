@@ -94,7 +94,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         ticket: {
           event_start_date: today,
           event_start_time: '',
-          event_end_date: '',
+          event_end_date: today,
           event_end_time: '',
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
@@ -319,12 +319,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                     />
                     <Input
-                      {...register('metadata.ticket.event_start_time', {
-                        required: {
-                          value: true,
-                          message: 'This value is required',
-                        },
-                      })}
+                      {...register('metadata.ticket.event_start_time', {})}
                       type="time"
                       label="Start time"
                       error={
@@ -359,12 +354,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                     />
                     <Input
-                      {...register('metadata.ticket.event_end_time', {
-                        required: {
-                          value: true,
-                          message: 'This value is required',
-                        },
-                      })}
+                      {...register('metadata.ticket.event_end_time', {})}
                       type="time"
                       min={minEndTime}
                       label="End time"
@@ -534,7 +524,7 @@ export const Form = ({ onSubmit }: FormProps) => {
               disabled={Object.keys(errors).length > 0}
               className="w-full"
             >
-              Deploy your contract
+              Create your event
             </Button>
           </div>
         </div>

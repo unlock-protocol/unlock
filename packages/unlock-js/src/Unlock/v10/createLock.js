@@ -1,27 +1,7 @@
 import ethersUtils from '../../utils'
 import { ETHERS_MAX_UINT, UNLIMITED_KEYS_COUNT, ZERO } from '../../constants'
 
-import { getErc20Decimals } from '../../erc20'
-
-/**
- * Returns the key price in its currency, rather than its decimal representation (Ether vs. Wei for example)
- * @param {*} currencyContractAddress
- * @param {*} lock
- * @param {*} provider
- */
-async function _getKeyPrice(lock, provider) {
-  const currencyContractAddress = lock.currencyContractAddress || ZERO
-
-  if (currencyContractAddress !== ZERO) {
-    // We need to get the decimal value
-    const erc20Decimals = await getErc20Decimals(
-      currencyContractAddress,
-      provider
-    )
-    return ethersUtils.toDecimal(lock.keyPrice, erc20Decimals)
-  }
-  return ethersUtils.toWei(lock.keyPrice, 'ether')
-}
+import { _getKeyPrice } from '../utils'
 
 /**
  * Creates a lock on behalf of the user, using version v17
