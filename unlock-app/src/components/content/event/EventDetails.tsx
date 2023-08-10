@@ -25,6 +25,7 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
+import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
@@ -633,6 +634,9 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 </li>
                 <li>
                   <TweetItButton event={eventData} />
+                </li>
+                <li>
+                  <CopyUrlButton event={eventData} />
                 </li>
               </ul>
             </section>
