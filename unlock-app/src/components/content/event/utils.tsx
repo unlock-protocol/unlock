@@ -40,7 +40,7 @@ export const getEventPath = ({
   const slug = metadata?.slug
 
   if (slug) {
-    return `/event?s=${slug}`
+    return `/event/${slug}`
   }
   return `/event?lockAddress=${lockAddress}&network=${network}`
 }
