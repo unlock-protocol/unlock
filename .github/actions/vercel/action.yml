@@ -1,12 +1,12 @@
-name: Deploy ${{ inputs.service }} on Vercel ${{ inputs.target-env }}
-
+name: Vercel Deployment
+description: Deploys to Vercel
 inputs:
-  service:
-    description: 'The service/app to deploy'
-    type: string
-    required: true
   target-env:
     description: 'The target environment (staging/production)'
+    type: string
+    required: true
+  service:
+    description: 'The service/app to deploy'
     type: string
     required: true
   is_forked:
@@ -20,15 +20,14 @@ secrets:
     required: false
   NEXT_PUBLIC_ETHPASS_KEY:
     required: false
-  OP_SERVICE_ACCOUNT_TOKEN:
-    required: true
-
+env:
+  DOCKER_BUILDKIT: 1
+  BUILDKIT_PROGRESS: plain
 runs:
   using: 'composite'
-  env:
-    DOCKER_BUILDKIT: 1
-    BUILDKIT_PROGRESS: plain
   steps:
+    - run: echo Deploying ${{ inputs.service }}.
+      shell: bash
     - name: Deploy to Vercel
       run: |
         # show args
