@@ -419,7 +419,7 @@ export const Form = ({ onSubmit }: FormProps) => {
 
                     {isInPerson && (
                       <Controller
-                        name="metadata.ticket.event_timezone"
+                        name="metadata.ticket.event_address"
                         control={control}
                         render={({ field: { onChange } }) => {
                           return <GoogleMapsAutoComplete onChange={onChange} />
