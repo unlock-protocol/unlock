@@ -81,9 +81,9 @@ jobs:
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
 
   deploy-unlock-app-vercel:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
-    runs-on: ubuntu-22.04
     needs: run-all-tests
+    if: ${{ github.repository_owner == 'unlock-protocol'  }}
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
         with:
@@ -97,11 +97,10 @@ jobs:
           UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
           UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-      - uses: ./.github/workflows/vercel
+      - uses: ./.github/actions/vercel
         with:
           service: unlock-app
           target-env: staging
-          bypass_diff_check: bypass
 
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
