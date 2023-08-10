@@ -85,6 +85,9 @@ jobs:
     runs-on: ubuntu-22.04
     needs: run-tests
     steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v1.3.1
         with:

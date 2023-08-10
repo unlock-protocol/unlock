@@ -82,16 +82,26 @@ jobs:
 
   deploy-unlock-app-vercel:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
+    runs-on: ubuntu-22.04
     needs: run-all-tests
-    uses: ./.github/workflows/_vercel.yml
-    with:
-      service: unlock-app
-      target-env: staging
-      bypass_diff_check: bypass
-    secrets:
-      NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
-      NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.3.1
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/workflows/_vercel.yml
+        with:
+          service: unlock-app
+          target-env: staging
+          bypass_diff_check: bypass
 
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
