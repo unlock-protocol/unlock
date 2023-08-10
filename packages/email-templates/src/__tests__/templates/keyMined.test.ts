@@ -15,7 +15,7 @@ describe('keyMined', () => {
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         network: 'Polygon',
       })
-    ).toBe('A membership was added to your wallet!')
+    ).toBe('You have received a new NFT!')
   })
 
   it('should have the right text', () => {
@@ -28,9 +28,7 @@ describe('keyMined', () => {
         network: 'Polygon',
       })
     )
-    expect(content.textContent).toContain(
-      `A new Membership NFT in your wallet!`
-    )
+    expect(content.textContent).toContain(`You have received a new NFT!`)
     expect(content.textContent).toContain(
       `A new membership (#1337) to the lock Ethereal NYC 202`
     )
