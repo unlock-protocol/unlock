@@ -68,6 +68,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
   const { network, account } = useAuth()
   const [isInPerson, setIsInPerson] = useState(true)
+  const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
@@ -112,7 +113,6 @@ export const Form = ({ onSubmit }: FormProps) => {
     formState: { errors },
     watch,
   } = methods
-
   const details = useWatch({
     control,
   })
@@ -149,7 +149,6 @@ export const Form = ({ onSubmit }: FormProps) => {
   const minEndDate = dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
 
   const router = useRouter()
-
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
@@ -439,9 +438,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                 These settings can also be changed, but only by sending on-chain
                 transactions.
               </p>
-              <div className="relative flex flex-col gap-4">
+              <div className="relative flex flex-col mt-4">
                 <div className="flex items-center justify-between">
-                  <label className="px-1 mb-2 text-base" htmlFor="">
+                  <label className="" htmlFor="">
                     Currency & Price:
                   </label>
                   <ToggleSwitch
@@ -493,17 +492,18 @@ export const Form = ({ onSubmit }: FormProps) => {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <label className="px-1 mb-2 text-base" htmlFor="">
-                  Capacity
+              <div className="flex items-center justify-between mt-4">
+                <label className="" htmlFor="">
+                  Capacity:
                 </label>
                 <ToggleSwitch
                   title="Unlimited"
                   enabled={isUnlimitedCapacity}
-                  setEnabled={setIsUnlimiedCapacity}
-                  onChange={() => {
-                    // reset the value
-                    setValue('metadata.ticket.event_address', undefined)
+                  setEnabled={setIsUnlimitedCapacity}
+                  onChange={(enabled) => {
+                    if (enabled) {
+                      setValue('lock.maxNumberOfKeys', undefined)
+                    }
                   }}
                 />
               </div>
@@ -512,19 +512,20 @@ export const Form = ({ onSubmit }: FormProps) => {
                   min: 0,
                   valueAsNumber: true,
                   required: {
-                    value: true,
+                    value: !isUnlimitedCapacity,
                     message: 'Capacity is required. ',
                   },
                 })}
+                disabled={isUnlimitedCapacity}
                 autoComplete="off"
                 step={1}
                 pattern="\d+"
                 type="number"
                 placeholder="Capacity"
-                label="Capacity"
                 description={
                   'This is the maximum number of tickets for your event. '
                 }
+                error={errors.lock?.maxNumberOfKeys?.message}
               />
             </div>
           </Disclosure>
@@ -532,7 +533,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           <div className="flex flex-col justify-center gap-6">
             {Object.keys(errors).length > 0 && (
               <div className="px-2 text-red-600">
-                Please make sure you complete all the required fields.
+                Please make sure you complete all the required fields.{' '}
               </div>
             )}
             <Button

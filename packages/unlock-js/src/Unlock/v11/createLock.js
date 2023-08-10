@@ -15,7 +15,7 @@ export default async function (lock, transactionOptions = {}, callback) {
     lock.publicLockVersion || (await unlockContract.publicLockLatestVersion())
 
   let { maxNumberOfKeys, expirationDuration } = lock
-  if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
+  if (!maxNumberOfKeys || maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
   if (expirationDuration === -1) {

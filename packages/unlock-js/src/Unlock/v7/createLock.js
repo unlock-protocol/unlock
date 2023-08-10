@@ -12,7 +12,7 @@ import { _getKeyPrice } from '../utils'
 export default async function (lock, transactionOptions = {}, callback) {
   const unlockContract = await this.getUnlockContract()
   let { maxNumberOfKeys } = lock
-  if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
+  if (!maxNumberOfKeys || maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
 

@@ -30,11 +30,6 @@ export const NewEvent = () => {
     const walletService = await getWalletService(formData.network)
 
     try {
-      console.log({
-        ...formData.lock,
-        name: formData.lock.name,
-        publicLockVersion: networks[formData.network].publicLockVersionToDeploy,
-      })
       lockAddress = await walletService.createLock(
         {
           ...formData.lock,
