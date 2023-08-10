@@ -81,7 +81,8 @@ jobs:
       NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
 
   deploy-unlock-app-vercel:
-    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: check-changes
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
     runs-on: ubuntu-22.04
     # needs: run-tests
     steps:
@@ -97,7 +98,7 @@ jobs:
           UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
           UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-      - uses: ./.github/workflows/_vercel.yml
+      - uses: ./.github/workflows/vercel
         with:
           service: unlock-app
           target-env: staging
