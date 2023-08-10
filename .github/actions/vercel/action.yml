@@ -24,6 +24,7 @@ secrets:
     required: true
 
 runs:
+  using: 'composite'
   env:
     DOCKER_BUILDKIT: 1
     BUILDKIT_PROGRESS: plain
