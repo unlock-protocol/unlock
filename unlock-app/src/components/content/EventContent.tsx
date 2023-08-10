@@ -12,10 +12,23 @@ import { NextSeo } from 'next-seo'
 import { config } from '~/config/app'
 
 export const EventContent = () => {
-  const router = useRouter()
-
   const { lockAddress, network, isLoading } =
     useRouterQueryForLockAddressAndNetworks()
+  return EventContentWithProps({ lockAddress, network, isLoading })
+}
+
+interface EventContentWithPropsProps {
+  lockAddress: string
+  network: number
+  isLoading?: boolean
+}
+
+export const EventContentWithProps = ({
+  lockAddress,
+  network,
+  isLoading,
+}: EventContentWithPropsProps) => {
+  const router = useRouter()
 
   const handleCreateEvent = () => {
     router.push(
