@@ -2,6 +2,7 @@ import fontColorContrast from 'font-color-contrast'
 import { ReactNode, useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
+import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
@@ -91,10 +92,10 @@ const EventLocation = ({ eventData }) => {
         {!inPerson && (
           <Link
             target="_blank"
-            className="text-base "
+            className="text-base flex items-center gap-2 hover:text-brand-ui-primary"
             href={eventData.ticket?.event_address}
           >
-            Video-conferencing
+            Open video-conference <ExternalLinkIcon />
           </Link>
         )}
       </div>
