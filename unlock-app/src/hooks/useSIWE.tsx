@@ -30,8 +30,10 @@ export interface SIWEContextType {
 const signOutToken = async () => {
   const session = getAccessToken()
   if (session) {
-    removeAccessToken()
-    return storage.revoke().catch(console.error)
+    // First, revoke the session on the server with the token
+    await storage.revoke().catch(console.error)
+    // Then remove token locally
+    return removeAccessToken()
   }
 }
 
