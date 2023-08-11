@@ -124,16 +124,13 @@ export const useCheckoutCommunication = () => {
   const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
 
-  const pushOrEmit = useCallback(
-    (kind: CheckoutEvents, payload?: Payload) => {
-      if (!parent) {
-        setOutgoingBuffer([...outgoingBuffer, { kind, payload }])
-      } else {
-        parent.emit(kind, payload)
-      }
-    },
-    [setOutgoingBuffer, outgoingBuffer]
-  )
+  const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+    if (!parent) {
+      setOutgoingBuffer([...outgoingBuffer, { kind, payload }])
+    } else {
+      parent.emit(kind, payload)
+    }
+  }
 
   // Handler for messages from the parent
   const handleMethodCallEvent = useCallback(
