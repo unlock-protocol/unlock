@@ -6,6 +6,8 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
+import { Metadata } from '~/components/interface/locks/metadata/utils'
+
 import {
   MetadataFormData,
   formDataToMetadata,
@@ -64,7 +66,7 @@ interface EventDetailProps {
   children?: ReactNode
 }
 
-const EventLocation = ({ eventData }) => {
+const EventLocation = ({ eventData }: { eventData: Partial<Metadata> }) => {
   let inPerson = true
   if (eventData.ticket?.event_address.startsWith('http')) {
     inPerson = false
@@ -821,8 +823,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               </Disclosure>
 
               <Disclosure
-                label="Checkout URL"
-                description="Select a checkout URL that will be used for this event."
+                label="Customize the Checkout"
+                description="Create a custom checkout experience with your event's name, logo, and ticket multiple ticket tiers."
               >
                 <EventCheckoutUrl
                   lockAddress={lockAddress}
