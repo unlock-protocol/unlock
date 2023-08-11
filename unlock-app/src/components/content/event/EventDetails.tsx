@@ -636,7 +636,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <TweetItButton event={eventData} />
                 </li>
                 <li>
-                  <CopyUrlButton event={eventData} />
+                  <CopyUrlButton />
                 </li>
               </ul>
             </section>
