@@ -40,7 +40,7 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                 </span>{' '}
                 {item.amount < Number(lock!.keyPrice) ? (
                   <Badge variant="green" size="tiny">
-                    {discount}% Discount
+                    {discount.toFixed(2)}% Discount
                   </Badge>
                 ) : null}
               </div>
