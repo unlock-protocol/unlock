@@ -116,6 +116,12 @@ export const logout: RequestHandler = async (request, response) => {
 export const revoke: RequestHandler = async (request, response) => {
   try {
     const id = request.user?.session
+    if (!id) {
+      // Missing id... so we can't revoke
+      return response.status(400).send({
+        message: 'Missing id, cannot revoke',
+      })
+    }
     await Session.destroy({
       where: {
         id,

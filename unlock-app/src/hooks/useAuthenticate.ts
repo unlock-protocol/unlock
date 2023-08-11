@@ -88,7 +88,6 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       projectId: config.walletConnectApiKey,
       showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
       qrModalOptions: {
-        chainImages: [],
         themeMode: 'light',
       },
       chains: [1],
@@ -138,8 +137,8 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
         if (!p?.account) {
           return console.error('Unable to get provider')
         }
-        if (p?.isUnlock && p?.email) {
-          setStorage('email', p.email)
+        if (p?.provider?.isUnlock && p?.provider?.emailAddress) {
+          setStorage('email', p?.provider?.emailAddress)
         } else {
           removeKey('email')
         }

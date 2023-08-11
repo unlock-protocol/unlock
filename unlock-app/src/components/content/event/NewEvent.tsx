@@ -9,6 +9,7 @@ import { networks } from '@unlock-protocol/networks'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
+import { getSlugForName } from '~/utils/slugs'
 
 export interface TransactionDetails {
   hash: string
@@ -50,9 +51,10 @@ export const NewEvent = () => {
         }
       ) // Deploy the lock! and show the "waiting" screen + mention to *not* close!
     } catch (error) {
+      console.error(error)
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
-
+    formData.metadata.slug = await getSlugForName(formData.lock.name)
     if (lockAddress) {
       // Save this:
       await storage.updateLockMetadata(formData.network, lockAddress!, {

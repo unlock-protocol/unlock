@@ -3,6 +3,7 @@ import { InputHTMLAttributes, ReactNode, useRef, useState } from 'react'
 import { Button, Props as ButtonProps } from '../Button/Button'
 import { QueryClientProvider, useMutation } from '@tanstack/react-query'
 import { DEFAULT_QUERY_CLIENT_OPTIONS } from '../constants'
+import { Placeholder } from '../Placeholder'
 
 interface TabProps {
   title: ReactNode
@@ -13,6 +14,7 @@ interface TabProps {
   onNextLabel?: string
   showButton?: boolean
   button?: ButtonProps
+  loading?: boolean
 }
 
 interface TabsProps {
@@ -98,6 +100,7 @@ const Tab = ({
   isOpen,
   onChange, // handle on change
   button,
+  loading = false,
 }: TabProps & {
   tabIndex: number
   isLast: boolean
@@ -163,7 +166,7 @@ const Tab = ({
             <div className="w-[2px] bg-gray-300 h-full"></div>
           </div>
           <div className="flex flex-col w-full gap-10 mt-10">
-            {children}
+            {loading ? <Placeholder.Card /> : children}
             {showButton && (
               <Button
                 loading={handleNextMutation.isLoading}
@@ -171,7 +174,7 @@ const Tab = ({
                 onClick={() => {
                   handleNextMutation.mutateAsync()
                 }}
-                disabled={disabled || button?.disabled}
+                disabled={disabled || button?.disabled || loading}
                 {...button}
               >
                 {onNextLabel}

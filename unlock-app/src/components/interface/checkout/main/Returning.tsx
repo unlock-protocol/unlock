@@ -18,16 +18,19 @@ import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ReturningButton } from '../ReturningButton'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
 export function Returning({
   checkoutService,
   injectedProvider,
+  communication,
   onClose,
 }: Props) {
   const config = useConfig()
@@ -56,6 +59,11 @@ export function Returning({
         address: account!,
       })
       setHasMessageToSign(false)
+      communication?.emitUserInfo({
+        address: account,
+        message: paywallConfig.messageToSign,
+        signedMessage: signature,
+      })
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(error.message)

@@ -13,6 +13,7 @@ import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from '../../operations/userMetadataOperations'
 import * as membershipOperations from '../../operations/membershipOperations'
 import * as Normalizer from '../../utils/normalizer'
+import { Task } from 'graphile-worker'
 
 /**
  * send email notification for key that are about to expire
@@ -94,7 +95,7 @@ async function notifyExpiringKey(key: any, network: number) {
   }
 }
 
-export async function notifyExpiringKeysForNetwork() {
+export const notifyExpiringKeysForNetwork: Task = async () => {
   const now = new Date()
 
   const end = new Date(now.getTime())

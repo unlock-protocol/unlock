@@ -10,6 +10,11 @@ import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOp
 import { sendEmail } from '../../operations/wedlocksOperations'
 import * as userMetadataOperations from '../../operations/userMetadataOperations'
 import * as Normalizer from '../../utils/normalizer'
+import { Task } from 'graphile-worker'
+import { Hook, ProcessedHookItem } from '../../models'
+import { Op } from 'sequelize'
+import { filterHooksByTopic, notifyHook } from '../helpers'
+import { TOPIC_EXPIRED_KEYS_ON_NETWORK } from '../topics'
 
 /**
  * Send email notification for expired key
@@ -65,7 +70,58 @@ async function notifyExpiredKey(key: any, network: number) {
   }
 }
 
-export async function notifyExpiredKeysForNetwork() {
+export const filterUnprocessedExpiredKeys = async (keys: any[]) => {
+  const keyIds = keys.map((key: any) => key.id)
+  const processedKeys = await ProcessedHookItem.findAll({
+    where: {
+      type: 'expired-keys',
+      objectId: {
+        [Op.in]: keyIds,
+      },
+    },
+  })
+
+  const unprocessedKeys = keys.filter(
+    (key: any) => !processedKeys.find((item) => item.objectId === key.id)
+  )
+  return unprocessedKeys
+}
+
+export const notifyExpiredKeysForLock = async (keys: any[]) => {
+  const hooks = await Hook.findAll({
+    where: {
+      mode: 'subscribe',
+      expiration: {
+        [Op.gte]: new Date(),
+      },
+    },
+  })
+  const expiredKeysHook = await filterHooksByTopic(
+    hooks,
+    TOPIC_EXPIRED_KEYS_ON_NETWORK
+  )
+
+  const events = await Promise.allSettled(
+    expiredKeysHook.map(async (hook) => {
+      const data = keys.filter((key: any) => key.lock.id === hook.lock)
+      const hookEvent = await notifyHook(hook, {
+        data,
+        network: hook.network,
+      })
+      return hookEvent
+    })
+  )
+  const items = keys.map((key: any) => ({
+    type: 'expired-keys',
+    objectId: key.id,
+    network: key.lock.network,
+  }))
+
+  await ProcessedHookItem.bulkCreate(items)
+  return events
+}
+
+export const notifyExpiredKeysForNetwork: Task = async () => {
   const now = new Date()
 
   const yesterday = new Date(now.getTime())
@@ -95,8 +151,11 @@ export async function notifyExpiredKeysForNetwork() {
     logger.info(
       `keys expired for ${networks[networkId]?.name}: ${keys?.length}`
     )
+
     for (const key of keys) {
       await notifyExpiredKey(key, Number(networkId))
     }
+    const unprocessedKeys = await filterUnprocessedExpiredKeys(keys)
+    await notifyExpiredKeysForLock(unprocessedKeys)
   }
 }

@@ -9,18 +9,18 @@
   },
   "dependencies": {
     "@babel/core": "7.21.5",
-    "@typescript-eslint/eslint-plugin": "5.60.1",
-    "@typescript-eslint/parser": "5.60.1",
-    "babel-plugin-polyfill-corejs2": "0.4.3",
+    "@typescript-eslint/eslint-plugin": "6.3.0",
+    "@typescript-eslint/parser": "6.3.0",
+    "babel-plugin-polyfill-corejs2": "0.4.5",
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "eslint": "8.44.0",
-    "eslint-plugin-prettier": "latest",
-    "eslint-plugin-vitest": "0.2.6",
+    "eslint": "8.46.0",
+    "eslint-plugin-prettier": "5.0.0",
+    "eslint-plugin-vitest": "0.2.8",
     "husky": "8.0.3",
     "lint-staged": "13.2.3",
-    "prettier": "2.8.8"
+    "prettier": "3.0.0"
   },
   "workspaces": [
     "packages/**",
@@ -34,7 +34,8 @@
     "paywall",
     "paywall-app",
     "wedlocks",
-    "provider"
+    "provider",
+    "docs"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -82,7 +83,7 @@
   "packageManager": "yarn@3.5.1",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
-    "*.{js,ts,tsx,sol,css,md}": "prettier --write",
+    "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",
     "*.sol": "yarn lint:contracts"
   }
 }
