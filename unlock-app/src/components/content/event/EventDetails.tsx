@@ -750,7 +750,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         {isLockManager && (
           <div className="grid gap-6 mt-12">
             <span className="text-2xl font-bold text-brand-dark">
-              Tools for you, the lock manager
+              Tools for you, the event organizer
             </span>
             <div className="grid gap-4">
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
