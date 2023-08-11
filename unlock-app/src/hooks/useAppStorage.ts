@@ -29,6 +29,7 @@ export function useAppStorage() {
   }, [])
 
   const getStorage = useCallback((key: string): string | null => {
+    if (typeof window === 'undefined') return null
     try {
       const value = localStorage.getItem(getKey(key))
       if (!value) return null
