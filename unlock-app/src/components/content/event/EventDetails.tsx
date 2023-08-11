@@ -34,6 +34,7 @@ import dayjs from 'dayjs'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { FiMapPin as MapPinIcon } from 'react-icons/fi'
+import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
 import { IconType } from 'react-icons'
 import { useValidKey, useValidKeyBulk } from '~/hooks/useKey'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
@@ -60,6 +61,45 @@ interface EventDetailProps {
   icon: IconType
   label: string
   children?: ReactNode
+}
+
+const EventLocation = ({ eventData }) => {
+  let inPerson = true
+  if (eventData.ticket?.event_address.startsWith('http')) {
+    inPerson = false
+  }
+  return (
+    <EventDetail label="Location" icon={inPerson ? MapPinIcon : ZoomIcon}>
+      <div
+        style={{ color: `#${eventData.background_color}` }}
+        className="flex flex-col gap-0.5"
+      >
+        {inPerson && (
+          <>
+            <span className="text-lg font-normal capitalize text-brand-dark">
+              {eventData.ticket?.event_address}
+            </span>
+            <Link
+              target="_blank"
+              className="text-base font-bold"
+              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
+            >
+              Show map
+            </Link>
+          </>
+        )}
+        {!inPerson && (
+          <Link
+            target="_blank"
+            className="text-base "
+            href={eventData.ticket?.event_address}
+          >
+            Video-conferencing
+          </Link>
+        )}
+      </div>
+    </EventDetail>
+  )
 }
 
 const EventDetail = ({ label, icon, children }: EventDetailProps) => {
@@ -673,25 +713,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                     </div>
                   </EventDetail>
                 )}
-                {hasLocation && (
-                  <EventDetail label="Location" icon={MapPinIcon}>
-                    <div
-                      style={{ color: `#${eventData.background_color}` }}
-                      className="flex flex-col gap-0.5"
-                    >
-                      <span className="text-lg font-normal capitalize text-brand-dark">
-                        {eventData.ticket?.event_address}
-                      </span>
-                      <Link
-                        target="_blank"
-                        className="text-base font-bold"
-                        href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
-                      >
-                        Show map
-                      </Link>
-                    </div>
-                  </EventDetail>
-                )}
+                {hasLocation && <EventLocation eventData={eventData} />}
               </div>
               <div className="mt-14">
                 <h2 className="text-2xl font-bold">Event Information</h2>
