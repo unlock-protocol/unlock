@@ -511,6 +511,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
         metadataInputs: [
           {
             name: 'fullname',
+            label: 'Full name',
             defaultValue: '',
             type: 'text',
             required: true,
