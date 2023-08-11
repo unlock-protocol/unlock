@@ -35,7 +35,6 @@ jobs:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
       NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_UNLOCK_GA_ID }}
-      NEXT_PUBLIC_UNLOCK_ENV: prod
 
   deploy-paywall-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -64,21 +63,6 @@ jobs:
       SMTP_USERNAME: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_USERNAME }}
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
       BASE64_WEDLOCKS_PRIVATE_KEY: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
-
-  deploy-unlock-app:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      service: unlock-app
-      target-env: staging
-      bypass_diff_check: bypass
-    secrets:
-      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
-      NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
-      NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
-      NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
 
   deploy-unlock-app-vercel:
     needs: run-all-tests
