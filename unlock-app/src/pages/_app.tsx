@@ -12,7 +12,7 @@ import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 
-const UnlockApp = ({ Component }: AppProps) => {
+const UnlockApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     if (!config.isServer) {
       if (config.env === 'prod' && config.tagManagerArgs) {
@@ -27,7 +27,7 @@ const UnlockApp = ({ Component }: AppProps) => {
         <ConnectModalProvider>
           <GlobalWrapper>
             <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
-              <Component />
+              <Component pageProps={pageProps} />
             </ErrorBoundary>
             <Toaster />
           </GlobalWrapper>
