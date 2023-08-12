@@ -699,7 +699,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
                 {hasDate && (
-                  <EventDetail label="Date & Time" icon={CalendarIcon}>
+                  <EventDetail label="Date" icon={CalendarIcon}>
                     <div
                       style={{ color: `#${eventData.background_color}` }}
                       className="flex flex-col text-lg font-normal capitalize text-brand-dark"
