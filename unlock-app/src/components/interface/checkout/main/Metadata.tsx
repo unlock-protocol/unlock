@@ -122,7 +122,7 @@ export const MetadataInputs = ({
       {hideRecipientAddress ? (
         <div className="space-y-1">
           <div className="ml-1 text-sm">
-            {isUnlockAccount ? 'Email:' : label}
+            {isUnlockAccount ? 'Email' : label}:
           </div>
           <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
             <div className="w-32 text-sm truncate">
@@ -174,7 +174,7 @@ export const MetadataInputs = ({
               <div className="grid gap-1.5">
                 <div className="flex items-center justify-between">
                   <label className="text-sm" htmlFor={label}>
-                    {label}
+                    {label}:
                   </label>
                   <div className="flex items-center gap-2">
                     <div className="text-sm">No wallet address?</div>
@@ -234,7 +234,7 @@ export const MetadataInputs = ({
           return (
             <Input
               key={name}
-              label={inputLabel}
+              label={`${inputLabel}:`}
               autoComplete={inputLabel}
               defaultValue={defaultValue}
               size="small"
@@ -256,6 +256,7 @@ export const MetadataInputs = ({
 const emailInput: MetadataInput = {
   type: 'email',
   name: 'email',
+  label: 'Email',
   required: true,
   placeholder: 'your@email.com',
 }
