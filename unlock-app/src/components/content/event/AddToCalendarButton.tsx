@@ -31,12 +31,11 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
   const calendarEvent = {
     title: event.name,
     start: eventDate,
+    location: event.ticket.event_address,
     description: event.description || '',
-    // https://github.com/AnandChowdhary/calendar-link#options
-    allDay: false, // default for now... change once we have metadata for it (or for end)
-    // fallback to 1 hour duration for the events that's to have end date
-    end: endDate ? endDate : new Date(eventDate.getTime() + 1000 * 60 * 60),
-    url: event.url,
+    allDay: !event.event_start_date,
+    end: endDate,
+    url: window.location.toString(),
   }
 
   return (
