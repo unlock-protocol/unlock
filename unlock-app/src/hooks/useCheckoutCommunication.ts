@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { usePostmateParent } from './usePostmateParent'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
@@ -106,14 +106,15 @@ export const resolveOnEvent = (name: string) => {
 // This is just a convenience hook that wraps the `emit` function
 // provided by the parent around some communication helpers. If any
 // events are called before the handshake completes, they go into a
-// buffer. After that, once the handle to the parent is available, all
-// the buffered events are emitted and future events are emitted
+// outgoingBuffer. After that, once the handle to the parent is available,
+// all the buffered events are emitted and future events are emitted
 // directly.
 export const useCheckoutCommunication = () => {
   const [providerAdapter, setProviderAdapter] = useState<
     AsyncSendable | undefined
   >(undefined)
-  const [buffer, setBuffer] = useState([] as BufferedEvent[])
+  const [outgoingBuffer, setOutgoingBuffer] = useState([] as BufferedEvent[])
+  const [incomingBuffer, setIncomingBuffer] = useState([] as MethodCall[])
   const [paywallConfig, setPaywallConfig] = useState<PaywallConfig | undefined>(
     undefined
   )
@@ -123,31 +124,21 @@ export const useCheckoutCommunication = () => {
   const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
 
-  // @ts-expect-error - attach to window
-  window.px = provider
+  const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+    if (!parent) {
+      setOutgoingBuffer([...outgoingBuffer, { kind, payload }])
+    } else {
+      parent.emit(kind, payload)
+    }
+  }
 
-  const parent = usePostmateParent({
-    setConfig: (config: PaywallConfig) => {
-      setPaywallConfig(config)
-      setOauthConfig(undefined)
-    },
-    authenticate: (config: any) => {
-      setOauthConfig({
-        clientId: config?.clientId,
-        responseType: config?.responseType ?? '',
-        state: config?.state ?? '',
-        redirectUri: config?.redirectUri ?? '',
-      })
-      setPaywallConfig(undefined)
-    },
-    resolveMethodCall,
-    resolveOnEvent,
-    resolveOnEnable,
-    handleMethodCallEvent: async ({ id, params, method }: MethodCall) => {
-      // @ts-expect-error but we know it's there
-      const px = window.px
-      if (px?.send) {
-        return px
+  // Handler for messages from the parent
+  const handleMethodCallEvent = useCallback(
+    async ({ id, params, method }: MethodCall) => {
+      if (!provider) {
+        setIncomingBuffer([...incomingBuffer, { id, params, method }])
+      } else if (provider.send) {
+        return provider
           .send(method, params)
           .then((response: unknown) => {
             pushOrEmit(CheckoutEvents.resolveMethodCall, {
@@ -172,6 +163,27 @@ export const useCheckoutCommunication = () => {
         })
       }
     },
+    [incomingBuffer, provider, pushOrEmit]
+  )
+
+  const parent = usePostmateParent({
+    setConfig: (config: PaywallConfig) => {
+      setPaywallConfig(config)
+      setOauthConfig(undefined)
+    },
+    authenticate: (config: any) => {
+      setOauthConfig({
+        clientId: config?.clientId,
+        responseType: config?.responseType ?? '',
+        state: config?.state ?? '',
+        redirectUri: config?.redirectUri ?? '',
+      })
+      setPaywallConfig(undefined)
+    },
+    resolveMethodCall,
+    resolveOnEvent,
+    resolveOnEnable,
+    handleMethodCallEvent,
     handleOnEvent: async (eventName: string) => {
       if (!provider) {
         return
@@ -182,25 +194,25 @@ export const useCheckoutCommunication = () => {
     },
   })
 
-  let insideIframe = false
-
-  const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
-    if (!parent) {
-      setBuffer([...buffer, { kind, payload }])
-    } else {
-      parent.emit(kind, payload)
-    }
-  }
-
-  // Once parent is available, we flush the buffer
+  // Once parent is available, we flush the outgoingBuffer
   useEffect(() => {
-    if (parent && buffer.length > 0) {
-      buffer.forEach((event) => {
+    if (parent && outgoingBuffer.length > 0) {
+      outgoingBuffer.forEach((event) => {
         parent.emit(event.kind, event.payload)
       })
-      setBuffer([])
+      setOutgoingBuffer([])
     }
-  }, [parent, buffer])
+  }, [parent, outgoingBuffer])
+
+  // Once provider is available, we flush the incomingBuffer
+  useEffect(() => {
+    if (provider && incomingBuffer.length > 0) {
+      incomingBuffer.forEach(({ id, params, method }) => {
+        handleMethodCallEvent({ id, params, method })
+      })
+      setIncomingBuffer([])
+    }
+  }, [provider, incomingBuffer, handleMethodCallEvent])
 
   const emitUserInfo = (info: UserInfo) => {
     // if user already emitted, avoid re-emitting
@@ -236,6 +248,7 @@ export const useCheckoutCommunication = () => {
   }
 
   // If the page is not inside an iframe, window and window.top will be identical
+  let insideIframe = false
   if (typeof window !== 'undefined') {
     insideIframe = window.top !== window
   }

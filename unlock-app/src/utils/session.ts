@@ -6,6 +6,7 @@ export const getSessionKey = (address: string) =>
   `${APP_NAME}.session_${address.trim().toLowerCase()}`
 
 export const getCurrentAccount = () => {
+  if (typeof window === 'undefined') return null
   return localStorage.getItem(CURRENT_ACCOUNT_KEY)
 }
 
