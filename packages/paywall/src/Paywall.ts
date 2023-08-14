@@ -111,7 +111,9 @@ export class Paywall {
       clientId: window.location.origin.toString(),
     }
   ) => {
-    this.provider = new PaywallProvider(this, unlockUrl, config)
+    if (!this.provider) {
+      this.provider = new PaywallProvider(this, unlockUrl, config)
+    }
     return this.provider
   }
 
@@ -226,7 +228,8 @@ export class Paywall {
       )
     } else {
       console.error(
-        'unknown method to call provider! Please make sure you use and EIP1193 provider!'
+        'unknown method to call provider! Please make sure you use and EIP1193 provider!',
+        { provider }
       )
     }
   }
