@@ -96,10 +96,11 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
           </div>
         </Dialog>
       </Transition.Root>
+
       <Disclosure label="Event ticketing">
         <>
           <p>
-            Add NFT properties for event. These will be displayed on NFT
+            Add NFT properties for the event. These will be displayed on NFT
             marketplaces and wallets that support them.
           </p>
           <p className="">

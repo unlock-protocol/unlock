@@ -146,7 +146,7 @@ export const MemberCard = ({
                     setExpireAndRefundOpen(true)
                   }}
                 >
-                  Refund
+                  Cancel
                 </Button>
               )}
               {canExtendKey && (
