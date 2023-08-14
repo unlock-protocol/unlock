@@ -49,6 +49,7 @@ export const EventContentWithProps = ({
 
   return (
     <AppLayout
+      showFooter={!showDetails}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
