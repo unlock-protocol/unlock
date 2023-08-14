@@ -13,7 +13,7 @@
       "require": "./dist/index.umd.js"
     }
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "tsx scripts/build.ts && vite build && tsup ./lib/index.ts --dts-only",
