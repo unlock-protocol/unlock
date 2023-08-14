@@ -92,7 +92,7 @@ export const Form = ({
     }
   }
 
-  const { isEvent } = getLockTypeByMetadata(defaultValues)
+  const { isEvent, isCertification } = getLockTypeByMetadata(defaultValues)
 
   const errorFields = Object.keys(errors)
   return (
@@ -100,11 +100,13 @@ export const Form = ({
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
           <DetailForm defaultValues={defaultValues} />
-          <TicketForm
-            lockAddress={lockAddress}
-            network={network}
-            disabled={isMetadataUpdating}
-          />
+          {!isCertification && (
+            <TicketForm
+              lockAddress={lockAddress}
+              network={network}
+              disabled={isMetadataUpdating}
+            />
+          )}
           {!isEvent && (
             <CertificationMetadataForm
               lockAddress={lockAddress}
