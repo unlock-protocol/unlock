@@ -206,7 +206,6 @@ export function UpdateMetadataForm({ lockAddress, network, keyId }: Props) {
   const isLockSelected = selected.lockAddress && selected.network
 
   const isTokenURIEditable = useMemo(() => {
-    return true
     if (!tokenURI || isTokenURILoading) {
       return false
     }
