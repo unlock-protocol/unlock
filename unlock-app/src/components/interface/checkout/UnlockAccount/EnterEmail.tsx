@@ -2,7 +2,7 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import { useStorageService } from '~/utils/withStorageService'
+import { storage } from '~/config/storage'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService } from './unlockAccountMachine'
 import Link from 'next/link'
@@ -21,13 +21,12 @@ export function EnterEmail({ unlockAccountService }: Props) {
     setError,
   } = useForm()
   const { email } = useAuth()
-  const storageService = useStorageService()
   const [isContinuing, setIsContinuing] = useState(false)
 
   async function onSubmit({ email }: FieldValues) {
     try {
       setIsContinuing(true)
-      const existingUser = await storageService.userExist(email)
+      const existingUser = await storage.userExist(email)
       send({
         type: 'SUBMIT_USER',
         email,
