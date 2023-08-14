@@ -128,7 +128,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   )}
                   {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
                     <LabeledItem
-                      label="Tickets available"
+                      label="Available"
                       icon={QuantityIcon}
                       value={
                         formattedData?.isSoldOut
