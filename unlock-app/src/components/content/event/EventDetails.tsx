@@ -506,6 +506,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const injectedProvider = selectProvider(config)
 
   const paywallConfig: PaywallConfig = {
+    title: 'Registration',
+    icon: metadata?.image,
     locks: {
       [lockAddress]: {
         network,
