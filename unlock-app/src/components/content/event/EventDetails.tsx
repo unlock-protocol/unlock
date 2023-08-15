@@ -29,7 +29,7 @@ import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
-import { getEventDate, getEventEndDate } from './utils'
+import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
@@ -54,6 +54,8 @@ import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
 import { PaywallConfig } from '~/unlockTypes'
+import useClipboard from 'react-use-clipboard'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -451,6 +453,16 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const { isEvent } = getLockTypeByMetadata(metadata)
 
+  const eventUrl = getEventUrl({
+    lockAddress,
+    network,
+    metadata,
+  })
+
+  const [_, setCopied] = useClipboard(eventUrl, {
+    successDuration: 1000,
+  })
+
   if (isMetadataLoading || isLoadingSettings || isLoadingEventLocks) {
     return (
       <Placeholder.Root>
@@ -682,7 +694,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <TweetItButton event={eventData} />
                 </li>
                 <li>
-                  <CopyUrlButton />
+                  <CopyUrlButton eventUrl={eventUrl} />
                 </li>
               </ul>
             </section>
@@ -757,6 +769,31 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               Tools for you, the event organizer
             </span>
             <div className="grid gap-4">
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
+                    title="Promote your event"
+                    description="Share your event's URL with your community and start selling tickets!"
+                  />
+                  <pre className="">{eventUrl}</pre>
+                </div>
+                <div className="md:col-span-1">
+                  <Button
+                    key={lockAddress}
+                    variant="black"
+                    className="button border w-full"
+                    size="small"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setCopied()
+                      ToastHelper.success('Copied!')
+                    }}
+                  >
+                    Copy URL
+                  </Button>
+                </div>
+              </Card>
+
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
