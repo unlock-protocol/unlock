@@ -1,12 +1,5 @@
-import {
-  Button,
-  Input,
-  Placeholder,
-  Select,
-  ToggleSwitch,
-} from '@unlock-protocol/ui'
+import { Button, Placeholder, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Controller, useForm } from 'react-hook-form'
-import { SLUG_REGEXP } from '~/constants'
 import { useCheckoutConfigsByUser } from '~/hooks/useCheckoutConfig'
 import {
   useGetLockSettings,
@@ -71,7 +64,6 @@ export const EventCheckoutUrl = ({
 
   const {
     control,
-    register,
     setValue,
     watch,
     formState: { errors, isDirty },
@@ -148,31 +140,6 @@ export const EventCheckoutUrl = ({
   return (
     <div>
       <form className="grid gap-4" onSubmit={methods.handleSubmit(onSubmit)}>
-        <Input
-          {...register('slug', {
-            required: {
-              value: !hasCustomUrl,
-              message: 'This field is required.',
-            },
-            pattern: {
-              value: SLUG_REGEXP,
-              message: 'Slug format is not valid',
-            },
-            validate: async (slug: string | undefined) => {
-              if (slug) {
-                const data = (await storage.getLockSettingsBySlug(slug))?.data
-                return data ? 'Slug already used, please use another one' : true
-              }
-              return true
-            },
-          })}
-          value={settings?.slug}
-          disabled={hasCustomUrl || disabled}
-          type="text"
-          label="Custom URL"
-          error={errors?.slug?.message as string}
-          description="Custom URL that will be used for the page."
-        />
         <div className="w-full">
           <ToggleSwitch
             title="Set a custom checkout URL"

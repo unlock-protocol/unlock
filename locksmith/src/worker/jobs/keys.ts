@@ -32,6 +32,7 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
   const keyIds = keys.map((key: any) => key.id)
   const processedKeys = await ProcessedHookItem.findAll({
     where: {
+      type: 'key',
       objectId: {
         [Op.in]: keyIds,
       },

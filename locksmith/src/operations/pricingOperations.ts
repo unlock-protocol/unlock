@@ -5,6 +5,7 @@ import { ethers } from 'ethers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
 import { Currencies } from '@unlock-protocol/core'
+import normalizer from '../utils/normalizer'
 
 interface Price {
   decimals: number
@@ -140,7 +141,9 @@ export async function getDefiLammaPrice({
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) => item.address?.toLowerCase() === erc20Address?.toLowerCase()
+    (item) =>
+      normalizer.ethereumAddress(item.address) ===
+      normalizer.ethereumAddress(erc20Address)
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {

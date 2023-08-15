@@ -21,22 +21,6 @@ jobs:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
-  deploy-locksmith-websub-staging:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
-    uses: ./.github/workflows/_heroku.yml
-    with:
-      bypass_diff_check: bypass
-      service: locksmith-websub
-      build-dir: locksmith
-      command: 'yarn worker'
-      container-type: worker
-      app-name: locksmith-websub-staging
-    secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-
   # Netlify Deployments
   # The unlock-protocol-com site is built from `master` as we don't use a staging site for it.
   deploy-unlock-protocol-com-production:
@@ -51,7 +35,6 @@ jobs:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_AUTH_TOKEN }}
       NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_PROD_UNLOCK_GA_ID }}
-      NEXT_PUBLIC_UNLOCK_ENV: prod
 
   deploy-paywall-app:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
@@ -81,20 +64,27 @@ jobs:
       SMTP_PASSWORD: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_SMTP_PASSWORD }}
       BASE64_WEDLOCKS_PRIVATE_KEY: ${{ secrets.WEDLOCKS_NETLIFY_STAGING_BASE64_WEDLOCKS_PRIVATE_KEY }}
 
-  deploy-unlock-app:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
+  deploy-unlock-app-vercel:
     needs: run-all-tests
-    uses: ./.github/workflows/_netlify.yml
-    with:
-      service: unlock-app
-      target-env: staging
-      bypass_diff_check: bypass
-    secrets:
-      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
-      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
-      NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
-      NEXT_PUBLIC_STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}
-      NEXT_PUBLIC_ETHPASS_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_ETHPASS_KEY }}
+    if: ${{ github.repository_owner == 'unlock-protocol'  }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.3.1
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+      - uses: ./.github/actions/vercel
+        with:
+          service: unlock-app
+          target-env: staging
 
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
