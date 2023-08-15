@@ -42,7 +42,7 @@ const config = {
   },
   output: 'standalone',
   experimental: {
-    // this includes files from the monorepo base two directories up
+    // this includes files from the monorepo base directory up
     outputFileTracingRoot: path.join(__dirname, '../'),
   },
 }

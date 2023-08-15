@@ -34,4 +34,4 @@ runs:
         # show args
         echo "${{ inputs.target-env }} ${{ inputs.service }} vercel (project-id: $VERCEL_PROJECT_ID) $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
         # run command
-        scripts/deploy.sh ${{ inputs.target-env }} ${{ inputs.service }} vercel "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }} "yarn dlx vercel build && yarn dlx vercel deploy --prebuilt"
+        scripts/deploy.sh ${{ inputs.target-env }} ${{ inputs.service }} vercel "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked }}
