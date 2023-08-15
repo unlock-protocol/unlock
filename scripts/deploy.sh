@@ -9,11 +9,10 @@ TARGET=$3
 COMMIT=$4
 BRANCH=$5
 IS_FORKED_PR=$6
-REPO_ROOT=`dirname "$0"`/..
+NPM_SCRIPT=${7:-"yarn workspace @unlock-protocol/$SERVICE deploy-$TARGET"}
+REPO_ROOT=$(dirname "$0")/..
 BASE_DOCKER_COMPOSE=$REPO_ROOT/docker/docker-compose.yml
 DOCKER_COMPOSE_FILE=$REPO_ROOT/docker/docker-compose.ci.yml
-
-NPM_SCRIPT="yarn workspace @unlock-protocol/$SERVICE deploy-$TARGET"
 
 # Setting the right env var
 export UNLOCK_ENV=$ENV_TARGET
@@ -37,7 +36,7 @@ fi
 # For example: UNLOCK_APP_NETLIFY_STAGING_SITE_ID will be passed as SITE_ID
 UPCASE_SERVICE="${SERVICE^^}"
 TARGET_PREFIX="${UPCASE_SERVICE//-/_}_${TARGET^^}_$ENV_PREFIX"
-ENV_VARS=`env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g"`
+ENV_VARS=$(env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g")
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
