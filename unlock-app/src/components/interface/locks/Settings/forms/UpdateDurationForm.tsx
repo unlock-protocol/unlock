@@ -93,7 +93,7 @@ export const UpdateDurationForm = ({
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <label className="block px-1 text-base" htmlFor="">
-            Memberships duration (days):
+            Membership duration (in days):
           </label>
           <ToggleSwitch
             title="Unlimited"
@@ -118,6 +118,7 @@ export const UpdateDurationForm = ({
             step={1}
             disabled={unlimitedDuration || disabledInput}
             {...register('expirationDuration', {
+              valueAsNumber: true,
               required: !unlimitedDuration,
               min: 0,
             })}

@@ -4,8 +4,11 @@ export function emailAddress(input: string): string {
   return input.toLocaleLowerCase()
 }
 
-export function ethereumAddress(input: string): string {
-  return ethers.utils.getAddress(input)
+export function ethereumAddress(input?: string): string {
+  if (!input) {
+    return ''
+  }
+  return ethers.utils.getAddress(input.trim())
 }
 
 export const getValidNumber = (value: string | number): number | undefined => {

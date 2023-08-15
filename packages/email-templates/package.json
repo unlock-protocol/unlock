@@ -8,7 +8,7 @@
   ],
   "main": "dist",
   "dependencies": {
-    "handlebars": "4.7.7"
+    "handlebars": "4.7.8"
   },
   "devDependencies": {
     "@vitest/coverage-c8": "0.31.4",

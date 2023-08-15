@@ -16,7 +16,7 @@ const ClaimBody = z.object({
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
   '0xafcfff71f3e717fcdb0b6a1bf20026304fd41bee',
-]
+].map((address) => normalizer.ethereumAddress(address))
 
 /**
  * Claim API on free locks on chains with low transaction fees.
@@ -57,7 +57,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
+  if (
+    LOCKS_WITH_DISABLED_CLAIMS.indexOf(
+      normalizer.ethereumAddress(lockAddress)
+    ) > -1
+  ) {
     return response.status(400).send({
       message: 'Claim disabled for this lock',
     })

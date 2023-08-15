@@ -7,6 +7,7 @@ import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import FileSaver from 'file-saver'
 import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+
 interface CheckoutPreviewProps {
   paywallConfig?: PaywallConfig
   id?: string | null
@@ -44,7 +45,6 @@ export const CheckoutShareOrDownload = ({
     successDuration: 2000,
   })
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
-  const buttonVariant = hasLocks ? 'primary' : 'outlined-primary'
 
   useEffect(() => {
     const url = new URL(`${window.location.origin}/checkout`)
@@ -67,7 +67,6 @@ export const CheckoutShareOrDownload = ({
     <div className="flex flex-col gap-3 md:flex-row">
       <Button
         size={size}
-        variant={buttonVariant}
         disabled={!hasLocks}
         onClick={() => {
           setCopied()
@@ -77,8 +76,8 @@ export const CheckoutShareOrDownload = ({
         Copy URL
       </Button>
       <Button
+        variant="transparent"
         size={size}
-        variant={buttonVariant}
         disabled={!hasLocks}
         onClick={() => onDownloadJson(paywallConfig)}
       >

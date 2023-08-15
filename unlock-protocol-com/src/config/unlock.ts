@@ -41,4 +41,4 @@ function getUnlockConfig(environment?: string) {
   }
 }
 
-export const unlockConfig = getUnlockConfig(process.env.NEXT_PUBLIC_UNLOCK_ENV)
+export const unlockConfig = getUnlockConfig('prod')

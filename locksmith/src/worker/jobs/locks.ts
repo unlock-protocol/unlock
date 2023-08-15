@@ -27,6 +27,7 @@ async function fetchUnprocessedLocks(network: number, page = 0) {
   const lockIds = locks.map((lock: any) => lock.id)
   const processedLocks = await ProcessedHookItem.findAll({
     where: {
+      type: 'lock',
       objectId: {
         [Op.in]: lockIds,
       },
