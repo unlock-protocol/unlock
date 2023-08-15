@@ -803,6 +803,12 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                 </div>
                 <div className="md:col-span-1">
                   {eventLocks?.map(({ lockAddress, network }) => {
+                    let label = 'Manage attendees'
+                    if (eventLocks.length > 1) {
+                      label = `Manage attendees for ${minifyAddress(
+                        lockAddress
+                      )}`
+                    }
                     return (
                       <Button
                         key={lockAddress}
@@ -812,7 +818,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                         size="small"
                         href={`/locks/lock?address=${lockAddress}&network=${network}`}
                       >
-                        Manage attendees for {minifyAddress(lockAddress)}
+                        {label}
                       </Button>
                     )
                   })}
