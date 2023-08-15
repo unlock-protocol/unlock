@@ -785,8 +785,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
-                    title="Event detail"
-                    description="Need to change something? Access your contract (Lock) & update detail"
+                    title="Event details"
+                    description="Need to change something? Access your contract (Lock) and update its details."
                   />
                 </div>
                 <div className="md:col-span-1">
@@ -803,7 +803,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
               <Disclosure
                 label="Verifiers"
-                description="Add & manage trusted users at the event to help check-in attendees"
+                description="Add and manage trusted users at the event to help check-in attendees as they arrive."
               >
                 <div className="grid gap-2">
                   {eventLocks?.map(({ lockAddress, network }) => {
