@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Set the environment based on NODE_ENV or fallback to 'prod'
+# Set the environment based on NODE_ENV or fallback to 'production'
 if [ -z "$NODE_ENV" ]; then
-    environment="prod"
+    environment="production"
 else
     environment="$NODE_ENV"
 fi
