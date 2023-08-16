@@ -35,16 +35,20 @@ export const OGEvent = ({
   bannerURL,
 }: Props) => {
   return (
-    <div tw="flex flex-col bg-[#F5F5F5] h-full w-full rounded-xl p-6">
+    <div tw="flex flex-col bg-[#F5F5F5] h-full w-full rounded-xl">
       <div tw="relative flex flex-col w-full h-90">
         <img
           src={bannerURL}
-          tw="absolute top-6 bottom-0 right-6 left-6 w-[1100px]"
+          width="600"
+          height="600"
+          tw="absolute top-0 object-cover"
           aria-label={name}
         />
         <img
+          width="64"
+          height="64"
           src={iconURL}
-          tw="w-48 h-48 top-48 left-12 rounded-xl border-4 shadow-xl border-white"
+          tw="w-64 h-64 top-16 left-12 rounded-xl border-4 shadow-xl border-white"
           aria-label={name}
         />
       </div>

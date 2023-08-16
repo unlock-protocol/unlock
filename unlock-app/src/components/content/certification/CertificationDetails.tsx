@@ -90,7 +90,7 @@ const CertificationManagerOptions = ({
         )}
         <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3 rounded-2xl">
           <Card.Label
-            title="Certification detail"
+            title="Certification details"
             description="Need to change something? Access your contract (Lock) & update its
               details."
           />

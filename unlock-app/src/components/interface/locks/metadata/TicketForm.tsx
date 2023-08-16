@@ -6,7 +6,7 @@ import { config } from '~/config/app'
 import { Dialog, Transition } from '@headlessui/react'
 import Link from 'next/link'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { getEventPath } from '~/components/content/event/utils'
+import { getEventUrl } from '~/components/content/event/utils'
 import dayjs from 'dayjs'
 
 interface Props {
@@ -27,15 +27,14 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
     control,
   })
 
-  const eventPageUrl = new URL(
-    `${window.location.origin}${getEventPath({
-      lockAddress,
-      network,
-      metadata: {
-        slug,
-      },
-    })}`
-  )
+  const eventPageUrl = getEventUrl({
+    lockAddress,
+    network,
+    metadata: {
+      slug,
+    },
+  })
+
   const today = dayjs().format('YYYY-MM-DD')
   const minEndDate = ticket?.event_start_date ? ticket?.event_start_date : today
   const isSameDay = dayjs(ticket?.event_end_date).isSame(

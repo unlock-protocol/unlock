@@ -33,7 +33,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
     start: eventDate,
     location: event.ticket.event_address,
     description: event.description || '',
-    allDay: !event.event_start_date,
+    allDay: !event.ticket.event_start_date,
     end: endDate,
     url: window.location.toString(),
   }
