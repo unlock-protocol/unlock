@@ -1,4 +1,5 @@
-import { Button, Tooltip } from '@unlock-protocol/ui'
+import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
+import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { useActor } from '@xstate/react'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -169,12 +170,14 @@ export function SignedOut({
 }
 
 interface ConnectedCheckoutProps {
+  skipAccountDetails?: boolean
   injectedProvider?: unknown
   service: CheckoutService | ConnectService
   children?: ReactNode
 }
 
 export function Connected({
+  skipAccountDetails = false,
   service,
   injectedProvider,
   children,
@@ -236,13 +239,15 @@ export function Connected({
   return account ? (
     <div className="space-y-2">
       {children}
-      <SignedIn
-        isDisconnecting={isDisconnecting}
-        account={account}
-        email={email}
-        isUnlockAccount={!!isUnlockAccount}
-        onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
-      />
+      {!skipAccountDetails && (
+        <SignedIn
+          isDisconnecting={isDisconnecting}
+          account={account}
+          email={email}
+          isUnlockAccount={!!isUnlockAccount}
+          onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
+        />
+      )}
     </div>
   ) : connected ? (
     <div className="grid">
@@ -252,6 +257,7 @@ export function Connected({
           event.preventDefault()
           signIn()
         }}
+        iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
       >
         Sign message to Continue
       </Button>
