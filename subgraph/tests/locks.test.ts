@@ -43,7 +43,6 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockAddressV8,
-  defaultMockAddress,
 } from './constants'
 
 // mock contract functions
