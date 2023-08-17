@@ -13,7 +13,6 @@ import { prepareAll } from './templates/prepare'
  */
 const getTemplateAndParams = async (args, opts) => {
   let template = templates[args.template.toLowerCase()]
-  console.log(template)
 
   if (!template && args.failoverTemplate) {
     template = templates[args.failoverTemplate.toLowerCase()]
