@@ -6,8 +6,6 @@ import templates from '@unlock-protocol/email-templates'
 
 import { prepareAll } from './templates/prepare'
 
-console.log({ config })
-
 /**
  * Builds the template and params
  * @param {*} args
@@ -15,6 +13,7 @@ console.log({ config })
  */
 const getTemplateAndParams = async (args, opts) => {
   let template = templates[args.template.toLowerCase()]
+  console.log(template)
 
   if (!template && args.failoverTemplate) {
     template = templates[args.failoverTemplate.toLowerCase()]
