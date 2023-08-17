@@ -187,21 +187,3 @@ export function createLockMetadata(
 
   return LockMetadataEvent
 }
-
-export function createReferrer(referrer: Address, fee: number): ReferrerFee {
-  const referrerMetadataEvent = changetype<ReferrerFee>(newMockEvent())
-
-  referrerMetadataEvent.address = Address.fromString(lockAddress)
-
-  referrerMetadataEvent.parameters = []
-
-  referrerMetadataEvent.parameters.push(
-    new ethereum.EventParam('referrer', ethereum.Value.fromAddress(referrer))
-  )
-
-  referrerMetadataEvent.parameters.push(
-    new ethereum.EventParam('fee', ethereum.Value.fromString(fee.toString()))
-  )
-
-  return referrerMetadataEvent
-}

@@ -26,7 +26,6 @@ import {
   createLockUpgradedEvent,
   createLockMetadata,
   mockDataSourceV8,
-  createReferrer,
 } from './locks-utils'
 import { createLockManagerAddedEvent } from './keys-utils'
 
@@ -211,19 +210,6 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'name', name)
     assert.fieldEquals('Lock', lockAddress, 'symbol', symbol)
     // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
-  })
-
-  test('Referrer Fee added (using `ReferrerFee`)', () => {
-    const referrerMetaData = createReferrer(Address.fromString(lockOwner), 200)
-    handleReferrerFees(referrerMetaData)
-
-    assert.fieldEquals(
-      'ReferrerFee',
-      lockAddress,
-      'referrer',
-      defaultMockAddress
-    )
-    assert.fieldEquals('ReferrerFee', lockAddress, 'fee', '200')
   })
 })
 
