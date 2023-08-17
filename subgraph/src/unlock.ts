@@ -61,7 +61,7 @@ export function handleNewLock(event: NewLock): void {
   let version = BigInt.fromI32(0)
   let publicLockVersion = lockContract.try_publicLockVersion()
   if (!publicLockVersion.reverted) {
-    version = BigInt.fromI32(publicLockVersion.value.toI32())
+    version = BigInt.fromI32(publicLockVersion.value)
   }
 
   // dont index locks with versions lower than 5

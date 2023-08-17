@@ -1,0 +1,5 @@
+{
+    "network": "bsc",
+    "unlock" : "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
+    "unlockStartBlock": "12396000"
+  }

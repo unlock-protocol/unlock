@@ -8,11 +8,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: Unlock
-    network: avalanche
+    network: {{ network }}
     source:
       abi: Unlock
-      address: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3'
-      startBlock: 17188332
+      address: '{{unlock}}'
+      startBlock: {{unlockStartBlock}}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -39,7 +39,7 @@ dataSources:
 templates:
   - kind: ethereum
     name: PublicLock
-    network: avalanche
+    network: {{ network }}
     source:
       abi: PublicLock
     mapping:

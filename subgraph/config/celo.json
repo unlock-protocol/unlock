@@ -1,0 +1,5 @@
+{
+    "network": "celo",
+    "unlock" : "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+    "unlockStartBlock": "7179039"
+  }
