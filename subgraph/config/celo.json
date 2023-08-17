@@ -1,5 +1,7 @@
 {
     "network": "celo",
     "unlock" : "0x1FF7e338d5E582138C46044dc238543Ce555C963",
-    "unlockStartBlock": "7179039"
+    "unlockStartBlock": "7179039",
+    "unlock2" : "0x0000000000000000000000000000000000000000",
+    "unlockStartBlock2": "7179039"
   }

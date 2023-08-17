@@ -1,5 +1,7 @@
 {
     "network": "optimism",
     "unlock" : "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
-    "unlockStartBlock": "302400"
+    "unlockStartBlock": "302400",
+    "unlock2" : "0x0000000000000000000000000000000000000000",
+    "unlockStartBlock2": "302400"
   }

@@ -1,5 +1,7 @@
 {
     "network": "avalanche",
     "unlock" : "0x70cBE5F72dD85aA634d07d2227a421144Af734b3",
-    "unlockStartBlock": "17188332"
+    "unlockStartBlock": "17188332",
+    "unlock2" : "0x0000000000000000000000000000000000000000",
+    "unlockStartBlock2": "17188332"
   }

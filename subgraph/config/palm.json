@@ -1,5 +1,7 @@
 {
     "network": "palm-mainnet",
     "unlock" : "0x0314E34345C2327aC753C5Bf0D0751Cf6C1BfdE2",
-    "unlockStartBlock": "9856400"
+    "unlockStartBlock": "9856400",
+    "unlock2" : "0x0000000000000000000000000000000000000000",
+    "unlockStartBlock2": "9856400"
   }

@@ -1,5 +1,7 @@
 {
     "network": "xdai",
     "unlock" : "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
-    "unlockStartBlock": "19338700"
+    "unlockStartBlock": "19338700",
+    "unlock2" : "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+    "unlockStartBlock2": "14521200"
   }
