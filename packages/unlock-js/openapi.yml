@@ -407,6 +407,25 @@ components:
           type: string
           default: 'usd'
 
+    EventDetails:
+      type: object
+      nullable: false
+      properties:
+        eventName:
+          type: string
+        eventDescription:
+          type: string
+        eventDate:
+          type: string
+        eventTime:
+          type: string
+        eventAddress:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+
   parameters:
     Network:
       in: path
@@ -2620,6 +2639,22 @@ paths:
                     type: string
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/events/{network}/{lockAddress}:
+    get:
+      operationId: getEventDetails
+      description: Get the event details from lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get event details by lock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
 
   /v2/lock-settings/slug/{slug}:
     get:

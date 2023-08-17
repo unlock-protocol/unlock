@@ -33,6 +33,7 @@ import stripeRouter from './v2/stripe'
 import lockSettingsRouter from './v2/lock-settings'
 import certificateRouter from './v2/certificate'
 import ogRouter from './v2/og'
+import eventsRouter from './v2/events'
 import hooksRooter from './v2/hooks'
 import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 
@@ -99,6 +100,7 @@ router.use('/v2/stripe', stripeRouter)
 router.use('/v2/lock-settings', lockSettingsRouter)
 router.use('/v2/certificate', certificateRouter)
 router.use('/v2/og', ogRouter)
+router.use('/v2/events', eventsRouter)
 router.use('/v2/hooks', hooksRooter)
 
 router.use('/', (_, res) => {

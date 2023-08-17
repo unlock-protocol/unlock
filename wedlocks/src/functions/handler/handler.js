@@ -39,6 +39,7 @@ export const handler = async (event, context, responseCallback) => {
     const body = await preview({
       template: match[1],
       params: event.queryStringParameters,
+      json: !!event.headers.accept.match('application/json'),
     })
     return callback(null, {
       statusCode: 200,
