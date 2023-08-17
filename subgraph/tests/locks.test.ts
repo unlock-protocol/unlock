@@ -15,6 +15,7 @@ import {
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
+  handleReferrerFees,
 } from '../src/public-lock'
 
 import {
@@ -25,6 +26,7 @@ import {
   createLockUpgradedEvent,
   createLockMetadata,
   mockDataSourceV8,
+  createReferrer,
 } from './locks-utils'
 import { createLockManagerAddedEvent } from './keys-utils'
 
@@ -43,6 +45,7 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockAddressV8,
+  defaultMockAddress,
 } from './constants'
 
 // mock contract functions
@@ -208,6 +211,19 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'name', name)
     assert.fieldEquals('Lock', lockAddress, 'symbol', symbol)
     // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
+  })
+
+  test('Referrer Fee added (using `ReferrerFee`)', () => {
+    const referrerMetaData = createReferrer(defaultMockAddress, 200)
+    handleReferrerFees(referrerMetaData)
+
+    assert.fieldEquals(
+      'ReferrerFee',
+      lockAddress,
+      'referrer',
+      defaultMockAddress
+    )
+    assert.fieldEquals('ReferrerFee', lockAddress, 'fee', '200')
   })
 })
 

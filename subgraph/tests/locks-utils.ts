@@ -18,6 +18,7 @@ import {
 import { lockAddress, lockAddressV8 } from './constants'
 import { LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
+import { ReferrerFee } from '../generated/templates/PublicLock/PublicLock'
 
 export function mockDataSourceV8(): void {
   const v8context = new DataSourceContext()
@@ -185,4 +186,22 @@ export function createLockMetadata(
   )
 
   return LockMetadataEvent
+}
+
+export function createReferrer(referrer: string, fee: number): ReferrerFee {
+  const referrerMetadataEvent = changetype<ReferrerFee>(newMockEvent())
+
+  referrerMetadataEvent.address = Address.fromString(lockAddress)
+
+  referrerMetadataEvent.parameters = []
+
+  referrerMetadataEvent.parameters.push(
+    new ethereum.EventParam('referrer', ethereum.Value.fromString(referrer))
+  )
+
+  referrerMetadataEvent.parameters.push(
+    new ethereum.EventParam('fee', ethereum.Value.fromString(fee.toString()))
+  )
+
+  return referrerMetadataEvent
 }
