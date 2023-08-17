@@ -905,18 +905,35 @@ export default class Web3Service extends UnlockService {
   async referrerFees({
     lockAddress,
     network,
-    address,
   }: {
     lockAddress: string
     network: number
-    address: string
   }) {
-    const lockContract = await this.getLockContract(
-      lockAddress,
-      this.providerForNetwork(network)
+    const query = `{
+      lock(id:"${lockAddress}") {
+        referrerFees {
+          id
+          referrer
+          fee
+        }
+      }
+    }`
+
+    const result = await fetch(
+      'https://api.thegraph.com/subgraphs/name/easyrun2023/unlock-goerli',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      }
     )
-    const referrerFees = await lockContract.referrerFees(address)
-    return ethers.BigNumber.from(referrerFees).toNumber()
+      .then((r) => r.json())
+      .then((res) => res?.data?.lock?.referrerFees || [])
+
+    return result
   }
 
   async getBaseTokenURI({

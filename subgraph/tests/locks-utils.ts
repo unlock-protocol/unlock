@@ -18,6 +18,7 @@ import {
 import { lockAddress, lockAddressV8 } from './constants'
 import { LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
+import { ReferrerFee } from '../generated/templates/PublicLock/PublicLock'
 
 export function mockDataSourceV8(): void {
   const v8context = new DataSourceContext()

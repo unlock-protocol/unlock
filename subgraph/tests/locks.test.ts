@@ -15,6 +15,7 @@ import {
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
+  handleReferrerFees,
 } from '../src/public-lock'
 
 import {
@@ -43,6 +44,7 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockAddressV8,
+  defaultMockAddress,
 } from './constants'
 
 // mock contract functions
