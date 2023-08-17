@@ -7,5 +7,4 @@ tests/.bin
 *.wasm
 
 # generated files
-abis
 networks.json
