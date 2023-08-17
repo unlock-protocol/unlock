@@ -12,7 +12,7 @@ import eventKeyAirdropped from './templates/eventKeyAirdropped'
 import certificationKeyMined from './templates/certificationKeyMined'
 import certificationKeyAirdropped from './templates/certificationKeyAirdropped'
 import LockTemplates from './templates/locks'
-import { base } from './templates/base/index'
+import bases from './templates/base/index'
 
 export interface EmailTemplateProps {
   nowrap?: boolean
@@ -63,4 +63,4 @@ Object.keys(EmailTemplates).forEach((template: string) => {
 const getEmailTemplate = (template: Template | string) => templates[template]
 
 export default templates
-export { getEmailTemplate, base }
+export { getEmailTemplate, bases }

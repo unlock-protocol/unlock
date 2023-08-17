@@ -1,4 +1,5 @@
-import base from './templates/base'
+import prepare from './templates/prepare'
+import * as templates from '@unlock-protocol/email-templates'
 
 /**
  * Function which wraps a template into the base stuff
@@ -19,7 +20,10 @@ const wrap = (template, opts = {}) => {
   if (template.html) {
     wrappedTemplate.html = (params) => {
       const content = template.html(params)
-      const [buildTemplate, getImages] = base(opts)
+      const [buildTemplate, getImages] = prepare(
+        templates.bases[template.base || 'defaultBase'],
+        opts
+      )
 
       const result = buildTemplate({ content })
       const images = getImages()

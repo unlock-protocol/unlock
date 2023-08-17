@@ -10,6 +10,7 @@ handlebars.registerHelper('links', links)
 handlebars.registerHelper('transactionLink', transactionLink)
 
 export default {
+  base: 'events',
   subject: `Your ticket for {{lockName}}`,
   html: `<h1>A NFT ticket for "{{lockName}}" was added to your wallet!</h1>
 <p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just minted!</p>
