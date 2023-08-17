@@ -6,8 +6,6 @@ import templates from '@unlock-protocol/email-templates'
 
 import { prepareAll } from './templates/prepare'
 
-console.log({ config })
-
 /**
  * Builds the template and params
  * @param {*} args

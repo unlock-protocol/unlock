@@ -8,6 +8,7 @@ import { links } from './helpers/links'
 handlebars.registerHelper('links', links)
 
 export default {
+  base: 'events',
   subject: `Your ticket for {{{eventName}}}`, // using {{{}}} prevents HTML escaping
   html: `<h1>A NFT ticket for "{{lockName}}" was airdropped to you!</h1>
 

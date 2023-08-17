@@ -10,6 +10,7 @@ handlebars.registerHelper('links', links)
 handlebars.registerHelper('transactionLink', transactionLink)
 
 export default {
+  base: 'events',
   subject: `Your ticket for {{{eventName}}}`,
   html: `<h1>Here's your ticket for {{eventName}}</h1>
 
