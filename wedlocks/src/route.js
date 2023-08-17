@@ -45,19 +45,8 @@ const getTemplateAndParams = async (args, opts) => {
   return [await wrap(template, opts), templateParams]
 }
 
-// This function loads the template and performs the actual email sending
-// args: {
-//  template: templateName string
-//  failoverTemplate: failoverTemplate string
-//  recipient: email address string
-//  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
-//  attachments: array of attachements as data-uri strings (nodemailer will handle them)
-// }
-export const route = async (args) => {
-  // Wrap the template
-  const [template, templateParams] = await getTemplateAndParams(args)
-
-  const email = {
+const buildEmail = async (template, templateParams, args) => {
+  return {
     from: {
       name: args?.emailSender || 'Unlock Labs',
       address: config.sender,
@@ -71,9 +60,21 @@ export const route = async (args) => {
       .concat(args.attachments, template.attachments)
       .filter((x) => !!x),
   }
+}
 
+// This function loads the template and performs the actual email sending
+// args: {
+//  template: templateName string
+//  failoverTemplate: failoverTemplate string
+//  recipient: email address string
+//  params: params for the template (as a hash). Each param is key: value where value can be either a string, or an object with {sign: <boolean></boolean>, value: <string>}
+//  attachments: array of attachements as data-uri strings (nodemailer will handle them)
+// }
+export const route = async (args) => {
+  // Wrap the template
+  const [template, templateParams] = await getTemplateAndParams(args)
   const transporter = nodemailer.createTransport(config)
-  return transporter.sendMail(email)
+  return transporter.sendMail(await buildEmail(template, templateParams, args))
 }
 
 /**
@@ -94,8 +95,10 @@ export const preview = async (args) => {
       templateParams[key] = param
     }
   })
-
-  return template.html(templateParams)
+  if (!args.json) {
+    return template.html(templateParams)
+  }
+  return JSON.stringify(await buildEmail(template, templateParams, args))
 }
 
 export default {
