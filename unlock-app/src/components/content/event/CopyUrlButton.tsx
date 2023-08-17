@@ -4,8 +4,12 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 
 import useClipboard from 'react-use-clipboard'
 
-export const CopyUrlButton = () => {
-  const [_, setCopied] = useClipboard(window.location.toString(), {
+interface CopyUrlButtonProps {
+  eventUrl: string
+}
+
+export const CopyUrlButton = ({ eventUrl }: CopyUrlButtonProps) => {
+  const [_, setCopied] = useClipboard(eventUrl, {
     successDuration: 1000,
   })
 

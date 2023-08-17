@@ -47,3 +47,22 @@ export const getEventPath = ({
   }
   return `/event?lockAddress=${lockAddress}&network=${network}`
 }
+
+export const getEventUrl = ({
+  metadata,
+  lockAddress,
+  network,
+}: EventUrlProps): string => {
+  if (typeof window !== 'undefined' && window?.location?.origin) {
+    return `${window.location.origin}${getEventPath({
+      metadata,
+      lockAddress,
+      network,
+    })}`
+  }
+  return getEventPath({
+    metadata,
+    lockAddress,
+    network,
+  })
+}
