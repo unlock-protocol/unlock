@@ -214,7 +214,7 @@ describe('Describe Locks events', () => {
   })
 
   test('Referrer Fee added (using `ReferrerFee`)', () => {
-    const referrerMetaData = createReferrer(defaultMockAddress, 200)
+    const referrerMetaData = createReferrer(Address.fromString(lockOwner), 200)
     handleReferrerFees(referrerMetaData)
 
     assert.fieldEquals(
