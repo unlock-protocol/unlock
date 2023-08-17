@@ -30,6 +30,8 @@ if [ "$ENV_TARGET" = "prod" ]; then
   ENV_PREFIX="PROD_"
 fi
 
+
+# THIS IS DEPRECATED!
 # Custom variables passed for the target
 # The convention is to name the environment variables starting with the UPPERCASE version of the $TARGET,
 # then the $TARGET and finally $ENV_TARGET.
@@ -37,6 +39,9 @@ fi
 UPCASE_SERVICE="${SERVICE^^}"
 TARGET_PREFIX="${UPCASE_SERVICE//-/_}_${TARGET^^}_$ENV_PREFIX"
 ENV_VARS=$(env | grep "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$TARGET_PREFIX//g")
+
+# New approach: copy _all_ env vars (minus the prefixed ones)
+ALL_ENV_VARS=$(env | grep -v "^$TARGET_PREFIX" | awk '{print "-e ",$1}' ORS=' ')
 
 # PUBLISH: whether to publish/promote the deployed version
 PUBLISH="false"
