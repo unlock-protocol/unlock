@@ -15,7 +15,6 @@ import {
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
-  handleReferrerFees,
 } from '../src/public-lock'
 
 import {
