@@ -1,12 +1,13 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch, Card } from '@unlock-protocol/ui'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import LoadingIcon from '~/components/interface/Loading'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useWeb3Service } from '~/utils/withWeb3Service'
+import { getAddressForName } from '~/hooks/useEns'
 
 interface UpdateReferralFeeProps {
   lockAddress: string
@@ -35,7 +36,7 @@ export const UpdateReferralFee = ({
   const [isReferralFeeEnabled, setIsReferralFeeEnabled] = useState(false)
   const [isReferralAddressEnabled, setIsReferralAddressEnabled] =
     useState(false)
-  const web3Service = useWeb3Service()
+  const [isResolvingAddress, setIsResolvingAddress] = useState(false)
   const { getWalletService } = useAuth()
 
   const {
@@ -56,21 +57,45 @@ export const UpdateReferralFee = ({
     })
   }
 
-  const getReferrerFees = async (): Promise<ReferrerFee[]> => {
-    return web3Service.referrerFees({
-      lockAddress,
-      network,
-    })
+  const getLock = async () => {
+    const service = new SubgraphService()
+    return service.lock(
+      {
+        where: {
+          id: lockAddress,
+        },
+      },
+      {
+        network,
+      }
+    )
   }
 
   const setReferrerFeeMutation = useMutation(setReferrerFee)
 
   const onSubmit = async (fields: FormProps) => {
+    setIsResolvingAddress(true)
+
+    const lowerCasedAddress = fields.referralAddress.toLowerCase()
+
+    // This will return resolved ens name or existing address
+    const resolvedAddress = await getAddressForName(lowerCasedAddress)
+
+    // We are checking if the resolved address is valid
+    const isValidAddress = ethers.utils.isAddress(resolvedAddress.toLowerCase())
+
+    // If not a valid address return early and give an error toaster
+    if (!isValidAddress) {
+      ToastHelper.error(`Referrer address is not valid, please check the value`)
+      setIsResolvingAddress(false)
+      return
+    }
+
+    setIsResolvingAddress(false)
+
     const setReferrerFeePromise = setReferrerFeeMutation.mutateAsync({
       ...fields,
-      referralAddress: ethers.utils.getAddress(
-        fields.referralAddress.toLowerCase()
-      ),
+      referralAddress: ethers.utils.getAddress(resolvedAddress.toLowerCase()),
     })
 
     await ToastHelper.promise(setReferrerFeePromise, {
@@ -83,11 +108,12 @@ export const UpdateReferralFee = ({
   }
 
   const { isLoading, data: referralFeesData } = useQuery(
-    ['getReferrerFees', lockAddress, network, setReferrerFeeMutation.isSuccess],
-    async () => getReferrerFees()
+    ['getLock', lockAddress, network, setReferrerFeeMutation.isSuccess],
+    async () => getLock()
   )
 
-  const referralFees = referralFeesData || []
+  // @ts-ignore
+  const referralFees = (referralFeesData?.referrer as ReferrerFee[]) || []
 
   const isDisabledReferrerInput =
     disabled || setReferrerFeeMutation.isLoading || isLoading
@@ -130,8 +156,6 @@ export const UpdateReferralFee = ({
         <Input
           type="text"
           {...register('referralAddress', {
-            validate: (value) =>
-              ethers.utils.isAddress(value.toLowerCase()) || 'Invalid address',
             required: {
               value: true,
               message: 'This field is required.',
@@ -146,7 +170,7 @@ export const UpdateReferralFee = ({
         <Button
           className="w-full md:w-1/3"
           type="submit"
-          disabled={isDisabledReferrerInput}
+          disabled={isDisabledReferrerInput || isResolvingAddress}
           loading={setReferrerFeeMutation.isLoading}
         >
           Apply

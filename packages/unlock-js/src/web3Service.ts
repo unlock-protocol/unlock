@@ -899,43 +899,6 @@ export default class Web3Service extends UnlockService {
     return await unlockContract.publicLockLatestVersion()
   }
 
-  /**
-   * Returns referrer fees
-   */
-  async referrerFees({
-    lockAddress,
-    network,
-  }: {
-    lockAddress: string
-    network: number
-  }) {
-    const query = `{
-      lock(id:"${lockAddress}") {
-        referrerFees {
-          id
-          referrer
-          fee
-        }
-      }
-    }`
-
-    const result = await fetch(
-      'https://api.thegraph.com/subgraphs/name/easyrun2023/unlock-goerli',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({ query }),
-      }
-    )
-      .then((r) => r.json())
-      .then((res) => res?.data?.lock?.referrerFees || [])
-
-    return result
-  }
-
   async getBaseTokenURI({
     lockAddress,
     network,
