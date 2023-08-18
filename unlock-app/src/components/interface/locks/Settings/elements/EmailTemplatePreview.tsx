@@ -12,9 +12,6 @@ import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
-import { getMetadata } from '~/hooks/metadata'
-import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { getEventDate } from '~/components/content/event/utils'
 
 interface EmailTemplatePreviewProps {
   templateId: string
@@ -105,17 +102,14 @@ export const EmailTemplatePreview = ({
       lockAddress
     )
     const params = {
-      lockName: 'Email Preview',
       keychainUrl: `${config.unlockApp}/keychain`,
-      keyId: 5,
+      keyId: 5, // Placeholder!
       network,
-      openSeaUrl: '',
-      transferUrl: '',
       lockImage,
       customContent: customContentHtml,
       ...eventDetails,
       // certificate details
-      certificationDetail: '{Certification detail}',
+      certificationDetail: '{Certification details}',
     }
 
     return params
@@ -200,8 +194,6 @@ export const EmailTemplatePreview = ({
       },
     ],
   })
-
-  console.log(email)
 
   const loading = saveCustomContent.isLoading
   const disableShowPreview = loading || saveCustomContent.isLoading || isDirty

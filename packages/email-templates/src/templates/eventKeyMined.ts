@@ -11,8 +11,8 @@ handlebars.registerHelper('transactionLink', transactionLink)
 
 export default {
   base: 'events',
-  subject: `Your ticket for {{{eventName}}}`,
-  html: `<h1>Here's your ticket for {{eventName}}</h1>
+  subject: `Here is your ticket!`,
+  html: `<h1>Here's your ticket</h1>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
@@ -24,6 +24,18 @@ export default {
   <h2>Event details</h2>
   {{#if eventDescription}}
     <p>{{eventDescription}}</p>
+  {{/if}}
+
+  {{#if lockName}}
+    <div>
+      <strong>Ticket:</strong> {{lockName}}
+    </div>
+  {{/if}}
+
+  {{#if keyId}}
+    <div>
+      <strong>Ticket #</strong> {{keyId}}
+    </div>
   {{/if}}
 
   {{#if eventDate}}
@@ -49,6 +61,8 @@ export default {
 </div>
 
 <p>You can view your ticket online <a href="{{keychainUrl}}">here</a>.</p>
+
+{{transactionLink transactionReceiptUrl}}
 
 `,
 }
