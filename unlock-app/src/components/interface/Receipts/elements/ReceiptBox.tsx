@@ -131,11 +131,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     })
 
     const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
-
-    const vatTotalInAmount = Number(
-      formatNumber((receiptPrice?.total * vatRatePercentage) / 100)
-    )
-    const subtotal = formatNumber(receiptPrice?.total - vatTotalInAmount)
+    const subtotal = receiptPrice?.total / (1 + vatRatePercentage / 100)
+    const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
     return (
       <div className="grid gap-2 mt-4">
@@ -155,10 +152,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 {vatRatePercentage > 0 && (
                   <>
                     <Detail label="Subtotal" inline>
-                      {`${subtotal} ${symbol}`}
+                      {`${subtotal.toFixed(2)} ${symbol}`}
                     </Detail>
                     <Detail label={`VAT (${vatRatePercentage}%)`} inline>
-                      {vatTotalInAmount} {symbol}
+                      {vatTotalInAmount.toFixed(2)} {symbol}
                     </Detail>
                   </>
                 )}
