@@ -3197,3 +3197,53 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+  /v2/email-subscriptions/unsubscribe/{network}/locks/{lockAddress}:
+    post:
+      operationId: unsubscribeEmail
+      security:
+        - User: []
+      description: Unsubscribe email from lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully unsubscribed email from lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+  /v2/email-subscriptions/subscribe/{network}/locks/{lockAddress}:
+    post:
+      operationId: reSubscribeEmail
+      security:
+        - User: []
+      description: resubscribe emails from lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully subscribed email from lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
