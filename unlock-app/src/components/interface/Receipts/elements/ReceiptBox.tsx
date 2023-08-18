@@ -14,7 +14,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
 import Link from 'next/link'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { formatNumber } from '~/utils/formatter'
 
 interface ReceiptBoxProps {
   lockAddress: string
