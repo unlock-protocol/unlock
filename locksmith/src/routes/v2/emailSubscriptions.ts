@@ -5,7 +5,7 @@ import {
   userOnlyMiddleware,
 } from '../../utils/middlewares/auth'
 import {
-  subscribeToEmailList,
+  reSubscribeToEmailList,
   unsubscribeFromEmailList,
 } from '../../controllers/v2/emailSubscription'
 
@@ -22,7 +22,7 @@ router.post(
   '/subscribe/:network/locks/:lockAddress',
   authenticatedMiddleware,
   userOnlyMiddleware,
-  subscribeToEmailList
+  reSubscribeToEmailList
 )
 
 export default router

@@ -32,7 +32,7 @@ export const unsubscribeFromEmailList: RequestHandler = async (
   })
 }
 
-export const subscribeToEmailList: RequestHandler = async (
+export const reSubscribeToEmailList: RequestHandler = async (
   request,
   response
 ) => {
