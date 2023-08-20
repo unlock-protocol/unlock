@@ -136,8 +136,9 @@ export const base = `<!DOCTYPE html>
         padding: 0.125rem 0.25rem;
       }
 
-      section a {
+      a {
         color: #603deb !important;
+        text-decoration: underline;
       }
     </style>
   </head>

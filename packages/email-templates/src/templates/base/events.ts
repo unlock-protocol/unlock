@@ -136,8 +136,9 @@ export const base = `<!DOCTYPE html>
         padding: 0.125rem 0.25rem;
       }
 
-      section a {
+      a {
         color: #603deb !important;
+        text-decoration: underline;
       }
     </style>
   </head>
@@ -297,26 +298,16 @@ export const base = `<!DOCTYPE html>
                       padding-top: 10px;
                       color: #999999;
                       font-size: 16px;
-                      text-align: center;
                     "
                     valign="top"
                     align="center"
                   >
-                    <span
-                      class="apple-link"
-                      style="
-                        color: #373a3e;
-                        font-size: 20px;
-                        font-weight: bold;
-                        text-align: center;
-                      "
-                      ><a
+                    <a
                         href="https://unlock-protocol.com/"
                         target="_blank"
                         style="color: #373a3e; text-decoration: none"
                         ><img src="{{inlineImage 'logo-unlock-events.svg'}}" /></a
-                      ></span
-                    >
+                      >
                   </td>
                 </tr>
               </table>

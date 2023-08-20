@@ -14,6 +14,6 @@ describe('eventKeyAirdropped', () => {
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         network: 'Polygon',
       })
-    ).toBe("Your ticket for Ethereal's NYC conference 2022")
+    ).toBe('Here is your ticket!')
   })
 })
