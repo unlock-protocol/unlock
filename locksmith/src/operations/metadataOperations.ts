@@ -10,7 +10,9 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-
+import { Event } from '../models'
+import { Op } from 'sequelize'
+import * as metadataOperations from '../operations/metadataOperations'
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -53,7 +55,7 @@ export const generateKeyMetadata = async (
 
   const [keyCentricData, baseTokenData, userMetadata] = await Promise.all([
     getKeyCentricData(address, keyId),
-    getBaseTokenData(address, host, keyId),
+    getBaseTokenData(address, host, keyId, network),
     onChainKeyMetadata.owner
       ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
       : {},
@@ -93,13 +95,14 @@ export const generateKeyMetadata = async (
 export const getBaseTokenData = async (
   address: string,
   host: string,
-  keyId: string
+  keyId: string,
+  network: number
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
-  const persistedBasedMetadata = await LockMetadata.findOne({
-    where: { address },
+  const persistedBasedMetadata = await metadataOperations.getLockMetadata({
+    lockAddress: address,
+    network,
   })
-
   const result: Record<string, any> = {
     ...defaultResponse,
     ...(persistedBasedMetadata?.data || {}),
@@ -258,6 +261,18 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
+  const event = await Event.findOne({
+    where: {
+      locks: {
+        [Op.contains]: [`${lockAddress}-${network}`],
+      },
+    },
+  })
+
+  if (event) {
+    return event.data
+  }
+
   const lockData = await LockMetadata.findOne({
     where: {
       chain: network,

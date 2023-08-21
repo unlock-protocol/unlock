@@ -3269,7 +3269,7 @@ paths:
                   type: string
       responses:
         200:
-          description: Successfully sent custom email
+          description: Successfully saved event data
           content:
             application/json:
               schema:
@@ -3277,6 +3277,53 @@ paths:
                 properties:
                   sent:
                     type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /save/v2/events:
+    post:
+      operationId: saveEventData
+      security:
+        - User: []
+      description: Save event data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                name:
+                  type: string
+                data:
+                  type: object
+                locks:
+                  type: array
+                  items:
+                    type: string
+
+      responses:
+        200:
+          description: Successfully saved event data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  data:
+                    type: object
+                  locks:
+                    type: array
+                    items:
+                      type: string
         400:
           $ref: '#/components/responses/400.Invalid'
 
