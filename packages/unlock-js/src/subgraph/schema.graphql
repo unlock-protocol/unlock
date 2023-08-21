@@ -4,10 +4,7 @@ query allLocks(
   $where: Lock_filter
   $orderBy: Lock_orderBy
   $orderDirection: OrderDirection
-  $referrerFeeFilter: ReferrerFee_filter
-  $referrerFeeOrderBy: ReferrerFee_orderBy
-  $referrerFeeFirst: Int = 1
-  $referrerFeeSkip: Int
+  $referrerFeeSkip: Int = 0
 ) {
   locks(
     first: $first
@@ -29,12 +26,7 @@ query allLocks(
     maxKeysPerAddress
     createdAtBlock
     totalKeys
-    referrerFees(
-      where: $referrerFeeFilter
-      orderBy: $referrerFeeOrderBy
-      first: $referrerFeeFirst
-      skip: $referrerFeeSkip
-    ) {
+    referrerFees(skip: $referrerFeeSkip) {
       id
       referrer
       fee

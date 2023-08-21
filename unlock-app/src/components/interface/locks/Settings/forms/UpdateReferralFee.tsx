@@ -21,12 +21,6 @@ interface FormProps {
   referralAddress: string
 }
 
-interface ReferrerFee {
-  id: string
-  referrer: string
-  fee: string
-}
-
 export const UpdateReferralFee = ({
   lockAddress,
   network,
@@ -112,8 +106,7 @@ export const UpdateReferralFee = ({
     async () => getLock()
   )
 
-  // @ts-ignore
-  const referralFees = (referralFeesData?.referrer as ReferrerFee[]) || []
+  const referralFees = referralFeesData?.referrerFees || []
 
   const isDisabledReferrerInput =
     disabled || setReferrerFeeMutation.isLoading || isLoading
