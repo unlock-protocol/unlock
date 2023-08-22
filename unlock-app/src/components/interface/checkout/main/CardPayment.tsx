@@ -25,6 +25,7 @@ import {
   usePaymentMethodList,
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   injectedProvider: unknown
@@ -193,9 +194,14 @@ export function PaymentForm({
     handleSubmit,
   } = useForm<{
     name: string
+    email: string
   }>()
+  const { email } = useAuth()
 
-  const onHandleSubmit = async ({ name }: Record<'name', string>) => {
+  const onHandleSubmit = async ({
+    name,
+    email: emailAddress,
+  }: Record<'name' | 'email', string>) => {
     if (!stripe || !elements) {
       return
     }
@@ -209,6 +215,7 @@ export function PaymentForm({
         payment_method_data: {
           billing_details: {
             name,
+            email: emailAddress,
           },
         },
       },
@@ -245,6 +252,23 @@ export function PaymentForm({
           })}
         />
         <p className="mt-2 text-sm text-red-600">{errors.name?.message}</p>
+      </div>
+      <div className="flex flex-col w-full">
+        <label className="text-sm text-gray-700" htmlFor="name">
+          Email
+        </label>
+        <input
+          disabled={isSubmitting}
+          id="email"
+          className={`border-gray-200 rounded shadow-sm outline-none appearance-none focus:border-gray-200 focus:ring-2 focus:outline-none focus:shadow-outline focus:ring-blue-200 ${
+            errors.email && 'border-red-600 border-2'
+          }`}
+          type="email"
+          {...register('email', {
+            value: email || undefined,
+          })}
+        />
+        <p className="mt-2 text-sm text-red-600">{errors.email?.message}</p>
       </div>
       <PaymentElement />
     </form>
