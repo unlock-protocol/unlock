@@ -31,7 +31,7 @@ In a small number of cases, some individuals may try to transfer their ticket to
 
 Unlock has built-in mechanisms to prevent this, by chacking in tickets at the venue and marking those tickets as "used" for event organizers who wish to do so. The verification page above works from any web browser. For this, we are using metadata on the NFT which can only be set by the event organizer (lock owner). This way, if the ticket is then transfered to someone else, the organizers would still be able to quickly identify sneaky users who are trying to re-use a ticket.
 
-<p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/checked-in-key.png" alt="checked-in!"></p>
+<p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/checked-in-key-2.png" alt="checked-in!"></p>
 
 With our support for credit cards, the ability to ask users to submit information for their tickets, and sell them on the organizers' website directly, we believe Unlock now provides a **ticketing experience** that's even better than most legacy solutions, while still leveraging Ethereum's core capabilities: decentralization, permissionless and programmable!
 
