@@ -4,7 +4,7 @@ subTitle: Tickets to conferences are memberships!
 authorName: Julien Genestoux
 publishDate: August 20, 2023
 description: At Unlock, we're proud to power the tickets for several conferences... but no ticketing solution is complete without a check-in mechanism!
-image: /images/blog/introducing-tickets/event-ticket-phone-qr-code.png
+image: /images/blog/checking-key-in/event-ticket-phone-qr-code.png
 ---
 
 Memberships are everywhere: from your local gym, to your favorite news site, through conferences! At Unlock, we take great care in making sure we can _bridge_ the gap between online memberships and the offline world.
