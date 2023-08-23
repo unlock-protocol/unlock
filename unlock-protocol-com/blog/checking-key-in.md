@@ -19,7 +19,7 @@ The ticket is a non-fungible-token, and can be delivered to either an email addr
 
 On the keychain, an attendee can "confirm ownership" of their ticket, which is a way for them to prove that they own it.
 
-<p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/keychain.png" alt="key in keychain"></p>
+<p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/devcon-demo-ticket.jpg" alt="key in keychain"></p>
 
 For each ticket, we generate a QR code which can then be used by anyone to verify that indeed, this user owns this ticket and that this ticket is valid. Below is my key to EthCC. You can scan it with your camera application!
 
