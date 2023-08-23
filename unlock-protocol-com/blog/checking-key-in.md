@@ -29,7 +29,7 @@ For each ticket, we generate a QR code which can then be used by anyone to verif
 
 In a small number of cases, some individuals may try to transfer their ticket to someone after they have used it. This means that, unless we use a mechanism to prevent this, an unscrupulous individual could use their ticket (and the corresponding QR code) to enter a venue, and then transfer the ticket to another user who is waiting outside, who would re-use the same ticket (and another version of the QR code) to enter the venue as well. **This is not how tickets are supposed to work**!
 
-Unlock has built-in mechanisms to prevent this, by chacking in tickets at the venue and marking those tickets as "used" for event organizers who wish to do so. The verification page above works from any web browser. For this, we are using metadata on the NFT which can only be set by the event organizer (lock owner). This way, if the ticket is then transfered to someone else, the organizers would still be able to quickly identify sneaky users who are trying to re-use a ticket.
+Unlock has built-in mechanisms to prevent this, by checking in tickets at the venue and marking those tickets as "used" for event organizers who wish to do so. The verification page above works from any web browser. For this, we are using metadata on the NFT which can only be set by the event organizer (lock owner). This way, if the ticket is then transfered to someone else, the organizers would still be able to quickly identify sneaky users who are trying to re-use a ticket.
 
 <p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/checked-in-key-2.png" alt="checked-in!"></p>
 
