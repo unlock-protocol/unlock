@@ -23,7 +23,7 @@ On the keychain, an attendee can "confirm ownership" of their ticket, which is a
 
 For each ticket, we generate a QR code which can then be used by anyone to verify that indeed, this user owns this ticket and that this ticket is valid. Below is my QR code for a ticket. You can scan it with your camera application!
 
-<p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/ethcc-ticket-qrcode.png" alt="qr code ticket"></p>
+<p style="text-align:center" ><img width="300" src="/images/blog/checking-key-in/qr-code.png" alt="qr code ticket"></p>
 
 # Checking users in
 
