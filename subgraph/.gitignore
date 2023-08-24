@@ -8,3 +8,4 @@ tests/.bin
 
 # generated files
 networks.json
+/config

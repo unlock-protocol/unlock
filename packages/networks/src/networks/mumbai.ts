@@ -61,6 +61,7 @@ export const mumbai: NetworkConfig = {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai-v2',
+    networkName: 'mumbai',
   },
   swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
   tokens: [

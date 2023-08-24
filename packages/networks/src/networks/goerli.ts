@@ -75,6 +75,7 @@ export const goerli: NetworkConfig = {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli-v2',
+    networkName: 'goerli',
   },
   swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   tokens: [

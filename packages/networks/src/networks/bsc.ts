@@ -72,6 +72,7 @@ export const bsc: NetworkConfig = {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
+    networkName: 'bsc',
   },
 
   swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',

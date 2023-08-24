@@ -71,6 +71,7 @@ export const optimism: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism-v2',
+    networkName: 'optimism',
   },
   swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   tokens: [

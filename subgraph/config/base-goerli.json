@@ -1,7 +1,0 @@
-{
-    "network": "base-testnet",
-    "unlock" : "0x51A1ceB83B83F1985a81C295d1fF28Afef186E02",
-    "unlockStartBlock": "2247300",
-    "unlock2" : "0x0000000000000000000000000000000000000000",
-    "unlockStartBlock2": "2247300"
-  }

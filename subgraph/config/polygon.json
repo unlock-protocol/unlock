@@ -1,7 +1,0 @@
-{
-    "network": "matic",
-    "unlock" : "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
-    "unlockStartBlock": "21986688",
-    "unlock2" : "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
-    "unlockStartBlock2": "15714206"
-  }

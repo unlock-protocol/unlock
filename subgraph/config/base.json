@@ -1,7 +1,0 @@
-{
-    "network": "base",
-    "unlock" : "0xd0b14797b9D08493392865647384974470202A78",
-    "unlockStartBlock": "1750000",
-    "unlock2" : "0x0000000000000000000000000000000000000000",
-    "unlockStartBlock2": "1750000"
-  }

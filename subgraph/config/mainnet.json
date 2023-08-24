@@ -1,7 +1,0 @@
-{
-    "network": "mainnet",
-    "unlock" : "0xe79B93f8E22676774F2A8dAd469175ebd00029FA",
-    "unlockStartBlock": "16989000",
-    "unlock2" : "0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13",
-    "unlockStartBlock2": "7120795"
-  }
