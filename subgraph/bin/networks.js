@@ -56,7 +56,7 @@ function setupFolderConfig() {
   fs.mkdirSync(configFolderPath)
 }
 
-function createNetworkAbi(network, chainName) {
+function createNetworkConfig(network, chainName) {
   const networkName = chainName
   const networkFile = {
     network: network.subgraph.networkName,
@@ -80,7 +80,7 @@ function parseNetworkConfigs() {
   Object.keys(networksConfig)
     .filter((d) => !['networks', 'default', 'localhost'].includes(d))
     .reduce((acc, chainName) => {
-      createNetworkAbi(networksConfig[chainName], chainName)
+      createNetworkConfig(networksConfig[chainName], chainName)
     }, {})
   console.log(`Configs saved at: ${configFolderPath}`)
 }
