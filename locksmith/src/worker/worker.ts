@@ -67,7 +67,6 @@ export async function startWorker() {
       addHookJobs,
       sendEmailJob,
       sendHook,
-      sendEmail: sendEmailJob,
       fiatRenewalJob,
       cryptoRenewalJob,
     },
