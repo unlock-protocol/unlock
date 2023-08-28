@@ -3247,3 +3247,38 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/email/{network}/locks/{lockAddress}/custom/send:
+    post:
+      operationId: sendCustomEmail
+      security:
+        - User: []
+      description: Send custom email to recipients
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                content:
+                  type: string
+      responses:
+        200:
+          description: Successfully sent custom email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'

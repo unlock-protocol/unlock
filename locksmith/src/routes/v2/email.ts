@@ -1,5 +1,8 @@
 import express from 'express'
-import { CustomEmailController } from '../../controllers/v2/customEmailController'
+import {
+  CustomEmailController,
+  sendCustomEmail,
+} from '../../controllers/v2/customEmailController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
@@ -23,6 +26,13 @@ router.get(
   (req, res) => {
     customEmailController.getCustomContent(req, res)
   }
+)
+
+router.post(
+  '/:network/locks/:lockAddress/custom/send',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  sendCustomEmail
 )
 
 export default router
