@@ -11,11 +11,12 @@ import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
 import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
-import { sendEmail } from './tasks/sendEmail'
+import { sendEmailJob } from './tasks/sendEmail'
 import { monitor } from './tasks/monitor'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
+
 const crontabProduction = `
 */5 * * * * monitor
 */5 * * * * allJobs
@@ -64,8 +65,8 @@ export async function startWorker() {
       addRenewalJobsWeekly,
       addKeyJobs,
       addHookJobs,
+      sendEmailJob,
       sendHook,
-      sendEmail,
       fiatRenewalJob,
       cryptoRenewalJob,
     },
