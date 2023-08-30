@@ -3269,7 +3269,7 @@ paths:
                   type: string
       responses:
         200:
-          description: Successfully saved event data
+          description: Successfully sent custom email
           content:
             application/json:
               schema:
