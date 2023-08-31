@@ -3283,7 +3283,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /save/v2/events:
+  /v2/events/save:
     post:
       operationId: saveEventData
       security:
