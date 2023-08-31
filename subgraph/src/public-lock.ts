@@ -14,10 +14,17 @@ import {
   Transfer as TransferEvent,
   LockMetadata as LockMetadataEvent,
   LockConfig as LockConfigEvent,
+  ReferrerFee as ReferrerFeeEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock, UnlockStats, LockStats } from '../generated/schema'
+import {
+  Key,
+  Lock,
+  UnlockStats,
+  LockStats,
+  ReferrerFee,
+} from '../generated/schema'
 
 import {
   genKeyID,
@@ -397,5 +404,24 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
 
     // lock.symbol = event.params.symbol
     lock.save()
+  }
+}
+
+export function handleReferrerFees(event: ReferrerFeeEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+
+  if (lock) {
+    const referrerAddress = event.params.referrer.toHexString()
+
+    let referrerFee = ReferrerFee.load(referrerAddress)
+
+    if (!referrerFee) {
+      referrerFee = new ReferrerFee(referrerAddress)
+    }
+
+    referrerFee.referrer = event.params.referrer
+    referrerFee.fee = event.params.fee
+    referrerFee.lock = lock.id
+    referrerFee.save()
   }
 }
