@@ -1,12 +1,5 @@
-import {
-  assert,
-  describe,
-  test,
-  clearStore,
-  afterAll,
-  beforeAll,
-} from 'matchstick-as/assembly/index'
-import { createReferrerEvent } from './referrer-utils.test'
+import { assert, describe, test, beforeAll } from 'matchstick-as/assembly/index'
+import { createReferrerEvent } from './referrer-utils'
 import {
   defaultMockAddress,
   keyPrice,
@@ -34,50 +27,67 @@ describe('Referrer', () => {
     lock.save()
   })
 
-  // After each test clear the store
-  afterAll(() => {
-    clearStore()
-  })
-
   // Creation of a new referrer
   test('Creation of a new referrer', () => {
     // Make sure a "Lock" has been created
     assert.entityCount('Lock', 1)
 
     // Create an referrer event with "referrer" address and "fee" number
-    const newTransferEvent = createReferrerEvent(
+    const newReferrerEvent = createReferrerEvent(
       Address.fromString(defaultMockAddress),
       BigInt.fromU32(referrerFee)
     )
 
     // Assign the referrer transfer with the same lock address that has been created ✅
-    newTransferEvent.address = Address.fromString(lockAddress)
+    newReferrerEvent.address = Address.fromString(lockAddress)
 
     // Handle the referrer fee as if it was in the subgraph
-    handleReferrerFees(newTransferEvent)
+    handleReferrerFees(newReferrerEvent)
 
-    // Transaction hash is used as "id"
-    const referrerTransactionHash =
-      newTransferEvent.transaction.hash.toHexString()
+    // Referrer address as "id"
+    const referrerAddress = newReferrerEvent.params.referrer.toHexString()
 
     // Make sure referrer fee has been created ✅
     assert.entityCount('ReferrerFee', 1)
 
     // Check if lock address is the same as the lock address you created
-    assert.fieldEquals(
-      'ReferrerFee',
-      referrerTransactionHash,
-      'lock',
-      lockAddress
-    )
+    assert.fieldEquals('ReferrerFee', referrerAddress, 'lock', lockAddress)
 
     // Make sure the referrer fee is "200" where we assigned it in `createReferrerEvent` function
-    assert.fieldEquals('ReferrerFee', referrerTransactionHash, 'fee', '200')
+    assert.fieldEquals('ReferrerFee', referrerAddress, 'fee', '200')
 
     // Make sure the referrer address is the same address where you have assigned it in `createReferrerEvent` function
     assert.fieldEquals(
       'ReferrerFee',
-      referrerTransactionHash,
+      referrerAddress,
+      'referrer',
+      defaultMockAddress
+    )
+  })
+
+  test('Changing referrer fee', () => {
+    // Create an referrer event with "referrer" address and "fee" number
+    const newReferrerEvent = createReferrerEvent(
+      Address.fromString(defaultMockAddress),
+      BigInt.fromU32(100)
+    )
+
+    // Assign the referrer transfer event with the same lock address ✅
+    newReferrerEvent.address = Address.fromString(lockAddress)
+
+    // Handle the referrer fee as if it was in the subgraph
+    handleReferrerFees(newReferrerEvent)
+
+    // Check if lock address is same
+    assert.fieldEquals('ReferrerFee', defaultMockAddress, 'lock', lockAddress)
+
+    // Make sure the referrer fee is "100" since it changed
+    assert.fieldEquals('ReferrerFee', defaultMockAddress, 'fee', '100')
+
+    // Make sure the referrer address is the same even if you've changed the referrer fee
+    assert.fieldEquals(
+      'ReferrerFee',
+      defaultMockAddress,
       'referrer',
       defaultMockAddress
     )

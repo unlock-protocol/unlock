@@ -411,8 +411,14 @@ export function handleReferrerFees(event: ReferrerFeeEvent): void {
   const lock = Lock.load(event.address.toHexString())
 
   if (lock) {
-    const hash = event.transaction.hash.toHexString()
-    const referrerFee = new ReferrerFee(hash)
+    const referrerAddress = event.params.referrer.toHexString()
+
+    let referrerFee = ReferrerFee.load(referrerAddress)
+
+    if (!referrerFee) {
+      referrerFee = new ReferrerFee(referrerAddress)
+    }
+
     referrerFee.referrer = event.params.referrer
     referrerFee.fee = event.params.fee
     referrerFee.lock = lock.id
