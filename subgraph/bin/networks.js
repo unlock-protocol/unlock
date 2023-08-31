@@ -57,20 +57,27 @@ function setupFolderConfig() {
 }
 
 function createNetworkConfig(network, chainName) {
-  const networkName = chainName
+  const name = networkName(chainName)
   const networkFile = {
-    network: network.subgraph.networkName,
-    unlock: network.unlockAddress,
-    unlockStartBlock: network.startBlock,
-    unlock2: ethers.constants.AddressZero,
-    unlockStartBlock2: network.startBlock,
+    network: name,
+    deployments: [
+      {
+        name: 'Unlock',
+        address: network.unlockAddress,
+        startBlock: network.startBlock,
+      },
+    ],
   }
 
-  if (network.previousDeploys.length > 0) {
-    networkFile.unlock2 = network.previousDeploys[0].unlockAddress
-    networkFile.unlockStartBlock2 = network.previousDeploys[0].startBlock
-  }
-  const configPath = path.join(configFolderPath, `${networkName}.json`)
+  network.previousDeploys.forEach((deployment, index) => {
+    networkFile.deployments[index + 1] = {
+      name: `Unlock${index}`,
+      address: deployment.unlockAddress,
+      startBlock: deployment.startBlock,
+    }
+  })
+
+  const configPath = path.join(configFolderPath, `${name}.json`)
   fs.writeJSONSync(configPath, networkFile, { spaces: 2 })
 }
 

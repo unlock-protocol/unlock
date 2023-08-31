@@ -6,13 +6,14 @@ features:
 schema:
   file: ./schema.graphql
 dataSources:
+{{#deployments}}
   - kind: ethereum
-    name: Unlock
+    name: {{ name }}
     network: {{ network }}
     source:
       abi: Unlock
-      address: '{{unlock}}'
-      startBlock: {{unlockStartBlock}}
+      address: '{{address}}'
+      startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -36,36 +37,7 @@ dataSources:
         - event: GNPChanged(uint256,uint256,address,uint256,address)
           handler: handleGNPChanged
       file: ./src/unlock.ts
-  - kind: ethereum
-    name: Unlock2
-    network: {{ network }}
-    source:
-      abi: Unlock
-      address: '{{unlock2}}'
-      startBlock: {{unlockStartBlock2}}
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - NewLock
-      abis:
-        - name: Unlock
-          file: ./abis/UnlockV11.json
-        - name: PublicLock
-          file: ./abis/PublicLockV13.json
-        - name: PublicLockV11
-          file: ./abis/PublicLockV11.json
-        - name: PublicLockV7
-          file: ./abis/PublicLockV7.json
-      eventHandlers:
-        - event: NewLock(indexed address,indexed address)
-          handler: handleNewLock
-        - event: LockUpgraded(address,uint16)
-          handler: handleLockUpgraded
-        - event: GNPChanged(uint256,uint256,address,uint256,address)
-          handler: handleGNPChanged
-      file: ./src/unlock.ts
+{{/deployments}}
 templates:
   - kind: ethereum
     name: PublicLock
@@ -88,7 +60,7 @@ templates:
         - Transfer
       abis:
         - name: PublicLock
-          file: ./abis/PublicLockV13.json
+          file: ./abis/PublicLock.json
         - name: PublicLockV11
           file: ./abis/PublicLockV11.json
         - name: PublicLockV12

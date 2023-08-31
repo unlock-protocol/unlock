@@ -18701,6 +18701,7 @@ __metadata:
     graphql: 16.7.1
     handlebars: 4.7.8
     matchstick-as: 0.5.2
+    mustache: ^4.2.0
     yargs: 17.7.2
   languageName: unknown
   linkType: soft

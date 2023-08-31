@@ -56,7 +56,6 @@ export const celo: NetworkConfig = {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo-v2',
-    networkName: 'celo',
   },
   swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   tokens: [

@@ -21,6 +21,5 @@ export const localhost: Partial<NetworkConfig> = {
   subgraph: {
     endpoint: 'http://localhost:8000/subgraphs/name/unlock-protocol/unlock',
     endpointV2: 'http://localhost:8000/subgraphs/name/testgraph',
-    networkName: 'localhost',
   },
 }

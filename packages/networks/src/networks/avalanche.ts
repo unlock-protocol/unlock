@@ -52,7 +52,6 @@ export const avalanche: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche-v2',
-    networkName: 'avalanche',
   },
   tokens: [
     {

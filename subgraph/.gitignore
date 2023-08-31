@@ -8,5 +8,5 @@ tests/.bin
 
 # generated files
 networks.json
-/config
+abis/
 config/
