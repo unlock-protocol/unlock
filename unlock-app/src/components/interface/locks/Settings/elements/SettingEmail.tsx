@@ -3,6 +3,7 @@ import { SendEmailForm } from '../forms/SendEmailForm'
 import { EmailTemplatePreview } from './EmailTemplatePreview'
 import { SettingCard } from './SettingCard'
 import { useMetadata } from '~/hooks/metadata'
+import { SendCustomEmail } from '../forms/SendCustomEmail'
 
 interface SettingEmailProps {
   lockAddress: string
@@ -119,6 +120,14 @@ export const SettingEmail = ({
           </SettingCard>
         )
       })}
+      <SettingCard
+        disabled={!isManager}
+        label="Send Email"
+        description="Send email to all members"
+        isLoading={isLoading}
+      >
+        <SendCustomEmail lockAddress={lockAddress} network={network} />
+      </SettingCard>
     </div>
   )
 }

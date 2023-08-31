@@ -178,6 +178,18 @@ export class PaymentProcessor {
         { stripeAccount }
       )
     }
+    const account = await stripe.accounts.retrieve({
+      stripeAccount,
+    })
+
+    const applicationFeeNotSupportedCountries = [
+      'BR',
+      'IN',
+      'MX',
+      'MY',
+      'SG',
+      'TH',
+    ]
 
     // retrieve lock currency
     const { creditCardCurrency = 'usd' } = await getSettings({
@@ -203,7 +215,11 @@ export class PaymentProcessor {
           // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
           // maxPrice,
         },
-        application_fee_amount: pricing.unlockServiceFee,
+        application_fee_amount: !applicationFeeNotSupportedCountries.includes(
+          account.country?.trim() || ''
+        )
+          ? pricing.unlockServiceFee
+          : undefined,
       },
       { stripeAccount }
     )

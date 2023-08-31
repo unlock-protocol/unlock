@@ -63,7 +63,7 @@ interface SendEmailProps {
   template: string
   failoverTemplate: string
   recipient: string
-  params: Params
+  params?: Params
   attachments?: Attachment[]
 }
 /**
