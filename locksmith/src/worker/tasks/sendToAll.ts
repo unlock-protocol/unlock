@@ -2,6 +2,9 @@ import { Task } from 'graphile-worker'
 import { z } from 'zod'
 import { UnsubscribeList, UserTokenMetadata } from '../../models'
 import normalizer from '../../utils/normalizer'
+import config from '../../config/config'
+import logger from '../../logger'
+import { minifyAddress } from '@unlock-protocol/ui'
 
 const Payload = z.object({
   lockAddress: z.string().transform((item) => normalizer.ethereumAddress(item)),
@@ -48,10 +51,19 @@ export const sendToAllJob: Task = async (payload, helper) => {
 
     // Skip if the user has unsubscribed
     if (unsubscribed.includes(recipient.walletAddress.toLowerCase().trim())) {
+      logger.info(
+        `${minifyAddress(recipient.walletAddress)} has unsubscribed from ${
+          parsed.lockAddress
+        }`
+      )
       continue
     }
 
-    await helper.addJob('sendEmail', {
+    const unsubscribeLink = new URL('/email/unsubscribe', config.unlockApp)
+    unsubscribeLink.searchParams.set('lockAddress', parsed.lockAddress)
+    unsubscribeLink.searchParams.set('network', parsed.network.toString())
+
+    await helper.addJob('sendEmailJob', {
       recipient: recipient.email,
       attachments: [],
       params: {
@@ -59,9 +71,10 @@ export const sendToAllJob: Task = async (payload, helper) => {
         subject: parsed.subject,
         lockAddress: parsed.lockAddress,
         network: parsed.network,
+        unsubscribeLink: unsubscribeLink.toString(),
       },
       template: 'custom',
-      fallbackTemplate: 'base',
+      failoverTemplate: 'debug',
     })
   }
 }

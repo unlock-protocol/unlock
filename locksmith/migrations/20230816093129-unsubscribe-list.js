@@ -7,17 +7,14 @@ module.exports = {
       lockAddress: {
         allowNull: false,
         type: Sequelize.STRING,
-        primaryKey: true,
       },
       userAddress: {
         allowNull: false,
         type: Sequelize.STRING,
-        primaryKey: true,
       },
       network: {
         allowNull: false,
         type: 'pg_chain_id',
-        primaryKey: true,
       },
       createdAt: {
         allowNull: false,
