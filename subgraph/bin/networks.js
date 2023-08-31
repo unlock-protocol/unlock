@@ -68,14 +68,15 @@ function createNetworkConfig(network, chainName) {
       },
     ],
   }
-
-  network.previousDeploys.forEach((deployment, index) => {
-    networkFile.deployments[index + 1] = {
-      name: `Unlock${index}`,
-      address: deployment.unlockAddress,
-      startBlock: deployment.startBlock,
-    }
-  })
+  if (network.previousDeploys) {
+    network.previousDeploys.forEach((deployment, index) => {
+      networkFile.deployments[index + 1] = {
+        name: `Unlock${index}`,
+        address: deployment.unlockAddress,
+        startBlock: deployment.startBlock,
+      }
+    })
+  }
 
   const configPath = path.join(configFolderPath, `${name}.json`)
   fs.writeJSONSync(configPath, networkFile, { spaces: 2 })
