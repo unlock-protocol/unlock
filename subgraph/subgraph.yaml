@@ -7,11 +7,10 @@ schema:
 dataSources:
   - kind: ethereum
     name: Unlock
-    network: base
+    network: localhost
     source:
       abi: Unlock
-      address: '0xd0b14797b9D08493392865647384974470202A78'
-      startBlock: 1750000
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -38,7 +37,7 @@ dataSources:
 templates:
   - kind: ethereum
     name: PublicLock
-    network: base
+    network: localhost
     source:
       abi: PublicLock
     mapping:
