@@ -6,7 +6,7 @@ import {
   afterAll,
   beforeAll,
 } from 'matchstick-as/assembly/index'
-import { createReferrerEvent } from './referrer-utils'
+import { createReferrerEvent } from './referrer-utils.test'
 import {
   defaultMockAddress,
   keyPrice,
