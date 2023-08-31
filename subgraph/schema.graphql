@@ -33,6 +33,8 @@ type Lock @entity {
   deployer: Bytes!
   "Total number of receipts of lock"
   numberOfReceipts: BigInt!
+  "Referrers fees set per custom address"
+  referrerFees: [ReferrerFee!]! @derivedFrom(field: "lock")
 }
 
 type Key @entity {
@@ -116,4 +118,15 @@ type Receipt @entity {
   gasTotal: BigInt!
   "Increasing number of receipt"
   receiptNumber: BigInt!
+}
+
+type ReferrerFee @entity {
+  "Transaction Hash"
+  id: ID!
+  "Address of the referrer."
+  referrer: Bytes!
+  "Fee attributed to the referrer. E.g., 200 represents 20%."
+  fee: BigInt!
+  "In the Unlock ecosystem, a “Lock” is a smart contract that creates (or “mints”) NFTs"
+  lock: Lock!
 }
