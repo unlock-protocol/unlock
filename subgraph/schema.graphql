@@ -80,7 +80,7 @@ type UnlockDailyData @entity {
 }
 
 type LockStats @entity {
-  "Address of the Referrer"
+  "Transaction Hash"
   id: ID!
   "Total locks deployed"
   totalLocksDeployed: BigInt!
@@ -121,7 +121,7 @@ type Receipt @entity {
 }
 
 type ReferrerFee @entity {
-  "Transaction Hash"
+  "Address of the Referrer"
   id: ID!
   "Address of the referrer."
   referrer: Bytes!
