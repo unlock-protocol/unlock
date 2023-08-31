@@ -54,6 +54,7 @@ Event.init(
   },
   {
     sequelize,
-    modelName: 'Roles',
+    modelName: 'Events',
+    tableName: 'Events',
   }
 )
