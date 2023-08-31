@@ -22,7 +22,7 @@ dataSources:
         - name: Unlock
           file: ./abis/UnlockV11.json
         - name: PublicLock
-          file: ./abis/PublicLockV13.json
+          file: ./abis/PublicLock.json
         - name: PublicLockV11
           file: ./abis/PublicLockV11.json
         - name: PublicLockV7
