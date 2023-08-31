@@ -18,9 +18,9 @@ yarn build <network-name>
 
 #### Multiple chains
 
-There is subgraph deployed for each network where Unlock Protocol is deployed. While code is similar for all, the addresses where the contracts are deployed vary, requiring a specifying config per network stored in `networks.json`.
+There is subgraph deployed for each network where Unlock Protocol is deployed. While code is similar for all, the addresses where the contracts are deployed vary, requiring a specifying config per network stored in `networks.json`. All networks are also generated into their own json file in the `/configs` folder with the same information.
 
-The `networks.json` file is generated from our `@unlock-protocol/networks` package.
+The `networks.json` file and `/config` files are generated from our `@unlock-protocol/networks` package.
 
 ```sh
 # build the `subgraph.yaml` with the correct contract address per network
@@ -36,21 +36,59 @@ Are Unlock's contracts are upgradable, we parse the multiple ABIs that are requi
 yarn prepare:abis
 ```
 
+#### Generating Manifest & Building Subgraph
+
+To build any network. This will generate the network configs, prepare the abis and generate the manifest for the subgraph according to the network configuration.
+
+```sh
+# build & generate
+yarn run build <network-name>
+```
+
 ### Deploying The Subgraph
 
-Deploy the latest subgraph code to the graph node.
+Deploy the latest subgraph code to the hosted-service.
 
 ```sh
 export SUBGRAPH_DEPLOY_KEY=<api-key>
 
-# build
-yarn run build <network-name>
-
 # deploy a single network
 yarn run deploy <network-name>
 
-# deploy all networks
+# deploy all available networks to hosted service
 yarn run deploy-all
+```
+
+Deploy the latest subgraph code to the studio.
+
+```sh
+export SUBGRAPH_STUDIO_DEPLOY_KEY=<api-key>
+
+# deploy a single network
+yarn run deploy <network-name> --studioName=<Name of studio deployment> --label=<Studio version>
+
+```
+
+Direct deployments can be made to the hosted service.
+
+```sh
+# build
+yarn run build <network-name>
+
+# deploy a single network. Example for <subgraph-deployment-slug> unlock-protocol/mainnet-v2
+yarn run deploy-hosted <subgraph-deployment-slug>
+
+```
+
+Direct deployments can be made to the studio.
+
+```sh
+# build
+yarn run build <network-name>
+
+# deploy a single network. Example for <subgraph-name> unlock-protocol-mainnet
+yarn run deploy-studio <subgraph-name> -l=<Studio version>
+
 ```
 
 ## Tests

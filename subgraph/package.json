@@ -10,7 +10,7 @@
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
-    "build": "yarn introspect && yarn prepare && yarn codegen && yarn build:graph",
+    "build": "yarn introspect && yarn prepare && yarn build:graph",
     "build:graph": "node bin/thegraph build",
     "deploy": "node bin/thegraph deploy",
     "deploy-all": "node bin/thegraph deploy-all",
@@ -24,7 +24,7 @@
     "ci": "yarn prepare && yarn codegen && yarn test -l",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/",
     "generate-manifest": "mustache config/\"$@\" subgraph.template.yaml > subgraph.yaml && graph codegen",
-    "deploy-hosted": "graph deploy --product hosted-service ",
+    "deploy-hosted": "graph build && graph deploy --product hosted-service ",
     "deploy-studio": "graph build && graph deploy --studio "
   },
   "dependencies": {
