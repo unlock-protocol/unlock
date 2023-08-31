@@ -22,14 +22,17 @@ UnsubscribeList.init(
     lockAddress: {
       allowNull: false,
       type: DataTypes.STRING,
+      primaryKey: true,
     },
     userAddress: {
       allowNull: false,
       type: DataTypes.STRING,
+      primaryKey: true,
     },
     network: {
       allowNull: false,
       type: 'pg_chain_id',
+      primaryKey: true,
     },
     createdAt: {
       allowNull: false,
@@ -49,5 +52,7 @@ UnsubscribeList.init(
         unique: true,
       },
     ],
+    modelName: 'UnsubscribeList',
+    tableName: 'UnsubscribeList',
   }
 )

@@ -13,7 +13,7 @@ import certificationKeyMined from './templates/certificationKeyMined'
 import certificationKeyAirdropped from './templates/certificationKeyAirdropped'
 import LockTemplates from './templates/locks'
 import bases from './templates/base/index'
-
+import custom from './templates/custom'
 export interface EmailTemplateProps {
   nowrap?: boolean
   subject: string
@@ -34,8 +34,9 @@ type Template =
   | 'eventKeyAirdropped'
   | 'certificationKeyMined'
   | 'certificationKeyAirdropped'
+  | 'custom'
 
-export const EmailTemplates: Record<Partial<Template>, EmailTemplateProps> = {
+export const EmailTemplates: Record<string, EmailTemplateProps> = {
   confirmEmail,
   welcome,
   keyOwnership,
@@ -49,6 +50,7 @@ export const EmailTemplates: Record<Partial<Template>, EmailTemplateProps> = {
   eventKeyAirdropped,
   certificationKeyMined,
   certificationKeyAirdropped,
+  custom,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}

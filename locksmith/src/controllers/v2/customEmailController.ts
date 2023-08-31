@@ -93,13 +93,17 @@ export const sendCustomEmail: RequestHandler = async (request, response) => {
     {
       connectionString: config.databaseUrl,
     },
-    'sendCustomEmail',
+    'sendToAllJob',
     {
       lockAddress,
       network,
       ...parsed,
+    },
+    {
+      maxAttempts: 3,
     }
   )
+
   return response.status(200).send({
     success: true,
   })
