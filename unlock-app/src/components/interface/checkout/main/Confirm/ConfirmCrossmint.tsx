@@ -1,4 +1,7 @@
-import { CrossmintPaymentElement } from '@crossmint/client-sdk-react-ui'
+import {
+  CrossmintPaymentElement,
+  useCrossmintEvents,
+} from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
@@ -16,6 +19,7 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ethers } from 'ethers'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
+import { TransactionAnimation } from '../../Shell'
 
 interface Props {
   injectedProvider: unknown
@@ -34,15 +38,17 @@ interface CrossmintQuote {
 
 export function ConfirmCrossmint({
   injectedProvider,
-  // onConfirmed,
+  onConfirmed,
   // onError,
   checkoutService,
 }: Props) {
-  const { account } = useAuth()
+  const { email } = useAuth()
   const [state] = useActor(checkoutService)
   const config = useConfig()
+  const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
-  // const [isConfirming, setIsConfirming] = useState(false)
+  const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
+
   const {
     lock,
     recipients,
@@ -69,16 +75,28 @@ export function ConfirmCrossmint({
       data,
     })
 
-  const onCrossmintEvent = (event: any) => {
+  // Handling minting events
+  const { listenToMintingEvents } = useCrossmintEvents({
+    environment: crossmintEnv,
+  })
+
+  // Handling payment events
+  const onCrossmintPaymentEvent = (paymentEvent: any) => {
+    console.log(paymentEvent)
     // We get the events from crossmint
     // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
-    console.log(event)
-    if (event.type === 'quote:status.changed') {
-      setQuote(event.payload)
+    if (paymentEvent.type === 'quote:status.changed') {
+      setQuote(paymentEvent.payload)
+    } else if (paymentEvent.type === 'payment:process.started') {
+      setIsConfirming(true)
+    } else if (paymentEvent.type === 'payment:process.succeeded') {
+      listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
+        console.log(mintingEvent)
+        if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
+          onConfirmed(lock!.address, mintingEvent.payload.txId)
+        }
+      })
     }
-    //
-    // onConfirmed
-    // onError
   }
 
   const {
@@ -120,80 +138,99 @@ export function ConfirmCrossmint({
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
-        <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lock!.network} />
-          </div>
+        {!isConfirming && (
+          <>
+            <div className="grid gap-y-2">
+              <div>
+                <h4 className="text-xl font-bold"> {lock!.name}</h4>
+                <ViewContract
+                  lockAddress={lock!.address}
+                  network={lock!.network}
+                />
+              </div>
 
-          {isPricingDataError && (
-            // TODO: use actual error from simulation
-            <div>
-              <p className="text-sm font-bold">
-                <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
-              </p>
+              {isPricingDataError && (
+                // TODO: use actual error from simulation
+                <div>
+                  <p className="text-sm font-bold">
+                    <ErrorIcon className="inline" />
+                    There was an error when preparing the transaction.
+                  </p>
+                </div>
+              )}
+
+              {!isLoading && (
+                <div>
+                  {quote.lineItems.map((item: any, index: number) => {
+                    const first = index <= 0
+
+                    return (
+                      <div
+                        key={index}
+                        className={`flex border-b ${
+                          first ? 'border-t' : null
+                        } items-center justify-between text-sm px-0 py-2`}
+                      >
+                        <div>{item.metadata.description}</div>{' '}
+                        <div className="font-bold">
+                          {item.price.amount}{' '}
+                          {item.price.currency.toUpperCase()}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
             </div>
-          )}
-
-          {!isLoading && (
-            <div>
-              {quote.lineItems.map((item: any, index: number) => {
-                const first = index <= 0
-
-                return (
+            {isLoading && (
+              <div className="flex flex-col items-center gap-2">
+                {recipients.map((user) => (
                   <div
-                    key={index}
-                    className={`flex border-b ${
-                      first ? 'border-t' : null
-                    } items-center justify-between text-sm px-0 py-2`}
-                  >
-                    <div>{item.metadata.description}</div>{' '}
-                    <div className="font-bold">
-                      {item.price.amount} {item.price.currency.toUpperCase()}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          )}
-        </div>
-        {isLoading && (
-          <div className="flex flex-col items-center gap-2">
-            {recipients.map((user) => (
-              <div
-                key={user}
-                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
+                    key={user}
+                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
+                  />
+                ))}
+              </div>
+            )}
+            {quote?.totalPrice && (
+              <Pricing
+                keyPrice={`${quote?.totalPrice
+                  .amount} ${quote?.totalPrice.currency.toUpperCase()}`}
+                isCardEnabled={false}
               />
-            ))}
+            )}
+            {!isPricingDataError && argumentsReady && (
+              <CrossmintPaymentElement
+                emailInputOptions={{
+                  show: !email,
+                }}
+                recipient={{
+                  email,
+                  wallet: recipients[0], // Crossmint only supports a single recipient for now!
+                }}
+                clientId={crossmintConfigId!}
+                environment={crossmintEnv}
+                mintConfig={{
+                  totalPrice: pricingData?.total.toString(),
+                  _values: values,
+                  _referrers: referrers,
+                  _keyManagers: keyManagers || recipients,
+                  _data: purchaseData,
+                }}
+                currency="USD" // USD only, more coming soon
+                locale="en-US" // en-US only, more coming soon
+                onEvent={onCrossmintPaymentEvent}
+              />
+            )}
+          </>
+        )}
+        {isConfirming && (
+          <div className="flex flex-col items-center justify-center h-full space-y-2">
+            <TransactionAnimation status={'PROCESSING'} />
+            <p className="text-lg font-bold text-brand-ui-primary">
+              Confirming payment
+            </p>
           </div>
-        )}
-        {quote?.totalPrice && (
-          <Pricing
-            keyPrice={`${quote?.totalPrice
-              .amount} ${quote?.totalPrice.currency.toUpperCase()}`}
-            isCardEnabled={false}
-          />
-        )}
-        {!isPricingDataError && argumentsReady && (
-          <CrossmintPaymentElement
-            recipient={{
-              wallet: account,
-            }}
-            clientId={crossmintConfigId!}
-            environment={config.env === 'prod' ? 'production' : 'staging'}
-            mintConfig={{
-              //  TODO: add recipient address here!
-              totalPrice: pricingData?.total.toString(),
-              _values: values,
-              _referrers: referrers,
-              _keyManagers: keyManagers || recipients,
-              _data: purchaseData,
-            }}
-            currency="USD" // USD only, more coming soon
-            locale="en-US" // en-US only, more coming soon
-            onEvent={onCrossmintEvent}
-          />
         )}
       </main>
 
