@@ -38,13 +38,8 @@ yarn provision --network localhost
 # prepare subgraph deployment
 cd $REPO_ROOT/subgraph
 yarn prepare:abis
-yarn prepare:networks
 
-# copy the generated subgraph config file
-rm -rf $REPO_ROOT/subgraph/networks.json 
-cp $REPO_ROOT/docker/development/eth-node/networks.json $REPO_ROOT/subgraph/networks.json
-
-yarn generate-manifest base.json
+yarn prepare:test
 yarn codegen
 yarn graph build --network localhost
 
