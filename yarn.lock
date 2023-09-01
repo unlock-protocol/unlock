@@ -12669,9 +12669,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-core-sdk@npm:3.3.4":
-  version: 3.3.4
-  resolution: "@safe-global/safe-core-sdk@npm:3.3.4"
+"@safe-global/safe-core-sdk@npm:3.3.5":
+  version: 3.3.5
+  resolution: "@safe-global/safe-core-sdk@npm:3.3.5"
   dependencies:
     "@ethersproject/solidity": ^5.7.0
     "@safe-global/safe-core-sdk-types": ^1.9.2
@@ -12680,7 +12680,8 @@ __metadata:
     ethereumjs-util: ^7.1.5
     semver: ^7.3.8
     web3-utils: ^1.8.1
-  checksum: c995aab2f1a5b75d80fbd4ef23a4cd24ebd4d65af0f99933d734f1e526d52a7e9bd8bd70ec3f4394a79a6b2d23d7bd75043d4406c516fbe6e0fb608b65a60c75
+    zksync-web3: ^0.14.3
+  checksum: 5a2cb9b61c90fee9edc88222017fecc1db55dca52c0f5cda462da4e9905ff5a398382eb9df2c29b76860fa9ff8322da4267662ebc02010b41495a9d3eacca6af
   languageName: node
   linkType: hard
 
@@ -18646,7 +18647,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": 1.28.0
     "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.27.3
-    "@safe-global/safe-core-sdk": 3.3.4
+    "@safe-global/safe-core-sdk": 3.3.5
     "@safe-global/safe-ethers-lib": 1.9.3
     "@safe-global/safe-service-client": 2.0.2
     "@uniswap/smart-order-router": 3.12.1
@@ -56305,6 +56306,15 @@ __metadata:
     compress-commons: ^4.1.0
     readable-stream: ^3.6.0
   checksum: 4a73da856738b0634700b52f4ab3fe0bf0a532bea6820ad962d0bda0163d2d5525df4859f89a7238e204a378384e12551985049790c1894c3ac191866e85887f
+  languageName: node
+  linkType: hard
+
+"zksync-web3@npm:^0.14.3":
+  version: 0.14.4
+  resolution: "zksync-web3@npm:0.14.4"
+  peerDependencies:
+    ethers: ^5.7.0
+  checksum: f702a3437f48a8d42c4bb35b8dd13671a168aadfc4e23ce723d62959220ccb6bf9c529c60331fe5b91afaa622147c6a37490551474fe3e35c06ac476524b5160
   languageName: node
   linkType: hard
 
