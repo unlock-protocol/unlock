@@ -10,7 +10,7 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-import { Event } from '../models'
+import { EventData } from '../models'
 import { Op } from 'sequelize'
 import * as metadataOperations from '../operations/metadataOperations'
 interface IsKeyOrLockOwnerOptions {
@@ -261,7 +261,7 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const event = await Event.findOne({
+  const event = await EventData.findOne({
     where: {
       locks: {
         [Op.contains]: [`${lockAddress}-${network}`],

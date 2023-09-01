@@ -6,9 +6,9 @@ import type {
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
 
-export class Event extends Model<
-  InferAttributes<Event>,
-  InferCreationAttributes<Event>
+export class EventData extends Model<
+  InferAttributes<EventData>,
+  InferCreationAttributes<EventData>
 > {
   declare id: CreationOptional<number>
   declare name: string
@@ -19,7 +19,7 @@ export class Event extends Model<
   declare updatedAt: CreationOptional<Date>
 }
 
-Event.init(
+EventData.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -54,7 +54,7 @@ Event.init(
   },
   {
     sequelize,
-    modelName: 'Events',
-    tableName: 'Events',
+    modelName: 'EventData',
+    tableName: 'EventData',
   }
 )

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import { getEventDetail } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
-import { Event } from '../../models'
+import { EventData } from '../../models'
 import { z } from 'zod'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
@@ -43,7 +43,7 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     })
   }
 
-  const [event, created] = await Event.upsert(
+  const [event, created] = await EventData.upsert(
     {
       id: parsed.id,
       name: parsed.name,
