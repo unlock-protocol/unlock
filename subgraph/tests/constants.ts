@@ -17,6 +17,9 @@ export const tokenURI = 'http://token-api'
 export const maxNumberOfKeys = 10
 export const maxKeysPerAddress = 5
 
+// referrer
+export const referrerFee = 200
+
 // prices
 export const keyPrice = 1000
 export const newKeyPrice = 1001
