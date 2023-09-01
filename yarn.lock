@@ -18357,7 +18357,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@vitest/coverage-c8": 0.31.4
     eslint: 8.46.0
-    tsup: 7.1.0
+    tsup: 7.2.0
     typescript: 5.1.6
     vitest: 0.31.4
   peerDependencies:
@@ -18382,7 +18382,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     storybook: 7.0.18
-    tsup: 7.1.0
+    tsup: 7.2.0
     tsx: 3.12.7
     typescript: 5.1.6
     vite: 4.4.8
