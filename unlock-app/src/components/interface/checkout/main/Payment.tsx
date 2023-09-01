@@ -193,8 +193,38 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {crossMintEnabled && !enableClaim && (
-              <div className="flex flex-col w-full space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white">
-                <CrossmintPayButton
+              <div>
+                <button
+                  onClick={(event) => {
+                    event.preventDefault()
+                    send({
+                      type: 'SELECT_PAYMENT_METHOD',
+                      payment: {
+                        method: 'crossmint',
+                      },
+                    })
+                  }}
+                  className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <h3 className="font-bold"> Pay via Crossmint </h3>
+                    <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                      <VisaIcon size={18} />
+                      <MasterCardIcon size={18} />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="text-sm text-left text-gray-500">
+                      Use your debit or credit with Crossmint. <br />
+                      <span className="text-xs">Additional fees may apply</span>
+                    </div>
+                    <RightArrowIcon
+                      className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                      size={20}
+                    />
+                  </div>
+                </button>
+                {/* <CrossmintPayButton
                   className="bg-white p-4 justify-start black shadow-none	transition-none	"
                   getButtonText={(connecting) =>
                     connecting ? 'Connecting' : `Pay with fiat via Crossmint`
@@ -210,7 +240,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     ],
                     _data: ['0x'],
                   }}
-                />
+                /> */}
               </div>
             )}
 
