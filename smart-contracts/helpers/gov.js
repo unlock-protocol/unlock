@@ -146,7 +146,9 @@ const queueProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
   })
-  const descriptionHash = web3.utils.keccak256(description)
+  const descriptionHash = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes(description)
+  )
   const { proposerAddress } = proposal
   let voterWallet
   if (!proposerAddress) {
@@ -169,7 +171,9 @@ const executeProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
   })
-  const descriptionHash = web3.utils.keccak256(description)
+  const descriptionHash = ethers.utils.keccak256(
+    ethers.utils.toUtf8Bytes(description)
+  )
   let voterWallet
   if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()
@@ -194,7 +198,8 @@ const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
   } else {
     proposer = await ethers.getSigner(proposerAddress)
   }
-  return await gov.connect(proposer).propose(...proposal)
+  const parsed = await parseProposal(proposal)
+  return await gov.connect(proposer).propose(...parsed)
 }
 
 const getProposalVotes = async (proposalId, govAddress) => {
@@ -208,6 +213,11 @@ const getQuorum = async (govAddress) => {
 
   const currentBlock = await ethers.provider.getBlockNumber()
   return await gov.quorum(currentBlock - 1)
+}
+
+const getGovTokenAddress = async (govAddress) => {
+  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  return await gov.token()
 }
 
 const getProposalState = async (proposalId, govAddress) => {
@@ -227,7 +237,7 @@ const getProposalState = async (proposalId, govAddress) => {
   return states[state]
 }
 
-const loadProposal = async (proposalPath, params) => {
+const loadProposal = async (proposalPath, params = []) => {
   const prop = require(proposalPath)
   if (typeof prop === 'function') {
     return await prop(params)
@@ -240,6 +250,7 @@ module.exports = {
   loadProposal,
   getProposalVotes,
   getQuorum,
+  getGovTokenAddress,
   getProposalState,
   getProposalId,
   getProposalIdFromContract,

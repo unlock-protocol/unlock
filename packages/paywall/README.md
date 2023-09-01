@@ -32,15 +32,40 @@ const networkConfigs = {
   },
   // etc
 }
-
-// Pass a provider. You can also use a provider from a library such as Magic.link or privy.io
-// If no provider is set, the library uses window.ethereum
-const provider = window.ethereum
-
-const paywall = new Paywall(paywallConfig, networkConfigs, provider)
+const paywall = new Paywall(networks)
 
 // Loads the checkout UI
-const response = await paywall.loadCheckoutModal()
+const response = await paywall.loadCheckoutModal(paywallConfig)
 
 // response is set when the modal is closed. response may include hash (the transaction hash) and lock (the address of the lock to which the transaction was sent)
 ```
+
+### Passing a provider
+
+The Paywall UI includes connecting a wallet (injected like MetaMask, [WalletConnect](https://walletconnect.com/), or, Coinbase's WalletLink) or using an [Unlock account](https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/unlock-accounts).
+
+However, it is also possible to skip this and "force" it to use a specific provider from your application. This way, you can use it with providers like [Privy](https://www.privy.io/), [Magic](https://magic.link/), etc.
+
+```javascript
+import { Paywall } from '@unlock-protocol/paywall'
+import { networks } from '@unlock-protocol/networks'
+
+const paywall = new Paywall(networks)
+paywall.connect(provider) // EIP 1193 provider
+paywall.loadCheckoutModal({...})
+```
+
+### Using unlock provider
+
+You can use `Paywall` class to load login modal and get a provider from it.
+
+```javascript
+import { Paywall } from '@unlock-protocol/paywall'
+import { networks } from '@unlock-protocol/networks'
+const paywall = new Paywall(networks)
+// you can now use the provider to sign messages, send transactions, etc.
+const provider = paywall.getProvider('https://app.unlock-protocol.com')
+await provider.connect() // this will open the login modal
+```
+
+You can find the tutorial [here](https://docs.unlock-protocol.com/tutorials/front-end/paywall/provider/) here to learn more about how to use the provider within your application using wagmi.

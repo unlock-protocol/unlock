@@ -19,7 +19,6 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { PricingData } from './PricingData'
 
 interface Props {
@@ -103,23 +102,13 @@ export function ConfirmSwapAndPurchase({
       lock as Lock,
       config.networks[lock!.network].nativeCurrency.symbol
     ),
+    payment,
   })
 
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: Number(route.convertToQuoteToken(amountToConvert).toFixed()),
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
-
-  const isLoading =
-    isPricingDataLoading || isInitialDataLoading || isTotalPricingDataLoading
+  const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const symbol = route.trade.inputAmount.currency.symbol
 
@@ -137,6 +126,9 @@ export function ConfirmSwapAndPurchase({
   }
 
   const onConfirmCrypto = async () => {
+    if (!pricingData) {
+      return
+    }
     try {
       setIsConfirming(true)
       const keyPrices: string[] =
@@ -159,7 +151,6 @@ export function ConfirmSwapAndPurchase({
           onConfirmed(lockAddress, hash)
         }
       }
-
       const swap = {
         srcTokenAddress: currencyContractAddress,
         uniswapRouter: route.swapRouter,
@@ -167,9 +158,7 @@ export function ConfirmSwapAndPurchase({
         value: route.value,
         amountInMax: ethers.utils
           .parseUnits(
-            route
-              .convertToQuoteToken(pricingData!.total.toString())
-              .toFixed(route.trade.inputAmount.currency.decimals), // Total Amount
+            route!.quote.toFixed(),
             route.trade.inputAmount.currency.decimals
           )
           // 1% slippage buffer
@@ -251,35 +240,29 @@ export function ConfirmSwapAndPurchase({
             />
           )}
         </div>
-        {!isPricingDataAvailable && (
-          <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                {recipients.map((user) => (
-                  <div
-                    key={user}
-                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <Pricing
-                isCardEnabled={false}
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
+
+        {isLoading && (
+          <div className="flex flex-col items-center gap-2">
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
               />
-            )}
+            ))}
           </div>
+        )}
+
+        {pricingData && (
+          <Pricing
+            isCardEnabled={false}
+            keyPrice={
+              pricingData.total <= 0
+                ? 'FREE'
+                : `${formatNumber(
+                    pricingData.total
+                  ).toLocaleString()} ${symbol}`
+            }
+          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

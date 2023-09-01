@@ -48,7 +48,7 @@ export const LabelMapping: Record<string, string> = {
   redirectUri: 'Redirect URL',
   skipRecipient: 'Skip Recipient',
   skipSelect: 'Skip Select',
-  endingCallToAction: 'Return button CTA.',
+  endingCallToAction: 'Redirect button text',
 }
 
 interface DynamicFormProps {
@@ -84,7 +84,7 @@ const TextInput = ({ props, name, type, ...rest }: FieldProps) => {
   const hasOptions = enumList?.length
   const isNumericField =
     (Array.isArray(type) && props.type.includes('number')) || type === 'number'
-  const inputType = isNumericField ? 'number' : type
+  const inputType = isNumericField ? 'text' : type
 
   if (!hasOptions) {
     return (
@@ -95,7 +95,12 @@ const TextInput = ({ props, name, type, ...rest }: FieldProps) => {
             <Input
               type={inputType}
               {...register(name, {
-                valueAsNumber: isNumericField,
+                setValueAs: (value: unknown) => {
+                  if (isNumericField) {
+                    return value === '' ? 1 : Number(value)
+                  }
+                  return value
+                },
               })}
               {...rest}
               error={error}
@@ -354,8 +359,18 @@ export const DynamicForm = ({
           className="grid grid-cols-1 gap-3 outline-none"
           onSubmit={methods.handleSubmit(onSubmit)}
           onChange={async () => {
-            const values = await methods.getValues()
-            onChange(values)
+            const fields = await methods.getValues()
+            const isValid = methods.formState.isValid
+
+            if (!isValid) {
+              console.error(
+                'form is not valid, please check that every field passes the validation.',
+                fields
+              )
+              return
+            }
+
+            onChange(fields)
           }}
         >
           {Object.entries(properties ?? {}).map(([fieldName, props], index) => {

@@ -53,7 +53,7 @@ export const EmailTemplatePreview = ({
   isManager,
 }: EmailTemplatePreviewProps) => {
   const config = useConfig()
-  const [showPreview, setShowPreview] = useState(false)
+  const [showPreview, setShowPreview] = useState(true)
   const wedlocksService = useWedlockService()
 
   const {
@@ -90,32 +90,35 @@ export const EmailTemplatePreview = ({
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
+  /**
+   * Compute params for the email template preview
+   * @returns
+   */
   const emailPreviewData = async () => {
     const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
     const customContentHtml: string = await markdownToHtml(customContent)
-
-    const params = {
-      lockName: 'Email Preview',
-      keychainUrl: `${config.unlockApp}/keychain`,
-      keyId: 5,
+    const { data: eventDetails } = await storage.getEventDetails(
       network,
-      openSeaUrl: '',
-      transferUrl: '',
+      lockAddress
+    )
+    const params = {
+      keychainUrl: `${config.unlockApp}/keychain`,
+      keyId: 5, // Placeholder!
+      network,
       lockImage,
       customContent: customContentHtml,
-      // event details
-      eventName: '{Event name}',
-      eventDescription: '{Email description}',
-      eventDate: '{Event date}',
-      eventTime: '{Event time}',
-      eventAddress: '{Event address}',
+      ...eventDetails,
       // certificate details
-      certificationDetail: '{Certification detail}',
+      certificationDetail: '{Certification details}',
     }
 
     return params
   }
 
+  /**
+   * Send preview email
+   * @param form
+   */
   const onSubmit = async (form: FormSchemaProps) => {
     const params = await emailPreviewData()
 
@@ -142,7 +145,7 @@ export const EmailTemplatePreview = ({
     setShowPreview(false) // close modal after email is sent
   }
 
-  const [_data, { data: emailHtmlPreview }] = useQueries({
+  const [_data, { data: email }] = useQueries({
     queries: [
       {
         queryKey: ['getCustomContent', network, lockAddress, templateId],
@@ -180,8 +183,13 @@ export const EmailTemplatePreview = ({
             url.searchParams.append(key, value.toString())
           })
 
-          const res = await (await fetch(url)).text()
-          return res
+          return (
+            await fetch(url, {
+              headers: {
+                accept: 'application/json',
+              },
+            })
+          ).json()
         },
       },
     ],
@@ -242,7 +250,7 @@ export const EmailTemplatePreview = ({
               <div className="w-full max-w-xl mt-10">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-bold text-brand-ui-primary">
-                    Email Preview
+                    Preview
                   </h2>
                   <div className="flex items-center justify-end">
                     <button
@@ -261,8 +269,13 @@ export const EmailTemplatePreview = ({
                   onSubmit={handleSubmit(onSubmit)}
                   className="flex flex-col w-full gap-6 py-4"
                 >
+                  <ul>
+                    <li>Email subject: {email?.subject}</li>
+                  </ul>
                   <div
-                    dangerouslySetInnerHTML={{ __html: emailHtmlPreview || '' }}
+                    dangerouslySetInnerHTML={{
+                      __html: email?.html || '',
+                    }}
                     style={{ width: '200px' }}
                   ></div>
                   <div className="flex flex-col gap-2">

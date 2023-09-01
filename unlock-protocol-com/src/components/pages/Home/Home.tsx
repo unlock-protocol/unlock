@@ -57,7 +57,6 @@ export function Home() {
             as={Link}
             className="w-auto"
             href="https://docs.unlock-protocol.com"
-            variant="outlined-primary"
           >
             Start Building
           </Button>

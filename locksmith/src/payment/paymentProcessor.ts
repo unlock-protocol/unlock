@@ -11,6 +11,7 @@ import {
   getStripeCustomerIdForAddress,
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
+import { getSettings } from '../operations/lockSettingOperations'
 import logger from '../logger'
 import { Op, Sequelize } from 'sequelize'
 import { createPricingForPurchase } from '../utils/pricing'
@@ -177,11 +178,28 @@ export class PaymentProcessor {
         { stripeAccount }
       )
     }
+    const account = await stripe.accounts.retrieve({
+      stripeAccount,
+    })
 
+    const applicationFeeNotSupportedCountries = [
+      'BR',
+      'IN',
+      'MX',
+      'MY',
+      'SG',
+      'TH',
+    ]
+
+    // retrieve lock currency
+    const { creditCardCurrency = 'usd' } = await getSettings({
+      lockAddress: lock,
+      network,
+    })
     const intent = await stripe.paymentIntents.create(
       {
         amount: pricing.total,
-        currency: 'usd',
+        currency: creditCardCurrency,
         customer: connectedCustomer.id,
         payment_method: method.id,
         capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
@@ -197,7 +215,11 @@ export class PaymentProcessor {
           // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
           // maxPrice,
         },
-        application_fee_amount: pricing.unlockServiceFee,
+        application_fee_amount: !applicationFeeNotSupportedCountries.includes(
+          account.country?.trim() || ''
+        )
+          ? pricing.unlockServiceFee
+          : undefined,
       },
       { stripeAccount }
     )

@@ -16,7 +16,7 @@ const ClaimBody = z.object({
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
   '0xafcfff71f3e717fcdb0b6a1bf20026304fd41bee',
-]
+].map((address) => normalizer.ethereumAddress(address))
 
 /**
  * Claim API on free locks on chains with low transaction fees.
@@ -38,6 +38,13 @@ export const claim: RequestHandler = async (request, response: Response) => {
 
   const email = request.body.email?.toString().toLowerCase()
 
+  // By default we protect all metadata
+  const protectedMetadata = {
+    ...request.body,
+  }
+  // Remove the recipient
+  delete protectedMetadata.recipient
+
   // Support for walletless claims!
   if (!owner && email) {
     // We can build a recipient wallet address from the email address
@@ -50,7 +57,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
+  if (
+    LOCKS_WITH_DISABLED_CLAIMS.indexOf(
+      normalizer.ethereumAddress(lockAddress)
+    ) > -1
+  ) {
     return response.status(400).send({
       message: 'Claim disabled for this lock',
     })
@@ -96,12 +107,12 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (email) {
-    // Save email if applicable
+  if (Object.keys(protectedMetadata).length > 0) {
+    // Save metadata if applicable
     const metadata = await UserMetadata.parseAsync({
       public: {},
       protected: {
-        email,
+        ...protectedMetadata,
       },
     })
     await upsertUserMetadata({

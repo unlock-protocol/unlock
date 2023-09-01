@@ -7,10 +7,8 @@ import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
@@ -31,6 +29,8 @@ import { IconType } from 'react-icons'
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
+import { useMetadata } from '~/hooks/metadata'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface ActionBarProps {
   lockAddress: string
@@ -44,16 +44,32 @@ interface TopActionBarProps {
   network: number
 }
 
-export function downloadAsCSV(cols: string[], metadata: any[]) {
+interface DownloadOptions {
+  fileName?: string
+  cols: string[]
+  metadata: any[]
+}
+export function downloadAsCSV({
+  cols,
+  metadata,
+  fileName = 'members.csv',
+}: DownloadOptions) {
   const csv = buildCSV(cols, metadata)
 
   const blob = new Blob([csv], {
     type: 'data:text/csv;charset=utf-8',
   })
-  FileSaver.saveAs(blob, 'members.csv')
+  FileSaver.saveAs(blob, fileName)
 }
 
 const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+  const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
+    lockAddress,
+    network,
+  })
+
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
   const getMembers = async () => {
     const response = await storage.keys(
       network,
@@ -75,7 +91,10 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         }
       })
     })
-    downloadAsCSV(cols, members)
+    downloadAsCSV({
+      cols,
+      metadata: members,
+    })
   }
 
   const { isManager } = useLockManager({
@@ -84,37 +103,28 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   })
 
   const onDownloadMutation = useMutation(onDownloadCsv, {
-    onSuccess: () => {
-      ToastHelper.success('CSV downloaded')
-    },
-    onError: () => {
-      ToastHelper.error(`Unexpected issue on CSV download, please try it again`)
+    meta: {
+      errorMessage: 'Failed to download members list',
     },
   })
 
   return (
     <>
       <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-brand-ui-primary">Members</span>
+        <span className="text-xl font-bold text-brand-ui-primary">
+          {isEvent ? 'Attendees' : 'Members'}
+        </span>
         {isManager && (
           <div className="flex gap-2">
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={onDownloadMutation.isLoading}
+              disabled={isLoadingMetadata}
+              loading={onDownloadMutation.isLoading}
+              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
               onClick={() => onDownloadMutation.mutate()}
             >
-              <div className="flex items-center gap-2">
-                {onDownloadMutation?.isLoading ? (
-                  <SpinnerIcon
-                    className="text-brand-ui-primary animate-spin"
-                    size={16}
-                  />
-                ) : (
-                  <CsvIcon className="text-brand-ui-primary" size={16} />
-                )}
-                <span className="text-brand-ui-primary">CSV</span>
-              </div>
+              Download {isEvent ? 'attendee' : 'member'} list
             </Button>
           </div>
         )}

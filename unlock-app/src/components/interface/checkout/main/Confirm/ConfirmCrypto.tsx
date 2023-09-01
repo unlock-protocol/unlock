@@ -20,7 +20,6 @@ import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
-import { useFiatChargePrice } from '~/hooks/useFiatChargePrice'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
 
@@ -114,16 +113,6 @@ export function ConfirmCrypto({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
-  const amountToConvert = pricingData?.total || 0
-
-  const { data: totalPricing, isInitialLoading: isTotalPricingDataLoading } =
-    useFiatChargePrice({
-      tokenAddress: currencyContractAddress,
-      amount: amountToConvert,
-      network: lock!.network,
-      enabled: isPricingDataAvailable,
-    })
-
   // TODO: run full estimate so we can catch all errors, rather just check balances
   const { data: isPayable, isInitialLoading: isPayableLoading } = useQuery(
     ['canAfford', account, lock, pricingData],
@@ -138,7 +127,8 @@ export function ConfirmCrypto({
         getAccountTokenBalance(web3Service, account!, null, lock!.network),
       ])
 
-      const totalAmount = pricingData!.total
+      // @ts-expect-error Type error: 'pricingData' is possibly 'undefined'. (not really because this hook is only enabled if isPricingDataAvailable)
+      const totalAmount = pricingData.total
 
       const isTokenPayable = totalAmount <= Number(balance)
       const isGasPayable = Number(networkBalance) > 0 // TODO: improve actual calculation (from estimate!). In the meantime, the wallet should warn them!
@@ -157,10 +147,7 @@ export function ConfirmCrypto({
     !isPayable || (isPayable?.isTokenPayable && isPayable?.isGasPayable)
 
   const isLoading =
-    isPricingDataLoading ||
-    isInitialDataLoading ||
-    isPayableLoading ||
-    isTotalPricingDataLoading
+    isPricingDataLoading || isInitialDataLoading || isPayableLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -283,35 +270,29 @@ export function ConfirmCrypto({
             />
           )}
         </div>
-        {!isPricingDataAvailable && (
-          <div>
-            {isLoading ? (
-              <div className="flex flex-col items-center gap-2">
-                {recipients.map((user) => (
-                  <div
-                    key={user}
-                    className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
-                  />
-                ))}
-              </div>
-            ) : (
-              <Pricing
-                keyPrice={
-                  pricingData!.total <= 0
-                    ? 'FREE'
-                    : `${formatNumber(
-                        pricingData!.total
-                      ).toLocaleString()} ${symbol}`
-                }
-                usdPrice={
-                  totalPricing?.total
-                    ? `~${formatNumber(totalPricing?.total).toLocaleString()}`
-                    : ''
-                }
-                isCardEnabled={!!creditCardEnabled}
+
+        {isLoading && (
+          <div className="flex flex-col items-center gap-2">
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
               />
-            )}
+            ))}
           </div>
+        )}
+
+        {pricingData && (
+          <Pricing
+            keyPrice={
+              pricingData.total <= 0
+                ? 'FREE'
+                : `${formatNumber(
+                    pricingData.total
+                  ).toLocaleString()} ${symbol}`
+            }
+            isCardEnabled={!!creditCardEnabled}
+          />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">

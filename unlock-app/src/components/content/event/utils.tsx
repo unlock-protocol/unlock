@@ -7,8 +7,10 @@ dayjs.extend(utc)
 dayjs.extend(timezone)
 
 export const getEventDate = (ticket: any): Date | null => {
-  if (ticket?.event_start_date && ticket?.event_start_time) {
-    const timestamp = `${ticket.event_start_date} ${ticket.event_start_time}`
+  if (ticket?.event_start_date) {
+    const timestamp = [ticket.event_start_date, ticket.event_start_time].join(
+      ' '
+    )
     const dayjsLocal = dayjs.tz(timestamp, ticket.event_timezone)
     return dayjsLocal.toDate()
   }
@@ -17,8 +19,9 @@ export const getEventDate = (ticket: any): Date | null => {
 }
 
 export const getEventEndDate = (ticket: any): Date | null => {
-  if (ticket?.event_end_date && ticket?.event_end_time) {
-    const timestamp = `${ticket.event_end_date} ${ticket.event_end_time}`
+  if (ticket?.event_end_date) {
+    const timestamp = [ticket.event_end_date, ticket.event_end_time].join(' ')
+
     const dayjsLocal = dayjs.tz(timestamp, ticket.event_timezone)
     return dayjsLocal.toDate()
   }
@@ -40,7 +43,26 @@ export const getEventPath = ({
   const slug = metadata?.slug
 
   if (slug) {
-    return `/event?s=${slug}`
+    return `/event/${slug}`
   }
   return `/event?lockAddress=${lockAddress}&network=${network}`
+}
+
+export const getEventUrl = ({
+  metadata,
+  lockAddress,
+  network,
+}: EventUrlProps): string => {
+  if (typeof window !== 'undefined' && window?.location?.origin) {
+    return `${window.location.origin}${getEventPath({
+      metadata,
+      lockAddress,
+      network,
+    })}`
+  }
+  return getEventPath({
+    metadata,
+    lockAddress,
+    network,
+  })
 }

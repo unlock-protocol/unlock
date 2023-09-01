@@ -35,12 +35,12 @@ export const useProvider = (config: any) => {
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
-  const { setStorage, clearStorage } = useAppStorage()
+  const { setStorage, clearStorage, getStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
 
   const isUnlockAccount = !!provider?.isUnlock
-  const email = provider?.emailAddress
+  const email = provider?.emailAddress || getStorage('email')
   const encryptedPrivateKey = provider?.passwordEncryptedPrivateKey
 
   const createWalletService = async (provider: any) => {
@@ -55,7 +55,7 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const displayAccount = isUnlockAccount ? email : connected
+  const displayAccount = email || connected
 
   const switchWeb3ProviderNetwork = async (id: number) => {
     try {
@@ -174,6 +174,8 @@ export const useProvider = (config: any) => {
           await provider.enable()
         } catch {
           console.error('Please check your wallet and try again to connect.')
+          setLoading(false)
+          return
         }
       }
       const ethersProvider = new ethers.providers.Web3Provider(provider)

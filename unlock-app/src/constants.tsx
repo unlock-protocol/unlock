@@ -83,6 +83,12 @@ export const MONTH_NAMES = [
   'Dec',
 ]
 
+// mapping of min price by currency https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
+export const CREDIT_CARD_MIN_PRICE_BY_CURRENCY: Record<string, number> = {
+  USD: 0.5,
+  EUR: 0.5,
+}
+
 export const CREDIT_CARD_MIN_USD_PRICE = 0.5
 export const INFINITY = '∞'
 export const UNLIMITED_KEYS_COUNT = -1

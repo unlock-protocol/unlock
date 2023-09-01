@@ -23,7 +23,7 @@ app.enable('trust proxy')
 app.set('query parser', 'extended')
 
 Sentry.init({
-  dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+  ...config.sentry,
   integrations: [
     // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
@@ -39,7 +39,11 @@ Sentry.init({
 })
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
-app.use(Sentry.Handlers.requestHandler())
+app.use(
+  Sentry.Handlers.requestHandler({
+    ip: true,
+  })
+)
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler())
 

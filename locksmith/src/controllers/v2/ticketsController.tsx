@@ -127,7 +127,7 @@ export class TicketsController {
         })
       }
 
-      await notifyNewKeyToWedlocks(
+      const sent = await notifyNewKeyToWedlocks(
         {
           tokenId: keyId,
           lock: {
@@ -140,7 +140,7 @@ export class TicketsController {
         network
       )
       return response.status(200).send({
-        sent: true,
+        sent,
       })
     } catch (err) {
       logger.error(err.message)
@@ -314,17 +314,18 @@ export const getTicket: RequestHandler = async (request, response) => {
   }
 
   const isManager = key.lock.lockManagers
-    .map((item: string) => item.toLowerCase().trim())
-    .includes(userAddress.toLowerCase().trim())
+    .map((item: string) => Normalizer.ethereumAddress(item))
+    .includes(Normalizer.ethereumAddress(userAddress))
 
   const isVerifier = verifiers
-    ?.map((item) => item.address.toLowerCase().trim())
-    .includes(userAddress.toLowerCase().trim())
+    ?.map((item) => Normalizer.ethereumAddress(item.address))
+    .includes(Normalizer.ethereumAddress(userAddress))
 
   const includeProtected =
     isManager ||
     isVerifier ||
-    key.owner.toLowerCase() === userAddress.toLowerCase().trim()
+    Normalizer.ethereumAddress(key.owner) ===
+      Normalizer.ethereumAddress(userAddress)
 
   const keyData = await generateKeyMetadata(
     lockAddress,

@@ -97,6 +97,7 @@ export const UpdateReferralFee = ({
         <Input
           type="number"
           {...register('referralFeePercentage', {
+            valueAsNumber: true,
             min: 0,
             max: 100,
           })}

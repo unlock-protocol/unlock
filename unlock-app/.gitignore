@@ -31,3 +31,4 @@ scripts/index.html
 
 # Sentry
 .sentryclirc
+.vercel

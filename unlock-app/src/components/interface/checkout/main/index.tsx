@@ -178,6 +178,7 @@ export function Checkout({
           <MessageToSign
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
+            communication={communication}
           />
         )
       }
@@ -236,6 +237,7 @@ export function Checkout({
       case 'RETURNING': {
         return (
           <Returning
+            communication={communication}
             onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}

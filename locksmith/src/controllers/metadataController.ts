@@ -51,8 +51,8 @@ export const evaluateKeyOwnership = async (
   const lock = new LockData(networks[network].provider)
 
   return (
-    signeeAddress.toLowerCase() ===
-    (await lock.getKeyOwner(lockAddress, tokenId)).toLowerCase()
+    Normalizer.ethereumAddress(signeeAddress) ===
+    Normalizer.ethereumAddress(await lock.getKeyOwner(lockAddress, tokenId))
   )
 }
 

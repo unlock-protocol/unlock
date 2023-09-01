@@ -14,7 +14,6 @@ import { useQuery } from '@tanstack/react-query'
 import { useGetPrice } from '~/hooks/usePrice'
 import Link from 'next/link'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { formatNumber } from '~/utils/formatter'
 
 interface ReceiptBoxProps {
   lockAddress: string
@@ -32,7 +31,7 @@ const Address = ({
 }: Record<string, string>) => {
   const addressLine =
     city.length + state.length + zip.length > 0
-      ? [city, state, zip].filter(Boolean).join(', ')
+      ? [zip, city, state].filter(Boolean).join(', ')
       : ''
   return (
     <div className="flex flex-col gap-1">
@@ -131,20 +130,18 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     })
 
     const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
-
-    const vatTotalInAmount = Number(
-      formatNumber((receiptPrice?.total * vatRatePercentage) / 100)
-    )
-    const subtotal = formatNumber(receiptPrice?.total - vatTotalInAmount)
+    const subtotal = receiptPrice?.total / (1 + vatRatePercentage / 100)
+    const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
     return (
-      <div className="grid gap-2">
+      <div className="grid gap-2 mt-4">
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-3 gap-4 pb-2 border-b border-gray-400 last-of-type:border-none">
             <div className="col-span-full">
-              <Detail label="Service performed:">
-                {supplier?.servicePerformed || 'NFT membership'}
-              </Detail>
+              <h2 className="text-lg font-bold text-brand-ui-primary">
+                Service performed:
+              </h2>
+              {supplier?.servicePerformed || 'NFT membership'}
             </div>
             <div className="flex flex-col w-full gap-1 mt-5 md:ml-auto md:w-1/2 col-span-full">
               <h2 className="text-lg font-bold md:ml-auto text-brand-ui-primary">
@@ -154,10 +151,10 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 {vatRatePercentage > 0 && (
                   <>
                     <Detail label="Subtotal" inline>
-                      {`${subtotal} ${symbol}`}
+                      {`${subtotal.toFixed(2)} ${symbol}`}
                     </Detail>
                     <Detail label={`VAT (${vatRatePercentage}%)`} inline>
-                      {vatTotalInAmount} {symbol}
+                      {vatTotalInAmount.toFixed(2)} {symbol}
                     </Detail>
                   </>
                 )}

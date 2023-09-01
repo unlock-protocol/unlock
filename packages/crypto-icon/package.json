@@ -13,7 +13,7 @@
       "require": "./dist/index.umd.js"
     }
   },
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "tsx scripts/build.ts && vite build && tsup ./lib/index.ts --dts-only",
@@ -39,14 +39,14 @@
     "@storybook/react-vite": "7.0.18",
     "@types/react": "18.0.32",
     "@types/react-dom": "18.0.11",
-    "@vitejs/plugin-react": "4.0.0",
+    "@vitejs/plugin-react": "4.0.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "storybook": "7.0.18",
-    "tsup": "6.7.0",
+    "tsup": "7.1.0",
     "tsx": "3.12.7",
-    "typescript": "5.1.3",
-    "vite": "4.3.9",
+    "typescript": "5.1.6",
+    "vite": "4.4.8",
     "vite-plugin-svgr": "3.2.0",
     "vite-tsconfig-paths": "4.2.0"
   }

@@ -51,6 +51,13 @@ export interface MethodCall {
   id: string | number
 }
 
+export interface OauthConfig {
+  clientId: string
+  responseType?: string
+  state?: string
+  redirectUri?: string
+}
+
 export interface MethodCallResult {
   id: number
   response?: any
@@ -98,8 +105,15 @@ export class Paywall {
    * @param unlockUrl
    * @returns
    */
-  getProvider = (unlockUrl?: string, config?: any) => {
-    this.provider = new PaywallProvider(this, unlockUrl, config)
+  getProvider = (
+    unlockUrl = 'https://app.unlock-protocol.com',
+    config: OauthConfig = {
+      clientId: window.location.origin.toString(),
+    }
+  ) => {
+    if (!this.provider) {
+      this.provider = new PaywallProvider(this, unlockUrl, config)
+    }
     return this.provider
   }
 
@@ -114,10 +128,7 @@ export class Paywall {
     } else {
       await this.shakeHands(unlockUrl || unlockAppUrl)
     }
-    this.sendOrBuffer(
-      'setConfig',
-      injectProviderInfo(config || this.paywallConfig, this.provider)
-    )
+    this.setPaywallConfig(config || this.paywallConfig)
   }
 
   setPaywallConfig = (config: PaywallConfig) => {
@@ -217,7 +228,8 @@ export class Paywall {
       )
     } else {
       console.error(
-        'unknown method to call provider! Please make sure you use and EIP1193 provider!'
+        'unknown method to call provider! Please make sure you use and EIP1193 provider!',
+        { provider }
       )
     }
   }

@@ -10,11 +10,16 @@ import {
 } from '../../controllers/v2/metadataController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
+import { createCacheMiddleware } from '../../utils/middlewares/cacheMiddleware'
 
 const router = express.Router({ mergeParams: true })
 
 router.get('/:network/locks/:lockAddress', getLockMetadata)
-router.get('/:network/locks/:lockAddress/keys/:keyId', getKeyMetadata)
+router.get(
+  '/:network/locks/:lockAddress/keys/:keyId',
+  createCacheMiddleware(),
+  getKeyMetadata
+)
 
 router.post(
   '/:network/locks/:lockAddress/keys',

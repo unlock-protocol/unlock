@@ -14,7 +14,9 @@ const requiredEnvs = {
   base64WedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY,
   stripeApiKey:
     process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
-  ethPassApiKey: process.env.NEXT_PUBLIC_ETHPASS_KEY,
+  ethPassApiKey:
+    process.env.NEXT_PUBLIC_ETHPASS_KEY ||
+    'sk_live_vKGUa9EuZAVffxI3pnhY3p3C2Ccb34s7',
 }
 
 for (const [key, value] of Object.entries(requiredEnvs)) {
@@ -37,6 +39,11 @@ const config = {
   },
   images: {
     unoptimized: true,
+  },
+  output: 'standalone',
+  experimental: {
+    // this includes files from the monorepo base directory up
+    outputFileTracingRoot: path.join(__dirname, '../'),
   },
 }
 

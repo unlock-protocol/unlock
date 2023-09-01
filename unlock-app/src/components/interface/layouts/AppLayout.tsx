@@ -1,6 +1,5 @@
 import useTermsOfService from '~/hooks/useTermsOfService'
 import { useConfig } from '~/utils/withConfig'
-import Loading from '../Loading'
 import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -21,6 +20,7 @@ interface DashboardLayoutProps {
   showHeader?: boolean
   logoImageUrl?: string
   logoRedirectUrl?: string
+  showFooter?: boolean
 }
 
 export const WalletNotConnected = () => {
@@ -143,6 +143,7 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
+  showFooter = true,
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
@@ -150,14 +151,11 @@ export const AppLayout = ({
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
   const { openConnectModal } = useConnectModal()
-  if (termsLoading) {
-    return <Loading />
-  }
 
   const showLogin = authRequired && !account
 
   const logoSrc = logoImageUrl || '/images/svg/unlock-logo.svg'
-  const logoRedirectUri = logoRedirectUrl || '/locks'
+  const logoRedirectUri = logoRedirectUrl || '/'
 
   const MENU = {
     extraClass: {
@@ -183,10 +181,12 @@ export const AppLayout = ({
       : [],
   }
 
+  const showTermsModal = !termsLoading && !termsAccepted
+
   return (
-    <div className="bg-ui-secondary-200">
+    <div className="overflow-hidden bg-ui-secondary-200">
       <Modal
-        isOpen={!termsAccepted}
+        isOpen={showTermsModal}
         setIsOpen={() => {
           saveTermsAccepted()
         }}
@@ -287,7 +287,7 @@ export const AppLayout = ({
           </div>
         </div>
         <div className="px-4 mx-auto lg:container">
-          <Footer {...FOOTER} />
+          {showFooter && <Footer {...FOOTER} />}
         </div>
       </div>
     </div>

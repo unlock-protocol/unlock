@@ -9,6 +9,8 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
+
 import {
   CurrencyAmount,
   NativeCurrency,
@@ -1098,5 +1100,49 @@ export default class Web3Service extends UnlockService {
       return extendItems.map((item) => item?.args?.tokenId?.toString())
     }
     return null
+  }
+
+  async getGasRefundValue({
+    network,
+    lockAddress,
+  }: {
+    network: number
+    lockAddress: string
+  }) {
+    const provider = this.providerForNetwork(network)
+    const lockContract = await this.getLockContract(lockAddress, provider)
+    if (!lockContract.gasRefundValue) {
+      return '0'
+    }
+    const gasRefund = await lockContract.gasRefundValue()
+    let decimals = this.networks[network].nativeCurrency.decimals
+    const erc20Address = await lockContract.tokenAddress()
+    if (erc20Address !== ethers.constants.AddressZero) {
+      decimals = await getErc20Decimals(erc20Address, provider)
+    }
+    return ethers.utils.formatUnits(gasRefund, decimals)
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getDiscountHookValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeHookAbi,
+    })
+    const discountForSigner = await contract.discounts(
+      lockAddress,
+      signerAddress
+    )
+    return ethers.BigNumber.from(discountForSigner).toNumber()
   }
 }

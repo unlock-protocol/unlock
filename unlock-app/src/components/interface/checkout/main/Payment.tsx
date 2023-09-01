@@ -70,8 +70,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     currencyContractAddress: lock.currencyContractAddress,
   })
 
-  console.log(state)
-
   const { data: purchaseData, isLoading: isPurchaseDataLoading } =
     usePurchaseData({
       lockAddress: lock.address,
@@ -111,21 +109,24 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCrypto = !isUnlockAccount || !!balance?.isPayable
 
-  const enableClaim =
+  const enableClaim: boolean = !!(
     canClaim &&
     !isCanClaimLoading &&
     isReceiverAccountOnly &&
     !balance?.isPayable
+  )
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
       routes: uniswapRoutes!,
-      enabled: isSwapAndPurchaseEnabled && !enableClaim,
+      enabled:
+        isSwapAndPurchaseEnabled && !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
+    false && // disabled for now
     window.top === window &&
     !enableCreditCard &&
     networkConfig.universalCard?.cardPurchaserAddress &&
@@ -165,7 +166,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex justify-between w-full">
-                  <h3 className="font-bold"> Pay via cryptocurrency </h3>
+                  <h3 className="font-bold"> Pay with {symbol} </h3>
                   <AmountBadge amount={price.toString()} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
@@ -306,7 +307,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
                   >
                     <div className="flex justify-between w-full">
-                      <h3 className="font-bold"> Swap and purchase </h3>
+                      <h3 className="font-bold">
+                        Pay with {route!.trade.inputAmount.currency.symbol}
+                      </h3>
                       <AmountBadge
                         amount={route!.quote.toFixed()}
                         symbol={route!.trade.inputAmount.currency.symbol ?? ''}

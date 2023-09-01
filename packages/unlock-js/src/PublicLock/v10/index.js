@@ -39,6 +39,7 @@ const {
   updateTransferFee,
   setKeyManagerOf,
   transferFrom,
+  setGasRefundValue,
 } = v9
 
 export default {
@@ -81,4 +82,5 @@ export default {
   updateTransferFee,
   setKeyManagerOf,
   transferFrom,
+  setGasRefundValue,
 }

@@ -15,11 +15,13 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
       {!!pricingData?.prices?.length &&
         pricingData.prices.map((item: any, index: number) => {
           const first = index <= 0
+
           const discount =
             Number(lock!.keyPrice) > 0
               ? (100 * (Number(lock!.keyPrice) - item.amount)) /
                 Number(lock!.keyPrice)
               : 0
+
           const symbol = payment?.route
             ? payment.route.trade.inputAmount.currency.symbol
             : item.symbol
@@ -38,22 +40,25 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                 </span>{' '}
                 {item.amount < Number(lock!.keyPrice) ? (
                   <Badge variant="green" size="tiny">
-                    {discount}% Discount
+                    {discount.toFixed(2)}% Discount
                   </Badge>
                 ) : null}
               </div>
 
-              <div className="font-bold">
-                {item.amount <= 0
-                  ? 'FREE'
-                  : payment?.route
-                  ? `${formatNumber(
-                      payment.route
-                        .convertToQuoteToken(item.amount.toString())
-                        .toFixed()
-                    ).toLocaleString()} ${symbol}`
-                  : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
-              </div>
+              {/* We hide the unit prices since we don't have them when using swap and pay */}
+              {!payment.route && (
+                <div className="font-bold">
+                  {item.amount <= 0
+                    ? 'FREE'
+                    : payment?.route
+                    ? `${formatNumber(
+                        payment.route
+                          .convertToQuoteToken(item.amount.toString())
+                          .toFixed()
+                      ).toLocaleString()} ${symbol}`
+                    : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+                </div>
+              )}
             </div>
           )
         })}

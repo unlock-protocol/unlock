@@ -17,6 +17,7 @@ import { storage } from '~/config/storage'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
+import CreditCardUnlockFee from './CreditCardUnlockFee'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -416,12 +417,19 @@ export const CreditCardForm = ({
             disabled={disabled || disconnectStipeMutation.isLoading}
           />
           {isManager && (
-            <CreditCardCustomPrice
-              lockAddress={lockAddress}
-              network={network}
-              disabled={disabled}
-              lock={lock}
-            />
+            <>
+              <CreditCardCustomPrice
+                lockAddress={lockAddress}
+                network={network}
+                disabled={disabled}
+                lock={lock}
+              />
+              <CreditCardUnlockFee
+                lockAddress={lockAddress}
+                network={network}
+                disabled={disabled}
+              />
+            </>
           )}
         </div>
       )

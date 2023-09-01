@@ -18,6 +18,23 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
   requestTimeout: '25s',
+  defenderRelayCredentials: {
+    80001: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_80001 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_80001 || '',
+    },
+    137: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_137 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_137 || '',
+    },
+    5: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_5 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_5 || '',
+    },
+  },
+  sentry: {
+    dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
+  },
 }
 
 if (process.env.ON_HEROKU) {

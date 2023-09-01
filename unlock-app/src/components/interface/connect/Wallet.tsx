@@ -38,6 +38,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
             Metamask
           </ConnectButton>
         )}
+
         <ConnectButton
           icon={<SvgComponents.WalletConnect width={40} height={40} />}
           highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
@@ -46,6 +47,7 @@ export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
         >
           WalletConnect
         </ConnectButton>
+
         <ConnectButton
           icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
           highlight={recentlyUsedProvider === 'COINBASE'}

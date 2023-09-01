@@ -93,6 +93,15 @@ vi.mock('../../../src/utils/keyData', () => {
 
 describe('Requesting Token Data', () => {
   beforeAll(async () => {
+    await LockMetadata.destroy({
+      where: {},
+      truncate: true,
+    })
+    await KeyMetadata.destroy({
+      where: {},
+      truncate: true,
+    })
+
     await LockMetadata.create({
       chain,
       address: lockAddress,

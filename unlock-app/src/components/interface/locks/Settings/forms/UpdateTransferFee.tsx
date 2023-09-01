@@ -3,6 +3,7 @@ import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import LoadingIcon from '~/components/interface/Loading'
 import { useTransferFee } from '~/hooks/useTransferFee'
 
 interface UpdateTransferFeeProps {
@@ -78,6 +79,10 @@ export const UpdateTransferFee = ({
     setAllowTransfer(isTransferAllowed)
   }, [isTransferAllowed, setValue, transferFeePercentage])
 
+  if (isLoading) {
+    return <LoadingIcon />
+  }
+
   const disabledInput =
     disabled || isLoading || updateTransferFeeMutation.isLoading
 
@@ -87,10 +92,7 @@ export const UpdateTransferFee = ({
         enabled={allowTransfer}
         setEnabled={(enabled) => {
           setAllowTransfer(enabled)
-          setValue(
-            'transferFeePercentage',
-            enabled ? (transferFeeBasisPoints ?? 0) / 100 : 100
-          )
+          setValue('transferFeePercentage', 0)
         }}
         title="Transfer authorized"
         description={
@@ -111,6 +113,7 @@ export const UpdateTransferFee = ({
             placeholder="10%"
             disabled={disabledInput || !allowTransfer}
             {...register('transferFeePercentage', {
+              valueAsNumber: true,
               min: 0,
               max: 100,
             })}

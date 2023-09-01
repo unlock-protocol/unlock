@@ -47,15 +47,20 @@ interface RecipientInputProps {
   id: number
   hideFirstRecipient?: boolean
   lock: Lock
+  checkoutService: CheckoutService
 }
 
 export const MetadataInputs = ({
+  checkoutService,
   metadataInputs,
   disabled,
   id,
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
+  const [state] = useActor(checkoutService)
+  const { paywallConfig } = state.context
+
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -69,6 +74,7 @@ export const MetadataInputs = ({
     formState: { errors },
   } = useFormContext<FormData>()
   const networkConfig = config.networks[lock.network]
+
   const onRecipientChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value
@@ -105,16 +111,22 @@ export const MetadataInputs = ({
       'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
   )
 
+  let recipient = account
+  // The first recipient could be hardcoded
+  if (id == 0 && paywallConfig.recipient) {
+    recipient = paywallConfig.recipient
+  }
+
   return (
     <div className="grid gap-2">
       {hideRecipientAddress ? (
         <div className="space-y-1">
           <div className="ml-1 text-sm">
-            {isUnlockAccount ? 'Email' : 'Wallet'}
+            {isUnlockAccount ? 'Email' : label}:
           </div>
           <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
             <div className="w-32 text-sm truncate">
-              {isUnlockAccount ? email : account}
+              {isUnlockAccount ? email : recipient}
             </div>
             <Button
               type="button"
@@ -162,7 +174,7 @@ export const MetadataInputs = ({
               <div className="grid gap-1.5">
                 <div className="flex items-center justify-between">
                   <label className="text-sm" htmlFor={label}>
-                    {label}
+                    {label}:
                   </label>
                   <div className="flex items-center gap-2">
                     <div className="text-sm">No wallet address?</div>
@@ -209,13 +221,21 @@ export const MetadataInputs = ({
           )
         })
         .map((metadataInputItem) => {
-          const { name, defaultValue, placeholder, type, required, value } =
-            metadataInputItem ?? {}
+          const {
+            name,
+            label,
+            defaultValue,
+            placeholder,
+            type,
+            required,
+            value,
+          } = metadataInputItem ?? {}
+          const inputLabel = label || name
           return (
             <Input
               key={name}
-              label={name}
-              autoComplete={name}
+              label={`${inputLabel}:`}
+              autoComplete={inputLabel}
               defaultValue={defaultValue}
               size="small"
               disabled={disabled}
@@ -223,7 +243,7 @@ export const MetadataInputs = ({
               type={type}
               error={errors?.metadata?.[id]?.[name]?.message}
               {...register(`metadata.${id}.${name}`, {
-                required: required && `${name} is required`,
+                required: required && `${inputLabel} is required`,
                 value,
               })}
             />
@@ -236,6 +256,7 @@ export const MetadataInputs = ({
 const emailInput: MetadataInput = {
   type: 'email',
   name: 'email',
+  label: 'Email',
   required: true,
   placeholder: 'your@email.com',
 }
@@ -387,6 +408,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 >
                   <FormProvider {...methods}>
                     <MetadataInputs
+                      checkoutService={checkoutService}
                       hideFirstRecipient={hideRecipient}
                       disabled={isSubmitting}
                       metadataInputs={metadataInputs}

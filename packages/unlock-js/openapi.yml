@@ -401,6 +401,30 @@ components:
         hookGuildId:
           type: string
           nullable: true
+        unlockFeeChargedToUser:
+          type: boolean
+        creditCardCurrency:
+          type: string
+          default: 'usd'
+
+    EventDetails:
+      type: object
+      nullable: false
+      properties:
+        eventName:
+          type: string
+        eventDescription:
+          type: string
+        eventDate:
+          type: string
+        eventTime:
+          type: string
+        eventAddress:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
 
   parameters:
     Network:
@@ -1254,13 +1278,13 @@ paths:
         - $ref: '#/components/parameters/LockAddress'
         - in: query
           name: query
-          required: false
+          required: true
           schema:
             type: string
           description: Query you want to search for.
         - in: query
           name: filterKey
-          required: false
+          required: true
           schema:
             type: string
           description: The key you want to search on.
@@ -1972,6 +1996,69 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/receipts/{network}/{lockAddress}/all:
+    get:
+      operationId: getReceipts
+      security:
+        - User: []
+      description: Get all receipts for a lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully retrieved receipts.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        receiptNumber:
+                          type: string
+                        timestamp:
+                          type: string
+                        sender:
+                          type: string
+                        payer:
+                          type: string
+                        lockAddress:
+                          type: string
+                        tokenAddress:
+                          type: string
+                        gasTotal:
+                          type: string
+                        amountTransferred:
+                          type: string
+                        network:
+                          type: number
+                        supplierAddress:
+                          type: string
+
+        500:
+          description: Failed to retrieve receipt details.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - 'message'
+                properties:
+                  message:
+                    type: string
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          description: Impossible to retrieve receipt details.
+
   /v2/receipts/{network}/{lockAddress}/{hash}:
     get:
       operationId: getReceipt
@@ -2553,6 +2640,22 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  /v2/events/{network}/{lockAddress}:
+    get:
+      operationId: getEventDetails
+      description: Get the event details from lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully get event details by lock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventDetails'
+
   /v2/lock-settings/slug/{slug}:
     get:
       operationId: getLockSettingsBySlug
@@ -3088,6 +3191,91 @@ paths:
                 type: object
                 properties:
                   canClaim:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+  /v2/email-subscriptions/unsubscribe/{network}/locks/{lockAddress}:
+    post:
+      operationId: unsubscribeEmail
+      security:
+        - User: []
+      description: Unsubscribe email from lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully unsubscribed email from lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+  /v2/email-subscriptions/subscribe/{network}/locks/{lockAddress}:
+    post:
+      operationId: reSubscribeEmail
+      security:
+        - User: []
+      description: resubscribe emails from lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+
+      responses:
+        200:
+          description: Successfully subscribed email from lock
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/email/{network}/locks/{lockAddress}/custom/send:
+    post:
+      operationId: sendCustomEmail
+      security:
+        - User: []
+      description: Send custom email to recipients
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                content:
+                  type: string
+      responses:
+        200:
+          description: Successfully sent custom email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
                     type: boolean
         400:
           $ref: '#/components/responses/400.Invalid'

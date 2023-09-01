@@ -1,5 +1,19 @@
 # Changes
 
+# 0.39.2
+
+- add `createLock` accepts keyPrice as number
+- `maxNumberOfKeys` is optional when creating a lock. If not passed will use unlimited.
+
+# 0.39.1
+
+- add `getDiscountHookValues` to web3Service
+- add `setDiscountCodeHookSigner` to walletService
+
+# 0.39.0
+
+- Add support for setGasRefundValue to walletService and getGasRefundValue to web3Service
+
 # 0.38.2
 
 - Add `getTokenIdFromTx` method to retrieve the tokenId from a transaction hash

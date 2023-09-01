@@ -15,6 +15,8 @@ import {
   getDefiLammaPrice,
   KeyPricing,
 } from '../operations/pricingOperations'
+import { getSettings as getLockSettings } from '../operations/lockSettingOperations'
+import normalizer from './normalizer'
 
 interface KeyPricingOptions {
   recipients: (string | null)[]
@@ -121,15 +123,37 @@ export const getCreditCardProcessingFee = (
 }
 
 // Fee denominated in cents
-export const getUnlockServiceFee = (cost: number) => {
+export const getUnlockServiceFee = (
+  cost: number,
+  options?: KeyPricingOptions
+) => {
+  if (
+    normalizer.ethereumAddress(options?.lockAddress) ===
+    normalizer.ethereumAddress('0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B')
+  ) {
+    // For EthVietnam, the fee is 2%
+    return Math.ceil(cost * 0.02)
+  }
+
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 
-export const getFees = (
+export const getFees = async (
   { subtotal, gasCost }: Record<'subtotal' | 'gasCost', number>,
   options?: KeyPricingOptions
 ) => {
-  let unlockServiceFee = getUnlockServiceFee(subtotal)
+  const { lockAddress, network } = options ?? {}
+  let unlockServiceFee = getUnlockServiceFee(subtotal, options)
+  let unlockFeeChargedToUser = true
+
+  // fees can be ignored if disabled by lockManager
+  if (lockAddress && network) {
+    const data = await getLockSettings({
+      lockAddress,
+      network,
+    })
+    unlockFeeChargedToUser = data?.unlockFeeChargedToUser ?? true
+  }
 
   if (
     options?.lockAddress.toLowerCase() ===
@@ -143,11 +167,13 @@ export const getFees = (
     subtotal + gasCost,
     unlockServiceFee
   )
+
+  const feePaidByUser = unlockFeeChargedToUser ? unlockServiceFee : 0
   return {
     unlockServiceFee,
     creditCardProcessingFee,
     gasCost,
-    total: unlockServiceFee + creditCardProcessingFee + subtotal + gasCost,
+    total: feePaidByUser + creditCardProcessingFee + subtotal + gasCost,
   }
 }
 
@@ -158,7 +184,7 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
     0
   )
   const gasCost = await getGasCost(options)
-  const fees = getFees(
+  const fees = await getFees(
     {
       subtotal,
       gasCost,
@@ -169,6 +195,7 @@ export const createPricingForPurchase = async (options: KeyPricingOptions) => {
   return {
     ...fees,
     recipients,
+    subtotal,
     gasCost,
     isCreditCardPurchasable: fees.total > MIN_PAYMENT_STRIPE_CREDIT_CARD,
   }

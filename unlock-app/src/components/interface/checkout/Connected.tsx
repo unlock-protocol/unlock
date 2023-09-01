@@ -1,4 +1,5 @@
-import { Button, Tooltip } from '@unlock-protocol/ui'
+import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
+import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { useActor } from '@xstate/react'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -64,7 +65,12 @@ export function SignedIn({
 
 interface SignedOutProps {
   authenticateWithProvider(
-    provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
+    provider:
+      | 'METAMASK'
+      | 'UNLOCK'
+      | 'WALLET_CONNECT'
+      | 'COINBASE'
+      | 'DELEGATED_PROVIDER'
   ): Promise<void>
   onUnlockAccount(): void
   injectedProvider: any
@@ -164,12 +170,14 @@ export function SignedOut({
 }
 
 interface ConnectedCheckoutProps {
+  skipAccountDetails?: boolean
   injectedProvider?: unknown
   service: CheckoutService | ConnectService
   children?: ReactNode
 }
 
 export function Connected({
+  skipAccountDetails = false,
   service,
   injectedProvider,
   children,
@@ -184,7 +192,8 @@ export function Connected({
   })
   const { signIn, signOut, isSignedIn } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
-  const autoconnect = state.context?.paywallConfig?.autoconnect
+  const useDelegatedProvider =
+    state.context?.paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
     const autoSignIn = async () => {
@@ -192,7 +201,7 @@ export function Connected({
         !isSignedIn &&
         !signing &&
         connected &&
-        (isUnlockAccount || autoconnect)
+        (isUnlockAccount || useDelegatedProvider)
       ) {
         setSigning(true)
         await signIn()
@@ -200,14 +209,14 @@ export function Connected({
       }
     }
     autoSignIn()
-  }, [connected, autoconnect, isUnlockAccount, signIn, signing, isSignedIn])
-
-  // Autoconnect
-  useEffect(() => {
-    if (autoconnect) {
-      authenticateWithProvider('METAMASK')
-    }
-  }, [autoconnect, authenticateWithProvider])
+  }, [
+    connected,
+    useDelegatedProvider,
+    isUnlockAccount,
+    signIn,
+    signing,
+    isSignedIn,
+  ])
 
   useEffect(() => {
     if (!account) {
@@ -215,7 +224,7 @@ export function Connected({
     } else console.debug(`Connected as ${account}`)
   }, [account])
 
-  if (autoconnect) {
+  if (useDelegatedProvider) {
     return <div className="space-y-2">{children}</div>
   }
 
@@ -230,13 +239,15 @@ export function Connected({
   return account ? (
     <div className="space-y-2">
       {children}
-      <SignedIn
-        isDisconnecting={isDisconnecting}
-        account={account}
-        email={email}
-        isUnlockAccount={!!isUnlockAccount}
-        onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
-      />
+      {!skipAccountDetails && (
+        <SignedIn
+          isDisconnecting={isDisconnecting}
+          account={account}
+          email={email}
+          isUnlockAccount={!!isUnlockAccount}
+          onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
+        />
+      )}
     </div>
   ) : connected ? (
     <div className="grid">
@@ -246,6 +257,7 @@ export function Connected({
           event.preventDefault()
           signIn()
         }}
+        iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
       >
         Sign message to Continue
       </Button>

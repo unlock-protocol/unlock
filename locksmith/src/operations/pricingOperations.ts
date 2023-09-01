@@ -4,6 +4,8 @@ import { MIN_PAYMENT_STRIPE_CREDIT_CARD } from '../utils/constants'
 import { ethers } from 'ethers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
+import { Currencies } from '@unlock-protocol/core'
+import normalizer from '../utils/normalizer'
 
 interface Price {
   decimals: number
@@ -60,6 +62,14 @@ export function fromDecimal(num: string, decimals: number) {
   )
 }
 
+export function getCurrencySymbol(currency?: string) {
+  return (
+    Currencies.find(
+      (item) => item?.currency?.toLowerCase() === currency?.toLowerCase()
+    )?.symbol || '$'
+  )
+}
+
 /** Helper to return usd pricing object */
 export const toUsdPricing = ({
   amount,
@@ -91,10 +101,11 @@ export const getPricingFromSettings = async ({
   network,
   recipients = [],
 }: GetPriceProps): Promise<KeyPricingPrice | null> => {
-  const { creditCardPrice } = await lockSettingOperations.getSettings({
-    lockAddress,
-    network,
-  })
+  const { creditCardPrice, creditCardCurrency } =
+    await lockSettingOperations.getSettings({
+      lockAddress,
+      network,
+    })
 
   // return pricing object using the price from the settings
   if (creditCardPrice) {
@@ -103,10 +114,12 @@ export const getPricingFromSettings = async ({
     const amountInCents = creditCardPrice * keysToPurchase // this total is in basisPoints
     const amountInUSD = amountInCents / 100 // get total price in USD
 
+    const symbol = getCurrencySymbol(creditCardCurrency)
+
     return {
       amount: amountInUSD, // amount is usd for the single key
       decimals: 18,
-      symbol: '$',
+      symbol,
       amountInUSD,
       amountInCents,
     }
@@ -128,7 +141,9 @@ export async function getDefiLammaPrice({
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(
-    (item) => item.address?.toLowerCase() === erc20Address?.toLowerCase()
+    (item) =>
+      normalizer.ethereumAddress(item.address) ===
+      normalizer.ethereumAddress(erc20Address)
   )?.mainnetAddress
 
   if (mainnetTokenAddress) {
@@ -196,7 +211,7 @@ export const getTotalCharges = async ({
     }
   }
   const subtotal = Math.round(pricing.priceInAmount * 100)
-  const fees = getFees({
+  const fees = await getFees({
     subtotal,
     gasCost,
   })

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { MetadataFormData } from '~/components/interface/locks/metadata/utils'
+import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { FormProvider, useForm, useWatch } from 'react-hook-form'
 import {
   Button,
@@ -10,7 +11,6 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
-  Icon,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -22,16 +22,15 @@ import { BalanceWarning } from '~/components/interface/locks/Create/elements/Bal
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
-import { FaArrowLeft as ArrowLeftIcon } from 'react-icons/fa'
-import Link from 'next/link'
-import { SLUG_REGEXP } from '~/constants'
-import { storage } from '~/config/storage'
+import { useRouter } from 'next/router'
+import { useAvailableNetworks } from '~/utils/networks'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
   network: number
   lock: Omit<Lock, 'address' | 'key'>
   currencySymbol: string
+  unlimitedQuantity: boolean
   metadata: Partial<MetadataFormData>
 }
 
@@ -44,32 +43,33 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { network, account } = useAuth()
 
   const [isFree, setIsFree] = useState(true)
-  const [unlimitedCapacity, setUnlimitedCapacity] = useState(false)
+  const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
   const [allowPurchase, setAllowPurchase] = useState(false)
   const [forever, setForever] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
+  const router = useRouter()
 
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
     shouldUnregister: false,
     defaultValues: {
       network,
+      unlimitedQuantity: true,
       lock: {
-        name: '',
+        name: 'My Certification',
         expirationDuration: undefined,
-        maxNumberOfKeys: 0,
+        maxNumberOfKeys: undefined,
         currencyContractAddress: null,
         keyPrice: '0',
       },
       currencySymbol: networks[network!].nativeCurrency.symbol,
       metadata: {
         external_url: '',
-        description: '',
+        description: 'This certification was created using Unlock Protocol.',
         image: '',
-        slug: '',
         certification: {
-          certification_issuer: '',
+          certification_issuer: 'My company',
         },
       },
     },
@@ -109,14 +109,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     }
   )
 
-  const networkOptions = Object.values(networks || {})?.map(
-    ({ name, id }: any) => {
-      return {
-        label: name,
-        value: id,
-      }
-    }
-  )
+  const networkOptions = useAvailableNetworks()
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
 
@@ -135,9 +128,13 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
-        <Link href="/certification">
-          <Icon icon={ArrowLeftIcon} />
-        </Link>
+        <Button variant="borderless" aria-label="arrow back">
+          <ArrowBackIcon
+            size={20}
+            className="cursor-pointer"
+            onClick={() => router.back()}
+          />
+        </Button>
         <h1 className="text-xl font-bold text-center text-brand-dark">
           Creating Certification
         </h1>
@@ -201,29 +198,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 />
 
                 <Input
-                  {...register('metadata.slug', {
-                    pattern: {
-                      value: SLUG_REGEXP,
-                      message: 'Slug format is not valid',
-                    },
-                    validate: async (slug: string | undefined) => {
-                      if (slug) {
-                        const data = (await storage.getLockSettingsBySlug(slug))
-                          .data
-                        return data
-                          ? 'Slug already used, please use another one.'
-                          : true
-                      }
-                      return true
-                    },
-                  })}
-                  type="text"
-                  label="Custom URL"
-                  error={errors?.metadata?.slug?.message as string}
-                  description="Custom URL that will be used for the page."
-                />
-
-                <Input
                   {...register('metadata.certification.certification_issuer', {
                     required: {
                       value: true,
@@ -257,17 +231,17 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       setEnabled={setForever}
                       onChange={(enabled) => {
                         if (enabled) {
-                          setValue('lock.expirationDuration', '' as any, {
-                            shouldValidate: true,
-                          })
+                          setValue('lock.expirationDuration', undefined as any)
                         }
                       }}
                     />
                   </div>
                   <Input
                     disabled={forever}
+                    type="number"
                     error={errors.lock?.expirationDuration?.message as string}
                     {...register('lock.expirationDuration', {
+                      valueAsNumber: true,
                       required: {
                         value: !forever,
                         message: 'Please add a duration',
@@ -275,6 +249,33 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     })}
                   />
                 </div>
+              </div>
+            </div>
+          </Disclosure>
+
+          <Disclosure label="Network" defaultOpen>
+            <div className="grid gap-6">
+              <Select
+                onChange={(newValue) => {
+                  setValue('network', Number(newValue))
+                  setValue('lock.currencyContractAddress', null)
+                  setValue(
+                    'currencySymbol',
+                    networks[newValue].nativeCurrency.symbol
+                  )
+                }}
+                options={networkOptions}
+                label="Network"
+                defaultValue={network}
+                description={<NetworkDescription />}
+              />
+              <div className="mb-4">
+                {noBalance && (
+                  <BalanceWarning
+                    network={details.network!}
+                    balance={parseFloat(balance)}
+                  />
+                )}
               </div>
             </div>
           </Disclosure>
@@ -359,8 +360,11 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                             type="number"
                             autoComplete="off"
                             placeholder="0.00"
+                            min="0"
+                            step="any"
                             disabled={isFree}
                             {...register('lock.keyPrice', {
+                              valueAsNumber: true,
                               required: {
                                 value: !isFree,
                                 message: 'This value is required',
@@ -384,26 +388,26 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                       <ToggleSwitch
                         disabled={!allowPurchase}
                         title="Unlimited"
-                        enabled={unlimitedCapacity}
-                        setEnabled={setUnlimitedCapacity}
+                        enabled={unlimitedQuantity}
+                        setEnabled={setUnlimitedQuantity}
                         onChange={(enable: boolean) => {
                           if (enable) {
-                            setValue('lock.maxNumberOfKeys', undefined, {
-                              shouldValidate: true,
-                            })
+                            setValue('lock.maxNumberOfKeys', undefined)
                           }
+                          setValue('unlimitedQuantity', enable)
                         }}
                       />
                     </div>
                     <Input
                       {...register('lock.maxNumberOfKeys', {
+                        valueAsNumber: true,
                         min: 0,
                         required: {
-                          value: !unlimitedCapacity,
+                          value: !unlimitedQuantity,
                           message: 'This value is required',
                         },
                       })}
-                      disabled={unlimitedCapacity || !allowPurchase}
+                      disabled={unlimitedQuantity || !allowPurchase}
                       autoComplete="off"
                       step={1}
                       pattern="\d+"
@@ -419,34 +423,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
               )}
             </div>
           </Disclosure>
-
-          <Disclosure label="Network" defaultOpen>
-            <div className="grid gap-6">
-              <Select
-                onChange={(newValue) => {
-                  setValue('network', Number(newValue))
-                  setValue('lock.currencyContractAddress', null)
-                  setValue(
-                    'currencySymbol',
-                    networks[newValue].nativeCurrency.symbol
-                  )
-                }}
-                options={networkOptions}
-                label="Network"
-                defaultValue={network}
-                description={<NetworkDescription />}
-              />
-              <div className="mb-4">
-                {noBalance && (
-                  <BalanceWarning
-                    network={details.network!}
-                    balance={parseFloat(balance)}
-                  />
-                )}
-              </div>
-            </div>
-          </Disclosure>
-
           <div className="flex flex-col justify-center gap-6">
             {Object.keys(errors).length > 0 && (
               <div className="px-2 text-red-600">
