@@ -17200,6 +17200,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/retry@npm:0.12.2":
+  version: 0.12.2
+  resolution: "@types/retry@npm:0.12.2"
+  checksum: e5675035717b39ce4f42f339657cae9637cf0c0051cf54314a6a2c44d38d91f6544be9ddc0280587789b6afd056be5d99dbe3e9f4df68c286c36321579b1bf4a
+  languageName: node
+  linkType: hard
+
 "@types/sax@npm:^1.2.1":
   version: 1.2.4
   resolution: "@types/sax@npm:1.2.4"
@@ -18548,7 +18555,7 @@ __metadata:
     multer-s3: 3.0.1
     nock: 13.3.2
     node-mocks-http: 1.12.2
-    p-retry: 5.1.2
+    p-retry: 6.0.0
     parse-data-uri: 0.2.0
     path-to-regexp: 6.2.1
     pg: 8.11.2
@@ -42005,13 +42012,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"p-retry@npm:5.1.2, p-retry@npm:^5.1.1":
-  version: 5.1.2
-  resolution: "p-retry@npm:5.1.2"
+"p-retry@npm:6.0.0":
+  version: 6.0.0
+  resolution: "p-retry@npm:6.0.0"
   dependencies:
-    "@types/retry": 0.12.1
+    "@types/retry": 0.12.2
     retry: ^0.13.1
-  checksum: f063c08b1adc3cf7c01de01eb2dbda841970229f9f229c5167ebf4e2080d8a38b1f4e6eccefac74bca97cfaf4436d0a0eeb0b551175b26bc8b3116195f61bba8
+  checksum: ef6bbac2733ff561b80f11fb9dcdf91a8adb8ceeec84388e789bdb23dc5f2d443bfffd2ffb20798e8db7fd9a4071cc238ef264b32ad495cc323d2df40c444750
   languageName: node
   linkType: hard
 
@@ -42022,6 +42029,16 @@ __metadata:
     "@types/retry": 0.12.0
     retry: ^0.13.1
   checksum: 45c270bfddaffb4a895cea16cb760dcc72bdecb6cb45fef1971fa6ea2e91ddeafddefe01e444ac73e33b1b3d5d29fb0dd18a7effb294262437221ddc03ce0f2e
+  languageName: node
+  linkType: hard
+
+"p-retry@npm:^5.1.1":
+  version: 5.1.2
+  resolution: "p-retry@npm:5.1.2"
+  dependencies:
+    "@types/retry": 0.12.1
+    retry: ^0.13.1
+  checksum: f063c08b1adc3cf7c01de01eb2dbda841970229f9f229c5167ebf4e2080d8a38b1f4e6eccefac74bca97cfaf4436d0a0eeb0b551175b26bc8b3116195f61bba8
   languageName: node
   linkType: hard
 
