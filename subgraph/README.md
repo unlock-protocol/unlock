@@ -69,7 +69,7 @@ yarn run deploy <network-name> --studioName=<Name of studio deployment> --label=
 
 ```
 
-Direct deployments can be made to the hosted service.
+Direct deployments can be made to the hosted service. This allows using a different endpoint than what is currently in @unlock-protocol/networks.
 
 ```sh
 # build
@@ -80,7 +80,7 @@ yarn run deploy-hosted <subgraph-deployment-slug>
 
 ```
 
-Direct deployments can be made to the studio.
+Direct deployments can be made to the studio. This allows using a different endpoint than what is currently in @unlock-protocol/networks.
 
 ```sh
 # build
@@ -119,8 +119,9 @@ To add a particular property to the subgraph you need to
 
 1. add to schema
 2. edit the mappings
-3. test it
-4. republish the new subgraph
+3. update ../tests/subgraph.test.yaml to match new manifest
+4. test it
+5. republish the new subgraph
 
 ### add to schema
 
