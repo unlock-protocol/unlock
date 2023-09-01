@@ -25,6 +25,8 @@ interface FormProps {
   referralAddress: string
 }
 
+const zeroAddress = ethers.constants.AddressZero
+
 export const UpdateReferralFee = ({
   lockAddress,
   network,
@@ -56,7 +58,10 @@ export const UpdateReferralFee = ({
   })
 
   const onSubmit = async (fields: FormProps) => {
-    const setReferrerFeePromise = setReferrerFee.mutateAsync(fields)
+    const setReferrerFeePromise = setReferrerFee.mutateAsync({
+      ...fields,
+      referralAddress: referralAddress || zeroAddress,
+    })
 
     await ToastHelper.promise(setReferrerFeePromise, {
       loading: 'Setting new referrer',
@@ -95,6 +100,9 @@ export const UpdateReferralFee = ({
       <div className="grid gap-2">
         <ToggleSwitch
           title="Referrer address"
+          description={
+            'If no address is provided, the default referral fee will apply to any referrer.'
+          }
           enabled={isReferralAddressToggled}
           disabled={isDisabledReferrerInput}
           setEnabled={(enabled: boolean) => {
@@ -119,7 +127,9 @@ export const UpdateReferralFee = ({
           className="w-full md:w-1/3"
           type="submit"
           disabled={
-            isDisabledReferrerInput || !referralFeePercentage || !isValidAddress
+            isDisabledReferrerInput ||
+            !referralFeePercentage ||
+            !!(referralAddress && !isValidAddress)
           }
           loading={isSettingReferrerFee}
         >
@@ -138,6 +148,7 @@ export const UpdateReferralFee = ({
           <div className="w-full grid gap-5 grid-cols-1 mt-3">
             {referralFees.map(({ id, referrer, fee }) => {
               const feeNumber = Number(fee)
+              const isAddressLinkedToAnyReferrer = referrer === zeroAddress
 
               return (
                 <div
@@ -145,7 +156,9 @@ export const UpdateReferralFee = ({
                   className="w-full overflow-x-auto flex justify-between items-center border border-gray-300 p-3 rounded-xl"
                 >
                   <h2 className="text-md font-medium break-words">
-                    {referrer}
+                    {isAddressLinkedToAnyReferrer
+                      ? 'Referral fee applied to any referrer'
+                      : referrer}
                   </h2>
                   <h2 className="text-md pl-3 font-medium break-words">
                     ({feeNumber / 100}%)
