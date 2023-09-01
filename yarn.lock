@@ -18704,12 +18704,12 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    eslint: 8.46.0
+    eslint: 8.48.0
     next: 13.4.12
     prettier: 3.0.0
-    typescript: 5.1.6
+    typescript: 5.2.2
     vite: 4.4.8
-    vite-plugin-node-polyfills: 0.9.0
+    vite-plugin-node-polyfills: 0.12.0
   languageName: unknown
   linkType: soft
 
@@ -23609,6 +23609,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"buffer-polyfill@npm:buffer@^6.0.3, buffer@npm:6.0.3, buffer@npm:^6.0.1, buffer@npm:^6.0.3":
+  version: 6.0.3
+  resolution: "buffer@npm:6.0.3"
+  dependencies:
+    base64-js: ^1.3.1
+    ieee754: ^1.2.1
+  checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
+  languageName: node
+  linkType: hard
+
 "buffer-reverse@npm:^1.0.1":
   version: 1.0.1
   resolution: "buffer-reverse@npm:1.0.1"
@@ -23664,16 +23674,6 @@ __metadata:
     base64-js: ^1.0.2
     ieee754: ^1.1.4
   checksum: d659494c5032dd39d03d2912e64179cc44c6340e7e9d1f68d3840e7ab4559989fbce92b4950174593c38d05268224235ba404f0878775cab2a616b6dcad9c23e
-  languageName: node
-  linkType: hard
-
-"buffer@npm:6.0.3, buffer@npm:^6.0.1, buffer@npm:^6.0.3":
-  version: 6.0.3
-  resolution: "buffer@npm:6.0.3"
-  dependencies:
-    base64-js: ^1.3.1
-    ieee754: ^1.2.1
-  checksum: 5ad23293d9a731e4318e420025800b42bf0d264004c0286c8cc010af7a270c7a0f6522e84f54b9ad65cbd6db20b8badbfd8d2ebf4f80fa03dab093b89e68c3f9
   languageName: node
   linkType: hard
 
@@ -53007,6 +53007,20 @@ __metadata:
   peerDependencies:
     vite: ">2.0.0-0"
   checksum: 63888198c1d2690aced7486f4864c33515ac9a541e993d5ac86f6e27129c92e7378f7552a22317988c1d8b66c7ec04f403c91ca3f9dd676d74f37ddc9930e67e
+  languageName: node
+  linkType: hard
+
+"vite-plugin-node-polyfills@npm:0.12.0":
+  version: 0.12.0
+  resolution: "vite-plugin-node-polyfills@npm:0.12.0"
+  dependencies:
+    "@rollup/plugin-inject": ^5.0.3
+    buffer-polyfill: "npm:buffer@^6.0.3"
+    node-stdlib-browser: ^1.2.0
+    process: ^0.11.10
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0
+  checksum: b996ba67d64938620b80bcf1f1c9c97ffa717df82807a62238e0ea3ae4aa36252e8a1fd5bf2f5eafe9f9c860a1efe9b5db127353e976c7d615f7dbd8fc25871f
   languageName: node
   linkType: hard
 
