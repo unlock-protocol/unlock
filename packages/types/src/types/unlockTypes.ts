@@ -84,6 +84,7 @@ export interface NetworkConfig {
     endpoint: string
     endpointV2?: string
     networkName?: string // for thegraph hosted service
+    studioEndpoint?: string
   }
   uniswapV3?: Partial<{
     subgraph: string
