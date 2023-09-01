@@ -1,3 +1,5 @@
+import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui'
+
 import { CheckoutService } from './checkoutMachine'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
@@ -133,11 +135,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     lock.currencyContractAddress?.toLowerCase()?.trim() ===
       USDC?.address?.toLowerCase()?.trim()
 
+  const crossMintEnabled = true // TODO: enable cross minting
+
   const allDisabled = [
     enableCreditCard,
     enableClaim,
     enableCrypto,
     universalCardEnabled,
+    crossMintEnabled,
   ].every((item) => !item)
 
   return (
@@ -185,6 +190,28 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     `You don't have enough ${networkConfig.nativeCurrency.symbol} for gas fee.`}
                 </div>
               </button>
+            )}
+
+            {crossMintEnabled && !enableClaim && (
+              <div className="flex flex-col w-full space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white">
+                <CrossmintPayButton
+                  className="bg-white p-4 justify-start black shadow-none	transition-none	"
+                  getButtonText={(connecting) =>
+                    connecting ? 'Connecting' : `Pay with fiat via Crossmint`
+                  }
+                  clientId="1d837cfc-6299-47b4-b5f9-462d5df00f33"
+                  environment="staging"
+                  mintConfig={{
+                    totalPrice: '0.005',
+                    _values: ['5000000000000000'],
+                    _referrers: ['0x6C3b3225759Cbda68F96378A9F0277B4374f9F06'],
+                    _keyManagers: [
+                      '0x6C3b3225759Cbda68F96378A9F0277B4374f9F06',
+                    ],
+                    _data: ['0x'],
+                  }}
+                />
+              </div>
             )}
 
             {universalCardEnabled && !enableClaim && (
