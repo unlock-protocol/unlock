@@ -409,9 +409,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const hasCheckoutId = settings?.checkoutConfigId
 
+  const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+
   const keysLeft =
     Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
-  const isSoldOut = keysLeft === 0
+  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const {
