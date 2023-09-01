@@ -1,4 +1,3 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   Button,
   Input,
@@ -6,13 +5,12 @@ import {
   Card,
   AddressInput,
 } from '@unlock-protocol/ui'
-import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import LoadingIcon from '~/components/interface/Loading'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { useReferrerFee } from '~/hooks/useReferrerFee'
 import { onResolveName } from '~/utils/resolvers'
 
 interface UpdateReferralFeeProps {
@@ -33,9 +31,8 @@ export const UpdateReferralFee = ({
   isManager,
   disabled,
 }: UpdateReferralFeeProps) => {
-  const [isReferralAddressEnabled, setIsReferralAddressEnabled] =
+  const [isReferralAddressToggled, setIsReferralAddressToggled] =
     useState(false)
-  const { getWalletService } = useAuth()
 
   const {
     watch,
@@ -48,41 +45,18 @@ export const UpdateReferralFee = ({
     defaultValues: { referralFeePercentage: 0, referralAddress: '' },
   })
 
-  const referralAddress = watch('referralAddress', '')
-  const referralFeePercentage = watch('referralFeePercentage', 0)
-
-  const setReferrerFee = async (fields: FormProps) => {
-    const walletService = await getWalletService(network)
-    await walletService.setReferrerFee({
-      lockAddress,
-      address: fields?.referralAddress,
-      feeBasisPoint: fields?.referralFeePercentage * 100,
-    })
-  }
-
-  const getLock = async () => {
-    const service = new SubgraphService()
-    return service.lock(
-      {
-        where: {
-          id: lockAddress,
-        },
-      },
-      {
-        network,
-      }
-    )
-  }
-
-  const setReferrerFeeMutation = useMutation(setReferrerFee)
-
-  const isValidAddress = ethers.utils.isAddress(referralAddress)
+  const {
+    data: referralFees,
+    isLoading,
+    isSettingReferrerFee,
+    setReferrerFee,
+  } = useReferrerFee({
+    lockAddress,
+    network,
+  })
 
   const onSubmit = async (fields: FormProps) => {
-    const setReferrerFeePromise = setReferrerFeeMutation.mutateAsync({
-      ...fields,
-      referralAddress,
-    })
+    const setReferrerFeePromise = setReferrerFee.mutateAsync(fields)
 
     await ToastHelper.promise(setReferrerFeePromise, {
       loading: 'Setting new referrer',
@@ -92,15 +66,13 @@ export const UpdateReferralFee = ({
 
     reset()
   }
-  const { isLoading, data: referralFeesData } = useQuery(
-    ['getLock', lockAddress, network, setReferrerFeeMutation.isSuccess],
-    async () => getLock()
-  )
 
-  const referralFees = referralFeesData?.referrerFees || []
+  const referralAddress = watch('referralAddress', '')
+  const referralFeePercentage = watch('referralFeePercentage', 0)
 
-  const isDisabledReferrerInput =
-    disabled || setReferrerFeeMutation.isLoading || isLoading
+  const isValidAddress = ethers.utils.isAddress(referralAddress)
+
+  const isDisabledReferrerInput = disabled || isSettingReferrerFee || isLoading
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
@@ -123,17 +95,17 @@ export const UpdateReferralFee = ({
       <div className="grid gap-2">
         <ToggleSwitch
           title="Referrer address"
-          enabled={isReferralAddressEnabled}
+          enabled={isReferralAddressToggled}
           disabled={isDisabledReferrerInput}
           setEnabled={(enabled: boolean) => {
-            setIsReferralAddressEnabled(enabled)
+            setIsReferralAddressToggled(enabled)
           }}
         />
 
         <AddressInput
           label=""
           value={referralAddress}
-          disabled={isDisabledReferrerInput || !isReferralAddressEnabled}
+          disabled={isDisabledReferrerInput || !isReferralAddressToggled}
           onChange={(value: any) => {
             setValue('referralAddress', value)
           }}
@@ -149,7 +121,7 @@ export const UpdateReferralFee = ({
           disabled={
             isDisabledReferrerInput || !referralFeePercentage || !isValidAddress
           }
-          loading={setReferrerFeeMutation.isLoading}
+          loading={isSettingReferrerFee}
         >
           Apply
         </Button>

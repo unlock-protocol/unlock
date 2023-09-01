@@ -1,5 +1,9 @@
 # Changes
 
+# 0.39.3
+
+- add `referrerFees` to `lock`.
+
 # 0.39.2
 
 - add `createLock` accepts keyPrice as number

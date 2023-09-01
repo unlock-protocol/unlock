@@ -899,6 +899,26 @@ export default class Web3Service extends UnlockService {
     return await unlockContract.publicLockLatestVersion()
   }
 
+  /**
+   * Returns referrer fees
+   */
+  async referrerFees({
+    lockAddress,
+    network,
+    address,
+  }: {
+    lockAddress: string
+    network: number
+    address: string
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const referrerFees = await lockContract.referrerFees(address)
+    return ethers.BigNumber.from(referrerFees).toNumber()
+  }
+
   async getBaseTokenURI({
     lockAddress,
     network,
