@@ -15,6 +15,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ethers } from 'ethers'
+import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -52,6 +53,12 @@ export function ConfirmCrossmint({
   } = state.context
 
   // const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
+
+  const { isLoading: isCrossmintLoading, data: crossmintConfigId } =
+    useCrossmintEnabled({
+      network: lock!.network,
+      lockAddress: lock!.address,
+    })
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
@@ -92,7 +99,8 @@ export function ConfirmCrossmint({
     ),
   })
 
-  const isLoading = isInitialDataLoading || isPricingDataLoading || !quote
+  const isLoading =
+    isCrossmintLoading || isInitialDataLoading || isPricingDataLoading || !quote
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig)
@@ -172,10 +180,8 @@ export function ConfirmCrossmint({
             recipient={{
               wallet: account,
             }}
-            // We should get this from the lock's settings
-            clientId="1d837cfc-6299-47b4-b5f9-462d5df00f33"
-            // change to prod?
-            environment="staging"
+            clientId={crossmintConfigId!}
+            environment={config.env === 'prod' ? 'production' : 'staging'}
             mintConfig={{
               //  TODO: add recipient address here!
               totalPrice: pricingData?.total.toString(),

@@ -25,6 +25,7 @@ import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
+import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -65,6 +66,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
+  const { isLoading: isCrossmintLoading, data: crossmintConfigId } =
+    useCrossmintEnabled({
+      network: lock.network,
+      lockAddress: lock.address,
+    })
+
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
     network: lock.network,
@@ -102,7 +109,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isSwapAndPurchaseEnabled =
     price > 0 && uniswapRoutes && uniswapRoutes.length > 0
 
-  const isWaiting = isLoading || isBalanceLoading
+  const isWaiting = isLoading || isCrossmintLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
@@ -134,14 +141,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     lock.currencyContractAddress?.toLowerCase()?.trim() ===
       USDC?.address?.toLowerCase()?.trim()
 
-  const crossMintEnabled = true // TODO: enable cross minting
-
   const allDisabled = [
     enableCreditCard,
     enableClaim,
     enableCrypto,
     universalCardEnabled,
-    crossMintEnabled,
+    !!crossmintConfigId,
   ].every((item) => !item)
 
   return (
@@ -191,7 +196,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {crossMintEnabled && !enableClaim && (
+            {crossmintConfigId && !enableClaim && (
               <div>
                 <button
                   onClick={(event) => {
