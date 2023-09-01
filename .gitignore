@@ -12,7 +12,7 @@ unlock-app/src/artifacts/
 smart-contracts/build/
 builds/
 
-/subgraph/subgraph.yaml
+# /subgraph/subgraph.yaml
 
 # dot env files
 .env.*.local
