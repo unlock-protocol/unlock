@@ -1,5 +1,4 @@
-import { CrossmintPayButton } from '@crossmint/client-sdk-react-ui'
-
+import Image from 'next/image'
 import { CheckoutService } from './checkoutMachine'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
@@ -211,11 +210,17 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                       <VisaIcon size={18} />
                       <MasterCardIcon size={18} />
+                      <Image
+                        alt="Crossmint Logo"
+                        src="https://www.crossmint.io/assets/crossmint/logo.svg"
+                        width={18}
+                        height={18}
+                      />
                     </div>
                   </div>
                   <div className="flex items-center justify-between w-full">
                     <div className="text-sm text-left text-gray-500">
-                      Use your debit or credit with Crossmint. <br />
+                      Use your card with Crossmint. <br />
                       <span className="text-xs">Additional fees may apply</span>
                     </div>
                     <RightArrowIcon
@@ -224,23 +229,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     />
                   </div>
                 </button>
-                {/* <CrossmintPayButton
-                  className="bg-white p-4 justify-start black shadow-none	transition-none	"
-                  getButtonText={(connecting) =>
-                    connecting ? 'Connecting' : `Pay with fiat via Crossmint`
-                  }
-                  clientId="1d837cfc-6299-47b4-b5f9-462d5df00f33"
-                  environment="staging"
-                  mintConfig={{
-                    totalPrice: '0.005',
-                    _values: ['5000000000000000'],
-                    _referrers: ['0x6C3b3225759Cbda68F96378A9F0277B4374f9F06'],
-                    _keyManagers: [
-                      '0x6C3b3225759Cbda68F96378A9F0277B4374f9F06',
-                    ],
-                    _data: ['0x'],
-                  }}
-                /> */}
               </div>
             )}
 
