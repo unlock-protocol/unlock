@@ -7,6 +7,7 @@ tests/.bin
 *.wasm
 
 # generated files
+subgraph.yaml
 networks.json
 /abis
 /config

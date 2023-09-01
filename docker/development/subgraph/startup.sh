@@ -8,7 +8,7 @@ echo "Preparing Unlock local subgraph..."
 yarn workspace @unlock-protocol/subgraph prepare:abis
 echo -e "✔ Unlock local ABI prepared\n\n"
 
-yarn workspace @unlock-protocol/subgraph prepare:test
+yarn workspace @unlock-protocol/subgraph copy-manifest
 
 yarn workspace @unlock-protocol/subgraph codegen
 echo -e "✔ Unlock local code generated\n\n"
