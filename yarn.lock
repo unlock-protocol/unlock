@@ -15263,16 +15263,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@stripe/react-stripe-js@npm:2.1.1"
+"@stripe/react-stripe-js@npm:2.1.2":
+  version: 2.1.2
+  resolution: "@stripe/react-stripe-js@npm:2.1.2"
   dependencies:
     prop-types: ^15.7.2
   peerDependencies:
-    "@stripe/stripe-js": ^1.44.1
+    "@stripe/stripe-js": ^1.44.1 || ^2.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: b9c0a2d3f98d757c84698560ba78ca619bdf21f6730157663ceb51396d494f6a2c221eada7dd518bcdde5cf7da242a26be0df385962e231c4bdecb38d9076923
+  checksum: fd1d51d9ea6b43d3a4e4d163b42aceaea8702b40ae75f5c3717ef38e64004e0cfc6bfa65986f9b764fd21af0e0255a0f3da42deb1a7164cdf80f1e542efd0ce6
   languageName: node
   linkType: hard
 
@@ -18890,7 +18890,7 @@ __metadata:
     "@rehooks/local-storage": 2.4.4
     "@sentry/nextjs": 7.60.1
     "@stripe/crypto": 0.0.4
-    "@stripe/react-stripe-js": 2.1.1
+    "@stripe/react-stripe-js": 2.1.2
     "@stripe/stripe-js": 1.54.2
     "@tanstack/react-query": 4.32.0
     "@testing-library/react": 14.0.0
