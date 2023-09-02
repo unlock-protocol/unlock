@@ -13,7 +13,6 @@ import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as userMetadataOperations from './userMetadataOperations'
-
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
 import { LockSetting } from '../models/lockSetting'
