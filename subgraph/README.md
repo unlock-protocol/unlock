@@ -59,7 +59,9 @@ yarn run deploy <network-name>
 yarn run deploy-all
 ```
 
-Deploy the latest subgraph code to the studio.
+Deploy the latest subgraph code to the studio. If `studioName` option is set it will use it instead of the `studioEndpoint` set in `network.subgraph`. If `studioEndpoint` is not set or `studioName` is not passed as a parameter, it will deploy to the hosted service. The `label` option should always be set when doing studio deployments, otherwise it will fallback to deploying to hosted service as well.
+
+Deploying all will deploy all networks that have `studioEndpoint` set.
 
 ```sh
 export SUBGRAPH_STUDIO_DEPLOY_KEY=<api-key>
@@ -67,6 +69,7 @@ export SUBGRAPH_STUDIO_DEPLOY_KEY=<api-key>
 # deploy a single network
 yarn run deploy <network-name> --studioName=<Name of studio deployment> --label=<Studio version>
 
+yarn run deploy-all-studio --label=<Studio version>
 ```
 
 Direct deployments can be made to the hosted service. This allows using a different endpoint than what is currently in @unlock-protocol/networks.

@@ -108,30 +108,51 @@ const deploy = async (network, studioName, graphLabel) => {
     'https://api.thegraph.com/subgraphs/name/(.*)'
   )
 
-  const matchStudio = networks[network].subgraph.endpointV2.match(
-    'https://api.studio.thegraph.com/query/44190/(.*)/(.*)'
-  )
+  const studioEndpoint = networks[network].subgraph.studioEndpoint;
 
   if(studioName && graphLabel){
     return deployStudio(graphLabel, studioName)
+  }
+
+  if(studioEndpoint && graphLabel){
+    return deployStudio(graphLabel, studioEndpoint)
   }
 
   if(matchHosted){
     return deployHosted(matchHosted[1])
   }
 
-  if (matchStudio) {
-    const [major, minor, patch] = matchStudio[2]
-      .split('.')
-      .map((x) => parseInt(x))
-    return deployStudio(`${major}.${minor}.${patch + 1}`, matchStudio[1])
-  }
-
   throw new Error(
-    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2})`
+    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2}) (${networks[network].subgraph.studioEndpoint})`
   )
 }
 
+/**
+ * deploy only studio command
+ * @param network 
+ * @param graphLabel 
+ * @returns 
+ */
+const deployOnlyStudio = async (network, graphLabel) => {
+  if (!network) {
+    throw new Error('Missing network name')
+  }
+
+  if (!networks[network]?.subgraph?.studioEndpoint) {
+    console.log(`Missing subgraph studioEndpoint for ${network}`)
+    return;
+  }
+
+  const studioEndpoint = networks[network].subgraph.studioEndpoint;
+
+  if(studioEndpoint && graphLabel){
+    return deployStudio(graphLabel, studioEndpoint)
+  }
+
+  throw new Error(
+    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioEndpoint})`
+  )
+}
 // Note: the palm network is not supported by
 //
 const choices = Object.keys(networks).filter(
@@ -187,6 +208,25 @@ require('yargs/yargs')(hideBin(process.argv))
       }
 
       console.log('Subgraph deployments done.')
+    }
+  )
+  .command(
+    'deploy-all-studio',
+    'Deploy subgraphs to studio on all decentralized networks',
+    {},
+    async ({ label }) => {
+      let studioChoices = choices.filter((c) => networks[c].subgraph.studioEndpoint != null);
+      // check config
+      console.log(
+        `Deploying subgraphs to studio for:\n${studioChoices.map((c) => ` - ${c}\n`).join('')}`
+      )
+      // build and deploy each network
+      for (const network of studioChoices) {
+        await build(network)
+        await deployOnlyStudio(network, label)
+      }
+
+      console.log('Subgraph studio deployments done.')
     }
   )
   .demandCommand()

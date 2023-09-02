@@ -14,6 +14,7 @@
     "build:graph": "node bin/thegraph build",
     "deploy": "node bin/thegraph deploy",
     "deploy-all": "node bin/thegraph deploy-all",
+    "deploy-all-studio": "node bin/thegraph deploy-all-studio",
     "create-local": "graph create --node http://localhost:8020/ ",
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
