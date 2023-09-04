@@ -12934,12 +12934,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rehooks/local-storage@npm:2.4.4":
-  version: 2.4.4
-  resolution: "@rehooks/local-storage@npm:2.4.4"
+"@rehooks/local-storage@npm:2.4.5":
+  version: 2.4.5
+  resolution: "@rehooks/local-storage@npm:2.4.5"
   peerDependencies:
     react: ">=16.8.0"
-  checksum: 1aba4f4cfa0f1767d82730240a11c814f5b70917a0031989d3ce3a97b3d040523271738802a4a5deee20e9295e7c09bca6882a048337f0b78525347b7370ec73
+  checksum: 407813443d093d3f0cfdf9c109346089744eb4dadebd41fcf3ebbe7d489829725a7701c6fbb677e248037c47519b626992440b9a4455e097a262089d55301299
   languageName: node
   linkType: hard
 
@@ -19357,7 +19357,7 @@ __metadata:
     "@hookform/error-message": 2.0.1
     "@hookform/resolvers": 3.1.1
     "@radix-ui/react-avatar": 1.0.3
-    "@rehooks/local-storage": 2.4.4
+    "@rehooks/local-storage": 2.4.5
     "@sentry/nextjs": 7.60.1
     "@stripe/crypto": 0.0.4
     "@stripe/react-stripe-js": 2.1.2
