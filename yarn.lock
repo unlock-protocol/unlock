@@ -13276,14 +13276,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-service-client@npm:2.0.2":
-  version: 2.0.2
-  resolution: "@safe-global/safe-service-client@npm:2.0.2"
+"@safe-global/safe-service-client@npm:2.0.3":
+  version: 2.0.3
+  resolution: "@safe-global/safe-service-client@npm:2.0.3"
   dependencies:
     "@ethersproject/abstract-signer": ^5.7.0
     "@safe-global/safe-core-sdk-types": ^1.9.2
     node-fetch: ^2.6.6
-  checksum: f7909d4809e06d5e7e1e682ec1ee52a477e6dea4a21f7c759103ae736b89f3391c641421a8039d1e0426316f943191d063d264364d79bb2f0cf955897af9d93b
+  checksum: 10b14307c75b184d7a62345109845d5d2e223d221e8cd6961dcc49b3453b1721cce3c04f728f5ee271353615250a9dd8d15ac3c843177f687dbb065a1c099b07
   languageName: node
   linkType: hard
 
@@ -18518,23 +18518,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:^6.2.0":
-  version: 6.2.1
-  resolution: "@typescript-eslint/utils@npm:6.2.1"
-  dependencies:
-    "@eslint-community/eslint-utils": ^4.4.0
-    "@types/json-schema": ^7.0.12
-    "@types/semver": ^7.5.0
-    "@typescript-eslint/scope-manager": 6.2.1
-    "@typescript-eslint/types": 6.2.1
-    "@typescript-eslint/typescript-estree": 6.2.1
-    semver: ^7.5.4
-  peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
-  checksum: d16356a633f39d988a9af159da15e28c6a28fa47abce372061c79cf186d193d148e1c32862c9702ff87e2a06f7a2f82773e4b56320a39f432f4b1a989f8005ad
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/visitor-keys@npm:5.47.0":
   version: 5.47.0
   resolution: "@typescript-eslint/visitor-keys@npm:5.47.0"
@@ -19221,7 +19204,7 @@ __metadata:
     "@openzeppelin/upgrades-core": 1.27.3
     "@safe-global/safe-core-sdk": 3.3.5
     "@safe-global/safe-ethers-lib": 1.9.3
-    "@safe-global/safe-service-client": 2.0.2
+    "@safe-global/safe-service-client": 2.0.3
     "@uniswap/smart-order-router": 3.16.21
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
@@ -29518,21 +29501,6 @@ __metadata:
     natural-compare: ^1.4.0
     requireindex: ~1.2.0
   checksum: d089e4ec4f8cea4ec239132f85c807ce71e500370e3ef778d684697da5011b413e625d6f5b9bf3b5b1cf7c4eafffc39d386bffca271b7c3e7983409fb0d7d2c6
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-vitest@npm:0.2.8":
-  version: 0.2.8
-  resolution: "eslint-plugin-vitest@npm:0.2.8"
-  dependencies:
-    "@typescript-eslint/utils": ^6.2.0
-  peerDependencies:
-    eslint: ">=8.0.0"
-    vitest: "*"
-  peerDependenciesMeta:
-    vite:
-      optional: true
-  checksum: bf09a8da8b564277b7bfcac37d24b3db16b35c61293bccfeb45651a3810c919da74e29e5a264eaf611af35c91b971dbbf28f6fba34166cf6a263d40ad91a48a6
   languageName: node
   linkType: hard
 
