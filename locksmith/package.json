@@ -112,7 +112,7 @@
     "@vitest/coverage-c8": "0.31.4",
     "eslint": "8.41.0",
     "eslint-config-standard": "17.1.0",
-    "nock": "13.3.2",
+    "nock": "13.3.3",
     "node-mocks-http": "1.12.2",
     "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
