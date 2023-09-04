@@ -17,7 +17,7 @@
   "devDependencies": {
     "eslint": "8.46.0",
     "eslint-plugin-prettier": "5.0.0",
-    "eslint-plugin-vitest": "0.2.8",
+    "eslint-plugin-vitest": "0.3.0",
     "husky": "8.0.3",
     "lint-staged": "14.0.1",
     "prettier": "3.0.0"
