@@ -11,6 +11,13 @@ const router = express.Router({ mergeParams: true })
 const customEmailController = new CustomEmailController()
 
 router.post(
+  '/:network/locks/:lockAddress/custom/send',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  sendCustomEmail
+)
+
+router.post(
   '/:network/locks/:lockAddress/custom/:template',
   authenticatedMiddleware,
   lockManagerMiddleware,
@@ -26,13 +33,6 @@ router.get(
   (req, res) => {
     customEmailController.getCustomContent(req, res)
   }
-)
-
-router.post(
-  '/:network/locks/:lockAddress/custom/send',
-  authenticatedMiddleware,
-  lockManagerMiddleware,
-  sendCustomEmail
 )
 
 export default router

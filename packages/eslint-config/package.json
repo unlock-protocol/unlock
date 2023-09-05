@@ -18,16 +18,16 @@
   },
   "dependencies": {
     "@babel/eslint-parser": "7.22.9",
-    "@typescript-eslint/eslint-plugin": "6.2.1",
-    "@typescript-eslint/parser": "6.2.1",
-    "eslint": "8.46.0",
+    "@typescript-eslint/eslint-plugin": "6.5.0",
+    "@typescript-eslint/parser": "6.5.0",
+    "eslint": "8.48.0",
     "eslint-config-next": "13.4.12",
-    "eslint-config-prettier": "8.9.0",
+    "eslint-config-prettier": "9.0.0",
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-mocha": "10.1.0",
     "eslint-plugin-prettier": "5.0.0",
-    "eslint-plugin-vitest": "0.2.8",
-    "typescript": "5.1.6"
+    "eslint-plugin-vitest": "0.3.0",
+    "typescript": "5.2.2"
   },
   "devDependencies": {
     "vitest": "0.34.1"
