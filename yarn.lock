@@ -19049,7 +19049,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": 4.0.4
-    autoprefixer: 10.4.14
+    autoprefixer: 10.4.15
     ethers: 5.7.2
     postcss: 8.4.29
     prism-react-renderer: 2.0.4
@@ -19117,7 +19117,7 @@ __metadata:
     "@walletconnect/ethereum-provider": 2.9.2
     "@walletconnect/modal": 2.6.1
     "@xstate/react": 3.2.2
-    autoprefixer: 10.4.14
+    autoprefixer: 10.4.15
     axios: 1.4.0
     blockies-react-svg: 0.0.13
     calendar-link: 2.5.1
@@ -19237,7 +19237,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@zeit/next-source-maps": 0.0.3
     apexcharts: 3.42.0
-    autoprefixer: 10.4.14
+    autoprefixer: 10.4.15
     babel-loader: 9.1.3
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
@@ -21881,7 +21881,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:10.4.14, autoprefixer@npm:^10.4.12, autoprefixer@npm:^10.4.7":
+"autoprefixer@npm:10.4.15":
+  version: 10.4.15
+  resolution: "autoprefixer@npm:10.4.15"
+  dependencies:
+    browserslist: ^4.21.10
+    caniuse-lite: ^1.0.30001520
+    fraction.js: ^4.2.0
+    normalize-range: ^0.1.2
+    picocolors: ^1.0.0
+    postcss-value-parser: ^4.2.0
+  peerDependencies:
+    postcss: ^8.1.0
+  bin:
+    autoprefixer: bin/autoprefixer
+  checksum: d490b14fb098c043e109fc13cd23628f146af99a493d35b9df3a26f8ec0b4dd8937c5601cdbaeb465b98ea31d3ea05aa7184711d4d93dfb52358d073dcb67032
+  languageName: node
+  linkType: hard
+
+"autoprefixer@npm:^10.4.12, autoprefixer@npm:^10.4.7":
   version: 10.4.14
   resolution: "autoprefixer@npm:10.4.14"
   dependencies:
@@ -23712,6 +23730,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"browserslist@npm:^4.21.10":
+  version: 4.21.10
+  resolution: "browserslist@npm:4.21.10"
+  dependencies:
+    caniuse-lite: ^1.0.30001517
+    electron-to-chromium: ^1.4.477
+    node-releases: ^2.0.13
+    update-browserslist-db: ^1.0.11
+  bin:
+    browserslist: cli.js
+  checksum: 1e27c0f111a35d1dd0e8fc2c61781b0daefabc2c9471b0b10537ce54843014bceb2a1ce4571af1a82b2bf1e6e6e05d38865916689a158f03bc2c7a4ec2577db8
+  languageName: node
+  linkType: hard
+
 "browserslist@npm:^4.21.3, browserslist@npm:^4.21.5":
   version: 4.21.5
   resolution: "browserslist@npm:4.21.5"
@@ -24333,6 +24365,13 @@ __metadata:
   version: 1.0.30001487
   resolution: "caniuse-lite@npm:1.0.30001487"
   checksum: b5a9e72ec165765fb3e07913cc389685ce8a30ac48967f99baec773a4353d2037fb534241e87b3c95d40a5081079be2263710b784883183bb2998b73f7202233
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001517, caniuse-lite@npm:^1.0.30001520":
+  version: 1.0.30001527
+  resolution: "caniuse-lite@npm:1.0.30001527"
+  checksum: 7ad99d78d1a30d494471c8a9ead3fc40a816ee61b16fef330bba5bdae5d7ebaa965becc8cd09c7aa6240125ce790a5213a40cd240ceaa211508744ed86b79783
   languageName: node
   linkType: hard
 
@@ -28038,6 +28077,13 @@ __metadata:
   version: 1.4.474
   resolution: "electron-to-chromium@npm:1.4.474"
   checksum: 16e55823064dfa6f64088a3d5124c0c5c2a577c981a35e58199a2baa6a237b4d9505ddf406d4c8761cabdf6f7b347013a57a887883781dfb04d1940f8be379b0
+  languageName: node
+  linkType: hard
+
+"electron-to-chromium@npm:^1.4.477":
+  version: 1.4.508
+  resolution: "electron-to-chromium@npm:1.4.508"
+  checksum: 4475eb18f5805d43f84d9542364045a39b183a14cd9f4626e0951ea61d0fa4f84a5ed579c2c32189f9af4a27a31041d09fed78f60930ac36b3baa08547dd3aa6
   languageName: node
   linkType: hard
 
@@ -41447,7 +41493,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-releases@npm:^2.0.12":
+"node-releases@npm:^2.0.12, node-releases@npm:^2.0.13":
   version: 2.0.13
   resolution: "node-releases@npm:2.0.13"
   checksum: 17ec8f315dba62710cae71a8dad3cd0288ba943d2ece43504b3b1aa8625bf138637798ab470b1d9035b0545996f63000a8a926e0f6d35d0996424f8b6d36dda3
