@@ -6249,7 +6249,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-react-ui@npm:^1.0.1-alpha.6":
+"@crossmint/client-sdk-react-ui@npm:1.0.1-alpha.6":
   version: 1.0.1-alpha.6
   resolution: "@crossmint/client-sdk-react-ui@npm:1.0.1-alpha.6"
   dependencies:
@@ -19130,7 +19130,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
-    "@crossmint/client-sdk-react-ui": ^1.0.1-alpha.6
+    "@crossmint/client-sdk-react-ui": 1.0.1-alpha.6
     "@enzoferey/ethers-error-parser": 0.2.3
     "@guildxyz/sdk": 1.1.1
     "@headlessui/react": 1.7.17

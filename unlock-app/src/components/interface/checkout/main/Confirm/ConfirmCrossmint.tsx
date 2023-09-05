@@ -49,19 +49,11 @@ export function ConfirmCrossmint({
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
 
-  const {
-    lock,
-    recipients,
-    paywallConfig,
-    // metadata, // Should we save it?
-    data,
-    keyManagers,
-  } = state.context
-
-  // const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
+  const { lock, recipients, paywallConfig, data, keyManagers } = state.context
 
   const { isLoading: isCrossmintLoading, data: crossmintConfigId } =
     useCrossmintEnabled({
+      recipients,
       network: lock!.network,
       lockAddress: lock!.address,
     })
@@ -82,7 +74,7 @@ export function ConfirmCrossmint({
 
   // Handling payment events
   const onCrossmintPaymentEvent = (paymentEvent: any) => {
-    console.log(paymentEvent)
+    console.debug(paymentEvent)
     // We get the events from crossmint
     // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
     if (paymentEvent.type === 'quote:status.changed') {
@@ -91,7 +83,7 @@ export function ConfirmCrossmint({
       setIsConfirming(true)
     } else if (paymentEvent.type === 'payment:process.succeeded') {
       listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
-        console.log(mintingEvent)
+        console.debug(mintingEvent)
         if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
           onConfirmed(lock!.address, mintingEvent.payload.txId)
         }
