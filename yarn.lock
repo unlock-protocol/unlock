@@ -18661,7 +18661,7 @@ __metadata:
     "@vitest/coverage-c8": 0.31.4
     eslint: 8.46.0
     tsup: 7.2.0
-    typescript: 5.1.6
+    typescript: 5.2.2
     vitest: 0.31.4
   peerDependencies:
     zod: 3.22.2
@@ -18687,7 +18687,7 @@ __metadata:
     storybook: 7.0.18
     tsup: 7.2.0
     tsx: 3.12.8
-    typescript: 5.1.6
+    typescript: 5.2.2
     vite: 4.4.8
     vite-plugin-svgr: 3.2.0
     vite-tsconfig-paths: 4.2.0
@@ -18725,7 +18725,7 @@ __metadata:
   dependencies:
     "@vitest/coverage-c8": 0.31.4
     handlebars: 4.7.8
-    typescript: 5.1.6
+    typescript: 5.2.2
     vitest: 0.31.4
   languageName: unknown
   linkType: soft
@@ -19273,7 +19273,7 @@ __metadata:
     showdown-highlight: 3.1.0
     tailwind-merge: 1.14.0
     tailwindcss: 3.3.3
-    typescript: 5.1.6
+    typescript: 5.2.2
     use-local-storage: 3.0.0
     vitest: 0.31.4
     yaml-front-matter: 4.1.1
@@ -44906,7 +44906,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
     toucan-js: 3.2.3
-    typescript: 5.1.6
+    typescript: 5.2.2
     vitest: 0.31.4
     wrangler: 3.6.0
   languageName: unknown
@@ -52622,7 +52622,7 @@ __metadata:
     husky: 8.0.3
     lint-staged: 14.0.1
     prettier: 3.0.0
-    typescript: 5.1.6
+    typescript: 5.2.2
   languageName: unknown
   linkType: soft
 
