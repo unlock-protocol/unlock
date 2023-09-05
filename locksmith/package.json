@@ -117,7 +117,7 @@
     "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
     "supertest": "6.3.3",
-    "tsx": "3.12.7",
+    "tsx": "3.12.8",
     "typescript": "5.1.6",
     "vitest": "0.31.4"
   },
