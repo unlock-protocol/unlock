@@ -58,6 +58,11 @@ const LockSettingSchema = z.object({
       description: 'Currency to use for credit card payment.',
     })
     .optional(),
+  crossmintClientId: z
+    .string({
+      description: 'Client Id for Crossmint if cards are enabled.',
+    })
+    .optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -72,6 +77,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   checkoutConfigId: undefined,
   hookGuildId: undefined,
   creditCardCurrency: 'usd',
+  crossmintClientId: undefined,
 }
 
 export const updateSettings: RequestHandler = async (

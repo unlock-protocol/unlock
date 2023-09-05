@@ -15,6 +15,7 @@ export class LockSetting extends Model<
   declare emailSender?: string | null
   declare slug?: string
   declare checkoutConfigId?: string | null
+  declare crossmintClientId?: string | null
   declare hookGuildId?: number | null
   declare unlockFeeChargedToUser?: boolean
   declare createdAt: CreationOptional<Date>
@@ -70,6 +71,11 @@ LockSetting.init(
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: true,
+    },
+    crossmintClientId: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null,
     },
     creditCardCurrency: {
       type: DataTypes.STRING,
