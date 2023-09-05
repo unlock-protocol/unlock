@@ -17194,6 +17194,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:18.17.14":
+  version: 18.17.14
+  resolution: "@types/node@npm:18.17.14"
+  checksum: f96ce1e588426a26cf82440193084f8bbab47bfb3c2e668cf174095f99ce808a20654b2137448c7e88cfd7b6c2b8521ffb6f714f521b3502ac595a0df0bff679
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^10.0.3, @types/node@npm:^10.12.18, @types/node@npm:^10.3.2":
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
@@ -19230,7 +19237,7 @@ __metadata:
     "@radix-ui/react-avatar": 1.0.3
     "@testing-library/react": 14.0.0
     "@types/next": 8.0.7
-    "@types/node": 18.16.3
+    "@types/node": 18.17.14
     "@types/react": 18.0.32
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -44902,7 +44909,7 @@ __metadata:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": 4.20230821.0
-    "@types/node": 18.16.3
+    "@types/node": 18.17.14
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
     toucan-js: 3.2.3
