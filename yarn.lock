@@ -18867,7 +18867,7 @@ __metadata:
     sequelize: 6.32.1
     sequelize-cli: 6.6.1
     siwe: 2.1.4
-    stripe: 12.8.0
+    stripe: 13.4.0
     supertest: 6.3.3
     tsx: 3.12.8
     typescript: 5.1.6
@@ -49962,13 +49962,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:12.8.0":
-  version: 12.8.0
-  resolution: "stripe@npm:12.8.0"
+"stripe@npm:13.4.0":
+  version: 13.4.0
+  resolution: "stripe@npm:13.4.0"
   dependencies:
     "@types/node": ">=8.1.0"
     qs: ^6.11.0
-  checksum: 65607e3329d49b000c9b7d85b545a850178e874f27b993d50df423729901009ad9a6ea7c28724d16d28168240d7df61124faf419eb26c5831c85d1256058a2cf
+  checksum: 8036e4daa69521046b7c1e3243e6a2adc19bd69c403bef7275c75d77a0673abe7ca164816bc8a281fe0fc8ac7253afaa727a2e36f55bb9c862b8d88aa44d59d2
   languageName: node
   linkType: hard
 
