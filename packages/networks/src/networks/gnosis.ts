@@ -80,6 +80,7 @@ export const gnosis: NetworkConfig = {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/gnosis-v2',
+    networkName: 'xdai',
   },
 
   tokens: [
