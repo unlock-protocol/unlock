@@ -144,6 +144,10 @@ const deploy = async (network, studioName, graphLabel) => {
     return deployStudio(graphLabel, studioEndpoint)
   }
 
+  if(studioEndpoint){
+    return deployStudio('v0.0.1', studioEndpoint)
+  }
+
   if(matchHosted){
     return deployHosted(matchHosted[1])
   }
@@ -224,7 +228,7 @@ require('yargs/yargs')(hideBin(process.argv))
     async ({ label }) => {
       // check config
       console.log(
-        `Deploying subgraphs for:\n${choices.map((c) => ` - ${c}\n`).join('')}`
+        `Deploying subgraphs for:\n${choices.filter((c) => c != 'localhost').map((c) => ` - ${c}\n`).join('')}`
       )
 
       // build and deploy each network
