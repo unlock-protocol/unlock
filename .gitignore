@@ -12,6 +12,8 @@ unlock-app/src/artifacts/
 smart-contracts/build/
 builds/
 
+/subgraph/subgraph.yaml
+
 # dot env files
 .env.*.local
 /smart-contracts/zos.development.json
