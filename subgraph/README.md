@@ -59,7 +59,7 @@ yarn run deploy <network-name>
 yarn run deploy-all
 ```
 
-Deploy the latest subgraph code to the studio. If `studioName` option is set it will use it instead of the `studioEndpoint` set in `network.subgraph`. If `studioEndpoint` is not set or `studioName` is not passed as a parameter, it will deploy to the hosted service. The `label` option should always be set when doing studio deployments, otherwise it will fallback to deploying to hosted service as well.
+Deploy the latest subgraph code to the studio. If `studioName` option is set it will use it instead of the `studioEndpoint` set in `network.subgraph`. If `studioEndpoint` is not set or `studioName` is not passed as a parameter, it will deploy to the hosted service. If `label` option is not set, it will try to deploy from `v0.0.1` and increment by 1 until it succeeds.
 
 Deploying all will deploy all networks that have `studioEndpoint` set.
 
