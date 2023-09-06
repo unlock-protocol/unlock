@@ -51,7 +51,7 @@ export function ConfirmCrossmint({
 
   const { lock, recipients, paywallConfig, data, keyManagers } = state.context
 
-  const { isLoading: isCrossmintLoading, data: crossmintConfigId } =
+  const { isLoading: isCrossmintLoading, crossmintClientId } =
     useCrossmintEnabled({
       recipients,
       network: lock!.network,
@@ -200,7 +200,7 @@ export function ConfirmCrossmint({
                   email,
                   wallet: recipients[0], // Crossmint only supports a single recipient for now!
                 }}
-                clientId={crossmintConfigId!}
+                clientId={crossmintClientId!}
                 environment={crossmintEnv}
                 mintConfig={{
                   totalPrice: pricingData?.total.toString(),

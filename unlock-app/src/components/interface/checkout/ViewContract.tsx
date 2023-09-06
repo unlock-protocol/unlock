@@ -15,10 +15,12 @@ export const ViewContract = ({ lockAddress, network }: ViewContractProps) => {
       href={networkConfig.explorer.urls.address(lockAddress)}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-xs text-brand-ui-primary hover:opacity-75 whitespace-nowrap"
+      className="inline-flex items-center gap-1 text-xs text-brand-ui-primary hover:opacity-75"
     >
-      View Contract ({networkConfig.name}){' '}
-      <Icon icon={ExternalLinkIcon} size="small" />
+      View contract ({networkConfig.name}){' '}
+      <span>
+        <Icon icon={ExternalLinkIcon} size="small" />
+      </span>
     </a>
   )
 }

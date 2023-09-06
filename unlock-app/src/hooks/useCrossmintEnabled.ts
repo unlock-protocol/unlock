@@ -15,18 +15,14 @@ export const useCrossmintEnabled = ({
     lockAddress,
     network,
   })
-  console.log(settings)
 
   // False if there are multiple  recipients
   if (recipients?.length !== 1) {
-    return false
+    return { ...rest, crossmintClientId: null }
   }
 
-  return { ...rest }
+  return { ...rest, crossmintClientId: settings?.crossmintClientId }
 
-  // return useQuery(
-  //   ['useCrossmintEnabled', lockAddress, network, recipients],
-  //   async () => {
   //     // TODO: move to backend
   //     const crossmintClientIds: CrossmintConfigs = {
   //       '0xa79dff775b5b259a33c4179c7de9c648fb4ab762':
@@ -34,7 +30,4 @@ export const useCrossmintEnabled = ({
   //       '0x41afecba16313d6b02beb5e68c69455b91450065':
   //         '966895c5-da5b-4f08-b6fd-ed12055c4d06',
   //     }
-  //     return crossmintClientIds[lockAddress]
-  //   }
-  // )
 }
