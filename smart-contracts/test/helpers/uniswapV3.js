@@ -247,11 +247,23 @@ const addLiquidity = async (poolContract, amountA, amountB) => {
 
 // get (or create if non-existing) a pool based on token0/token1 paris
 // default pool is UDT/WETH
-const createPool = async function ({
+const createPool = async function (
   token0 = UDT,
   token1 = WETH,
   rate = 42, // in basis point
-} = {}) {
+  fee = FEE
+) {
+  const { decimals: token0Decimals, symbol: token0Symbol } = await getTokenInfo(
+    token0
+  )
+  const { decimals: token1Decimals, symbol: token1Symbol } = await getTokenInfo(
+    token1
+  )
+
+  console.log(
+    `Pool ${token0Symbol}/${token1Symbol} rate: ${rate}/${BASIS_POINTS} (fee ${fee})`
+  )
+
   /**
    * You need to build the artifacts first by running `yarn && yarn hardhat compile`
    * in `node_modules/@uniswap/v3-core` and `node_modules/@uniswap/v3-periphery`
@@ -271,16 +283,15 @@ const createPool = async function ({
     UNISWAP_FACTORY_ADDRESS
   )
 
-  let poolAddress = await factoryContract.getPool(token0, token1, FEE)
+  let poolAddress = await factoryContract.getPool(token0, token1, fee)
   if (poolAddress === ADDRESS_ZERO) {
+    console.log(`Pool doen't exist, creating pool...`)
     // create pool if necessary
     const positionManager = await ethers.getContractAt(
       INonfungiblePositionManager,
       POSITION_MANAGER_ADDRESS
     )
     // initialize pool at 1:1
-    const { decimals: token0Decimals } = await getTokenInfo(token0)
-    const { decimals: token1Decimals } = await getTokenInfo(token1)
     const sqrtPriceX96 = encodePriceSqrt(
       ethers.utils.parseUnits(rate.toString(), token0Decimals),
       ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals)
@@ -288,10 +299,11 @@ const createPool = async function ({
     await positionManager.createAndInitializePoolIfNecessary(
       token0,
       token1,
-      FEE,
+      fee,
       sqrtPriceX96
     )
-    poolAddress = await factoryContract.getPool(token0, token1, FEE)
+    poolAddress = await factoryContract.getPool(token0, token1, fee)
+    console.log(`Pool created at ${poolAddress}`)
   }
 
   // pool
@@ -428,12 +440,14 @@ module.exports = {
   createUniswapV3Pool: createPool,
   deployUniswapV3Oracle,
   currencyAmountToBigNumber,
+  getTokenInfo,
   getPoolState,
   getPoolImmutables,
   getUniswapRoute,
   getUniswapTokens,
   PERMIT2_ADDRESS,
   MAX_UINT160,
+  BASIS_POINTS,
   makePermit,
   generatePermitSignature,
 }

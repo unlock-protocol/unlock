@@ -63,10 +63,10 @@ const addERC20 = async function (
   amount = ethers.utils.parseEther('1000')
 ) {
   // wrapped some ETH
-  if (tokenAddress === WETH) {
-    await addSomeETH(address, amount)
+  if (tokenAddress.toLowerCase() === WETH.toLowerCase()) {
+    await addSomeETH(address)
     const weth = await ethers.getContractAt(WethABI, WETH)
-    await weth.deposit({ value: amount })
+    await weth.deposit({ value: amount.toString() })
     return weth
   }
 
