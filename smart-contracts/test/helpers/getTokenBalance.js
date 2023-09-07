@@ -2,12 +2,9 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('./constants')
 
-async function logBalance(token, signer) {
-  const balance = await getBalance(signer.address, token.address)
-  console.log(
-    `${signer.address}: ${token.symbol} balance: `,
-    balance.toString()
-  )
+async function logBalance(tokenAddress, account) {
+  const balance = await getBalance(account, tokenAddress)
+  console.log(` balance: ${account} `, balance.toString())
 }
 
 async function getBalance(account, tokenAddress) {
