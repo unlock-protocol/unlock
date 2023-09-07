@@ -1,6 +1,9 @@
 const { ethers, network, config } = require('hardhat')
 const { UDT, unlockAddress, whales } = require('./contracts')
 const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
+const {
+  abi: WethABI,
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
 const { MAX_UINT } = require('./constants')
 
 const resetNodeState = async () => {
@@ -59,6 +62,14 @@ const addERC20 = async function (
   address,
   amount = ethers.utils.parseEther('1000')
 ) {
+  // wrapped some ETH
+  if (tokenAddress === WETH) {
+    await addSomeETH(address, amount)
+    const weth = await ethers.getContractAt(WethABI, WETH)
+    await weth.deposit({ value: amount })
+    return weth
+  }
+
   if (!whales[tokenAddress])
     throw Error(`No whale for this address: ${tokenAddress}`)
   const whale = await ethers.getSigner(whales[tokenAddress])

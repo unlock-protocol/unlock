@@ -24,7 +24,7 @@ const mainnet = {
 
 // whales
 const whales = {
-  [mainnet.DAI]: '0xf977814e90da44bfa03b6295a0616a897441acec', // binance
+  [mainnet.DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8', // PulseX
   [mainnet.USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28',
   [mainnet.WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
   [mainnet.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534', // unlock-protocol.eth
