@@ -16,7 +16,7 @@ const {
   addERC20,
   MAX_UINT,
   MAX_UINT160,
-  getBalance,
+  logBalance,
   V3_SWAP_ROUTER_ADDRESS,
   PERMIT2_ADDRESS,
   makePermit,
@@ -53,14 +53,6 @@ const PERMIT2_APPROVE_ABI = [
     type: 'function',
   },
 ]
-
-const logBalance = async (token, signer) => {
-  const balance = await getBalance(signer.address, token.address)
-  console.log(
-    `${signer.address}: ${token.symbol} balance: `,
-    balance.toString()
-  )
-}
 
 const isStable = (token) => ['DAI', 'USDC'].includes(token.symbol)
 
