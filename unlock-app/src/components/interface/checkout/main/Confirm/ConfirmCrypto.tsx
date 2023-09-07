@@ -308,8 +308,6 @@ export function ConfirmCrypto({
               }
               onClick={async (event) => {
                 event.preventDefault()
-                // TODO: check that we need to do that here?
-                // We should have done it earlier!
                 if (metadata) {
                   await updateUsersMetadata(metadata)
                 }
