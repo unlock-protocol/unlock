@@ -22,12 +22,4 @@ export const useCrossmintEnabled = ({
   }
 
   return { ...rest, crossmintClientId: settings?.crossmintClientId }
-
-  //     // TODO: move to backend
-  //     const crossmintClientIds: CrossmintConfigs = {
-  //       '0xa79dff775b5b259a33c4179c7de9c648fb4ab762':
-  //         '1d837cfc-6299-47b4-b5f9-462d5df00f33',
-  //       '0x41afecba16313d6b02beb5e68c69455b91450065':
-  //         '966895c5-da5b-4f08-b6fd-ed12055c4d06',
-  //     }
 }
