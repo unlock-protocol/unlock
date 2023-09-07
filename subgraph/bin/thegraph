@@ -24,6 +24,32 @@ const executeCommand = async (command) => {
   }
 }
 
+const executeComanndErrorReturn = async (command) => {
+  try {
+    const { stdout, stderr } = await exec(command)
+    if (stderr) {
+      return stderr;
+    }
+    console.log('stdout:', stdout)
+  } catch (e) {
+    // should contain code (exit code) and signal (that caused the termination).
+    console.error(`exec error: ${e}`)
+  }
+}
+
+const executeStudioDeployWithVersionIncrement = async (subgraphName, version) => {
+  let [major, minor, patch] = version
+      .split('.')
+  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${ parseInt(patch)}`
+  let stderr =  await executeComanndErrorReturn(cmd)
+  if(stderr){
+    if(stderr.includes("Version label already exists")){
+      console.log(`Stuido version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch)+1}`)
+      return executeStudioDeployWithVersionIncrement(subgraphName, `${major}.${minor}.${parseInt(patch)+1}`)
+    }
+  }
+}
+
 const checkHostedServiceAccessToken = () => {
   if (!process.env.SUBGRAPH_DEPLOY_KEY) {
     throw new Error(
@@ -85,7 +111,7 @@ const deployStudio = async (version, subgraphName) => {
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
   )
   const cmd = `yarn deploy-studio ${subgraphName} -l=${version}`
-  return executeCommand(cmd)
+  return executeStudioDeployWithVersionIncrement(subgraphName,version)
 }
 
 /**
@@ -116,6 +142,10 @@ const deploy = async (network, studioName, graphLabel) => {
 
   if(studioEndpoint && graphLabel){
     return deployStudio(graphLabel, studioEndpoint)
+  }
+
+  if(studioEndpoint){
+    return deployStudio('v0.0.1', studioEndpoint)
   }
 
   if(matchHosted){
@@ -198,7 +228,7 @@ require('yargs/yargs')(hideBin(process.argv))
     async ({ label }) => {
       // check config
       console.log(
-        `Deploying subgraphs for:\n${choices.map((c) => ` - ${c}\n`).join('')}`
+        `Deploying subgraphs for:\n${choices.filter((c) => c != 'localhost').map((c) => ` - ${c}\n`).join('')}`
       )
 
       // build and deploy each network

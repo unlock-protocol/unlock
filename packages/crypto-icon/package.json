@@ -45,7 +45,7 @@
     "storybook": "7.0.18",
     "tsup": "7.2.0",
     "tsx": "3.12.8",
-    "typescript": "5.1.6",
+    "typescript": "5.2.2",
     "vite": "4.4.8",
     "vite-plugin-svgr": "3.2.0",
     "vite-tsconfig-paths": "4.2.0"
