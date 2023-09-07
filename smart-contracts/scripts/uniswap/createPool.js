@@ -4,23 +4,22 @@ const {
   addLiquidity,
   logBalance,
   UDT,
-  // DAI,
-  WETH,
+  DAI,
+  // WETH
   BASIS_POINTS,
-  addUDT,
   addERC20,
 } = require('../../test/helpers')
 
-async function main({ tokenB = WETH } = {}) {
+async function main({ tokenA = DAI, tokenB = UDT } = {}) {
   const [signer] = await ethers.getSigners()
 
   // create pool
   const POOL_FEE = 500
   const POOL_RATE = 12
-  const pool = await createUniswapV3Pool(UDT, tokenB, POOL_RATE, POOL_FEE)
+  const pool = await createUniswapV3Pool(tokenA, tokenB, POOL_RATE, POOL_FEE)
   console.log(`poolAddress: ${pool.address}`)
 
-  await logBalance(UDT, signer.address)
+  await logBalance(tokenA, signer.address)
   await logBalance(tokenB, signer.address)
 
   // amount to add as liquidity
@@ -33,12 +32,13 @@ async function main({ tokenB = WETH } = {}) {
     amountB
   )
 
+  // make sure we have enough for testing
   if (process.env.RUN_FORK) {
-    await addUDT(signer.address, amountA)
-    await addERC20(tokenB, signer.address, amountB) // make sure we have enough
+    await addERC20(tokenA, signer.address, amountA)
+    await addERC20(tokenB, signer.address, amountB)
   }
 
-  await logBalance(UDT, signer.address)
+  await logBalance(tokenA, signer.address)
   await logBalance(tokenB, signer.address)
 
   const added = await addLiquidity(pool, amountA, amountB)

@@ -70,6 +70,13 @@ const addERC20 = async function (
     return weth
   }
 
+  // special for UDT
+  if (tokenAddress.toLowerCase() === UDT.toLowerCase()) {
+    await addUDT(address, amount)
+    return await ethers.getContractAt('TestERC20', UDT)
+  }
+
+  // otherwise use transfer from whales
   if (!whales[tokenAddress])
     throw Error(`No whale for this address: ${tokenAddress}`)
   const whale = await ethers.getSigner(whales[tokenAddress])
