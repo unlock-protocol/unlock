@@ -132,6 +132,13 @@ const getUDTMainnet = async () => {
   return udt
 }
 
+const getERC20Contract = async (tokenAddress) => {
+  const [signer] = await ethers.getSigners()
+  return tokenAddress === WETH
+    ? await ethers.getContractAt(WethABI, WETH, signer)
+    : await ethers.getContractAt('TestERC20', tokenAddress, signer)
+}
+
 const addSomeUSDC = async (usdcAddress, recipientAddress, amount = 1000) => {
   const usdc = await ethers.getContractAt(USDC_ABI, usdcAddress)
   const masterMinter = await usdc.masterMinter()
@@ -150,6 +157,7 @@ module.exports = {
   getDelegates,
   getUnlockMainnet,
   getUDTMainnet,
+  getERC20Contract,
   addUDT,
   addSomeETH,
   addSomeUSDC,

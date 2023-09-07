@@ -16,11 +16,6 @@ const {
 const JSBI = require('jsbi')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
-
-const {
-  abi: WethABI,
-} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
-const { addUDT, impersonate, addSomeETH } = require('./fork')
 const {
   WETH,
   USDC,
@@ -32,6 +27,7 @@ const {
   POSITION_MANAGER_ADDRESS,
   CHAIN_ID,
 } = require('./contracts')
+const { getERC20Contract } = require('./fork')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 // default fee
@@ -128,35 +124,12 @@ const getTokens = async (pool) => {
   return [TokenA, TokenB]
 }
 
-const creditTokens = async (tokenAddress, amount) => {
-  const [signer] = await ethers.getSigners()
-  await addSomeETH(signer.address, amount.mul(2))
-  // wrapped some ETH
-  if (tokenAddress === WETH) {
-    const weth = await ethers.getContractAt(WethABI, WETH, signer)
-    await weth.deposit({ value: amount })
-    return weth
-  }
-  const token = await ethers.getContractAt('TestERC20', tokenAddress, signer)
-  if (tokenAddress === UDT) {
-    await addUDT(signer.address, amount)
-  } else {
-    await impersonate(tokenAddress)
-    await token.transfer(signer.address, amount)
-  }
-  return token
-}
-
 const getMinTick = (tickSpacing) =>
   Math.ceil(-887272 / tickSpacing) * tickSpacing
 const getMaxTick = (tickSpacing) =>
   Math.floor(887272 / tickSpacing) * tickSpacing
 
-const addLiquidity = async (
-  poolContract,
-  rate = 42, // in basis point
-  amount = 500 // how much tokens we add
-) => {
+const addLiquidity = async (poolContract, amountA, amountB) => {
   const {
     abi: INonfungiblePositionManager,
   } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
@@ -164,18 +137,14 @@ const addLiquidity = async (
   // parse tokens for uniswap SDK
   const [tokenA, tokenB] = await getTokens(poolContract)
   console.log(
-    `adding position for ${tokenA.symbol}/${tokenB.symbol} on pool ${poolContract.address} `
+    `adding position for ${tokenA.symbol}/${tokenB.symbol} on pool ${poolContract.address} \n`,
+    ` amount ${tokenA.symbol} : ${amountA} \n`,
+    ` amount ${tokenB.symbol} : ${amountB}`
   )
 
   // token balances
-  const tokenAContract = await creditTokens(
-    tokenA.address,
-    ethers.utils.parseUnits(amount.toString(), tokenA.decimals)
-  )
-  const tokenBContract = await creditTokens(
-    tokenB.address,
-    ethers.utils.parseUnits(amount.toString(), tokenB.decimals)
-  )
+  const tokenAContract = await getERC20Contract(tokenA.address)
+  const tokenBContract = await getERC20Contract(tokenB.address)
 
   // approve spending
   await tokenAContract.approve(POSITION_MANAGER_ADDRESS, MAX_UINT)
@@ -237,11 +206,8 @@ const addLiquidity = async (
     tickLower: getMinTick(tickSpacing),
     tickUpper: getMaxTick(tickSpacing),
     // trade a 1:1
-    amount0Desired: ethers.utils
-      .parseUnits(amount.toString(), tokenA.decimals)
-      .mul(rate)
-      .div(BASIS_POINTS), // apply rate
-    amount1Desired: ethers.utils.parseUnits(amount.toString(), tokenB.decimals),
+    amount0Desired: amountA,
+    amount1Desired: amountB,
     // no slippage protection, bad in prod!
     amount0Min: 0,
     amount1Min: 0,
