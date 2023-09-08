@@ -1,17 +1,18 @@
-specVersion: 0.0.4
+specVersion: 0.0.5
 description: Unlock Protocol & Associated contracts
 features:
   - nonFatalErrors
-  - grafting
 schema:
   file: ./schema.graphql
 dataSources:
+{{#deployments}}
   - kind: ethereum
-    name: Unlock
+    name: {{ name }}
+    network: {{ network }}
     source:
       abi: Unlock
-      address: "0xd0b14797b9D08493392865647384974470202A78"
-      startBlock: 1750000
+      address: '{{address}}'
+      startBlock: {{ startBlock }}
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.7
@@ -35,10 +36,11 @@ dataSources:
         - event: GNPChanged(uint256,uint256,address,uint256,address)
           handler: handleGNPChanged
       file: ./src/unlock.ts
-    network: base
+{{/deployments}}
 templates:
   - kind: ethereum
     name: PublicLock
+    network: {{ network }}
     source:
       abi: PublicLock
     mapping:
@@ -55,7 +57,6 @@ templates:
         - LockManagerRemoved
         - PricingChanged
         - Transfer
-        - ReferrerFee
       abis:
         - name: PublicLock
           file: ./abis/PublicLock.json
@@ -110,8 +111,4 @@ templates:
         - event: LockMetadata(string,string,string)
           handler: handleLockMetadata
           receipt: true
-        - event: ReferrerFee(indexed address,uint256)
-          handler: handleReferrerFees
-          receipt: true
       file: ./src/public-lock.ts
-    network: base
