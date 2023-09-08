@@ -48,6 +48,7 @@ export const baseGoerli: NetworkConfig = {
     endpointV2:
       'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
     networkName: 'base-testnet',
+    studioEndpoint: 'unlock-protocol-base-goerli',
   },
   unlockAddress: '0x51A1ceB83B83F1985a81C295d1fF28Afef186E02',
   url: 'https://docs.base.org/network-information#base-testnet',

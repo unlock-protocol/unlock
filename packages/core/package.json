@@ -23,7 +23,7 @@
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "tsup": "7.2.0",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "zod": "3.22.2"
@@ -31,7 +31,7 @@
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@vitest/coverage-c8": "0.31.4",
-    "eslint": "8.46.0",
+    "eslint": "8.48.0",
     "vitest": "0.31.4"
   }
 }
