@@ -1,11 +1,12 @@
 import {
+  CrossmintCheckoutEventUnion,
   CrossmintPaymentElement,
   useCrossmintEvents,
 } from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
-import { Fragment, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
@@ -72,23 +73,27 @@ export function ConfirmCrossmint({
   })
 
   // Handling payment events
-  const onCrossmintPaymentEvent = (paymentEvent: any) => {
-    console.debug(paymentEvent)
-    // We get the events from crossmint
-    // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
-    if (paymentEvent.type === 'quote:status.changed') {
-      setQuote(paymentEvent.payload)
-    } else if (paymentEvent.type === 'payment:process.started') {
-      setIsConfirming(true)
-    } else if (paymentEvent.type === 'payment:process.succeeded') {
-      listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
-        console.debug(mintingEvent)
-        if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
-          onConfirmed(lock!.address, mintingEvent.payload.txId)
-        }
-      })
-    }
-  }
+  const onCrossmintPaymentEvent = useCallback(
+    (paymentEvent: CrossmintCheckoutEventUnion) => {
+      console.debug(paymentEvent)
+      // We get the events from crossmint
+      // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
+      if (paymentEvent.type === 'quote:status.changed') {
+        setQuote(paymentEvent.payload)
+      } else if (paymentEvent.type === 'payment:process.started') {
+        // Wait!
+      } else if (paymentEvent.type === 'payment:process.succeeded') {
+        setIsConfirming(true)
+        listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
+          console.debug(mintingEvent)
+          if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
+            onConfirmed(lock!.address, mintingEvent.payload.txId)
+          }
+        })
+      }
+    },
+    [setQuote, onConfirmed, listenToMintingEvents, lock]
+  )
 
   const {
     data: pricingData,
@@ -125,6 +130,27 @@ export function ConfirmCrossmint({
     : []
 
   const argumentsReady = referrers && purchaseData && pricingData
+
+  // crossmint config
+  const crossmintConfig = {
+    emailInputOptions: {
+      show: !email,
+    },
+    recipient: {
+      email,
+      wallet: recipients[0], // Crossmint only supports a single recipient for now!
+    },
+    clientId: crossmintClientId!,
+    environment: crossmintEnv,
+    mintConfig: {
+      totalPrice: pricingData?.total.toString(),
+      _values: values,
+      _referrers: referrers,
+      _keyManagers: keyManagers || recipients,
+      _data: purchaseData,
+    },
+    onEvent: onCrossmintPaymentEvent,
+  }
 
   return (
     <Fragment>
@@ -191,27 +217,7 @@ export function ConfirmCrossmint({
               />
             )}
             {!isPricingDataError && argumentsReady && (
-              <CrossmintPaymentElement
-                emailInputOptions={{
-                  show: !email,
-                }}
-                recipient={{
-                  email,
-                  wallet: recipients[0], // Crossmint only supports a single recipient for now!
-                }}
-                clientId={crossmintClientId!}
-                environment={crossmintEnv}
-                mintConfig={{
-                  totalPrice: pricingData?.total.toString(),
-                  _values: values,
-                  _referrers: referrers,
-                  _keyManagers: keyManagers || recipients,
-                  _data: purchaseData,
-                }}
-                currency="USD" // USD only, more coming soon
-                locale="en-US" // en-US only, more coming soon
-                onEvent={onCrossmintPaymentEvent}
-              />
+              <CrossmintPaymentElement {...crossmintConfig} />
             )}
           </>
         )}
