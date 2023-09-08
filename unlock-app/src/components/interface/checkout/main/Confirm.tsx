@@ -9,6 +9,7 @@ import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
 import { ConfirmCard } from './Confirm/ConfirmCard'
+import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmUniversalCard } from './Confirm/ConfirmUniversalCard'
 
@@ -66,6 +67,14 @@ export function Confirm({
       )}
       {payment.method === 'swap_and_purchase' && (
         <ConfirmSwapAndPurchase
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          onConfirmed={onConfirmed}
+          onError={onError}
+        />
+      )}
+      {payment.method === 'crossmint' && (
+        <ConfirmCrossmint
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}

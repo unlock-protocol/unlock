@@ -24,3 +24,7 @@ body {
   margin-left: 2em;
   display: list-item;
 }
+
+#iframe-crossmint-payment-element {
+  width: 100%;
+}
