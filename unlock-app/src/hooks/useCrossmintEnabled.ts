@@ -16,7 +16,7 @@ export const useCrossmintEnabled = ({
     network,
   })
 
-  // False if there are multiple  recipients
+  // Disabled if there are multiple recipients
   if (recipients?.length !== 1) {
     return { ...rest, crossmintClientId: null }
   }
