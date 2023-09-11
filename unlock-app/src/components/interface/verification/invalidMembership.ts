@@ -10,23 +10,18 @@ interface Options {
 }
 
 export function invalidMembership({
-  owner,
   keyId,
   expiration,
   isSignatureValid,
   verificationData,
 }: Options) {
-  const { account, tokenId } = verificationData
+  const { tokenId } = verificationData
   if (!isSignatureValid) {
     return 'Signature does not match'
   }
 
   if (tokenId && keyId !== tokenId.toString()) {
     return 'This key does not match the user'
-  }
-
-  if (owner.toLowerCase().trim() !== account.toLowerCase().trim()) {
-    return 'The owner of this key does not match the QR code'
   }
 
   if (expiration != -1 && expiration < new Date().getTime() / 1000) {
