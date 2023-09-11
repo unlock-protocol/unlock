@@ -283,6 +283,7 @@ export const getTicket: RequestHandler = async (request, response) => {
     keyId: key.tokenId,
     lockAddress: key.lock.address,
     owner: key.owner,
+    manager: key.manager,
     publicLockVersion: key.lock.version,
   }
 

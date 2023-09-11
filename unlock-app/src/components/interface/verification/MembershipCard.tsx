@@ -5,7 +5,6 @@ import {
 } from '@radix-ui/react-avatar'
 import dayjs from 'dayjs'
 import relativeTimePlugin from 'dayjs/plugin/relativeTime'
-import { addressMinify } from '~/utils/strings'
 import { useConfig } from '~/utils/withConfig'
 import {
   RiCloseCircleFill as InvalidIcon,
@@ -14,6 +13,7 @@ import {
 import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { Button, Placeholder } from '@unlock-protocol/ui'
+import { AddressLink } from '../AddressLink'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -114,10 +114,15 @@ export function MembershipCard({
           </div>
         </div>
         <div className="space-y-2">
-          <Item label="Lock Address" value={addressMinify(lockAddress)} />
+          <Item label="Lock">
+            <AddressLink lockAddress={lockAddress} network={network} />
+          </Item>
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
-          <Item label="Owner" value={addressMinify(owner)} />
+          <Item label="Owner">
+            <AddressLink lockAddress={owner} network={network} />
+          </Item>
+
           {!!userMetadata?.public && (
             <MetadataItems metadata={userMetadata.public} />
           )}
@@ -133,14 +138,16 @@ export function MembershipCard({
 
 interface ItemProps {
   label: string
-  value: string
+  value?: string
+  children?: ReactNode
 }
 
-export function Item({ label, value }: ItemProps) {
+export function Item({ label, value, children }: ItemProps) {
   return (
     <div className="flex items-center gap-2">
       <span className="text-gray-500"> {label}: </span>
-      <span className="font-medium">{value}</span>
+      {value && <span className="font-medium">{value}</span>}
+      {children}
     </div>
   )
 }
