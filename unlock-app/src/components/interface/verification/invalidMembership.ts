@@ -36,7 +36,8 @@ export function invalidMembership({
   // When the key manager is our key manager contract, the owner can be different as the key
   // may have been transfered!
   if (
-    manager.toLowerCase() != networkConfig.keyManagerAddress.toLowerCase() &&
+    networkConfig.keyManagerAddress &&
+    manager.toLowerCase() !== networkConfig.keyManagerAddress.toLowerCase() &&
     owner.toLowerCase().trim() !== account.toLowerCase().trim()
   ) {
     return 'The current owner of this key does not match the QR code'
