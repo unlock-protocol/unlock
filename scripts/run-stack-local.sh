@@ -35,19 +35,17 @@ cd $REPO_ROOT/docker/development/eth-node
 yarn
 yarn provision --network localhost
 
-# copy the generated subgraph config file
-rm -rf $REPO_ROOT/subgraph/networks.json 
-cp $REPO_ROOT/docker/development/eth-node/networks.json $REPO_ROOT/subgraph/networks.json
-
 # prepare subgraph deployment
 cd $REPO_ROOT/subgraph
 yarn prepare:abis
+
+yarn prepare:test
 yarn codegen
 yarn graph build --network localhost
 
 # now deploy the subgraph
-yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://localhost:8020/ --version 0.0.1
-yarn graph deploy testgraph --node http://localhost:8020/ --ipfs http://localhost:5001 --version-label 0.0.1 --network localhost
+yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://localhost:8020/
+yarn graph deploy testgraph --node=http://localhost:8020/ --ipfs=http://localhost:5001 --version-label=v0.0.1 --network=localhost
 
 # start 2nd postgres instance for locksmith
 docker run --name locksmith-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=locksmith -d postgres

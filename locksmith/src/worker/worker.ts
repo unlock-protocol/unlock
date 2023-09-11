@@ -11,11 +11,13 @@ import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
 import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
-import { sendEmail } from './tasks/sendEmail'
+import { sendEmailJob } from './tasks/sendEmail'
+import { sendToAllJob } from './tasks/sendToAll'
 import { monitor } from './tasks/monitor'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
+
 const crontabProduction = `
 */5 * * * * monitor
 */5 * * * * allJobs
@@ -49,7 +51,6 @@ export async function startWorker() {
       // @ts-expect-error - type is not defined properly
       ssl: config.database?.dialectOptions?.ssl,
     }),
-    // logger: plug into our main logger
     crontab,
     concurrency: 5,
     noHandleSignals: false,
@@ -64,8 +65,9 @@ export async function startWorker() {
       addRenewalJobsWeekly,
       addKeyJobs,
       addHookJobs,
+      sendEmailJob,
+      sendToAllJob,
       sendHook,
-      sendEmail,
       fiatRenewalJob,
       cryptoRenewalJob,
     },

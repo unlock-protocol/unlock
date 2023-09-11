@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { CheckoutService } from './checkoutMachine'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
@@ -24,6 +25,7 @@ import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
+import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 
 interface Props {
   injectedProvider: unknown
@@ -64,6 +66,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
+  const { isLoading: isCrossmintLoading, crossmintClientId } =
+    useCrossmintEnabled({
+      network: lock.network,
+      lockAddress: lock.address,
+      recipients,
+    })
+
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
     network: lock.network,
@@ -101,7 +110,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isSwapAndPurchaseEnabled =
     price > 0 && uniswapRoutes && uniswapRoutes.length > 0
 
-  const isWaiting = isLoading || isBalanceLoading
+  const isWaiting = isLoading || isCrossmintLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
@@ -138,6 +147,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableClaim,
     enableCrypto,
     universalCardEnabled,
+    !!crossmintClientId,
   ].every((item) => !item)
 
   return (
@@ -185,6 +195,47 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     `You don't have enough ${networkConfig.nativeCurrency.symbol} for gas fee.`}
                 </div>
               </button>
+            )}
+
+            {crossmintClientId && !enableClaim && (
+              <div>
+                <button
+                  onClick={(event) => {
+                    event.preventDefault()
+                    send({
+                      type: 'SELECT_PAYMENT_METHOD',
+                      payment: {
+                        method: 'crossmint',
+                      },
+                    })
+                  }}
+                  className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <h3 className="font-bold"> Pay via Crossmint </h3>
+                    <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                      <VisaIcon size={18} />
+                      <MasterCardIcon size={18} />
+                      <Image
+                        alt="Crossmint Logo"
+                        src="https://www.crossmint.io/assets/crossmint/logo.svg"
+                        width={18}
+                        height={18}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between w-full">
+                    <div className="text-sm text-left text-gray-500">
+                      Use your card with Crossmint. <br />
+                      <span className="text-xs">Additional fees may apply</span>
+                    </div>
+                    <RightArrowIcon
+                      className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                      size={20}
+                    />
+                  </div>
+                </button>
+              </div>
             )}
 
             {universalCardEnabled && !enableClaim && (
