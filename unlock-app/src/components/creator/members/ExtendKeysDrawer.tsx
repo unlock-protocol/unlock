@@ -57,7 +57,6 @@ const ExtendKeyDurationForm = ({
   network,
 }: ExtendKeyDurationProps) => {
   const { getWalletService } = useAuth()
-
   const defaultValues = {
     // expiration date as default
     expiration: formatDate(
@@ -110,9 +109,25 @@ const ExtendKeyDurationForm = ({
       // the new expiration will extend the key from the current block timestamp
       const now = dayjs()
       const newExpiration = dayjs(expiration)
-      const timeDiffFromNow = newExpiration.diff(now, 'second')
 
-      const extendDuration = neverExpires ? MAX_UINT : timeDiffFromNow
+      let extendDuration: number | string = MAX_UINT
+      if (!neverExpires) {
+        if (parseInt(currentExpiration) * 1000 > new Date().getTime()) {
+          const timeDiffFromExpiration = newExpiration.diff(
+            new Date(parseInt(currentExpiration) * 1000),
+            'second'
+          )
+          extendDuration = timeDiffFromExpiration
+        } else {
+          const timeDiffFromNow = newExpiration.diff(now, 'second')
+          extendDuration = timeDiffFromNow
+        }
+      }
+
+      if (typeof extendDuration === 'number' && extendDuration < 0) {
+        return ToastHelper.error(`The expiration date can't be pulled back.`)
+      }
+
       if (
         (typeof extendDuration === 'number' && extendDuration > 0) ||
         extendDuration === MAX_UINT
@@ -136,6 +151,7 @@ const ExtendKeyDurationForm = ({
   }
   const { neverExpires } = getValues()
   const loading = extendKeyMutation.isLoading
+
   return (
     <form
       className="flex flex-col w-full gap-3"
@@ -146,7 +162,9 @@ const ExtendKeyDurationForm = ({
         placeholder="Key expiration date"
         label="Key expiration date"
         disabled={neverExpires || loading}
-        min={1}
+        min={new Date(parseInt(currentExpiration) * 1000)
+          .toISOString()
+          .slice(0, 16)}
         {...register('expiration')}
       />
 
