@@ -152,6 +152,7 @@ export const OGEvent = ({
   )
 }
 
+// TODO: replaced by routes on unlock-app since we use Vercel for hosting but only once axos supports the Edge runtime!
 export const eventOGHandler: RequestHandler = async (request, response) => {
   const lockAddress = normalizer.ethereumAddress(
     request.params.lockAddress?.toString() || ''
