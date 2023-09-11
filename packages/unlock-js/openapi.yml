@@ -1728,6 +1728,7 @@ paths:
                   - name
                   - lockAddress
                   - keyId
+                  - manager
                   - publicLockVersion
                   - userMetadata
                   - isVerifier
@@ -1744,6 +1745,8 @@ paths:
                   name:
                     type: string
                   owner:
+                    type: string
+                  manager:
                     type: string
                   lockAddress:
                     type: string
