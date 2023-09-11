@@ -157,7 +157,6 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     )
   )
 
-  console.log(ticket)
   const invalid = invalidMembership({
     network,
     manager: ticket!.manager,
