@@ -2,10 +2,12 @@ import { RequestHandler } from 'express'
 import normalizer from '../../utils/normalizer'
 import { getLockMetadata } from '../../operations/metadataOperations'
 import { readFileSync } from 'fs'
+import { Resvg } from '@resvg/resvg-js'
+
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import satori from 'satori'
-import { imageUrlToBase64 } from '../../utils/image'
+import { imageURLToDataURI, imageUrlToBase64 } from '../../utils/image'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -36,14 +38,14 @@ export const OGEvent = ({
 }: Props) => {
   return (
     <div tw="flex flex-col bg-[#F5F5F5] h-full w-full rounded-xl">
-      <div tw="relative flex flex-col w-full h-90">
+      {bannerURL && (
         <img
           src={bannerURL}
-          width="600"
-          height="600"
           tw="absolute top-0 object-cover"
           aria-label={name}
         />
+      )}
+      <div tw="relative flex flex-col w-full h-90">
         <img
           width="64"
           height="64"
@@ -53,10 +55,10 @@ export const OGEvent = ({
         />
       </div>
       <div tw="flex items-center justify-between w-full px-6">
-        <h1 tw="text-5xl line-clamp-2 w-128">{name}</h1>
+        <h1 tw="text-5xl w-128 bg-white/50 p-2 rounded">{name}</h1>
         <div tw="flex flex-col">
           {startTime && (
-            <div tw="flex items-center">
+            <div tw="flex items-center bg-white/50 rounded-2xl">
               <svg
                 width="64"
                 height="64"
@@ -102,7 +104,7 @@ export const OGEvent = ({
           )}
 
           {location && (
-            <div tw="flex items-center mt-6">
+            <div tw="flex items-center mt-6 bg-white/50 rounded-2xl">
               <svg
                 width="64"
                 height="64"
@@ -172,11 +174,12 @@ export const eventOGHandler: RequestHandler = async (request, response) => {
   )
 
   const [bannerURL, iconURL] = await Promise.all([
-    imageUrlToBase64(attributes?.event_cover_image, lockAddress),
+    attributes?.event_cover_image &&
+      imageURLToDataURI(attributes?.event_cover_image),
     imageUrlToBase64(metadata?.image, lockAddress),
   ])
 
-  const eventBanner = await satori(
+  const eventBannerSVG = await satori(
     <OGEvent
       name={metadata?.name || 'Unlock Event'}
       startTime={dayjs
@@ -207,10 +210,15 @@ export const eventOGHandler: RequestHandler = async (request, response) => {
     }
   )
 
+  // OG cannot be SVG
+  const svg = new Resvg(eventBannerSVG)
+  const pngData = svg.render()
+  const pngBuffer = pngData.asPng()
+
   response.writeHead(200, {
-    'Content-Type': 'image/svg+xml',
-    'Content-Length': eventBanner.length,
+    'Content-Type': 'image/png',
+    'Content-Length': pngBuffer.length,
   })
 
-  return response.end(eventBanner)
+  return response.end(pngBuffer)
 }
