@@ -2,7 +2,7 @@
 
 # 0.39.3
 
-- add `referrerFees` to `lock`.
+- add `referrerFees` to `lock` in subgraphs
 
 # 0.39.2
 
