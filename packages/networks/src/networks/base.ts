@@ -57,6 +57,7 @@ export const base: NetworkConfig = {
     endpointV2:
       'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
     networkName: 'base',
+    studioEndpoint: 'unlock-protocol-base',
   },
   tokens: [
     {
