@@ -424,5 +424,4 @@ export function handleReferrerFees(event: ReferrerFeeEvent): void {
     referrerFee.lock = lock.id
     referrerFee.save()
   }
-  // test
 }
