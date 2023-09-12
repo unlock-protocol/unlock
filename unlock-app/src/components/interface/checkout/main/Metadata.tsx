@@ -112,8 +112,6 @@ export const MetadataInputs = ({
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
 
-  console.log(typeof recipient, hideRecipientAddress)
-
   return (
     <div className="grid gap-2">
       {hideRecipientAddress ? (
@@ -299,7 +297,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   })
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
-  console.log(recipient, 'recipient')
 
   const { isInitialLoading: isMemberLoading, data: isMember } = useQuery(
     ['isMember', recipient, lock],
@@ -397,7 +394,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
             {fields.map((item, index) => {
               const hideRecipient = !index && !isMember
-              console.log(!index, !isMember)
               return (
                 <div
                   key={item.id}
