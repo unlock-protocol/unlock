@@ -406,6 +406,9 @@ components:
         creditCardCurrency:
           type: string
           default: 'usd'
+        crossmintClientId:
+          type: string
+          nullable: true
 
     EventDetails:
       type: object
@@ -1725,6 +1728,7 @@ paths:
                   - name
                   - lockAddress
                   - keyId
+                  - manager
                   - publicLockVersion
                   - userMetadata
                   - isVerifier
@@ -1741,6 +1745,8 @@ paths:
                   name:
                     type: string
                   owner:
+                    type: string
+                  manager:
                     type: string
                   lockAddress:
                     type: string
@@ -3277,6 +3283,53 @@ paths:
                 properties:
                   sent:
                     type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/save:
+    post:
+      operationId: saveEventData
+      security:
+        - User: []
+      description: Save event data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: number
+                name:
+                  type: string
+                data:
+                  type: object
+                locks:
+                  type: array
+                  items:
+                    type: string
+
+      responses:
+        200:
+          description: Successfully saved event data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  name:
+                    type: string
+                  data:
+                    type: object
+                  locks:
+                    type: array
+                    items:
+                      type: string
         400:
           $ref: '#/components/responses/400.Invalid'
 

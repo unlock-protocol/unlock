@@ -59,9 +59,9 @@ export function handleNewLock(event: NewLock): void {
   // fetch lock version
   let lockContract = PublicLockMerged.bind(lockAddress)
   let version = BigInt.fromI32(0)
-  let publicLockVersion = lockContract.try_publicLockVersion()
+  let publicLockVersion = lockContract.try_publicLockVersion1()
   if (!publicLockVersion.reverted) {
-    version = BigInt.fromI32(publicLockVersion.value.toI32())
+    version = BigInt.fromI32(publicLockVersion.value)
   }
 
   // dont index locks with versions lower than 5
