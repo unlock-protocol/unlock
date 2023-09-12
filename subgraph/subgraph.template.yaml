@@ -57,6 +57,7 @@ templates:
         - LockManagerRemoved
         - PricingChanged
         - Transfer
+        - ReferrerFee
       abis:
         - name: PublicLock
           file: ./abis/PublicLock.json
@@ -110,5 +111,8 @@ templates:
           receipt: true
         - event: LockMetadata(string,string,string)
           handler: handleLockMetadata
+          receipt: true
+        - event: ReferrerFee(indexed address,uint256)
+          handler: handleReferrerFees
           receipt: true
       file: ./src/public-lock.ts
