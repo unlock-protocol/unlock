@@ -124,8 +124,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
       routes: uniswapRoutes!,
-      enabled:
-        isSwapAndPurchaseEnabled && !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
+      enabled: isSwapAndPurchaseEnabled && !enableClaim,
     })
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
