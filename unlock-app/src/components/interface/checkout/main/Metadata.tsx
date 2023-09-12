@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutService } from './checkoutMachine'
+import { CheckoutService, LockState } from './checkoutMachine'
 import {
   Controller,
   FormProvider,
@@ -26,7 +26,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { Lock } from '~/unlockTypes'
+import { Lock, PaywallConfig } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
@@ -60,7 +60,6 @@ export const MetadataInputs = ({
 }: RecipientInputProps) => {
   const [state] = useActor(checkoutService)
   const { paywallConfig } = state.context
-
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -111,11 +110,9 @@ export const MetadataInputs = ({
       'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
   )
 
-  let recipient = account
-  // The first recipient could be hardcoded
-  if (id == 0 && paywallConfig.recipient) {
-    recipient = paywallConfig.recipient
-  }
+  const recipient = recipientFromConfig(paywallConfig, lock) || account
+
+  console.log(typeof recipient, hideRecipientAddress)
 
   return (
     <div className="grid gap-2">
@@ -282,7 +279,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     paywallConfig.metadataInputs,
     isEmailRequired,
   ])
-
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
   const methods = useForm<FormData>({
     shouldUnregister: false,
@@ -301,30 +297,34 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     name: 'metadata',
     control,
   })
+
+  const recipient = recipientFromConfig(paywallConfig, lock) || account || ''
+  console.log(recipient, 'recipient')
+
   const { isInitialLoading: isMemberLoading, data: isMember } = useQuery(
-    ['isMember', account, lock],
+    ['isMember', recipient, lock],
     async () => {
       const total = await web3Service.totalKeys(
         lock!.address,
-        account!,
+        recipient!,
         lock!.network
       )
       return total > 0
     },
     {
-      enabled: !!account,
+      enabled: !!recipient,
     }
   )
 
   useEffect(() => {
-    if (account && quantity > fields.length && !isMemberLoading) {
+    if (recipient && quantity > fields.length && !isMemberLoading) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
         const addAccountAddress = !index && !isMember
-        const recipient = addAccountAddress
-          ? { recipient: account }
+        const recipients = addAccountAddress
+          ? { recipient: recipient }
           : { recipient: '' }
-        append(recipient, {
+        append(recipients, {
           shouldFocus: false,
         })
       })
@@ -334,7 +334,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         remove(fields.length - index)
       )
     }
-  }, [quantity, account, fields, append, remove, isMember, isMemberLoading])
+  }, [quantity, recipient, fields, append, remove, isMember, isMemberLoading])
 
   async function onSubmit(data: FormData) {
     try {
@@ -364,7 +364,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           }
         })
       )
-
       const recipients = data.metadata.map((item) => item.recipient)
       const keyManagers = data.metadata.map(
         (item) => item.keyManager || item.recipient
@@ -398,6 +397,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
             {fields.map((item, index) => {
               const hideRecipient = !index && !isMember
+              console.log(!index, !isMember)
               return (
                 <div
                   key={item.id}
@@ -440,4 +440,19 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       </footer>
     </Fragment>
   )
+}
+
+const recipientFromConfig = (
+  paywall: PaywallConfig,
+  lock: Lock | LockState | undefined
+): string => {
+  const paywallRecipient = paywall.recipient
+  const lockReceip = paywall?.locks[lock!.address].recipient
+
+  if (paywallRecipient != undefined && paywallRecipient != '') {
+    return paywallRecipient
+  } else if (lockReceip != undefined && lockReceip != '') {
+    return lockReceip
+  }
+  return ''
 }
