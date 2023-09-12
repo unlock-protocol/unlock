@@ -142,6 +142,9 @@ type Payment =
       method: 'universal_card'
       cardId?: string
     }
+  | {
+      method: 'crossmint'
+    }
 
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 

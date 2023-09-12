@@ -406,6 +406,9 @@ components:
         creditCardCurrency:
           type: string
           default: 'usd'
+        crossmintClientId:
+          type: string
+          nullable: true
 
     EventDetails:
       type: object
@@ -1725,6 +1728,7 @@ paths:
                   - name
                   - lockAddress
                   - keyId
+                  - manager
                   - publicLockVersion
                   - userMetadata
                   - isVerifier
@@ -1741,6 +1745,8 @@ paths:
                   name:
                     type: string
                   owner:
+                    type: string
+                  manager:
                     type: string
                   lockAddress:
                     type: string
