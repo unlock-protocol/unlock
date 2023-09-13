@@ -13,6 +13,7 @@ import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../../ViewContract'
 import { usePurchase } from '~/hooks/usePurchase'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCapturePayment } from '~/hooks/useCapturePayment'
@@ -132,7 +133,7 @@ export function ConfirmCard({
   const [state] = useActor(checkoutService)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, data, renew } =
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
     state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
@@ -154,6 +155,8 @@ export function ConfirmCard({
     lockAddress,
     network: lockNetwork,
   })
+
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
@@ -374,6 +377,9 @@ export function ConfirmCard({
               disabled={isConfirming || isLoading || isError}
               onClick={async (event) => {
                 event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
                 onConfirmCard()
               }}
             >
