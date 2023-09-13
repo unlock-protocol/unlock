@@ -11,6 +11,7 @@ import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../../ViewContract'
 import { useClaim } from '~/hooks/useClaim'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useConfig } from '~/utils/withConfig'
@@ -34,7 +35,8 @@ export function ConfirmClaim({
 
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, data } = state.context
+  const { lock, recipients, payment, paywallConfig, metadata, data } =
+    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -44,6 +46,8 @@ export function ConfirmClaim({
     lockAddress,
     network: lockNetwork,
   })
+
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
@@ -159,6 +163,9 @@ export function ConfirmClaim({
               disabled={isConfirming || isLoading || isPricingDataError}
               onClick={async (event) => {
                 event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
                 onConfirmClaim()
               }}
             >

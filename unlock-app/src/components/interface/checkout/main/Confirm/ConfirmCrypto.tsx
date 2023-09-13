@@ -16,6 +16,7 @@ import { Lock } from '~/unlockTypes'
 import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
 import { ViewContract } from '../../ViewContract'
+import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
@@ -41,8 +42,16 @@ export function ConfirmCrypto({
   const web3Service = useWeb3Service()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, keyManagers, data, renew } =
-    state.context
+  const {
+    lock,
+    recipients,
+    payment,
+    paywallConfig,
+    keyManagers,
+    metadata,
+    data,
+    renew,
+  } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 
@@ -71,6 +80,8 @@ export function ConfirmCrypto({
     lockAddress,
     network: lockNetwork,
   })
+
+  const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
@@ -297,6 +308,9 @@ export function ConfirmCrypto({
               }
               onClick={async (event) => {
                 event.preventDefault()
+                if (metadata) {
+                  await updateUsersMetadata(metadata)
+                }
                 onConfirmCrypto()
               }}
             >
