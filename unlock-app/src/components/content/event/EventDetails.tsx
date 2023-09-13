@@ -7,6 +7,7 @@ import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
+import { NextSeo } from 'next-seo'
 
 import {
   MetadataFormData,
@@ -129,6 +130,7 @@ interface CoverImageDrawerProps {
   metadata: MetadataFormData
   handleClose: () => void
 }
+
 const CoverImageDrawer = ({
   image,
   setImage,
@@ -641,6 +643,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
+  const locksmithEventOG = new URL(
+    `/v2/og/event/${network}/locks/${lockAddress}`,
+    config.locksmithHost
+  ).toString()
+
   return (
     <div>
       <Modal
@@ -657,6 +664,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           }}
         />
       </Modal>
+
+      <NextSeo
+        title={eventData.title}
+        description={`${eventData.description}. Powered by Unlock Protocol.`}
+        openGraph={{
+          images: [
+            {
+              alt: eventData.title,
+              url: locksmithEventOG,
+            },
+          ],
+        }}
+      />
 
       <div className="relative">
         <div className="relative">
