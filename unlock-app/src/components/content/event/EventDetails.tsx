@@ -543,6 +543,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const startDate = eventDate
     ? eventDate.toLocaleDateString(undefined, {
+        timeZone: eventData?.ticket?.event_timezone,
         weekday: 'long',
         year: 'numeric',
         month: 'short',
@@ -562,6 +563,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const endDate =
     eventEndDate && eventEndDate && !isSameDay
       ? eventEndDate.toLocaleDateString(undefined, {
+          timeZone: eventData?.ticket?.event_timezone,
           weekday: 'long',
           year: 'numeric',
           month: 'short',
@@ -718,7 +720,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <EventDetail label="Date" icon={CalendarIcon}>
                     <div
                       style={{ color: `#${eventData.background_color}` }}
-                      className="flex flex-col text-lg font-normal capitalize text-brand-dark"
+                      className="flex flex-col text-lg font-normal text-brand-dark"
                     >
                       {(startDate || endDate) && (
                         <span>

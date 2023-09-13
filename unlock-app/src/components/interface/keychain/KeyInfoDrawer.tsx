@@ -252,12 +252,24 @@ export const KeyInfo = ({
           <div className="divide-y divide-brand-dark">
             {starDate && (
               <KeyItem label={isSameDay ? 'Event Date' : 'Event Start Date'}>
-                {starDate?.toLocaleDateString()}
+                {starDate?.toLocaleDateString(undefined, {
+                  timeZone: ticket?.event_timezone,
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
               </KeyItem>
             )}
             {endDate && !isSameDay && (
               <KeyItem label="Event End Date">
-                {endDate?.toLocaleDateString()}
+                {endDate?.toLocaleDateString(undefined, {
+                  timeZone: ticket?.event_timezone,
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                })}
               </KeyItem>
             )}
             {ticket?.event_start_date && (
