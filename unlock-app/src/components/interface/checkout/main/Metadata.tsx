@@ -318,9 +318,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
         const addAccountAddress = !index && !isMember
-        const recipients = addAccountAddress
-          ? { recipient: recipient }
-          : { recipient: '' }
+        const recipients = addAccountAddress ? { recipient } : { recipient: '' }
         append(recipients, {
           shouldFocus: false,
         })
@@ -443,12 +441,12 @@ const recipientFromConfig = (
   lock: Lock | LockState | undefined
 ): string => {
   const paywallRecipient = paywall.recipient
-  const lockReceip = paywall?.locks[lock!.address].recipient
+  const lockRecipient = paywall?.locks[lock!.address].recipient
 
   if (paywallRecipient != undefined && paywallRecipient != '') {
     return paywallRecipient
-  } else if (lockReceip != undefined && lockReceip != '') {
-    return lockReceip
+  } else if (lockRecipient != undefined && lockRecipient != '') {
+    return lockRecipient
   }
   return ''
 }
