@@ -15,10 +15,7 @@ import {
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import {
-  useUniswapRoutes,
-  useUniswapRoutesUsingLock,
-} from '~/hooks/useUniswapRoutes'
+import { useUniswapRoutes } from '~/hooks/useUniswapRoutes'
 import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
@@ -52,8 +49,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { account, isUnlockAccount } = useAuth()
   const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-
-  const price = Number(parseFloat(lock.keyPrice) * recipients.length)
 
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
     {
@@ -98,14 +93,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const networkConfig = config.networks[lock.network]
 
-  const uniswapRoutes = useUniswapRoutesUsingLock({
-    lock,
-    price: price.toString(),
-  })
-
-  const isSwapAndPurchaseEnabled =
-    price > 0 && uniswapRoutes && uniswapRoutes.length > 0
-
   const isWaiting = isLoading || isCrossmintLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
@@ -123,8 +110,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
-      routes: uniswapRoutes!,
-      enabled: isSwapAndPurchaseEnabled && !enableClaim,
+      lock,
+      recipients,
+      purchaseData,
+      paywallConfig: state.context.paywallConfig,
+      enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
@@ -331,7 +321,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </div>
             )}
             {!isUniswapRoutesLoading &&
-              isSwapAndPurchaseEnabled &&
               !enableClaim &&
               routes?.map((route, index) => {
                 if (!route) {
