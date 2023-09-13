@@ -3,7 +3,7 @@ title: Unlock Protocol and Crossmint Partner for Payment Processing Integration
 authorName: Julien Genestoux
 publishDate: September 14, 2023
 description: Unlock Protocol is now integrated with Crossmint, expanding its credit card and other payment processing options.
-image: /images/blog/crossmint/crossmint-share.png
+image: /images/blog/crossmint/crossmint-share-2.png
 ---
 
 Unlock Protocol is now integrated with [Crossmint](https://crossmint.com), expanding its credit card and other payment processing options! Working with Crossmint grants developers who are building on Unlock Protocol an additional avenue for implementing fiat transactions, specifically credit card payments. 
