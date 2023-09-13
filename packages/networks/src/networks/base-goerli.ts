@@ -44,9 +44,9 @@ export const baseGoerli: NetworkConfig = {
   startBlock: 2247300,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/version/latest',
     endpointV2:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/0.0.2',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base-goerli/version/latest',
     networkName: 'base-testnet',
     studioEndpoint: 'unlock-protocol-base-goerli',
   },
