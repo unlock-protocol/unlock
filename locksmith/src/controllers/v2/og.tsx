@@ -11,6 +11,7 @@ import { imageURLToDataURI, imageUrlToBase64 } from '../../utils/image'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import logger from '../../logger'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -210,15 +211,22 @@ export const eventOGHandler: RequestHandler = async (request, response) => {
     }
   )
 
-  // OG cannot be SVG
-  const svg = new Resvg(eventBannerSVG)
-  const pngData = svg.render()
-  const pngBuffer = pngData.asPng()
+  try {
+    // OG cannot be SVG
+    const svg = new Resvg(eventBannerSVG)
+    const pngData = svg.render()
+    const pngBuffer = pngData.asPng()
 
-  response.writeHead(200, {
-    'Content-Type': 'image/png',
-    'Content-Length': pngBuffer.length,
-  })
+    response.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': pngBuffer.length,
+    })
 
-  return response.end(pngBuffer)
+    return response.end(pngBuffer)
+  } catch (error) {
+    logger.error('Could not generate OG image', error)
+    return response
+      .status(500)
+      .json({ message: 'We could not generate OG image', error })
+  }
 }
