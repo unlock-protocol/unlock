@@ -37,6 +37,11 @@ export const useUniswapRoutes = ({
   return useQuery(
     ['uniswapRoutes', account, lock, recipients, purchaseData],
     async () => {
+      const networkConfig = networks[lock.network]
+      if (!networkConfig || !networkConfig.swapPurchaser) {
+        return []
+      }
+
       // get the price for each of the keys
       const prices = await purchasePriceFor(web3Service, {
         lockAddress: lock.address,
@@ -51,10 +56,10 @@ export const useUniswapRoutes = ({
       // compute total
       const price = prices.reduce((acc, item) => acc + item.amount, 0)
 
-      const networkConfig = networks[lock.network]
-      if (!networkConfig || !networkConfig.swapPurchaser) {
+      if (isNaN(price)) {
         return []
       }
+
       const recipient = networkConfig.swapPurchaser.toLowerCase().trim()
       const network = lock.network
       const isErc20 =
