@@ -46,6 +46,7 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
     isLoading,
     data: referralFeesData,
     error,
+    refetch,
   } = useQuery(
     ['getLock', lockAddress, network, setReferrerFee.isSuccess],
     async () => getLock()
@@ -59,5 +60,6 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
     setReferrerFee,
     isSettingReferrerFee,
     error,
+    refetch,
   }
 }

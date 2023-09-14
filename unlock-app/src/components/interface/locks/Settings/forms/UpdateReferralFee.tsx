@@ -6,6 +6,7 @@ import {
   AddressInput,
 } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
+import Image from 'next/image'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -52,6 +53,7 @@ export const UpdateReferralFee = ({
     isLoading,
     isSettingReferrerFee,
     setReferrerFee,
+    refetch,
   } = useReferrerFee({
     lockAddress,
     network,
@@ -138,7 +140,30 @@ export const UpdateReferralFee = ({
       )}
 
       <div className="flex flex-col mt-5 items-start">
-        <Card.Title>Referrers ({referralFees.length})</Card.Title>
+        <div className="flex items-center justify-between w-full">
+          <Card.Title>Referrers ({referralFees.length})</Card.Title>
+
+          {!isLoading ? (
+            <Button
+              className="w-full max-w-[120px]"
+              type="button"
+              onClick={() => {
+                refetch()
+              }}
+              iconLeft={
+                <Image
+                  className="justify-self-left"
+                  width="20"
+                  height="20"
+                  alt="Apple Wallet"
+                  src={`/images/illustrations/refresh.svg`}
+                />
+              }
+            >
+              Refresh
+            </Button>
+          ) : null}
+        </div>
 
         {isLoading ? (
           <div className="w-full flex items-center justify-center">
