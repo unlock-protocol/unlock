@@ -52,7 +52,7 @@ export async function startWorker() {
       ssl: config.database?.dialectOptions?.ssl,
     }),
     crontab,
-    concurrency: 5,
+    concurrency: 1, // very low concurrency to check if this could be causing issues with email sending
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
