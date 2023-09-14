@@ -84,7 +84,11 @@ export async function deployPublicLock(
   const publicLock: Contract = await PublicLock.deploy()
   await publicLock.deployTransaction.wait(confirmations)
 
-  console.log(`PUBLICLOCK > deployed to : ${publicLock.address}`)
+  console.log(
+    `PUBLICLOCK > deployed to : ${
+      publicLock.address
+    } (${await publicLock.publicLockVersion()})`
+  )
   return publicLock
 }
 
