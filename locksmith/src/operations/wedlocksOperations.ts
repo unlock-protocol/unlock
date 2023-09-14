@@ -111,7 +111,7 @@ export const sendEmail = async ({
     })
     if (response.status !== 204) {
       const reason = await response.text()
-      logger.info(
+      logger.error(
         'Wedlocks returned unexpected status code',
         response.status,
         reason
