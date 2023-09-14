@@ -43,6 +43,8 @@ export async function createLock(
   lockAddress: string
   transactionHash: string
 }> {
+  console.log(`Creating lock ${version}...`)
+
   // send tx
   const [signer] = await hre.ethers.getSigners()
   if (!beneficiary) beneficiary = signer.address
