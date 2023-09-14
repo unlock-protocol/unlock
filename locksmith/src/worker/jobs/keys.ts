@@ -11,7 +11,7 @@ import {
   OrderDirection,
 } from '@unlock-protocol/unlock-js'
 
-const FETCH_LIMIT = 500
+const FETCH_LIMIT = 50
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const subgraph = new SubgraphService()
