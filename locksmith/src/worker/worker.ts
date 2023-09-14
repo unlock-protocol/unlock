@@ -20,7 +20,7 @@ import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 
 const crontabProduction = `
 */5 * * * * monitor
-*/5 * * * * allJobs
+*/2 * * * * allJobs
 */5 * * * * addRenewalJobs
 0 0 * * * addRenewalJobsDaily
 0 0 * * 0 addRenewalJobsWeekly
@@ -32,7 +32,7 @@ const crontabProduction = `
 
 const cronTabTesting = `
 */1 * * * * monitor
-*/5 * * * * allJobs
+*/2 * * * * allJobs
 */1 * * * * addRenewalJobs
 0 0 * * * addRenewalJobsDaily
 0 0 * * * addRenewalJobsWeekly
