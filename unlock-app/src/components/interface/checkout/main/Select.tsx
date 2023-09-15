@@ -73,7 +73,11 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
             <div className="flex w-full gap-x-4">
               <div>
                 <Avatar.Root className="inline-flex items-center justify-center w-14 h-14 rounded-xl">
-                  <Avatar.Image src={lockImageURL} alt={lock.name} />
+                  <Avatar.Image
+                    className="object-cover w-full m-auto aspect-1"
+                    src={lockImageURL}
+                    alt={lock.name}
+                  />
                   <Avatar.Fallback className="bg-gray-50">
                     {lock.name.slice(0, 2).toUpperCase()}
                   </Avatar.Fallback>
@@ -128,7 +132,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   )}
                   {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
                     <LabeledItem
-                      label="Quantity"
+                      label="Left"
                       icon={QuantityIcon}
                       value={
                         formattedData?.isSoldOut

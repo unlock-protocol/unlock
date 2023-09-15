@@ -7,6 +7,7 @@ import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
+import { NextSeo } from 'next-seo'
 
 import {
   MetadataFormData,
@@ -29,7 +30,7 @@ import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
-import { getEventDate, getEventEndDate } from './utils'
+import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
@@ -54,6 +55,8 @@ import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
 import { PaywallConfig } from '~/unlockTypes'
+import useClipboard from 'react-use-clipboard'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -127,6 +130,7 @@ interface CoverImageDrawerProps {
   metadata: MetadataFormData
   handleClose: () => void
 }
+
 const CoverImageDrawer = ({
   image,
   setImage,
@@ -407,9 +411,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const hasCheckoutId = settings?.checkoutConfigId
 
+  const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+
   const keysLeft =
     Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
-  const isSoldOut = keysLeft === 0
+  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const {
@@ -450,6 +456,16 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   }
 
   const { isEvent } = getLockTypeByMetadata(metadata)
+
+  const eventUrl = getEventUrl({
+    lockAddress,
+    network,
+    metadata,
+  })
+
+  const [_, setCopied] = useClipboard(eventUrl, {
+    successDuration: 1000,
+  })
 
   if (isMetadataLoading || isLoadingSettings || isLoadingEventLocks) {
     return (
@@ -506,6 +522,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const injectedProvider = selectProvider(config)
 
   const paywallConfig: PaywallConfig = {
+    title: 'Registration',
+    icon: metadata?.image,
     locks: {
       [lockAddress]: {
         network,
@@ -527,6 +545,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const startDate = eventDate
     ? eventDate.toLocaleDateString(undefined, {
+        timeZone: eventData?.ticket?.event_timezone,
         weekday: 'long',
         year: 'numeric',
         month: 'short',
@@ -546,6 +565,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const endDate =
     eventEndDate && eventEndDate && !isSameDay
       ? eventEndDate.toLocaleDateString(undefined, {
+          timeZone: eventData?.ticket?.event_timezone,
           weekday: 'long',
           year: 'numeric',
           month: 'short',
@@ -623,6 +643,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
+  const locksmithEventOG = new URL(
+    `/v2/og/event/${network}/locks/${lockAddress}`,
+    config.locksmithHost
+  ).toString()
+
   return (
     <div>
       <Modal
@@ -639,6 +664,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           }}
         />
       </Modal>
+
+      <NextSeo
+        title={eventData.title}
+        description={`${eventData.description}. Powered by Unlock Protocol.`}
+        openGraph={{
+          images: [
+            {
+              alt: eventData.title,
+              url: locksmithEventOG,
+            },
+          ],
+        }}
+      />
 
       <div className="relative">
         <div className="relative">
@@ -680,7 +718,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <TweetItButton event={eventData} />
                 </li>
                 <li>
-                  <CopyUrlButton />
+                  <CopyUrlButton eventUrl={eventUrl} />
                 </li>
               </ul>
             </section>
@@ -702,7 +740,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <EventDetail label="Date" icon={CalendarIcon}>
                     <div
                       style={{ color: `#${eventData.background_color}` }}
-                      className="flex flex-col text-lg font-normal capitalize text-brand-dark"
+                      className="flex flex-col text-lg font-normal text-brand-dark"
                     >
                       {(startDate || endDate) && (
                         <span>
@@ -758,12 +796,43 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
+                    title="Promote your event"
+                    description="Share your event's URL with your community and start selling tickets!"
+                  />
+                  <pre className="">{eventUrl}</pre>
+                </div>
+                <div className="md:col-span-1">
+                  <Button
+                    key={lockAddress}
+                    variant="black"
+                    className="button border w-full"
+                    size="small"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      setCopied()
+                      ToastHelper.success('Copied!')
+                    }}
+                  >
+                    Copy URL
+                  </Button>
+                </div>
+              </Card>
+
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
                     title="Manage Attendees"
                     description="See who is attending your event, invite people with airdrops and more!"
                   />
                 </div>
                 <div className="md:col-span-1">
                   {eventLocks?.map(({ lockAddress, network }) => {
+                    let label = 'Manage attendees'
+                    if (eventLocks.length > 1) {
+                      label = `Manage attendees for ${minifyAddress(
+                        lockAddress
+                      )}`
+                    }
                     return (
                       <Button
                         key={lockAddress}
@@ -773,7 +842,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                         size="small"
                         href={`/locks/lock?address=${lockAddress}&network=${network}`}
                       >
-                        Manage attendees for {minifyAddress(lockAddress)}
+                        {label}
                       </Button>
                     )
                   })}
@@ -783,8 +852,8 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
-                    title="Event detail"
-                    description="Need to change something? Access your contract (Lock) & update detail"
+                    title="Event details"
+                    description="Need to change something? Access your contract (Lock) and update its details."
                   />
                 </div>
                 <div className="md:col-span-1">
@@ -801,7 +870,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
               <Disclosure
                 label="Verifiers"
-                description="Add & manage trusted users at the event to help check-in attendees"
+                description="Add and manage trusted users at the event to help check-in attendees as they arrive."
               >
                 <div className="grid gap-2">
                   {eventLocks?.map(({ lockAddress, network }) => {
