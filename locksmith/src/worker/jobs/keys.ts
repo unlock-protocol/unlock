@@ -11,7 +11,8 @@ import {
   OrderDirection,
 } from '@unlock-protocol/unlock-js'
 
-const FETCH_LIMIT = 50
+// If this is too high, the memory gets too high and Heroku kills the dyno
+const FETCH_LIMIT = 20
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const subgraph = new SubgraphService()
