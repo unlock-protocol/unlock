@@ -12,6 +12,11 @@ import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
 const ClaimBody = z.object({
   data: z.string().optional(),
   recipient: z.string().optional(),
+  email: z
+    .string()
+    .email()
+    .transform((value) => value.toLowerCase())
+    .optional(),
 })
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
@@ -26,7 +31,7 @@ export const LOCKS_WITH_DISABLED_CLAIMS = [
  * @returns
  */
 export const claim: RequestHandler = async (request, response: Response) => {
-  const { data, recipient } = await ClaimBody.parseAsync(request.body)
+  const { data, recipient, email } = await ClaimBody.parseAsync(request.body)
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
 
@@ -35,8 +40,6 @@ export const claim: RequestHandler = async (request, response: Response) => {
   if (request.user && !owner) {
     owner = normalizer.ethereumAddress(request.user.walletAddress)
   }
-
-  const email = request.body.email?.toString().toLowerCase()
 
   // By default we protect all metadata
   const protectedMetadata = {
