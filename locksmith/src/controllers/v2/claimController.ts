@@ -12,7 +12,11 @@ import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
 const ClaimBody = z.object({
   data: z.string().optional(),
   recipient: z.string().optional(),
-  email: z.string().email().optional(),
+  email: z
+    .string()
+    .email()
+    .transform((value) => value.toLowerCase())
+    .optional(),
 })
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
