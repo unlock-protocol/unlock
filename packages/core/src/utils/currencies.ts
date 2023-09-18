@@ -6,4 +6,5 @@ export interface Currency {
 export const Currencies: Currency[] = [
   { symbol: '$', currency: 'usd' },
   { symbol: '€', currency: 'eur' },
+  { symbol: 'R$', currency: 'brl' },
 ]
