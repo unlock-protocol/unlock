@@ -14,9 +14,10 @@ export async function setMaxNumberOfKeys(
   const lockContract = await this.getLockContract(lockAddress)
   const maxKeysPerAddress = await lockContract.maxKeysPerAddress()
   const expirationDuration = await lockContract.expirationDuration()
+  const supply = await lockContract.totalSupply()
   const transactionPromise = lockContract.updateLockConfig(
     expirationDuration,
-    maxNumberOfKeys,
+    supply.lt(maxNumberOfKeys) ? maxNumberOfKeys : supply,
     maxKeysPerAddress
   )
   const hash = await this._handleMethodCall(transactionPromise)

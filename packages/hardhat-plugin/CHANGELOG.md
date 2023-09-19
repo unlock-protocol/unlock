@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.1.2
+
+- Changing the lock deployed version to the latest
+
 ### 0.0.16
 
 - Allow to pass `unlockAddress` when creating a lock

@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { Token } from '@uniswap/sdk-core'
-import { useMemo } from 'react'
 import { networks } from '@unlock-protocol/networks'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { Lock } from '~/unlockTypes'
+import { Lock, PaywallConfig } from '~/unlockTypes'
 import { nativeOnChain } from '@uniswap/smart-order-router'
 import { ethers } from 'ethers'
 import { NativeCurrency } from '@uniswap/sdk-core'
 import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { purchasePriceFor } from './usePricing'
 export interface UniswapRoute {
   network: number
   tokenIn: Token | NativeCurrency
@@ -18,21 +18,113 @@ export interface UniswapRoute {
 }
 
 interface UniswapRoutesOption {
-  routes: UniswapRoute[]
   enabled?: boolean
+  lock: Lock
+  recipients: string[]
+  purchaseData: string[] | undefined
+  paywallConfig: PaywallConfig
 }
 
 export const useUniswapRoutes = ({
-  routes,
+  lock,
+  recipients,
+  purchaseData,
+  paywallConfig,
   enabled = true,
 }: UniswapRoutesOption) => {
   const { account } = useAuth()
   const web3Service = useWeb3Service()
   return useQuery(
-    ['uniswapRoutes', account, routes],
+    ['uniswapRoutes', account, lock, recipients, purchaseData],
     async () => {
+      const networkConfig = networks[lock.network]
+      if (!networkConfig || !networkConfig.swapPurchaser) {
+        return []
+      }
+
+      // get the price for each of the keys
+      const prices = await purchasePriceFor(web3Service, {
+        lockAddress: lock.address,
+        network: lock.network,
+        recipients,
+        data: purchaseData || recipients.map(() => ''),
+        paywallConfig,
+        currencyContractAddress: lock.currencyContractAddress,
+        symbol: lock.currencySymbol,
+      })
+
+      // compute total
+      const price = prices.reduce((acc, item) => acc + item.amount, 0)
+
+      if (isNaN(price)) {
+        return []
+      }
+
+      const recipient = networkConfig.swapPurchaser.toLowerCase().trim()
+      const network = lock.network
+      const isErc20 =
+        lock.currencyContractAddress &&
+        lock.currencyContractAddress !== ethers.constants.AddressZero
+
+      const tokenOut = isErc20
+        ? new Token(
+            lock.network,
+            lock.currencyContractAddress!.toLowerCase().trim(),
+            lock.currencyDecimals || 18,
+            lock.currencySymbol || '',
+            lock.currencyName || ''
+          )
+        : nativeOnChain(network)
+
+      const amountOut = ethers.utils
+        .parseUnits(price.toString(), lock.currencyDecimals || 18)
+        .toString()
+
+      // build the routes
+      const routes = (networkConfig.tokens || []).map((item: any) => {
+        const tokenIn = new Token(
+          lock.network,
+          item.address.toLowerCase().trim(),
+          item.decimals,
+          item.symbol,
+          item.name
+        )
+
+        return {
+          tokenIn,
+          tokenOut,
+          amountOut,
+          recipient,
+          network,
+        } as UniswapRoute
+      })
+
+      // Add native currency as a route if the lock is an ERC20
+      if (isErc20) {
+        routes.push({
+          tokenIn: nativeOnChain(network),
+          tokenOut,
+          amountOut,
+          recipient,
+          network,
+        })
+      }
+      const routesToLookup = routes.filter((route: UniswapRoute) => {
+        // Filter out duplicates if any
+        if (route.tokenIn.isNative) {
+          return !route.tokenOut.isNative
+        }
+        if (route.tokenOut.isNative) {
+          return !route.tokenIn.isNative
+        }
+        return (
+          route.tokenOut!.address.toLowerCase() !==
+          route.tokenIn!.address.toLowerCase()
+        )
+      })
+
       const result = await Promise.all(
-        routes.map(async (route) => {
+        routesToLookup.map(async (route) => {
           try {
             const params = {
               network: route.network,
@@ -71,83 +163,4 @@ export const useUniswapRoutes = ({
       enabled,
     }
   )
-}
-
-export const useUniswapRoutesUsingLock = ({
-  lock,
-  price,
-}: Partial<{
-  lock: Lock
-  price: string
-}>) => {
-  return useMemo(() => {
-    if (!(lock && price)) {
-      return []
-    }
-    const networkConfig = networks[lock.network]
-    if (!networkConfig || !networkConfig.swapPurchaser) {
-      return []
-    }
-    const recipient = networkConfig.swapPurchaser.toLowerCase().trim()
-    const network = lock.network
-    const isErc20 =
-      lock.currencyContractAddress &&
-      lock.currencyContractAddress !== ethers.constants.AddressZero
-
-    const tokenOut = isErc20
-      ? new Token(
-          lock.network,
-          lock.currencyContractAddress!.toLowerCase().trim(),
-          lock.currencyDecimals || 18,
-          lock.currencySymbol || '',
-          lock.currencyName || ''
-        )
-      : nativeOnChain(network)
-
-    const amountOut = ethers.utils
-      .parseUnits(price, lock.currencyDecimals || 18)
-      .toString()
-
-    const routes = (networkConfig.tokens || []).map((item: any) => {
-      const tokenIn = new Token(
-        lock.network,
-        item.address.toLowerCase().trim(),
-        item.decimals,
-        item.symbol,
-        item.name
-      )
-
-      return {
-        tokenIn,
-        tokenOut,
-        amountOut,
-        recipient,
-        network,
-      } as UniswapRoute
-    })
-
-    // Add native currency as a route if the lock is an ERC20
-    if (isErc20) {
-      routes.push({
-        tokenIn: nativeOnChain(network),
-        tokenOut,
-        amountOut,
-        recipient,
-        network,
-      })
-    }
-    return routes.filter((route: UniswapRoute) => {
-      // Filter out duplicates if any
-      if (route.tokenIn.isNative) {
-        return !route.tokenOut.isNative
-      }
-      if (route.tokenOut.isNative) {
-        return !route.tokenIn.isNative
-      }
-      return (
-        route.tokenOut!.address.toLowerCase() !==
-        route.tokenIn!.address.toLowerCase()
-      )
-    })
-  }, [lock, price])
 }
