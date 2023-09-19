@@ -71,14 +71,18 @@ module.exports = async ([
   const randInt = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min
 
-  const protocolFee = ethers.utils
+  const burnAddress = ADDRESS_ZERO
+  const tokenAmount = ethers.utils
     .parseEther(`0.000001`)
     .add(`${randInt(1, 999)}`)
-  const calldata = unlockInterface.encodeFunctionData('setProtocolFee', [
-    protocolFee,
+
+  const calldata = unlockInterface.encodeFunctionData('transferTokens', [
+    ADDRESS_ZERO, // native tokens
+    burnAddress, // to
+    tokenAmount,
   ])
 
-  console.log(`setProtocolFee(${protocolFee})`)
+  console.log(`transferTokens(${tokenAmount})`)
 
   // src info
   const { chainId } = await ethers.provider.getNetwork()
