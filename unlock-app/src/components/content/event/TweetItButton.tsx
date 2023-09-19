@@ -21,6 +21,7 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
     `🎟️ I will be attending ${event.name} on ${eventDate.toLocaleDateString(
       undefined,
       {
+        timeZone: event?.ticket?.event_timezone,
         weekday: 'long',
         year: 'numeric',
         month: 'long',

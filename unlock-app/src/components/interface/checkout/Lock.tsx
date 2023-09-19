@@ -21,21 +21,21 @@ export function Pricing({
   }
   if (isCardEnabled && !usdPrice) {
     return (
-      <div className="grid text-right">
+      <div className="grid text-right whitespace-nowrap">
         <span className="font-semibold">{keyPrice}</span>
       </div>
     )
   }
   if (isCardEnabled) {
     return (
-      <div className="grid text-right">
+      <div className="grid text-right whitespace-nowrap">
         <span className="font-semibold">{usdPrice}</span>
         <span className="text-sm text-gray-500">{keyPrice} </span>
       </div>
     )
   }
   return (
-    <div className="grid text-right">
+    <div className="grid text-right whitespace-nowrap">
       <span className="font-semibold">{keyPrice} </span>
       <span className="text-sm text-gray-500">{usdPrice}</span>
     </div>
