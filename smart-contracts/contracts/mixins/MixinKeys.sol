@@ -196,7 +196,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     }
 
     // We increment the tokenId counter
-    _totalSupply++;
+    unchecked {
+      _totalSupply++;
+    }
     tokenId = _totalSupply;
 
     // create the key
@@ -204,7 +206,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // increase total number of unique owners
     if (totalKeys(_recipient) == 0) {
-      numberOfOwners++;
+      unchecked {
+        numberOfOwners++;
+      }
     }
 
     // store ownership
@@ -280,7 +284,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // update ownership mapping
     _ownerOf[_tokenId] = _recipient;
-    _balances[_recipient] += 1;
+    unchecked {
+      _balances[_recipient] += 1;
+    }
   }
 
   /**
@@ -332,7 +338,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // remove from owner count if thats the only key
     if (totalKeys(previousOwner) == 1) {
-      numberOfOwners--;
+      unchecked {
+        numberOfOwners--;
+      }
     }
     // update balance
     _balances[previousOwner] -= 1;
@@ -361,9 +369,14 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function balanceOf(address _keyOwner) public view returns (uint balance) {
     uint length = totalKeys(_keyOwner);
-    for (uint i = 0; i < length; i++) {
+    for (uint i; i < length; ) {
       if (isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
-        balance++;
+        unchecked {
+          balance++;
+        }
+      }
+      unchecked {
+        i++;
       }
     }
   }
