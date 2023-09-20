@@ -86,9 +86,7 @@ export const UpdateReferralFee = ({
       <div className="grid gap-2">
         <ToggleSwitch
           title="Custom Referrer Address"
-          description={
-            'If no address is provided, the default referral fee will apply to any referrer.'
-          }
+          description={'Set a referrer for a custom address.'}
           enabled={isReferralAddressToggled}
           disabled={isDisabledReferrerInput}
           setEnabled={(enabled: boolean) => {
@@ -115,6 +113,8 @@ export const UpdateReferralFee = ({
       </div>
 
       <div className="grid gap-2">
+        <span className="text-base semibold">{'Referrer fee (%)'}</span>
+
         <Input
           type="number"
           {...register('referralFeePercentage', {
