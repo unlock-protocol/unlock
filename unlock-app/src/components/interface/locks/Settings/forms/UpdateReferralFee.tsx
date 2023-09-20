@@ -84,6 +84,37 @@ export const UpdateReferralFee = ({
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-2">
+        <ToggleSwitch
+          title="Custom Referrer Address"
+          description={
+            'If no address is provided, the default referral fee will apply to any referrer.'
+          }
+          enabled={isReferralAddressToggled}
+          disabled={isDisabledReferrerInput}
+          setEnabled={(enabled: boolean) => {
+            if (referralAddress && !enabled) {
+              setValue('referralAddress', '')
+            }
+
+            setIsReferralAddressToggled(enabled)
+          }}
+        />
+
+        {isReferralAddressToggled ? (
+          <AddressInput
+            label=""
+            value={referralAddress}
+            disabled={isDisabledReferrerInput || !isReferralAddressToggled}
+            onChange={(value: any) => {
+              setValue('referralAddress', value)
+            }}
+            error={errors?.referralAddress?.message}
+            onResolveName={onResolveName}
+          />
+        ) : null}
+      </div>
+
+      <div className="grid gap-2">
         <Input
           type="number"
           {...register('referralFeePercentage', {
@@ -99,31 +130,6 @@ export const UpdateReferralFee = ({
         />
       </div>
 
-      <div className="grid gap-2">
-        <ToggleSwitch
-          title="Referrer address"
-          description={
-            'If no address is provided, the default referral fee will apply to any referrer.'
-          }
-          enabled={isReferralAddressToggled}
-          disabled={isDisabledReferrerInput}
-          setEnabled={(enabled: boolean) => {
-            setIsReferralAddressToggled(enabled)
-          }}
-        />
-
-        <AddressInput
-          label=""
-          value={referralAddress}
-          disabled={isDisabledReferrerInput || !isReferralAddressToggled}
-          onChange={(value: any) => {
-            setValue('referralAddress', value)
-          }}
-          error={errors?.referralAddress?.message}
-          onResolveName={onResolveName}
-        />
-      </div>
-
       {isManager && (
         <Button
           className="w-full md:w-1/3"
@@ -131,6 +137,7 @@ export const UpdateReferralFee = ({
           disabled={
             isDisabledReferrerInput ||
             !referralFeePercentage ||
+            (isReferralAddressToggled && !referralAddress) ||
             !!(referralAddress && !isValidAddress)
           }
           loading={isSettingReferrerFee}
