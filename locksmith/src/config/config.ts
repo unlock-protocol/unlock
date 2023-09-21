@@ -84,7 +84,7 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
-  requestTimeout: '30s',
+  requestTimeout: '10s',
   defenderRelayCredentials,
   databaseUrl: process.env.DATABASE_URL || '',
   sentry: {
