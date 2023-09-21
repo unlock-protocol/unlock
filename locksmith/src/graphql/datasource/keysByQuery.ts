@@ -109,13 +109,12 @@ export const keysByQuery = async ({
     const tokenId = filterKey === 'tokenId' ? getValidNumber(search) : undefined
 
     // Filter by owners
-    const owners = filterKey === 'owner' ? [search] : undefined
+    const owners = filterKey === 'owner' && search ? [search] : undefined
 
     const getData = async (getFromPage: number) => {
       const skip = parseInt(`${getFromPage}`, 10) * first
       // The Graph does not support skipping more than 5000
       // https://thegraph.com/docs/en/querying/graphql-api/#pagination
-
       return await locksByFilter({
         owners,
         first,
