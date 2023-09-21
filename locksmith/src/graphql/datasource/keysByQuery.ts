@@ -19,6 +19,7 @@ interface KeyByFilterProps {
   expireTimestamp: number | undefined
   filter: KeyFilter
   tokenId?: number
+  owners?: string[]
 }
 
 const locksByFilter = async ({
@@ -29,6 +30,7 @@ const locksByFilter = async ({
   skip = 0,
   expireTimestamp,
   addresses = [],
+  owners = [],
 }: KeyByFilterProps): Promise<any> => {
   const subgraph = new SubgraphService()
 
@@ -37,13 +39,17 @@ const locksByFilter = async ({
   }
 
   const keyFilter: KeyFilterProps = {
-    tokenId: filter === 'tokenId' ? tokenId : undefined,
+    tokenId,
   }
 
   if (filter === 'expired') {
     keyFilter.expiration_lt = expireTimestamp // all expired keys
   } else {
     keyFilter.expiration_gt = expireTimestamp // all non expired keys
+  }
+
+  if (owners?.length) {
+    keyFilter.owner_in = owners?.map((owner) => owner.toLowerCase()) // lowercase address
   }
 
   const lockFilter: LockFilter = {
@@ -98,7 +104,12 @@ export const keysByQuery = async ({
       expiration === 'all' || filterKey === 'tokenId'
         ? 0
         : parseInt(`${new Date().getTime() / 1000}`)
-    const tokenId = getValidNumber(search)
+
+    // Filter by tokenId
+    const tokenId = filterKey === 'tokenId' ? getValidNumber(search) : undefined
+
+    // Filter by owners
+    const owners = filterKey === 'owner' ? [search] : undefined
 
     const getData = async (getFromPage: number) => {
       const skip = parseInt(`${getFromPage}`, 10) * first
@@ -106,6 +117,7 @@ export const keysByQuery = async ({
       // https://thegraph.com/docs/en/querying/graphql-api/#pagination
 
       return await locksByFilter({
+        owners,
         first,
         skip,
         addresses,
@@ -131,7 +143,8 @@ export const keysByQuery = async ({
 
         keysList?.push(...(nextPageKeys ?? []))
 
-        getForNextPage = keysList?.length < max || keysList?.length === first
+        // get more if we don't have enough AND we only get a partail page
+        getForNextPage = keysList?.length < max && keysList?.length === first
       } catch (error) {
         logger.error(error)
         getForNextPage = false // When we have an error, we stop paginating, results will be partial
