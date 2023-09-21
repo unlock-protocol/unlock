@@ -272,7 +272,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             <div className="grid">
               <p className="mb-5">
                 This information will be public and included on each of the NFT
-                tickets. There again, it can be adjusted later.
+                tickets. Again, it can be adjusted later.
               </p>
               <div className="grid items-center gap-4 align-top sm:grid-cols-2">
                 <div className="flex flex-col self-start gap-4 justify-top">
