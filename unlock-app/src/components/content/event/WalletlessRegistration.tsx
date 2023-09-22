@@ -182,7 +182,7 @@ export const WalletlessRegistrationForm = ({
       })
       setClaimResult({ hash, owner })
       setClaimOpen(true)
-      ToastHelper.success('Transaction successful sent!')
+      ToastHelper.success('Transaction successfully sent!')
     } catch (error) {
       console.error(error)
       ToastHelper.error(
