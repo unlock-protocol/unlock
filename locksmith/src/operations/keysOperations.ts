@@ -86,8 +86,6 @@ export const buildKeysWithMetadata = (
 /**
  * Returns keys with their metadata
  * This supports pagination and filtering
- * In the current (bad) approach: we get all keys and then we filter them.
- * It's obviously bad for large locks because getting all keys fails spectacularly
  * @param param0
  * @returns
  */
@@ -125,7 +123,7 @@ export async function getKeysWithMetadata({
     }
     keysFilter = {
       ...filters,
-      query: addresses[0], // What happens if there are muliple?
+      query: addresses[0], // TODO: consider what happens if there are muliple?
       filterKey: 'owner',
     }
   }
