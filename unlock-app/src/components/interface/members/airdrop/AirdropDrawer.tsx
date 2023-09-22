@@ -93,15 +93,20 @@ export const AirdropForm = ({
 
     // Create options to pass to grant keys from the members
     const options = items.reduce((prop, item) => {
-      let expiration = Math.floor(
-        new Date(
-          item.expiration || formatDate(lockData!.expirationDuration)
-        ).getTime() / 1000
-      ).toString()
+      let expiration
 
-      // if item never expires
-      if (item.neverExpire) {
+      if (item.expiration) {
+        expiration = Math.floor(
+          new Date(item.expiration).getTime() / 1000
+        ).toString()
+      } else if (item.neverExpire) {
         expiration = MAX_UINT
+      } else if (lockData!.expirationDuration == -1) {
+        expiration = MAX_UINT
+      } else {
+        expiration = Math.floor(
+          new Date(formatDate(lockData!.expirationDuration)).getTime() / 1000
+        ).toString()
       }
 
       for (const _ of Array.from({ length: item.count })) {
@@ -114,6 +119,7 @@ export const AirdropForm = ({
     }, initialValue)
 
     const walletService = await getWalletService(network)
+
     // Grant keys
     await walletService
       .grantKeys(
