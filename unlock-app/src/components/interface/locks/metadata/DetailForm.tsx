@@ -99,6 +99,30 @@ export function DetailForm({ disabled, defaultValues }: Props) {
               rows={4}
             />
             <Input
+              {...register('slug', {
+                pattern: {
+                  value: SLUG_REGEXP,
+                  message: 'Slug format is not valid',
+                },
+                validate: async (slug: string | undefined) => {
+                  const slugChanged = defaultValues?.slug !== slug
+                  if (slugChanged && slug) {
+                    const data = (await storage.getLockSettingsBySlug(slug))
+                      .data
+                    return data
+                      ? 'Slug already used, please use another one'
+                      : true
+                  }
+                  return true
+                },
+              })}
+              disabled={disabled || defaultValues?.slug}
+              type="text"
+              label="Custom URL"
+              error={errors.slug?.message}
+              description="Custom URL that will be used for the page."
+            />
+            <Input
               {...register('external_url')}
               disabled={disabled}
               type="url"

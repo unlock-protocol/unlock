@@ -388,8 +388,6 @@ export const ManageLockPage = () => {
     )
   }
 
-  const totalKeys = 4000
-
   return (
     <>
       <AirdropKeysDrawer
