@@ -112,8 +112,9 @@ export async function getKeysWithMetadata({
   let metadataItems: any[] = []
 
   let keysFilter = filters
+
   // Ok so if the filters is not an _onchain_ thing we need to first get the addresses that would match it!
-  if (filters.filterKey === 'email') {
+  if (filters.filterKey === 'email' && filters.query) {
     const addresses = await getUserAddressesMatchingData(
       network,
       lockAddress,
