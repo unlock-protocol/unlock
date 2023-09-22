@@ -1300,7 +1300,12 @@ paths:
           name: page
           schema:
             type: integer
-          description: Pagination
+          description: Page number when paginating
+        - in: query
+          name: max
+          schema:
+            type: integer
+          description: Maximum number of items to get by page
       responses:
         200:
           description: List of keys matching the query

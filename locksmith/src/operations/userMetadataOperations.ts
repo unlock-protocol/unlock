@@ -1,8 +1,7 @@
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types'
 import { UserTokenMetadata } from '../models'
-
-import { InferAttributes } from 'sequelize'
+import { InferAttributes, Op, Sequelize } from 'sequelize'
 import { isEmpty, merge } from 'lodash'
 
 // @deprecated Use `createOrUpdateUserMetadata` instead.
@@ -25,6 +24,26 @@ export async function addMetadata(metadata: UserTokenMetadataInput) {
       conflictFields: ['tokenAddress', 'userAddress'],
     }
   )
+}
+
+export async function getUserAddressesMatchingData(
+  network: number,
+  lockAddress: string,
+  data: string
+) {
+  const userTokenMetadata = await UserTokenMetadata.findAll({
+    attributes: ['userAddress'],
+    where: Sequelize.and(
+      Sequelize.where(Sequelize.cast(Sequelize.col('data'), 'text'), {
+        [Op.iLike]: `%${data}%`,
+      }),
+      {
+        chain: network,
+        tokenAddress: lockAddress,
+      }
+    ),
+  })
+  return userTokenMetadata.map((item) => item.userAddress)
 }
 
 export function isMetadataEmpty(data: Record<string, any>) {

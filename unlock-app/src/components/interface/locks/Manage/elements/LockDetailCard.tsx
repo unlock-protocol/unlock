@@ -156,7 +156,7 @@ export const LockDetailCard = ({
 
   const loading = isLoading || isLoadingStripe
 
-  const symbol = lock?.currencySymbol || nativeCurrency.symbol
+  const symbol = lock?.currencySymbol || nativeCurrency?.symbol
   const priceLabel =
     keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
 
