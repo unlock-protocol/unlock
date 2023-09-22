@@ -8,6 +8,7 @@ import networks from '@unlock-protocol/networks'
 import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
+import { getUserAddressesMatchingData } from './userMetadataOperations'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -82,6 +83,12 @@ export const buildKeysWithMetadata = (
   )
 }
 
+/**
+ * Returns keys with their metadata
+ * This supports pagination and filtering
+ * @param param0
+ * @returns
+ */
 export async function getKeysWithMetadata({
   network,
   lockAddress,
@@ -102,10 +109,29 @@ export async function getKeysWithMetadata({
 
   let metadataItems: any[] = []
 
+  let keysFilter = filters
+
+  // Ok so if the filters is not an _onchain_ thing we need to first get the addresses that would match it!
+  if (filters.filterKey === 'email' && filters.query) {
+    const addresses = await getUserAddressesMatchingData(
+      network,
+      lockAddress,
+      filters.query
+    )
+    if (addresses.length === 0) {
+      return []
+    }
+    keysFilter = {
+      ...filters,
+      query: addresses[0], // TODO: consider what happens if there are muliple?
+      filterKey: 'owner',
+    }
+  }
+
   const [lock] = await keysByQuery({
     network,
     addresses: [lockAddress],
-    filters,
+    filters: keysFilter,
   })
 
   // only lock manager can see metadata
