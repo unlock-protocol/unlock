@@ -14,6 +14,7 @@ export default class KeyController {
       const {
         query = '',
         page = 0,
+        max = 100,
         filterKey,
         expiration = 'active',
       } = request.query ?? {}
@@ -29,6 +30,7 @@ export default class KeyController {
         page: Number(page),
         filterKey,
         expiration,
+        max: Math.min(100, Number(max)),
       }
 
       const loggedInUserAddress = Normalizer.ethereumAddress(
