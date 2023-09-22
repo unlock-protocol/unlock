@@ -48,7 +48,7 @@ export const UpdateTransferFee = ({
   const onSubmit = async (fields: FormProps) => {
     if (isValid) {
       const updateTransferFeePromise = updateTransferFeeMutation.mutateAsync(
-        fields?.transferFeePercentage
+        allowTransfer ? fields?.transferFeePercentage : 100
       )
 
       await ToastHelper.promise(updateTransferFeePromise, {
