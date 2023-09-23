@@ -1,10 +1,10 @@
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import networks from '@unlock-protocol/networks'
 import { Hook, HookType } from '@unlock-protocol/types'
+import { ConnectForm } from '../../../CheckoutUrl/ChooseConfiguration'
 
 export const CaptchaContractHook = ({
   name,
