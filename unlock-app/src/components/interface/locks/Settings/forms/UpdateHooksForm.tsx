@@ -5,15 +5,14 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
-import { ConnectForm } from '../../CheckoutUrl/elements/DynamicForm'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
 import { GuildContractHook } from './hooksComponents/GuildContractHook'
-
 import { useCustomHook } from '~/hooks/useCustomHooks'
+import { ConnectForm } from '../../CheckoutUrl/ChooseConfiguration'
 
 interface UpdateHooksFormProps {
   lockAddress: string

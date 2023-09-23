@@ -7,7 +7,6 @@ import {
   PaywallLockConfigType,
 } from '@unlock-protocol/core'
 import { useConfig } from '~/utils/withConfig'
-import { DynamicForm } from './DynamicForm'
 import {
   Button,
   Card,
@@ -27,9 +26,7 @@ import { useLockSettings } from '~/hooks/useLockSettings'
 import { getLocksByNetwork } from '~/hooks/useLocksByManager'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-const LockSchema = PaywallLockConfig.omit({
-  network: true, // network will managed with a custom input with the lock address
-})
+import { CheckBoxInput } from './BasicConfigForm'
 
 interface LockListItemProps {
   address: string
@@ -39,6 +36,98 @@ interface LockListItemProps {
   onEdit?: () => void
   onReset?: () => void
   hasEdit?: boolean
+}
+
+// Form component
+interface Props {
+  onChange: (values: z.infer<typeof PaywallLockConfig>) => void
+  defaultValues?: z.infer<typeof PaywallLockConfig>
+}
+
+export const BasicConfigForm: React.FC<Props> = ({
+  onChange,
+  defaultValues,
+}) => {
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm<z.infer<typeof PaywallLockConfig>>({
+    reValidateMode: 'onChange',
+    defaultValues: defaultValues as any,
+  })
+
+  // Define an onChange handler for each input field
+  const handleInputChange = () => {
+    const updatedValues = watch() // Get all form values
+    onChange(updatedValues) // Call the onChange prop with updated values
+  }
+
+  return (
+    <form
+      className="grid gap-6"
+      onChange={() => {
+        handleInputChange()
+      }}
+    >
+      <Input
+        label="Name"
+        size="small"
+        description={PaywallLockConfig.shape.name.description}
+        error={errors.name?.message}
+        {...register('name')}
+      />
+      <Input
+        label="Number of Renewals"
+        size="small"
+        type="text"
+        description={PaywallLockConfig.shape.recurringPayments.description}
+        {...register('recurringPayments', {
+          valueAsNumber: true,
+        })}
+      />
+      <Input
+        label="Max Recipients"
+        type="text"
+        size="small"
+        description={PaywallLockConfig.shape.maxRecipients?.description}
+        {...register('maxRecipients', {
+          valueAsNumber: true,
+        })}
+      />
+      <Input
+        label="Recipient"
+        size="small"
+        description={PaywallLockConfig.shape.recipient?.description}
+        {...register('recipient')}
+      />
+      <Input
+        label="Data Builder"
+        type="url"
+        size="small"
+        description={PaywallLockConfig.shape.dataBuilder?.description}
+        {...register('dataBuilder')}
+      />
+      <CheckBoxInput
+        label="Skip Recipient"
+        description={PaywallLockConfig.shape.skipRecipient?.description}
+        error={errors.skipRecipient?.message}
+        {...register('skipRecipient')}
+      />
+      <CheckBoxInput
+        label="Collect Email"
+        description={PaywallLockConfig.shape.emailRequired?.description}
+        error={errors.emailRequired?.message}
+        {...register('emailRequired')}
+      />
+      <CheckBoxInput
+        label="Promotion Code"
+        description={PaywallLockConfig.shape.promo?.description}
+        error={errors.promo?.message}
+        {...register('promo')}
+      />
+    </form>
+  )
 }
 
 type LocksProps = Record<string, Partial<PaywallLockConfigType>>
@@ -540,18 +629,8 @@ export const LocksForm = ({
                               .
                             </span>
                           </div>
-                          <DynamicForm
-                            name={'locks'}
+                          <BasicConfigForm
                             defaultValues={defaultValue}
-                            schema={LockSchema.omit({
-                              metadataInputs: true,
-                              minRecipients: true, // This option is confusing. Let's not add it by default.
-                              default: true,
-                              recurringPayments: true, // Managed separately to get Unlimited recurring
-                              // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
-                              password: true,
-                              captcha: true,
-                            })}
                             onChange={(fields: any) => {
                               onAddLock({
                                 lockAddress,
@@ -663,7 +742,6 @@ export const LocksForm = ({
     </div>
   )
 }
-
 const LockListItem = ({
   address,
   name,
