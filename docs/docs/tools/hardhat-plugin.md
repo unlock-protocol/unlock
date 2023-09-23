@@ -21,16 +21,62 @@ yarn add @unlock-protocol/hardhat-plugin
 Import the plugin in your `hardhat.config.js`:
 
 ```js
-require("@unlock-protocol/hardhat-plugin");
+require('@unlock-protocol/hardhat-plugin')
 ```
 
 Or if you are using TypeScript, in your `hardhat.config.ts`:
 
 ```ts
-import "@unlock-protocol/hardhat-plugin";
+import '@unlock-protocol/hardhat-plugin'
 ```
 
-## Configuration
+## Usage
+
+There are no additional steps you need to take for this plugin to work.
+
+Install it and access ethers through the Hardhat Runtime Environment anywhere
+you need it (tasks, scripts, tests, etc).
+
+```js
+import { unlock } from 'hardhat'
+
+// deploy the Unlock contract
+await unlock.deployUnlock()
+
+// deploy the template
+await unlock.deployPublicLock()
+
+// deploy the entire protocol (localhost only)
+await unlock.deployProtocol()
+
+// create a lock
+const lockArgs = {
+  expirationDuration: 60 * 60 * 24 * 7, // 7 days
+  currencyContractAddress: null, // null for ETH or erc20 address
+  keyPrice: '100000000', // in wei
+  maxNumberOfKeys: 10,
+  name: 'A Demo Lock',
+}
+await unlock.createLock(lockArgs)
+```
+
+You can also use the plugin to import the Unlock contracts in your own contracts, like we do for example [when creating Hooks](../tutorials/smart-contracts/using-unlock-in-other-contracts.md).
+
+```solidity
+
+// Importing the PublicLock interface
+import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV13.sol";
+
+contract MyContract {
+  constructor(_lock) {
+    // Check if the sender is a manager on the lock passed as argument
+    IPublicLockV13(_lock).isLockManager(msg.sender)
+  }
+}
+
+```
+
+## Configuration (optional)
 
 ### Networks
 
@@ -54,4 +100,4 @@ const config: HardhatUserConfig = {
 
 ## Other Links
 
-For more check the [plugin page](https://github.com/unlock-protocol/hardhat-plugin-example) or the [example repo](https://github.com/unlock-protocol/hardhat-plugin-example).
+For more check the [plugin page](https://github.com/unlock-protocol/unlock/tree/master/packages/hardhat-plugin) or the [example repo](https://github.com/unlock-protocol/hardhat-plugin-example).
