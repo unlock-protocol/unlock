@@ -15,10 +15,7 @@ import {
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import {
-  useUniswapRoutes,
-  useUniswapRoutesUsingLock,
-} from '~/hooks/useUniswapRoutes'
+import { useUniswapRoutes } from '~/hooks/useUniswapRoutes'
 import { useBalance } from '~/hooks/useBalance'
 import LoadingIcon from '../../Loading'
 import { formatNumber } from '~/utils/formatter'
@@ -32,17 +29,13 @@ interface Props {
   checkoutService: CheckoutService
 }
 
-interface AmountBadgeProps {
+interface CurrencyBadgeProps {
   symbol: string
-  amount: string
 }
 
-const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
+const CurrencyBadge = ({ symbol }: CurrencyBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-      {Number(amount) <= 0
-        ? 'FREE'
-        : `${formatNumber(Number(amount))} ${symbol.toUpperCase()}`}
       <CryptoIcon size={16} symbol={symbol} />
     </div>
   )
@@ -56,8 +49,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { account, isUnlockAccount } = useAuth()
   const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-
-  const price = Number(parseFloat(lock.keyPrice) * recipients.length)
 
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
     {
@@ -102,14 +93,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const networkConfig = config.networks[lock.network]
 
-  const uniswapRoutes = useUniswapRoutesUsingLock({
-    lock,
-    price: price.toString(),
-  })
-
-  const isSwapAndPurchaseEnabled =
-    price > 0 && uniswapRoutes && uniswapRoutes.length > 0
-
   const isWaiting = isLoading || isCrossmintLoading || isBalanceLoading
 
   const isReceiverAccountOnly =
@@ -127,9 +110,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
-      routes: uniswapRoutes!,
-      enabled:
-        isSwapAndPurchaseEnabled && !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
+      lock,
+      recipients,
+      purchaseData,
+      paywallConfig: state.context.paywallConfig,
+      enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
@@ -177,7 +162,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay with {symbol} </h3>
-                  <AmountBadge amount={price.toString()} symbol={symbol} />
+                  <CurrencyBadge symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
@@ -336,7 +321,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </div>
             )}
             {!isUniswapRoutesLoading &&
-              isSwapAndPurchaseEnabled &&
               !enableClaim &&
               routes?.map((route, index) => {
                 if (!route) {
@@ -361,8 +345,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                       <h3 className="font-bold">
                         Pay with {route!.trade.inputAmount.currency.symbol}
                       </h3>
-                      <AmountBadge
-                        amount={route!.quote.toFixed()}
+                      <CurrencyBadge
                         symbol={route!.trade.inputAmount.currency.symbol ?? ''}
                       />
                     </div>

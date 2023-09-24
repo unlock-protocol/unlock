@@ -7,6 +7,7 @@ import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
+import { NextSeo } from 'next-seo'
 
 import {
   MetadataFormData,
@@ -129,6 +130,7 @@ interface CoverImageDrawerProps {
   metadata: MetadataFormData
   handleClose: () => void
 }
+
 const CoverImageDrawer = ({
   image,
   setImage,
@@ -543,6 +545,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
 
   const startDate = eventDate
     ? eventDate.toLocaleDateString(undefined, {
+        timeZone: eventData?.ticket?.event_timezone,
         weekday: 'long',
         year: 'numeric',
         month: 'short',
@@ -562,6 +565,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const endDate =
     eventEndDate && eventEndDate && !isSameDay
       ? eventEndDate.toLocaleDateString(undefined, {
+          timeZone: eventData?.ticket?.event_timezone,
           weekday: 'long',
           year: 'numeric',
           month: 'short',
@@ -639,6 +643,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     )
   }
 
+  const locksmithEventOG = new URL(
+    `/v2/og/event/${network}/locks/${lockAddress}`,
+    config.locksmithHost
+  ).toString()
+
   return (
     <div>
       <Modal
@@ -655,6 +664,19 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
           }}
         />
       </Modal>
+
+      <NextSeo
+        title={eventData.title}
+        description={`${eventData.description}. Powered by Unlock Protocol.`}
+        openGraph={{
+          images: [
+            {
+              alt: eventData.title,
+              url: locksmithEventOG,
+            },
+          ],
+        }}
+      />
 
       <div className="relative">
         <div className="relative">
@@ -718,7 +740,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
                   <EventDetail label="Date" icon={CalendarIcon}>
                     <div
                       style={{ color: `#${eventData.background_color}` }}
-                      className="flex flex-col text-lg font-normal capitalize text-brand-dark"
+                      className="flex flex-col text-lg font-normal text-brand-dark"
                     >
                       {(startDate || endDate) && (
                         <span>

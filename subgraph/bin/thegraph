@@ -39,13 +39,13 @@ const executeComanndErrorReturn = async (command) => {
 
 const executeStudioDeployWithVersionIncrement = async (subgraphName, version) => {
   let [major, minor, patch] = version
-      .split('.')
-  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${ parseInt(patch)}`
-  let stderr =  await executeComanndErrorReturn(cmd)
-  if(stderr){
-    if(stderr.includes("Version label already exists")){
-      console.log(`Stuido version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch)+1}`)
-      return executeStudioDeployWithVersionIncrement(subgraphName, `${major}.${minor}.${parseInt(patch)+1}`)
+    .split('.')
+  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${parseInt(patch)}`
+  let stderr = await executeComanndErrorReturn(cmd)
+  if (stderr) {
+    if (stderr.includes("Version label already exists")) {
+      console.log(`Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch) + 1}`)
+      return executeStudioDeployWithVersionIncrement(subgraphName, `${major}.${minor}.${parseInt(patch) + 1}`)
     }
   }
 }
@@ -111,7 +111,7 @@ const deployStudio = async (version, subgraphName) => {
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
   )
   const cmd = `yarn deploy-studio ${subgraphName} -l=${version}`
-  return executeStudioDeployWithVersionIncrement(subgraphName,version)
+  return executeStudioDeployWithVersionIncrement(subgraphName, version)
 }
 
 /**
@@ -136,19 +136,19 @@ const deploy = async (network, studioName, graphLabel) => {
 
   const studioEndpoint = networks[network].subgraph.studioEndpoint;
 
-  if(studioName && graphLabel){
+  if (studioName && graphLabel) {
     return deployStudio(graphLabel, studioName)
   }
 
-  if(studioEndpoint && graphLabel){
+  if (studioEndpoint && graphLabel) {
     return deployStudio(graphLabel, studioEndpoint)
   }
 
-  if(studioEndpoint){
+  if (studioEndpoint) {
     return deployStudio('v0.0.1', studioEndpoint)
   }
 
-  if(matchHosted){
+  if (matchHosted) {
     return deployHosted(matchHosted[1])
   }
 
@@ -175,7 +175,7 @@ const deployOnlyStudio = async (network, graphLabel) => {
 
   const studioEndpoint = networks[network].subgraph.studioEndpoint;
 
-  if(studioEndpoint && graphLabel){
+  if (studioEndpoint && graphLabel) {
     return deployStudio(graphLabel, studioEndpoint)
   }
 
@@ -186,7 +186,7 @@ const deployOnlyStudio = async (network, graphLabel) => {
 // Note: the palm network is not supported by
 //
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'palm'].includes(d)
+  (d) => !['networks', 'default', 'palm', 'localhost'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
@@ -228,7 +228,7 @@ require('yargs/yargs')(hideBin(process.argv))
     async ({ label }) => {
       // check config
       console.log(
-        `Deploying subgraphs for:\n${choices.filter((c) => c != 'localhost').map((c) => ` - ${c}\n`).join('')}`
+        `Deploying subgraphs for:\n${choices.map((c) => ` - ${c}\n`).join('')}`
       )
 
       // build and deploy each network
