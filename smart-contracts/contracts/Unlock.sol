@@ -407,7 +407,8 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       locks[msg.sender].totalSales += valueInETH;
 
       // Distribute UDT
-      // version 13 is the first version for which locks can be paying the fee. Prior versions should not distribute UDT if they don't "pay" the fee.
+      // version 13 is the first version for which locks can be paying the fee.
+      // Prior versions should not distribute UDT if they don't "pay" the fee.
       if (
         _referrer != address(0) &&
         IPublicLock(msg.sender).publicLockVersion() >= 13
@@ -433,9 +434,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
             baseFee = 100;
           }
 
-          // tokensToDistribute is either == to the gas cost times 1.25 to cover the 20% dev cut
+          // tokensToDistribute is either == to the gas cost
           uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
-            (125 * 10 ** 18)) /
+            (100 * 10 ** 18)) /
             100 /
             udtPrice;
 
@@ -451,16 +452,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
           }
 
           if (tokensToDistribute > 0) {
-            // 80% goes to the referrer, 20% to the Unlock dev - round in favor of the referrer
-            uint devReward = (tokensToDistribute * 20) / 100;
-
             if (balance > tokensToDistribute) {
               // Only distribute if there are enough tokens
-              IMintableERC20(udt).transfer(
-                _referrer,
-                tokensToDistribute - devReward
-              );
-              IMintableERC20(udt).transfer(owner(), devReward);
+              IMintableERC20(udt).transfer(_referrer, tokensToDistribute);
             }
           }
         }
