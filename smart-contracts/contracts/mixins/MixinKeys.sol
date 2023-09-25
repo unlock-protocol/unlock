@@ -620,6 +620,23 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   }
 
   /**
+   * Set the expiration of a key
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function setKeyExpiration(uint _tokenId, uint _newExpiration) public {
+    _onlyLockManager();
+    _keys[_tokenId].expirationTimestamp = _newExpiration;
+
+    emit ExpirationChanged(
+      _tokenId,
+      _keys[_tokenId].expirationTimestamp,
+      0, // delta left unknow - or should we calculate it?
+      false // time added unknown - or should we calculate it?
+    );
+  }
+
+  /**
    * @return the maximum number of key allowed for a single address
    */
   function maxKeysPerAddress() external view returns (uint) {
