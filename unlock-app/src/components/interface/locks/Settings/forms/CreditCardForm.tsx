@@ -67,7 +67,7 @@ const DisconnectStripe = ({
       <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
         <Badge variant="green" className="justify-center w-full md:w-1/3">
           <div className="flex items-center gap-2">
-            <span>Payment method enabled</span>
+            <span>Fiat payments enabled</span>
             <CheckCircleIcon />
           </div>
         </Badge>
@@ -251,7 +251,7 @@ const StripeNotReady = ({
   connectedStripeAccount,
 }: Pick<ConnectStripeProps, 'isManager' | 'disabled'> &
   ConnectStripe & {
-    connectedStripeAccount?: string
+    connectedStripeAccount?: any
   }) => {
   return (
     <span className="grid gap-2 text-sm">
@@ -313,9 +313,10 @@ export const CreditCardForm = ({
       return getKeyGranter()
     }
   )
-
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
+  const supportedCurrencies =
+    stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
 
   const getKeyGranter = async () => {
     return await storageService.getKeyGranter(network)
@@ -416,6 +417,13 @@ export const CreditCardForm = ({
             onDisconnect={onDisconnectStripe}
             disabled={disabled || disconnectStipeMutation.isLoading}
           />
+          {connectedStripeAccount && (
+            <span>
+              You will receive payments on your Stripe account{' '}
+              <code>{connectedStripeAccount.id}</code>
+            </span>
+          )}
+
           {isManager && (
             <>
               <CreditCardCustomPrice
@@ -423,6 +431,8 @@ export const CreditCardForm = ({
                 network={network}
                 disabled={disabled}
                 lock={lock}
+                currencies={supportedCurrencies}
+                connectedStripeAccount={connectedStripeAccount}
               />
               <CreditCardUnlockFee
                 lockAddress={lockAddress}
