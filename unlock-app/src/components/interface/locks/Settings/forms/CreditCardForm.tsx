@@ -67,7 +67,7 @@ const DisconnectStripe = ({
       <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
         <Badge variant="green" className="justify-center w-full md:w-1/3">
           <div className="flex items-center gap-2">
-            <span>Fiat payments enabled</span>
+            <span>Card payments enabled</span>
             <CheckCircleIcon />
           </div>
         </Badge>
