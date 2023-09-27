@@ -70,7 +70,8 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   const { isEvent } = getLockTypeByMetadata(metadata)
 
-  const getMembers = async () => {
+  // this breaks when there is too many rows!
+  const onDownloadCsv = async () => {
     const response = await storage.keys(
       network,
       lockAddress,
@@ -78,11 +79,7 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       'owner',
       'all'
     )
-    return response.data
-  }
-
-  const onDownloadCsv = async () => {
-    const members = await getMembers()
+    const members = response.data
     const cols: string[] = []
     members?.map((member: any) => {
       Object.keys(member).map((key: string) => {
@@ -390,6 +387,7 @@ export const ManageLockPage = () => {
       </div>
     )
   }
+
   return (
     <>
       <AirdropKeysDrawer

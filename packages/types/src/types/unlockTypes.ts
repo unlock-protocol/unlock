@@ -1,6 +1,5 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
-import { ethers } from 'ethers'
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
 /* eslint-disable no-unused-vars */
@@ -67,13 +66,12 @@ export interface Hook {
 
 export interface NetworkConfig {
   id: number
-  featured?: boolean
+  featured: boolean
   name: string
-  chain?: string
+  chain: string
   provider: string
   publicProvider: string
-  unlockAddress?: string
-  serializerAddress?: string
+  unlockAddress: string
   multisig?: string
   keyManagerAddress?: string
   universalCard?: {
@@ -86,9 +84,7 @@ export interface NetworkConfig {
     endpoint: string
     endpointV2?: string
     networkName?: string // for thegraph hosted service
-  }
-  uniswapV2?: {
-    oracle?: string
+    studioEndpoint?: string
   }
   uniswapV3?: Partial<{
     subgraph: string
@@ -99,7 +95,6 @@ export interface NetworkConfig {
   }>
   swapPurchaser?: string
   unlockOwner?: string
-  ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
     urls: {
@@ -130,7 +125,6 @@ export interface NetworkConfig {
   } | null
   maxFreeClaimCost?: number
   nativeCurrency: Omit<Token, 'address'>
-  wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
   description: string
@@ -139,9 +133,6 @@ export interface NetworkConfig {
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean
-  defenderRelay?: {
-    apiKey: string
-  }
 }
 
 export interface NetworkConfigs {

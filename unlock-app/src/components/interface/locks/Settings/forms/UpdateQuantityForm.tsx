@@ -85,7 +85,7 @@ export const UpdateQuantityForm = ({
     >
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
-          <label className="block px-1 mb-4 text-base" htmlFor="">
+          <label className="block px-1 text-base" htmlFor="">
             Number of memberships for sale:
           </label>
           <ToggleSwitch
@@ -107,21 +107,24 @@ export const UpdateQuantityForm = ({
           />
         </div>
         <div className="relative">
-          <Input
-            placeholder="Enter quantity"
-            type="number"
-            autoComplete="off"
-            step={1}
-            disabled={unlimitedQuantity || disabledInput}
-            error={
-              errors?.maxNumberOfKeys &&
-              'Please choose a number of memberships for sale for your lock.'
-            }
-            {...register('maxNumberOfKeys', {
-              min: 0,
-              required: !unlimitedQuantity,
-            })}
-          />
+          {!unlimitedQuantity && (
+            <Input
+              placeholder="Enter quantity"
+              type="number"
+              autoComplete="off"
+              step={1}
+              disabled={unlimitedQuantity || disabledInput}
+              error={
+                errors?.maxNumberOfKeys &&
+                'Please choose a number of memberships for sale for your lock.'
+              }
+              {...register('maxNumberOfKeys', {
+                valueAsNumber: true,
+                min: 0,
+                required: !unlimitedQuantity,
+              })}
+            />
+          )}
         </div>
       </div>
 

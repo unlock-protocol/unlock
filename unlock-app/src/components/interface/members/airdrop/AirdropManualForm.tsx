@@ -224,7 +224,7 @@ export function AirdropForm({
         />
       )}
       <Input
-        pattern="[0-9]+"
+        pattern="\d+"
         label="Number of keys to airdrop"
         {...register('count', {
           valueAsNumber: true,
@@ -276,7 +276,7 @@ export function AirdropForm({
           {...register('manager', {
             onChange: addressFieldChanged('manager'),
           })}
-          description="Key manager will be grant the permission to transfer, cancel the membership. By default, your address is set as manager."
+          description="Key manager will be granted the permission to transfer or to cancel the membership. By default, your address is set as manager."
           error={errors.manager?.message}
         />
       )}

@@ -25,13 +25,17 @@ export interface SIWEContextType {
   signOut: () => Promise<unknown> | unknown
   status?: Status
   isSignedIn: boolean
+  signature?: string
+  message?: string
 }
 
 const signOutToken = async () => {
   const session = getAccessToken()
   if (session) {
-    removeAccessToken()
-    return storage.revoke().catch(console.error)
+    // First, revoke the session on the server with the token
+    await storage.revoke().catch(console.error)
+    // Then remove token locally
+    return removeAccessToken()
   }
 }
 
@@ -42,6 +46,8 @@ const SIWEContext = createContext<SIWEContextType>({
   signIn: () => {
     throw new Error('No SIWE provider found')
   },
+  signature: undefined,
+  message: undefined,
   signOut: signOutToken,
   session: undefined,
   isSignedIn: false,
@@ -52,6 +58,10 @@ interface Props {
 }
 
 export const SIWEProvider = ({ children }: Props) => {
+  const [siweResult, setSiweResult] = useState<{
+    message: string
+    signature: string
+  } | null>(null)
   const { connected, getWalletService, network } = useAuth()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
@@ -150,6 +160,7 @@ export const SIWEProvider = ({ children }: Props) => {
       const siweResult = await siweSign(nonce, '')
 
       if (siweResult) {
+        setSiweResult(siweResult)
         const { message, signature } = siweResult
         const response = await storage.login({
           message,
@@ -175,7 +186,16 @@ export const SIWEProvider = ({ children }: Props) => {
   const isSignedIn = !!session
   return (
     <SIWEContext.Provider
-      value={{ session, signIn, siweSign, status, signOut, isSignedIn }}
+      value={{
+        session,
+        signIn,
+        siweSign,
+        status,
+        signOut,
+        isSignedIn,
+        signature: siweResult?.signature,
+        message: siweResult?.message,
+      }}
     >
       {children}
     </SIWEContext.Provider>

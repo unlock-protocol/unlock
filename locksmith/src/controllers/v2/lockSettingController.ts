@@ -5,6 +5,7 @@ import logger from '../../logger'
 import * as lockSettingOperations from '../../operations/lockSettingOperations'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { Currencies } from '@unlock-protocol/core'
 
 const LockSettingSchema = z.object({
   sendEmail: z
@@ -54,8 +55,16 @@ const LockSettingSchema = z.object({
     )
     .nullish(),
   creditCardCurrency: z
-    .enum(['usd', 'eur'], {
-      description: 'Currency to use for credit card payment.',
+    .enum(
+      Currencies.map((currency) => currency.currency) as [string, ...string[]], //zod requires at least 1 element
+      {
+        description: 'Currency to use for credit card payment.',
+      }
+    )
+    .optional(),
+  crossmintClientId: z
+    .string({
+      description: 'Client Id for Crossmint if cards are enabled.',
     })
     .optional(),
 })
@@ -72,6 +81,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   checkoutConfigId: undefined,
   hookGuildId: undefined,
   creditCardCurrency: 'usd',
+  crossmintClientId: undefined,
 }
 
 export const updateSettings: RequestHandler = async (

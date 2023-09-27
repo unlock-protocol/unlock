@@ -15,6 +15,7 @@ import { GAS_COST } from '../utils/constants'
 import { getGasSettings } from '../utils/gasSettings'
 import config from '../config/config'
 import executeAndRetry from './retries'
+import normalizer from '../utils/normalizer'
 
 interface KeyToGrant {
   recipient: string
@@ -28,6 +29,16 @@ interface KeyToGrant {
  * @returns
  */
 export const getProviderForNetwork = async function (network = 1) {
+  return new ethers.providers.JsonRpcProvider(networks[network].provider)
+}
+
+/**
+ * Helper function to return the public provider for a network id
+ * (used to send tx only!)
+ * @param network
+ * @returns
+ */
+export const getPublicProviderForNetwork = async function (network = 1) {
   return new ethers.providers.JsonRpcProvider(networks[network].publicProvider)
 }
 
@@ -45,7 +56,7 @@ export const getPurchaser = async function (network = 1) {
     })
     return { wallet, provider }
   }
-  const provider = await getProviderForNetwork(network)
+  const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
   return {
     wallet,
@@ -62,7 +73,8 @@ export default class Dispatcher {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
         try {
-          const { wallet, provider } = await getPurchaser(network.id)
+          const provider = await getProviderForNetwork(network.id)
+          const { wallet } = await getPurchaser(network.id)
           const address = await wallet.getAddress()
           const balance: ethers.BigNumberish =
             await Promise.race<ethers.BigNumberish>([
@@ -104,8 +116,8 @@ export default class Dispatcher {
    * @returns
    */
   async hasFundsForTransaction(network: number): Promise<boolean> {
-    const { wallet, provider } = await getPurchaser(network)
-
+    const provider = await getProviderForNetwork(network)
+    const { wallet } = await getPurchaser(network)
     const gasPrice = await provider.getGasPrice()
     const address = await wallet.getAddress()
     const balance = await provider.getBalance(address)
@@ -194,8 +206,8 @@ export default class Dispatcher {
     })
     const walletAddress = await wallet.getAddress()
     const isSignedByLocksmith =
-      transferSignerAddress.trim().toLowerCase() ===
-      walletAddress.trim().toLowerCase()
+      normalizer.ethereumAddress(transferSignerAddress) ===
+      normalizer.ethereumAddress(walletAddress)
 
     return isSignedByLocksmith
   }

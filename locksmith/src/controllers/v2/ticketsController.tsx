@@ -283,6 +283,7 @@ export const getTicket: RequestHandler = async (request, response) => {
     keyId: key.tokenId,
     lockAddress: key.lock.address,
     owner: key.owner,
+    manager: key.manager,
     publicLockVersion: key.lock.version,
   }
 
@@ -314,17 +315,18 @@ export const getTicket: RequestHandler = async (request, response) => {
   }
 
   const isManager = key.lock.lockManagers
-    .map((item: string) => item.toLowerCase().trim())
-    .includes(userAddress.toLowerCase().trim())
+    .map((item: string) => Normalizer.ethereumAddress(item))
+    .includes(Normalizer.ethereumAddress(userAddress))
 
   const isVerifier = verifiers
-    ?.map((item) => item.address.toLowerCase().trim())
-    .includes(userAddress.toLowerCase().trim())
+    ?.map((item) => Normalizer.ethereumAddress(item.address))
+    .includes(Normalizer.ethereumAddress(userAddress))
 
   const includeProtected =
     isManager ||
     isVerifier ||
-    key.owner.toLowerCase() === userAddress.toLowerCase().trim()
+    Normalizer.ethereumAddress(key.owner) ===
+      Normalizer.ethereumAddress(userAddress)
 
   const keyData = await generateKeyMetadata(
     lockAddress,

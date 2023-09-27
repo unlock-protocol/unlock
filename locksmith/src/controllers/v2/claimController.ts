@@ -12,11 +12,16 @@ import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
 const ClaimBody = z.object({
   data: z.string().optional(),
   recipient: z.string().optional(),
+  email: z
+    .string()
+    .email()
+    .transform((value) => value.toLowerCase())
+    .optional(),
 })
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
   '0xafcfff71f3e717fcdb0b6a1bf20026304fd41bee',
-]
+].map((address) => normalizer.ethereumAddress(address))
 
 /**
  * Claim API on free locks on chains with low transaction fees.
@@ -26,7 +31,7 @@ export const LOCKS_WITH_DISABLED_CLAIMS = [
  * @returns
  */
 export const claim: RequestHandler = async (request, response: Response) => {
-  const { data, recipient } = await ClaimBody.parseAsync(request.body)
+  const { data, recipient, email } = await ClaimBody.parseAsync(request.body)
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
 
@@ -35,8 +40,6 @@ export const claim: RequestHandler = async (request, response: Response) => {
   if (request.user && !owner) {
     owner = normalizer.ethereumAddress(request.user.walletAddress)
   }
-
-  const email = request.body.email?.toString().toLowerCase()
 
   // By default we protect all metadata
   const protectedMetadata = {
@@ -57,7 +60,11 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (LOCKS_WITH_DISABLED_CLAIMS.indexOf(lockAddress.toLowerCase()) > -1) {
+  if (
+    LOCKS_WITH_DISABLED_CLAIMS.indexOf(
+      normalizer.ethereumAddress(lockAddress)
+    ) > -1
+  ) {
     return response.status(400).send({
       message: 'Claim disabled for this lock',
     })

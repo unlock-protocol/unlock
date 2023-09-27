@@ -31,9 +31,10 @@ export default class UnlockService {
     }
 
     // for convenience, pass directly an ethers provider in the `networks` contructor
-    if (this.networks[networkId].ethersProvider) {
-      return this.networks[networkId]
-        .ethersProvider as ethers.providers.Provider
+    // @ts-expect-error Property 'ethersProvider' does not exist on type 'NetworkConfig'.
+    const ethersProvider = this.networks[networkId].ethersProvider
+    if (ethersProvider) {
+      return ethersProvider as ethers.providers.Provider
     }
     return new ethers.providers.JsonRpcBatchProvider(
       this.networks[networkId].provider,
@@ -90,9 +91,7 @@ export default class UnlockService {
     }
 
     throw new Error(
-      `Contract ${address} not deployed, or unknown version ${version} with provider ${JSON.stringify(
-        provider
-      )}`
+      `Contract ${address} (${contractName}) not deployed on ${await provider.getNetwork()}, or unknown version ${version}`
     )
   }
 

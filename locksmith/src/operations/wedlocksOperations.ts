@@ -13,7 +13,6 @@ import remarkHtml from 'remark-html'
 import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as userMetadataOperations from './userMetadataOperations'
-
 import { createEventIcs } from '../utils/calendar'
 import { EventProps, getEventDetail } from './eventOperations'
 import { LockSetting } from '../models/lockSetting'
@@ -63,7 +62,7 @@ interface SendEmailProps {
   template: string
   failoverTemplate: string
   recipient: string
-  params: Params
+  params?: Params
   attachments?: Attachment[]
 }
 /**
@@ -361,143 +360,158 @@ export interface CertificationProps {
 }
 
 export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
-  const keyManager = new KeyManager()
-  const lockAddress = Normalizer.ethereumAddress(key.lock.address)
-  const ownerAddress = Normalizer.ethereumAddress(key.owner)
-  const tokenId = key?.tokenId
-  const manager = key?.manager
+  try {
+    const keyManager = new KeyManager()
+    const lockAddress = Normalizer.ethereumAddress(key.lock.address)
+    const ownerAddress = Normalizer.ethereumAddress(key.owner)
+    const tokenId = key?.tokenId
+    const manager = key?.manager
 
-  const recipient = await userMetadataOperations.getUserEmailRecipient({
-    lockAddress,
-    ownerAddress,
-  })
-
-  if (!recipient) {
-    logger.info('No recipient found for', { lockAddress, ownerAddress })
-    return `No recipient found for owner ${ownerAddress} on lock ${lockAddress}`
-  }
-
-  const airdroppedRecipient = keyManager.createTransferAddress({
-    params: {
-      email: recipient,
+    const recipient = await userMetadataOperations.getUserEmailRecipient({
       lockAddress,
-    },
-  })
-
-  const isAirdroppedRecipient =
-    airdroppedRecipient?.toLowerCase() === ownerAddress?.toLowerCase() ||
-    manager?.toLowerCase()?.trim() ===
-      networks[network!]?.keyManagerAddress?.toLowerCase()?.trim()
-
-  logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
-
-  logger.info('Notifying wedlock for new key', {
-    recipient,
-    lock: lockAddress,
-    keyId: tokenId,
-  })
-
-  const openSeaUrl =
-    networks[network!] && tokenId && lockAddress
-      ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ?? undefined
-      : undefined
-
-  const transferUrl = new URL('/transfer', config.unlockApp)
-  transferUrl.searchParams.set('lockAddress', lockAddress)
-  transferUrl.searchParams.set('keyId', tokenId ?? '')
-  transferUrl.searchParams.set('network', network?.toString() ?? '')
-
-  const metadata = await getLockMetadata({ lockAddress, network })
-  const types = getLockTypeByMetadata(metadata)
-
-  const { isEvent, isCertification } = types
-  let eventDetail: EventProps | undefined = undefined
-  let certificationDetail: CertificationProps | undefined = undefined
-
-  // get event details only when lock is event
-  if (isEvent) {
-    eventDetail = await getEventDetail(lockAddress, network)
-  }
-
-  if (isCertification && tokenId) {
-    const hostUrl = new URL(config.unlockApp)
-    const keyData = await generateKeyMetadata(
-      lockAddress,
-      tokenId,
-      true, // include protected data
-      hostUrl.host, // host
-      network
-    )
-    const certificationUrl = getCertificateLinkedinShareUrl({
-      lockAddress,
-      network,
-      tokenId,
-      metadata: keyData,
+      ownerAddress,
     })
 
-    if (certificationUrl) {
-      certificationDetail = {
-        certificationUrl,
+    if (!recipient) {
+      logger.info('No recipient found for', { lockAddress, ownerAddress })
+      return `No recipient found for owner ${ownerAddress} on lock ${lockAddress}`
+    }
+
+    const airdroppedRecipient = keyManager.createTransferAddress({
+      params: {
+        email: recipient,
+        lockAddress,
+      },
+    })
+
+    const isAirdroppedRecipient =
+      Normalizer.ethereumAddress(airdroppedRecipient) ===
+        Normalizer.ethereumAddress(ownerAddress) ||
+      Normalizer.ethereumAddress(manager) ===
+        Normalizer.ethereumAddress(networks[network!]?.keyManagerAddress)
+
+    logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
+
+    logger.info('Notifying wedlock for new key', {
+      recipient,
+      lock: lockAddress,
+      keyId: tokenId,
+    })
+
+    const openSeaUrl =
+      networks[network!] && tokenId && lockAddress
+        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
+          undefined
+        : undefined
+
+    const transferUrl = new URL('/transfer', config.unlockApp)
+    transferUrl.searchParams.set('lockAddress', lockAddress)
+    transferUrl.searchParams.set('keyId', tokenId ?? '')
+    transferUrl.searchParams.set('network', network?.toString() ?? '')
+
+    const metadata = await getLockMetadata({ lockAddress, network })
+    const types = getLockTypeByMetadata(metadata)
+
+    const { isEvent, isCertification } = types
+    let eventDetail: EventProps | undefined = undefined
+    let certificationDetail: CertificationProps | undefined = undefined
+
+    // get event details only when lock is event
+    if (isEvent) {
+      eventDetail = await getEventDetail(lockAddress, network)
+    }
+
+    if (isCertification && tokenId) {
+      const hostUrl = new URL(config.unlockApp)
+      const keyData = await generateKeyMetadata(
+        lockAddress,
+        tokenId,
+        true, // include protected data
+        hostUrl.host, // host
+        network
+      )
+      const certificationUrl = getCertificateLinkedinShareUrl({
+        lockAddress,
+        network,
+        tokenId,
+        metadata: keyData,
+      })
+
+      if (certificationUrl) {
+        certificationDetail = {
+          certificationUrl,
+        }
       }
     }
+
+    // attachments list
+    const attachments = await getAttachments({
+      tokenId,
+      lockAddress,
+      network,
+      owner: ownerAddress,
+      event: eventDetail,
+      types,
+    })
+
+    // email templates
+    const templates = getTemplates({
+      types,
+      isAirdropped: isAirdroppedRecipient,
+      lockAddress,
+    })
+
+    // get custom email content
+    const template = getCustomTemplate({
+      types,
+      isAirdropped: isAirdroppedRecipient,
+    })
+
+    const customContent = await getCustomContent(
+      lockAddress,
+      network!,
+      template
+    )
+    const withLockImage = (customContent || '')?.length > 0
+    const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
+
+    const keychainUrl = `${config.unlockApp}/keychain`
+    const transactionReceiptUrl = getTransactionHashUrl(key, network)
+
+    return sendEmail({
+      network: network!,
+      template: templates[0],
+      failoverTemplate: templates[1],
+      recipient,
+      attachments,
+      params: {
+        lockAddress: key.lock.address ?? '',
+        lockName: key.lock.name,
+        keyId: tokenId ?? '',
+        network: networks[network!]?.name ?? '',
+        customContent,
+        lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
+        // urls
+        keychainUrl,
+        transactionReceiptUrl,
+        transferUrl: transferUrl.toString(),
+        openSeaUrl,
+        // add event details props
+        eventName: eventDetail?.eventName,
+        eventDate: eventDetail?.eventDate,
+        eventDescription: eventDetail?.eventDescription,
+        eventTime: eventDetail?.eventTime,
+        eventAddress: eventDetail?.eventAddress,
+        // add certification props
+        ...certificationDetail,
+      },
+    })
+  } catch (error) {
+    logger.error('failed to send new key to wedlocks ', {
+      key,
+      network,
+      error,
+    })
+    return null
   }
-
-  // attachments list
-  const attachments = await getAttachments({
-    tokenId,
-    lockAddress,
-    network,
-    owner: ownerAddress,
-    event: eventDetail,
-    types,
-  })
-
-  // email templates
-  const templates = getTemplates({
-    types,
-    isAirdropped: isAirdroppedRecipient,
-    lockAddress,
-  })
-
-  // get custom email content
-  const template = getCustomTemplate({
-    types,
-    isAirdropped: isAirdroppedRecipient,
-  })
-
-  const customContent = await getCustomContent(lockAddress, network!, template)
-  const withLockImage = (customContent || '')?.length > 0
-  const lockImage = `${config.services.locksmith}/lock/${lockAddress}/icon`
-
-  const keychainUrl = `${config.unlockApp}/keychain`
-  const transactionReceiptUrl = getTransactionHashUrl(key, network)
-
-  return sendEmail({
-    network: network!,
-    template: templates[0],
-    failoverTemplate: templates[1],
-    recipient,
-    attachments,
-    params: {
-      lockAddress: key.lock.address ?? '',
-      lockName: key.lock.name,
-      keyId: tokenId ?? '',
-      network: networks[network!]?.name ?? '',
-      customContent,
-      lockImage: withLockImage ? lockImage : undefined, // add custom image only when custom content is present
-      // urls
-      keychainUrl,
-      transactionReceiptUrl,
-      transferUrl: transferUrl.toString(),
-      openSeaUrl,
-      // add event details props
-      eventName: eventDetail?.eventName,
-      eventDate: eventDetail?.eventDate,
-      eventDescription: eventDetail?.eventDescription,
-      eventTime: eventDetail?.eventTime,
-      eventAddress: eventDetail?.eventAddress,
-      // add certification props
-      ...certificationDetail,
-    },
-  })
 }

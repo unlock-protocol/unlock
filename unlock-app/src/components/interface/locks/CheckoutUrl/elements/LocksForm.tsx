@@ -7,7 +7,6 @@ import {
   PaywallLockConfigType,
 } from '@unlock-protocol/core'
 import { useConfig } from '~/utils/withConfig'
-import { DynamicForm } from './DynamicForm'
 import {
   Button,
   Card,
@@ -25,9 +24,9 @@ import { Picker } from '~/components/interface/Picker'
 import type { z } from 'zod'
 import { useLockSettings } from '~/hooks/useLockSettings'
 import { getLocksByNetwork } from '~/hooks/useLocksByManager'
-const LockSchema = PaywallLockConfig.omit({
-  network: true, // network will managed with a custom input with the lock address
-})
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CheckBoxInput } from './BasicConfigForm'
 
 interface LockListItemProps {
   address: string
@@ -37,6 +36,98 @@ interface LockListItemProps {
   onEdit?: () => void
   onReset?: () => void
   hasEdit?: boolean
+}
+
+// Form component
+interface Props {
+  onChange: (values: z.infer<typeof PaywallLockConfig>) => void
+  defaultValues?: z.infer<typeof PaywallLockConfig>
+}
+
+export const BasicConfigForm: React.FC<Props> = ({
+  onChange,
+  defaultValues,
+}) => {
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useForm<z.infer<typeof PaywallLockConfig>>({
+    reValidateMode: 'onChange',
+    defaultValues: defaultValues as any,
+  })
+
+  // Define an onChange handler for each input field
+  const handleInputChange = () => {
+    const updatedValues = watch() // Get all form values
+    onChange(updatedValues) // Call the onChange prop with updated values
+  }
+
+  return (
+    <form
+      className="grid gap-6"
+      onChange={() => {
+        handleInputChange()
+      }}
+    >
+      <Input
+        label="Name"
+        size="small"
+        description={PaywallLockConfig.shape.name.description}
+        error={errors.name?.message}
+        {...register('name')}
+      />
+      <Input
+        label="Number of Renewals"
+        size="small"
+        type="text"
+        description={PaywallLockConfig.shape.recurringPayments.description}
+        {...register('recurringPayments', {
+          valueAsNumber: true,
+        })}
+      />
+      <Input
+        label="Max Recipients"
+        type="text"
+        size="small"
+        description={PaywallLockConfig.shape.maxRecipients?.description}
+        {...register('maxRecipients', {
+          valueAsNumber: true,
+        })}
+      />
+      <Input
+        label="Recipient"
+        size="small"
+        description={PaywallLockConfig.shape.recipient?.description}
+        {...register('recipient')}
+      />
+      <Input
+        label="Data Builder"
+        type="url"
+        size="small"
+        description={PaywallLockConfig.shape.dataBuilder?.description}
+        {...register('dataBuilder')}
+      />
+      <CheckBoxInput
+        label="Skip Recipient"
+        description={PaywallLockConfig.shape.skipRecipient?.description}
+        error={errors.skipRecipient?.message}
+        {...register('skipRecipient')}
+      />
+      <CheckBoxInput
+        label="Collect Email"
+        description={PaywallLockConfig.shape.emailRequired?.description}
+        error={errors.emailRequired?.message}
+        {...register('emailRequired')}
+      />
+      <CheckBoxInput
+        label="Promotion Code"
+        description={PaywallLockConfig.shape.promo?.description}
+        error={errors.promo?.message}
+        {...register('promo')}
+      />
+    </form>
+  )
 }
 
 type LocksProps = Record<string, Partial<PaywallLockConfigType>>
@@ -86,6 +177,102 @@ type RecurringByLock = Record<
   }
 >
 
+interface LockMetadataProps {
+  onSubmit(data: Omit<z.infer<typeof MetadataInput>, 'defaultValue'>): void
+}
+
+export const LockMetadataForm = ({ onSubmit }: LockMetadataProps) => {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<Omit<z.infer<typeof MetadataInput>, 'defaultValue'>>({
+    resolver: zodResolver(
+      MetadataInput.omit({
+        defaultValue: true,
+      })
+    ),
+  })
+
+  return (
+    <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <Input
+        {...register('name')}
+        size="small"
+        label="Name"
+        description={MetadataInput.shape.name.description}
+        error={errors?.name?.message}
+      />
+      <Input
+        {...register('label')}
+        label="Label"
+        size="small"
+        description={MetadataInput.shape.label.description}
+        error={errors?.label?.message}
+      />
+      <Input
+        {...register('placeholder')}
+        label="Placeholder"
+        size="small"
+        description={MetadataInput.shape.placeholder.description}
+        error={errors?.placeholder?.message}
+      />
+      <Input
+        {...register('value')}
+        label="Value"
+        size="small"
+        description={MetadataInput.shape.value.description}
+        error={errors?.value?.message}
+      />
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="required"
+            className="cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent"
+            {...register('required')}
+          />
+          <label htmlFor="required"> Required </label>
+        </div>
+        <p className="text-xs text-gray-600 ">
+          {MetadataInput.shape.required.description}
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-3">
+          <input
+            type="checkbox"
+            id="public"
+            className="cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent"
+            {...register('public')}
+          />
+          <label htmlFor="public"> Public </label>
+        </div>
+        <p className="text-xs text-gray-600 ">
+          {MetadataInput.shape.public.description}
+        </p>
+      </div>
+      <div className="space-y-2">
+        <select
+          className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100 pl-2.5 py-1.5 text-sm"
+          {...register('type')}
+        >
+          {Object.values(MetadataInput.shape.type._def.values)?.map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
+        </select>
+        <p className="text-xs text-gray-600 ">
+          {MetadataInput.shape.type.description}
+        </p>
+      </div>
+      <Button type="submit">Add Field</Button>
+    </form>
+  )
+}
 export const LocksForm = ({
   onChange,
   locks: locksDefault = {},
@@ -368,7 +555,7 @@ export const LocksForm = ({
           {Object.entries(locks ?? {})?.map(
             ([address, values]: [
               string,
-              z.infer<typeof PaywallLockConfig>
+              z.infer<typeof PaywallLockConfig>,
             ]) => {
               const hasEdit =
                 lockAddress?.toLowerCase() === address?.toLowerCase()
@@ -442,25 +629,15 @@ export const LocksForm = ({
                               .
                             </span>
                           </div>
-                          <DynamicForm
-                            name={'locks'}
+                          <BasicConfigForm
                             defaultValues={defaultValue}
-                            schema={LockSchema.omit({
-                              metadataInputs: true,
-                              minRecipients: true, // This option is confusing. Let's not add it by default.
-                              default: true,
-                              recurringPayments: true, // Managed separately to get Unlimited recurring
-                              // this fields are managed by checkout when hook or when advanced user set it in paywallConfig
-                              password: true,
-                              captcha: true,
-                            })}
-                            onChange={(fields: any) =>
+                            onChange={(fields: any) => {
                               onAddLock({
                                 lockAddress,
                                 network,
                                 fields,
                               })
-                            }
+                            }}
                           />
                         </div>
                       </div>
@@ -496,16 +673,7 @@ export const LocksForm = ({
                             <MetadataList />
                           ) : (
                             <div className="grid items-center grid-cols-1 gap-2 mt-2 rounded-xl">
-                              <DynamicForm
-                                name={'metadata'}
-                                schema={MetadataInput.omit({
-                                  defaultValue: true, // default value is not needed
-                                })}
-                                onChange={() => void 0}
-                                onSubmit={onAddMetadata}
-                                submitLabel={'Add'}
-                                showSubmit={true}
-                              />
+                              <LockMetadataForm onSubmit={onAddMetadata} />
                             </div>
                           )}
                           <Button onClick={() => reset()}>Done</Button>
@@ -574,7 +742,6 @@ export const LocksForm = ({
     </div>
   )
 }
-
 const LockListItem = ({
   address,
   name,

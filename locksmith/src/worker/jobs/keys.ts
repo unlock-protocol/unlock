@@ -11,7 +11,8 @@ import {
   OrderDirection,
 } from '@unlock-protocol/unlock-js'
 
-const FETCH_LIMIT = 25
+// If this is too high, the memory gets too high and Heroku kills the dyno
+const FETCH_LIMIT = 20
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
   const subgraph = new SubgraphService()
@@ -32,6 +33,7 @@ async function fetchUnprocessedKeys(network: number, page = 0) {
   const keyIds = keys.map((key: any) => key.id)
   const processedKeys = await ProcessedHookItem.findAll({
     where: {
+      type: 'key',
       objectId: {
         [Op.in]: keyIds,
       },
@@ -52,46 +54,48 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
     const keys = await fetchUnprocessedKeys(network, page)
 
     // If empty, break the loop and return as there are no more new keys to process.
-    if (!keys.length) {
-      logger.info(`No new keys for ${network}`)
+    if (!keys.length && page > 10) {
       break
     }
-    logger.info('Found new keys', {
-      keys: keys.map((key: any) => [network, key.lock.address, key.id]),
-    })
 
-    await Promise.allSettled([
-      notifyNewKeysToWedlocks(keys, network), // send emails when applicable!
-      // Send notification to hooks subscribed to keys on a specific lock address
-      ...keysOnLockHooks.map(async (keysOnLockHook) => {
-        const data = keys.filter(
-          (key: any) => key.lock.id === keysOnLockHook.lock
-        )
-        const hookEvent = await notifyHook(keysOnLockHook, {
-          data,
+    if (keys.length > 0) {
+      logger.info('Found new keys', {
+        keys: keys.map((key: any) => [network, key.lock.address, key.id]),
+      })
+
+      await Promise.allSettled([
+        notifyNewKeysToWedlocks(keys, network), // send emails when applicable!
+        // Send notification to hooks subscribed to keys on a specific lock address
+        ...keysOnLockHooks.map(async (keysOnLockHook) => {
+          const data = keys.filter(
+            (key: any) => key.lock.id === keysOnLockHook.lock
+          )
+          const hookEvent = await notifyHook(keysOnLockHook, {
+            data,
+            network,
+          })
+          return hookEvent
+        }),
+        // Send notification to hooks subscribed to keys on a whole network
+        ...keysOnNetworkHooks.map(async (keysOnNetworkHook) => {
+          const hookEvent = await notifyHook(keysOnNetworkHook, {
+            network,
+            data: keys,
+          })
+          return hookEvent
+        }),
+      ])
+
+      const processedHookItems = keys.map((key: any) => {
+        return {
           network,
-        })
-        return hookEvent
-      }),
-      // Send notification to hooks subscribed to keys on a whole network
-      ...keysOnNetworkHooks.map(async (keysOnNetworkHook) => {
-        const hookEvent = await notifyHook(keysOnNetworkHook, {
-          network,
-          data: keys,
-        })
-        return hookEvent
-      }),
-    ])
+          type: 'key',
+          objectId: key.id,
+        }
+      })
 
-    const processedHookItems = keys.map((key: any) => {
-      return {
-        network,
-        type: 'key',
-        objectId: key.id,
-      }
-    })
-
-    await ProcessedHookItem.bulkCreate(processedHookItems)
+      await ProcessedHookItem.bulkCreate(processedHookItems)
+    }
 
     page += 1
   }

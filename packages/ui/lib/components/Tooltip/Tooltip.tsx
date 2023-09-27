@@ -37,7 +37,7 @@ export function Tooltip({
         <Content
           side={side}
           sideOffset={sideOffset}
-          className={`rounded text-sm ${contentColors} [box-shadow:0px_8px_30px_rgba(0,0,0,0.08)] px-4 py-0.5`}
+          className={`z-50 rounded text-sm ${contentColors} [box-shadow:0px_8px_30px_rgba(0,0,0,0.08)] px-4 py-0.5`}
         >
           <TooltipArrow className={`${arrowColor}`} />
           {tip}

@@ -10,7 +10,9 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-
+import { EventData } from '../models'
+import { Op } from 'sequelize'
+import normalizer from '../utils/normalizer'
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -53,7 +55,7 @@ export const generateKeyMetadata = async (
 
   const [keyCentricData, baseTokenData, userMetadata] = await Promise.all([
     getKeyCentricData(address, keyId),
-    getBaseTokenData(address, host, keyId),
+    getBaseTokenData(address, host, keyId, network),
     onChainKeyMetadata.owner
       ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
       : {},
@@ -93,16 +95,25 @@ export const generateKeyMetadata = async (
 export const getBaseTokenData = async (
   address: string,
   host: string,
-  keyId: string
+  keyId: string,
+  network: number = 1
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
+  const event = await EventData.findOne({
+    where: {
+      locks: {
+        [Op.contains]: [`${normalizer.ethereumAddress(address)}-${network}`],
+      },
+    },
+  })
+
   const persistedBasedMetadata = await LockMetadata.findOne({
     where: { address },
   })
 
-  const result: Record<string, any> = {
+  const result: Record<string, unknown> = {
     ...defaultResponse,
-    ...(persistedBasedMetadata?.data || {}),
+    ...(event?.data || persistedBasedMetadata?.data || {}),
   }
 
   return result
@@ -145,7 +156,10 @@ const defaultMappings = (address: string, host: string, keyId: string) => {
   // Custom mappings
   // TODO: move that to a datastore at some point...
   metadata.forEach((lockMetadata) => {
-    if (address.toLowerCase() == lockMetadata.address.toLowerCase()) {
+    if (
+      Normalizer.ethereumAddress(address) ==
+      Normalizer.ethereumAddress(lockMetadata.address)
+    ) {
       defaultResponse.name = lockMetadata.name
       defaultResponse.description = lockMetadata.description
       defaultResponse.image = lockMetadata.image || defaultResponse.image
@@ -255,6 +269,20 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
+  const event = await EventData.findOne({
+    where: {
+      locks: {
+        [Op.contains]: [
+          `${normalizer.ethereumAddress(lockAddress)}-${network}`,
+        ],
+      },
+    },
+  })
+
+  if (event) {
+    return event?.data
+  }
+
   const lockData = await LockMetadata.findOne({
     where: {
       chain: network,

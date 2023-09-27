@@ -11,14 +11,16 @@ import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
 import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
-import { sendEmail } from './tasks/sendEmail'
+import { sendEmailJob } from './tasks/sendEmail'
+import { sendToAllJob } from './tasks/sendToAll'
 import { monitor } from './tasks/monitor'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
+
 const crontabProduction = `
 */5 * * * * monitor
-*/5 * * * * allJobs
+*/2 * * * * allJobs
 */5 * * * * addRenewalJobs
 0 0 * * * addRenewalJobsDaily
 0 0 * * 0 addRenewalJobsWeekly
@@ -30,7 +32,7 @@ const crontabProduction = `
 
 const cronTabTesting = `
 */1 * * * * monitor
-*/5 * * * * allJobs
+*/2 * * * * allJobs
 */1 * * * * addRenewalJobs
 0 0 * * * addRenewalJobsDaily
 0 0 * * * addRenewalJobsWeekly
@@ -49,9 +51,8 @@ export async function startWorker() {
       // @ts-expect-error - type is not defined properly
       ssl: config.database?.dialectOptions?.ssl,
     }),
-    // logger: plug into our main logger
     crontab,
-    concurrency: 5,
+    concurrency: 1, // very low concurrency to check if this could be causing issues with email sending
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
@@ -64,8 +65,9 @@ export async function startWorker() {
       addRenewalJobsWeekly,
       addKeyJobs,
       addHookJobs,
+      sendEmailJob,
+      sendToAllJob,
       sendHook,
-      sendEmail,
       fiatRenewalJob,
       cryptoRenewalJob,
     },

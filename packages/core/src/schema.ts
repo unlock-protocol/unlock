@@ -5,9 +5,14 @@ export const MetadataInput = z.object({
     description:
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
   }),
-  name: z.string({
-    description: 'Name of the attribute to collect.',
-  }),
+  name: z
+    .string({
+      description: 'Name of the attribute to collect.',
+    })
+    .regex(
+      /^[A-Za-z-]+$/,
+      'Only letters and dashes are allowed in the name. No spaces, special characters, or separators.'
+    ),
   label: z
     .string({
       description: 'Label displayed to users. Defaults to the name field.',
@@ -89,6 +94,7 @@ export const PaywallLockConfig = z.object({
         'During checkout, users can buy multiple memberships at once. You can set a minimum number they can buy.',
     })
     .int()
+    .default(1)
     .nullable()
     .optional(),
   maxRecipients: z.coerce
@@ -96,7 +102,7 @@ export const PaywallLockConfig = z.object({
       description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
     })
     .int()
-    .positive()
+    .default(1)
     .nullable()
     .optional(),
   default: z.boolean().optional(),

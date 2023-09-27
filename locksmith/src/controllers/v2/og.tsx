@@ -2,13 +2,16 @@ import { RequestHandler } from 'express'
 import normalizer from '../../utils/normalizer'
 import { getLockMetadata } from '../../operations/metadataOperations'
 import { readFileSync } from 'fs'
+import { Resvg } from '@resvg/resvg-js'
+
 const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import satori from 'satori'
-import { imageUrlToBase64 } from '../../utils/image'
+import { imageURLToDataURI, imageUrlToBase64 } from '../../utils/image'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
+import logger from '../../logger'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -35,24 +38,28 @@ export const OGEvent = ({
   bannerURL,
 }: Props) => {
   return (
-    <div tw="flex flex-col bg-[#F5F5F5] h-full w-full rounded-xl p-6">
-      <div tw="relative flex flex-col w-full h-90">
+    <div tw="flex flex-col bg-[#F5F5F5] h-full w-full rounded-xl">
+      {bannerURL && (
         <img
           src={bannerURL}
-          tw="absolute top-6 bottom-0 right-6 left-6 w-[1100px]"
+          tw="absolute top-0 object-cover"
           aria-label={name}
         />
+      )}
+      <div tw="relative flex flex-col w-full h-90">
         <img
+          width="64"
+          height="64"
           src={iconURL}
-          tw="w-48 h-48 top-48 left-12 rounded-xl border-4 shadow-xl border-white"
+          tw="w-64 h-64 top-16 left-12 rounded-xl border-4 shadow-xl border-white"
           aria-label={name}
         />
       </div>
       <div tw="flex items-center justify-between w-full px-6">
-        <h1 tw="text-5xl line-clamp-2 w-128">{name}</h1>
+        <h1 tw="text-5xl w-128 bg-white/50 p-2 rounded">{name}</h1>
         <div tw="flex flex-col">
           {startTime && (
-            <div tw="flex items-center">
+            <div tw="flex items-center bg-white/50 rounded-2xl">
               <svg
                 width="64"
                 height="64"
@@ -98,7 +105,7 @@ export const OGEvent = ({
           )}
 
           {location && (
-            <div tw="flex items-center mt-6">
+            <div tw="flex items-center mt-6 bg-white/50 rounded-2xl">
               <svg
                 width="64"
                 height="64"
@@ -148,6 +155,7 @@ export const OGEvent = ({
   )
 }
 
+// TODO: replaced by routes on unlock-app since we use Vercel for hosting but only once axos supports the Edge runtime!
 export const eventOGHandler: RequestHandler = async (request, response) => {
   const lockAddress = normalizer.ethereumAddress(
     request.params.lockAddress?.toString() || ''
@@ -167,11 +175,12 @@ export const eventOGHandler: RequestHandler = async (request, response) => {
   )
 
   const [bannerURL, iconURL] = await Promise.all([
-    imageUrlToBase64(attributes?.event_cover_image, lockAddress),
+    attributes?.event_cover_image &&
+      imageURLToDataURI(attributes?.event_cover_image),
     imageUrlToBase64(metadata?.image, lockAddress),
   ])
 
-  const eventBanner = await satori(
+  const eventBannerSVG = await satori(
     <OGEvent
       name={metadata?.name || 'Unlock Event'}
       startTime={dayjs
@@ -202,10 +211,22 @@ export const eventOGHandler: RequestHandler = async (request, response) => {
     }
   )
 
-  response.writeHead(200, {
-    'Content-Type': 'image/svg+xml',
-    'Content-Length': eventBanner.length,
-  })
+  try {
+    // OG cannot be SVG
+    const svg = new Resvg(eventBannerSVG)
+    const pngData = svg.render()
+    const pngBuffer = pngData.asPng()
 
-  return response.end(eventBanner)
+    response.writeHead(200, {
+      'Content-Type': 'image/png',
+      'Content-Length': pngBuffer.length,
+    })
+
+    return response.end(pngBuffer)
+  } catch (error) {
+    logger.error('Could not generate OG image', error)
+    return response
+      .status(500)
+      .json({ message: 'We could not generate OG image', error })
+  }
 }

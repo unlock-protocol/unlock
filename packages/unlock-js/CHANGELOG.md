@@ -1,5 +1,14 @@
 # Changes
 
+# 0.39.3
+
+- handling cases where `supply` is larger than `maxNumberOfKeys` when calling `updateLockConfig`.
+
+# 0.39.2
+
+- add `createLock` accepts keyPrice as number
+- `maxNumberOfKeys` is optional when creating a lock. If not passed will use unlimited.
+
 # 0.39.1
 
 - add `getDiscountHookValues` to web3Service
