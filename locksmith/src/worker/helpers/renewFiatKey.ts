@@ -36,7 +36,7 @@ export async function renewFiatKey({
       lockAddress,
     }
 
-    const { stripeEnabled, stripeAccount = '' } = await getStripeConnectForLock(
+    const { stripeEnabled, stripeAccount } = await getStripeConnectForLock(
       lockAddress,
       network
     )
@@ -71,7 +71,7 @@ export async function renewFiatKey({
     const customer = await stripe.customers.retrieve(
       subscription.connectedCustomer,
       {
-        stripeAccount,
+        stripeAccount: stripeAccount.id,
       }
     )
 
@@ -85,7 +85,7 @@ export async function renewFiatKey({
         type: 'card',
       },
       {
-        stripeAccount,
+        stripeAccount: stripeAccount.id,
       }
     )
 
@@ -129,7 +129,7 @@ export async function renewFiatKey({
         },
       },
       {
-        stripeAccount,
+        stripeAccount: stripeAccount.id,
       }
     )
 
@@ -158,7 +158,7 @@ export async function renewFiatKey({
 
           // Capture it on the connected stripe account
           const intent = await stripe.paymentIntents.capture(paymentIntent.id, {
-            stripeAccount,
+            stripeAccount: stripeAccount.id,
           })
 
           switch (intent.status) {
@@ -177,7 +177,7 @@ export async function renewFiatKey({
                   },
                 },
                 {
-                  stripeAccount,
+                  stripeAccount: stripeAccount.id,
                 }
               )
               await KeyRenewal.create(recordedrenewalInfo)

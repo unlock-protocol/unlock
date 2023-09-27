@@ -248,7 +248,11 @@ export const getStripeConnectLockDetails = async (
 export const getStripeConnectForLock = async (
   lock: string,
   chain: number
-): Promise<{ stripeAccount?: string; stripeEnabled: boolean }> => {
+): Promise<{
+  countrySpec?: Stripe.CountrySpec
+  stripeAccount?: Stripe.Account | null
+  stripeEnabled: boolean
+}> => {
   const stripeConnectLockDetails = await getStripeConnectLockDetails(
     lock,
     chain
@@ -262,9 +266,15 @@ export const getStripeConnectForLock = async (
 
   const account = await stripeConnection(stripeConnectLockDetails.stripeAccount)
 
+  let countrySpec
+  if (account?.country) {
+    countrySpec = await stripe.countrySpecs.retrieve(account?.country)
+  }
+
   return {
     stripeEnabled: !!account?.charges_enabled,
-    stripeAccount: stripeConnectLockDetails.stripeAccount,
+    stripeAccount: account,
+    countrySpec,
   }
 }
 

@@ -1825,8 +1825,27 @@ paths:
               schema:
                 type: object
                 properties:
+                  countrySpec:
+                    type: object
+                    properties:
+                      supported_payment_currencies:
+                        type: array
+                        items:
+                          type: string
                   account:
-                    type: string
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      charges_enabled:
+                        type: boolean
+                      payouts_enabled:
+                        type: boolean
+                      requirements:
+                        type: object
+                        properties:
+                          disabled_reason:
+                            type: string
                   connected:
                     type: number
 

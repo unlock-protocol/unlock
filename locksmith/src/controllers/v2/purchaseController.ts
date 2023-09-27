@@ -98,14 +98,18 @@ export const createPaymentIntent: RequestHandler = async (
     throw new Error('Lock is sold out.')
   }
 
-  const { stripeEnabled, stripeAccount: stripeConnectApiKey = '' } =
-    await getStripeConnectForLock(lockAddress, network)
+  const { stripeEnabled, stripeAccount } = await getStripeConnectForLock(
+    lockAddress,
+    network
+  )
 
-  if (!stripeEnabled) {
+  if (!stripeEnabled || !stripeAccount) {
     return response
       .status(400)
       .send({ message: 'Missing Stripe Connect integration' })
   }
+
+  const stripeConnectApiKey = stripeAccount.id
 
   let stripeCustomerId = await getStripeCustomerIdForAddress(userAddress)
 
