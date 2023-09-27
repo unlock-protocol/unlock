@@ -20,7 +20,6 @@ import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
 import { storage } from '~/config/storage'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
-import { Currencies } from '@unlock-protocol/core'
 
 interface CreditCardFormSchema {
   creditCardPrice?: string | number | null
@@ -32,6 +31,8 @@ interface CreditCardCustomPriceProps {
   network: number
   disabled: boolean
   lock: any
+  currencies: string[]
+  connectedStripeAccount: any
 }
 
 export default function CreditCardCustomPrice({
@@ -39,19 +40,26 @@ export default function CreditCardCustomPrice({
   network,
   disabled,
   lock,
+  currencies,
+  connectedStripeAccount,
 }: CreditCardCustomPriceProps) {
   const [useCustomPrice, setUseCustomPrice] = useState(false)
   const [hasPriceConversion, setHasPriceConversion] = useState(false)
-  const [currency, setCurrency] = useState('') // default currency is USD
+  const [currency, setCurrency] = useState(
+    connectedStripeAccount.default_currency
+  )
 
   const {
     isLoading: isLoadingSettings,
-    data: { creditCardCurrency = 'usd ' } = {},
+    data: { creditCardCurrency = connectedStripeAccount.default_currency } = {},
   } = useGetLockSettings({ lockAddress, network })
 
   const getDefaultValues = async (): Promise<CreditCardFormSchema> => {
     const settings = (await storage.getLockSettings(network, lockAddress)).data
-    const { creditCardPrice: price, creditCardCurrency = 'usd' } = settings
+    const {
+      creditCardPrice: price,
+      creditCardCurrency = connectedStripeAccount.default_currency,
+    } = settings
 
     if (price && creditCardCurrency) {
       const priceInUsd = parseFloat(formatNumber(price / 100)).toFixed(2)
@@ -66,7 +74,7 @@ export default function CreditCardCustomPrice({
 
     return {
       creditCardPrice: undefined,
-      creditCardCurrency: 'usd',
+      creditCardCurrency: connectedStripeAccount.default_currency,
     }
   }
 
@@ -138,9 +146,9 @@ export default function CreditCardCustomPrice({
   const symbol = lock?.currencySymbol
 
   // list of currencies for dropdown
-  const currencyOptions = Currencies.map(({ currency, symbol }) => {
+  const currencyOptions = currencies.map((currency: string) => {
     return {
-      label: `${currency.toUpperCase()} - ${symbol}`,
+      label: `${currency.toUpperCase()}`,
       value: currency,
     }
   })
