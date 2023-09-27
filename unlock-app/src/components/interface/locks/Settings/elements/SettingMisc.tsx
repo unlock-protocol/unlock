@@ -52,7 +52,7 @@ export const SettingMisc = ({
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Referral fee"
-        description="Set up a percentage of the membership price to be sent to the referrer. This is great use cases to reward your members to promote your membership."
+        description="Set custom referral percentage for each address. Easily decide how much each promoter earns from your membership."
         isLoading={isLoading}
       >
         <UpdateReferralFee

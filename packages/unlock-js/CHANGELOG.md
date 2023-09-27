@@ -1,5 +1,9 @@
 # Changes
 
+# 0.39.4
+
+- add `referrerFees` to `lock` in subgraphs
+
 # 0.39.3
 
 - handling cases where `supply` is larger than `maxNumberOfKeys` when calling `updateLockConfig`.

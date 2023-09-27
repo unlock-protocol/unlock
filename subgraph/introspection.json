@@ -7445,7 +7445,7 @@
           "fields": [
             {
               "name": "id",
-              "description": "Transaction Hash",
+              "description": "Address of the Referrer",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
