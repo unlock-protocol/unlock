@@ -59,7 +59,7 @@ export const sepolia: NetworkConfig = {
     studioEndpoint: 'unlock-protocol-sepolia',
   },
   tokens: [],
-  unlockAddress: '',
+  unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   url: 'https://github.com/eth-clients/sepolia',
 }
 
