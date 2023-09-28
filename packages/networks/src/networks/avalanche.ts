@@ -21,6 +21,11 @@ export const avalanche: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
+        address: '0xF57a29012Bc367a6FDBB0Aead9A8909Ce15a8aCf',
+        id: HookType.PASSWORD,
+        name: 'Password required',
+      },
+      {
         address: '0x2499D94880B30fA505543550ac8a1e24cfFeFe78',
         id: HookType.CAPTCHA,
         name: 'Captcha',
