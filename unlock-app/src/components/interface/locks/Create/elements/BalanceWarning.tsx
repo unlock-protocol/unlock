@@ -35,7 +35,7 @@ const CALL_TO_ACTION_MAPPING: Record<number | 'default', LinkProps> = {
   },
   137: {
     label: 'Transfer some Matic to the Polygon chain using ',
-    link: 'https://wallet.matic.network/bridge',
+    link: 'https://wallet.polygon.technology/',
     ref: 'the Bridge.',
   },
   default: {

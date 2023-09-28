@@ -9,6 +9,20 @@ import {
 import { Placeholder } from '@unlock-protocol/ui'
 import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
 import { config } from '~/config/app'
+import { ImageBar } from '../../Manage/elements/ImageBar'
+
+export const NoItems = () => {
+  return (
+    <ImageBar
+      src="/images/illustrations/no-locks.svg"
+      description={
+        <>
+          <span>You have not create any membership contract yet. </span>
+        </>
+      }
+    />
+  )
+}
 
 interface LocksByNetworkProps {
   network: number
@@ -27,14 +41,9 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
   if (isLoading)
     return (
       <Placeholder.Root>
-        <h2 className="text-lg font-bold text-brand-ui-primary">
-          {networkName}
-        </h2>
-        <Placeholder.Root>
-          <Placeholder.Card />
-          <Placeholder.Card />
-          <Placeholder.Card />
-        </Placeholder.Root>
+        <Placeholder.Card />
+        <Placeholder.Card />
+        <Placeholder.Card />
       </Placeholder.Root>
     )
   if (locks?.length === 0) return null
@@ -83,6 +92,14 @@ export const LockList = ({ owner }: LockListProps) => {
   ]
 
   const results = useLocksByManagerOnNetworks(owner, networkItems)
+  const isEmpty = results.reduce((previous: boolean, current: any) => {
+    return !!(
+      previous &&
+      !current.isLoading &&
+      current.data &&
+      current.data.length === 0
+    )
+  }, true)
 
   return (
     <div className="grid gap-20 mb-20">
@@ -99,6 +116,7 @@ export const LockList = ({ owner }: LockListProps) => {
           />
         )
       })}
+      {isEmpty && <NoItems />}
     </div>
   )
 }
