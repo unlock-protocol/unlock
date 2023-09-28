@@ -1,13 +1,13 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { getEthersWalletFromPassword } from '~/utils/strings'
+import { ConnectForm } from '../../../CheckoutUrl/ChooseConfiguration'
 
 const FAKE_PWD = 'fakepwd'
 export const PasswordContractHook = ({

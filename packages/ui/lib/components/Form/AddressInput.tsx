@@ -118,6 +118,7 @@ export const WrappedAddressInput = ({
       type="address"
       value={address}
       label={label}
+      size={size}
       error={error || errorMessage}
       success={isTruncated ? minifyAddress(success) : success}
       description={description}
