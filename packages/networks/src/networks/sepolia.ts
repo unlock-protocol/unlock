@@ -49,7 +49,7 @@ export const sepolia: NetworkConfig = {
 
   publicLockVersionToDeploy: 13,
 
-  publicProvider: 'https://developer-access-mainnet.base.org',
+  publicProvider: 'https://rpc.sepolia.dev',
 
   startBlock: 1750000,
   subgraph: {
