@@ -25,6 +25,11 @@ export const avalanche: NetworkConfig = {
         id: HookType.CAPTCHA,
         name: 'Captcha',
       },
+      {
+        address: '0xF57a29012Bc367a6FDBB0Aead9A8909Ce15a8aCf',
+        id: HookType.PASSWORD,
+        name: 'Password required',
+      },
     ],
   },
   id: 43114,
