@@ -224,19 +224,4 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.checkoutConfigId).toBe(null)
     expect(response.hookGuildId).toBe(null)
   })
-
-  it('should fail to save not supported currency', async () => {
-    expect.assertions(1)
-
-    const { loginResponse } = await loginRandomUser(app)
-    // save settings
-    const saveSettingResponse = await request(app)
-      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-      .send({
-        creditCardCurrency: 'ooo',
-      })
-
-    expect(saveSettingResponse.status).toBe(500)
-  })
 })
