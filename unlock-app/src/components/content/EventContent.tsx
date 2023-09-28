@@ -8,14 +8,25 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
-import { NextSeo } from 'next-seo'
-import { config } from '~/config/app'
 
 export const EventContent = () => {
-  const router = useRouter()
-
   const { lockAddress, network, isLoading } =
     useRouterQueryForLockAddressAndNetworks()
+  return EventContentWithProps({ lockAddress, network, isLoading })
+}
+
+interface EventContentWithPropsProps {
+  lockAddress: string
+  network: number
+  isLoading?: boolean
+}
+
+export const EventContentWithProps = ({
+  lockAddress,
+  network,
+  isLoading,
+}: EventContentWithPropsProps) => {
+  const router = useRouter()
 
   const handleCreateEvent = () => {
     router.push(
@@ -29,13 +40,9 @@ export const EventContent = () => {
 
   const showDetails = lockAddress && network
 
-  const locksmithEventOG = new URL(
-    `/v2/og/event/${network}/locks/${lockAddress}`,
-    config.locksmithHost
-  ).toString()
-
   return (
     <AppLayout
+      showFooter={!showDetails}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
@@ -44,18 +51,7 @@ export const EventContent = () => {
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-      <NextSeo
-        title="Unlock Events"
-        description="Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered."
-        openGraph={{
-          images: [
-            {
-              alt: 'Event',
-              url: locksmithEventOG,
-            },
-          ],
-        }}
-      />
+
       {!showDetails && (
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}

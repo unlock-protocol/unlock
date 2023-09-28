@@ -60,6 +60,8 @@ const Events = {
   resolveMethodCall: 'handleMethodCallEvent',
   resolveOnEvent: 'handleOnEventCallEvent',
 }
+
+// EIP-1193 provider to interact with Unlock
 export class PaywallProvider extends events.EventEmitter {
   paywall: Paywall
   unlockUrl: string

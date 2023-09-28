@@ -10,9 +10,9 @@ handlebars.registerHelper('links', links)
 handlebars.registerHelper('transactionLink', transactionLink)
 
 export default {
-  subject: `Your ticket for {{lockName}}`,
-  html: `<h1>A NFT ticket for "{{lockName}}" was added to your wallet!</h1>
-<p>Your NFT ticket (#{{keyId}}) for the event <strong>{{lockName}}</strong> was just minted!</p>
+  base: 'events',
+  subject: `Here is your ticket!`,
+  html: `<h1>Here's your ticket</h1>
 
 {{#if customContent}}
 <section style="${customContentStyle}">
@@ -24,6 +24,18 @@ export default {
   <h2>Event details</h2>
   {{#if eventDescription}}
     <p>{{eventDescription}}</p>
+  {{/if}}
+
+  {{#if lockName}}
+    <div>
+      <strong>Ticket:</strong> {{lockName}}
+    </div>
+  {{/if}}
+
+  {{#if keyId}}
+    <div>
+      <strong>Ticket #</strong> {{keyId}}
+    </div>
   {{/if}}
 
   {{#if eventDate}}
@@ -48,10 +60,9 @@ export default {
   {{/if}}
 </div>
 
-<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
-
-{{links txUrl openSeaUrl true}}
+<p>You can view your ticket online <a href="{{keychainUrl}}">here</a>.</p>
 
 {{transactionLink transactionReceiptUrl}}
+
 `,
 }

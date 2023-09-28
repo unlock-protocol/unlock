@@ -23,5 +23,6 @@ export default {
 {{links txUrl openSeaUrl true}}
 
 {{transactionLink transactionReceiptUrl}}
+
 `,
 }

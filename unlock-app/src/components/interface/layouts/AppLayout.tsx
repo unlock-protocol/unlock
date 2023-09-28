@@ -20,6 +20,7 @@ interface DashboardLayoutProps {
   showHeader?: boolean
   logoImageUrl?: string
   logoRedirectUrl?: string
+  showFooter?: boolean
 }
 
 export const WalletNotConnected = () => {
@@ -142,6 +143,7 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
+  showFooter = true,
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
@@ -285,7 +287,7 @@ export const AppLayout = ({
           </div>
         </div>
         <div className="px-4 mx-auto lg:container">
-          <Footer {...FOOTER} />
+          {showFooter && <Footer {...FOOTER} />}
         </div>
       </div>
     </div>

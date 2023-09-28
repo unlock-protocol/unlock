@@ -25,7 +25,7 @@ export const imageURLToDataURI = async (url: string, fallbackURL?: string) => {
     const imageURL = `data:${contentType};base64,${buffer.toString('base64')}`
     return imageURL
   } catch (err) {
-    logger.error(err)
+    logger.error('Failed to retrieve image from url', { url, err })
     if (fallbackURL) {
       return fallbackURL
     } else {

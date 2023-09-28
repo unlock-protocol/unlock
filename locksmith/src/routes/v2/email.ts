@@ -1,11 +1,21 @@
 import express from 'express'
-import { CustomEmailController } from '../../controllers/v2/customEmailController'
+import {
+  CustomEmailController,
+  sendCustomEmail,
+} from '../../controllers/v2/customEmailController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
 const router = express.Router({ mergeParams: true })
 
 const customEmailController = new CustomEmailController()
+
+router.post(
+  '/:network/locks/:lockAddress/custom/send',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  sendCustomEmail
+)
 
 router.post(
   '/:network/locks/:lockAddress/custom/:template',
