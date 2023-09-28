@@ -51,7 +51,7 @@ export const sepolia: NetworkConfig = {
 
   publicProvider: 'https://rpc.sepolia.dev',
 
-  startBlock: 1750000,
+  startBlock: 4381710,
   subgraph: {
     endpoint: 'https://api.studio.thegraph.com/',
     endpointV2: 'https://api.studio.thegraph.com/',
