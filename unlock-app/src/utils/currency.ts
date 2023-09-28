@@ -4,6 +4,8 @@ export function getCurrencySymbol(currency?: string) {
   return (
     Currencies.find(
       (item) => item?.currency?.toLowerCase() === currency?.toLowerCase()
-    )?.symbol || '$'
+    )?.symbol ||
+    currency?.toUpperCase() ||
+    '$'
   )
 }
