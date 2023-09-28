@@ -100,9 +100,9 @@ export const convertedKeyPrice = async (
   // priority to credit card price if present
   if (creditCardPrice) {
     // format price with selected currency for lock
-    const priceInUsd = `~${creditCardCurrencySymbol}${(
+    const priceInUsd = `~${(
       parseFloat(`${creditCardPrice / 100}`) * numberOfRecipients
-    ).toFixed(2)}`
+    ).toFixed(2)} ${creditCardCurrencySymbol}`
     return priceInUsd
   }
 
