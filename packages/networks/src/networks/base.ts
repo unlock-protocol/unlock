@@ -53,9 +53,9 @@ export const base: NetworkConfig = {
   startBlock: 1750000,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/version/latest',
     endpointV2:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/v0.0.1',
+      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/version/latest',
     networkName: 'base',
     studioEndpoint: 'unlock-protocol-base',
   },
