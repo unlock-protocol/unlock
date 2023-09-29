@@ -48,7 +48,7 @@ export function CreditCardPricingBreakdown({
   creditCardProcessingFee,
   gasCosts,
   loading,
-  symbol = '$',
+  symbol = 'USD',
   unlockFeeChargedToUser = true,
 }: CreditCardPricingBreakdownProps) {
   return (
@@ -193,6 +193,13 @@ export function ConfirmCard({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
+  const { data: { creditCardCurrency = 'usd ' } = {} } = useGetLockSettings({
+    lockAddress,
+    network: lock!.network,
+  })
+
+  const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
+
   const {
     data: totalPricing,
     isInitialLoading: isTotalPricingDataLoading,
@@ -281,13 +288,6 @@ export function ConfirmCard({
     setIsConfirming(false)
   }
 
-  const { data: { creditCardCurrency = 'usd ' } = {} } = useGetLockSettings({
-    lockAddress,
-    network: lock!.network,
-  })
-
-  const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)
-
   const isError = isPricingDataError
 
   const usdTotalPricing = totalPricing?.total
@@ -323,7 +323,6 @@ export function ConfirmCard({
             />
           )}
         </div>
-
         {/* Totals */}
         {isLoading && (
           <div className="flex flex-col items-center gap-2">
@@ -347,13 +346,14 @@ export function ConfirmCard({
             }
             usdPrice={
               usdTotalPricing
-                ? `~${formatNumber(usdTotalPricing).toLocaleString()} $`
+                ? `~${formatNumber(
+                    usdTotalPricing
+                  ).toLocaleString()} ${creditCardCurrencySymbol}`
                 : ''
             }
             isCardEnabled={!!creditCardEnabled}
           />
         )}
-
         {!isError && pricingData && (
           <CreditCardPricingBreakdown
             loading={isTotalPricingDataLoading || !isTotalPricingDataFetched}

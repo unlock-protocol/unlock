@@ -57,7 +57,7 @@ export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })
-  return `${currency} ${formatted}`
+  return `${formatted} ${currency}`
 }
 interface Options {
   paywallConfig?: PaywallConfig
