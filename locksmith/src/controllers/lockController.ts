@@ -43,14 +43,17 @@ export const connectStripe = async (req: Request, res: Response) => {
 
 export const stripeConnected = async (req: Request, res: Response) => {
   try {
-    const { stripeEnabled, stripeAccount: account } =
-      await stripeOperations.getStripeConnectForLock(
-        Normalizer.ethereumAddress(req.params.lockAddress),
-        req.chain
-      )
+    const {
+      stripeEnabled,
+      stripeAccount: account,
+      countrySpec,
+    } = await stripeOperations.getStripeConnectForLock(
+      Normalizer.ethereumAddress(req.params.lockAddress),
+      req.chain
+    )
 
     if (stripeEnabled) {
-      return res.json({ connected: 1, account })
+      return res.json({ connected: 1, account, countrySpec })
     }
 
     return res.json({
