@@ -436,7 +436,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
           // tokensToDistribute is either == to the gas cost
           uint tokensToDistribute = ((estimatedGasForPurchase * baseFee) *
-            (10 ** 18)
+            (10 ** 18)/
             udtPrice;
 
           // or tokensToDistribute is capped by network GDP growth
