@@ -122,7 +122,7 @@ module.exports = async ([
   const calls = [
     {
       contractAddress: bridgeAddress,
-      contractName: abiIConnext,
+      contractNameOrAbi: abiIConnext,
       functionName: 'xcall',
       functionArgs: [
         destDomainId,

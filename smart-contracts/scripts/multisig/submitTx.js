@@ -79,7 +79,7 @@ async function main({ safeAddress, tx, signer }) {
     txs.map(async (tx) => {
       // encode contract call
       const {
-        contractName,
+        contractNameOrAbi,
         contractAddress,
         functionName,
         functionArgs,
@@ -90,7 +90,7 @@ async function main({ safeAddress, tx, signer }) {
       let encodedFunctionCall
       if (!calldata) {
         const { interface } = await ethers.getContractAt(
-          contractName,
+          contractNameOrAbi,
           ADDRESS_ZERO
         )
         encodedFunctionCall = interface.encodeFunctionData(
