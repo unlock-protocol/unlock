@@ -33,7 +33,7 @@
     "blockies-react-svg": "0.0.13",
     "calendar-link": "2.5.1",
     "csv": "6.3.3",
-    "dayjs": "1.11.9",
+    "dayjs": "1.11.10",
     "deep-object-diff": "1.1.9",
     "dotenv": "16.3.1",
     "eslint": "8.46.0",
