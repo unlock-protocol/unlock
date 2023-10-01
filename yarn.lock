@@ -18897,7 +18897,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     eslint: 8.48.0
     fs-extra: 11.1.1
-    graphql: 16.8.0
+    graphql: 16.8.1
     handlebars: 4.7.8
     matchstick-as: 0.5.2
     mustache: ^4.2.0
@@ -32873,13 +32873,6 @@ __metadata:
   version: 16.6.0
   resolution: "graphql@npm:16.6.0"
   checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
-  languageName: node
-  linkType: hard
-
-"graphql@npm:16.8.0":
-  version: 16.8.0
-  resolution: "graphql@npm:16.8.0"
-  checksum: d853d4085b0c911a7e2a926c3b0d379934ec61cd4329e70cdf281763102f024fd80a97db7a505b8b04fed9050cb4875f8f518150ea854557a500a0b41dcd7f4e
   languageName: node
   linkType: hard
 
