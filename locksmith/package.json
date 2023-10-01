@@ -106,7 +106,7 @@
     "@types/node-cron": "3.0.8",
     "@types/request-promise-native": "1.0.18",
     "@types/stripe": "8.0.416",
-    "@types/supertest": "2.0.12",
+    "@types/supertest": "2.0.13",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitest/coverage-c8": "0.31.4",
