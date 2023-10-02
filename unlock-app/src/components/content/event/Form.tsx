@@ -268,7 +268,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
-          <Disclosure label="Location, date and time" defaultOpen>
+          <Disclosure label="Location, Date and Time" defaultOpen>
             <div className="grid">
               <p className="mb-5">
                 This information will be public and included on each of the NFT
@@ -432,7 +432,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
-          <Disclosure label="Price and capacity" defaultOpen>
+          <Disclosure label="Price and Capacity" defaultOpen>
             <div className="grid ">
               <p>
                 These settings can also be changed, but only by sending on-chain
