@@ -2,17 +2,17 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock, PaywallConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
-// import {
-//   BoxHooksContextProvider,
-//   useBoxAction,
-//   UseBoxActionArgs,
-//   EvmTransaction,
-//   ActionType,
-//   bigintSerializer,
-//   ChainId,
-//   getChainExplorerTxLink,
-//   useBridgeReceipt,
-// } from '@decent.xyz/box-hooks'
+import {
+  BoxHooksContextProvider,
+  useBoxAction,
+  UseBoxActionArgs,
+  EvmTransaction,
+  ActionType,
+  bigintSerializer,
+  ChainId,
+  getChainExplorerTxLink,
+  useBridgeReceipt,
+} from '@decent.xyz/box-hooks'
 import { useEffect, useMemo, useState } from 'react'
 import { ethers } from 'ethers'
 import { getReferrer } from '~/utils/checkoutLockUtils'
@@ -72,16 +72,9 @@ export const useCrossChainRoutes = ({
     getPrices()
   }, [lock, recipients, purchaseData, paywallConfig, web3Service])
 
-  // const args: UseBoxActionArgs = {
-  const args = {
-    // actionType: ActionType.NftPreferMint,
-
-    // srcChainId: network,
-    // sender: account!,
-    // slippage: 1, // 1%
-    // srcToken: '0x0000000000000000000000000000000000000000', // Native token of the chain that the user is on?
-    // dstToken: lock.currencyContractAddress, // ETH
-    // dstChainId: lock.network,
+  const args: UseBoxActionArgs = {
+    // const args = {
+    actionType: ActionType.NftPreferMint,
     actionConfig: {
       contractAddress: lock.address,
       chainId: lock.network,
