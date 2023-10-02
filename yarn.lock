@@ -16472,21 +16472,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/core@npm:1.5.1":
-  version: 1.5.1
-  resolution: "@tw-classed/core@npm:1.5.1"
-  checksum: ff118c1f2a6a09ff17df8241cf6ea7a37ca3372a260fd3f7013e04d30c3fd05b52e500cdeaeec325a3dd2911d6ffbdbdae44025ebcc1e18ee12dfc598714a772
+"@tw-classed/core@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@tw-classed/core@npm:1.5.2"
+  checksum: 11392ada0d17abe12f462d8885550937e96fa4bb1e7378a09de1254552c753bdc0613340da58d40937a2f34580cb654562ad74b69ec711276499eae81a0fdb76
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.5.1":
-  version: 1.5.1
-  resolution: "@tw-classed/react@npm:1.5.1"
+"@tw-classed/react@npm:1.5.2":
+  version: 1.5.2
+  resolution: "@tw-classed/react@npm:1.5.2"
   dependencies:
-    "@tw-classed/core": 1.5.1
+    "@tw-classed/core": 1.5.2
   peerDependencies:
     react: ">=16.8.0"
-  checksum: aa8e1fde0ea96632761b2af02a748fe60e3fd74901313cd1d79f30c1685345e916336b03ef11ea27ec7120456787fb4c126745339c1bae2c3b850c0db6d2cb69
+  checksum: e44f51bc54cdb0b039c9e07ab7523ca73fd1c5bcae1cd97cd9b70156bacfae97c1f344c8e7d462617482d5d0cadd3e0b00678e7599517e213732b477ca96f986
   languageName: node
   linkType: hard
 
@@ -19023,7 +19023,7 @@ __metadata:
     "@tailwindcss/line-clamp": 0.4.4
     "@tailwindcss/typography": 0.5.10
     "@tanstack/react-query": 4.33.0
-    "@tw-classed/react": 1.5.1
+    "@tw-classed/react": 1.5.2
     "@types/react": 18.2.0
     "@types/react-dom": 18.2.1
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -19076,7 +19076,7 @@ __metadata:
     "@tanstack/react-query": 4.32.0
     "@testing-library/react": 14.0.0
     "@testing-library/react-hooks": 8.0.1
-    "@tw-classed/react": 1.5.1
+    "@tw-classed/react": 1.5.2
     "@types/file-saver": 2.0.5
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.3
