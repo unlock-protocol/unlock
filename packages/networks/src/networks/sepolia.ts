@@ -53,8 +53,10 @@ export const sepolia: NetworkConfig = {
 
   startBlock: 4381710,
   subgraph: {
-    endpoint: 'https://api.studio.thegraph.com/',
-    endpointV2: 'https://api.studio.thegraph.com/',
+    endpoint:
+      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia',
+    endpointV2:
+      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia',
     networkName: 'sepolia',
     studioEndpoint: 'unlock-protocol-sepolia',
   },
