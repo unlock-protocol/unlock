@@ -19449,7 +19449,7 @@ __metadata:
     graphql: 16.8.1
     handlebars: 4.7.8
     matchstick-as: 0.5.2
-    mustache: ^4.2.0
+    mustache: 4.2.0
     yargs: 17.7.2
   languageName: unknown
   linkType: soft
@@ -41099,7 +41099,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mustache@npm:^4.2.0":
+"mustache@npm:4.2.0, mustache@npm:^4.2.0":
   version: 4.2.0
   resolution: "mustache@npm:4.2.0"
   bin:
