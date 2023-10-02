@@ -353,7 +353,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function _cancelKey(uint _tokenId) internal {
     // expire the key
-    _keys[_tokenId].expirationTimestamp = block.timestamp;
+    _setKeyExpiration(_tokenId, block.timestamp, 0, false);
   }
 
   /**
@@ -566,7 +566,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
 
-    emit ExpirationChanged(
+    setKeyExpiration(
       _tokenId,
       _keys[_tokenId].expirationTimestamp,
       _deltaT,
@@ -623,17 +623,35 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Set the expiration of a key
    * @param _tokenId the id of the key
    * @param _newExpiration the new timestamp to use
+   * @param _delta time difference in sec (zero is unknown)
+   * @param _timeAdded boolean `true` = time added, `false` = time removed
+   * @notice is _delta is null and _timeAdded is `false`, then the time diff is considered unknown
    */
-  function setKeyExpiration(uint _tokenId, uint _newExpiration) public {
-    _onlyLockManager();
+  function _setKeyExpiration(
+    uint _tokenId,
+    uint _newExpiration,
+    uint _delta,
+    bool _timeAdded
+  ) internal {
+    // update expiration
     _keys[_tokenId].expirationTimestamp = _newExpiration;
 
     emit ExpirationChanged(
       _tokenId,
       _keys[_tokenId].expirationTimestamp,
-      0, // delta left unknow - or should we calculate it?
-      false // time added unknown - or should we calculate it?
+      0,
+      false
     );
+  }
+
+  /**
+   * Set the expiration of a key
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function setKeyExpiration(uint _tokenId, uint _newExpiration) public {
+    _onlyLockManager();
+    _setKeyExpiration(_tokenId, _newExpiration, 0, false);
   }
 
   /**
