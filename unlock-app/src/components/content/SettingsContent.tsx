@@ -32,8 +32,7 @@ export const PaymentSettings = () => {
   if (isMethodLoading) {
     return null
   }
-
-  return card ? (
+  const cardContent = card ? (
     <Card
       name={payment!.billing_details?.name || ''}
       last4={card.last4!}
@@ -68,6 +67,19 @@ export const PaymentSettings = () => {
       >
         Save
       </Button>
+    </div>
+  )
+
+  return (
+    <div className="flex flex-col gap-4 mt-6 mb-4">
+      <div className="col-span-12 text-base font-bold leading-5">
+        Card Payments
+      </div>
+      <p>
+        Some membership contracts may have fiat payment enabled. If you enter
+        your payment details you will be able to use perform a fiat payment.
+      </p>
+      {cardContent}
     </div>
   )
 }
