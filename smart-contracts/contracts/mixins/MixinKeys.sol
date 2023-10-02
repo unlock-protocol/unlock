@@ -555,6 +555,10 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
 
     if (_addTime) {
+      // cant add to a non-expiring key
+      if (formerTimestamp == type(uint).max) {
+        revert OUT_OF_RANGE();
+      }
       if (formerTimestamp > block.timestamp) {
         // append to valid key
         _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
@@ -566,7 +570,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
 
-    setKeyExpiration(
+    _setKeyExpiration(
       _tokenId,
       _keys[_tokenId].expirationTimestamp,
       _deltaT,
@@ -639,8 +643,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     emit ExpirationChanged(
       _tokenId,
       _keys[_tokenId].expirationTimestamp,
-      0,
-      false
+      _delta,
+      _timeAdded
     );
   }
 
