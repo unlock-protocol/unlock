@@ -4,8 +4,7 @@
   "private": true,
   "dependencies": {
     "@crossmint/client-sdk-react-ui": "1.0.1-alpha.6",
-    "@decent.xyz/box-common": "^1.0.0",
-    "@decent.xyz/box-hooks": "^1.0.23",
+    "@decent.xyz/box-hooks": "1.0.29",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "1.1.1",
     "@headlessui/react": "1.7.17",

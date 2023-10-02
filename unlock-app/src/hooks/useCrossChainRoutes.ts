@@ -1,24 +1,21 @@
-import { useQuery } from '@tanstack/react-query'
-import { Token } from '@uniswap/sdk-core'
-import { networks } from '@unlock-protocol/networks'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock, PaywallConfig } from '~/unlockTypes'
-import { nativeOnChain } from '@uniswap/smart-order-router'
-import { ethers } from 'ethers'
-import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
-import {
-  BoxHooksContextProvider,
-  useBoxAction,
-  UseBoxActionArgs,
-  EvmTransaction,
-  ActionType,
-  bigintSerializer,
-  ChainId,
-  getChainExplorerTxLink,
-  useBridgeReceipt,
-} from '@decent.xyz/box-hooks'
+// import {
+//   BoxHooksContextProvider,
+//   useBoxAction,
+//   UseBoxActionArgs,
+//   EvmTransaction,
+//   ActionType,
+//   bigintSerializer,
+//   ChainId,
+//   getChainExplorerTxLink,
+//   useBridgeReceipt,
+// } from '@decent.xyz/box-hooks'
+import { useEffect, useMemo, useState } from 'react'
+import { ethers } from 'ethers'
+import { getReferrer } from '~/utils/checkoutLockUtils'
 
 // export interface UniswapRoute {
 //   network: number
@@ -29,43 +26,107 @@ import {
 // }
 
 interface CrossChainRoutesOption {
-  enabled?: boolean
   lock: Lock
-  recipients: string[]
   purchaseData: string[] | undefined
+  context: any
   paywallConfig: PaywallConfig
+  enabled: boolean
 }
 
 export const useCrossChainRoutes = ({
   lock,
-  recipients,
   purchaseData,
-  paywallConfig,
+  context,
   enabled = true,
 }: CrossChainRoutesOption) => {
+  const [prices, setPrices] = useState<
+    {
+      symbol: string | null | undefined
+      userAddress: string
+      amount: number
+      decimals: any
+    }[]
+  >([])
   const { account, network } = useAuth()
   const web3Service = useWeb3Service()
 
-  const args: UseBoxActionArgs = {
-    actionType: ActionType.NftMint,
+  const { recipients, paywallConfig, keyManagers, renew } = context
+
+  // TODO: consider renewals!
+  // TODO: fail for multiple purchases?
+
+  useEffect(() => {
+    const getPrices = async () => {
+      setPrices(
+        await purchasePriceFor(web3Service, {
+          lockAddress: lock.address,
+          network: lock.network,
+          recipients,
+          data: purchaseData || recipients.map(() => ''),
+          paywallConfig,
+          currencyContractAddress: lock.currencyContractAddress,
+          symbol: lock.currencySymbol,
+        })
+      )
+    }
+    getPrices()
+  }, [lock, recipients, purchaseData, paywallConfig, web3Service])
+
+  // const args: UseBoxActionArgs = {
+  const args = {
+    // actionType: ActionType.NftPreferMint,
+
+    // srcChainId: network,
+    // sender: account!,
+    // slippage: 1, // 1%
+    // srcToken: '0x0000000000000000000000000000000000000000', // Native token of the chain that the user is on?
+    // dstToken: lock.currencyContractAddress, // ETH
+    // dstChainId: lock.network,
     actionConfig: {
       contractAddress: lock.address,
-      chainId: lock.network, // Do we want to list all possible chains for the user?
+      chainId: lock.network,
+      signature:
+        'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])', // We need to get this from walletService!
+      args: [
+        prices.map((price) =>
+          ethers.utils.parseUnits(price.amount.toString(), price.decimals)
+        ),
+        recipients,
+        recipients.map((recipient: string) => getReferrer(recipient)),
+        keyManagers,
+        purchaseData || recipients.map(() => ''),
+      ],
       cost: {
         isNative: true,
-        amount: 0, // parseUnits('0.00005', 18), // What happens if we're doing an ERC20 lock?
+        amount: prices.reduce(
+          (acc, current) =>
+            acc.add(
+              ethers.utils.parseUnits(
+                current.amount.toString(),
+                current.decimals
+              )
+            ),
+          ethers.BigNumber.from('0')
+        ),
       },
+      // supplyConfig: {
+      //   // NOTE: only need this section on NftPreferMint action config; could just do NftMint - difference is this version will source secondary listings once mint concludes.  Mint can conclude in 1 of two ways highlighted below (contract was unverified, so I just harcoded something):
+      //   maxCap: nftInfo.maxCap,
+      //   // sellOutDate: nftInfo.sellOutDate
+      // },
     },
     srcChainId: network,
-    sender: account!,
+    sender: account,
     slippage: 1, // 1%
-    srcToken: '0x0000000000000000000000000000000000000000', // Native token of the chain that the user is on?
-    dstToken: '0x0000000000000000000000000000000000000000', // ETH
+    srcToken: ethers.constants.AddressZero, // We assume the source is only the native token
+    dstToken: lock.currencyContractAddress,
     dstChainId: lock.network,
   }
 
-  const { actionResponse, isLoading, error } = useBoxAction(args)
-  console.log({ actionResponse, isLoading, error })
+  console.log(args)
+
+  // const { actionResponse, isLoading, error } = useBoxAction(args)
+  // console.log({ actionResponse, isLoading, error })
 
   // return useQuery(
   //   ['crossChainRoutes', account, lock, recipients, purchaseData],
