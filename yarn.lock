@@ -17561,12 +17561,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/request-promise-native@npm:1.0.18":
-  version: 1.0.18
-  resolution: "@types/request-promise-native@npm:1.0.18"
+"@types/request-promise-native@npm:1.0.19":
+  version: 1.0.19
+  resolution: "@types/request-promise-native@npm:1.0.19"
   dependencies:
     "@types/request": "*"
-  checksum: e25ae495d18ccd147cbacd7c746dbe05e989e6dae83c6e2f8094ff1c4e43da5f55ed288c3ca724b1f20c9271dfb909b4f68c519d3edf6a91cc96f211d42548b1
+  checksum: b3e51bff6f634e9c1edb4b0a5b4a817542efc2688ef4f71a5cd758bb54022d96fea7fb63cc8a1472231565386e99d57bc27b881e0eba388dc693c81e3ba159da
   languageName: node
   linkType: hard
 
@@ -18737,7 +18737,7 @@ __metadata:
     "@types/node": 18.16.3
     "@types/node-cron": 3.0.8
     "@types/random-words": 1.1.2
-    "@types/request-promise-native": 1.0.18
+    "@types/request-promise-native": 1.0.19
     "@types/stripe": 8.0.416
     "@types/supertest": 2.0.12
     "@unlock-protocol/contracts": "workspace:^"
