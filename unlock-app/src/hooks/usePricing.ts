@@ -35,7 +35,7 @@ export const purchasePriceFor = async (
 
   const prices = await Promise.all(
     recipients.map(async (userAddress, index) => {
-      const referrer = getReferrer(userAddress, paywallConfig, lockAddress)
+      const referrer = getReferrer(userAddress, paywallConfig)
       const options = {
         lockAddress,
         network,

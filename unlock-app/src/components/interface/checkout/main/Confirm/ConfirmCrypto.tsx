@@ -160,7 +160,7 @@ export function ConfirmCrypto({
         new Array(recipients!.length).fill(keyPrice)
 
       const referrers: string[] = recipients.map((recipient) => {
-        return getReferrer(recipient, paywallConfig, lockAddress)
+        return getReferrer(recipient, paywallConfig)
       })
 
       const onErrorCallback = (error: Error | null, hash: string | null) => {
@@ -182,7 +182,7 @@ export function ConfirmCrypto({
           {
             lockAddress,
             owner: recipients?.[0],
-            referrer: getReferrer(account!, paywallConfig, lockAddress),
+            referrer: getReferrer(account!, paywallConfig),
             data: purchaseData?.[0],
           },
           {} /** Transaction params */,

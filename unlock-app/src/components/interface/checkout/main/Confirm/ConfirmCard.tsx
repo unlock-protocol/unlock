@@ -218,9 +218,7 @@ export function ConfirmCard({
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient: string) =>
-      getReferrer(recipient, paywallConfig, lockAddress)
-    ),
+    referrers: recipients.map((recipient: string) => getReferrer(recipient)),
     recipients,
     purchaseType: renew ? 'extend' : 'purchase',
   })
@@ -234,7 +232,7 @@ export function ConfirmCard({
   const onConfirmCard = async () => {
     setIsConfirming(true)
     const referrers: string[] = recipients.map((recipient) => {
-      return getReferrer(recipient, paywallConfig, lockAddress)
+      return getReferrer(recipient, paywallConfig)
     })
 
     const stripeIntent = await createPurchaseIntent({

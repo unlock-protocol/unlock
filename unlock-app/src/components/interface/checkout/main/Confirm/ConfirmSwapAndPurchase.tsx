@@ -136,7 +136,7 @@ export function ConfirmSwapAndPurchase({
         new Array(recipients!.length).fill(keyPrice)
 
       const referrers: string[] = recipients.map((recipient: string) => {
-        return getReferrer(recipient, paywallConfig, lockAddress)
+        return getReferrer(recipient, paywallConfig)
       })
 
       const onErrorCallback = (error: Error | null, hash: string | null) => {
