@@ -162,9 +162,9 @@ export const getReferrer = (
       paywallConfig.locks[lockAddress] &&
       isAccount(paywallConfig.locks[lockAddress].referrer)
     ) {
-      return paywallConfig.locks[lockAddress].referrer
+      return paywallConfig.locks[lockAddress].referrer!
     }
-    if (isAccount(paywallConfig.referrer)) {
+    if (paywallConfig.referrer && isAccount(paywallConfig.referrer)) {
       return paywallConfig.referrer
     }
   }

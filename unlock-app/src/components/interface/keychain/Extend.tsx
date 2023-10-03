@@ -125,7 +125,7 @@ export const ExtendMembershipModal = ({
       await walletService.extendKey({
         lockAddress: lock?.address,
         tokenId: ownedKey.tokenId,
-        referrer: getReferrer(account!, paywallConfig, lockAddress),
+        referrer: getReferrer(account!),
         recurringPayment: renewal ? renewal : undefined,
         totalApproval: unlimited ? MAX_UINT : undefined,
       })
