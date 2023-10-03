@@ -2,20 +2,11 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock, PaywallConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
-import {
-  BoxHooksContextProvider,
-  useBoxAction,
-  UseBoxActionArgs,
-  EvmTransaction,
-  ActionType,
-  bigintSerializer,
-  ChainId,
-  getChainExplorerTxLink,
-  useBridgeReceipt,
-} from '@decent.xyz/box-hooks'
-import { useEffect, useMemo, useState } from 'react'
+
+import { useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { getReferrer } from '~/utils/checkoutLockUtils'
+import { getCrossChainRoutes } from '~/utils/thebox'
 
 // export interface UniswapRoute {
 //   network: number
@@ -55,68 +46,24 @@ export const useCrossChainRoutes = ({
   // TODO: consider renewals!
   // TODO: fail for multiple purchases?
 
-  useEffect(() => {
-    const getPrices = async () => {
-      setPrices(
-        await purchasePriceFor(web3Service, {
-          lockAddress: lock.address,
-          network: lock.network,
-          recipients,
-          data: purchaseData || recipients.map(() => ''),
-          paywallConfig,
-          currencyContractAddress: lock.currencyContractAddress,
-          symbol: lock.currencySymbol,
-        })
-      )
-    }
-    getPrices()
+  useEffect(async () => {
+    const prices = await purchasePriceFor(web3Service, {
+      lockAddress: lock.address,
+      network: lock.network,
+      recipients,
+      data: purchaseData || recipients.map(() => ''),
+      paywallConfig,
+      currencyContractAddress: lock.currencyContractAddress,
+      symbol: lock.currencySymbol,
+    })
+    const routes = await getCrossChainRoutes({
+      prices,
+      sender,
+      lock,
+      recipients,
+      keyManagers,
+    })
   }, [lock, recipients, purchaseData, paywallConfig, web3Service])
-
-  const args: UseBoxActionArgs = {
-    // const args = {
-    actionType: ActionType.NftPreferMint,
-    actionConfig: {
-      contractAddress: lock.address,
-      chainId: lock.network,
-      signature:
-        'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])', // We need to get this from walletService!
-      args: [
-        prices.map((price) =>
-          ethers.utils.parseUnits(price.amount.toString(), price.decimals)
-        ),
-        recipients,
-        recipients.map((recipient: string) => getReferrer(recipient)),
-        keyManagers,
-        purchaseData || recipients.map(() => ''),
-      ],
-      cost: {
-        isNative: true,
-        amount: prices.reduce(
-          (acc, current) =>
-            acc.add(
-              ethers.utils.parseUnits(
-                current.amount.toString(),
-                current.decimals
-              )
-            ),
-          ethers.BigNumber.from('0')
-        ),
-      },
-      // supplyConfig: {
-      //   // NOTE: only need this section on NftPreferMint action config; could just do NftMint - difference is this version will source secondary listings once mint concludes.  Mint can conclude in 1 of two ways highlighted below (contract was unverified, so I just harcoded something):
-      //   maxCap: nftInfo.maxCap,
-      //   // sellOutDate: nftInfo.sellOutDate
-      // },
-    },
-    srcChainId: network,
-    sender: account,
-    slippage: 1, // 1%
-    srcToken: ethers.constants.AddressZero, // We assume the source is only the native token
-    dstToken: lock.currencyContractAddress,
-    dstChainId: lock.network,
-  }
-
-  console.log(args)
 
   // const { actionResponse, isLoading, error } = useBoxAction(args)
   // console.log({ actionResponse, isLoading, error })
