@@ -117,7 +117,7 @@ export function ConfirmCrossmint({
     isCrossmintLoading || isInitialDataLoading || isPricingDataLoading || !quote
 
   const referrers: string[] = recipients.map((recipient) => {
-    return getReferrer(recipient, paywallConfig)
+    return getReferrer(recipient, paywallConfig, lockAddress)
   })
 
   const values = pricingData

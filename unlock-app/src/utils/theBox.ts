@@ -12,14 +12,14 @@ interface BoxActionRequest {
   actionConfig: any
 }
 
-// interface BoxActionResponse {
-//   tx: any
-//   tokenPayment?: any
-//   applicationFee?: any
-//   bridgeFee?: any
-//   bridgeId?: any
-//   relayInfo?: any
-// }
+interface BoxActionResponse {
+  tx: any
+  tokenPayment?: any
+  applicationFee?: any
+  bridgeFee?: any
+  bridgeId?: any
+  relayInfo?: any
+}
 
 interface getCrossChainRoutesParams {
   sender: string
@@ -39,13 +39,13 @@ const bigintSerializer = (_key: string, value: unknown): unknown => {
   return value
 }
 
-// const bigintDeserializer = (_key: string, value: unknown): unknown => {
-//   if (typeof value === 'string' && /^-?\\d+n$/.test(value)) {
-//     return BigInt(value.slice(0, -1))
-//   }
+const bigintDeserializer = (_key: string, value: unknown): unknown => {
+  if (typeof value === 'string' && /^-?\\d+n$/.test(value)) {
+    return BigInt(value.slice(0, -1))
+  }
 
-//   return value
-// }
+  return value
+}
 
 export const getCrossChainRoutes = async ({
   sender,
@@ -56,9 +56,9 @@ export const getCrossChainRoutes = async ({
   referrers,
   purchaseData,
 }: getCrossChainRoutesParams) => {
+  console.log('_______________')
   const baseUrl = 'https://box-v1.api.decent.xyz/api/getBoxAction'
   const apiKey = '9f3ef983290e05e38264f4eb65e09754'
-
   // Build the object to pass to the cross chain router
   // use axios
   // Go!
@@ -66,7 +66,7 @@ export const getCrossChainRoutes = async ({
   const actionRequest: BoxActionRequest = {
     sender,
     srcChainId: 1, // Loop over all the chains?
-    srcToken: '', // use the native token. Later: check the user balances!
+    srcToken: ethers.constants.AddressZero, // use the native token. Later: check the user balances!
     dstChainId: lock.network,
     dstToken: lock.currencyContractAddress || ethers.constants.AddressZero,
     slippage: 1, // 1%
@@ -100,10 +100,9 @@ export const getCrossChainRoutes = async ({
       },
     },
   }
-
+  console.log(actionRequest)
+  console.log('_______________')
   const query = JSON.stringify(actionRequest, bigintSerializer)
-
-  console.log(query)
 
   const url = `${baseUrl}?arguments=${query}`
 
@@ -114,13 +113,4 @@ export const getCrossChainRoutes = async ({
   })
 
   console.log(response)
-}
-
-if (require.main === module) {
-  getCrossChainRoutes({})
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error)
-      process.exit(1)
-    })
 }

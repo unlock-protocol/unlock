@@ -126,8 +126,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enabled: !enableClaim, // Disabled swap and purchase for multiple recipients
   })
 
-  console.log(x)
-
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
   const universalCardEnabled =
