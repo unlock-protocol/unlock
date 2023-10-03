@@ -23,7 +23,6 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
-import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 
 interface Props {
   injectedProvider: unknown
@@ -117,14 +116,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       paywallConfig: state.context.paywallConfig,
       enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
-
-  const x = useCrossChainRoutes({
-    lock,
-    recipients,
-    purchaseData,
-    context: state.context,
-    enabled: !enableClaim, // Disabled swap and purchase for multiple recipients
-  })
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
@@ -297,7 +288,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
-
             {enableClaim && (
               <button
                 onClick={(event) => {
@@ -325,13 +315,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
-
             {isUniswapRoutesLoading && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading payment options...
               </div>
             )}
-
             {!isUniswapRoutesLoading &&
               !enableClaim &&
               routes?.map((route, index) => {
@@ -374,8 +362,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   </button>
                 )
               })}
-
-            {/* Show cross chain! */}
 
             {allDisabled && (
               <div className="text-sm">
