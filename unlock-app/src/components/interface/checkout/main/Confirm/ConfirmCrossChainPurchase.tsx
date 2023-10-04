@@ -7,9 +7,8 @@ import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
-import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
-import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
@@ -17,7 +16,6 @@ import { ViewContract } from '../../ViewContract'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
-import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
 
@@ -33,47 +31,19 @@ export function ConfirmCrossChainPurchase({
   checkoutService,
   onConfirmed,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const [state] = useActor(checkoutService)
   const { getWalletService } = useAuth()
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const {
-    lock,
-    recipients,
-    payment,
-    paywallConfig,
-    keyManagers,
-    metadata,
-    data,
-    renew,
-  } = state.context
+  const { lock, recipients, payment, paywallConfig, metadata, data } =
+    state.context
 
-  const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
+  const { address: lockAddress, network: lockNetwork } = lock!
 
+  console.log(payment)
   // @ts-expect-error Property 'route' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
   const route = payment.route
-
-  const currencyContractAddress = route.trade.inputAmount.currency?.address
-
-  const recurringPayment =
-    paywallConfig?.recurringPayments ||
-    paywallConfig?.locks[lockAddress]?.recurringPayments
-
-  const totalApproval =
-    typeof recurringPayment === 'string' &&
-    recurringPayment.toLowerCase() === 'forever' &&
-    payment.method === 'crypto'
-      ? MAX_UINT
-      : undefined
-
-  const recurringPaymentAmount = recurringPayment
-    ? Math.abs(Math.floor(Number(recurringPayment)))
-    : undefined
-
-  const recurringPayments: number[] | undefined = recurringPaymentAmount
-    ? new Array(recipients.length).fill(recurringPaymentAmount)
-    : undefined
 
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
@@ -110,8 +80,6 @@ export function ConfirmCrossChainPurchase({
 
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
-  const symbol = route.trade.inputAmount.currency.symbol
-
   const onError = (error: any, message?: string) => {
     console.error(error)
     switch (error.code) {
@@ -125,75 +93,18 @@ export function ConfirmCrossChainPurchase({
     }
   }
 
-  const onConfirmCrypto = async () => {
+  const onConfirm = async () => {
     if (!pricingData) {
       return
     }
     try {
       setIsConfirming(true)
-      const keyPrices: string[] =
-        pricingData?.prices.map((item) => item.amount.toString()) ||
-        new Array(recipients!.length).fill(keyPrice)
 
-      const referrers: string[] = recipients.map((recipient: string) => {
-        return getReferrer(recipient, paywallConfig)
-      })
+      const walletService = await getWalletService(route.network)
 
-      const onErrorCallback = (error: Error | null, hash: string | null) => {
-        setIsConfirming(false)
-        if (error) {
-          send({
-            type: 'CONFIRM_MINT',
-            status: 'ERROR',
-            transactionHash: hash!,
-          })
-        } else if (hash) {
-          onConfirmed(lockAddress, hash)
-        }
-      }
-      const swap = {
-        srcTokenAddress: currencyContractAddress,
-        uniswapRouter: route.swapRouter,
-        swapCallData: route.swapCalldata,
-        value: route.value,
-        amountInMax: ethers.utils
-          .parseUnits(
-            route!.quote.toFixed(),
-            route.trade.inputAmount.currency.decimals
-          )
-          // 1% slippage buffer
-          .mul(101)
-          .div(100)
-          .toString(),
-      }
-
-      const walletService = await getWalletService(lockNetwork)
-      if (renew) {
-        await walletService.extendKey({
-          lockAddress,
-          keyPrice,
-          owner: recipients?.[0],
-          data: purchaseData?.[0] || '0x',
-          referrer: referrers?.[0],
-          swap,
-        })
-      } else {
-        await walletService.purchaseKeys(
-          {
-            lockAddress,
-            keyPrices,
-            owners: recipients!,
-            data: purchaseData,
-            keyManagers: keyManagers?.length ? keyManagers : undefined,
-            recurringPayments,
-            referrers,
-            totalApproval,
-            swap,
-          },
-          {} /** Transaction params */,
-          onErrorCallback
-        )
-      }
+      const tx = await walletService.signer.sendTransaction(route.tx)
+      console.log(tx)
+      onConfirmed(lockAddress, tx.hash)
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)
@@ -258,9 +169,9 @@ export function ConfirmCrossChainPurchase({
             keyPrice={
               pricingData.total <= 0
                 ? 'FREE'
-                : `${formatNumber(
-                    pricingData.total
-                  ).toLocaleString()} ${symbol}`
+                : `${formatNumber(pricingData.total).toLocaleString()} ${
+                    route.symbol
+                  }`
             }
           />
         )}
@@ -279,7 +190,7 @@ export function ConfirmCrossChainPurchase({
                 if (metadata) {
                   await updateUsersMetadata(metadata)
                 }
-                onConfirmCrypto()
+                onConfirm()
               }}
             >
               {buttonLabel}

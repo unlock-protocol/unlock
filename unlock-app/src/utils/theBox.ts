@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 
-interface BoxActionRequest {
+export interface BoxActionRequest {
   sender: string
   srcChainId: number
   srcToken?: string
@@ -14,7 +14,10 @@ interface BoxActionRequest {
   actionConfig: any
 }
 
-interface BoxActionResponse {
+export interface CrossChainRoute {
+  symbol: string
+  networkName: string
+  currency: string
   tx: any
   tokenPayment?: any
   applicationFee?: any
@@ -48,7 +51,7 @@ export const getCrossChainRoutes = async ({
   keyManagers,
   referrers,
   purchaseData,
-}: getCrossChainRoutesParams) => {
+}: getCrossChainRoutesParams): Promise<CrossChainRoute[]> => {
   const baseUrl = 'https://box-v1.api.decent.xyz/api/getBoxAction'
   const apiKey = '9f3ef983290e05e38264f4eb65e09754'
   const actionRequest: BoxActionRequest = {
@@ -100,7 +103,7 @@ export const getCrossChainRoutes = async ({
         .filter((network) => {
           return !network.isTestNetwork && network.id !== lock.network
         })
-        .map(async (network) => {
+        .map(async (network): Promise<CrossChainRoute | null> => {
           const query = JSON.stringify(
             {
               ...actionRequest,
@@ -131,7 +134,7 @@ export const getCrossChainRoutes = async ({
               currency: network.nativeCurrency.name,
               symbol: network.nativeCurrency.symbol,
               networkName: network.name,
-            } as BoxActionResponse
+            } as CrossChainRoute
           }
           return null
         })

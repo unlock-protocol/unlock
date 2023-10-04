@@ -22,9 +22,11 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                 Number(lock!.keyPrice)
               : 0
 
-          const symbol = payment?.route
+          const symbol = payment?.route?.trade
             ? payment.route.trade.inputAmount.currency.symbol
             : item.symbol
+
+          console.log({ symbol })
 
           return (
             <div

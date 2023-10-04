@@ -385,7 +385,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {!isCrossChaingRoutesLoading &&
               !enableClaim &&
               crossChainRoutes?.map((route, index) => {
-                console.log(route)
                 return (
                   <button
                     key={index}

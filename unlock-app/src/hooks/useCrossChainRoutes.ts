@@ -5,7 +5,7 @@ import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { getCrossChainRoutes } from '~/utils/theBox'
+import { CrossChainRoute, getCrossChainRoutes } from '~/utils/theBox'
 import { getAccountTokenBalance } from './useAccount'
 
 interface CrossChainRoutesOption {
@@ -28,7 +28,7 @@ export const useCrossChainRoutes = ({
 
   return useQuery(
     ['crossChainRoutes', account, lock, recipients, purchaseData],
-    async () => {
+    async (): Promise<CrossChainRoute[]> => {
       if (!purchaseData || !account || !lock || !recipients) {
         return []
       }
