@@ -38,7 +38,7 @@ export const sepolia: NetworkConfig = {
 
   opensea: {
     collectionUrl: (lockAddress) =>
-      `https://testnets.opensea.io/assets/base/${lockAddress}`,
+      `https://testnets.opensea.io/assets/sepolia/${lockAddress}`,
     tokenUrl: (_lockAddress, _tokenId) =>
       `https://testnets.opensea.io/assets/base/${_lockAddress}/${_tokenId}`,
   },
