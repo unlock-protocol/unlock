@@ -1,11 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-
+import { ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
 import { getCrossChainRoutes } from '~/utils/theBox'
+import { getAccountTokenBalance } from './useAccount'
 
 interface CrossChainRoutesOption {
   lock: Lock
@@ -42,7 +43,7 @@ export const useCrossChainRoutes = ({
         symbol: lock.currencySymbol,
       })
 
-      return getCrossChainRoutes({
+      const routes = await getCrossChainRoutes({
         sender: account!,
         lock,
         prices,
@@ -53,6 +54,21 @@ export const useCrossChainRoutes = ({
         ),
         purchaseData: purchaseData || recipients.map(() => '0x'),
       })
+
+      return routes.reduce(async (filteredRoutes, route) => {
+        // Do some async stuff
+        const userBalance = await getAccountTokenBalance(
+          web3Service,
+          account!,
+          null,
+          route.network
+        )
+        route.userBalance = userBalance
+        if (ethers.utils.parseEther(userBalance).gte(route?.tx.value)) {
+          return [...(await filteredRoutes), ...[route]]
+        }
+        return await filteredRoutes
+      }, [])
     },
     {
       enabled,

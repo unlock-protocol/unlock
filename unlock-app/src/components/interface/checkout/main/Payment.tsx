@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { ethers } from 'ethers'
 import { CheckoutService } from './checkoutMachine'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
@@ -408,10 +409,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Pay {route.tokenPayment.amount} {route.currency} on{' '}
-                        {route.networkName} through the {route.bridgeId} bridge.
-                        {/* Swap {route!.trade.inputAmount.currency.symbol} for{' '}
-                        {symbol.toUpperCase()} on {networkConfig.name} and pay{' '} */}
+                        Pay{' '}
+                        {formatNumber(
+                          Number(ethers.utils.formatEther(route.tx.value))
+                        )}{' '}
+                        {route.currency} on {route.networkName} through the{' '}
+                        {route.bridgeId} bridge.
                       </div>
                       <RightArrowIcon
                         className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"

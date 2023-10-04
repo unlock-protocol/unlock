@@ -12,6 +12,7 @@ import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmUniversalCard } from './Confirm/ConfirmUniversalCard'
+import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
 
 interface Props {
   injectedProvider: unknown
@@ -67,6 +68,14 @@ export function Confirm({
       )}
       {payment.method === 'swap_and_purchase' && (
         <ConfirmSwapAndPurchase
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          onConfirmed={onConfirmed}
+          onError={onError}
+        />
+      )}
+      {payment.method === 'crosschain_purchase' && (
+        <ConfirmCrossChainPurchase
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}

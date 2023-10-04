@@ -139,6 +139,10 @@ type Payment =
       route?: any
     }
   | {
+      method: 'crosschain_purchase'
+      route?: any
+    }
+  | {
       method: 'universal_card'
       cardId?: string
     }

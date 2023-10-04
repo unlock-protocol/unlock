@@ -101,8 +101,6 @@ export const getCrossChainRoutes = async ({
           return !network.isTestNetwork && network.id !== lock.network
         })
         .map(async (network) => {
-          console.log(network)
-
           const query = JSON.stringify(
             {
               ...actionRequest,
@@ -122,8 +120,13 @@ export const getCrossChainRoutes = async ({
               console.log(error)
             })
           if (response?.status === 200) {
+            const { data } = response
             return {
-              ...response.data,
+              ...data,
+              tx: {
+                ...data.tx,
+                value: ethers.BigNumber.from(data.tx.value.slice(0, -1)),
+              },
               network: network.id,
               currency: network.nativeCurrency.name,
               symbol: network.nativeCurrency.symbol,
