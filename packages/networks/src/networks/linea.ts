@@ -18,7 +18,7 @@ export const linea: NetworkConfig = {
       transaction: (hash: string) => `https://lineascan.build/tx/${hash}`,
     },
   },
-  featured: true,
+  featured: false,
   hooks: {},
   id: 59144,
   isTestNetwork: false,
