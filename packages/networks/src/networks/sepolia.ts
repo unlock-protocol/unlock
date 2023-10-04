@@ -18,7 +18,7 @@ export const sepolia: NetworkConfig = {
       transaction: (hash: string) => `https://sepolia.etherscan.io/tx/${hash}`,
     },
   },
-  featured: true,
+  featured: false,
   fullySubsidizedGas: false,
   hooks: {
     onKeyPurchaseHook: [],
