@@ -17,6 +17,7 @@ const etherscan = {
     palm: 'abc',
     baseGoerli: 'YourApiKeyToken',
     base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
+    linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
   },
   // TODO : generate from networks package!
   customChains: [
@@ -50,6 +51,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.basescan.org/api',
         browserURL: 'https://basescan.org/',
+      },
+    },
+    {
+      network: 'linea',
+      chainId: 59144,
+      urls: {
+        apiURL: 'https://api.lineascan.build/api',
+        browserURL: 'https://lineascan.build/',
       },
     },
   ],
