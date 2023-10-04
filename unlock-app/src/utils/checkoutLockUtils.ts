@@ -148,18 +148,25 @@ export const inClaimDisallowList = (address: string) => {
  * Helper function that returns a valid referrer address
  * @param recipient
  * @param paywallConfig
+ * @param lockAddress
  * @returns
  */
 export const getReferrer = (
   recipient: string,
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfig,
+  lockAddress?: string
 ): string => {
-  if (
-    paywallConfig &&
-    paywallConfig.referrer &&
-    isAccount(paywallConfig.referrer)
-  ) {
-    return paywallConfig.referrer
+  if (paywallConfig) {
+    if (
+      lockAddress &&
+      paywallConfig.locks[lockAddress] &&
+      isAccount(paywallConfig.locks[lockAddress].referrer)
+    ) {
+      return paywallConfig.locks[lockAddress].referrer!
+    }
+    if (paywallConfig.referrer && isAccount(paywallConfig.referrer)) {
+      return paywallConfig.referrer
+    }
   }
   return recipient
 }
