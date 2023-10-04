@@ -40,7 +40,7 @@ export const sepolia: NetworkConfig = {
     collectionUrl: (lockAddress) =>
       `https://testnets.opensea.io/assets/sepolia/${lockAddress}`,
     tokenUrl: (_lockAddress, _tokenId) =>
-      `https://testnets.opensea.io/assets/base/${_lockAddress}/${_tokenId}`,
+      `https://testnets.opensea.io/assets/sepolia/${_lockAddress}/${_tokenId}`,
   },
 
   previousDeploys: [],
