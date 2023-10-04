@@ -160,7 +160,7 @@ export const useUniswapRoutes = ({
       return result.filter((item) => !!item)
     },
     {
-      enabled,
+      enabled: false,
     }
   )
 }

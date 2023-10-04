@@ -109,7 +109,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !balance?.isPayable
   )
 
-  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
+  const { data: uniswapRoutes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
       lock,
       recipients,
@@ -118,13 +118,18 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
 
-  const x = useCrossChainRoutes({
+  const {
+    data: crossChainRoutes,
+    isInitialLoading: isCrossChaingRoutesLoading,
+  } = useCrossChainRoutes({
     lock,
-    recipients,
     purchaseData,
     context: state.context,
     enabled: !enableClaim, // Disabled swap and purchase for multiple recipients
   })
+
+  const isLoadingMoreRoutes =
+    isUniswapRoutesLoading || isCrossChaingRoutesLoading
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
@@ -326,7 +331,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {isUniswapRoutesLoading && !enableClaim && (
+            {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading payment options...
               </div>
@@ -334,7 +339,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
             {!isUniswapRoutesLoading &&
               !enableClaim &&
-              routes?.map((route, index) => {
+              uniswapRoutes?.map((route, index) => {
                 if (!route) {
                   return null
                 }
@@ -376,7 +381,46 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               })}
 
             {/* Show cross chain! */}
-
+            {!isCrossChaingRoutesLoading &&
+              !enableClaim &&
+              crossChainRoutes?.map((route, index) => {
+                console.log(route)
+                return (
+                  <button
+                    key={index}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      send({
+                        type: 'SELECT_PAYMENT_METHOD',
+                        payment: {
+                          method: 'crosschain_purchase',
+                          route,
+                        },
+                      })
+                    }}
+                    className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                  >
+                    <div className="flex justify-between w-full">
+                      <h3 className="font-bold">
+                        Pay with {route.symbol} on {route.networkName}
+                      </h3>
+                      <CurrencyBadge symbol={route.symbol} />
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center w-full text-sm text-left text-gray-500">
+                        Pay {route.tokenPayment.amount} {route.currency} on{' '}
+                        {route.networkName} through the {route.bridgeId} bridge.
+                        {/* Swap {route!.trade.inputAmount.currency.symbol} for{' '}
+                        {symbol.toUpperCase()} on {networkConfig.name} and pay{' '} */}
+                      </div>
+                      <RightArrowIcon
+                        className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                        size={20}
+                      />
+                    </div>
+                  </button>
+                )
+              })}
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">

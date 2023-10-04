@@ -1,5 +1,7 @@
 import { Lock } from '~/unlockTypes'
 import { ethers } from 'ethers'
+import axios from 'axios'
+import { networks } from '@unlock-protocol/networks'
 
 interface BoxActionRequest {
   sender: string
@@ -35,15 +37,6 @@ const bigintSerializer = (_key: string, value: unknown): unknown => {
   if (typeof value === 'bigint') {
     return value.toString() + 'n'
   }
-
-  return value
-}
-
-const bigintDeserializer = (_key: string, value: unknown): unknown => {
-  if (typeof value === 'string' && /^-?\\d+n$/.test(value)) {
-    return BigInt(value.slice(0, -1))
-  }
-
   return value
 }
 
@@ -56,16 +49,10 @@ export const getCrossChainRoutes = async ({
   referrers,
   purchaseData,
 }: getCrossChainRoutesParams) => {
-  console.log('_______________')
   const baseUrl = 'https://box-v1.api.decent.xyz/api/getBoxAction'
   const apiKey = '9f3ef983290e05e38264f4eb65e09754'
-  // Build the object to pass to the cross chain router
-  // use axios
-  // Go!
-
   const actionRequest: BoxActionRequest = {
     sender,
-    srcChainId: 1, // Loop over all the chains?
     srcToken: ethers.constants.AddressZero, // use the native token. Later: check the user balances!
     dstChainId: lock.network,
     dstToken: lock.currencyContractAddress || ethers.constants.AddressZero,
@@ -77,17 +64,23 @@ export const getCrossChainRoutes = async ({
       signature:
         'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])', // We need to get this from walletService!
       args: [
-        prices.map((price) =>
-          ethers.utils.parseUnits(price.amount.toString(), price.decimals)
-        ),
+        prices.map((price) => {
+          const priceInBigNumber = ethers.utils.parseUnits(
+            price.amount.toString(),
+            price.decimals
+          )
+          return priceInBigNumber.toBigInt()
+        }),
         recipients,
         referrers,
         keyManagers,
         purchaseData,
       ],
-      cost: {
-        isNative: true,
-        amount: prices.reduce(
+    },
+    cost: {
+      isNative: true,
+      amount: prices
+        .reduce(
           (acc, current) =>
             acc.add(
               ethers.utils.parseUnits(
@@ -96,21 +89,53 @@ export const getCrossChainRoutes = async ({
               )
             ),
           ethers.BigNumber.from('0')
-        ),
-      },
+        )
+        .toBigInt(),
     },
   }
-  console.log(actionRequest)
-  console.log('_______________')
-  const query = JSON.stringify(actionRequest, bigintSerializer)
 
-  const url = `${baseUrl}?arguments=${query}`
+  const routes = (
+    await Promise.all(
+      Object.values(networks)
+        .filter((network) => {
+          return !network.isTestNetwork && network.id !== lock.network
+        })
+        .map(async (network) => {
+          console.log(network)
 
-  const response = await fetch(url, {
-    headers: {
-      'x-api-key': apiKey,
-    },
+          const query = JSON.stringify(
+            {
+              ...actionRequest,
+              srcChainId: network.id,
+            },
+            bigintSerializer
+          )
+
+          const url = `${baseUrl}?arguments=${query}`
+          const response = await axios
+            .get(url, {
+              headers: {
+                'x-api-key': apiKey,
+              },
+            })
+            .catch(function (error) {
+              console.log(error)
+            })
+          if (response?.status === 200) {
+            return {
+              ...response.data,
+              network: network.id,
+              currency: network.nativeCurrency.name,
+              symbol: network.nativeCurrency.symbol,
+              networkName: network.name,
+            } as BoxActionResponse
+          }
+          return null
+        })
+    )
+  ).filter((route) => {
+    return !!route
   })
 
-  console.log(response)
+  return routes
 }
