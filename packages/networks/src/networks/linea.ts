@@ -35,10 +35,9 @@ export const linea: NetworkConfig = {
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 21986688,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
-    networkName: 'matic',
+    endpoint: 'https://graph-query.linea.build',
+    endpointV2: 'https://graph-query.linea.build',
+    networkName: 'linea',
   },
   swapPurchaser: '',
   tokens: [
