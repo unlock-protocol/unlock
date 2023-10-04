@@ -4,7 +4,7 @@ export const sepolia: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  chain: 'base',
+  chain: 'sepolia',
   description:
     'Sepolia is the primary testnet recommended by Ethereum for dapp development.',
   explorer: {
