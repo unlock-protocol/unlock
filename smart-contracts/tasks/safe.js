@@ -45,6 +45,24 @@ task('safe:version', 'Get the address of a safe').setAction(
   }
 )
 
+task(
+  'safe:bridge:execute',
+  'Execute a call coming from the bridge to the Gnosis Zodiac Delay module'
+)
+  .addParam(
+    'bridgeTx',
+    'the tx emitted by the Connext bridge on the receiving chain'
+  )
+  .addOptionalParam(
+    'delayMod',
+    'The address of the Delay module on the receiving chain'
+  )
+  .setAction(async ({ bridgeTx, delayMod }) => {
+    // eslint-disable-next-line global-require
+    const crossExec = require('../scripts/multisig/crossExec')
+    await crossExec({ bridgeTxHash: bridgeTx, delayModuleAddress: delayMod })
+  })
+
 task('safe:owners', 'List owners of a safe')
   .addOptionalParam('safeAddress', 'the address of the multisig contract')
   .addOptionalParam(
