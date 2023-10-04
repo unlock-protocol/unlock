@@ -83,7 +83,7 @@ export const linea: NetworkConfig = {
     stripeDestinationCurrency: 'usdc',
     stripeDestinationNetwork: '',
   },
-  unlockAddress: '',
+  unlockAddress: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   url: 'https://linea.build/',
 }
 
