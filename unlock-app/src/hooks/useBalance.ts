@@ -6,12 +6,14 @@ interface Options {
   network: number
   currencyContractAddress: string | null
   account?: string
+  requiredAmount?: number
 }
 
 export const useBalance = ({
   account,
   network,
   currencyContractAddress,
+  requiredAmount = 0,
 }: Options) => {
   const web3Service = useWeb3Service()
   return useQuery(['balance', account], async () => {
@@ -31,6 +33,7 @@ export const useBalance = ({
       balance,
       networkBalance,
       isGasPayable,
+      isPayable: parseFloat(balance) >= requiredAmount,
     }
 
     return options

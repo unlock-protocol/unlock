@@ -102,6 +102,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     account: account!,
     network: lock.network,
     currencyContractAddress: lock.currencyContractAddress,
+    requiredAmount: pricingData?.total,
   })
 
   const { data: canClaim, isLoading: isCanClaimLoading } = useCanClaim(
@@ -123,7 +124,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     recipients.length <= 1 &&
     recipients[0]?.toLowerCase() === account?.toLowerCase()
 
-  const enableCrypto = !isUnlockAccount || !!balance?.isGasPayable
+  const enableCrypto = !isUnlockAccount
 
   const enableClaim: boolean = !!(
     canClaim &&
@@ -179,7 +180,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div className="space-y-6">
             {enableCrypto && (
               <button
-                disabled={!balance?.isGasPayable}
+                disabled={!(balance?.isGasPayable && balance?.isPayable)}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
