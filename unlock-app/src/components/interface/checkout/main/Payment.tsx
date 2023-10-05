@@ -29,13 +29,17 @@ interface Props {
   checkoutService: CheckoutService
 }
 
-interface CurrencyBadgeProps {
+interface AmountBadgeProps {
   symbol: string
+  amount: string
 }
 
-const CurrencyBadge = ({ symbol }: CurrencyBadgeProps) => {
+const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+      {Number(amount) <= 0
+        ? 'FREE'
+        : `${formatNumber(Number(amount))} ${symbol.toUpperCase()}`}
       <CryptoIcon size={16} symbol={symbol} />
     </div>
   )
@@ -162,7 +166,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay with {symbol} </h3>
-                  <CurrencyBadge symbol={symbol} />
+                  <AmountBadge amount={price.toString()} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
@@ -345,7 +349,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                       <h3 className="font-bold">
                         Pay with {route!.trade.inputAmount.currency.symbol}
                       </h3>
-                      <CurrencyBadge
+                      <AmountBadge
+                        amount={route!.quote.toFixed()}
                         symbol={route!.trade.inputAmount.currency.symbol ?? ''}
                       />
                     </div>
