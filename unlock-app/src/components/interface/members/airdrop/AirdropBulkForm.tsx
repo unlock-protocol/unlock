@@ -42,142 +42,154 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
       setIsLoadingMembers(true)
     },
     onDropAccepted: async ([file]) => {
-      const text = await file.text()
-      const discarded = []
-      const json: any[] =
-        parse(text, {
-          delimiter: [',', ';'],
-          columns: true,
-        }) || []
+      try {
+        const text = await file.text()
+        const discarded = []
+        const json: any[] =
+          parse(text, {
+            delimiter: [',', ';'],
+            columns: true,
+            skip_empty_lines: true,
+          }) || []
 
-      const linesWithError: number[] = []
-      const duplicates: AirdropMember[] = []
-      const missingEmail: AirdropMember[] = []
+        const linesWithError: number[] = []
+        const duplicates: AirdropMember[] = []
+        const missingEmail: AirdropMember[] = []
 
-      const members = await Promise.all(
-        json.map(async (item, line) => {
-          try {
-            if (!item.wallet && item.email) {
-              // If no recipient is provided but email is, we create a transfer address for walletless users
-              const keyManager = new KeyManager(config.networks)
-              const networkConfig = config.networks[lock.network]
-              const wallet = keyManager.createTransferAddress({
-                params: {
-                  lockAddress: lock.address,
-                  email: item.email,
-                },
-              })
-              item.manager = networkConfig.keyManagerAddress
-              item.wallet = wallet
+        const members = await Promise.all(
+          json.map(async (item, line) => {
+            try {
+              if (!item.wallet && item.email) {
+                // If no recipient is provided but email is, we create a transfer address for walletless users
+                const keyManager = new KeyManager(config.networks)
+                const networkConfig = config.networks[lock.network]
+                const wallet = keyManager.createTransferAddress({
+                  params: {
+                    lockAddress: lock.address,
+                    email: item.email,
+                  },
+                })
+                item.manager = networkConfig.keyManagerAddress
+                item.wallet = wallet
+              }
+              const record = AirdropMember.parse(item)
+
+              // If there is any record in the expiration column, we should assume that this is the expiration date
+              if (record.expiration) {
+                record.neverExpire = false
+              }
+
+              const [wallet, manager] = await Promise.all([
+                getAddressForName(record.wallet),
+                getAddressForName(record.manager || account!),
+              ])
+
+              // Deduplicate by looking at existing keys
+              const balance = await web3Service.totalKeys(
+                lock.address,
+                wallet,
+                lock.network
+              )
+
+              return {
+                ...record,
+                wallet,
+                manager,
+                balance,
+                line: line + 2,
+              }
+            } catch (error) {
+              linesWithError.push(line + 2) // index starts at 0, lines at 1 and we have the header row
+              console.error(`Failed to add `, item, error)
+              return
             }
-            const record = AirdropMember.parse(item)
+          })
+        )
 
-            // If there is any record in the expiration column, we should assume that this is the expiration date
-            if (record.expiration) {
-              record.neverExpire = false
+        const filteredMembers = members
+          .reduce<AirdropMember[]>((filtered, member) => {
+            // filter null or undefined values
+            if (!member) {
+              return filtered
             }
 
-            const [wallet, manager] = await Promise.all([
-              getAddressForName(record.wallet),
-              getAddressForName(record.manager || account!),
-            ])
-
-            // Deduplicate by looking at existing keys
-            const balance = await web3Service.totalKeys(
-              lock.address,
-              wallet,
-              lock.network
+            // find existing members
+            const existingMembers = filtered.filter(
+              ({ wallet }) => wallet === member.wallet
             )
 
-            return {
-              ...record,
-              wallet,
-              manager,
-              balance,
-              line: line + 2,
-            }
-          } catch (error) {
-            linesWithError.push(line + 2) // index starts at 0, lines at 1 and we have the header row
-            console.error(`Failed to add `, item, error)
-            return
-          }
-        })
-      )
-
-      const filteredMembers = members
-        .reduce<AirdropMember[]>((filtered, member) => {
-          // filter null or undefined values
-          if (!member) {
-            return filtered
-          }
-
-          // find existing members
-          const existingMembers = filtered.filter(
-            ({ wallet }) => wallet === member.wallet
-          )
-
-          const noEmail = !member?.email?.includes('@')
-          const existingBalance = member.balance || 0
-          const alreadyToBeAdded = existingMembers.reduce(
-            (total, existingMember) => total + existingMember.count,
-            0
-          )
-          const toBeAdded = member.count
-          if (
-            existingBalance + alreadyToBeAdded + toBeAdded >
-            (lock.maxKeysPerAddress || 1)
-          ) {
-            console.warn(`Discarded duplicate`, member)
-            duplicates.push(member)
-            discarded.push(member)
-            return filtered
-          }
-
-          if (noEmail && emailRequired) {
-            console.warn(`Email required and missing`, member)
-            missingEmail.push(member)
-            return filtered
-          }
-          // push the item to array if new unique member found
-          filtered.push(member)
-          return filtered
-        }, [])
-        .slice(0, MAX_SIZE)
-
-      // Notify how many loaded and discarded.
-      ToastHelper.success(
-        `Loaded ${filteredMembers.length} members. ${discarded.length} members discarded.`
-      )
-      const errors: string[] = []
-      if (linesWithError.length > 0) {
-        errors.push(
-          `The following lines had errors in your CSV file and could not be imported: ${linesWithError.join(
-            ', '
-          )}.`
-        )
-      }
-      if (duplicates.length > 0) {
-        errors.push(
-          `The following recipients are duplicates and have been discarded: ${duplicates
-            .map(
-              (m) => `${minifyAddress(m.wallet)} - ${m.email} (line ${m.line})`
+            const noEmail = !member?.email?.includes('@')
+            const existingBalance = member.balance || 0
+            const alreadyToBeAdded = existingMembers.reduce(
+              (total, existingMember) => total + existingMember.count,
+              0
             )
-            .join(', ')}`
-        )
-      }
+            const toBeAdded = member.count
+            if (
+              existingBalance + alreadyToBeAdded + toBeAdded >
+              (lock.maxKeysPerAddress || 1)
+            ) {
+              console.warn(`Discarded duplicate`, member)
+              duplicates.push(member)
+              discarded.push(member)
+              return filtered
+            }
 
-      if (missingEmail.length > 0) {
-        errors.push(
-          `The following recipients are missing a required email address and have been discarded: ${missingEmail
-            .map((m) => `${minifyAddress(m.wallet)} -  (line ${m.line})`)
-            .join(', ')}`
+            if (noEmail && emailRequired) {
+              console.warn(`Email required and missing`, member)
+              missingEmail.push(member)
+              return filtered
+            }
+            // push the item to array if new unique member found
+            filtered.push(member)
+            return filtered
+          }, [])
+          .slice(0, MAX_SIZE)
+
+        // Notify how many loaded and discarded.
+        ToastHelper.success(
+          `Loaded ${filteredMembers.length} members. ${discarded.length} members discarded.`
         )
+        const errors: string[] = []
+        if (linesWithError.length > 0) {
+          errors.push(
+            `The following lines had errors in your CSV file and could not be imported: ${linesWithError.join(
+              ', '
+            )}.`
+          )
+        }
+        if (duplicates.length > 0) {
+          errors.push(
+            `The following recipients are duplicates and have been discarded: ${duplicates
+              .map(
+                (m) =>
+                  `${minifyAddress(m.wallet)} - ${m.email} (line ${m.line})`
+              )
+              .join(', ')}`
+          )
+        }
+
+        if (missingEmail.length > 0) {
+          errors.push(
+            `The following recipients are missing a required email address and have been discarded: ${missingEmail
+              .map((m) => `${minifyAddress(m.wallet)} -  (line ${m.line})`)
+              .join(', ')}`
+          )
+        }
+        if (errors.length > 0) {
+          setError(errors.join('\n\n'))
+        }
+        setIsLoadingMembers(false)
+        set(filteredMembers)
+      } catch (error) {
+        setIsLoadingMembers(false)
+        set([])
+        ToastHelper.error(
+          'There was an error parsing your CSV file. Please make sure you use the right format.'
+        )
+
+        console.error(error)
       }
-      if (errors.length > 0) {
-        setError(errors.join('\n\n'))
-      }
-      setIsLoadingMembers(false)
-      set(filteredMembers)
     },
   })
 
