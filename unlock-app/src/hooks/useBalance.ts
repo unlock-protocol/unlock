@@ -27,14 +27,9 @@ export const useBalance = ({
 
     const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
-    const isPayable = isGasPayable
-    /** Note: we won't really know if user can afford because there could be discounts... */
-    /* userCanAffordKey(lock, balance, recipients.length) && isGasPayable */
-
     const options = {
       balance,
       networkBalance,
-      isPayable,
       isGasPayable,
     }
 

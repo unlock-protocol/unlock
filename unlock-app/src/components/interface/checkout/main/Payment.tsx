@@ -123,13 +123,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     recipients.length <= 1 &&
     recipients[0]?.toLowerCase() === account?.toLowerCase()
 
-  const enableCrypto = !isUnlockAccount || !!balance?.isPayable
+  const enableCrypto = !isUnlockAccount || !!balance?.isGasPayable
 
   const enableClaim: boolean = !!(
     canClaim &&
     !isCanClaimLoading &&
     isReceiverAccountOnly &&
-    !balance?.isPayable
+    !balance?.isGasPayable
   )
 
   const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
@@ -179,7 +179,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div className="space-y-6">
             {enableCrypto && (
               <button
-                disabled={!balance?.isPayable}
+                disabled={!balance?.isGasPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
