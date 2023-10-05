@@ -42,6 +42,7 @@ export const MintingScreen = ({
   const web3Service = useWeb3Service()
   const config = useConfig()
 
+  console.log({ mint })
   const { data: tokenId } = useQuery(
     ['userTokenId', mint, owner, lockAddress, network, web3Service],
     async () => {

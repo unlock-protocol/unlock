@@ -24,12 +24,13 @@ export const useCrossChainRoutes = ({
   const { account } = useAuth()
   const web3Service = useWeb3Service()
 
-  const { recipients, paywallConfig, keyManagers } = context
+  const { recipients, paywallConfig, keyManagers, renew } = context
 
   return useQuery(
     ['crossChainRoutes', account, lock, recipients, purchaseData],
     async (): Promise<CrossChainRoute[]> => {
-      if (!purchaseData || !account || !lock || !recipients) {
+      // TODO: support renewals
+      if (!purchaseData || !account || !lock || !recipients || renew) {
         return []
       }
 
@@ -55,20 +56,32 @@ export const useCrossChainRoutes = ({
         purchaseData: purchaseData || recipients.map(() => '0x'),
       })
 
-      return routes.reduce(async (filteredRoutes, route) => {
-        // Do some async stuff
+      // Async filter function
+      const reduce = async (
+        filteredRoutes: CrossChainRoute[],
+        route: CrossChainRoute
+      ): Promise<CrossChainRoute[]> => {
         const userBalance = await getAccountTokenBalance(
           web3Service,
           account!,
           null,
           route.network
         )
-        route.userBalance = userBalance
         if (ethers.utils.parseEther(userBalance).gte(route?.tx.value)) {
           return [...(await filteredRoutes), ...[route]]
         }
-        return await filteredRoutes
-      }, [])
+        return filteredRoutes
+      }
+
+      // For some reason Typescript does not like that the type of the accumulator and the currnet value are different
+      const filteredRoutes = await routes.reduce(
+        // @ts-expect-error
+        reduce,
+        [] as CrossChainRoute[]
+      )
+
+      // @ts-expect-error
+      return filteredRoutes
     },
     {
       enabled,

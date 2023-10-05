@@ -22,7 +22,7 @@ import { PricingData } from './PricingData'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string) => void
+  onConfirmed: (lock: string, hash?: string, network?: number) => void
   onError: (message: string) => void
 }
 
@@ -99,12 +99,10 @@ export function ConfirmCrossChainPurchase({
     }
     try {
       setIsConfirming(true)
-
       const walletService = await getWalletService(route.network)
-
       const tx = await walletService.signer.sendTransaction(route.tx)
       console.log(tx)
-      onConfirmed(lockAddress, tx.hash)
+      onConfirmed(lockAddress, tx.hash, route.network)
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)
@@ -131,7 +129,7 @@ export function ConfirmCrossChainPurchase({
         <div className="grid gap-y-2">
           <div>
             <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
+            <ViewContract lockAddress={route.tx.to} network={route.network} />
           </div>
           {isPricingDataError && (
             // TODO: use actual error from simulation

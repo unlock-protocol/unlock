@@ -15,15 +15,17 @@ export interface BoxActionRequest {
 }
 
 export interface CrossChainRoute {
-  symbol: string
-  networkName: string
-  currency: string
+  network: number
   tx: any
   tokenPayment?: any
   applicationFee?: any
   bridgeFee?: any
   bridgeId?: any
   relayInfo?: any
+  // Remove me
+  symbol: string
+  networkName: string
+  currency: string
 }
 
 interface getCrossChainRoutesParams {
@@ -55,6 +57,7 @@ export const getCrossChainRoutes = async ({
   const baseUrl = 'https://box-v1.api.decent.xyz/api/getBoxAction'
   const apiKey = '9f3ef983290e05e38264f4eb65e09754'
   const actionRequest: BoxActionRequest = {
+    srcChainId: 1, // we be replaced when looping over networks
     sender,
     srcToken: ethers.constants.AddressZero, // use the native token. Later: check the user balances!
     dstChainId: lock.network,
@@ -79,31 +82,31 @@ export const getCrossChainRoutes = async ({
         keyManagers,
         purchaseData,
       ],
-    },
-    cost: {
-      isNative: true,
-      amount: prices
-        .reduce(
-          (acc, current) =>
-            acc.add(
-              ethers.utils.parseUnits(
-                current.amount.toString(),
-                current.decimals
-              )
-            ),
-          ethers.BigNumber.from('0')
-        )
-        .toBigInt(),
+      cost: {
+        isNative: true,
+        amount: prices
+          .reduce(
+            (acc, current) =>
+              acc.add(
+                ethers.utils.parseUnits(
+                  current.amount.toString(),
+                  current.decimals
+                )
+              ),
+            ethers.BigNumber.from('0')
+          )
+          .toBigInt(),
+      },
     },
   }
 
-  const routes = (
+  const routes: CrossChainRoute[] = (
     await Promise.all(
       Object.values(networks)
         .filter((network) => {
           return !network.isTestNetwork && network.id !== lock.network
         })
-        .map(async (network): Promise<CrossChainRoute | null> => {
+        .map(async (network): Promise<CrossChainRoute | undefined> => {
           const query = JSON.stringify(
             {
               ...actionRequest,
@@ -136,12 +139,14 @@ export const getCrossChainRoutes = async ({
               networkName: network.name,
             } as CrossChainRoute
           }
-          return null
+          return
         })
     )
-  ).filter((route) => {
-    return !!route
-  })
+  ).filter<CrossChainRoute>(
+    (route: CrossChainRoute | undefined): route is CrossChainRoute => {
+      return !!route
+    }
+  )
 
   return routes
 }
