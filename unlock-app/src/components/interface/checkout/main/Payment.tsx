@@ -1,6 +1,10 @@
 import Image from 'next/image'
 import { CheckoutService } from './checkoutMachine'
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+
+import {
+  RiExternalLinkLine as ExternalLinkIcon,
+  RiErrorWarningFill as ErrorIcon,
+} from 'react-icons/ri'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -23,6 +27,7 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
+import { usePricing } from '~/hooks/usePricing'
 
 interface Props {
   injectedProvider: unknown
@@ -51,7 +56,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { recipients } = state.context
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
-  const baseSymbol = config.networks[lock.network].nativeCurrency.symbol
+  const networkConfig = config.networks[lock.network]
+  const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
 
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
@@ -60,6 +66,30 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       lockAddress: lock.address,
     }
   )
+
+  const { data: purchaseData, isLoading: isPurchaseDataLoading } =
+    usePurchaseData({
+      lockAddress: lock.address,
+      network: lock.network,
+      recipients: recipients,
+      paywallConfig: state.context.paywallConfig,
+      data: state.context.data,
+    })
+
+  const {
+    data: pricingData,
+    isInitialLoading: isPricingDataLoading,
+    isError: isPricingDataError,
+  } = usePricing({
+    lockAddress: lock!.address,
+    network: lock!.network,
+    recipients,
+    currencyContractAddress: lock.currencyContractAddress,
+    data: purchaseData!,
+    paywallConfig: state.context.paywallConfig,
+    enabled: !!purchaseData,
+    symbol: lockTickerSymbol(lock, baseSymbol),
+  })
 
   const { isLoading: isCrossmintLoading, crossmintClientId } =
     useCrossmintEnabled({
@@ -74,15 +104,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     currencyContractAddress: lock.currencyContractAddress,
   })
 
-  const { data: purchaseData, isLoading: isPurchaseDataLoading } =
-    usePurchaseData({
-      lockAddress: lock.address,
-      network: lock.network,
-      recipients: recipients,
-      paywallConfig: state.context.paywallConfig,
-      data: state.context.data,
-    })
-
   const { data: canClaim, isLoading: isCanClaimLoading } = useCanClaim(
     {
       lockAddress: lock.address,
@@ -95,9 +116,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const networkConfig = config.networks[lock.network]
-
-  const isWaiting = isLoading || isCrossmintLoading || isBalanceLoading
+  const isWaiting =
+    isLoading || isCrossmintLoading || isBalanceLoading || isPricingDataLoading
 
   const isReceiverAccountOnly =
     recipients.length <= 1 &&
@@ -148,6 +168,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
             <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
           </div>
+        ) : isPricingDataError ? (
+          <div>
+            <p className="text-sm font-bold">
+              <ErrorIcon className="inline" />
+              There was an error when preparing the transaction.
+            </p>
+          </div>
         ) : (
           <div className="space-y-6">
             {enableCrypto && (
@@ -166,7 +193,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay with {symbol} </h3>
-                  <AmountBadge amount={price.toString()} symbol={symbol} />
+                  <AmountBadge
+                    amount={pricingData!.total.toString()}
+                    symbol={symbol}
+                  />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
@@ -181,7 +211,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="inline-flex text-sm text-start">
                   {!balance?.isGasPayable &&
-                    `You don't have enough ${networkConfig.nativeCurrency.symbol} for gas fee.`}
+                    `You don't have enough ${baseSymbol} for gas fee.`}
                 </div>
               </button>
             )}
@@ -292,6 +322,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
+
             {enableClaim && (
               <button
                 onClick={(event) => {
@@ -319,11 +350,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
+
             {isUniswapRoutesLoading && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading payment options...
               </div>
             )}
+
             {!isUniswapRoutesLoading &&
               !enableClaim &&
               routes?.map((route, index) => {
