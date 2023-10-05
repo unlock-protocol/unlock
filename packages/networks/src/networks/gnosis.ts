@@ -30,7 +30,7 @@ export const gnosis: NetworkConfig = {
   opensea: {
     tokenUrl: (_lockAddress, _tokenId) => null,
   },
-  erc20: null, // no default ERC20 on xdai for now
+  erc20: null, // no default ERC20 on XDAI for now 
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   baseCurrencySymbol: 'DAI',
   baseCurrencyFormat: '0,0',
