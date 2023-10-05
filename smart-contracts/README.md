@@ -443,6 +443,11 @@ yarn hardhat verify <address> --network binance
 - add `goerli.ts` to `packages/networks/src`
 - add `export * from './goerli'` to `packages/networks/src/index.ts`
 
+## Add block explorer verification
+
+- add a `goerli` key to the `apiKey` object in to [`packages/hardhat-helpers/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
+- optionally can add support for env variable
+
 ### Deploy contracts
 
 ```
