@@ -73,15 +73,8 @@ export const linea: NetworkConfig = {
     },
   ],
   uniswapV3: {
-    factoryAddress: '',
-    oracle: '',
-    quoterAddress: '',
-    universalRouterAddress: '',
   },
   universalCard: {
-    cardPurchaserAddress: '',
-    stripeDestinationCurrency: 'usdc',
-    stripeDestinationNetwork: '',
   },
   unlockAddress: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   url: 'https://linea.build/',
