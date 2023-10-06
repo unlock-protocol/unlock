@@ -18,7 +18,6 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
-import { useEffect } from 'react'
 
 interface Props {
   injectedProvider: unknown
@@ -42,6 +41,7 @@ export function ConfirmCrossChainPurchase({
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
+  // @ts-expect-error Property 'route' does not exist on type '{ method: "card"; cardId?: string | undefined; }'.
   const route = payment.route
 
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
@@ -100,7 +100,6 @@ export function ConfirmCrossChainPurchase({
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
       const tx = await walletService.signer.sendTransaction(route.tx)
-      console.log(lockAddress, tx.hash, route.network)
       onConfirmed(lockAddress, tx.hash, route.network)
     } catch (error: any) {
       setIsConfirming(false)

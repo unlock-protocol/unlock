@@ -109,7 +109,6 @@ export const useUniswapRoutes = ({
           network,
         })
       }
-
       const routesToLookup = routes.filter((route: UniswapRoute) => {
         // Filter out duplicates if any
         if (route.tokenIn.isNative) {

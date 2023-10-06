@@ -123,7 +123,7 @@ export const getCrossChainRoutes = async ({
               },
             })
             .catch(function (error) {
-              console.log(error)
+              console.error(error)
             })
           if (response?.status === 200) {
             const { data } = response

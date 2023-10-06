@@ -82,7 +82,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     data: pricingData,
     isInitialLoading: isPricingDataLoading,
     isError: isPricingDataError,
-    error: pricingDataError,
   } = usePricing({
     lockAddress: lock!.address,
     network: lock!.network,
