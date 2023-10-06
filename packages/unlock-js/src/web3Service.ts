@@ -678,6 +678,24 @@ export default class Web3Service extends UnlockService {
     return id.toNumber()
   }
 
+  // Return the latest key ID of owner.
+  async latestTokenOfOwner(
+    lockAddress: string,
+    owner: string,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalKeys = await lockContract.totalKeys(owner)
+    if (totalKeys.gt(0)) {
+      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys.sub(1))
+      return id.toNumber()
+    }
+    return null
+  }
+
   /**
    * Returns the number of keys already sold
    * @param lockAddress
