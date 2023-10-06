@@ -458,7 +458,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                         )}{' '}
                         {route.currency} on {route.networkName} through{' '}
                         <Link
-                          className="underline"
+                          className="underline ml-1"
                           target="_blank"
                           href="https://www.decent.xyz/"
                         >
