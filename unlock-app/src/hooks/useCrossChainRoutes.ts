@@ -84,7 +84,7 @@ export const useCrossChainRoutes = ({
       return filteredRoutes
     },
     {
-      enabled,
+      enabled: true, // debugging!
     }
   )
 }

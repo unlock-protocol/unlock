@@ -153,6 +153,7 @@ type Payment =
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 
 export interface Transaction {
+  network?: number
   status: TransactionStatus
   transactionHash?: string
 }
@@ -645,10 +646,11 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (_, { status, transactionHash }) => {
+        mint: (_, { status, transactionHash, network }) => {
           return {
             status,
             transactionHash,
+            network,
           } as const
         },
       }),

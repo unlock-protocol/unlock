@@ -23,6 +23,7 @@ import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
+import { sleeper } from '~/utils/promise'
 
 interface MintingScreenProps {
   lockName: string
@@ -41,12 +42,15 @@ export const MintingScreen = ({
 }: MintingScreenProps) => {
   const web3Service = useWeb3Service()
   const config = useConfig()
-
-  console.log({ mint })
+  const transactionNetwork = mint.network || network
   const { data: tokenId } = useQuery(
-    ['userTokenId', mint, owner, lockAddress, network, web3Service],
+    ['userTokenId', mint, owner, lockAddress, transactionNetwork, web3Service],
     async () => {
-      return web3Service.getTokenIdForOwner(lockAddress, owner!, network)
+      return web3Service.getTokenIdForOwner(
+        lockAddress,
+        owner!,
+        transactionNetwork
+      )
     },
     {
       enabled: mint?.status === 'FINISHED',
@@ -94,7 +98,7 @@ export const MintingScreen = ({
       )}
       {mint?.transactionHash && (
         <a
-          href={config.networks[network].explorer.urls.transaction(
+          href={config.networks[transactionNetwork].explorer.urls.transaction(
             mint.transactionHash
           )}
           target="_blank"
@@ -105,7 +109,7 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </a>
       )}
-      {hasTokenId && isEthPassSupported(network) && (
+      {hasTokenId && isEthPassSupported(transactionNetwork) && (
         <ul className="grid grid-cols-2 gap-3 pt-4">
           {!isIOS && (
             <li className="">
@@ -186,16 +190,33 @@ export function Minting({
   const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata } = state.context
+  const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
 
   useEffect(() => {
     if (mint?.status !== 'PROCESSING') {
       return
     }
+
+    const waitForTokenIds = async (): Promise<string[]> => {
+      const web3Service = new Web3Service(networks)
+
+      const tokenIds = await Promise.all(
+        recipients.map((r: string) =>
+          web3Service.latestTokenOfOwner(lock!.address, r, lock!.network)
+        )
+      )
+      console.log(tokenIds)
+      if (tokenIds.filter((tokenId?: string) => !!tokenId).length) {
+        return tokenIds
+      }
+      await sleeper(1000)
+      return waitForTokenIds()
+    }
+
     const waitForConfirmation = async () => {
       try {
-        const network = config.networks[lock!.network]
+        const network = config.networks[mint.network || lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcBatchProvider(
             network.provider
@@ -209,14 +230,9 @@ export function Minting({
           if (transaction.status !== 1) {
             throw new Error('Transaction failed.')
           }
-          const web3Service = new Web3Service(networks)
-          const tokenIds = await web3Service.getTokenIdsFromTx({
-            params: {
-              lockAddress: lock!.address,
-              hash: mint!.transactionHash!,
-              network: lock!.network,
-            },
-          })
+
+          // TODO: we should wait for the tokens to exist when this is thru a bridge...
+          const tokenIds = await waitForTokenIds()
 
           communication?.emitTransactionInfo({
             hash: mint!.transactionHash!,
@@ -235,6 +251,7 @@ export function Minting({
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
+            network: mint!.network,
             transactionHash: mint!.transactionHash!,
           })
         }
@@ -244,6 +261,7 @@ export function Minting({
           send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
+            network: mint!.network,
             transactionHash: mint!.transactionHash,
           })
         }

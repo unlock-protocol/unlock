@@ -26,8 +26,6 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
             ? payment.route.trade.inputAmount.currency.symbol
             : item.symbol
 
-          console.log({ symbol })
-
           return (
             <div
               key={index}

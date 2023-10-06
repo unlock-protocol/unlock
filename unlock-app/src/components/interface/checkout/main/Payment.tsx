@@ -82,6 +82,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     data: pricingData,
     isInitialLoading: isPricingDataLoading,
     isError: isPricingDataError,
+    error: pricingDataError,
   } = usePricing({
     lockAddress: lock!.address,
     network: lock!.network,
@@ -135,6 +136,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !balance?.isGasPayable
   )
 
+  const canAfford = balance?.isGasPayable && balance?.isPayable
+
   const { data: uniswapRoutes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
       lock,
@@ -151,7 +154,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     lock,
     purchaseData,
     context: state.context,
-    enabled: !enableClaim, // Disabled swap and purchase for multiple recipients
+    enabled: !canAfford && !enableClaim,
   })
 
   const isLoadingMoreRoutes =
@@ -195,7 +198,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div className="space-y-6">
             {enableCrypto && (
               <button
-                disabled={!(balance?.isGasPayable && balance?.isPayable)}
+                disabled={!canAfford}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -369,7 +372,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
             {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
-                <LoadingIcon size={16} /> Loading payment options...
+                <LoadingIcon size={16} /> Loading more payment options...
               </div>
             )}
 
