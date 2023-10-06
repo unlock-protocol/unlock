@@ -9,12 +9,12 @@ import { z } from 'zod'
 import { onResolveName } from '~/utils/resolvers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
-import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { addressMinify } from '~/utils/strings'
 import { useMutation } from '@tanstack/react-query'
 import { useLockData } from '~/hooks/useLockData'
 import { useEffect } from 'react'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface TransferKeyDrawerProps {
   isOpen: boolean
@@ -57,7 +57,7 @@ export const TransferKeyDrawer = ({
   })
 
   const web3Service = useWeb3Service()
-  const walletService = useWalletService()
+  const { getWalletService } = useAuth()
   const newOwner = watch('newOwner', '')
 
   const { lock } = useLockData({
@@ -68,6 +68,7 @@ export const TransferKeyDrawer = ({
   const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
 
   const onTransferFrom = async () => {
+    const walletService = await getWalletService(network)
     await walletService.transferFrom({
       keyOwner: owner,
       to: newOwner!,
@@ -118,7 +119,6 @@ export const TransferKeyDrawer = ({
       >
         <div className="grid gap-1">
           <h1 className="text-xl font-bold">{`Transfer key ownership for "${lockName}" (#${tokenId})`}</h1>
-          <span>Transfer key allow you to change the owner of a key</span>
         </div>
 
         <Controller
