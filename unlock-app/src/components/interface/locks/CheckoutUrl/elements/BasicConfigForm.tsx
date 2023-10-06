@@ -138,8 +138,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         size="small"
         description={BasicPaywallConfigSchema.shape.referrer.description}
         error={errors.referrer?.message}
-        {...register('referrer', {
-        })}
+        {...register('referrer', {})}
       />
       <TextBox
         label="Message to Sign"
