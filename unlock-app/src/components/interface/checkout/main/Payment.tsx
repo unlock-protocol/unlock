@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { ethers } from 'ethers'
 import { CheckoutService } from './checkoutMachine'
 
 import {
@@ -27,7 +28,9 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
+import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
+import Link from 'next/link'
 
 interface Props {
   injectedProvider: unknown
@@ -133,7 +136,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !balance?.isGasPayable
   )
 
-  const { data: routes, isInitialLoading: isUniswapRoutesLoading } =
+  const canAfford = balance?.isGasPayable && balance?.isPayable
+
+  const { data: uniswapRoutes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
       lock,
       recipients,
@@ -141,6 +146,19 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       paywallConfig: state.context.paywallConfig,
       enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
+
+  const {
+    data: crossChainRoutes,
+    isInitialLoading: isCrossChaingRoutesLoading,
+  } = useCrossChainRoutes({
+    lock,
+    purchaseData,
+    context: state.context,
+    enabled: !canAfford && !enableClaim,
+  })
+
+  const isLoadingMoreRoutes =
+    isUniswapRoutesLoading || isCrossChaingRoutesLoading
 
   // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
   const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
@@ -180,7 +198,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div className="space-y-6">
             {enableCrypto && (
               <button
-                disabled={!(balance?.isGasPayable && balance?.isPayable)}
+                disabled={!canAfford}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -352,15 +370,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {isUniswapRoutesLoading && !enableClaim && (
+            {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
-                <LoadingIcon size={16} /> Loading payment options...
+                <LoadingIcon size={16} /> Loading more payment options...
               </div>
             )}
 
             {!isUniswapRoutesLoading &&
               !enableClaim &&
-              routes?.map((route, index) => {
+              uniswapRoutes?.map((route, index) => {
                 if (!route) {
                   return null
                 }
@@ -402,6 +420,60 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 )
               })}
 
+            {/* Show cross chain! */}
+            {!isCrossChaingRoutesLoading &&
+              !enableClaim &&
+              crossChainRoutes?.map((route, index) => {
+                return (
+                  <button
+                    key={index}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      send({
+                        type: 'SELECT_PAYMENT_METHOD',
+                        payment: {
+                          method: 'crosschain_purchase',
+                          route,
+                        },
+                      })
+                    }}
+                    className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                  >
+                    <div className="flex justify-between w-full">
+                      <h3 className="font-bold">
+                        Pay with {route.symbol} on {route.networkName}
+                      </h3>
+                      <AmountBadge
+                        amount={formatNumber(
+                          Number(ethers.utils.formatEther(route.tx.value))
+                        )}
+                        symbol={route.symbol}
+                      />
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <div className="flex items-center w-full text-sm text-left text-gray-500">
+                        Pay{' '}
+                        {formatNumber(
+                          Number(ethers.utils.formatEther(route.tx.value))
+                        )}{' '}
+                        {route.currency} on {route.networkName} through{' '}
+                        <Link
+                          className="underline ml-1"
+                          target="_blank"
+                          href="https://www.decent.xyz/"
+                        >
+                          Decent
+                        </Link>
+                        .
+                      </div>
+                      <RightArrowIcon
+                        className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                        size={20}
+                      />
+                    </div>
+                  </button>
+                )
+              })}
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">
