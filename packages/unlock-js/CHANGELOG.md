@@ -1,5 +1,9 @@
 # Changes
 
+# 0.40.0
+
+- adding `latestTokenOfOwner`
+
 # 0.39.4
 
 - add `referrerFees` to `lock` in subgraphs
