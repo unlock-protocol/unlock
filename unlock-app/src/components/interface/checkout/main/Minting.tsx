@@ -230,7 +230,6 @@ export function Minting({
             throw new Error('Transaction failed.')
           }
 
-          // TODO: we should wait for the tokens to exist when this is thru a bridge...
           const tokenIds = await waitForTokenIds()
 
           communication?.emitTransactionInfo({
