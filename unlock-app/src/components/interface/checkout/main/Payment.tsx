@@ -464,6 +464,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                         >
                           Decent
                         </Link>
+                        .
                       </div>
                       <RightArrowIcon
                         className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
