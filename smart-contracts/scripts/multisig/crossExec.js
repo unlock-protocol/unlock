@@ -463,7 +463,7 @@ async function main({
     `- expiration: ${new Date(createdAt.add(expiration) * 1000)}`
   )
 
-  // to cancel, should be setTxNonce(queueNonce)
+  // to cancel use `setTxNonce(queueNonce)` from the multisig
   await delayMod.executeNextTx(to, value, data, operation)
 }
 
