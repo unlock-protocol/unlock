@@ -1,6 +1,6 @@
 ---
 title: Bounties
-description:  >-
+description: >-
   Explanation of bounties at Unlock Protocol
 ---
 

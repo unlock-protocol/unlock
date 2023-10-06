@@ -83,8 +83,10 @@ export const usePricing = ({
       })
       // Totals needs to be expressed in the currency of the payment if applicable
       let total = prices.reduce((acc, item) => acc + item.amount, 0)
-      if (payment) {
+      if (payment?.route?.quote) {
         total = payment.route!.quote.toFixed()
+      } else if (payment?.route?.tx.value) {
+        total = Number(ethers.utils.formatEther(payment.route!.tx.value))
       }
       const item = {
         prices,

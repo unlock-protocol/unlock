@@ -15,6 +15,7 @@ export interface TransactionInfo {
   lock?: string
   metadata?: any
   tokenIds?: string[]
+  network?: number
 }
 
 export enum CheckoutEvents {
