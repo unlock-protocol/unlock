@@ -30,6 +30,7 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
+import Link from 'next/link'
 
 interface Props {
   injectedProvider: unknown
@@ -455,8 +456,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                         {formatNumber(
                           Number(ethers.utils.formatEther(route.tx.value))
                         )}{' '}
-                        {route.currency} on {route.networkName} through the{' '}
-                        {route.bridgeId} bridge.
+                        {route.currency} on {route.networkName} through{' '}
+                        <Link
+                          className="underline"
+                          target="_blank"
+                          href="https://www.decent.xyz/"
+                        >
+                          Decent
+                        </Link>
                       </div>
                       <RightArrowIcon
                         className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
