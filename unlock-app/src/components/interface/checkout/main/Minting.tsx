@@ -206,7 +206,6 @@ export function Minting({
           web3Service.latestTokenOfOwner(lock!.address, r, lock!.network)
         )
       )
-      console.log(tokenIds)
       if (tokenIds.filter((tokenId?: string) => !!tokenId).length) {
         return tokenIds
       }
