@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 // import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
-import "../UnlockUtils.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 import "./MixinKeys.sol";
 import "./MixinLockCore.sol";
 import "./MixinRoles.sol";
@@ -19,9 +19,8 @@ contract MixinLockMetadata is
   MixinLockCore,
   MixinKeys
 {
-  using UnlockUtils for uint;
-  using UnlockUtils for address;
-  using UnlockUtils for string;
+  using Strings for uint;
+  using Strings for address;
 
   /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock owner
   string public name;
@@ -86,11 +85,11 @@ contract MixinLockMetadata is
   function tokenURI(uint256 _tokenId) external view returns (string memory) {
     string memory URI;
     string memory tokenId;
-    string memory lockAddress = address(this).address2Str();
+    string memory lockAddress = address(this).toHexString();
     string memory seperator;
 
     if (_tokenId != 0) {
-      tokenId = _tokenId.uint2Str();
+      tokenId = _tokenId.toString();
     } else {
       tokenId = "";
     }
@@ -116,7 +115,7 @@ contract MixinLockMetadata is
       lockAddress = "";
     }
 
-    return URI.strConcat(lockAddress, seperator, tokenId);
+    return string(abi.encodePacked(URI, lockAddress, seperator, tokenId));
   }
 
   function supportsInterface(

@@ -71,7 +71,7 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Load secrets from 1Password

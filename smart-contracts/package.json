@@ -8,7 +8,7 @@
     "test": "test"
   },
   "dependencies": {
-    "@connext/nxtp-contracts": "0.2.1-rc.16",
+    "@connext/interfaces": "2.0.5",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
     "@nomiclabs/hardhat-truffle5": "2.0.7",
@@ -26,7 +26,7 @@
     "@uniswap/v2-core": "1.0.1",
     "@uniswap/v2-periphery": "1.1.0-beta.0",
     "@uniswap/v3-core": "1.0.1",
-    "@uniswap/v3-periphery": "1.4.3",
+    "@uniswap/v3-periphery": "1.4.4",
     "@uniswap/v3-sdk": "3.9.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
@@ -39,7 +39,7 @@
     "debug": "4.3.4",
     "eslint": "8.46.0",
     "eslint-plugin-mocha": "10.1.0",
-    "eth-gas-reporter": "0.2.25",
+    "eth-gas-reporter": "0.2.27",
     "eth-sig-util": "3.0.1",
     "ethers": "5.7.2",
     "fs-extra": "11.1.1",
