@@ -1,5 +1,6 @@
 const { expect } = require('chai')
 const { ethers, unlock } = require('hardhat')
+const { reverts } = require('../../helpers')
 
 /**
  * Helper function
@@ -98,16 +99,16 @@ describe('PasswordRequiredHook', function () {
     expect(s).to.equal(signer)
 
     // And now make a purchase that should fail because we did not submit a data
-    await expect(
+    await reverts(
       lock.purchase([0], [user.address], [user.address], [user.address], [])
-    ).to.reverted
+    )
 
     // And a purchase that fails because we use the wrong password
     const [badData] = await getSignatureForPassword(
       'wrong password',
       user.address.toLowerCase()
     )
-    await expect(
+    await reverts(
       lock.purchase(
         [0],
         [user.address],
@@ -115,11 +116,11 @@ describe('PasswordRequiredHook', function () {
         [user.address],
         [badData]
       )
-    ).to.reverted
+    )
 
     // And a purchase that succeeds when we use the correct password!
-    await expect(
+    await reverts(
       lock.purchase([0], [user.address], [user.address], [user.address], [data])
-    ).not.to.reverted
+    ).not
   })
 })
