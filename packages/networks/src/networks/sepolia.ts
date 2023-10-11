@@ -25,7 +25,7 @@ export const sepolia: NetworkConfig = {
   },
   id: 11155111,
   isTestNetwork: true,
-  keyManagerAddress: '', // complete me!
+  keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
   maxFreeClaimCost: 10,
   multisig: '', // Complete me!
   name: 'Sepolia',
