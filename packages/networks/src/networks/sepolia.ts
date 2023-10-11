@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const sepolia: NetworkConfig = {
   blockScan: {
@@ -21,13 +21,34 @@ export const sepolia: NetworkConfig = {
   featured: true,
   fullySubsidizedGas: true,
   hooks: {
-    onKeyPurchaseHook: [], // complete me!
+    onKeyPurchaseHook: [
+      {
+        address: '0x34EbEc0AE80A2d078DE5489f0f5cAa4d3aaEA355',
+        id: HookType.PASSWORD,
+        name: 'Password required',
+      },
+      {
+        address: '',
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+      },
+      {
+        address: '0x6878Ae3c863f6Ebd27B47C02F6B32aAC8B0BA07E',
+        id: HookType.GUILD,
+        name: 'Guild',
+      },
+      {
+        address: '',
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+      },
+    ],
   },
   id: 11155111,
   isTestNetwork: true,
   keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
   maxFreeClaimCost: 10,
-  multisig: '', // Complete me!
+  multisig: '', // SAFE does not support Sepolia as of October 11th 2023
   name: 'Sepolia',
   nativeCurrency: {
     coingecko: 'ethereum',
