@@ -1,4 +1,11 @@
-# Cross Chain Governance
+---
+sidebar_position: 1
+title: Cross-Chain Governance
+description: >-
+  Workflow to propagate DAO proposals accross multiple chains
+---
+
+import { networks } from "@unlock-protocol/networks";
 
 To simplify the maintenance and management of the protocol contracts, we use a cross-chain governance that allows for a DAO proposal on mainnet to reach contracts on other networks.
 
@@ -26,23 +33,27 @@ The Safes still own Unlock contracts and Proxy Admins on destination networks (n
 
 # Supported Networks
 
-(as Oct 10, 2023)
+To work, this workflow requires Connext bridge, SAFE contracts and Unlock Protocol to be deployed 
+and active on the network.
 
-|                    | Unlock Protocol | Safe | Connext |
-| ------------------ | --------------- | ---- | ------- |
-| Ethereum Mainnet   | x               | x    | x       |
-| Gnosis             | x               | x    | x       |
-| Polygon            | x               | x    | x       |
-| Optimism           | x               | x    | x       |
-| Arbitrum One       | x               | x    | x       |
-| BNB Chain          | x               | x    | x       |
-| Avalanche          | x               | x    |         |
-| Base               | x               | x    |         |
-| Celo               | x               | x    |         |
-| Palm               | x               |      |         |
-| Polygon zkEVM      |                 | x    |         |
-| zkSync Era mainnet |                 | x    |         |
-| Aurora             |                 | x    |         |
+As Oct 10, 2023 the list of supported networks are:
+
+{/* TODO: filter directly using `bridge` key from the networks package */}
+export const supportedChains = [1,137,100,10,42161,56]
+
+<ul>
+{
+Object.values(networks)
+  .filter((network) => supportedChains.includes(network.id))
+  .map((network) => {
+  return (
+    <li key={network.id}>
+      {network.name}
+    </li>
+  );  
+})
+}
+</ul>
 
 # How to setup the multisig
 
