@@ -69,7 +69,7 @@ connextMod.setTarget(delayMod.address)
 
 Make sure that `delayMod.target` is set to `safe.address` and `connextMod.target` is set to `delayMod.address`
 
-Now the multisig can receive cals from the bridge through the `connextMod` that will pass the call to the `delayMod` which will put it in cooldown.
+Now the multisig can receive calls from the bridge through the `connextMod` that will pass the call to the `delayMod` which will put it in cooldown.
 
 ## Write a multichain DAO proposal
 
