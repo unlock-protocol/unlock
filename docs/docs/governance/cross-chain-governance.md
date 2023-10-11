@@ -14,11 +14,11 @@ DAO proposal >  Connext Bridge >   Safe multisig    >  wait for 7 days   >
 The workflow is as follow
 
 1. a DAO proposal is created, containing 1 call per chain
-2. if the vote succeeds, the DAO proposal is executed. All calls are sent to the bridge(s).
+2. if the vote succeeds, the DAO proposal is executed. All calls are sent to the Connext bridge(s).
 3. each call crosses the bridge seperately towards its destination on a specific chain
-4. the call is received on the destination chain by a SAFE Multisig that includes a special plugin to handle them
-5. once received, the call is held in the multisig for a period of X days during which it can be cancelled.
-6. once the cooldown period ends, the call is executed
+4. the call is received on the destination chain by a SAFE Multisig configured with a special bridge receiver plugin
+5. once received, the call is held in the multisig for a cooldown period of 2 days during which it can be cancelled
+6. once the cooldown period ends, the call is ready to be executed by anyone
 
 NB: The cooldown period is useful to prevent malicious or errored calls from being executed if the bridge itself has been compromised.
 
