@@ -111,7 +111,7 @@ yarn hardhat gov:submit --gov-address 0xE85696a3419162452e6925816D8073374e4190b7
 
 ## Executing a call
 
-Once a call has pass the cooldown delay, it can be executed via the `executeNextTx` in the Delay mod.
+Once a call has pass the cooldown delay, it can be executed by anyone (the addressed submitting the transaction does not need to be a signer on the multisig) via the `executeNextTx` in the Delay mod.
 
 The arguments to pass to the function are the one that were pass in the original DAO proposal. You can also find here in the `TransactionAdded` event that was fire by the bridge transaction (example [https://polygonscan.com/tx/0xc7bb22753a6c9fccb9c389cd2c3108361f6ed9d3e069134844842d63cdd24ca9#eventlog](https://polygonscan.com/tx/0xc7bb22753a6c9fccb9c389cd2c3108361f6ed9d3e069134844842d63cdd24ca9#eventlog) )
 
