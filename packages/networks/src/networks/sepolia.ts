@@ -6,7 +6,7 @@ export const sepolia: NetworkConfig = {
   },
   chain: 'sepolia',
   description:
-    'Sepolia is the primary testnet recommended by Ethereum for dapp development.',
+    'Sepolia is the primary testnet recommended by the Ethereum community for dapp development.',
   explorer: {
     name: 'Sepolia Etherscan',
     urls: {
@@ -18,16 +18,16 @@ export const sepolia: NetworkConfig = {
       transaction: (hash: string) => `https://sepolia.etherscan.io/tx/${hash}`,
     },
   },
-  featured: false,
-  fullySubsidizedGas: false,
+  featured: true,
+  fullySubsidizedGas: true,
   hooks: {
-    onKeyPurchaseHook: [],
+    onKeyPurchaseHook: [], // complete me!
   },
   id: 11155111,
   isTestNetwork: true,
-  keyManagerAddress: '',
+  keyManagerAddress: '', // complete me!
   maxFreeClaimCost: 10,
-  multisig: '',
+  multisig: '', // Complete me!
   name: 'Sepolia',
   nativeCurrency: {
     coingecko: 'ethereum',
@@ -49,7 +49,7 @@ export const sepolia: NetworkConfig = {
 
   publicLockVersionToDeploy: 13,
 
-  publicProvider: 'https://rpc.sepolia.dev',
+  publicProvider: 'https://rpc2.sepolia.org/',
 
   startBlock: 4381710,
   subgraph: {
