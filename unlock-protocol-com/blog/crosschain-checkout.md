@@ -33,7 +33,7 @@ This new feature lets users send transactions from the chain of *their* choice t
 
 What to try it out by yourself on a live demo? [Use this checkout link.](https://app.unlock-protocol.com/checkout?id=cf572b45-5799-4e0d-9dce-d7f741063a5e)
 
-![crosschain-checkout-screenshot.png](/images/blog/crosschaincheckout/crosschain-checkout-screenshot.png)
+![crosschain-checkout-screenshot.png](/images/blog/crosschaincheckout/cross-chain-checkout-screenshot.png)
 
 In the example, a membership NFT smart contract has been [deployed on Optimism](https://optimistic.etherscan.io/address/0x82bc85aac5b8192d1ef835a9ae9e4bdb299a57ea#code). As a user, I want to purchase a membership, but I don’t have any tokens on Optimism. However, in my wallet, I **do** have some Ether on Arbitrum, Base and Ethereum mainnet. I also have some Matic on Polygon, but not enough to make the purchase, so this option does not show up.
 
