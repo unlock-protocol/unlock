@@ -46,10 +46,10 @@ The Safes still own Unlock contracts and Proxy Admins on destination networks (n
 
 # How to setup the multisig
 
-On every receiving chain, we need a Gnosis Safe configured with two Zodiac plugins
+On every receiving chain, we need a [SAFE](https://safe.global/) multisig configured with two [Zodiac](https://zodiac.wiki/index.php/ZODIAC.WIKI) plugins, namely:
 
-- one Connext bridge receiver
-- one Delay
+- one [Zodiac Connext](https://github.com/gnosis/zodiac-module-connext/) bridge receiver
+- one [Delay](https://zodiac.wiki/index.php/Category:Delay_Modifier)
 
 1. In Gnosis web UI, go to Apps > Zodiac
 2. add the Delay module (cooldown : 7 days, expiration: 90 days)
