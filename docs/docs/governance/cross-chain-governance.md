@@ -20,7 +20,7 @@ The workflow is as follow
 5. once received, the call is held in the multisig for a period of X days during which it can be cancelled.
 6. once the cooldown period ends, the call is executed
 
-NB: The cooldown period is useful to prevent malicious or errored calls from being executed
+NB: The cooldown period is useful to prevent malicious or errored calls from being executed if the bridge itself has been compromised.
 
 The Safes still own Unlock contracts and Proxy Admins on destination networks (no changes in governance here).
 
