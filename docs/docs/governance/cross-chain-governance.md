@@ -14,7 +14,7 @@ DAO proposal >  Connext Bridge >   Safe multisig    >  wait for 7 days   >
 The workflow is as follow
 
 1. a DAO proposal is created, containing 1 call per chain
-2. if the vote succeed, the DAO proposal is executed. All calls are send to the bridge
+2. if the vote succeeds, the DAO proposal is executed. All calls are sent to the bridge(s).
 3. each call cross the bridge seperately towards its destination on a specific chain
 4. the call is received on the destination chain by Unlock multisig
 5. once received, the call is held in the multisig for a period of X days during which it can be cancelled.
