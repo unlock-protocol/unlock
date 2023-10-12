@@ -23,6 +23,7 @@ export const optimism: NetworkConfig = {
     connext: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
     domainId: 1869640809,
     modules: {
+      connextMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
       delayMod: '0xA8BB5AF09B599794136B14B112e137FAf83Acf1f',
     },
   },
