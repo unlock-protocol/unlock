@@ -11,8 +11,8 @@
 const allNetworks = require('@unlock-protocol/networks')
 
 const owner = '0x246A13358Fb27523642D86367a51C2aEB137Ac6C'
-const daoTimelockAddress = '0x04664b4290fa1F4001ED25d9576f7C2d980aC64d'
-const daoChainId = 100
+const daoTimelockAddress = '0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b'
+const daoChainId = 1
 const daoDomainId = allNetworks.networks[daoChainId].governanceBridge.domainId
 
 // in seconds
