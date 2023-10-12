@@ -80,9 +80,10 @@ On every receiving chain, we need a [SAFE](https://safe.global/) multisig config
 ## Using scripts 
 
 
-- Deploy the Delay module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md))
+- Deploy the Delay module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md)) 
+(NB: you can use the `deploy_multisig_mods` script in the `smart-contracts` folder to help you parse the commands)
 - add the `delayMod` to the `bridge.modules` object in the `networks` package
-- Deploy the Connext module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md))
+- Deploy the Connext module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md)) (NB: you can use the `deploy_multisig_mods` script to help you parse the commands)
 - add the `connextMod` to the `bridge.modules` object in the `networks` package
 - send the `proposals/enableModule.js` to the multisig on the chain to check settings and activate the module there
 - NB: make sure that `delayMod.target` is set to `safe.address` and `connextMod.target` is set to `delayMod.address`
