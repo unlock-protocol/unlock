@@ -4,6 +4,10 @@ export const mainnet: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
+  bridge: {
+    connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
+    domainId: 6648936,
+  },
   chain: 'ethereum',
   description:
     'The original and most secure EVM network. Gas fees are expensive on this network.',

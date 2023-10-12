@@ -4,6 +4,10 @@ export const bsc: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
+  bridge: {
+    connext: '0xCd401c10afa37d641d2F594852DA94C700e4F2CE',
+    domainId: 6450786,
+  },
   chain: 'bsc',
   description:
     'The best-performing EVM compatible layer 1. Fully compatible tooling for EVM with up to 35 times of capacity.',
