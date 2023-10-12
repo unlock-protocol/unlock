@@ -4,10 +4,6 @@ export const gnosis: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
-    domainId: 6778479,
-  },
   chain: 'xdai',
   description:
     'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
@@ -24,6 +20,10 @@ export const gnosis: NetworkConfig = {
   },
   faucet: 'https://gnosisfaucet.com/',
   featured: true,
+  governanceBridge: {
+    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+    domainId: 6778479,
+  },
   hooks: {
     onKeyPurchaseHook: [
       {

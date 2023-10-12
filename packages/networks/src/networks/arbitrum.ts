@@ -4,10 +4,6 @@ export const arbitrum: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
-    domainId: 1634886255,
-  },
   chain: 'arbitrum',
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
@@ -22,6 +18,10 @@ export const arbitrum: NetworkConfig = {
     },
   },
   featured: true,
+  governanceBridge: {
+    connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
+    domainId: 1634886255,
+  },
   hooks: {
     onKeyPurchaseHook: [
       {

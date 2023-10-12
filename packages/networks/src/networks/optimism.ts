@@ -4,10 +4,6 @@ export const optimism: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
-    domainId: 1869640809,
-  },
   chain: 'optimism',
   description:
     'Optimism is a Layer 2 Optimistic Rollup network designed to utilize the strong security guarantees of Ethereum while reducing its cost and latency.',
@@ -23,6 +19,10 @@ export const optimism: NetworkConfig = {
     },
   },
   featured: true,
+  governanceBridge: {
+    connext: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
+    domainId: 1869640809,
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
