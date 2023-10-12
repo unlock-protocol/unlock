@@ -68,23 +68,24 @@ On every receiving chain, we need a [SAFE](https://safe.global/) multisig config
 - one [Zodiac Connext](https://github.com/gnosis/zodiac-module-connext/) bridge receiver
 - one [Delay](https://zodiac.wiki/index.php/Category:Delay_Modifier)
 
-1. In Gnosis web UI, go to Apps > Zodiac
+## Using the Gnosis web UI
+
+1. go to Apps > Zodiac
 2. add the Delay module (cooldown : 7 days, expiration: 90 days)
 3. add the Connext module (Origin sender address : DAO address, Origin domain ID: 6648936 - see [list of Connext domains](https://docs.connext.network/resources/deployments#ethereum))
 4. Go to Connext module > write > `setTarget` with the Delay address
 5. Get the Connext module address then remove the Connext module
 6. Go to Delay > write > `enableModule` with the Connext module address
 
-As code it looks like
+## Using scripts 
 
-```jsx
-safe.disableModule(connextMod.address)
-safe.enableModule(delayMod.address)
-delayMod.enableModule(connextMod.address)
-connextMod.setTarget(delayMod.address)
-```
 
-Make sure that `delayMod.target` is set to `safe.address` and `connextMod.target` is set to `delayMod.address`
+- Deploy the Delay module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md))
+- add the `delayMod` to the `bridge.modules` object in the `networks` package
+- Deploy the Connext module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md))
+- add the `connextMod` to the `bridge.modules` object in the `networks` package
+- send the `proposals/enableModule.js` to the multisig on the chain to check settings and activate the module there
+- NB: make sure that `delayMod.target` is set to `safe.address` and `connextMod.target` is set to `delayMod.address`
 
 Now the multisig can receive calls from the bridge through the `connextMod` that will pass the call to the `delayMod` which will put it in cooldown.
 
