@@ -1,0 +1,82 @@
+#!/usr/bin/env node
+/**
+ *
+ * A small util to show the command that needs to be run to
+ * deploy SAFE modules used by cross-chain governance
+ *
+ * Usage: scripts/deploy_multisig_mods
+ *
+ */
+
+const allNetworks = require('@unlock-protocol/networks')
+
+const owner = '0x246A13358Fb27523642D86367a51C2aEB137Ac6C'
+const daoTimelockAddress = '0x04664b4290fa1F4001ED25d9576f7C2d980aC64d'
+const daoChainId = 100
+const daoDomainId = allNetworks.networks[daoChainId].bridge.domainId
+
+// in seconds
+const ONE_DAY = 24 * 3600
+
+// if any network is present this array, only these will be executed
+const only = ['polygon', 'gnosis', 'bsc', 'arbitrum', 'optimism']
+
+// these networks will be excluded from run
+const toExclude = ['localhost', 'default', 'networks']
+
+//
+const networks = only.length
+  ? only
+  : Object.keys(allNetworks).filter((n) => !toExclude.includes(n))
+
+console.log(`Running task for the following networks: ${networks.toString()}`)
+
+for (let i = 0; i < networks.length; i++) {
+  const { multisig, bridge } = allNetworks[networks[i]]
+  console.log('\n', networks[i], '\n')
+  if (bridge.modules && !bridge.modules.delayMod) {
+    const args = [
+      '--network',
+      networks[i],
+      `--owner`,
+      owner,
+      '--avatar',
+      multisig,
+      '--target',
+      multisig,
+      '--cooldown',
+      ONE_DAY * 2, // 2 days
+      '--expiration',
+      ONE_DAY * 90, // 90 days expiration
+    ]
+
+    console.log(`yarn hardhat setup ${args.join(' ')}`)
+
+    console.log(`yarn hardhat verifyEtherscan ${args.join(' ')} --modifier`)
+  } else {
+    console.log(`Delay mod at ${bridge.modules.delayMod}`)
+
+    if (!bridge.modules.connextMod) {
+      const argsConnext = [
+        '--network',
+        networks[i],
+        '--avatar',
+        multisig,
+        '--connext',
+        bridge.connext,
+        '--origin',
+        daoDomainId,
+        '--sender',
+        daoTimelockAddress,
+        '--owner',
+        owner,
+        '--target',
+        bridge.modules.delayMod,
+      ]
+
+      console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
+    } else {
+      console.log(`Connext mod at ${bridge.modules.connextMod}`)
+    }
+  }
+}
