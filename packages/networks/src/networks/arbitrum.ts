@@ -21,6 +21,9 @@ export const arbitrum: NetworkConfig = {
   governanceBridge: {
     connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
     domainId: 1634886255,
+    modules: {
+      delayMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
+    },
   },
   hooks: {
     onKeyPurchaseHook: [

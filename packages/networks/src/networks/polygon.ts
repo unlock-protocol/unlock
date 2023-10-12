@@ -22,6 +22,9 @@ export const polygon: NetworkConfig = {
   governanceBridge: {
     connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
     domainId: 1886350457,
+    modules: {
+      delayMod: '0x31B8bB0BC5ffEe8e476202e9D97b0b8c31aA767d',
+    },
   },
   hooks: {
     onKeyPurchaseHook: [

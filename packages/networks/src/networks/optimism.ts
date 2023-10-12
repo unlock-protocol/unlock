@@ -22,6 +22,9 @@ export const optimism: NetworkConfig = {
   governanceBridge: {
     connext: '0x8f7492DE823025b4CfaAB1D34c58963F2af5DEDA',
     domainId: 1869640809,
+    modules: {
+      delayMod: '0xA8BB5AF09B599794136B14B112e137FAf83Acf1f',
+    },
   },
   hooks: {
     onKeyPurchaseHook: [

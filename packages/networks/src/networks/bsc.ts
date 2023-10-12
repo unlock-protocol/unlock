@@ -21,6 +21,9 @@ export const bsc: NetworkConfig = {
   governanceBridge: {
     connext: '0xCd401c10afa37d641d2F594852DA94C700e4F2CE',
     domainId: 6450786,
+    modules: {
+      delayMod: '0xcf07c951C44731f82E548286C7ebeC576149a49e',
+    },
   },
   hooks: {
     onKeyPurchaseHook: [
