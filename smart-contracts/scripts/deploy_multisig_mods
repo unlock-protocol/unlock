@@ -76,6 +76,10 @@ for (let i = 0; i < networks.length; i++) {
         ]
 
         console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
+
+        console.log(
+          `yarn hardhat verifyModule ${argsConnext.join(' ')} --module`
+        )
       } else {
         console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
       }
