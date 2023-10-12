@@ -2,7 +2,7 @@
 /**
  *
  * A small util to show the command that needs to be run to
- * deploy SAFE modules used by cross-chain governance
+ * deploy SAFE modules used by cross-chain governance.
  *
  * Usage: scripts/deploy_multisig_mods
  *
@@ -34,7 +34,7 @@ console.log(`Running task for the following networks: ${networks.toString()}`)
 for (let i = 0; i < networks.length; i++) {
   const { multisig, bridge } = allNetworks[networks[i]]
   console.log('\n', networks[i], '\n')
-  if (bridge.modules && !bridge.modules.delayMod) {
+  if (!bridge.modules || !bridge.modules.delayMod) {
     const args = [
       '--network',
       networks[i],
@@ -54,29 +54,31 @@ for (let i = 0; i < networks.length; i++) {
 
     console.log(`yarn hardhat verifyEtherscan ${args.join(' ')} --modifier`)
   } else {
-    console.log(`Delay mod at ${bridge.modules.delayMod}`)
+    if (bridge.modules) {
+      console.log(`Delay mod at ${bridge.modules.delayMod}`)
 
-    if (!bridge.modules.connextMod) {
-      const argsConnext = [
-        '--network',
-        networks[i],
-        '--avatar',
-        multisig,
-        '--connext',
-        bridge.connext,
-        '--origin',
-        daoDomainId,
-        '--sender',
-        daoTimelockAddress,
-        '--owner',
-        owner,
-        '--target',
-        bridge.modules.delayMod,
-      ]
+      if (!bridge.modules.connextMod) {
+        const argsConnext = [
+          '--network',
+          networks[i],
+          '--avatar',
+          multisig,
+          '--connext',
+          bridge.connext,
+          '--origin',
+          daoDomainId,
+          '--sender',
+          daoTimelockAddress,
+          '--owner',
+          owner,
+          '--target',
+          bridge.modules.delayMod,
+        ]
 
-      console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
-    } else {
-      console.log(`Connext mod at ${bridge.modules.connextMod}`)
+        console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
+      } else {
+        console.log(`Connext mod at ${bridge.modules.connextMod}`)
+      }
     }
   }
 }
