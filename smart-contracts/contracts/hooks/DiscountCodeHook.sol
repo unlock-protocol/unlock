@@ -3,9 +3,6 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV12.sol";
 
-// Uncomment this line to use console.log
-// import "hardhat/console.sol";
-
 error TOO_BIG();
 error NOT_AUTHORIZED();
 
@@ -37,6 +34,9 @@ contract DiscountHook {
     bytes calldata signature /* data */
   ) external view returns (uint256 minKeyPrice) {
     uint keyPrice = IPublicLockV12(msg.sender).keyPrice();
+    if (signature.length == 0) {
+      return keyPrice;
+    }
     address signer = getSigner(toString(recipient), signature);
     if (discounts[msg.sender][signer] > 0) {
       // Overflow?
@@ -49,14 +49,15 @@ contract DiscountHook {
    * No-op but required for the hook to work
    */
   function onKeyPurchase(
-    address /* from */,
-    address /* recipient */,
-    address /* referrer */,
-    bytes calldata /* data */,
-    uint256 /* minKeyPrice */,
-    uint256 /* pricePaid */
+    uint256 /* tokenId */,
+    address /*from*/,
+    address /*recipient*/,
+    address /*referrer*/,
+    bytes calldata /*data*/,
+    uint256 /*minKeyPrice*/,
+    uint256 /*pricePaid*/
   ) external {
-    // NO OP
+    // No op
   }
 
   /**

@@ -28,15 +28,12 @@ describe('DiscountHook', function () {
   it('should work', async function () {
     const recipient = '0xF5C28ce24cf47849988f147d5C75787c0103534'.toLowerCase()
 
-    const password = 'password' // (Math.random()).toString(36).substring(2);
+    const code = 'PROMO CODE'
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
     await hook.deployed()
 
-    const [data, signerAddress] = await getSignatureForPassword(
-      password,
-      recipient
-    )
+    const [data, signerAddress] = await getSignatureForPassword(code, recipient)
 
     // with wrong password
     const [badData] = await getSignatureForPassword('wrongpassword', recipient)
@@ -56,7 +53,7 @@ describe('DiscountHook', function () {
     await unlock.deployProtocol()
     const expirationDuration = 60 * 60 * 24 * 7
     const maxNumberOfKeys = 100
-    const keyPrice = 0
+    const keyPrice = ethers.utils.parseEther('0.1')
 
     const { lock } = await unlock.createLock({
       expirationDuration,
@@ -79,43 +76,45 @@ describe('DiscountHook', function () {
         ethers.constants.AddressZero
       )
     ).wait()
+    // Let's get the price without a promo code
+    const priceWithout = await lock.purchasePriceFor(
+      user.address,
+      user.address,
+      []
+    )
+    assert.equal(
+      ethers.utils.formatEther(priceWithout),
+      ethers.utils.formatEther(keyPrice)
+    )
 
-    // Build the signer from password
-    const password = 'unguessable!'
+    const code = 'PROMOCODE'
+    const discount = 3000
     const [data, signer] = await getSignatureForPassword(
-      password,
+      code,
       user.address.toLowerCase()
     )
 
-    // Set the password on the hook for the lock
-    await (await hook.setSigner(lock.address, signer)).wait()
+    // Set the code on the hook for the lock
+    await (await hook.setSigner(lock.address, signer, discount)).wait()
 
-    const s = await hook.signers(lock.address)
-    expect(s).to.equal(signer)
+    // Let's get the price without a promo code
+    const price = await lock.purchasePriceFor(user.address, user.address, data)
+    assert.equal(ethers.utils.formatEther(price), '0.07')
 
-    // And now make a purchase that should fail because we did not submit a data
-    await expect(
-      lock.purchase([0], [user.address], [user.address], [user.address], [])
-    ).to.reverted
-
-    // And a purchase that fails because we use the wrong password
-    const [badData] = await getSignatureForPassword(
-      'wrong password',
-      user.address.toLowerCase()
-    )
-    await expect(
-      lock.purchase(
-        [0],
+    // Let's make a purchase!
+    await (
+      await lock.purchase(
+        [price],
         [user.address],
         [user.address],
         [user.address],
-        [badData]
+        [data],
+        {
+          value: price,
+        }
       )
-    ).to.reverted
+    ).wait()
 
-    // And a purchase that succeeds when we use the correct password!
-    await expect(
-      lock.purchase([0], [user.address], [user.address], [user.address], [data])
-    ).not.to.reverted
+    expect((await lock.balanceOf(user.address)).toNumber()).to.equal(1)
   })
 })
