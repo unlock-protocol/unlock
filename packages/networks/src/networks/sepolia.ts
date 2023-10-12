@@ -81,7 +81,15 @@ export const sepolia: NetworkConfig = {
     networkName: 'sepolia',
     studioEndpoint: 'unlock-protocol-sepolia',
   },
-  tokens: [],
+  tokens: [
+    {
+      address: '0x7b79995e5f793a07bc00c21412e50ecae098e7f9',
+      decimals: 18,
+      mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+    },
+  ],
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   url: 'https://github.com/eth-clients/sepolia',
 }
