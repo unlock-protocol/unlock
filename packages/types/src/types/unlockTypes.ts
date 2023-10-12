@@ -123,7 +123,7 @@ export interface NetworkConfig {
   blockScan?: {
     url?: (address: string) => string
   }
-  bridge?: NetworkBridgeConfig
+  governanceBridge?: NetworkBridgeConfig
   isTestNetwork?: boolean
   erc20?: {
     symbol: string
