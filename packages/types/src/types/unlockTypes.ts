@@ -70,8 +70,8 @@ export interface NetworkBridgeConfig {
   domainId: number
   connext: string
   modules?: {
-    connextMod: string
-    delayMod: string
+    connextMod?: string
+    delayMod?: string
   }
 }
 

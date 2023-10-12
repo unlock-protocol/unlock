@@ -7,6 +7,10 @@ export const goerli: NetworkConfig = {
   bridge: {
     connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
     domainId: 1735353714,
+    modules: {
+      connextMod: '0xce58DB94DE48A8a9Ea47cBe4376F19724D154DF2',
+      delayMod: '0x46FdC1d73486E20406D1C6dAcDD22b6599AEA32d',
+    },
   },
   chain: 'goerli',
   description: 'Main Ethereum test network. Do not use for production.',
