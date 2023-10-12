@@ -25,7 +25,7 @@
     "eslint": "8.48.0",
     "eslint-plugin-mocha": "10.2.0",
     "ethers": "5.7.2",
-    "next": "13.4.19",
+    "next": "13.5.4",
     "next-seo": "6.1.0",
     "numeral": "2.0.6",
     "path-match": "1.2.4",
@@ -47,8 +47,8 @@
     "yaml-front-matter": "4.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.15",
-    "eslint-config-next": "13.4.19",
+    "autoprefixer": "10.4.16",
+    "eslint-config-next": "13.5.4",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
     "next-transpile-modules": "10.0.1",
