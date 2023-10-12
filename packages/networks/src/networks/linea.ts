@@ -19,10 +19,20 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
-  hooks: {},
+  hooks: {}, // TODO
+
   id: 59144,
+
   isTestNetwork: false,
+
+  keyManagerAddress: '', // TODO
+
+  maxFreeClaimCost: 10,
+
+  multisig: '', // TODO
+
   name: 'Linea',
+
   nativeCurrency: {
     coingecko: 'linea-eth',
     decimals: 18,
@@ -39,7 +49,7 @@ export const linea: NetworkConfig = {
     endpointV2: 'https://graph-query.linea.build',
     networkName: 'linea',
   },
-  swapPurchaser: '',
+  swapPurchaser: '', // TODO
   tokens: [
     {
       address: '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f',
@@ -72,10 +82,8 @@ export const linea: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
-  uniswapV3: {
-  },
-  universalCard: {
-  },
+  uniswapV3: {},
+  universalCard: {},
   unlockAddress: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   url: 'https://linea.build/',
 }
