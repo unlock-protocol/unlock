@@ -54,6 +54,14 @@ const defenderRelayCredentials: DefenderRelayCredentials = {
     apiKey: process.env.DEFENDER_RELAY_KEY_5 || '',
     apiSecret: process.env.DEFENDER_RELAY_SECRET_5 || '',
   },
+  1: {
+    apiKey: process.env.DEFENDER_RELAY_KEY_1 || '',
+    apiSecret: process.env.DEFENDER_RELAY_SECRET_1 || '',
+  },
+  8453: {
+    apiKey: process.env.DEFENDER_RELAY_KEY_8453 || '',
+    apiSecret: process.env.DEFENDER_RELAY_SECRET_8453 || '',
+  },
 }
 
 const config = {
