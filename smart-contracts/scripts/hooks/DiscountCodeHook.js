@@ -1,25 +1,23 @@
 const { ethers } = require('hardhat')
 
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000)
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS
+  const [user] = await ethers.getSigners()
+  if (!user) {
+    throw new Error('Missing signer!')
+  }
+  const { chainId } = await user.provider.getNetwork()
+  console.log(`Deploying from ${user.address} on ${chainId}`)
 
-  const lockedAmount = ethers.utils.parseEther('1')
+  const DiscountHook = await ethers.getContractFactory('DiscountHook')
+  const hook = await DiscountHook.deploy()
+  await hook.deployed()
 
-  const Lock = await ethers.getContractFactory('Lock')
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount })
-
-  await lock.deployed()
-
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  )
+  console.log('Hook deployed to:', hook.address)
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error)
-  process.exitCode = 1
-})
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })
