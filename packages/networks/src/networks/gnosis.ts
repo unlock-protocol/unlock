@@ -56,9 +56,6 @@ export const gnosis: NetworkConfig = {
     name: 'xDAI',
     symbol: 'xDAI',
   },
-  opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
-  },
   previousDeploys: [
     {
       startBlock: 14521200,
