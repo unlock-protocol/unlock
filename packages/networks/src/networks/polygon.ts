@@ -4,6 +4,10 @@ export const polygon: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
+  bridge: {
+    connext: '0x11984dc4465481512eb5b777E44061C158CF2259',
+    domainId: 1886350457,
+  },
   chain: 'polygon',
   description:
     "Polygon is a side-chain to build and scale your projects on Ethereum, the world's largest blockchain ecosystem.",

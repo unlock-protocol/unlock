@@ -10,7 +10,7 @@ const {
 
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated but deterministic for tests
 
-const contractName = 'UnlockDiscountTokenV3'
+const contractNameOrAbi = 'UnlockDiscountTokenV3'
 const functionName = 'transfer'
 const functionArgs = [
   tokenRecipientAddress,
@@ -31,7 +31,7 @@ contract('Proposal Helper', () => {
   describe('calldata args encoder', () => {
     it('encode correctly a function call', async () => {
       const encoded = await encodeProposalArgs({
-        contractName,
+        contractNameOrAbi,
         functionName,
         functionArgs,
       })
@@ -42,7 +42,7 @@ contract('Proposal Helper', () => {
   describe('calldata args decoder', () => {
     it('encode correctly a function call', async () => {
       const decoded = await decodeProposalArgs({
-        contractName,
+        contractNameOrAbi,
         functionName,
         calldata: calldataEncoded,
       })
@@ -58,13 +58,13 @@ contract('Proposal Helper', () => {
       const proposalName = 'Send some tokens to a grantee'
 
       const encoded = await encodeProposalArgs({
-        contractName,
+        contractNameOrAbi,
         functionName,
         functionArgs,
       })
 
       const [to, value, calldata, proposalNameParsed] = await parseProposal({
-        calls: [{ contractName, contractAddress, calldata: encoded }],
+        calls: [{ contractNameOrAbi, contractAddress, calldata: encoded }],
         proposalName,
       })
 

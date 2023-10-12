@@ -96,25 +96,25 @@ async function main([oldGovAddress, newGovAddress]) {
 
   const calls = [
     {
-      contractName: 'UnlockProtocolTimelock',
+      contractNameOrAbi: 'UnlockProtocolTimelock',
       contractAddress: timeLockAddress,
       functionName: 'grantRole',
       functionArgs: [TIMELOCK_ADMIN_ROLE, newGovAddress],
     },
     {
-      contractName: 'UnlockProtocolTimelock',
+      contractNameOrAbi: 'UnlockProtocolTimelock',
       contractAddress: timeLockAddress,
       functionName: 'grantRole',
       functionArgs: [PROPOSER_ROLE, newGovAddress],
     },
     {
-      contractName: 'UnlockProtocolTimelock',
+      contractNameOrAbi: 'UnlockProtocolTimelock',
       contractAddress: timeLockAddress,
       functionName: 'revokeRole',
       functionArgs: [TIMELOCK_ADMIN_ROLE, oldGovAddress],
     },
     {
-      contractName: 'UnlockProtocolTimelock',
+      contractNameOrAbi: 'UnlockProtocolTimelock',
       contractAddress: timeLockAddress,
       functionName: 'revokeRole',
       functionArgs: [PROPOSER_ROLE, oldGovAddress],

@@ -7,7 +7,7 @@ const { ADDRESS_ZERO } = require('../test/helpers')
  * @param {Array.<{
  * contractAddress: string, // target address of the call
  * calldata: string, // if not present, will be encoded using functionName + functionArgs
- * contractName: string, // to fetch the encoding ABI
+ * contractNameOrAbi: string, // to fetch the encoding ABI
  * functionName: string,
  * functionArgs: Array,
  * }>} calls An array of calls to be send to the proposal
@@ -32,14 +32,14 @@ const parseProposal = async ({
     calls.map(
       async ({
         calldata,
-        contractName,
+        contractNameOrAbi,
         contractAddress,
         functionName,
         functionArgs,
       }) => {
         if (!calldata) {
           calldata = await encodeProposalArgs({
-            contractName,
+            contractNameOrAbi,
             functionName,
             functionArgs,
           })
@@ -126,18 +126,25 @@ const validateProposalCall = (proposal) => {
 }
 
 const encodeProposalArgs = async ({
-  contractName,
+  contractNameOrAbi,
   functionName,
   functionArgs,
 }) => {
   // use that pattern instead of `getContractFactory` so we support passing interfaces
-  const { interface } = await ethers.getContractAt(contractName, ADDRESS_ZERO)
+  const { interface } = await ethers.getContractAt(
+    contractNameOrAbi,
+    ADDRESS_ZERO
+  )
   const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
   return calldata
 }
 
-const decodeProposalArgs = async ({ contractName, functionName, calldata }) => {
-  const { interface } = await ethers.getContractFactory(contractName)
+const decodeProposalArgs = async ({
+  contractNameOrAbi,
+  functionName,
+  calldata,
+}) => {
+  const { interface } = await ethers.getContractFactory(contractNameOrAbi)
   const decoded = interface.decodeFunctionData(functionName, calldata)
   return decoded
 }

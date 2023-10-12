@@ -50,7 +50,7 @@ const getSafeVersion = async (safeAddress) => {
 const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
   // encode contract call
   const {
-    contractName,
+    contractNameOrAbi,
     contractAddress,
     functionName,
     functionArgs,
@@ -60,7 +60,7 @@ const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
 
   let encodedFunctionCall
   if (!calldata) {
-    const { interface } = await ethers.getContractFactory(contractName)
+    const { interface } = await ethers.getContractFactory(contractNameOrAbi)
     encodedFunctionCall = interface.encodeFunctionData(
       functionName,
       functionArgs

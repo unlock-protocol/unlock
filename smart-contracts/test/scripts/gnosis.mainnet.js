@@ -102,7 +102,7 @@ describe('scripts / gnosis', () => {
 
       // submit to multisig
       addLockTemplateTx = {
-        contractName: 'Unlock',
+        contractNameOrAbi: 'Unlock',
         contractAddress: unlockAddress,
         functionName: 'addLockTemplate',
         functionArgs: [publicLockUpgraded.address, publicLockLatestVersion],
@@ -119,7 +119,7 @@ describe('scripts / gnosis', () => {
 
       // submit 2nd tx
       setLockTemplateTx = {
-        contractName: 'Unlock',
+        contractNameOrAbi: 'Unlock',
         contractAddress: unlockAddress,
         functionName: 'setLockTemplate',
         functionArgs: [publicLockUpgraded.address],
