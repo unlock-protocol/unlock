@@ -31,6 +31,14 @@ const config = {
       apiKey: process.env.DEFENDER_RELAY_KEY_5 || '',
       apiSecret: process.env.DEFENDER_RELAY_SECRET_5 || '',
     },
+    1: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_1 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_1 || '',
+    },
+    8453: {
+      apiKey: process.env.DEFENDER_RELAY_KEY_8453 || '',
+      apiSecret: process.env.DEFENDER_RELAY_SECRET_8453 || '',
+    },
   },
   sentry: {
     dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
