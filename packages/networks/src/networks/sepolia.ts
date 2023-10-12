@@ -38,7 +38,7 @@ export const sepolia: NetworkConfig = {
         name: 'Guild',
       },
       {
-        address: '',
+        address: '0x639143cbf90F27eA5Ce4b3A7D869d4D7878009A5',
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
