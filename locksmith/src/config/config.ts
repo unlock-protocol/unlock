@@ -92,19 +92,6 @@ const config = {
   },
 }
 
-console.log('')
-console.log('')
-console.log('')
-console.log('_______________________')
-console.log('')
-console.log('SETTING UP THE FOLLOWING ENV VARS:')
-Object.keys(process.env).forEach((key) => console.log(`- ${key}=`))
-console.log('')
-console.log('_______________________')
-console.log('')
-console.log('')
-console.log('')
-
 if (process.env.ON_HEROKU) {
   // Heroku needs this:
   config.database.ssl = true
