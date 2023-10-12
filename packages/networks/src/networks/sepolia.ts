@@ -28,7 +28,7 @@ export const sepolia: NetworkConfig = {
         name: 'Password required',
       },
       {
-        address: '',
+        address: '0xd0b14797b9D08493392865647384974470202A78',
         id: HookType.CAPTCHA,
         name: 'Captcha',
       },
