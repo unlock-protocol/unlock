@@ -13,7 +13,7 @@ const allNetworks = require('@unlock-protocol/networks')
 const owner = '0x246A13358Fb27523642D86367a51C2aEB137Ac6C'
 const daoTimelockAddress = '0x04664b4290fa1F4001ED25d9576f7C2d980aC64d'
 const daoChainId = 100
-const daoDomainId = allNetworks.networks[daoChainId].bridge.domainId
+const daoDomainId = allNetworks.networks[daoChainId].governanceBridge.domainId
 
 // in seconds
 const ONE_DAY = 24 * 3600
@@ -32,9 +32,9 @@ const networks = only.length
 console.log(`Running task for the following networks: ${networks.toString()}`)
 
 for (let i = 0; i < networks.length; i++) {
-  const { multisig, bridge } = allNetworks[networks[i]]
+  const { multisig, governanceBridge } = allNetworks[networks[i]]
   console.log('\n', networks[i], '\n')
-  if (!bridge.modules || !bridge.modules.delayMod) {
+  if (!governanceBridge.modules || !governanceBridge.modules.delayMod) {
     const args = [
       '--network',
       networks[i],
@@ -54,17 +54,17 @@ for (let i = 0; i < networks.length; i++) {
 
     console.log(`yarn hardhat verifyEtherscan ${args.join(' ')} --modifier`)
   } else {
-    if (bridge.modules) {
-      console.log(`Delay mod at ${bridge.modules.delayMod}`)
+    if (governanceBridge.modules) {
+      console.log(`Delay mod at ${governanceBridge.modules.delayMod}`)
 
-      if (!bridge.modules.connextMod) {
+      if (!governanceBridge.modules.connextMod) {
         const argsConnext = [
           '--network',
           networks[i],
           '--avatar',
           multisig,
           '--connext',
-          bridge.connext,
+          governanceBridge.connext,
           '--origin',
           daoDomainId,
           '--sender',
@@ -72,12 +72,12 @@ for (let i = 0; i < networks.length; i++) {
           '--owner',
           owner,
           '--target',
-          bridge.modules.delayMod,
+          governanceBridge.modules.delayMod,
         ]
 
         console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
       } else {
-        console.log(`Connext mod at ${bridge.modules.connextMod}`)
+        console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
       }
     }
   }
