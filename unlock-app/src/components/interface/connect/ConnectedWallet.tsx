@@ -7,6 +7,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import BlockiesSvg from 'blockies-react-svg'
+import { useHasEmail } from '~/hooks/useHasEmail'
 
 export const ConnectedWallet = () => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
@@ -19,12 +20,16 @@ export const ConnectedWallet = () => {
     successDuration: 1000,
   })
 
+  const { data: hasEmail, isLoading: hasEmailIsLoading } = useHasEmail()
+
   const onSignIn = useCallback(async () => {
     setIsSigningIn(true)
     await signIn()
     setIsSigningIn(false)
-    closeConnectModal()
-  }, [setIsSigningIn, signIn, closeConnectModal])
+    if (!hasEmailIsLoading && hasEmail) {
+      closeConnectModal()
+    }
+  }, [setIsSigningIn, signIn, closeConnectModal, hasEmailIsLoading, hasEmail])
 
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
@@ -62,20 +67,30 @@ export const ConnectedWallet = () => {
             <Placeholder.Line />
           </Placeholder.Root>
         )}
-        {session && !isDisconnecting && (
-          <div className="text-gray-700">
-            You are successfully verified as {minifyAddress(displayAccount!)}
-          </div>
-        )}
-        {!session && !isDisconnecting && (
-          <div className="flex flex-col gap-4">
-            <h3 className="text-gray-700">
-              Sign message to confirm ownership of your account
-            </h3>
-            <Button loading={isSigningIn} onClick={onSignIn}>
-              Confirm Ownership
-            </Button>
-          </div>
+        {!isDisconnecting && (
+          <>
+            {session && (
+              <>
+                {hasEmail && (
+                  <div className="text-gray-700">
+                    You are successfully verified as{' '}
+                    {minifyAddress(displayAccount!)}
+                  </div>
+                )}
+                {!hasEmail && <>Save your email address!</>}
+              </>
+            )}
+            {!session && (
+              <div className="flex flex-col gap-4">
+                <h3 className="text-gray-700">
+                  Sign message to confirm ownership of your account
+                </h3>
+                <Button loading={isSigningIn} onClick={onSignIn}>
+                  Confirm Ownership
+                </Button>
+              </div>
+            )}
+          </>
         )}
       </div>
       <div className="grid p-6">

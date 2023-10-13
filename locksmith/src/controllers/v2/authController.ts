@@ -8,6 +8,7 @@ import config from '../../config/config'
 import normalizer from '../../utils/normalizer'
 import { ethers } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
+import { findByAddress } from '../../operations/userOperations'
 
 export const login: RequestHandler = async (request, response) => {
   try {
@@ -78,9 +79,11 @@ export const login: RequestHandler = async (request, response) => {
   }
 }
 
-export const user: RequestHandler = (request, response) => {
+export const user: RequestHandler = async (request, response) => {
+  const user = await findByAddress(request.user!.walletAddress)
   return response.status(200).send({
-    walletAddress: request.user?.walletAddress,
+    ...user,
+    walletAddress: request.user!.walletAddress,
   })
 }
 

@@ -163,6 +163,7 @@ export const getCards = async (emailAddress: string): Promise<any[]> => {
   }
   return []
 }
+
 export const getCardDetailsFromStripe = async (
   customer_id: any
 ): Promise<any[]> => {
@@ -202,6 +203,27 @@ export const findByEmail = async (emailAddress: string) => {
   return user
 }
 
+export const updateUser = async (address: ethereumAddress, params: any) => {
+  const [user] = await UserReference.upsert(
+    {
+      publicKey: Normalizer.ethereumAddress(address),
+      ...params,
+    },
+    {
+      conflictFields: ['publicKey'],
+    }
+  )
+  return user
+}
+
+export const findByAddress = async (address: ethereumAddress) => {
+  return UserReference.findOne({
+    where: {
+      publicKey: Normalizer.ethereumAddress(address),
+    },
+  })
+}
+
 const UserOperations = {
   createUser,
   getUserPrivateKeyByEmailAddress,
@@ -215,6 +237,8 @@ const UserOperations = {
   getCardDetailsFromStripe,
   eject,
   findByEmail,
+  updateUser,
+  findByAddress,
 }
 
 export default UserOperations

@@ -13,7 +13,7 @@ export const useSessionUser = () => {
       try {
         if (!accessToken) return null
         const response = await storage.user()
-        return response.data!.walletAddress
+        return response.data!
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401 && accessToken) {
@@ -38,8 +38,8 @@ export const useSessionUser = () => {
 
 interface SessionContextType {
   isInitialLoading: boolean
-  session?: string | null
-  refetchSession: () => Promise<UseQueryResult<string | null | undefined>>
+  session?: any
+  refetchSession: () => Promise<UseQueryResult<any | null | undefined>>
 }
 
 export const SessionContext = createContext<SessionContextType>({
@@ -56,6 +56,7 @@ interface Props {
 
 export const SessionProvider = ({ children }: Props) => {
   const { data: session, refetch, isInitialLoading } = useSessionUser()
+  console.log({ session })
   return (
     <SessionContext.Provider
       value={{ session, refetchSession: refetch, isInitialLoading }}
