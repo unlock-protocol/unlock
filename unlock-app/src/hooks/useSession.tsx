@@ -3,6 +3,7 @@ import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
 import { getAccessToken, getCurrentAccount } from '~/utils/session'
 import { ReactNode, createContext, useContext } from 'react'
+import { Auth } from '@unlock-protocol/unlock-js'
 
 export const useSessionUser = () => {
   return useQuery(
@@ -22,8 +23,8 @@ export const useSessionUser = () => {
           // To handle temporary network errors and fallback if locksmith is not behaving correctly
           if (accessToken) {
             return {
-              publicKey: address,
-            }
+              walletAddress: address,
+            } as Auth
           }
           return null
         }

@@ -35,7 +35,6 @@ components:
           nullable: false
         emailAddress:
           type: string
-          required: false
 
     AuthResult:
       required:
@@ -665,12 +664,12 @@ paths:
               $ref: '#/components/schemas/User'
 
       responses:
-        201:
-          description: Added verifier.
+        200:
+          description: Updated user details.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Verifier'
+                $ref: '#/components/schemas/User'
 
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'

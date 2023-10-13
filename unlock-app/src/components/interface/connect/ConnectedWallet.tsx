@@ -63,7 +63,7 @@ export const ConnectedWallet = () => {
     try {
       await storage.updateUser(data)
       closeConnectModal()
-    } catch (error) {
+    } catch (error: any) {
       if (error.response?.data?.message === 'Validation error') {
         setError('emailAddress', {
           message:
@@ -74,7 +74,7 @@ export const ConnectedWallet = () => {
           message: 'Something went wrong. Please try again later.',
         })
       }
-    } // assume success?
+    }
     await refetch()
   })
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
