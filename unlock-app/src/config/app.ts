@@ -1,5 +1,5 @@
 import networksConfig from '@unlock-protocol/networks'
-import { NetworkConfig, NetworkConfigs } from '@unlock-protocol/types'
+import { NetworkConfigs } from '@unlock-protocol/types'
 
 const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
