@@ -36,7 +36,7 @@ async function main([
 
   const calls = [
     {
-      contractName: 'Unlock',
+      contractNameOrAbi: 'Unlock',
       contractAddress: unlockAddress,
       functionName: 'setProtocolFee',
       functionArgs: [protocolFee],
