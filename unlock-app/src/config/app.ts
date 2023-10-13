@@ -61,11 +61,7 @@ export const config = {
   ], // TODO: cleanup? We should use config from networks package!
   networks: Object.keys(networksConfig).reduce<NetworkConfigs>(
     (networks, network) => {
-      networks[network] = {
-        ...networksConfig[network],
-        locksmithUri: app.locksmithHost,
-        locksmith: app.locksmithHost,
-      } as NetworkConfig
+      networks[network] = networksConfig[network]
       return networks
     },
     {}
