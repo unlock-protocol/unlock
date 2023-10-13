@@ -210,10 +210,14 @@ export const updateUser = async (address: ethereumAddress, params: any) => {
       ...params,
     },
     {
+      returning: true,
       conflictFields: ['publicKey'],
     }
   )
-  return user
+  return {
+    publicKey: Normalizer.ethereumAddress(address),
+    emailAddress: user.dataValues.emailAddress,
+  }
 }
 
 export const findByAddress = async (address: ethereumAddress) => {

@@ -82,7 +82,7 @@ export const login: RequestHandler = async (request, response) => {
 export const user: RequestHandler = async (request, response) => {
   const user = await findByAddress(request.user!.walletAddress)
   return response.status(200).send({
-    ...user,
+    emailAddress: user?.emailAddress,
     walletAddress: request.user!.walletAddress,
   })
 }

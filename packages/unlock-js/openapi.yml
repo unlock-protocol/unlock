@@ -33,6 +33,9 @@ components:
         walletAddress:
           type: string
           nullable: false
+        emailAddress:
+          type: string
+          required: false
 
     AuthResult:
       required:
@@ -130,6 +133,14 @@ components:
         network:
           type: integer
           nullable: false
+
+    User:
+      type: object
+      nullable: false
+      properties:
+        emailAddress:
+          type: string
+          nullable: true
 
     KeyMetadata:
       type: object
@@ -639,6 +650,30 @@ paths:
                 $ref: '#/components/schemas/Auth'
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/user/:
+    put:
+      operationId: updateUser
+      description: Update user details.
+      security:
+        - User: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+
+      responses:
+        201:
+          description: Added verifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verifier'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 
   /v2/applications/list:
     get:

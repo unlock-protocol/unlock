@@ -21,7 +21,9 @@ export const useSessionUser = () => {
           }
           // To handle temporary network errors and fallback if locksmith is not behaving correctly
           if (accessToken) {
-            return address
+            return {
+              publicKey: address,
+            }
           }
           return null
         }
@@ -56,7 +58,7 @@ interface Props {
 
 export const SessionProvider = ({ children }: Props) => {
   const { data: session, refetch, isInitialLoading } = useSessionUser()
-  console.log({ session })
+
   return (
     <SessionContext.Provider
       value={{ session, refetchSession: refetch, isInitialLoading }}
