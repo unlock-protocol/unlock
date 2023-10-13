@@ -1,5 +1,5 @@
 import networksConfig from '@unlock-protocol/networks'
-import { NetworkConfig, NetworkConfigs } from '@unlock-protocol/types'
+import { NetworkConfigs } from '@unlock-protocol/types'
 
 const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
@@ -61,11 +61,7 @@ export const config = {
   ], // TODO: cleanup? We should use config from networks package!
   networks: Object.keys(networksConfig).reduce<NetworkConfigs>(
     (networks, network) => {
-      networks[network] = {
-        ...networksConfig[network],
-        locksmithUri: app.locksmithHost,
-        locksmith: app.locksmithHost,
-      } as NetworkConfig
+      networks[network] = networksConfig[network]
       return networks
     },
     {}
