@@ -113,11 +113,10 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   })
 
   scenarios.forEach((chainId) => {
-    let balanceReferrer, balanceUnlockOwner, unlockOwner
+    let balanceReferrer
 
     describe(`behaviour on chain with ${chainId}`, () => {
       before(async () => {
-        unlockOwner = await unlock.owner()
         await unlock.configUnlock(
           udt.address,
           weth.address,
@@ -143,8 +142,6 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           )
 
           const balanceReferrerBefore = await udt.balanceOf(referrer)
-          const balanceUnlockOwnerBefore = await udt.balanceOf(unlockOwner)
-
           const { blockNumber } = await lock.purchase(
             [],
             [keyBuyer],
@@ -165,9 +162,6 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           balanceReferrer = new BigNumber(await udt.balanceOf(referrer)).minus(
             balanceReferrerBefore
           )
-          balanceUnlockOwner = new BigNumber(
-            await udt.balanceOf(unlockOwner)
-          ).minus(balanceUnlockOwnerBefore)
         })
 
         it('referrer has received some UDT now', async () => {
@@ -183,17 +177,6 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
               .shiftedBy(-18) // shift the rate
               .toFixed(3),
             gasSpent.shiftedBy(-18).toFixed(3)
-          )
-        })
-
-        it('amount granted for dev ~= gas spent * 20%', async () => {
-          assert.equal(
-            balanceUnlockOwner
-              .shiftedBy(-18) // shift UDT balance
-              .times(rate.toString())
-              .shiftedBy(-18) // shift the rate
-              .toFixed(3),
-            gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
           )
         })
       })
@@ -222,8 +205,6 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           ])
 
           const balanceReferrerBefore = await udt.balanceOf(referrer)
-          const balanceUnlockOwnerBefore = await udt.balanceOf(unlockOwner)
-
           await lock.purchase(
             [],
             [keyBuyer],
@@ -242,21 +223,14 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           balanceReferrer = new BigNumber(await udt.balanceOf(referrer)).minus(
             balanceReferrerBefore
           )
-          balanceUnlockOwner = new BigNumber(
-            await udt.balanceOf(unlockOwner)
-          ).minus(balanceUnlockOwnerBefore)
         })
 
         it('referrer has some UDT now', async () => {
           assert.notEqual(balanceReferrer.toString(), 0)
         })
 
-        it('amount granted for referrer ~= 8 UDT', async () => {
-          assert.equal(balanceReferrer.shiftedBy(-18).toFixed(0), '8')
-        })
-
-        it('amount granted for dev ~= 2 UDT', async () => {
-          assert.equal(balanceUnlockOwner.shiftedBy(-18).toFixed(0), '2')
+        it('amount granted for referrer ~= 10 UDT', async () => {
+          assert.equal(balanceReferrer.shiftedBy(-18).toFixed(0), '10')
         })
       })
     })
