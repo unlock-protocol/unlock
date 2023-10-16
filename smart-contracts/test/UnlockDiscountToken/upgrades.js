@@ -248,8 +248,6 @@ contract('UnlockDiscountToken upgrade', async () => {
 
     describe('mint by gas price', () => {
       let gasSpent
-      let balanceBefore
-
       before(async () => {
         // buy a key
         lock.connect(keyBuyer)
@@ -269,8 +267,6 @@ contract('UnlockDiscountToken upgrade', async () => {
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
         gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
-
-        balanceBefore = await udt.balanceOf(await unlock.owner())
       })
 
       it('referrer has some UDT now', async () => {
@@ -289,22 +285,9 @@ contract('UnlockDiscountToken upgrade', async () => {
           gasSpent.shiftedBy(-18).toFixed(3)
         )
       })
-
-      it('amount minted for dev ~= gas spent * 20%', async () => {
-        assert.equal(
-          new BigNumber((await udt.balanceOf(await unlock.owner())).toString())
-            .minus(new BigNumber(balanceBefore.toString()))
-            .shiftedBy(-18) // shift UDT balance
-            .times(rate.toString())
-            .shiftedBy(-18) // shift the rate
-            .toFixed(3),
-          gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
-        )
-      })
     })
 
     describeOrSkip('mint capped by % growth', () => {
-      let ownerBalanceBefore
       before(async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
@@ -317,7 +300,6 @@ contract('UnlockDiscountToken upgrade', async () => {
           ethers.BigNumber.from(baseFeePerGas).toHexString(16),
         ])
 
-        ownerBalanceBefore = await udt.balanceOf(await unlock.owner())
         lock.connect(keyBuyer)
         await lock.purchase(
           [],
@@ -339,18 +321,10 @@ contract('UnlockDiscountToken upgrade', async () => {
         assert.notEqual(actual.toString(), 0)
       })
 
-      it('amount minted for referrer ~= 10 UDT', async () => {
+      it('amount minted for referrer ~= 12 UDT', async () => {
         const balance = await udt.balanceOf(referrer2.address)
         const bn = new BigNumber(balance.toString())
-        assert.equal(bn.shiftedBy(-18).toFixed(0), '10')
-      })
-
-      it('amount minted for dev ~= 2 UDT', async () => {
-        const balance = await udt.balanceOf(await unlock.owner())
-        assert.equal(
-          parseInt(ethers.utils.formatEther(balance.sub(ownerBalanceBefore))),
-          '2'
-        )
+        assert.equal(bn.shiftedBy(-18).toFixed(0), '12')
       })
     })
   })
