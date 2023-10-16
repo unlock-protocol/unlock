@@ -2,7 +2,7 @@
 title: Cross-chain Governance
 authorName: Clément Renaud
 publishDate: October 16, 2023
-description: unlock connext gnosis.
+description: Unlock Labs partnered with Connext and Gnosis Safe to create this first-of-its-kind architecture that passes not only tokens between networks. It passes code changes across bridges..
 image: /images/blog/crosschain/cross-chain-share.png
 ---
 
