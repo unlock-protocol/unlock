@@ -56,7 +56,7 @@ Connext provides the bridge technology that is necessary for taking the calls co
 
 ### What was the role of Safe in this architecture?
 
-Gnosis Safe provides the receiving end of DAO proposals on destination chains. When a call is sent from the DAO’s Governor contract, it crosses the bridge towards a Gnosis Safe that receives it.
+Safe provides the receiving end of DAO proposals on destination chains. When a call is sent from the DAO’s Governor contract, it crosses the bridge towards a Safe that receives it.
 
 Gnosis Safe’s Zodiac suite of modules allows for a Safe to 1) receive calls properly from the bridge and 2) put a call in quarantine for a cooldown period once it is received.
 
