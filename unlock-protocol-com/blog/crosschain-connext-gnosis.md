@@ -1,5 +1,5 @@
 ---
-title: Cross-chain Governance
+title: Implementing Cross-Chain DAO Governance with Unlock Protocol, Connext and Safe
 authorName: Clément Renaud
 publishDate: October 16, 2023
 description: Unlock Labs partnered with Connext and Gnosis Safe to create this first-of-its-kind architecture that passes not only tokens between networks. It passes code changes across bridges..
