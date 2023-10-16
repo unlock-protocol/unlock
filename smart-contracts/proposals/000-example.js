@@ -8,7 +8,7 @@ module.exports = {
   calls: [
     {
       contractAddress: '0x90DE74265a416e1393A450752175AED98fe11517',
-      contractName: 'UnlockDiscountTokenV3',
+      contractNameOrAbi: 'UnlockDiscountTokenV3',
       functionName: 'transfer',
       functionArgs: [
         tokenRecipientAddress,

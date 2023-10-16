@@ -244,7 +244,7 @@ module.exports = {
   proposalName: `My Proposal`, // a string describing the proposal
   calls: [
     {
-      contractName, // the contract name or an ABI - ex. `UnlockDiscountTokenV3`
+      contractNameOrAbi, // the contract name or an ABI - ex. `UnlockDiscountTokenV3`
       functionName, // the name or signature of the function to be executed - `transfer`
       functionArgs, // the args of the function - ex. [ 0x0000..., 10000 ]
       value, // (optional) payable value in native tokens
@@ -285,7 +285,7 @@ module.exports = async function (params) {
     proposalName: `My async proposal`, // a string describing the proposal
     calls: [
       {
-        contractName, // the contract name or an ABI - ex. `UnlockDiscountTokenV3`
+        contractNameOrAbi, // the contract name or an ABI - ex. `UnlockDiscountTokenV3`
         functionName, // the name or signature of the function to be executed - `transfer`
         functionArgs: [amount], // the args of the function - ex. [ 0x0000..., 10000 ]
         value, // (optional) payable value in native tokens

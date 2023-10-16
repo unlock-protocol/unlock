@@ -13,4 +13,5 @@ export interface Env {
   PALM_PROVIDER: string
   BASE_GOERLI_PROVIDER: string
   BASE_PROVIDER: string
+  SEPOLIA_PROVIDER: string
 }

@@ -11,8 +11,8 @@ async function main({ proposal, proposerAddress, govAddress }) {
   console.log(
     `GOV SUBMIT > Proposed (${proposal.calls.length} calls):\n${proposal.calls
       .map(
-        ({ contractName, functionName, functionArgs }) =>
-          `- ${contractName} ${functionName} ${functionArgs}`
+        ({ contractNameOrAbi, functionName, functionArgs }) =>
+          `- ${contractNameOrAbi} ${functionName} ${functionArgs}`
       )
       .join('\n')}\n`
   )
