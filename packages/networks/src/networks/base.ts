@@ -25,7 +25,7 @@ export const base: NetworkConfig = {
   id: 8453,
   isTestNetwork: false,
   keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
-  maxFreeClaimCost: 10,
+  maxFreeClaimCost: 1,
   multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
   name: 'Base',
   nativeCurrency: {
