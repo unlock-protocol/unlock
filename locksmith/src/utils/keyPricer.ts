@@ -25,9 +25,13 @@ export default class KeyPricer {
 
   async canAffordGrant(network: number): Promise<boolean> {
     const gasPrice = new GasPrice()
+    // TODO: compute actual gas for transaction (on L2 this is challenging since we need to account for both L1 and L2 parts)
     const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
     if (!networks[network].maxFreeClaimCost) {
       return false
+    }
+    if (networks[network].fullySubsidizedGas) {
+      return true
     }
     return gasCost < networks[network].maxFreeClaimCost!
   }

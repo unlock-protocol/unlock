@@ -260,16 +260,16 @@ export class PurchaseController {
         pricer.canAffordGrant(network),
       ])
 
+      if (!canAffordGas) {
+        return response.status(500).send({
+          message: 'Gas fees is too pricey.',
+        })
+      }
+
       if (!hasEnoughToPayForGas) {
         return response.status(500).send({
           message:
             'Purchaser does not have enough funds to allow claiming the membership',
-        })
-      }
-
-      if (!canAffordGas) {
-        return response.status(500).send({
-          message: 'Gas fees is too pricey.',
         })
       }
 
