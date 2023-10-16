@@ -58,7 +58,7 @@ Connext provides the bridge technology that is necessary for taking the calls co
 
 Safe provides the receiving end of DAO proposals on destination chains. When a call is sent from the DAO’s Governor contract, it crosses the bridge towards a Safe that receives it.
 
-Gnosis Safe’s Zodiac suite of modules allows for a Safe to 1) receive calls properly from the bridge and 2) put a call in quarantine for a cooldown period once it is received.
+Safe’s Zodiac suite of modules allows for a Safe to 1) receive calls properly from the bridge and 2) put a call in quarantine for a cooldown period once it is received.
 
 Unlock Protocol has historically relied on Gnosis Safe for the management of the protocol contracts. By reusing and building on the same tech, the changes required for the protocol governance are kept to a minimum to avoid potential security issues.
 
