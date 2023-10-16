@@ -12,7 +12,7 @@ In service to the Unlock DAO, the Unlock Labs team has been working on [an ambit
 
 When the Unlock DAO approves a proposal that affects the operation of the core Unlock Protocol, those changes are propagated via bridges across the various chains to keep the protocol’s behavior consistent, regardless of which chain is being used to deploy an Unlock Protocol smart contract. 
 
-Unlock Labs partnered with [Connext](https://www.connext.network/) and [Gnosis Safe](https://safe.global/) to create this first-of-its-kind architecture that passes not only tokens between networks. *It passes code changes across bridges*. 
+Unlock Labs partnered with [Connext](https://www.connext.network/) and [Safe](https://safe.global/) to create this first-of-its-kind architecture that passes not only tokens between networks. *It passes code changes across bridges*. 
 
 Here’s a quick FAQ on why this matters and how it works.
 
