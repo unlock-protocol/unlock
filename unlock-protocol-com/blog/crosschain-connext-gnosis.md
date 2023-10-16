@@ -54,7 +54,7 @@ This cross-chain governance process puts management of contracts previously only
 
 Connext provides the bridge technology that is necessary for taking the calls contained in the DAO proposal from mainnet to the other chains. The Connext bridge effectively conveys the instructions to execute across chains.
 
-### What was the role of Gnosis Safe in this architecture?
+### What was the role of Safe in this architecture?
 
 Gnosis Safe provides the receiving end of DAO proposals on destination chains. When a call is sent from the DAO’s Governor contract, it crosses the bridge towards a Gnosis Safe that receives it.
 
