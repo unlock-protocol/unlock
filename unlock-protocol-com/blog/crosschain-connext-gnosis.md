@@ -68,7 +68,7 @@ There were multiple challenges along the way, as we were in radically unexplored
 
 In the time since the first iteration of this architecture, Connext developed integration with the *extremely* helpful Safe Zodiac module solution, which was audited and maintained by their own team.
 
-We discovered a few issues integrating with the Gnosis Safe contracts during the process, and were able to work very closely with the Gnosis Safe team, who were incredibly responsive when issues arose during the development. 
+We discovered a few issues integrating with the Safe contracts during the process, and were able to work very closely with the Safe team, who were incredibly responsive when issues arose during the development. 
 
 ### The bottom line: This is complex stuff!
 
