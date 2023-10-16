@@ -38,7 +38,7 @@ For members of the DAO, the cross-chain process allows them to gain more control
 
 This new implementation helps the Unlock Protocol ecosystem execute more efficiently, since approved proposals will propagate more quickly across the various networks with reduced overhead. 
 
-Security, as usual, is a double-edged sword. On one side, a single proposal can apply changes across multiple chains making audit and tracking of calls easier, and the protocol more consistent. For instance in case of an upgrade, which in the past could result in different protocol versions across different chains. 
+Security, as usual, is a double-edged sword. On one side, a single proposal can apply changes across multiple chains making audit and tracking of calls easier, and the protocol more consistent (for instance in case of an upgrade, which in the past could result in different protocol versions across different chains). 
 
 Of course, the converse is also true — a potential error will propagate more quickly to the other chains. This upgrade includes multiple safeguards, including a cooldown process for transactions when they arrive on destination chains with the ability to cancel a malicious transaction during that cooldown period. A timelock allows quarantining a call after it has crossed the bridge. 
 
