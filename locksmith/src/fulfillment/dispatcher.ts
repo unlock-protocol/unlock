@@ -71,39 +71,46 @@ export default class Dispatcher {
    */
   async balances() {
     const balances = await Promise.all(
-      Object.values(networks).map(async (network: any) => {
-        try {
-          const provider = await getProviderForNetwork(network.id)
-          const { wallet } = await getPurchaser(network.id)
-          const address = await wallet.getAddress()
-          const balance: ethers.BigNumberish =
-            await Promise.race<ethers.BigNumberish>([
-              new Promise((resolve) =>
-                setTimeout(() => {
-                  console.log(
-                    `Could not retrieve balance on network ${network.id}`
-                  )
-                  resolve(0)
-                }, 3000)
-              ),
-              provider.getBalance(address),
-            ])
-          return [
-            network.id,
-            {
-              address,
-              name: network.name,
-              balance: ethers.utils.formatEther(balance),
-            },
-          ]
-        } catch (error) {
-          logger.error('Could not retrieve balance on network', {
-            network,
-            error,
-          })
-          return [network.id, {}]
-        }
-      })
+      Object.values(networks)
+        .filter((network) => network.name !== 'localhost')
+        .map(async (network: any) => {
+          try {
+            const provider = await getProviderForNetwork(network.id)
+            const { wallet } = await getPurchaser(network.id)
+            const address = await wallet.getAddress()
+            let timeout
+            const balance: ethers.BigNumberish =
+              await Promise.race<ethers.BigNumberish>([
+                new Promise(
+                  (resolve) =>
+                    (timeout = setTimeout(() => {
+                      console.log(
+                        `Timeout while retrieving balance on network ${network.name} (${network.id})`
+                      )
+                      resolve(0)
+                    }, 3000))
+                ),
+                provider.getBalance(address),
+              ])
+            clearTimeout(timeout) // clears timeout
+            return [
+              network.id,
+              {
+                address,
+                name: network.name,
+                balance: ethers.utils.formatEther(balance),
+              },
+            ]
+          } catch (error) {
+            logger.error(
+              `Could not retrieve balance on network ${network.name} (${network.id}) `,
+              {
+                error,
+              }
+            )
+            return [network.id, {}]
+          }
+        })
     )
     // @ts-expect-error - map type
     const entries = new Map(balances)
