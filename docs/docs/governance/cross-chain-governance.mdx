@@ -35,7 +35,7 @@ NB: The cooldown period is useful to prevent malicious or errored calls from bei
 To work, this workflow requires Connext bridge, SAFE contracts and Unlock Protocol to be deployed 
 and active on the network.
 
-As Oct 10, 2023 the list of supported networks are:
+The list of supported networks are:
 
 <>
 {
@@ -44,21 +44,27 @@ As Oct 10, 2023 the list of supported networks are:
 }
 </>
 
-export const supportedChains = [1,137,100,10,42161,56]
+
+export const supportedChains = Object.keys(networks).filter((chainId) => !!networks[chainId].governanceBridge?.modules && !networks[chainId].isTestNetwork)
+
+<>
+{ console.log(supportedChains) }
+</>
 
 <ul>
 {
 Object.values(networks)
-  .filter((network) => supportedChains.includes(network.id))
+  .filter((network) => supportedChains.includes(network.id.toString()))
   .map((network) => {
   return (
     <li key={network.id}>
-      {network.name}
+      <p>{network.name}</p>
     </li>
   );  
 })
 }
 </ul>
+
 
 # How to setup the multisig
 
