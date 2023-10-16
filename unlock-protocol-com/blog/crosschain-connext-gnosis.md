@@ -60,7 +60,7 @@ Safe provides the receiving end of DAO proposals on destination chains. When a c
 
 Safe’s Zodiac suite of modules allows for a Safe to 1) receive calls properly from the bridge and 2) put a call in quarantine for a cooldown period once it is received.
 
-Unlock Protocol has historically relied on Gnosis Safe for the management of the protocol contracts. By reusing and building on the same tech, the changes required for the protocol governance are kept to a minimum to avoid potential security issues.
+Unlock Protocol has historically relied on Safe for the management of the protocol contracts. By reusing and building on the same tech, the changes required for the protocol governance are kept to a minimum to avoid potential security issues.
 
 ### Things we learned along the way
 
