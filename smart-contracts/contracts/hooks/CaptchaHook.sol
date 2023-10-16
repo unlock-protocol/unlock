@@ -3,12 +3,19 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV12.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CaptchaHook {
-  address public secretSigner;
+contract CaptchaHook is Ownable {
+  mapping(address => bool) public signers;
 
-  constructor(address _secretSigner) {
-    secretSigner = _secretSigner;
+  constructor() {}
+
+  function addSigner(address signer) public onlyOwner {
+    signers[signer] = true;
+  }
+
+  function removeSigner(address signer) public onlyOwner {
+    signers[signer] = false;
   }
 
   /**
@@ -39,7 +46,7 @@ contract CaptchaHook {
     bytes32 messageHash = keccak256(encoded);
     bytes32 hash = ECDSA.toEthSignedMessageHash(messageHash);
     address recoveredAddress = ECDSA.recover(hash, signature);
-    return recoveredAddress == secretSigner;
+    return signers[recoveredAddress];
   }
 
   /**
