@@ -64,6 +64,17 @@ export interface Hook {
   description?: string
 }
 
+// info about the bridge are available at
+// https://docs.connext.network/resources/deployments
+export interface NetworkBridgeConfig {
+  domainId: number
+  connext: string
+  modules?: {
+    connextMod?: string
+    delayMod?: string
+  }
+}
+
 export interface NetworkConfig {
   id: number
   featured: boolean
@@ -112,13 +123,7 @@ export interface NetworkConfig {
   blockScan?: {
     url?: (address: string) => string
   }
-  // info about the bridge are available at
-  // https://docs.connext.network/resources/deployments
-  bridge?: {
-    domainId: number
-    connext: string
-    connextZodiacGnosisAddress?: string
-  }
+  governanceBridge?: NetworkBridgeConfig
   isTestNetwork?: boolean
   erc20?: {
     symbol: string

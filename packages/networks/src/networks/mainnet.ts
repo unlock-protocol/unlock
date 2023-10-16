@@ -18,6 +18,10 @@ export const mainnet: NetworkConfig = {
     },
   },
   featured: true,
+  governanceBridge: {
+    connext: '0x8898B472C54c31894e3B9bb83cEA802a5d0e63C6',
+    domainId: 6648936,
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
