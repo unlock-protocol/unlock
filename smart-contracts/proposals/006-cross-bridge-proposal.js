@@ -58,7 +58,12 @@ const abiIConnext = [
   },
 ]
 
-const targetChains = [137, 137, 137]
+const targetChains = Object.keys(networks)
+  .map((id) => networks[id])
+  .filter(
+    ({ governanceBridge, isTestNetwork }) =>
+      !isTestNetwork && !!governanceBridge
+  )
 
 module.exports = async ([
   destChainId,
@@ -88,29 +93,29 @@ module.exports = async ([
 
   // src info
   const { chainId } = await ethers.provider.getNetwork()
-  console.log(`from ${chainId} to ${targetChains.join(', ')}`)
+  console.log(
+    `from ${chainId} to chains ${targetChains.map(({ id }) => id).join(' - ')}`
+  )
 
   const {
-    bridge: { connext: bridgeAddress },
+    governanceBridge: { connext: bridgeAddress },
   } = networks[chainId]
 
   // dest info
   const explainers = []
   const parsedCalls = await Promise.all(
-    (destChainId ? [destChainId] : targetChains).map(async (destChainId) => {
-      const {
-        bridge,
-        unlockAddress,
-        name: destChainName,
-      } = networks[destChainId]
+    targetChains.map(async (network) => {
+      const { governanceBridge, unlockAddress, name: destChainName } = network
+
+      // make sure we have bridge infor in networks package
+      if (!governanceBridge) return {}
+
       if (!destAddress) {
         destAddress = unlockAddress
       }
 
-      // make sure we have bridge infor in networks package
-      if (!bridge) return {}
-
-      const { domainId: destDomainId, connextZodiacModuleAddress } = bridge
+      const { domainId: destDomainId, connextZodiacModuleAddress } =
+        governanceBridge
 
       if (!destMultisigAddress) {
         destMultisigAddress = connextZodiacModuleAddress
