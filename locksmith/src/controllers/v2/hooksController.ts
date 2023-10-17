@@ -17,6 +17,9 @@ const guildHookQuery = z.object({
     .transform((item) => item.map((item) => normalizer.ethereumAddress(item))),
 })
 
+// This is the hook that is called to verify that a user is part of tha guild
+// First we get the lock's hook, we query the hook to get the signer
+// we get its signature
 export const guildHook: RequestHandler = async (request, response) => {
   const { network, recipients, lockAddress } = await guildHookQuery.parseAsync(
     request.query
@@ -30,7 +33,7 @@ export const guildHook: RequestHandler = async (request, response) => {
   }
   const hookGuildId = settings.hookGuildId
 
-  const { wallet } = await getPurchaser()
+  const { wallet } = await getPurchaser({ network })
   const accesses = await Promise.all(
     recipients.map(async (recipient: string) => {
       const roles = await guild.getUserAccess(hookGuildId, recipient)
