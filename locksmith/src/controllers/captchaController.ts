@@ -65,17 +65,12 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
 
   // Ok let's now select a purchaser that is set as signer, or throw an Error!
   for (let i = 0; i < purchasers.length; i++) {
-    console.log({
-      hook: hook.address,
-      signer: await purchasers[i].getAddress(),
-    })
     const isSigner = await hook
       .signers(await purchasers[i].getAddress())
       .catch((e: any) => {
         logger.error(e)
         return false
       })
-    console.log({ isSigner })
     if (isSigner) {
       wallet = purchasers[i]
       break
