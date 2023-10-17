@@ -20,7 +20,7 @@
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "introspect": "/bin/sh -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
     "introspect:local": "INTROSPECT_NETWORK=31337 node bin/introspect.js",
-    "test": "graph test -v 0.5.2 #change_me_when_changing_matchstick_version ",
+    "test": "graph test -v 0.5.2",
     "prepare:test": "yarn copy-manifest && yarn copy-networks",
     "copy-networks": "rm -rf networks.json && cp ../docker/development/eth-node/networks.json networks.json",
     "copy-manifest": "rm -rf subgraph.yaml && cp ../tests/subgraph.test.yaml subgraph.yaml",
