@@ -3,7 +3,7 @@ title: Unlock Protocol is Now Available on the Sepolia Ethereum Testnet
 publishDate: October 17, 2023
 authorName: Clément Renaud
 description: As Goerli is being deprecated, the Unlock Protocol has now been deployed on the Sepolia Ethereum Testnet for developers.
-image: images/blog/sepolia/sepolia-share.png
+image: images/blog/sepolia/sepolia-share-image.png
 ---
 
 ![sepolia-share-image.png](images/blog/sepolia/sepolia-share-image.png)
