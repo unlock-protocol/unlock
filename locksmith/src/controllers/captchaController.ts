@@ -3,17 +3,9 @@ import { ethers } from 'ethers'
 import { SignedRequest } from '../types'
 import config from '../config/config'
 import fetch from 'isomorphic-fetch'
-import {
-  getAllPurchasers,
-  getPublicProviderForNetwork,
-  getPurchaser,
-  getSignerFromOnKeyPurchaserHookOnLock,
-} from '../fulfillment/dispatcher'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import { networks } from '@unlock-protocol/networks'
+import { getSignerFromOnKeyPurchaserHookOnLock } from '../fulfillment/dispatcher'
 import * as Normalizer from '../utils/normalizer'
 import { z } from 'zod'
-import logger from '../logger'
 
 const SignCaptchaRequest = z.object({
   recipients: z.array(

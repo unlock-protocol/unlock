@@ -13,14 +13,14 @@ const getDataForGuild = async (
       lockAddress,
       recipients
     )
-    return response.data
+    return response.data.result
   } catch (error: any) {
     if (error.response.data.error) {
       throw new Error(error.response.data.error)
     }
-    return ''
+    return recipients.map(() => '')
   }
-  return ''
+  return recipients.map(() => '')
 }
 
 interface UseDataForGuildProps {
@@ -41,6 +41,7 @@ export function useDataForGuild({
         return getDataForGuild(network, lockAddress, recipients)
       } catch (error: any) {
         ToastHelper.error(error.message)
+        return recipients.map(() => '') // Return empty values by default
       }
     },
     {
