@@ -3,10 +3,10 @@ title: Unlock Protocol is Now Available on the Sepolia Ethereum Testnet
 publishDate: October 17, 2023
 authorName: Clément Renaud
 description: As Goerli is being deprecated, the Unlock Protocol has now been deployed on the Sepolia Ethereum Testnet for developers.
-image: images/blog/sepolia/sepolia-share-image.png
+image: /images/blog/sepolia/sepolia-share-image.png
 ---
 
-![sepolia-share-image.png](images/blog/sepolia/sepolia-share-image.png)
+![sepolia-share-image.png](/images/blog/sepolia/sepolia-share-image.png)
 
 The [Sepolia testnet](https://moralis.io/sepolia-testnet-guide-what-is-the-sepolia-testnet/) has emerged as an important environment for developers who are creating dapps in the Ethereum ecosystem. In a move to help ensure that the Unlock Protocol is available wherever developers need it, Unlock Labs is thrilled to announce that the Unlock Protocol is now available on the Sepolia testnet, effective immediately.
 
