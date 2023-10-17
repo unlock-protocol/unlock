@@ -1,6 +1,8 @@
 {
   "name": "@unlock-protocol/governance",
   "packageManager": "yarn@3.5.1",
+  "description": "Scripts for the management of the Unlock Protocol",
+  "private": true,
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
@@ -13,5 +15,8 @@
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "hardhat": "2.15.0"
+  },
+  "scripts": {
+    "test": "echo 'test'"
   }
 }
