@@ -6,7 +6,7 @@ description: As Goerli is being deprecated, the Unlock Protocol has now been dep
 image: images/blog/sepolia/sepolia-share.png
 ---
 
-![sepolia-share-image.png](/images/blog/sepolia/sepolia-share-image.png)
+![sepolia-share-image.png](images/blog/sepolia/sepolia-share-image.png)
 
 The [Sepolia testnet](https://moralis.io/sepolia-testnet-guide-what-is-the-sepolia-testnet/) has emerged as an important environment for developers who are creating dapps in the Ethereum ecosystem. In a move to help ensure that the Unlock Protocol is available wherever developers need it, Unlock Labs is thrilled to announce that the Unlock Protocol is now available on the Sepolia testnet, effective immediately.
 
