@@ -102,6 +102,49 @@ export const getAllPurchasers = async function ({
   return purchasers
 }
 
+interface getSignerFromOnKeyPurchaserHookOnLockArgs {
+  lockAddress: string
+  network: number
+}
+
+export const getSignerFromOnKeyPurchaserHookOnLock = async function ({
+  lockAddress,
+  network,
+}: getSignerFromOnKeyPurchaserHookOnLockArgs) {
+  const web3Service = new Web3Service(networks)
+  const hookAddress = await web3Service.onKeyPurchaseHook({
+    lockAddress,
+    network,
+  })
+
+  const purchasers = await getAllPurchasers({ network })
+  const provider = await getPublicProviderForNetwork(network)
+
+  const hook = new ethers.Contract(
+    hookAddress,
+    ['function signers(address signer) constant view returns (bool)'],
+    provider
+  )
+
+  let wallet = null
+
+  // Ok let's now select a purchaser that is set as signer, or throw an Error!
+  // Can we do Promise.all to reduce latency?
+  for (let i = 0; i < purchasers.length; i++) {
+    const isSigner = await hook
+      .signers(await purchasers[i].getAddress())
+      .catch((e: any) => {
+        logger.error(e)
+        return false
+      })
+    if (isSigner) {
+      wallet = purchasers[i]
+      break
+    }
+  }
+  return wallet
+}
+
 export default class Dispatcher {
   /**
    * Return the purchaser's balances for each network

@@ -322,9 +322,6 @@ export class StorageService extends EventEmitter {
       url.searchParams.append('lockAddress', lockAddress)
       url.searchParams.append('network', network.toString())
 
-      console.log('____________')
-      console.log(url.toString())
-
       const response = await fetch(url.toString(), {
         method: 'GET',
         headers: options.headers,

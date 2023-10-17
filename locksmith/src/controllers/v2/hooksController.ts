@@ -4,7 +4,7 @@ import * as z from 'zod'
 import normalizer from '../../utils/normalizer'
 import { getSettings } from '../../operations/lockSettingOperations'
 import { ethers } from 'ethers'
-import { getPurchaser } from '../../fulfillment/dispatcher'
+import { getSignerFromOnKeyPurchaserHookOnLock } from '../../fulfillment/dispatcher'
 
 const guildHookQuery = z.object({
   network: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number()),
@@ -33,7 +33,17 @@ export const guildHook: RequestHandler = async (request, response) => {
   }
   const hookGuildId = settings.hookGuildId
 
-  const { wallet } = await getPurchaser({ network })
+  const wallet = await getSignerFromOnKeyPurchaserHookOnLock({
+    lockAddress,
+    network,
+  })
+
+  if (!wallet) {
+    return response.status(422).json({
+      error: 'This lock has a misconfigured Guild hook.',
+    })
+  }
+
   const accesses = await Promise.all(
     recipients.map(async (recipient: string) => {
       const roles = await guild.getUserAccess(hookGuildId, recipient)

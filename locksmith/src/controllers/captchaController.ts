@@ -7,6 +7,7 @@ import {
   getAllPurchasers,
   getPublicProviderForNetwork,
   getPurchaser,
+  getSignerFromOnKeyPurchaserHookOnLock,
 } from '../fulfillment/dispatcher'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
@@ -35,47 +36,21 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
     return res.json({ error: 'Missing recipients or captchaValue' })
   }
 
-  // const url = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${captchaValue}`
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${captchaValue}`
 
-  // const response = await fetch(url, {
-  //   method: 'post',
-  // }).then((response) => response.json())
+  const response = await fetch(url, {
+    method: 'post',
+  }).then((response) => response.json())
 
-  // if (!response.success) {
-  //   return res.json({ error: response['error-codes'] })
-  // }
+  if (!response.success) {
+    return res.json({ error: response['error-codes'] })
+  }
 
-  const web3Service = new Web3Service(networks)
-  const hookAddress = await web3Service.onKeyPurchaseHook({
+  const wallet = await getSignerFromOnKeyPurchaserHookOnLock({
     lockAddress,
     network,
   })
 
-  const purchasers = await getAllPurchasers({ network })
-
-  const provider = await getPublicProviderForNetwork(network)
-
-  const hook = new ethers.Contract(
-    hookAddress,
-    ['function signers(address signer) constant view returns (bool)'],
-    provider
-  )
-
-  let wallet = null
-
-  // Ok let's now select a purchaser that is set as signer, or throw an Error!
-  for (let i = 0; i < purchasers.length; i++) {
-    const isSigner = await hook
-      .signers(await purchasers[i].getAddress())
-      .catch((e: any) => {
-        logger.error(e)
-        return false
-      })
-    if (isSigner) {
-      wallet = purchasers[i]
-      break
-    }
-  }
   if (!wallet) {
     return res.status(422).json({
       error: 'This lock has a misconfigured Captcha hook.',
