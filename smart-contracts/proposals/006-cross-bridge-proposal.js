@@ -61,15 +61,11 @@ const abiIConnext = [
 const targetChains = Object.keys(networks)
   .map((id) => networks[id])
   .filter(
-    ({ governanceBridge, isTestNetwork }) =>
-      !isTestNetwork && !!governanceBridge
+    ({ governanceBridge, isTestNetwork, id }) =>
+      !isTestNetwork && !!governanceBridge && id != 1
   )
 
-module.exports = async ([
-  destChainId,
-  destMultisigAddress,
-  destAddress,
-] = []) => {
+module.exports = async () => {
   // parse call data for function call
   const { interface: unlockInterface } = await ethers.getContractAt(
     'Unlock',
@@ -105,32 +101,30 @@ module.exports = async ([
   const explainers = []
   const parsedCalls = await Promise.all(
     targetChains.map(async (network) => {
-      const { governanceBridge, unlockAddress, name: destChainName } = network
+      const {
+        governanceBridge,
+        unlockAddress,
+        id: destChainId,
+        name: destChainName,
+      } = network
 
       // make sure we have bridge infor in networks package
       if (!governanceBridge) return {}
 
-      if (!destAddress) {
-        destAddress = unlockAddress
-      }
+      const {
+        domainId: destDomainId,
+        modules: { connextMod: destAddress },
+      } = governanceBridge
 
-      const { domainId: destDomainId, connextZodiacModuleAddress } =
-        governanceBridge
-
-      if (!destMultisigAddress) {
-        destMultisigAddress = connextZodiacModuleAddress
-      }
-
-      if (!destMultisigAddress || !destDomainId) {
+      if (!destDomainId || !destAddress) {
         throw Error('Missing bridge information')
       }
 
-      // encode data to be passed to Gnosis Zodiac module
-      // following instructions at https://github.com/gnosis/zodiac-module-connext
+      // encode instructions to be executed by the SAFE
       const moduleData = await ethers.utils.defaultAbiCoder.encode(
         ['address', 'uint256', 'bytes', 'bool'],
         [
-          destAddress, // to
+          unlockAddress, // to
           0, // value
           calldata, // data
           0, // operation: 0 for CALL, 1 for DELEGATECALL
@@ -140,7 +134,7 @@ module.exports = async ([
 
       console.log(moduleData)
 
-      // add small explanation
+      // add a small explanation
       explainers.push([destChainId, destChainName, unlockAddress])
 
       // proposed changes
@@ -150,7 +144,7 @@ module.exports = async ([
         functionName: 'xcall',
         functionArgs: [
           destDomainId,
-          destMultisigAddress, // destMultisigAddress,
+          destAddress, // destMultisigAddress,
           ADDRESS_ZERO, // asset
           ADDRESS_ZERO, // delegate
           0, // amount
