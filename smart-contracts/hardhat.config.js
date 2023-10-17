@@ -79,14 +79,12 @@ if (process.env.RUN_FORK) {
 
 // tasks
 require('./tasks/accounts')
-require('./tasks/balance')
 require('./tasks/deploy')
 require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/release')
 require('./tasks/utils')
 require('./tasks/lock')
-require('./tasks/verify')
 require('./tasks/keys')
 require('./tasks/unlock')
 

@@ -18,18 +18,18 @@ const settings = {
 }
 
 // tasks
+require('./tasks/balance')
 require('./tasks/safe')
 require('./tasks/gov')
+require('./tasks/verify')
 
 // require('./tasks/accounts')
-// require('./tasks/balance')
 // require('./tasks/deploy')
 // require('./tasks/upgrade')
 // require('./tasks/set')
 // require('./tasks/release')
 // require('./tasks/utils')
 // require('./tasks/lock')
-// require('./tasks/verify')
 // require('./tasks/keys')
 // require('./tasks/unlock')
 
