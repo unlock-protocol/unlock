@@ -7,7 +7,7 @@ description: >-
 
 import { networks } from "@unlock-protocol/networks";
 
-To simplify the maintenance and management of the protocol contracts, we use a cross-chain governance that allows for a DAO proposal on mainnet to reach contracts on other networks.
+To fully decentralize the maintenance and management of the protocol contracts, we use a cross-chain governance that allows for a DAO proposal on Ethereum mainnet to reach the Unlock contracts on other networks.
 
 # How it works
 
@@ -66,17 +66,19 @@ Object.values(networks)
 </ul>
 
 
-# How to setup the multisig
+# How to setup the multisig on the "remote" chain
 
 On every receiving chain, we need a [SAFE](https://safe.global/) multisig configured with two [Zodiac](https://zodiac.wiki/index.php/ZODIAC.WIKI) plugins, namely:
 
 - one [Zodiac Connext](https://github.com/gnosis/zodiac-module-connext/) bridge receiver
 - one [Delay](https://zodiac.wiki/index.php/Category:Delay_Modifier)
 
+Important note: we use a multisig here, but no signature is required for transactions to be executed. The SAFE contracts are actually flexible enough to include the ability to execute transactions directly as long as they have been through pre-configured modules. 
+
 ## Using the Gnosis web UI
 
 1. go to Apps > Zodiac
-2. add the Delay module (cooldown : 7 days, expiration: 90 days)
+2. add the Delay module (cooldown : 2 days, expiration: 90 days)
 3. add the Connext module (Origin sender address : DAO address, Origin domain ID: 6648936 - see [list of Connext domains](https://docs.connext.network/resources/deployments#ethereum))
 4. Go to Connext module > write > `setTarget` with the Delay address
 5. Get the Connext module address then remove the Connext module
@@ -121,7 +123,7 @@ return {
 }
 ```
 
-Once the proposal is correctly parsed, we can send it to the DAO
+Once the proposal is correctly parsed, we can send it to the DAO.
 
 ```jsx
 yarn hardhat gov:submit --gov-address <governor> --proposal <proposal-filepath> --network gnosis <arguments>
@@ -135,9 +137,9 @@ yarn hardhat gov:submit --gov-address 0xE85696a3419162452e6925816D8073374e4190b7
 
 ## Executing a call
 
-Once a call has pass the cooldown delay, it can be executed by anyone (the addressed submitting the transaction does not need to be a signer on the multisig) via the `executeNextTx` in the Delay mod.
+Once a call has passed the cooldown delay, it can be executed by anyone (the address submitting the transaction does not need to be a signer on the multisig) via the `executeNextTx` in the Delay mod.
 
-The arguments to pass to the function are the one that were pass in the original DAO proposal. You can also find here in the `TransactionAdded` event that was fire by the bridge transaction ([example](https://polygonscan.com/tx/0xc7bb22753a6c9fccb9c389cd2c3108361f6ed9d3e069134844842d63cdd24ca9#eventlog) )
+The arguments to pass to the function are the one that were passed in the original DAO proposal. You can also find here in the `TransactionAdded` event that was fired by the bridge transaction ([example](https://polygonscan.com/tx/0xc7bb22753a6c9fccb9c389cd2c3108361f6ed9d3e069134844842d63cdd24ca9#eventlog) )
 
 There is a script that allows to execute a call stored in Safe Zodiac Delay module
 
@@ -151,6 +153,6 @@ yarn hardhat safe:bridge:execute --bridge-tx <tx hash> --delay-mod <contract add
 
 ## Cancel a call
 
-During the cooldown period, a call can be cancelled. That can prevent malicious or errored calls if from being executed.
+During the cooldown period, a call can be cancelled by the SAFE multisig signers. That can prevent malicious or errored calls from being executed. 
 
 To cancel a call, you need to call `setTxNonce` from the multisig with the value returned by `queueNonce()`. That way, the nonce will increase past the malicious tx, making the queue appear empty.
