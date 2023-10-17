@@ -37,12 +37,6 @@ and active on the network.
 
 The list of supported networks are:
 
-<>
-{
-// TODO: filter supported chains directly using `bridge` 
-// key from the networks package 
-}
-</>
 
 
 export const supportedChains = Object.keys(networks).filter((chainId) => !!networks[chainId].governanceBridge?.modules && !networks[chainId].isTestNetwork)
