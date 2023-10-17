@@ -1,22 +1,24 @@
 ---
 title: Unlock Token (UDT)
 description: The Unlock Token (UDT) and its tokenomics.
-sidebar_position: 1
+sidebar_position: 3
 ---
 
 The Unlock DAO Tokens — previously known as Unlock Discount Tokens — (UDT) are the governance tokens for the Unlock Protocol. Holders of UDT collectively form the [Unlock DAO](./unlock-dao.md).
 
 :::info
-UDT are perfectly _optional_. Creators can deploy lock without knowledge of UDT and their members can similarly purchase membership without knowing about UDT.
+UDT are perfectly _optional_. Creators can deploy locks without knowledge of UDT and their members can similarly purchase membership without knowing about UDT.
 :::
 
 UDT tokens were created on Ethereum at this address: [`0x90de74265a416e1393a450752175aed98fe11517`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517), and have also been bridged to multiple side-chains and networks such as Polygon, Gnosis Chain and others. The DAO may decide to add support for more networks.
 
-The contract uses OpenZeppelin's ERC20 libraries. It was initally deployed to be upgradable but the proxy admin renounced its role, making the contract not upgradable anymore.
+The contract uses OpenZeppelin's ERC20 libraries. It was initally deployed to be upgradable but **the proxy admin renounced its role**, making the contract not upgradable anymore.
 
-As of April 2023, the supply of UDT is fixed and no new UDT can be minted.
+UDT can optionnaly be distributed by the protocol itself when membership tokens are purchased or renewed. Please see below for details.
 
-## Key concepts
+As of April 2023, the supply of UDT is fixed and no new UDT can be minted. Additionnaly, no UDT is currently being distributed by the protocol.
+
+## Definitions
 
 - **Gross Network Product** This is the protocol's equivalent to a country's gross national product or income. It is the sum of all the value excchanged on a network. Since locks can be priced in any ERC20, the Unlock contract will consult local oracles (Uniswap) and convert the ERC20 price into the networks's native currency
 - **Referrer** an account address that can be set on any purchase (or renewal) transaction. This address should be considered to be the "implementer's" address but can be left up to the user.
