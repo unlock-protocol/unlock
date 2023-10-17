@@ -45,7 +45,10 @@ export const avalanche: NetworkConfig = {
     symbol: 'AVAX',
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/avalanche/${lockAddress}`,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://opensea.io/assets/avalanche/${_lockAddress}/${_tokenId}`,
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/43114',

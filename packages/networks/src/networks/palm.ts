@@ -7,7 +7,6 @@ export const palm: NetworkConfig = {
   chain: 'palm',
   description:
     'The Palm network is an Ethereum-compatible sidechain, built to serve as the foundation of a new scalable and sustainable ecosystem for NFTs. It is designed by, and for, Ethereum developers and features low gas costs and fast transaction finality.',
-  erc20: null,
   explorer: {
     name: 'Palm Explorer',
     urls: {

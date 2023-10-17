@@ -50,7 +50,10 @@ export const mumbai: NetworkConfig = {
     symbol: 'MATIC',
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    collectionUrl: (lockAddress) =>
+      `https://testnets.opensea.io/assets/mumbai/${lockAddress}`,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://testnets.opensea.io/assets/mumbai/${_lockAddress}/${_tokenId}`,
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/80001',
