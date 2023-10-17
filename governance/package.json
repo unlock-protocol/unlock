@@ -1,0 +1,15 @@
+{
+  "name": "@unlock-protocol/governance",
+  "packageManager": "yarn@3.5.1",
+  "dependencies": {
+    "@safe-global/safe-core-sdk": "3.3.5",
+    "@safe-global/safe-ethers-lib": "1.9.3",
+    "@safe-global/safe-service-client": "2.0.3",
+    "@unlock-protocol/contracts": "workspace:./packages/contracts",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/hardhat-helpers": "workspace:^",
+    "@unlock-protocol/hardhat-plugin": "workspace:^",
+    "@unlock-protocol/networks": "workspace:./packages/networks",
+    "hardhat": "2.15.0"
+  }
+}
