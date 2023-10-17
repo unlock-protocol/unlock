@@ -198,7 +198,7 @@ All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}
 ${explainers
   .map(
     ([destChainId, destChainName, destAddress]) =>
-      `- \`transferTokens(${tokenAmount})\` to ${destAddress} on chain ${destChainName} (${destChainId})`
+      `- \`transferTokens(${tokenAmount})\` from ${destAddress} on chain ${destChainName} (${destChainId})`
   )
   .join('\n')}
 
