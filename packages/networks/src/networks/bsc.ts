@@ -58,9 +58,12 @@ export const bsc: NetworkConfig = {
     symbol: 'BNB',
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/bsc/${lockAddress}`,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://opensea.io/assets/bsc/${_lockAddress}/${_tokenId}`,
   },
-  // 12368889,
+
   previousDeploys: [
     {
       startBlock: 12396000,
