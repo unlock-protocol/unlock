@@ -144,6 +144,6 @@ yarn hardhat safe:bridge:execute --bridge-tx <tx hash> --delay-mod <contract add
 
 ## Cancel a call
 
-During the cooldown period, a call can be cancelled by the SAFE multisig signers. That can prevent malicious or errored calls from being executed. 
+During the cooldown period, a call can be cancelled by the Safe multisig signers. That can prevent malicious or errored calls from being executed. 
 
 To cancel a call, you need to call `setTxNonce` from the multisig with the value returned by `queueNonce()`. That way, the nonce will increase past the malicious tx, making the queue appear empty.
