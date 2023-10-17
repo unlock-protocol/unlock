@@ -24,11 +24,9 @@ Sepolia is the next primary Ethereum testnet for developers, and Sepolia is sche
 
 The contracts for Unlock Protocol have been deployed on Sepolia and you are able to create test locks from the Unlock dashboard, starting now. The Unlock Protocol main contract on Sepolia lives at the address [0x36b34e10295cCE69B652eEB5a8046041074515Da](https://sepolia.etherscan.io/address/0x36b34e10295cCE69B652eEB5a8046041074515Da). Sepolia is an ideal environment to build custom logic for your lock, and supports key Unlock Protocol capabilities like contract hooks.
 
-**Sepolia chain/network id:** 11155111
-
-**Native currency:** ETH
-
-**Sepolia explorer:** [https://sepolia.etherscan.io/](https://sepolia.etherscan.io/)
+- **Sepolia chain/network id:** 11155111
+- **Native currency:** ETH
+- **Sepolia explorer:** [https://sepolia.etherscan.io/](https://sepolia.etherscan.io/)
 
 ## Sepolia online faucets
 
