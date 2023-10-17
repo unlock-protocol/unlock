@@ -1,5 +1,5 @@
-const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('../test/helpers')
+const { ethers } = require('ethers')
+const { ADDRESS_ZERO } = require('./constants')
 
 /**
  * Helper to parse a DAO proposal from an object

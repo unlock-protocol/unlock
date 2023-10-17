@@ -5,7 +5,7 @@ const {
   getProposalState,
   getProposalVotes,
   getProposalId,
-} = require('../../helpers/gov')
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ proposal, govAddress }) {
   // env settings

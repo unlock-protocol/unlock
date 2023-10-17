@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { submitProposal } = require('../../helpers/gov')
+const { submitProposal } = require('@unlock-protocol/hardhat-helpers')
 const { impersonate } = require('../../test/helpers')
 
 async function main({ proposal, proposerAddress, govAddress }) {
