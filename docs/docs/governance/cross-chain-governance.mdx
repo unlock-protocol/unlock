@@ -132,7 +132,7 @@ Once a call has passed the cooldown delay, it can be executed by anyone (the add
 
 The arguments to pass to the function are the ones that were passed in the original DAO proposal. You can also find them here in the `TransactionAdded` event that was fired by the bridge transaction ([example](https://polygonscan.com/tx/0xc7bb22753a6c9fccb9c389cd2c3108361f6ed9d3e069134844842d63cdd24ca9#eventlog) )
 
-There is a script that allows to execute a call stored in Safe Zodiac Delay module
+There is a script that allows execution of a call stored in Safe Zodiac Delay module
 
 ```jsx
 yarn hardhat safe:bridge:execute --bridge-tx <tx hash> --delay-mod <contract address> --network <network name>
