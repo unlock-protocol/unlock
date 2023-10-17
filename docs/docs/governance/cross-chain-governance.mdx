@@ -41,9 +41,6 @@ The list of supported networks are:
 
 export const supportedChains = Object.keys(networks).filter((chainId) => !!networks[chainId].governanceBridge?.modules && !networks[chainId].isTestNetwork)
 
-<>
-{ console.log(supportedChains) }
-</>
 
 <ul>
 {
