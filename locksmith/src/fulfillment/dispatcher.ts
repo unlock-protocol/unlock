@@ -42,6 +42,11 @@ export const getPublicProviderForNetwork = async function (network = 1) {
   return new ethers.providers.JsonRpcProvider(networks[network].publicProvider)
 }
 
+interface PurchaserArgs {
+  network: number
+  address?: string
+}
+
 /**
  * Helper function that yields a provider and connected wallet based on the config
  * @param network
@@ -50,10 +55,7 @@ export const getPublicProviderForNetwork = async function (network = 1) {
 export const getPurchaser = async function ({
   network = 1,
   address = undefined,
-}: {
-  network: number
-  address?: string
-}) {
+}: PurchaserArgs) {
   // If we have a provider, we need to fetch that one... or yield an error!
 
   const defenderRelayCredential = config.defenderRelayCredentials[network]
@@ -84,9 +86,7 @@ export const getPurchaser = async function ({
  */
 export const getAllPurchasers = async function ({
   network = 1,
-}: {
-  network: number
-}) {
+}: PurchaserArgs) {
   const purchasers = []
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
@@ -194,7 +194,7 @@ export default class Dispatcher {
         .map(async (network: any) => {
           try {
             const provider = await getProviderForNetwork(network.id)
-            const { wallet } = await getPurchaser(network.id)
+            const { wallet } = await getPurchaser({ network: network.id })
             const address = await wallet.getAddress()
             let timeout
             const balance: ethers.BigNumberish =
@@ -306,6 +306,7 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
+    const { wallet } = await getPurchaser({ network })
     const keyManager = new KeyManager()
     const purchasers = await getAllPurchasers({ network })
     const signers = await Promise.all(
@@ -372,7 +373,7 @@ export default class Dispatcher {
     const { network, lockAddress, owner, data, keyManager } = options
     const walletService = new WalletService(networks)
 
-    // get any purchaser, as the address is not required here.
+    // purchaser address is not required here.
     const { wallet, provider } = await getPurchaser({ network })
 
     await walletService.connect(provider, wallet)
@@ -503,6 +504,7 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter
+
     const wallet = await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
