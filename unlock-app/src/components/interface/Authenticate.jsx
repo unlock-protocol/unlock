@@ -21,6 +21,7 @@ import { useAutoLogin } from '../../hooks/useAutoLogin'
 import { SIWEProvider } from '~/hooks/useSIWE'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import { ConnectModal } from './connect'
+import { config } from '~/config/app'
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -31,8 +32,8 @@ const Web3ServiceProvider = Web3ServiceContext.Provider
  */
 const Providers = ({ network, networkConfig, children, authenticate }) => {
   const storageService = useMemo(
-    () => new StorageService(networkConfig[network].locksmith),
-    [networkConfig, network]
+    () => new StorageService(config.services.storage.host),
+    []
   )
 
   const web3Service = useMemo(() => {

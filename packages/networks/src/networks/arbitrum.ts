@@ -18,6 +18,14 @@ export const arbitrum: NetworkConfig = {
     },
   },
   featured: true,
+  governanceBridge: {
+    connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
+    domainId: 1634886255,
+    modules: {
+      connextMod: '0x4A553635774b3d6fB6273A83b5B49577dF450227',
+      delayMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -40,7 +48,7 @@ export const arbitrum: NetworkConfig = {
   id: 42161,
   isTestNetwork: false,
   keyManagerAddress: '0x520294E736167303efa038205D4391b58261BC9c',
-  maxFreeClaimCost: 100,
+  maxFreeClaimCost: 1,
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   name: 'Arbitrum',
   nativeCurrency: {

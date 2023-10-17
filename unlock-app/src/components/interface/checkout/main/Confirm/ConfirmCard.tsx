@@ -218,7 +218,9 @@ export function ConfirmCard({
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient: string) => getReferrer(recipient)),
+    referrers: recipients.map((recipient: string) =>
+      getReferrer(recipient, paywallConfig, lockAddress)
+    ),
     recipients,
     purchaseType: renew ? 'extend' : 'purchase',
   })
@@ -232,7 +234,7 @@ export function ConfirmCard({
   const onConfirmCard = async () => {
     setIsConfirming(true)
     const referrers: string[] = recipients.map((recipient) => {
-      return getReferrer(recipient, paywallConfig)
+      return getReferrer(recipient, paywallConfig, lockAddress)
     })
 
     const stripeIntent = await createPurchaseIntent({
@@ -273,19 +275,26 @@ export function ConfirmCard({
         confirmation.error ||
         confirmation.paymentIntent?.status !== 'requires_capture'
       ) {
-        throw new Error('We could not confirm your payment.')
+        onError(confirmation.error?.message || 'Failed to confirm payment')
+        setIsConfirming(false)
+        return
       }
     }
-    const transactionHash = await capturePayment({
+
+    capturePayment({
       paymentIntent: paymentIntent.id,
     })
-
-    if (transactionHash) {
-      onConfirmed(lockAddress, transactionHash)
-    } else {
-      onError('No transaction hash returned. Failed to claim membership.')
-    }
-    setIsConfirming(false)
+      .then((transactionHash) => {
+        onConfirmed(lockAddress, transactionHash)
+        setIsConfirming(false)
+      })
+      .catch((error) => {
+        onError(
+          'There was an error while trying to capture your payment. Please check with your financial institution.'
+        )
+        console.log(error.response.data)
+        setIsConfirming(false)
+      })
   }
 
   const isError = isPricingDataError
