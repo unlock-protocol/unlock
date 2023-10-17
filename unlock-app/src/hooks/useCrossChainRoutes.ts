@@ -44,12 +44,6 @@ export const useCrossChainRoutes = ({
         symbol: lock.currencySymbol,
       })
 
-      const price = prices.reduce((acc, item) => acc + item.amount, 0)
-
-      if (isNaN(price) || price === 0) {
-        return []
-      }
-
       const routes = await getCrossChainRoutes({
         sender: account!,
         lock,

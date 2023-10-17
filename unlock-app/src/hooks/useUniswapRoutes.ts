@@ -56,7 +56,7 @@ export const useUniswapRoutes = ({
       // compute total
       const price = prices.reduce((acc, item) => acc + item.amount, 0)
 
-      if (isNaN(price) || price === 0) {
+      if (isNaN(price)) {
         return []
       }
 
