@@ -1,6 +1,6 @@
 const { task } = require('hardhat/config')
 const { networks } = require('@unlock-protocol/networks')
-const { getProxyAdminAddress } = require('../helpers/deployments')
+const { getProxyAdminAddress } = require('@unlock-protocol/hardhat-helpers')
 
 task(
   'upgrade',
