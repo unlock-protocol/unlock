@@ -8603,7 +8603,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:^0.60.0":
+"@graphprotocol/graph-cli@npm:0.60.0":
   version: 0.60.0
   resolution: "@graphprotocol/graph-cli@npm:0.60.0"
   dependencies:
@@ -19655,7 +19655,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": ^0.60.0
+    "@graphprotocol/graph-cli": 0.60.0
     "@graphprotocol/graph-ts": 0.31.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
