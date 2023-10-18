@@ -5,7 +5,7 @@ module.exports = {
   proposalName: 'Marketing unlock - david moderator',
   calls: [
     {
-      contractName: 'UnlockDiscountTokenV3',
+      contractNameOrAbi: 'UnlockDiscountTokenV3',
       functionName: 'transfer',
       proposerAddress,
       calldata:

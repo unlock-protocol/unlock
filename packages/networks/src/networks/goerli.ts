@@ -4,10 +4,6 @@ export const goerli: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
-    domainId: 1735353714,
-  },
   chain: 'goerli',
   description: 'Main Ethereum test network. Do not use for production.',
   explorer: {
@@ -23,6 +19,14 @@ export const goerli: NetworkConfig = {
   faucet: 'https://goerlifaucet.com/',
   featured: true,
   fullySubsidizedGas: true,
+  governanceBridge: {
+    connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
+    domainId: 1735353714,
+    modules: {
+      connextMod: '0xce58DB94DE48A8a9Ea47cBe4376F19724D154DF2',
+      delayMod: '0x46FdC1d73486E20406D1C6dAcDD22b6599AEA32d',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -31,7 +35,7 @@ export const goerli: NetworkConfig = {
         name: 'Password required',
       },
       {
-        address: '0x0e646EF3F880eB9C5C97f0D6c113c40b2f442dbe',
+        address: '0xDF2A7C8be199C0e9e825750586be7F331F30dC29',
         id: HookType.CAPTCHA,
         name: 'Captcha',
       },
