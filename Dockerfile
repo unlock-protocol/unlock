@@ -22,7 +22,7 @@ RUN apt-get update \
     python3 \
     postgresql \
     default-jdk \
-    openjdk-11-jre \
+    openjdk-17-jre \
     build-essential \
     ca-certificates
 
