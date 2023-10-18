@@ -2,7 +2,7 @@
 title: Implementing Cross-Chain DAO Governance with Unlock Protocol, Connext and Gnosis Guild
 authorName: Clément Renaud
 publishDate: October 16, 2023
-description: Unlock Labs partnered with Connext and Gnosis Guild to create this first-of-its-kind architecture that passes not only tokens between networks. It passes code changes across bridges..
+description: Unlock Labs partnered with Connext and Gnosis Guild to create this first-of-its-kind architecture that passes not only tokens between networks. It passes code changes across bridges.
 image: /images/blog/crosschain/cross-chain-share.png
 ---
 
