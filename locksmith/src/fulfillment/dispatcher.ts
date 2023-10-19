@@ -299,12 +299,27 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
-    // TODO Get the purchaser based on who is a signer on the KeyManager contract!
-    const { wallet } = await getPurchaser({ network })
     const keyManager = new KeyManager()
+    const purchasers = await getAllPurchasers({ network })
+    const signers = await Promise.all(
+      purchasers.map(async (purchaser) => {
+        if (await keyManager.isSigner(network, await purchaser.getAddress())) {
+          return purchaser
+        }
+        return null
+      })
+    )
+    const signer = signers.find((purchaser) => purchaser !== null)
+
+    if (!signer) {
+      throw new Error(
+        'No signer is set as locksmith on the Key Manager contract'
+      )
+    }
+
     const transferCode = await keyManager.createTransferSignature({
       params,
-      signer: wallet,
+      signer,
       network,
     })
     return transferCode
