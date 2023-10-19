@@ -143,4 +143,4 @@ ETHGlobal New York 2023 embodied the fast-paced, exciting energy of the web3 eco
 
 The event's top projects, including UnleashTheLock, Fixed Protocol, and Engage, demonstrated the innovative applications that can be achieved with Unlock, reaffirming its position as a versatile and impactful tool in the web3 toolkit. The hackathon's spirit of innovation, problem-solving, and collaboration left no doubt that the web3 landscape is teeming with opportunities for those willing to explore and create, making it an exciting and promising frontier for the future of technology.
 
-_Lana Dingwall is a business coach for socially and spiritually conscious entrepreneursis and is an Unlock Ambassador. You can find Lana's full online presence at https://lanadingwall.com_
+_Lana Dingwall is a business coach for socially and spiritually conscious entrepreneursis and is an Unlock Ambassador. You can find Lana's full online presence at [https://lanadingwall.com](https://lanadingwall.com)_
