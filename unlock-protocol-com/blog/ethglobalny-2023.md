@@ -103,7 +103,7 @@ You can deeper into UnleashTheLock [here](https://ethglobal.com/showcase/unleash
 
 ![The UnleashTheLock team](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2FKos3sPGizBLodQdABSvKI.jpg&w=3840&q=75)
 
-The UnleashTheLock team
+_The UnleashTheLock team_
 
 ### **[🦄 Fixed Protocol](https://ethglobal.com/showcase/fixed-protocol-e890z) took home second-place**
 
