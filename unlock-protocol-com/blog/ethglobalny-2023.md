@@ -91,7 +91,7 @@ Here are the top three prize-winning projects.
 
 ![UnleashTheLock](https://storage.googleapis.com/ethglobal-api-production/projects%2F915uc%2Fimages%2F1.png)
 
-UnleashTheLock
+_UnleashTheLock_
 
 A React library to facilitate integration with Unlock Protocol subscriptions.
 
