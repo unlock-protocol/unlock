@@ -28,7 +28,7 @@ In other words, you can build a normie in the front, crypto in the back applicat
 
 ![An event from Nameless.nyc ](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2FHVZTFBY4UODmuzgevKZdB.png&w=3840&q=75)
 
-An event from Nameless.nyc
+_An event from Nameless.nyc_
 
 This year ETHGlobal New York had over 990 hackers and saw 330 submissions.
 
