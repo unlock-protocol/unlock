@@ -16,7 +16,7 @@ Test networks like Sepolia are crucial for experimentation and development. They
 
 ## The Goerli testnet is scheduled to be sunset in 2023
 
-Many developers are currently using [the Goerli testnet, which is scheduled to sunset by the end of 2023](https://docs.chainstack.com/docs/goerli-to-sepolia-transition). 
+Many developers are currently using [the Goerli testnet, which is scheduled to sunset by the end of 2023](https://docs.chainstack.com/docs/goerli-to-sepolia-transition).
 
 Sepolia is the next primary Ethereum testnet for developers, and Sepolia is scheduled to be in operation until 2026.
 

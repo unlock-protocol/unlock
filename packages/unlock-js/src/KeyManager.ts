@@ -54,13 +54,20 @@ export const TransferTypes = {
 
 export interface GetContractOptions {
   network: number
-  signer: Signer
+  signer?: Signer
 }
 
 export class KeyManager {
   public networks: NetworkConfigs
   constructor(networks?: NetworkConfigs) {
     this.networks = networks || networkConfigs
+  }
+
+  isSigner(network: number, signer: string) {
+    const provider = this.providerForNetwork(network)
+    const KeyManagerContract = this.getContract({ network })
+
+    return KeyManagerContract.locksmiths(signer)
   }
 
   providerForNetwork(network: number) {
@@ -99,7 +106,10 @@ export class KeyManager {
       KeyManagerAbi,
       provider
     )
-    return KeyManagerContract.connect(signer)
+    if (signer) {
+      return KeyManagerContract.connect(signer)
+    }
+    return KeyManagerContract
   }
 
   /**
