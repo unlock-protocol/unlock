@@ -79,7 +79,7 @@ Here is a very simplified list of ways you could use their tech stack in your pr
 
 ![Some developer tooling resources](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2F4C8amDM1L6TG0HrJBZloB.jpg&w=3840&q=75)
 
-Some developer tooling resources
+_Some developer tooling resources_
 
 ## 36 hours, 15 submitted projects
 
