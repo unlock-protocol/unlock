@@ -4,10 +4,6 @@ export const mumbai: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a',
-    domainId: 9991,
-  },
   chain: 'mumbai',
   description: 'Polygon test network. Do not use for production.',
   explorer: {
@@ -23,6 +19,10 @@ export const mumbai: NetworkConfig = {
   faucet: 'https://faucet.polygon.technology/',
   featured: false,
   fullySubsidizedGas: true,
+  governanceBridge: {
+    connext: '0x2334937846Ab2A3FCE747b32587e1A1A2f6EEC5a',
+    domainId: 9991,
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -50,7 +50,10 @@ export const mumbai: NetworkConfig = {
     symbol: 'MATIC',
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    collectionUrl: (lockAddress) =>
+      `https://testnets.opensea.io/assets/mumbai/${lockAddress}`,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://testnets.opensea.io/assets/mumbai/${_lockAddress}/${_tokenId}`,
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/80001',
