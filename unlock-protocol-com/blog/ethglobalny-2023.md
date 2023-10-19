@@ -109,7 +109,7 @@ _The UnleashTheLock team_
 
 ![Fixed Protocol](https://storage.googleapis.com/ethglobal-api-production/projects%2Fe890z%2Fimages%2F2023-09-23%2022.16.05.jpg)
 
-Fixed Protocol
+_Fixed Protocol_
 
 Fixed is a subscription-based, zero-cost trading product on Uniswap for stable swaps designed to increase capital efficiency and limit sandwich attacks. Using Uniswap Hooks, Unbound and Safe, Fixed allows traders to pay a subscription to access 0 fee stable pools with no gas fees
 
