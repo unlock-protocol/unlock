@@ -45,14 +45,13 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
   }
 
   const isLoading = isLoadingGuild || isLoadingGuildData
-
-  const disabled = data && data.filter((d) => !d).length > 0
+  const disabled = !data || data.filter((d) => !d).length == 0
 
   return (
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 pt-4 overflow-auto text-sm">
-        {isLoading && (
+        {isLoading && !guild && (
           <Placeholder.Root
             data-testid="placeholder"
             className="flex flex-col w-full gap-5 p-4"
