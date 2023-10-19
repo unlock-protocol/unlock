@@ -414,11 +414,6 @@ export const EventDetails = ({
     network,
   })
 
-  const { refetch } = useMetadata({
-    lockAddress,
-    network,
-  })
-
   const hasCheckoutId = settings?.checkoutConfigId
 
   const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
@@ -428,6 +423,10 @@ export const EventDetails = ({
   const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+  const { refetch } = useMetadata({
+    lockAddress,
+    network,
+  })
 
   const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim({
     recipients: [account || ZERO],

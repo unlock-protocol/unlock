@@ -4,9 +4,7 @@ import { storage } from '~/config/storage'
 
 interface Params {
   params: {
-    lockAddress?: string
-    network?: string
-    slug?: string
+    slug: string
   }
 }
 
@@ -19,30 +17,19 @@ interface EventPageProps {
 }
 
 export const getServerSideProps = async ({ params }: Params) => {
-  console.log('___________________________')
-  console.log(params)
-  if (params.slug) {
-    const { data: lockSettings } = await storage.getLockSettingsBySlug(
-      params.slug
+  const { data: lockSettings } = await storage.getLockSettingsBySlug(
+    params.slug
+  )
+  if (lockSettings?.network && lockSettings?.lockAddress) {
+    const lockMetadataResponse = await storage.lockMetadata(
+      lockSettings.network,
+      lockSettings.lockAddress
     )
-    if (lockSettings?.network && lockSettings?.lockAddress) {
-      const lockMetadataResponse = await storage.lockMetadata(
-        lockSettings.network,
-        lockSettings.lockAddress
-      )
-      return {
-        props: {
-          lockAddress: lockSettings?.lockAddress,
-          network: lockSettings?.network,
-          metadata: lockMetadataResponse?.data,
-        },
-      }
-    }
-
     return {
       props: {
         lockAddress: lockSettings?.lockAddress,
         network: lockSettings?.network,
+        metadata: lockMetadataResponse?.data,
       },
     }
   }
