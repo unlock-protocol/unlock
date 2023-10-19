@@ -1,5 +1,5 @@
 const { ethers } = require('ethers')
-const { ADDRESS_ZERO } = require('./constants')
+const { AddressZero } = ethers.constants
 
 /**
  * Helper to parse a DAO proposal from an object
@@ -133,7 +133,7 @@ const encodeProposalArgs = async ({
   // use that pattern instead of `getContractFactory` so we support passing interfaces
   const { interface } = await ethers.getContractAt(
     contractNameOrAbi,
-    ADDRESS_ZERO
+    AddressZero
   )
   const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
   return calldata
