@@ -38,7 +38,7 @@ Julien, the Founder of Unlock Protocol also gave a workshop at the hackathon on 
 
 ![The view from the Unlock Protocol Booth](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2FFFYTCgjrQg7lxXMl4w1Im.jpg&w=3840&q=75)
 
-The view from the Unlock Protocol Booth
+_The view from the Unlock Protocol Booth_
 
 ## The TLDR on Unlock Protocol
 
