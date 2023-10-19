@@ -18862,9 +18862,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:4.0.7, @uniswap/sdk-core@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "@uniswap/sdk-core@npm:4.0.7"
+"@uniswap/sdk-core@npm:4.0.9":
+  version: 4.0.9
+  resolution: "@uniswap/sdk-core@npm:4.0.9"
   dependencies:
     "@ethersproject/address": ^5.0.2
     big.js: ^5.2.2
@@ -18872,7 +18872,7 @@ __metadata:
     jsbi: ^3.1.4
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
-  checksum: b89ce380206f14fef70fb233c34edb439e9602bc4c17c4801e3032ed6e4b932d71942f677535c996c55e724f9dd7fac42443e117f75bae9348300380e50d95a5
+  checksum: f4ed31d995ddd04579061ecc9d613c88da400c50a8be820142fb7cce958532b828ec1992d0c0a5115f839a3cd5e4722cbd853578fa0a28a46aabbd60c3a54ef7
   languageName: node
   linkType: hard
 
@@ -18901,6 +18901,20 @@ __metadata:
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
   checksum: 0dd876d117c2d359a09047fafb5e80e8312b4db2cb0078a968d0ebbdb0a294558e8a0ea13678b113a9c2026f7c394193eb56650a250fd0c52ec51680c8aed3bc
+  languageName: node
+  linkType: hard
+
+"@uniswap/sdk-core@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "@uniswap/sdk-core@npm:4.0.7"
+  dependencies:
+    "@ethersproject/address": ^5.0.2
+    big.js: ^5.2.2
+    decimal.js-light: ^2.5.0
+    jsbi: ^3.1.4
+    tiny-invariant: ^1.1.0
+    toformat: ^2.0.0
+  checksum: b89ce380206f14fef70fb233c34edb439e9602bc4c17c4801e3032ed6e4b932d71942f677535c996c55e724f9dd7fac42443e117f75bae9348300380e50d95a5
   languageName: node
   linkType: hard
 
@@ -19647,7 +19661,7 @@ __metadata:
     "@types/react": 18.2.0
     "@types/react-google-recaptcha": 2.1.6
     "@types/react-gtm-module": 2.0.1
-    "@uniswap/sdk-core": 4.0.7
+    "@uniswap/sdk-core": 4.0.9
     "@uniswap/smart-order-router": 3.16.33
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -19744,7 +19758,7 @@ __metadata:
     "@graphql-codegen/typescript-operations": 4.0.1
     "@nomiclabs/hardhat-ethers": 2.2.3
     "@openapitools/openapi-generator-cli": 2.7.0
-    "@uniswap/sdk-core": 4.0.7
+    "@uniswap/sdk-core": 4.0.9
     "@uniswap/smart-order-router": 3.16.33
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
