@@ -8,6 +8,8 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
+import { useMetadata } from '~/hooks/metadata'
+import { Placeholder } from '@unlock-protocol/ui'
 
 export const EventContent = () => {
   const { lockAddress, network, isLoading } =
@@ -18,13 +20,13 @@ export const EventContent = () => {
 interface EventContentWithPropsProps {
   lockAddress: string
   network: number
-  isLoading?: boolean
+  metadata?: any
 }
 
 export const EventContentWithProps = ({
   lockAddress,
   network,
-  isLoading,
+  metadata,
 }: EventContentWithPropsProps) => {
   const router = useRouter()
 
@@ -32,10 +34,6 @@ export const EventContentWithProps = ({
     router.push(
       'https://unlock-protocol-1.hubspotpagebuilder.com/unlock-protocol-newsletter-signup-0'
     )
-  }
-
-  if (isLoading) {
-    return <LoadingIcon />
   }
 
   const showDetails = lockAddress && network
@@ -51,12 +49,15 @@ export const EventContentWithProps = ({
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-
       {!showDetails && (
         <EventLandingPage handleCreateEvent={handleCreateEvent} />
       )}
       {showDetails && lockAddress && network && (
-        <EventDetails lockAddress={lockAddress} network={network} />
+        <EventDetails
+          metadata={metadata}
+          lockAddress={lockAddress}
+          network={network}
+        />
       )}
     </AppLayout>
   )

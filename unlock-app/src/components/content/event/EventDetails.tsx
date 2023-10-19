@@ -61,6 +61,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 interface EventDetailsProps {
   lockAddress: string
   network: number
+  metadata?: any
 }
 
 interface EventDetailProps {
@@ -391,7 +392,11 @@ export const LockPriceDetails = ({
   )
 }
 
-export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
+export const EventDetails = ({
+  lockAddress,
+  network,
+  metadata,
+}: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
   const { account } = useAuth()
@@ -409,6 +414,11 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     network,
   })
 
+  const { refetch } = useMetadata({
+    lockAddress,
+    network,
+  })
+
   const hasCheckoutId = settings?.checkoutConfigId
 
   const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
@@ -418,14 +428,6 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const {
-    data: metadata,
-    isInitialLoading: isMetadataLoading,
-    refetch,
-  } = useMetadata({
-    lockAddress,
-    network,
-  })
 
   const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim({
     recipients: [account || ZERO],
@@ -467,7 +469,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     successDuration: 1000,
   })
 
-  if (isMetadataLoading || isLoadingSettings || isLoadingEventLocks) {
+  if (isLoadingSettings || isLoadingEventLocks) {
     return (
       <Placeholder.Root>
         <Placeholder.Card size="lg" />
