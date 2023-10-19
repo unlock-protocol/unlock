@@ -5,9 +5,12 @@ publishDate: October 4, 2023
 description: Unlock Ambassador Lana Dingwall shares her experience at the ETHGlobal New York 2023 hackathon, which drew over 1300 participants.
 image: /images/blog/ethglobalny23/ethglobalny23-share.png
 ---
+
+![the booth ](https://images.mirror-media.xyz/publication-images/3RVsNPK8b787RwjfGfM4A.jpeg)
+
 _Editor's note: This is a crosspost from [Lana's original post on Mirror](https://mirror.xyz/lanadingwall.eth/AjyFa55txACpTwH6B5vzqJbI_2Kk0HlfVZ_mDbtCHV4). After reading, we highly recommend you collect it there!_
 
-ETHGlobal New York was a 3-day, 36-hour hackathon that was jam-packed with fun builders energy.
+## ETHGlobal New York was a 3-day, 36-hour hackathon that was jam-packed with fun builders energy
 
 If you’ve never been, a web3 hackathon is an event where developers, designers, project managers, business development folks, product designers and innovators come together to create decentralized applications (dApps), and blockchain-based solutions, and explore the potential of web3 technologies. Participants typically collaborate in teams (of up to 5) to build innovative projects that leverage blockchain, smart contracts, and decentralized protocols. These hackathons often involve coding challenges, workshops, and opportunities to learn and network with experts in the blockchain and cryptocurrency space. The goal is to foster creativity and accelerate the development of decentralized solutions for various industries and use cases.
 
