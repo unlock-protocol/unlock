@@ -5,7 +5,7 @@ const { PublicLockV8 } = require('@unlock-protocol/contracts')
 const Locks = require('../../fixtures/locks')
 const deployLock = require('../../../scripts/deployments/lock')
 const compareValues = require('../../LockSerializer/_compareValues')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO } = require('../../helpers')
 
 contract('Scripts/deploy:lock', () => {
   let serializer

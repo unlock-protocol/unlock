@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers')
 
 const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
 

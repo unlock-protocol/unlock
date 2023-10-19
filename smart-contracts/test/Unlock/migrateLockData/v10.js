@@ -9,7 +9,7 @@ const {
   cleanupPastContracts,
   getContractAtVersion,
 } = require('../../helpers/versions')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO } = require('../../helpers')
 
 const previousVersionNumber = 9 // to next version
 const keyPrice = ethers.utils.parseEther('0.01')
