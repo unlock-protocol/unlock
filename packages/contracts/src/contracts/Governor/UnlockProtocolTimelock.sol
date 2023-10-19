@@ -1,8 +1,7 @@
 // Sources flattened with hardhat v2.15.0 https://hardhat.org
+// SPDX-License-Identifier: MIT
 
 // File @openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol@v4.9.3
-
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (access/IAccessControl.sol)
 
 pragma solidity ^0.8.0;
@@ -105,7 +104,6 @@ interface IAccessControlUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Address.sol)
 
 pragma solidity ^0.8.1;
@@ -390,7 +388,6 @@ library AddressUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (proxy/utils/Initializable.sol)
 
 pragma solidity ^0.8.2;
@@ -561,7 +558,6 @@ abstract contract Initializable {
 
 // File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -599,7 +595,6 @@ abstract contract ContextUpgradeable is Initializable {
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -627,7 +622,6 @@ interface IERC165Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -670,7 +664,6 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/math/MathUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/math/Math.sol)
 
 pragma solidity ^0.8.0;
@@ -1032,7 +1025,6 @@ library MathUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/math/SignedMathUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (utils/math/SignedMath.sol)
 
 pragma solidity ^0.8.0;
@@ -1078,7 +1070,6 @@ library SignedMathUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Strings.sol)
 
 pragma solidity ^0.8.0;
@@ -1175,7 +1166,6 @@ library StringsUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (access/AccessControl.sol)
 
 pragma solidity ^0.8.0;
@@ -1455,7 +1445,6 @@ abstract contract AccessControlUpgradeable is
 
 // File @openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.5.0) (token/ERC1155/IERC1155Receiver.sol)
 
 pragma solidity ^0.8.0;
@@ -1514,7 +1503,6 @@ interface IERC1155ReceiverUpgradeable is IERC165Upgradeable {
 
 // File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
 
 pragma solidity ^0.8.0;
@@ -1544,7 +1532,6 @@ interface IERC721ReceiverUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/governance/TimelockControllerUpgradeable.sol@v4.9.3
 
-// SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (governance/TimelockController.sol)
 
 pragma solidity ^0.8.0;
@@ -2061,7 +2048,6 @@ contract TimelockControllerUpgradeable is
 
 // File contracts/UnlockProtocolTimelock.sol
 
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
 contract UnlockProtocolTimelock is TimelockControllerUpgradeable {
