@@ -117,7 +117,7 @@ You can dive deeper into Fixed Protocol [here](https://ethglobal.com/showcase/fi
 
 ![The Fixed Protocol team featuring Julien](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2Fg_2Ectpw0kUslVfy27gvT.jpg&w=3840&q=75)
 
-The Fixed Protocol team featuring Julien
+_The Fixed Protocol team featuring Julien_
 
 ### **[📽️ Engage](https://ethglobal.com/showcase/engage-efsd1) took home third-place**
 
