@@ -1,6 +1,7 @@
 // hardhat.config.js
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-etherscan')
+require('@nomiclabs/hardhat-waffle')
 
 // import helpers
 const { etherscan, networks } = require('@unlock-protocol/hardhat-helpers')

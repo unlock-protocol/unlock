@@ -11701,6 +11701,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomiclabs/hardhat-waffle@npm:2.0.6":
+  version: 2.0.6
+  resolution: "@nomiclabs/hardhat-waffle@npm:2.0.6"
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@types/sinon-chai": ^3.2.3
+    ethereum-waffle: "*"
+    ethers: ^5.0.0
+    hardhat: ^2.0.0
+  checksum: e43592b135739c7f077a9d0a38a479a5512000e58f91d684e6a0d4f0894f8f826821d0b637e2cd7b646669ba12300fcb5e180bcc2473f5cc67d55f44ab809770
+  languageName: node
+  linkType: hard
+
 "@nomiclabs/hardhat-web3@npm:2.0.0":
   version: 2.0.0
   resolution: "@nomiclabs/hardhat-web3@npm:2.0.0"
@@ -19308,6 +19321,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
+    "@nomiclabs/hardhat-ethers": 2.2.3
+    "@nomiclabs/hardhat-waffle": 2.0.6
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"

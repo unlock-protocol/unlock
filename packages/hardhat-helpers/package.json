@@ -13,6 +13,8 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/"
   },
   "dependencies": {
+    "@nomiclabs/hardhat-ethers": "2.2.3",
+    "@nomiclabs/hardhat-waffle": "2.0.6",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
