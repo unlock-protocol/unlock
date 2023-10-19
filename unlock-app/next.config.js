@@ -16,7 +16,7 @@ const requiredEnvs = {
     process.env.NEXT_PUBLIC_STRIPE_KEY || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB',
   ethPassApiKey:
     process.env.NEXT_PUBLIC_ETHPASS_KEY ||
-    'sk_live_vKGUa9EuZAVffxI3pnhY3p3C2Ccb34s7',
+    'sk_live_UqGWk8FCZu2eamzAwegRTjlhS0wd1feu',
 }
 
 for (const [key, value] of Object.entries(requiredEnvs)) {
