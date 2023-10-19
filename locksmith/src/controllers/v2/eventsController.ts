@@ -1,5 +1,8 @@
 import { RequestHandler } from 'express'
-import { getEventDetail } from '../../operations/eventOperations'
+import {
+  createEventSlug,
+  getEventDataForLock,
+} from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
 import { EventData } from '../../models'
 import { z } from 'zod'
@@ -10,7 +13,7 @@ export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
 
-  const eventDetails = await getEventDetail(lockAddress, network)
+  const eventDetails = await getEventDataForLock(lockAddress, network)
   return response.status(200).send(eventDetails)
 }
 
@@ -43,10 +46,14 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     })
   }
 
+  // TODO: We should update the metadata on the locks to point to this event
+  // by default!
+  const slug = await createEventSlug(parsed.name, parsed.id)
   const [event, created] = await EventData.upsert(
     {
       id: parsed.id,
       name: parsed.name,
+      slug,
       data: parsed.data,
       locks: parsed.locks,
       createdBy: request.user!.walletAddress,

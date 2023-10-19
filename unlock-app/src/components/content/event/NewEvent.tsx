@@ -23,8 +23,6 @@ export const NewEvent = () => {
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
 
-  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
-
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
@@ -54,27 +52,29 @@ export const NewEvent = () => {
       console.error(error)
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
-    formData.metadata.slug = await getSlugForName(formData.lock.name)
     if (lockAddress) {
-      // Save this:
-      await storage.updateLockMetadata(formData.network, lockAddress!, {
-        metadata: formDataToMetadata({
+      const { data: event } = await storage.saveEventData({
+        name: formData.lock.name,
+        locks: [[lockAddress, formData.network].join('-')],
+        data: formDataToMetadata({
           name: formData.lock.name,
           ...formData.metadata,
         }),
       })
+      // TODO: handle errors!
+      console.log(event)
+
+      // TODO: handle this in locksmith!
+      // await storage.updateLockMetadata(formData.network, lockAddress!, {
+      //   metadata: formDataToMetadata({
+      //     name: formData.lock.name,
+      //     ...formData.metadata,
+      //   }),
+      // })
 
       // Save slug for URL if present
-      setSlug(formData?.metadata?.slug)
+      setSlug(event.slug)
 
-      const slug = formData?.metadata.slug
-      if (slug) {
-        await saveSettingsMutation({
-          lockAddress,
-          network: formData.network,
-          slug,
-        })
-      }
       // Finally
       setLockAddress(lockAddress)
     }

@@ -16,9 +16,9 @@ interface EventPageProps {
 }
 
 export const getServerSideProps = async ({ params }: Params) => {
-  const { data } = await storage.getLockSettingsBySlug(params.slug)
+  const response = await storage.getLockSettingsBySlug(params.slug)
   return {
-    props: data,
+    props: response.data,
   }
 }
 
