@@ -8,7 +8,7 @@ image: /images/blog/ethglobalny23/ethglobalny23-share.png
 
 ![the booth ](https://images.mirror-media.xyz/publication-images/3RVsNPK8b787RwjfGfM4A.jpeg)
 
-_Editor's note: This is a crosspost from [Lana's original post on Mirror](https://mirror.xyz/lanadingwall.eth/AjyFa55txACpTwH6B5vzqJbI_2Kk0HlfVZ_mDbtCHV4). After reading, we highly recommend you collect it there!_
+_Editor's note: This is a crosspost from [Lana's original post on Mirror](https://mirror.xyz/lanadingwall.eth/AjyFa55txACpTwH6B5vzqJbI_2Kk0HlfVZ_mDbtCHV4). After reading, we highly recommend you mint & collect it there!_
 
 ## ETHGlobal New York was a 3-day, 36-hour hackathon that was jam-packed with fun builders energy
 
@@ -142,3 +142,5 @@ In my opinion what makes hackathons so exciting is all the builder energy. The i
 ETHGlobal New York 2023 embodied the fast-paced, exciting energy of the web3 ecosystem, bringing together a diverse array of talented builders and innovators. The hackathon showcased the potential of Unlock Protocol, offering a wide range of integration possibilities across industries, from Defi and DAOs to healthcare and daycare solutions, as well as innovative applications in decentralized science and identity management.
 
 The event's top projects, including UnleashTheLock, Fixed Protocol, and Engage, demonstrated the innovative applications that can be achieved with Unlock, reaffirming its position as a versatile and impactful tool in the web3 toolkit. The hackathon's spirit of innovation, problem-solving, and collaboration left no doubt that the web3 landscape is teeming with opportunities for those willing to explore and create, making it an exciting and promising frontier for the future of technology.
+
+_Lana Dingwall is a business coach for socially and spiritually conscious entrepreneursis and is an Unlock Ambassador. You can find Lana's full online presence at https://lanadingwall.com_
