@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const multisigOldABI = require('../../test/helpers/ABIs/multisig.json')
+const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const { networks } = require('@unlock-protocol/networks')
 
 const {

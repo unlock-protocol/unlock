@@ -131,11 +131,10 @@ const encodeProposalArgs = async ({
   functionArgs,
 }) => {
   // use that pattern instead of `getContractFactory` so we support passing interfaces
-  const { interface } = await ethers.getContractAt(
-    contractNameOrAbi,
-    AddressZero
-  )
-  const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
+  const {
+    interface: { encodeFunctionData },
+  } = await ethers.getContractAt(contractNameOrAbi, AddressZero)
+  const calldata = encodeFunctionData(functionName, [...functionArgs])
   return calldata
 }
 
@@ -144,8 +143,10 @@ const decodeProposalArgs = async ({
   functionName,
   calldata,
 }) => {
-  const { interface } = await ethers.getContractFactory(contractNameOrAbi)
-  const decoded = interface.decodeFunctionData(functionName, calldata)
+  const {
+    interface: { decodeFunctionData },
+  } = await ethers.getContractFactory(contractNameOrAbi)
+  const decoded = decodeFunctionData(functionName, calldata)
   return decoded
 }
 
