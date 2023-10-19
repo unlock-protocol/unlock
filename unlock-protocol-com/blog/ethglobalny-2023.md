@@ -123,7 +123,7 @@ _The Fixed Protocol team featuring Julien_
 
 ![Engage](https://storage.googleapis.com/ethglobal-api-production/projects%2Fefsd1%2Fimages%2Fss1.png)
 
-Engage
+_Engage_
 
 Engage provides a platform for creators to interact with their audience and track useful analytics.
 
