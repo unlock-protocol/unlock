@@ -2,8 +2,14 @@
   "name": "@unlock-protocol/hardhat-helpers",
   "version": "0.0.2",
   "description": "Some internal parser/helpers for Unlock Protocol's hardhat configs",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "yarn build:ts && yarn copyABIs",
+    "build:ts": "tsup src/index.ts --dts --format esm,cjs",
+    "copyABIs": "copyfiles --verbose -u 2 src/ABIs/*.json ./dist/ABIs",
+    "start": "tsc --watch",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/"
   },
   "dependencies": {
@@ -11,6 +17,10 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "hardhat": "2.18.2"
+  },
+  "devDependencies": {
+    "copyfiles": "2.4.1",
+    "tsup": "7.2.0"
   },
   "repository": {
     "type": "git",
