@@ -44,9 +44,6 @@ export const celo: NetworkConfig = {
     name: 'CELO',
     symbol: 'CELO',
   },
-  opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
-  },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/42220',
   publicLockVersionToDeploy: 13,

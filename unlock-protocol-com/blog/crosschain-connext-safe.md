@@ -1,8 +1,8 @@
 ---
-title: Implementing Cross-Chain DAO Governance with Unlock Protocol, Connext and Safe
+title: Implementing Cross-Chain DAO Governance with Unlock Protocol, Connext and Gnosis Guild
 authorName: Clément Renaud
 publishDate: October 16, 2023
-description: Unlock Labs partnered with Connext and Safe to create this first-of-its-kind architecture that passes not only tokens between networks. It passes code changes across bridges..
+description: Unlock Labs partnered with Connext and Gnosis Guild to create this first-of-its-kind architecture that passes not only tokens between networks. It passes code changes across bridges.
 image: /images/blog/crosschain/cross-chain-share.png
 ---
 
@@ -12,7 +12,7 @@ In service to the Unlock DAO, the Unlock Labs team has been working on [an ambit
 
 When the Unlock DAO approves a proposal that affects the operation of the core Unlock Protocol, those changes are propagated via bridges across the various chains to keep the protocol’s behavior consistent, regardless of which chain is being used to deploy an Unlock Protocol smart contract. 
 
-Unlock Labs partnered with [Connext](https://www.connext.network/) and [Safe](https://safe.global/) to create this first-of-its-kind architecture that passes not only tokens between networks. *It passes code changes across bridges*. 
+Unlock Labs partnered with [Connext](https://www.connext.network/) and [Gnosis Guild](https://gnosisguild.org/) to create this first-of-its-kind architecture that passes not only tokens between networks. *It passes code changes across bridges*. 
 
 Here’s a quick FAQ on why this matters and how it works.
 
@@ -58,7 +58,7 @@ Connext provides the bridge technology that is necessary for taking the calls co
 
 Safe provides the receiving end of DAO proposals on destination chains. When a call is sent from the DAO’s Governor contract, it crosses the bridge towards a Safe that receives it.
 
-Safe’s Zodiac suite of modules allows for a Safe to 1) receive calls properly from the bridge and 2) put a call in quarantine for a cooldown period once it is received.
+Gnosis Guild’s Zodiac suite of modules allows for a Safe to 1) receive calls properly from the bridge and 2) put a call in quarantine for a cooldown period once it is received.
 
 Unlock Protocol has historically relied on Safe for the management of the protocol contracts. By reusing and building on the same tech, the changes required for the protocol governance are kept to a minimum to avoid potential security issues.
 
@@ -66,9 +66,9 @@ Unlock Protocol has historically relied on Safe for the management of the protoc
 
 There were multiple challenges along the way, as we were in radically unexplored technical territory. When we started [working on this idea earlier this summer](https://unlock-protocol.com/blog/crosschain), Connext had recently been launched. At that time, each call took more than 5 hours to cross a bridge, making things a bit tedious to test sometimes. Also, the lack of some tooling on testnets made for some development challenges.
 
-In the time since the first iteration of this architecture, Connext developed integration with the *extremely* helpful Safe Zodiac module solution, which was audited and maintained by their own team.
+In the time since the first iteration of this architecture, Connext developed integration with the *extremely* helpful Zodiac module solution, which was audited and maintained by their own team.
 
-We discovered a few issues integrating with the Safe contracts during the process, and were able to work very closely with the Safe team, who were incredibly responsive when issues arose during the development. 
+We discovered a few issues integrating with the contracts during the process, and were able to work very closely with the Gnosis Guild team, who were incredibly responsive when issues arose during the development. 
 
 ### The bottom line: This is complex stuff!
 
@@ -76,4 +76,4 @@ As an industry, it’s clear that we are just at the beginning of this journey. 
 
 Work on governance is hard, as tools are still in a very early stage. 
 
-**Unlock Labs wants to give a big shout out to the teams at [Connext](https://www.connext.network/) and [Safe](https://safe.global/), who are not only at the top of their technical game, but who are also a blast to work with!**
+**Unlock Labs wants to give a big shout out to the teams at [Connext](https://www.connext.network/) and [Gnosis Guild](https://gnosisguild.org/), who are not only at the top of their technical game, but who are also a blast to work with!**

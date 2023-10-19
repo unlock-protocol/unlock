@@ -301,7 +301,9 @@ export class StorageService extends EventEmitter {
 
   async getDataForRecipientsAndCaptcha(
     recipients: string[],
-    captchaValue: string
+    captchaValue: string,
+    lockAddress: string,
+    network: number
   ) {
     try {
       const url = new URL(`${this.host}/api/captcha`)
@@ -317,6 +319,8 @@ export class StorageService extends EventEmitter {
       }
 
       url.searchParams.append('captchaValue', captchaValue)
+      url.searchParams.append('lockAddress', lockAddress)
+      url.searchParams.append('network', network.toString())
 
       const response = await fetch(url.toString(), {
         method: 'GET',
