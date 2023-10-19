@@ -8,7 +8,6 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
-import { useMetadata } from '~/hooks/metadata'
 
 export const EventContent = () => {
   const { lockAddress, network, isLoading } =
@@ -38,15 +37,6 @@ export const EventContentWithProps = ({
   if (isLoading) {
     return <LoadingIcon />
   }
-
-  const {
-    data: metadata,
-    isInitialLoading: isMetadataLoading,
-    refetch,
-  } = useMetadata({
-    lockAddress,
-    network,
-  })
 
   const showDetails = lockAddress && network
 
