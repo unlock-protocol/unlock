@@ -102,10 +102,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.48.0":
-  version: 8.48.0
-  resolution: "@eslint/js@npm:8.48.0"
-  checksum: b2755f9c0ee810c886eba3c50dcacb184ba5a5cd1cbc01988ee506ad7340653cae0bd55f1d95c64b56dfc6d25c2caa7825335ffd2c50165bae9996fe0f396851
+"@eslint/js@npm:8.51.0":
+  version: 8.51.0
+  resolution: "@eslint/js@npm:8.51.0"
+  checksum: 0228bf1e1e0414843e56d9ff362a2a72d579c078f93174666f29315690e9e30a8633ad72c923297f7fd7182381b5a476805ff04dac8debe638953eb1ded3ac73
   languageName: node
   linkType: hard
 
@@ -518,14 +518,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/config-array@npm:^0.11.10":
-  version: 0.11.10
-  resolution: "@humanwhocodes/config-array@npm:0.11.10"
+"@humanwhocodes/config-array@npm:^0.11.11":
+  version: 0.11.12
+  resolution: "@humanwhocodes/config-array@npm:0.11.12"
   dependencies:
-    "@humanwhocodes/object-schema": ^1.2.1
+    "@humanwhocodes/object-schema": ^2.0.0
     debug: ^4.1.1
     minimatch: ^3.0.5
-  checksum: 1b1302e2403d0e35bc43e66d67a2b36b0ad1119efc704b5faff68c41f791a052355b010fb2d27ef022670f550de24cd6d08d5ecf0821c16326b7dcd0ee5d5d8a
+  checksum: 8eab5a7c7e4948aa07cf26d0b6cca103298ab9bbb70f897c7cfbb3ee5fd5431a0d9f2ff5efd4d712dae7fd8fa941f09b1b22da842b9d87367ccb75b86bbd715b
   languageName: node
   linkType: hard
 
@@ -536,10 +536,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/object-schema@npm:^1.2.1":
-  version: 1.2.1
-  resolution: "@humanwhocodes/object-schema@npm:1.2.1"
-  checksum: a824a1ec31591231e4bad5787641f59e9633827d0a2eaae131a288d33c9ef0290bd16fda8da6f7c0fcb014147865d12118df10db57f27f41e20da92369fcb3f1
+"@humanwhocodes/object-schema@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@humanwhocodes/object-schema@npm:2.0.0"
+  checksum: e0558acd035198a69adfa3edce33ec385bb664c92478a08a91b3e8082acd2d96ef7bf43189d848e4b0bdd75092f9d494a55a4efaf5bed45101c9e83d28379d83
   languageName: node
   linkType: hard
 
@@ -1123,10 +1123,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@npm:0.0.22":
-  version: 0.0.22
-  resolution: "@unlock-protocol/contracts@npm:0.0.22"
-  checksum: bc1cad2dde0d961b4af73bc5430984fa7b64dc905c72b0e4b23c32c4c6a6b5530e9eaf36fe9cb3f3df35d6322b68a2478aa55eec55df0832f13e9af86ed96adf
+"@unlock-protocol/contracts@npm:0.0.21":
+  version: 0.0.21
+  resolution: "@unlock-protocol/contracts@npm:0.0.21"
+  checksum: 0d6a02a45c12546728bcd3bf79c1384d51cf730010b297b55381895c194a8c69b72fdb21c69709f999d5e2b75fe7d83c42b195bbb3c5f72dfd088f6cb2cadd9e
   languageName: node
   linkType: hard
 
@@ -1135,9 +1135,9 @@ __metadata:
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.2.3
-    "@unlock-protocol/contracts": 0.0.22
+    "@unlock-protocol/contracts": 0.0.21
     "@unlock-protocol/hardhat-plugin": 0.1.3
-    eslint: 8.48.0
+    eslint: 8.51.0
     ethers: 5.7.2
     hardhat: 2.17.2
     hardhat-erc1820: 0.1.0
@@ -2026,15 +2026,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.48.0":
-  version: 8.48.0
-  resolution: "eslint@npm:8.48.0"
+"eslint@npm:8.51.0":
+  version: 8.51.0
+  resolution: "eslint@npm:8.51.0"
   dependencies:
     "@eslint-community/eslint-utils": ^4.2.0
     "@eslint-community/regexpp": ^4.6.1
     "@eslint/eslintrc": ^2.1.2
-    "@eslint/js": 8.48.0
-    "@humanwhocodes/config-array": ^0.11.10
+    "@eslint/js": 8.51.0
+    "@humanwhocodes/config-array": ^0.11.11
     "@humanwhocodes/module-importer": ^1.0.1
     "@nodelib/fs.walk": ^1.2.8
     ajv: ^6.12.4
@@ -2069,7 +2069,7 @@ __metadata:
     text-table: ^0.2.0
   bin:
     eslint: bin/eslint.js
-  checksum: f20b359a4f8123fec5c033577368cc020d42978b1b45303974acd8da7a27063168ee3fe297ab5b35327162f6a93154063e3ce6577102f70f9809aff793db9bd0
+  checksum: 214fa5d1fcb67af1b8992ce9584ccd85e1aa7a482f8b8ea5b96edc28fa838a18a3b69456db45fc1ed3ef95f1e9efa9714f737292dc681e572d471d02fda9649c
   languageName: node
   linkType: hard
 
