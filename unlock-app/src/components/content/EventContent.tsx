@@ -49,11 +49,9 @@ export const EventContentWithProps = ({
     return <LoadingIcon />
   }
 
-  const showDetails = lockAddress && network
-
   return (
     <AppLayout
-      showFooter={!showDetails}
+      showFooter={!metadata}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
@@ -63,10 +61,8 @@ export const EventContentWithProps = ({
         <title>{pageTitle('Event')}</title>
       </Head>
 
-      {!showDetails && (
-        <EventLandingPage handleCreateEvent={handleCreateEvent} />
-      )}
-      {showDetails && lockAddress && network && (
+      {!metadata && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
+      {!!metadata && lockAddress && network && (
         <EventDetails
           metadata={metadata}
           lockAddress={lockAddress}
