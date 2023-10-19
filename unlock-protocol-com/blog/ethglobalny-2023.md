@@ -50,7 +50,7 @@ Their dynamic smart contract NFTs allow you to add time constraints, update pric
 
 ![A slide on what makes Unlocks tech stack so much more than just a basic NFT](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2FK9akUlaMg_9npxcJ7CD-4.jpg&w=3840&q=75)
 
-A slide on what makes Unlocks tech stack so much more than just a basic NFT
+_A slide on what makes Unlocks tech stack so much more than just a basic NFT_
 
 Since Unlock’s use cases include event ticketing, recurring subscriptions, time-based memberships, certifications and credentials, gaming, loyalty programs, attendance NFTs, and digital collectibles that all have crypto or fiat, wallet or email sign-up capabilities there are a number of ways you can integrate Unlock.
 
