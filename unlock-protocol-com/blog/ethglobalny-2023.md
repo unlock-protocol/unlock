@@ -133,7 +133,7 @@ You can dive deeper into Engage [here](https://ethglobal.com/showcase/engage-efs
 
 ![The Engage team](https://mirror.xyz/_next/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2F9OMKmYlmIMoQS_o5qOzrz.jpg&w=3840&q=75)
 
-The Engage team
+_The Engage team_
 
 ## Builder Energy
 
