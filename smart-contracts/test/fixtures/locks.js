@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { MAX_UINT } = require('../helpers')
+const { MAX_UINT } = require('@unlock-protocol/hardhat-helpers')
 
 let publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days

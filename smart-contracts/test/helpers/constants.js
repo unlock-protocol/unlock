@@ -4,7 +4,6 @@ const {
   MAX_GAS,
 } = require('@unlock-protocol/hardhat-helpers')
 
-console.log(ADDRESS_ZERO, MAX_UINT, MAX_GAS)
 module.exports = {
   ADDRESS_ZERO,
   MAX_UINT,
