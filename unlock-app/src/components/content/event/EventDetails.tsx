@@ -1,22 +1,16 @@
-import fontColorContrast from 'font-color-contrast'
 import { useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-import { useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
-import { selectProvider } from '~/hooks/useAuthenticate'
 import { NextSeo } from 'next-seo'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import {
   Button,
   Card,
   Disclosure,
-  Modal,
   Placeholder,
   minifyAddress,
 } from '@unlock-protocol/ui'
-import { Checkout } from '~/components/interface/checkout/main'
-import { AddressLink } from '~/components/interface/AddressLink'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
@@ -25,7 +19,6 @@ import router from 'next/router'
 import { useLockManager } from '~/hooks/useLockManager'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
-import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { useValidKey } from '~/hooks/useKey'
 import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
@@ -34,16 +27,13 @@ import { useCanClaim } from '~/hooks/useCanClaim'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { EventCheckoutUrl } from './EventCheckoutUrl'
-import { useGetLockSettings } from '~/hooks/useLockSettings'
-import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
-import { LockPriceDetails } from './LockPriceDetails'
-import { CheckoutRegistrationCard } from './CheckoutRegistrationCard'
+import { RegistrationCard } from './RegistrationCard'
 
 interface EventDetailsProps {
   lockAddress: string
@@ -58,47 +48,6 @@ export const EventDetails = ({
 }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
-  const { account } = useAuth()
-  const { lock, isLockLoading } = useLockData({
-    lockAddress,
-    network,
-  })
-
-  const {
-    isLoading: isLoadingSettings,
-    data: settings,
-    refetch: refetchSettings,
-  } = useGetLockSettings({
-    lockAddress,
-    network,
-  })
-
-  const hasCheckoutId = settings?.checkoutConfigId
-
-  const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
-
-  const keysLeft =
-    Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
-  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
-
-  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const { refetch } = useMetadata({
-    lockAddress,
-    network,
-  })
-
-  const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim({
-    recipients: [account || ZERO],
-    lockAddress,
-    network,
-    data: [],
-  })
-
-  const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =
-    useValidKey({
-      lockAddress,
-      network,
-    })
 
   const { isManager: isLockManager } = useLockManager({
     lockAddress,
@@ -112,7 +61,7 @@ export const EventDetails = ({
     })
 
   const reload = async () => {
-    await Promise.allSettled([refetch(), refetchSettings()])
+    console.log('RELOAD!')
   }
 
   const { isEvent } = getLockTypeByMetadata(metadata)
@@ -127,7 +76,7 @@ export const EventDetails = ({
     successDuration: 1000,
   })
 
-  if (isLoadingSettings || isLoadingEventLocks) {
+  if (isLoadingEventLocks) {
     return (
       <Placeholder.Root>
         <Placeholder.Card size="lg" />
@@ -179,6 +128,7 @@ export const EventDetails = ({
 
   const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
+<<<<<<< HEAD
   const injectedProvider = selectProvider(config)
 
   const paywallConfig: PaywallConfigType = {
@@ -203,6 +153,8 @@ export const EventDetails = ({
     },
   }
 
+=======
+>>>>>>> a70987cf1 (moving lock logic deeper in the stack, on the Registation components)
   const startDate = eventDate
     ? eventDate.toLocaleDateString(undefined, {
         timeZone: eventData?.ticket?.event_timezone,
@@ -245,63 +197,7 @@ export const EventDetails = ({
   const hasLocation = (eventData?.ticket?.event_address || '')?.length > 0
   const hasDate = startDate || startTime || endDate || endTime
 
-  const showWalletLess = !hasValidKey && isClaimable
-
   const coverImage = eventData.ticket?.event_cover_image
-
-  const RegistrationCard = () => {
-    if (
-      isClaimableLoading ||
-      isLockLoading ||
-      isLoadingSettings ||
-      isHasValidKeyLoading
-    ) {
-      return <Placeholder.Card size="md" />
-    }
-
-    return (
-      <Card className="grid gap-6 mt-10 lg:mt-0">
-        <span className="text-2xl font-bold text-gray-900">Registration</span>
-        {hasValidKey ? (
-          <p className="text-lg">
-            🎉 You already have a ticket! You can view it in{' '}
-            <Link className="underline" href="/keychain">
-              your keychain
-            </Link>
-            .
-          </p>
-        ) : (
-          <>
-            <LockPriceDetails lockAddress={lockAddress} network={network} />
-            {showWalletLess ? (
-              <WalletlessRegistrationForm
-                lockAddress={lockAddress}
-                network={network}
-                disabled={isSoldOut}
-              />
-            ) : (
-              <Button
-                variant="primary"
-                size="medium"
-                style={{
-                  backgroundColor: `#${eventData.background_color}`,
-                  color: `#${eventData.background_color}`
-                    ? fontColorContrast(`#${eventData.background_color}`)
-                    : 'white',
-                }}
-                disabled={isClaimableLoading || isSoldOut}
-                onClick={() => {
-                  setCheckoutOpen(true)
-                }}
-              >
-                Register
-              </Button>
-            )}
-          </>
-        )}
-      </Card>
-    )
-  }
 
   const locksmithEventOG = new URL(
     `/v2/og/event/${network}/locks/${lockAddress}`,
@@ -310,21 +206,6 @@ export const EventDetails = ({
 
   return (
     <div>
-      <Modal
-        isOpen={isCheckoutOpen && !isClaimable}
-        setIsOpen={setCheckoutOpen}
-        empty={true}
-      >
-        <Checkout
-          injectedProvider={injectedProvider as any}
-          paywallConfig={paywallConfig}
-          handleClose={() => {
-            setCheckoutOpen(false)
-            reload() // force refresh after eventual purchase
-          }}
-        />
-      </Modal>
-
       <NextSeo
         title={eventData.title}
         description={`${eventData.description}. Powered by Unlock Protocol.`}
@@ -357,7 +238,7 @@ export const EventDetails = ({
             lockAddress={lockAddress}
             network={network}
             handleClose={() => {
-              refetch()
+              console.log('REFETCH!!')
             }}
           />
 
@@ -388,12 +269,13 @@ export const EventDetails = ({
         <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
-            {!hasCheckoutId && (
+            {/* TODO: How do we handle this? */}
+            {/* {!hasCheckoutId && (
               <div className="flex gap-2 flex-rows">
                 <span className="text-brand-gray">Ticket contract</span>
                 <AddressLink lockAddress={lockAddress} network={network} />
               </div>
-            )}
+            )} */}
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
                 {hasDate && (
@@ -428,21 +310,11 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-          {!isCheckoutOpen && (
-            <>
-              {/** Prioritize Checkout URL if there is one set */}
-              {hasCheckoutId ? (
-                <CheckoutRegistrationCard
-                  isManager={isLockManager}
-                  lockAddress={lockAddress}
-                  network={network}
-                  onPurchase={reload}
-                />
-              ) : (
-                <RegistrationCard />
-              )}
-            </>
-          )}
+          <RegistrationCard
+            lockAddress={lockAddress}
+            network={network}
+            metadata={metadata}
+          />
         </section>
       </div>
 
