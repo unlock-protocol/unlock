@@ -31,6 +31,8 @@ import UnlockV9 from './abis/Unlock/UnlockV9.json'
 import UnlockDiscountTokenV0 from './abis/UnlockDiscountToken/UnlockDiscountTokenV0.json'
 import UnlockDiscountTokenV1 from './abis/UnlockDiscountToken/UnlockDiscountTokenV1.json'
 import UnlockDiscountTokenV2 from './abis/UnlockDiscountToken/UnlockDiscountTokenV2.json'
+import GovernorUnlockProtocol from './abis/Governor/UnlockProtocolGovernor.json'
+import GovernorUnlockProtocolTimelock from './abis/Governor/UnlockProtocolTimelock.json'
 import LockSerializer from './abis/utils/LockSerializer.json'
 
 // exports
@@ -64,4 +66,6 @@ export { UnlockV9 }
 export { UnlockDiscountTokenV0 }
 export { UnlockDiscountTokenV1 }
 export { UnlockDiscountTokenV2 }
+export { GovernorUnlockProtocol }
+export { GovernorUnlockProtocolTimelock }
 export { LockSerializer }
