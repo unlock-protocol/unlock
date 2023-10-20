@@ -20,6 +20,8 @@ export const getServerSideProps = async ({ params }: Params) => {
   const { data: lockSettings } = await storage.getLockSettingsBySlug(
     params.slug
   )
+
+  console.log(lockSettings)
   if (lockSettings?.network && lockSettings?.lockAddress) {
     const lockMetadataResponse = await storage.lockMetadata(
       lockSettings.network,

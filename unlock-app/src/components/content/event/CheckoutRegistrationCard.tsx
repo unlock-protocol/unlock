@@ -9,14 +9,12 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { LockPriceDetails } from './LockPriceDetails'
 
 interface CheckoutRegistrationCardProps {
-  isManager: boolean
   lockAddress: string
   network: number
   onPurchase: () => void
 }
 
 export const CheckoutRegistrationCard = ({
-  isManager,
   lockAddress,
   network,
   onPurchase,
@@ -53,11 +51,7 @@ export const CheckoutRegistrationCard = ({
     return (
       <Card className="grid gap-6 mt-10 lg:mt-0">
         <span className="text-2xl font-bold text-gray-900">Registration</span>
-        <span>
-          {isManager
-            ? 'The checkout URL assigned to this event is deleted or invalid. Please make sure to assign an existing one.'
-            : 'Registration details are not configured.'}
-        </span>
+        <span>Registration details are not configured.</span>
       </Card>
     )
   }

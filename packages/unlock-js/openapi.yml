@@ -3350,6 +3350,8 @@ paths:
                     type: string
                   data:
                     type: object
+                  slug:
+                    type: string
                   locks:
                     type: array
                     items:
