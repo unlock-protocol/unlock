@@ -67,4 +67,4 @@ Object.keys(networks).forEach((key) => {
   }
 })
 
-module.exports = { networks: hardhatNetworks }
+export default hardhatNetworks

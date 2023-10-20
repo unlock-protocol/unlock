@@ -15,7 +15,4 @@ async function getBalance(account, tokenAddress) {
   }
   return balance
 }
-
-module.exports = {
-  getBalance,
-}
+export default { getBalance }

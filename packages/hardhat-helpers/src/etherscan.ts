@@ -88,4 +88,4 @@ if (process.env.SEPOLIA_API_KEY) {
   etherscan.apiKey.sepolia = process.env.SEPOLIA_API_KEY
 }
 
-module.exports = { etherscan }
+export default { etherscan }

@@ -1,8 +1,8 @@
-const { etherscan } = require('./etherscan')
-const { networks } = require('./networks')
 const tasks = require('./tasks')
-const balance = require('./balance')
-const constants = require('./constants')
+import networks from './networks'
+import etherscan from './etherscan'
+import balance from './balance'
+import constants from './constants'
 
 module.exports = {
   networks,
