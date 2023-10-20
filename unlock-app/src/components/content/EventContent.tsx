@@ -9,6 +9,7 @@ import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 import { useMetadata } from '~/hooks/metadata'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 
 export const EventContent = () => {
   const {
@@ -20,14 +21,15 @@ export const EventContent = () => {
     lockAddress,
     network,
   })
+  const eventData = metadata ? toFormData(metadata) : null
   const isLoading = isLoadingQuery || isMetadataLoading
-  return EventContentWithProps({ lockAddress, network, isLoading, metadata })
+  return EventContentWithProps({ lockAddress, network, isLoading, eventData })
 }
 
 interface EventContentWithPropsProps {
   lockAddress: string
   network: number
-  metadata?: any
+  eventData?: any // TODO: not optional
   isLoading?: boolean
 }
 
@@ -35,7 +37,7 @@ export const EventContentWithProps = ({
   lockAddress,
   network,
   isLoading,
-  metadata,
+  eventData,
 }: EventContentWithPropsProps) => {
   const router = useRouter()
 
@@ -51,7 +53,7 @@ export const EventContentWithProps = ({
 
   return (
     <AppLayout
-      showFooter={!metadata}
+      showFooter={!eventData}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
@@ -61,10 +63,10 @@ export const EventContentWithProps = ({
         <title>{pageTitle('Event')}</title>
       </Head>
 
-      {!metadata && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
-      {!!metadata && lockAddress && network && (
+      {!eventData && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
+      {!!eventData && lockAddress && network && (
         <EventDetails
-          metadata={metadata}
+          eventData={eventData}
           lockAddress={lockAddress}
           network={network}
         />

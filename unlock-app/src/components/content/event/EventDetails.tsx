@@ -3,7 +3,6 @@ import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { useConfig } from '~/utils/withConfig'
 import { NextSeo } from 'next-seo'
-import { toFormData } from '~/components/interface/locks/metadata/utils'
 import {
   Button,
   Card,
@@ -38,13 +37,13 @@ import { RegistrationCard } from './RegistrationCard'
 interface EventDetailsProps {
   lockAddress: string
   network: number
-  metadata?: any
+  eventData?: any
 }
 
 export const EventDetails = ({
   lockAddress,
   network,
-  metadata,
+  eventData,
 }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
@@ -64,12 +63,10 @@ export const EventDetails = ({
     console.log('RELOAD!')
   }
 
-  const { isEvent } = getLockTypeByMetadata(metadata)
-
   const eventUrl = getEventUrl({
     lockAddress,
     network,
-    metadata,
+    eventData,
   })
 
   const [_, setCopied] = useClipboard(eventUrl, {
@@ -100,29 +97,6 @@ export const EventDetails = ({
     )
   }
 
-  if (!isEvent) {
-    if (isLockManager) {
-      return (
-        <>
-          <p className="mb-2">
-            Your event details are not set. Please make sure you add a date,
-            time and location.
-          </p>
-          <Button
-            onClick={onEdit}
-            variant="black"
-            className="w-32 border"
-            size="small"
-          >
-            Edit Details
-          </Button>
-        </>
-      )
-    }
-    return <p>This contract is not configured.</p>
-  }
-
-  const eventData = toFormData(metadata!)
   const eventDate = getEventDate(eventData.ticket)
   const eventEndDate = getEventEndDate(eventData.ticket)
 
@@ -313,7 +287,7 @@ export const EventDetails = ({
           <RegistrationCard
             lockAddress={lockAddress}
             network={network}
-            metadata={metadata}
+            eventData={eventData}
           />
         </section>
       </div>
