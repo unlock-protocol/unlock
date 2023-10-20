@@ -19329,6 +19329,7 @@ __metadata:
     copyfiles: 2.4.1
     hardhat: 2.18.2
     tsup: 7.2.0
+    typescript: 5.2.2
   languageName: unknown
   linkType: soft
 

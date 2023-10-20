@@ -1,5 +1,6 @@
 // Etherscan api for verification
 // NB: list of supported network can be obtained with `yarn hardhat verify --list-networks`
+
 const etherscan = {
   apiKey: {
     // xdai requires only placeholder api key
