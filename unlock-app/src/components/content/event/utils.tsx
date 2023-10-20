@@ -31,16 +31,18 @@ export const getEventEndDate = (ticket: any): Date | null => {
 
 interface EventUrlProps {
   metadata?: Partial<Metadata>
+  eventData?: any
   lockAddress: string
   network: string | number
 }
 
 export const getEventPath = ({
+  eventData,
   metadata,
   lockAddress,
   network,
 }: EventUrlProps): string => {
-  const slug = metadata?.slug
+  const slug = eventData?.slug || metadata?.slug
 
   if (slug) {
     return `/event/${slug}`
@@ -49,6 +51,7 @@ export const getEventPath = ({
 }
 
 export const getEventUrl = ({
+  eventData,
   metadata,
   lockAddress,
   network,
@@ -61,6 +64,7 @@ export const getEventUrl = ({
     })}`
   }
   return getEventPath({
+    eventData,
     metadata,
     lockAddress,
     network,

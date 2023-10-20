@@ -20,13 +20,13 @@ import { CheckoutRegistrationCard } from './CheckoutRegistrationCard'
 interface RegistrationCardProps {
   lockAddress: string
   network: number
-  metadata: any
+  eventData: any
 }
 
 export const RegistrationCard = ({
   lockAddress,
   network,
-  metadata,
+  eventData,
 }: RegistrationCardProps) => {
   const config = useConfig()
 
@@ -76,7 +76,7 @@ export const RegistrationCard = ({
 
   const paywallConfig: PaywallConfig = {
     title: 'Registration',
-    icon: metadata?.image,
+    icon: 'metadata?.image', // Replace with eventData
     locks: {
       [lockAddress]: {
         network,
