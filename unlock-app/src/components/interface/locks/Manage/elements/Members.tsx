@@ -11,8 +11,7 @@ import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-
-const itemsPerPage = 30
+import { MEMBERS_PER_PAGE } from '~/constants'
 
 interface MembersProps {
   lockAddress: string
@@ -53,7 +52,7 @@ export const Members = ({
       filters.filterKey,
       filters.expiration,
       page - 1, // API starts at 0
-      itemsPerPage
+      MEMBERS_PER_PAGE
     )
     return keys.data
   }
@@ -184,7 +183,7 @@ export const Members = ({
   const pageOffset = page - 1 ?? 0
   const { maxNumbersOfPage } = paginate({
     page: pageOffset,
-    itemsPerPage,
+    itemsPerPage: MEMBERS_PER_PAGE,
     totalItems: chainLock.outstandingKeys,
   })
 
