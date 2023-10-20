@@ -14,8 +14,7 @@ import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
-import router from 'next/router'
-import { useLockManager } from '~/hooks/useLockManager'
+import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
@@ -45,12 +44,13 @@ export const EventDetails = ({
   network,
   eventData,
 }: EventDetailsProps) => {
+  console.log(eventData)
   const [image, setImage] = useState('')
   const config = useConfig()
 
-  const { isManager: isLockManager } = useLockManager({
-    lockAddress,
-    network,
+  // Check if the user is one of the lock manager
+  const { isOrganizer } = useEventOrganizer({
+    eventData,
   })
 
   const { locks: eventLocks, isLoading: isLoadingEventLocks } =
@@ -60,7 +60,7 @@ export const EventDetails = ({
     })
 
   const reload = async () => {
-    console.log('RELOAD!')
+    console.log('RELOAD!') // TODO
   }
 
   const eventUrl = getEventUrl({
@@ -88,12 +88,6 @@ export const EventDetails = ({
         <Placeholder.Line />
         <Placeholder.Line />
       </Placeholder.Root>
-    )
-  }
-
-  const onEdit = () => {
-    return router.push(
-      `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
     )
   }
 
@@ -173,6 +167,7 @@ export const EventDetails = ({
 
   const coverImage = eventData.ticket?.event_cover_image
 
+  // TODO: OG for event!
   const locksmithEventOG = new URL(
     `/v2/og/event/${network}/locks/${lockAddress}`,
     config.locksmithHost
@@ -293,7 +288,7 @@ export const EventDetails = ({
       </div>
 
       <section className="flex flex-col mb-8">
-        {isLockManager && (
+        {isOrganizer && (
           <div className="grid gap-6 mt-12">
             <span className="text-2xl font-bold text-brand-dark">
               Tools for you, the event organizer
@@ -364,7 +359,9 @@ export const EventDetails = ({
                 </div>
                 <div className="md:col-span-1">
                   <Button
-                    onClick={onEdit}
+                    onClick={() => {
+                      console.log('TODO : EDIT EVENT')
+                    }}
                     variant="black"
                     className="w-full border"
                     size="small"
@@ -388,8 +385,7 @@ export const EventDetails = ({
                         <VerifierForm
                           lockAddress={lockAddress}
                           network={network}
-                          isManager={isLockManager}
-                          disabled={!isLockManager}
+                          disabled={!isOrganizer}
                         />
                       </Disclosure>
                     )
@@ -401,13 +397,13 @@ export const EventDetails = ({
                 label="Customize the Checkout"
                 description="Create a custom checkout experience with your event's name, logo, and ticket multiple ticket tiers."
               >
-                <EventCheckoutUrl
+                {/* <EventCheckoutUrl
                   lockAddress={lockAddress}
                   network={network}
                   isManager={isLockManager}
                   disabled={!isLockManager}
                   onCheckoutChange={reload}
-                />
+                /> */}
               </Disclosure>
             </div>
           </div>
