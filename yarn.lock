@@ -19529,7 +19529,7 @@ __metadata:
     prettier-plugin-solidity: 1.1.3
     prompt: 1.3.0
     solhint: 3.4.1
-    solidity-coverage: 0.8.2
+    solidity-coverage: 0.8.5
     yesno: 0.4.0
   languageName: unknown
   linkType: soft
@@ -49621,6 +49621,38 @@ __metadata:
   bin:
     solidity-coverage: plugins/bin.js
   checksum: 489f73d56a1279f2394b7a14db315532884895baa00a4016e68a4e5be0eddca90a95cb3322e6a0b15e67f2d9003b9413ee24c1c61d78f558f5a2e1e233840825
+  languageName: node
+  linkType: hard
+
+"solidity-coverage@npm:0.8.5":
+  version: 0.8.5
+  resolution: "solidity-coverage@npm:0.8.5"
+  dependencies:
+    "@ethersproject/abi": ^5.0.9
+    "@solidity-parser/parser": ^0.16.0
+    chalk: ^2.4.2
+    death: ^1.1.0
+    detect-port: ^1.3.0
+    difflib: ^0.2.4
+    fs-extra: ^8.1.0
+    ghost-testrpc: ^0.0.2
+    global-modules: ^2.0.0
+    globby: ^10.0.1
+    jsonschema: ^1.2.4
+    lodash: ^4.17.15
+    mocha: 10.2.0
+    node-emoji: ^1.10.0
+    pify: ^4.0.1
+    recursive-readdir: ^2.2.2
+    sc-istanbul: ^0.4.5
+    semver: ^7.3.4
+    shelljs: ^0.8.3
+    web3-utils: ^1.3.6
+  peerDependencies:
+    hardhat: ^2.11.0
+  bin:
+    solidity-coverage: plugins/bin.js
+  checksum: c9ca4deda9383c1db425117e72677f8908dcb2263ad41cfc1821c96afcfd5e8070146b87cd2c4b0812612fb707896928c07b776347143db838e486b4c938b394
   languageName: node
   linkType: hard
 
