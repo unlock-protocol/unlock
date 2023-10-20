@@ -1,5 +1,5 @@
 const ethers = require('ethers')
-
+const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 const tokenRecipientAddress = '0x70997970c51812dc3a010c7d01b50e0d17dc79c8'
 const proposerAddress = '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
 
@@ -8,7 +8,7 @@ module.exports = {
   calls: [
     {
       contractAddress: '0x90DE74265a416e1393A450752175AED98fe11517',
-      contractNameOrAbi: 'UnlockDiscountTokenV3',
+      contractNameOrAbi: UnlockDiscountTokenV2.abi,
       functionName: 'transfer',
       functionArgs: [
         tokenRecipientAddress,

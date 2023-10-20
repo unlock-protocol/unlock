@@ -1,4 +1,6 @@
+const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 const { ethers } = require('hardhat')
+const { assert } = require('chai')
 const {
   encodeProposalArgs,
   decodeProposalArgs,
@@ -33,7 +35,7 @@ describe('Proposal Helper', () => {
   })
 
   describe('calldata args decoder', () => {
-    it('encode correctly a function call', async () => {
+    it('decode correctly a function call', async () => {
       const decoded = await decodeProposalArgs({
         contractNameOrAbi,
         functionName,
@@ -74,9 +76,12 @@ describe('Proposal Helper', () => {
         '../test/fixtures/proposal-000-example.js'
       )
       const proposalId = await getProposalId(proposalExample)
+      const { abi, bytecode } = GovernorUnlockProtocol
+      const Gov = await ethers.getContractFactory(abi, bytecode)
+      const gov = await Gov.deploy()
       const proposalIdFromContract = await getProposalIdFromContract(
         proposalExample,
-        ethers.constants.AddressZero
+        gov.address
       )
       assert.equal(proposalId.toString(), proposalIdFromContract.toString())
     })
