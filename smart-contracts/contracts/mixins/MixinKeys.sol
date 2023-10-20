@@ -411,7 +411,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   ) public view returns (bool isValid) {
     isValid = balanceOf(_keyOwner) > 0;
 
-    if (!isValid && address(onValidKeyHook) != address(0))
+    if (address(onValidKeyHook) != address(0))
       isValid = onValidKeyHook.isValidKey(
         address(this),
         msg.sender,
