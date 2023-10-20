@@ -1,6 +1,8 @@
 import dayjs from 'dayjs'
+import { kebabCase } from 'lodash'
 import * as metadataOperations from './metadataOperations'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { EventData } from '../models'
 
 interface AttributeProps {
   value: string
@@ -31,7 +33,7 @@ const getEventDate = (
   return null
 }
 
-export const getEventDetail = async (
+export const getEventDataForLock = async (
   lockAddress: string,
   network?: number
 ): Promise<EventProps | undefined> => {
@@ -120,4 +122,25 @@ export const getEventDetail = async (
   }
 
   return eventDetail
+}
+
+export const getEventBySlug = async (slug: string) => {
+  return await EventData.findOne({
+    where: {
+      slug,
+    },
+  })
+}
+
+export const createEventSlug = async (
+  name: string,
+  eventId?: number,
+  index: number | undefined = undefined
+): Promise<string> => {
+  const slug = index ? kebabCase([name, index].join('-')) : kebabCase(name)
+  const event = await getEventBySlug(slug)
+  if (!!event && event.id !== eventId) {
+    return createEventSlug(name, eventId, index ? index + 1 : 1)
+  }
+  return slug
 }

@@ -17,6 +17,7 @@ export class EventData extends Model<
   declare createdBy: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
+  declare slug: string
 }
 
 EventData.init(
@@ -50,6 +51,10 @@ EventData.init(
     updatedAt: {
       allowNull: false,
       type: DataTypes.DATE,
+    },
+    slug: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
   },
   {
