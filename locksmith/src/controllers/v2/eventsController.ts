@@ -8,6 +8,7 @@ import { EventData } from '../../models'
 import { z } from 'zod'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 
 export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -64,4 +65,25 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
   )
   const statusCode = created ? 201 : 200
   return response.status(statusCode).send(event.toJSON())
+}
+
+export const getEventBySlug: RequestHandler = async (request, response) => {
+  const slug = request.params.slug.toLowerCase().trim()
+  const event = await EventData.findOne({
+    where: { slug },
+  })
+
+  if (event) {
+    return response.status(200).send(event.toJSON())
+  }
+
+  if (!event) {
+    // We need to look by lock's slug as well so support legacy events
+    const settings = await getLockSettingsBySlug(slug)
+    // Reconstruct the event object from the lock's slug settings?
+  }
+
+  return response.status(404).send({
+    message: `No event found for slug ${slug}`,
+  })
 }
