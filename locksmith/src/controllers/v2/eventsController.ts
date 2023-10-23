@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
+import { getLockMetadata } from '../../operations/metadataOperations'
 
 export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -67,6 +68,9 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
   return response.status(statusCode).send(event.toJSON())
 }
 
+// This function returns the event based on its slug.
+// For backward compatibility, if the event does not exist, we look for a lock
+// whose slug matches and get the event data from that lock.
 export const getEventBySlug: RequestHandler = async (request, response) => {
   const slug = request.params.slug.toLowerCase().trim()
   const event = await EventData.findOne({
@@ -78,9 +82,20 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
   }
 
   if (!event) {
-    // We need to look by lock's slug as well so support legacy events
     const settings = await getLockSettingsBySlug(slug)
-    // Reconstruct the event object from the lock's slug settings?
+
+    if (settings) {
+      const lockData = await getLockMetadata({
+        lockAddress: settings.lockAddress,
+        network: settings.network,
+      })
+      if (lockData) {
+        return response.status(200).send({
+          data: { ...lockData },
+          locks: [[settings.lockAddress, settings.network].join('-')],
+        })
+      }
+    }
   }
 
   return response.status(404).send({
