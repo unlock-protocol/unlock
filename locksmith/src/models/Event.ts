@@ -58,6 +58,9 @@ EventData.init(
     },
   },
   {
+    defaultScope: {
+      attributes: { exclude: ['id'] },
+    },
     sequelize,
     modelName: 'EventData',
     tableName: 'EventData',
