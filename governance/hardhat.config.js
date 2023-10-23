@@ -24,16 +24,6 @@ require('./tasks/safe')
 require('./tasks/gov')
 require('./tasks/verify')
 
-// require('./tasks/accounts')
-// require('./tasks/deploy')
-// require('./tasks/upgrade')
-// require('./tasks/set')
-// require('./tasks/release')
-// require('./tasks/utils')
-// require('./tasks/lock')
-// require('./tasks/keys')
-// require('./tasks/unlock')
-
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
