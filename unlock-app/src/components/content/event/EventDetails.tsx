@@ -83,7 +83,6 @@ export const EventDetails = ({
   const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-
   const { refetch } = useMetadata({
     lockAddress,
     network,
