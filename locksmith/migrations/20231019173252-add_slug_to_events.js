@@ -1,7 +1,6 @@
-'use strict';
+'use strict'
 
 /** @type {import('sequelize-cli').Migration} */
-
 
 const table = 'EventData'
 
@@ -10,7 +9,6 @@ module.exports = {
     await queryInterface.addColumn(table, 'slug', {
       type: Sequelize.STRING,
       allowNull: false,
-      defaultValue: '',
       unique: true,
     })
     await queryInterface.addIndex(table, {
@@ -22,5 +20,5 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.removeColumn(table, 'slug')
-  }
-};
+  },
+}
