@@ -2,7 +2,7 @@ import fontColorContrast from 'font-color-contrast'
 import { PaywallConfig } from '~/unlockTypes'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
-import { useValidKey } from '~/hooks/useKey'
+import { useValidKey, useValidKeyBulk } from '~/hooks/useKey'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { LockPriceDetails } from './LockPriceDetails'
@@ -14,93 +14,91 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { useState } from 'react'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
-import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { CheckoutRegistrationCard } from './CheckoutRegistrationCard'
+import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 
 interface RegistrationCardProps {
-  lockAddress: string
-  network: number
-  eventData: any
+  event: any
 }
 
-export const RegistrationCard = ({
-  lockAddress,
-  network,
-  eventData,
-}: RegistrationCardProps) => {
+const CustomCheckoutRegistrationCard = ({
+  checkoutConfigId,
+}: {
+  checkoutConfigId: string
+}) => {
   const config = useConfig()
-
-  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const { account } = useAuth()
-
-  const { lock, isLockLoading } = useLockData({
-    lockAddress,
-    network,
-  })
-  const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
-  const keysLeft =
-    Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
-  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
-
-  const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim({
-    recipients: [account || ZERO],
-    lockAddress,
-    network,
-    data: [],
+  const injectedProvider = selectProvider(config)
+  const { isLoading, data } = useCheckoutConfig({
+    id: checkoutConfigId,
   })
 
-  // Get the lock's settings to see if there is a custom checkout attached
-  const { isLoading: isLoadingSettings, data: settings } = useGetLockSettings({
-    lockAddress,
-    network,
-  })
-  const hasCheckoutId = settings?.checkoutConfigId
-
-  const { data: hasValidKey, isInitialLoading: isHasValidKeyLoading } =
-    useValidKey({
-      lockAddress,
-      network,
-    })
-
-  const showWalletLess = !hasValidKey && isClaimable
-  if (
-    isClaimableLoading ||
-    isLockLoading ||
-    isHasValidKeyLoading ||
-    isLoadingSettings
-  ) {
+  if (isLoading) {
     return <Placeholder.Card size="md" />
   }
 
+  const checkoutConfig = data?.config
+
+  return (
+    <Checkout
+      injectedProvider={injectedProvider as any}
+      paywallConfig={checkoutConfig as any}
+      handleClose={() => {
+        setCheckoutOpen(false)
+        onPurchase()
+      }}
+    />
+  )
+}
+
+export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
+  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
+  const { account } = useAuth()
+  const config = useConfig()
   const injectedProvider = selectProvider(config)
 
-  const paywallConfig: PaywallConfig = {
-    title: 'Registration',
-    icon: 'metadata?.image', // Replace with eventData
-    locks: {
-      [lockAddress]: {
-        network,
-        emailRequired: true,
-        metadataInputs: [
-          {
-            name: 'fullname',
-            label: 'Full name',
-            defaultValue: '',
-            type: 'text',
-            required: true,
-            placeholder: 'Satoshi Nakamoto',
-            public: false,
-          },
-        ],
-      },
+  const queries = useValidKeyBulk(
+    Object.keys(event.locks).reduce((acc, lockAddress: string) => {
+      return [
+        ...acc,
+        { lockAddress, network: event.locks[lockAddress].network },
+      ]
+    }, [])
+  )
+  const isLoadingValidKeys = queries?.some(
+    (query) => query.isInitialLoading || query.isRefetching
+  )
+  const hasValidKey = queries?.map((query) => query.data).some((value) => value)
+
+  const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim(
+    {
+      recipients: [account || ZERO],
+      lockAddress: Object.keys(event.locks)[0],
+      network: event.locks[Object.keys(event.locks)[0]].network,
+      data: [],
     },
+    { enabled: Object.keys(event.locks).length === 1 }
+  )
+
+  if (isLoadingValidKeys || isClaimableLoading) {
+    return <Placeholder.Card size="md" />
   }
 
-  if (hasCheckoutId) {
+  if (hasValidKey) {
     return (
-      <CheckoutRegistrationCard
-        lockAddress={lockAddress}
-        network={network}
+      <p className="text-lg">
+        🎉 You already have a ticket! You can view it in{' '}
+        <Link className="underline" href="/keychain">
+          your keychain
+        </Link>
+        .
+      </p>
+    )
+  }
+
+  if (event.checkoutConfigId) {
+    return (
+      <CustomCheckoutRegistrationCard
+        checkoutConfigId={event.checkoutConfigId}
         onPurchase={() => {
           console.log('purchase done!')
         }}
@@ -108,9 +106,126 @@ export const RegistrationCard = ({
     )
   }
 
+  if (isClaimable) {
+    return (
+      <WalletlessRegistrationForm
+        lockAddress={Object.keys(event.locks)[0]}
+        network={event.locks[Object.keys(event.locks)[0]].network}
+      />
+    )
+  }
+
+  const paywallConfig: PaywallConfig = {
+    title: 'Registration',
+    icon: 'metadata?.image', // Replace with event
+    emailRequired: true,
+    metadataInputs: [
+      {
+        name: 'fullname',
+        label: 'Full name',
+        defaultValue: '',
+        type: 'text',
+        required: true,
+        placeholder: 'Satoshi Nakamoto',
+        public: false,
+      },
+    ],
+    locks: event.locks,
+  }
+
+  return (
+    <>
+      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+        <Checkout
+          injectedProvider={injectedProvider as any}
+          paywallConfig={paywallConfig}
+          handleClose={() => {
+            setCheckoutOpen(false)
+            // reload() // TODO: force refresh after eventual purchase
+          }}
+        />
+      </Modal>
+      <Button
+        variant="primary"
+        size="medium"
+        style={{
+          backgroundColor: `#${event.background_color}`,
+          color: `#${event.background_color}`
+            ? fontColorContrast(`#${event.background_color}`)
+            : 'white',
+        }}
+        disabled={isClaimableLoading}
+        onClick={() => {
+          setCheckoutOpen(true)
+        }}
+      >
+        Register
+      </Button>
+    </>
+  )
+}
+
+// For each of the locks
+// We need to check first if the user has any
+// if they do, show the "success" card
+// If they don't, check if the event has a custom checkout (it will have the sold out details)
+// if it does, then show it
+// if it does not, check if the event is claimable (one lock that is free)
+// if it does, then show the claim UI
+// if it does not, show a checkout UI with the locks by default
+export const RegistrationCard = ({ event }: RegistrationCardProps) => {
+  const config = useConfig()
+
+  // const { lock, isLockLoading } = useLockData({
+  //   lockAddress,
+  //   network,
+  // })
+  // const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
+  // const keysLeft =
+  //   Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
+  // const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
+
+  // // Check of the event has a custom checkout!
+  // const hasCheckoutId = settings?.checkoutConfigId
+
+  // const showWalletLess = !hasValidKey && isClaimable
+  // if (
+  //   isClaimableLoading ||
+  //   isLockLoading ||
+  //   isHasValidKeyLoading ||
+  //   isLoadingSettings
+  // ) {
+  //   return <Placeholder.Card size="md" />
+  // }
+
+  // if (hasCheckoutId) {
+  //   return (
+  //     <CheckoutRegistrationCard
+  //       lockAddress={lockAddress}
+  //       network={network}
+  //       onPurchase={() => {
+  //         console.log('purchase done!')
+  //       }}
+  //     />
+  //   )
+  // }
+
   return (
     <Card className="grid gap-6 mt-10 lg:mt-0">
-      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
+      <div className="grid gap-6 md:gap-8">
+        {Object.keys(event.locks)?.map((lockAddress: string) => {
+          return (
+            <LockPriceDetails
+              key={lockAddress}
+              lockAddress={lockAddress}
+              network={event.locks[lockAddress].network}
+              showContract
+            />
+          )
+        })}
+      </div>
+      <RegistrationCardInternal event={event} />
+      {/* <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
         <Checkout
           injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
@@ -139,25 +254,10 @@ export const RegistrationCard = ({
               disabled={isSoldOut}
             />
           ) : (
-            <Button
-              variant="primary"
-              size="medium"
-              style={{
-                backgroundColor: `#${eventData.background_color}`,
-                color: `#${eventData.background_color}`
-                  ? fontColorContrast(`#${eventData.background_color}`)
-                  : 'white',
-              }}
-              disabled={isClaimableLoading || isSoldOut}
-              onClick={() => {
-                setCheckoutOpen(true)
-              }}
-            >
-              Register
-            </Button>
+            
           )}
         </>
-      )}
+      )} */}
     </Card>
   )
 }

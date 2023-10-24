@@ -30,13 +30,13 @@ export const EventContent = () => {
 }
 
 interface EventContentWithPropsProps {
-  eventData: any // TODO: type this
+  event: any // TODO: type this
   isLoading?: boolean
 }
 
 export const EventContentWithProps = ({
   isLoading,
-  eventData,
+  event,
 }: EventContentWithPropsProps) => {
   const router = useRouter()
 
@@ -52,7 +52,7 @@ export const EventContentWithProps = ({
 
   return (
     <AppLayout
-      showFooter={!eventData}
+      showFooter={!event}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
@@ -62,8 +62,8 @@ export const EventContentWithProps = ({
         <title>{pageTitle('Event')}</title>
       </Head>
 
-      {!eventData && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
-      {!!eventData && <EventDetails eventData={eventData} />}
+      {!event && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
+      {!!event && <EventDetails event={event} />}
     </AppLayout>
   )
 }

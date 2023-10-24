@@ -54,7 +54,9 @@ export const LockPriceDetails = ({
         <div className="flex items-center gap-2">
           <>
             {symbol && <CryptoIcon symbol={symbol} size={30} />}
-            <span>{price}</span>
+            <span>
+              {price} {symbol}
+            </span>
           </>
         </div>
         <div className="flex items-center gap-2">

@@ -54,7 +54,6 @@ interface WalletlessRegistrationProps {
 interface FormProps {
   lockAddress: string
   network: number
-  disabled: boolean
 }
 
 const WalletlessRegistrationClaiming = ({
@@ -130,7 +129,6 @@ const WalletlessRegistrationClaiming = ({
 export const WalletlessRegistrationForm = ({
   lockAddress,
   network,
-  disabled,
 }: FormProps) => {
   const [claimResult, setClaimResult] = useState<any>()
   const [isClaimOpen, setClaimOpen] = useState(false)
@@ -221,7 +219,6 @@ export const WalletlessRegistrationForm = ({
             message: 'This field is required.',
           },
         })}
-        disabled={disabled}
         required
         type="email"
         placeholder="your@email.com"
@@ -238,7 +235,6 @@ export const WalletlessRegistrationForm = ({
             message: 'This field is required.',
           },
         })}
-        disabled={disabled}
         required
         placeholder="Satoshi Nakamoto"
         label="Full Name"
@@ -266,14 +262,13 @@ export const WalletlessRegistrationForm = ({
               onChange={(value: any) => {
                 setValue('recipient', value)
               }}
-              disabled={disabled}
               description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
               onResolveName={onResolveName}
             />
           )
         }}
       />
-      <Button disabled={loading || disabled} loading={loading} type="submit">
+      <Button disabled={loading} loading={loading} type="submit">
         RSVP now
       </Button>
     </form>

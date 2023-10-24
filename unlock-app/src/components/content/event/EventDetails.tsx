@@ -3,13 +3,7 @@ import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { useConfig } from '~/utils/withConfig'
 import { NextSeo } from 'next-seo'
-import {
-  Button,
-  Card,
-  Disclosure,
-  Placeholder,
-  minifyAddress,
-} from '@unlock-protocol/ui'
+import { Button, Card, Disclosure, minifyAddress } from '@unlock-protocol/ui'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
@@ -18,6 +12,7 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
+<<<<<<< HEAD
 import { useValidKey } from '~/hooks/useKey'
 import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
@@ -26,6 +21,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { EventCheckoutUrl } from './EventCheckoutUrl'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
+// import { EventCheckoutUrl } from './EventCheckoutUrl'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
@@ -34,60 +30,39 @@ import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './RegistrationCard'
 
 interface EventDetailsProps {
-  eventData?: any
+  event?: any
 }
 
-export const EventDetails = ({ eventData }: EventDetailsProps) => {
-  console.log(eventData)
+const language = () => {
+  if (typeof navigator === 'undefined') {
+    return 'en-US'
+  }
+  return navigator?.language || 'en-US'
+}
+
+export const EventDetails = ({ event }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
 
   // Check if the user is one of the lock manager
-  const { isOrganizer } = useEventOrganizer({
-    eventData,
+  const { data: isOrganizer } = useEventOrganizer({
+    event,
   })
-
-  // Get locks from eventData!
-  const { locks: eventLocks, isLoading: isLoadingEventLocks } =
-    useGetEventLocksConfig({
-      lockAddress,
-      network,
-    })
 
   const reload = async () => {
     console.log('RELOAD!') // TODO
   }
 
   const eventUrl = getEventUrl({
-    lockAddress,
-    network,
-    eventData,
+    event,
   })
 
   const [_, setCopied] = useClipboard(eventUrl, {
     successDuration: 1000,
   })
 
-  if (isLoadingEventLocks) {
-    return (
-      <Placeholder.Root>
-        <Placeholder.Card size="lg" />
-        <Placeholder.Root inline>
-          <Placeholder.Image size="sm" />
-          <Placeholder.Image size="sm" />
-          <div className="w-1/3 ml-auto">
-            <Placeholder.Card size="md" />
-          </div>
-        </Placeholder.Root>
-        <Placeholder.Line />
-        <Placeholder.Line />
-        <Placeholder.Line />
-      </Placeholder.Root>
-    )
-  }
-
-  const eventDate = getEventDate(eventData.ticket)
-  const eventEndDate = getEventEndDate(eventData.ticket)
+  const eventDate = getEventDate(event.ticket)
+  const eventEndDate = getEventEndDate(event.ticket)
 
   const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
@@ -120,7 +95,7 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
 >>>>>>> a70987cf1 (moving lock logic deeper in the stack, on the Registation components)
   const startDate = eventDate
     ? eventDate.toLocaleDateString(undefined, {
-        timeZone: eventData?.ticket?.event_timezone,
+        timeZone: event.ticket.event_timezone,
         weekday: 'long',
         year: 'numeric',
         month: 'short',
@@ -129,9 +104,9 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
     : null
 
   const startTime =
-    eventDate && eventData.ticket?.event_start_time
-      ? eventDate.toLocaleTimeString(navigator.language || 'en-US', {
-          timeZone: eventData.ticket.event_timezone,
+    eventDate && event.ticket.event_start_time
+      ? eventDate.toLocaleTimeString(language(), {
+          timeZone: event.ticket.event_timezone,
           hour: '2-digit',
           minute: '2-digit',
         })
@@ -140,7 +115,7 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
   const endDate =
     eventEndDate && eventEndDate && !isSameDay
       ? eventEndDate.toLocaleDateString(undefined, {
-          timeZone: eventData?.ticket?.event_timezone,
+          timeZone: event.ticket.event_timezone,
           weekday: 'long',
           year: 'numeric',
           month: 'short',
@@ -149,35 +124,35 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
       : null
 
   const endTime =
-    eventDate && eventData.ticket?.event_end_time && eventEndDate && isSameDay
-      ? eventEndDate.toLocaleTimeString(navigator.language || 'en-US', {
-          timeZone: eventData.ticket.event_timezone,
+    eventDate && event.ticket.event_end_time && eventEndDate && isSameDay
+      ? eventEndDate.toLocaleTimeString(language(), {
+          timeZone: event.ticket.event_timezone,
           hour: '2-digit',
           minute: '2-digit',
         })
       : null
 
-  const hasLocation = (eventData?.ticket?.event_address || '')?.length > 0
+  const hasLocation = (event.ticket.event_address || '')?.length > 0
   const hasDate = startDate || startTime || endDate || endTime
 
-  const coverImage = eventData.ticket?.event_cover_image
+  const coverImage = event.ticket.event_cover_image
 
   // TODO: OG for event!
-  const locksmithEventOG = new URL(
-    `/v2/og/event/${network}/locks/${lockAddress}`,
-    config.locksmithHost
-  ).toString()
+  // const locksmithEventOG = new URL(
+  //   `/v2/og/event/${network}/locks/${lockAddress}`,
+  //   config.locksmithHost
+  // ).toString()
 
   return (
     <div>
       <NextSeo
-        title={eventData.title}
-        description={`${eventData.description}. Powered by Unlock Protocol.`}
+        title={event.title}
+        description={`${event.description}. Powered by Unlock Protocol.`}
         openGraph={{
           images: [
             {
-              alt: eventData.title,
-              url: locksmithEventOG,
+              alt: event.title,
+              url: 'locksmithEventOG',
             },
           ],
         }}
@@ -198,9 +173,7 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
           <CoverImageDrawer
             image={image}
             setImage={setImage}
-            metadata={eventData}
-            lockAddress={lockAddress}
-            network={network}
+            metadata={event}
             handleClose={() => {
               console.log('REFETCH!!')
             }}
@@ -210,17 +183,17 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
             <section className="flex justify-between">
               <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
                 <img
-                  alt={eventData.title}
+                  alt={event.title}
                   className="object-cover w-full m-auto aspect-1 rounded-2xl"
-                  src={eventData.image}
+                  src={event.image}
                 />
               </div>
               <ul className="flex items-center gap-2 mt-auto md:gap-2">
                 <li>
-                  <AddToCalendarButton event={eventData} />
+                  <AddToCalendarButton event={event} />
                 </li>
                 <li>
-                  <TweetItButton event={eventData} />
+                  <TweetItButton event={event} />
                 </li>
                 <li>
                   <CopyUrlButton eventUrl={eventUrl} />
@@ -232,20 +205,13 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
 
         <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="text-4xl font-bold md:text-7xl">{eventData.name}</h1>
-            {/* TODO: How do we handle this? */}
-            {/* {!hasCheckoutId && (
-              <div className="flex gap-2 flex-rows">
-                <span className="text-brand-gray">Ticket contract</span>
-                <AddressLink lockAddress={lockAddress} network={network} />
-              </div>
-            )} */}
+            <h1 className="text-4xl font-bold md:text-7xl">{event.name}</h1>
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
                     <div
-                      style={{ color: `#${eventData.background_color}` }}
+                      style={{ color: `#${event.background_color}` }}
                       className="flex flex-col text-lg font-normal text-brand-dark"
                     >
                       {(startDate || endDate) && (
@@ -261,24 +227,20 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
                     </div>
                   </EventDetail>
                 )}
-                {hasLocation && <EventLocation eventData={eventData} />}
+                {hasLocation && <EventLocation event={event} />}
               </div>
               <div className="mt-14">
                 <h2 className="text-2xl font-bold">Event Information</h2>
-                {eventData.description && (
+                {event.description && (
                   <div className="mt-4 markdown">
                     {/* eslint-disable-next-line react/no-children-prop */}
-                    <ReactMarkdown children={eventData.description} />
+                    <ReactMarkdown children={event.description} />
                   </div>
                 )}
               </div>
             </section>
           </div>
-          <RegistrationCard
-            lockAddress={lockAddress}
-            network={network}
-            eventData={eventData}
-          />
+          <RegistrationCard event={event} />
         </section>
       </div>
 
@@ -299,7 +261,6 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
                 </div>
                 <div className="md:col-span-1">
                   <Button
-                    key={lockAddress}
                     variant="black"
                     className="button border w-full"
                     size="small"
@@ -322,9 +283,10 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
                   />
                 </div>
                 <div className="md:col-span-1">
-                  {eventLocks?.map(({ lockAddress, network }) => {
+                  {Object.keys(event.locks).map((lockAddress: string) => {
+                    const network = event.locks[lockAddress].network
                     let label = 'Manage attendees'
-                    if (eventLocks.length > 1) {
+                    if (Object.keys(event.locks).length > 1) {
                       label = `Manage attendees for ${minifyAddress(
                         lockAddress
                       )}`
@@ -345,33 +307,13 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
                 </div>
               </Card>
 
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Event details"
-                    description="Need to change something? Access your contract (Lock) and update its details."
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  <Button
-                    onClick={() => {
-                      console.log('TODO : EDIT EVENT')
-                    }}
-                    variant="black"
-                    className="w-full border"
-                    size="small"
-                  >
-                    Edit Details
-                  </Button>
-                </div>
-              </Card>
-
               <Disclosure
                 label="Verifiers"
                 description="Add and manage trusted users at the event to help check-in attendees as they arrive."
               >
                 <div className="grid gap-2">
-                  {eventLocks?.map(({ lockAddress, network }) => {
+                  {Object.keys(event.locks).map((lockAddress: string) => {
+                    const network = event.locks[lockAddress].network
                     return (
                       <Disclosure
                         label={`Verifiers for ${minifyAddress(lockAddress)}`}
@@ -386,19 +328,6 @@ export const EventDetails = ({ eventData }: EventDetailsProps) => {
                     )
                   })}
                 </div>
-              </Disclosure>
-
-              <Disclosure
-                label="Customize the Checkout"
-                description="Create a custom checkout experience with your event's name, logo, and ticket multiple ticket tiers."
-              >
-                {/* <EventCheckoutUrl
-                  lockAddress={lockAddress}
-                  network={network}
-                  isManager={isLockManager}
-                  disabled={!isLockManager}
-                  onCheckoutChange={reload}
-                /> */}
               </Disclosure>
             </div>
           </div>
