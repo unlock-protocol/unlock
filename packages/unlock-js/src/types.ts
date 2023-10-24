@@ -1,4 +1,12 @@
-import { ethers, providers } from 'ethers'
+import { ethers, providers, BigNumber } from 'ethers'
+import type {
+  CurrencyAmount,
+  NativeCurrency,
+  Percent,
+  Token,
+  TradeType,
+  Currency,
+} from '@uniswap/sdk-core'
 
 export interface PurchaseKeyParams {
   lockAddress: string
@@ -59,4 +67,16 @@ export interface TransactionOptions {
   maxPriorityFeePerGas?: ethers.BigNumberish
   runEstimate?: boolean
   value?: ethers.BigNumberish
+}
+
+export interface UnlockUniswapRoute {
+  swapCalldata?: string
+  value: string
+  amountInMax: BigNumber
+  swapRouter: string
+  quote: any
+  trade: any
+  convertToQuoteToken: any
+  quoteGasAdjusted: any
+  estimatedGasUsedUSD: any
 }

@@ -7,7 +7,11 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
-import { TransactionOptions, WalletServiceCallback } from './types'
+import {
+  TransactionOptions,
+  WalletServiceCallback,
+  UnlockUniswapRoute,
+} from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 
@@ -1027,7 +1031,7 @@ export default class Web3Service extends UnlockService {
       recipient: string
       network: number
     }
-  }) {
+  }): Promise<UnlockUniswapRoute> {
     const provider: any = this.providerForNetwork(network)
     const networkConfig = this.networks[network]
     const router = new AlphaRouter({
