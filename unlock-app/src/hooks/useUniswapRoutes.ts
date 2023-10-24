@@ -9,6 +9,8 @@ import { NativeCurrency } from '@uniswap/sdk-core'
 import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
+import type { UnlockUniswapRoute } from '@unlock-protocol/unlock-js'
+
 export interface UniswapRoute {
   network: number
   tokenIn: Token | NativeCurrency
@@ -25,7 +27,7 @@ interface UniswapRoutesOption {
   paywallConfig: PaywallConfig
 }
 
-export const useUniswapRoutes = ({
+export const useUniswapRoutes: UnlockUniswapRoute = ({
   lock,
   recipients,
   purchaseData,
