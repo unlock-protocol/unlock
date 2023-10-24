@@ -30,7 +30,10 @@ import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
-import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
+import {
+  MetadataInputType as MetadataInput,
+  PaywallConfigType,
+} from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 interface Props {
   injectedProvider: unknown
