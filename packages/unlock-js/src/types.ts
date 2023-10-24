@@ -1,12 +1,4 @@
-import { ethers, providers, BigNumber } from 'ethers'
-import type {
-  CurrencyAmount,
-  NativeCurrency,
-  Percent,
-  Token,
-  TradeType,
-  Currency,
-} from '@uniswap/sdk-core'
+import type { ethers, providers } from 'ethers'
 
 export interface PurchaseKeyParams {
   lockAddress: string
