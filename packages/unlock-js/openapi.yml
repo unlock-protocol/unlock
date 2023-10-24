@@ -3384,12 +3384,11 @@ paths:
                     type: number
                   data:
                     type: object # TODO: better schema!
+                  checkoutConfig:
+                    $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
-                  locks:
-                    type: array
-                    items:
-                      type: string
+
         400:
           $ref: '#/components/responses/400.Invalid'
 

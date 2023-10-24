@@ -44,7 +44,6 @@ export const getEventPath = ({
 }: EventUrlProps): string => {
   const slug = event?.slug || metadata?.slug
 
-  console.log(event)
   if (slug) {
     return `/event/${slug}`
   }

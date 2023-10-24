@@ -19,6 +19,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 
 interface RegistrationCardProps {
   event: any
+  checkoutConfig: PaywallConfigType
 }
 
 const CustomCheckoutRegistrationCard = ({
@@ -50,17 +51,20 @@ const CustomCheckoutRegistrationCard = ({
   )
 }
 
-export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
+export const RegistrationCardInternal = ({
+  event,
+  checkoutConfig,
+}: RegistrationCardProps) => {
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
   const { account } = useAuth()
   const config = useConfig()
   const injectedProvider = selectProvider(config)
 
   const queries = useValidKeyBulk(
-    Object.keys(event.locks).reduce((acc, lockAddress: string) => {
+    Object.keys(checkoutConfig.locks).reduce((acc, lockAddress: string) => {
       return [
         ...acc,
-        { lockAddress, network: event.locks[lockAddress].network },
+        { lockAddress, network: checkoutConfig.locks[lockAddress].network },
       ]
     }, [])
   )
@@ -72,11 +76,12 @@ export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
   const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim(
     {
       recipients: [account || ZERO],
-      lockAddress: Object.keys(event.locks)[0],
-      network: event.locks[Object.keys(event.locks)[0]].network,
+      lockAddress: Object.keys(checkoutConfig.locks)[0],
+      network:
+        checkoutConfig.locks[Object.keys(checkoutConfig.locks)[0]].network,
       data: [],
     },
-    { enabled: Object.keys(event.locks).length === 1 }
+    { enabled: Object.keys(checkoutConfig.locks).length === 1 }
   )
 
   if (isLoadingValidKeys || isClaimableLoading) {
@@ -109,28 +114,12 @@ export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
   if (isClaimable) {
     return (
       <WalletlessRegistrationForm
-        lockAddress={Object.keys(event.locks)[0]}
-        network={event.locks[Object.keys(event.locks)[0]].network}
+        lockAddress={Object.keys(checkoutConfig.locks)[0]}
+        network={
+          checkoutConfig.locks[Object.keys(checkoutConfig.locks)[0]].network
+        }
       />
     )
-  }
-
-  const paywallConfig: PaywallConfigType = {
-    title: 'Registration',
-    icon: 'metadata?.image', // Replace with event
-    emailRequired: true,
-    metadataInputs: [
-      {
-        name: 'fullname',
-        label: 'Full name',
-        defaultValue: '',
-        type: 'text',
-        required: true,
-        placeholder: 'Satoshi Nakamoto',
-        public: false,
-      },
-    ],
-    locks: event.locks,
   }
 
   return (
@@ -138,7 +127,7 @@ export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
       <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
         <Checkout
           injectedProvider={injectedProvider as any}
-          paywallConfig={paywallConfig}
+          paywallConfig={checkoutConfig}
           handleClose={() => {
             setCheckoutOpen(false)
             // reload() // TODO: force refresh after eventual purchase
@@ -173,7 +162,10 @@ export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
 // if it does not, check if the event is claimable (one lock that is free)
 // if it does, then show the claim UI
 // if it does not, show a checkout UI with the locks by default
-export const RegistrationCard = ({ event }: RegistrationCardProps) => {
+export const RegistrationCard = ({
+  event,
+  checkoutConfig,
+}: RegistrationCardProps) => {
   const config = useConfig()
 
   // const { lock, isLockLoading } = useLockData({
@@ -213,18 +205,18 @@ export const RegistrationCard = ({ event }: RegistrationCardProps) => {
   return (
     <Card className="grid gap-6 mt-10 lg:mt-0">
       <div className="grid gap-6 md:gap-8">
-        {Object.keys(event.locks)?.map((lockAddress: string) => {
+        {Object.keys(checkoutConfig.locks)?.map((lockAddress: string) => {
           return (
             <LockPriceDetails
               key={lockAddress}
               lockAddress={lockAddress}
-              network={event.locks[lockAddress].network}
+              network={checkoutConfig.locks[lockAddress].network}
               showContract
             />
           )
         })}
       </div>
-      <RegistrationCardInternal event={event} />
+      <RegistrationCardInternal checkoutConfig={checkoutConfig} event={event} />
       {/* <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
         <Checkout
           injectedProvider={injectedProvider as any}

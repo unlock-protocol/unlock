@@ -1,30 +1,33 @@
 import { useQuery } from '@tanstack/react-query'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface useEventOrganizerProps {
-  event: any
+  checkoutConfig: PaywallConfigType
 }
 /**
  * Check if currently authenticated user is manager for one of the event's locks.
  *
  */
-export const useEventOrganizer = ({ event }: useEventOrganizerProps) => {
+export const useEventOrganizer = ({
+  checkoutConfig,
+}: useEventOrganizerProps) => {
   const web3Service = useWeb3Service()
   const { account } = useAuth()
 
   return useQuery(
-    ['eventOrganizer', event, account],
+    ['eventOrganizer', checkoutConfig, account],
     async (): Promise<boolean> => {
       if (!account) {
         return false
       }
       const isManagerByLock = await Promise.all(
-        Object.keys(event.locks).map((lockAddress: string) =>
+        Object.keys(checkoutConfig.locks).map((lockAddress: string) =>
           web3Service.isLockManager(
             lockAddress,
             account!,
-            event.locks[lockAddress].network
+            checkoutConfig.locks[lockAddress].network
           )
         )
       )
