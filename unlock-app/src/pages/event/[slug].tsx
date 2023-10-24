@@ -17,35 +17,19 @@ interface EventPageProps {
 
 export const getServerSideProps = async ({ params }: Params) => {
   const { data: eventMetadata } = await storage.getEvent(params.slug)
-  let locks
-  // TODO: consider doing these transformations on the server?
-  if (Array.isArray(eventMetadata?.locks)) {
-    locks = eventMetadata.locks.reduce((acc: any, lockAsString: any) => {
-      const [address, network] = lockAsString.split('-')
-      return {
-        ...acc,
-        [address]: {
-          network: parseInt(network),
-        },
-      }
-    }, {})
-  }
   return {
     props: {
       event: {
-        locks,
         ...toFormData(eventMetadata.data),
       },
+      checkoutConfig: eventMetadata.checkoutConfig,
     },
   }
 }
 
 const EventPage = (props: EventPageProps) => {
-  return (
-    <EventContentWithProps
-      event={props.pageProps.event}
-    ></EventContentWithProps>
-  )
+  console.log(props.pageProps)
+  return <EventContentWithProps {...props.pageProps}></EventContentWithProps>
 }
 
 export default EventPage
