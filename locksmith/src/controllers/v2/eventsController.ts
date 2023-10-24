@@ -108,7 +108,9 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
       }, {}),
     }
     delete eventResponse.locks
-    eventResponse.checkoutConfig = checkoutConfig
+    eventResponse.checkoutConfig = {
+      config: checkoutConfig,
+    }
     return response.status(200).send(eventResponse)
   }
 
@@ -131,10 +133,12 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
               },
             })
           : {
-              ...defaultPaywallConfig,
-              locks: {
-                [settings.lockAddress]: {
-                  network: settings.network,
+              config: {
+                ...defaultPaywallConfig,
+                locks: {
+                  [settings.lockAddress]: {
+                    network: settings.network,
+                  },
                 },
               },
             }
