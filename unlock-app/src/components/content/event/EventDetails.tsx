@@ -1,26 +1,16 @@
 import fontColorContrast from 'font-color-contrast'
-import { ReactNode, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { useMetadata, useUpdateMetadata } from '~/hooks/metadata'
+import { useMetadata } from '~/hooks/metadata'
 import { useConfig } from '~/utils/withConfig'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { NextSeo } from 'next-seo'
-
-import {
-  MetadataFormData,
-  formDataToMetadata,
-  toFormData,
-} from '~/components/interface/locks/metadata/utils'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 import {
   Button,
   Card,
   Disclosure,
-  Drawer,
-  Icon,
-  ImageUpload,
   Modal,
   Placeholder,
   minifyAddress,
@@ -37,16 +27,9 @@ import { VerifierForm } from '~/components/interface/locks/Settings/forms/Verifi
 import dayjs from 'dayjs'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { FiMapPin as MapPinIcon } from 'react-icons/fi'
-import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
-import { IconType } from 'react-icons'
-import { useValidKey, useValidKeyBulk } from '~/hooks/useKey'
+import { useValidKey } from '~/hooks/useKey'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
-import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
-import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockData } from '~/hooks/useLockData'
-import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
-import { useImageUpload } from '~/hooks/useImageUpload'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
@@ -57,341 +40,23 @@ import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
 import { PaywallConfig } from '~/unlockTypes'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { CoverImageDrawer } from './CoverImageDrawer'
+import { EventDetail } from './EventDetail'
+import { EventLocation } from './EventLocation'
+import { LockPriceDetails } from './LockPriceDetails'
+import { CheckoutRegistrationCard } from './CheckoutRegistrationCard'
 
 interface EventDetailsProps {
   lockAddress: string
   network: number
+  metadata?: any
 }
 
-interface EventDetailProps {
-  icon: IconType
-  label: string
-  children?: ReactNode
-}
-
-const EventLocation = ({ eventData }: { eventData: Partial<Metadata> }) => {
-  let inPerson = true
-  if (eventData.ticket?.event_address.startsWith('http')) {
-    inPerson = false
-  }
-  return (
-    <EventDetail label="Location" icon={inPerson ? MapPinIcon : ZoomIcon}>
-      <div
-        style={{ color: `#${eventData.background_color}` }}
-        className="flex flex-col gap-0.5"
-      >
-        {inPerson && (
-          <>
-            <span className="text-lg font-normal capitalize text-brand-dark">
-              {eventData.ticket?.event_address}
-            </span>
-            <Link
-              target="_blank"
-              className="text-base font-bold"
-              href={`https://www.google.com/maps/search/?api=1&query=${eventData.ticket?.event_address}`}
-            >
-              Show map
-            </Link>
-          </>
-        )}
-        {!inPerson && (
-          <Link
-            target="_blank"
-            className="text-base flex items-center gap-2 hover:text-brand-ui-primary"
-            href={eventData.ticket?.event_address}
-          >
-            Open video-conference <ExternalLinkIcon />
-          </Link>
-        )}
-      </div>
-    </EventDetail>
-  )
-}
-
-const EventDetail = ({ label, icon, children }: EventDetailProps) => {
-  return (
-    <div className="grid grid-cols-[64px_1fr] gap-4">
-      <div className="flex w-16 h-16 bg-white border border-gray-200 min-w-16 rounded-2xl">
-        <Icon className="m-auto" icon={icon} size={32} />
-      </div>
-      <div className="flex flex-col gap-0.5">
-        <span className="text-xl font-bold text-black">{label}</span>
-        <div>{children}</div>
-      </div>
-    </div>
-  )
-}
-
-interface CoverImageDrawerProps {
-  image: string
-  setImage: (image: string) => void
-  lockAddress: string
-  network: number
-  metadata: MetadataFormData
-  handleClose: () => void
-}
-
-const CoverImageDrawer = ({
-  image,
-  setImage,
+export const EventDetails = ({
   lockAddress,
   network,
   metadata,
-  handleClose,
-}: CoverImageDrawerProps) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const { isManager: isLockManager } = useLockManager({
-    lockAddress,
-    network,
-  })
-
-  const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
-
-  const { mutateAsync: updateMetadata, isLoading } = useUpdateMetadata({
-    lockAddress,
-    network,
-  })
-
-  const coverImage = metadata.ticket?.event_cover_image
-
-  const onSubmit = async () => {
-    const metadataObj = formDataToMetadata({
-      ...metadata,
-      ticket: {
-        ...metadata?.ticket,
-        event_cover_image: image,
-      },
-    })
-    await updateMetadata(metadataObj)
-    setIsOpen(false)
-    handleClose()
-  }
-
-  return (
-    <div className="relative inset-0 z-[1]">
-      {isLockManager && (
-        <Button
-          className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
-          variant="secondary"
-          size="tiny"
-          onClick={() => {
-            setIsOpen(true)
-            setImage(coverImage || '')
-          }}
-        >
-          {coverImage ? 'Change image' : 'Upload Image'}
-        </Button>
-      )}
-      <div className="relative">
-        <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Cover image">
-          <div className="z-10 mt-2 space-y-6">
-            <ImageUpload
-              size="full"
-              description="This illustration will be used as cover image for your event page"
-              preview={image}
-              isUploading={isUploading}
-              imageRatio="cover"
-              onChange={async (fileOrFileUrl: any) => {
-                if (typeof fileOrFileUrl === 'string') {
-                  setImage(fileOrFileUrl)
-                } else {
-                  const items = await uploadImage(fileOrFileUrl[0])
-                  const image = items?.[0]?.publicUrl
-                  if (!image) {
-                    return
-                  }
-                  setImage(image)
-                }
-              }}
-            />
-          </div>
-          <Button
-            className="w-full"
-            size="small"
-            type="submit"
-            onClick={onSubmit}
-            loading={isLoading}
-            disabled={image === coverImage}
-          >
-            Save
-          </Button>
-        </Drawer>
-      </div>
-    </div>
-  )
-}
-
-interface CheckoutRegistrationCardProps {
-  isManager: boolean
-  lockAddress: string
-  network: number
-  onPurchase: () => void
-}
-
-const CheckoutRegistrationCard = ({
-  isManager,
-  lockAddress,
-  network,
-  onPurchase,
-}: CheckoutRegistrationCardProps) => {
-  const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-
-  const config = useConfig()
-
-  const {
-    locks: eventLocks,
-    isLoading: isLoadingEventLocks,
-    checkoutConfig,
-  } = useGetEventLocksConfig({
-    lockAddress,
-    network,
-  })
-
-  const queries = useValidKeyBulk(eventLocks)
-  const isLoadingValidKeys = queries?.some(
-    (query) => query.isInitialLoading || query.isRefetching
-  )
-  const hasValidKey = queries?.map((query) => query.data).some((value) => value)
-
-  const injectedProvider = selectProvider(config)
-
-  const showCardPlaceholder = isLoadingEventLocks || isLoadingValidKeys
-
-  if (showCardPlaceholder) {
-    return <Placeholder.Card size="md" />
-  }
-
-  // not match found for the assigned Checkout ID, for example could be deleted
-  if (eventLocks.length === 0) {
-    return (
-      <Card className="grid gap-6 mt-10 lg:mt-0">
-        <span className="text-2xl font-bold text-gray-900">Registration</span>
-        <span>
-          {isManager
-            ? 'The checkout URL assigned to this event is deleted or invalid. Please make sure to assign an existing one.'
-            : 'Registration details are not configured.'}
-        </span>
-      </Card>
-    )
-  }
-
-  return (
-    <>
-      <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
-        <Checkout
-          injectedProvider={injectedProvider as any}
-          paywallConfig={checkoutConfig as any}
-          handleClose={() => {
-            setCheckoutOpen(false)
-            onPurchase()
-          }}
-        />
-      </Modal>
-      <Card className="grid gap-6 mt-10 lg:mt-0">
-        <span className="text-2xl font-bold text-gray-900">Registration</span>
-        {hasValidKey ? (
-          <p className="text-lg">
-            🎉 You already have a ticket! You can view it in{' '}
-            <Link className="underline" href="/keychain">
-              your keychain
-            </Link>
-            .
-          </p>
-        ) : (
-          <div className="grid gap-6 md:gap-8">
-            {eventLocks?.map(({ lockAddress, network }) => {
-              return (
-                <LockPriceDetails
-                  key={lockAddress}
-                  lockAddress={lockAddress}
-                  network={network}
-                  showContract
-                />
-              )
-            })}
-          </div>
-        )}
-        <Button
-          variant="primary"
-          size="medium"
-          onClick={() => {
-            setCheckoutOpen(true)
-          }}
-        >
-          Register
-        </Button>
-      </Card>
-    </>
-  )
-}
-
-export const LockPriceDetails = ({
-  lockAddress,
-  network,
-  showContract = false,
-}: EventDetailsProps & { showContract?: boolean }) => {
-  const { lock, isLockLoading } = useLockData({
-    lockAddress,
-    network,
-  })
-
-  const price =
-    lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
-
-  const keysLeft =
-    Math.max(lock?.maxNumberOfKeys || 0, 0) - (lock?.outstandingKeys || 0)
-
-  const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
-
-  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
-
-  const { data: symbol } = useGetLockCurrencySymbol({
-    lockAddress,
-    network,
-    contractAddress: lock?.currencyContractAddress,
-  })
-
-  if (isLockLoading) {
-    return (
-      <Placeholder.Root inline>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-      </Placeholder.Root>
-    )
-  }
-
-  return (
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-5">
-        <div className="flex items-center gap-2">
-          <>
-            {symbol && <CryptoIcon symbol={symbol} size={30} />}
-            <span>{price}</span>
-          </>
-        </div>
-        <div className="flex items-center gap-2">
-          <Icon icon={TicketIcon} size={30} />
-          {hasUnlimitedKeys ? (
-            <span className="text-base font-bold">&infin;</span>
-          ) : (
-            <span className="text-base font-bold">
-              {isSoldOut ? 'Sold out' : keysLeft}
-            </span>
-          )}
-          {!isSoldOut && <span className="text-gray-600">Left</span>}
-        </div>
-      </div>
-      {showContract && (
-        <div className="flex gap-2 flex-rows">
-          <span className="text-brand-gray">Ticket contract</span>
-          <AddressLink lockAddress={lockAddress} network={network} />
-        </div>
-      )}
-    </div>
-  )
-}
-
-export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
+}: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
   const { account } = useAuth()
@@ -418,11 +83,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
   const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
 
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const {
-    data: metadata,
-    isInitialLoading: isMetadataLoading,
-    refetch,
-  } = useMetadata({
+  const { refetch } = useMetadata({
     lockAddress,
     network,
   })
@@ -467,7 +128,7 @@ export const EventDetails = ({ lockAddress, network }: EventDetailsProps) => {
     successDuration: 1000,
   })
 
-  if (isMetadataLoading || isLoadingSettings || isLoadingEventLocks) {
+  if (isLoadingSettings || isLoadingEventLocks) {
     return (
       <Placeholder.Root>
         <Placeholder.Card size="lg" />
