@@ -213,7 +213,7 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
               </div>
             </section>
           </div>
-          <RegistrationCard event={event} />
+          <RegistrationCard checkoutConfig={checkoutConfig} event={event} />
         </section>
       </div>
 
@@ -256,27 +256,29 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
                   />
                 </div>
                 <div className="md:col-span-1">
-                  {Object.keys(event.locks).map((lockAddress: string) => {
-                    const network = event.locks[lockAddress].network
-                    let label = 'Manage attendees'
-                    if (Object.keys(event.locks).length > 1) {
-                      label = `Manage attendees for ${minifyAddress(
-                        lockAddress
-                      )}`
+                  {Object.keys(checkoutConfig.locks).map(
+                    (lockAddress: string) => {
+                      const network = checkoutConfig.locks[lockAddress].network
+                      let label = 'Manage attendees'
+                      if (Object.keys(checkoutConfig.locks).length > 1) {
+                        label = `Manage attendees for ${minifyAddress(
+                          lockAddress
+                        )}`
+                      }
+                      return (
+                        <Button
+                          key={lockAddress}
+                          as={Link}
+                          variant="black"
+                          className="button border"
+                          size="small"
+                          href={`/locks/lock?address=${lockAddress}&network=${network}`}
+                        >
+                          {label}
+                        </Button>
+                      )
                     }
-                    return (
-                      <Button
-                        key={lockAddress}
-                        as={Link}
-                        variant="black"
-                        className="button border"
-                        size="small"
-                        href={`/locks/lock?address=${lockAddress}&network=${network}`}
-                      >
-                        {label}
-                      </Button>
-                    )
-                  })}
+                  )}
                 </div>
               </Card>
 
@@ -285,21 +287,23 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
                 description="Add and manage trusted users at the event to help check-in attendees as they arrive."
               >
                 <div className="grid gap-2">
-                  {Object.keys(event.locks).map((lockAddress: string) => {
-                    const network = event.locks[lockAddress].network
-                    return (
-                      <Disclosure
-                        label={`Verifiers for ${minifyAddress(lockAddress)}`}
-                        key={lockAddress}
-                      >
-                        <VerifierForm
-                          lockAddress={lockAddress}
-                          network={network}
-                          disabled={!isOrganizer}
-                        />
-                      </Disclosure>
-                    )
-                  })}
+                  {Object.keys(checkoutConfig.locks).map(
+                    (lockAddress: string) => {
+                      const network = checkoutConfig.locks[lockAddress].network
+                      return (
+                        <Disclosure
+                          label={`Verifiers for ${minifyAddress(lockAddress)}`}
+                          key={lockAddress}
+                        >
+                          <VerifierForm
+                            lockAddress={lockAddress}
+                            network={network}
+                            disabled={!isOrganizer}
+                          />
+                        </Disclosure>
+                      )
+                    }
+                  )}
                 </div>
               </Disclosure>
             </div>

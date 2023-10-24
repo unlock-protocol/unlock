@@ -1,3 +1,4 @@
+import { PaywallConfigType } from '@unlock-protocol/core'
 import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
@@ -11,7 +12,8 @@ interface Params {
 
 interface EventPageProps {
   pageProps: {
-    event?: any // TODO: type this
+    event: any // TODO: type this
+    checkoutConfig: PaywallConfigType
   }
 }
 
@@ -20,7 +22,7 @@ export const getServerSideProps = async ({ params }: Params) => {
   return {
     props: {
       event: {
-        ...toFormData(eventMetadata.data),
+        ...toFormData(eventMetadata.data!),
       },
       checkoutConfig: eventMetadata.checkoutConfig,
     },
