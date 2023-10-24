@@ -24,9 +24,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Emitted when the expiration of a key is modified
   event ExpirationChanged(
     uint indexed tokenId,
-    uint newExpiration,
-    uint amount,
-    bool timeAdded
+    uint prevExpiration,
+    uint newExpiration
   );
 
   // fire when a key is extended
@@ -353,7 +352,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function _cancelKey(uint _tokenId) internal {
     // expire the key
-    _setKeyExpiration(_tokenId, block.timestamp, 0, false);
+    _setKeyExpiration(_tokenId, block.timestamp);
   }
 
   /**
@@ -553,6 +552,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _isKey(_tokenId);
 
     uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
+    uint newTimestamp;
 
     if (_addTime) {
       // cant add to a non-expiring key
@@ -561,21 +561,16 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       }
       if (formerTimestamp > block.timestamp) {
         // append to valid key
-        _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
+        newTimestamp = formerTimestamp + _deltaT;
       } else {
         // add from now if key is expired
-        _keys[_tokenId].expirationTimestamp = block.timestamp + _deltaT;
+        newTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
+      newTimestamp = formerTimestamp - _deltaT;
     }
 
-    _setKeyExpiration(
-      _tokenId,
-      _keys[_tokenId].expirationTimestamp,
-      _deltaT,
-      _addTime
-    );
+    _setKeyExpiration(_tokenId, newTimestamp);
   }
 
   /**
@@ -627,24 +622,16 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    * Set the expiration of a key
    * @param _tokenId the id of the key
    * @param _newExpiration the new timestamp to use
-   * @param _delta time difference in sec (zero is unknown)
-   * @param _timeAdded boolean `true` = time added, `false` = time removed
-   * @notice is _delta is null and _timeAdded is `false`, then the time diff is considered unknown
    */
-  function _setKeyExpiration(
-    uint _tokenId,
-    uint _newExpiration,
-    uint _delta,
-    bool _timeAdded
-  ) internal {
+  function _setKeyExpiration(uint _tokenId, uint _newExpiration) internal {
+    uint prevExpiration = _keys[_tokenId].expirationTimestamp;
     // update expiration
     _keys[_tokenId].expirationTimestamp = _newExpiration;
 
     emit ExpirationChanged(
       _tokenId,
-      _keys[_tokenId].expirationTimestamp,
-      _delta,
-      _timeAdded
+      prevExpiration,
+      _keys[_tokenId].expirationTimestamp
     );
   }
 
@@ -655,7 +642,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function setKeyExpiration(uint _tokenId, uint _newExpiration) public {
     _onlyLockManager();
-    _setKeyExpiration(_tokenId, _newExpiration, 0, false);
+    _setKeyExpiration(_tokenId, _newExpiration);
   }
 
   /**
