@@ -34,16 +34,10 @@ import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './RegistrationCard'
 
 interface EventDetailsProps {
-  lockAddress: string
-  network: number
   eventData?: any
 }
 
-export const EventDetails = ({
-  lockAddress,
-  network,
-  eventData,
-}: EventDetailsProps) => {
+export const EventDetails = ({ eventData }: EventDetailsProps) => {
   console.log(eventData)
   const [image, setImage] = useState('')
   const config = useConfig()
@@ -53,6 +47,7 @@ export const EventDetails = ({
     eventData,
   })
 
+  // Get locks from eventData!
   const { locks: eventLocks, isLoading: isLoadingEventLocks } =
     useGetEventLocksConfig({
       lockAddress,
