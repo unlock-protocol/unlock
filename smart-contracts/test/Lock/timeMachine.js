@@ -79,8 +79,7 @@ contract('Lock / timeMachine', () => {
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
 
       assert(timestampAfter.eq(evt.args.newExpiration))
-      assert.equal(evt.args.amount, 42)
-      assert.equal(evt.args.timeAdded, true)
+      assert(timestampBefore.eq(evt.args.prevExpiration))
       assert.equal(evt.args.tokenId.eq(tokenId), true)
     })
   })
