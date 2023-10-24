@@ -1,5 +1,7 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
+import type { BigNumber } from 'ethers'
+
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
 /* eslint-disable no-unused-vars */
@@ -276,6 +278,18 @@ export interface UserMetadata {
   protectedData?: {
     [key: string]: string
   }
+}
+
+export interface UnlockUniswapRoute {
+  swapCalldata?: string
+  value: string
+  amountInMax: BigNumber
+  swapRouter: string
+  quote: any
+  trade: any
+  convertToQuoteToken: any
+  quoteGasAdjusted: any
+  estimatedGasUsedUSD: any
 }
 
 export type UnlockNetworks = number
