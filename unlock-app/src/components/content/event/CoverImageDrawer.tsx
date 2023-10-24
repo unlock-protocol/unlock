@@ -9,31 +9,27 @@ interface CoverImageDrawerProps {
   image: string
   setImage: (image: string) => void
   lockAddress: string
-  network: number
-  metadata: MetadataFormData
   handleClose: () => void
 }
 
 export const CoverImageDrawer = ({
   image,
   setImage,
-  lockAddress,
-  network,
   metadata,
   handleClose,
 }: CoverImageDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { isManager: isLockManager } = useLockManager({
-    lockAddress,
-    network,
-  })
+  // const { isManager: isLockManager } = useLockManager({
+  //   lockAddress,
+  //   network,
+  // })
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
-  const { mutateAsync: updateMetadata, isLoading } = useUpdateMetadata({
-    lockAddress,
-    network,
-  })
+  // const { mutateAsync: updateMetadata, isLoading } = useUpdateMetadata({
+  //   lockAddress,
+  //   network,
+  // })
 
   const coverImage = metadata.ticket?.event_cover_image
 
@@ -45,14 +41,14 @@ export const CoverImageDrawer = ({
         event_cover_image: image,
       },
     })
-    await updateMetadata(metadataObj)
+    // await updateMetadata(metadataObj)
     setIsOpen(false)
     handleClose()
   }
 
   return (
     <div className="relative inset-0 z-[1]">
-      {isLockManager && (
+      {/* {isLockManager && (
         <Button
           className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
           variant="secondary"
@@ -64,7 +60,7 @@ export const CoverImageDrawer = ({
         >
           {coverImage ? 'Change image' : 'Upload Image'}
         </Button>
-      )}
+      )} */}
       <div className="relative">
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Cover image">
           <div className="z-10 mt-2 space-y-6">
@@ -93,7 +89,7 @@ export const CoverImageDrawer = ({
             size="small"
             type="submit"
             onClick={onSubmit}
-            loading={isLoading}
+            loading={false}
             disabled={image === coverImage}
           >
             Save
