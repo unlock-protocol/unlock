@@ -1,5 +1,6 @@
-import { PaywallConfig, NetworkConfigs } from '@unlock-protocol/types'
+import { NetworkConfigs } from '@unlock-protocol/types'
 import { hasValidKey } from './hasValidKey'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 /**
  * A function which, given a user account, a paywall config will return the list of unlocked locks.
@@ -8,7 +9,7 @@ import { hasValidKey } from './hasValidKey'
  */
 export const isUnlocked = async (
   userAccountAddress: string,
-  paywallConfig: PaywallConfig,
+  paywallConfig: PaywallConfigType,
   networks: NetworkConfigs
 ): Promise<string[]> => {
   const unlockedLocks: string[] = []

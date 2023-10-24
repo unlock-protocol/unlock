@@ -10,6 +10,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -25,6 +26,21 @@ const EventBody = z.object({
   data: z.any(),
   locks: z.array(z.string()),
 })
+
+const defaultPaywallConfig: Partial<PaywallConfigType> = {
+  title: 'Registration',
+  emailRequired: true,
+  metadataInputs: [
+    {
+      name: 'fullname',
+      label: 'Full name',
+      defaultValue: '',
+      type: 'text',
+      required: true,
+      placeholder: 'Satoshi Nakamoto',
+    },
+  ],
+}
 
 export const saveEventDetails: RequestHandler = async (request, response) => {
   const parsed = await EventBody.parseAsync(request.body)
@@ -80,6 +96,7 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
   if (event) {
     const eventResponse = event.toJSON() as any // TODO: type!
     const checkoutConfig = {
+      ...defaultPaywallConfig,
       locks: eventResponse.locks.reduce((acc: any, lockAsString: any) => {
         const [address, network] = lockAsString.split('-')
         return {
@@ -114,6 +131,7 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
               },
             })
           : {
+              ...defaultPaywallConfig,
               locks: {
                 [settings.lockAddress]: {
                   network: settings.network,
