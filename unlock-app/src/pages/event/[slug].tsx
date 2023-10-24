@@ -24,7 +24,7 @@ export const getServerSideProps = async ({ params }: Params) => {
       event: {
         ...toFormData(eventMetadata.data!),
       },
-      checkoutConfig: eventMetadata.checkoutConfig,
+      checkoutConfig: eventMetadata.checkoutConfig.config,
     },
   }
 }

@@ -55,7 +55,7 @@ export const LockPriceDetails = ({
           <>
             {symbol && <CryptoIcon symbol={symbol} size={30} />}
             <span>
-              {price} {symbol}
+              {price} {price === 'FREE' ? '' : symbol}
             </span>
           </>
         </div>
