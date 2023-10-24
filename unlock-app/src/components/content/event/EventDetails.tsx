@@ -12,7 +12,6 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-<<<<<<< HEAD
 import { useValidKey } from '~/hooks/useKey'
 import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
@@ -30,7 +29,8 @@ import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './RegistrationCard'
 
 interface EventDetailsProps {
-  event?: any
+  event: any
+  checkoutConfig: PaywallConfigType
 }
 
 const language = () => {
@@ -40,7 +40,7 @@ const language = () => {
   return navigator?.language || 'en-US'
 }
 
-export const EventDetails = ({ event }: EventDetailsProps) => {
+export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
   const [image, setImage] = useState('')
   const config = useConfig()
 
@@ -66,33 +66,6 @@ export const EventDetails = ({ event }: EventDetailsProps) => {
 
   const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
-<<<<<<< HEAD
-  const injectedProvider = selectProvider(config)
-
-  const paywallConfig: PaywallConfigType = {
-    title: 'Registration',
-    icon: metadata?.image,
-    locks: {
-      [lockAddress]: {
-        network,
-        emailRequired: true,
-        metadataInputs: [
-          {
-            name: 'fullname',
-            label: 'Full name',
-            defaultValue: '',
-            type: 'text',
-            required: true,
-            placeholder: 'Satoshi Nakamoto',
-            public: false,
-          },
-        ],
-      },
-    },
-  }
-
-=======
->>>>>>> a70987cf1 (moving lock logic deeper in the stack, on the Registation components)
   const startDate = eventDate
     ? eventDate.toLocaleDateString(undefined, {
         timeZone: event.ticket.event_timezone,
