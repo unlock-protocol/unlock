@@ -102,6 +102,7 @@ export const getEvent: RequestHandler = async (request, response) => {
         },
       })
     }
+
     return response.status(200).send(eventResponse)
   }
 
