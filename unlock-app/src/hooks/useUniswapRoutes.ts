@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import type { BigNumber } from 'ethers'
 import { Token } from '@uniswap/sdk-core'
 import { networks } from '@unlock-protocol/networks'
+import { UnlockUniswapRoute } from '@unlock-protocol/types'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock, PaywallConfig } from '~/unlockTypes'
 import { nativeOnChain } from '@uniswap/smart-order-router'
@@ -25,18 +25,6 @@ interface UniswapRoutesOption {
   recipients: string[]
   purchaseData: string[] | undefined
   paywallConfig: PaywallConfig
-}
-
-export interface UnlockUniswapRoute {
-  swapCalldata?: string
-  value: string
-  amountInMax: BigNumber
-  swapRouter: string
-  quote: any
-  trade: any
-  convertToQuoteToken: any
-  quoteGasAdjusted: any
-  estimatedGasUsedUSD: any
 }
 
 export const useUniswapRoutes = ({

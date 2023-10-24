@@ -68,15 +68,3 @@ export interface TransactionOptions {
   runEstimate?: boolean
   value?: ethers.BigNumberish
 }
-
-export interface UnlockUniswapRoute {
-  swapCalldata?: string
-  value: string
-  amountInMax: BigNumber
-  swapRouter: string
-  quote: any
-  trade: any
-  convertToQuoteToken: any
-  quoteGasAdjusted: any
-  estimatedGasUsedUSD: any
-}

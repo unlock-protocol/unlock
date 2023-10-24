@@ -7,11 +7,7 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
-import {
-  TransactionOptions,
-  WalletServiceCallback,
-  UnlockUniswapRoute,
-} from './types'
+import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 
@@ -24,6 +20,8 @@ import {
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
 import { networks } from '@unlock-protocol/networks'
+import { UnlockUniswapRoute } from '@unlock-protocol/types'
+
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
