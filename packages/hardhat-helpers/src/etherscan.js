@@ -1,5 +1,6 @@
 // Etherscan api for verification
 // NB: list of supported network can be obtained with `yarn hardhat verify --list-networks`
+
 const etherscan = {
   apiKey: {
     // xdai requires only placeholder api key
@@ -88,4 +89,4 @@ if (process.env.SEPOLIA_API_KEY) {
   etherscan.apiKey.sepolia = process.env.SEPOLIA_API_KEY
 }
 
-module.exports = { etherscan }
+export default { etherscan }

@@ -1,6 +1,6 @@
 const { ethers, network, config } = require('hardhat')
 const { UDT, unlockAddress, whales } = require('./contracts')
-const USDC_ABI = require('../helpers/ABIs/USDC.json')
+const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const { MAX_UINT } = require('./constants')
 
 const resetNodeState = async () => {

@@ -1,6 +1,6 @@
 const { ethers, network } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { getProxyAdminAddress } = require('../../helpers/deployments')
+const { getProxyAdminAddress } = require('@unlock-protocol/hardhat-helpers')
 const getOwners = require('../multisig/owners')
 
 async function main({ unlockAddress }) {

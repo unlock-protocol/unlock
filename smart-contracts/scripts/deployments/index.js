@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 const { ethers, run, upgrades } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
-const { getNetworkName } = require('../../helpers/network')
 const { networks } = require('@unlock-protocol/networks')
 const createLock = require('../lock/create')
 
@@ -35,7 +34,7 @@ async function main({
 
   // fetch chain info
   const chainId = await deployer.getChainId()
-  const networkName = getNetworkName(chainId)
+  const networkName = networks[chainId].name
   const isLocalNet = networkName === 'localhost'
   log(
     `Deploying contracts on ${networkName} with the account: ${deployer.address}`

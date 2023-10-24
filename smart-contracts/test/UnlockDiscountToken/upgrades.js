@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers')
 const { createUniswapV2Exchange } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
