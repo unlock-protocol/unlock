@@ -187,17 +187,15 @@ contract('Lock / shareKey', () => {
         const expirationAfter = await lock.keyExpirationTimestampFor(
           tokenIds[2]
         )
-        console.log(events)
         const { args } = events.find(
           ({ event }) => event === 'ExpirationChanged'
         )
-        assert.equal(args.timeAdded, false)
         assert.equal(args.tokenId.toString(), tokenIds[2].toString())
-        assert.equal(args.newExpiration.toString(), expirationAfter.toString())
         assert.equal(
-          args.amount.toString(),
-          expirationBefore.sub(expirationAfter).toString()
+          args.prevExpiration.toString(),
+          expirationBefore.toString()
         )
+        assert.equal(args.newExpiration.toString(), expirationAfter.toString())
       })
 
       it('should emit Transfer events', async () => {
@@ -205,17 +203,25 @@ contract('Lock / shareKey', () => {
         assert.equal(transfers.length, 2)
 
         // issuer mint a new token
-        assert.equal(transfers[0].args.from, ADDRESS_ZERO)
-        assert.equal(transfers[0].args.to, accountWithNoKey2.address)
+        const { args: createKeyEventArgs } = transfers.find(
+          ({ args: { from } }) => from === ADDRESS_ZERO
+        )
+        console.log(createKeyEventArgs)
+        assert.equal(createKeyEventArgs.from, ADDRESS_ZERO)
+        assert.equal(createKeyEventArgs.to, accountWithNoKey2)
         assert.equal(
-          transfers[0].args.tokenId.toString(),
+          createKeyEventArgs.tokenId.toString(),
           newTokenId.toString()
         )
+
         // issuer send the token to destination account
-        assert.equal(transfers[1].args.from, keyOwners[2].address)
-        assert.equal(transfers[1].args.to, accountWithNoKey2)
+        const { args: transferKeyEventArgs } = transfers.find(
+          ({ args: { from } }) => from !== ADDRESS_ZERO
+        )
+        assert.equal(transferKeyEventArgs.from, keyOwners[2].address)
+        assert.equal(transferKeyEventArgs.to, accountWithNoKey2)
         assert.equal(
-          transfers[1].args.tokenId.toString(),
+          transferKeyEventArgs.tokenId.toString(),
           newTokenId.toString()
         )
       })
