@@ -6,7 +6,7 @@ description: An informational tutorial covering tyhe basics of NFTs from develop
 
 # What is a Non-Fungible Token (NFT)?
 
-In this document, we'll answer the question "What is an NFT (Non-Fungible Token)?" We'll start with a simple explanation of what a token looks like on the blockchain and give some examples of how these are in use in the wild today. We'll mention some of the new ideas recently emerging and we'll briefly introduce some popular products and recent trends.
+In this document, we'll answer the question _"What is an NFT (Non-Fungible Token)?"_ We'll start with a simple explanation of what a token looks like on the blockchain and give some examples of how these are in use in the wild today. We'll mention some of the new ideas recently emerging and we'll briefly introduce some popular products and recent trends.
 
 When you've finished this guide you'll have an understanding of what an NFT is in practical terms and perhaps why you might want one (beyond just having a cool profile picture!).
 
@@ -40,11 +40,11 @@ Alongside this mapping in the contract is a set of functions to manage the excha
 
 ## NFT smart contract standards
 
-ERC721 and ERC1155 are the most common NFT standards on Ethereum, although there are new proposals to further advance these.
+[ERC721](https://eips.ethereum.org/EIPS/eip-721) and [ERC1155](https://eips.ethereum.org/EIPS/eip-1155) are the most common NFT standards in the Ethereum ecosystem, although there are new proposals to further advance these.
 
 The main difference between the two standards is that all ERC721 tokens in a contract collection are individually unique, whereas ERC1155 tokens can issue a set of more than one of each token in the collection.
 
-These specifications define how to manage ownership of the tokens - the mapping of token id to owner address - and the information associated with the token. This often includes a URL or IPFS hash for retrieving metadata about the token from another service.
+These specifications define how to manage ownership of the tokens - the mapping of token id to owner address - and the information associated with the token. This often includes a URL or IPFS hash for retrieving **metadata** (including the image) about the token from another service.
 
 As long as they adhere to the basic spec for compatibility, tokens are free to include additional functionality to support their product or utility.
 
@@ -56,7 +56,7 @@ Tokens are a new digital primitive. Like websites began as simple text documents
 
 What are some common use cases for NFTs right now, other than trading expensive pictures of monkeys?
 
-Most notable are NFT-based event ticketing, media memberships, DAO memberships, online credentials and proof of attendance records, and digital colectibles. All are being done today.
+Most notable are NFT-based [event ticketing](https://events.unlock-protocol.com/), media memberships, DAO memberships, [online credentials](https://certifications.unlock-protocol.com/) and proof of attendance records, and digital colectibles. All are being done today.
 
 Here's a quick overview of how tokens help achieve these outcomes and an introduction to some of the companies working on ideas in the space.
 
@@ -66,9 +66,9 @@ Online and IRL event ticketing are a natural use cases for NFTs. The verifiable 
 
 > Related: [How to sell NFT tickets for an event](https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/)
 
-### Media and DAO memberships
+### NFT subscriptions for Media and DAO memberships
 
-NFTs can act like membership cards that provide access to content websites (e.g. media paywalls), online and offline communities (e.g. membership cards), or members-only benefits. Unlock extends this core function in an important way, enabling NFT-based membershps to be time-bound (e.g. for a day, month, year, or any other lenght of time).
+Subscription NFTs can act like membership cards that provide access to content websites (e.g. media paywalls), online and offline communities (e.g. membership cards), or members-only benefits. Unlock extends this core function in an important way, enabling NFT-based membershps to be time-bound (e.g. for a day, month, year, or any other lenght of time).
 
 > Related: [Creating a media membership paywall with Unlock and WordPress](https://unlock-protocol.com/guides/guide-to-the-unlock-protocol-wordpress-plugin/)
 >

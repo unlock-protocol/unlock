@@ -12,6 +12,8 @@ We recently launched support for [crypto based NFT subscriptions](./recurring-su
 
 Today, we are extending the same support to fiat payment options we provide (including credit card, [Apple and Google Pay](/blog/support-for-google-and-apple-pay)). Creators can now add `recurringPayments: number` to the `paywallConfig` when building their checkout URL in order to charge their users on a regular frequency.
 
+A really interesting tidbit is that even users who pay with their cards are receiving a **subscription NFT** that gets renewed every time their card is charged!
+
 Here is an example of paywallConfig.
 
 ```json

@@ -51,7 +51,8 @@ export function Home() {
       <Container>
         <div className="flex flex-col items-center w-full gap-6 mt-16 mb-48">
           <span className="mx-auto text-2xl font-bold text-center md:text-3xl">
-            Build your first membership contract in minutes.
+            Build your first membership contract and mint a subscription NFT in
+            minutes.
           </span>
           <Button
             as={Link}
