@@ -1,6 +1,8 @@
 const { unlock, config, ethers } = require('hardhat')
 const { expect } = require('chai')
-const { abi: USDCabi } = require('../helpers/ABIs/USDC.json')
+const {
+  abi: USDCabi,
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const {
   UNISWAP_FACTORY_ADDRESS,
   USDC,

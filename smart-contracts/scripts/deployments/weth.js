@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const WETH = require('../../test/helpers/ABIs/weth.json')
+const WETH = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
 
 async function main() {
   const Weth = await ethers.getContractFactory(WETH.abi, WETH.bytecode)

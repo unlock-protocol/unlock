@@ -1,7 +1,6 @@
 const { ethers } = require('hardhat')
-const { reverts, ADDRESS_ZERO } = require('../helpers')
+const { reverts, ADDRESS_ZERO, getProxyAddress } = require('../helpers')
 const { time } = require('@openzeppelin/test-helpers')
-const { getProxyAddress } = require('../../helpers/deployments')
 
 const {
   resetNodeState,

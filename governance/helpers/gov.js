@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('../test/helpers')
+const { AddressZero } = ethers.constants
+const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 
 /**
  * Helper to parse a DAO proposal from an object
@@ -99,7 +100,7 @@ const getProposalIdFromContract = async (proposal, govAddress) => {
     : await ethers.getSigner(proposerAddress)
 
   const gov = await ethers.getContractAt(
-    'UnlockProtocolGovernor',
+    GovernorUnlockProtocol.abi,
     govAddress,
     proposerWallet
   )
@@ -131,11 +132,14 @@ const encodeProposalArgs = async ({
   functionArgs,
 }) => {
   // use that pattern instead of `getContractFactory` so we support passing interfaces
-  const { interface } = await ethers.getContractAt(
+  const { interface: contractInterface } = await ethers.getContractAt(
     contractNameOrAbi,
-    ADDRESS_ZERO
+    AddressZero
   )
-  const calldata = interface.encodeFunctionData(functionName, [...functionArgs])
+
+  const calldata = contractInterface.encodeFunctionData(functionName, [
+    ...functionArgs,
+  ])
   return calldata
 }
 
@@ -144,8 +148,11 @@ const decodeProposalArgs = async ({
   functionName,
   calldata,
 }) => {
-  const { interface } = await ethers.getContractFactory(contractNameOrAbi)
-  const decoded = interface.decodeFunctionData(functionName, calldata)
+  const { interface: contractInterface } = await ethers.getContractAt(
+    contractNameOrAbi,
+    AddressZero
+  )
+  const decoded = contractInterface.decodeFunctionData(functionName, calldata)
   return decoded
 }
 

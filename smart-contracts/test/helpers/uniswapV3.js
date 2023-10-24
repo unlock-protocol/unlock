@@ -17,7 +17,9 @@ const JSBI = require('jsbi')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
 
-const { abi: WethABI } = require('./ABIs/weth.json')
+const {
+  abi: WethABI,
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
 const { addUDT, impersonate, addSomeETH } = require('./fork')
 const {
   WETH,

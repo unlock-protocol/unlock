@@ -3,7 +3,7 @@ const { expectRevert } = require('@openzeppelin/test-helpers')
 
 const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 

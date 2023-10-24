@@ -1,7 +1,10 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { addUDT } = require('../../test/helpers')
-const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
+const {
+  getQuorum,
+  getGovTokenAddress,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // workflow
 const submit = require('./submit')

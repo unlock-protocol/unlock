@@ -1,7 +1,9 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 
-const { abi: proxyABI } = require('../../test/helpers/ABIs/ProxyAdmin.json')
+const {
+  abi: proxyABI,
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 const { confirmMultisigTx, impersonate } = require('../../test/helpers')
 
 const { submitTx, getOwners } = require('../multisig')

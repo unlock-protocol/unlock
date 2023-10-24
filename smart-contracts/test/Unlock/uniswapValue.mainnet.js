@@ -2,8 +2,8 @@ const { ethers } = require('hardhat')
 const { mainnet } = require('@unlock-protocol/networks')
 const { expect } = require('chai')
 
-const ShibaInuAbi = require('../helpers/ABIs/erc20.json')
-const USDCabi = require('../helpers/ABIs/USDC.json')
+const ShibaInuAbi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
+const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 
 const {
   ADDRESS_ZERO,

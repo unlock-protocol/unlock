@@ -5,7 +5,7 @@ const {
   submitTxOldMultisig,
   confirmMultisigTx,
 } = require('./_helpers')
-const { ADDRESS_ZERO } = require('../../test/helpers')
+const { AddressZero } = ethers.constants
 
 const Safe = require('@safe-global/safe-core-sdk').default
 const SafeServiceClient = require('@safe-global/safe-service-client').default
@@ -91,7 +91,7 @@ async function main({ safeAddress, tx, signer }) {
       if (!calldata) {
         const { interface } = await ethers.getContractAt(
           contractNameOrAbi,
-          ADDRESS_ZERO
+          AddressZero
         )
         encodedFunctionCall = interface.encodeFunctionData(
           functionName,

@@ -6,11 +6,11 @@ const fs = require('fs-extra')
 const {
   abi: proxyAbi,
   bytecode: proxyBytecode,
-} = require('./ABIs/TransparentUpgradeableProxy.json')
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/TransparentUpgradeableProxy.json')
 const {
   abi: proxyAdminAbi,
   bytecode: proxyAdminBytecode,
-} = require('./ABIs/ProxyAdmin.json')
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
 const LATEST_UNLOCK_VERSION = 12
 const LATEST_PUBLIC_LOCK_VERSION = 13

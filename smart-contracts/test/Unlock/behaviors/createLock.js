@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const createLockHash = require('../../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO } = require('../../helpers')
 
 const PublicLock = artifacts.require('PublicLock')
 

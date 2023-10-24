@@ -29,7 +29,7 @@ const {
   reverts,
 } = require('../helpers')
 
-const { submitTx } = require('../../scripts/multisig')
+const { submitTx } = require('@unlock-protocol/governance/scripts/multisig')
 
 const NEW_UNLOCK_ADDRESS = '0xe79B93f8E22676774F2A8dAd469175ebd00029FA'
 

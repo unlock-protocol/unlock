@@ -3,7 +3,7 @@ const PublicLock = artifacts.require('contracts/PublicLock.sol:PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
 const deployContracts = require('../fixtures/deploy')
-const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
+const { ADDRESS_ZERO, MAX_UINT } = require('@unlock-protocol/hardhat-helpers')
 
 async function deployLock({
   unlock,

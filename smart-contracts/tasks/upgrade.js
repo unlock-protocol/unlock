@@ -1,6 +1,6 @@
 const { task } = require('hardhat/config')
-const { getNetworkName } = require('../helpers/network')
-const { getProxyAdminAddress } = require('../helpers/deployments')
+const { networks } = require('@unlock-protocol/networks')
+const { getProxyAdminAddress } = require('@unlock-protocol/hardhat-helpers')
 
 task(
   'upgrade',
@@ -40,7 +40,7 @@ task('upgrade:prepare', 'Deploy the implementation of an upgradeable contract')
     await run('compile')
 
     const { chainId } = await ethers.provider.getNetwork()
-    const networkName = getNetworkName(chainId)
+    const networkName = networks[chainId].name
 
     // eslint-disable-next-line no-console
     console.log(`Deploying new implementation ${contract} on ${networkName}.`)
@@ -64,7 +64,7 @@ task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
     await run('compile')
 
     const { chainId } = await ethers.provider.getNetwork()
-    const networkName = getNetworkName(chainId)
+    const networkName = networks[chainId].name
 
     // eslint-disable-next-line no-console
     console.log(`Importing implementations from ${contract} on ${networkName}.`)

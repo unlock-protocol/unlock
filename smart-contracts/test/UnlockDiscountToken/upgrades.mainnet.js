@@ -1,8 +1,8 @@
 const { reverts, ADDRESS_ZERO } = require('../helpers')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const multisigABI = require('../helpers/ABIs/multisig.json')
-const proxyABI = require('../helpers/ABIs/proxy.json')
+const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
+const proxyABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/proxy.json')
 
 const UDTProxyContractAddress = '0x90DE74265a416e1393A450752175AED98fe11517'
 const proxyAdminAddress = '0x79918A4389A437906538E0bbf39918BfA4F7690e'

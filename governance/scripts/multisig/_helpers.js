@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const multisigOldABI = require('../../test/helpers/ABIs/multisig.json')
+const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 
 // get the correct provider if chainId is specified
 const getProvider = async (chainId) => {

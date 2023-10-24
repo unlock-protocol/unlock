@@ -1,5 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO } = require('../../helpers')
 const {
   getContractFactoryFromSolFiles,
   cleanupPastContracts,
