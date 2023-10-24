@@ -1,5 +1,4 @@
 import fontColorContrast from 'font-color-contrast'
-import { PaywallConfig } from '~/unlockTypes'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { useValidKey, useValidKeyBulk } from '~/hooks/useKey'
@@ -16,6 +15,7 @@ import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
 import { CheckoutRegistrationCard } from './CheckoutRegistrationCard'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 interface RegistrationCardProps {
   event: any
@@ -115,7 +115,7 @@ export const RegistrationCardInternal = ({ event }: RegistrationCardProps) => {
     )
   }
 
-  const paywallConfig: PaywallConfig = {
+  const paywallConfig: PaywallConfigType = {
     title: 'Registration',
     icon: 'metadata?.image', // Replace with event
     emailRequired: true,
