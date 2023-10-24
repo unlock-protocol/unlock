@@ -4,7 +4,7 @@ import {
   getEventDataForLock,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
-import { EventData } from '../../models'
+import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
@@ -78,7 +78,21 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
   })
 
   if (event) {
-    return response.status(200).send(event.toJSON())
+    const eventResponse = event.toJSON() as any // TODO: type!
+    const checkoutConfig = {
+      locks: eventResponse.locks.reduce((acc: any, lockAsString: any) => {
+        const [address, network] = lockAsString.split('-')
+        return {
+          ...acc,
+          [address]: {
+            network: parseInt(network),
+          },
+        }
+      }, {}),
+    }
+    delete eventResponse.locks
+    eventResponse.checkoutConfig = checkoutConfig
+    return response.status(200).send(eventResponse)
   }
 
   if (!event) {
@@ -89,10 +103,21 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
         lockAddress: settings.lockAddress,
         network: settings.network,
       })
+
       if (lockData) {
+        // We need to look if there are more locks for that event as well!
+        // For this we need to check if any checkout config is attached to this lock.
+        const checkoutConfig = settings.checkoutConfigId
+          ? await CheckoutConfig.findOne({
+              where: {
+                id: settings.checkoutConfigId,
+              },
+            })
+          : ''
         return response.status(200).send({
           data: { ...lockData },
           locks: [[settings.lockAddress, settings.network].join('-')],
+          checkoutConfig,
         })
       }
     }
