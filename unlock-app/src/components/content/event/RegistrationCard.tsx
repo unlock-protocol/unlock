@@ -73,16 +73,17 @@ export const RegistrationCardInternal = ({
   )
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
-  const { isLoading: isClaimableLoading, data: isClaimable } = useCanClaim(
-    {
-      recipients: [account || ZERO],
-      lockAddress: Object.keys(checkoutConfig.locks)[0],
-      network:
-        checkoutConfig.locks[Object.keys(checkoutConfig.locks)[0]].network,
-      data: [],
-    },
-    { enabled: Object.keys(checkoutConfig.locks).length === 1 }
-  )
+  const { isInitialLoading: isClaimableLoading, data: isClaimable } =
+    useCanClaim(
+      {
+        recipients: [account || ZERO],
+        lockAddress: Object.keys(checkoutConfig.locks)[0],
+        network:
+          checkoutConfig.locks[Object.keys(checkoutConfig.locks)[0]].network,
+        data: [],
+      },
+      { enabled: Object.keys(checkoutConfig.locks).length === 1 }
+    )
 
   if (isLoadingValidKeys || isClaimableLoading) {
     return <Placeholder.Card size="md" />
@@ -97,17 +98,6 @@ export const RegistrationCardInternal = ({
         </Link>
         .
       </p>
-    )
-  }
-
-  if (event.checkoutConfigId) {
-    return (
-      <CustomCheckoutRegistrationCard
-        checkoutConfigId={event.checkoutConfigId}
-        onPurchase={() => {
-          console.log('purchase done!')
-        }}
-      />
     )
   }
 

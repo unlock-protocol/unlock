@@ -3385,7 +3385,10 @@ paths:
                   data:
                     type: object # TODO: better schema!
                   checkoutConfig:
-                    $ref: '#/components/schemas/CheckoutConfig'
+                    type: object
+                    properties:
+                      config:
+                        $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
 
