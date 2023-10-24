@@ -29,5 +29,8 @@
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "typescript": "5.0.4"
+  },
+  "dependencies": {
+    "ethers": "5.7.2"
   }
 }

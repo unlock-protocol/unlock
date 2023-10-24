@@ -1,4 +1,4 @@
-import { ethers, providers } from 'ethers'
+import type { ethers, providers } from 'ethers'
 
 export interface PurchaseKeyParams {
   lockAddress: string
