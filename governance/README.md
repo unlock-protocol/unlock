@@ -98,9 +98,7 @@ Additionnaly, you can pass arguments to your proposal script via CLI positional 
 3. When things are ready, post it to the DAO!
 
 ```
-
 yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainnet
-
 ```
 
 4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
