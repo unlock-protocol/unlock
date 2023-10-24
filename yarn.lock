@@ -19313,7 +19313,9 @@ __metadata:
     "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
+    eslint: 8.46.0
     hardhat: 2.15.0
+    solhint: 3.4.1
   languageName: unknown
   linkType: soft
 
