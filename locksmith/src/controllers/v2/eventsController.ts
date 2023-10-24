@@ -113,10 +113,15 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
                 id: settings.checkoutConfigId,
               },
             })
-          : ''
+          : {
+              locks: {
+                [settings.lockAddress]: {
+                  network: settings.network,
+                },
+              },
+            }
         return response.status(200).send({
           data: { ...lockData },
-          locks: [[settings.lockAddress, settings.network].join('-')],
           checkoutConfig,
         })
       }
