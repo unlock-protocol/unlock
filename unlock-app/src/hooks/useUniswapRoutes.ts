@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import type { BigNumber } from 'ethers'
 import { Token } from '@uniswap/sdk-core'
 import { networks } from '@unlock-protocol/networks'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -9,7 +10,6 @@ import { NativeCurrency } from '@uniswap/sdk-core'
 import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
-import type { UnlockUniswapRoute } from '@unlock-protocol/unlock-js'
 
 export interface UniswapRoute {
   network: number
@@ -27,7 +27,19 @@ interface UniswapRoutesOption {
   paywallConfig: PaywallConfig
 }
 
-export const useUniswapRoutes: UnlockUniswapRoute = ({
+export interface UnlockUniswapRoute {
+  swapCalldata?: string
+  value: string
+  amountInMax: BigNumber
+  swapRouter: string
+  quote: any
+  trade: any
+  convertToQuoteToken: any
+  quoteGasAdjusted: any
+  estimatedGasUsedUSD: any
+}
+
+export const useUniswapRoutes = ({
   lock,
   recipients,
   purchaseData,
@@ -127,7 +139,7 @@ export const useUniswapRoutes: UnlockUniswapRoute = ({
       })
 
       const result = await Promise.all(
-        routesToLookup.map(async (route) => {
+        routesToLookup.map(async (route: UniswapRoute) => {
           try {
             const params = {
               network: route.network,
@@ -136,9 +148,10 @@ export const useUniswapRoutes: UnlockUniswapRoute = ({
               amountOut: route.amountOut,
               recipient: route.recipient,
             }
-            const response = await web3Service.getUniswapRoute({
-              params,
-            })
+            const response: UnlockUniswapRoute =
+              await web3Service.getUniswapRoute({
+                params,
+              })
 
             const balance = await getAccountTokenBalance(
               web3Service,
