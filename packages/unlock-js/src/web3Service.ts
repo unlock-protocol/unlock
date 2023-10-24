@@ -20,6 +20,8 @@ import {
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
 import { networks } from '@unlock-protocol/networks'
+import { UnlockUniswapRoute } from '@unlock-protocol/types'
+
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -1027,7 +1029,7 @@ export default class Web3Service extends UnlockService {
       recipient: string
       network: number
     }
-  }) {
+  }): Promise<UnlockUniswapRoute> {
     const provider: any = this.providerForNetwork(network)
     const networkConfig = this.networks[network]
     const router = new AlphaRouter({

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Token } from '@uniswap/sdk-core'
 import { networks } from '@unlock-protocol/networks'
+import { UnlockUniswapRoute } from '@unlock-protocol/types'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { nativeOnChain } from '@uniswap/smart-order-router'
@@ -10,6 +11,7 @@ import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
 import { PaywallConfigType } from '@unlock-protocol/core'
+
 export interface UniswapRoute {
   network: number
   tokenIn: Token | NativeCurrency
@@ -126,7 +128,7 @@ export const useUniswapRoutes = ({
       })
 
       const result = await Promise.all(
-        routesToLookup.map(async (route) => {
+        routesToLookup.map(async (route: UniswapRoute) => {
           try {
             const params = {
               network: route.network,
@@ -135,9 +137,10 @@ export const useUniswapRoutes = ({
               amountOut: route.amountOut,
               recipient: route.recipient,
             }
-            const response = await web3Service.getUniswapRoute({
-              params,
-            })
+            const response: UnlockUniswapRoute =
+              await web3Service.getUniswapRoute({
+                params,
+              })
 
             const balance = await getAccountTokenBalance(
               web3Service,
