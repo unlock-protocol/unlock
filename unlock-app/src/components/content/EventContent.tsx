@@ -23,19 +23,18 @@ export const EventContent = () => {
   })
   const eventData = metadata ? toFormData(metadata) : null
   const isLoading = isLoadingQuery || isMetadataLoading
-  return EventContentWithProps({ lockAddress, network, isLoading, eventData })
+
+  // GREAT: TODO LET US REBUILD THE eventData
+
+  return EventContentWithProps({ isLoading, eventData })
 }
 
 interface EventContentWithPropsProps {
-  lockAddress: string
-  network: number
-  eventData?: any // TODO: not optional
+  eventData: any // TODO: type this
   isLoading?: boolean
 }
 
 export const EventContentWithProps = ({
-  lockAddress,
-  network,
   isLoading,
   eventData,
 }: EventContentWithPropsProps) => {
@@ -64,13 +63,7 @@ export const EventContentWithProps = ({
       </Head>
 
       {!eventData && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
-      {!!eventData && lockAddress && network && (
-        <EventDetails
-          eventData={eventData}
-          lockAddress={lockAddress}
-          network={network}
-        />
-      )}
+      {!!eventData && <EventDetails eventData={eventData} />}
     </AppLayout>
   )
 }

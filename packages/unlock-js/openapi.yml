@@ -2670,6 +2670,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  # TODO: Deprecate me!
   /v2/events/{network}/{lockAddress}:
     get:
       operationId: getEventDetails
@@ -3227,6 +3228,7 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/email-subscriptions/unsubscribe/{network}/locks/{lockAddress}:
     post:
       operationId: unsubscribeEmail
@@ -3252,6 +3254,7 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/email-subscriptions/subscribe/{network}/locks/{lockAddress}:
     post:
       operationId: reSubscribeEmail
@@ -3350,6 +3353,37 @@ paths:
                     type: string
                   data:
                     type: object
+                  slug:
+                    type: string
+                  locks:
+                    type: array
+                    items:
+                      type: string
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}:
+    get:
+      operationId: getEvent
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      description: Retrieves an event based on its slug
+
+      responses:
+        200:
+          description: Successfully retrieves the event
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  data:
+                    type: object # TODO: better schema!
                   slug:
                     type: string
                   locks:
