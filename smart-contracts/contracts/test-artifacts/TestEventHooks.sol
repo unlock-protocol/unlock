@@ -4,7 +4,7 @@ import "../interfaces/hooks/ILockKeyPurchaseHook.sol";
 import "../interfaces/hooks/ILockKeyCancelHook.sol";
 import "../interfaces/hooks/ILockTokenURIHook.sol";
 import "../interfaces/IPublicLock.sol";
-import "../UnlockUtils.sol";
+import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 /**
  * @title Test contract for lock event hooks.
@@ -14,8 +14,8 @@ contract TestEventHooks is
   ILockKeyCancelHook,
   ILockTokenURIHook
 {
-  using UnlockUtils for uint;
-  using UnlockUtils for address;
+  using Strings for uint;
+  using Strings for address;
 
   event OnKeyPurchase(
     uint tokenId,
@@ -180,13 +180,13 @@ contract TestEventHooks is
     uint _expirationTimestamp
   ) external view returns (string memory) {
     string memory tokenId;
-    string memory lockAddress = _lockAddress.address2Str();
-    string memory operator = _operator.address2Str();
-    string memory owner = _owner.address2Str();
-    string memory expirationTimestamp = _expirationTimestamp.uint2Str();
+    string memory lockAddress = _lockAddress.toHexString();
+    string memory operator = _operator.toHexString();
+    string memory owner = _owner.toHexString();
+    string memory expirationTimestamp = _expirationTimestamp.toString();
 
     if (_tokenId != 0) {
-      tokenId = _tokenId.uint2Str();
+      tokenId = _tokenId.toString();
     } else {
       tokenId = "";
     }

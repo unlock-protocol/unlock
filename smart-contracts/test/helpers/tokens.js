@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const WethABI = require('./ABIs/weth.json')
+const WethABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
 const TestERC20 = artifacts.require('TestERC20')
 
 const deployERC20 = async (deployer, isEthers = false) => {

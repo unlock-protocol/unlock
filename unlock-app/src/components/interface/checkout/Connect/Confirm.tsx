@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { RiUser3Line as UserIcon } from 'react-icons/ri'
 import { OAuthConfig } from '~/unlockTypes'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
@@ -12,7 +12,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
 
 interface Props {
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfigType
   oauthConfig: OAuthConfig
   connectService: ConnectService
   injectedProvider: unknown
