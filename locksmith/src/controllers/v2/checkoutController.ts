@@ -1,7 +1,10 @@
 import { RequestHandler } from 'express'
 import { PaywallConfig } from '@unlock-protocol/core'
 import { CheckoutConfig } from '../../models'
-import { randomUUID } from 'node:crypto'
+import {
+  getCheckoutConfigById,
+  saveCheckoutConfig,
+} from '../../operations/checkoutConfigOperations'
 
 export const createOrUpdateCheckoutConfig: RequestHandler = async (
   request,
@@ -15,19 +18,12 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
     })
   }
   const checkoutConfig = await PaywallConfig.strip().parseAsync(config)
-  const userAddress = request.user!.walletAddress
-  const generatedId = randomUUID()
-  const [createdConfig] = await CheckoutConfig.upsert(
-    {
-      name,
-      id: id || generatedId,
-      config: checkoutConfig,
-      createdBy: userAddress,
-    },
-    {
-      conflictFields: ['id', 'createdBy'],
-    }
-  )
+  const createdConfig = await saveCheckoutConfig({
+    id,
+    name,
+    config: checkoutConfig,
+    createdBy: request.user!.walletAddress,
+  })
   return response.status(200).send({
     id: createdConfig.id,
     by: createdConfig.createdBy,
@@ -40,21 +36,10 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
 
 export const getCheckoutConfig: RequestHandler = async (request, response) => {
   const id = request.params.id
-  const checkoutConfig = await CheckoutConfig.findOne({
-    where: {
-      id,
-    },
-  })
+  const checkoutConfig = await getCheckoutConfigById(id)
   const statusCode = checkoutConfig ? 200 : 404
   const json = checkoutConfig
-    ? {
-        id: checkoutConfig.id,
-        name: checkoutConfig.name,
-        by: checkoutConfig.createdBy,
-        config: checkoutConfig.config,
-        updatedAt: checkoutConfig.updatedAt.toISOString(),
-        createdAt: checkoutConfig.createdAt.toISOString(),
-      }
+    ? checkoutConfig
     : {
         message: 'No config found',
       }
