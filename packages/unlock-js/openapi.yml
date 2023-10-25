@@ -3330,14 +3330,15 @@ paths:
               properties:
                 id:
                   type: number
-                name:
-                  type: string
                 data:
                   type: object
-                locks:
-                  type: array
-                  items:
-                    type: string
+                checkoutConfig:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    config:
+                      $ref: '#/components/schemas/CheckoutConfig'
 
       responses:
         200:
@@ -3387,6 +3388,8 @@ paths:
                   checkoutConfig:
                     type: object
                     properties:
+                      id:
+                        type: string
                       config:
                         $ref: '#/components/schemas/CheckoutConfig'
                   slug:

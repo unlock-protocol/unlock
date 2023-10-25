@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { useUpdateMetadata } from '~/hooks/metadata'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { storage } from '~/config/storage'
 
 interface CoverImageDrawerProps {
   image: string
@@ -24,6 +25,7 @@ export const CoverImageDrawer = ({
   checkoutConfig,
   handleClose,
 }: CoverImageDrawerProps) => {
+  console.log(checkoutConfig)
   const [isOpen, setIsOpen] = useState(false)
   // Check if the user is one of the lock manager
   const { data: isOrganizer } = useEventOrganizer({
@@ -41,7 +43,14 @@ export const CoverImageDrawer = ({
   const coverImage = event.event_cover_image
 
   const onSubmit = async () => {
-    console.log('save event with image set!', image)
+    event.ticket.event_cover_image = image
+    console.log('save event with image set!', event, checkoutConfig)
+    await storage.saveEventData({
+      data: formDataToMetadata(event),
+      checkoutConfig,
+    })
+    console.log('RELOAD!')
+
     // const metadataObj = formDataToMetadata({
     //   ...metadata,
     //   ticket: {

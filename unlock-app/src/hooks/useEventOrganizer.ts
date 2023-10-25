@@ -4,7 +4,10 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface useEventOrganizerProps {
-  checkoutConfig: PaywallConfigType
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 /**
  * Check if currently authenticated user is manager for one of the event's locks.
@@ -23,11 +26,11 @@ export const useEventOrganizer = ({
         return false
       }
       const isManagerByLock = await Promise.all(
-        Object.keys(checkoutConfig.locks).map((lockAddress: string) =>
+        Object.keys(checkoutConfig.config.locks).map((lockAddress: string) =>
           web3Service.isLockManager(
             lockAddress,
             account!,
-            checkoutConfig.locks[lockAddress].network
+            checkoutConfig.config.locks[lockAddress].network
           )
         )
       )
