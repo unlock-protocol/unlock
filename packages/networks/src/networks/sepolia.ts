@@ -47,7 +47,7 @@ export const sepolia: NetworkConfig = {
   id: 11155111,
   isTestNetwork: true,
   keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
-  maxFreeClaimCost: 10,
+  maxFreeClaimCost: 1000,
   multisig: '', // SAFE does not support Sepolia as of October 11th 2023
   name: 'Sepolia',
   nativeCurrency: {
@@ -75,9 +75,9 @@ export const sepolia: NetworkConfig = {
   startBlock: 4381710,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia',
+      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia/version/latest',
     endpointV2:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia',
+      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia/version/latest',
     networkName: 'sepolia',
     studioEndpoint: 'unlock-protocol-sepolia',
   },

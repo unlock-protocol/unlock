@@ -1,4 +1,4 @@
-const getBalance = require('./getTokenBalance')
+const balance = require('./balance')
 const lock = require('./lock')
 const constants = require('./constants')
 const errors = require('./errors')
@@ -20,7 +20,7 @@ const bridge = require('./bridge')
 
 module.exports = {
   deployContracts,
-  ...getBalance,
+  ...balance,
   ...lock,
   ...constants,
   ...deployLocks,

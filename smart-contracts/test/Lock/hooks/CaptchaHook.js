@@ -9,8 +9,10 @@ describe('CaptchaHook', function () {
     const sender = '0xF5C28ce24Acf47849988f147d5C75787c0103534'.toLowerCase()
 
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
-    const hook = await CaptchaHook.deploy(secretSigner.address)
+    const hook = await CaptchaHook.deploy()
     await hook.deployed()
+
+    await (await hook.addSigner(secretSigner.address)).wait()
 
     // signing wrong message
     expect(
@@ -57,8 +59,10 @@ describe('CaptchaHook', function () {
       name: 'ticket',
     })
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
-    const hook = await CaptchaHook.deploy(secretSigner.address)
+    const hook = await CaptchaHook.deploy()
     await hook.deployed()
+
+    await (await hook.addSigner(secretSigner.address)).wait()
 
     // Set the hook on avatar
     await (

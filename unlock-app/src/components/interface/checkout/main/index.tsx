@@ -18,11 +18,11 @@ import { Promo } from './Promo'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 interface Props {
   injectedProvider: any
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
   communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
   handleClose?: (params: Record<string, string>) => void

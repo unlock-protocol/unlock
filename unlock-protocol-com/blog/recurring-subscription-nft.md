@@ -1,5 +1,5 @@
 ---
-title: Unlock Protocol Launches Web3 Recurring Subscriptions
+title: Unlock Protocol Launches Web3 Recurring Subscriptions NFT
 subTitle: A sustainable business model for Web3 creators
 authorName: Christopher Carfi
 publishDate: May 17, 2022
@@ -10,7 +10,7 @@ image: /images/blog/subscriptions/recurring-blog-header.png
 
 ![recurring-blog-header.png](/images/blog/subscriptions/recurring-blog-header.png)
 
-Traditionally, using NFTs for memberships was a yes-or-no proposition: If someone held the NFT for a project, they had access to the project’s perks or community for as long as they held the NFT — potentially forever.
+Traditionally, using **NFTs for memberships** was a yes-or-no proposition: If someone held the NFT for a project, they had access to the project’s perks or community for as long as they held the NFT — potentially forever.
 
 From a creator standpoint, this is ok, but not great. Every NFT sold was, in effect, giving “lifetime access” to those who held the NFT.
 
@@ -18,7 +18,7 @@ Unlock changed all this in 2019 by innovating **membership NFTs** that take into
 
 When the NFT expires, it’s just like when the gym membership card in your old-school wallet expires. The card is still in your wallet, but anyone looking at it can instantly tell it’s expired and out of date.
 
-Hundreds of creators, developers, brands, and projects have built on top of Unlock since we launched to manage member access to content, conversations, credentials, and ticketed events for their communities. And in listening to those building their projects and businesses on top of the open-source Unlock Protocol, there was one particular need we heard time and time again: can Unlock do NFT-based _recurring_ subscriptions and memberships that don’t need to be manually renewed?
+Hundreds of creators, developers, brands, and projects have built on top of Unlock since we launched to manage member access to content, conversations, credentials, and ticketed events for their communities. And in listening to those building their projects and businesses on top of the open-source Unlock Protocol, there was one particular need we heard time and time again: can Unlock do NFT-based _recurring_ **subscriptions NFT** and memberships that don’t need to be manually renewed?
 
 The answer is “yes.”
 
@@ -34,7 +34,7 @@ Furthermore, creators, fans, developers, and supporters all have the opportunity
 
 ## How does it work?
 
-Unlock's approach to recurring billing through NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
+Unlock's approach to recurring billing through NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription NFT by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
 
 ![unlock-subscription-dashboard.png](/images/blog/subscriptions/unlock-subscription-dashboard.png)
 _Example lock in Unlock Dashboard with recurring subscriptions enabled. This publication’s subscription is 30 XDAI ($30) per month. Subscription duration, price, renewal terms, and currency are all configurable by creators._
@@ -45,7 +45,7 @@ For too long, perverse attention economics have both shaped and dictated the con
 
 ### Availability
 
-- Unlock Protocol’s recurring subscription membership NFTs are available today.
+- Unlock Protocol’s recurring **subscription NFT** membership NFTs are available today.
 - Recurring memberships can be enabled for locks using v10 of the protocol.
 - Locks using v9 can be upgraded to v10.
 
