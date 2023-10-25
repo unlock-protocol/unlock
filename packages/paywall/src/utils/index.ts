@@ -1,5 +1,5 @@
-import { PaywallConfig } from '@unlock-protocol/types'
 import { Enabler } from './enableInjectedProvider'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 /**
  * Dispatches events
@@ -89,7 +89,7 @@ export const setupUnlockProtocolVariable = (properties: {
 }
 
 export const injectProviderInfo = (
-  config: PaywallConfig,
+  config: PaywallConfigType,
   provider?: Enabler
 ) => {
   const newConfig = { ...config }

@@ -3,13 +3,14 @@ import { Token } from '@uniswap/sdk-core'
 import { networks } from '@unlock-protocol/networks'
 import { UnlockUniswapRoute } from '@unlock-protocol/types'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { nativeOnChain } from '@uniswap/smart-order-router'
 import { ethers } from 'ethers'
 import { NativeCurrency } from '@uniswap/sdk-core'
 import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export interface UniswapRoute {
   network: number
@@ -24,7 +25,7 @@ interface UniswapRoutesOption {
   lock: Lock
   recipients: string[]
   purchaseData: string[] | undefined
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
 }
 
 export const useUniswapRoutes = ({
