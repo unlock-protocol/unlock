@@ -1,23 +1,18 @@
 const { ethers } = require('hardhat')
-const multisigOldABI = require('../../test/helpers/ABIs/multisig.json')
+const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const { networks } = require('@unlock-protocol/networks')
 
+// TODO: move fork helpers to shared lib
 const {
   deployLock,
   impersonate,
   confirmMultisigTx,
-  UNLOCK_MULTISIG_ADDRESS,
-  MULTISIG_ADDRESS_OWNER,
-} = require('../helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
-const {
-  submitTx,
-  getSafeAddress,
-  getOwners,
-} = require('../../scripts/multisig')
+const { submitTx, getSafeAddress, getOwners } = require('../scripts/multisig')
 
 const { assert } = require('chai')
-const { unlockAddress } = networks[1]
+const { unlockAddress, multisig } = networks[1]
 
 const getSafe = async ({ safeAddress, signer }) => {
   const safe = new ethers.Contract(safeAddress, multisigOldABI, signer)
@@ -38,21 +33,20 @@ describe('scripts / gnosis', () => {
     }
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
-    // impersonate one of the multisig owner
-    await impersonate(MULTISIG_ADDRESS_OWNER)
-    signer = await ethers.getSigner(MULTISIG_ADDRESS_OWNER)
-
     // get mainnet safe
-    safe = await getSafe({ safeAddress: UNLOCK_MULTISIG_ADDRESS, signer })
+    safe = await getSafe({ safeAddress: multisig, signer })
+
+    // impersonate one of the multisig owner
+    const [multisigOwner] = await safe.owners()
+    await impersonate(multisigOwner)
+    signer = await ethers.getSigner(multisigOwner)
+    safe = safe.connect(signer)
   })
 
   describe('get safe address', () => {
     it('should get the correct address based on chain id', async () => {
       assert.equal(await getSafeAddress({ chainId: 1 }), await unlock.owner())
-      assert.equal(
-        await getSafeAddress({ chainId: 1 }),
-        UNLOCK_MULTISIG_ADDRESS
-      )
+      assert.equal(await getSafeAddress({ chainId: 1 }), multisig)
       assert.equal(
         await getSafeAddress({ chainId: 4 }),
         '0x04e855D82c079222d6bDBc041F6202d5A0137267'

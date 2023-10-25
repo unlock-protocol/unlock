@@ -11701,6 +11701,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomiclabs/hardhat-waffle@npm:2.0.6":
+  version: 2.0.6
+  resolution: "@nomiclabs/hardhat-waffle@npm:2.0.6"
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@types/sinon-chai": ^3.2.3
+    ethereum-waffle: "*"
+    ethers: ^5.0.0
+    hardhat: ^2.0.0
+  checksum: e43592b135739c7f077a9d0a38a479a5512000e58f91d684e6a0d4f0894f8f826821d0b637e2cd7b646669ba12300fcb5e180bcc2473f5cc67d55f44ab809770
+  languageName: node
+  linkType: hard
+
 "@nomiclabs/hardhat-web3@npm:2.0.0":
   version: 2.0.0
   resolution: "@nomiclabs/hardhat-web3@npm:2.0.0"
@@ -18862,9 +18875,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:4.0.7, @uniswap/sdk-core@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "@uniswap/sdk-core@npm:4.0.7"
+"@uniswap/sdk-core@npm:4.0.9":
+  version: 4.0.9
+  resolution: "@uniswap/sdk-core@npm:4.0.9"
   dependencies:
     "@ethersproject/address": ^5.0.2
     big.js: ^5.2.2
@@ -18872,7 +18885,7 @@ __metadata:
     jsbi: ^3.1.4
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
-  checksum: b89ce380206f14fef70fb233c34edb439e9602bc4c17c4801e3032ed6e4b932d71942f677535c996c55e724f9dd7fac42443e117f75bae9348300380e50d95a5
+  checksum: f4ed31d995ddd04579061ecc9d613c88da400c50a8be820142fb7cce958532b828ec1992d0c0a5115f839a3cd5e4722cbd853578fa0a28a46aabbd60c3a54ef7
   languageName: node
   linkType: hard
 
@@ -18901,6 +18914,20 @@ __metadata:
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
   checksum: 0dd876d117c2d359a09047fafb5e80e8312b4db2cb0078a968d0ebbdb0a294558e8a0ea13678b113a9c2026f7c394193eb56650a250fd0c52ec51680c8aed3bc
+  languageName: node
+  linkType: hard
+
+"@uniswap/sdk-core@npm:^4.0.7":
+  version: 4.0.7
+  resolution: "@uniswap/sdk-core@npm:4.0.7"
+  dependencies:
+    "@ethersproject/address": ^5.0.2
+    big.js: ^5.2.2
+    decimal.js-light: ^2.5.0
+    jsbi: ^3.1.4
+    tiny-invariant: ^1.1.0
+    toformat: ^2.0.0
+  checksum: b89ce380206f14fef70fb233c34edb439e9602bc4c17c4801e3032ed6e4b932d71942f677535c996c55e724f9dd7fac42443e117f75bae9348300380e50d95a5
   languageName: node
   linkType: hard
 
@@ -19285,14 +19312,40 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/governance@workspace:governance":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/governance@workspace:governance"
+  dependencies:
+    "@nomiclabs/hardhat-ethers": 2.2.3
+    "@nomiclabs/hardhat-etherscan": 3.1.7
+    "@openzeppelin/test-helpers": 0.5.16
+    "@safe-global/safe-core-sdk": 3.3.5
+    "@safe-global/safe-ethers-lib": 1.9.3
+    "@safe-global/safe-service-client": 2.0.3
+    "@unlock-protocol/contracts": "workspace:./packages/contracts"
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/hardhat-helpers": "workspace:^"
+    "@unlock-protocol/hardhat-plugin": "workspace:^"
+    "@unlock-protocol/networks": "workspace:./packages/networks"
+    eslint: 8.46.0
+    hardhat: 2.15.0
+    solhint: 3.4.1
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/hardhat-helpers@workspace:^, @unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
+    "@nomiclabs/hardhat-ethers": 2.2.3
+    "@nomiclabs/hardhat-waffle": 2.0.6
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
+    copyfiles: 2.4.1
     hardhat: 2.18.2
+    tsup: 7.2.0
+    typescript: 5.2.2
   languageName: unknown
   linkType: soft
 
@@ -19563,6 +19616,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
+    ethers: 5.7.2
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
@@ -19647,7 +19701,7 @@ __metadata:
     "@types/react": 18.2.0
     "@types/react-google-recaptcha": 2.1.6
     "@types/react-gtm-module": 2.0.1
-    "@uniswap/sdk-core": 4.0.7
+    "@uniswap/sdk-core": 4.0.9
     "@uniswap/smart-order-router": 3.16.33
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -19744,7 +19798,7 @@ __metadata:
     "@graphql-codegen/typescript-operations": 4.0.1
     "@nomiclabs/hardhat-ethers": 2.2.3
     "@openapitools/openapi-generator-cli": 2.7.0
-    "@uniswap/sdk-core": 4.0.7
+    "@uniswap/sdk-core": 4.0.9
     "@uniswap/smart-order-router": 3.16.33
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"

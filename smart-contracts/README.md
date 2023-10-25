@@ -221,7 +221,7 @@ yarn hardhat set:unlock-config --unlock-address <xxx> \
   --locksmith-u-r-i <xxx>
 ```
 
-## Governor + Timelock
+## Deploy Governor + Timelock
 
 ```
 yarn hardhat deploy:governor
@@ -232,89 +232,6 @@ Deploying Governor on localhost with the account: 0xf39Fd6e51aad88F6F4ce6aB88272
 > Governor added to Timelock as sole proposer.  0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9 is Proposer: true
 > Unlock Owner recounced Admin Role.  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 isAdmin: false
 ```
-
-### Make a DAO proposal
-
-1. First, create a file in the `proposals` folder that describe the proposal itself. The file should contain either a js async function or a literal object and should export as default an object containing: 1. the title of the proposal and 2. an array with the description of the calls to send - in following format:
-
-#### Exports a litteral object
-
-```js
-module.exports = {
-  proposalName: `My Proposal`, // a string describing the proposal
-  calls: [
-    {
-      contractNameOrAbi, // the contract name or an ABI - ex. `UnlockDiscountTokenV3`
-      functionName, // the name or signature of the function to be executed - `transfer`
-      functionArgs, // the args of the function - ex. [ 0x0000..., 10000 ]
-      value, // (optional) payable value in native tokens
-    },
-  ],
-}
-```
-
-check [`./proposals/000-example.js`](./proposals/000-example.js) for an example.
-
-#### Exports an aysnc function
-
-When using an async function to parse a proposal, you can pass params to the function through positional args in cli scripts.
-
-**CLI call**
-
-```sh
-RUN_FORK=1 yarn hardhat gov --gov-address 0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94 \
-  --proposal proposals/my-proposal.js
-  0x000000 1000
-```
-
-**JS async proposal**
-
-```js
-import { ethers } from 'hardhat'
-
-module.exports = async function (params) {
-  // unpack params from the command line i.e. [0x00000, 1000]
-  const [myAddress, myAmount] = params
-
-  // do whatever you need with await calls and your params...
-  const contract = await ethers.getContractAt('MyContract', myAddress)
-  const amount = await contract.someFunc(myAmount)
-
-  // the returned format
-  return {
-    proposalName: `My async proposal`, // a string describing the proposal
-    calls: [
-      {
-        contractNameOrAbi, // the contract name or an ABI - ex. `UnlockDiscountTokenV3`
-        functionName, // the name or signature of the function to be executed - `transfer`
-        functionArgs: [amount], // the args of the function - ex. [ 0x0000..., 10000 ]
-        value, // (optional) payable value in native tokens
-      },
-    ],
-  }
-}
-```
-
-check [`./proposals/002-set-protocol-fee.js`](./proposals/002-set-protocol-fee.js) for an example.
-
-2. Test you proposal locally on a mainnet fork
-
-```shell
-RUN_FORK=1 yarn hardhat gov --gov-address 0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94 \
-  --proposal proposals/<your-proposal>.js
-```
-
-Additionnaly, you can pass arguments to your proposal script via CLI positional args.
-
-3. When things are ready, post it to the DAO!
-
-```
-
-yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainnet
-
-```
-
-4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
 
 ## Release a new version of a contract
 
@@ -330,110 +247,37 @@ yarn workspace @unlock-protocol/smart-contracts hardhat release --contract contr
 
 ```
 
-## Handle locks
+## Locks
+
+### List lock managers
+
+```
+yarn hardhat lock:managers --lock-address <lock-address> --network xdai
+```
 
 ### Deploy sample locks
 
 Once you have deployed the Unlock contract on localhost, you can try
 
 ```
-
-yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
-
-```
-
-### Serialize existing lock
+yarn hardhat lock:samples --unlock-address <unlock-address> --network localhost
 
 ```
 
+### Serialize an existing lock
+
+```
 # deploy LockSerializer contract
-
 yarn deploy:serializer --network localhost
 
 # copy data of a lock locally
-
 yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
-
 ```
 
-## Clone an existing locks
+## Clone an existing lock
 
 ```
-
-# copy data of a lock locally
-
 yarn hardhat lock:clone --lock-address 0x... --deployer-address 0x... -- --network localhost
-
-```
-
-## Handle locks
-
-### Deploy sample locks
-
-Once you have deployed the Unlock contract on localhost, you can try
-
-```
-
-yarn hardhat lock:samples --unlock-address 0x720472c8ce72c2A2D711333e064ABD3E6BbEAdd3 --network localhost
-
-```
-
-### Serialize existing lock
-
-```
-
-# deploy LockSerializer contract
-
-yarn deploy:serializer --network localhost
-
-# copy data of a lock locally
-
-yarn hardhat lock:serialize --lock-address 0x... --deployer-address 0x... -- --network localhost
-
-```
-
-## Clone an existing locks
-
-```
-
-yarn hardhat lock:clone --lock-address 0x84Ee59446F664c933b175fBB96c489ac2Ed76d31 /
---serializer-address 0xf090f16dEc8b6D24082Edd25B1C8D26f2bC86128 /
---unlock-address 0x071586BA1b380B00B793Cc336fe01106B0BFbE6D /
---network localhost
-
-```
-
-## List lock managers
-
-```
-
-yarn hardhat lock:managers --lock-address 0x06441a9ac376b80004c32f8f37b1f80a2135362c --network xdai
-LOCK > managers for the lock 'lido':
-[0]: 0x61e155fac2bb8e58fa8c5c01a21e0513cfe52fc4
-
-```
-
-## Verify contracts
-
-Contracts can be verified contracts on Xdai, Polygon and BSC using the command line.
-
-```
-
-# xdai
-
-export BLOCKSCOUT_API_KEY=<xxx>
-yarn hardhat verify <address> --network xdai
-
-# polygon
-
-export POLYGONSCAN_API_KEY=<xxx>
-yarn hardhat verify <address> --network polygon
-
-# bsc
-
-export BSCSCAN_API_KEY=<xxx>
-yarn hardhat verify <address> --network binance
-
 ```
 
 ## How to deploy the Protocol on a new network
@@ -462,41 +306,12 @@ PUBLIC LOCK > deployed v10 to : 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 (tx: 
 
 ```
 
-### Verify contracts
-
-You need to verify the deployed contracts : Unlock , PublicLock and the Proxy used to create locks
-NB: you can get `yarn hardhat impl --proxy-address <UNLOCK_ADDRESS> --network goerli`
-
-```
-
-export ETHERSCAN_API_KEY=<xxx>
-
-# verify unlock
-
-yarn hardhat verify <UNLOCK_IMPLEMENTATION_ADDRESS> --network goerli
-
-# verify public-lock (while specifying a version)
-
-yarn hardhat verify-template --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
- --public-lock-version 10 \
- --network goerli
-
-# verify proxy
-
-yarn hardhat verify-proxy --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
- --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \ # this is from `unlock.proxyAdminAddress`
---network goerli
-
-```
-
 ### Set template
 
 ```
-
 yarn hardhat set:template --unlock-address 0x1FF7e338d5E582138C46044dc238543Ce555C963 \
  --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
  --network avalanche
-
 ```
 
 ### Config Unlock
@@ -519,9 +334,7 @@ chainId: <chainId>
 1. Run this command to create a safe with the same owners as the mainnet wallet
 
 ```
-
 yarn hardhat safe:create --network goerli
-
 ```
 
 1. Go to https://safe.global/app/load and follow the steps to add the new wallet.
@@ -529,7 +342,6 @@ yarn hardhat safe:create --network goerli
 2. Transfer the ownership of the Unlock instance to the multisig
 
 ```
-
 yarn hardhat safe:transfer --safe-address <SAFE_GLOBAL_ADDRESS> \
  --contract-address <UNLOCK_ADDRESS>
 --network goerli

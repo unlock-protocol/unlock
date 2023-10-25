@@ -28,7 +28,7 @@ import dayjs from 'dayjs'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { useValidKey } from '~/hooks/useKey'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { useLockData } from '~/hooks/useLockData'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -37,7 +37,6 @@ import { EventCheckoutUrl } from './EventCheckoutUrl'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
-import { PaywallConfig } from '~/unlockTypes'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
@@ -183,7 +182,7 @@ export const EventDetails = ({
 
   const injectedProvider = selectProvider(config)
 
-  const paywallConfig: PaywallConfig = {
+  const paywallConfig: PaywallConfigType = {
     title: 'Registration',
     icon: metadata?.image,
     locks: {

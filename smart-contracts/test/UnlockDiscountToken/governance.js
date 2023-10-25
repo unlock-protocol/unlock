@@ -12,7 +12,7 @@ const UnlockDiscountTokenV3 = artifacts.require('UnlockDiscountTokenV3.sol')
 const { promisify } = require('util')
 
 const queue = promisify(setImmediate)
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers')
 
 async function countPendingTransactions() {
   return parseInt(
