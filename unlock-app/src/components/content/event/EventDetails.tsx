@@ -42,11 +42,10 @@ const language = () => {
 
 export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
   const [image, setImage] = useState('')
-  const config = useConfig()
 
   // Check if the user is one of the lock manager
   const { data: isOrganizer } = useEventOrganizer({
-    event,
+    checkoutConfig,
   })
 
   const reload = async () => {
@@ -146,7 +145,8 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
           <CoverImageDrawer
             image={image}
             setImage={setImage}
-            metadata={event}
+            checkoutConfig={checkoutConfig}
+            event={event}
             handleClose={() => {
               console.log('REFETCH!!')
             }}

@@ -1,28 +1,35 @@
 import { Button, Drawer, ImageUpload } from '@unlock-protocol/ui'
-import { MetadataFormData, formDataToMetadata } from '@unlock-protocol/core'
+import {
+  MetadataFormData,
+  PaywallConfigType,
+  formDataToMetadata,
+} from '@unlock-protocol/core'
 import { useState } from 'react'
 import { useUpdateMetadata } from '~/hooks/metadata'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { useLockManager } from '~/hooks/useLockManager'
+import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 
 interface CoverImageDrawerProps {
   image: string
   setImage: (image: string) => void
-  lockAddress: string
   handleClose: () => void
+  event: any
+  checkoutConfig: PaywallConfigType
 }
 
 export const CoverImageDrawer = ({
   image,
   setImage,
-  metadata,
+  event,
+  checkoutConfig,
   handleClose,
 }: CoverImageDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  // const { isManager: isLockManager } = useLockManager({
-  //   lockAddress,
-  //   network,
-  // })
+  // Check if the user is one of the lock manager
+  const { data: isOrganizer } = useEventOrganizer({
+    checkoutConfig,
+  })
+  console.log({ event })
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
@@ -31,24 +38,25 @@ export const CoverImageDrawer = ({
   //   network,
   // })
 
-  const coverImage = metadata.ticket?.event_cover_image
+  const coverImage = event.event_cover_image
 
   const onSubmit = async () => {
-    const metadataObj = formDataToMetadata({
-      ...metadata,
-      ticket: {
-        ...metadata?.ticket,
-        event_cover_image: image,
-      },
-    })
+    console.log('save event with image set!', image)
+    // const metadataObj = formDataToMetadata({
+    //   ...metadata,
+    //   ticket: {
+    //     ...metadata?.ticket,
+    //     event_cover_image: image,
+    //   },
+    // })
     // await updateMetadata(metadataObj)
-    setIsOpen(false)
-    handleClose()
+    // setIsOpen(false)
+    // handleClose()
   }
 
   return (
     <div className="relative inset-0 z-[1]">
-      {/* {isLockManager && (
+      {isOrganizer && (
         <Button
           className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
           variant="secondary"
@@ -60,7 +68,7 @@ export const CoverImageDrawer = ({
         >
           {coverImage ? 'Change image' : 'Upload Image'}
         </Button>
-      )} */}
+      )}
       <div className="relative">
         <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Cover image">
           <div className="z-10 mt-2 space-y-6">
