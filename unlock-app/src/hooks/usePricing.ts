@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { networks } from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
-import { PaywallConfig } from '~/unlockTypes'
 import { getReferrer } from '~/utils/checkoutLockUtils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -12,7 +12,7 @@ interface Options {
   network: number
   recipients: string[]
   data: string[]
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
   enabled?: boolean
   payment?: any
 }

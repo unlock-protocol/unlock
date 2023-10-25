@@ -26,11 +26,14 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 import { Toggle } from '@unlock-protocol/ui'
-import { MetadataInputType as MetadataInput } from '@unlock-protocol/core'
+import {
+  MetadataInputType as MetadataInput,
+  PaywallConfigType,
+} from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 interface Props {
   injectedProvider: unknown
@@ -437,7 +440,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
 }
 
 const recipientFromConfig = (
-  paywall: PaywallConfig,
+  paywall: PaywallConfigType,
   lock: Lock | LockState | undefined
 ): string => {
   const paywallRecipient = paywall.recipient

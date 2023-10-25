@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { usePostmateParent } from './usePostmateParent'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { config as AppConfig } from '~/config/app'
@@ -116,9 +116,9 @@ export const useCheckoutCommunication = () => {
   >(undefined)
   const [outgoingBuffer, setOutgoingBuffer] = useState([] as BufferedEvent[])
   const [incomingBuffer, setIncomingBuffer] = useState([] as MethodCall[])
-  const [paywallConfig, setPaywallConfig] = useState<PaywallConfig | undefined>(
-    undefined
-  )
+  const [paywallConfig, setPaywallConfig] = useState<
+    PaywallConfigType | undefined
+  >(undefined)
   const [oauthConfig, setOauthConfig] = useState<OAuthConfig | undefined>(
     undefined
   )
@@ -168,7 +168,7 @@ export const useCheckoutCommunication = () => {
   )
 
   const parent = usePostmateParent({
-    setConfig: (config: PaywallConfig) => {
+    setConfig: (config: PaywallConfigType) => {
       setPaywallConfig(config)
       setOauthConfig(undefined)
     },

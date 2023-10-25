@@ -6,16 +6,16 @@ import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import FileSaver from 'file-saver'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 interface CheckoutPreviewProps {
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfigType
   id?: string | null
   checkoutUrl: string
   setCheckoutUrl: (value: string) => void
 }
 
-const onDownloadJson = (paywallConfig: PaywallConfig) => {
+const onDownloadJson = (paywallConfig: PaywallConfigType) => {
   const fileName = 'paywall-config.json'
 
   // Create a blob of the data
@@ -27,7 +27,7 @@ const onDownloadJson = (paywallConfig: PaywallConfig) => {
 }
 
 interface CheckoutShareOrDownloadProps {
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfigType
   checkoutUrl: string
   setCheckoutUrl: (value: string) => void
   size?: Size

@@ -1,7 +1,7 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
   CheckoutShareOrDownload,
@@ -114,7 +114,7 @@ export const CheckoutUrlPage = () => {
       icon: '',
       pessimistic: true,
       skipRecipient: true,
-    } as PaywallConfig
+    } as PaywallConfigType
   }, [recurringSetting, lockAddress, network])
 
   const {
@@ -185,7 +185,7 @@ export const CheckoutUrlPage = () => {
     setCheckoutConfig({
       id: result?.id || null,
       name: result?.name || 'config',
-      config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
+      config: (result?.config as PaywallConfigType) || DEFAULT_CONFIG,
     })
     setDeleteConfirmation(false)
   }, [
@@ -203,7 +203,7 @@ export const CheckoutUrlPage = () => {
     setCheckoutConfig({
       id: checkout.id,
       name: checkout.name,
-      config: checkout.config as PaywallConfig,
+      config: checkout.config as PaywallConfigType,
     })
   }, [checkoutConfigList])
 
@@ -219,7 +219,7 @@ export const CheckoutUrlPage = () => {
     })
   }
 
-  const onBasicConfigChange = async (fields: Partial<PaywallConfig>) => {
+  const onBasicConfigChange = async (fields: Partial<PaywallConfigType>) => {
     const hasDefaultLock =
       Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
 
@@ -275,7 +275,7 @@ export const CheckoutUrlPage = () => {
       const response = await updateConfig(option)
       setCheckoutConfig({
         id: response.id,
-        config: response.config as PaywallConfig,
+        config: response.config as PaywallConfigType,
         name: response.name,
       })
       setValue('configName', '') // reset field after new configuration is set

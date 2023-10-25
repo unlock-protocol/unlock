@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { fetchRecipientsData } from '~/components/interface/checkout/main/utils'
-import { PaywallConfig } from '~/unlockTypes'
 
 interface Options {
   lockAddress: string
   network: number
   data?: string[]
   recipients: string[]
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
 }
 
 export const usePurchaseData = ({

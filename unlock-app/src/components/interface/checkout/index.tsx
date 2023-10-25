@@ -12,8 +12,8 @@ import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
-import { PaywallConfig } from '~/unlockTypes'
 import { ethers } from 'ethers'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -33,7 +33,7 @@ export function CheckoutPage() {
 
   const oauthConfig = communication.oauthConfig || oauthConfigFromQuery
   const paywallConfig =
-    (checkout?.config as PaywallConfig) ||
+    (checkout?.config as PaywallConfigType) ||
     communication.paywallConfig ||
     paywallConfigFromQuery
 

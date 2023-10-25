@@ -1,9 +1,9 @@
-import { PaywallConfig } from '~/unlockTypes'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { isValidPaywallConfig } from './checkoutValidators'
 
 export function getPaywallConfigFromQuery(
   query: Record<string, any>
-): PaywallConfig | undefined {
+): PaywallConfigType | undefined {
   if (typeof query.paywallConfig === 'string') {
     const rawConfig = query.paywallConfig
     const decodedConfig = decodeURIComponent(rawConfig)
@@ -22,7 +22,7 @@ export function getPaywallConfigFromQuery(
     }
 
     if (isValidPaywallConfig(parsedConfig)) {
-      return parsedConfig as PaywallConfig
+      return parsedConfig as PaywallConfigType
     }
     console.error(
       'paywall config in URL does not pass validation, continuing with undefined'

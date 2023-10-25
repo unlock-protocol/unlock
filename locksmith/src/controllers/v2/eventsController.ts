@@ -4,12 +4,13 @@ import {
   getEventDataForLock,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
-import { EventData } from '../../models'
+import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -25,6 +26,21 @@ const EventBody = z.object({
   data: z.any(),
   locks: z.array(z.string()),
 })
+
+const defaultPaywallConfig: Partial<PaywallConfigType> = {
+  title: 'Registration',
+  emailRequired: true,
+  metadataInputs: [
+    {
+      name: 'fullname',
+      label: 'Full name',
+      defaultValue: '',
+      type: 'text',
+      required: true,
+      placeholder: 'Satoshi Nakamoto',
+    },
+  ],
+}
 
 export const saveEventDetails: RequestHandler = async (request, response) => {
   const parsed = await EventBody.parseAsync(request.body)
@@ -78,7 +94,24 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
   })
 
   if (event) {
-    return response.status(200).send(event.toJSON())
+    const eventResponse = event.toJSON() as any // TODO: type!
+    const checkoutConfig = {
+      ...defaultPaywallConfig,
+      locks: eventResponse.locks.reduce((acc: any, lockAsString: any) => {
+        const [address, network] = lockAsString.split('-')
+        return {
+          ...acc,
+          [address]: {
+            network: parseInt(network),
+          },
+        }
+      }, {}),
+    }
+    delete eventResponse.locks
+    eventResponse.checkoutConfig = {
+      config: checkoutConfig,
+    }
+    return response.status(200).send(eventResponse)
   }
 
   if (!event) {
@@ -89,10 +122,29 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
         lockAddress: settings.lockAddress,
         network: settings.network,
       })
+
       if (lockData) {
+        // We need to look if there are more locks for that event as well!
+        // For this we need to check if any checkout config is attached to this lock.
+        const checkoutConfig = settings.checkoutConfigId
+          ? await CheckoutConfig.findOne({
+              where: {
+                id: settings.checkoutConfigId,
+              },
+            })
+          : {
+              config: {
+                ...defaultPaywallConfig,
+                locks: {
+                  [settings.lockAddress]: {
+                    network: settings.network,
+                  },
+                },
+              },
+            }
         return response.status(200).send({
           data: { ...lockData },
-          locks: [[settings.lockAddress, settings.network].join('-')],
+          checkoutConfig,
         })
       }
     }

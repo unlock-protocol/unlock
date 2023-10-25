@@ -3,10 +3,11 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 import { storage } from '~/config/storage'
 import { getCurrencySymbol } from './currency'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
@@ -153,7 +154,7 @@ export const inClaimDisallowList = (address: string) => {
  */
 export const getReferrer = (
   recipient: string,
-  paywallConfig?: PaywallConfig,
+  paywallConfig?: PaywallConfigType,
   lockAddress?: string
 ): string => {
   if (paywallConfig) {
