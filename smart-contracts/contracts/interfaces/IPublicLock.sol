@@ -605,6 +605,14 @@ interface IPublicLock {
   function renewMembershipFor(uint _tokenId, address _referrer) external;
 
   /**
+   * Set the expiration of a key
+   * @notice only a lock manager can call this function
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function setKeyExpiration(uint _tokenId, uint _newExpiration) external;
+
+  /**
    * @dev helper to check if a key is currently renewable
    * it will revert if the pricing or duration of the lock have been modified
    * unfavorably since the key was bought(price increase or duration decrease).
