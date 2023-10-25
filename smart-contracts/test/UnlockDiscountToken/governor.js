@@ -2,7 +2,7 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const PROPOSER_ROLE = ethers.utils.keccak256(

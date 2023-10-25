@@ -1,7 +1,7 @@
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
-const multisigABI = require('../helpers/ABIs/multisig.json')
-const proxyABI = require('../helpers/ABIs/proxy.json')
+const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
+const proxyABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/proxy.json')
 const { ADDRESS_ZERO } = require('../helpers')
 
 // NB : this needs to be run against a mainnet fork using

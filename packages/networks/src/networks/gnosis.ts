@@ -4,10 +4,6 @@ export const gnosis: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
-    domainId: 6778479,
-  },
   chain: 'xdai',
   description:
     'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
@@ -24,6 +20,14 @@ export const gnosis: NetworkConfig = {
   },
   faucet: 'https://gnosisfaucet.com/',
   featured: true,
+  governanceBridge: {
+    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+    domainId: 6778479,
+    modules: {
+      connextMod: '0xdFB9328cF62e3525D355581dE88AeAa330879D12',
+      delayMod: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -55,9 +59,6 @@ export const gnosis: NetworkConfig = {
     decimals: 18,
     name: 'xDAI',
     symbol: 'xDAI',
-  },
-  opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
   },
   previousDeploys: [
     {

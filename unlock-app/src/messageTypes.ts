@@ -1,4 +1,5 @@
-import { PaywallConfig, Locks, PurchaseKeyRequest } from './unlockTypes'
+import { PaywallConfigType } from '@unlock-protocol/core'
+import { Locks, PurchaseKeyRequest } from './unlockTypes'
 import { web3MethodCall, Web3WalletInfo } from './windowTypes'
 
 // This file written with HEAVY inspiration from https://artsy.github.io/blog/2018/11/21/conditional-types-in-typescript/
@@ -65,7 +66,7 @@ export type Message =
     }
   | {
       type: PostMessages.CONFIG
-      payload: PaywallConfig
+      payload: PaywallConfigType
     }
   | {
       type: PostMessages.ACCOUNT

@@ -1,6 +1,6 @@
 import events from 'events'
 import { CheckoutEvents, MethodCall, Paywall } from '../Paywall'
-import { PaywallConfig } from '@unlock-protocol/types'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export interface Web3Window {
   // Present with more recent injected providers
@@ -65,7 +65,7 @@ const Events = {
 export class PaywallProvider extends events.EventEmitter {
   paywall: Paywall
   unlockUrl: string
-  config: PaywallConfig
+  config: PaywallConfigType
   isMetamask = true
 
   #methodCalls: {

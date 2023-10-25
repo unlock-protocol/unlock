@@ -4,13 +4,9 @@
 import { Card } from '@stripe/stripe-js'
 import { z } from 'zod'
 
-import {
-  PaywallConfig as PaywallConfigSchema,
-  PaywallConfigType,
-} from '@unlock-protocol/core'
+import { PaywallConfig as PaywallConfigSchema } from '@unlock-protocol/core'
 
-export type PaywallConfig = PaywallConfigType
-
+/// NEEDED?
 export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   redirectUri: true,
   endingCallToAction: true,

@@ -1,20 +1,27 @@
 const { assert } = require('chai')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 
-const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
+const {
+  deployLock,
+  purchaseKey,
+  getBalanceEthers,
+  MAX_UINT,
+} = require('../helpers')
 
-contract('Lock / non expiring', (accounts) => {
+const FIVE_HUNDRED_YEARS = 5 * 100 * 365 * 24 * 60 * 60 * 1000
+
+contract('Lock / non expiring', () => {
   let lock
-  const keyOwner = accounts[2]
+  let keyOwner
   let keyPrice
   let tokenId
 
   beforeEach(async () => {
-    lock = await deployLock({ name: 'NON_EXPIRING' })
+    ;[, keyOwner] = await ethers.getSigners()
+    lock = await deployLock({ name: 'NON_EXPIRING', isEthers: true })
     keyPrice = await lock.keyPrice()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
   })
 
   describe('Create lock', () => {
@@ -26,7 +33,7 @@ contract('Lock / non expiring', (accounts) => {
   describe('Purchased key', () => {
     it('should have an expiration timestamp of as max uint', async () => {
       assert.equal(await lock.isValidKey(tokenId), true)
-      assert.equal(await lock.balanceOf(keyOwner), 1)
+      assert.equal(await lock.balanceOf(keyOwner.address), 1)
       assert.equal(
         (await lock.keyExpirationTimestampFor(tokenId)).toString(),
         MAX_UINT
@@ -34,10 +41,9 @@ contract('Lock / non expiring', (accounts) => {
     })
 
     it('should be valid far in the future', async () => {
-      const fiveHundredYears = 5 * 100 * 365 * 24 * 60 * 60 * 1000
-      await time.increaseTo(Date.now() + fiveHundredYears)
+      await time.increaseTo(Date.now() + FIVE_HUNDRED_YEARS)
       assert.equal(await lock.isValidKey(tokenId), true)
-      assert.equal(await lock.balanceOf(keyOwner), 1)
+      assert.equal(await lock.balanceOf(keyOwner.address), 1)
     })
   })
 
@@ -49,8 +55,7 @@ contract('Lock / non expiring', (accounts) => {
           (await lock.getCancelAndRefundValue(tokenId)).toString(),
           keyPrice.toString()
         )
-        const fiveHundredYears = 5 * 100 * 365 * 24 * 60 * 60 * 1000
-        await time.increaseTo(Date.now() + fiveHundredYears)
+        await time.increaseTo(Date.now() + FIVE_HUNDRED_YEARS)
         assert.equal(
           (await lock.getCancelAndRefundValue(tokenId)).toString(),
           keyPrice.toString()
@@ -60,39 +65,41 @@ contract('Lock / non expiring', (accounts) => {
     describe('cancelAndRefund', () => {
       it('should transfer entire price back', async () => {
         // make sure the refund actually happened
-        const initialLockBalance = await getBalance(lock.address)
-        const initialKeyOwnerBalance = await getBalance(keyOwner)
+        const initialLockBalance = await getBalanceEthers(lock.address)
+        const initialKeyOwnerBalance = await getBalanceEthers(keyOwner.address)
 
         // refund
-        const tx = await lock.cancelAndRefund(tokenId, { from: keyOwner })
+        const tx = await lock.connect(keyOwner).cancelAndRefund(tokenId)
 
         // make sure key is cancelled
         assert.equal(await lock.isValidKey(tokenId), false)
-        assert.equal(await lock.balanceOf(keyOwner), 0)
-        assert.equal(tx.logs[0].event, 'CancelKey')
-        const refund = new BigNumber(tx.logs[0].args.refund)
-        assert(refund.isEqualTo(keyPrice))
+        assert.equal(await lock.balanceOf(keyOwner.address), 0)
+
+        const { events, gasUsed } = await tx.wait()
+
+        // mkae sure event has been fired properly
+        const {
+          args: { refund },
+        } = events.find(({ event }) => event === 'CancelKey')
+        assert(refund.eq(keyPrice))
 
         // get gas used
-        const txHash = await ethers.provider.getTransaction(tx.tx)
-        const gasUsed = new BigNumber(tx.receipt.gasUsed)
-        const gasPrice = new BigNumber(txHash.gasPrice)
-        const txFee = gasPrice.times(gasUsed)
+        const txFee = tx.gasPrice.mul(gasUsed)
 
         // check key owner balance
-        const finalOwnerBalance = await getBalance(keyOwner)
+        const finalOwnerBalance = await getBalanceEthers(keyOwner.address)
 
         assert(
-          finalOwnerBalance.toFixed(),
-          initialKeyOwnerBalance.plus(refund).minus(txFee).toFixed()
+          finalOwnerBalance.toString(),
+          initialKeyOwnerBalance.add(refund).sub(txFee).toString()
         )
 
         // also check lock balance
-        const finalLockBalance = await getBalance(lock.address)
+        const finalLockBalance = await getBalanceEthers(lock.address)
 
         assert(
           finalLockBalance.toString(),
-          initialLockBalance.minus(refund).toString()
+          initialLockBalance.sub(refund).toString()
         )
       })
     })
@@ -100,13 +107,13 @@ contract('Lock / non expiring', (accounts) => {
 
   describe('Transfer', () => {
     it('should transfer a valid non-expiring key to someone else', async () => {
-      const keyReceiver = accounts[3]
-      await lock.transferFrom(keyOwner, keyReceiver, tokenId, {
-        from: keyOwner,
-      })
+      const [, , keyReceiver] = await ethers.getSigners()
+      await lock
+        .connect(keyOwner)
+        .transferFrom(keyOwner.address, keyReceiver.address, tokenId)
 
-      assert.equal(await lock.getHasValidKey(keyOwner), false)
-      assert.equal(await lock.getHasValidKey(keyReceiver), true)
+      assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+      assert.equal(await lock.getHasValidKey(keyReceiver.address), true)
 
       assert.equal(
         (await lock.keyExpirationTimestampFor(tokenId)).toString(),
