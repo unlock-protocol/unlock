@@ -1,5 +1,5 @@
 const deployContracts = require('../../fixtures/deploy')
-const { MAX_GAS } = require('../../helpers/constants')
+const { MAX_GAS } = require('../../helpers')
 
 const shared = require('./shared')
 
