@@ -269,19 +269,20 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const event = await EventData.findOne({
-    where: {
-      locks: {
-        [Op.contains]: [
-          `${normalizer.ethereumAddress(lockAddress)}-${network}`,
-        ],
-      },
-    },
-  })
+  // TODO: get data from event if the lock is used for an event!
+  // const event = await EventData.findOne({
+  //   where: {
+  //     locks: {
+  //       [Op.contains]: [
+  //         `${normalizer.ethereumAddress(lockAddress)}-${network}`,
+  //       ],
+  //     },
+  //   },
+  // })
 
-  if (event) {
-    return event?.data
-  }
+  // if (event) {
+  //   return event?.data
+  // }
 
   const lockData = await LockMetadata.findOne({
     where: {

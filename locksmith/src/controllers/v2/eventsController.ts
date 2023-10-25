@@ -10,8 +10,10 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
+import { saveCheckoutConfig } from '../../operations/checkoutConfigOperations'
 
+// deprecated!
 export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
@@ -22,9 +24,11 @@ export const getEventDetails: RequestHandler = async (request, response) => {
 
 const EventBody = z.object({
   id: z.number().optional(),
-  name: z.string(),
   data: z.any(),
-  locks: z.array(z.string()),
+  checkoutConfig: z.object({
+    config: PaywallConfig,
+    id: z.string().optional(),
+  }),
 })
 
 const defaultPaywallConfig: Partial<PaywallConfigType> = {
@@ -46,9 +50,13 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
   const parsed = await EventBody.parseAsync(request.body)
   const web3Service = new Web3Service(networks)
   const userAddress = request.user!.walletAddress
+
+  const locks = parsed.checkoutConfig.config.locks || {}
+
+  // TODO: Maybe move to a middleware?
   const lockManagers = await Promise.all(
-    parsed.locks.map((item) => {
-      const [lockAddress, networkId] = item.split('-')
+    Object.keys(locks).map((lockAddress: string) => {
+      const networkId = locks[lockAddress].network
       return web3Service.isLockManager(
         lockAddress,
         userAddress,
@@ -56,7 +64,8 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
       )
     })
   )
-  const isLockManager = lockManagers.some((item) => item)
+
+  const isLockManager = lockManagers.some((isManager) => isManager)
 
   if (!isLockManager) {
     return response.status(403).send({
@@ -64,22 +73,42 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     })
   }
 
-  // TODO: We should update the metadata on the locks to point to this event
-  // by default!
-  const slug = await createEventSlug(parsed.name, parsed.id)
+  let slug = parsed.data.slug
+  if (!parsed.id) {
+    // If the event does not exist yet, we need to create a slug for it
+    slug = await createEventSlug(parsed.data.name, parsed.id)
+  }
+
   const [event, created] = await EventData.upsert(
     {
       id: parsed.id,
-      name: parsed.name,
+      name: parsed.data.name,
       slug,
       data: parsed.data,
-      locks: parsed.locks,
       createdBy: request.user!.walletAddress,
     },
     {
       conflictFields: ['id'],
     }
   )
+
+  if (!event.checkoutConfigId) {
+    const checkoutConfig = await PaywallConfig.strip().parseAsync(
+      parsed.checkoutConfig.config
+    )
+    const createdConfig = await saveCheckoutConfig({
+      name: `Checkout config for ${event.name}`,
+      config: checkoutConfig,
+      createdBy: request.user!.walletAddress,
+    })
+    // And now attach the id to the event
+    event.checkoutConfigId = createdConfig.id
+    await event.save()
+  }
+
+  // TODO: We should update the metadata on the locks
+  // to point to this event by default!
+
   const statusCode = created ? 201 : 200
   return response.status(statusCode).send(event.toJSON())
 }
@@ -95,27 +124,19 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
 
   if (event) {
     const eventResponse = event.toJSON() as any // TODO: type!
-    const checkoutConfig = {
-      ...defaultPaywallConfig,
-      locks: eventResponse.locks.reduce((acc: any, lockAsString: any) => {
-        const [address, network] = lockAsString.split('-')
-        return {
-          ...acc,
-          [address]: {
-            network: parseInt(network),
-          },
-        }
-      }, {}),
-    }
-    delete eventResponse.locks
-    eventResponse.checkoutConfig = {
-      config: checkoutConfig,
+    if (event.checkoutConfigId) {
+      eventResponse.checkoutConfig = await CheckoutConfig.findOne({
+        where: {
+          id: event.checkoutConfigId,
+        },
+      })
     }
     return response.status(200).send(eventResponse)
   }
 
   if (!event) {
     const settings = await getLockSettingsBySlug(slug)
+    console.log({ settings })
 
     if (settings) {
       const lockData = await getLockMetadata({
