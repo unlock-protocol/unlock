@@ -10,9 +10,7 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-import { EventData } from '../models'
-import { Op } from 'sequelize'
-import normalizer from '../utils/normalizer'
+
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -96,16 +94,9 @@ export const getBaseTokenData = async (
   address: string,
   host: string,
   keyId: string,
-  network: number = 1
+  _network: number = 1
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
-  const event = await EventData.findOne({
-    where: {
-      locks: {
-        [Op.contains]: [`${normalizer.ethereumAddress(address)}-${network}`],
-      },
-    },
-  })
 
   const persistedBasedMetadata = await LockMetadata.findOne({
     where: { address },
@@ -113,7 +104,7 @@ export const getBaseTokenData = async (
 
   const result: Record<string, unknown> = {
     ...defaultResponse,
-    ...(event?.data || persistedBasedMetadata?.data || {}),
+    ...(persistedBasedMetadata?.data || {}),
   }
 
   return result

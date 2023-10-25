@@ -6,8 +6,6 @@ import {
 import normalizer from '../../utils/normalizer'
 import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
 import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
@@ -22,7 +20,7 @@ export const getEventDetails: RequestHandler = async (request, response) => {
   return response.status(200).send(eventDetails)
 }
 
-const EventBody = z.object({
+export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
   checkoutConfig: z.object({
@@ -48,30 +46,6 @@ const defaultPaywallConfig: Partial<PaywallConfigType> = {
 
 export const saveEventDetails: RequestHandler = async (request, response) => {
   const parsed = await EventBody.parseAsync(request.body)
-  const web3Service = new Web3Service(networks)
-  const userAddress = request.user!.walletAddress
-
-  const locks = parsed.checkoutConfig.config.locks || {}
-
-  // TODO: Maybe move to a middleware?
-  const lockManagers = await Promise.all(
-    Object.keys(locks).map((lockAddress: string) => {
-      const networkId = locks[lockAddress].network
-      return web3Service.isLockManager(
-        lockAddress,
-        userAddress,
-        Number(networkId)
-      )
-    })
-  )
-
-  const isLockManager = lockManagers.some((isManager) => isManager)
-
-  if (!isLockManager) {
-    return response.status(403).send({
-      message: `${userAddress} is not a lock manager of this transaction`,
-    })
-  }
 
   let slug = parsed.data.slug
   if (!parsed.id) {
@@ -136,7 +110,6 @@ export const getEventBySlug: RequestHandler = async (request, response) => {
 
   if (!event) {
     const settings = await getLockSettingsBySlug(slug)
-    console.log({ settings })
 
     if (settings) {
       const lockData = await getLockMetadata({

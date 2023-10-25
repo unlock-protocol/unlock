@@ -19,7 +19,7 @@ export const createOrUpdateCheckoutConfig: RequestHandler = async (
   }
   const checkoutConfig = await PaywallConfig.strip().parseAsync(config)
   const createdConfig = await saveCheckoutConfig({
-    id: id,
+    id,
     name,
     config: checkoutConfig,
     createdBy: request.user!.walletAddress,
