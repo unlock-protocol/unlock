@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express'
 import {
   createEventSlug,
+  getEventBySlug,
   getEventDataForLock,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
@@ -47,11 +48,8 @@ const defaultPaywallConfig: Partial<PaywallConfigType> = {
 export const saveEventDetails: RequestHandler = async (request, response) => {
   const parsed = await EventBody.parseAsync(request.body)
 
-  let slug = parsed.data.slug
-  if (!parsed.id) {
-    // If the event does not exist yet, we need to create a slug for it
-    slug = await createEventSlug(parsed.data.name, parsed.id)
-  }
+  const slug =
+    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
 
   const [event, created] = await EventData.upsert(
     {
@@ -62,7 +60,7 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
       createdBy: request.user!.walletAddress,
     },
     {
-      conflictFields: ['id'],
+      conflictFields: ['slug'],
     }
   )
 
@@ -90,15 +88,14 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
 // This function returns the event based on its slug.
 // For backward compatibility, if the event does not exist, we look for a lock
 // whose slug matches and get the event data from that lock.
-export const getEventBySlug: RequestHandler = async (request, response) => {
+export const getEvent: RequestHandler = async (request, response) => {
   const slug = request.params.slug.toLowerCase().trim()
-  const event = await EventData.findOne({
-    where: { slug },
-  })
+  const event = await getEventBySlug(slug)
 
   if (event) {
     const eventResponse = event.toJSON() as any // TODO: type!
     if (event.checkoutConfigId) {
+      delete eventResponse.checkoutConfigId
       eventResponse.checkoutConfig = await CheckoutConfig.findOne({
         where: {
           id: event.checkoutConfigId,

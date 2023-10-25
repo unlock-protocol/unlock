@@ -2,7 +2,8 @@ import { RequestHandler } from 'express'
 import { EventBody } from '../../controllers/v2/eventsController'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-import { CheckoutConfig, EventData } from '../../models'
+import { getEventBySlug } from '../../operations/eventOperations'
+import { getCheckoutConfigById } from '../../operations/checkoutConfigOperations'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
   request,
@@ -16,20 +17,12 @@ export const eventOrganizerMiddleware: RequestHandler = async (
   let locks = parsed.checkoutConfig.config.locks || {}
 
   // If this is an existing event!
-  if (parsed.id) {
-    const existingEvent = await EventData.findOne({
-      where: { id: parsed.id },
-    })
-
-    if (!existingEvent?.checkoutConfigId) {
-      delete parsed.id // The event does not really exist
-    } else {
-      // ok the event exists!
-      const checkoutConfig = await CheckoutConfig.findOne({
-        where: {
-          id: existingEvent.checkoutConfigId,
-        },
-      })
+  if (parsed.data.slug) {
+    const existingEvent = await getEventBySlug(parsed.data.slug)
+    if (existingEvent?.checkoutConfigId) {
+      const checkoutConfig = await getCheckoutConfigById(
+        existingEvent.checkoutConfigId
+      )
       locks = checkoutConfig?.config.locks || {}
     }
   }
