@@ -15,7 +15,10 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 
 interface RegistrationCardProps {
   event: any
-  checkoutConfig: PaywallConfigType
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 export const RegistrationCardInternal = ({
@@ -28,12 +31,18 @@ export const RegistrationCardInternal = ({
   const injectedProvider = selectProvider(config)
 
   const queries = useValidKeyBulk(
-    Object.keys(checkoutConfig.locks).reduce((acc, lockAddress: string) => {
-      return [
-        ...acc,
-        { lockAddress, network: checkoutConfig.locks[lockAddress].network },
-      ]
-    }, [])
+    Object.keys(checkoutConfig.config.locks).reduce(
+      (acc, lockAddress: string) => {
+        return [
+          ...acc,
+          {
+            lockAddress,
+            network: checkoutConfig.config.locks[lockAddress].network,
+          },
+        ]
+      },
+      []
+    )
   )
   const isLoadingValidKeys = queries?.some(
     (query) => query.isInitialLoading || query.isRefetching
@@ -44,12 +53,14 @@ export const RegistrationCardInternal = ({
     useCanClaim(
       {
         recipients: [account || ZERO],
-        lockAddress: Object.keys(checkoutConfig.locks)[0],
+        lockAddress: Object.keys(checkoutConfig.config.locks)[0],
         network:
-          checkoutConfig.locks[Object.keys(checkoutConfig.locks)[0]].network,
+          checkoutConfig.config.locks[
+            Object.keys(checkoutConfig.config.locks)[0]
+          ].network,
         data: [],
       },
-      { enabled: Object.keys(checkoutConfig.locks).length === 1 }
+      { enabled: Object.keys(checkoutConfig.config.locks).length === 1 }
     )
 
   if (isLoadingValidKeys || isClaimableLoading) {
@@ -71,9 +82,11 @@ export const RegistrationCardInternal = ({
   if (isClaimable) {
     return (
       <WalletlessRegistrationForm
-        lockAddress={Object.keys(checkoutConfig.locks)[0]}
+        lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
         network={
-          checkoutConfig.locks[Object.keys(checkoutConfig.locks)[0]].network
+          checkoutConfig.config.locks[
+            Object.keys(checkoutConfig.config.locks)[0]
+          ].network
         }
       />
     )
@@ -118,16 +131,18 @@ export const RegistrationCard = ({
   return (
     <Card className="grid gap-6 mt-10 lg:mt-0">
       <div className="grid gap-6 md:gap-8">
-        {Object.keys(checkoutConfig.locks)?.map((lockAddress: string) => {
-          return (
-            <LockPriceDetails
-              key={lockAddress}
-              lockAddress={lockAddress}
-              network={checkoutConfig.locks[lockAddress].network}
-              showContract
-            />
-          )
-        })}
+        {Object.keys(checkoutConfig.config.locks)?.map(
+          (lockAddress: string) => {
+            return (
+              <LockPriceDetails
+                key={lockAddress}
+                lockAddress={lockAddress}
+                network={checkoutConfig.config.locks[lockAddress].network}
+                showContract
+              />
+            )
+          }
+        )}
       </div>
       <RegistrationCardInternal checkoutConfig={checkoutConfig} event={event} />
     </Card>

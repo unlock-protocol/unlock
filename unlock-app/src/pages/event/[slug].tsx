@@ -13,7 +13,10 @@ interface Params {
 interface EventPageProps {
   pageProps: {
     event: any // TODO: type this
-    checkoutConfig: PaywallConfigType
+    checkoutConfig: {
+      id?: string
+      config: PaywallConfigType
+    }
   }
 }
 
@@ -24,13 +27,12 @@ export const getServerSideProps = async ({ params }: Params) => {
       event: {
         ...toFormData(eventMetadata.data!),
       },
-      checkoutConfig: eventMetadata.checkoutConfig.config,
+      checkoutConfig: eventMetadata.checkoutConfig,
     },
   }
 }
 
 const EventPage = (props: EventPageProps) => {
-  console.log(props.pageProps)
   return <EventContentWithProps {...props.pageProps}></EventContentWithProps>
 }
 

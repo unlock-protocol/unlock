@@ -30,7 +30,10 @@ import { RegistrationCard } from './RegistrationCard'
 
 interface EventDetailsProps {
   event: any
-  checkoutConfig: PaywallConfigType
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 const language = () => {
@@ -256,11 +259,12 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
                   />
                 </div>
                 <div className="md:col-span-1">
-                  {Object.keys(checkoutConfig.locks).map(
+                  {Object.keys(checkoutConfig.config.locks).map(
                     (lockAddress: string) => {
-                      const network = checkoutConfig.locks[lockAddress].network
+                      const network =
+                        checkoutConfig.config.locks[lockAddress].network
                       let label = 'Manage attendees'
-                      if (Object.keys(checkoutConfig.locks).length > 1) {
+                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
                         label = `Manage attendees for ${minifyAddress(
                           lockAddress
                         )}`
@@ -287,9 +291,10 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
                 description="Add and manage trusted users at the event to help check-in attendees as they arrive."
               >
                 <div className="grid gap-2">
-                  {Object.keys(checkoutConfig.locks).map(
+                  {Object.keys(checkoutConfig.config.locks).map(
                     (lockAddress: string) => {
-                      const network = checkoutConfig.locks[lockAddress].network
+                      const network =
+                        checkoutConfig.config.locks[lockAddress].network
                       return (
                         <Disclosure
                           label={`Verifiers for ${minifyAddress(lockAddress)}`}
