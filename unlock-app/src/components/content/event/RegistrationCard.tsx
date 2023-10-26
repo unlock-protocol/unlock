@@ -102,10 +102,10 @@ export const RegistrationCardInternal = ({
       <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
         <Checkout
           injectedProvider={injectedProvider as any}
-          paywallConfig={checkoutConfig}
+          paywallConfig={checkoutConfig.config}
           handleClose={() => {
+            refresh()
             setCheckoutOpen(false)
-            // reload() // TODO: force refresh after eventual purchase
           }}
         />
       </Modal>
