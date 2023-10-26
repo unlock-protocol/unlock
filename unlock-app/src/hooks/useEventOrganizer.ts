@@ -34,7 +34,6 @@ export const useEventOrganizer = ({
           )
         )
       )
-      console.log(isManagerByLock)
       return !!isManagerByLock.find((isManager) => !!isManager)
     }
   )

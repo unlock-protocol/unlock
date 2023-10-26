@@ -22,18 +22,42 @@ export const EventContent = () => {
     lockAddress,
     network,
   })
-  const eventData = metadata ? toFormData(metadata) : null
+  const event = metadata ? toFormData(metadata) : null
   const isLoading = isLoadingQuery || isMetadataLoading
 
-  // GREAT: TODO LET US REBUILD THE eventData
+  // Create a checkout config
+  const checkoutConfig = {
+    config: {
+      locks: {
+        [lockAddress]: {
+          network,
+        },
+      },
+      title: 'Registration',
+      emailRequired: true,
+      metadataInputs: [
+        {
+          name: 'fullname',
+          type: 'text',
+          label: 'Full name',
+          required: true,
+          placeholder: 'Satoshi Nakamoto',
+          defaultValue: '',
+        },
+      ],
+    } as PaywallConfigType,
+  }
 
-  return EventContentWithProps({ isLoading, eventData })
+  return EventContentWithProps({ isLoading, checkoutConfig, event })
 }
 
 interface EventContentWithPropsProps {
   event: any // TODO: type this
   isLoading?: boolean
-  checkoutConfig: PaywallConfigType
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 export const EventContentWithProps = ({
@@ -41,6 +65,8 @@ export const EventContentWithProps = ({
   checkoutConfig,
   event,
 }: EventContentWithPropsProps) => {
+  console.log({ checkoutConfig, event })
+
   const router = useRouter()
 
   const handleCreateEvent = () => {
