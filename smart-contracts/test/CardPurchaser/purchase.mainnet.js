@@ -8,7 +8,7 @@ const {
   addSomeUSDC,
 } = require('../helpers')
 
-const USDC_ABI = require('../helpers/ABIs/USDC.json')
+const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
 const keyPrice = ethers.utils.parseUnits('5', 6)
