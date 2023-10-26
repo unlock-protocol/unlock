@@ -19,7 +19,7 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
-  hooks: {}, // TODO
+  // hooks: {}, // TODO
 
   id: 59144,
 
@@ -82,8 +82,8 @@ export const linea: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
-  uniswapV3: {},
-  universalCard: {},
+  // uniswapV3: {},
+  // universalCard: {},
   unlockAddress: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   url: 'https://linea.build/',
 }
