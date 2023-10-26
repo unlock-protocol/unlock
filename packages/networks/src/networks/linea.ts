@@ -62,7 +62,7 @@ export const linea: NetworkConfig = {
     symbol: 'ETH',
   },
   previousDeploys: [],
-  provider: 'https://rpc.linea.build',
+  provider: 'https://rpc.unlock-protocol.com/59144',
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 560908,
