@@ -102,42 +102,42 @@ export const getEvent: RequestHandler = async (request, response) => {
         },
       })
     }
-
     return response.status(200).send(eventResponse)
   }
 
-  // No event, let's look for a lock that was configured for
-  // an event! (legacy system)
-  const settings = await getLockSettingsBySlug(slug)
-  if (settings) {
-    const lockData = await getLockMetadata({
-      lockAddress: settings.lockAddress,
-      network: settings.network,
-    })
+  if (!event) {
+    const settings = await getLockSettingsBySlug(slug)
 
-    if (lockData) {
-      // We need to look if there are more locks for that event as well!
-      // For this we need to check if any checkout config is attached to this lock.
-      const checkoutConfig = settings.checkoutConfigId
-        ? await CheckoutConfig.findOne({
-            where: {
-              id: settings.checkoutConfigId,
-            },
-          })
-        : {
-            config: {
-              ...defaultPaywallConfig,
-              locks: {
-                [settings.lockAddress]: {
-                  network: settings.network,
+    if (settings) {
+      const lockData = await getLockMetadata({
+        lockAddress: settings.lockAddress,
+        network: settings.network,
+      })
+
+      if (lockData) {
+        // We need to look if there are more locks for that event as well!
+        // For this we need to check if any checkout config is attached to this lock.
+        const checkoutConfig = settings.checkoutConfigId
+          ? await CheckoutConfig.findOne({
+              where: {
+                id: settings.checkoutConfigId,
+              },
+            })
+          : {
+              config: {
+                ...defaultPaywallConfig,
+                locks: {
+                  [settings.lockAddress]: {
+                    network: settings.network,
+                  },
                 },
               },
-            },
-          }
-      return response.status(200).send({
-        data: { ...lockData },
-        checkoutConfig,
-      })
+            }
+        return response.status(200).send({
+          data: { ...lockData },
+          checkoutConfig,
+        })
+      }
     }
   }
 
