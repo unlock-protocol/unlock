@@ -11,7 +11,7 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
@@ -21,7 +21,7 @@ import { RegistrationCard } from './RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 
 interface EventDetailsProps {
-  event: any
+  event: Event
   checkoutConfig: {
     id?: string
     config: PaywallConfigType

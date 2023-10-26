@@ -10,7 +10,7 @@ import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 import { useMetadata } from '~/hooks/metadata'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 export const EventContent = () => {
   const {
@@ -52,7 +52,7 @@ export const EventContent = () => {
 }
 
 interface EventContentWithPropsProps {
-  event: any // TODO: type this
+  event: Event
   isLoading?: boolean
   checkoutConfig: {
     id?: string

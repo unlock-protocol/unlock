@@ -1,5 +1,9 @@
 import { Button, Drawer, ImageUpload } from '@unlock-protocol/ui'
-import { PaywallConfigType, formDataToMetadata } from '@unlock-protocol/core'
+import {
+  Event,
+  PaywallConfigType,
+  formDataToMetadata,
+} from '@unlock-protocol/core'
 import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
@@ -9,7 +13,7 @@ interface CoverImageDrawerProps {
   image: string
   setImage: (image: string) => void
   handleClose: () => void
-  event: any
+  event: Event
   checkoutConfig: {
     id?: string
     config: PaywallConfigType
@@ -31,13 +35,13 @@ export const CoverImageDrawer = ({
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
-  const coverImage = event.event_cover_image
+  const coverImage = event.ticket.event_cover_image
 
   const onSubmit = async () => {
     event.ticket.event_cover_image = image
     await storage.saveEventData({
       data: formDataToMetadata(event),
-      // @ts-expect-error TODO: fix this
+      // @ts-expect-error
       checkoutConfig,
     })
 

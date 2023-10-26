@@ -11,10 +11,10 @@ import { Checkout } from '~/components/interface/checkout/main'
 import { useState } from 'react'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 interface RegistrationCardProps {
-  event: any
+  event: Event
   checkoutConfig: {
     id?: string
     config: PaywallConfigType

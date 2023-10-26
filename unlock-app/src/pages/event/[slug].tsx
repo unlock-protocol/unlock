@@ -1,4 +1,4 @@
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
@@ -12,7 +12,7 @@ interface Params {
 
 interface EventPageProps {
   pageProps: {
-    event: any // TODO: type this
+    event: Event
     checkoutConfig: {
       id?: string
       config: PaywallConfigType
