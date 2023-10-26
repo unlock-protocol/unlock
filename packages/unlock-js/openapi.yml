@@ -132,6 +132,9 @@ components:
           type: array
           items:
             type: object
+            required:
+              - trait_type
+              - value
             properties:
               trait_type:
                 type: string
