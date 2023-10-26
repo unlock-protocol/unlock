@@ -49,9 +49,6 @@ const settings = {
 }
 
 const networks = getHardhatNetwork()
-networks.hardhat = {
-  initialBaseFeePerGas: 100000000,
-}
 
 // mainnet fork
 if (process.env.RUN_FORK) {
