@@ -111,6 +111,33 @@ components:
           type: string
           format: date-time
 
+    Event:
+      type: object
+      required:
+        - 'name'
+        - 'slug'
+        - 'image'
+        - 'description'
+        - 'attributes'
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        attributes:
+          type: array
+          items:
+            type: object
+            properties:
+              trait_type:
+                type: string
+              value:
+                type: string
+
     Verifier:
       type: object
       nullable: false
@@ -3375,7 +3402,7 @@ paths:
 
       responses:
         200:
-          description: Successfully retrieves the event
+          description: Successfully retrieves the event along with its checkout config
           content:
             application/json:
               schema:
@@ -3384,7 +3411,7 @@ paths:
                   id:
                     type: number
                   data:
-                    type: object # TODO: better schema!
+                    $ref: '#/components/schemas/Event'
                   checkoutConfig:
                     type: object
                     properties:
