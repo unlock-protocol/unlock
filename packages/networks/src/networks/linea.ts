@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const linea: NetworkConfig = {
   blockScan: {
@@ -19,17 +19,39 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
-  // hooks: {}, // TODO
-
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        address: '0x6878Ae3c863f6Ebd27B47C02F6B32aAC8B0BA07E',
+        id: HookType.PASSWORD,
+        name: 'Password required',
+      },
+      {
+        address: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+        id: HookType.CAPTCHA,
+        name: 'Captcha',
+      },
+      {
+        address: '0xaE8F3F0826A39122401ED634f0a5C19549331432',
+        id: HookType.GUILD,
+        name: 'Guild',
+      },
+      {
+        address: '0xCD9C9b40D757b56359e19563203D3bc64089638d',
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+      },
+    ],
+  },
   id: 59144,
 
   isTestNetwork: false,
 
-  keyManagerAddress: '', // TODO
+  keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
 
   maxFreeClaimCost: 10,
 
-  multisig: '', // TODO
+  // multisig: '', // TODO
 
   name: 'Linea',
 
@@ -51,7 +73,6 @@ export const linea: NetworkConfig = {
     // NB: this name should be changed once The Graph supports Linea
     networkName: 'linea-mainnet',
   },
-  swapPurchaser: '', // TODO
   tokens: [
     {
       address: '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f',
