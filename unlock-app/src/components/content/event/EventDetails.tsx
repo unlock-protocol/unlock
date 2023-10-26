@@ -27,6 +27,7 @@ import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './RegistrationCard'
+import { useEvent } from '~/hooks/useEvent'
 
 interface EventDetailsProps {
   event: any
@@ -43,7 +44,10 @@ const language = () => {
   return navigator?.language || 'en-US'
 }
 
-export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
+export const EventDetails = ({
+  event: eventProp,
+  checkoutConfig,
+}: EventDetailsProps) => {
   const [image, setImage] = useState('')
 
   // Check if the user is one of the lock manager
@@ -51,9 +55,10 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
     checkoutConfig,
   })
 
-  const reload = async () => {
-    console.log('RELOAD!') // TODO
-  }
+  const { refetch, data: event } = useEvent(
+    { slug: eventProp.slug },
+    { initialData: eventProp }
+  )
 
   const eventUrl = getEventUrl({
     event,
@@ -151,7 +156,7 @@ export const EventDetails = ({ event, checkoutConfig }: EventDetailsProps) => {
             checkoutConfig={checkoutConfig}
             event={event}
             handleClose={() => {
-              console.log('REFETCH!!')
+              refetch()
             }}
           />
 
