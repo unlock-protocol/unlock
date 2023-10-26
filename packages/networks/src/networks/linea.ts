@@ -19,7 +19,7 @@ export const linea: NetworkConfig = {
     },
   },
   featured: false,
-  hooks: {}, // TODO
+  // hooks: {}, // TODO
 
   id: 59144,
 
@@ -43,11 +43,13 @@ export const linea: NetworkConfig = {
   provider: 'https://rpc.linea.build',
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://rpc.linea.build/',
-  startBlock: 21986688,
+  startBlock: 560908,
   subgraph: {
-    endpoint: 'https://graph-query.linea.build',
-    endpointV2: 'https://graph-query.linea.build',
-    networkName: 'linea',
+    endpoint: 'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
+    endpointV2:
+      'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
+    // NB: this name should be changed once The Graph supports Linea
+    networkName: 'linea-mainnet',
   },
   swapPurchaser: '', // TODO
   tokens: [
@@ -82,8 +84,8 @@ export const linea: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
-  uniswapV3: {},
-  universalCard: {},
+  // uniswapV3: {},
+  // universalCard: {},
   unlockAddress: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   url: 'https://linea.build/',
 }
