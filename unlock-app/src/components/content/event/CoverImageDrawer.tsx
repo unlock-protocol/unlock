@@ -37,6 +37,7 @@ export const CoverImageDrawer = ({
     event.ticket.event_cover_image = image
     await storage.saveEventData({
       data: formDataToMetadata(event),
+      // @ts-expect-error TODO: fix this
       checkoutConfig,
     })
 

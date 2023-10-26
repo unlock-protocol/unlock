@@ -8,7 +8,7 @@ import { LockPriceDetails } from './LockPriceDetails'
 import { Button, Card, Placeholder, Modal } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { Checkout } from '~/components/interface/checkout/main'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
 import { PaywallConfigType } from '@unlock-protocol/core'
@@ -30,20 +30,7 @@ export const RegistrationCardInternal = ({
   const config = useConfig()
   const injectedProvider = selectProvider(config)
 
-  const queries = useValidKeyBulk(
-    Object.keys(checkoutConfig.config.locks).reduce(
-      (acc, lockAddress: string) => {
-        return [
-          ...acc,
-          {
-            lockAddress,
-            network: checkoutConfig.config.locks[lockAddress].network,
-          },
-        ]
-      },
-      []
-    )
-  )
+  const queries = useValidKeyBulk(checkoutConfig.config.locks)
   const refresh = () => {
     queries.map((query) => query.refetch())
   }
@@ -58,10 +45,9 @@ export const RegistrationCardInternal = ({
       {
         recipients: [account || ZERO],
         lockAddress: Object.keys(checkoutConfig.config.locks)[0],
-        network:
-          checkoutConfig.config.locks[
-            Object.keys(checkoutConfig.config.locks)[0]
-          ].network,
+        network: (checkoutConfig.config.locks[
+          Object.keys(checkoutConfig.config.locks)[0]
+        ].network || checkoutConfig.config.network)!,
         data: [],
       },
       { enabled: Object.keys(checkoutConfig.config.locks).length === 1 }
@@ -88,9 +74,9 @@ export const RegistrationCardInternal = ({
       <WalletlessRegistrationForm
         lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
         network={
-          checkoutConfig.config.locks[
+          (checkoutConfig.config.locks[
             Object.keys(checkoutConfig.config.locks)[0]
-          ].network
+          ].network || checkoutConfig.config.network)!
         }
         refresh={refresh}
       />
@@ -142,7 +128,11 @@ export const RegistrationCard = ({
               <LockPriceDetails
                 key={lockAddress}
                 lockAddress={lockAddress}
-                network={checkoutConfig.config.locks[lockAddress].network}
+                network={
+                  (checkoutConfig.config.locks[
+                    Object.keys(checkoutConfig.config.locks)[0]
+                  ].network || checkoutConfig.config.network)!
+                }
                 showContract
               />
             )

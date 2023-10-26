@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
-import { useConfig } from '~/utils/withConfig'
 import { NextSeo } from 'next-seo'
 import { Button, Card, Disclosure, minifyAddress } from '@unlock-protocol/ui'
 import AddToCalendarButton from './AddToCalendarButton'
@@ -12,15 +11,7 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { useValidKey } from '~/hooks/useKey'
-import { PaywallConfigType, getLockTypeByMetadata } from '@unlock-protocol/core'
-import { useLockData } from '~/hooks/useLockData'
-import { useCanClaim } from '~/hooks/useCanClaim'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
-import { EventCheckoutUrl } from './EventCheckoutUrl'
-import { useGetEventLocksConfig } from '~/hooks/useGetEventLocksConfig'
-// import { EventCheckoutUrl } from './EventCheckoutUrl'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
@@ -299,7 +290,8 @@ export const EventDetails = ({
                   {Object.keys(checkoutConfig.config.locks).map(
                     (lockAddress: string) => {
                       const network =
-                        checkoutConfig.config.locks[lockAddress].network
+                        checkoutConfig.config.locks[lockAddress].network ||
+                        checkoutConfig.config.network
                       return (
                         <Disclosure
                           label={`Verifiers for ${minifyAddress(lockAddress)}`}
@@ -307,7 +299,7 @@ export const EventDetails = ({
                         >
                           <VerifierForm
                             lockAddress={lockAddress}
-                            network={network}
+                            network={network!}
                             disabled={!isOrganizer}
                           />
                         </Disclosure>

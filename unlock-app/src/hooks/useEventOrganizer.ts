@@ -30,7 +30,8 @@ export const useEventOrganizer = ({
           web3Service.isLockManager(
             lockAddress,
             account!,
-            checkoutConfig.config.locks[lockAddress].network
+            (checkoutConfig.config.locks[lockAddress].network ||
+              checkoutConfig.config.network)!
           )
         )
       )

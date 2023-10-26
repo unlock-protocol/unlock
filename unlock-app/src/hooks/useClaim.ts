@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 
 interface ClaimOption {
