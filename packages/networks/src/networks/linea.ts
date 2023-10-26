@@ -43,13 +43,13 @@ export const linea: NetworkConfig = {
   provider: 'https://rpc.linea.build',
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://rpc.linea.build/',
-  startBlock: 21986688,
+  startBlock: 560908,
   subgraph: {
     endpoint: 'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
     endpointV2:
       'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
     // NB: this name should be changed once The Graph supports Linea
-    networkName: 'ethereum',
+    networkName: 'linea-mainnet',
   },
   swapPurchaser: '', // TODO
   tokens: [
