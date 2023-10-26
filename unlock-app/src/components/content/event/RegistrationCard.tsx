@@ -8,7 +8,7 @@ import { LockPriceDetails } from './LockPriceDetails'
 import { Button, Card, Placeholder, Modal } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { Checkout } from '~/components/interface/checkout/main'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
 import { PaywallConfigType } from '@unlock-protocol/core'
@@ -44,6 +44,10 @@ export const RegistrationCardInternal = ({
       []
     )
   )
+  const refresh = () => {
+    queries.map((query) => query.refetch())
+  }
+
   const isLoadingValidKeys = queries?.some(
     (query) => query.isInitialLoading || query.isRefetching
   )
@@ -88,6 +92,7 @@ export const RegistrationCardInternal = ({
             Object.keys(checkoutConfig.config.locks)[0]
           ].network
         }
+        refresh={refresh}
       />
     )
   }

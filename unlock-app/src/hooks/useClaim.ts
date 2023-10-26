@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 
 interface ClaimOption {
@@ -17,15 +18,22 @@ export const useClaim = ({ lockAddress, network }: Options) => {
   return useMutation(
     ['claim', network, lockAddress],
     async ({ data, recipient, captcha, email, metadata }: ClaimOption) => {
-      const response = await storage.claim(network, lockAddress, captcha, {
-        recipient,
-        data,
-        email,
-        ...metadata,
-      })
-      return {
-        hash: response.data.transactionHash,
-        owner: response.data.owner,
+      try {
+        const response = await storage.claim(network, lockAddress, captcha, {
+          recipient,
+          data,
+          email,
+          ...metadata,
+        })
+        return {
+          hash: response.data.transactionHash,
+          owner: response.data.owner,
+        }
+      } catch (error: any) {
+        if (error.response.data?.message) {
+          return error.response.data
+        }
+        throw error
       }
     },
     {
