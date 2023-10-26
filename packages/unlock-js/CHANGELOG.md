@@ -1,5 +1,9 @@
 # Changes
 
+# 0.40.1
+
+- adding missing ABI for locksmiths
+
 # 0.40.0
 
 - adding `latestTokenOfOwner`
