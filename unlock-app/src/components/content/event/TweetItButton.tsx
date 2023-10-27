@@ -29,7 +29,10 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
       }
     )}. \n\nGet your ticket with @unlockProtocol!`
   )
-  tweetIntent.searchParams.set('url', window.location.toString())
+  tweetIntent.searchParams.set(
+    'url',
+    typeof window !== 'undefined' ? window.location.toString() : ''
+  )
 
   return (
     <Tooltip

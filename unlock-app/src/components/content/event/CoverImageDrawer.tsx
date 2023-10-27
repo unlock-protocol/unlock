@@ -1,58 +1,57 @@
 import { Button, Drawer, ImageUpload } from '@unlock-protocol/ui'
-import { MetadataFormData, formDataToMetadata } from '@unlock-protocol/core'
+import {
+  Event,
+  PaywallConfigType,
+  formDataToMetadata,
+} from '@unlock-protocol/core'
 import { useState } from 'react'
-import { useUpdateMetadata } from '~/hooks/metadata'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { useLockManager } from '~/hooks/useLockManager'
+import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { storage } from '~/config/storage'
 
 interface CoverImageDrawerProps {
   image: string
   setImage: (image: string) => void
-  lockAddress: string
-  network: number
-  metadata: MetadataFormData
   handleClose: () => void
+  event: Event
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 export const CoverImageDrawer = ({
   image,
   setImage,
-  lockAddress,
-  network,
-  metadata,
+  event,
+  checkoutConfig,
   handleClose,
 }: CoverImageDrawerProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const { isManager: isLockManager } = useLockManager({
-    lockAddress,
-    network,
+  // Check if the user is one of the lock manager
+  const { data: isOrganizer } = useEventOrganizer({
+    checkoutConfig,
   })
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
-  const { mutateAsync: updateMetadata, isLoading } = useUpdateMetadata({
-    lockAddress,
-    network,
-  })
-
-  const coverImage = metadata.ticket?.event_cover_image
+  const coverImage = event.ticket.event_cover_image
 
   const onSubmit = async () => {
-    const metadataObj = formDataToMetadata({
-      ...metadata,
-      ticket: {
-        ...metadata?.ticket,
-        event_cover_image: image,
-      },
+    event.ticket.event_cover_image = image
+    await storage.saveEventData({
+      data: formDataToMetadata(event),
+      // @ts-expect-error
+      checkoutConfig,
     })
-    await updateMetadata(metadataObj)
+
     setIsOpen(false)
     handleClose()
   }
 
   return (
     <div className="relative inset-0 z-[1]">
-      {isLockManager && (
+      {isOrganizer && (
         <Button
           className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
           variant="secondary"
@@ -93,7 +92,7 @@ export const CoverImageDrawer = ({
             size="small"
             type="submit"
             onClick={onSubmit}
-            loading={isLoading}
+            loading={false}
             disabled={image === coverImage}
           >
             Save
