@@ -313,7 +313,6 @@ export const CreditCardForm = ({
       return getKeyGranter()
     }
   )
-
   const stripeConnectionState = stripeConnectionDetails?.connected ?? 0
   const connectedStripeAccount = stripeConnectionDetails?.account
   const supportedCurrencies =
