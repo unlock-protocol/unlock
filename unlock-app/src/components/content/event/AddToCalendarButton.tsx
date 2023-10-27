@@ -35,7 +35,7 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
     description: event.description || '',
     allDay: !event.ticket.event_start_date,
     end: endDate,
-    url: window.location.toString(),
+    url: typeof window !== 'undefined' ? window.location.toString() : '',
   }
 
   return (

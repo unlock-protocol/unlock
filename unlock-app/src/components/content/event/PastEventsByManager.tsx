@@ -71,7 +71,6 @@ export const PastEventsByManager = ({ manager }: PastEventsByManagerProps) => {
       <h2 className="text-3xl font-semibold mb-4">Your organized events</h2>
       <ul className="flex flex-wrap gap-4 ">
         {events?.map((event) => {
-          console.log(event)
           return (
             <li
               className="flex gap-4 p-2 w-full md:w-64 rounded-lg bg-white"

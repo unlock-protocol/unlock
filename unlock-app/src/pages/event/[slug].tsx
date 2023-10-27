@@ -1,5 +1,7 @@
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { storage } from '~/config/storage'
 
 interface Params {
@@ -10,47 +12,28 @@ interface Params {
 
 interface EventPageProps {
   pageProps: {
-    lockAddress: string
-    network: number
-    metadata?: any
+    event: Event
+    checkoutConfig: {
+      id?: string
+      config: PaywallConfigType
+    }
   }
 }
 
 export const getServerSideProps = async ({ params }: Params) => {
-  const { data: lockSettings } = await storage.getLockSettingsBySlug(
-    params.slug
-  )
-  if (lockSettings?.network && lockSettings?.lockAddress) {
-    const lockMetadataResponse = await storage.lockMetadata(
-      lockSettings.network,
-      lockSettings.lockAddress
-    )
-    return {
-      props: {
-        lockAddress: lockSettings?.lockAddress,
-        network: lockSettings?.network,
-        metadata: lockMetadataResponse?.data,
-      },
-    }
-  }
-
+  const { data: eventMetadata } = await storage.getEvent(params.slug)
   return {
     props: {
-      lockAddress: lockSettings?.lockAddress,
-      network: lockSettings?.network,
+      event: {
+        ...toFormData(eventMetadata.data!),
+      },
+      checkoutConfig: eventMetadata.checkoutConfig,
     },
   }
 }
 
-const EventPage = (p: EventPageProps) => {
-  const { lockAddress, network, metadata } = p.pageProps
-  return (
-    <EventContentWithProps
-      lockAddress={lockAddress}
-      network={network}
-      metadata={metadata}
-    ></EventContentWithProps>
-  )
+const EventPage = (props: EventPageProps) => {
+  return <EventContentWithProps {...props.pageProps}></EventContentWithProps>
 }
 
 export default EventPage

@@ -23,7 +23,7 @@ export const useGetLockCurrencySymbol = ({
           contractAddress,
           network
         )
-        return baseCurrencySymbol || symbol
+        return symbol || baseCurrencySymbol
       }
 
       return baseCurrencySymbol
