@@ -60,6 +60,12 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
+  if (!owner && !email) {
+    return response.status(401).send({
+      message: 'You are not authenticated.',
+    })
+  }
+
   if (
     LOCKS_WITH_DISABLED_CLAIMS.indexOf(
       normalizer.ethereumAddress(lockAddress)
@@ -70,28 +76,36 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  // First check that the lock is indeed free and that the gas costs is low enough!
   const pricer = new KeyPricer()
-  const totalAmount = await getTotalPurchasePriceInCrypto({
-    lockAddress,
-    network,
-    recipients: [owner],
-    data: [data || '0x'],
-  })
+  const fulfillmentDispatcher = new Dispatcher()
+  const web3Service = new Web3Service(networks)
+
+  // Check that claim is not too costly and that the lock is free
+  const [
+    hasEnoughToPayForGas,
+    canAffordGas,
+    totalAmount,
+    hasValidKey,
+    totalKeysForUser,
+  ] = await Promise.all([
+    fulfillmentDispatcher.hasFundsForTransaction(network),
+    pricer.canAffordGrant(network),
+    getTotalPurchasePriceInCrypto({
+      lockAddress,
+      network,
+      recipients: [owner],
+      data: [data || '0x'],
+    }),
+    web3Service.getHasValidKey(lockAddress, owner, network),
+    web3Service.totalKeys(lockAddress, owner, network),
+  ])
 
   if (totalAmount.gt(0)) {
-    return response.status(400).send({
+    return response.status(402).send({
       message: 'Lock is not free',
     })
   }
 
-  const fulfillmentDispatcher = new Dispatcher()
-
-  // Check that claim is not too costly
-  const [hasEnoughToPayForGas, canAffordGas] = await Promise.all([
-    fulfillmentDispatcher.hasFundsForTransaction(network),
-    pricer.canAffordGrant(network),
-  ])
   if (!hasEnoughToPayForGas) {
     return response.status(500).send({
       message: 'Not enough funds to pay for gas',
@@ -104,14 +118,15 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (!owner && !email) {
-    return response.status(401).send({
-      message: 'You are not authenticated.',
+  // Is user already has a valid key, claim will likely fail
+  if (hasValidKey) {
+    return response.status(400).send({
+      message: 'User already has key',
     })
   }
 
+  // Save metadata if applicable
   if (Object.keys(protectedMetadata).length > 0) {
-    // Save metadata if applicable
     const metadata = await UserMetadata.parseAsync({
       public: {},
       protected: {
@@ -125,22 +140,8 @@ export const claim: RequestHandler = async (request, response: Response) => {
       metadata,
     })
   }
-  const web3Service = new Web3Service(networks)
 
-  const [member, total] = await Promise.all([
-    web3Service.getHasValidKey(lockAddress, owner, network),
-    web3Service.totalKeys(lockAddress, owner, network),
-  ])
-
-  const expired = !member && total > 0
-
-  // Is user already has a valid key, claim will likely fail
-  if (member) {
-    return response.status(400).send({
-      message: 'User already has key',
-    })
-  }
-
+  const expired = !hasValidKey && totalKeysForUser > 0
   const keyManagerAddress = networks[network].keyManagerAddress
 
   // if the key is expired, we use extend rather than purchase
@@ -163,21 +164,21 @@ export const claim: RequestHandler = async (request, response: Response) => {
         })
       }
     )
-  } else {
-    return fulfillmentDispatcher.purchaseKey(
-      {
-        lockAddress,
-        owner,
-        network,
-        data,
-        keyManager: email ? keyManagerAddress : owner,
-      },
-      async (_, transactionHash) => {
-        return response.send({
-          transactionHash,
-          owner,
-        })
-      }
-    )
   }
+
+  return fulfillmentDispatcher.purchaseKey(
+    {
+      lockAddress,
+      owner,
+      network,
+      data,
+      keyManager: email ? keyManagerAddress : owner,
+    },
+    async (_, transactionHash) => {
+      return response.send({
+        transactionHash,
+        owner,
+      })
+    }
+  )
 }
