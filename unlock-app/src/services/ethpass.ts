@@ -26,46 +26,6 @@ export const isEthPassSupported = (network: number) => {
   ].includes(network)
 }
 
-export const applePass = (
-  name: string,
-  lockAddress: string,
-  tokenId: string,
-  network: number
-) => {
-  return {
-    description: 'Unlock Protocol',
-    auxiliaryFields: [],
-    backFields: [],
-    headerFields: [
-      {
-        key: 'header',
-        value: name,
-      },
-    ],
-    primaryFields: [],
-    secondaryFields: [
-      {
-        key: 'secondary1',
-        label: 'Lock Address',
-        value: minifyAddress(lockAddress),
-        textAlignment: 'PKTextAlignmentLeft',
-      },
-      {
-        key: 'secondary2',
-        label: 'Key ID',
-        value: tokenId,
-        textAlignment: 'PKTextAlignmentNatural',
-      },
-      {
-        key: 'secondary3',
-        label: 'Network',
-        value: networks[network].name,
-        textAlignment: 'PKTextAlignmentNatural',
-      },
-    ],
-  }
-}
-
 export const createWalletPass = async ({
   lockAddress,
   tokenId,
@@ -109,7 +69,7 @@ export const createWalletPass = async ({
           },
           {
             label: 'Key ID',
-            value: tokenId,
+            value: tokenId.toString(),
             alignment: 'middle',
           },
           {
