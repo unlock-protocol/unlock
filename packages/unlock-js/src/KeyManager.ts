@@ -4,6 +4,7 @@ import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 export const KeyManagerAbi = [
   'function transfer(address lock, uint256 token, address owner, uint256 deadline, bytes transferCode)',
+  'function locksmiths(address user) view returns (bool)',
 ]
 
 export interface TransferObject {

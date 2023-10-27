@@ -1,6 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { getNetworkName } = require('../../helpers/network')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 async function main(locksmiths) {
@@ -8,7 +7,7 @@ async function main(locksmiths) {
 
   // fetch chain info
   const chainId = await deployer.getChainId()
-  const networkName = getNetworkName(chainId)
+  const networkName = networks[chainId].name
 
   const KeyManager = await ethers.getContractFactory('KeyManager')
   const keyManager = await upgrades.deployProxy(KeyManager, [], {

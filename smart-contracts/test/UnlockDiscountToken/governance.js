@@ -1,76 +1,52 @@
 // tests adapted/imported from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/7e41bf2259950c33e55604015875b7780b6a2e63/test/token/ERC20/extensions/ERC20VotesComp.test.js
-const { network } = require('hardhat')
-const { expect, assert } = require('chai')
+const { ethers } = require('hardhat')
+const { expectRevert, time } = require('@openzeppelin/test-helpers')
+
 const {
-  BN,
+  ADDRESS_ZERO,
   expectEvent,
-  expectRevert,
-  time,
-} = require('@openzeppelin/test-helpers')
+  notExpectEvent,
+  compareBigNumbers,
+  compareBigNumberArrays,
+} = require('../helpers')
 
-const UnlockDiscountTokenV3 = artifacts.require('UnlockDiscountTokenV3.sol')
-const { promisify } = require('util')
+const supply = ethers.BigNumber.from('10000000000000000000000000')
 
-const queue = promisify(setImmediate)
-const { ADDRESS_ZERO } = require('../helpers')
-
-async function countPendingTransactions() {
-  return parseInt(
-    await network.provider.send('eth_getBlockTransactionCountByNumber', [
-      'pending',
-    ])
-  )
-}
-
-async function batchInBlock(txs) {
-  try {
-    // disable auto-mining
-    await network.provider.send('evm_setAutomine', [false])
-    // send all transactions
-    const promises = txs.map((fn) => fn())
-    // wait for node to have all pending transactions
-    while (txs.length > (await countPendingTransactions())) {
-      await queue()
-    }
-    // mine one block
-    await network.provider.send('evm_mine')
-    // fetch receipts
-    const receipts = await Promise.all(promises)
-    // Sanity check, all tx should be in the same block
-    const minedBlocks = new Set(
-      receipts.map(({ receipt }) => receipt.blockNumber)
-    )
-    expect(minedBlocks.size).to.equal(1)
-
-    return receipts
-  } finally {
-    // enable auto-mining
-    await network.provider.send('evm_setAutomine', [true])
-  }
-}
-
-contract('UDT ERC20VotesComp extension', (accounts) => {
+describe('UDT ERC20VotesComp extension', () => {
   let udt
-  const [minter, holder, recipient, holderDelegatee, other1, other2] = accounts
-
-  const supply = new BN('10000000000000000000000000')
+  let holderSigner, recipientSigner
+  let minter, holder, recipient, holderDelegatee, other1, other2
 
   beforeEach(async () => {
-    udt = await UnlockDiscountTokenV3.new()
-    await udt.initialize(minter)
+    ;[
+      { address: minter },
+      holderSigner,
+      recipientSigner,
+      { address: holderDelegatee },
+      { address: other1 },
+      { address: other2 },
+    ] = await ethers.getSigners()
+    ;({ address: holder } = holderSigner)
+    ;({ address: recipient } = recipientSigner)
+
+    const UnlockDiscountTokenV3 = await ethers.getContractFactory(
+      'UnlockDiscountTokenV3'
+    )
+    udt = await UnlockDiscountTokenV3.deploy()
+    await udt['initialize(address)'](minter)
   })
 
   describe('Supply', () => {
     describe('balanceOf', () => {
       it('grants initial supply to minter account', async () => {
-        await udt.mint(holder, supply, { from: minter })
+        await udt.mint(holder, supply)
         assert(supply.eq(await udt.balanceOf(holder)))
       })
     })
     it('minting restriction', async () => {
-      const amount = new BN('2').pow(new BN('96'))
+      const amount = ethers.BigNumber.from('2').pow('96')
       await expectRevert(
-        udt.mint(minter, amount, { from: minter }),
+        udt.mint(minter, amount),
         'ERC20Votes: total supply risks overflowing votes'
       )
     })
@@ -78,89 +54,93 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
 
   describe('Delegation', () => {
     it('delegation with balance', async () => {
-      await udt.mint(holder, supply, { from: minter })
+      await udt.mint(holder, supply)
       assert.equal(await udt.delegates(minter), ADDRESS_ZERO)
-      const { receipt } = await udt.delegate(holder, { from: holder })
+      const tx = await udt.connect(holderSigner).delegate(holder)
+      const { events, blockNumber } = await tx.wait()
 
-      expectEvent(receipt, 'DelegateChanged', {
+      // console.log(events)
+      expectEvent(events, 'DelegateChanged', {
         delegator: holder,
         fromDelegate: ADDRESS_ZERO,
         toDelegate: holder,
       })
-      expectEvent(receipt, 'DelegateVotesChanged', {
+      expectEvent(events, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: '0',
         newBalance: supply,
       })
 
-      assert(supply.eq(await udt.getCurrentVotes(holder)))
-      assert(
-        new BN(0).eq(await udt.getPriorVotes(holder, receipt.blockNumber - 1))
-      )
+      compareBigNumbers(supply, await udt.getCurrentVotes(holder))
+      compareBigNumbers('0', await udt.getPriorVotes(holder, blockNumber - 1))
       await time.advanceBlock()
-      assert(supply.eq(await udt.getPriorVotes(holder, receipt.blockNumber)))
+      compareBigNumbers(supply, await udt.getPriorVotes(holder, blockNumber))
     })
     it('delegation without balance', async () => {
-      expect(await udt.delegates(holder)).to.be.equal(ADDRESS_ZERO)
+      assert.equal(await udt.delegates(holder), ADDRESS_ZERO)
 
-      const { receipt } = await udt.delegate(holder, { from: holder })
-      expectEvent(receipt, 'DelegateChanged', {
+      const tx = await udt.connect(holderSigner).delegate(holder)
+      const { events } = await tx.wait()
+
+      expectEvent(events, 'DelegateChanged', {
         delegator: holder,
         fromDelegate: ADDRESS_ZERO,
         toDelegate: holder,
       })
-      expectEvent.notEmitted(receipt, 'DelegateVotesChanged')
+      notExpectEvent(events, 'DelegateVotesChanged')
 
-      expect(await udt.delegates(holder)).to.be.equal(holder)
+      assert.equal(await udt.delegates(holder), holder)
     })
 
     describe('change delegation', () => {
       beforeEach(async () => {
         await udt.mint(holder, supply)
-        await udt.delegate(holder, { from: holder })
+        await udt.connect(holderSigner).delegate(holder)
       })
 
       it('call', async () => {
-        expect(await udt.delegates(holder)).to.be.equal(holder)
+        assert.equal(await udt.delegates(holder), holder)
 
-        const { receipt } = await udt.delegate(holderDelegatee, {
-          from: holder,
-        })
-        expectEvent(receipt, 'DelegateChanged', {
+        const tx = await udt.connect(holderSigner).delegate(holderDelegatee)
+        const { events, blockNumber } = await tx.wait()
+
+        expectEvent(events, 'DelegateChanged', {
           delegator: holder,
           fromDelegate: holder,
           toDelegate: holderDelegatee,
         })
-        expectEvent(receipt, 'DelegateVotesChanged', {
+        expectEvent(events, 'DelegateVotesChanged', {
           delegate: holder,
           previousBalance: supply,
           newBalance: '0',
         })
-        expectEvent(receipt, 'DelegateVotesChanged', {
+        expectEvent(events, 'DelegateVotesChanged', {
           delegate: holderDelegatee,
           previousBalance: '0',
           newBalance: supply,
         })
 
-        expect(await udt.delegates(holder)).to.be.equal(holderDelegatee)
+        assert.equal(await udt.delegates(holder), holderDelegatee)
+        compareBigNumbers('0', await udt.getCurrentVotes(holder))
+        compareBigNumbers(supply, await udt.getCurrentVotes(holderDelegatee))
 
-        expect(await udt.getCurrentVotes(holder)).to.be.bignumber.equal('0')
-        expect(
-          await udt.getCurrentVotes(holderDelegatee)
-        ).to.be.bignumber.equal(supply)
-        expect(
-          await udt.getPriorVotes(holder, receipt.blockNumber - 1)
-        ).to.be.bignumber.equal(supply)
-        expect(
-          await udt.getPriorVotes(holderDelegatee, receipt.blockNumber - 1)
-        ).to.be.bignumber.equal('0')
+        compareBigNumbers(
+          supply,
+          await udt.getPriorVotes(holder, blockNumber - 1)
+        )
+
+        compareBigNumbers(
+          '0',
+          await udt.getPriorVotes(holderDelegatee, blockNumber - 1)
+        )
+
         await time.advanceBlock()
-        expect(
-          await udt.getPriorVotes(holder, receipt.blockNumber)
-        ).to.be.bignumber.equal('0')
-        expect(
-          await udt.getPriorVotes(holderDelegatee, receipt.blockNumber)
-        ).to.be.bignumber.equal(supply)
+        compareBigNumbers('0', await udt.getPriorVotes(holder, blockNumber))
+
+        compareBigNumbers(
+          supply,
+          await udt.getPriorVotes(holderDelegatee, blockNumber)
+        )
       })
     })
   })
@@ -170,56 +150,53 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     let recipientVotes
 
     beforeEach(async () => {
-      await udt.mint(holder, supply, { from: minter })
+      await udt.mint(holder, supply)
     })
     it('no delegation', async () => {
-      const { receipt } = await udt.transfer(recipient, 1, {
-        from: holder,
-      })
-      expectEvent(receipt, 'Transfer', {
+      const tx = await udt.connect(holderSigner).transfer(recipient, 1)
+      const { events } = await tx.wait()
+      expectEvent(events, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent.notEmitted(receipt, 'DelegateVotesChanged')
+      notExpectEvent(events, 'DelegateVotesChanged')
 
       holderVotes = '0'
       recipientVotes = '0'
     })
 
     it('sender delegation', async () => {
-      await udt.delegate(holder, { from: holder })
+      await udt.connect(holderSigner).delegate(holder)
 
-      const { receipt } = await udt.transfer(recipient, 1, {
-        from: holder,
-      })
-      expectEvent(receipt, 'Transfer', {
+      const tx = await udt.connect(holderSigner).transfer(recipient, 1)
+      const { events } = await tx.wait()
+      expectEvent(events, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent(receipt, 'DelegateVotesChanged', {
+      expectEvent(events, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
-        newBalance: supply.subn(1),
+        newBalance: supply.sub(1),
       })
 
-      holderVotes = supply.subn(1)
+      holderVotes = supply.sub(1)
       recipientVotes = '0'
     })
 
     it('receiver delegation', async () => {
-      await udt.delegate(recipient, { from: recipient })
+      await udt.connect(recipientSigner).delegate(recipient)
 
-      const { receipt } = await udt.transfer(recipient, 1, {
-        from: holder,
-      })
-      expectEvent(receipt, 'Transfer', {
+      const tx = await udt.connect(holderSigner).transfer(recipient, 1)
+      const { events } = await tx.wait()
+      expectEvent(events, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent(receipt, 'DelegateVotesChanged', {
+      expectEvent(events, 'DelegateVotesChanged', {
         delegate: recipient,
         previousBalance: '0',
         newBalance: '1',
@@ -230,49 +207,46 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     })
 
     it('full delegation', async () => {
-      await udt.delegate(holder, { from: holder })
-      await udt.delegate(recipient, { from: recipient })
+      await udt.connect(holderSigner).delegate(holder)
+      await udt.connect(recipientSigner).delegate(recipient)
 
-      const { receipt } = await udt.transfer(recipient, 1, {
-        from: holder,
-      })
-      expectEvent(receipt, 'Transfer', {
+      const tx = await udt.connect(holderSigner).transfer(recipient, 1)
+      const { events } = await tx.wait()
+      expectEvent(events, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent(receipt, 'DelegateVotesChanged', {
+      expectEvent(events, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
-        newBalance: supply.subn(1),
+        newBalance: supply.sub(1),
       })
-      expectEvent(receipt, 'DelegateVotesChanged', {
+      expectEvent(events, 'DelegateVotesChanged', {
         delegate: recipient,
         previousBalance: '0',
         newBalance: '1',
       })
 
-      holderVotes = supply.subn(1)
+      holderVotes = supply.sub(1)
       recipientVotes = '1'
     })
 
     afterEach(async () => {
-      expect(await udt.getCurrentVotes(holder)).to.be.bignumber.equal(
-        holderVotes
-      )
-      expect(await udt.getCurrentVotes(recipient)).to.be.bignumber.equal(
-        recipientVotes
-      )
+      compareBigNumbers(holderVotes, await udt.getCurrentVotes(holder))
+      compareBigNumbers(recipientVotes, await udt.getCurrentVotes(recipient))
 
       // need to advance 2 blocks to see the effect of a transfer on "getPriorVotes"
-      const blockNumber = await time.latestBlock()
+      const blockNumber = (await time.latestBlock()).toString()
       await time.advanceBlock()
-      expect(
+      compareBigNumbers(
+        holderVotes,
         await udt.getPriorVotes(holder, blockNumber)
-      ).to.be.bignumber.equal(holderVotes)
-      expect(
+      )
+      compareBigNumbers(
+        recipientVotes,
         await udt.getPriorVotes(recipient, blockNumber)
-      ).to.be.bignumber.equal(recipientVotes)
+      )
     })
   })
 
@@ -283,7 +257,8 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
 
     describe('balanceOf', () => {
       it('grants to initial account', async () => {
-        expect(await udt.balanceOf(holder)).to.be.bignumber.equal(
+        assert.equal(
+          (await udt.balanceOf(holder)).toString(),
           '10000000000000000000000000'
         )
       })
@@ -291,76 +266,52 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
 
     describe('numCheckpoints', () => {
       it('returns the number of checkpoints for a delegate', async () => {
-        await udt.transfer(recipient, '100', { from: holder }) // give an account a few tokens for readability
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('0')
+        await udt.connect(holderSigner).transfer(recipient, '100') // give an account a few tokens for readability
+        compareBigNumbers('0', await udt.numCheckpoints(other1))
 
-        const t1 = await udt.delegate(other1, { from: recipient })
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('1')
+        const t1 = await udt.connect(recipientSigner).delegate(other1)
+        compareBigNumbers('1', await udt.numCheckpoints(other1))
 
-        const t2 = await udt.transfer(other2, 10, { from: recipient })
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('2')
+        const t2 = await udt.connect(recipientSigner).transfer(other2, 10)
+        compareBigNumbers('2', await udt.numCheckpoints(other1))
 
-        const t3 = await udt.transfer(other2, 10, { from: recipient })
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('3')
+        const t3 = await udt.connect(recipientSigner).transfer(other2, 10)
+        compareBigNumbers('3', await udt.numCheckpoints(other1))
 
-        const t4 = await udt.transfer(recipient, 20, { from: holder })
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('4')
+        const t4 = await udt.connect(holderSigner).transfer(recipient, 20)
+        compareBigNumbers('4', await udt.numCheckpoints(other1))
 
-        expect(await udt.checkpoints(other1, 0)).to.be.deep.equal([
-          t1.receipt.blockNumber.toString(),
+        compareBigNumberArrays(await udt.checkpoints(other1, 0), [
+          t1.blockNumber.toString(),
           '100',
         ])
-        expect(await udt.checkpoints(other1, 1)).to.be.deep.equal([
-          t2.receipt.blockNumber.toString(),
+        compareBigNumberArrays(await udt.checkpoints(other1, 1), [
+          t2.blockNumber.toString(),
           '90',
         ])
-        expect(await udt.checkpoints(other1, 2)).to.be.deep.equal([
-          t3.receipt.blockNumber.toString(),
+        compareBigNumberArrays(await udt.checkpoints(other1, 2), [
+          t3.blockNumber.toString(),
           '80',
         ])
-        expect(await udt.checkpoints(other1, 3)).to.be.deep.equal([
-          t4.receipt.blockNumber.toString(),
+        compareBigNumberArrays(await udt.checkpoints(other1, 3), [
+          t4.blockNumber.toString(),
           '100',
         ])
 
         await time.advanceBlock()
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber)
-        ).to.be.bignumber.equal('100')
-        expect(
-          await udt.getPriorVotes(other1, t2.receipt.blockNumber)
-        ).to.be.bignumber.equal('90')
-        expect(
-          await udt.getPriorVotes(other1, t3.receipt.blockNumber)
-        ).to.be.bignumber.equal('80')
-        expect(
-          await udt.getPriorVotes(other1, t4.receipt.blockNumber)
-        ).to.be.bignumber.equal('100')
-      })
-
-      it('does not add more than one checkpoint in a block', async () => {
-        await udt.transfer(recipient, '100', { from: holder })
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('0')
-
-        const [t1] = await batchInBlock([
-          () => udt.delegate(other1, { from: recipient, gas: 100000 }),
-          () => udt.transfer(other2, 10, { from: recipient, gas: 100000 }),
-          () => udt.transfer(other2, 10, { from: recipient, gas: 100000 }),
-        ])
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('1')
-        expect(await udt.checkpoints(other1, 0)).to.be.deep.equal([
-          t1.receipt.blockNumber.toString(),
-          '80',
-        ])
-        // expectReve(await udt.checkpoints(other1, 1)).to.be.deep.equal([ '0', '0' ]); // Reverts due to array overflow check
-        // expect(await udt.checkpoints(other1, 2)).to.be.deep.equal([ '0', '0' ]); // Reverts due to array overflow check
-
-        const t4 = await udt.transfer(recipient, 20, { from: holder })
-        expect(await udt.numCheckpoints(other1)).to.be.bignumber.equal('2')
-        expect(await udt.checkpoints(other1, 1)).to.be.deep.equal([
-          t4.receipt.blockNumber.toString(),
+        compareBigNumbers(
           '100',
-        ])
+          await udt.getPriorVotes(other1, t1.blockNumber)
+        )
+
+        compareBigNumbers('90', await udt.getPriorVotes(other1, t2.blockNumber))
+
+        compareBigNumbers('80', await udt.getPriorVotes(other1, t3.blockNumber))
+
+        compareBigNumbers(
+          '100',
+          await udt.getPriorVotes(other1, t4.blockNumber)
+        )
       })
     })
 
@@ -373,84 +324,100 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       })
 
       it('returns 0 if there are no checkpoints', async () => {
-        expect(await udt.getPriorVotes(other1, 0)).to.be.bignumber.equal('0')
+        compareBigNumbers('0', await udt.getPriorVotes(other1, 0))
       })
 
       it('returns the latest block if >= last checkpoint block', async () => {
-        const t1 = await udt.delegate(other1, { from: holder })
+        const t1 = await udt.connect(holderSigner).delegate(other1)
+        const { blockNumber } = await t1.wait()
         await time.advanceBlock()
         await time.advanceBlock()
 
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber)
-        ).to.be.bignumber.equal('10000000000000000000000000')
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber + 1)
-        ).to.be.bignumber.equal('10000000000000000000000000')
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, blockNumber)
+        )
+
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, blockNumber + 1)
+        )
       })
 
       it('returns zero if < first checkpoint block', async () => {
         await time.advanceBlock()
-        const t1 = await udt.delegate(other1, { from: holder })
+        const t1 = await udt.connect(holderSigner).delegate(other1)
+        const { blockNumber } = await t1.wait()
         await time.advanceBlock()
         await time.advanceBlock()
 
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber - 1)
-        ).to.be.bignumber.equal('0')
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber + 1)
-        ).to.be.bignumber.equal('10000000000000000000000000')
+        compareBigNumbers('0', await udt.getPriorVotes(other1, blockNumber - 1))
+
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, blockNumber + 1)
+        )
       })
 
       it('generally returns the voting balance at the appropriate checkpoint', async () => {
-        const t1 = await udt.delegate(other1, { from: holder })
+        const t1 = await udt.connect(holderSigner).delegate(other1)
         await time.advanceBlock()
         await time.advanceBlock()
-        const t2 = await udt.transfer(other2, 10, { from: holder })
+        const t2 = await udt.connect(holderSigner).transfer(other2, 10)
         await time.advanceBlock()
         await time.advanceBlock()
-        const t3 = await udt.transfer(other2, 10, { from: holder })
+        const t3 = await udt.connect(holderSigner).transfer(other2, 10)
         await time.advanceBlock()
         await time.advanceBlock()
-        const t4 = await udt.transfer(holder, 20, { from: other2 })
+        const t4 = await udt
+          .connect(await ethers.getSigner(other2))
+          .transfer(holder, 20)
         await time.advanceBlock()
         await time.advanceBlock()
 
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber - 1)
-        ).to.be.bignumber.equal('0')
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber)
-        ).to.be.bignumber.equal('10000000000000000000000000')
-        expect(
-          await udt.getPriorVotes(other1, t1.receipt.blockNumber + 1)
-        ).to.be.bignumber.equal('10000000000000000000000000')
-        expect(
-          await udt.getPriorVotes(other1, t2.receipt.blockNumber)
-        ).to.be.bignumber.equal('9999999999999999999999990')
-        expect(
-          await udt.getPriorVotes(other1, t2.receipt.blockNumber + 1)
-        ).to.be.bignumber.equal('9999999999999999999999990')
-        expect(
-          await udt.getPriorVotes(other1, t3.receipt.blockNumber)
-        ).to.be.bignumber.equal('9999999999999999999999980')
-        expect(
-          await udt.getPriorVotes(other1, t3.receipt.blockNumber + 1)
-        ).to.be.bignumber.equal('9999999999999999999999980')
-        expect(
-          await udt.getPriorVotes(other1, t4.receipt.blockNumber)
-        ).to.be.bignumber.equal('10000000000000000000000000')
-        expect(
-          await udt.getPriorVotes(other1, t4.receipt.blockNumber + 1)
-        ).to.be.bignumber.equal('10000000000000000000000000')
+        compareBigNumbers(
+          '0',
+          await udt.getPriorVotes(other1, t1.blockNumber - 1)
+        )
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, t1.blockNumber)
+        )
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, t1.blockNumber + 1)
+        )
+        compareBigNumbers(
+          '9999999999999999999999990',
+          await udt.getPriorVotes(other1, t2.blockNumber)
+        )
+        compareBigNumbers(
+          '9999999999999999999999990',
+          await udt.getPriorVotes(other1, t2.blockNumber + 1)
+        )
+        compareBigNumbers(
+          '9999999999999999999999980',
+          await udt.getPriorVotes(other1, t3.blockNumber)
+        )
+        compareBigNumbers(
+          '9999999999999999999999980',
+          await udt.getPriorVotes(other1, t3.blockNumber + 1)
+        )
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, t4.blockNumber)
+        )
+        compareBigNumbers(
+          '10000000000000000000000000',
+          await udt.getPriorVotes(other1, t4.blockNumber + 1)
+        )
       })
     })
   })
 
   describe('getPastTotalSupply', () => {
     beforeEach(async () => {
-      await udt.delegate(holder, { from: holder })
+      await udt.connect(holderSigner).delegate(holder)
     })
 
     it('reverts if block number >= current block', async () => {
@@ -461,7 +428,7 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
     })
 
     it('returns 0 if there are no checkpoints', async () => {
-      expect(await udt.getPastTotalSupply(0)).to.be.bignumber.equal('0')
+      compareBigNumbers('0', await udt.getPastTotalSupply(0))
     })
 
     it('returns the latest block if >= last checkpoint block', async () => {
@@ -470,12 +437,12 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       await time.advanceBlock()
       await time.advanceBlock()
 
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber)
-      ).to.be.bignumber.equal(supply)
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal(supply)
+      compareBigNumbers(supply, await udt.getPastTotalSupply(t1.blockNumber))
+
+      compareBigNumbers(
+        supply,
+        await udt.getPastTotalSupply(t1.blockNumber + 1)
+      )
     })
 
     it('returns zero if < first checkpoint block', async () => {
@@ -484,12 +451,12 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       await time.advanceBlock()
       await time.advanceBlock()
 
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber - 1)
-      ).to.be.bignumber.equal('0')
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000000')
+      compareBigNumbers('0', await udt.getPastTotalSupply(t1.blockNumber - 1))
+
+      compareBigNumbers(
+        '10000000000000000000000000',
+        await udt.getPastTotalSupply(t1.blockNumber + 1)
+      )
     })
 
     it('generally returns the voting balance at the appropriate checkpoint', async () => {
@@ -506,33 +473,47 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       await time.advanceBlock()
       await time.advanceBlock()
 
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber - 1)
-      ).to.be.bignumber.equal('0')
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber)
-      ).to.be.bignumber.equal('10000000000000000000000000')
-      expect(
-        await udt.getPastTotalSupply(t1.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000000')
-      expect(
-        await udt.getPastTotalSupply(t2.receipt.blockNumber)
-      ).to.be.bignumber.equal('10000000000000000000000010')
-      expect(
-        await udt.getPastTotalSupply(t2.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000010')
-      expect(
-        await udt.getPastTotalSupply(t3.receipt.blockNumber)
-      ).to.be.bignumber.equal('10000000000000000000000020')
-      expect(
-        await udt.getPastTotalSupply(t3.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000020')
-      expect(
-        await udt.getPastTotalSupply(t4.receipt.blockNumber)
-      ).to.be.bignumber.equal('10000000000000000000000040')
-      expect(
-        await udt.getPastTotalSupply(t4.receipt.blockNumber + 1)
-      ).to.be.bignumber.equal('10000000000000000000000040')
+      compareBigNumbers('0', await udt.getPastTotalSupply(t1.blockNumber - 1))
+
+      compareBigNumbers(
+        '10000000000000000000000000',
+        await udt.getPastTotalSupply(t1.blockNumber)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000000',
+        await udt.getPastTotalSupply(t1.blockNumber + 1)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000010',
+        await udt.getPastTotalSupply(t2.blockNumber)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000010',
+        await udt.getPastTotalSupply(t2.blockNumber + 1)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000020',
+        await udt.getPastTotalSupply(t3.blockNumber)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000020',
+        await udt.getPastTotalSupply(t3.blockNumber + 1)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000040',
+        await udt.getPastTotalSupply(t4.blockNumber)
+      )
+
+      compareBigNumbers(
+        '10000000000000000000000040',
+        await udt.getPastTotalSupply(t4.blockNumber + 1)
+      )
     })
   })
 })

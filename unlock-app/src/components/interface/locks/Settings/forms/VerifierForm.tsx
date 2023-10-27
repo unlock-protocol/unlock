@@ -13,6 +13,7 @@ import { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { storage } from '~/config/storage'
 import { onResolveName } from '~/utils/resolvers'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface VerifierProps {
   address: string
@@ -27,7 +28,6 @@ interface VerifierProps {
 interface VerifierFormProps {
   lockAddress: string
   network: number
-  isManager: boolean
   disabled: boolean
 }
 
@@ -82,12 +82,16 @@ const VerifierCard = ({
 export const VerifierForm = ({
   lockAddress,
   network,
-  isManager,
   disabled,
 }: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
 
   const localForm = useForm<VerifierFormDataProps>()
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
 
   const { handleSubmit, control, setValue } = localForm
 
