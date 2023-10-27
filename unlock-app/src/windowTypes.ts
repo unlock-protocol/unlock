@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { PaywallConfig } from './unlockTypes'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 // window sub-types
 
@@ -129,7 +129,7 @@ export interface UnlockWindow
     UnlockProtocolWindow,
     LocalStorageWindow,
     IframeManagingWindow {
-  unlockProtocolConfig?: PaywallConfig
+  unlockProtocolConfig?: PaywallConfigType
   document: FullDocument
   origin: string
 }

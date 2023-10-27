@@ -1,5 +1,5 @@
 const { task } = require('hardhat/config')
-const { getNetworkName } = require('../helpers/network')
+const { networks } = require('@unlock-protocol/networks')
 
 task('deploy', 'Deploy the entire Unlock protocol')
   .addOptionalParam(
@@ -63,9 +63,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
       { ethers }
     ) => {
       const { chainId } = await ethers.provider.getNetwork()
-      const networkName = process.env.RUN_MAINNET_FORK
-        ? 'mainnet'
-        : getNetworkName(chainId)
+      const networkName = networks[chainId].name
 
       // eslint-disable-next-line no-console
       console.log(`Starting deployments on ${networkName}...`)
