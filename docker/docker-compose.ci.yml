@@ -19,6 +19,17 @@ services:
         - unlockprotocol/unlock-dev
       args:
         BUILD_DIR: smart-contracts
+  
+  governance:
+    # Image with our contracts
+    image: governance
+    build:
+      context: ../
+      target: dev
+      cache_from:
+        - unlockprotocol/unlock-dev
+      args:
+        BUILD_DIR: governance
 
   subgraph:
     # Subgraph unit testing
@@ -242,7 +253,7 @@ services:
 
   ipfs:
     # Required for subgraph
-    image: ipfs/go-ipfs:v0.21.0
+    image: ipfs/go-ipfs:v0.22.0
     ports:
       - '5001:5001'
 

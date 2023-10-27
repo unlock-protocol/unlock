@@ -25,6 +25,11 @@ export const avalanche: NetworkConfig = {
         id: HookType.CAPTCHA,
         name: 'Captcha',
       },
+      {
+        address: '0x58D86Dc056c442867485941FeBeA8D3bB4657eAC',
+        id: HookType.PASSWORD,
+        name: 'Password required',
+      },
     ],
   },
   id: 43114,
@@ -40,7 +45,10 @@ export const avalanche: NetworkConfig = {
     symbol: 'AVAX',
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    collectionUrl: (lockAddress) =>
+      `https://opensea.io/assets/avalanche/${lockAddress}`,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://opensea.io/assets/avalanche/${_lockAddress}/${_tokenId}`,
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/43114',

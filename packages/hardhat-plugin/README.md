@@ -22,7 +22,7 @@ Or if you are using TypeScript, in your `hardhat.config.ts`:
 import '@unlock-protocol/hardhat-plugin'
 ```
 
-## Configuration
+## Configuration (optional)
 
 ### Networks
 

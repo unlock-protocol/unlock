@@ -24,9 +24,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Emitted when the expiration of a key is modified
   event ExpirationChanged(
     uint indexed tokenId,
-    uint newExpiration,
-    uint amount,
-    bool timeAdded
+    uint prevExpiration,
+    uint newExpiration
   );
 
   // fire when a key is extended
@@ -196,7 +195,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     }
 
     // We increment the tokenId counter
-    _totalSupply++;
+    unchecked {
+      _totalSupply++;
+    }
     tokenId = _totalSupply;
 
     // create the key
@@ -204,7 +205,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // increase total number of unique owners
     if (totalKeys(_recipient) == 0) {
-      numberOfOwners++;
+      unchecked {
+        numberOfOwners++;
+      }
     }
 
     // store ownership
@@ -280,7 +283,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // update ownership mapping
     _ownerOf[_tokenId] = _recipient;
-    _balances[_recipient] += 1;
+    unchecked {
+      _balances[_recipient] += 1;
+    }
   }
 
   /**
@@ -332,7 +337,9 @@ contract MixinKeys is MixinErrors, MixinLockCore {
 
     // remove from owner count if thats the only key
     if (totalKeys(previousOwner) == 1) {
-      numberOfOwners--;
+      unchecked {
+        numberOfOwners--;
+      }
     }
     // update balance
     _balances[previousOwner] -= 1;
@@ -345,7 +352,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function _cancelKey(uint _tokenId) internal {
     // expire the key
-    _keys[_tokenId].expirationTimestamp = block.timestamp;
+    _setKeyExpiration(_tokenId, block.timestamp);
   }
 
   /**
@@ -361,9 +368,14 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function balanceOf(address _keyOwner) public view returns (uint balance) {
     uint length = totalKeys(_keyOwner);
-    for (uint i = 0; i < length; i++) {
+    for (uint i; i < length; ) {
       if (isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
-        balance++;
+        unchecked {
+          balance++;
+        }
+      }
+      unchecked {
+        i++;
       }
     }
   }
@@ -540,25 +552,25 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _isKey(_tokenId);
 
     uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
+    uint newTimestamp;
 
     if (_addTime) {
+      // cant add to a non-expiring key
+      if (formerTimestamp == type(uint).max) {
+        revert OUT_OF_RANGE();
+      }
       if (formerTimestamp > block.timestamp) {
         // append to valid key
-        _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
+        newTimestamp = formerTimestamp + _deltaT;
       } else {
         // add from now if key is expired
-        _keys[_tokenId].expirationTimestamp = block.timestamp + _deltaT;
+        newTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
+      newTimestamp = formerTimestamp - _deltaT;
     }
 
-    emit ExpirationChanged(
-      _tokenId,
-      _keys[_tokenId].expirationTimestamp,
-      _deltaT,
-      _addTime
-    );
+    _setKeyExpiration(_tokenId, newTimestamp);
   }
 
   /**
@@ -604,6 +616,33 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       _maxNumberOfKeys,
       _maxKeysPerAddress
     );
+  }
+
+  /**
+   * Set the expiration of a key
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function _setKeyExpiration(uint _tokenId, uint _newExpiration) internal {
+    uint prevExpiration = _keys[_tokenId].expirationTimestamp;
+    // update expiration
+    _keys[_tokenId].expirationTimestamp = _newExpiration;
+
+    emit ExpirationChanged(
+      _tokenId,
+      prevExpiration,
+      _keys[_tokenId].expirationTimestamp
+    );
+  }
+
+  /**
+   * Set the expiration of a key
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function setKeyExpiration(uint _tokenId, uint _newExpiration) public {
+    _onlyLockManager();
+    _setKeyExpiration(_tokenId, _newExpiration);
   }
 
   /**

@@ -20,7 +20,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { useValidKey } from '~/hooks/useKey'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -54,7 +53,7 @@ interface WalletlessRegistrationProps {
 interface FormProps {
   lockAddress: string
   network: number
-  disabled: boolean
+  refresh: () => void
 }
 
 const WalletlessRegistrationClaiming = ({
@@ -130,7 +129,7 @@ const WalletlessRegistrationClaiming = ({
 export const WalletlessRegistrationForm = ({
   lockAddress,
   network,
-  disabled,
+  refresh,
 }: FormProps) => {
   const [claimResult, setClaimResult] = useState<any>()
   const [isClaimOpen, setClaimOpen] = useState(false)
@@ -139,11 +138,6 @@ export const WalletlessRegistrationForm = ({
   const [loading, setLoading] = useState<boolean>(false)
   const { account } = useAuth()
   const { mutateAsync: claim } = useClaim({
-    lockAddress,
-    network,
-  })
-
-  const { refetch } = useValidKey({
     lockAddress,
     network,
   })
@@ -162,6 +156,7 @@ export const WalletlessRegistrationForm = ({
     formState: { errors },
     setValue,
     control,
+    reset,
   } = localForm
 
   const { recipient = '' } = useWatch({
@@ -171,8 +166,9 @@ export const WalletlessRegistrationForm = ({
   const onSubmit = async ({ email, recipient, fullname }: RsvpFormProps) => {
     setLoading(true)
     try {
+      await recaptchaRef.current?.reset()
       const captcha = await recaptchaRef.current?.executeAsync()
-      const { hash, owner } = await claim({
+      const { hash, owner, message } = await claim({
         metadata: {
           fullname,
         },
@@ -180,11 +176,15 @@ export const WalletlessRegistrationForm = ({
         recipient,
         captcha,
       })
-      setClaimResult({ hash, owner })
-      setClaimOpen(true)
-      ToastHelper.success('Transaction successful sent!')
-    } catch (error) {
-      console.error(error)
+      if (message) {
+        ToastHelper.error(message)
+      }
+      if (hash && owner) {
+        setClaimResult({ hash, owner })
+        setClaimOpen(true)
+        ToastHelper.success('Transaction successfully sent!')
+      }
+    } catch (error: any) {
       ToastHelper.error(
         'There was an error during registration. Please try again.'
       )
@@ -203,7 +203,8 @@ export const WalletlessRegistrationForm = ({
           network={network}
           handleClose={() => {
             setClaimOpen(false)
-            refetch()
+            refresh()
+            reset()
           }}
           claimResult={claimResult}
         />
@@ -221,7 +222,6 @@ export const WalletlessRegistrationForm = ({
             message: 'This field is required.',
           },
         })}
-        disabled={disabled}
         required
         type="email"
         placeholder="your@email.com"
@@ -238,7 +238,6 @@ export const WalletlessRegistrationForm = ({
             message: 'This field is required.',
           },
         })}
-        disabled={disabled}
         required
         placeholder="Satoshi Nakamoto"
         label="Full Name"
@@ -266,14 +265,13 @@ export const WalletlessRegistrationForm = ({
               onChange={(value: any) => {
                 setValue('recipient', value)
               }}
-              disabled={disabled}
               description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
               onResolveName={onResolveName}
             />
           )
         }}
       />
-      <Button disabled={loading || disabled} loading={loading} type="submit">
+      <Button disabled={loading} loading={loading} type="submit">
         RSVP now
       </Button>
     </form>

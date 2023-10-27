@@ -58,6 +58,12 @@ export const PaywallLockConfig = z.object({
     .optional(),
   network: z.number().int().positive().optional(),
   metadataInputs: z.array(MetadataInput).optional(),
+  referrer: z
+    .string({
+      description:
+        '(Recommended) The address of the purchase referrer. This address may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
+    })
+    .optional(),
   recurringPayments: z
     .union([z.string(), z.number()], {
       description:
@@ -280,3 +286,21 @@ export const PaywallConfig = z
 export type PaywallConfigType = z.infer<typeof PaywallConfig>
 export const PaywallLocksConfig = z.record(z.string(), PaywallLockConfig)
 export type PaywallLocksConfigType = z.infer<typeof PaywallLocksConfig>
+
+export const EventObject = z.object({
+  name: z.string(),
+  slug: z.string(),
+  image: z.string().url(),
+  description: z.string(),
+  ticket: z.object({
+    event_cover_image: z.string(),
+    event_start_date: z.string(),
+    event_start_time: z.string(),
+    event_end_date: z.string(),
+    event_end_time: z.string(),
+    event_timezone: z.string(),
+    event_address: z.string(),
+    event_url: z.string(),
+  }),
+})
+export type Event = z.infer<typeof EventObject>

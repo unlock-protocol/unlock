@@ -1,10 +1,12 @@
-import { Request, Response } from 'express'
+import { Request, RequestHandler, Response } from 'express'
 import * as z from 'zod'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import { CustomEmailContent } from '../../models/customEmailContent'
 import * as emailOperations from '../../operations/emailOperations'
-
+import { quickAddJob } from 'graphile-worker'
+import config from '../../config/config'
+import { Pool } from 'pg'
 const CustomEmail = z.object({
   content: z
     .string({
@@ -69,4 +71,45 @@ export class CustomEmailController {
       })
     }
   }
+}
+
+const SendCustomEmailBody = z.object({
+  content: z.string(),
+  subject: z.string(),
+})
+
+export const sendCustomEmail: RequestHandler = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+
+  const parsed = await SendCustomEmailBody.parseAsync(request.body)
+
+  if (!(lockAddress && network)) {
+    return response.status(400).send({
+      message: 'Invalid lock address or network',
+    })
+  }
+
+  await quickAddJob(
+    {
+      pgPool: new Pool({
+        connectionString: config.databaseUrl,
+        // @ts-expect-error - type is not defined properly
+        ssl: config.database?.dialectOptions?.ssl,
+      }),
+    },
+    'sendToAllJob',
+    {
+      lockAddress,
+      network,
+      ...parsed,
+    },
+    {
+      maxAttempts: 3,
+    }
+  )
+
+  return response.status(200).send({
+    success: true,
+  })
 }

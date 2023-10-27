@@ -10,26 +10,33 @@
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
-    "build": "yarn introspect && yarn prepare && yarn codegen && yarn build:graph",
+    "build": "yarn introspect && yarn prepare && yarn build:graph",
     "build:graph": "node bin/thegraph build",
     "deploy": "node bin/thegraph deploy",
     "deploy-all": "node bin/thegraph deploy-all",
+    "deploy-all-studio": "node bin/thegraph deploy-all-studio",
     "create-local": "graph create --node http://localhost:8020/ ",
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "introspect": "/bin/sh -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
     "introspect:local": "INTROSPECT_NETWORK=31337 node bin/introspect.js",
-    "test": "graph test",
+    "test": "graph test -v 0.5.2",
+    "prepare:test": "yarn copy-manifest && yarn copy-networks",
+    "copy-networks": "rm -rf networks.json && cp ../docker/development/eth-node/networks.json networks.json",
+    "copy-manifest": "rm -rf subgraph.yaml && cp ../tests/subgraph.test.yaml subgraph.yaml",
     "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ unlock-protocol-mainnet",
-    "ci": "yarn prepare && yarn codegen && yarn test -l",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
+    "ci": "yarn prepare:abis && yarn copy-manifest && yarn codegen && yarn test -l",
+    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/",
+    "generate-manifest": "mustache config/\"$@\" subgraph.template.yaml > subgraph.yaml && graph codegen",
+    "deploy-hosted": "graph build && graph deploy --product hosted-service ",
+    "deploy-studio": "graph build && graph deploy --studio "
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.53.0",
+    "@graphprotocol/graph-cli": "0.60.0",
     "@graphprotocol/graph-ts": "0.31.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "8.46.0",
+    "eslint": "8.50.0",
     "fs-extra": "11.1.1",
     "handlebars": "4.7.8",
     "yargs": "17.7.2"
@@ -38,7 +45,8 @@
     "hoistingLimits": "workspaces"
   },
   "devDependencies": {
-    "graphql": "16.7.1",
-    "matchstick-as": "0.5.2"
+    "graphql": "16.8.1",
+    "matchstick-as": "0.5.2",
+    "mustache": "4.2.0"
   }
 }

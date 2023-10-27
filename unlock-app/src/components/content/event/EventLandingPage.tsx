@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PastEventsByManager } from './PastEventsByManager'
+import { NextSeo } from 'next-seo'
 
 const customers = [
   {
@@ -155,59 +156,75 @@ interface LandingPageProps {
 }
 export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
   return (
-    <LockTypeLandingPage
-      title={
-        <h1
-          style={{
-            backgroundImage:
-              'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
-          }}
-          className="text-5xl font-extrabold text-transparent uppercase break-words md:text-8xl bg-clip-text"
-        >
-          Easy-peasy event tickets and registration
-        </h1>
-      }
-      actions={
-        <EventLandingPageCallToAction
-          handleCreateEvent={handleCreateEvent}
-          showManagerEvents={true}
-        />
-      }
-      illustration={
-        <object
-          className="w-full 4xl:right-0 md:absolute md:top-0"
-          type="image/svg+xml"
-          data="/images/illustrations/events/dappcon-screenshot-hero.svg"
-        />
-      }
-      coverImage="/images/illustrations/events/party.svg"
-      subtitle="Create event tickets and landing pages for your conference, event, or meetup in under
+    <>
+      <NextSeo
+        title="Unlock Events"
+        description="Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered."
+        openGraph={{
+          images: [
+            {
+              alt: 'Event',
+              url: 'https://events.unlock-protocol.com/',
+            },
+          ],
+        }}
+      />
+      <LockTypeLandingPage
+        title={
+          <h1
+            style={{
+              backgroundImage:
+                'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
+            }}
+            className="text-5xl font-extrabold text-transparent uppercase break-words md:text-8xl bg-clip-text"
+          >
+            Easy-peasy event tickets and registration
+          </h1>
+        }
+        actions={
+          <EventLandingPageCallToAction
+            handleCreateEvent={handleCreateEvent}
+            showManagerEvents={true}
+          />
+        }
+        illustration={
+          <object
+            className="w-full 4xl:right-0 md:absolute md:top-0"
+            type="image/svg+xml"
+            data="/images/illustrations/events/dappcon-screenshot-hero.svg"
+          />
+        }
+        coverImage="/images/illustrations/events/party.svg"
+        subtitle="Create event tickets and landing pages for your conference, event, or meetup in under
        five minutes with Unlock Protocol."
-      description="Create events in the easiest possible way. Set up
+        description="Create events in the easiest possible way. Set up
        your event landing page, sell or airdrop tickets as NFTs and via email,
         and perform check-in with a dedicated QR code. Easy."
-      customers={{
-        title:
-          'Trusted by event organizers and community meetups around the world',
-        items: customers,
-      }}
-      faqs={faqs}
-      features={features}
-      problemSection={{
-        title: 'The Problem',
-        subtitle: `Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers`,
-        items: problems,
-      }}
-      callToAction={{
-        title: 'Ticketing events with Unlock is simple.',
-        subtitle:
-          'From creating the event description to selling tickets to check-in, Unlock built the tools you need.',
-        description:
-          'Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization.',
-        actions: (
-          <EventLandingPageCallToAction handleCreateEvent={handleCreateEvent} />
-        ),
-      }}
-    />
+        customers={{
+          title:
+            'Trusted by event organizers and community meetups around the world',
+          items: customers,
+        }}
+        faqs={faqs}
+        features={features}
+        problemSection={{
+          title: 'The Problem',
+          subtitle: `Legacy ticketing solutions don't meet the needs of web3 and crypto event organizers`,
+          items: problems,
+        }}
+        callToAction={{
+          title: 'Ticketing events with Unlock is simple.',
+          subtitle:
+            'From creating the event description to selling tickets to check-in, Unlock built the tools you need.',
+          description:
+            'Psst, you can also Airdrop tickets to frens or have them stake. Just cherry on your sundae for other customization.',
+          actions: (
+            <EventLandingPageCallToAction
+              handleCreateEvent={handleCreateEvent}
+            />
+          ),
+        }}
+      />
+    </>
   )
 }

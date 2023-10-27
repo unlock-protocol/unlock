@@ -21,7 +21,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   const config = useConfig()
   const { account } = useAuth()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients } = state.context
+  const { recipients, lock } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -33,7 +33,9 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       }
       const response = await storage.getDataForRecipientsAndCaptcha(
         users,
-        recaptchaValue!
+        recaptchaValue!,
+        lock!.address,
+        lock!.network
       )
 
       if (response.error) {

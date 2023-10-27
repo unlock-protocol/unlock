@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { AddressZero } = ethers.constants
 
 const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
 
@@ -23,8 +23,8 @@ const purchaseKey = async (
     .purchase(
       isErc20 ? [keyPrice] : [],
       [keyOwner.address],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
+      [AddressZero],
+      [AddressZero],
       [[]],
       {
         value: isErc20 ? 0 : keyPrice,
@@ -57,8 +57,8 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
   const tx = await lock.purchase(
     isErc20 ? keyOwners.map(() => DEFAULT_KEY_PRICE) : [],
     keyOwners.map(({ address }) => address),
-    keyOwners.map(() => ADDRESS_ZERO),
-    keyOwners.map(() => ADDRESS_ZERO),
+    keyOwners.map(() => AddressZero),
+    keyOwners.map(() => AddressZero),
     keyOwners.map(() => []),
     {
       value: isErc20 ? 0 : DEFAULT_KEY_PRICE.mul(nbOfKeys),

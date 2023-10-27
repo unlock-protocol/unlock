@@ -10,6 +10,8 @@ import Link from 'next/link'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { MEMBERS_PER_PAGE } from '~/constants'
 
 interface MembersProps {
   lockAddress: string
@@ -40,13 +42,17 @@ export const Members = ({
     expiration: ExpirationStatus.ALL,
   },
 }: MembersProps) => {
+  const web3Service = useWeb3Service()
+
   const getMembers = async () => {
     const keys = await storage.keys(
       network,
       lockAddress,
       filters.query,
       filters.filterKey,
-      filters.expiration
+      filters.expiration,
+      page - 1, // API starts at 0
+      MEMBERS_PER_PAGE
     )
     return keys.data
   }
@@ -56,20 +62,24 @@ export const Members = ({
   }
 
   const [
+    { isLoading: isChainLockLoading, data: chainLock },
     { isLoading, data: members = [] },
     { isLoading: isLockLoading, data: lock, isError: hasLockLoadingError },
     { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
       {
+        queryKey: ['getLock', lockAddress, network],
+        queryFn: () => web3Service.getLock(lockAddress, network),
+      },
+      {
         queryFn: getMembers,
-        queryKey: ['getMembers', lockAddress, network, filters],
+        queryKey: ['getMembers', page, lockAddress, network, filters],
         onError: () => {
           ToastHelper.error(`Can't load members, please try again`)
         },
         refetchOnWindowFocus: true,
       },
-
       {
         queryFn: () => {
           return subgraph.lock(
@@ -96,7 +106,11 @@ export const Members = ({
   })
 
   const loading =
-    isLockLoading || isLoading || loadingFilters || isLoadingSettings
+    isChainLockLoading ||
+    isLockLoading ||
+    isLoading ||
+    loadingFilters ||
+    isLoadingSettings
 
   const noItems = members?.length === 0 && !loading
 
@@ -167,17 +181,17 @@ export const Members = ({
   }
 
   const pageOffset = page - 1 ?? 0
-  const { items, maxNumbersOfPage } = paginate({
-    items: members,
+  const { maxNumbersOfPage } = paginate({
     page: pageOffset,
-    itemsPerPage: 30,
+    itemsPerPage: MEMBERS_PER_PAGE,
+    totalItems: chainLock.outstandingKeys,
   })
 
   const showPagination = maxNumbersOfPage > 1
 
   return (
     <div className="grid grid-cols-1 gap-6">
-      {(items || [])?.map((metadata: any) => {
+      {(members || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard

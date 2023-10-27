@@ -1,8 +1,8 @@
 import { Input } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 import { CustomComponentProps } from '../UpdateHooksForm'
+import { ConnectForm } from '../../../CheckoutUrl/ChooseConfiguration'
 
 export const CustomContractHook = ({
   name,

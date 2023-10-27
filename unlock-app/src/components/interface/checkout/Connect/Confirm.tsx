@@ -1,9 +1,8 @@
 import React, { Fragment, useState } from 'react'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { RiUser3Line as UserIcon } from 'react-icons/ri'
-import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { OAuthConfig } from '~/unlockTypes'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
@@ -13,7 +12,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
 
 interface Props {
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfigType
   oauthConfig: OAuthConfig
   connectService: ConnectService
   injectedProvider: unknown
@@ -30,13 +29,39 @@ export function ConfirmConnect({
   communication,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { siweSign } = useSIWE()
+  const { siweSign, signature, message } = useSIWE()
   const { account, isUnlockAccount } = useAuth()
 
-  const onSignIn = async () => {
-    try {
-      setLoading(true)
+  const onCancel = async () => {
+    onClose({
+      error: 'access-denied',
+      state: oauthConfig.state,
+    })
+  }
 
+  const onSuccess = (signature: string, message: string) => {
+    const code = Buffer.from(
+      JSON.stringify({
+        d: message,
+        s: signature,
+      })
+    ).toString('base64')
+    communication?.emitUserInfo({
+      address: account,
+      message: message,
+      signedMessage: signature,
+    })
+    onClose({
+      code,
+      state: oauthConfig.state,
+    })
+  }
+
+  const onSignIn = async () => {
+    setLoading(true)
+    if (signature && message) {
+      onSuccess(signature, message)
+    } else {
       const result = await siweSign(
         generateNonce(),
         paywallConfig?.messageToSign || '',
@@ -44,32 +69,11 @@ export function ConfirmConnect({
           resources: [new URL('https://' + oauthConfig.clientId).toString()],
         }
       )
-
       if (result) {
-        const { message, signature } = result
-        const code = Buffer.from(
-          JSON.stringify({
-            d: message,
-            s: signature,
-          })
-        ).toString('base64')
-        communication?.emitUserInfo({
-          address: account,
-          message: message,
-          signedMessage: signature,
-        })
-        onClose({
-          code,
-          state: oauthConfig.state,
-        })
-        setLoading(false)
-      } else {
-        setLoading(false)
+        onSuccess(result.signature, result.message)
       }
-    } catch (error: any) {
-      setLoading(false)
-      console.error(error)
     }
+    setLoading(false)
   }
 
   return (
@@ -106,6 +110,7 @@ export function ConfirmConnect({
               <div className="text-brand-gray">
                 Please use your{' '}
                 <a
+                  className="underline"
                   target="_blank"
                   href="https://ethereum.org/en/wallets/"
                   rel="noreferrer noopener"
@@ -120,22 +125,29 @@ export function ConfirmConnect({
         </ol>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected injectedProvider={injectedProvider} service={connectService}>
-          <Button
-            onClick={onSignIn}
-            disabled={loading || !account}
-            loading={loading}
-            iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
-            className="w-full"
-          >
-            {isUnlockAccount && 'Continue'}
-            {!isUnlockAccount && (
-              <>
-                {loading && 'Please sign the message'}
-                {!loading && 'Sign-in with Wallet'}
-              </>
-            )}
-          </Button>
+        <Connected
+          skipAccountDetails
+          injectedProvider={injectedProvider}
+          service={connectService}
+        >
+          <div className="flex gap-4">
+            <Button
+              onClick={onSignIn}
+              loading={loading}
+              disabled={loading || !account}
+              className="w-1/2"
+            >
+              Accept
+            </Button>
+            <Button
+              variant="outlined-primary"
+              onClick={onCancel}
+              disabled={!account}
+              className="w-1/2"
+            >
+              Refuse
+            </Button>
+          </div>
         </Connected>
         <PoweredByUnlock />
       </footer>

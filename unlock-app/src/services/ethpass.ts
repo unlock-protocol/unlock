@@ -9,12 +9,11 @@ export enum Platform {
 }
 
 interface PassRequest {
-  signature: string
-  signatureMessage: string
-  pass: any
-  platform: Platform
-  templateId: string
-  chain: { network: number; name: string }
+  layout: any
+  wallet: {
+    address: string
+    chain: { network: number; name: string }
+  }
   nft?: { contractAddress: string; tokenId: string }
   barcode: { redirect: { url: string } }
   image: string
@@ -27,112 +26,24 @@ export const isEthPassSupported = (network: number) => {
   ].includes(network)
 }
 
-export const applePass = (
-  name: string,
-  lockAddress: string,
-  tokenId: string,
-  network: number
-) => {
-  return {
-    description: 'Unlock Protocol',
-    auxiliaryFields: [],
-    backFields: [],
-    headerFields: [
-      {
-        key: 'header',
-        value: name,
-      },
-    ],
-    primaryFields: [],
-    secondaryFields: [
-      {
-        key: 'secondary1',
-        label: 'Lock Address',
-        value: minifyAddress(lockAddress),
-        textAlignment: 'PKTextAlignmentLeft',
-      },
-      {
-        key: 'secondary2',
-        label: 'Key ID',
-        value: tokenId,
-        textAlignment: 'PKTextAlignmentNatural',
-      },
-      {
-        key: 'secondary3',
-        label: 'Network',
-        value: networks[network].name,
-        textAlignment: 'PKTextAlignmentNatural',
-      },
-    ],
-  }
-}
-
 export const createWalletPass = async ({
-  signature,
   lockAddress,
   tokenId,
-  name,
-  image,
-  signatureMessage,
   signedByOwner,
   network,
+  owner,
   platform,
 }: any) => {
-  let pass = {}
-  if (platform === Platform.APPLE) {
-    pass = applePass(name, lockAddress, tokenId, network)
-  } else {
-    pass = {
-      logo: {
-        sourceUri: {
-          uri: 'https://raw.githubusercontent.com/unlock-protocol/unlock/master/design/logo/%C9%84nlock-Logo-monogram-black.png',
-        },
-      },
-      hexBackgroundColor: '#FFF7E8',
-      cardTitle: {
-        defaultValue: {
-          language: 'en',
-          value: 'Unlock',
-        },
-      },
-      subheader: {
-        defaultValue: {
-          language: 'en',
-          value: 'Name',
-        },
-      },
-      header: {
-        defaultValue: {
-          language: 'en',
-          value: name,
-        },
-      },
-      textModulesData: [
-        {
-          id: 'oneLeft',
-          header: 'Lock Address',
-          body: minifyAddress(lockAddress),
-        },
-        {
-          id: 'oneMiddle',
-          header: 'Key ID',
-          body: tokenId,
-        },
-        {
-          id: 'oneRight',
-          header: 'Network',
-          body: networks[network].name,
-        },
-      ],
-    }
-  }
+  const [keyMetadataResponse, lockMetadataResponse, verificationResponse] =
+    await Promise.all([
+      storage.keyMetadata(network!, lockAddress!, tokenId),
+      storage.lockMetadata(network, lockAddress),
+      storage.ticketVerificationUrl(network, lockAddress, tokenId),
+    ])
 
-  // Get signed QR Code for verification!
-  const verificationResponse = await storage.ticketVerificationUrl(
-    network,
-    lockAddress,
-    tokenId
-  )
+  const keyMetadata = keyMetadataResponse.data
+  const lockMetadata = lockMetadataResponse.data
+
   const verificationUrl = verificationResponse.data?.verificationUrl
 
   if (!verificationUrl) {
@@ -140,14 +51,41 @@ export const createWalletPass = async ({
   }
 
   const passRequest: PassRequest = {
-    signature,
-    signatureMessage,
-    pass, // customize me?
-    platform,
-    templateId: '3923259c-0d1c-4f45-9a42-cf6e995a963d',
-    chain: {
-      network: network,
-      name: 'evm',
+    layout: {
+      universal: {
+        logoText: lockMetadata!.name,
+        description: lockMetadata!.description,
+        headerFields: [
+          {
+            label: 'Name',
+            value: lockMetadata!.name,
+          },
+        ],
+        primaryFields: [
+          {
+            label: 'Lock Address',
+            value: minifyAddress(lockAddress),
+            alignment: 'left',
+          },
+          {
+            label: 'Key ID',
+            value: tokenId.toString(),
+            alignment: 'middle',
+          },
+          {
+            label: 'Network',
+            value: networks[network].name,
+            alignment: 'right',
+          },
+        ],
+      },
+    },
+    wallet: {
+      address: owner,
+      chain: {
+        network: network,
+        name: 'evm',
+      },
     },
     nft: {
       contractAddress: lockAddress,
@@ -158,7 +96,7 @@ export const createWalletPass = async ({
         url: verificationUrl,
       },
     },
-    image,
+    image: keyMetadata!.image,
   }
   if (!signedByOwner) {
     // If not signed by the owner, we can't send the nft to ethpass as it would verify ownership
@@ -175,8 +113,8 @@ export const createWalletPass = async ({
   }
   const response = await fetch('https://api.ethpass.xyz/api/v0/passes', opts)
   if (response.ok) {
-    const { fileURL } = await response.json()
-    return fileURL
+    const json = await response.json()
+    return json.distribution[platform].url
   } else {
     throw new Error('EthPass pass generation failed!')
   }

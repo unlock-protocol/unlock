@@ -41,7 +41,7 @@ const MENU = {
   actions: [
     {
       title: 'Launch App',
-      url: `${unlockConfig.appURL}/locks`,
+      url: `${unlockConfig.appURL}`,
       icon: ArrowRight,
     },
   ],

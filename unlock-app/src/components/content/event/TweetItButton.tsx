@@ -21,6 +21,7 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
     `🎟️ I will be attending ${event.name} on ${eventDate.toLocaleDateString(
       undefined,
       {
+        timeZone: event?.ticket?.event_timezone,
         weekday: 'long',
         year: 'numeric',
         month: 'long',
@@ -28,7 +29,10 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
       }
     )}. \n\nGet your ticket with @unlockProtocol!`
   )
-  tweetIntent.searchParams.set('url', window.location.toString())
+  tweetIntent.searchParams.set(
+    'url',
+    typeof window !== 'undefined' ? window.location.toString() : ''
+  )
 
   return (
     <Tooltip

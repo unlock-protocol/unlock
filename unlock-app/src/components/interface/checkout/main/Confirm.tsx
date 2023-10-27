@@ -9,8 +9,10 @@ import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
 import { ConfirmCard } from './Confirm/ConfirmCard'
+import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmUniversalCard } from './Confirm/ConfirmUniversalCard'
+import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
 
 interface Props {
   injectedProvider: unknown
@@ -31,7 +33,7 @@ export function Confirm({
     ToastHelper.error(message)
   }
 
-  const onConfirmed = (lock: string, hash?: string) => {
+  const onConfirmed = (lock: string, hash?: string, network?: number) => {
     // If not pessimistic, we can emit the transaction info right away
     // and pass the signed message as well
     if (!paywallConfig.pessimistic && hash) {
@@ -39,6 +41,7 @@ export function Confirm({
         hash,
         lock,
         metadata,
+        network,
       })
       communication?.emitUserInfo({
         address: account,
@@ -50,6 +53,7 @@ export function Confirm({
       type: 'CONFIRM_MINT',
       status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
       transactionHash: hash!,
+      network,
     })
   }
 
@@ -66,6 +70,22 @@ export function Confirm({
       )}
       {payment.method === 'swap_and_purchase' && (
         <ConfirmSwapAndPurchase
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          onConfirmed={onConfirmed}
+          onError={onError}
+        />
+      )}
+      {payment.method === 'crosschain_purchase' && (
+        <ConfirmCrossChainPurchase
+          checkoutService={checkoutService}
+          injectedProvider={injectedProvider}
+          onConfirmed={onConfirmed}
+          onError={onError}
+        />
+      )}
+      {payment.method === 'crossmint' && (
+        <ConfirmCrossmint
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}

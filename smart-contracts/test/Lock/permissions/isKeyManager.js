@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO } = require('../../helpers')
 
 const KeyManagerMock = artifacts.require('KeyManagerMock')
 

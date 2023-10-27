@@ -1,5 +1,21 @@
 # Changes
 
+# 0.40.1
+
+- adding missing ABI for locksmiths
+
+# 0.40.0
+
+- adding `latestTokenOfOwner`
+
+# 0.39.4
+
+- add `referrerFees` to `lock` in subgraphs
+
+# 0.39.3
+
+- handling cases where `supply` is larger than `maxNumberOfKeys` when calling `updateLockConfig`.
+
 # 0.39.2
 
 - add `createLock` accepts keyPrice as number

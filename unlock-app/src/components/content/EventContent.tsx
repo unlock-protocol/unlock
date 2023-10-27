@@ -8,25 +8,62 @@ import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
-import { NextSeo } from 'next-seo'
-import { config } from '~/config/app'
+import { useMetadata } from '~/hooks/metadata'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 export const EventContent = () => {
-  const { lockAddress, network, isLoading } =
-    useRouterQueryForLockAddressAndNetworks()
-  return EventContentWithProps({ lockAddress, network, isLoading })
+  const {
+    lockAddress,
+    network,
+    isLoading: isLoadingQuery,
+  } = useRouterQueryForLockAddressAndNetworks()
+  const { data: metadata, isInitialLoading: isMetadataLoading } = useMetadata({
+    lockAddress,
+    network,
+  })
+  const event = metadata ? (toFormData(metadata) as Event) : undefined
+  const isLoading = isLoadingQuery || isMetadataLoading
+
+  // Create a checkout config
+  const checkoutConfig = {
+    config: {
+      locks: {
+        [lockAddress]: {
+          network,
+        },
+      },
+      title: 'Registration',
+      emailRequired: true,
+      metadataInputs: [
+        {
+          name: 'fullname',
+          type: 'text',
+          label: 'Full name',
+          required: true,
+          placeholder: 'Satoshi Nakamoto',
+          defaultValue: '',
+        },
+      ],
+    } as PaywallConfigType,
+  }
+
+  return EventContentWithProps({ isLoading, checkoutConfig, event })
 }
 
 interface EventContentWithPropsProps {
-  lockAddress: string
-  network: number
+  event?: Event
   isLoading?: boolean
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 export const EventContentWithProps = ({
-  lockAddress,
-  network,
   isLoading,
+  checkoutConfig,
+  event,
 }: EventContentWithPropsProps) => {
   const router = useRouter()
 
@@ -36,20 +73,13 @@ export const EventContentWithProps = ({
     )
   }
 
-  if (isLoading) {
+  if (isLoading || !event) {
     return <LoadingIcon />
   }
 
-  const showDetails = lockAddress && network
-
-  const locksmithEventOG = new URL(
-    `/v2/og/event/${network}/locks/${lockAddress}`,
-    config.locksmithHost
-  ).toString()
-
   return (
     <AppLayout
-      showFooter={!showDetails}
+      showFooter={!event}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
@@ -58,23 +88,10 @@ export const EventContentWithProps = ({
       <Head>
         <title>{pageTitle('Event')}</title>
       </Head>
-      <NextSeo
-        title="Unlock Events"
-        description="Unlock Protocol empowers everyone to create events the true web3 way. Deploy a contract, sell tickets as NFTs, and perform check-in with a dedicated QR code. We got it covered."
-        openGraph={{
-          images: [
-            {
-              alt: 'Event',
-              url: locksmithEventOG,
-            },
-          ],
-        }}
-      />
-      {!showDetails && (
-        <EventLandingPage handleCreateEvent={handleCreateEvent} />
-      )}
-      {showDetails && lockAddress && network && (
-        <EventDetails lockAddress={lockAddress} network={network} />
+
+      {!event && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
+      {!!event && (
+        <EventDetails event={event} checkoutConfig={checkoutConfig} />
       )}
     </AppLayout>
   )

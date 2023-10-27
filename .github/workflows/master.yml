@@ -69,7 +69,7 @@ jobs:
     if: ${{ github.repository_owner == 'unlock-protocol'  }}
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Load secrets from 1Password
@@ -81,6 +81,8 @@ jobs:
           UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
           UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+          UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
+
       - uses: ./.github/actions/vercel
         with:
           service: unlock-app

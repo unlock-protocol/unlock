@@ -1,5 +1,7 @@
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { storage } from '~/config/storage'
 
 interface Params {
@@ -10,26 +12,28 @@ interface Params {
 
 interface EventPageProps {
   pageProps: {
-    lockAddress: string
-    network: number
+    event: Event
+    checkoutConfig: {
+      id?: string
+      config: PaywallConfigType
+    }
   }
 }
 
 export const getServerSideProps = async ({ params }: Params) => {
-  const { data } = await storage.getLockSettingsBySlug(params.slug)
+  const { data: eventMetadata } = await storage.getEvent(params.slug)
   return {
-    props: data,
+    props: {
+      event: {
+        ...toFormData(eventMetadata.data!),
+      },
+      checkoutConfig: eventMetadata.checkoutConfig,
+    },
   }
 }
 
-const EventPage = (p: EventPageProps) => {
-  const { lockAddress, network } = p.pageProps
-  return (
-    <EventContentWithProps
-      lockAddress={lockAddress}
-      network={network}
-    ></EventContentWithProps>
-  )
+const EventPage = (props: EventPageProps) => {
+  return <EventContentWithProps {...props.pageProps}></EventContentWithProps>
 }
 
 export default EventPage

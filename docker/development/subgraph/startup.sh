@@ -8,12 +8,14 @@ echo "Preparing Unlock local subgraph..."
 yarn workspace @unlock-protocol/subgraph prepare:abis
 echo -e "✔ Unlock local ABI prepared\n\n"
 
+yarn workspace @unlock-protocol/subgraph copy-manifest
+
 yarn workspace @unlock-protocol/subgraph codegen
 echo -e "✔ Unlock local code generated\n\n"
 
 # build the subgraph files
 # show networks
-yarn workspace @unlock-protocol/subgraph run build:graph localhost
+yarn workspace @unlock-protocol/subgraph graph build --network localhost
 echo -e "✔ Unlock local subgraph built\n\n"
 
 # init the graph

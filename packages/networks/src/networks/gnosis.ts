@@ -20,6 +20,14 @@ export const gnosis: NetworkConfig = {
   },
   faucet: 'https://gnosisfaucet.com/',
   featured: true,
+  governanceBridge: {
+    connext: '0x5bB83e95f63217CDa6aE3D181BA580Ef377D2109',
+    domainId: 6778479,
+    modules: {
+      connextMod: '0xdFB9328cF62e3525D355581dE88AeAa330879D12',
+      delayMod: '0x6E74DC46EbF2cDB75B72Ab1dCAe3C98c7E9d28a1',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -43,45 +51,32 @@ export const gnosis: NetworkConfig = {
   isTestNetwork: false,
   keyManagerAddress: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
   maxFreeClaimCost: 100,
-
   multisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
-
   name: 'Gnosis Chain',
-
   nativeCurrency: {
     coinbase: 'DAI',
     coingecko: 'xdai',
     decimals: 18,
     name: 'xDAI',
-    symbol: 'xDAI',
+    symbol: 'DAI',
   },
-
-  opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
-  },
-
   previousDeploys: [
     {
       startBlock: 14521200,
       unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
     },
   ],
-
   provider: 'https://rpc.unlock-protocol.com/100',
-
   publicLockVersionToDeploy: 13,
-
   publicProvider: 'https://rpc.gnosischain.com',
-
   startBlock: 19338700,
-
   // This is used in llama pricing API so can't rename.
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
     endpointV2:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/gnosis-v2',
+    networkName: 'xdai',
   },
-
   tokens: [
     {
       address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',

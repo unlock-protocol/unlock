@@ -53,7 +53,7 @@ export const generateKeyMetadata = async (
 
   const [keyCentricData, baseTokenData, userMetadata] = await Promise.all([
     getKeyCentricData(address, keyId),
-    getBaseTokenData(address, host, keyId),
+    getBaseTokenData(address, host, keyId, network),
     onChainKeyMetadata.owner
       ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
       : {},
@@ -93,14 +93,16 @@ export const generateKeyMetadata = async (
 export const getBaseTokenData = async (
   address: string,
   host: string,
-  keyId: string
+  keyId: string,
+  _network: number = 1
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
+
   const persistedBasedMetadata = await LockMetadata.findOne({
     where: { address },
   })
 
-  const result: Record<string, any> = {
+  const result: Record<string, unknown> = {
     ...defaultResponse,
     ...(persistedBasedMetadata?.data || {}),
   }
@@ -258,6 +260,21 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
+  // TODO: get data from event if the lock is used for an event!
+  // const event = await EventData.findOne({
+  //   where: {
+  //     locks: {
+  //       [Op.contains]: [
+  //         `${normalizer.ethereumAddress(lockAddress)}-${network}`,
+  //       ],
+  //     },
+  //   },
+  // })
+
+  // if (event) {
+  //   return event?.data
+  // }
+
   const lockData = await LockMetadata.findOne({
     where: {
       chain: network,

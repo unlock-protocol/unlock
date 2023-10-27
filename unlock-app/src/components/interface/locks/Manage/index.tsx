@@ -31,12 +31,14 @@ import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { MEMBERS_PER_PAGE } from '~/constants'
 
 interface ActionBarProps {
   lockAddress: string
   network: number
   setIsOpen: (open: boolean) => void
   isOpen: boolean
+  page: number
 }
 
 interface TopActionBarProps {
@@ -49,6 +51,7 @@ interface DownloadOptions {
   cols: string[]
   metadata: any[]
 }
+
 export function downloadAsCSV({
   cols,
   metadata,
@@ -62,7 +65,7 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
   const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
@@ -70,19 +73,18 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   const { isEvent } = getLockTypeByMetadata(metadata)
 
-  const getMembers = async () => {
+  // this breaks when there is too many rows!
+  const onDownloadCsv = async () => {
     const response = await storage.keys(
       network,
       lockAddress,
       '',
       'owner',
-      'all'
+      'all',
+      page - 1,
+      MEMBERS_PER_PAGE
     )
-    return response.data
-  }
-
-  const onDownloadCsv = async () => {
-    const members = await getMembers()
+    const members = response.data
     const cols: string[] = []
     members?.map((member: any) => {
       Object.keys(member).map((key: string) => {
@@ -390,6 +392,7 @@ export const ManageLockPage = () => {
       </div>
     )
   }
+
   return (
     <>
       <AirdropKeysDrawer
@@ -416,6 +419,7 @@ export const ManageLockPage = () => {
               <div className="flex flex-col gap-6 lg:col-span-9">
                 <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
                 <ActionBar
+                  page={page}
                   lockAddress={lockAddress}
                   network={lockNetwork!}
                   isOpen={airdropKeys}
