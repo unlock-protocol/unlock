@@ -22,7 +22,7 @@ export const EventContent = () => {
     lockAddress,
     network,
   })
-  const event = metadata ? toFormData(metadata) : null
+  const event = metadata ? (toFormData(metadata) as Event) : undefined
   const isLoading = isLoadingQuery || isMetadataLoading
 
   // Create a checkout config
@@ -52,7 +52,7 @@ export const EventContent = () => {
 }
 
 interface EventContentWithPropsProps {
-  event: Event
+  event?: Event
   isLoading?: boolean
   checkoutConfig: {
     id?: string
@@ -73,7 +73,7 @@ export const EventContentWithProps = ({
     )
   }
 
-  if (isLoading) {
+  if (isLoading || !event) {
     return <LoadingIcon />
   }
 

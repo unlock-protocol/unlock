@@ -1,4 +1,3 @@
-import fontColorContrast from 'font-color-contrast'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { WalletlessRegistrationForm } from './WalletlessRegistration'
 import { useValidKeyBulk } from '~/hooks/useKey'
@@ -22,7 +21,6 @@ interface RegistrationCardProps {
 }
 
 export const RegistrationCardInternal = ({
-  event,
   checkoutConfig,
 }: RegistrationCardProps) => {
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
@@ -98,12 +96,6 @@ export const RegistrationCardInternal = ({
       <Button
         variant="primary"
         size="medium"
-        style={{
-          backgroundColor: `#${event.background_color}`,
-          color: `#${event.background_color}`
-            ? fontColorContrast(`#${event.background_color}`)
-            : 'white',
-        }}
         disabled={isClaimableLoading}
         onClick={() => {
           setCheckoutOpen(true)
