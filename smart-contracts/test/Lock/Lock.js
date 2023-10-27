@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
 const { reverts, deployLock } = require('../helpers')
 
-const erc777abi = require('../helpers/ABIs/erc777.json')
+const erc777abi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc777.json')
 
 let lock
 

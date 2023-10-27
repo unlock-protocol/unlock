@@ -1,0 +1,18 @@
+const { ethers } = require('hardhat')
+const { getProvider, getSafeAddress } = require('./_helpers')
+const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
+
+async function main({ chainId, safeAddress }) {
+  if (!chainId) {
+    ;({ chainId } = await ethers.provider.getNetwork())
+  }
+  const { provider } = await getProvider(chainId)
+  if (!safeAddress) {
+    safeAddress = await getSafeAddress(chainId)
+  }
+  const safe = new ethers.Contract(safeAddress, multisigABI, provider)
+  const owners = await safe.getOwners()
+  return owners
+}
+
+module.exports = main

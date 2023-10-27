@@ -1,12 +1,12 @@
 import { Fragment, useState } from 'react'
 import { Combobox, Transition } from '@headlessui/react'
 import { FaCheck as CheckIcon, FaAngleDown as UpDownIcon } from 'react-icons/fa'
-import { PaywallConfig } from '~/unlockTypes'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export interface CheckoutConfig {
   id: string | null
   name: string
-  config: PaywallConfig
+  config: PaywallConfigType
 }
 
 interface Props {
