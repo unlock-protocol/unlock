@@ -156,49 +156,6 @@ describe.skip('StorageService', () => {
     })
   })
 
-  describe('Add payment method', () => {
-    describe('When a payment method is successfully added', () => {
-      it('emits a success', (done) => {
-        expect.assertions(2)
-        axios.put.mockReturnValue()
-        storageService.addPaymentMethod(
-          'geoff@bitconnect.gov',
-          'signed token data',
-          null
-        )
-
-        storageService.on(success.addPaymentMethod, () => {
-          expect(true).toBeTruthy()
-          done()
-        })
-
-        expect(axios.put).toHaveBeenCalledWith(
-          `${serviceHost}/users/${encodeURIComponent(
-            'geoff@bitconnect.gov'
-          )}/paymentdetails`,
-          'signed token data',
-          {}
-        )
-      })
-    })
-
-    describe('when a payment method cannot be successfully added', () => {
-      it('emits a failure', (done) => {
-        expect.assertions(1)
-        axios.put.mockRejectedValue()
-        storageService.addPaymentMethod(
-          'geoff@bitconnect.gov',
-          'signed token data',
-          null
-        )
-        storageService.on(failure.addPaymentMethod, () => {
-          expect(true).toBeTruthy()
-          done()
-        })
-      })
-    })
-  })
-
   describe('Retrieve a private key for a user', () => {
     describe('When a private key can be retrieved', () => {
       it('emits a success', (done) => {
@@ -255,61 +212,6 @@ describe.skip('StorageService', () => {
           null,
           {}
         )
-      })
-    })
-  })
-
-  describe('Retrieve user payment details', () => {
-    describe('When a request succeeds with at least one card', () => {
-      it('emits a success', (done) => {
-        expect.assertions(2)
-        const emailAddress = 'geoff@bitconnect.gov'
-        axios.get.mockReturnValue({ data: [{ id: 'a card object' }] })
-
-        storageService.getCards(emailAddress)
-
-        storageService.on(success.getCards, (cards) => {
-          expect(cards[0].id).toEqual('a card object')
-          done()
-        })
-
-        expect(axios.get).toHaveBeenCalledWith(
-          `${serviceHost}/users/${encodeURIComponent(emailAddress)}/cards`
-        )
-      })
-    })
-
-    describe('When a request succeeds without a card', () => {
-      it('emits a success', (done) => {
-        expect.assertions(2)
-        const emailAddress = 'geoff@bitconnect.gov'
-        axios.get.mockReturnValue({ data: [] })
-
-        storageService.getCards(emailAddress)
-
-        storageService.on(success.getCards, (cards) => {
-          expect(cards).toHaveLength(0)
-          done()
-        })
-
-        expect(axios.get).toHaveBeenCalledWith(
-          `${serviceHost}/users/${encodeURIComponent(emailAddress)}/cards`
-        )
-      })
-    })
-
-    describe('When a request fails', () => {
-      it('emits a failure', (done) => {
-        expect.assertions(1)
-        const emailAddress = 'geoff@bitconnect.gov'
-        axios.get.mockRejectedValue('Could not fulfill request due to sunspots')
-
-        storageService.getCards(emailAddress)
-
-        storageService.on(failure.getCards, ({ error }) => {
-          expect(error).toEqual('Could not fulfill request due to sunspots')
-          done()
-        })
       })
     })
   })
@@ -393,50 +295,6 @@ describe.skip('StorageService', () => {
           null,
           {}
         )
-      })
-    })
-  })
-
-  describe('Purchase key', () => {
-    describe('When a key purchase succeeds', () => {
-      it('emits a success', (done) => {
-        expect.assertions(2)
-        const data = {
-          message: {
-            purchaseRequest: {
-              lock: '0x321cba',
-            },
-          },
-        }
-        axios.post.mockReturnValue()
-
-        storageService.on(success.keyPurchase, () => {
-          expect(true).toBeTruthy()
-          done()
-        })
-
-        storageService.purchaseKey(data, {})
-
-        expect(axios.post).toHaveBeenCalledWith(
-          `${serviceHost}/purchase`,
-          data,
-          expect.objectContaining({
-            headers: expect.any(Object),
-          })
-        )
-      })
-    })
-
-    describe('when a key purchase fails', () => {
-      it('emits a failure', (done) => {
-        expect.assertions(1)
-        axios.post.mockRejectedValue()
-        storageService.on(failure.keyPurchase, () => {
-          expect(true).toBeTruthy()
-          done()
-        })
-
-        storageService.purchaseKey({}, {})
       })
     })
   })

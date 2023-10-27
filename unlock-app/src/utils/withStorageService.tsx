@@ -10,24 +10,6 @@ export const StorageServiceContext = React.createContext<StorageService | null>(
   null
 )
 
-/**
- * This creates an HOC from a component and injects the storageService.
- * @param {*} Component
- */
-export default function withStorageService(Component: any) {
-  function componentWithStorageService(props: any) {
-    return (
-      <StorageServiceContext.Consumer>
-        {(storageService) => (
-          <Component {...props} storageService={storageService} />
-        )}
-      </StorageServiceContext.Consumer>
-    )
-  }
-
-  return componentWithStorageService
-}
-
 export function useStorageService() {
   return useContext(StorageServiceContext)!
 }
