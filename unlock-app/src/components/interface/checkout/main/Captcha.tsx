@@ -5,7 +5,7 @@ import React, { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
-import { storage } from '~/config/storage'
+import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -20,6 +20,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
   const { account } = useAuth()
+  const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const { recipients, lock } = state.context
   const [isContinuing, setIsContinuing] = useState(false)

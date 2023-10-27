@@ -3,6 +3,7 @@ import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
@@ -295,6 +296,8 @@ export const CreditCardForm = ({
   isManager,
   disabled,
 }: CardPaymentProps) => {
+  const storageService = useStorageService()
+
   const {
     isLoading,
     data: stripeConnectionDetails,
@@ -316,7 +319,7 @@ export const CreditCardForm = ({
     stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
 
   const getKeyGranter = async () => {
-    return await storage.getKeyGranter(network)
+    return await storageService.getKeyGranter(network)
   }
 
   const disconnectStipeMutation = useStripeDisconnect({
