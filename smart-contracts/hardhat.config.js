@@ -33,7 +33,7 @@ require('hardhat-contract-sizer')
 require('@unlock-protocol/hardhat-plugin')
 
 // import helpers
-const { etherscan } = require('@unlock-protocol/hardhat-helpers')
+const { etherscan } = require('@unlock-protocol/hardhat-helpers').etherscan
 
 const settings = {
   optimizer: {

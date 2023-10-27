@@ -1,12 +1,11 @@
 const { ethers, run } = require('hardhat')
-const { getNetworkName } = require('../../helpers/network')
+const { networks } = require('@unlock-protocol/networks')
 const contracts = require('@unlock-protocol/contracts')
 
 async function main({ publicLockVersion }) {
   // fetch chain info
   const { chainId } = await ethers.provider.getNetwork()
-  const networkName = getNetworkName(chainId)
-
+  const networkName = networks[chainId].name
   const [signer] = await ethers.getSigners()
 
   let PublicLock

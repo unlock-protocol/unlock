@@ -1,17 +1,11 @@
-const networks = require('@unlock-protocol/networks')
+const { networks } = require('@unlock-protocol/networks')
 const { ethers } = require('hardhat')
 
 async function main() {
-  const { chainId } = await ethers.getDefaultProvider().getNetwork()
-  const unlockNetworkName = Object.keys(networks).filter((name) => {
-    return networks[name].id === chainId
-  })[0]
-
-  if (!unlockNetworkName) {
-    return console.error('No Unlock network found for chainId', chainId)
-  }
-  const unlockNetwork = networks[unlockNetworkName]
   const [user] = await ethers.getSigners()
+  const { chainId } = await user.provider.getNetwork()
+
+  const unlockNetwork = networks[chainId]
 
   if (!user) {
     return console.error('No user. Please set the PKEY env var')
@@ -30,18 +24,18 @@ async function main() {
 
   await hook.deployed()
 
-  console.log('Hook deployed to:', hook.address)
+  console.log('Guild Hook deployed to:', hook.address)
   for (let i = 0; i < signers.length; i++) {
     console.log('Adding signer:', signers[i])
     await hook.addSigner(signers[i])
   }
   if (unlockNetwork.multisig) {
+    console.log(
+      'Transfering ownership to multisig signer:',
+      unlockNetwork.multisig
+    )
     await hook.transferOwnership(unlockNetwork.multisig)
   }
-  console.log(
-    'Transfering ownership to multisig signer:',
-    unlockNetwork.multisig
-  )
 }
 
 main()
