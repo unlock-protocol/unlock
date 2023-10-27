@@ -260,9 +260,9 @@ export class PurchaseController {
         pricer.canAffordGrant(network),
       ])
 
-      if (!canAffordGas) {
+      if (!canAffordGas.canAfford) {
         return response.status(500).send({
-          message: 'Gas fees is too pricey.',
+          message: canAffordGas.reason,
         })
       }
 

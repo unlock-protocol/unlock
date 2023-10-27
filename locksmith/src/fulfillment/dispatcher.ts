@@ -54,8 +54,6 @@ export const getPurchaser = async function ({
   network: number
   address?: string
 }) {
-  // If we have a provider, we need to fetch that one... or yield an error!
-
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
     const provider = new DefenderRelayProvider(defenderRelayCredential)
@@ -237,11 +235,15 @@ export default class Dispatcher {
     network: number,
     purchaser?: string
   ): Promise<boolean> {
-    const provider = await getProviderForNetwork(network)
-    const { wallet } = await getPurchaser({ network, address: purchaser })
-    const gasPrice = await provider.getGasPrice()
+    const [provider, { wallet }] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network, address: purchaser }),
+    ])
     const address = await wallet.getAddress()
-    const balance = await provider.getBalance(address)
+    const [gasPrice, balance] = await Promise.all([
+      provider.getGasPrice(),
+      provider.getBalance(address),
+    ])
     if (balance.lt(gasPrice.mul(GAS_COST))) {
       logger.warn(
         `Purchaser ${address} does not have enough coins (${ethers.utils.formatUnits(

@@ -12,6 +12,7 @@ import {
   baseStripeFee,
   GAS_COST_TO_GRANT,
 } from './constants'
+import { getPurchaser } from '../fulfillment/dispatcher'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -23,17 +24,36 @@ export default class KeyPricer {
     this.readOnlyEthereumService = new Web3Service(networks)
   }
 
-  async canAffordGrant(network: number): Promise<boolean> {
-    const gasPrice = new GasPrice()
-    // TODO: compute actual gas for transaction (on L2 this is challenging since we need to account for both L1 and L2 parts)
-    const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
+  async canAffordGrant(
+    network: number
+  ): Promise<{ canAfford: boolean; reason?: string }> {
     if (!networks[network].maxFreeClaimCost) {
-      return false
+      return { canAfford: false, reason: 'No free claim on this network' }
     }
     if (networks[network].fullySubsidizedGas) {
-      return true
+      return { canAfford: true }
     }
-    return gasCost < networks[network].maxFreeClaimCost!
+    const { wallet, provider } = await getPurchaser({ network })
+    const [gasPrice, balance] = await Promise.all([
+      provider.getGasPrice(),
+      provider.getBalance(await wallet.getAddress()),
+    ])
+    const gasCost = gasPrice.mul(GAS_COST_TO_GRANT)
+    // Balance is too low to afford the gas cost
+    if (balance.lt(gasCost)) {
+      return { canAfford: false, reason: 'Insufficient purchaser balance' }
+    }
+    // And now check the value in USD
+    const symbol = networks[network].nativeCurrency.symbol
+    const priceConversion = new PriceConversion()
+    const usdPrice = await priceConversion.convertToUSD(
+      symbol,
+      parseFloat(ethers.utils.formatEther(gasCost).toString())
+    )
+    if (usdPrice < networks[network].maxFreeClaimCost!) {
+      return { canAfford: false, reason: 'Gas costs too high' }
+    }
+    return { canAfford: true }
   }
 
   async keyPriceUSD(lockAddress: string, network: number) {
