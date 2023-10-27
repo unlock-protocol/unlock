@@ -81,24 +81,18 @@ export const claim: RequestHandler = async (request, response: Response) => {
   const web3Service = new Web3Service(networks)
 
   // Check that claim is not too costly and that the lock is free
-  const [
-    hasEnoughToPayForGas,
-    canAffordGas,
-    totalAmount,
-    hasValidKey,
-    totalKeysForUser,
-  ] = await Promise.all([
-    fulfillmentDispatcher.hasFundsForTransaction(network),
-    pricer.canAffordGrant(network),
-    getTotalPurchasePriceInCrypto({
-      lockAddress,
-      network,
-      recipients: [owner],
-      data: [data || '0x'],
-    }),
-    web3Service.getHasValidKey(lockAddress, owner, network),
-    web3Service.totalKeys(lockAddress, owner, network),
-  ])
+  const [canAffordGas, totalAmount, hasValidKey, totalKeysForUser] =
+    await Promise.all([
+      pricer.canAffordGrant(network),
+      getTotalPurchasePriceInCrypto({
+        lockAddress,
+        network,
+        recipients: [owner],
+        data: [data || '0x'],
+      }),
+      web3Service.getHasValidKey(lockAddress, owner, network),
+      web3Service.totalKeys(lockAddress, owner, network),
+    ])
 
   if (totalAmount.gt(0)) {
     return response.status(402).send({
@@ -106,19 +100,13 @@ export const claim: RequestHandler = async (request, response: Response) => {
     })
   }
 
-  if (!hasEnoughToPayForGas) {
-    return response.status(500).send({
-      message: 'Not enough funds to pay for gas',
+  if (!canAffordGas.canAfford) {
+    return response.status(422).send({
+      message: canAffordGas.reason,
     })
   }
 
-  if (!canAffordGas) {
-    return response.status(500).send({
-      message: 'Gas fees too high!',
-    })
-  }
-
-  // Is user already has a valid key, claim will likely fail
+  // Is user already has a valid key, claim will fail
   if (hasValidKey) {
     return response.status(400).send({
       message: 'User already has key',
