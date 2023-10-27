@@ -309,7 +309,6 @@ export default class Dispatcher {
       InstanceType<typeof KeyManager>['createTransferSignature']
     >[0]['params']
   ) {
-    const { wallet } = await getPurchaser({ network })
     const keyManager = new KeyManager()
     const purchasers = await getAllPurchasers({ network })
     const signers = await Promise.all(
@@ -376,7 +375,7 @@ export default class Dispatcher {
     const { network, lockAddress, owner, data, keyManager } = options
     const walletService = new WalletService(networks)
 
-    // purchaser address is not required here.
+    // get any purchaser, as the address is not required here.
     const { wallet, provider } = await getPurchaser({ network })
 
     await walletService.connect(provider, wallet)
@@ -507,7 +506,6 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter
-
     const wallet = await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
