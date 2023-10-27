@@ -4,6 +4,7 @@ import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 export const KeyManagerAbi = [
   'function transfer(address lock, uint256 token, address owner, uint256 deadline, bytes transferCode)',
+  'function locksmiths(address user) view returns (bool)',
 ]
 
 export interface TransferObject {
@@ -54,13 +55,20 @@ export const TransferTypes = {
 
 export interface GetContractOptions {
   network: number
-  signer: Signer
+  signer?: Signer
 }
 
 export class KeyManager {
   public networks: NetworkConfigs
   constructor(networks?: NetworkConfigs) {
     this.networks = networks || networkConfigs
+  }
+
+  isSigner(network: number, signer: string) {
+    const provider = this.providerForNetwork(network)
+    const KeyManagerContract = this.getContract({ network })
+
+    return KeyManagerContract.locksmiths(signer)
   }
 
   providerForNetwork(network: number) {
@@ -99,7 +107,10 @@ export class KeyManager {
       KeyManagerAbi,
       provider
     )
-    return KeyManagerContract.connect(signer)
+    if (signer) {
+      return KeyManagerContract.connect(signer)
+    }
+    return KeyManagerContract
   }
 
   /**

@@ -1,5 +1,7 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
+import type { BigNumber } from 'ethers'
+
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
 /* eslint-disable no-unused-vars */
@@ -64,6 +66,17 @@ export interface Hook {
   description?: string
 }
 
+// info about the bridge are available at
+// https://docs.connext.network/resources/deployments
+export interface NetworkBridgeConfig {
+  domainId: number
+  connext: string
+  modules?: {
+    connextMod?: string
+    delayMod?: string
+  }
+}
+
 export interface NetworkConfig {
   id: number
   featured: boolean
@@ -112,12 +125,7 @@ export interface NetworkConfig {
   blockScan?: {
     url?: (address: string) => string
   }
-  // info about the bridge are available at
-  // https://docs.connext.network/resources/deployments
-  bridge?: {
-    domainId: number
-    connext: string
-  }
+  governanceBridge?: NetworkBridgeConfig
   isTestNetwork?: boolean
   erc20?: {
     symbol: string
@@ -182,46 +190,6 @@ export interface Network {
 
 export interface ChainExplorerURLBuilders {
   [site: string]: (_address: string) => string
-}
-
-// TODO: to remove, deprecated
-export interface PaywallCallToAction {
-  default: string
-  expired: string
-  pending: string
-  confirmed: string
-  noWallet: string
-  metadata: string
-}
-
-export interface PaywallConfigLocks {
-  [address: string]: PaywallConfigLock
-}
-
-export interface PaywallConfigLock {
-  name?: string
-  network?: number
-}
-
-export interface MetadataInput {
-  name: string
-  type: 'text' | 'date' | 'color' | 'email' | 'url'
-  required: boolean
-  public?: true // optional, all non-public fields are treated as protected
-}
-
-// This interface describes an individual paywall's config
-export interface PaywallConfig {
-  pessimistic?: boolean
-  icon?: string
-  unlockUserAccounts?: true | 'true' | false
-  callToAction: PaywallCallToAction // TODO: to remove, deprecated
-  locks: PaywallConfigLocks
-  metadataInputs?: MetadataInput[]
-  persistentCheckout?: boolean
-  useDelegatedProvider?: boolean
-  network: number
-  autoconnect?: boolean
 }
 
 export enum KeyStatus {
@@ -310,6 +278,18 @@ export interface UserMetadata {
   protectedData?: {
     [key: string]: string
   }
+}
+
+export interface UnlockUniswapRoute {
+  swapCalldata?: string
+  value: string
+  amountInMax: BigNumber
+  swapRouter: string
+  quote: any
+  trade: any
+  convertToQuoteToken: any
+  quoteGasAdjusted: any
+  estimatedGasUsedUSD: any
 }
 
 export type UnlockNetworks = number

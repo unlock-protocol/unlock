@@ -1,14 +1,17 @@
 import { useQuery } from '@tanstack/react-query'
 import { Token } from '@uniswap/sdk-core'
 import { networks } from '@unlock-protocol/networks'
+import { UnlockUniswapRoute } from '@unlock-protocol/types'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { nativeOnChain } from '@uniswap/smart-order-router'
 import { ethers } from 'ethers'
 import { NativeCurrency } from '@uniswap/sdk-core'
 import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
+import { PaywallConfigType } from '@unlock-protocol/core'
+
 export interface UniswapRoute {
   network: number
   tokenIn: Token | NativeCurrency
@@ -22,7 +25,7 @@ interface UniswapRoutesOption {
   lock: Lock
   recipients: string[]
   purchaseData: string[] | undefined
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
 }
 
 export const useUniswapRoutes = ({
@@ -56,7 +59,7 @@ export const useUniswapRoutes = ({
       // compute total
       const price = prices.reduce((acc, item) => acc + item.amount, 0)
 
-      if (isNaN(price)) {
+      if (isNaN(price) || price === 0) {
         return []
       }
 
@@ -109,6 +112,7 @@ export const useUniswapRoutes = ({
           network,
         })
       }
+
       const routesToLookup = routes.filter((route: UniswapRoute) => {
         // Filter out duplicates if any
         if (route.tokenIn.isNative) {
@@ -124,7 +128,7 @@ export const useUniswapRoutes = ({
       })
 
       const result = await Promise.all(
-        routesToLookup.map(async (route) => {
+        routesToLookup.map(async (route: UniswapRoute) => {
           try {
             const params = {
               network: route.network,
@@ -133,9 +137,10 @@ export const useUniswapRoutes = ({
               amountOut: route.amountOut,
               recipient: route.recipient,
             }
-            const response = await web3Service.getUniswapRoute({
-              params,
-            })
+            const response: UnlockUniswapRoute =
+              await web3Service.getUniswapRoute({
+                params,
+              })
 
             const balance = await getAccountTokenBalance(
               web3Service,

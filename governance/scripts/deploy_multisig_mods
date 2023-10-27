@@ -1,0 +1,88 @@
+#!/usr/bin/env node
+/**
+ *
+ * A small util to show the command that needs to be run to
+ * deploy SAFE modules used by cross-chain governance.
+ *
+ * Usage: scripts/deploy_multisig_mods
+ *
+ */
+
+const allNetworks = require('@unlock-protocol/networks')
+
+const owner = '0x246A13358Fb27523642D86367a51C2aEB137Ac6C'
+const daoTimelockAddress = '0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b'
+const daoChainId = 1
+const daoDomainId = allNetworks.networks[daoChainId].governanceBridge.domainId
+
+// in seconds
+const ONE_DAY = 24 * 3600
+
+// if any network is present this array, only these will be executed
+const only = ['polygon', 'gnosis', 'bsc', 'arbitrum', 'optimism']
+
+// these networks will be excluded from run
+const toExclude = ['localhost', 'default', 'networks']
+
+//
+const networks = only.length
+  ? only
+  : Object.keys(allNetworks).filter((n) => !toExclude.includes(n))
+
+console.log(`Running task for the following networks: ${networks.toString()}`)
+
+for (let i = 0; i < networks.length; i++) {
+  const { multisig, governanceBridge } = allNetworks[networks[i]]
+  console.log('\n', networks[i], '\n')
+  if (!governanceBridge.modules || !governanceBridge.modules.delayMod) {
+    const args = [
+      '--network',
+      networks[i],
+      `--owner`,
+      owner,
+      '--avatar',
+      multisig,
+      '--target',
+      multisig,
+      '--cooldown',
+      ONE_DAY * 2, // 2 days
+      '--expiration',
+      ONE_DAY * 90, // 90 days expiration
+    ]
+
+    console.log(`yarn hardhat setup ${args.join(' ')}`)
+
+    console.log(`yarn hardhat verifyEtherscan ${args.join(' ')} --modifier`)
+  } else {
+    if (governanceBridge.modules) {
+      console.log(`Delay mod at ${governanceBridge.modules.delayMod}`)
+
+      if (!governanceBridge.modules.connextMod) {
+        const argsConnext = [
+          '--network',
+          networks[i],
+          '--avatar',
+          multisig,
+          '--connext',
+          governanceBridge.connext,
+          '--origin',
+          daoDomainId,
+          '--sender',
+          daoTimelockAddress,
+          '--owner',
+          owner,
+          '--target',
+          governanceBridge.modules.delayMod,
+        ]
+
+        console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
+
+        console.log(
+          `yarn hardhat verifyModule ${argsConnext.join(' ')} --module`
+        )
+      } else {
+        console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
+      }
+    }
+  }
+}

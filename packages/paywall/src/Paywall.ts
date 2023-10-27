@@ -1,5 +1,6 @@
 import Postmate from 'postmate'
-import { PaywallConfig, NetworkConfigs } from '@unlock-protocol/types'
+import { NetworkConfigs } from '@unlock-protocol/types'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import './iframe.css'
 import { dispatchEvent, unlockEvents, injectProviderInfo } from './utils'
 import { store, retrieve } from './utils/localStorage'
@@ -75,7 +76,7 @@ export class Paywall {
 
   networkConfigs: NetworkConfigs
 
-  paywallConfig!: PaywallConfig
+  paywallConfig!: PaywallConfigType
 
   userAccountAddress?: string
 
@@ -122,7 +123,10 @@ export class Paywall {
    * @param config
    * @param unlockUrl
    */
-  loadCheckoutModal = async (config?: PaywallConfig, unlockUrl?: string) => {
+  loadCheckoutModal = async (
+    config?: PaywallConfigType,
+    unlockUrl?: string
+  ) => {
     if (this.iframe) {
       this.showIframe()
     } else {
@@ -131,7 +135,7 @@ export class Paywall {
     this.setPaywallConfig(config || this.paywallConfig)
   }
 
-  setPaywallConfig = (config: PaywallConfig) => {
+  setPaywallConfig = (config: PaywallConfigType) => {
     if (this.provider && !this.provider.isPaywallProvider) {
       config.autoconnect = true // force autoconnect, when the provider is external
     }

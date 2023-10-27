@@ -1,5 +1,5 @@
 const { task, run } = require('hardhat/config')
-const { getNetworkName } = require('../helpers/network')
+const { networks } = require('@unlock-protocol/networks')
 
 task('set', 'Various setters for Unlock contracts')
   .addOptionalParam(
@@ -32,9 +32,7 @@ task('set', 'Various setters for Unlock contracts')
       { ethers }
     ) => {
       const { chainId } = await ethers.provider.getNetwork()
-      const networkName = process.env.RUN_MAINNET_FORK
-        ? 'mainnet'
-        : getNetworkName(chainId)
+      const networkName = networks[chainId].name
 
       // eslint-disable-next-line no-console
       console.log(`Connecting to ${networkName}...`)

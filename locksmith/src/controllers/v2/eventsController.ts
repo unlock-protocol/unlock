@@ -1,60 +1,147 @@
 import { RequestHandler } from 'express'
-import { getEventDetail } from '../../operations/eventOperations'
+import {
+  createEventSlug,
+  getEventBySlug,
+  getEventDataForLock,
+} from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
-import { EventData } from '../../models'
+import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
+import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
+import { getLockMetadata } from '../../operations/metadataOperations'
+import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
+import { saveCheckoutConfig } from '../../operations/checkoutConfigOperations'
 
+// deprecated!
 export const getEventDetails: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
 
-  const eventDetails = await getEventDetail(lockAddress, network)
+  const eventDetails = await getEventDataForLock(lockAddress, network)
   return response.status(200).send(eventDetails)
 }
 
-const EventBody = z.object({
+export const EventBody = z.object({
   id: z.number().optional(),
-  name: z.string(),
   data: z.any(),
-  locks: z.array(z.string()),
+  checkoutConfig: z.object({
+    config: PaywallConfig,
+    id: z.string().optional(),
+  }),
 })
+
+const defaultPaywallConfig: Partial<PaywallConfigType> = {
+  title: 'Registration',
+  emailRequired: true,
+  metadataInputs: [
+    {
+      name: 'fullname',
+      label: 'Full name',
+      defaultValue: '',
+      type: 'text',
+      required: true,
+      placeholder: 'Satoshi Nakamoto',
+    },
+  ],
+}
 
 export const saveEventDetails: RequestHandler = async (request, response) => {
   const parsed = await EventBody.parseAsync(request.body)
-  const web3Service = new Web3Service(networks)
-  const userAddress = request.user!.walletAddress
-  const lockManagers = await Promise.all(
-    parsed.locks.map((item) => {
-      const [lockAddress, networkId] = item.split('-')
-      return web3Service.isLockManager(
-        lockAddress,
-        userAddress,
-        Number(networkId)
-      )
-    })
-  )
-  const isLockManager = lockManagers.some((item) => item)
 
-  if (!isLockManager) {
-    return response.status(403).send({
-      message: `${userAddress} is not a lock manager of this transaction`,
-    })
-  }
+  const slug =
+    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
 
   const [event, created] = await EventData.upsert(
     {
       id: parsed.id,
-      name: parsed.name,
+      name: parsed.data.name,
+      slug,
       data: parsed.data,
-      locks: parsed.locks,
       createdBy: request.user!.walletAddress,
     },
     {
-      conflictFields: ['id'],
+      conflictFields: ['slug'],
     }
   )
+
+  if (!event.checkoutConfigId) {
+    const checkoutConfig = await PaywallConfig.strip().parseAsync(
+      parsed.checkoutConfig.config
+    )
+    const createdConfig = await saveCheckoutConfig({
+      name: `Checkout config for ${event.name}`,
+      config: checkoutConfig,
+      createdBy: request.user!.walletAddress,
+    })
+    // And now attach the id to the event
+    event.checkoutConfigId = createdConfig.id
+    await event.save()
+  }
+
+  // TODO: We should update the metadata on the locks
+  // to point to this event by default!
+
   const statusCode = created ? 201 : 200
   return response.status(statusCode).send(event.toJSON())
+}
+
+// This function returns the event based on its slug.
+// For backward compatibility, if the event does not exist, we look for a lock
+// whose slug matches and get the event data from that lock.
+export const getEvent: RequestHandler = async (request, response) => {
+  const slug = request.params.slug.toLowerCase().trim()
+  const event = await getEventBySlug(slug)
+
+  if (event) {
+    const eventResponse = event.toJSON() as any // TODO: type!
+    if (event.checkoutConfigId) {
+      delete eventResponse.checkoutConfigId
+      eventResponse.checkoutConfig = await CheckoutConfig.findOne({
+        where: {
+          id: event.checkoutConfigId,
+        },
+      })
+    }
+
+    return response.status(200).send(eventResponse)
+  }
+
+  // No event, let's look for a lock that was configured for
+  // an event! (legacy system)
+  const settings = await getLockSettingsBySlug(slug)
+  if (settings) {
+    const lockData = await getLockMetadata({
+      lockAddress: settings.lockAddress,
+      network: settings.network,
+    })
+
+    if (lockData) {
+      // We need to look if there are more locks for that event as well!
+      // For this we need to check if any checkout config is attached to this lock.
+      const checkoutConfig = settings.checkoutConfigId
+        ? await CheckoutConfig.findOne({
+            where: {
+              id: settings.checkoutConfigId,
+            },
+          })
+        : {
+            config: {
+              ...defaultPaywallConfig,
+              locks: {
+                [settings.lockAddress]: {
+                  network: settings.network,
+                },
+              },
+            },
+          }
+      return response.status(200).send({
+        data: { ...lockData },
+        checkoutConfig,
+      })
+    }
+  }
+
+  return response.status(404).send({
+    message: `No event found for slug ${slug}`,
+  })
 }
