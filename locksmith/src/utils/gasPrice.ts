@@ -24,15 +24,7 @@ export default class GasPrice {
     }
 
     const gasPrice = await this.gasPriceETH(network, gasCost)
-    // Cost in currency
-    let symbol = 'ETH'
-    if (network === 100) {
-      symbol = 'DAI'
-    }
-    if (network === 137) {
-      symbol = 'MATIC'
-    }
-    // TODO: support more "native" currencies
+    const symbol = networks[network].nativeCurrency?.symbol || 'ETH' // default to ether
     const priceConversion = new PriceConversion()
     const usdPrice = await priceConversion.convertToUSD(symbol, gasPrice)
     return usdPrice

@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const UniswapOracleV2 = require('../../test/helpers/ABIs/UniswapV2Oracle.json')
+const UniswapOracleV2 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/UniswapV2Oracle.json')
 
 const {
   UNISWAP_FACTORY_ADDRESS: UNISWAPV3_FACTORY_ADDRESS,

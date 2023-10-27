@@ -1,6 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
-
-const { getNetworkName } = require('../../helpers/network')
+const { networks } = require('@unlock-protocol/networks')
 const ZERO_ADDRESS = ethers.constants.AddressZero
 
 const TIMELOCK_ADMIN_ROLE = ethers.utils.keccak256(
@@ -15,7 +14,7 @@ async function main({ udtAddress, timelockAddress, testing } = {}) {
 
   // fetch chain info
   const chainId = await unlockOwner.getChainId()
-  const networkName = getNetworkName(chainId)
+  const networkName = networks[chainId].name
 
   // eslint-disable-next-line no-console
   console.log(

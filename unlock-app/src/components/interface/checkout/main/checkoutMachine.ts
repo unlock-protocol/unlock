@@ -1,6 +1,6 @@
 import { Lock } from '~/unlockTypes'
 import {
-  PaywallConfigType as PaywallConfig,
+  PaywallConfigType,
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
@@ -97,7 +97,7 @@ interface UnlockAccountEvent {
 }
 interface UpdatePaywallConfigEvent {
   type: 'UPDATE_PAYWALL_CONFIG'
-  config: PaywallConfig
+  config: PaywallConfigType
 }
 
 interface BackEvent {
@@ -159,7 +159,7 @@ export interface Transaction {
 }
 
 export interface CheckoutMachineContext {
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
   lock?: LockState
   payment: Payment
   messageToSign?: {
@@ -180,7 +180,7 @@ export interface CheckoutMachineContext {
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
-  paywallConfig: {} as PaywallConfig,
+  paywallConfig: {} as PaywallConfigType,
   skipRecipient: true,
   lock: undefined,
   messageToSign: undefined,

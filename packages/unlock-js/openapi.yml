@@ -113,6 +113,36 @@ components:
           type: string
           format: date-time
 
+    Event:
+      type: object
+      required:
+        - 'name'
+        - 'slug'
+        - 'image'
+        - 'description'
+        - 'attributes'
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        attributes:
+          type: array
+          items:
+            type: object
+            required:
+              - trait_type
+              - value
+            properties:
+              trait_type:
+                type: string
+              value:
+                type: string
+
     Verifier:
       type: object
       nullable: false
@@ -2704,6 +2734,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  # TODO: Deprecate me!
   /v2/events/{network}/{lockAddress}:
     get:
       operationId: getEventDetails
@@ -3261,6 +3292,7 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/email-subscriptions/unsubscribe/{network}/locks/{lockAddress}:
     post:
       operationId: unsubscribeEmail
@@ -3286,6 +3318,7 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/email-subscriptions/subscribe/{network}/locks/{lockAddress}:
     post:
       operationId: reSubscribeEmail
@@ -3361,14 +3394,15 @@ paths:
               properties:
                 id:
                   type: number
-                name:
-                  type: string
                 data:
                   type: object
-                locks:
-                  type: array
-                  items:
-                    type: string
+                checkoutConfig:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    config:
+                      $ref: '#/components/schemas/CheckoutConfig'
 
       responses:
         200:
@@ -3384,10 +3418,47 @@ paths:
                     type: string
                   data:
                     type: object
+                  slug:
+                    type: string
                   locks:
                     type: array
                     items:
                       type: string
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}:
+    get:
+      operationId: getEvent
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      description: Retrieves an event based on its slug
+
+      responses:
+        200:
+          description: Successfully retrieves the event along with its checkout config
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  data:
+                    $ref: '#/components/schemas/Event'
+                  checkoutConfig:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      config:
+                        $ref: '#/components/schemas/CheckoutConfig'
+                  slug:
+                    type: string
+
         400:
           $ref: '#/components/responses/400.Invalid'
 

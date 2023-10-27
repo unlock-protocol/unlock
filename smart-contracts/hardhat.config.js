@@ -1,5 +1,6 @@
 // hardhat.config.js
 const { copySync } = require('fs-extra')
+const { networks } = require('@unlock-protocol/hardhat-helpers')
 
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
@@ -32,9 +33,7 @@ require('hardhat-contract-sizer')
 require('@unlock-protocol/hardhat-plugin')
 
 // import helpers
-const { etherscan } = require('@unlock-protocol/hardhat-helpers')
-
-const { getHardhatNetwork } = require('./helpers/network')
+const { etherscan } = require('@unlock-protocol/hardhat-helpers').etherscan
 
 const settings = {
   optimizer: {
@@ -48,7 +47,7 @@ const settings = {
   },
 }
 
-const networks = getHardhatNetwork()
+// used for tests
 networks.hardhat = {
   initialBaseFeePerGas: 100000000,
 }
@@ -80,16 +79,12 @@ if (process.env.RUN_FORK) {
 
 // tasks
 require('./tasks/accounts')
-require('./tasks/balance')
 require('./tasks/deploy')
 require('./tasks/upgrade')
 require('./tasks/set')
-require('./tasks/safe')
 require('./tasks/release')
-require('./tasks/gov')
 require('./tasks/utils')
 require('./tasks/lock')
-require('./tasks/verify')
 require('./tasks/keys')
 require('./tasks/unlock')
 
