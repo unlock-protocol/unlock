@@ -10,7 +10,7 @@ import {
   QueryClient,
   QueryClientProvider,
   DehydratedState,
-} from 'react-query'
+} from '@tanstack/react-query'
 import { UnlockUIProvider } from '@unlock-protocol/ui'
 import NextLink from 'next/link'
 
