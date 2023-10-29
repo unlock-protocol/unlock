@@ -19613,7 +19613,7 @@ __metadata:
     "@docusaurus/plugin-content-docs": 2.4.3
     "@flockler/react-flockler-embed": 1.0.4
     "@mdx-js/react": 1.6.22
-    "@unlock-protocol/networks": 0.0.15
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     clsx: 2.0.0
     docusaurus-gtm-plugin: 0.0.2
     docusaurus-node-polyfills: 1.0.0
@@ -19813,13 +19813,6 @@ __metadata:
     zod: 3.22.3
   languageName: unknown
   linkType: soft
-
-"@unlock-protocol/networks@npm:0.0.15":
-  version: 0.0.15
-  resolution: "@unlock-protocol/networks@npm:0.0.15"
-  checksum: da77c3b56d96bb997242defbcf0949fb66b2a45cc45cc63e0c31aaa3a804b2212a2b169e91095ad102d48ba787fa7287721499e0508447133731f7b596b27849
-  languageName: node
-  linkType: hard
 
 "@unlock-protocol/networks@workspace:./packages/networks, @unlock-protocol/networks@workspace:^, @unlock-protocol/networks@workspace:packages/networks":
   version: 0.0.0-use.local
