@@ -10,27 +10,22 @@ import { EventEmitter } from 'events'
 // these objects, and nothing that isn't emitted should be in one of these
 // objects.
 export const success = {
-  addPaymentMethod: 'addPaymentMethod.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.success',
-  getCards: 'getCards.success',
-  keyPurchase: 'keyPurchase.success',
   ejectUser: 'ejectUser.success',
 }
 
 export const failure = {
-  addPaymentMethod: 'addPaymentMethod.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
   getUserRecoveryPhrase: 'getUserRecoveryPhrase.failure',
-  getCards: 'getCards.failure',
-  keyPurchase: 'keyPurchase.failure',
   ejectUser: 'ejectUser.failure',
 }
 
+// This approach is deprecated and we should move to using '~/config/storage'
 export class StorageService extends EventEmitter {
   public host: string
 
@@ -109,36 +104,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Adds a payment method to a user's account, using their email address as key.
-   *
-   * @param {*} emailAddress
-   * @param {*} paymentDetails structured_data used to generate signature
-   * @param {*} token
-   */
-  async addPaymentMethod(
-    emailAddress: string,
-    stripeTokenId: string,
-    token: string
-  ) {
-    const opts = {
-      headers: this.genAuthorizationHeader(token),
-    }
-    try {
-      await fetch(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}/paymentdetails`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(stripeTokenId),
-          headers: opts.headers,
-        }
-      )
-      this.emit(success.addPaymentMethod, { emailAddress, stripeTokenId })
-    } catch (error) {
-      this.emit(failure.addPaymentMethod, { emailAddress, error })
-    }
-  }
-
-  /**
    * Given a user's email address, retrieves their private key. In the case of failure a rejected promise
    * is returned to the caller.
    * @param {*} emailAddress
@@ -202,49 +167,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a user's email address, retrieves the payment methods associated with
-   * their account. Except in event of error, will always respond with an array
-   * of 0 or more elements.
-   */
-  async getCards(emailAddress: string) {
-    try {
-      const response = await fetch(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`,
-        { method: 'GET' }
-      )
-      const data = await response.json()
-      this.emit(success.getCards, data)
-    } catch (error) {
-      this.emit(failure.getCards, { error })
-    }
-  }
-
-  async purchaseKey(purchaseRequest: Record<string, any>, token: string) {
-    const opts = {
-      headers: {
-        ...this.genAuthorizationHeader(token),
-        ...{ 'Content-Type': 'application/json' },
-      },
-    }
-    try {
-      const response = await fetch(`${this.host}/purchase`, {
-        method: 'POST',
-        body: JSON.stringify(purchaseRequest),
-        headers: opts.headers,
-      })
-      const data = await response.json()
-
-      this.emit(
-        success.keyPurchase,
-        purchaseRequest.message.purchaseRequest.lock
-      )
-      return data.transactionHash
-    } catch (error) {
-      this.emit(failure.keyPurchase, error)
-    }
-  }
-
-  /**
    * Ejects a user
    *
    * @param {*} publicKey
@@ -268,35 +190,6 @@ export class StorageService extends EventEmitter {
     } catch (error) {
       this.emit(failure.ejectUser, { publicKey })
     }
-  }
-
-  /**
-   * Given a lock address and a typed data signature, connect to stripe
-   * @param {string} lockAddress
-   * @param {string} signature
-   * @param {*} data
-   */
-  async getStripeConnect(lockAddress: string, signature: string, data: any) {
-    const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
-    }
-
-    const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
-    url.searchParams.append('data', JSON.stringify(data))
-    url.searchParams.append('signature', signature)
-
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        ...opts.headers,
-      },
-    })
-    return response.json()
   }
 
   async getDataForRecipientsAndCaptcha(
