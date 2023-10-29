@@ -9,7 +9,7 @@
     "@docusaurus/plugin-content-docs": "2.4.3",
     "@flockler/react-flockler-embed": "1.0.4",
     "@mdx-js/react": "1.6.22",
-    "@unlock-protocol/networks": "0.0.15",
+    "@unlock-protocol/networks": "workspace:./packages/networks",
     "clsx": "2.0.0",
     "docusaurus-gtm-plugin": "0.0.2",
     "docusaurus-node-polyfills": "1.0.0",
