@@ -22,7 +22,7 @@ Configure environment variables (Locksmith will recognize these placed in
 an `.env.dev.local` file at the root of the monorepo)
 
 If you used the docker command above, add:
-`DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/locksmith` (you may need to replace the IP)
+`DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres` (you may need to replace the IP)
 
 Alternatively, you could set these variables:
 

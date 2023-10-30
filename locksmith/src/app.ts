@@ -9,6 +9,7 @@ import router from './routes'
 import { errorHandler } from './utils/middlewares/error'
 import timeout from 'connect-timeout'
 import config from './config/config'
+import logger from './logger'
 
 const app = express()
 
@@ -53,7 +54,7 @@ app.use(cookieParser())
 // Request logging
 app.use(
   expressWinston.logger({
-    transports: [new winston.transports.Console()],
+    transports: logger.transports,
     format: winston.format.combine(
       winston.format.colorize(),
       winston.format.json()
