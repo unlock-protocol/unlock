@@ -4,109 +4,97 @@ on:
   pull_request:
 
 jobs:
-  deploy-locksmith-staging:
-    if: ${{ github.repository_owner == 'unlock-protocol' }}
-    uses: ./.github/workflows/_heroku.yml
+  # check which folder changed in the repo
+  check-changes:
+    uses: ./.github/workflows/_check.yml
     with:
-      bypass_diff_check: bypass
-      service: locksmith
-      app-name: unlock-locksmith-staging
+      targets: '[
+        "locksmith",
+        "packages/contracts",
+        "packages/hardhat-plugin",
+        "packages/unlock-js",
+        "packages/paywall",
+        "smart-contracts",
+        "subgraph",
+        "unlock-protocol-com",
+        "wedlocks",
+        "unlock-app",
+        "packages/core",
+        "docs"
+        ]'
+      # run all tests if PR contains the 'run-all-tests' tag
+      bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
+
+  # run tests for folders that have changed
+  run-tests:
+    needs: check-changes
+    # name: "Run the tests"
+    if: ${{ needs.check-changes.outputs.changed != '[]' }}
+    uses: ./.github/workflows/_tests.yml
+    with:
+      changed: ${{ needs.check-changes.outputs.changed }}
+
+  smart-contracts-coverage:
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'smart-contracts') }}
+    uses: ./.github/workflows/_coverage.yml
+    with:
+      service: smart-contracts
+
+  # Netlify Deployments (run as drafts, unpublished to main URL)
+  deploy-unlock-protocol-com:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: unlock-protocol-com
+      target-env: staging
     secrets:
-      HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
-      HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-      OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
 
-  # # check which folder changed in the repo
-  # check-changes:
-  #   uses: ./.github/workflows/_check.yml
-  #   with:
-  #     targets: '[
-  #       "locksmith",
-  #       "packages/contracts",
-  #       "packages/hardhat-plugin",
-  #       "packages/unlock-js",
-  #       "packages/paywall",
-  #       "smart-contracts",
-  #       "subgraph",
-  #       "unlock-protocol-com",
-  #       "wedlocks",
-  #       "unlock-app",
-  #       "packages/core",
-  #       "docs"
-  #       ]'
-  #     # run all tests if PR contains the 'run-all-tests' tag
-  #     bypass: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
+  deploy-paywall-app:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: paywall-app
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
-  # # run tests for folders that have changed
-  # run-tests:
-  #   needs: check-changes
-  #   # name: "Run the tests"
-  #   if: ${{ needs.check-changes.outputs.changed != '[]' }}
-  #   uses: ./.github/workflows/_tests.yml
-  #   with:
-  #     changed: ${{ needs.check-changes.outputs.changed }}
+  deploy-unlock-app-vercel:
+    needs:
+      - check-changes
+      - run-tests
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Load secrets from 1Password
+        uses: 1Password/load-secrets-action@v1.3.1
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
+          UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
+          UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
+      - uses: ./.github/actions/vercel
+        with:
+          service: unlock-app
+          target-env: staging
 
-  # smart-contracts-coverage:
-  #   needs: check-changes
-  #   if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'smart-contracts') }}
-  #   uses: ./.github/workflows/_coverage.yml
-  #   with:
-  #     service: smart-contracts
-
-  # # Netlify Deployments (run as drafts, unpublished to main URL)
-  # deploy-unlock-protocol-com:
-  #   if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
-  #   needs: run-tests
-  #   uses: ./.github/workflows/_netlify.yml
-  #   with:
-  #     service: unlock-protocol-com
-  #     target-env: staging
-  #   secrets:
-  #     SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
-  #     AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
-
-  # deploy-paywall-app:
-  #   if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-  #   needs: run-tests
-  #   uses: ./.github/workflows/_netlify.yml
-  #   with:
-  #     service: paywall-app
-  #     target-env: staging
-  #   secrets:
-  #     SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
-  #     AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
-
-  # deploy-unlock-app-vercel:
-  #   needs:
-  #     - check-changes
-  #     - run-tests
-  #   if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Load secrets from 1Password
-  #       uses: 1Password/load-secrets-action@v1.3.1
-  #       with:
-  #         export-env: true
-  #       env:
-  #         OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-  #         UNLOCK_APP_VERCEL_STAGING_VERCEL_PROJECT_ID: op://secrets/vercel/project-id-unlock-app-staging
-  #         UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
-  #         UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
-  #         UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
-  #     - uses: ./.github/actions/vercel
-  #       with:
-  #         service: unlock-app
-  #         target-env: staging
-
-  # deploy-docs:
-  #   if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
-  #   uses: ./.github/workflows/_netlify.yml
-  #   with:
-  #     service: docs
-  #     target-env: staging
-  #   secrets:
-  #     SITE_ID: d6588eac-a04f-43dc-8341-f85d830bff49
-  #     AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
+  deploy-docs:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: docs
+      target-env: staging
+    secrets:
+      SITE_ID: d6588eac-a04f-43dc-8341-f85d830bff49
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
