@@ -28,7 +28,7 @@ The Unlock Protocol main contract on Linea can be found at the address [0x70B3c9
 
 **Native currency:** ETH
 
-**Linea explorer:** https://lineascan.build/
+**Linea explorer:** [https://lineascan.build/](https://lineascan.build/)
 
 We are committed to continually expanding the networks where Unlock Protocol can be used by developers to deploy subscription NFT, on-chain events and other membership NFTs. The integration with Linea marks another step towards a more decentralized web. 
 
