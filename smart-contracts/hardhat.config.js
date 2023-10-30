@@ -47,10 +47,6 @@ const settings = {
   },
 }
 
-// used for tests
-networks.hardhat = {
-  initialBaseFeePerGas: 100000000,
-}
 
 // mainnet fork
 if (process.env.RUN_FORK) {
