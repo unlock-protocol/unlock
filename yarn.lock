@@ -19231,7 +19231,7 @@ __metadata:
     copyfiles: 2.4.1
     eslint: 8.50.0
     fs-extra: 11.1.1
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     typescript: 5.2.2
   languageName: unknown
   linkType: soft
@@ -19350,7 +19350,7 @@ __metadata:
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     eslint: 8.46.0
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     solhint: 3.4.1
   languageName: unknown
   linkType: soft
@@ -19365,7 +19365,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: 2.4.1
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     tsup: 7.2.0
     typescript: 5.2.2
   languageName: unknown
@@ -19386,7 +19386,7 @@ __metadata:
     chai: 4.3.10
     eslint: 8.41.0
     eslint-plugin-mocha: 10.1.0
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     mocha: 10.2.0
     prettier: 3.0.0
     ts-mocha: 10.0.0
@@ -19585,7 +19585,7 @@ __metadata:
     eth-sig-util: 3.0.1
     ethers: 5.7.2
     fs-extra: 11.1.1
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     hardhat-contract-sizer: 2.10.0
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
@@ -19821,7 +19821,7 @@ __metadata:
     eslint: 8.46.0
     graphql: 16.8.1
     graphql-request: 6.1.0
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     prettier: 3.0.0
     react-to-print: 2.14.13
     siwe: 2.1.4
@@ -34088,7 +34088,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:^2.18.3":
+"hardhat@npm:2.18.3":
   version: 2.18.3
   resolution: "hardhat@npm:2.18.3"
   dependencies:
@@ -51342,7 +51342,7 @@ __metadata:
     eslint: 8.46.0
     ethers: ^5.4.7
     graphql: ^16.6.0
-    hardhat: ^2.18.3
+    hardhat: 2.18.3
     hardhat-gas-reporter: ^1.0.8
     isomorphic-fetch: ^3.0.0
     solidity-coverage: 0.8.2

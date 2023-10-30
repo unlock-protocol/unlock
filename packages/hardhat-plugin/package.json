@@ -45,7 +45,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "4.3.10",
     "eslint": "8.41.0",
-    "hardhat": "^2.18.3",
+    "hardhat": "2.18.3",
     "mocha": "10.2.0",
     "prettier": "3.0.0",
     "ts-mocha": "10.0.0",
