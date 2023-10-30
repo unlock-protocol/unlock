@@ -2,7 +2,7 @@
 title: Unlock Protocol Now Available on the Linea Network
 publishDate: October 30, 2023
 authorName: Julien Genestoux
-description: Unlock Protocol has been deployed to the [Linea](https://linea.build) network, effective immediately.
+description: Unlock Protocol has been deployed to the Linea network, effective immediately.
 image: /images/blog/linea-launch/linea-share-image.png
 ---
 
