@@ -22,7 +22,7 @@ Linea supports popular development tools and infrastructure, enabling seamless M
 
 We have deployed the contracts for Unlock Protocol on Linea, and starting now, you are able to create locks from the Unlock dashboard. 
 
-The Unlock Protocol main contract on Linea can be found at the address `[0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7](https://lineascan.build/address/0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7)`. Linea fully supports the key capabilities of the Unlock Protocol, including contract hooks.
+The Unlock Protocol main contract on Linea can be found at the address [0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7](https://lineascan.build/address/0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7). Linea fully supports the key capabilities of the Unlock Protocol, including contract hooks.
 
 **Linea chain/network id:** 59144
 
