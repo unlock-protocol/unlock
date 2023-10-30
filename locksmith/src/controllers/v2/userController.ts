@@ -10,10 +10,8 @@ const UpdateUserBody = z.object({
 })
 
 export const update: RequestHandler = async (request, response) => {
-  const user = await updateUser(
-    request.user!.walletAddress,
-    UpdateUserBody.parse(request.body)
-  )
+  const userUpdate = UpdateUserBody.parse(request.body)
+  const user = await updateUser(request.user!.walletAddress, userUpdate)
 
   if (!user) {
     return response.sendStatus(404)
