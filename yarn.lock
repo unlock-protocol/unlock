@@ -19167,9 +19167,9 @@ __metadata:
   linkType: hard
 
 "@uniswap/default-token-list@npm:^11.2.0":
-  version: 11.4.0
-  resolution: "@uniswap/default-token-list@npm:11.4.0"
-  checksum: 3aa7bbdeccb6d0933ccd96ab9df15bf4edf0f6520f1f54b6d5d6d42d3f22bb6f03839e5d4eea082a5a0f638f6a2047d2af3ae98cd6c1679386eb6d3dabef055f
+  version: 11.9.0
+  resolution: "@uniswap/default-token-list@npm:11.9.0"
+  checksum: cef20b765604450cb05f9076f16109e050efe20901c2e584ade965a70bbeab368df08df9a823d5fb147e60dccffe82774a04baf3508b27f2d2ac2e1a8c8df4c2
   languageName: node
   linkType: hard
 
@@ -19205,19 +19205,19 @@ __metadata:
   linkType: hard
 
 "@uniswap/router-sdk@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "@uniswap/router-sdk@npm:1.6.0"
+  version: 1.7.1
+  resolution: "@uniswap/router-sdk@npm:1.7.1"
   dependencies:
     "@ethersproject/abi": ^5.5.0
-    "@uniswap/sdk-core": ^4
-    "@uniswap/swap-router-contracts": 1.1.0
+    "@uniswap/sdk-core": ^4.0.7
+    "@uniswap/swap-router-contracts": ^1.1.0
     "@uniswap/v2-sdk": ^3.2.0
     "@uniswap/v3-sdk": ^3.10.0
-  checksum: 941f03ed193a395e44e505da581a0a8926a9ecbcf866cce974ee4140db26e398cf53c2302b4ef3269e52def5d2fa11f52f69d668fcd3b55b1fe5452ca4b3f16e
+  checksum: 9d93a454da8badad038afe10563fb7556d74b99cd23b2aff10faf58f927e284bc0be21bbb3a569b90f339057bb3ecc698aea85a38c42960632978eca1669bb0f
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:4.0.9":
+"@uniswap/sdk-core@npm:4.0.9, @uniswap/sdk-core@npm:^4, @uniswap/sdk-core@npm:^4.0.0, @uniswap/sdk-core@npm:^4.0.7":
   version: 4.0.9
   resolution: "@uniswap/sdk-core@npm:4.0.9"
   dependencies:
@@ -19232,8 +19232,8 @@ __metadata:
   linkType: hard
 
 "@uniswap/sdk-core@npm:^3.0.1":
-  version: 3.2.2
-  resolution: "@uniswap/sdk-core@npm:3.2.2"
+  version: 3.2.3
+  resolution: "@uniswap/sdk-core@npm:3.2.3"
   dependencies:
     "@ethersproject/address": ^5.0.2
     big.js: ^5.2.2
@@ -19241,41 +19241,13 @@ __metadata:
     jsbi: ^3.1.4
     tiny-invariant: ^1.1.0
     toformat: ^2.0.0
-  checksum: 6a2b85ef429b2f19324764944f7de309e74509bcc7c4f869e4fb39b836e75d3efda6c842a35511e9e4747dddaf24c4675f2bf980668110e742c76bafab29e8b4
+  checksum: a19367c7e1d7b391b1664f59b808836cbaed9a12880bdf6b9a31e6c3b63f2edce2966bdda65144a3003e4c3cd96085b86129c174971330a9766194c404263346
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:^4, @uniswap/sdk-core@npm:^4.0.0, @uniswap/sdk-core@npm:^4.0.2":
-  version: 4.0.6
-  resolution: "@uniswap/sdk-core@npm:4.0.6"
-  dependencies:
-    "@ethersproject/address": ^5.0.2
-    big.js: ^5.2.2
-    decimal.js-light: ^2.5.0
-    jsbi: ^3.1.4
-    tiny-invariant: ^1.1.0
-    toformat: ^2.0.0
-  checksum: 0dd876d117c2d359a09047fafb5e80e8312b4db2cb0078a968d0ebbdb0a294558e8a0ea13678b113a9c2026f7c394193eb56650a250fd0c52ec51680c8aed3bc
-  languageName: node
-  linkType: hard
-
-"@uniswap/sdk-core@npm:^4.0.7":
-  version: 4.0.7
-  resolution: "@uniswap/sdk-core@npm:4.0.7"
-  dependencies:
-    "@ethersproject/address": ^5.0.2
-    big.js: ^5.2.2
-    decimal.js-light: ^2.5.0
-    jsbi: ^3.1.4
-    tiny-invariant: ^1.1.0
-    toformat: ^2.0.0
-  checksum: b89ce380206f14fef70fb233c34edb439e9602bc4c17c4801e3032ed6e4b932d71942f677535c996c55e724f9dd7fac42443e117f75bae9348300380e50d95a5
-  languageName: node
-  linkType: hard
-
-"@uniswap/smart-order-router@npm:3.16.33":
-  version: 3.16.33
-  resolution: "@uniswap/smart-order-router@npm:3.16.33"
+"@uniswap/smart-order-router@npm:3.17.2":
+  version: 3.17.2
+  resolution: "@uniswap/smart-order-router@npm:3.17.2"
   dependencies:
     "@uniswap/default-token-list": ^11.2.0
     "@uniswap/permit2-sdk": ^1.2.0
@@ -19285,7 +19257,7 @@ __metadata:
     "@uniswap/token-lists": ^1.0.0-beta.31
     "@uniswap/universal-router": ^1.0.1
     "@uniswap/universal-router-sdk": ^1.5.8
-    "@uniswap/v2-sdk": ^3.2.2
+    "@uniswap/v2-sdk": ^3.2.3
     "@uniswap/v3-sdk": ^3.10.0
     async-retry: ^1.3.1
     await-timeout: ^1.1.1
@@ -19301,34 +19273,21 @@ __metadata:
     stats-lite: ^2.2.0
   peerDependencies:
     jsbi: ^3.2.0
-  checksum: 45eaf5c4a1e3315f03f36160fa01276054f7706dc93e48bcf240d40d47e484392c856e253c4ec7c1dff7240c2a984b2ee1498b7f6743c965e861535dfd48c9ad
+  checksum: 892fe402328337a5857caae15a1d6a3b63527424b00efe836bfada417cf7ea078c87dd1194d0f336f99fa6fcff643d4f089b13c6bfb642a502aa00afe6e29cfa
   languageName: node
   linkType: hard
 
-"@uniswap/swap-router-contracts@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@uniswap/swap-router-contracts@npm:1.1.0"
-  dependencies:
-    "@openzeppelin/contracts": 3.4.1-solc-0.7-2
-    "@uniswap/v2-core": 1.0.1
-    "@uniswap/v3-core": 1.0.0
-    "@uniswap/v3-periphery": 1.3.0
-    hardhat-watcher: ^2.1.1
-  checksum: bea8490b1bb6d6522382f197dadd3c74dc5ebe510560a4c05f12cdd26de9aaa7bcb2c038153e297815b46a3a970d574c7211568adbbc79cd649dd1dea2769caa
-  languageName: node
-  linkType: hard
-
-"@uniswap/swap-router-contracts@npm:^1.2.1, @uniswap/swap-router-contracts@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@uniswap/swap-router-contracts@npm:1.3.0"
+"@uniswap/swap-router-contracts@npm:^1.1.0, @uniswap/swap-router-contracts@npm:^1.2.1, @uniswap/swap-router-contracts@npm:^1.3.0":
+  version: 1.3.1
+  resolution: "@uniswap/swap-router-contracts@npm:1.3.1"
   dependencies:
     "@openzeppelin/contracts": 3.4.2-solc-0.7
-    "@uniswap/v2-core": 1.0.1
-    "@uniswap/v3-core": 1.0.0
-    "@uniswap/v3-periphery": 1.4.1
+    "@uniswap/v2-core": ^1.0.1
+    "@uniswap/v3-core": ^1.0.0
+    "@uniswap/v3-periphery": ^1.4.4
     dotenv: ^14.2.0
     hardhat-watcher: ^2.1.1
-  checksum: 66f853a4f04742bdfb4eb3fd6035aa7e3238cafec99609fcfb87b640953a6575152687bd6d0d14fe35440b339b7e3cc70dde237fb70703b3f49684c630a2d648
+  checksum: cf2e94464077d02af0041ef0971a0b54194970b57bd04bcf114f898724604750fe09fcd12ccc50309e3bb22ea9a513405f226b9ea236e5b53edb252e5cedef8b
   languageName: node
   linkType: hard
 
@@ -19367,13 +19326,13 @@ __metadata:
   linkType: hard
 
 "@uniswap/universal-router@npm:^1.0.1":
-  version: 1.4.1
-  resolution: "@uniswap/universal-router@npm:1.4.1"
+  version: 1.5.1
+  resolution: "@uniswap/universal-router@npm:1.5.1"
   dependencies:
     "@openzeppelin/contracts": 4.7.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v3-core": 1.0.0
-  checksum: 510bd376c9199c8887363f85fe196c01c482e5c693c51d01424cd4b98a242364a818dc2c4de0dd6b498cd17f41310f86b37117e0b6e0c354815e77fdeb5864c9
+  checksum: e5b05c7b8d544fce33b8b944aee2e6638b52b3b31b83205bf648109a24bc84cf2f3ac43b8e0416463a22c8d9c587bc285bf04712012e7d1a14f2bd803fd71e1c
   languageName: node
   linkType: hard
 
@@ -19401,29 +19360,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v2-sdk@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@uniswap/v2-sdk@npm:3.2.0"
-  dependencies:
-    "@ethersproject/address": ^5.0.0
-    "@ethersproject/solidity": ^5.0.0
-    "@uniswap/sdk-core": ^4.0.2
-    tiny-invariant: ^1.1.0
-    tiny-warning: ^1.0.3
-  checksum: d4445af16bc203364074d2ded02231dd2ceff798b723ced760c19cfd171dafb71603efc42ac11c88cc9528de8e5439c1ac57d11671cf9eae6006fea158d02077
-  languageName: node
-  linkType: hard
-
-"@uniswap/v2-sdk@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "@uniswap/v2-sdk@npm:3.2.2"
+"@uniswap/v2-sdk@npm:^3.2.0, @uniswap/v2-sdk@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "@uniswap/v2-sdk@npm:3.2.3"
   dependencies:
     "@ethersproject/address": ^5.0.0
     "@ethersproject/solidity": ^5.0.0
     "@uniswap/sdk-core": ^4.0.7
     tiny-invariant: ^1.1.0
     tiny-warning: ^1.0.3
-  checksum: e129abd31a7838eb87284c992568c3c7c9d44557f9410d901357a16c500af7f1f09262060392f3858c82f4bd5a7b727c9a1b9d3d78dd8d76e5748cfaa038f747
+  checksum: 0e1838673508654b8270c54d9ee97c010e9a2463065e623aa78f96ade47f424627a9858fb39587331fb4e9b016d5113b821a475450018f1f62e8e4ab166e2893
   languageName: node
   linkType: hard
 
@@ -19441,35 +19387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-periphery@npm:1.3.0":
-  version: 1.3.0
-  resolution: "@uniswap/v3-periphery@npm:1.3.0"
-  dependencies:
-    "@openzeppelin/contracts": 3.4.1-solc-0.7-2
-    "@uniswap/lib": ^4.0.1-alpha
-    "@uniswap/v2-core": 1.0.1
-    "@uniswap/v3-core": 1.0.0
-    base64-sol: 1.0.1
-    hardhat-watcher: ^2.1.1
-  checksum: 669200142f23b610911adf9fef87c3af0e16772b51d4bc5a4f8b444c879f7a397d92bcdadf6a19a8bea37991d93751bd9d4c9937a2a3c3f9c0bc60d970fad5b5
-  languageName: node
-  linkType: hard
-
-"@uniswap/v3-periphery@npm:1.4.1":
-  version: 1.4.1
-  resolution: "@uniswap/v3-periphery@npm:1.4.1"
-  dependencies:
-    "@openzeppelin/contracts": 3.4.2-solc-0.7
-    "@uniswap/lib": ^4.0.1-alpha
-    "@uniswap/v2-core": 1.0.1
-    "@uniswap/v3-core": 1.0.0
-    base64-sol: 1.0.1
-    hardhat-watcher: ^2.1.1
-  checksum: a171332f1f1b89cde24d9962bdfc9742d9e6b102ea16815fa6997e0c812aa93a120752a6f497a5d5ab709f5c91ec7f18c2957fa5a8b9af57db3ff202ac8b7dc7
-  languageName: node
-  linkType: hard
-
-"@uniswap/v3-periphery@npm:1.4.4":
+"@uniswap/v3-periphery@npm:1.4.4, @uniswap/v3-periphery@npm:^1.0.1, @uniswap/v3-periphery@npm:^1.1.1, @uniswap/v3-periphery@npm:^1.4.4":
   version: 1.4.4
   resolution: "@uniswap/v3-periphery@npm:1.4.4"
   dependencies:
@@ -19479,19 +19397,6 @@ __metadata:
     "@uniswap/v3-core": ^1.0.0
     base64-sol: 1.0.1
   checksum: 48b57f1f648cb002935421ac1770666ab3c0263885a03c769985b06501b88d513a435c8edc439b41ac5aef7ad40a11038a3561f7e828cce5ae6ec2c77742f1af
-  languageName: node
-  linkType: hard
-
-"@uniswap/v3-periphery@npm:^1.0.1, @uniswap/v3-periphery@npm:^1.1.1":
-  version: 1.4.3
-  resolution: "@uniswap/v3-periphery@npm:1.4.3"
-  dependencies:
-    "@openzeppelin/contracts": 3.4.2-solc-0.7
-    "@uniswap/lib": ^4.0.1-alpha
-    "@uniswap/v2-core": 1.0.1
-    "@uniswap/v3-core": 1.0.0
-    base64-sol: 1.0.1
-  checksum: 50636951fc0a7737cfeef988ab38f4ddf26f6165a19df95b84294929088cc8b05fdbc7910168610ce9daebcce5d7a408fa5a02228ef9dfb73c23c695acc8b741
   languageName: node
   linkType: hard
 
@@ -19884,7 +19789,7 @@ __metadata:
     "@safe-global/safe-core-sdk": 3.3.5
     "@safe-global/safe-ethers-lib": 1.9.3
     "@safe-global/safe-service-client": 2.0.3
-    "@uniswap/smart-order-router": 3.16.33
+    "@uniswap/smart-order-router": 3.17.2
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
     "@uniswap/v3-core": 1.0.1
@@ -20038,7 +19943,7 @@ __metadata:
     "@types/react-google-recaptcha": 2.1.6
     "@types/react-gtm-module": 2.0.1
     "@uniswap/sdk-core": 4.0.9
-    "@uniswap/smart-order-router": 3.16.33
+    "@uniswap/smart-order-router": 3.17.2
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -20134,7 +20039,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": 2.2.3
     "@openapitools/openapi-generator-cli": 2.7.0
     "@uniswap/sdk-core": 4.0.9
-    "@uniswap/smart-order-router": 3.16.33
+    "@uniswap/smart-order-router": 3.17.2
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -24111,7 +24016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bignumber.js@npm:*, bignumber.js@npm:^9.0.0, bignumber.js@npm:^9.0.1, bignumber.js@npm:^9.0.2":
+"bignumber.js@npm:*, bignumber.js@npm:^9.0.0, bignumber.js@npm:^9.0.1":
   version: 9.1.1
   resolution: "bignumber.js@npm:9.1.1"
   checksum: ad243b7e2f9120b112d670bb3d674128f0bd2ca1745b0a6c9df0433bd2c0252c43e6315d944c2ac07b4c639e7496b425e46842773cf89c6a2dcd4f31e5c4b11e
@@ -24132,7 +24037,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bignumber.js@npm:9.1.2":
+"bignumber.js@npm:9.1.2, bignumber.js@npm:^9.0.2":
   version: 9.1.2
   resolution: "bignumber.js@npm:9.1.2"
   checksum: 582c03af77ec9cb0ebd682a373ee6c66475db94a4325f92299621d544aa4bd45cb45fd60001610e94aef8ae98a0905fa538241d9638d4422d57abbeeac6fadaf

@@ -18,7 +18,7 @@
     "@tanstack/react-query": "4.32.0",
     "@tw-classed/react": "1.5.2",
     "@uniswap/sdk-core": "4.0.9",
-    "@uniswap/smart-order-router": "3.16.33",
+    "@uniswap/smart-order-router": "3.17.2",
     "@unlock-protocol/core": "workspace:./packages/core",
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
