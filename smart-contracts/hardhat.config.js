@@ -6,7 +6,7 @@ require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
 
 // full stack trace if needed
-// require('hardhat-tracer')
+require('hardhat-tracer')
 
 // erc1820 deployment
 require('hardhat-erc1820')
