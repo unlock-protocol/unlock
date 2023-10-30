@@ -6,7 +6,7 @@ require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
 
 // full stack trace if needed
-require('hardhat-tracer')
+// require('hardhat-tracer')
 
 // erc1820 deployment
 require('hardhat-erc1820')
@@ -46,7 +46,6 @@ const settings = {
     },
   },
 }
-
 
 // mainnet fork
 if (process.env.RUN_FORK) {
@@ -101,7 +100,13 @@ module.exports = {
       { version: '0.8.4', settings }, // required for test/Lock/upgrades/V10
       { version: '0.8.7', settings }, // required for test/Lock/upgrades/V11
       { version: '0.8.13', settings }, // required for test/Lock/upgrades/V12
-      { version: '0.8.21', settings },
+      {
+        version: '0.8.21',
+        settings: {
+          ...settings,
+          evmVersion: 'shanghai',
+        },
+      },
     ],
   },
   mocha: {
