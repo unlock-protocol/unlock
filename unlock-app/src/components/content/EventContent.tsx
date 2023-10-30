@@ -9,6 +9,8 @@ import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
 import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryForLockAddressAndNetworks'
 import { useMetadata } from '~/hooks/metadata'
+import { toFormData } from '~/components/interface/locks/metadata/utils'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 export const EventContent = () => {
   const {
@@ -20,22 +22,48 @@ export const EventContent = () => {
     lockAddress,
     network,
   })
+  const event = metadata ? (toFormData(metadata) as Event) : undefined
   const isLoading = isLoadingQuery || isMetadataLoading
-  return EventContentWithProps({ lockAddress, network, isLoading, metadata })
+
+  // Create a checkout config
+  const checkoutConfig = {
+    config: {
+      locks: {
+        [lockAddress]: {
+          network,
+        },
+      },
+      title: 'Registration',
+      emailRequired: true,
+      metadataInputs: [
+        {
+          name: 'fullname',
+          type: 'text',
+          label: 'Full name',
+          required: true,
+          placeholder: 'Satoshi Nakamoto',
+          defaultValue: '',
+        },
+      ],
+    } as PaywallConfigType,
+  }
+
+  return EventContentWithProps({ isLoading, checkoutConfig, event })
 }
 
 interface EventContentWithPropsProps {
-  lockAddress: string
-  network: number
-  metadata?: any
+  event?: Event
   isLoading?: boolean
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
 }
 
 export const EventContentWithProps = ({
-  lockAddress,
-  network,
   isLoading,
-  metadata,
+  checkoutConfig,
+  event,
 }: EventContentWithPropsProps) => {
   const router = useRouter()
 
@@ -45,13 +73,13 @@ export const EventContentWithProps = ({
     )
   }
 
-  if (isLoading) {
+  if (isLoading || !event) {
     return <LoadingIcon />
   }
 
   return (
     <AppLayout
-      showFooter={!metadata}
+      showFooter={!event}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
@@ -61,13 +89,9 @@ export const EventContentWithProps = ({
         <title>{pageTitle('Event')}</title>
       </Head>
 
-      {!metadata && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
-      {!!metadata && lockAddress && network && (
-        <EventDetails
-          metadata={metadata}
-          lockAddress={lockAddress}
-          network={network}
-        />
+      {!event && <EventLandingPage handleCreateEvent={handleCreateEvent} />}
+      {!!event && (
+        <EventDetails event={event} checkoutConfig={checkoutConfig} />
       )}
     </AppLayout>
   )
