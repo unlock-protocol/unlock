@@ -1,15 +1,16 @@
 import request from 'supertest'
-import { getWalletInput, loginRandomUser } from '../../test-helpers/utils'
+import { getWalletInput } from '../../test-helpers/utils'
 import app from '../../app'
 import { expect } from 'vitest'
-import { UserReference } from '../../../src/models'
+import { User, UserReference } from '../../../src/models'
 
 describe('update user', () => {
   beforeEach(async () => {
-    await UserReference.truncate()
+    await UserReference.truncate({ cascade: true })
+    await User.truncate({ cascade: true })
   })
 
-  it.skip('save a user email address if supplied', async () => {
+  it('save a user email address if supplied', async () => {
     expect.assertions(4)
     const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
