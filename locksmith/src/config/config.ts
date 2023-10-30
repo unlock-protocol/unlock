@@ -1,5 +1,6 @@
 import '../utils/envLoader'
 import { Options } from 'sequelize'
+import networks from '@unlock-protocol/networks'
 
 export const isProduction = ['prod'].includes(
   process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
@@ -41,20 +42,13 @@ interface DefenderRelayCredentials {
   }
 }
 
-const defenderRelayCredentials: DefenderRelayCredentials = {
-  80001: {
-    apiKey: process.env.DEFENDER_RELAY_KEY_80001 || '',
-    apiSecret: process.env.DEFENDER_RELAY_SECRET_80001 || '',
-  },
-  137: {
-    apiKey: process.env.DEFENDER_RELAY_KEY_137 || '',
-    apiSecret: process.env.DEFENDER_RELAY_SECRET_137 || '',
-  },
-  5: {
-    apiKey: process.env.DEFENDER_RELAY_KEY_5 || '',
-    apiSecret: process.env.DEFENDER_RELAY_SECRET_5 || '',
-  },
-}
+const defenderRelayCredentials: DefenderRelayCredentials = {}
+Object.values(networks).forEach((network) => {
+  defenderRelayCredentials[network.id] = {
+    apiKey: process.env[`DEFENDER_RELAY_KEY_${network.id}`] || '',
+    apiSecret: process.env[`DEFENDER_RELAY_SECRET_${network.id}`] || '',
+  }
+})
 
 const config = {
   isProduction,
