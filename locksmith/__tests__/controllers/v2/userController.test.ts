@@ -5,11 +5,6 @@ import { expect } from 'vitest'
 import { User, UserReference } from '../../../src/models'
 
 describe('update user', () => {
-  beforeEach(async () => {
-    await UserReference.truncate({ cascade: true })
-    await User.truncate({ cascade: true })
-  })
-
   it('save a user email address if supplied', async () => {
     expect.assertions(4)
     const { message, signedMessage } = await getWalletInput()
@@ -19,7 +14,7 @@ describe('update user', () => {
     })
 
     expect(loginResponse.status).toBe(200)
-    const emailAddress = 'julien@unlock-protocol.com'
+    const emailAddress = 'julien+email-saved@unlock-protocol.com'
 
     const response = await request(app)
       .put(`/v2/user`)
