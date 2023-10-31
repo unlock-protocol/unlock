@@ -73,7 +73,7 @@ export const EventContentWithProps = ({
     )
   }
 
-  if (isLoading || !event) {
+  if (isLoading) {
     return <LoadingIcon />
   }
 
