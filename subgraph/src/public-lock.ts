@@ -69,7 +69,6 @@ function newKey(event: TransferEvent): void {
   createReceipt(event)
 
   // update lock
-  log.info('Updating lock {}', [event.address.toHexString()])
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
