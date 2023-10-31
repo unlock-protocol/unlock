@@ -11,13 +11,12 @@ let hook
 let nft
 
 contract('ERC721BalanceOfHook', () => {
-  let from
   let nftOwner
   let keyOwner
   let randomSigner
 
   beforeEach(async () => {
-    ;[, from, { address: nftOwner }, { address: keyOwner }, randomSigner] =
+    ;[, { address: nftOwner }, { address: keyOwner }, randomSigner] =
       await ethers.getSigners()
     const Erc721TokenUriHook = await ethers.getContractFactory(
       'ERC721BalanceOfHook'
@@ -79,11 +78,16 @@ contract('ERC721BalanceOfHook', () => {
     it('with a valid key', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
-      await lock
-        .connect(from)
-        .purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
+      await lock.purchase(
+        [],
+        [keyOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
           value: keyPrice,
-        })
+        }
+      )
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
     it('with an expired key', async () => {
