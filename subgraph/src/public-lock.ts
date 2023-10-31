@@ -32,6 +32,7 @@ import {
   loadOrCreateUnlockDailyData,
   getKeyManagerOf,
   LOCK_MANAGER,
+  addTransactionHashToKey,
 } from './helpers'
 import { createReceipt } from './receipt'
 
@@ -62,22 +63,13 @@ function newKey(event: TransferEvent): void {
     event.params.to
   )
 
-  const hash = event.transaction.hash.toHexString()
-  const transactionsHash = key.transactionsHash
-  // add transaction hash for new key event
-  if (transactionsHash && transactionsHash.length) {
-    if (!transactionsHash.includes(hash)) {
-      transactionsHash.push(hash)
-    }
-  } else {
-    key.transactionsHash = [hash]
-  }
-
+  addTransactionHashToKey(key, event.transaction.hash.toHexString())
   key.save()
 
   createReceipt(event)
 
   // update lock
+  log.info('Updating lock {}', [event.address.toHexString()])
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
@@ -156,16 +148,6 @@ export function handleTransfer(event: TransferEvent): void {
       )
 
       key.expiration = expiration
-      const hash = event.transaction.hash.toHexString()
-      const transactionsHash = key.transactionsHash
-      // add transaction hash for transfer event
-      if (transactionsHash && transactionsHash.length) {
-        if (!transactionsHash.includes(hash)) {
-          transactionsHash.push(hash)
-        }
-      } else {
-        key.transactionsHash = [hash]
-      }
       key.save()
     }
   }
@@ -249,16 +231,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    const hash = event.transaction.hash.toHexString()
-    const transactionsHash = key.transactionsHash
-    // add transaction hash for extend event
-    if (transactionsHash && transactionsHash.length) {
-      if (!transactionsHash.includes(hash)) {
-        transactionsHash.push(hash)
-      }
-    } else {
-      key.transactionsHash = [hash]
-    }
+    addTransactionHashToKey(key, event.transaction.hash.toHexString())
     key.expiration = event.params.newTimestamp
     key.cancelled = false
     key.save()
@@ -278,16 +251,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const keyID = genKeyID(event.address, tokenId.value.toString())
   const key = Key.load(keyID)
   if (key) {
-    const hash = event.transaction.hash.toHexString()
-    const transactionsHash = key.transactionsHash
-    // add transaction hash for renew event
-    if (transactionsHash && transactionsHash.length) {
-      if (!transactionsHash.includes(hash)) {
-        transactionsHash.push(hash)
-      }
-    } else {
-      key.transactionsHash = [hash]
-    }
+    addTransactionHashToKey(key, event.transaction.hash.toHexString())
     key.expiration = event.params.newExpiration
     key.cancelled = false
     key.save()

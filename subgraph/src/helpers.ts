@@ -1,7 +1,8 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
 import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
-import { UnlockDailyData, UnlockStats } from '../generated/schema'
+import { UnlockDailyData, UnlockStats, Key } from '../generated/schema'
+import { log } from 'matchstick-as/assembly/log'
 
 // keccak 256 of 'LOCK_MANAGER'
 export const LOCK_MANAGER =
@@ -87,4 +88,27 @@ export function getKeyManagerOf(
     return response.value
   }
   return owner // fallback to owner when lockManager is null
+}
+
+export function addTransactionHashToKey(
+  key: Key,
+  transactionHash: string
+): Key {
+  const transactionsHash = key.transactionsHash
+
+  if (transactionsHash) {
+    log.info('Push to transactionsHash: {}, value: {}', [
+      transactionsHash.toString(),
+      transactionHash,
+    ])
+    if (!transactionsHash.includes(transactionHash)) {
+      log.info('Push confrimed!', [])
+      transactionsHash.push(transactionHash)
+      key.transactionsHash = transactionsHash
+    }
+  } else {
+    key.transactionsHash = [transactionHash]
+  }
+  key.save()
+  return key
 }
