@@ -11,9 +11,12 @@ import { useSessionUser } from '~/hooks/useSession'
 import { storage } from '~/config/storage'
 import { useMutation } from '@tanstack/react-query'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { config } from '~/config/app'
+import { CheckBoxInput } from '../locks/CheckoutUrl/elements/BasicConfigForm'
 
 interface FormProps {
   emailAddress?: string
+  newsletter?: boolean
 }
 
 export const ConnectedWallet = () => {
@@ -57,17 +60,27 @@ export const ConnectedWallet = () => {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<FormProps>({})
+  } = useForm<FormProps>({
+    defaultValues: {
+      newsletter: true,
+    },
+  })
+
+  console.log(errors)
 
   const saveEmailMutation = useMutation(async (data: FormProps) => {
     try {
       await storage.updateUser(data)
       closeConnectModal()
     } catch (error: any) {
+      console.log(error.response?.data)
       if (error.response?.data?.message === 'Validation error') {
         setError('emailAddress', {
-          message:
-            'There is already a user with that email address. Please use another one!',
+          message: 'There is already a user with that email address.',
+        })
+      } else if (error.response?.data?.error.emailAddress) {
+        setError('emailAddress', {
+          message: 'This email address is not valid.',
         })
       } else {
         setError('emailAddress', {
@@ -116,30 +129,65 @@ export const ConnectedWallet = () => {
                 {!user?.emailAddress && (
                   <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col gap-4 w-full text-left"
+                    className="flex flex-col gap-2 w-full text-left"
                   >
                     <Input
-                      {...register('emailAddress', { required: true })}
-                      label="Save your email address"
-                      description="We won't share it with anyone."
+                      {...register('emailAddress', {
+                        required: true,
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: 'This email address is not valid.',
+                        },
+                      })}
+                      label="Email address:"
                       type="email"
-                      error={errors.emailAddress?.message}
+                      error={
+                        errors.emailAddress
+                          ? errors.emailAddress.message
+                            ? errors.emailAddress.message
+                            : 'This email address is not valid.'
+                          : ''
+                      }
                     />
+
+                    <CheckBoxInput
+                      className="block box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none disabled:bg-gray-100 pl-4 py-2 text-base"
+                      label="Subscribe to features and product updates"
+                      {...register('newsletter')}
+                    />
+
                     <Button loading={saveEmailMutation.isLoading} type="submit">
-                      Save
+                      Continue
                     </Button>
                   </form>
                 )}
               </>
             )}
             {!user && (
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
                 <h3 className="text-gray-700">
                   Sign message to confirm ownership of your account
                 </h3>
                 <Button loading={isSigningIn} onClick={onSignIn}>
                   Confirm Ownership
                 </Button>
+                <p className="text-gray-700 align-left text-gray-700 text-xs text-left	">
+                  By proceeding, you agree to our{' '}
+                  <a
+                    className="outline-none text-brand-ui-primary"
+                    href={`${config.unlockStaticUrl}/terms`}
+                  >
+                    Terms of Service
+                  </a>{' '}
+                  and{' '}
+                  <a
+                    className="outline-none text-brand-ui-primary"
+                    href={`${config.unlockStaticUrl}/privacy`}
+                  >
+                    Privacy Policy
+                  </a>
+                  .
+                </p>
               </div>
             )}
           </>
