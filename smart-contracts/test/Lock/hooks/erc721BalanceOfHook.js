@@ -1,29 +1,36 @@
+const { ethers } = require('hardhat')
 const {
   deployLock,
   ADDRESS_ZERO,
   purchaseKey,
   reverts,
 } = require('../../helpers')
-const Erc721TokenUriHook = artifacts.require('ERC721BalanceOfHook')
-const TestERC721 = artifacts.require('TestERC721')
 
 let lock
 let hook
 let nft
 
-contract('ERC721BalanceOfHook', (accounts) => {
-  const from = accounts[1]
-  const nftOwner = accounts[2]
-  const keyOwner = accounts[3]
+contract('ERC721BalanceOfHook', () => {
+  let from
+  let nftOwner
+  let keyOwner
+  let randomSigner
 
   beforeEach(async () => {
-    lock = await deployLock()
+    ;[, from, { address: nftOwner }, { address: keyOwner }, randomSigner] =
+      await ethers.getSigners()
+    const Erc721TokenUriHook = await ethers.getContractFactory(
+      'ERC721BalanceOfHook'
+    )
+    const TestERC721 = await ethers.getContractFactory('TestERC721')
+
+    lock = await deployLock({ isEthers: true })
 
     // deploy some ERC721
-    nft = await TestERC721.new()
+    nft = await TestERC721.deploy()
 
     // deploy the hook
-    hook = await Erc721TokenUriHook.new()
+    hook = await Erc721TokenUriHook.deploy()
 
     // set the hook
     await lock.setEventHooks(
@@ -46,7 +53,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
     })
     it('should only allow lock managers to set mapping', async () => {
       await reverts(
-        hook.createMapping(lock.address, nft.address, { from: accounts[5] }),
+        hook.connect(randomSigner).createMapping(lock.address, nft.address),
         'Caller does not have the LockManager role'
       )
     })
@@ -72,17 +79,11 @@ contract('ERC721BalanceOfHook', (accounts) => {
     it('with a valid key', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
+      await lock
+        .connect(from)
+        .purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
           value: keyPrice,
-        }
-      )
+        })
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
     it('with an expired key', async () => {
