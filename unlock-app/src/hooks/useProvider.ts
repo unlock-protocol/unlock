@@ -37,8 +37,7 @@ export const useProvider = (config: any) => {
   const [connected, setConnected] = useState<string | undefined>()
   const { setStorage, clearStorage, getStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
-  const { session, refetchSession } = useSession()
-  const { walletAddress: account } = session || {}
+  const { session: account, refetchSession } = useSession()
 
   const isUnlockAccount = !!provider?.isUnlock
   const email = provider?.emailAddress || getStorage('email')

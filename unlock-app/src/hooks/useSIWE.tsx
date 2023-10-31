@@ -65,7 +65,6 @@ export const SIWEProvider = ({ children }: Props) => {
   const { connected, getWalletService, network } = useAuth()
   const { provider } = useContext(ProviderContext)
   const { session, refetchSession } = useSession()
-
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
 
@@ -184,10 +183,11 @@ export const SIWEProvider = ({ children }: Props) => {
     }
   }
 
-  const isSignedIn = !!session?.walletAddress
+  const isSignedIn = !!session
   return (
     <SIWEContext.Provider
       value={{
+        session,
         signIn,
         siweSign,
         status,
