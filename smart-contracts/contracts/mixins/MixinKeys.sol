@@ -418,7 +418,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
         0, // no token specified
         0, // no token specified
         _keyOwner,
-        false
+        isValid
       );
   }
 
