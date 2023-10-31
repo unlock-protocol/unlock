@@ -7,7 +7,7 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
@@ -46,6 +46,7 @@ import {
 
 // mock contract functions
 import './mocks'
+import { Transfer } from '../generated/templates/PublicLock/PublicLock'
 
 const keyID = `${lockAddress}-${tokenId}`
 const keyIDV8 = `${lockAddressV8}-${tokenId}`
@@ -106,12 +107,6 @@ describe('Burn a key', () => {
 describe('Key transfers', () => {
   beforeAll(() => {
     mockDataSourceV11()
-    const newTransferEvent = createTransferEvent(
-      Address.fromString(nullAddress),
-      Address.fromString(keyOwnerAddress),
-      BigInt.fromU32(tokenId)
-    )
-    handleTransfer(newTransferEvent)
   })
 
   afterAll(() => {
@@ -119,6 +114,12 @@ describe('Key transfers', () => {
   })
 
   test('Creation of a new key', () => {
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
     assert.entityCount('Key', 1)
     assert.fieldEquals('Key', keyID, 'lock', lockAddress)
     assert.fieldEquals('Key', keyID, 'owner', keyOwnerAddress)
@@ -126,6 +127,8 @@ describe('Key transfers', () => {
     assert.fieldEquals('Key', keyID, 'tokenURI', `${tokenURI}`)
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration}`)
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
+    const hash = newTransferEvent.transaction.hash.toHexString()
+    assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
   })
 
   test('Transfer of an existing key', () => {
@@ -164,6 +167,7 @@ describe('Change in expiration timestamp', () => {
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
     dataSourceMock.resetValues()
   })
+
   test('should increase key timestamp (until v11)', () => {
     mockDataSourceV11()
     // create a key
@@ -248,6 +252,7 @@ describe('Key is expired by lock manager', () => {
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
   })
+
   test('should update the key expiration', () => {
     mockDataSourceV11()
     // create a key
@@ -307,6 +312,7 @@ describe('Key managers', () => {
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
   })
+
   test('key manager changed', () => {
     mockDataSourceV11()
 
@@ -362,6 +368,7 @@ describe('Cancel keys', () => {
     assert.fieldEquals('Key', keyID, 'transactionsHash', `[${hash}]`)
     dataSourceMock.resetValues()
   })
+
   test('cancel a key', () => {
     mockDataSourceV11()
     // create a key
@@ -400,7 +407,36 @@ describe('RenewKeyPurchase (lock <v10)', () => {
     )
     handleRenewKeyPurchase(newRenewKeyPurchase)
     assert.fieldEquals('Key', keyIDV8, 'expiration', `${newExpiration}`)
-
     dataSourceMock.resetValues()
+  })
+
+  test('should add the new transaction to the list of transactions', () => {
+    mockDataSourceV11()
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    const creationHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000001'
+
+    newTransferEvent.transaction.hash = Bytes.fromHexString(creationHash)
+    handleTransfer(newTransferEvent)
+    assert.fieldEquals('Key', keyID, 'transactionsHash', `[${creationHash}]`)
+    const newExpiration = expiration + 1000
+    const newRenewKeyPurchase = createRenewKeyPurchaseEvent(
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU64(newExpiration)
+    )
+    const renewHash =
+      '0x0000000000000000000000000000000000000000000000000000000000000002'
+    newRenewKeyPurchase.transaction.hash = Bytes.fromHexString(renewHash)
+    handleRenewKeyPurchase(newRenewKeyPurchase)
+    assert.fieldEquals(
+      'Key',
+      keyID,
+      'transactionsHash',
+      `[${creationHash}, ${renewHash}]`
+    )
   })
 })
