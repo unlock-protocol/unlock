@@ -52,6 +52,8 @@ export interface Metadata {
   [key: string]: any
 }
 
+// Turns NFT metadata into a form data object
+// TODO: change name!
 export function toFormData({
   name,
   slug,
@@ -105,6 +107,11 @@ export function toFormData({
   return metadata
 }
 
+/**
+ * Turns NFT metadata attributes into a form data object
+ * @param attributes
+ * @returns
+ */
 export const categorizeAttributes = (
   attributes: Attribute[] | undefined = []
 ) => {

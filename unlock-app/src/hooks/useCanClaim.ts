@@ -24,7 +24,8 @@ export const useCanClaim = (
           data,
         })
         return !!response.data?.canClaim
-      } catch {
+      } catch (error) {
+        console.error(error)
         return false
       }
     },

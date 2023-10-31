@@ -122,7 +122,7 @@ export function TicketForm({ disabled, lockAddress, network }: Props) {
                 disabled={disabled}
                 size="small"
                 variant="outlined-primary"
-                onClick={(event: any) => {
+                onClick={(event) => {
                   event.preventDefault()
                   setPreviewTicket(true)
                 }}

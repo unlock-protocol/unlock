@@ -38,7 +38,6 @@ export const SettingRoles = ({
         <VerifierForm
           lockAddress={lockAddress}
           network={network}
-          isManager={isManager}
           disabled={!isManager}
         />
       </SettingCard>

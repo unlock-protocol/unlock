@@ -47,11 +47,6 @@ const settings = {
   },
 }
 
-// used for tests
-networks.hardhat = {
-  initialBaseFeePerGas: 100000000,
-}
-
 // mainnet fork
 if (process.env.RUN_FORK) {
   const chainId = parseInt(process.env.RUN_FORK)
@@ -105,7 +100,13 @@ module.exports = {
       { version: '0.8.4', settings }, // required for test/Lock/upgrades/V10
       { version: '0.8.7', settings }, // required for test/Lock/upgrades/V11
       { version: '0.8.13', settings }, // required for test/Lock/upgrades/V12
-      { version: '0.8.21', settings },
+      {
+        version: '0.8.21',
+        settings: {
+          ...settings,
+          evmVersion: 'shanghai',
+        },
+      },
     ],
   },
   mocha: {
