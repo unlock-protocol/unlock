@@ -99,7 +99,7 @@
     "@types/cors": "2.8.14",
     "@types/geoip-country": "4.0.0",
     "@types/isomorphic-fetch": "0.0.37",
-    "@types/multer": "1.4.8",
+    "@types/multer": "1.4.9",
     "@types/multer-s3": "3.0.1",
     "@types/nock": "10.0.3",
     "@types/node": "18.16.3",
