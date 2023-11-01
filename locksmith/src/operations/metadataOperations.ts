@@ -94,17 +94,20 @@ export const getBaseTokenData = async (
   address: string,
   host: string,
   keyId: string,
-  _network: number = 1
+  network: number = 1
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
 
-  const persistedBasedMetadata = await LockMetadata.findOne({
-    where: { address },
+  // Cool That is where we get the base token data from the database
+  // And where we should get the event data!
+  const baseMetadata = await getLockMetadata({
+    lockAddress: address,
+    network,
   })
 
   const result: Record<string, unknown> = {
     ...defaultResponse,
-    ...(persistedBasedMetadata?.data || {}),
+    ...baseMetadata,
   }
 
   return result
@@ -260,6 +263,7 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
+  console.log('CHECK IF AN EVENT ESISTS!')
   // TODO: get data from event if the lock is used for an event!
   // const event = await EventData.findOne({
   //   where: {
