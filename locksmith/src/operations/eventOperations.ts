@@ -50,6 +50,7 @@ export const getEventDataForLock = async (
 
   const attributes: AttributeProps[] = lockMetadata?.attributes
 
+  // Util function!
   const getAttribute = (name: string): string | undefined => {
     return (
       attributes?.find(({ trait_type }: AttributeProps) => trait_type === name)

@@ -170,7 +170,6 @@ export const EventCheckoutUrl = ({
                   return (
                     <>
                       <Select
-                        // @ts-expect-error
                         options={configOptions}
                         defaultValue={
                           settings?.checkoutConfigId || checkoutConfigId
