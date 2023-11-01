@@ -19495,7 +19495,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: ^2.7.0
+    hardhat-tracer: 2.7.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 3.0.0
@@ -19640,7 +19640,7 @@ __metadata:
     axios: 1.4.0
     blockies-react-svg: 0.0.13
     calendar-link: 2.5.1
-    csv: 6.3.3
+    csv: 6.3.5
     dayjs: 1.11.10
     deep-object-diff: 1.1.9
     dotenv: 16.3.1
@@ -27092,36 +27092,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-generate@npm:^4.2.8":
-  version: 4.2.8
-  resolution: "csv-generate@npm:4.2.8"
-  checksum: 0aabbe20ffba8681c1d5c3ae35010304eb63cb42534204e8c218dfedcfbe53956501c6a866c5cd896caaa6eaa6eab6bd2f1779e39f2126cb05ce7563cfff15bf
+"csv-generate@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "csv-generate@npm:4.3.0"
+  checksum: cd0f7fe3d021010b683c618fcca165e4dcf3157ee7d514033d1baf4dfeee697228bdad9215ec85e962babd71e8dbd1bde67fdb50cf0aed99409f23ebefce0875
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.5.0":
-  version: 5.5.0
-  resolution: "csv-parse@npm:5.5.0"
-  checksum: a9cc73a332debdabe9658c532e7668c626c06616113b650fb2e063f3a1451d45a48080c1942a680e8ddeaf1665efef49f126e655c54c19e025d70cccc002ff4d
+"csv-parse@npm:^5.5.2":
+  version: 5.5.2
+  resolution: "csv-parse@npm:5.5.2"
+  checksum: de2eb0c29b049783ef101b7eb843456200dc9a4fc9f4b400473bb0521b41aadb77af560cf4edc49bac65cc457b32596519860120181b26ec3b372109ddf8e8ea
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.4.2":
-  version: 6.4.2
-  resolution: "csv-stringify@npm:6.4.2"
-  checksum: de8f394634e9745e0bc50d25312125204ca492a945f3e892af63cc340d371fdf653120c6bf2ff8ec2c9ce86b09e8455d7b5267cf91c7278e81a5f8c1b100105f
+"csv-stringify@npm:^6.4.4":
+  version: 6.4.4
+  resolution: "csv-stringify@npm:6.4.4"
+  checksum: cc0c0d49e32c2c862658cc45fa2e9668cd67d85ff7eb1f65de0383335aaaae53bf2fc73e8f8051ba8de50f8f5dbffd8f3686bdaa760363762bba02525fe61939
   languageName: node
   linkType: hard
 
-"csv@npm:6.3.3":
-  version: 6.3.3
-  resolution: "csv@npm:6.3.3"
+"csv@npm:6.3.5":
+  version: 6.3.5
+  resolution: "csv@npm:6.3.5"
   dependencies:
-    csv-generate: ^4.2.8
-    csv-parse: ^5.5.0
-    csv-stringify: ^6.4.2
-    stream-transform: ^3.2.8
-  checksum: e5f268305957a4cc8b2936fd305f6fe0d097b93959ef1d0bd5081f4fc59ac02c3d842cdaaea5304073ac2de985c3931aa3e4b924ebd4fba48b0efc29c5287902
+    csv-generate: ^4.3.0
+    csv-parse: ^5.5.2
+    csv-stringify: ^6.4.4
+    stream-transform: ^3.2.10
+  checksum: ec54ebf4b213bdab3dc143aa36ca90ed4777cbd90580d4e44be2eb0cd85ef58c5a69726905d88930c02c262dca4815671b7efd06d72b6cd58fb96bc65cc86073
   languageName: node
   linkType: hard
 
@@ -33969,7 +33969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:^2.7.0":
+"hardhat-tracer@npm:2.7.0":
   version: 2.7.0
   resolution: "hardhat-tracer@npm:2.7.0"
   dependencies:
@@ -50102,10 +50102,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stream-transform@npm:^3.2.8":
-  version: 3.2.8
-  resolution: "stream-transform@npm:3.2.8"
-  checksum: 2e640d2b1d1c3be798f5f6d63ce9ee07c885d2648df052ff6863555d25f7c8f3902630585e21f5a75386ce40202ff173cf6f85e9a5610f84c83e615ff2bdc23e
+"stream-transform@npm:^3.2.10":
+  version: 3.2.10
+  resolution: "stream-transform@npm:3.2.10"
+  checksum: e2755beed075e4891db2be30ee5fcc925a6b332f88b66144ef0c035252347660d4a0131f291cba175eb6a8ff2ca0ac05931b464ad1a227d7d2cffd19ebe1d536
   languageName: node
   linkType: hard
 
