@@ -51,7 +51,7 @@ export default class KeyPricer {
       parseFloat(ethers.utils.formatEther(gasCost).toString())
     )
     if (usdPrice < networks[network].maxFreeClaimCost!) {
-      return { canAfford: false, reason: 'Gas costs too high' }
+      return { canAfford: false, reason: `Gas costs too high: $${usdPrice}` }
     }
     return { canAfford: true }
   }
