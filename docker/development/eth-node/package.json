@@ -12,7 +12,7 @@
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@unlock-protocol/hardhat-plugin": "0.1.3",
     "@unlock-protocol/contracts": "0.0.22",
-    "@unlock-protocol/contracts": "0.0.21",
+    "@unlock-protocol/contracts": "0.0.22",
     "eslint": "8.51.0",
     "ethers": "5.7.2",
     "hardhat": "2.18.2",
