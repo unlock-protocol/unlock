@@ -27,7 +27,7 @@
     "typescript": "5.2.2"
   },
   "peerDependencies": {
-    "zod": "3.22.2"
+    "zod": "3.22.4"
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
