@@ -48,7 +48,7 @@ export const getEventDataForLock = async (
 
   const types = getLockTypeByMetadata(lockMetadata)
 
-  const attributes: AttributeProps[] = lockMetadata?.attributes
+  const attributes: AttributeProps[] = lockMetadata?.attributes || []
 
   // Util function!
   const getAttribute = (name: string): string | undefined => {
@@ -112,7 +112,7 @@ export const getEventDataForLock = async (
       : `${eventStartTime}`
 
     eventDetail = {
-      eventName: lockMetadata?.name,
+      eventName: lockMetadata?.name || '',
       eventDescription: lockMetadata?.description,
       eventDate,
       eventTime,

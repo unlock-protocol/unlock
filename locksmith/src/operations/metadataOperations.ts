@@ -278,10 +278,11 @@ export const getLockMetadata = async ({
     },
   })
 
-  console.log(lockMetadata)
-
   if (lockData) {
-    lockMetadata = lockData.data
+    lockMetadata = {
+      ...lockMetadata,
+      ...lockData.data,
+    }
   }
 
   // Now let's see if there is an event data that needs to be attached
