@@ -17912,12 +17912,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-google-recaptcha@npm:2.1.6":
-  version: 2.1.6
-  resolution: "@types/react-google-recaptcha@npm:2.1.6"
+"@types/react-google-recaptcha@npm:2.1.7":
+  version: 2.1.7
+  resolution: "@types/react-google-recaptcha@npm:2.1.7"
   dependencies:
     "@types/react": "*"
-  checksum: dcabdee728fb23ee7fa96ee5694e8f75ece34528091ede923d840d0c1c98debab6f5cebf53eb8de448610d9d3473706561baae58c32b5e7d79fc9e4c9fb559cc
+  checksum: 58c3a628da1d4c7ebcda700c2851e6fb6ac6cf202c8922b5352a13b5dd9945cd242eeed01bea809d227f597250efffc83ae2b26fb5b577bec295681b49b5d489
   languageName: node
   linkType: hard
 
@@ -19495,7 +19495,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: ^2.7.0
+    hardhat-tracer: 2.7.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 3.0.0
@@ -19619,7 +19619,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.3
     "@types/react": 18.2.0
-    "@types/react-google-recaptcha": 2.1.6
+    "@types/react-google-recaptcha": 2.1.7
     "@types/react-gtm-module": 2.0.1
     "@uniswap/sdk-core": 4.0.9
     "@uniswap/smart-order-router": 3.17.2
@@ -33969,7 +33969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:^2.7.0":
+"hardhat-tracer@npm:2.7.0":
   version: 2.7.0
   resolution: "hardhat-tracer@npm:2.7.0"
   dependencies:
