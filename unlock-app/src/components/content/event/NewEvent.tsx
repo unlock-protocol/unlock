@@ -51,7 +51,6 @@ export const NewEvent = () => {
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
     if (lockAddress) {
-      // const checkoutConfig =
       const { data: event } = await storage.saveEventData({
         data: formDataToMetadata({
           name: formData.lock.name,
