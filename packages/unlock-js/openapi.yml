@@ -88,6 +88,8 @@ components:
     CheckoutConfig:
       type: object
       required:
+        - 'id'
+        - 'by'
         - 'config'
         - 'name'
       properties:
@@ -3361,7 +3363,12 @@ paths:
                 data:
                   type: object
                 checkoutConfig:
-                  $ref: '#/components/schemas/CheckoutConfig'
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    config:
+                      $ref: '#/components/schemas/CheckoutConfig'
 
       responses:
         200:
@@ -3409,7 +3416,12 @@ paths:
                   data:
                     $ref: '#/components/schemas/Event'
                   checkoutConfig:
-                    $ref: '#/components/schemas/CheckoutConfig'
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      config:
+                        $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
 

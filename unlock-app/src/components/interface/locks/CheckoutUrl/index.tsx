@@ -201,7 +201,7 @@ export const CheckoutUrlPage = () => {
     if (!checkout) return
 
     setCheckoutConfig({
-      id: checkout.id!,
+      id: checkout.id,
       name: checkout.name,
       config: checkout.config as PaywallConfigType,
     })
@@ -274,7 +274,7 @@ export const CheckoutUrlPage = () => {
     if (!option.id) {
       const response = await updateConfig(option)
       setCheckoutConfig({
-        id: response.id!,
+        id: response.id,
         config: response.config as PaywallConfigType,
         name: response.name,
       })
