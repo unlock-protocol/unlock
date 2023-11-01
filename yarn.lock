@@ -17622,13 +17622,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/multer-s3@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@types/multer-s3@npm:3.0.1"
+"@types/multer-s3@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@types/multer-s3@npm:3.0.2"
   dependencies:
     "@aws-sdk/client-s3": ^3.0.0
     "@types/multer": "*"
-  checksum: 90a616d2ccb9c427c7a80ac7e1cf71b0432804005fa572bb189d6d8e152499ba7b1d4a896d212204908912f5ea6cb93b4acea2160dbab44251d97836c348c3e0
+    "@types/node": "*"
+  checksum: 9c65ecba76cbd030c17aa32f2fe6479906c7a3e076f6b8ed90ee36217c87d9c8dbaeb0d8edefa36eb1d9ed5958206d7050a43f42a85a5a801debb3202cbbb700
   languageName: node
   linkType: hard
 
@@ -19325,7 +19326,7 @@ __metadata:
     "@types/geoip-country": 4.0.1
     "@types/isomorphic-fetch": 0.0.37
     "@types/multer": 1.4.9
-    "@types/multer-s3": 3.0.1
+    "@types/multer-s3": 3.0.2
     "@types/nock": 10.0.3
     "@types/node": 18.16.3
     "@types/node-cron": 3.0.10
