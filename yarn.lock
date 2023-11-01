@@ -19372,7 +19372,7 @@ __metadata:
     path-to-regexp: 6.2.1
     pg: 8.11.3
     random-words: 2.0.0
-    rate-limiter-flexible: 3.0.0
+    rate-limiter-flexible: 3.0.3
     react: 18.2.0
     remark-html: 15.0.2
     remark-parse: 10.0.2
@@ -19495,7 +19495,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: ^2.7.0
+    hardhat-tracer: 2.7.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 3.0.0
@@ -33969,7 +33969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:^2.7.0":
+"hardhat-tracer@npm:2.7.0":
   version: 2.7.0
   resolution: "hardhat-tracer@npm:2.7.0"
   dependencies:
@@ -45801,10 +45801,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:3.0.0":
-  version: 3.0.0
-  resolution: "rate-limiter-flexible@npm:3.0.0"
-  checksum: 2ad889db22f26dea5a1f7fcbe3117ebfd64d5f642c5a68732c4bf633f45c279b072eda3da258348a6ce9512f41bbcad4a3059e3f4ea10aa09417fe108ce7388e
+"rate-limiter-flexible@npm:3.0.3":
+  version: 3.0.3
+  resolution: "rate-limiter-flexible@npm:3.0.3"
+  checksum: 3854577d78511e225028ec592987a64d2daab3235e159ce64bf875eb47090f8c01073d8095283cff2a253708b0a81c7a413844f8f8077af8528716fb1b44a50f
   languageName: node
   linkType: hard
 
