@@ -19449,10 +19449,10 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: 8.50.0
+    eslint: 8.52.0
     eslint-plugin-sort-keys-fix: 1.1.2
     tsup: 7.2.0
-    tsx: 3.13.0
+    tsx: 3.14.0
     typescript: 5.2.2
   languageName: unknown
   linkType: soft
