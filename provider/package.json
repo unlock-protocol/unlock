@@ -10,7 +10,7 @@
     "vitest": "0.34.6"
   },
   "dependencies": {
-    "toucan-js": "3.3.0",
+    "toucan-js": "3.3.1",
     "wrangler": "3.10.1"
   },
   "scripts": {

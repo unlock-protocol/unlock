@@ -13707,14 +13707,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.70.0":
-  version: 7.70.0
-  resolution: "@sentry/core@npm:7.70.0"
+"@sentry/core@npm:7.76.0":
+  version: 7.76.0
+  resolution: "@sentry/core@npm:7.76.0"
   dependencies:
-    "@sentry/types": 7.70.0
-    "@sentry/utils": 7.70.0
-    tslib: ^2.4.1 || ^1.9.3
-  checksum: 550ff55f8232fbbe8263b05deca997b6fe98ae19fe445f39d90915cc515bdcc8d6c2ec09df6976fcf750547adc39aefb5714ebfd5f039b32e94c5c5320f4cfab
+    "@sentry/types": 7.76.0
+    "@sentry/utils": 7.76.0
+  checksum: 76b4fedd76f31e5b0e7eef53aa557b4fb17ad89f50bf9078916983dbab33e7a0ab3fc679a47fcf53119f04e0abbb186617beef58ae733971c0dc007d6cf5b275
   languageName: node
   linkType: hard
 
@@ -13741,15 +13740,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/integrations@npm:7.70.0":
-  version: 7.70.0
-  resolution: "@sentry/integrations@npm:7.70.0"
+"@sentry/integrations@npm:7.76.0":
+  version: 7.76.0
+  resolution: "@sentry/integrations@npm:7.76.0"
   dependencies:
-    "@sentry/types": 7.70.0
-    "@sentry/utils": 7.70.0
+    "@sentry/core": 7.76.0
+    "@sentry/types": 7.76.0
+    "@sentry/utils": 7.76.0
     localforage: ^1.8.1
-    tslib: ^2.4.1 || ^1.9.3
-  checksum: 4cd1343e4c89fa9e71e14b4c5df1196f2bcc6a0829885f2812df72801ba644729d476592cfc4dfce5f49d590e24e540b0be8e2012954f2f8ddacb82b9255a393
+  checksum: 4099ce3ea311468082b0d6960e6a97e61c7f0015dba934cc3085e8c771065d51bff26fb1a0cd6a16ad54c95da2daa93a0215df097513c18ba4b53e598bb3e565
   languageName: node
   linkType: hard
 
@@ -13932,10 +13931,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.70.0":
-  version: 7.70.0
-  resolution: "@sentry/types@npm:7.70.0"
-  checksum: 0a38f47ccf0d995d8d5ab0353c332bd2573f044d993d746ec9ecee5e185da773ffdc13db3f29d525b4377ed3ce9235eaa0dc728c039739eb23050d0411667222
+"@sentry/types@npm:7.76.0":
+  version: 7.76.0
+  resolution: "@sentry/types@npm:7.76.0"
+  checksum: 8978b0b1e680cabc0f9f04881452832e53d636e37bfd0599a8c988ee8bbd244539a286102eba322b4b2019428ceb9c662edb69e3ec88255c8cb217e0ba84f9ce
   languageName: node
   linkType: hard
 
@@ -13979,13 +13978,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.70.0":
-  version: 7.70.0
-  resolution: "@sentry/utils@npm:7.70.0"
+"@sentry/utils@npm:7.76.0":
+  version: 7.76.0
+  resolution: "@sentry/utils@npm:7.76.0"
   dependencies:
-    "@sentry/types": 7.70.0
-    tslib: ^2.4.1 || ^1.9.3
-  checksum: a1590f5e752667910638262bb8e85f2e2c26e722df4087e79c39b11d1d81dbefaea8f426826a50b0832c079e77092ff7c2335d48e63a2d11c32b1c0b59b10eee
+    "@sentry/types": 7.76.0
+  checksum: 6a9e796835da6daa04893817b57af180cf1b04fb6c61d7523635cf7c41f616be6fb8ba485b6f6bdd626006398dc3491b3e4c981219e4874772b7e59f545b206f
   languageName: node
   linkType: hard
 
@@ -19495,7 +19493,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: ^2.7.0
+    hardhat-tracer: 2.7.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 3.0.0
@@ -33969,7 +33967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:^2.7.0":
+"hardhat-tracer@npm:2.7.0":
   version: 2.7.0
   resolution: "hardhat-tracer@npm:2.7.0"
   dependencies:
@@ -45286,7 +45284,7 @@ __metadata:
     "@types/node": 18.16.3
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
-    toucan-js: 3.3.0
+    toucan-js: 3.3.1
     typescript: 5.2.2
     vitest: 0.34.6
     wrangler: 3.10.1
@@ -51752,15 +51750,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"toucan-js@npm:3.3.0":
-  version: 3.3.0
-  resolution: "toucan-js@npm:3.3.0"
+"toucan-js@npm:3.3.1":
+  version: 3.3.1
+  resolution: "toucan-js@npm:3.3.1"
   dependencies:
-    "@sentry/core": 7.70.0
-    "@sentry/integrations": 7.70.0
-    "@sentry/types": 7.70.0
-    "@sentry/utils": 7.70.0
-  checksum: 7cdd14b9bad0211e78ba25f2685c4797a08b696179d259992f661152cd59ecde457c44a95b517f0c577843152da672abca6cd043d018e5bdb4cf4c2ec0e57ab0
+    "@sentry/core": 7.76.0
+    "@sentry/integrations": 7.76.0
+    "@sentry/types": 7.76.0
+    "@sentry/utils": 7.76.0
+  checksum: 5908ce0d246dbd9571a63e664116381c98bbeea9154fcacdc49ef99c24ff212825f26065778919fa12fb3c0ea913b267c49d886cd8ce4d60fdb1ec8ca5361930
   languageName: node
   linkType: hard
 
