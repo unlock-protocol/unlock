@@ -65,18 +65,6 @@ export function toFormData({
   background_color,
   image,
 }: Partial<Metadata>) {
-  console.log('_____XXXXX_____')
-  console.log({
-    name,
-    slug,
-    description,
-    attributes,
-    animation_url,
-    external_url,
-    youtube_url,
-    background_color,
-    image,
-  })
   const categorizedAttrs = categorizeAttributes(attributes || [])
   const metadata = {
     ...categorizedAttrs,
@@ -115,8 +103,6 @@ export function toFormData({
       ? `#${background_color}`
       : background_color
   }
-
-  console.log(metadata)
 
   return metadata
 }
