@@ -92,7 +92,7 @@
     "winston": "3.9.0",
     "winston-transport-sentry-node": "2.7.0",
     "yargs": "17.7.2",
-    "zod": "3.22.3"
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.5",
