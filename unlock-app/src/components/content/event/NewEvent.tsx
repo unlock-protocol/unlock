@@ -8,8 +8,6 @@ import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSaveLockSettings } from '~/hooks/useLockSettings'
-import { getSlugForName } from '~/utils/slugs'
 
 export interface TransactionDetails {
   hash: string
@@ -53,14 +51,31 @@ export const NewEvent = () => {
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
     if (lockAddress) {
+      // const checkoutConfig =
       const { data: event } = await storage.saveEventData({
-        name: formData.lock.name,
-        locks: [[lockAddress, formData.network].join('-')],
         data: formDataToMetadata({
           name: formData.lock.name,
           ...formData.metadata,
         }),
+        checkoutConfig: {
+          name: `Checkout config for ${formData.lock.name}`,
+          config: {
+            locks: {
+              [lockAddress]: {
+                network: formData.network,
+              },
+            },
+          },
+        },
       })
+      // await storage.saveEventData({
+      //   name: formData.lock.name,
+      //   locks: [[lockAddress, formData.network].join('-')],
+      //   data: formDataToMetadata({
+      //     name: formData.lock.name,
+      //     ...formData.metadata,
+      //   }),
+      // })
       // TODO: handle errors!
       console.log(event)
 
