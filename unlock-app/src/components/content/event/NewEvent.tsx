@@ -68,25 +68,6 @@ export const NewEvent = () => {
           },
         },
       })
-      // await storage.saveEventData({
-      //   name: formData.lock.name,
-      //   locks: [[lockAddress, formData.network].join('-')],
-      //   data: formDataToMetadata({
-      //     name: formData.lock.name,
-      //     ...formData.metadata,
-      //   }),
-      // })
-      // TODO: handle errors!
-      console.log(event)
-
-      // TODO: handle this in locksmith!
-      // await storage.updateLockMetadata(formData.network, lockAddress!, {
-      //   metadata: formDataToMetadata({
-      //     name: formData.lock.name,
-      //     ...formData.metadata,
-      //   }),
-      // })
-
       // Save slug for URL if present
       setSlug(event.slug)
 

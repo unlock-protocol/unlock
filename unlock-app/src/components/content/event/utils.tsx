@@ -42,6 +42,13 @@ export const getEventPath = ({
   network,
   event,
 }: EventUrlProps): string => {
+  console.log({
+    metadata,
+    lockAddress,
+    network,
+    event,
+  })
+
   const slug = event?.slug || metadata?.slug
 
   if (slug) {
