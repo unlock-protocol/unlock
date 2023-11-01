@@ -1139,7 +1139,7 @@ __metadata:
     "@unlock-protocol/hardhat-plugin": 0.1.3
     eslint: 8.51.0
     ethers: 5.7.2
-    hardhat: 2.18.2
+    hardhat: 2.18.3
     hardhat-erc1820: 0.1.0
     ts-node: 10.9.1
     typescript: 5.2.2
@@ -2543,9 +2543,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.18.2":
-  version: 2.18.2
-  resolution: "hardhat@npm:2.18.2"
+"hardhat@npm:2.18.3":
+  version: 2.18.3
+  resolution: "hardhat@npm:2.18.3"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -2605,7 +2605,7 @@ __metadata:
       optional: true
   bin:
     hardhat: internal/cli/bootstrap.js
-  checksum: b234ec9c4030ee91c0c91b78acbebf7fd6354ea46c7a5d1ced245b2e0e6045996d130944e6d2d5b2139fb53895a15c5eb054ab76571f9835e2021d9f70beccbe
+  checksum: 7dc2bacee287238b026dec07f9f80f3f2f7d33c7572117635297609c960fa84feff36905fc81c95ddc6d1b51ea9345d03243a1bba9de76b1be97419df84cc1bf
   languageName: node
   linkType: hard
 
