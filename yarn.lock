@@ -17820,10 +17820,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/postmate@npm:1.5.2":
-  version: 1.5.2
-  resolution: "@types/postmate@npm:1.5.2"
-  checksum: cfe409057aa2b9cebfaf012c1a0940af8a825112be6942cf43c51c312e2840828ca9a1127d1d6d6b2066d17e1c1aac0f553f3cdd56ebaaaafa16b3c5d47d0d37
+"@types/postmate@npm:1.5.3":
+  version: 1.5.3
+  resolution: "@types/postmate@npm:1.5.3"
+  checksum: 391979967c911973f675555642abbf550412a7b9d34f526d4da98f46e68746e3b9bf9a513a785f36eb29486b1973e9e56af305057d3c6d76a8f4662e6bb1591b
   languageName: node
   linkType: hard
 
@@ -19433,7 +19433,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/paywall@workspace:packages/paywall"
   dependencies:
-    "@types/postmate": 1.5.2
+    "@types/postmate": 1.5.3
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -19616,7 +19616,7 @@ __metadata:
     "@testing-library/react-hooks": 8.0.1
     "@tw-classed/react": 1.5.2
     "@types/file-saver": 2.0.6
-    "@types/postmate": 1.5.2
+    "@types/postmate": 1.5.3
     "@types/qrcode.react": 1.0.4
     "@types/react": 18.2.0
     "@types/react-google-recaptcha": 2.1.7
