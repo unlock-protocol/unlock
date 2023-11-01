@@ -19495,7 +19495,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: ^2.7.0
+    hardhat-tracer: 2.7.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 3.0.0
@@ -19728,7 +19728,7 @@ __metadata:
     graphql-request: 6.1.0
     hardhat: 2.18.3
     prettier: 3.0.0
-    react-to-print: 2.14.13
+    react-to-print: 2.14.15
     siwe: 2.1.4
     tsup: 7.2.0
     typescript: 5.1.6
@@ -33969,7 +33969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:^2.7.0":
+"hardhat-tracer@npm:2.7.0":
   version: 2.7.0
   resolution: "hardhat-tracer@npm:2.7.0"
   dependencies:
@@ -46492,13 +46492,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-to-print@npm:2.14.13":
-  version: 2.14.13
-  resolution: "react-to-print@npm:2.14.13"
+"react-to-print@npm:2.14.15":
+  version: 2.14.15
+  resolution: "react-to-print@npm:2.14.15"
   peerDependencies:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: b233eda519f34ee030529e41c1421bdfb40c454562439f5c3af8a8052cb4a285c30066aebf0cb34b9733be7d7afc250927fa27cb7c52e2fc5ff9f2eddee47e88
+  checksum: 00259ab12f3bfe9eeae1424dc0d09bfd04f2c090ad98c5a7ac0052427bd3cc95fa401b46d03bd0a9e7e1ca637ae74e309969d4cff5ec81f8274e7198382e5464
   languageName: node
   linkType: hard
 
