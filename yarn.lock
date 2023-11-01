@@ -17641,12 +17641,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/multer@npm:1.4.8":
-  version: 1.4.8
-  resolution: "@types/multer@npm:1.4.8"
+"@types/multer@npm:1.4.9":
+  version: 1.4.9
+  resolution: "@types/multer@npm:1.4.9"
   dependencies:
     "@types/express": "*"
-  checksum: bdc4e367d8f228303b987f8ecd4189d069990b97007308e3f1f80c009aae620eea7720484a39ef265e1ba915481e405631bc2113d148b4461e1d12d14dc38dac
+  checksum: 2e565052174389bf3bfdf77c0a8c7e9d4a44a65b05d388d9c1336db833fc3efc8d312587d3107b64e1e168b57d00f7834e093db0060b5acec8a7a02cd05b3877
   languageName: node
   linkType: hard
 
@@ -19324,7 +19324,7 @@ __metadata:
     "@types/cors": 2.8.14
     "@types/geoip-country": 4.0.1
     "@types/isomorphic-fetch": 0.0.37
-    "@types/multer": 1.4.8
+    "@types/multer": 1.4.9
     "@types/multer-s3": 3.0.1
     "@types/nock": 10.0.3
     "@types/node": 18.16.3
