@@ -17855,12 +17855,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/qrcode.react@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@types/qrcode.react@npm:1.0.3"
+"@types/qrcode.react@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@types/qrcode.react@npm:1.0.4"
   dependencies:
     "@types/react": "*"
-  checksum: 4cf8323e9632d97c8e4f43e02456fcff94cfe4fc46727f544ee66faa04c9de0ab36490267a35180d789996690508ec087cfd7eec2258641ff4a346ac4a9857e3
+  checksum: 5178ded1d335bd7c9ff1d01bc06667fcc9f21134e66866fb26cc11a80eaea6d1757a35d1943ccd280f0c7e9f1d3fd5f5b3f00a4cfe08f9ca4d0036b77d4fe48e
   languageName: node
   linkType: hard
 
@@ -19495,7 +19495,7 @@ __metadata:
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.7
-    hardhat-tracer: ^2.7.0
+    hardhat-tracer: 2.7.0
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
     prettier: 3.0.0
@@ -19617,7 +19617,7 @@ __metadata:
     "@tw-classed/react": 1.5.2
     "@types/file-saver": 2.0.5
     "@types/postmate": 1.5.2
-    "@types/qrcode.react": 1.0.3
+    "@types/qrcode.react": 1.0.4
     "@types/react": 18.2.0
     "@types/react-google-recaptcha": 2.1.6
     "@types/react-gtm-module": 2.0.1
@@ -33969,7 +33969,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:^2.7.0":
+"hardhat-tracer@npm:2.7.0":
   version: 2.7.0
   resolution: "hardhat-tracer@npm:2.7.0"
   dependencies:
