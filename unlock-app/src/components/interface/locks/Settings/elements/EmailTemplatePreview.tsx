@@ -53,7 +53,7 @@ export const EmailTemplatePreview = ({
   isManager,
 }: EmailTemplatePreviewProps) => {
   const config = useConfig()
-  const [showPreview, setShowPreview] = useState(true)
+  const [showPreview, setShowPreview] = useState(false)
   const wedlocksService = useWedlockService()
 
   const {

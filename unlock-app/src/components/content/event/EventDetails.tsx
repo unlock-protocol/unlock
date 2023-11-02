@@ -19,6 +19,7 @@ import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
+import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 
 interface EventDetailsProps {
   event: Event
@@ -247,6 +248,47 @@ export const EventDetails = ({
                 </div>
               </Card>
 
+              <Disclosure
+                label="Emails"
+                description="Customize the emails your attendees will receive."
+              >
+                <div className="flex flex-col gap-4">
+                  {Object.keys(checkoutConfig.config.locks).map(
+                    (lockAddress: string) => {
+                      const network =
+                        checkoutConfig.config.locks[lockAddress].network ||
+                        checkoutConfig.config.network
+                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
+                        return (
+                          <Disclosure
+                            label={`Emails for ${minifyAddress(lockAddress)}`}
+                            key={lockAddress}
+                          >
+                            <SettingEmail
+                              key={lockAddress}
+                              lockAddress={lockAddress}
+                              network={network!}
+                              isManager={true}
+                              isLoading={false}
+                            />
+                          </Disclosure>
+                        )
+                      } else {
+                        return (
+                          <SettingEmail
+                            key={lockAddress}
+                            lockAddress={lockAddress}
+                            network={network!}
+                            isManager={true}
+                            isLoading={false}
+                          />
+                        )
+                      }
+                    }
+                  )}
+                </div>
+              </Disclosure>
+
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
@@ -270,7 +312,7 @@ export const EventDetails = ({
                           key={lockAddress}
                           as={Link}
                           variant="black"
-                          className="button border"
+                          className="button border mb-2"
                           size="small"
                           href={`/locks/lock?address=${lockAddress}&network=${network}`}
                         >
@@ -292,18 +334,31 @@ export const EventDetails = ({
                       const network =
                         checkoutConfig.config.locks[lockAddress].network ||
                         checkoutConfig.config.network
-                      return (
-                        <Disclosure
-                          label={`Verifiers for ${minifyAddress(lockAddress)}`}
-                          key={lockAddress}
-                        >
+                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
+                        return (
+                          <Disclosure
+                            label={`Verifiers for ${minifyAddress(
+                              lockAddress
+                            )}`}
+                            key={lockAddress}
+                          >
+                            <VerifierForm
+                              lockAddress={lockAddress}
+                              network={network!}
+                              disabled={!isOrganizer}
+                            />
+                          </Disclosure>
+                        )
+                      } else {
+                        return (
                           <VerifierForm
+                            key={lockAddress}
                             lockAddress={lockAddress}
                             network={network!}
                             disabled={!isOrganizer}
                           />
-                        </Disclosure>
-                      )
+                        )
+                      }
                     }
                   )}
                 </div>
