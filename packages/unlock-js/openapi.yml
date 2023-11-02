@@ -100,11 +100,12 @@ components:
         config:
           type: object
           additionalProperties: true
-
+          properties:
+            locks:
+              type: object
         createdAt:
           type: string
           format: date-time
-
         updatedAt:
           type: string
           format: date-time
