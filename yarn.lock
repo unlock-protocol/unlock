@@ -17754,10 +17754,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.16.3":
-  version: 18.16.3
-  resolution: "@types/node@npm:18.16.3"
-  checksum: 816b39d45b05ebdc6f362b630970df3f6d82f71d418a2555353522f4eeeb078fa201de5299f02c09a09faa975e43b2745fe19c263d44069f87ddf37d6c37b717
+"@types/node@npm:20.8.10":
+  version: 20.8.10
+  resolution: "@types/node@npm:20.8.10"
+  dependencies:
+    undici-types: ~5.26.4
+  checksum: 7c61190e43e8074a1b571e52ff14c880bc67a0447f2fe5ed0e1a023eb8a23d5f815658edb98890f7578afe0f090433c4a635c7c87311762544e20dd78723e515
   languageName: node
   linkType: hard
 
@@ -19322,7 +19324,7 @@ __metadata:
     "@types/chai": 4.3.9
     "@types/fs-extra": 11.0.3
     "@types/mocha": 10.0.3
-    "@types/node": 18.16.3
+    "@types/node": 20.8.10
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -19365,7 +19367,7 @@ __metadata:
     "@types/multer": 1.4.9
     "@types/multer-s3": 3.0.2
     "@types/nock": 10.0.3
-    "@types/node": 18.16.3
+    "@types/node": 20.8.10
     "@types/node-cron": 3.0.10
     "@types/random-words": 1.1.3
     "@types/request-promise-native": 1.0.19
@@ -19787,7 +19789,7 @@ __metadata:
     "@tanstack/react-query": 4.36.1
     "@testing-library/react": 14.0.0
     "@types/next": 8.0.7
-    "@types/node": 18.16.3
+    "@types/node": 20.8.10
     "@types/react": 18.0.32
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -45412,7 +45414,7 @@ __metadata:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": 4.20230922.0
-    "@types/node": 18.16.3
+    "@types/node": 20.8.10
     "@unlock-protocol/networks": "workspace:^"
     ethers: 5.7.2
     toucan-js: 3.3.1
@@ -52939,6 +52941,13 @@ __metadata:
   version: 1.13.6
   resolution: "underscore@npm:1.13.6"
   checksum: d5cedd14a9d0d91dd38c1ce6169e4455bb931f0aaf354108e47bd46d3f2da7464d49b2171a5cf786d61963204a42d01ea1332a903b7342ad428deaafaf70ec36
+  languageName: node
+  linkType: hard
+
+"undici-types@npm:~5.26.4":
+  version: 5.26.5
+  resolution: "undici-types@npm:5.26.5"
+  checksum: 3192ef6f3fd5df652f2dc1cd782b49d6ff14dc98e5dced492aa8a8c65425227da5da6aafe22523c67f035a272c599bb89cfe803c1db6311e44bed3042fc25487
   languageName: node
   linkType: hard
 
