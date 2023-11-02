@@ -42,7 +42,7 @@
     "@resvg/resvg-js": "2.4.1",
     "@sentry/node": "7.54.0",
     "@sentry/tracing": "7.54.0",
-    "@types/connect-timeout": "0.0.37",
+    "@types/connect-timeout": "0.0.38",
     "@types/random-words": "1.1.3",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/core": "workspace:./packages/core",

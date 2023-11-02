@@ -17186,12 +17186,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/connect-timeout@npm:0.0.37":
-  version: 0.0.37
-  resolution: "@types/connect-timeout@npm:0.0.37"
+"@types/connect-timeout@npm:0.0.38":
+  version: 0.0.38
+  resolution: "@types/connect-timeout@npm:0.0.38"
   dependencies:
     "@types/express": "*"
-  checksum: dad1373c9238387c691757a0f501fac6ccc822d34f8c39f93917b11783843e13f8e7f4b8d9cdf4156ffcd39416a760f05962a605ae3bfdf6d3dda8152657284f
+  checksum: a8941718a9f02a34d5696052e3dc42eeb4af0d4d05958c4781c1158c374609ff1907633f79fd01af622c3ac58161f0c6dfc108efdda60ac592b639dbf3e6ea1e
   languageName: node
   linkType: hard
 
@@ -19357,7 +19357,7 @@ __metadata:
     "@resvg/resvg-js": 2.4.1
     "@sentry/node": 7.54.0
     "@sentry/tracing": 7.54.0
-    "@types/connect-timeout": 0.0.37
+    "@types/connect-timeout": 0.0.38
     "@types/cookie-parser": 1.4.5
     "@types/cors": 2.8.15
     "@types/geoip-country": 4.0.1
