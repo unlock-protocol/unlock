@@ -7,14 +7,14 @@ export function eventDetails(
   eventDate: string,
   eventTime: string,
   eventAddress: string,
-  eventDescription: string
+  eventUrl: string
 ) {
   let content = `
   <div style="${eventDetailStyle}">
   <h2>Event details</h2>
 
     <div>
-      <strong>Ticket:</strong> ${lockName}
+      <strong>${lockName}</strong>
     </div>
 
     <div>
@@ -35,11 +35,11 @@ export function eventDetails(
         ${eventAddress}
       </a>
     </div>
-    <br />
+
     <div>
-    ${eventDescription}
+      <a style="display:inline-block;background-color:#603DEE;color:white !important;font-family:helvetica;font-size:16px;line-height:1;margin:0;text-decoration:none;text-transform:none;border-radius:9999px;font-weight:700;padding:12px 24px;margin-top:12px" target="_blank" href="${eventUrl}">Event Page</a>
     </div>
-</div>`
+  </div>`
 
   return new handlebars.SafeString(content)
 }

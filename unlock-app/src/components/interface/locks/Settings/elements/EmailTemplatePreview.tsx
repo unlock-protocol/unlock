@@ -101,6 +101,9 @@ export const EmailTemplatePreview = ({
       network,
       lockAddress
     )
+
+    console.log('EVENT DATAILS RECEIVED BY LOCKSMITH!')
+    console.log({ eventDetails })
     const params = {
       keychainUrl: `${config.unlockApp}/keychain`,
       keyId: 5, // Placeholder!

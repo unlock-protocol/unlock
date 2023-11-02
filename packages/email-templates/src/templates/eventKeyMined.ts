@@ -1,8 +1,5 @@
 import handlebars from 'handlebars'
-import {
-  customContentStyle,
-  eventDetailStyle,
-} from './helpers/customContentStyle'
+import { customContentStyle } from './helpers/customContentStyle'
 import { links } from './helpers/links'
 import { transactionLink } from './helpers/transactionLink'
 import { eventDetails } from './helpers/eventDetails'
@@ -28,7 +25,7 @@ export default {
   eventDate
   eventTime
   eventAddress
-  eventDescription
+  eventUrl
 }}
 
 <p>You can view your ticket online <a href="{{keychainUrl}}">here</a>.</p>

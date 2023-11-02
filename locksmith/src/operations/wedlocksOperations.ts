@@ -499,9 +499,9 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
         // add event details props
         eventName: eventDetail?.eventName,
         eventDate: eventDetail?.eventDate,
-        eventDescription: eventDetail?.eventDescription,
         eventTime: eventDetail?.eventTime,
         eventAddress: eventDetail?.eventAddress,
+        eventUrl: 'eventDetail?.eventUrl',
         // add certification props
         ...certificationDetail,
       },
