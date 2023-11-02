@@ -9,6 +9,8 @@ import ReCaptcha from 'react-google-recaptcha'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useLockData } from '~/hooks/useLockData'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -91,6 +93,7 @@ interface Props {
 export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const config = useConfig()
   const router = useRouter()
+  const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
   const { getWalletService } = useAuth()
   const {
@@ -101,12 +104,17 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
     reValidateMode: 'onBlur',
   })
 
+  const { lock } = useLockData({
+    lockAddress: transferObject.lock,
+    network,
+  })
+
   const { transferDone } = useTransferDone()
 
   const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
     const walletService = await getWalletService(network)
-
     const signer = walletService.signer
+
     const transferSignature = [
       '0x',
       Buffer.from(
@@ -136,22 +144,35 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
     )
 
     try {
-      const tx = await manager.transfer({
-        network: network!,
-        params: {
-          transferSignature,
-          deadline: transferObject.deadline,
-          lock: transferObject.lock,
-          token: transferObject.token,
-          owner: transferObject.owner,
-        },
-        signer,
-      })
-      await tx.wait()
-      // Push to keychain on success
-      router.push('/keychain')
-    } catch (error) {
-      console.log(error)
+      const total = await web3Service.totalKeys(
+        transferObject.lock,
+        await signer.getAddress(),
+        network
+      )
+      const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
+
+      if (total >= maxKeysPerAddress) {
+        toast.error(
+          'You already have the maximum number of NFTs for this contract. Please connect with another wallet.'
+        )
+      } else {
+        const tx = await manager.transfer({
+          network: network!,
+          params: {
+            transferSignature,
+            deadline: transferObject.deadline,
+            lock: transferObject.lock,
+            token: transferObject.token,
+            owner: transferObject.owner,
+          },
+          signer,
+        })
+        await tx.wait()
+        // Push to keychain on success
+        router.push('/keychain')
+      }
+    } catch (error: any) {
+      console.log(error.message)
       toast.error('Error transferring key. Please try again later.')
     }
   }
