@@ -96,7 +96,7 @@ export const getBaseTokenData = async (
   address: string,
   host: string,
   keyId: string,
-  network: number = 1
+  network: number
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
 
