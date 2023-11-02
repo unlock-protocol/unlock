@@ -119,7 +119,7 @@ const faqs = [
   {
     title: 'Are attendees receiving tickets?',
     description:
-      'Yes they are! Once the blockchain transaction is completed, they will receive an email that includes a ticket. On this ticket there is a unique QR code that can be scanned by organizers to verify its validity.Additionally, verifiers can &quot;redeem&quot; the QR code so that if another attendee arrives with the same QR code, they will be rejected!',
+      'Yes they are! Once the blockchain transaction is completed, they will receive an email that includes a ticket. On this ticket there is a unique QR code that can be scanned by organizers to verify its validity. Additionally, verifiers can redeem the QR code so that if another attendee arrives with the same QR code, they will be rejected!',
   },
 ]
 
