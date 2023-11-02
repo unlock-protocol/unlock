@@ -95,7 +95,7 @@ export const getCalendarUrl = (event: CalendarItem): string => {
   const eventStartDate = event?.start?.date || event?.start?.dateTime
   const eventEndDate = event?.end?.date || event?.end?.dateTime
   const title = event.summary
-  const description = event.description ?? ''
+  const description = event.description ?? '' // markdown!
   const location = event.location ?? ''
   const startDate = dayjs(eventStartDate).format('YYYYMMDDTHHmmss')
   const endDate = dayjs(eventEndDate).format('YYYYMMDDTHHmmss')

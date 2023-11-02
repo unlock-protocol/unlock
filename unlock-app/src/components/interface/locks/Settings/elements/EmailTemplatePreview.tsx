@@ -177,6 +177,7 @@ export const EmailTemplatePreview = ({
           )
 
           const params = await emailPreviewData()
+          console.log({ params })
 
           // add all params in URL
           Object.entries(params).map(([key, value]) => {

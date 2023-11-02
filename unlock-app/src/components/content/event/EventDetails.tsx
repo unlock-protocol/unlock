@@ -109,6 +109,8 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
+  console.log({ event })
+
   // TODO: OG for event!
   // const locksmithEventOG = new URL(
   //   `/v2/og/event/${network}/locks/${lockAddress}`,
