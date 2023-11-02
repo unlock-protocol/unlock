@@ -58,7 +58,7 @@
     "@uniswap/smart-order-router": "3.17.2",
     "graphql": "16.8.1",
     "graphql-request": "6.1.0",
-    "react-to-print": "2.14.13",
+    "react-to-print": "2.14.15",
     "siwe": "2.1.4"
   }
 }
