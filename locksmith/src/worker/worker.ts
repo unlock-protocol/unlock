@@ -14,6 +14,7 @@ import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmailJob } from './tasks/sendEmail'
 import { sendToAllJob } from './tasks/sendToAll'
 import { monitor } from './tasks/monitor'
+import { checkBalances } from './tasks/checkBalances'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
@@ -28,10 +29,11 @@ const crontabProduction = `
 */5 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
 0 0 * * * notifyExpiredKeysForNetwork
+5 */3 * * * checkBalances
 `
 
 const cronTabTesting = `
-*/1 * * * * monitor
+*/5 * * * * monitor
 */2 * * * * allJobs
 */1 * * * * addRenewalJobs
 0 0 * * * addRenewalJobsDaily
@@ -40,6 +42,7 @@ const cronTabTesting = `
 */1 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
 0 0 * * * notifyExpiredKeysForNetwork
+5 */3 * * * checkBalances
 `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
@@ -70,6 +73,7 @@ export async function startWorker() {
       sendHook,
       fiatRenewalJob,
       cryptoRenewalJob,
+      checkBalances,
     },
   })
 
