@@ -262,26 +262,38 @@ export const CheckoutUrlPage = () => {
 
   const configName = watch('configName')
 
-  const handleSetConfiguration = async ({
-    config,
-    ...rest
-  }: CheckoutConfig) => {
-    const option = {
-      ...rest,
-      config: config || DEFAULT_CONFIG,
+  const handleSetConfiguration = useCallback(
+    async ({ config, ...rest }: CheckoutConfig) => {
+      const option = {
+        ...rest,
+        config: config || DEFAULT_CONFIG,
+      }
+      setCheckoutConfig(option)
+      if (!option.id) {
+        const response = await updateConfig(option)
+        setCheckoutConfig({
+          id: response.id!,
+          config: response.config as PaywallConfigType,
+          name: response.name,
+        })
+        setValue('configName', '') // reset field after new configuration is set
+        await refetchConfigList()
+      }
+    },
+    [DEFAULT_CONFIG, refetchConfigList, setValue, updateConfig]
+  )
+
+  useEffect(() => {
+    if (checkoutConfigList?.length && !!query.id) {
+      const config = checkoutConfigList.find((c) => c.id === query.id)
+      if (config) {
+        // @ts-expect-error Type 'undefined' is not assignable to type 'string | null'. (but id is not undefined)
+        handleSetConfiguration(config)
+      } else {
+        // TODO: handle the case where the user is a lock manager but the config was not created by them
+      }
     }
-    setCheckoutConfig(option)
-    if (!option.id) {
-      const response = await updateConfig(option)
-      setCheckoutConfig({
-        id: response.id!,
-        config: response.config as PaywallConfigType,
-        name: response.name,
-      })
-      setValue('configName', '') // reset field after new configuration is set
-      await refetchConfigList()
-    }
-  }
+  }, [checkoutConfigList, query.id, handleSetConfiguration])
 
   const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
 
