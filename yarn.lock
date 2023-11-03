@@ -19414,9 +19414,9 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.10
-    eslint: 8.41.0
-    eslint-plugin-mocha: 10.1.0
-    hardhat: 2.18.3
+    eslint: 8.52.0
+    eslint-plugin-mocha: 10.2.0
+    hardhat: 2.19.0
     mocha: 10.2.0
     prettier: 3.0.0
     ts-mocha: 10.0.0
@@ -19424,7 +19424,7 @@ __metadata:
     tslint: 5.20.1
     tslint-config-prettier: 1.18.0
     tslint-plugin-prettier: 2.3.0
-    typescript: 5.1.6
+    typescript: 5.2.2
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     ethers: ^5.7.x
@@ -34227,6 +34227,72 @@ __metadata:
   bin:
     hardhat: internal/cli/bootstrap.js
   checksum: 7dc2bacee287238b026dec07f9f80f3f2f7d33c7572117635297609c960fa84feff36905fc81c95ddc6d1b51ea9345d03243a1bba9de76b1be97419df84cc1bf
+  languageName: node
+  linkType: hard
+
+"hardhat@npm:2.19.0":
+  version: 2.19.0
+  resolution: "hardhat@npm:2.19.0"
+  dependencies:
+    "@ethersproject/abi": ^5.1.2
+    "@metamask/eth-sig-util": ^4.0.0
+    "@nomicfoundation/ethereumjs-block": 5.0.2
+    "@nomicfoundation/ethereumjs-blockchain": 7.0.2
+    "@nomicfoundation/ethereumjs-common": 4.0.2
+    "@nomicfoundation/ethereumjs-evm": 2.0.2
+    "@nomicfoundation/ethereumjs-rlp": 5.0.2
+    "@nomicfoundation/ethereumjs-statemanager": 2.0.2
+    "@nomicfoundation/ethereumjs-trie": 6.0.2
+    "@nomicfoundation/ethereumjs-tx": 5.0.2
+    "@nomicfoundation/ethereumjs-util": 9.0.2
+    "@nomicfoundation/ethereumjs-vm": 7.0.2
+    "@nomicfoundation/solidity-analyzer": ^0.1.0
+    "@sentry/node": ^5.18.1
+    "@types/bn.js": ^5.1.0
+    "@types/lru-cache": ^5.1.0
+    adm-zip: ^0.4.16
+    aggregate-error: ^3.0.0
+    ansi-escapes: ^4.3.0
+    chalk: ^2.4.2
+    chokidar: ^3.4.0
+    ci-info: ^2.0.0
+    debug: ^4.1.1
+    enquirer: ^2.3.0
+    env-paths: ^2.2.0
+    ethereum-cryptography: ^1.0.3
+    ethereumjs-abi: ^0.6.8
+    find-up: ^2.1.0
+    fp-ts: 1.19.3
+    fs-extra: ^7.0.1
+    glob: 7.2.0
+    immutable: ^4.0.0-rc.12
+    io-ts: 1.10.4
+    keccak: ^3.0.2
+    lodash: ^4.17.11
+    mnemonist: ^0.38.0
+    mocha: ^10.0.0
+    p-map: ^4.0.0
+    raw-body: ^2.4.1
+    resolve: 1.17.0
+    semver: ^6.3.0
+    solc: 0.7.3
+    source-map-support: ^0.5.13
+    stacktrace-parser: ^0.1.10
+    tsort: 0.0.1
+    undici: ^5.14.0
+    uuid: ^8.3.2
+    ws: ^7.4.6
+  peerDependencies:
+    ts-node: "*"
+    typescript: "*"
+  peerDependenciesMeta:
+    ts-node:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    hardhat: internal/cli/bootstrap.js
+  checksum: 99b7ee89c5898aa410298f48269360e414c5471c2cab56d382a08fd9d639db540c5d242ab9b1189bcffb4ac7847fbfc5b30c047cbc91fb802f2806e8e8c19e8f
   languageName: node
   linkType: hard
 
