@@ -84,7 +84,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
           extraClassDisabled,
         ].join(' ')}
         dangerouslySetInnerHTML={{
-          __html: event.description, // markdown!!!
+          __html: event.description,
         }}
       ></p>
       <div className="flex flex-col gap-4 mt-auto">

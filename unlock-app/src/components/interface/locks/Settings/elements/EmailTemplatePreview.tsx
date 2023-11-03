@@ -102,8 +102,6 @@ export const EmailTemplatePreview = ({
       lockAddress
     )
 
-    console.log('EVENT DATAILS RECEIVED BY LOCKSMITH!')
-    console.log({ eventDetails })
     const params = {
       keychainUrl: `${config.unlockApp}/keychain`,
       keyId: 5, // Placeholder!
@@ -180,7 +178,6 @@ export const EmailTemplatePreview = ({
           )
 
           const params = await emailPreviewData()
-          console.log({ params })
 
           // add all params in URL
           Object.entries(params).map(([key, value]) => {
