@@ -20,7 +20,7 @@ export default {
 {{/if}}
 
 {{eventDetails 
-  lockName
+  eventName
   keyId
   eventDate
   eventTime
