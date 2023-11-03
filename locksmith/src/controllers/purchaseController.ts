@@ -261,13 +261,13 @@ export class PurchaseController {
       ])
 
       if (!canAffordGas.canAfford) {
-        return response.status(500).send({
+        return response.status(400).send({
           message: canAffordGas.reason,
         })
       }
 
       if (!hasEnoughToPayForGas) {
-        return response.status(500).send({
+        return response.status(400).send({
           message:
             'Purchaser does not have enough funds to allow claiming the membership',
         })

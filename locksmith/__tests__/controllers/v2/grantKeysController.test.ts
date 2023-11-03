@@ -193,7 +193,7 @@ describe('grantKeys endpoint', () => {
         ],
       })
     expect(response.body.error).toBe('Gas fees too high to grant keys')
-    expect(response.status).toBe(500)
+    expect(response.status).toBe(422)
   })
 
   it('returns an error when the purchaser does not have enough funds', async () => {
@@ -221,6 +221,6 @@ describe('grantKeys endpoint', () => {
     expect(response.body.error).toBe(
       'Purchaser does not have enough to pay for gas on 2000'
     )
-    expect(response.status).toBe(500)
+    expect(response.status).toBe(422)
   })
 })

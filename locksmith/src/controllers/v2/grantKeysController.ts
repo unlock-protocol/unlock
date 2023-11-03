@@ -49,7 +49,7 @@ export class GrantKeysController {
 
       // We max at 5 cts per transaction
       if (gasCost > 5) {
-        response.status(500).send({
+        response.status(422).send({
           error: 'Gas fees too high to grant keys',
         })
         return
@@ -60,7 +60,7 @@ export class GrantKeysController {
       )
 
       if (!hasEnoughToPayForGas) {
-        response.status(500).send({
+        response.status(422).send({
           error: `Purchaser does not have enough to pay for gas on ${network}`,
         })
         return
