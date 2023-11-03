@@ -349,16 +349,22 @@ export default class Dispatcher {
       network,
       params,
     })
-    const { wallet } = await getPurchaser({
-      network,
-      address: transferSignerAddress, // we get the signer at that address! (this throws if the signer does not match!)
-    })
-    const walletAddress = await wallet.getAddress()
-    const isSignedByLocksmith =
-      normalizer.ethereumAddress(transferSignerAddress) ===
-      normalizer.ethereumAddress(walletAddress)
-
-    return isSignedByLocksmith
+    try {
+      const { wallet } = await getPurchaser({
+        network,
+        address: transferSignerAddress, // we get the signer at that address! (this throws if the signer does not match!)
+      })
+      const walletAddress = await wallet.getAddress()
+      const isSignedByLocksmith =
+        normalizer.ethereumAddress(transferSignerAddress) ===
+        normalizer.ethereumAddress(walletAddress)
+      return isSignedByLocksmith
+    } catch (error) {
+      logger.error(`We could not find a signer for ${transferSignerAddress}`, {
+        error,
+      })
+      return false
+    }
   }
 
   /** Sends a purchase transaction */
