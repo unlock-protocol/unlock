@@ -3,9 +3,6 @@ import { kebabCase } from 'lodash'
 import * as metadataOperations from './metadataOperations'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { EventData } from '../models'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkHtml from 'remark-html'
 
 interface AttributeProps {
   value: string
@@ -51,8 +48,9 @@ export const getEventDataForLock = async (
 
   const types = getLockTypeByMetadata(lockMetadata)
 
-  const attributes: AttributeProps[] = lockMetadata?.attributes
+  const attributes: AttributeProps[] = lockMetadata?.attributes || []
 
+  // Util function!
   const getAttribute = (name: string): string | undefined => {
     return (
       attributes?.find(({ trait_type }: AttributeProps) => trait_type === name)
@@ -113,14 +111,9 @@ export const getEventDataForLock = async (
       ? `${eventStartTime} to ${eventEndTime}`
       : `${eventStartTime}`
 
-    const parsedContent = await unified()
-      .use(remarkParse)
-      .use(remarkHtml)
-      .process(lockMetadata?.description || '')
-
     eventDetail = {
-      eventName: lockMetadata?.name,
-      eventDescription: String(parsedContent?.value),
+      eventName: lockMetadata?.name || '',
+      eventDescription: lockMetadata?.description,
       eventDate,
       eventTime,
       eventAddress,

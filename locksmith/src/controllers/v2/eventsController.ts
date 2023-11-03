@@ -56,7 +56,10 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
       id: parsed.id,
       name: parsed.data.name,
       slug,
-      data: parsed.data,
+      data: {
+        ...parsed.data,
+        slug, // Making sure we add the slug to the data as well.
+      },
       createdBy: request.user!.walletAddress,
     },
     {
@@ -102,13 +105,11 @@ export const getEvent: RequestHandler = async (request, response) => {
         },
       })
     }
-
     return response.status(200).send(eventResponse)
   }
 
-  // No event, let's look for a lock that was configured for
-  // an event! (legacy system)
   const settings = await getLockSettingsBySlug(slug)
+
   if (settings) {
     const lockData = await getLockMetadata({
       lockAddress: settings.lockAddress,

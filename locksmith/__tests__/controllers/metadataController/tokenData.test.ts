@@ -41,7 +41,7 @@ const keyHolderStructuredData = lockTypedData(
   'LockMetaData'
 )
 
-const chain = 31337
+const chain = 1
 
 const mockOnChainLockOwnership = {
   getKeyOwner: vi.fn(() => {
@@ -213,7 +213,7 @@ describe('Requesting Token Data', () => {
         expect(response.body).toEqual(
           expect.objectContaining({
             description:
-              'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+              'This is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
             userMetadata: { public: { mock: 'values' } },
           })
         )
@@ -241,7 +241,7 @@ describe('Requesting Token Data', () => {
           expect(response.body).toEqual(
             expect.objectContaining({
               description:
-                'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+                'This is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
               userMetadata: {
                 protected: {
                   hidden: 'metadata',
@@ -275,7 +275,7 @@ describe('Requesting Token Data', () => {
           expect(response.body).toEqual(
             expect.objectContaining({
               description:
-                'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+                'This is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
               userMetadata: {
                 protected: {
                   hidden: 'metadata',
