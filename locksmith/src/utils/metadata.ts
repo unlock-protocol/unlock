@@ -24,6 +24,7 @@ export const getDefaultLockData = async ({ lockAddress, network }: Options) => {
       name: lock.name,
       description: `${lock.name} is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/`,
       image: `${config.services.locksmith}/lock/${lockAddress}/icon`,
+      attributes: [],
     }
   } catch (error) {
     logger.error(error)

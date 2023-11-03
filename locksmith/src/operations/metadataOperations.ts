@@ -10,6 +10,8 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
+import { CheckoutConfig, EventData } from '../models'
+import { getEventUrl } from '../utils/eventHelpers'
 
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
@@ -94,17 +96,20 @@ export const getBaseTokenData = async (
   address: string,
   host: string,
   keyId: string,
-  _network: number = 1
+  network: number
 ) => {
   const defaultResponse = defaultMappings(address, host, keyId)
 
-  const persistedBasedMetadata = await LockMetadata.findOne({
-    where: { address },
+  // Cool That is where we get the base token data from the database
+  // And where we should get the event data!
+  const baseMetadata = await getLockMetadata({
+    lockAddress: address,
+    network,
   })
 
   const result: Record<string, unknown> = {
     ...defaultResponse,
-    ...(persistedBasedMetadata?.data || {}),
+    ...baseMetadata,
   }
 
   return result
@@ -260,20 +265,11 @@ export const getLockMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  // TODO: get data from event if the lock is used for an event!
-  // const event = await EventData.findOne({
-  //   where: {
-  //     locks: {
-  //       [Op.contains]: [
-  //         `${normalizer.ethereumAddress(lockAddress)}-${network}`,
-  //       ],
-  //     },
-  //   },
-  // })
-
-  // if (event) {
-  //   return event?.data
-  // }
+  // default
+  let lockMetadata = await getDefaultLockData({
+    lockAddress,
+    network,
+  })
 
   const lockData = await LockMetadata.findOne({
     where: {
@@ -282,13 +278,35 @@ export const getLockMetadata = async ({
     },
   })
 
-  if (!lockData) {
-    const defaultLockData = await getDefaultLockData({
-      lockAddress,
-      network,
-    })
-    return defaultLockData
+  if (lockData) {
+    lockMetadata = {
+      ...lockMetadata,
+      ...lockData.data,
+    }
   }
 
-  return lockData?.data
+  // Now let's see if there is an event data that needs to be attached
+  // find checkout URLs that include this lock
+  const checkoutConfigs = await CheckoutConfig.findAll({
+    where: {
+      [`config.locks.${lockAddress.toLowerCase()}.network`]: network,
+    },
+    order: [['updatedAt', 'DESC']],
+  })
+  // If there are checkout configs, let's see if an even exists with them!
+  // Let's now find any event that uses this checkout config!
+  const event = await EventData.findOne({
+    where: {
+      checkoutConfigId: checkoutConfigs.map((record) => record.id),
+    },
+  })
+  // Add the event data!
+  if (event) {
+    lockMetadata = {
+      ...lockMetadata,
+      ...event.data,
+      external_url: getEventUrl(event),
+    }
+  }
+  return lockMetadata
 }

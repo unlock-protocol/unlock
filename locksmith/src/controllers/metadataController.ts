@@ -99,7 +99,7 @@ export const data = async (req: any, res: Response): Promise<any> => {
       res.json(keyMetadata)
     }
   } catch (error) {
-    logger.error(`Error serving metadata`)
+    logger.error(`Error serving metadata`, error)
     res.json({})
   }
 }

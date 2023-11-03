@@ -88,8 +88,6 @@ components:
     CheckoutConfig:
       type: object
       required:
-        - 'id'
-        - 'by'
         - 'config'
         - 'name'
       properties:
@@ -102,11 +100,12 @@ components:
         config:
           type: object
           additionalProperties: true
-
+          properties:
+            locks:
+              type: object
         createdAt:
           type: string
           format: date-time
-
         updatedAt:
           type: string
           format: date-time
@@ -3363,12 +3362,7 @@ paths:
                 data:
                   type: object
                 checkoutConfig:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    config:
-                      $ref: '#/components/schemas/CheckoutConfig'
+                  $ref: '#/components/schemas/CheckoutConfig'
 
       responses:
         200:
@@ -3416,12 +3410,7 @@ paths:
                   data:
                     $ref: '#/components/schemas/Event'
                   checkoutConfig:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      config:
-                        $ref: '#/components/schemas/CheckoutConfig'
+                    $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
 
