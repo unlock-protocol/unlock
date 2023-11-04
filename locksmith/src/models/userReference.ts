@@ -28,7 +28,6 @@ UserReference.init(
     emailAddress: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     publicKey: {
       type: DataTypes.STRING,

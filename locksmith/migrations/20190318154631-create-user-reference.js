@@ -11,7 +11,6 @@ module.exports = {
       emailAddress: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
       },
       publicKey: {
         type: Sequelize.STRING,
