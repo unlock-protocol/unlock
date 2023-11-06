@@ -53,7 +53,7 @@ export const EmailTemplatePreview = ({
   isManager,
 }: EmailTemplatePreviewProps) => {
   const config = useConfig()
-  const [showPreview, setShowPreview] = useState(true)
+  const [showPreview, setShowPreview] = useState(false)
   const wedlocksService = useWedlockService()
 
   const {
@@ -101,6 +101,7 @@ export const EmailTemplatePreview = ({
       network,
       lockAddress
     )
+
     const params = {
       keychainUrl: `${config.unlockApp}/keychain`,
       keyId: 5, // Placeholder!
