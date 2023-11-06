@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV12.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -44,7 +45,7 @@ contract CaptchaHook is Ownable {
   ) public view returns (bool isSigner) {
     bytes memory encoded = abi.encodePacked(message);
     bytes32 messageHash = keccak256(encoded);
-    bytes32 hash = ECDSA.toEthSignedMessageHash(messageHash);
+    bytes32 hash = MessageHashUtils.toEthSignedMessageHash(messageHash);
     address recoveredAddress = ECDSA.recover(hash, signature);
     return signers[recoveredAddress];
   }
