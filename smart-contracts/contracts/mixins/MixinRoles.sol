@@ -27,10 +27,10 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
     _setRoleAdmin(KEY_GRANTER_ROLE, LOCK_MANAGER_ROLE);
 
     if (!isLockManager(sender)) {
-      _setupRole(LOCK_MANAGER_ROLE, sender);
+      _grantRole(LOCK_MANAGER_ROLE, sender);
     }
     if (!hasRole(KEY_GRANTER_ROLE, sender)) {
-      _setupRole(KEY_GRANTER_ROLE, sender);
+      _grantRole(KEY_GRANTER_ROLE, sender);
     }
   }
 
