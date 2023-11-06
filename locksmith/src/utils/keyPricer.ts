@@ -12,7 +12,7 @@ import {
   baseStripeFee,
   GAS_COST_TO_GRANT,
 } from './constants'
-import { getPurchaser } from '../fulfillment/dispatcher'
+import { getProviderForNetwork, getPurchaser } from '../fulfillment/dispatcher'
 
 const ZERO = ethers.constants.AddressZero
 
@@ -33,7 +33,10 @@ export default class KeyPricer {
     if (networks[network].fullySubsidizedGas) {
       return { canAfford: true }
     }
-    const { wallet, provider } = await getPurchaser({ network })
+    const [provider, wallet] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network }),
+    ])
     const [gasPrice, balance] = await Promise.all([
       provider.getGasPrice(),
       provider.getBalance(await wallet.getAddress()),
