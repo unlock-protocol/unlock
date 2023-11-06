@@ -17,7 +17,7 @@ export const generateCertificate: RequestHandler = async (
   })
 
   if (!certificate) {
-    return response.status(500).send({
+    return response.status(422).send({
       message: `Certificate can't be generated for the provided tokenId`,
     })
   }

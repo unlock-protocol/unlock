@@ -106,7 +106,7 @@ export const EventCheckoutUrl = ({
     checkoutConfigList?.map(({ name: label, id: value }) => {
       return {
         label,
-        value,
+        value: value!,
       }
     }) ?? []
 

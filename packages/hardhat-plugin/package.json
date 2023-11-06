@@ -37,15 +37,15 @@
   },
   "devDependencies": {
     "@types/chai": "4.3.9",
-    "@types/fs-extra": "11.0.2",
-    "@types/mocha": "10.0.2",
-    "@types/node": "18.16.3",
+    "@types/fs-extra": "11.0.3",
+    "@types/mocha": "10.0.3",
+    "@types/node": "20.8.10",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "4.3.10",
-    "eslint": "8.41.0",
-    "hardhat": "2.18.3",
+    "eslint": "8.52.0",
+    "hardhat": "2.19.0",
     "mocha": "10.2.0",
     "prettier": "3.0.0",
     "ts-mocha": "10.0.0",
@@ -53,7 +53,7 @@
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.3.0",
-    "typescript": "5.1.6"
+    "typescript": "5.2.2"
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
@@ -62,6 +62,6 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "eslint-plugin-mocha": "10.1.0"
+    "eslint-plugin-mocha": "10.2.0"
   }
 }

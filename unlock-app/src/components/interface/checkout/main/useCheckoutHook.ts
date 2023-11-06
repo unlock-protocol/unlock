@@ -10,6 +10,7 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
   GUILD: 'guild',
   CAPTCHA: 'captcha',
+  PROMOCODE: 'promocode',
 }
 
 export function useCheckoutHook(service: CheckoutService) {
