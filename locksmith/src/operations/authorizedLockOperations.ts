@@ -11,7 +11,7 @@ export const hasAuthorization = async (
   const lockAddress = Normalizer.ethereumAddress(address)
   const web3Service = new Web3Service(networks)
 
-  const { wallet } = await getPurchaser({ network })
+  const wallet = await getPurchaser({ network })
 
   const purchaserAddress = await wallet.getAddress()
 
