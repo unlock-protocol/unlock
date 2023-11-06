@@ -376,6 +376,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
       image: `https://staging-locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
       name: 'Test Lock',
       attributes: [],
+      external_url: null,
     })
   })
 
