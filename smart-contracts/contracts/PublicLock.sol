@@ -2,7 +2,6 @@
 pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 import "./mixins/MixinDisable.sol";
 import "./mixins/MixinERC721Enumerable.sol";
 import "./mixins/MixinFunds.sol";
@@ -25,7 +24,6 @@ import "./mixins/MixinConvenienceOwnable.sol";
  */
 contract PublicLock is
   Initializable,
-  ERC165StorageUpgradeable,
   MixinRoles,
   MixinFunds,
   MixinDisable,
@@ -79,12 +77,7 @@ contract PublicLock is
     public
     view
     virtual
-    override(
-      MixinERC721Enumerable,
-      MixinLockMetadata,
-      AccessControlUpgradeable,
-      ERC165StorageUpgradeable
-    )
+    override(MixinERC721Enumerable, MixinLockMetadata, AccessControlUpgradeable)
     returns (bool)
   {
     return super.supportsInterface(interfaceId);

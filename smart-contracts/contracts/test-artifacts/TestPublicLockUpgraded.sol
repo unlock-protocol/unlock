@@ -8,10 +8,8 @@ import "../mixins/MixinLockMetadata.sol";
 import "../mixins/MixinERC721Enumerable.sol";
 import "../mixins/MixinRoles.sol";
 import "../interfaces/IPublicLock.sol";
-import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 
 contract TestPublicLockUpgraded is
-  ERC165StorageUpgradeable,
   MixinLockCore,
   MixinKeys,
   MixinLockMetadata,
@@ -57,12 +55,7 @@ contract TestPublicLockUpgraded is
     public
     view
     virtual
-    override(
-      MixinERC721Enumerable,
-      MixinLockMetadata,
-      AccessControlUpgradeable,
-      ERC165StorageUpgradeable
-    )
+    override(MixinERC721Enumerable, MixinLockMetadata, AccessControlUpgradeable)
     returns (bool)
   {
     return super.supportsInterface(interfaceId);

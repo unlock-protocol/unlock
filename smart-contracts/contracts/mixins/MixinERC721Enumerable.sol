@@ -4,13 +4,11 @@ pragma solidity ^0.8.0;
 import "./MixinKeys.sol";
 import "./MixinLockCore.sol";
 import "./MixinErrors.sol";
-import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol";
 
 /**
  * @title Implements the ERC-721 Enumerable extension.
  */
 contract MixinERC721Enumerable is
-  ERC165StorageUpgradeable,
   MixinErrors,
   MixinLockCore, // Implements totalSupply
   MixinKeys
@@ -40,13 +38,7 @@ contract MixinERC721Enumerable is
 
   function supportsInterface(
     bytes4 interfaceId
-  )
-    public
-    view
-    virtual
-    override(AccessControlUpgradeable, ERC165StorageUpgradeable)
-    returns (bool)
-  {
+  ) public view virtual override(AccessControlUpgradeable) returns (bool) {
     return super.supportsInterface(interfaceId);
   }
 
