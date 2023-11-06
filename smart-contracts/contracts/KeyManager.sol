@@ -3,8 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/cryptography/draft-EIP712Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/cryptography/ECDSAUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/cryptography/EIP712Upgradeable.sol";
+import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 // Hardcoding the lendKey interface
 interface IPublicLockForKeyManager {
@@ -27,7 +27,7 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
   }
 
   function initialize() public initializer {
-    __Ownable_init();
+    __Ownable_init(msg.sender);
     __EIP712_init("KeyManager", "1");
   }
 
@@ -60,7 +60,7 @@ contract KeyManager is Initializable, OwnableUpgradeable, EIP712Upgradeable {
 
     bytes32 hash = _hashTypedDataV4(structHash);
 
-    address signer = ECDSAUpgradeable.recover(hash, transferCode);
+    address signer = ECDSA.recover(hash, transferCode);
 
     if (!locksmiths[signer]) {
       revert NOT_AUTHORIZED(signer);
