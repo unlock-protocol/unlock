@@ -19,7 +19,7 @@ export const pulsechain: NetworkConfig = {
     id: 369,
     isTestNetwork: false,
     keyManagerAddress: '',
-    maxFreeClaimCost: 10000,
+    maxFreeClaimCost: 0,
     multisig: '',
     name: 'pulsechain',
     nativeCurrency: {
