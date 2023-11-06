@@ -33,8 +33,6 @@ contract TestPublicLockUpgraded is
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRoles._initializeMixinRoles(_lockCreator);
-
-    _registerInterface(0x80ac58cd);
   }
 
   // add a function to try
@@ -58,7 +56,7 @@ contract TestPublicLockUpgraded is
     override(MixinERC721Enumerable, MixinLockMetadata, AccessControlUpgradeable)
     returns (bool)
   {
-    return super.supportsInterface(interfaceId);
+    return 0x80ac58cd || super.supportsInterface(interfaceId);
   }
 }
 

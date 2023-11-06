@@ -57,9 +57,6 @@ contract PublicLock is
     MixinRefunds._initializeMixinRefunds();
     MixinRoles._initializeMixinRoles(_lockCreator);
     MixinConvenienceOwnable._initializeMixinConvenienceOwnable(_lockCreator);
-    // registering the interface for erc721 with ERC165.sol using
-    // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
-    _registerInterface(0x80ac58cd);
   }
 
   /**
@@ -80,6 +77,8 @@ contract PublicLock is
     override(MixinERC721Enumerable, MixinLockMetadata, AccessControlUpgradeable)
     returns (bool)
   {
-    return super.supportsInterface(interfaceId);
+    // registering the interface for erc721 with ERC165.sol using
+    // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
+    return 0x80ac58cd || super.supportsInterface(interfaceId);
   }
 }

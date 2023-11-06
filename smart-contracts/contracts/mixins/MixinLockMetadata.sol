@@ -28,9 +28,6 @@ contract MixinLockMetadata is MixinRoles, MixinLockCore, MixinKeys {
 
   function _initializeMixinLockMetadata(string calldata _lockName) internal {
     name = _lockName;
-    // registering the optional erc721 metadata interface with ERC165.sol using
-    // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
-    _registerInterface(0x5b5e139f);
   }
 
   /**
@@ -113,7 +110,9 @@ contract MixinLockMetadata is MixinRoles, MixinLockCore, MixinKeys {
   function supportsInterface(
     bytes4 interfaceId
   ) public view virtual override(AccessControlUpgradeable) returns (bool) {
-    return super.supportsInterface(interfaceId);
+    // registering the optional erc721 metadata interface with ERC165.sol using
+    // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
+    return 0x5b5e139f || super.supportsInterface(interfaceId);
   }
 
   uint256[1000] private __safe_upgrade_gap;
