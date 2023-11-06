@@ -9,7 +9,6 @@ const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
 const time = require('./time')
 const interface = require('./interface')
-const uniswapV2 = require('./uniswapV2')
 const uniswapV3 = require('./uniswapV3')
 const math = require('./math')
 const fork = require('./fork')
@@ -32,7 +31,6 @@ module.exports = {
   ...multisig,
   ...time,
   ...interface,
-  ...uniswapV2,
   ...uniswapV3,
   ...math,
   ...fork,
