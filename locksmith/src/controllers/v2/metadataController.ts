@@ -81,7 +81,7 @@ export const getBulkKeysMetadata: RequestHandler = async (
         .send({
           message: 'Parameter `keys` is not present',
         })
-        .status(500)
+        .status(400)
     }
 
     const owners: { owner: string; keyId: string }[] = keys?.map(

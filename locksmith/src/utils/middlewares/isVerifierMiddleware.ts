@@ -41,7 +41,8 @@ export const isVerifierMiddleware: RequestHandler = async (req, res, next) => {
   } catch (err) {
     logger.error(err)
     return res.status(500).send({
-      message: 'There is some unexpected issue, please try again',
+      message:
+        'There is some unexpected issue when checking if the user is a verifier or manager.',
     })
   }
 }

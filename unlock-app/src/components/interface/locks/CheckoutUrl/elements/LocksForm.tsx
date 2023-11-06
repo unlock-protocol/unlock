@@ -120,12 +120,6 @@ export const BasicConfigForm: React.FC<Props> = ({
         error={errors.emailRequired?.message}
         {...register('emailRequired')}
       />
-      <CheckBoxInput
-        label="Promotion Code"
-        description={PaywallLockConfig.shape.promo?.description}
-        error={errors.promo?.message}
-        {...register('promo')}
-      />
     </form>
   )
 }
