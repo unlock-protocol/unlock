@@ -161,7 +161,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * This deploys an instance of ProxyAdmin used by PublicLock transparent proxies.
    */
   function _deployProxyAdmin() private returns (address) {
-    proxyAdmin = new ProxyAdmin();
+    proxyAdmin = new ProxyAdmin(address(this));
     proxyAdminAddress = address(proxyAdmin);
     return address(proxyAdmin);
   }
@@ -334,7 +334,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       lockAddress
     );
 
-    proxyAdmin.upgrade(proxy, impl);
+    proxyAdmin.upgradeAndCall(proxy, impl, "0x");
 
     // let's upgrade the data schema
     // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
