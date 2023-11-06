@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "./MixinDisable.sol";
 import "./MixinRoles.sol";
 import "./MixinErrors.sol";
@@ -163,7 +164,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
     if (_tokenAddress == address(0)) {
       balance = address(this).balance;
     } else {
-      balance = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
+      balance = IERC20(_tokenAddress).balanceOf(address(this));
     }
 
     uint amount;
