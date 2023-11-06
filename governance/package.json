@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/governance",
-  "packageManager": "yarn@3.5.1",
+  "packageManager": "yarn@4.0.1",
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
