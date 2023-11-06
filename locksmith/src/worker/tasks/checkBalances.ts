@@ -1,32 +1,53 @@
 import * as Sentry from '@sentry/node'
 import { Task } from 'graphile-worker'
-import Dispatcher from '../../fulfillment/dispatcher'
+import {
+  getAllPurchasers,
+  getProviderForNetwork,
+} from '../../fulfillment/dispatcher'
 import { getDefiLammaPrice } from '../../operations/pricingOperations'
 import networks from '@unlock-protocol/networks'
+import logger from '../../logger'
+import { ethers } from 'ethers'
 
 const MIN_BALANCE = 50
 
 export const checkBalances: Task = async () => {
   // Look for balnces for all purchasers, trigger if they are below a threashold.
-  const fulfillmentDispatcher = new Dispatcher()
-  const balances = await fulfillmentDispatcher.balances()
-  console.log(balances)
-  Object.keys(balances).forEach(async (network) => {
-    // Get the balance in USD
-    const balance = balances[network].balance
-    const usdPricing = await getDefiLammaPrice({
-      network: parseInt(network, 10),
+  Object.values(networks)
+    .filter((network) => network.name !== 'localhost')
+    .map(async (network: any) => {
+      try {
+        const [provider, purchasers] = await Promise.all([
+          getProviderForNetwork(network.id),
+          getAllPurchasers({ network: network.id }),
+        ])
+        purchasers.forEach(async (purchaser) => {
+          const address = await purchaser.getAddress()
+          const balance = ethers.utils.formatEther(
+            await provider.getBalance(address)
+          )
+          const usdPricing = await getDefiLammaPrice({
+            network: parseInt(network.id, 10),
+          })
+          if (!usdPricing.price) {
+            // We can't get a $ price for this network, so we can't check the balance
+            logger.info(
+              `Missing price conversion for ${network.name}. Can't compare balance.`
+            )
+            return
+          }
+          const balanceInUSD = usdPricing.price! * parseFloat(balance)
+          if (balanceInUSD < MIN_BALANCE) {
+            Sentry.captureMessage(
+              `Insufficient balance (${balanceInUSD}) for ${address} for network ${network.id} (${network.name})`
+            )
+          }
+        })
+      } catch (error) {
+        logger.error(
+          `Error checking balance for network ${network.name}`,
+          error
+        )
+      }
     })
-    if (!usdPricing.price) {
-      // We can't get a $ price for this network, so we can't check the balance
-      return
-    }
-    if (usdPricing.price! * balance < MIN_BALANCE) {
-      Sentry.captureMessage(
-        `Insufficient balance for network ${network} (${networks[network].name})`
-      )
-    }
-  })
-
-  Sentry.captureException(new Error('custom error'))
 }
