@@ -12040,10 +12040,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.9.3":
-  version: 4.9.3
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.9.3"
-  checksum: bda0240b1d44c913ec5a4e109c622f216c2bbd7b468d210822f75782a5f7fe0609d08bf03b78b253333625e99e507cf2f75212f1de3b274bd9fc64ae967aeec3
+"@openzeppelin/contracts-upgradeable@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@openzeppelin/contracts-upgradeable@npm:5.0.0"
+  peerDependencies:
+    "@openzeppelin/contracts": 5.0.0
+  checksum: 4e8a44db153da299d4798fb5cd10aacc537c7fb0fcde099481b92f291f27597db3854b8cc9d2f3916fdeee686944da272852ffdb47a5dca3c93c226e3d96b5e8
   languageName: node
   linkType: hard
 
@@ -19593,7 +19595,7 @@ __metadata:
     "@nomiclabs/hardhat-waffle": 2.0.5
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 5.0.0
-    "@openzeppelin/contracts-upgradeable": 4.9.3
+    "@openzeppelin/contracts-upgradeable": 5.0.0
     "@openzeppelin/hardhat-upgrades": 1.28.0
     "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.27.3
