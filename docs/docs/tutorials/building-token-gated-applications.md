@@ -10,7 +10,7 @@ This guide provides a high-level overview of the steps involved in building a ty
 
 One way to think of token gating is that it is "permission-less" _in-app purchases_. Your application does not need the approval of an App Store to sell access to custom features or content.
 
-> Note: the flow described here is one used in many Unlock integrations, such as the WordPress plugin. You can try the [flow on this demo blog for example](https://wordpress-demo.unlock-protocol.com).
+> Note: the flow described here is one used in many Unlock integrations, such as the [Unlock Protocol WordPress plugin](https://wordpress.org/plugins/unlock-protocol/). 
 
 ## Pre-requisites
 
