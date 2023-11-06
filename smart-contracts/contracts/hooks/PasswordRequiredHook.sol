@@ -10,8 +10,8 @@ error NOT_AUTHORIZED();
 uint256 constant MAX_INT = 2 ** 256 - 1;
 
 contract PasswordRequiredHook {
-  uint256 public signers;
-  uint256 public counters;
+  mapping(address => mapping(address => uint256)) public signers;
+  mapping(address => mapping(address => uint256)) public counters;
 
   /** NO OP */
   constructor() {}
@@ -36,7 +36,7 @@ contract PasswordRequiredHook {
     address /* referrer */,
     bytes calldata signature /* data */
   ) external view returns (uint256 minKeyPrice) {
-    address signer = getSigner(toString(recipient), signature);
+    address signer = getSigner(_toString(recipient), signature);
     if (
       signers[msg.sender][signer] > 0 &&
       counters[msg.sender][signer] < signers[msg.sender][signer]
@@ -63,15 +63,15 @@ contract PasswordRequiredHook {
    * the signature (address is signed as string on the client)
    */
   function _toString(address account) private pure returns (string memory) {
-    return toString(abi.encodePacked(account));
+    return _toString(abi.encodePacked(account));
   }
 
   function _toString(uint256 value) private pure returns (string memory) {
-    return toString(abi.encodePacked(value));
+    return _toString(abi.encodePacked(value));
   }
 
   function _toString(bytes32 value) private pure returns (string memory) {
-    return toString(abi.encodePacked(value));
+    return _toString(abi.encodePacked(value));
   }
 
   function _toString(bytes memory data) private pure returns (string memory) {
@@ -99,7 +99,7 @@ contract PasswordRequiredHook {
     uint256 /*minKeyPrice*/,
     uint256 /*pricePaid*/
   ) external {
-    address signer = getSigner(toString(recipient), signature);
+    address signer = getSigner(_toString(recipient), signature);
     counters[msg.sender][signer] += 1;
   }
 }
