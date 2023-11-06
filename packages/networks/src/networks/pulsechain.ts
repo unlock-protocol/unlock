@@ -14,7 +14,8 @@ export const pulsechain: NetworkConfig = {
             transaction: (hash: string) => `https://scan.pulsechain.com/tx/${hash}`,
         },
     },
-    featured: true,
+    featured: false,
+
     fullySubsidizedGas: false,
     id: 369,
     isTestNetwork: false,
