@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract GuildHook is Ownable {
   mapping(address => bool) public signers;
 
-  constructor() {}
+  constructor() Ownable(msg.sender) {}
 
   function addSigner(address signer) public onlyOwner {
     signers[signer] = true;
