@@ -2,16 +2,16 @@
 pragma solidity ^0.8.0;
 
 import "./MixinErrors.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 /**
  * @title An implementation of the money related functions.
  */
 contract MixinFunds is MixinErrors {
-  using AddressUpgradeable for address payable;
-  using SafeERC20Upgradeable for IERC20Upgradeable;
+  using Address for address payable;
+  using SafeERC20 for IERC20;
 
   /**
    * The token-type that this Lock is priced in.  If 0, then use ETH, else this is
@@ -26,8 +26,7 @@ contract MixinFunds is MixinErrors {
 
   function _isValidToken(address _tokenAddress) internal view {
     if (
-      _tokenAddress != address(0) &&
-      IERC20Upgradeable(_tokenAddress).totalSupply() < 0
+      _tokenAddress != address(0) && IERC20(_tokenAddress).totalSupply() < 0
     ) {
       revert INVALID_TOKEN();
     }
@@ -48,7 +47,7 @@ contract MixinFunds is MixinErrors {
         // https://diligence.consensys.net/blog/2019/09/stop-using-soliditys-transfer-now/
         _to.sendValue(_amount);
       } else {
-        IERC20Upgradeable token = IERC20Upgradeable(_tokenAddress);
+        IERC20 token = IERC20(_tokenAddress);
         token.safeTransfer(_to, _amount);
       }
     }

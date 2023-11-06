@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 import "./MixinDisable.sol";
 import "./MixinRoles.sol";
 import "./MixinErrors.sol";
@@ -21,7 +21,7 @@ import "../interfaces/hooks/ILockKeyExtendHook.sol";
  * separates logically groupings of code to ease readability.
  */
 contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
-  using AddressUpgradeable for address;
+  using Address for address;
 
   event Withdrawal(
     address indexed sender,

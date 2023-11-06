@@ -3,8 +3,6 @@
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
-
 /**
  * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed
  * behind a proxy. Since proxied contracts do not make use of a constructor, it's common to move constructor logic to an
@@ -78,6 +76,6 @@ abstract contract UnlockInitializable {
   }
 
   function _isConstructor() private view returns (bool) {
-    return !AddressUpgradeable.isContract(address(this));
+    return address(this).code.length > 0;
   }
 }

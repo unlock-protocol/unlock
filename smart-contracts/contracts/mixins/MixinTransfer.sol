@@ -8,8 +8,8 @@ import "./MixinFunds.sol";
 import "./MixinLockCore.sol";
 import "./MixinPurchase.sol";
 import "./MixinErrors.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import {IERC721Receiver} from "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
@@ -26,7 +26,7 @@ contract MixinTransfer is
   MixinKeys,
   MixinPurchase
 {
-  using AddressUpgradeable for address;
+  using Address for address;
 
   event TransferFeeChanged(uint transferFeeBasisPoints);
 
@@ -347,7 +347,7 @@ contract MixinTransfer is
     if (!to.isContract()) {
       return true;
     }
-    bytes4 retval = IERC721ReceiverUpgradeable(to).onERC721Received(
+    bytes4 retval = IERC721Receiver(to).onERC721Received(
       msg.sender,
       from,
       tokenId,
