@@ -2,19 +2,16 @@
 pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract TestERC721 is ERC721 {
-  using Counters for Counters.Counter;
-  Counters.Counter private _tokenIds;
+  uint256 private _tokenIdCounter;
 
   constructor() ERC721("BasicToken", "BASIC") {}
 
   function mint(address holder) public returns (uint256) {
-    _tokenIds.increment();
-
-    uint256 newItemId = _tokenIds.current();
+    uint256 newItemId = _tokenIdCounter;
     _mint(holder, newItemId);
+    _tokenIdCounter += 1;
 
     return newItemId;
   }
