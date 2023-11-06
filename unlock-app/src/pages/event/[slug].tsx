@@ -25,7 +25,10 @@ export const getServerSideProps = async ({ params }: Params) => {
   return {
     props: {
       event: {
-        ...toFormData(eventMetadata.data!),
+        ...toFormData({
+          ...eventMetadata.data!,
+          slug: eventMetadata.slug,
+        }),
       },
       checkoutConfig: eventMetadata.checkoutConfig,
     },

@@ -64,16 +64,13 @@ export const getPurchaser = async function ({
       speed: 'fast',
     })
     if (!address || address === (await wallet.getAddress())) {
-      return { wallet, provider }
+      return wallet
     }
   }
   const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
   if (!address || address === (await wallet.getAddress())) {
-    return {
-      wallet,
-      provider,
-    }
+    return wallet
   }
   throw new Error(`The purchaser at ${address} is unavailable!`)
 }
@@ -192,8 +189,10 @@ export default class Dispatcher {
         .filter((network) => network.name !== 'localhost')
         .map(async (network: any) => {
           try {
-            const provider = await getProviderForNetwork(network.id)
-            const { wallet } = await getPurchaser({ network: network.id })
+            const [provider, wallet] = await Promise.all([
+              getProviderForNetwork(network.id),
+              getPurchaser({ network: network.id }),
+            ])
             const address = await wallet.getAddress()
             let timeout
             const balance: ethers.BigNumberish =
@@ -243,7 +242,7 @@ export default class Dispatcher {
     network: number,
     purchaser?: string
   ): Promise<boolean> {
-    const [provider, { wallet }] = await Promise.all([
+    const [provider, wallet] = await Promise.all([
       getProviderForNetwork(network),
       getPurchaser({ network, address: purchaser }),
     ])
@@ -292,7 +291,7 @@ export default class Dispatcher {
       timestamp: Date.now(),
     })
 
-    const { wallet } = await getPurchaser({ network })
+    const wallet = await getPurchaser({ network })
 
     return [payload, await wallet.signMessage(payload)]
   }
@@ -349,16 +348,22 @@ export default class Dispatcher {
       network,
       params,
     })
-    const { wallet } = await getPurchaser({
-      network,
-      address: transferSignerAddress, // we get the signer at that address! (this throws if the signer does not match!)
-    })
-    const walletAddress = await wallet.getAddress()
-    const isSignedByLocksmith =
-      normalizer.ethereumAddress(transferSignerAddress) ===
-      normalizer.ethereumAddress(walletAddress)
-
-    return isSignedByLocksmith
+    try {
+      const wallet = await getPurchaser({
+        network,
+        address: transferSignerAddress, // we get the signer at that address! (this throws if the signer does not match!)
+      })
+      const walletAddress = await wallet.getAddress()
+      const isSignedByLocksmith =
+        normalizer.ethereumAddress(transferSignerAddress) ===
+        normalizer.ethereumAddress(walletAddress)
+      return isSignedByLocksmith
+    } catch (error) {
+      logger.error(`We could not find a signer for ${transferSignerAddress}`, {
+        error,
+      })
+      return false
+    }
   }
 
   /** Sends a purchase transaction */
@@ -376,8 +381,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // get any purchaser, as the address is not required here.
-    const { wallet, provider } = await getPurchaser({ network })
-
+    const [provider, wallet] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network }),
+    ])
     await walletService.connect(provider, wallet)
 
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
@@ -405,7 +412,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get any purchaser, as the address does not matter
-    const { wallet, provider } = await getPurchaser({ network })
+    const [provider, wallet] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network }),
+    ])
 
     await walletService.connect(provider, wallet)
 
@@ -479,7 +489,10 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
     // get any purchaser here as the address does not matter
-    const { wallet, provider } = await getPurchaser({ network })
+    const [provider, wallet] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network }),
+    ])
     await walletService.connect(provider, wallet)
     return executeAndRetry(
       walletService.extendKey(
@@ -556,7 +569,10 @@ export default class Dispatcher {
     callback: (error: any, hash: string | null) => Promise<void> | void
   ) {
     // purchaser does not matter here
-    const { wallet, provider } = await getPurchaser({ network })
+    const [provider, wallet] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network }),
+    ])
     const walletService = new WalletService(networks)
     await walletService.connect(provider, wallet)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
@@ -590,7 +606,10 @@ export default class Dispatcher {
   ) {
     const walletService = new WalletService(networks)
     // get any purchaser, as the sender of this transaction does not matter
-    const { wallet, provider } = await getPurchaser({ network })
+    const [provider, wallet] = await Promise.all([
+      getProviderForNetwork(network),
+      getPurchaser({ network }),
+    ])
     await walletService.connect(provider, wallet)
 
     const referrer = networks[network]?.multisig
