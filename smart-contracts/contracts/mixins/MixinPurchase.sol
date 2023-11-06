@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "./MixinDisable.sol";
 import "./MixinKeys.sol";
 import "./MixinLockCore.sol";
@@ -221,11 +222,7 @@ contract MixinPurchase is
    */
   function _transferValue(address _payer, uint _priceToPay) private {
     if (tokenAddress != address(0)) {
-      IERC20Upgradeable(tokenAddress).transferFrom(
-        _payer,
-        address(this),
-        _priceToPay
-      );
+      IERC20(tokenAddress).transferFrom(_payer, address(this), _priceToPay);
     } else if (msg.value < _priceToPay) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       revert INSUFFICIENT_VALUE();
