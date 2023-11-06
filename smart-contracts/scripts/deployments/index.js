@@ -1,7 +1,10 @@
 /* eslint-disable global-require */
 const { ethers, run, upgrades } = require('hardhat')
+const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { networks } = require('@unlock-protocol/networks')
 const createLock = require('../lock/create')
+
+const { MaxUint256 } = ethers.constants
 
 const log = (...message) => {
   // eslint-disable-next-line no-console
@@ -12,6 +15,7 @@ const log = (...message) => {
 // TODO: prompt user for each action before doing them and ask them for input?
 async function main({
   premintAmount, // in ETH, must be a string
+  liquidity, // in ETH, must be a string
   unlockAddress,
   unlockVersion,
   publicLockVersion,
@@ -112,6 +116,41 @@ async function main({
       throw new Error(
         'Missing uniswapFactoryAddress. Cannot proceed. Please use --uniswap-factory-address'
       )
+    }
+
+    // get uniswap instance
+    const Router = await ethers.getContractFactory(
+      UniswapV2Router02.abi,
+      UniswapV2Router02.bytecode
+    )
+    const uniswapRouter = Router.attach(uniswapRouterAddress)
+    uniswapFactoryAddress = await uniswapRouter.factory()
+
+    // add liquidity
+    if (isLocalNet) {
+      const amountLiquidity = liquidity || '1000.0'
+      await udt
+        .connect(deployer)
+        .approve(uniswapRouterAddress, ethers.utils.parseEther(amountLiquidity))
+      log(`UDT approved Uniswap Router for ${amountLiquidity} ETH`)
+
+      await uniswapRouter.connect(deployer).addLiquidityETH(
+        udtAddress,
+        ethers.utils.parseEther(amountLiquidity), // pool size
+        '1',
+        '1',
+        deployer.address, // receiver
+        MaxUint256, // max timestamp
+        { value: ethers.utils.parseEther('10.0') }
+      )
+      log(`added liquidity to uniswap ${amountLiquidity}`)
+    }
+
+    // deploy oracle if needed
+    if (!oracleAddress) {
+      oracleAddress = await run('deploy:oracle', {
+        uniswapFactoryAddress,
+      })
     }
   }
 

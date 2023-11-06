@@ -19424,6 +19424,8 @@ __metadata:
     "@safe-global/safe-ethers-lib": 1.9.3
     "@safe-global/safe-service-client": 2.0.3
     "@uniswap/smart-order-router": 3.17.2
+    "@uniswap/v2-core": 1.0.1
+    "@uniswap/v2-periphery": 1.1.0-beta.0
     "@uniswap/v3-core": 1.0.1
     "@uniswap/v3-periphery": 1.4.4
     "@uniswap/v3-sdk": 3.10.0
