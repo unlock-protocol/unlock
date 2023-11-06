@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
 import { Button, Card, Disclosure, minifyAddress } from '@unlock-protocol/ui'
@@ -41,6 +42,7 @@ export const EventDetails = ({
   checkoutConfig,
 }: EventDetailsProps) => {
   const [image, setImage] = useState('')
+  const router = useRouter()
 
   // Check if the user is one of the lock manager
   const { data: isOrganizer } = useEventOrganizer({
@@ -365,6 +367,28 @@ export const EventDetails = ({
                   )}
                 </div>
               </Disclosure>
+
+              {/* Put that only if the event requires the checkout? */}
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
+                    title="Checkout configuration"
+                    description="Configure the checkout experience for your event: collect attendee info... etc."
+                  />
+                </div>
+                <div className="md:col-span-1">
+                  <Button
+                    variant="black"
+                    className="button border w-full"
+                    size="small"
+                    onClick={() => {
+                      router.push(`/locks/checkout-url?id=${checkoutConfig.id}`)
+                    }}
+                  >
+                    Configure
+                  </Button>
+                </div>
+              </Card>
             </div>
           </div>
         )}
