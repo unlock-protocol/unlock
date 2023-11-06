@@ -17,6 +17,7 @@ export interface EventProps {
   eventName: string
   startDate: Date | null
   endDate: Date | null
+  eventUrl: string | null
 }
 
 const getEventDate = (
@@ -118,6 +119,7 @@ export const getEventDataForLock = async (
       eventTime,
       eventAddress,
       startDate,
+      eventUrl: lockMetadata?.external_url,
       endDate,
     }
   }

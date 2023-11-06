@@ -12,11 +12,13 @@ import { getLockMetadata } from '../../operations/metadataOperations'
 import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
 import { saveCheckoutConfig } from '../../operations/checkoutConfigOperations'
 
-// deprecated!
-export const getEventDetails: RequestHandler = async (request, response) => {
+// DEPRECATED!
+export const getEventDetailsByLock: RequestHandler = async (
+  request,
+  response
+) => {
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-
   const eventDetails = await getEventDataForLock(lockAddress, network)
   return response.status(200).send(eventDetails)
 }
