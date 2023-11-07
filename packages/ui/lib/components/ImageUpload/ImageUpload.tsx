@@ -8,7 +8,7 @@ import { classed } from '@tw-classed/react'
 const tabs = [
   {
     id: 1,
-    name: 'Upload File',
+    name: 'Upload image file',
   },
   {
     id: 2,
@@ -122,7 +122,7 @@ export const ImageUpload = ({
               >
                 <input {...getInputProps()} />
                 <Button size="small" type="button" variant="outlined-primary">
-                  Select a file
+                  Select an image file
                 </Button>
               </div>
             </Tab.Panel>
