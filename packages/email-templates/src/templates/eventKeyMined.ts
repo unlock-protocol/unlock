@@ -10,7 +10,7 @@ handlebars.registerHelper('eventDetails', eventDetails)
 
 export default {
   base: 'events',
-  subject: `Here is your ticket!`,
+  subject: `Here is your ticket for {{{lockName}}}`,
   html: `<h1>Here's your ticket</h1>
 
 {{#if customContent}}
@@ -28,9 +28,6 @@ export default {
   eventUrl
 }}
 
-<p>You can view your ticket online <a href="{{keychainUrl}}">here</a>.</p>
-
 {{transactionLink transactionReceiptUrl}}
-
 `,
 }
