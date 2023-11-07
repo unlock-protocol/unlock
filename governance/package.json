@@ -15,9 +15,9 @@
     "@unlock-protocol/hardhat-helpers": "workspace:^",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
-    "eslint": "8.46.0",
+    "eslint": "8.52.0",
     "hardhat": "2.18.3",
-    "solhint": "3.4.1"
+    "solhint": "4.0.0"
   },
   "scripts": {
     "test": "hardhat test",

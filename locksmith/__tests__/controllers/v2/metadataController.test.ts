@@ -375,6 +375,8 @@ describe('Metadata v2 endpoints for locksmith', () => {
         'Test Lock is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
       image: `https://staging-locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
       name: 'Test Lock',
+      attributes: [],
+      external_url: null,
     })
   })
 

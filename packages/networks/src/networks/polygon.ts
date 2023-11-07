@@ -54,7 +54,7 @@ export const polygon: NetworkConfig = {
   id: 137,
   isTestNetwork: false,
   keyManagerAddress: '0x7111a1aDfbED501beaAd556Bba7cB6dCa3296aa9',
-  maxFreeClaimCost: 1000,
+  maxFreeClaimCost: 100,
   multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   name: 'Polygon',
   nativeCurrency: {
