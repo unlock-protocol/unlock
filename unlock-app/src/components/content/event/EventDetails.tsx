@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -12,7 +12,11 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import { Event, PaywallConfigType } from '@unlock-protocol/core'
+import {
+  Event,
+  PaywallConfigType,
+  formDataToMetadata,
+} from '@unlock-protocol/core'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
@@ -21,6 +25,7 @@ import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
+import { storage } from '~/config/storage'
 
 interface EventDetailsProps {
   event: Event
@@ -57,6 +62,30 @@ export const EventDetails = ({
   const eventUrl = getEventUrl({
     event,
   })
+  // Migrate legacy event and/or redirect
+  useEffect(() => {
+    const migrateAndRedirect = async () => {
+      if (router.pathname === '/event') {
+        if (event.slug) {
+          router.push(eventUrl)
+        } else {
+          const { data: savedEvent } = await storage.saveEventData({
+            data: formDataToMetadata(event),
+            // @ts-expect-error Property ''name'' is missing in type
+            checkoutConfig,
+          })
+          if (savedEvent.data) {
+            router.push(
+              getEventUrl({
+                event: savedEvent.data,
+              })
+            )
+          }
+        }
+      }
+    }
+    migrateAndRedirect()
+  }, [router, event, eventUrl])
 
   const [_, setCopied] = useClipboard(eventUrl, {
     successDuration: 1000,
@@ -110,8 +139,6 @@ export const EventDetails = ({
   const hasDate = startDate || startTime || endDate || endTime
 
   const coverImage = event.ticket.event_cover_image
-
-  console.log({ event })
 
   // TODO: OG for event!
   // const locksmithEventOG = new URL(
