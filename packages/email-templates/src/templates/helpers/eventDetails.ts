@@ -37,7 +37,7 @@ export function eventDetails(
     </div>
 
     <div>
-      <a style="display:inline-block;background-color:#603DEE;color:white !important;font-family:helvetica;font-size:16px;line-height:1;margin:0;text-decoration:none;text-transform:none;border-radius:9999px;font-weight:700;padding:12px 24px;margin-top:12px" target="_blank" href="${eventUrl}">Event Page</a>
+      <a style="display:inline-block;background-color:#603DEE;color:white !important;font-family:helvetica;font-size:16px;line-height:1;margin:0;text-decoration:none;text-transform:none;border-radius:9999px;font-weight:700;padding:12px 24px;margin-top:12px" target="_blank" href="${eventUrl}">View Event Page</a>
     </div>
   </div>`
 
