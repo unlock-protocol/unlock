@@ -181,7 +181,9 @@ export const EmailTemplatePreview = ({
 
           // add all params in URL
           Object.entries(params).map(([key, value]) => {
-            url.searchParams.append(key, value.toString())
+            if (value) {
+              url.searchParams.append(key, value.toString())
+            }
           })
 
           return (
