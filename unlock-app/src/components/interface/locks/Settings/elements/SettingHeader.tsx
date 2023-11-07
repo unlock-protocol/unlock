@@ -53,7 +53,7 @@ export const SettingHeader = ({
             </span>
             <div className="flex gap-4">
               <div className="px-4 py-1 bg-lime-200 rounded-2xl">{version}</div>
-              <AddressLink lockAddress={lock.address} network={network} />
+              <AddressLink address={lock.address} network={network} />
             </div>
           </div>
         </div>

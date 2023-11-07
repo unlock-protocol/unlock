@@ -3,7 +3,7 @@ import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useLockData } from '~/hooks/useLockData'
 import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
 import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
-import { AddressLink } from '~/components/interface/AddressLink'
+import { ExplorerLink } from '~/components/interface/AddressLink'
 import { Icon, Placeholder } from '@unlock-protocol/ui'
 
 interface LockPriceDetailsProps {
@@ -39,7 +39,7 @@ export const LockPriceDetails = ({
     contractAddress: lock?.currencyContractAddress,
   })
 
-  if (isLockLoading) {
+  if (isLockLoading || !lock) {
     return (
       <Placeholder.Root inline>
         <Placeholder.Line width="sm" />
@@ -50,6 +50,11 @@ export const LockPriceDetails = ({
 
   return (
     <div className="flex flex-col gap-1">
+      {showContract && (
+        <div className="flex gap-2 flex-row text-brand-gray">
+          {lock!.name} <ExplorerLink address={lockAddress} network={network} />
+        </div>
+      )}
       <div className="flex items-center gap-5">
         <div className="flex items-center gap-2">
           <>
@@ -71,12 +76,6 @@ export const LockPriceDetails = ({
           {!isSoldOut && <span className="text-gray-600">Left</span>}
         </div>
       </div>
-      {showContract && (
-        <div className="flex gap-2 flex-rows">
-          <span className="text-brand-gray">Ticket contract</span>
-          <AddressLink lockAddress={lockAddress} network={network} />
-        </div>
-      )}
     </div>
   )
 }
