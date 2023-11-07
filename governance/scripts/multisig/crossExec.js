@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const { networks } = require('@unlock-protocol/networks')
 
 const delayABI = [
   {
@@ -422,14 +423,21 @@ const delayABI = [
     type: 'function',
   },
 ]
-async function main({
-  delayModuleAddress = '0xE12CCcf36449907db62b10Fe0f4Aa70DACACeBff',
-  bridgeTxHash = '0x17c6d4fb1b80c867c54ef2e57f0f29bf608f4da6d114192e54479da480e4bd5c',
-} = {}) {
-  const delayMod = await ethers.getContractAt(delayABI, delayModuleAddress)
 
-  // TODO: fetch delayMod address from networks package
+async function main({ delayModuleAddress, bridgeTxHash } = {}) {
+  // fetch delayMod address from networks package
+  if (!delayModuleAddress) {
+    const { chainId } = await ethers.provider.getNetwork()
+    ;({
+      governanceBridge: {
+        modules: { delayMod: delayModuleAddress },
+      },
+    } = networks[chainId])
+  }
+
+  const delayMod = await ethers.getContractAt(delayABI, delayModuleAddress)
   // TODO: fetch tx from Connext graph
+  console.log({ delayModuleAddress, bridgeTxHash })
 
   // get the nonces
   const currentNonce = await delayMod.txNonce()
