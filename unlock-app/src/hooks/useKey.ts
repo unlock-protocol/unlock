@@ -37,7 +37,7 @@ export const useValidKeyBulk = (locks: PaywallLocksConfigType) => {
       const network = locks[lockAddress].network
       return {
         enabled: !!account,
-        queryKey: ['validKeyForKey', lockAddress, network],
+        queryKey: ['validKeyForKey', lockAddress, account, network],
         queryFn: async () => {
           if (!account) {
             return false
