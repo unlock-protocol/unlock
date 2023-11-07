@@ -19,6 +19,5 @@ export default {
 
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and its metadata.</p>
 
-{{links txUrl openSeaUrl true}}
 `,
 }

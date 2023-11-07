@@ -28,13 +28,6 @@ export default {
   eventUrl
 }}
 
-<p>You can view your ticket online <a href="{{keychainUrl}}">here</a>.</p>
-
-<p>You can transfer it to your own wallet <a href="{{transferUrl}}">by going there</a>. You can also print the ticket attached to this email.</p>
-
-{{links txUrl openSeaUrl true}}
-
-{{transactionLink transactionReceiptUrl}}
-
+<small>Have a crypto wallet? Your ticket is an NFT and can be transferred to your self-custodial wallet <a href="{{transferUrl}}">by going there</a>.</small>
 `,
 }

@@ -22,6 +22,5 @@ export default {
 {{else}}
   <p>You can transfer it to your own wallet <a href="{{transferUrl}}">by going there</a>.</p>
 {{/if}}
-{{links txUrl openSeaUrl true}}
 `,
 }

@@ -7,12 +7,12 @@ import { asHtml } from '../utils'
 describe('eventKeyMined', () => {
   it('should have transaction receipt link', () => {
     expect.assertions(2)
-    const content = prepareAll(eventKeyMined).html({
+    const template = prepareAll(eventKeyMined)
+    const content = template.html({
       keyId: '1337',
-      lockName: 'Ethereal NYC 202',
+      lockName: 'Ethereal NYC 2023',
       network: 'Polygon',
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
-      openSeaUrl: 'http://opensealurl.com',
       transactionReceiptUrl: 'https://app.unlock-protocol.com/receipts',
     })
 
@@ -25,14 +25,20 @@ describe('eventKeyMined', () => {
   })
 
   it('should not have transaction receipt link', () => {
-    expect.assertions(2)
-    const content = prepareAll(eventKeyMined).html({
+    expect.assertions(3)
+    const template = prepareAll(eventKeyMined)
+    const content = template.html({
       keyId: '1337',
-      lockName: 'Ethereal NYC 202',
+      lockName: 'Ethereal NYC 2023',
       network: 'Polygon',
       keychainUrl: 'https://app.unlock-protocol.com/keychain',
-      openSeaUrl: 'http://opensealurl.com',
     })
+
+    expect(
+      template.subject({
+        lockName: 'Ethereal NYC 2023',
+      })
+    ).contain('Here is your ticket for Ethereal NYC 2023')
 
     expect(asHtml(content).textContent).not.contain(
       'PS: you can view and print a transaction receipt if needed.'
