@@ -75,9 +75,11 @@ export const EventDetails = ({
             checkoutConfig,
           })
           if (savedEvent.data) {
-            router.push({
-              event: savedEvent.data,
-            })
+            router.push(
+              getEventUrl({
+                event: savedEvent.data,
+              })
+            )
           }
         }
       }
