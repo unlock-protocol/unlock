@@ -44,7 +44,7 @@ interface GoogleMapsAutoCompleteProps {
 const GoogleMapsAutoComplete = ({ onChange }: GoogleMapsAutoCompleteProps) => {
   const { ref } = usePlacesWidget({
     options: {
-      types: ['address'],
+      types: [],
     },
     apiKey: config.googleMapsApiKey,
     onPlaceSelected: (place) => onChange(place.formatted_address),
