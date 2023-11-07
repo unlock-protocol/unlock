@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const pulsechainTestnetV4: NetworkConfig = {
     chain: 'pulsechainTestnetV4',
-    description: 'Pulsechain Testnet V4.',
+    description: 'Pulsechain Testnetv4 is the test ground for Pulsechain which is a full system state fork of Ethereum mainnet and maintains upstream compatliblity with the Ethereum code base. It provides lower gas costs and 10s block times and is supported by a community that places importance on permissionless protocols.',
     explorer: {
         name: 'pulsechainTestnetV4',
         urls: {
@@ -30,7 +30,7 @@ export const pulsechainTestnetV4: NetworkConfig = {
     previousDeploys: [],
     provider: 'https://rpc.unlock-protocol.com/369',
     publicLockVersionToDeploy: 13,
-    publicProvider: 'https://scan.v4.testnet.pulsechain.com',
+    publicProvider: 'https://rpc.v4.testnet.pulsechain.com',
     startBlock: 2247300,
     // Graph can be found at https://scan.v4.testnet.pulsechain.com/graphiql/
     subgraph: {
