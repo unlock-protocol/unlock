@@ -119,6 +119,17 @@ const WalletlessRegistrationClaiming = ({
             lockName={''}
             lockAddress={lockAddress}
             network={network}
+            states={{
+              PROCESSING: {
+                text: 'Creating your ticket...',
+              },
+              FINISHED: {
+                text: 'Successfully created your ticket!',
+              },
+              ERROR: {
+                text: 'Failed to create the ticket.',
+              },
+            }}
           />
         </div>
       )}

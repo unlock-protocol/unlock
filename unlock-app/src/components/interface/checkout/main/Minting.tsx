@@ -4,7 +4,7 @@ import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { Fragment, useEffect, useMemo } from 'react'
+import { Fragment, useEffect } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -31,6 +31,19 @@ interface MintingScreenProps {
   owner: string
   lockAddress: string
   network: number
+  states?: Record<string, { text: string }>
+}
+
+const DEFAULT_STATES = {
+  PROCESSING: {
+    text: 'Minting NFT...',
+  },
+  FINISHED: {
+    text: 'Successfully minted NFT',
+  },
+  ERROR: {
+    text: 'Failed to mint NFT',
+  },
 }
 
 export const MintingScreen = ({
@@ -39,6 +52,7 @@ export const MintingScreen = ({
   owner,
   lockAddress,
   network,
+  states = DEFAULT_STATES,
 }: MintingScreenProps) => {
   const web3Service = useWeb3Service()
   const config = useConfig()
@@ -58,33 +72,12 @@ export const MintingScreen = ({
   )
   const hasTokenId = !!tokenId
 
-  const content = useMemo(() => {
-    switch (mint?.status) {
-      case 'PROCESSING': {
-        return {
-          title: 'Minting NFT',
-          text: 'Minting NFT...',
-        }
-      }
-      case 'FINISHED': {
-        return {
-          title: 'You have NFT!',
-          text: 'Successfully minted NFT',
-        }
-      }
-      case 'ERROR': {
-        return {
-          title: 'Minting failed',
-          text: 'Failed to mint NFT',
-        }
-      }
-    }
-  }, [mint?.status])
-
   return (
     <div className="flex flex-col items-center justify-center h-full space-y-2">
       <TransactionAnimation status={mint?.status} />
-      <p className="text-lg font-bold text-brand-ui-primary">{content?.text}</p>
+      <p className="text-lg font-bold text-brand-ui-primary">
+        {states[mint?.status]?.text}
+      </p>
       {mint?.status === 'FINISHED' && hasTokenId && (
         <Link
           href="/keychain"
