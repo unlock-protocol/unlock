@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const pulsechain: NetworkConfig = {
     chain: 'pulsechain',
-    description: 'pulsechain mainnet.',
+    description: 'Pulsechain is a full system state fork of Ethereum mainnet and maintains upstream compatliblity with the Ethereum code base. It provides lower gas costs and 10s block times and is supported by a community that places importance on permissionless protocols.',
     explorer: {
         name: 'Pulsechain',
         urls: {
@@ -32,7 +32,7 @@ export const pulsechain: NetworkConfig = {
     previousDeploys: [],
     provider: 'https://rpc.unlock-protocol.com/369',
     publicLockVersionToDeploy: 13,
-    publicProvider: 'https://scan.pulsechain.com',
+    publicProvider: 'https://rpc.pulsechain.com',
     startBlock: 2247300,
     // Graph can be found at https://graph.pulsechain.com/
     subgraph: {
