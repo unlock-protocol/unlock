@@ -9,11 +9,20 @@ error NOT_AUTHORIZED();
 contract DiscountHook {
   // mapping of lock address, to address for password to keyPrice
   mapping(address => mapping(address => uint)) public discounts;
+  // mapping of lock address, to address to cap
+  mapping(address => mapping(address => uint256)) public caps;
+  // mapping of lock address, to address to counter
+  mapping(address => mapping(address => uint256)) public counters;
 
   constructor() {}
 
   // discount is expressed in basis points (ie 100% is 10000)
-  function setSigner(address lock, address signer, uint discount) public {
+  function setSigner(
+    address lock,
+    address signer,
+    uint discount,
+    uint cap
+  ) public {
     if (discount > 10000) {
       revert TOO_BIG();
     }
@@ -21,6 +30,7 @@ contract DiscountHook {
       revert NOT_AUTHORIZED();
     }
     discounts[lock][signer] = discount;
+    caps[lock][signer] = cap;
   }
 
   /**
@@ -38,7 +48,11 @@ contract DiscountHook {
       return keyPrice;
     }
     address signer = getSigner(toString(recipient), signature);
-    if (discounts[msg.sender][signer] > 0) {
+    if (
+      discounts[msg.sender][signer] > 0 && // If there is a discount
+      caps[msg.sender][signer] > 0 && // If the cap is not reached
+      counters[msg.sender][signer] < caps[msg.sender][signer] // if the counter is not reached
+    ) {
       // Overflow?
       return keyPrice - (keyPrice * discounts[msg.sender][signer]) / 10000;
     }
@@ -51,13 +65,14 @@ contract DiscountHook {
   function onKeyPurchase(
     uint256 /* tokenId */,
     address /*from*/,
-    address /*recipient*/,
+    address recipient,
     address /*referrer*/,
-    bytes calldata /*data*/,
+    bytes calldata signature,
     uint256 /*minKeyPrice*/,
     uint256 /*pricePaid*/
   ) external {
-    // No op
+    address signer = getSigner(toString(recipient), signature);
+    counters[msg.sender][signer] += 1;
   }
 
   /**

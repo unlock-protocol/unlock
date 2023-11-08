@@ -8,19 +8,20 @@ error WRONG_PASSWORD();
 error NOT_AUTHORIZED();
 
 contract PasswordRequiredHook {
-  mapping(address => address) public signers;
+  mapping(address => mapping(address => uint256)) public signers;
+  mapping(address => mapping(address => uint256)) public counters;
 
   /** NO OP */
   constructor() {}
 
   /**
-   * Function to set the signer for a lock.
+   * Function to set the signer for a lock. A number of usages can be passed
    */
-  function setSigner(address lock, address signer) public {
+  function setSigner(address lock, address signer, uint256 usages) public {
     if (!IPublicLockV12(lock).isLockManager(msg.sender)) {
       revert NOT_AUTHORIZED();
     }
-    signers[lock] = signer;
+    signers[lock][signer] = usages;
   }
 
   /**
@@ -33,7 +34,11 @@ contract PasswordRequiredHook {
     address /* referrer */,
     bytes calldata signature /* data */
   ) external view returns (uint256 minKeyPrice) {
-    if (getSigner(toString(recipient), signature) == signers[msg.sender]) {
+    address signer = getSigner(_toString(recipient), signature);
+    if (
+      signers[msg.sender][signer] > 0 &&
+      counters[msg.sender][signer] < signers[msg.sender][signer]
+    ) {
       return IPublicLockV12(msg.sender).keyPrice();
     }
     revert WRONG_PASSWORD();
@@ -55,19 +60,19 @@ contract PasswordRequiredHook {
    * Helper functions to turn address into string so we can verify
    * the signature (address is signed as string on the client)
    */
-  function toString(address account) public pure returns (string memory) {
-    return toString(abi.encodePacked(account));
+  function _toString(address account) private pure returns (string memory) {
+    return _toString(abi.encodePacked(account));
   }
 
-  function toString(uint256 value) public pure returns (string memory) {
-    return toString(abi.encodePacked(value));
+  function _toString(uint256 value) private pure returns (string memory) {
+    return _toString(abi.encodePacked(value));
   }
 
-  function toString(bytes32 value) public pure returns (string memory) {
-    return toString(abi.encodePacked(value));
+  function _toString(bytes32 value) private pure returns (string memory) {
+    return _toString(abi.encodePacked(value));
   }
 
-  function toString(bytes memory data) public pure returns (string memory) {
+  function _toString(bytes memory data) private pure returns (string memory) {
     bytes memory alphabet = "0123456789abcdef";
 
     bytes memory str = new bytes(2 + data.length * 2);
@@ -81,15 +86,18 @@ contract PasswordRequiredHook {
   }
 
   /**
-   * No-op but required for the hook to work
+   * Records the use of the password!
    */
   function onKeyPurchase(
     uint256 /* tokenId */,
     address /*from*/,
-    address /*recipient*/,
+    address recipient,
     address /*referrer*/,
-    bytes calldata /*data*/,
+    bytes calldata signature,
     uint256 /*minKeyPrice*/,
     uint256 /*pricePaid*/
-  ) external {}
+  ) external {
+    address signer = getSigner(_toString(recipient), signature);
+    counters[msg.sender][signer] += 1;
+  }
 }
