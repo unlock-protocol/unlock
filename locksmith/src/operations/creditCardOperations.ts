@@ -17,20 +17,20 @@ interface CreditCardStateProps {
 
 // Function that checks if card is enabled for a lock
 // This function does several checks that are expensive
-// so we have doing them in parallel and try to "fail early"
+// so we have doing them in parallel and try to "resolve early"
 export const getCreditCardEnabledStatus = async ({
   lockAddress,
   network,
 }: CreditCardStateProps): Promise<boolean> => {
   const fulfillmentDispatcher = new Dispatcher()
 
-  // Checks ths DB + Stripe's API, but this should fail the most often
+  // Checks the DB + Stripe's API, but this should return false the most often
   const { stripeEnabled } = await getStripeConnectForLock(lockAddress, network)
   if (!stripeEnabled) {
     return false
   }
 
-  // This does on an onchain check, but should fail rarely
+  // This does an onchain check, but should mostly return true
   const hasEnoughToPayForGas =
     await fulfillmentDispatcher.hasFundsForTransaction(network)
   if (!hasEnoughToPayForGas) {
@@ -40,7 +40,9 @@ export const getCreditCardEnabledStatus = async ({
   // Check if the lock has authorized credit card payments
   // get the total price in cents
   const [isAuthorizedForCreditCard, totalPriceInCents] = await Promise.all([
+    // This should almost always be true if the db check above is true...
     AuthorizedLockOperations.hasAuthorization(lockAddress, network),
+    // This is expensive
     getTotalPriceToChargeInCentsForLock({
       lockAddress,
       network,

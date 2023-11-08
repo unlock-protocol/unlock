@@ -102,8 +102,6 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   try {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-
-    // Check if credit card is enabled for this lock
     const creditCardEnabled = await getCreditCardEnabledStatus({
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
