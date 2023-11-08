@@ -35,16 +35,24 @@ export const EmailTemplatePreview = ({
   const [showPreview, setShowPreview] = useState(false)
   const wedlocksService = useWedlockService()
 
+  const { email, customContent, ...rest } = useEmailPreview({
+    lockAddress,
+    network,
+    templateId,
+  })
+
   const {
     register,
     handleSubmit,
     formState: { errors, isDirty },
     watch,
     reset,
-  } = useForm<FormSchemaProps>()
+  } = useForm<FormSchemaProps>({
+    defaultValues: { customContent },
+  })
 
-  const customContent = watch('customContent', '')
-  const onSaveCustomContent = async () => {
+  const onSaveCustomContent = async ({ customContent }) => {
+    console.log('save: ', { customContent })
     const saveEmailPromise = storage.saveCustomEmailContent(
       network,
       lockAddress,
@@ -68,12 +76,18 @@ export const EmailTemplatePreview = ({
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
+  console.log(rest)
+
   /**
    * Send preview email
    * @param form
    */
   const onSubmit = async (form: FormSchemaProps) => {
-    const params = await emailPreviewData({ lockAddress, network })
+    const params = await emailPreviewData({
+      lockAddress,
+      network,
+      customContent,
+    })
 
     const { data: lockSettings } = await storage.getLockSettings(
       network,
@@ -97,13 +111,6 @@ export const EmailTemplatePreview = ({
     })
     setShowPreview(false) // close modal after email is sent
   }
-
-  const { email, ...rest } = useEmailPreview({
-    lockAddress,
-    network,
-    templateId,
-  })
-  console.log(rest)
 
   const loading = saveCustomContent.isLoading
   const disableShowPreview = loading || saveCustomContent.isLoading || isDirty

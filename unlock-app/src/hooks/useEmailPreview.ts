@@ -16,8 +16,13 @@ export const useEmailPreview = ({
 }) => {
   const { data: customContent, ...rest } = useQuery(
     ['getCustomContent', network, lockAddress, templateId],
-    () => {
-      return storage.getCustomEmailContent(network, lockAddress, templateId)
+    async () => {
+      const response = await storage.getCustomEmailContent(
+        network,
+        lockAddress,
+        templateId
+      )
+      return response.data.content
     }
   )
 
@@ -28,7 +33,11 @@ export const useEmailPreview = ({
         `${config.services.wedlocks.host}/preview/${templateId}`
       )
 
-      const params = await emailPreviewData({ network, lockAddress })
+      const params = await emailPreviewData({
+        network,
+        lockAddress,
+        customContent,
+      })
       Object.entries(params).map(([key, value]) => {
         if (value) {
           url.searchParams.append(key, value.toString())
@@ -67,7 +76,7 @@ export const emailPreviewData = async ({
   customContent: string
 }) => {
   const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
-  const customContentHtml: string = await markdownToHtml(customContent)
+  const customContentHtml: string = await markdownToHtml(customContent || '')
   const { data: eventDetails } = await storage.getEventDetails(
     network,
     lockAddress
