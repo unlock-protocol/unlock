@@ -1,22 +1,24 @@
 import { RequestHandler } from 'express'
 import {
-  createEventSlug,
   getEventBySlug,
   getEventDataForLock,
+  saveEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
-import { CheckoutConfig, EventData } from '../../models'
+import { CheckoutConfig } from '../../models'
 import { z } from 'zod'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
 import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
-import { saveCheckoutConfig } from '../../operations/checkoutConfigOperations'
+import listManagers from '../../utils/lockManagers'
 
-// deprecated!
-export const getEventDetails: RequestHandler = async (request, response) => {
+// DEPRECATED!
+export const getEventDetailsByLock: RequestHandler = async (
+  request,
+  response
+) => {
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-
   const eventDetails = await getEventDataForLock(lockAddress, network)
   return response.status(200).send(eventDetails)
 }
@@ -29,6 +31,7 @@ export const EventBody = z.object({
     id: z.string().optional(),
   }),
 })
+export type EventBodyType = z.infer<typeof EventBody>
 
 const defaultPaywallConfig: Partial<PaywallConfigType> = {
   title: 'Registration',
@@ -46,44 +49,11 @@ const defaultPaywallConfig: Partial<PaywallConfigType> = {
 }
 
 export const saveEventDetails: RequestHandler = async (request, response) => {
-  const parsed = await EventBody.parseAsync(request.body)
-
-  const slug =
-    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
-
-  const [event, created] = await EventData.upsert(
-    {
-      id: parsed.id,
-      name: parsed.data.name,
-      slug,
-      data: {
-        ...parsed.data,
-        slug, // Making sure we add the slug to the data as well.
-      },
-      createdBy: request.user!.walletAddress,
-    },
-    {
-      conflictFields: ['slug'],
-    }
+  const parsedBody = await EventBody.parseAsync(request.body)
+  const [event, created] = await saveEvent(
+    parsedBody,
+    request.user!.walletAddress
   )
-
-  if (!event.checkoutConfigId) {
-    const checkoutConfig = await PaywallConfig.strip().parseAsync(
-      parsed.checkoutConfig.config
-    )
-    const createdConfig = await saveCheckoutConfig({
-      name: `Checkout config for ${event.name}`,
-      config: checkoutConfig,
-      createdBy: request.user!.walletAddress,
-    })
-    // And now attach the id to the event
-    event.checkoutConfigId = createdConfig.id
-    await event.save()
-  }
-
-  // TODO: We should update the metadata on the locks
-  // to point to this event by default!
-
   const statusCode = created ? 201 : 200
   return response.status(statusCode).send(event.toJSON())
 }
@@ -135,6 +105,19 @@ export const getEvent: RequestHandler = async (request, response) => {
               },
             },
           }
+
+      await saveEvent(
+        {
+          data: { ...lockData },
+          checkoutConfig: checkoutConfig!,
+        },
+        (
+          await listManagers({
+            lockAddress: settings.lockAddress,
+            network: settings.network,
+          })
+        )[0]
+      )
       return response.status(200).send({
         data: { ...lockData },
         checkoutConfig,

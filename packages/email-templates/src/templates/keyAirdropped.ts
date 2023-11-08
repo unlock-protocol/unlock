@@ -16,7 +16,7 @@ export default {
   </section>
 {{/if}}
 
-<p> You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
+<p> You can transfer it to your own wallet <a href="{{transferUrl}}">by going there</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
 
 {{links txUrl openSeaUrl true}}
 

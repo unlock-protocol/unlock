@@ -44,7 +44,7 @@ interface GoogleMapsAutoCompleteProps {
 const GoogleMapsAutoComplete = ({ onChange }: GoogleMapsAutoCompleteProps) => {
   const { ref } = usePlacesWidget({
     options: {
-      types: ['address'],
+      types: [],
     },
     apiKey: config.googleMapsApiKey,
     onPlaceSelected: (place) => onChange(place.formatted_address),
@@ -301,7 +301,11 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       onChange={(event) => {
-                        if (!details.metadata?.ticket?.event_end_date) {
+                        if (
+                          !details.metadata?.ticket?.event_end_date ||
+                          new Date(details.metadata?.ticket?.event_end_date) <
+                            new Date(event.target.value)
+                        ) {
                           setValue(
                             'metadata.ticket.event_end_date',
                             event.target.value
