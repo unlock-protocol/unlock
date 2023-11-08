@@ -194,10 +194,10 @@ export const EventDetails = ({
               </div>
               <ul className="flex items-center gap-2 mt-auto md:gap-2">
                 <li>
-                  <AddToCalendarButton event={event} />
+                  <AddToCalendarButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
-                  <TweetItButton event={event} />
+                  <TweetItButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
                   <CopyUrlButton eventUrl={eventUrl} />
