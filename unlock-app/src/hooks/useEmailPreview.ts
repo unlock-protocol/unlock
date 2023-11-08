@@ -21,7 +21,7 @@ export const useEmailPreview = ({
     }
   )
 
-  const { data: previewHtml, ...rest2 } = useQuery(
+  const { data: email, ...rest2 } = useQuery(
     ['getEmailPreview', network, lockAddress, templateId, customContent],
     async () => {
       const url = new URL(
@@ -49,7 +49,7 @@ export const useEmailPreview = ({
     ...rest2,
     ...rest,
     customContent,
-    previewHtml,
+    email,
   }
 }
 
