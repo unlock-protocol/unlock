@@ -7,8 +7,6 @@ import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV12.sol";
 error WRONG_PASSWORD();
 error NOT_AUTHORIZED();
 
-uint256 constant MAX_INT = 2 ** 256 - 1;
-
 contract PasswordRequiredHook {
   mapping(address => mapping(address => uint256)) public signers;
   mapping(address => mapping(address => uint256)) public counters;
