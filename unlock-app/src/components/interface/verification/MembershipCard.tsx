@@ -115,12 +115,12 @@ export function MembershipCard({
         </div>
         <div className="space-y-2">
           <Item label="Lock">
-            <AddressLink lockAddress={lockAddress} network={network} />
+            <AddressLink address={lockAddress} network={network} />
           </Item>
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
           <Item label="Owner">
-            <AddressLink lockAddress={owner} network={network} />
+            <AddressLink address={owner} network={network} />
           </Item>
 
           {!!userMetadata?.public && (

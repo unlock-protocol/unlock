@@ -1,11 +1,12 @@
 import handlebars from 'handlebars'
-import {
-  customContentStyle,
-  eventDetailStyle,
-} from './helpers/customContentStyle'
+import { customContentStyle } from './helpers/customContentStyle'
 import { links } from './helpers/links'
+import { transactionLink } from './helpers/transactionLink'
+import { eventDetails } from './helpers/eventDetails'
 
 handlebars.registerHelper('links', links)
+handlebars.registerHelper('transactionLink', transactionLink)
+handlebars.registerHelper('eventDetails', eventDetails)
 
 export default {
   base: 'events',
@@ -18,53 +19,15 @@ export default {
   </section>
 {{/if}}
 
-<div style="${eventDetailStyle}">
-  <h2>Event details</h2>
-  {{#if eventDescription}}
-    <p>{{eventDescription}}</p>
-  {{/if}}
+{{eventDetails 
+  eventName
+  keyId
+  eventDate
+  eventTime
+  eventAddress
+  eventUrl
+}}
 
-  {{#if lockName}}
-    <div>
-      <strong>Ticket:</strong> {{lockName}}
-    </div>
-  {{/if}}
-
-  {{#if keyId}}
-    <div>
-      <strong>Ticket #</strong> {{keyId}}
-    </div>
-  {{/if}}
-
-  {{#if eventDate}}
-    <div>
-      <strong>Date:</strong> {{eventDate}}
-    </div>
-  {{/if}}
-
-  {{#if eventTime}}
-    <div>
-      <strong>Time:</strong> {{eventTime}}
-    </div>
-  {{/if}}
-
-  {{#if eventAddress}}
-    <div>
-      <strong>Location:</strong>
-      <a target="_blank" href="https://www.google.com/maps/search/?api=1&query={{eventAddress}}"> 
-        {{eventAddress}}
-      </a>
-    </div>
-  {{/if}}
-</div>
-
-<p>You can view your ticket online <a href="{{keychainUrl}}">here</a>.</p>
-
-<p>You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print the ticket attached to this email.</p>
-
-{{links txUrl openSeaUrl true}}
-
-{{transactionLink transactionReceiptUrl}}
-
+<small>Have a crypto wallet? Your ticket is an NFT and can be transferred to your self-custodial wallet <a href="{{transferUrl}}">by going there</a>.</small>
 `,
 }

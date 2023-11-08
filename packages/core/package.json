@@ -27,12 +27,12 @@
     "typescript": "5.2.2"
   },
   "peerDependencies": {
-    "zod": "3.22.2"
+    "zod": "3.22.4"
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@vitest/coverage-c8": "0.33.0",
-    "eslint": "8.51.0",
+    "eslint": "8.52.0",
     "vitest": "0.34.6"
   }
 }

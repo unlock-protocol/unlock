@@ -1,8 +1,10 @@
 import dayjs from 'dayjs'
 import { kebabCase } from 'lodash'
 import * as metadataOperations from './metadataOperations'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { EventData } from '../models'
+import { saveCheckoutConfig } from './checkoutConfigOperations'
+import { EventBodyType } from '../controllers/v2/eventsController'
 
 interface AttributeProps {
   value: string
@@ -17,6 +19,7 @@ export interface EventProps {
   eventName: string
   startDate: Date | null
   endDate: Date | null
+  eventUrl: string | null
 }
 
 const getEventDate = (
@@ -48,8 +51,9 @@ export const getEventDataForLock = async (
 
   const types = getLockTypeByMetadata(lockMetadata)
 
-  const attributes: AttributeProps[] = lockMetadata?.attributes
+  const attributes: AttributeProps[] = lockMetadata?.attributes || []
 
+  // Util function!
   const getAttribute = (name: string): string | undefined => {
     return (
       attributes?.find(({ trait_type }: AttributeProps) => trait_type === name)
@@ -111,12 +115,13 @@ export const getEventDataForLock = async (
       : `${eventStartTime}`
 
     eventDetail = {
-      eventName: lockMetadata?.name,
+      eventName: lockMetadata?.name || '',
       eventDescription: lockMetadata?.description,
       eventDate,
       eventTime,
       eventAddress,
       startDate,
+      eventUrl: lockMetadata?.external_url,
       endDate,
     }
   }
@@ -143,4 +148,43 @@ export const createEventSlug = async (
     return createEventSlug(name, eventId, index ? index + 1 : 1)
   }
   return slug
+}
+
+export const saveEvent = async (
+  parsed: EventBodyType,
+  walletAddress: string
+): Promise<[EventData, boolean]> => {
+  const slug =
+    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
+
+  const [savedEvent, created] = await EventData.upsert(
+    {
+      id: parsed.id,
+      name: parsed.data.name,
+      slug,
+      data: {
+        ...parsed.data,
+        slug, // Making sure we add the slug to the data as well.
+      },
+      createdBy: walletAddress,
+    },
+    {
+      conflictFields: ['slug'],
+    }
+  )
+
+  if (!savedEvent.checkoutConfigId) {
+    const checkoutConfig = await PaywallConfig.strip().parseAsync(
+      parsed.checkoutConfig.config
+    )
+    const createdConfig = await saveCheckoutConfig({
+      name: `Checkout config for ${savedEvent.name}`,
+      config: checkoutConfig,
+      createdBy: walletAddress,
+    })
+    // And now attach the id to the savedEvent
+    savedEvent.checkoutConfigId = createdConfig.id
+    await savedEvent.save()
+  }
+  return [savedEvent, !!created]
 }
