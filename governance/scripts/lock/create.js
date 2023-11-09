@@ -1,6 +1,9 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getUnlock,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const defaultParams = {
   expirationDuration: ethers.BigNumber.from(60 * 60 * 24 * 30), // 30 days
@@ -34,9 +37,7 @@ async function main({
     unlockAddress = networks[chainId].unlockAddress
   }
 
-  const Unlock = await ethers.getContractFactory('Unlock')
-  const unlock = Unlock.attach(unlockAddress)
-
+  const unlock = await getUnlock(unlockAddress)
   if (!lockVersion) {
     lockVersion = await unlock.publicLockLatestVersion()
   }
