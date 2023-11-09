@@ -7,7 +7,7 @@ const { ADDRESS_ZERO } = require('../helpers')
 const { createUniswapV2Exchange } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
-const createLockHash = require('../helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 const Locks = require('../fixtures/locks')
 
@@ -167,7 +167,10 @@ contract('UnlockDiscountToken upgrade', async () => {
         Locks.FIRST.maxNumberOfKeys,
         Locks.FIRST.lockName,
       ]
-      const calldata = await createLockHash({ args, from: lockOwner.address })
+      const calldata = await createLockCalldata({
+        args,
+        from: lockOwner.address,
+      })
       const tx = await unlock.createUpgradeableLock(calldata)
 
       const { events } = await tx.wait()

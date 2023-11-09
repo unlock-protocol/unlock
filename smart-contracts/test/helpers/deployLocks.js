@@ -1,9 +1,12 @@
 const { ethers } = require('hardhat')
 const PublicLock = artifacts.require('contracts/PublicLock.sol:PublicLock')
-const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
 const deployContracts = require('../fixtures/deploy')
-const { ADDRESS_ZERO, MAX_UINT } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  MAX_UINT,
+  createLockCalldata,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function deployLock({
   unlock,
@@ -37,7 +40,7 @@ async function deployLock({
     lockName,
   ]
 
-  const calldata = await createLockHash({ args, from: deployer })
+  const calldata = await createLockCalldata({ args, from: deployer })
 
   // support passing unlock as either truffle or ethersjs contract instance
   const tx = await unlock.createUpgradeableLock(calldata)

@@ -4,7 +4,7 @@ const {
   reverts,
   getContractFactoryFromSolFiles,
 } = require('../helpers')
-const createLockHash = require('../helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
@@ -48,7 +48,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
       10,
       'A neat upgradeable lock!',
     ]
-    const calldata = await createLockHash({ args, from: creator.address })
+    const calldata = await createLockCalldata({ args, from: creator.address })
     const tx = await unlock.createUpgradeableLock(calldata)
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')
@@ -176,7 +176,7 @@ describe('upgrades', async () => {
     versions[firstUpgradableVersion] = oldestPublicLock
 
     // deploy a simple lock
-    const calldata = await createLockHash({
+    const calldata = await createLockCalldata({
       args: [duration, currency, price, maxKeys, name],
       from: creator.address,
     })

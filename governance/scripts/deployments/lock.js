@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
-const createLockHash = require('../../test/helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 const toBigNumber = (mayBN) =>
   ethers.BigNumber.isBigNumber(mayBN) ? mayBN : ethers.BigNumber.from(mayBN)
@@ -44,7 +44,7 @@ async function main({
       salt
     )
   } else {
-    const calldata = await createLockHash({
+    const calldata = await createLockCalldata({
       args: [expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name],
       from: signer.address,
     })

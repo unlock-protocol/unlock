@@ -3,6 +3,7 @@ import networks from './networks'
 import etherscan from './etherscan'
 import balance from './balance'
 import constants from './constants'
+import lock from './lock'
 
 module.exports = {
   networks,
@@ -10,4 +11,5 @@ module.exports = {
   tasks,
   ...balance,
   ...constants,
+  ...lock,
 }

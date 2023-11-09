@@ -74,7 +74,6 @@ if (process.env.RUN_FORK) {
 
 // tasks
 require('./tasks/accounts')
-require('./tasks/deploy')
 require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/release')

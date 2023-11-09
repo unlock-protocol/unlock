@@ -23,7 +23,7 @@
  */
 const { ethers, run } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const createLockCalldata = require('../test/helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 const Locks = require('../test/fixtures/locks')
 
 async function main({

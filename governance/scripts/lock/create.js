@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const createLockHash = require('../../test/helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 const defaultParams = {
   expirationDuration: ethers.BigNumber.from(60 * 60 * 24 * 30), // 30 days
@@ -45,7 +45,7 @@ async function main({
   const [signer] = await ethers.getSigners()
   owner = owner || signer.address
 
-  const calldata = await createLockHash({
+  const calldata = await createLockCalldata({
     args: lockParams,
     from: owner,
   })

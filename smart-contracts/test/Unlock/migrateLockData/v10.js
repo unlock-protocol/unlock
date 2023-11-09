@@ -3,7 +3,7 @@
  */
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
-const createLockHash = require('../../helpers/createLockCalldata')
+const createLockCalldata = require('../../helpers/createLockCalldata')
 const {
   getContractFactoryFromSolFiles,
   cleanupPastContracts,
@@ -106,7 +106,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       1000, // available keys
       'A neat upgradeable lock!',
     ]
-    const calldata = await createLockHash({ args, from: creator.address })
+    const calldata = await createLockCalldata({ args, from: creator.address })
     const tx = await unlock.createUpgradeableLock(calldata)
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')

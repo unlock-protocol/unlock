@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const WalletService = require('../helpers/walletServiceMock.js')
-const createLockHash = require('../helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 let unlock
@@ -19,7 +19,7 @@ contract('Unlock / gas', (accounts) => {
       100, // maxNumberOfKeys
       'Gas Test Lock',
     ]
-    const calldata = await createLockHash({ args, from: accounts[0] })
+    const calldata = await createLockCalldata({ args, from: accounts[0] })
     const tx = await unlock.createUpgradeableLock(calldata)
     createLockGas = new BigNumber(tx.receipt.gasUsed)
   })
