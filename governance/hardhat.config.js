@@ -3,6 +3,8 @@ require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-etherscan')
 require('@nomiclabs/hardhat-waffle')
 
+require('@openzeppelin/hardhat-upgrades')
+
 // import helpers
 const { etherscan, networks } = require('@unlock-protocol/hardhat-helpers')
 

@@ -19221,6 +19221,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
+    "@openzeppelin/hardhat-upgrades": "npm:1.28.0"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
