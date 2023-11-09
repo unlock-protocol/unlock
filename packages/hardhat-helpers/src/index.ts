@@ -5,6 +5,7 @@ import balance from './balance'
 import constants from './constants'
 import lock from './lock'
 import upgrades from './upgrades'
+import versions from './versions'
 
 module.exports = {
   networks,
@@ -14,4 +15,5 @@ module.exports = {
   ...constants,
   ...lock,
   ...upgrades,
+  ...versions,
 }
