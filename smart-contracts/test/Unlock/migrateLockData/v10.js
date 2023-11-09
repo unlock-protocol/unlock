@@ -3,7 +3,7 @@
  */
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
-const createLockCalldata = require('../../helpers/createLockCalldata')
+const createLockCalldata = require('@unlock-protocol/hardhat-helpers')
 const {
   getContractFactoryFromSolFiles,
   cleanupPastContracts,
