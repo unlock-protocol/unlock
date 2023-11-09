@@ -14,13 +14,7 @@ async function copyAndBuildContractAtVersion(dirname, contractName, version) {
   const pastUnlockPath = require.resolve(
     `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${version}.sol`
   )
-  console.log({
-    pastUnlockPath,
-    newUnlk: path.resolve(
-      getContractsPath(dirname),
-      `${contractName}V${version}.sol`
-    ),
-  })
+
   await fs.copy(
     pastUnlockPath,
     path.resolve(getContractsPath(dirname), `${contractName}V${version}.sol`)
