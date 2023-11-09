@@ -3,7 +3,7 @@ const { ethers, run, upgrades } = require('hardhat')
 const {
   copyAndBuildContractAtVersion,
   cleanupContractVersions,
-} = require('./_helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
 // used to update contract implementation address in proxy admin
 async function main({ proxyAddress, contractName, contractVersion }) {
@@ -12,6 +12,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   if (contractVersion) {
     console.log(`Setting up version ${contractVersion} from package`)
     Contract = await copyAndBuildContractAtVersion(
+      __dirname,
       contractName,
       contractVersion
     )

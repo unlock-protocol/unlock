@@ -1,32 +1,22 @@
-const { ethers, run } = require('hardhat')
 const fs = require('fs-extra')
 const path = require('path')
 
-const contractsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  'contracts',
-  'past-versions'
-)
+const getContractsPath = (dirname) =>
+  path.resolve(dirname, '..', '..', 'contracts', 'past-versions')
 
-const artifactsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  'artifacts',
-  'contracts',
-  'past-versions'
-)
+const getArtifactsPath = (dirname) =>
+  path.resolve(dirname, '..', '..', 'artifacts', 'contracts', 'past-versions')
 
-async function copyAndBuildContractAtVersion(contractName, version) {
+async function copyAndBuildContractAtVersion(dirname, contractName, version) {
+  const { ethers, run } = require('hardhat')
+
   // need to copy .sol for older versions in contracts repo
   const pastUnlockPath = require.resolve(
     `@unlock-protocol/contracts/dist/Unlock/${contractName}V${version}.sol`
   )
   await fs.copy(
     pastUnlockPath,
-    path.resolve(contractsPath, `${contractName}V${version}.sol`)
+    path.resolve(getContractsPath(dirname), `${contractName}V${version}.sol`)
   )
 
   // re-compile contract
@@ -39,13 +29,13 @@ async function copyAndBuildContractAtVersion(contractName, version) {
   return Contract
 }
 
-async function cleanupContractVersions() {
+async function cleanupContractVersions(dirname) {
   // delete .sol file
-  await fs.remove(contractsPath)
-  await fs.remove(artifactsPath)
+  await fs.remove(getContractsPath(dirname))
+  await fs.remove(getArtifactsPath(dirname))
 }
 
-module.exports = {
+export default {
   copyAndBuildContractAtVersion,
   cleanupContractVersions,
 }
