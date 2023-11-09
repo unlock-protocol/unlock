@@ -6,10 +6,12 @@ const { reverts } = require('../../helpers/errors')
 const createLockCalldata = require('@unlock-protocol/hardhat-helpers')
 const {
   getContractFactoryFromSolFiles,
-  cleanupPastContracts,
   getContractAtVersion,
 } = require('../../helpers/versions')
-const { ADDRESS_ZERO } = require('../../helpers')
+const {
+  cleanupContractVersions,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const previousVersionNumber = 9 // to next version
 const keyPrice = ethers.utils.parseEther('0.01')
@@ -61,7 +63,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
   let lock
   let pastVersion
 
-  after(async () => await cleanupPastContracts())
+  after(async () => await cleanupContractVersions(__dirname))
 
   before(async function () {
     // make sure mocha doesnt time out

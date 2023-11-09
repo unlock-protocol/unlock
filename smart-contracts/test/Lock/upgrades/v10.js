@@ -1,28 +1,34 @@
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
-const { ADDRESS_ZERO } = require('../../helpers')
+const path = require('path')
 const {
-  getContractFactoryFromSolFiles,
-  cleanupPastContracts,
-} = require('../../helpers/versions')
+  copyAndBuildContractAtVersion,
+  cleanupContractVersions,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const versionNumber = 9
 const keyPrice = ethers.utils.parseEther('0.01')
+
+// pass proper root folder to helpers
+const dirname = path.join(__dirname, '..')
 
 describe('PublicLock upgrade  v9 > v10', () => {
   let lock
   let PublicLockLatest
   let PublicLockPast
 
-  after(async () => await cleanupPastContracts())
+  after(async () => await cleanupContractVersions(dirname))
 
   before(async function copyAndBuildContract() {
     this.timeout(200000)
-    PublicLockPast = await getContractFactoryFromSolFiles(
+    PublicLockPast = await copyAndBuildContractAtVersion(
+      dirname,
       'PublicLock',
       versionNumber
     )
-    PublicLockLatest = await getContractFactoryFromSolFiles(
+    PublicLockLatest = await copyAndBuildContractAtVersion(
+      dirname,
       'PublicLock',
       versionNumber + 1
     )
