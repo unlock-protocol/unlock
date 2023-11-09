@@ -34,7 +34,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   })
 
   if (contractVersion) {
-    await cleanupContractVersions()
+    await cleanupContractVersions(__dirname)
   }
   return implementation
 }

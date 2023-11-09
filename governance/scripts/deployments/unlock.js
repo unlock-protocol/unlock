@@ -43,7 +43,7 @@ async function main({ unlockVersion } = {}) {
 
   // delete remaining files if we are using a packaged version
   if (unlockVersion) {
-    await cleanupContractVersions()
+    await cleanupContractVersions(__dirname)
   }
 
   return unlock.address

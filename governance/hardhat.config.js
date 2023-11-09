@@ -26,6 +26,7 @@ require('./tasks/safe')
 require('./tasks/gov')
 require('./tasks/verify')
 require('./tasks/deploy')
+require('./tasks/set')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

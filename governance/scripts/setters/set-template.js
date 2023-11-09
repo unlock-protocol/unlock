@@ -29,8 +29,12 @@ async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
   }
 
   // set lock template
-  const publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
+  const publicLock = await ethers.getContractAt(
+    ['function publicLockVersion() pure returns (uint16)'],
+    publicLockAddress
+  )
   const version = await publicLock.publicLockVersion()
+  console.log(version)
   if (unlockVersion > 9) {
     // eslint-disable-next-line no-console
     console.log(
