@@ -23,6 +23,7 @@ require('./tasks/balance')
 require('./tasks/safe')
 require('./tasks/gov')
 require('./tasks/verify')
+require('./tasks/deploy')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
