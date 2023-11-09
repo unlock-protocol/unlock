@@ -131,6 +131,7 @@ export const getPricingFromSettings = async ({
   return null
 }
 
+// TODO: add cache!
 export async function getDefiLammaPrice({
   network,
   erc20Address,
