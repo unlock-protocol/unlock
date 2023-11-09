@@ -14,7 +14,11 @@ export const useEmailPreview = ({
   lockAddress: string
   templateId: string
 }) => {
-  const { data: customContent, ...rest } = useQuery(
+  const {
+    data: customContent,
+    refetch: refetchGetCustomContent,
+    isLoading: isLoadingCustomContent,
+  } = useQuery(
     ['getCustomContent', network, lockAddress, templateId],
     async () => {
       const response = await storage.getCustomEmailContent(
@@ -26,7 +30,11 @@ export const useEmailPreview = ({
     }
   )
 
-  const { data: email, ...rest2 } = useQuery(
+  const {
+    data: email,
+    refetch: refetchEmailPreview,
+    isLoading: isLoadingEmailPreview,
+  } = useQuery(
     ['getEmailPreview', network, lockAddress, templateId, customContent],
     async () => {
       const url = new URL(
@@ -36,7 +44,7 @@ export const useEmailPreview = ({
       const params = await emailPreviewData({
         network,
         lockAddress,
-        customContent,
+        customContent: customContent || '',
       })
       Object.entries(params).map(([key, value]) => {
         if (value) {
@@ -51,12 +59,17 @@ export const useEmailPreview = ({
           },
         })
       ).json()
+    },
+    {
+      enabled: !!customContent,
     }
   )
 
   return {
-    ...rest2,
-    ...rest,
+    refetch: async () => {
+      await refetchGetCustomContent(), await refetchEmailPreview
+    },
+    isLoading: isLoadingEmailPreview || isLoadingCustomContent,
     customContent,
     email,
   }

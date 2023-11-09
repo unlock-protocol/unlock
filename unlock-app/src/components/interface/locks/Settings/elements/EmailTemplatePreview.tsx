@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
-import { Button, Input, Modal, TextBox } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { Button, Input, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -35,7 +35,7 @@ export const EmailTemplatePreview = ({
   const [showPreview, setShowPreview] = useState(false)
   const wedlocksService = useWedlockService()
 
-  const { email, customContent, ...rest } = useEmailPreview({
+  const { email, customContent, isLoading, refetch } = useEmailPreview({
     lockAddress,
     network,
     templateId,
@@ -44,15 +44,21 @@ export const EmailTemplatePreview = ({
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty },
-    watch,
-    reset,
+    formState: { errors },
+    getValues,
+    setValue,
   } = useForm<FormSchemaProps>({
     defaultValues: { customContent },
   })
 
-  const onSaveCustomContent = async ({ customContent }) => {
-    console.log('save: ', { customContent })
+  useEffect(() => {
+    if (customContent) {
+      setValue('customContent', customContent)
+    }
+  }, [customContent, setValue])
+
+  const onSaveCustomContent = async () => {
+    const customContent = getValues('customContent')
     const saveEmailPromise = storage.saveCustomEmailContent(
       network,
       lockAddress,
@@ -63,26 +69,22 @@ export const EmailTemplatePreview = ({
         },
       }
     )
+    await refetch()
     await ToastHelper.promise(saveEmailPromise, {
       loading: 'Updating the custom section of the email.',
       error: 'We could not update the custom section of the email.',
       success: 'The custom section of the email was updated successfully!',
     })
-    reset({
-      customContent: customContent || '',
-      email: '',
-    })
   }
 
   const saveCustomContent = useMutation(onSaveCustomContent)
-
-  console.log(rest)
 
   /**
    * Send preview email
    * @param form
    */
   const onSubmit = async (form: FormSchemaProps) => {
+    const customContent = getValues('customContent')
     const params = await emailPreviewData({
       lockAddress,
       network,
@@ -112,8 +114,15 @@ export const EmailTemplatePreview = ({
     setShowPreview(false) // close modal after email is sent
   }
 
-  const loading = saveCustomContent.isLoading
-  const disableShowPreview = loading || saveCustomContent.isLoading || isDirty
+  if (isLoading) {
+    return (
+      <Placeholder.Root>
+        <Placeholder.Line size="lg" />
+        <Placeholder.Line size="sm" />
+        <Placeholder.Line size="sm" />
+      </Placeholder.Root>
+    )
+  }
 
   return (
     <>
@@ -145,17 +154,16 @@ export const EmailTemplatePreview = ({
                 await saveCustomContent.mutateAsync()
               }}
               loading={saveCustomContent.isLoading}
-              disabled={loading}
             >
               Save
             </Button>
             <Button
+              disabled={!email}
               size="small"
               variant="outlined-primary"
               onClick={async () => {
                 setShowPreview(true)
               }}
-              disabled={disableShowPreview}
             >
               Show email preview
             </Button>
