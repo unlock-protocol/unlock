@@ -8,8 +8,6 @@ require('@openzeppelin/hardhat-upgrades')
 // import helpers
 const { etherscan, networks } = require('@unlock-protocol/hardhat-helpers')
 
-console.log(etherscan)
-
 const settings = {
   optimizer: {
     enabled: true,

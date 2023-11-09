@@ -1,6 +1,6 @@
 // hardhat.config.js
 const { copySync } = require('fs-extra')
-const { networks } = require('@unlock-protocol/hardhat-helpers')
+const { networks, etherscan } = require('@unlock-protocol/hardhat-helpers')
 
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
@@ -31,9 +31,6 @@ require('hardhat-contract-sizer')
 
 // our own hardhat plugin (for mainnet tests)
 require('@unlock-protocol/hardhat-plugin')
-
-// import helpers
-const { etherscan } = require('@unlock-protocol/hardhat-helpers').etherscan
 
 const settings = {
   optimizer: {
