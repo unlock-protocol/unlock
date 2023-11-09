@@ -17,12 +17,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
       contractVersion
     )
   } else {
-    console.log(
-      `Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`
-    )
-    Contract = await ethers.getContractFactory(
-      `contracts/${contractName}.sol:${contractName}`
-    )
+    throw Error('Need a version number --unlock-version')
   }
 
   const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract)
