@@ -6,11 +6,13 @@ import constants from './constants'
 import lock from './lock'
 import upgrades from './upgrades'
 import versions from './versions'
+import proxy from './proxy'
 
 module.exports = {
   networks,
   etherscan,
   tasks,
+  ...proxy,
   ...balance,
   ...constants,
   ...lock,

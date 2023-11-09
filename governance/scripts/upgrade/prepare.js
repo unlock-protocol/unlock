@@ -1,4 +1,4 @@
-const { ethers, run, upgrades } = require('hardhat')
+const { run, upgrades } = require('hardhat')
 
 const {
   copyAndBuildContractAtVersion,
@@ -20,7 +20,9 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     throw Error('Need a version number --unlock-version')
   }
 
-  const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract)
+  const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
+    kind: 'transparent',
+  })
 
   console.log(`${contractName} implementation deployed at: ${implementation}`)
 
