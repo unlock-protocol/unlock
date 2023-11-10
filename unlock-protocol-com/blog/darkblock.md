@@ -28,7 +28,7 @@ Stella Achenbach, founder of [The ALANA Project](https://www.the-alana-project.x
 
 Watch the video below to see how creators can use Unlock Protocol to deploy a smart contract (referred to as a “lock”) and mint an NFT (referred to as a “key”) with specific conditions and time-based constraints on digital ownership, then use Darkblock’s no-code app to encrypt and attach multimedia files to those NFTs that, by virtue of a simple checkbox added to the workflow, will only be accessible to an NFT’s owner based on time constraints the creator set via Unlock.
 
-[video goes here]
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/6l0L7P4DtGo" title="Darkblock and Unlock Protocol Integration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
 ## New Business Models Unlocked
 
