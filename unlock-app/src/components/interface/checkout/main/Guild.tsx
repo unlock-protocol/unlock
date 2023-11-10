@@ -157,7 +157,6 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
         >
           <Button
             type="submit"
-            form="password"
             className="w-full"
             disabled={isLoadingGuildData || disabled}
             loading={isLoading}

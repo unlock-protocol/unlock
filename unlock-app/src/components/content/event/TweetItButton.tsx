@@ -29,7 +29,7 @@ export const TweetItButton = ({ event, eventUrl }: TweetItButtonProps) => {
       }
     )}. \n\nGet your ticket with @unlockProtocol!\n\n`
   )
-  tweetIntent.searchParams.set('url', eventUrl)
+  tweetIntent.searchParams.set('url', eventUrl.toString())
 
   return (
     <Tooltip
@@ -40,7 +40,7 @@ export const TweetItButton = ({ event, eventUrl }: TweetItButtonProps) => {
     >
       <Link
         target="_blank"
-        href={tweetIntent}
+        href={tweetIntent.toString()}
         className="w-12 h-12 flex justify-center items-center"
       >
         <FiTwitter className="w-6 h-6" />
