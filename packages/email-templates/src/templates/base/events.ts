@@ -306,7 +306,7 @@ export const base = `<!DOCTYPE html>
                         href="https://unlock-protocol.com/"
                         target="_blank"
                         style="color: #373a3e; text-decoration: none"
-                        ><img src="{{inlineImage 'logo-unlock-events.svg'}}" /></a
+                        ><img width="120" src="{{inlineImage 'logo-unlock-events.png'}}" /></a
                       >
                   </td>
                 </tr>
