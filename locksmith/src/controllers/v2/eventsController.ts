@@ -5,7 +5,7 @@ import {
   saveEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
-import { CheckoutConfig } from '../../models'
+import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
@@ -56,6 +56,19 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
   )
   const statusCode = created ? 201 : 200
   return response.status(statusCode).send(event.toJSON())
+}
+
+export const getAllEvents: RequestHandler = async (request, response) => {
+  const page = request.query.page ? Number(request.query.page) : 1
+  const events = await EventData.findAll({
+    limit: 10,
+    offset: (page - 1) * 10,
+    include: [{ model: CheckoutConfig, as: 'checkoutConfig' }],
+  })
+  return response.status(200).send({
+    data: events,
+    page,
+  })
 }
 
 // This function returns the event based on its slug.
