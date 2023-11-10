@@ -116,6 +116,7 @@ export const SettingEmail = ({
               lockAddress={lockAddress}
               network={network}
               isManager={isManager}
+              sendingParams={{}}
             />
           </SettingCard>
         )

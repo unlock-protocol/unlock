@@ -12,7 +12,7 @@ export const EmailPreview = ({
   sendingParams,
 }: {
   templateId: string
-  setShowPreview: (boolean) => void
+  setShowPreview: (show: boolean) => void
   emailParams: any
   sendingParams?: {
     replyTo: string
@@ -36,8 +36,7 @@ export const EmailPreview = ({
     params: emailParams,
   })
 
-  console.log({ isLoading, email })
-
+  console.log(sendingParams)
   /**
    * Send preview email
    * @param form
@@ -45,7 +44,7 @@ export const EmailPreview = ({
   const onSubmit = async (form: any) => {
     const promise = wedlocksService.sendEmail(
       templateId as any,
-      form.email,
+      form.emailAddress,
       {
         ...emailParams,
       },

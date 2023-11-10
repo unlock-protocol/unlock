@@ -18,6 +18,10 @@ interface EmailTemplatePreviewProps {
   network: number
   lockAddress: string
   isManager: boolean
+  sendingParams: {
+    replyTo?: string
+    emailSender?: string
+  }
 }
 
 const FormSchema = z.object({
@@ -33,6 +37,7 @@ export const EmailTemplatePreview = ({
   network,
   lockAddress,
   isManager,
+  sendingParams,
 }: EmailTemplatePreviewProps) => {
   const [showPreview, setShowPreview] = useState(false)
 
@@ -46,13 +51,7 @@ export const EmailTemplatePreview = ({
     templateId,
   })
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues,
-    setValue,
-  } = useForm<FormSchemaProps>({
+  const { register, getValues, setValue } = useForm<FormSchemaProps>({
     defaultValues: { customContent },
   })
 
@@ -154,7 +153,8 @@ export const EmailTemplatePreview = ({
               <EmailPreview
                 templateId={templateId}
                 setShowPreview={setShowPreview}
-                params={params}
+                emailParams={params}
+                sendingParams={sendingParams}
               />
             </div>
           </Modal>
