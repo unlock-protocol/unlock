@@ -1,14 +1,16 @@
 import { useMutation } from '@tanstack/react-query'
-import { Button, Input, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
+import { Button, Modal, Placeholder, TextBox } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { storage } from '~/config/storage'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWedlockService } from '~/contexts/WedlocksContext'
 import * as z from 'zod'
 import React from 'react'
-import { RiCloseLine as CloseIcon } from 'react-icons/ri'
-import { emailPreviewData, useEmailPreview } from '~/hooks/useEmailPreview'
+import {
+  useCustomContentForEmail,
+  useEmailPreviewDataForLock,
+} from '~/hooks/useEmailPreview'
+import { EmailPreview } from './EmailPreview'
 
 interface EmailTemplatePreviewProps {
   templateId: string
@@ -33,9 +35,12 @@ export const EmailTemplatePreview = ({
   isManager,
 }: EmailTemplatePreviewProps) => {
   const [showPreview, setShowPreview] = useState(false)
-  const wedlocksService = useWedlockService()
 
-  const { email, customContent, isLoading, refetch } = useEmailPreview({
+  const {
+    data: customContent,
+    isLoading: isLoadingCustomContent,
+    refetch: refetchCustomContent,
+  } = useCustomContentForEmail({
     lockAddress,
     network,
     templateId,
@@ -49,6 +54,16 @@ export const EmailTemplatePreview = ({
     setValue,
   } = useForm<FormSchemaProps>({
     defaultValues: { customContent },
+  })
+
+  const {
+    data: params,
+    // isLoading: isLoadingParams,
+    // refetch: refetchParams,
+  } = useEmailPreviewDataForLock({
+    lockAddress,
+    network,
+    customContent,
   })
 
   useEffect(() => {
@@ -69,7 +84,7 @@ export const EmailTemplatePreview = ({
         },
       }
     )
-    await refetch()
+    await refetchCustomContent()
     await ToastHelper.promise(saveEmailPromise, {
       loading: 'Updating the custom section of the email.',
       error: 'We could not update the custom section of the email.',
@@ -79,42 +94,7 @@ export const EmailTemplatePreview = ({
 
   const saveCustomContent = useMutation(onSaveCustomContent)
 
-  /**
-   * Send preview email
-   * @param form
-   */
-  const onSubmit = async (form: FormSchemaProps) => {
-    const customContent = getValues('customContent')
-    const params = await emailPreviewData({
-      lockAddress,
-      network,
-      customContent,
-    })
-
-    const { data: lockSettings } = await storage.getLockSettings(
-      network,
-      lockAddress
-    )
-
-    const promise = wedlocksService.sendEmail(
-      templateId as any,
-      form.email,
-      {
-        ...params,
-      },
-      [], // attachments
-      lockSettings?.replyTo,
-      lockSettings?.emailSender
-    )
-    await ToastHelper.promise(promise, {
-      loading: 'Sending email preview...',
-      success: 'Email preview sent.',
-      error: `Can't send email preview`,
-    })
-    setShowPreview(false) // close modal after email is sent
-  }
-
-  if (isLoading) {
+  if (isLoadingCustomContent) {
     return (
       <Placeholder.Root>
         <Placeholder.Line size="lg" />
@@ -158,7 +138,6 @@ export const EmailTemplatePreview = ({
               Save
             </Button>
             <Button
-              disabled={!email}
               size="small"
               variant="outlined-primary"
               onClick={async () => {
@@ -172,57 +151,11 @@ export const EmailTemplatePreview = ({
         {showPreview && (
           <Modal empty isOpen={showPreview} setIsOpen={setShowPreview}>
             <div className="fixed inset-0 z-10 flex justify-center overflow-y-auto bg-white">
-              <div className="w-full max-w-xl mt-10">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-bold text-brand-ui-primary">
-                    Preview
-                  </h2>
-                  <div className="flex items-center justify-end">
-                    <button
-                      className="hover:fill-brand-ui-primary"
-                      aria-label="close"
-                      onClick={(event) => {
-                        event.preventDefault()
-                        setShowPreview(false)
-                      }}
-                    >
-                      <CloseIcon className="fill-inherit" size={24} />
-                    </button>
-                  </div>
-                </div>
-                <form
-                  onSubmit={handleSubmit(onSubmit)}
-                  className="flex flex-col w-full gap-6 py-4"
-                >
-                  <ul>
-                    <li>Email subject: {email?.subject}</li>
-                  </ul>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: email?.html || '',
-                    }}
-                    style={{ width: '200px' }}
-                  />
-                  <div className="flex flex-col gap-2">
-                    <Input
-                      placeholder="your@email.com"
-                      type="email"
-                      disabled={disabled}
-                      className="w-full"
-                      {...register('email', {
-                        required: {
-                          value: true,
-                          message: 'This field is required.',
-                        },
-                      })}
-                      error={errors?.email?.message}
-                    />
-                    <Button type="submit" disabled={disabled}>
-                      Send email preview
-                    </Button>
-                  </div>
-                </form>
-              </div>
+              <EmailPreview
+                templateId={templateId}
+                setShowPreview={setShowPreview}
+                params={params}
+              />
             </div>
           </Modal>
         )}

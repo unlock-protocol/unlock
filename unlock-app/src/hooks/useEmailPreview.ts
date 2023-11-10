@@ -5,7 +5,7 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 
-export const useEmailPreview = ({
+export const useCustomContentForEmail = ({
   network,
   lockAddress,
   templateId,
@@ -14,11 +14,7 @@ export const useEmailPreview = ({
   lockAddress: string
   templateId: string
 }) => {
-  const {
-    data: customContent,
-    refetch: refetchGetCustomContent,
-    isLoading: isLoadingCustomContent,
-  } = useQuery(
+  return useQuery(
     ['getCustomContent', network, lockAddress, templateId],
     async () => {
       const response = await storage.getCustomEmailContent(
@@ -29,84 +25,76 @@ export const useEmailPreview = ({
       return response.data.content
     }
   )
+}
 
-  const {
-    data: email,
-    refetch: refetchEmailPreview,
-    isLoading: isLoadingEmailPreview,
-  } = useQuery(
-    ['getEmailPreview', network, lockAddress, templateId, customContent],
-    async () => {
-      const url = new URL(
-        `${config.services.wedlocks.host}/preview/${templateId}`
-      )
+export const useEmailPreview = ({
+  params,
+  templateId,
+}: {
+  params: any
+  templateId: string
+}) => {
+  return useQuery(['getEmailPreview', templateId, params], async () => {
+    const url = new URL(
+      `${config.services.wedlocks.host}/preview/${templateId}`
+    )
 
-      const params = await emailPreviewData({
-        network,
-        lockAddress,
-        customContent: customContent || '',
+    Object.entries(params).map(([key, value]) => {
+      if (value) {
+        url.searchParams.append(key, value.toString())
+      }
+    })
+
+    return (
+      await fetch(url, {
+        headers: {
+          accept: 'application/json',
+        },
       })
-      Object.entries(params).map(([key, value]) => {
-        if (value) {
-          url.searchParams.append(key, value.toString())
-        }
-      })
-
-      return (
-        await fetch(url, {
-          headers: {
-            accept: 'application/json',
-          },
-        })
-      ).json()
-    },
-    {
-      enabled: !!customContent,
-    }
-  )
-
-  return {
-    refetch: async () => {
-      await refetchGetCustomContent(), await refetchEmailPreview
-    },
-    isLoading: isLoadingEmailPreview || isLoadingCustomContent,
-    customContent,
-    email,
-  }
+    ).json()
+  })
 }
 
 /**
  * Compute params for the email template preview
  * @returns
  */
-export const emailPreviewData = async ({
+export const useEmailPreviewDataForLock = ({
   lockAddress,
   network,
   customContent,
 }: {
   network: number
   lockAddress: string
-  customContent: string
+  customContent?: string
 }) => {
-  const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
-  const customContentHtml: string = await markdownToHtml(customContent || '')
-  const { data: eventDetails } = await storage.getEventDetails(
-    network,
-    lockAddress
+  return useQuery(
+    ['useEmailPreviewDataForLock', lockAddress, network, customContent],
+    async () => {
+      const lockImage = `${config.locksmithHost}/lock/${lockAddress}/icon`
+      const customContentHtml: string = await markdownToHtml(
+        customContent || ''
+      )
+      const { data: eventDetails } = await storage.getEventDetails(
+        network,
+        lockAddress
+      )
+
+      const params = {
+        keychainUrl: `${config.unlockApp}/keychain`,
+        keyId: 5, // Placeholder!
+        network,
+        lockImage,
+        customContent: customContentHtml,
+        ...eventDetails,
+        // certificate details
+        certificationDetail: '{Certification details}',
+      }
+
+      return params
+    },
+    { enabled: !!customContent && !!lockAddress && !!network }
   )
-
-  const params = {
-    keychainUrl: `${config.unlockApp}/keychain`,
-    keyId: 5, // Placeholder!
-    network,
-    lockImage,
-    customContent: customContentHtml,
-    ...eventDetails,
-    // certificate details
-    certificationDetail: '{Certification details}',
-  }
-
-  return params
 }
 
 // parse markdown to HTML
