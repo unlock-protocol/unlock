@@ -19,8 +19,8 @@ interface EmailTemplatePreviewProps {
   lockAddress: string
   isManager: boolean
   sendingParams: {
-    replyTo?: string
-    emailSender?: string
+    replyTo?: string | null
+    emailSender?: string | null
   }
 }
 

@@ -15,8 +15,8 @@ export const EmailPreview = ({
   setShowPreview: (show: boolean) => void
   emailParams: any
   sendingParams?: {
-    replyTo: string
-    emailSender: string
+    replyTo?: string | null
+    emailSender?: string | null
   }
 }) => {
   const wedlocksService = useWedlockService()
