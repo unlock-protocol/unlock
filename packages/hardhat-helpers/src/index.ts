@@ -7,6 +7,7 @@ import lock from './lock'
 import upgrades from './upgrades'
 import versions from './versions'
 import proxy from './proxy'
+import fixtures from './fixtures'
 
 module.exports = {
   networks,
@@ -18,4 +19,5 @@ module.exports = {
   ...lock,
   ...upgrades,
   ...versions,
+  ...fixtures,
 }
