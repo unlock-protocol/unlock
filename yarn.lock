@@ -19694,7 +19694,7 @@ __metadata:
     typescript: "npm:5.1.6"
     vitest: "npm:0.34.6"
   peerDependencies:
-    axios: 1.4.0
+    axios: 1.6.0
     ethers: ^5.7.x
   languageName: unknown
   linkType: soft
