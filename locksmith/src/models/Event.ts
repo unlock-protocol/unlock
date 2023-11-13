@@ -5,6 +5,8 @@ import type {
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
+import { CheckoutConfig } from './checkoutConfig'
+import config from '../config/config'
 
 export class EventData extends Model<
   InferAttributes<EventData>,
@@ -18,6 +20,7 @@ export class EventData extends Model<
   declare updatedAt: CreationOptional<Date>
   declare slug: string
   declare checkoutConfigId: string | null
+  declare eventUrl: string | null
 }
 
 EventData.init(
@@ -55,6 +58,12 @@ EventData.init(
       allowNull: true,
       type: DataTypes.STRING,
     },
+    eventUrl: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${config.unlockApp}/event/${this.getDataValue('slug')}`
+      },
+    },
   },
   {
     defaultScope: {
@@ -65,3 +74,8 @@ EventData.init(
     tableName: 'EventData',
   }
 )
+
+EventData.belongsTo(CheckoutConfig, {
+  foreignKey: 'checkoutConfigId',
+  as: 'checkoutConfig',
+})
