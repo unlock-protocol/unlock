@@ -3,9 +3,9 @@ title: Introduction
 description: Summary of the Locksmith service, a development tool for Unlock Protocol.
 ---
 
-Locksmith is a hosted API service providing an array of functionality which are not part of the core protocol, but are useful for onboarding. These tools can (and should!) be replaced by 3rd party applications who want to implement the protocol natively.
+Locksmith is a hosted API service providing an array of functionality which are not part of the core protocol, but are useful to build applications or onboard users. These tools can (and should!) be replaced by 3rd party applications who want to implement the protocol natively.
 
-Locksmith powers the following functionality at the moment.
+Locksmith powers the following functionality at the moment:
 
 - Store metadata for locks, keys, and users
 - Automated NFT membership renewals
@@ -16,42 +16,47 @@ Locksmith powers the following functionality at the moment.
 
 ## Authorization Strategy
 
+Several endpoints are protected and require authentication.
+
 We use signed [SIWE](https://docs.login.xyz/general-information/siwe-overview/eip-4361) message to issue token for authentication. You will need to sign message using [siwe](https://docs.ssx.id/) library and send the signed message to the server. The server will verify the signature and issue a token for the user. You will receive a token with short expiry duration which needs to be passed in the header as bearer token for all subsequent requests. The other is refresh token which is used to get a new token when the current token expires.
 
-You can use LocksmithService to interact with Locksmith API. The following is an example of how to use it to send a login request.
+If you are creating applications using JavaScript, you can use `LocksmithService` from the `@unlock-protocol/unlock-js` to interact with Locksmith API. The following is an example of how to use it to send a login request.
 
 ```ts
-import { LocksmithService } from "@unlock-protocol/unlock-js";
+import { LocksmithService } from '@unlock-protocol/unlock-js'
 
-const service = new LocksmithService();
+const service = new LocksmithService()
 
 // Creates a SIWE message to be signed
 const siwe = LocksmithService.createSiweMessage({
-  // ...
-});
+  domain: 'your-app.com',
+  uri: 'https://your-app.com',
+  address: '0x123...', // Address of the account that is trying to connect
+  chainId: network, // ChainId of the network (use 1 by default)
+  version: '1', // Version of the Siwe message (use '1' by default)
+})
 
 // Get message text to be signed
-const message = siwe.prepareMessage();
+const message = siwe.prepareMessage()
 
 // Sign the message
-const signature = wallet.signMessage(message);
+// The wallet object here is an ethers wallet
+const signature = wallet.signMessage(message)
 
 const loginResponse = await service.login({
   message,
   signature,
-});
+})
 
 // Use the token to make subsequent requests in the header as bearer token using axios middleware and refresh or re-login when the session expires.
-const { accessToken, walletAddress, refreshToken } = loginResponse.data;
+const { accessToken, walletAddress, refreshToken } = loginResponse.data
 
 // Get key metadata from locksmith. If the request is authenticated, you will also receive protected metadata for the key and associated user.
-const keyResponse = await storage.keyMetadata(5, "0x", "1", {
+const keyResponse = await storage.keyMetadata(5, '0x', '1', {
   headers: {
     Authorization: `Bearer ${accessToken}`,
   },
-});
+})
 
-console.log(keyResponse.data);
+console.log(keyResponse.data) // This will show the metadata for the key, including the protected fields with the owner's metadata.
 ```
-
-To see this in action, you can check out [useAuth](https://github.com/unlock-protocol/flocker/blob/main/src/hooks/useAuth.tsx) and [login](https://github.com/unlock-protocol/flocker/blob/main/src/config/storage.ts) files in [Flocker codebase](https://github.com/unlock-protocol/flocker).
