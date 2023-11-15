@@ -84,7 +84,11 @@ export const sendEmail = async ({
     emailSender,
   } = await getLockSettings(params.lockAddress, network)
 
-  if (!canSendEmail) {
+  if (
+    !canSendEmail ||
+    params.lockAddress.toLocaleLowerCase() ===
+      '0x02c510be69fe87e052e065d8a40b437d55907b48'.toLowerCase()
+  ) {
     logger.info('Email sending disabled for', {
       lockAddress: params.lockAddress,
     })
