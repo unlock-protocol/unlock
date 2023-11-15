@@ -37,7 +37,7 @@ After you've done the above, there will be a chat ID in the Telegram chat. (It'l
 
 Ok! The Telegram side is in good shape now.
 
-Head back over the the Guild.xyz site, and set up the token gate using an Unlock lock.
+Head back over to the Guild.xyz site, and set up the token gate using an Unlock lock.
 
 ![guild-screenshot-gif](/images/blog/guildxyz-launch/unlock-protocol-guildxyz.gif)
 
