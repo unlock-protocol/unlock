@@ -49,6 +49,7 @@ const keysToIgnore = [
   'lockAddress',
   'checkedInAt',
   'email',
+  'data',
 ]
 
 interface KeyRenewalProps {
