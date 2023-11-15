@@ -26,7 +26,7 @@ With this new version of the protocol, each lock manager can additionally decide
 
 ## Setting referrer or affiliate fees
 
-To set the referrer fee for a lock, the lock manager sets a custom referrer fee on their lock contract for a specific referrer address by calling _setReferrerFee_ and passing both the address of the referrer they want to share the proceeds with, as well the the percentage of the sale price (in basis points) they will share. By default, the referrerFee is 0 for any address.
+To set the referrer fee for a lock, the lock manager sets a custom referrer fee on their lock contract for a specific referrer address by calling _setReferrerFee_ and passing both the address of the referrer they want to share the proceeds with, as well as the percentage of the sale price (in basis points) they will share. By default, the referrerFee is 0 for any address.
 
 In addition to setting referrer fees for specific addresses, lock managers can also use the zero address (0x0) to set a default fee that will be paid to _any_ address that refers in a paid membership.
 
