@@ -10,7 +10,7 @@ yarn prepare
 # generate graph code from source
 yarn codegen
 
-# build Web Assemly binaries
+# build Web Assembly binaries
 yarn build <network-name>
 ```
 
@@ -29,7 +29,7 @@ yarn prepare:networks
 
 #### Contrat ABIs
 
-Are Unlock's contracts are upgradable, we parse the multiple ABIs that are required from our `@unlock-protocol/contracts` package.
+Unlock's contracts are upgradable, we parse the multiple ABIs that are required from our `@unlock-protocol/contracts` package.
 
 ```sh
 # parse and build the require ABIs
