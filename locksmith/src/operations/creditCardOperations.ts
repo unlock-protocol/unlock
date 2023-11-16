@@ -73,7 +73,7 @@ const getTotalPriceToChargeInCentsForLock = async ({
 
   // Get the lock's price + currency
   const lock = await web3Service.getLock(lockAddress, network, {
-    fields: ['keyPrice', 'currencyContractAddress'],
+    fields: ['keyPrice', 'tokenAddress'],
   })
   // get lock's settings and convert price to $
   const defiLammaPricing = await pricingOperations.getDefiLammaPrice({
@@ -81,5 +81,5 @@ const getTotalPriceToChargeInCentsForLock = async ({
     erc20Address: lock.currencyContractAddress,
     amount: Number(`${lock.keyPrice}`),
   })
-  return (defiLammaPricing.priceInAmount ?? 0) * 100
+  return Math.ceil((defiLammaPricing.priceInAmount ?? 0) * 100)
 }
