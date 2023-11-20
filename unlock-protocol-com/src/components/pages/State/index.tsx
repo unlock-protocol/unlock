@@ -443,7 +443,7 @@ export function State() {
           }
         })
       )
-      setSubgraphData(subgraphData.filter((item) => item))
+      setSubgraphData(subgraphData.filter((item) => item && item.data))
     }
     run()
   }, [currentDay])
