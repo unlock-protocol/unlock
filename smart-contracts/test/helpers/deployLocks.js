@@ -25,15 +25,18 @@ async function deployLock({
   }
 
   const {
-    expirationDuration,
+    expirationDuration: expirationDurationArg,
     keyPrice: price,
     maxNumberOfKeys,
     lockName,
     maxKeysPerAddress,
   } = Locks[name]
 
+  const expirationDuration =
+    name === 'NON_EXPIRING' ? MAX_UINT : expirationDurationArg.toString()
+
   const args = [
-    name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration.toString(),
+    expirationDuration,
     tokenAddress,
     (keyPrice || price).toString(),
     maxNumberOfKeys.toString(),
@@ -62,6 +65,7 @@ async function deployLock({
       { from: deployer }
     )
   }
+
   return isEthers
     ? await ethers.getContractAt(
         'contracts/PublicLock.sol:PublicLock',
