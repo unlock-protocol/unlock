@@ -16,7 +16,7 @@ To add support for a new network, just update `src/index.ts`
 
 # Deployment
 
-You can use the `yarn wrangler` CLI (version 2) from Cloudflare to run locally with `yarn wrangler publish`.
+You can use the `yarn wrangler` CLI (version 2) from Cloudflare to deploy with `yarn wrangler publish`.
 
 # Adding new networks
 

@@ -122,7 +122,8 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   }
 
   const body: RpcRequest = await request.json()
-
+  const bodyAsString = JSON.stringify(body)
+  console.log(bodyAsString)
   // Handling chainId locally
   if (
     body?.method?.toLocaleLowerCase().trim() ===
@@ -143,7 +144,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   // Make JSON RPC request
   const response = await fetch(supportedNetwork, {
     method: 'POST',
-    body: JSON.stringify(body),
+    body: bodyAsString,
     headers: new Headers({
       Accept: '*/*',
       Origin: 'https://rpc.unlock-protocol.com/', // required to add this to allowlists
