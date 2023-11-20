@@ -12,7 +12,7 @@ export const AirdropMember = z
       if (value) {
         return new Date(value.toString()).getTime()
       }
-    }, z.number().optional()),
+    }, z.string().optional()),
     neverExpire: z.preprocess(
       (value) => !!value,
       z.boolean().optional().default(false)
