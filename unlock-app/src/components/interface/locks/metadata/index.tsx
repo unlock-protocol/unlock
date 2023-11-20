@@ -4,7 +4,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { AdvancedForm } from './AdvancedForm'
 import { LockCustomForm } from './custom'
 import { DetailForm } from './DetailForm'
-import { TicketForm } from './TicketForm'
 import {
   formDataToMetadata,
   Metadata,
@@ -92,7 +91,7 @@ export const Form = ({
     }
   }
 
-  const { isEvent, isCertification } = getLockTypeByMetadata(defaultValues)
+  const { isEvent } = getLockTypeByMetadata(defaultValues)
 
   const errorFields = Object.keys(errors)
   return (
@@ -100,13 +99,6 @@ export const Form = ({
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
           <DetailForm defaultValues={defaultValues} />
-          {!isCertification && (
-            <TicketForm
-              lockAddress={lockAddress}
-              network={network}
-              disabled={isMetadataUpdating}
-            />
-          )}
           {!isEvent && (
             <CertificationMetadataForm
               lockAddress={lockAddress}
