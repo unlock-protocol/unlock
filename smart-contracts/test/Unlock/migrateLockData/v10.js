@@ -1,17 +1,18 @@
 /**
  * Tests for the lock data migration for PublicLock v10
  */
+const path = require('path')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
-const createLockCalldata = require('@unlock-protocol/hardhat-helpers')
 const {
-  getContractFactoryFromSolFiles,
-  getContractAtVersion,
-} = require('../../helpers/versions')
-const {
+  copyAndBuildContractAtVersion,
   cleanupContractVersions,
+  createLockCalldata,
   ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
+
+// pass proper root folder to helpers
+const dirname = path.join(__dirname, '..')
 
 const previousVersionNumber = 9 // to next version
 const keyPrice = ethers.utils.parseEther('0.01')
@@ -62,6 +63,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
   let unlock
   let lock
   let pastVersion
+  let PublicLockLatest
 
   after(async () => await cleanupContractVersions(__dirname))
 
@@ -72,15 +74,21 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    const PublicLockLatest = await getContractFactoryFromSolFiles(
+    console.log(dirname)
+    PublicLockLatest = await copyAndBuildContractAtVersion(
+      dirname,
       'PublicLock',
-      10
+      previousVersionNumber + 1
     )
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
 
     // deploy past impl
-    const PublicLockPast = await getContractFactoryFromSolFiles('PublicLock', 9)
+    const PublicLockPast = await copyAndBuildContractAtVersion(
+      dirname,
+      'PublicLock',
+      previousVersionNumber
+    )
     const publicLockPast = await PublicLockPast.deploy()
     await publicLockPast.deployed()
     pastVersion = await publicLockPast.publicLockVersion()
@@ -115,9 +123,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const { newLockAddress } = evt.args
 
     // get lock
-    lock = await getContractAtVersion(
-      'PublicLock',
-      previousVersionNumber,
+    lock = await ethers.getContractAt(
+      PublicLockPast.interface.format(ethers.utils.FormatTypes.full),
       newLockAddress
     )
     // add latest tempalte
@@ -166,9 +173,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
       )
 
       // update abi before upgrade, so we can track event
-      lock = await getContractAtVersion(
-        'PublicLock',
-        pastVersion + 1,
+      lock = await ethers.getContractAt(
+        PublicLockLatest.interface,
         lock.address
       )
 
