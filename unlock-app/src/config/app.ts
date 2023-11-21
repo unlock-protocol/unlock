@@ -58,6 +58,8 @@ export const config = {
   locksmithSigners: [
     '0x58b5CeDE554a39666091F96C8058920dF5906581',
     '0x22c095c69c38b66afAad4eFd4280D94Ec9D12f4C',
+    '0xc7c6759c2cf2ad209f7aebd2c7012543f7bb5db4', // Goerli OZ Relay
+    '0xd851fe9ba8efa66e65d7865690bd2b9522c6e99f', // OZ Relay
   ], // TODO: cleanup? We should use config from networks package!
   networks: Object.keys(networksConfig).reduce<NetworkConfigs>(
     (networks, network) => {
