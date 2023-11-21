@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs from '../config/dayjs'
 import { kebabCase } from 'lodash'
 import * as metadataOperations from './metadataOperations'
 import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
