@@ -63,7 +63,6 @@ export const getEventDataForLock = async (
 
   if (types.isEvent) {
     const timeZone = getAttribute('event_timezone')
-
     const startDate =
       getEventDate(
         getAttribute('event_start_date'),
@@ -88,6 +87,7 @@ export const getEventDataForLock = async (
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+      timeZone,
     })
 
     const eventEndDate = endDate?.toLocaleDateString(undefined, {
@@ -95,6 +95,7 @@ export const getEventDataForLock = async (
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+      timeZone,
     })
 
     const eventStartTime = startDate?.toLocaleTimeString('en-US', {
