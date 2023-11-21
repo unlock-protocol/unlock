@@ -4,7 +4,7 @@ import * as metadataOperations from '../operations/metadataOperations'
 import { Certificate, minifyAddress } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import satori from 'satori'
-import dayjs from 'dayjs'
+import dayjs from '../config/dayjs'
 
 import { readFileSync } from 'fs'
 import { networks } from '@unlock-protocol/networks'
