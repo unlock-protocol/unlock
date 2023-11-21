@@ -1,9 +1,6 @@
 const { ethers, upgrades } = require('hardhat')
-const {
-  ADDRESS_ZERO,
-  reverts,
-  getContractFactoryFromSolFiles,
-} = require('../helpers')
+const contracts = require('@unlock-protocol/contracts')
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
@@ -158,7 +155,17 @@ describe('upgrades', async () => {
     await unlock.deployed()
 
     // Helper function
-    const deployAndAddPublicLockVersion = async (PublicLock) => {
+    const getPublicLockFactoryAtVersion = async (publicLockVersion) => {
+      const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
+      const PublicLock = await ethers.getContractFactory(abi, bytecode)
+      return PublicLock
+    }
+
+    const deployAndAddPublicLockVersion = async (publicLockVersion) => {
+      const PublicLock = !publicLockVersion
+        ? await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
+        : await getPublicLockFactoryAtVersion(publicLockVersion)
+
       const publicLock = await PublicLock.deploy()
       await publicLock.deployed()
       const txImpl = await unlock.addLockTemplate(
@@ -171,7 +178,7 @@ describe('upgrades', async () => {
 
     // Add oldest
     const oldestPublicLock = await deployAndAddPublicLockVersion(
-      await getContractFactoryFromSolFiles('PublicLock', firstUpgradableVersion)
+      firstUpgradableVersion
     )
     versions[firstUpgradableVersion] = oldestPublicLock
 
@@ -191,9 +198,7 @@ describe('upgrades', async () => {
     lock = oldestPublicLock.attach(newLockAddress)
 
     // Add latest
-    const latestPublicLock = await deployAndAddPublicLockVersion(
-      await ethers.getContractFactory('contracts/PublicLock.sol:PublicLock')
-    )
+    const latestPublicLock = await deployAndAddPublicLockVersion()
     latestVersion = await latestPublicLock.publicLockVersion()
     versions[latestVersion] = latestPublicLock
 
@@ -203,9 +208,7 @@ describe('upgrades', async () => {
       currentVersion < latestVersion;
       currentVersion++
     ) {
-      const publicLock = await deployAndAddPublicLockVersion(
-        await getContractFactoryFromSolFiles('PublicLock', currentVersion)
-      )
+      const publicLock = await deployAndAddPublicLockVersion(currentVersion)
       versions[currentVersion] = publicLock
     }
   })
