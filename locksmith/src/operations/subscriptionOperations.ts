@@ -11,12 +11,7 @@ import { ethers } from 'ethers'
 import { KeySubscription } from '../models'
 import { Op } from 'sequelize'
 
-import dayjs from 'dayjs'
-import relative from 'dayjs/plugin/relativeTime'
-import duration from 'dayjs/plugin/duration'
-
-dayjs.extend(relative)
-dayjs.extend(duration)
+import dayjs from '../config/dayjs'
 
 interface Amount {
   amount: string

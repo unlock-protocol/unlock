@@ -1,6 +1,3 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
 import * as Normalizer from '../utils/normalizer'
 import config from '../config/config'
 import { logger } from '../logger'
@@ -25,9 +22,6 @@ import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
 import { svgStringToDataURI } from '../utils/image'
 import { createCertificate } from '../utils/certification'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 type Params = {
   [key: string]: string | number | undefined | boolean

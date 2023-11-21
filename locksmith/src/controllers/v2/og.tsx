@@ -8,13 +8,8 @@ const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import satori from 'satori'
 import { imageURLToDataURI, imageUrlToBase64 } from '../../utils/image'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
+import dayjs from '../../config/dayjs'
 import logger from '../../logger'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 declare module 'react' {
   interface HTMLAttributes<T> extends React.DOMAttributes<T> {
