@@ -177,7 +177,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
       // update abi before upgrade, so we can track event
       lock = await ethers.getContractAt(
-        PublicLockLatest.interface,
+        PublicLockLatest.interface.format(ethers.utils.FormatTypes.full),
         lock.address
       )
 
