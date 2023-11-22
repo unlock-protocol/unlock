@@ -1,11 +1,11 @@
 const { ethers } = require('hardhat')
 const PublicLock = artifacts.require('contracts/PublicLock.sol:PublicLock')
-const Locks = require('../fixtures/locks')
 const deployContracts = require('../fixtures/deploy')
 const {
   ADDRESS_ZERO,
   MAX_UINT,
   createLockCalldata,
+  lockFixtures: Locks,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function deployLock({

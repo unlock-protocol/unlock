@@ -7,9 +7,10 @@ const { ADDRESS_ZERO } = require('../helpers')
 const { createUniswapV2Exchange } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
-
-const Locks = require('../fixtures/locks')
+const {
+  createLockCalldata,
+  lockFixtures: Locks,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // skip on coverage until solidity-coverage supports EIP-1559
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe

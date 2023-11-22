@@ -6,8 +6,6 @@ const {
   ADDRESS_ZERO,
   createLockCalldata,
 } = require('@unlock-protocol/hardhat-helpers')
-const ha = require('@unlock-protocol/hardhat-helpers')
-console.log(ha)
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
