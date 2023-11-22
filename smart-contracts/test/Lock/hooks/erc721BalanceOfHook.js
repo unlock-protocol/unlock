@@ -69,13 +69,13 @@ contract('ERC721BalanceOfHook', () => {
   })
 
   describe('mapping is not set', () => {
-    it('mapping not set', async () => {
+    it('mapping not set (fails)', async () => {
       assert.notEqual(await hook.nftAddresses(lock.address), nft.address)
     })
-    it('with no valid key', async () => {
+    it('with no valid key (fails)', async () => {
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
-    it('with a valid key', async () => {
+    it('with a valid key (works)', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
       await lock.purchase(
@@ -90,7 +90,7 @@ contract('ERC721BalanceOfHook', () => {
       )
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
-    it('with an expired key', async () => {
+    it('with an expired key (fails)', async () => {
       // buy a key
       const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.isValidKey(tokenId), true)
@@ -110,14 +110,14 @@ contract('ERC721BalanceOfHook', () => {
       await nft.mint(nftOwner)
     })
 
-    it('with no valid key', async () => {
+    it('with no valid key (works)', async () => {
       assert.equal(await lock.getHasValidKey(nftOwner), false)
       assert.equal(await lock.balanceOf(nftOwner), 0)
       // create mapping
       await hook.createMapping(lock.address, nft.address)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
-    it('with a valid key', async () => {
+    it('with a valid key (works)', async () => {
       assert.equal(await lock.getHasValidKey(nftOwner), false)
 
       // buy a key
@@ -129,7 +129,7 @@ contract('ERC721BalanceOfHook', () => {
       await hook.createMapping(lock.address, nft.address)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
-    it('with an expired key', async () => {
+    it('with an expired key (works)', async () => {
       assert.equal(await lock.getHasValidKey(nftOwner), false)
 
       // buy a key
@@ -151,15 +151,15 @@ contract('ERC721BalanceOfHook', () => {
   })
 
   describe('mapping is set, account does not hold a nft', () => {
-    it('with no valid key', async () => {
+    it('with no valid key (fails)', async () => {
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
-    it('with a valid key', async () => {
+    it('with a valid key (works)', async () => {
       // buy a key
       await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
-    it('with an expired key', async () => {
+    it('with an expired key (fails)', async () => {
       // buy a key
       const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
