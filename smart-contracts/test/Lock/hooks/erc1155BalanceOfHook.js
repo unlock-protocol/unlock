@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const {
   deployLock,
   ADDRESS_ZERO,
@@ -5,28 +6,32 @@ const {
   reverts,
 } = require('../../helpers')
 
-const Erc1155TokenUriHook = artifacts.require('ERC1155BalanceOfHook')
-const TestERC1155 = artifacts.require('TestERC1155')
-
 let lock
 let hook
 let nft
 
 const GOLD = 1
 
-contract('ERC1155BalanceOfHook', (accounts) => {
-  const from = accounts[1]
-  const nftOwner = accounts[2]
-  const keyOwner = accounts[3]
+contract('ERC1155BalanceOfHook', () => {
+  let nftOwner
+  let keyOwner
+  let randomSigner
 
   beforeEach(async () => {
-    lock = await deployLock()
+    ;[, { address: nftOwner }, { address: keyOwner }, randomSigner] =
+      await ethers.getSigners()
+
+    lock = await deployLock({ isEthers: true })
 
     // deploy some ERC1155
-    nft = await TestERC1155.new()
+    const TestERC1155 = await ethers.getContractFactory('TestERC1155')
+    nft = await TestERC1155.deploy()
 
     // deploy the hook
-    hook = await Erc1155TokenUriHook.new()
+    const Erc1155TokenUriHook = await ethers.getContractFactory(
+      'ERC1155BalanceOfHook'
+    )
+    hook = await Erc1155TokenUriHook.deploy()
 
     // set the hook
     await lock.setEventHooks(
@@ -55,9 +60,9 @@ contract('ERC1155BalanceOfHook', (accounts) => {
 
     it('should only allow lock managers to set mapping', async () => {
       await reverts(
-        hook.createMapping(lock.address, nft.address, GOLD, {
-          from: accounts[5],
-        }),
+        hook
+          .connect(randomSigner)
+          .createMapping(lock.address, nft.address, GOLD),
         'Caller does not have the LockManager role'
       )
     })
@@ -87,7 +92,6 @@ contract('ERC1155BalanceOfHook', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          from,
           value: keyPrice,
         }
       )

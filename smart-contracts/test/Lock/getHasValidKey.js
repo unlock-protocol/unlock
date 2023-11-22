@@ -2,12 +2,15 @@ const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 const { ethers } = require('hardhat')
 
 contract('Lock / getHasValidKey', (accounts) => {
-  const [, keyOwner] = accounts
   let lock
   let tokenId
+  let keyOwner
+  let keyOwnerSigner
 
   beforeEach(async () => {
-    lock = await deployLock()
+    lock = await deployLock({ isEthers: true })
+    ;[, keyOwnerSigner] = await ethers.getSigners()
+    keyOwner = keyOwnerSigner.address
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
@@ -29,9 +32,9 @@ contract('Lock / getHasValidKey', (accounts) => {
 
     describe('after transfering a previously purchased key', () => {
       beforeEach(async () => {
-        await lock.transferFrom(keyOwner, accounts[5], tokenId, {
-          from: keyOwner,
-        })
+        await lock
+          .connect(keyOwnerSigner)
+          .transferFrom(keyOwner, accounts[5], tokenId)
       })
 
       it('should be false', async () => {
@@ -43,7 +46,6 @@ contract('Lock / getHasValidKey', (accounts) => {
 
   describe('with multiple keys', () => {
     let tokenIds
-    const keyOwner = accounts[6]
     beforeEach(async () => {
       const tx = await lock.purchase(
         [],
@@ -55,7 +57,8 @@ contract('Lock / getHasValidKey', (accounts) => {
           value: ethers.utils.parseUnits('0.03', 'ether'),
         }
       )
-      tokenIds = tx.logs
+      const { events } = await tx.wait()
+      tokenIds = await events
         .filter((v) => v.event === 'Transfer')
         .map(({ args }) => args.tokenId)
     })
@@ -67,9 +70,9 @@ contract('Lock / getHasValidKey', (accounts) => {
 
     describe('after transfering one of the purchased key', () => {
       beforeEach(async () => {
-        await lock.transferFrom(keyOwner, accounts[5], tokenIds[0], {
-          from: keyOwner,
-        })
+        await lock
+          .connect(keyOwnerSigner)
+          .transferFrom(keyOwner, accounts[5], tokenIds[0])
       })
 
       it('should still be true', async () => {
@@ -81,9 +84,7 @@ contract('Lock / getHasValidKey', (accounts) => {
 
     describe('after cancelling one of the purchased key', () => {
       beforeEach(async () => {
-        await lock.cancelAndRefund(tokenIds[0], {
-          from: keyOwner,
-        })
+        await lock.connect(keyOwnerSigner).cancelAndRefund(tokenIds[1])
       })
 
       it('should be true', async () => {
@@ -96,9 +97,7 @@ contract('Lock / getHasValidKey', (accounts) => {
       beforeEach(async () => {
         await Promise.all(
           tokenIds.map((id) =>
-            lock.transferFrom(keyOwner, accounts[5], id, {
-              from: keyOwner,
-            })
+            lock.connect(keyOwnerSigner).transferFrom(keyOwner, accounts[5], id)
           )
         )
       })
