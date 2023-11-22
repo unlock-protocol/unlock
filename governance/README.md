@@ -26,7 +26,7 @@ yarn hardhat verify-proxy <...>
 
 1. First, create a file in the `proposals` folder that describe the proposal itself. The file should contain either a js async function or a literal object and should export as default an object containing: 1. the title of the proposal and 2. an array with the description of the calls to send - in following format:
 
-#### Exports a litteral object
+#### Exports a literal object
 
 ```js
 module.exports = {
@@ -44,7 +44,7 @@ module.exports = {
 
 check [`./proposals/000-example.js`](./proposals/000-example.js) for an example.
 
-#### Exports an aysnc function
+#### Exports an async function
 
 When using an async function to parse a proposal, you can pass params to the function through positional args in cli scripts.
 
