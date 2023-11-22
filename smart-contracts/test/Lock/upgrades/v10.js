@@ -2,7 +2,7 @@ const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const path = require('path')
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
   ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
@@ -22,16 +22,22 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
   before(async function copyAndBuildContract() {
     this.timeout(200000)
-    PublicLockPast = await copyAndBuildContractAtVersion(
+    ;[PublicLockPast, PublicLockLatest] = await copyAndBuildContractsAtVersion(
       dirname,
-      'PublicLock',
-      versionNumber
+      [
+        {
+          contractName: 'PublicLock',
+          version: versionNumber,
+        },
+        {
+          contractName: 'PublicLock',
+          version: versionNumber + 1,
+        },
+      ]
     )
-    PublicLockLatest = await copyAndBuildContractAtVersion(
-      dirname,
-      'PublicLock',
-      versionNumber + 1
-    )
+    // deploy latest version
+    const publicLockLatest = await PublicLockLatest.deploy()
+    await publicLockLatest.deployed()
   })
 
   beforeEach(async () => {

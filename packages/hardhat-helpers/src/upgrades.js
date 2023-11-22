@@ -7,9 +7,7 @@ const getContractsPath = (dirname) =>
 const getArtifactsPath = (dirname) =>
   path.resolve(dirname, '..', '..', 'artifacts', 'contracts', 'past-versions')
 
-async function copyAndBuildContractAtVersion(dirname, contractName, version) {
-  const { ethers, run } = require('hardhat')
-
+const copyContractFiles = async (dirname, contractName, version) => {
   // need to copy .sol for older versions in contracts repo
   const pastUnlockPath = require.resolve(
     `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${version}.sol`
@@ -19,24 +17,40 @@ async function copyAndBuildContractAtVersion(dirname, contractName, version) {
     pastUnlockPath,
     path.resolve(getContractsPath(dirname), `${contractName}V${version}.sol`)
   )
+}
+
+async function copyAndBuildContractsAtVersion(dirname, contracts) {
+  const { ethers, run } = require('hardhat')
+
+  // copy all files
+  await Promise.all(
+    contracts.map(({ contractName, version }) =>
+      copyContractFiles(dirname, contractName, version)
+    )
+  )
 
   // re-compile contract
   await run('compile')
 
   // get factory using fully qualified path
-  const Contract = await ethers.getContractFactory(
-    `contracts/past-versions/${contractName}V${version}.sol:${contractName}`
+  const Contracts = await Promise.all(
+    contracts.map(({ contractName, version }) => {
+      return ethers.getContractFactory(
+        `contracts/past-versions/${contractName}V${version}.sol:${contractName}`
+      )
+    })
   )
-  return Contract
+
+  return Contracts
 }
 
 async function cleanupContractVersions(dirname) {
   // delete .sol file
   await fs.remove(getContractsPath(dirname))
-  await fs.remove(getArtifactsPath(dirname))
+  // dont delete artifacts
 }
 
 export default {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
 }

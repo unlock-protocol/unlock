@@ -2,7 +2,7 @@ const { ethers, upgrades, run } = require('hardhat')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -12,11 +12,9 @@ async function main({ unlockVersion } = {}) {
   // need to fetch previous unlock versions
   if (unlockVersion) {
     console.log(`Setting up version ${unlockVersion} from package`)
-    Unlock = await copyAndBuildContractAtVersion(
-      __dirname,
-      'Unlock',
-      unlockVersion
-    )
+    Unlock = await copyAndBuildContractsAtVersion(__dirname, [
+      { contractName: 'Unlock', version: unlockVersion },
+    ])
   } else {
     throw 'Need to set --unlock-version'
   }

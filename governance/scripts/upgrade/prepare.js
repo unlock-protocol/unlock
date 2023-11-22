@@ -1,7 +1,7 @@
 const { run, upgrades } = require('hardhat')
 
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -11,11 +11,12 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   let Contract
   if (contractVersion) {
     console.log(`Setting up version ${contractVersion} from package`)
-    Contract = await copyAndBuildContractAtVersion(
-      __dirname,
-      contractName,
-      contractVersion
-    )
+    Contract = await copyAndBuildContractsAtVersion(__dirname, [
+      {
+        contractName,
+        version: contractVersion,
+      },
+    ])
   } else {
     throw Error('Need a version number --unlock-version')
   }

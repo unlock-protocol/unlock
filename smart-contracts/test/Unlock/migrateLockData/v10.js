@@ -5,7 +5,7 @@ const path = require('path')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
   createLockCalldata,
   ADDRESS_ZERO,
@@ -63,7 +63,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
   let unlock
   let lock
   let pastVersion
-  let PublicLockLatest
+  let PublicLockLatest, PublicLockPast
 
   after(async () => await cleanupContractVersions(__dirname))
 
@@ -74,21 +74,24 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    console.log(dirname)
-    PublicLockLatest = await copyAndBuildContractAtVersion(
+    ;[PublicLockPast, PublicLockLatest] = await copyAndBuildContractsAtVersion(
       dirname,
-      'PublicLock',
-      previousVersionNumber + 1
+      [
+        {
+          contractName: 'PublicLock',
+          version: previousVersionNumber,
+        },
+        {
+          contractName: 'PublicLock',
+          version: previousVersionNumber + 1,
+        },
+      ]
     )
+    // deploy latest version
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
 
-    // deploy past impl
-    const PublicLockPast = await copyAndBuildContractAtVersion(
-      dirname,
-      'PublicLock',
-      previousVersionNumber
-    )
+    // deploy old version
     const publicLockPast = await PublicLockPast.deploy()
     await publicLockPast.deployed()
     pastVersion = await publicLockPast.publicLockVersion()

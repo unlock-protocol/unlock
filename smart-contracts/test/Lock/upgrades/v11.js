@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 const path = require('path')
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
   ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
@@ -23,17 +23,18 @@ describe('PublicLock upgrade v10 > v11', () => {
     // make sure mocha doesnt time out
     this.timeout(200000)
 
-    // getr previous versions
-    PublicLockPast = await copyAndBuildContractAtVersion(
+    // get contract versions
+    ;[PublicLockPast, PublicLockLatest] = await copyAndBuildContractsAtVersion(
       dirname,
-      'PublicLock',
-      10
+      [
+        { contractName: 'PublicLock', version: 10 },
+        { contractName: 'PublicLock', version: 11 },
+      ]
     )
-    PublicLockLatest = await copyAndBuildContractAtVersion(
-      dirname,
-      'PublicLock',
-      11
-    )
+
+    // deploy latest version
+    const publicLockLatest = await PublicLockLatest.deploy()
+    await publicLockLatest.deployed()
 
     // deploy a simple lock
     const [, lockOwner] = await ethers.getSigners()
