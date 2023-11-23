@@ -7,9 +7,10 @@ const { ADDRESS_ZERO } = require('../helpers')
 const { createUniswapV2Exchange } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
-const createLockHash = require('../helpers/createLockCalldata')
-
-const Locks = require('../fixtures/locks')
+const {
+  createLockCalldata,
+  lockFixtures: Locks,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // skip on coverage until solidity-coverage supports EIP-1559
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
@@ -167,7 +168,10 @@ contract('UnlockDiscountToken upgrade', async () => {
         Locks.FIRST.maxNumberOfKeys,
         Locks.FIRST.lockName,
       ]
-      const calldata = await createLockHash({ args, from: lockOwner.address })
+      const calldata = await createLockCalldata({
+        args,
+        from: lockOwner.address,
+      })
       const tx = await unlock.createUpgradeableLock(calldata)
 
       const { events } = await tx.wait()

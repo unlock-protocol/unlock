@@ -3,6 +3,8 @@ require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-etherscan')
 require('@nomiclabs/hardhat-waffle')
 
+require('@openzeppelin/hardhat-upgrades')
+
 // import helpers
 const { etherscan, networks } = require('@unlock-protocol/hardhat-helpers')
 
@@ -23,6 +25,9 @@ require('./tasks/balance')
 require('./tasks/safe')
 require('./tasks/gov')
 require('./tasks/verify')
+require('./tasks/deploy')
+require('./tasks/set')
+require('./tasks/unlock')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

@@ -1,6 +1,11 @@
 {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
+    "lib": [
+      "es2020", 
+      "esnext"
+    ],
+    "target": "es2020",
     "outDir": "dist",
     "allowJs": true,
     "resolveJsonModule": true

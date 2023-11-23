@@ -19088,7 +19088,6 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-etherscan": "npm:3.1.7"
     "@primitivefi/hardhat-dodoc": "npm:0.2.3"
-    "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
@@ -19226,6 +19225,8 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
+    "@openzeppelin/hardhat-upgrades": "npm:1.28.0"
+    "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
@@ -19245,6 +19246,7 @@ __metadata:
     "@types/fs-extra": "npm:11.0.3"
     "@types/mocha": "npm:10.0.3"
     "@types/node": "npm:20.8.10"
+    "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"

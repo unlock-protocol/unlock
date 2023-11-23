@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
 const deployContracts = require('../fixtures/deploy')
-const createLockHash = require('../helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 const {
   ADDRESS_ZERO,
   purchaseKey,
@@ -25,7 +25,7 @@ contract('Lock / maxNumberOfKeys', () => {
       const tokenAddress = ADDRESS_ZERO
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
-      const calldata = await createLockHash({ args, from: from.address })
+      const calldata = await createLockCalldata({ args, from: from.address })
       const tx = await unlock.createUpgradeableLock(calldata)
       const { events } = await tx.wait()
       const {
