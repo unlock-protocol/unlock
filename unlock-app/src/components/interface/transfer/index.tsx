@@ -11,6 +11,8 @@ import { AxiosError } from 'axios'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useLockData } from '~/hooks/useLockData'
+import { useTransferFee } from '~/hooks/useTransferFee'
+import { useQuery } from '@tanstack/react-query'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -238,11 +240,29 @@ export const Transfer = () => {
     (TransferObject & { transferCode: string }) | undefined
   >(transfer)
 
-  const { createTransferCode, isLoading } = useTransferCode({
+  const { createTransferCode, isLoading: isLoadingTransferCode } =
+    useTransferCode({
+      network: props.network!,
+      lockAddress: props.lockAddress!,
+      keyId: props.keyId!,
+    })
+
+  const { getTransferFeeBasisPoints } = useTransferFee({
     network: props.network!,
     lockAddress: props.lockAddress!,
-    keyId: props.keyId!,
   })
+
+  const {
+    isLoading: isLoadingTransferFeeBasisPoints,
+    data: transferFeeBasisPoints,
+  } = useQuery(
+    ['getTransferFeeBasisPoints', props.lockAddress!, props.network!],
+    async () => getTransferFeeBasisPoints()
+  )
+
+  const isLoading = isLoadingTransferCode || isLoadingTransferFeeBasisPoints
+  // TODO: check is the key manager is also lock manager
+  const transferEnabled = transferFeeBasisPoints !== 10000
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -254,15 +274,6 @@ export const Transfer = () => {
       </header>
       <main className="grid gap-6">
         {!isReady && <div> Invalid transfer URL </div>}
-        {isReady && (
-          <SendTransferForm
-            isLoading={isLoading}
-            createTransferCode={createTransferCode}
-            onTransferCodeReceived={(obj) => {
-              setTransferObject(obj)
-            }}
-          />
-        )}
         {isLoading && (
           <Placeholder.Root className="p-6 bg-white border rounded-lg">
             <Placeholder.Line size="lg" />
@@ -271,11 +282,35 @@ export const Transfer = () => {
             <Placeholder.Line size="lg" />
           </Placeholder.Root>
         )}
-        {transferObject && !isLoading && (
-          <ConfirmTransferForm
-            network={props.network}
-            transferObject={transferObject}
-          />
+        {!isLoading && isReady && (
+          <>
+            {transferEnabled && (
+              <>
+                <SendTransferForm
+                  isLoading={isLoading}
+                  createTransferCode={createTransferCode}
+                  onTransferCodeReceived={(obj) => {
+                    setTransferObject(obj)
+                  }}
+                />
+                {transferObject && !isLoading && (
+                  <ConfirmTransferForm
+                    network={props.network}
+                    transferObject={transferObject}
+                  />
+                )}
+              </>
+            )}
+            {!transferEnabled && (
+              <div className="space-y-1">
+                <p className="text-gray-800">
+                  Transfers for this contract are currently disabled. Please
+                  contact the manager of the contract to transfer your
+                  individual membership.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>
