@@ -40,6 +40,7 @@
     "@types/fs-extra": "11.0.3",
     "@types/mocha": "10.0.3",
     "@types/node": "20.8.10",
+    "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",

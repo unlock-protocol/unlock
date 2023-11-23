@@ -16,10 +16,7 @@ async function main({ publicLockVersion }) {
     )
     PublicLock = await ethers.getContractFactory(abi, bytecode)
   } else {
-    console.log(
-      `PUBLIC LOCK > Deploying lock template on ${networkName} for development version with signer ${signer.address}`
-    )
-    PublicLock = await ethers.getContractFactory('PublicLock')
+    throw Error('Need to set --public-lock-version')
   }
 
   const publicLock = await PublicLock.deploy()

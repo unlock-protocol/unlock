@@ -2,8 +2,10 @@ const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 
 const deployContracts = require('../fixtures/deploy')
-const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  createLockCalldata,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -20,7 +22,7 @@ contract('Lock / mimick owner()', () => {
     const tokenAddress = ADDRESS_ZERO
     const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
-    const calldata = await createLockHash({ args, from: deployer.address })
+    const calldata = await createLockCalldata({ args, from: deployer.address })
     const tx = await unlock.createUpgradeableLock(calldata)
     const { events } = await tx.wait()
     const {

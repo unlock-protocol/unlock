@@ -1,7 +1,7 @@
 const { expect, assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
-const createLockHash = require('../helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO } = require('../helpers')
 // lock args
 const args = [
@@ -50,7 +50,7 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     ).to.equals(2)
 
     // create lock calldata
-    calldata = await createLockHash({ args, from: lockOwner.address })
+    calldata = await createLockCalldata({ args, from: lockOwner.address })
   })
 
   it('creates versioned locks successfully', async () => {

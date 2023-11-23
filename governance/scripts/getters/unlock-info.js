@@ -1,6 +1,10 @@
 const { ethers, network } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { getProxyAdminAddress } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getUnlock,
+  getProxyAdminAddress,
+} = require('@unlock-protocol/hardhat-helpers')
+
 const getOwners = require('../multisig/owners')
 
 async function main({ unlockAddress }) {
@@ -11,7 +15,7 @@ async function main({ unlockAddress }) {
   }
 
   const { name } = networks[chainId]
-  const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+  const unlock = await getUnlock(unlockAddress)
   const unlockOwner = await unlock.owner()
   const isMultisig = safeAddress === unlockOwner
 

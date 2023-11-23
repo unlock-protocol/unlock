@@ -58,26 +58,6 @@ task('set', 'Various setters for Unlock contracts')
     }
   )
 
-task('set:template', 'Set PublicLock address in Unlock contract')
-  .addParam(
-    'publicLockAddress',
-    'the address of an existing public Lock contract'
-  )
-  .addOptionalParam(
-    'unlockAddress',
-    'the address of an existing Unlock contract'
-  )
-  .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
-  .setAction(async ({ publicLockAddress, unlockAddress, unlockVersion }) => {
-    // eslint-disable-next-line global-require
-    const templateSetter = require('../scripts/setters/set-template')
-    await templateSetter({
-      publicLockAddress,
-      unlockAddress,
-      unlockVersion,
-    })
-  })
-
 task('set:unlock-config', 'Configure Unlock contract')
   .addOptionalParam(
     'unlockAddress',
@@ -128,5 +108,25 @@ task('set:unlock-oracle', 'Set ERC20 <> WETH oracle address in Unlock contract')
       unlockAddress,
       tokenAddress,
       oracleAddress,
+    })
+  })
+
+task('set:template', 'Set PublicLock address in Unlock contract')
+  .addParam(
+    'publicLockAddress',
+    'the address of an existing public Lock contract'
+  )
+  .addOptionalParam(
+    'unlockAddress',
+    'the address of an existing Unlock contract'
+  )
+  .addOptionalParam('unlockVersion', 'the version of Unlock to deploy')
+  .setAction(async ({ publicLockAddress, unlockAddress, unlockVersion }) => {
+    // eslint-disable-next-line global-require
+    const templateSetter = require('../scripts/setters/set-template')
+    await templateSetter({
+      publicLockAddress,
+      unlockAddress,
+      unlockVersion,
     })
   })

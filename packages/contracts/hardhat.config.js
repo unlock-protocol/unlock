@@ -4,11 +4,8 @@
 
 // to build contract docs
 require('@primitivefi/hardhat-dodoc')
-require('@nomiclabs/hardhat-etherscan')
 
 const fs = require('fs-extra')
-const { networks, etherscan } = require('@unlock-protocol/hardhat-helpers')
-
 require('./task/exportAbis')
 
 const contractsPath = './src/contracts'
@@ -34,8 +31,6 @@ const settings = {
 }
 
 module.exports = {
-  networks,
-  etherscan,
   solidity: {
     compilers: [
       { version: '0.4.24', settings },

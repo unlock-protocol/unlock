@@ -1,9 +1,8 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
-const Locks = require('../fixtures/locks')
 const { deployLock, purchaseKey, purchaseKeys, reverts } = require('../helpers')
-
-const { maxNumberOfKeys, expirationDuration } = Locks['NO_MAX_KEYS']
+const { lockFixtures } = require('@unlock-protocol/hardhat-helpers')
+const { maxNumberOfKeys, expirationDuration } = lockFixtures['NO_MAX_KEYS']
 const maxKeysPerAddress = 1
 
 const defaultValues = [expirationDuration, maxNumberOfKeys, maxKeysPerAddress]

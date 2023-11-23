@@ -11,6 +11,6 @@ const getProxyAdminAddress = async ({ network }) => {
   return proxyAdminAddress
 }
 
-module.exports = {
+export default {
   getProxyAdminAddress,
 }

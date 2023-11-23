@@ -1,6 +1,9 @@
 const { ethers } = require('hardhat')
 
-const createLockHash = require('../helpers/createLockCalldata')
+const {
+  createLockCalldata,
+  cleanupContractVersions,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const {
   LATEST_UNLOCK_VERSION,
@@ -9,7 +12,7 @@ const {
   getContractFactoryAtVersion,
   getUnlockVersionNumbers,
   getMatchingLockVersion,
-  cleanupPastContracts,
+
   deployUpgreadableContract,
   upgradeUpgreadableContract,
 } = require('../helpers')
@@ -20,7 +23,7 @@ contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
-  after(async () => await cleanupPastContracts())
+  after(async () => await cleanupContractVersions(__dirname))
 
   for (let i = 0; i < unlockVersions.length; i++) {
     const versionNumber = unlockVersions[i]
@@ -37,7 +40,7 @@ contract('Unlock / upgrades', async (accounts) => {
       let originalLockData
       let proxyAdmin
 
-      after(async () => await cleanupPastContracts())
+      after(async () => await cleanupContractVersions(__dirname))
 
       before(async function copyAndBuildContract() {
         // make sure mocha doesnt time out
@@ -117,7 +120,7 @@ contract('Unlock / upgrades', async (accounts) => {
               5, // maxNumberOfKeys
               `UpgradeTestingLock ${versionNumber}`,
             ]
-            const calldata = await createLockHash({ args })
+            const calldata = await createLockCalldata({ args })
             lockTx = await unlock
               .connect(lockOwner)
               .createUpgradeableLock(calldata)
@@ -359,7 +362,7 @@ contract('Unlock / upgrades', async (accounts) => {
                   5, // maxNumberOfKeys
                   'After-Upgrade Lock',
                 ]
-                const calldata = await createLockHash({ args })
+                const calldata = await createLockCalldata({ args })
                 const lockLatestTx = await unlock.createUpgradeableLock(
                   calldata
                 )

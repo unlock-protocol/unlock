@@ -3,6 +3,7 @@ const { ethers, run, upgrades } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { networks } = require('@unlock-protocol/networks')
 const createLock = require('../lock/create')
+const { getUnlock } = require('@unlock-protocol/hardhat-helpers')
 
 const { MaxUint256 } = ethers.constants
 
@@ -60,9 +61,10 @@ async function main({
 
   // deploy UDT
   if (!udtAddress && isLocalNet) {
-    // deploy UDT v2 (upgradable)
-    udtAddress = await run('deploy:udt')
+    // shutdown UDT on local for now
+    // udtAddress = await run('deploy:udt')
   }
+
   if (!udtAddress) {
     udtAddress = '0x0000000000000000000000000000000000000000'
   }
@@ -181,10 +183,7 @@ async function main({
   if (!owner && multisig) {
     owner = multisig
     if (owner) {
-      // get unlock instance (TODO: do not use code version but packaged version)
-      const Unlock = await ethers.getContractFactory('Unlock')
-      const unlock = Unlock.attach(unlockAddress)
-
+      const unlock = await getUnlock(unlockAddress)
       await unlock.transferOwnership(owner)
       console.log(`> Transfered ownership of KeyManager to owner ${owner}`)
 

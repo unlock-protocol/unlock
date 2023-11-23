@@ -4,9 +4,7 @@ const { networks } = require('@unlock-protocol/networks')
 const {
   abi: proxyABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
-const { confirmMultisigTx, impersonate } = require('../../test/helpers')
-
-const { submitTx, getOwners } = require('../multisig')
+const { submitTx } = require('../multisig')
 
 // used to update contract implementation address in proxy admin using multisig
 async function main({
@@ -20,13 +18,6 @@ async function main({
   let [signer] = await ethers.getSigners()
   if (!multisig) {
     ;({ multisig } = networks[chainId])
-  }
-
-  // impersonate multisig owner
-  if (chainId === 31337) {
-    const owners = await getOwners(chainId)
-    signer = await ethers.getSigner(owners[0])
-    await impersonate(owners[0])
   }
 
   console.log(`Submitting contract upgrade on chain ${chainId}: 
@@ -54,11 +45,6 @@ async function main({
     },
     signer,
   })
-
-  // make sure it doesnt revert
-  if (chainId === 31337) {
-    await confirmMultisigTx({ transactionId })
-  }
 }
 
 // execute as standalone
