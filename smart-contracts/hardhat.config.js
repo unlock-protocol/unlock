@@ -49,7 +49,7 @@ const settings = {
 
 // mainnet fork
 if (process.env.RUN_FORK) {
-  parseForkUrl(networks, process.env.RUN_FORK)
+  parseForkUrl(networks)
 }
 
 // tasks

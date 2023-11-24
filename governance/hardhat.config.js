@@ -28,7 +28,7 @@ const settings = {
 
 // mainnet fork
 if (process.env.RUN_FORK) {
-  parseForkUrl(networks, process.env.RUN_FORK)
+  parseForkUrl(networks)
 
   // replace localhost manifest by mainnet one
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')

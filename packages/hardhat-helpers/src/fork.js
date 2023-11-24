@@ -7,17 +7,27 @@ const { abi: WETH_ABI } = require('./ABIs/weth.json')
 
 const { MAX_UINT } = require('./constants')
 
-// parse mainnet fork
-const parseForkUrl = (networks, chainId) => {
-  chainId = parseInt(process.env.RUN_FORK)
+const getChainId = () => {
+  const chainId = parseInt(process.env.RUN_FORK)
   if (isNaN(chainId)) {
     throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
   }
+  return chainId
+}
+
+const getForkUrl = () => {
+  return `https://rpc.unlock-protocol.com/${getChainId()}`
+}
+
+// parse mainnet fork
+const parseForkUrl = (networks) => {
+  const chainId = getChainId()
+  const url = getForkUrl()
   console.log(`Running a fork (chainId : ${chainId})...`)
   networks.hardhat = {
     chainId,
     forking: {
-      url: `https://rpc.unlock-protocol.com/${chainId}`,
+      url,
     },
   }
 
@@ -56,11 +66,11 @@ const addSomeETH = async (
 }
 
 const impersonate = async (address) => {
-  const { network } = require('hardhat')
+  const { network, ethers } = require('hardhat')
   // provider workaround for hardhat bug
   // see https://github.com/NomicFoundation/hardhat/issues/1226#issuecomment-1181706467
   let provider
-  if (network.config.url !== undefined) {
+  if (network.config.url) {
     provider = new ethers.providers.JsonRpcProvider(network.config.url)
   } else {
     // if network.config.url is undefined, then this is the hardhat network
