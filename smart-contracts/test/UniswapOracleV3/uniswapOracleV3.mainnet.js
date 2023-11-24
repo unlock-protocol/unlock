@@ -2,7 +2,12 @@ const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 
-const { UNISWAP_FACTORY_ADDRESS, USDC, WETH, DAI } = require('../helpers')
+const {
+  UNISWAP_FACTORY_ADDRESS,
+  USDC,
+  WETH,
+  DAI,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const pairs = [
   [USDC, WETH],

@@ -21,7 +21,7 @@ const {
   PERMIT2_ADDRESS,
   makePermit,
   generatePermitSignature,
-} = require('../../test/helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
 const PERMIT2_APPROVE_ABI = [
   {

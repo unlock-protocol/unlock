@@ -1,20 +1,22 @@
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
 const {
-  getUniswapTokens,
-  getUniswapRoute,
-  ADDRESS_ZERO,
   deployLock,
   purchaseKey,
-  getBalance,
-  addERC20,
   UNLOCK_ADDRESS,
-  PERMIT2_ADDRESS,
-  CHAIN_ID,
   reverts,
 } = require('../helpers')
 
-const uniswapRouterAddresses = require('../../scripts/uniswap/routerAddresses.json')
+const {
+  uniswapRouterAddresses,
+  getUniswapTokens,
+  getUniswapRoute,
+  ADDRESS_ZERO,
+  PERMIT2_ADDRESS,
+  CHAIN_ID,
+  getBalance,
+  addERC20,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // get uniswap-formatted tokens
 const tokens = getUniswapTokens(CHAIN_ID)
