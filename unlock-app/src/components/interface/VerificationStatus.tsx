@@ -148,30 +148,35 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     )
   }
 
-  const isSignatureValid = isSignatureValidForAddress(
-    sig,
-    raw,
-    account,
-    [...AppConfig.locksmithSigners, ticket!.owner, keyGranter!].filter(
-      (item) => !!item
+  const isSignatureValid = !!(
+    ticket &&
+    isSignatureValidForAddress(
+      sig,
+      raw,
+      account,
+      [...AppConfig.locksmithSigners, ticket!.owner, keyGranter!].filter(
+        (item) => !!item
+      )
     )
   )
 
-  const invalid = invalidMembership({
-    network,
-    manager: ticket!.manager,
-    keyId: ticket!.keyId,
-    owner: ticket!.owner,
-    expiration:
-      ticket!.expiration === MAX_UINT ? -1 : parseInt(ticket!.expiration),
-    isSignatureValid,
-    verificationData: data,
-  })
+  const invalid = ticket
+    ? invalidMembership({
+        network,
+        manager: ticket!.manager,
+        keyId: ticket!.keyId,
+        owner: ticket!.owner,
+        expiration:
+          ticket!.expiration === MAX_UINT ? -1 : parseInt(ticket!.expiration),
+        isSignatureValid,
+        verificationData: data,
+      })
+    : 'Invalid QR code'
 
-  const checkedInAt = ticket!.checkedInAt
+  const checkedInAt = ticket?.checkedInAt
 
   const disableActions =
-    !ticket!.isVerifier || isCheckingIn || !!invalid || !!checkedInAt
+    !ticket?.isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
   const onClickVerified = () => {
     if (!checkedInAt && ticket!.isVerifier && !showWarning) {
@@ -221,22 +226,34 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
         setIsOpen={setShowWarning}
         onConfirm={onClickVerified}
       />
-      <MembershipCard
-        image={ticket!.image}
-        onClose={onClose}
-        keyId={tokenId!}
-        owner={ticket!.owner}
-        userMetadata={ticket!.userMetadata}
-        invalid={invalid}
-        timestamp={timestamp}
-        lockAddress={lockAddress}
-        name={ticket!.name}
-        network={network}
-        checkedInAt={checkedInAt}
-        showWarning={showWarning}
-      >
-        <CardActions />
-      </MembershipCard>
+      {ticket && (
+        <MembershipCard
+          image={ticket!.image}
+          onClose={onClose}
+          keyId={tokenId!}
+          owner={ticket!.owner}
+          userMetadata={ticket!.userMetadata}
+          invalid={invalid}
+          timestamp={timestamp}
+          lockAddress={lockAddress}
+          name={ticket!.name}
+          network={network}
+          checkedInAt={checkedInAt}
+          showWarning={showWarning}
+        >
+          <CardActions />
+        </MembershipCard>
+      )}
+      {!ticket && (
+        <div className="flex flex-col center">
+          <p className="p-8 text-red-500 items-center text-center">
+            Invalid QR Code.
+          </p>
+          <Button variant="outlined-primary" onClick={onVerified}>
+            Scan next ticket
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
