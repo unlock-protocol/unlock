@@ -18953,6 +18953,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uniswap/universal-router-sdk@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@uniswap/universal-router-sdk@npm:2.0.2"
+  dependencies:
+    "@uniswap/permit2-sdk": "npm:^1.2.0"
+    "@uniswap/router-sdk": "npm:^1.6.0"
+    "@uniswap/sdk-core": "npm:^4.0.0"
+    "@uniswap/universal-router": "npm:1.5.1"
+    "@uniswap/v2-sdk": "npm:^3.2.0"
+    "@uniswap/v3-sdk": "npm:^3.10.0"
+    bignumber.js: "npm:^9.0.2"
+    ethers: "npm:^5.3.1"
+  checksum: e9fca01c69705a2d790107524f22941b7481e7b3b32ac5257b2aa6696b46b70a7e7b8fb928e3a7a1007a68b0a04cc9741e0cc7b77208731cf2169a84f23b4ab8
+  languageName: node
+  linkType: hard
+
 "@uniswap/universal-router-sdk@npm:^1.5.8":
   version: 1.5.8
   resolution: "@uniswap/universal-router-sdk@npm:1.5.8"
@@ -18980,7 +18996,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/universal-router@npm:^1.0.1":
+"@uniswap/universal-router@npm:1.5.1, @uniswap/universal-router@npm:^1.0.1":
   version: 1.5.1
   resolution: "@uniswap/universal-router@npm:1.5.1"
   dependencies:
@@ -19208,6 +19224,9 @@ __metadata:
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
     "@safe-global/safe-service-client": "npm:2.0.3"
+    "@uniswap/smart-order-router": "npm:3.17.2"
+    "@uniswap/universal-router-sdk": "npm:2.0.2"
+    "@uniswap/v3-sdk": "npm:3.10.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
@@ -19430,12 +19449,10 @@ __metadata:
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
     "@safe-global/safe-service-client": "npm:2.0.3"
-    "@uniswap/smart-order-router": "npm:3.17.2"
     "@uniswap/v2-core": "npm:1.0.1"
     "@uniswap/v2-periphery": "npm:1.1.0-beta.0"
     "@uniswap/v3-core": "npm:1.0.1"
     "@uniswap/v3-periphery": "npm:1.4.4"
-    "@uniswap/v3-sdk": "npm:3.10.0"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"

@@ -1,12 +1,14 @@
-const { ethers, network, config } = require('hardhat')
-const { UDT, unlockAddress, whales } = require('./contracts')
-const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
-const {
-  abi: WethABI,
-} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
+const { ethers } = require('ethers')
+const { UDT, WETH, whales, unlockAddress } = require('./contracts')
+
+const ERC20_ABI = require('./ABIs/erc20.json')
+const USDC_ABI = require('./ABIs/USDC.json')
+const { abi: WETH_ABI } = require('./ABIs/weth.json')
+
 const { MAX_UINT } = require('./constants')
 
 const resetNodeState = async () => {
+  const { ethers, network, config } = require('hardhat')
   // reset fork
   const { forking } = config.networks.hardhat
   await network.provider.request({
@@ -26,11 +28,13 @@ const addSomeETH = async (
   address,
   amount = ethers.utils.parseEther('1000')
 ) => {
+  const { network } = require('hardhat')
   const balance = ethers.utils.hexStripZeros(amount)
   await network.provider.send('hardhat_setBalance', [address, balance])
 }
 
 const impersonate = async (address) => {
+  const { network } = require('hardhat')
   // provider workaround for hardhat bug
   // see https://github.com/NomicFoundation/hardhat/issues/1226#issuecomment-1181706467
   let provider
@@ -51,6 +55,7 @@ const impersonate = async (address) => {
 }
 
 const stopImpersonate = async (address) => {
+  const { network } = require('hardhat')
   await network.provider.request({
     method: 'hardhat_stopImpersonatingAccount',
     params: [address],
@@ -62,10 +67,11 @@ const addERC20 = async function (
   address,
   amount = ethers.utils.parseEther('1000')
 ) {
+  const { ethers } = require('hardhat')
   // wrapped some ETH
   if (tokenAddress.toLowerCase() === WETH.toLowerCase()) {
     await addSomeETH(address)
-    const weth = await ethers.getContractAt(WethABI, WETH)
+    const weth = await ethers.getContractAt(WETH_ABI, WETH)
     await weth.deposit({ value: amount.toString() })
     return weth
   }
@@ -73,7 +79,7 @@ const addERC20 = async function (
   // special for UDT
   if (tokenAddress.toLowerCase() === UDT.toLowerCase()) {
     await addUDT(address, amount)
-    return await ethers.getContractAt('TestERC20', UDT)
+    return await ethers.getContractAt(ERC20_ABI, UDT)
   }
 
   // otherwise use transfer from whales
@@ -82,7 +88,7 @@ const addERC20 = async function (
   const whale = await ethers.getSigner(whales[tokenAddress])
   await impersonate(whale.address)
 
-  const erc20Contract = await ethers.getContractAt('TestERC20', tokenAddress)
+  const erc20Contract = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   await erc20Contract.connect(whale).transfer(address, amount)
   return erc20Contract
 }
@@ -92,6 +98,8 @@ const toBytes32 = (bn) => {
 }
 
 const addUDT = async (recipientAddress, amount = 1000) => {
+  const { ethers, network } = require('hardhat')
+
   // UDT contract
   const udtAmount = ethers.utils.parseEther(`${amount}`)
 
@@ -122,31 +130,16 @@ const getDelegates = async () => {
   return await Promise.all(delegates.map((delegate) => impersonate(delegate)))
 }
 
-const getUnlockMainnet = async () => {
-  let unlock = await ethers.getContractAt('Unlock', unlockAddress)
-
-  //impersonate unlock multisig
-  const unlockOwner = await unlock.owner()
-  await impersonate(unlockOwner)
-  const unlockSigner = await ethers.getSigner(unlockOwner)
-
-  unlock = unlock.connect(unlockSigner)
-  return unlock
-}
-
-const getUDTMainnet = async () => {
-  const udt = await ethers.getContractAt('UnlockDiscountTokenV3', UDT)
-  return udt
-}
-
 const getERC20Contract = async (tokenAddress) => {
+  const { ethers } = require('hardhat')
   const [signer] = await ethers.getSigners()
   return tokenAddress === WETH
-    ? await ethers.getContractAt(WethABI, WETH, signer)
-    : await ethers.getContractAt('TestERC20', tokenAddress, signer)
+    ? await ethers.getContractAt(WETH_ABI, WETH, signer)
+    : await ethers.getContractAt(ERC20_ABI, tokenAddress, signer)
 }
 
 const addSomeUSDC = async (usdcAddress, recipientAddress, amount = 1000) => {
+  const { ethers } = require('hardhat')
   const usdc = await ethers.getContractAt(USDC_ABI, usdcAddress)
   const masterMinter = await usdc.masterMinter()
   await impersonate(masterMinter)
@@ -162,8 +155,6 @@ module.exports = {
   impersonate,
   stopImpersonate,
   getDelegates,
-  getUnlockMainnet,
-  getUDTMainnet,
   getERC20Contract,
   addUDT,
   addSomeETH,

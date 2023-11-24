@@ -8,6 +8,8 @@ import upgrades from './upgrades'
 import versions from './versions'
 import proxy from './proxy'
 import fixtures from './fixtures'
+import uniswap from './uniswap'
+import contracts from './contracts'
 
 module.exports = {
   networks,
@@ -20,4 +22,6 @@ module.exports = {
   ...upgrades,
   ...versions,
   ...fixtures,
+  ...uniswap,
+  ...contracts,
 }

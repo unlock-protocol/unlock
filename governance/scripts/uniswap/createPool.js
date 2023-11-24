@@ -1,14 +1,24 @@
 const { ethers } = require('hardhat')
 const {
-  createUniswapV3Pool,
-  addLiquidity,
-  logBalance,
+  addERC20,
+  getBalance,
+  BASIS_POINTS,
   UDT,
   DAI,
   // WETH
-  BASIS_POINTS,
-  addERC20,
-} = require('../../test/helpers')
+} = require('@unlock-protocol/hardhat-helpers')
+
+const {
+  createUniswapV3Pool,
+  getTokenInfo,
+  addLiquidity,
+} = require('../../helpers/uniswap')
+
+async function logBalance(tokenAddress, account) {
+  const balance = await getBalance(account, tokenAddress)
+  const { symbol } = await getTokenInfo(tokenAddress)
+  console.log(` balance ${symbol}: `, balance.toString())
+}
 
 async function main({ tokenA = DAI, tokenB = UDT } = {}) {
   const [signer] = await ethers.getSigners()

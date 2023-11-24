@@ -17,6 +17,9 @@ const JSBI = require('jsbi')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
 const {
+  ADDRESS_ZERO,
+  MAX_UINT,
+  BASIS_POINTS,
   WETH,
   USDC,
   DAI,
@@ -26,13 +29,12 @@ const {
   V3_SWAP_ROUTER_ADDRESS,
   POSITION_MANAGER_ADDRESS,
   CHAIN_ID,
-} = require('./contracts')
-const { getERC20Contract } = require('./fork')
-const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
+  getERC20Contract,
+} = require('@unlock-protocol/hardhat-helpers')
+const ERC20_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
 // default fee
 const FEE = 500
-const BASIS_POINTS = 1000000
 
 // returns the sqrt price as a 64x96
 bn.config({ EXPONENTIAL_AT: 999999, DECIMAL_PLACES: 40 })
@@ -90,7 +92,7 @@ async function getPoolState(poolContract) {
 }
 
 const getTokenInfo = async (tokenAddress) => {
-  const token0 = await ethers.getContractAt('TestERC20', tokenAddress)
+  const token0 = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   const [decimals, symbol] = await Promise.all([
     await token0.decimals(),
     await token0.symbol(),
@@ -447,7 +449,6 @@ module.exports = {
   getUniswapTokens,
   PERMIT2_ADDRESS,
   MAX_UINT160,
-  BASIS_POINTS,
   makePermit,
   generatePermitSignature,
 }
