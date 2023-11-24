@@ -8,7 +8,7 @@ const inter700 = readFileSync('src/fonts/inter-700.woff')
 import { Ticket } from '@unlock-protocol/ui'
 import normalizer from './normalizer'
 import { imageUrlToBase64 } from './image'
-import FilBangalore from '../components/FilBangalore'
+import FilBangalore from '../assets/FilBangalore'
 
 interface Options {
   network: number
@@ -123,25 +123,7 @@ export const ticketForFilBangalore = async ({
     lockAddress,
     tokenId,
   })
+
   // Let's now generate the SVG
-
-
-  return satori(<FilBangalore qrCode={qrCode} />, {
-    width: 1024,
-    height: 1024,
-    fonts: [
-      {
-        name: 'Inter',
-        data: inter400,
-        style: 'normal',
-        weight: 400,
-      },
-      {
-        name: 'Inter',
-        data: inter700,
-        style: 'normal',
-        weight: 700,
-      },
-    ],
-  })
+  return FilBangalore(qrCode)
 }
