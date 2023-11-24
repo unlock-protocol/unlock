@@ -8,6 +8,7 @@ const inter700 = readFileSync('src/fonts/inter-700.woff')
 import { Ticket } from '@unlock-protocol/ui'
 import normalizer from './normalizer'
 import { imageUrlToBase64 } from './image'
+import FilBangalore from '../assets/FilBangalore'
 
 interface Options {
   network: number
@@ -105,4 +106,24 @@ export const createTicket = async ({
     }
   )
   return ticket
+}
+
+export const ticketForFilBangalore = async ({
+  network,
+  lockAddress,
+  tokenId,
+}: {
+  network: number
+  lockAddress: string
+  tokenId: string
+}) => {
+  // We need to generate the icon from SVG + QR code!
+  const qrCode = await generateQrCode({
+    network,
+    lockAddress,
+    tokenId,
+  })
+
+  // Let's now generate the SVG
+  return FilBangalore(qrCode)
 }

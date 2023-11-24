@@ -5,6 +5,13 @@ import { Op } from 'sequelize'
 import { UserTokenMetadata, LockMetadata, LockIcons } from '../models'
 import parseDataUri from 'parse-data-uri'
 import lockIconUtils from '../utils/lockIcon'
+import { ticketForFilBangalore } from '../utils/ticket'
+
+interface IconType {
+  icon: string
+  type: string | null
+  isURL: boolean
+}
 
 export async function getKeyHolderMetadata(
   address: string,
@@ -36,7 +43,7 @@ export async function isSoldOut(
   return keysAvailable.lt(keysNeeded) // true of keysAvailable smaller than keysNeeded
 }
 
-export const getGeneratedLockIcon = (lockAddress: string) => {
+export const getGeneratedLockIcon = (lockAddress: string): IconType => {
   const svg = lockIconUtils.lockIcon(lockAddress)
   return {
     icon: svg,
@@ -53,7 +60,7 @@ export const getLockIcon = async ({
   lockAddress: string
   original?: boolean
   requestUrl: string
-}) => {
+}): Promise<IconType> => {
   if (original) {
     return getGeneratedLockIcon(lockAddress)
   }
@@ -104,6 +111,33 @@ export const getLockIcon = async ({
   } catch {
     return getGeneratedLockIcon(lockAddress)
   }
+}
+
+export const getKeyIcon = async ({
+  network,
+  lockAddress,
+  keyId,
+}: {
+  network: number
+  lockAddress: string
+  keyId: string
+}): Promise<IconType | null> => {
+  console.log({ lockAddress, keyId })
+
+  // Temporary icon for FilBangalore
+  if (
+    network == 42161 &&
+    lockAddress.toLowerCase() === '0x02c510be69fe87e052e065d8a40b437d55907b48'
+  ) {
+    const icon = await ticketForFilBangalore({
+      network,
+      lockAddress,
+      tokenId: keyId,
+    })
+
+    return { type: 'image/svg+xml', icon, isURL: false }
+  }
+  return null
 }
 
 const lockOperations = {
