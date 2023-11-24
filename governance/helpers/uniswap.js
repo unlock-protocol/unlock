@@ -1,6 +1,7 @@
 const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
-const { Token, Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk')
+const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk')
+const { Token } = require('@uniswap/sdk-core')
 const {
   ADDRESS_ZERO,
   MAX_UINT,

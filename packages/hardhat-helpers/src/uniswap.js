@@ -204,6 +204,7 @@ async function generatePermitSignature(permit, signer, chainId = CHAIN_ID) {
 }
 
 export const getTokenInfo = async (tokenAddress) => {
+  const { ethers } = require('hardhat')
   const token0 = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   const [decimals, symbol] = await Promise.all([
     await token0.decimals(),
