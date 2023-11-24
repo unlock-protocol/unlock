@@ -5,7 +5,6 @@ const { Token } = require('@uniswap/sdk-core')
 const {
   ADDRESS_ZERO,
   MAX_UINT,
-  BASIS_POINTS,
   WETH,
   UDT,
   UNISWAP_FACTORY_ADDRESS,
@@ -219,9 +218,11 @@ const addLiquidity = async (poolContract, amountA, amountB) => {
 // get (or create if non-existing) a pool based on token0/token1 paris
 // default pool is UDT/WETH
 const createPool = async function (
-  token0 = UDT,
-  token1 = WETH,
-  rate = 42, // in basis point
+  token0 = WETH,
+  token1 = UDT,
+  priceA = 2000,
+  priceB = 10,
+  // rate = 42, // in basis point
   fee = FEE
 ) {
   const { decimals: token0Decimals, symbol: token0Symbol } = await getTokenInfo(
@@ -232,7 +233,7 @@ const createPool = async function (
   )
 
   console.log(
-    `Pool ${token0Symbol}/${token1Symbol} rate: ${rate}/${BASIS_POINTS} (fee ${fee})`
+    `Pool ${token0Symbol}/${token1Symbol} - USD rate: ${priceA}/${priceB} (fee ${fee})`
   )
 
   /**
@@ -256,7 +257,7 @@ const createPool = async function (
 
   let poolAddress = await factoryContract.getPool(token0, token1, fee)
   if (poolAddress === ADDRESS_ZERO) {
-    console.log(`Pool doen't exist, creating pool...`)
+    console.log(`Pool doesn't exist, creating pool...`)
     // create pool if necessary
     const positionManager = await ethers.getContractAt(
       INonfungiblePositionManager,
@@ -264,9 +265,12 @@ const createPool = async function (
     )
     // initialize pool at 1:1
     const sqrtPriceX96 = encodePriceSqrt(
-      ethers.utils.parseUnits(rate.toString(), token0Decimals),
-      ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals)
+      ethers.utils.parseUnits(priceA.toString(), token0Decimals),
+      ethers.utils.parseUnits(priceB.toString(), token1Decimals)
     )
+    console.log(sqrtPriceX96)
+    console.log(token0, token1)
+    console.log(POSITION_MANAGER_ADDRESS)
     await positionManager.createAndInitializePoolIfNecessary(
       token0,
       token1,

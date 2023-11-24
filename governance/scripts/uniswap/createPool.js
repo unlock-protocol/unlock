@@ -4,19 +4,23 @@ const {
   logBalance,
   BASIS_POINTS,
   UDT,
-  DAI,
-  // WETH
+  WETH,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const { createUniswapV3Pool, addLiquidity } = require('../../helpers/uniswap')
 
-async function main({ tokenA = DAI, tokenB = UDT } = {}) {
+async function main({ tokenA = WETH, tokenB = UDT } = {}) {
   const [signer] = await ethers.getSigners()
 
   // create pool
-  const POOL_FEE = 500
-  const POOL_RATE = 12
-  const pool = await createUniswapV3Pool(tokenA, tokenB, POOL_RATE, POOL_FEE)
+  const POOL_FEE = 3000
+
+  // calculate rate
+  // const UDT_PRICE = 942 // USD cents
+  // const WETH_PRICE = 210629 // ETH in USD cents
+
+  const POOL_RATE = Math.round(7500 / 33) // in basis points
+  const pool = await createUniswapV3Pool(tokenA, tokenB, 33, 7500, POOL_FEE)
   console.log(`poolAddress: ${pool.address}`)
 
   await logBalance(tokenA, signer.address)
