@@ -36,10 +36,10 @@ async function main({ tokenA = DAI, tokenB = UDT } = {}) {
   const amountA = ethers.utils.parseUnits('50', 18)
   const amountB = amountA.mul(POOL_RATE).div(BASIS_POINTS)
 
-  console.log({
-    amountA: `${ethers.utils.formatEther(amountA)} ${amountA}`,
-    amountB: `${ethers.utils.formatEther(amountB)} ${amountB}`,
-  })
+  console.log(
+    `liquidity A: ${ethers.utils.formatEther(amountA)} ${tokenA.symbol} \n`,
+    `liquidity B: ${ethers.utils.formatEther(amountB)} ${tokenB.symbol}`
+  )
 
   // make sure we have enough for testing
   if (process.env.RUN_FORK) {
