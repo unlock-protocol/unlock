@@ -126,7 +126,6 @@ export const ticketForFilBangalore = async ({
   })
   // Let's now generate the SVG
 
-  console.log(qrCode)
 
   return satori(<FilBangalore qrCode={qrCode} />, {
     width: 1024,
