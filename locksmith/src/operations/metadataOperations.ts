@@ -89,7 +89,6 @@ export const generateKeyMetadata = async (
     lockAddress: address,
     network,
   }
-
   return data
 }
 
@@ -112,6 +111,16 @@ export const getBaseTokenData = async (
     ...defaultResponse,
     ...baseMetadata,
   }
+
+  // Temporary for FilBangalore
+  // Ok to remove after 03/31/2024
+  // Uncoment for reveal!
+  // if (
+  //   address.toLowerCase() == '0x02c510be69fe87e052e065d8a40b437d55907b48' &&
+  //   network == 42161
+  // ) {
+  //   result.image = `${host}/${network}/lock/${address}/icon?id=${keyId}`
+  // }
 
   return result
 }
