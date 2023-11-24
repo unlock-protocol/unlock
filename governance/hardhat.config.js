@@ -1,4 +1,6 @@
 // hardhat.config.js
+const { copySync } = require('fs-extra')
+
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-etherscan')
 require('@nomiclabs/hardhat-waffle')
@@ -6,7 +8,11 @@ require('@nomiclabs/hardhat-waffle')
 require('@openzeppelin/hardhat-upgrades')
 
 // import helpers
-const { etherscan, networks } = require('@unlock-protocol/hardhat-helpers')
+const {
+  etherscan,
+  networks,
+  parseForkUrl,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const settings = {
   optimizer: {
@@ -18,6 +24,14 @@ const settings = {
       '*': ['storageLayout'],
     },
   },
+}
+
+// mainnet fork
+if (process.env.RUN_FORK) {
+  parseForkUrl(networks, process.env.RUN_FORK)
+
+  // replace localhost manifest by mainnet one
+  copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
 }
 
 // tasks

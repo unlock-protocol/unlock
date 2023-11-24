@@ -7,6 +7,28 @@ const { abi: WETH_ABI } = require('./ABIs/weth.json')
 
 const { MAX_UINT } = require('./constants')
 
+// parse mainnet fork
+const parseForkUrl = (networks, chainId) => {
+  chainId = parseInt(process.env.RUN_FORK)
+  if (isNaN(chainId)) {
+    throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
+  }
+  console.log(`Running a fork (chainId : ${chainId})...`)
+  networks.hardhat = {
+    chainId,
+    forking: {
+      url: `https://rpc.unlock-protocol.com/${chainId}`,
+    },
+  }
+
+  // needed for Uniswap Router to compute routes on local forks
+  networks.hardhat.blockGasLimit = 1_000_000_000
+
+  // set the correct chainId to use with local node over RPC
+  networks.localhost.chainId = chainId
+  networks.localhost.url = 'http://localhost:8545'
+}
+
 const resetNodeState = async () => {
   const { ethers, network, config } = require('hardhat')
   // reset fork
@@ -161,4 +183,5 @@ module.exports = {
   addSomeUSDC,
   addERC20,
   delegates,
+  parseForkUrl,
 }

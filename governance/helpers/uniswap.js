@@ -255,6 +255,7 @@ const createPool = async function (
   rate = 42, // in basis point
   fee = FEE
 ) {
+  console.log({ token0, token1, rate, fee })
   const { decimals: token0Decimals, symbol: token0Symbol } = await getTokenInfo(
     token0
   )

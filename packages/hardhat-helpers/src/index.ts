@@ -10,6 +10,7 @@ import proxy from './proxy'
 import fixtures from './fixtures'
 import uniswap from './uniswap'
 import contracts from './contracts'
+import fork from './fork'
 
 module.exports = {
   networks,
@@ -24,4 +25,5 @@ module.exports = {
   ...fixtures,
   ...uniswap,
   ...contracts,
+  ...fork,
 }
