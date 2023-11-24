@@ -80,19 +80,21 @@ export const stripeConnected = async (req: Request, res: Response) => {
  */
 export const lockIcon = async (req: Request, res: Response) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
-  const network = Number(req.params.network)
+  const network = parseInt(req.params.network) || 1 // defaults to mainnet
   const { original } = req.query
+
   let icon = await getLockIcon({
     lockAddress,
     original: original === '1',
     requestUrl: Normalizer.getRequestURL(req).toString(),
   })
+
   if (req.query.id) {
     // Check if there is a custom icon for this key
     const keyIcon = await getKeyIcon({
       network,
       lockAddress,
-      keyId: req.query.id.toString(),
+      keyId: String(req.query.id || ''),
     })
     if (keyIcon) {
       icon = keyIcon

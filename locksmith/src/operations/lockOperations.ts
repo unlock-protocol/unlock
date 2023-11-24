@@ -121,7 +121,7 @@ export const getKeyIcon = async ({
   network: number
   lockAddress: string
   keyId: string
-}): Promise<IconType | undefined> => {
+}): Promise<IconType | null> => {
   console.log({ lockAddress, keyId })
 
   // Temporary icon for FilBangalore
@@ -137,8 +137,7 @@ export const getKeyIcon = async ({
 
     return { type: 'image/svg+xml', icon, isURL: false }
   }
-  // By default, no icon
-  return
+  return null
 }
 
 const lockOperations = {
