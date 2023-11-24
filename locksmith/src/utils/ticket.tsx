@@ -117,7 +117,6 @@ export const ticketForFilBangalore = async ({
   lockAddress: string
   tokenId: string
 }) => {
-  console.log({ network, lockAddress, tokenId })
   // We need to generate the icon from SVG + QR code!
   const qrCode = await generateQrCode({
     network,
