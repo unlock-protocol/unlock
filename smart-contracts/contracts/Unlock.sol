@@ -27,8 +27,8 @@ pragma solidity ^0.8.21;
  *  b. Keeping track of GNP
  */
 
-import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
+import "./utils/LockProxy.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
@@ -276,11 +276,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     }
 
     // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
-      publicLockImpl,
-      proxyAdminAddress,
-      data
-    );
+    LockProxy proxy = new LockProxy(publicLockImpl, proxyAdminAddress, data);
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
@@ -329,9 +325,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert Unlock__MISSING_TEMPLATE();
     }
 
-    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(
-      lockAddress
-    );
+    ILockProxy proxy = ILockProxy(lockAddress);
 
     proxyAdmin.upgrade(proxy, impl);
 
