@@ -37,6 +37,7 @@ export interface Token {
   coingecko?: string
   coinbase?: string
   mainnetAddress?: string
+  wrapped?: string
 }
 
 export enum HookType {
