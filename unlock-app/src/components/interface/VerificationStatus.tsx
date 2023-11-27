@@ -121,8 +121,6 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     network,
   })
 
-  console.log(ticket)
-
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)

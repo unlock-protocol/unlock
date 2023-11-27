@@ -14,7 +14,6 @@ import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { Button, Placeholder } from '@unlock-protocol/ui'
 import { AddressLink } from '../AddressLink'
-// import { Item } from '../user-account/styles'
 
 dayjs.extend(relativeTimePlugin)
 
