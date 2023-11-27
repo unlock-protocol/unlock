@@ -33,6 +33,7 @@ export const base: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0x4200000000000000000000000000000000000006',
   },
 
   opensea: {
@@ -73,7 +74,11 @@ export const base: NetworkConfig = {
       symbol: 'USDC',
     },
   ],
-
+  uniswapV3: {
+    factoryAddress: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
+    positionManager: '0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1',
+    universalRouterAddress: '0x198EF79F1F515F02dFE9e3115eD9fC07183f02fC',
+  },
   unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
   url: 'https://base.org/',
 }
