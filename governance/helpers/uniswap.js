@@ -2,14 +2,13 @@ const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
 const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk')
 const { Token } = require('@uniswap/sdk-core')
+const { networks } = require('@unlock-protocol/networks')
 const {
   ADDRESS_ZERO,
   BASIS_POINTS,
   MAX_UINT,
   WETH,
   UDT,
-  UNISWAP_FACTORY_ADDRESS,
-  POSITION_MANAGER_ADDRESS,
   getERC20Contract,
   getTokenInfo,
 } = require('@unlock-protocol/hardhat-helpers')
@@ -99,7 +98,6 @@ const addLiquidity = async (
   } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
 
   // parse tokens for uniswap SDK
-
   const [tokenA, tokenB] = await Promise.all([
     getToken(tokenAddressA),
     getToken(tokenAddressB),
@@ -110,13 +108,19 @@ const addLiquidity = async (
     ` amount ${tokenB.symbol} : ${amountB}`
   )
 
+  //
+  const { chainId } = await ethers.provider.getNetwork()
+  const {
+    uniswapV3: { positionManager: positionManagerAddress },
+  } = networks[chainId]
+
   // token balances
   const tokenAContract = await getERC20Contract(tokenA.address)
   const tokenBContract = await getERC20Contract(tokenB.address)
 
   // approve spending
-  await tokenAContract.approve(POSITION_MANAGER_ADDRESS, MAX_UINT)
-  await tokenBContract.approve(POSITION_MANAGER_ADDRESS, MAX_UINT)
+  await tokenAContract.approve(positionManagerAddress, MAX_UINT)
+  await tokenBContract.approve(positionManagerAddress, MAX_UINT)
 
   // Pool setup
   const { fee: poolFee, tickSpacing } = await getPoolImmutables(poolContract)
@@ -186,7 +190,7 @@ const addLiquidity = async (
   // mint!
   const positionManager = await ethers.getContractAt(
     INonfungiblePositionManager,
-    POSITION_MANAGER_ADDRESS
+    positionManagerAddress
   )
 
   const mintTransaction = await positionManager.mint(mintParams, {
@@ -229,7 +233,7 @@ const createPool = async function (
   )
 
   console.log(
-    `Pool ${token0Symbol}/${token1Symbol} - rate 1/${poolRate} bp (fee ${fee})`
+    `Pool ${token0Symbol}/${token1Symbol} - rate: ${poolRate} bps (fee ${fee})`
   )
 
   /**
@@ -246,27 +250,31 @@ const createPool = async function (
     abi: INonfungiblePositionManager,
   } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
 
+  const { chainId } = await ethers.provider.getNetwork()
+  const {
+    uniswapV3: { factoryAddress, positionManager: positionManagerAddress },
+  } = networks[chainId]
+
   const factoryContract = await ethers.getContractAt(
     IUniswapV3Factory,
-    UNISWAP_FACTORY_ADDRESS
+    factoryAddress
   )
 
   let poolAddress = await factoryContract.getPool(token0, token1, fee)
   if (poolAddress === ADDRESS_ZERO) {
     console.log(`Pool doesn't exist, creating pool...`)
+
     // create pool if necessary
     const positionManager = await ethers.getContractAt(
       INonfungiblePositionManager,
-      POSITION_MANAGER_ADDRESS
+      positionManagerAddress
     )
     // initialize pool at 1:1
     const sqrtPriceX96 = encodePriceSqrt(
-      ethers.utils.parseUnits(poolRate.toString(), token0Decimals),
-      ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals)
+      ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals),
+      ethers.utils.parseUnits(poolRate.toString(), token0Decimals)
     )
-    console.log(sqrtPriceX96)
-    console.log(token0, token1)
-    console.log(POSITION_MANAGER_ADDRESS)
+
     await positionManager.createAndInitializePoolIfNecessary(
       token0,
       token1,
@@ -287,8 +295,10 @@ const createPool = async function (
 }
 
 const deployUniswapV3Oracle = async function () {
+  const { chainId } = await ethers.provider.getNetwork()
+  const { factoryAddress } = networks[chainId]
   const Oracle = await ethers.getContractFactory('UniswapOracleV3')
-  const oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
+  const oracle = await Oracle.deploy(factoryAddress)
   return oracle
 }
 
