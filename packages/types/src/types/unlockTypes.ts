@@ -110,7 +110,6 @@ export interface NetworkConfig {
   }>
   swapPurchaser?: string
   unlockOwner?: string
-  unlockDiscountToken?: string
   explorer?: {
     name: string
     urls: {
