@@ -33,6 +33,7 @@ export const base: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0x4200000000000000000000000000000000000006',
   },
 
   opensea: {

@@ -62,6 +62,7 @@ export const goerli: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
   },
   opensea: {
     collectionUrl: (lockAddress) =>

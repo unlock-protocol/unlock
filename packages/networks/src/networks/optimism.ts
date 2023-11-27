@@ -62,6 +62,7 @@ export const optimism: NetworkConfig = {
     decimals: 18,
     name: 'Ether',
     symbol: 'ETH',
+    wrapped: '0x4200000000000000000000000000000000000006',
   },
   opensea: {
     collectionUrl: (lockAddress) =>

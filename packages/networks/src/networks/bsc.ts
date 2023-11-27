@@ -56,6 +56,7 @@ export const bsc: NetworkConfig = {
     decimals: 18,
     name: 'BNB',
     symbol: 'BNB',
+    wrapped: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   },
   opensea: {
     collectionUrl: (lockAddress) =>
