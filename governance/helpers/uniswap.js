@@ -93,10 +93,6 @@ const addLiquidity = async (
   [tokenAddressA, amountA],
   [tokenAddressB, amountB]
 ) => {
-  const {
-    abi: INonfungiblePositionManager,
-  } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
-
   // parse tokens for uniswap SDK
   const [tokenA, tokenB] = await Promise.all([
     getToken(tokenAddressA),
@@ -109,18 +105,15 @@ const addLiquidity = async (
   )
 
   //
-  const { chainId } = await ethers.provider.getNetwork()
-  const {
-    uniswapV3: { positionManager: positionManagerAddress },
-  } = networks[chainId]
+  const { positionManager } = await getUniswapV3Contracts()
 
-  // token balances
+  // tokens
   const tokenAContract = await getERC20Contract(tokenA.address)
   const tokenBContract = await getERC20Contract(tokenB.address)
 
   // approve spending
-  await tokenAContract.approve(positionManagerAddress, MAX_UINT)
-  await tokenBContract.approve(positionManagerAddress, MAX_UINT)
+  await tokenAContract.approve(positionManager.address, MAX_UINT)
+  await tokenBContract.approve(positionManager.address, MAX_UINT)
 
   // Pool setup
   const { fee: poolFee, tickSpacing } = await getPoolImmutables(poolContract)
@@ -180,7 +173,7 @@ const addLiquidity = async (
     // trade a 1:1
     amount0Desired: amountA,
     amount1Desired: amountB,
-    // no slippage protection, bad in prod!
+    // TODO: no slippage protection, bad in prod!
     amount0Min: 0,
     amount1Min: 0,
     recipient: signer.address,
@@ -188,15 +181,11 @@ const addLiquidity = async (
   }
 
   // mint!
-  const positionManager = await ethers.getContractAt(
-    INonfungiblePositionManager,
-    positionManagerAddress
-  )
-
   const mintTransaction = await positionManager.mint(mintParams, {
-    // value,
-    gasPrice: 20e9,
+    gasPrice: 20e9, // cap gas price
   })
+
+  // parse tokenURI of the position NFT
   const { events } = await mintTransaction.wait()
   const {
     args: { tokenId, liquidity: addedLiquidity, amount0, amount1 },
@@ -269,15 +258,15 @@ const createPool = async function (token0 = WETH, token1 = UDT, fee = FEE) {
     ethers.utils.parseUnits(BASIS_POINTS.toString(), token0Decimals)
   )
 
-  await positionManager.createAndInitializePoolIfNecessary(
+  const tx = await positionManager.createAndInitializePoolIfNecessary(
     token0,
     token1,
     fee,
     sqrtPriceX96
   )
 
-  const { pool } = await getPool(token0, token1, fee)
-  console.log(`Pool created at ${pool.address}`)
+  const pool = await getPool(token0, token1, fee)
+  console.log(`Pool created at ${pool.address} - (tx: ${tx.hash})`)
   return pool
 }
 
@@ -288,12 +277,11 @@ const createOrGetPool = async function (
   token1 = UDT,
   fee = FEE
 ) {
-  console.log(`Create pool ${token0Symbol}/${token1Symbol} (fee ${fee})`)
-
   const { symbol: token0Symbol } = await getTokenInfo(token0)
   const { symbol: token1Symbol } = await getTokenInfo(token1)
+  console.log(`Create/get pool ${token0Symbol}/${token1Symbol} (fee ${fee})`)
 
-  let { pool } = await getPool(token0, token1, fee)
+  let pool = await getPool(token0, token1, fee)
 
   if (pool.address === ADDRESS_ZERO) {
     console.log(`Pool doesn't exist, creating pool...`)

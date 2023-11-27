@@ -3,10 +3,13 @@ const {
   addERC20,
   logBalance,
   BASIS_POINTS,
-  UDT,
+  getUnlock,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const { createUniswapV3Pool, addLiquidity } = require('../../helpers/uniswap')
+const {
+  createOrGetUniswapV3Pool,
+  addLiquidity,
+} = require('../../helpers/uniswap')
 const { networks } = require('@unlock-protocol/networks')
 
 // pool fee
@@ -25,59 +28,49 @@ async function main() {
 
   const {
     nativeCurrency: { wrapped: wrappedNativeAddress },
-    unlockDiscountToken,
+    unlockAddress,
   } = networks[chainId]
 
-  console.log({ unlockDiscountToken, wrappedNativeAddress })
+  const unlock = await getUnlock(unlockAddress)
+  const udtAddress = await unlock.udt()
 
   const amountWrapped = ethers.utils.parseUnits(INITIAL_AMOUNT, 18)
-
-  // rates can be taken from existing `getReserves()` on mainnet pool '0x9ca8aef2372c705d6848fdda3c1267a7f51267c1'
-  const nativePriceInUSD = ethers.utils.parseEther(
-    `${Math.round(NATIVE_USD_PRICE * BASIS_POINTS)}`
+  const exchangeRate = Math.round(
+    (NATIVE_USD_PRICE * BASIS_POINTS) / UDT_USD_PRICE
   )
-  const udtPriceInUSD = ethers.utils.parseEther(
-    `${Math.round(UDT_USD_PRICE * BASIS_POINTS)}`
-  )
-
-  const poolRate = nativePriceInUSD.mul(BASIS_POINTS).div(udtPriceInUSD)
+  console.log(`Exchange rate for Wrapped <> UDT: ${exchangeRate} bps`)
 
   // amount to match at prev pool rate
-  const amountUDT = amountWrapped.mul(poolRate).div(BASIS_POINTS)
+  const amountUDT = amountWrapped.mul(exchangeRate).div(BASIS_POINTS)
 
-  // create the pool
-  const pool = await createUniswapV3Pool(
+  // get the pool
+  const pool = await createOrGetUniswapV3Pool(
     wrappedNativeAddress,
-    unlockDiscountToken,
-    poolRate,
+    udtAddress,
     POOL_FEE
   )
-  console.log(`poolAddress: ${pool.address}`)
+  console.log(`Pool address: ${pool.address}`)
 
   console.log(
-    `liquidity to add (WETH): ${ethers.utils.formatEther(amountWrapped)} \n`,
-    `liquidity to add (UDT): ${ethers.utils.formatEther(amountUDT)}`
+    ` liquidity to add (Wrapped): ${ethers.utils.formatEther(amountWrapped)}\n`,
+    ` liquidity to add (UDT): ${ethers.utils.formatEther(amountUDT)}`
   )
 
   // make sure we have enough (for testing)
   if (process.env.RUN_FORK) {
     await addERC20(wrappedNativeAddress, signer.address, amountWrapped)
-    await addERC20(
-      unlockDiscountToken,
-      signer.address,
-      ethers.utils.formatEther(amountUDT)
-    )
+    await addERC20(udtAddress, signer.address, amountUDT)
   }
 
   // show balances
   await logBalance(wrappedNativeAddress, signer.address)
-  await logBalance(unlockDiscountToken, signer.address)
+  await logBalance(udtAddress, signer.address)
 
   // add position
   const added = await addLiquidity(
     pool,
     [wrappedNativeAddress, amountWrapped],
-    [unlockDiscountToken, amountUDT]
+    [udtAddress, amountUDT]
   )
   console.log(added)
 }

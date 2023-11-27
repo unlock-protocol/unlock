@@ -1,9 +1,15 @@
 const { networks } = require('@unlock-protocol/networks')
 
 const chainId = parseInt(process.env.RUN_FORK)
-const { unlockAddress, uniswapV3, tokens, multisig } = networks[chainId]
+const {
+  unlockAddress,
+  uniswapV3,
+  tokens: tokensList,
+  multisig,
+  nativeCurrency: { wrapped },
+} = networks[chainId]
 
-const tokensParsed = tokens.reduce((prev, { symbol, address }) => {
+const tokens = tokensList.reduce((prev, { symbol, address }) => {
   prev[symbol] = address
   return prev
 }, {})
@@ -41,11 +47,8 @@ if (chainId === 137) {
     // Unlock stuff
     UDT: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
     UNLOCK_PROXY_OWNER: '0x479f3830fbd715342868BA95E438609BCe443DFB',
-
-    // uniswap
-    // 'POSITION_MANAGER_ADDRESS' : '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
-    // 'V3_SWAP_ROUTER_ADDRESS' : '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45',
   }
+
   whales = {
     [tokens.USDC]: '0xf977814e90da44bfa03b6295a0616a897441acec',
     [tokens.DAI]: '0x91993f2101cc758d0deb7279d41e880f7defe827',
@@ -56,6 +59,7 @@ if (chainId === 137) {
 
 module.exports = {
   CHAIN_ID: chainId,
+  WRAPPED: wrapped,
 
   // Unlock stuff
   UNLOCK_ADDRESS: unlockAddress,
@@ -63,11 +67,11 @@ module.exports = {
 
   // uniswap
   UNISWAP_FACTORY_ADDRESS: uniswapV3.factoryAddress,
-  whales: whales[chainId],
+  whales,
 
   // custom values
   ...chainSpecificValues,
 
   // tokens
-  ...tokensParsed,
+  ...tokens,
 }
