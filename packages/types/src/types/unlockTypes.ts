@@ -106,6 +106,7 @@ export interface NetworkConfig {
     quoterAddress: string
     oracle: string
     universalRouterAddress: string
+    positionManager: string
   }>
   swapPurchaser?: string
   unlockOwner?: string

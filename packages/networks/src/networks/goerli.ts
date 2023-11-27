@@ -108,6 +108,7 @@ export const goerli: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
+    positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   universalCard: {
