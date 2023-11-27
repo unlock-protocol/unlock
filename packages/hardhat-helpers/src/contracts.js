@@ -1,7 +1,8 @@
 const { networks } = require('@unlock-protocol/networks')
 
 const chainId = parseInt(process.env.RUN_FORK)
-const { unlockAddress, uniswapV3, tokens, multisig } = networks[chainId]
+const { unlockAddress, uniswapV3, tokens, multisig, nativeCurrency } =
+  networks[chainId]
 
 const tokensParsed = tokens.reduce((prev, { symbol, address }) => {
   prev[symbol] = address
@@ -60,6 +61,8 @@ module.exports = {
   // Unlock stuff
   UNLOCK_ADDRESS: unlockAddress,
   UNLOCK_MULTISIG: multisig,
+
+  WRAPPED: nativeCurrency.wrapped,
 
   // uniswap
   UNISWAP_FACTORY_ADDRESS: uniswapV3.factoryAddress,

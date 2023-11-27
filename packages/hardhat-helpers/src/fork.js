@@ -1,5 +1,5 @@
 const { ethers } = require('ethers')
-const { UDT, WETH, whales, unlockAddress } = require('./contracts')
+const { UDT, WRAPPED, whales, unlockAddress } = require('./contracts')
 
 const ERC20_ABI = require('./ABIs/erc20.json')
 const USDC_ABI = require('./ABIs/USDC.json')
@@ -101,9 +101,9 @@ const addERC20 = async function (
 ) {
   const { ethers } = require('hardhat')
   // wrapped some ETH
-  if (tokenAddress.toLowerCase() === WETH.toLowerCase()) {
+  if (tokenAddress.toLowerCase() === WRAPPED.toLowerCase()) {
     await addSomeETH(address)
-    const weth = await ethers.getContractAt(WETH_ABI, WETH)
+    const weth = await ethers.getContractAt(WETH_ABI, WRAPPED)
     await weth.deposit({ value: amount.toString() })
     return weth
   }
@@ -165,8 +165,8 @@ const getDelegates = async () => {
 const getERC20Contract = async (tokenAddress) => {
   const { ethers } = require('hardhat')
   const [signer] = await ethers.getSigners()
-  return tokenAddress === WETH
-    ? await ethers.getContractAt(WETH_ABI, WETH, signer)
+  return tokenAddress === WRAPPED
+    ? await ethers.getContractAt(WETH_ABI, WRAPPED, signer)
     : await ethers.getContractAt(ERC20_ABI, tokenAddress, signer)
 }
 
