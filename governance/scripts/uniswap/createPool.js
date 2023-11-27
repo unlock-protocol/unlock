@@ -9,48 +9,46 @@ const {
 
 const { createUniswapV3Pool, addLiquidity } = require('../../helpers/uniswap')
 
+// create pool
+const POOL_FEE = 3000
+
+// calculate rate from existing `getReserves()` on mainnet pool '0x9ca8aef2372c705d6848fdda3c1267a7f51267c1'
+const [reserveUDT, reserveWETH] = [
+  ethers.BigNumber.from(`7043336789457615457636`),
+  ethers.BigNumber.from(`35739020833764974774`),
+]
+const poolRate = reserveUDT.div(reserveWETH).mul(BASIS_POINTS)
+
 async function main() {
   const [signer] = await ethers.getSigners()
 
-  // create pool
-  const POOL_FEE = 3000
-
-  // calculate rate from existing mainnet pool
-  const UDT_AMOUNT = 7500 //
-  const WETH_AMOUNT = 33.54 // ETH in USD cents
-  const POOL_RATE = Math.round(UDT_AMOUNT / WETH_AMOUNT) * BASIS_POINTS
-
-  const pool = await createUniswapV3Pool(
-    WETH,
-    UDT,
-    UDT_AMOUNT,
-    WETH_AMOUNT,
-    POOL_FEE
-  )
-  console.log(`poolAddress: ${pool.address}`)
-
-  await logBalance(WETH, signer.address)
-  await logBalance(UDT, signer.address)
-
   // amount to add as liquidity
   const amountWETH = ethers.utils.parseUnits('0.5', 18)
-  const amountUDT = amountWETH.mul(POOL_RATE).div(BASIS_POINTS)
+
+  // amount to match at prev pool rate
+  const amountUDT = amountWETH.mul(poolRate).div(BASIS_POINTS)
+
+  // create the pool
+  const pool = await createUniswapV3Pool(WETH, UDT, poolRate, POOL_FEE)
+  console.log(`poolAddress: ${pool.address}`)
 
   console.log(
-    `liquidity WETH: ${ethers.utils.formatEther(amountWETH)} ${WETH.symbol} \n`,
-    `liquidity UDT: ${ethers.utils.formatEther(amountUDT)} ${UDT.symbol}`
+    `liquidity to add (WETH): ${ethers.utils.formatEther(amountWETH)} WETH \n`,
+    `liquidity to add (UDT): ${ethers.utils.formatEther(amountUDT)} UDT`
   )
 
-  // make sure we have enough for testing
+  // make sure we have enough (for testing)
   if (process.env.RUN_FORK) {
     await addERC20(WETH, signer.address, amountWETH)
-    await addERC20(UDT, signer.address, amountUDT)
+    await addERC20(UDT, signer.address, ethers.utils.formatEther(amountUDT))
   }
 
+  // show balances
   await logBalance(WETH, signer.address)
   await logBalance(UDT, signer.address)
 
-  const added = await addLiquidity(pool, amountWETH, amountUDT)
+  // add position
+  const added = await addLiquidity(pool, [WETH, amountWETH], [UDT, amountUDT])
   console.log(added)
 }
 

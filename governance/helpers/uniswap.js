@@ -4,6 +4,7 @@ const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk')
 const { Token } = require('@uniswap/sdk-core')
 const {
   ADDRESS_ZERO,
+  BASIS_POINTS,
   MAX_UINT,
   WETH,
   UDT,
@@ -71,27 +72,16 @@ async function getPoolState(poolContract) {
   return PoolState
 }
 
-const getTokens = async (pool) => {
+const getToken = async (tokenAddress) => {
   const { chainId } = await ethers.provider.getNetwork()
-  const immutables = await getPoolImmutables(pool)
-
-  const [token0, token1] = await Promise.all([
-    getTokenInfo(immutables.token0),
-    getTokenInfo(immutables.token1),
-  ])
-  const TokenA = new Token(
+  const token0 = await getTokenInfo(tokenAddress)
+  const Token0 = new Token(
     chainId,
-    immutables.token0,
+    tokenAddress,
     token0.decimals,
     token0.symbol
   )
-  const TokenB = new Token(
-    chainId,
-    immutables.token1,
-    token1.decimals,
-    token1.symbol
-  )
-  return [TokenA, TokenB]
+  return Token0
 }
 
 const getMinTick = (tickSpacing) =>
@@ -99,13 +89,21 @@ const getMinTick = (tickSpacing) =>
 const getMaxTick = (tickSpacing) =>
   Math.floor(887272 / tickSpacing) * tickSpacing
 
-const addLiquidity = async (poolContract, amountA, amountB) => {
+const addLiquidity = async (
+  poolContract,
+  [tokenAddressA, amountA],
+  [tokenAddressB, amountB]
+) => {
   const {
     abi: INonfungiblePositionManager,
   } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
 
   // parse tokens for uniswap SDK
-  const [tokenA, tokenB] = await getTokens(poolContract)
+
+  const [tokenA, tokenB] = await Promise.all([
+    getToken(tokenAddressA),
+    getToken(tokenAddressB),
+  ])
   console.log(
     `adding position for ${tokenA.symbol}/${tokenB.symbol} on pool ${poolContract.address} \n`,
     ` amount ${tokenA.symbol} : ${amountA} \n`,
@@ -220,9 +218,7 @@ const addLiquidity = async (poolContract, amountA, amountB) => {
 const createPool = async function (
   token0 = WETH,
   token1 = UDT,
-  priceA = 2000,
-  priceB = 10,
-  // rate = 42, // in basis point
+  poolRate, // in basis points
   fee = FEE
 ) {
   const { decimals: token0Decimals, symbol: token0Symbol } = await getTokenInfo(
@@ -233,7 +229,7 @@ const createPool = async function (
   )
 
   console.log(
-    `Pool ${token0Symbol}/${token1Symbol} - USD rate: ${priceA}/${priceB} (fee ${fee})`
+    `Pool ${token0Symbol}/${token1Symbol} - rate 1/${poolRate} bp (fee ${fee})`
   )
 
   /**
@@ -265,8 +261,8 @@ const createPool = async function (
     )
     // initialize pool at 1:1
     const sqrtPriceX96 = encodePriceSqrt(
-      ethers.utils.parseUnits(priceA.toString(), token0Decimals),
-      ethers.utils.parseUnits(priceB.toString(), token1Decimals)
+      ethers.utils.parseUnits(poolRate.toString(), token0Decimals),
+      ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals)
     )
     console.log(sqrtPriceX96)
     console.log(token0, token1)
