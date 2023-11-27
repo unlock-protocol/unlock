@@ -31,6 +31,7 @@ export const useTicket = ({ lockAddress, keyId, network }: TicketOptions) => {
     ['ticket', network, lockAddress, keyId],
     async () => {
       const response = await storage.getTicket(network, lockAddress, keyId)
+      console.log(response)
       return response.data
     },
     {

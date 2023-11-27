@@ -283,10 +283,24 @@ export const MetadataCard = ({
     })
 
   const getCheckInTime = () => {
+    if (checkInTimestamp) {
+      // checked in from this UI
+      return checkInTimestamp
+    }
+    // Check the metadata
     const [_, checkInTimeValue] =
       Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
-    if (checkInTimestamp) return checkInTimestamp
-    if (!checkInTimeValue) return null
+    console.log(checkInTimeValue)
+    if (!checkInTimeValue) {
+      return null
+    }
+    if (Array.isArray(checkInTimeValue)) {
+      // Multiple check ins
+      return new Date(
+        checkInTimeValue[checkInTimeValue.length - 1] as number
+      ).toLocaleString()
+    }
+    // single checkin
     return new Date(checkInTimeValue as number).toLocaleString()
   }
 

@@ -121,6 +121,8 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     network,
   })
 
+  console.log(ticket)
+
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
@@ -175,8 +177,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
 
   const checkedInAt = ticket?.checkedInAt
 
-  const disableActions =
-    !ticket?.isVerifier || isCheckingIn || !!invalid || !!checkedInAt
+  const disableActions = !ticket?.isVerifier || isCheckingIn || !!invalid
 
   const onClickVerified = () => {
     if (!checkedInAt && ticket!.isVerifier && !showWarning) {
@@ -189,7 +190,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const CardActions = () => (
     <div className="grid w-full gap-2">
       {viewer ? (
-        !checkedInAt && ticket!.isVerifier ? (
+        ticket!.isVerifier ? (
           <Button
             loading={isCheckingIn}
             disabled={disableActions}
