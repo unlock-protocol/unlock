@@ -9,42 +9,48 @@ const {
 
 const { createUniswapV3Pool, addLiquidity } = require('../../helpers/uniswap')
 
-async function main({ tokenA = WETH, tokenB = UDT } = {}) {
+async function main() {
   const [signer] = await ethers.getSigners()
 
   // create pool
   const POOL_FEE = 3000
 
-  // calculate rate
-  // const UDT_PRICE = 942 // USD cents
-  // const WETH_PRICE = 210629 // ETH in USD cents
+  // calculate rate from existing mainnet pool
+  const UDT_AMOUNT = 7500 //
+  const WETH_AMOUNT = 33.54 // ETH in USD cents
+  const POOL_RATE = Math.round(UDT_AMOUNT / WETH_AMOUNT) * BASIS_POINTS
 
-  const POOL_RATE = Math.round(7500 / 33) // in basis points
-  const pool = await createUniswapV3Pool(tokenA, tokenB, 33, 7500, POOL_FEE)
+  const pool = await createUniswapV3Pool(
+    WETH,
+    UDT,
+    UDT_AMOUNT,
+    WETH_AMOUNT,
+    POOL_FEE
+  )
   console.log(`poolAddress: ${pool.address}`)
 
-  await logBalance(tokenA, signer.address)
-  await logBalance(tokenB, signer.address)
+  await logBalance(WETH, signer.address)
+  await logBalance(UDT, signer.address)
 
   // amount to add as liquidity
-  const amountA = ethers.utils.parseUnits('50', 18)
-  const amountB = amountA.mul(POOL_RATE).div(BASIS_POINTS)
+  const amountWETH = ethers.utils.parseUnits('0.5', 18)
+  const amountUDT = amountWETH.mul(POOL_RATE).div(BASIS_POINTS)
 
   console.log(
-    `liquidity A: ${ethers.utils.formatEther(amountA)} ${tokenA.symbol} \n`,
-    `liquidity B: ${ethers.utils.formatEther(amountB)} ${tokenB.symbol}`
+    `liquidity WETH: ${ethers.utils.formatEther(amountWETH)} ${WETH.symbol} \n`,
+    `liquidity UDT: ${ethers.utils.formatEther(amountUDT)} ${UDT.symbol}`
   )
 
   // make sure we have enough for testing
   if (process.env.RUN_FORK) {
-    await addERC20(tokenA, signer.address, amountA)
-    await addERC20(tokenB, signer.address, amountB)
+    await addERC20(WETH, signer.address, amountWETH)
+    await addERC20(UDT, signer.address, amountUDT)
   }
 
-  await logBalance(tokenA, signer.address)
-  await logBalance(tokenB, signer.address)
+  await logBalance(WETH, signer.address)
+  await logBalance(UDT, signer.address)
 
-  const added = await addLiquidity(pool, amountA, amountB)
+  const added = await addLiquidity(pool, amountWETH, amountUDT)
   console.log(added)
 }
 
