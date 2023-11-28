@@ -1,5 +1,5 @@
 const { ethers } = require('ethers')
-const { UDT, WRAPPED, whales, unlockAddress } = require('./contracts')
+const { CHAIN_ID, UDT, WRAPPED, whales, unlockAddress } = require('./contracts')
 
 const ERC20_ABI = require('./ABIs/erc20.json')
 const USDC_ABI = require('./ABIs/USDC.json')
@@ -133,22 +133,34 @@ const addUDT = async (recipientAddress, amount = 1000) => {
   const { ethers, network } = require('hardhat')
 
   // UDT contract
-  const udtAmount = ethers.utils.parseEther(`${amount}`)
+  const udtAmount = ethers.BigNumber.isBigNumber(amount)
+    ? amount
+    : ethers.utils.parseEther(`${amount}`)
 
-  // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
-  // Get storage slot index
-  const index = ethers.utils.solidityKeccak256(
-    ['uint256', 'uint256'],
-    [recipientAddress, 51] // key, slot
-  )
+  if (CHAIN_ID === 1) {
+    // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
+    // Get storage slot index
+    const index = ethers.utils.solidityKeccak256(
+      ['uint256', 'uint256'],
+      [recipientAddress, 51] // key, slot
+    )
 
-  // Manipulate local balance (needs to be bytes32 string)
-  await network.provider.request({
-    method: 'hardhat_setStorageAt',
-    params: [UDT, index.toString(), toBytes32(udtAmount).toString()],
-  })
-  // Just mines to the next block
-  await ethers.provider.send('evm_mine', [])
+    // Manipulate local balance (needs to be bytes32 string)
+    await network.provider.request({
+      method: 'hardhat_setStorageAt',
+      params: [UDT, index.toString(), toBytes32(udtAmount).toString()],
+    })
+    // Just mines to the next block
+    await ethers.provider.send('evm_mine', [])
+  } else {
+    const unlock_protocol_eth = '0xf5c28ce24acf47849988f147d5c75787c0103534'
+    const whale = await ethers.getSigner(unlock_protocol_eth)
+    await impersonate(unlock_protocol_eth)
+
+    const erc20Contract = await ethers.getContractAt(ERC20_ABI, UDT)
+    await erc20Contract.connect(whale).transfer(recipientAddress, amount)
+    return erc20Contract
+  }
 }
 
 const delegates = [

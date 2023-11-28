@@ -102,3 +102,21 @@ yarn hardhat gov:submit --proposal proposals/<your-proposal>.js --network mainne
 ```
 
 4. Head to [Tally](https://www.withtally.com/governance/unlock) to see your proposal. NB: this may take some time as it requires X block confirmations
+
+## Uniswap
+
+### Create a Uniswap V3 Native/UDT pool
+
+Edit the pool fee directly in the script
+
+```
+yarn run scripts/uniswap/createPool.js
+```
+
+### Add liquidity a Uniswap V3 Native/UDT pool
+
+Edit directly the amounts and prices in the script
+
+```
+yarn run scripts/uniswap/addLiquidity.js
+```
