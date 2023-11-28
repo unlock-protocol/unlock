@@ -57,15 +57,16 @@ export class TicketsController {
       })
 
       const data = keyMetadata?.data as unknown as {
-        metadata: { checkedInAt: number }
+        metadata: { checkedInAt: number | number[] }
       }
 
-      const isCheckedIn = data?.metadata?.checkedInAt
-
-      if (isCheckedIn) {
-        return response.status(409).send({
-          error: 'Ticket already checked in',
-        })
+      const checkedInAt = []
+      if (!data?.metadata?.checkedInAt) {
+        checkedInAt.push(new Date().getTime())
+      } else if (typeof data?.metadata?.checkedInAt === 'number') {
+        checkedInAt.push(data?.metadata?.checkedInAt, new Date().getTime())
+      } else if (Array.isArray(data?.metadata?.checkedInAt)) {
+        checkedInAt.push(...data.metadata.checkedInAt, new Date().getTime())
       }
 
       await KeyMetadata.upsert(
@@ -77,7 +78,7 @@ export class TicketsController {
             ...data,
             metadata: {
               ...data?.metadata,
-              checkedInAt: new Date().getTime(),
+              checkedInAt,
             },
           },
         },

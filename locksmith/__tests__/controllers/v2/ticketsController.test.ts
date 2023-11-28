@@ -159,25 +159,6 @@ describe('tickets endpoint', () => {
     expect(keyData.metadata.checkedInAt).not.toBeUndefined()
   })
 
-  it('Throws 409 error when ticket is already checked in', async () => {
-    expect.assertions(3)
-    const { loginResponse } = await loginRandomUser(app)
-
-    const keyId = keyGen.next().value
-
-    const response1 = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-
-    const response2 = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-
-    expect(loginResponse.status).toBe(200)
-    expect(response1.status).toBe(202)
-    expect(response2.status).toBe(409)
-  })
-
   it('does not override metadata', async () => {
     expect.assertions(4)
     const { loginResponse } = await loginRandomUser(app)
