@@ -290,7 +290,6 @@ export const MetadataCard = ({
     // Check the metadata
     const [_, checkInTimeValue] =
       Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
-    console.log(checkInTimeValue)
     if (!checkInTimeValue) {
       return null
     }
