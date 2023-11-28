@@ -5,12 +5,12 @@ import balance from './balance'
 import constants from './constants'
 import lock from './lock'
 import upgrades from './upgrades'
-import versions from './versions'
+import versions from './unlock'
 import proxy from './proxy'
 import fixtures from './fixtures'
 import uniswap from './uniswap'
-import contracts from './contracts'
 import fork from './fork'
+import tokens from './tokens'
 
 module.exports = {
   networks,
@@ -24,6 +24,6 @@ module.exports = {
   ...versions,
   ...fixtures,
   ...uniswap,
-  ...contracts,
   ...fork,
+  ...tokens,
 }

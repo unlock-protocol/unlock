@@ -9,22 +9,14 @@ const {
 } = require('@uniswap/sdk-core')
 
 const JSBI = require('jsbi')
+const { getTokens } = require('./tokens')
+const { getNetwork } = require('./unlock')
 
 const {
   AlphaRouter,
   SwapType,
   nativeOnChain,
 } = require('@uniswap/smart-order-router')
-
-const {
-  CHAIN_ID,
-  DAI,
-  WETH,
-  USDC,
-  UDT,
-  WBTC,
-  V3_SWAP_ROUTER_ADDRESS,
-} = require('./contracts')
 
 const ERC20_ABI = require('./ABIs/erc20.json')
 
@@ -55,7 +47,7 @@ async function getUniswapRoute({
   slippageTolerance = new Percent(10, 100),
   deadline = Math.floor(new Date().getTime() / 1000 + 100000),
   permitOptions: { usePermit2Sig = false, inputTokenPermit } = {},
-  chainId = CHAIN_ID,
+  chainId,
 }) {
   // init router
   const router = new AlphaRouter({
@@ -107,14 +99,18 @@ async function getUniswapRoute({
   }
 }
 
-const getUniswapTokens = (chainId = 1) => ({
-  native: nativeOnChain(chainId),
-  dai: new Token(chainId, DAI, 18, 'DAI'),
-  weth: new Token(chainId, WETH, 18, 'WETH'),
-  usdc: new Token(chainId, USDC, 6, 'USDC'),
-  udt: new Token(chainId, UDT, 18, 'UDT'),
-  wBtc: new Token(chainId, WBTC, 18, 'wBTC'),
-})
+const getUniswapTokens = async (chainId = 1) => {
+  const { DAI, WETH, USDC, UDT, WBTC } = await getTokens()
+
+  return {
+    native: nativeOnChain(chainId),
+    dai: new Token(chainId, DAI, 18, 'DAI'),
+    weth: new Token(chainId, WETH, 18, 'WETH'),
+    usdc: new Token(chainId, USDC, 6, 'USDC'),
+    udt: new Token(chainId, UDT, 18, 'UDT'),
+    wBtc: new Token(chainId, WBTC, 18, 'wBTC'),
+  }
+}
 
 const routerAddresses = {
   421613: {
@@ -176,12 +172,15 @@ const routerAddresses = {
 /**
  * PERMIT2 helpers
  * */
-const makePermit = (
+const makePermit = async (
   tokenAddress,
   amount = ethers.constants.MaxUint256.toString(),
   deadline = Math.floor(new Date().getTime() / 1000 + 100000),
   nonce = '0'
 ) => {
+  const {
+    uniswapV3: { routerAddress },
+  } = await getNetwork()
   return {
     details: {
       token: tokenAddress,
@@ -189,12 +188,12 @@ const makePermit = (
       expiration: deadline.toString(),
       nonce,
     },
-    spender: V3_SWAP_ROUTER_ADDRESS,
+    spender: routerAddress,
     sigDeadline: deadline.toString(),
   }
 }
 
-async function generatePermitSignature(permit, signer, chainId = CHAIN_ID) {
+async function generatePermitSignature(permit, signer, chainId) {
   const { domain, types, values } = AllowanceTransfer.getPermitData(
     permit,
     PERMIT2_ADDRESS,

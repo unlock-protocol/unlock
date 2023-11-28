@@ -1,11 +1,11 @@
 const { ethers } = require('ethers')
-const { CHAIN_ID, UDT, WRAPPED, whales, unlockAddress } = require('./contracts')
 
 const ERC20_ABI = require('./ABIs/erc20.json')
 const USDC_ABI = require('./ABIs/USDC.json')
 const { abi: WETH_ABI } = require('./ABIs/weth.json')
 
 const { MAX_UINT } = require('./constants')
+const { getNetwork, getUnlock, getUdt, getTokens } = require('./unlock')
 
 const getChainId = () => {
   const chainId = parseInt(process.env.RUN_FORK)
@@ -17,6 +17,29 @@ const getChainId = () => {
 
 const getForkUrl = () => {
   return `https://rpc.unlock-protocol.com/${getChainId()}`
+}
+
+async function getWhales(chainId = 137) {
+  const tokens = getTokens()
+  switch (chainId) {
+    case 1:
+      return {
+        [tokens.DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8', // PulseX
+        [tokens.USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28',
+        [tokens.WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
+        [tokens.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534', // unlock-protocol.eth
+      }
+
+    case 137:
+      return {
+        [tokens.USDC]: '0xf977814e90da44bfa03b6295a0616a897441acec',
+        [tokens.DAI]: '0x91993f2101cc758d0deb7279d41e880f7defe827',
+        [tokens.WBTC]: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
+        [tokens.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534',
+      }
+    default:
+      break
+  }
 }
 
 // parse mainnet fork
@@ -100,21 +123,28 @@ const addERC20 = async function (
   amount = ethers.utils.parseEther('1000')
 ) {
   const { ethers } = require('hardhat')
+  const {
+    nativeToken: { wrapped },
+  } = await getNetwork()
+
   // wrapped some ETH
-  if (tokenAddress.toLowerCase() === WRAPPED.toLowerCase()) {
+  if (tokenAddress.toLowerCase() === wrapped.toLowerCase()) {
     await addSomeETH(address)
-    const weth = await ethers.getContractAt(WETH_ABI, WRAPPED)
+    const weth = await ethers.getContractAt(WETH_ABI, wrapped)
     await weth.deposit({ value: amount.toString() })
     return weth
   }
 
   // special for UDT
-  if (tokenAddress.toLowerCase() === UDT.toLowerCase()) {
+  const unlock = await getUnlock()
+  const udt = await unlock.udt()
+  if (tokenAddress.toLowerCase() === udt.toLowerCase()) {
     await addUDT(address, amount)
-    return await ethers.getContractAt(ERC20_ABI, UDT)
+    return await ethers.getContractAt(ERC20_ABI, udt)
   }
 
   // otherwise use transfer from whales
+  const whales = await getWhales()
   if (!whales[tokenAddress])
     throw Error(`No whale for this address: ${tokenAddress}`)
   const whale = await ethers.getSigner(whales[tokenAddress])
@@ -131,13 +161,15 @@ const toBytes32 = (bn) => {
 
 const addUDT = async (recipientAddress, amount = 1000) => {
   const { ethers, network } = require('hardhat')
+  const { chainId } = await ethers.provider.getNetwork()
+  const udt = await getUdt()
 
   // UDT contract
   const udtAmount = ethers.BigNumber.isBigNumber(amount)
     ? amount
     : ethers.utils.parseEther(`${amount}`)
 
-  if (CHAIN_ID === 1) {
+  if (chainId === 1) {
     // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
     // Get storage slot index
     const index = ethers.utils.solidityKeccak256(
@@ -148,7 +180,7 @@ const addUDT = async (recipientAddress, amount = 1000) => {
     // Manipulate local balance (needs to be bytes32 string)
     await network.provider.request({
       method: 'hardhat_setStorageAt',
-      params: [UDT, index.toString(), toBytes32(udtAmount).toString()],
+      params: [udt.address, index.toString(), toBytes32(udtAmount).toString()],
     })
     // Just mines to the next block
     await ethers.provider.send('evm_mine', [])
@@ -157,9 +189,8 @@ const addUDT = async (recipientAddress, amount = 1000) => {
     const whale = await ethers.getSigner(unlock_protocol_eth)
     await impersonate(unlock_protocol_eth)
 
-    const erc20Contract = await ethers.getContractAt(ERC20_ABI, UDT)
-    await erc20Contract.connect(whale).transfer(recipientAddress, amount)
-    return erc20Contract
+    await udt.connect(whale).transfer(recipientAddress, amount)
+    return udt
   }
 }
 
@@ -176,9 +207,12 @@ const getDelegates = async () => {
 
 const getERC20Contract = async (tokenAddress) => {
   const { ethers } = require('hardhat')
+  const {
+    nativeCurrency: { wrapped },
+  } = await getNetwork()
   const [signer] = await ethers.getSigners()
-  return tokenAddress === WRAPPED
-    ? await ethers.getContractAt(WETH_ABI, WRAPPED, signer)
+  return tokenAddress === wrapped
+    ? await ethers.getContractAt(WETH_ABI, wrapped, signer)
     : await ethers.getContractAt(ERC20_ABI, tokenAddress, signer)
 }
 

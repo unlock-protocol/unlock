@@ -1,11 +1,6 @@
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
-const {
-  deployLock,
-  purchaseKey,
-  UNLOCK_ADDRESS,
-  reverts,
-} = require('../helpers')
+const { deployLock, purchaseKey, getUnlock, reverts } = require('../helpers')
 
 const {
   uniswapRouterAddresses,
@@ -18,19 +13,8 @@ const {
   addERC20,
 } = require('@unlock-protocol/hardhat-helpers')
 
-// get uniswap-formatted tokens
-const tokens = getUniswapTokens(CHAIN_ID)
-
-const scenarios = [
-  [tokens.native, tokens.dai],
-  [tokens.native, tokens.usdc],
-  [tokens.dai, tokens.usdc],
-  [tokens.usdc, tokens.native],
-  [tokens.udt, tokens.native],
-  // [tokens.native, tokens.wBtc] // Uniswap SDK failsto generate route and parse calldata
-]
-
 describe(`swapAndCall`, function () {
+  let tokens, scenarios
   let unlock, swapPurchaser
   before(async function () {
     if (!process.env.RUN_FORK) {
@@ -38,25 +22,37 @@ describe(`swapAndCall`, function () {
       this.skip()
     }
 
+    // get uniswap-formatted tokens
+    tokens = await getUniswapTokens(CHAIN_ID)
+
+    scenarios = [
+      [tokens.native, tokens.dai],
+      [tokens.native, tokens.usdc],
+      [tokens.dai, tokens.usdc],
+      [tokens.usdc, tokens.native],
+      [tokens.udt, tokens.native],
+      // [tokens.native, tokens.wBtc] // Uniswap SDK failsto generate route and parse calldata
+    ]
+
     const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[CHAIN_ID]
     const routers = [UniversalRouter, SwapRouter02]
 
     // get Unlock contract
-    unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
+    unlock = await getUnlock()
 
     // deploy swapper
     const UnlockSwapPurchaser = await ethers.getContractFactory(
       'UnlockSwapPurchaser'
     )
     swapPurchaser = await UnlockSwapPurchaser.deploy(
-      UNLOCK_ADDRESS,
+      unlock.address,
       PERMIT2_ADDRESS,
       routers
     )
   })
 
   it('unlock is set properly', async () => {
-    expect(await swapPurchaser.unlockAddress()).to.equal(UNLOCK_ADDRESS)
+    expect(await swapPurchaser.unlockAddress()).to.equal(unlock.address)
   })
   it('permit2 is set properly', async () => {
     expect(await swapPurchaser.permit2()).to.equal(PERMIT2_ADDRESS)
