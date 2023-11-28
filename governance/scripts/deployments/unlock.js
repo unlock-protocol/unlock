@@ -2,9 +2,9 @@ const { ethers, upgrades, run } = require('hardhat')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
-} = require('../upgrade/_helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ unlockVersion } = {}) {
   const [deployer] = await ethers.getSigners()
@@ -12,12 +12,11 @@ async function main({ unlockVersion } = {}) {
   // need to fetch previous unlock versions
   if (unlockVersion) {
     console.log(`Setting up version ${unlockVersion} from package`)
-    Unlock = await copyAndBuildContractAtVersion('Unlock', unlockVersion)
+    Unlock = await copyAndBuildContractsAtVersion(__dirname, [
+      { contractName: 'Unlock', version: unlockVersion },
+    ])
   } else {
-    console.log(
-      `Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`
-    )
-    Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
+    throw 'Need to set --unlock-version'
   }
 
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
@@ -42,7 +41,7 @@ async function main({ unlockVersion } = {}) {
 
   // delete remaining files if we are using a packaged version
   if (unlockVersion) {
-    await cleanupContractVersions()
+    await cleanupContractVersions(__dirname)
   }
 
   return unlock.address

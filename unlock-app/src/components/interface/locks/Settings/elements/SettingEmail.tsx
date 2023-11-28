@@ -4,6 +4,7 @@ import { EmailTemplatePreview } from './EmailTemplatePreview'
 import { SettingCard } from './SettingCard'
 import { useMetadata } from '~/hooks/metadata'
 import { SendCustomEmail } from '../forms/SendCustomEmail'
+import { useGetLockSettings } from '~/hooks/useLockSettings'
 
 interface SettingEmailProps {
   lockAddress: string
@@ -78,6 +79,11 @@ export const SettingEmail = ({
     network,
   })
 
+  const { data: { replyTo, emailSender } = {} } = useGetLockSettings({
+    network,
+    lockAddress,
+  })
+
   const types = getLockTypeByMetadata(metadata)
 
   // find lock type
@@ -116,6 +122,7 @@ export const SettingEmail = ({
               lockAddress={lockAddress}
               network={network}
               isManager={isManager}
+              sendingParams={{ replyTo, emailSender }}
             />
           </SettingCard>
         )

@@ -1,16 +1,16 @@
 const { ethers } = require('hardhat')
-const Locks = require('../../test/fixtures/locks')
 const createLock = require('../deployments/lock.js')
 const contracts = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
-const { ZERO_ADDRESS } = require('@openzeppelin/test-helpers/src/constants')
-
-const { AddressZero } = ethers.constants
+const {
+  lockFixtures: Locks,
+  ZERO_ADDRESS,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main({
   unlockAddress,
   lockVersion,
-  tokenAddress = AddressZero,
+  tokenAddress = ZERO_ADDRESS,
   lockCount = 1,
 }) {
   const signers = await ethers.getSigners()

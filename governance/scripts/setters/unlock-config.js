@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const { getUnlock } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({
   unlockAddress,
@@ -29,10 +30,7 @@ async function main({
 
   const [deployer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
-
-  // get unlock instance (TODO: do not use code version but packaged version)
-  const Unlock = await ethers.getContractFactory('Unlock')
-  const unlock = Unlock.attach(unlockAddress)
+  const unlock = await getUnlock(unlockAddress)
 
   let hostname = isLocalNet
     ? 'http://127.0.0.1:3000'

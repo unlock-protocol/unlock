@@ -40,6 +40,7 @@ export function AirdropForm({
     handleSubmit,
     register,
     reset,
+    resetField,
     setValue,
     watch,
     control,
@@ -110,6 +111,7 @@ export function AirdropForm({
       const address = await getAddressForName(member.wallet)
       member.wallet = address
       const parsed = AirdropMember.parse(member)
+      console.log(parsed)
       add(parsed)
       reset()
       setValue('wallet', '')
@@ -158,6 +160,8 @@ export function AirdropForm({
                   <Toggle
                     value={useEmail}
                     onChange={(value: boolean) => {
+                      resetField('email')
+                      resetField('wallet')
                       setUseEmail(value)
                     }}
                   />
@@ -192,6 +196,7 @@ export function AirdropForm({
                           onChange={(value: any) => {
                             setValue('wallet', value)
                           }}
+                          required
                           onResolveName={onResolveName}
                         />
                       </>
@@ -300,9 +305,12 @@ export function AirdropManualForm({
 }: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
-  const expiration = new Date(
-    formatDate(lock.expirationDuration || 0)
-  ).getTime()
+  const expiration =
+    lock.expirationDuration > 0
+      ? new Date(formatDate(lock.expirationDuration || 0))
+          .toISOString()
+          .substring(0, 16)
+      : undefined
   const [isConfirming, setIsConfirming] = useState(false)
 
   return (

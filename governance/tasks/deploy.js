@@ -133,7 +133,7 @@ task('deploy:template', 'Deploy PublicLock contract')
   .addOptionalParam('publicLockVersion', 'the version of unlock to deploy')
   .setAction(async ({ publicLockVersion }) => {
     // eslint-disable-next-line global-require
-    const templateDeployer = require('../scripts/deployments/template')
+    const templateDeployer = require('../scripts/deployments/publicLock')
     return await templateDeployer({ publicLockVersion })
   })
 
