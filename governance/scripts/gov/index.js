@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const { addUDT } = require('../../test/helpers')
 const {
+  addUDT,
   getQuorum,
   getGovTokenAddress,
 } = require('@unlock-protocol/hardhat-helpers')

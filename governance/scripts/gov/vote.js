@@ -1,7 +1,10 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const { getProposalState } = require('@unlock-protocol/hardhat-helpers')
-const { getDelegates, impersonate } = require('../../test/helpers')
+const {
+  getProposalState,
+  getDelegates,
+  impersonate,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const vote = async (gov, voter, proposalId) => {
   const currentBlock = await ethers.provider.getBlockNumber()
