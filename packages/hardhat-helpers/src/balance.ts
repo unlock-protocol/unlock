@@ -1,4 +1,5 @@
 import erc20Abi from './ABIs/erc20.json'
+import { getTokenInfo } from './uniswap'
 
 async function getBalance(account: string, tokenAddress: string) {
   const { ethers } = require('hardhat')
@@ -15,4 +16,11 @@ async function getBalance(account: string, tokenAddress: string) {
   }
   return balance
 }
-export default { getBalance }
+
+async function logBalance(tokenAddress: string, account: string) {
+  const balance = await getBalance(account, tokenAddress)
+  const { symbol } = await getTokenInfo(tokenAddress)
+  console.log(` balance ${symbol}: `, balance.toString())
+}
+
+export default { getBalance, logBalance }

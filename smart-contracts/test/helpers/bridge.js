@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 
 const { deployERC20, deployWETH } = require('./tokens')
-const { addSomeETH } = require('./fork')
+const { addSomeETH } = require('@unlock-protocol/hardhat-helpers')
 
 // default to mainnet
 const SRC_DOMAIN_ID = 6648936

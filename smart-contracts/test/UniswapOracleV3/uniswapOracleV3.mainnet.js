@@ -2,34 +2,40 @@ const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 
-const { UNISWAP_FACTORY_ADDRESS, USDC, WETH, DAI } = require('../helpers')
-
-const pairs = [
-  [USDC, WETH],
-  [DAI, WETH],
-  [WETH, DAI],
-  [USDC, DAI],
-  // [ETH, USDC],
-].map(([one, two]) => [
-  // make sure we got correct checksum
-  ethers.utils.getAddress(one),
-  ethers.utils.getAddress(two),
-])
+const { getTokens, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 // very unprecise way to round up things...
 const round = (bn) => Math.floor(parseInt(bn.toString().slice(0, 3)))
 
 describe(`oracle`, () => {
-  let oracle
+  let oracle, pairs, DAI, WETH, USDC
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
+
+    ;({ DAI, WETH, USDC } = await getTokens())
+    pairs = [
+      [USDC, WETH],
+      [DAI, WETH],
+      [WETH, DAI],
+      [USDC, DAI],
+      // [ETH, USDC],
+    ].map(([one, two]) => [
+      // make sure we got correct checksum
+      ethers.utils.getAddress(one),
+      ethers.utils.getAddress(two),
+    ])
+
+    const {
+      uniswapV3: { factoryAddress },
+    } = await getNetwork()
+
     const UnlockUniswapOracle = await ethers.getContractFactory(
       'UniswapOracleV3'
     )
-    oracle = await UnlockUniswapOracle.deploy(UNISWAP_FACTORY_ADDRESS)
+    oracle = await UnlockUniswapOracle.deploy(factoryAddress)
   })
 
   describe('consult', () => {

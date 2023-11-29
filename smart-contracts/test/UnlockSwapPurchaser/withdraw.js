@@ -1,12 +1,12 @@
 const { ethers } = require('hardhat')
+const { deployERC20, deployContracts } = require('../helpers')
+
 const {
-  getBalanceEthers,
-  deployERC20,
+  getBalance,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
-  deployContracts,
-  CHAIN_ID,
-} = require('../helpers')
+  uniswapRouterAddresses,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const someTokens = ethers.utils.parseUnits('10', 'ether')
 const scenarios = [true, false]
@@ -19,7 +19,6 @@ let swapper,
   owner,
   unlockBalanceBefore,
   swapperBalanceBefore
-const uniswapRouterAddresses = require('../../scripts/uniswap/routerAddresses.json')
 const { assert } = require('chai')
 
 contract('UnlockSwapPurchaser / withdraw', () => {
@@ -32,8 +31,10 @@ contract('UnlockSwapPurchaser / withdraw', () => {
         const UnlockSwapPurchaser = await ethers.getContractFactory(
           'UnlockSwapPurchaser'
         )
+        // use mainnet settings for testing purposes only
+        const chainId = 1
         const { UniversalRouter, SwapRouter02 } =
-          uniswapRouterAddresses[CHAIN_ID]
+          uniswapRouterAddresses[chainId]
         const routers = [UniversalRouter, SwapRouter02]
         swapper = await UnlockSwapPurchaser.deploy(
           unlock.address,
@@ -41,14 +42,8 @@ contract('UnlockSwapPurchaser / withdraw', () => {
           routers
         )
 
-        swapperBalanceBefore = await getBalanceEthers(
-          swapper.address,
-          tokenAddress
-        )
-        unlockBalanceBefore = await getBalanceEthers(
-          unlock.address,
-          tokenAddress
-        )
+        swapperBalanceBefore = await getBalance(swapper.address, tokenAddress)
+        unlockBalanceBefore = await getBalance(unlock.address, tokenAddress)
 
         if (isErc20) {
           testToken = await deployERC20(owner, isEthersJs)
@@ -65,7 +60,7 @@ contract('UnlockSwapPurchaser / withdraw', () => {
 
         assert.equal(
           swapperBalanceBefore.add(someTokens).toString(),
-          (await getBalanceEthers(swapper.address, tokenAddress)).toString()
+          (await getBalance(swapper.address, tokenAddress)).toString()
         )
 
         // actually withdraw the funds
@@ -75,11 +70,11 @@ contract('UnlockSwapPurchaser / withdraw', () => {
       it('should have transferred the funds to unlock', async () => {
         assert.equal(
           unlockBalanceBefore.add(someTokens).toString(),
-          (await getBalanceEthers(unlock.address, tokenAddress)).toString()
+          (await getBalance(unlock.address, tokenAddress)).toString()
         )
         assert.equal(
           swapperBalanceBefore.toString(),
-          (await getBalanceEthers(swapper.address, tokenAddress)).toString()
+          (await getBalance(swapper.address, tokenAddress)).toString()
         )
       })
     })
