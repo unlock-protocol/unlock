@@ -1,10 +1,12 @@
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
+const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
+
 const {
   getProposalState,
   executeProposal,
   getProposalId,
-} = require('@unlock-protocol/hardhat-helpers')
+} = require('../../helpers/gov')
 
 async function main({ proposal, govAddress }) {
   // env settings
@@ -19,7 +21,7 @@ async function main({ proposal, govAddress }) {
 
   // contract instance etc
   let state = await getProposalState(proposalId, govAddress)
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
 
   if (state === 'Queued') {
     // check if time is ripe

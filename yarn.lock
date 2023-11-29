@@ -11420,6 +11420,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-network-helpers@npm:1.0.9":
+  version: 1.0.9
+  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.9"
+  dependencies:
+    ethereumjs-util: "npm:^7.1.4"
+  peerDependencies:
+    hardhat: ^2.9.5
+  checksum: 3d71d25ec3aed080727433213b37cc268e9535a1cda9cba37d978d7287ea56a8492665a7e55a3bde984c5f25aa964e8ebb5f05b29d2a350e2dc93e0ef2e38c78
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/hardhat-network-helpers@npm:^1.0.0":
   version: 1.0.8
   resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.8"
@@ -19234,6 +19245,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.9"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-etherscan": "npm:3.1.7"
     "@openzeppelin/test-helpers": "npm:0.5.16"

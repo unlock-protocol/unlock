@@ -1,10 +1,8 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
-const {
-  addUDT,
-  getQuorum,
-  getGovTokenAddress,
-} = require('@unlock-protocol/hardhat-helpers')
+const { mine } = require('@nomicfoundation/hardhat-network-helpers')
+const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
+const { addUDT } = require('@unlock-protocol/hardhat-helpers')
+const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
 // workflow
 const submit = require('./submit')
@@ -26,9 +24,12 @@ async function main({ proposal, govAddress }) {
 
     // NB: this has to be done *before* proposal submission's block height so votes get accounted for
     console.log('GOV (dev) > Delegating UDT to bypass quorum')
-    await addUDT(signer.address, ethers.utils.formatEther(quorum.mul(2)))
+    await addUDT(signer.address, quorum.mul(2))
 
-    const udt = await ethers.getContractAt('UnlockDiscountTokenV3', udtAddress)
+    const udt = await ethers.getContractAt(
+      UnlockDiscountTokenV2.abi,
+      udtAddress
+    )
 
     // delegate 30k to voter
     const tx = await udt.delegate(signer.address)
@@ -44,7 +45,8 @@ async function main({ proposal, govAddress }) {
       )
     }
 
-    await time.advanceBlock()
+    // mine 10 blocks
+    await mine(10)
   }
 
   // Run the gov workflow
