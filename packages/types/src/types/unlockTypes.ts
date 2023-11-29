@@ -37,6 +37,7 @@ export interface Token {
   coingecko?: string
   coinbase?: string
   mainnetAddress?: string
+  wrapped?: string
 }
 
 export enum HookType {
@@ -105,6 +106,7 @@ export interface NetworkConfig {
     quoterAddress: string
     oracle: string
     universalRouterAddress: string
+    positionManager: string
   }>
   swapPurchaser?: string
   unlockOwner?: string
