@@ -3,6 +3,7 @@
  * that can be used for retroactive funding
  */
 const ethers = require('ethers')
+const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
 module.exports = ([recipientAddress]) => {
   const amount = ethers.utils.parseUnits('0.01', 18)
@@ -14,7 +15,7 @@ module.exports = ([recipientAddress]) => {
     calls: [
       {
         contractAddress: '0x90DE74265a416e1393A450752175AED98fe11517',
-        contractNameOrAbi: 'UnlockDiscountTokenV3',
+        contractNameOrAbi: UnlockDiscountTokenV2.abi,
         functionName: 'transfer',
         functionArgs: [recipientAddress, amount],
       },
