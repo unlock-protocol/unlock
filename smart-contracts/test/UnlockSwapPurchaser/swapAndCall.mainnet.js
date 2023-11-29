@@ -8,22 +8,22 @@ const {
   getUniswapRoute,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
-  CHAIN_ID,
   getBalance,
   addERC20,
 } = require('@unlock-protocol/hardhat-helpers')
 
+let scenarios = []
+
 describe(`swapAndCall`, function () {
-  let tokens, scenarios
-  let unlock, swapPurchaser
+  let unlock, swapPurchaser, tokens
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
-
+    const { chainId } = await ethers.provider.getNetwork()
     // get uniswap-formatted tokens
-    tokens = await getUniswapTokens(CHAIN_ID)
+    tokens = await getUniswapTokens(chainId)
 
     scenarios = [
       [tokens.native, tokens.dai],
@@ -34,7 +34,7 @@ describe(`swapAndCall`, function () {
       // [tokens.native, tokens.wBtc] // Uniswap SDK failsto generate route and parse calldata
     ]
 
-    const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[CHAIN_ID]
+    const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[chainId]
     const routers = [UniversalRouter, SwapRouter02]
 
     // get Unlock contract

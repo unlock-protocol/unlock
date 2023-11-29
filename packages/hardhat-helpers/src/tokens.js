@@ -1,8 +1,8 @@
-const { getNetwork } = require('./unlock')
+import { getNetwork } from './unlock'
 
 const getTokens = async () => {
-  const { tokens: tokensList } = await getNetwork()
-  const tokens = tokensList.reduce((prev, { symbol, address }) => {
+  const { tokens } = await getNetwork()
+  return tokens.reduce((prev, { symbol, address }) => {
     prev[symbol] = address
     return prev
   }, {})

@@ -1,29 +1,29 @@
-const tasks = require('./tasks')
-import networks from './networks'
-import etherscan from './etherscan'
 import balance from './balance'
 import constants from './constants'
-import lock from './lock'
-import upgrades from './upgrades'
-import versions from './unlock'
-import proxy from './proxy'
+import etherscan from './etherscan'
 import fixtures from './fixtures'
-import uniswap from './uniswap'
 import fork from './fork'
+import lock from './lock'
+import networks from './networks'
+import proxy from './proxy'
+const tasks = require('./tasks')
 import tokens from './tokens'
+import uniswap from './uniswap'
+import unlock from './unlock'
+import upgrades from './upgrades'
 
 module.exports = {
-  networks,
-  etherscan,
-  tasks,
-  ...proxy,
   ...balance,
   ...constants,
-  ...lock,
-  ...upgrades,
-  ...versions,
+  etherscan,
   ...fixtures,
-  ...uniswap,
   ...fork,
+  ...lock,
+  networks,
+  ...proxy,
+  tasks,
   ...tokens,
+  ...uniswap,
+  ...unlock,
+  ...upgrades,
 }

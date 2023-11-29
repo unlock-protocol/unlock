@@ -2,7 +2,7 @@ const { networks } = require('@unlock-protocol/networks')
 const contracts = require('@unlock-protocol/contracts')
 const ERC20_ABI = require('./ABIs/erc20.json')
 
-const getUnlock = async (unlockAddress) => {
+export const getUnlock = async (unlockAddress) => {
   const { ethers } = require('hardhat')
   if (!unlockAddress) {
     unlockAddress = await getUnlockAddress()
@@ -13,19 +13,19 @@ const getUnlock = async (unlockAddress) => {
   return unlock
 }
 
-const getUdt = async () => {
+export const getUdt = async () => {
   const { ethers } = require('hardhat')
   const unlock = await getUnlock()
   const udt = await ethers.getContractAt(ERC20_ABI, await unlock.udt())
   return udt
 }
 
-const getUnlockAddress = async () => {
+export const getUnlockAddress = async () => {
   const { unlockAddress } = await getNetwork()
   return unlockAddress
 }
 
-const getNetwork = async () => {
+export const getNetwork = async () => {
   const { ethers } = require('hardhat')
   const { chainId } = await ethers.provider.getNetwork()
   return networks[chainId]
