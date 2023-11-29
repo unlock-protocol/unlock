@@ -15,7 +15,7 @@ async function main({ proposal, govAddress }) {
   const { chainId } = await ethers.provider.getNetwork()
 
   const quorum = await getQuorum(govAddress)
-  const udtAddress = getGovTokenAddress(govAddress)
+  const udtAddress = await getGovTokenAddress(govAddress)
 
   // lower voting period on mainnet
   if (chainId === 31337 || process.env.RUN_FORK) {
@@ -23,16 +23,19 @@ async function main({ proposal, govAddress }) {
     console.log(`GOV (dev) > gov contract: ${govAddress}`)
 
     // NB: this has to be done *before* proposal submission's block height so votes get accounted for
-    console.log('GOV (dev) > Delegating UDT to bypass quorum')
-    await addUDT(signer.address, quorum.mul(2))
+    console.log(
+      `GOV (dev) > Delegating UDT to bypass quorum (udt: ${udtAddress})`
+    )
 
     const udt = await ethers.getContractAt(
       UnlockDiscountTokenV2.abi,
       udtAddress
     )
+    await addUDT(signer.address, quorum.mul(2), udt)
 
     // delegate 30k to voter
     const tx = await udt.delegate(signer.address)
+
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'DelegateVotesChanged')
     if (evt) {

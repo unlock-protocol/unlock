@@ -61,7 +61,7 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
           voter = await impersonate(voterAddress)
         }
       } else {
-        ;[, , voter] = await ethers.getSigners()
+        ;[voter] = await ethers.getSigners()
       }
       console.log(`GOV VOTE (dev) > Impersonate voter: ${voter.address}`)
     }
