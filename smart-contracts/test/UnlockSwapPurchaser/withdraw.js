@@ -5,7 +5,6 @@ const {
   getBalance,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
-  CHAIN_ID,
   uniswapRouterAddresses,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -32,8 +31,10 @@ contract('UnlockSwapPurchaser / withdraw', () => {
         const UnlockSwapPurchaser = await ethers.getContractFactory(
           'UnlockSwapPurchaser'
         )
+        // use mainnet settings for testing purposes only
+        const chainId = 1
         const { UniversalRouter, SwapRouter02 } =
-          uniswapRouterAddresses[CHAIN_ID]
+          uniswapRouterAddresses[chainId]
         const routers = [UniversalRouter, SwapRouter02]
         swapper = await UnlockSwapPurchaser.deploy(
           unlock.address,
