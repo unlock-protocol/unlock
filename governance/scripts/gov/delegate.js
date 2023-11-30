@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
 const { impersonate } = require('../../test/helpers/mainnet')
+const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
 async function main({ holderAddress, delegateAddress, UDTAddress }) {
   // env settings
@@ -23,7 +24,7 @@ async function main({ holderAddress, delegateAddress, UDTAddress }) {
     ;[holder] = await ethers.getSigners()
   }
 
-  const udt = await new ethers.Contract('UnlockDiscountTokenV3', UDTAddress)
+  const udt = await new ethers.Contract(UnlockDiscountTokenV2.abi, UDTAddress)
   const tx = await udt.delegate(delegateAddress)
 
   const { events, transactionHash } = await tx.wait()

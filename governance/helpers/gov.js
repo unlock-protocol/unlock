@@ -173,7 +173,7 @@ const queueProposal = async ({ proposal, govAddress }) => {
 
   console.log({ targets, values, calldatas, description })
 
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
 
   return await gov
     .connect(voterWallet)
@@ -195,7 +195,7 @@ const executeProposal = async ({ proposal, govAddress }) => {
     voterWallet = await ethers.getSigner(proposerAddress)
   }
 
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
   return await gov
     .connect(voterWallet)
     .execute(targets, values, calldatas, descriptionHash)
@@ -205,7 +205,7 @@ const executeProposal = async ({ proposal, govAddress }) => {
  * Submits a proposal
  */
 const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
   let proposer
   if (!proposerAddress) {
     ;[proposer] = await ethers.getSigners()
@@ -217,20 +217,20 @@ const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
 }
 
 const getProposalVotes = async (proposalId, govAddress) => {
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
   const votes = await gov.proposalVotes(proposalId)
   return votes
 }
 
 const getQuorum = async (govAddress) => {
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
 
   const currentBlock = await ethers.provider.getBlockNumber()
   return await gov.quorum(currentBlock - 1)
 }
 
 const getGovTokenAddress = async (govAddress) => {
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
   return await gov.token()
 }
 
@@ -246,7 +246,7 @@ const getProposalState = async (proposalId, govAddress) => {
     'Executed',
   ]
 
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
   const state = await gov.state(proposalId)
   return states[state]
 }

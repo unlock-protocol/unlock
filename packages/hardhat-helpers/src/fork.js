@@ -159,17 +159,19 @@ const toBytes32 = (bn) => {
   return ethers.utils.hexlify(ethers.utils.zeroPad(bn.toHexString(), 32))
 }
 
-const addUDT = async (recipientAddress, amount = 1000) => {
+const addUDT = async (recipientAddress, amount = 1000, udt) => {
   const { ethers, network } = require('hardhat')
   const { chainId } = await ethers.provider.getNetwork()
-  const udt = await getUdt()
+  if (!udt) {
+    udt = await getUdt()
+  }
 
   // UDT contract
   const udtAmount = ethers.BigNumber.isBigNumber(amount)
     ? amount
     : ethers.utils.parseEther(`${amount}`)
 
-  if (chainId === 1) {
+  if (chainId === 1 || chainId === 5) {
     // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
     // Get storage slot index
     const index = ethers.utils.solidityKeccak256(

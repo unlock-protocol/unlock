@@ -1,7 +1,8 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
-const { getProposalState } = require('@unlock-protocol/hardhat-helpers')
-const { getDelegates, impersonate } = require('../../test/helpers')
+const { mineUpTo } = require('@nomicfoundation/hardhat-network-helpers')
+const { getProposalState, getDelegates } = require('../../helpers/gov')
+const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 
 const vote = async (gov, voter, proposalId) => {
   const currentBlock = await ethers.provider.getBlockNumber()
@@ -47,7 +48,7 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
   }
   console.log(`GOV VOTE > proposal ID : ${proposalId}`)
 
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
 
   let voter
   if (isDev) {
@@ -60,7 +61,7 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
           voter = await impersonate(voterAddress)
         }
       } else {
-        ;[, , voter] = await ethers.getSigners()
+        ;[voter] = await ethers.getSigners()
       }
       console.log(`GOV VOTE (dev) > Impersonate voter: ${voter.address}`)
     }
@@ -72,11 +73,11 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
       const currentBlock = await ethers.provider.getBlockNumber()
       // if proposal block not specified, default to currentBlock
       const originBlock = ethers.BigNumber.from(proposalBlock || currentBlock)
-      const targetBlock = originBlock.add(votingDelay)
+      const targetBlock = originBlock.add(votingDelay).add('1')
       console.log(
         `GOV VOTE (dev): Skipping voting delay. Advancing time from block ${currentBlock} to ${targetBlock}`
       )
-      await time.advanceBlockTo(targetBlock.toString())
+      await mineUpTo(targetBlock)
     }
   }
 

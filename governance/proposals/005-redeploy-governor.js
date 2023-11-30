@@ -32,6 +32,11 @@
 const { ethers, upgrades, run } = require('hardhat')
 const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
+const {
+  GovernorUnlockProtocol,
+  GovernorUnlockProtocolTimelock,
+} = require('@unlock-protocol/contracts')
+
 async function main([oldGovAddress, newGovAddress]) {
   if (!oldGovAddress) {
     throw Error(`Missing old governor address.`)
@@ -46,7 +51,7 @@ async function main([oldGovAddress, newGovAddress]) {
   const tokenAddress = await oldGovernor.token()
 
   const timelock = await ethers.getContractAt(
-    'UnlockProtocolTimelock',
+    GovernorUnlockProtocolTimelock.abi,
     timeLockAddress
   )
   const TIMELOCK_ADMIN_ROLE = await timelock.TIMELOCK_ADMIN_ROLE()
@@ -60,7 +65,10 @@ async function main([oldGovAddress, newGovAddress]) {
   // deploy new instance of gov if necessary
   if (!newGovAddress) {
     console.log(`Redeploying governor...`)
-    const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
+    const Governor = await ethers.getContractFactory(
+      GovernorUnlockProtocol.abi,
+      GovernorUnlockProtocol.bytecode
+    )
 
     const votingPeriod = await oldGovernor.votingPeriod()
     const votingDelay = await oldGovernor.votingDelay()
@@ -96,25 +104,25 @@ async function main([oldGovAddress, newGovAddress]) {
 
   const calls = [
     {
-      contractNameOrAbi: 'UnlockProtocolTimelock',
+      contractNameOrAbi: GovernorUnlockProtocolTimelock.abi,
       contractAddress: timeLockAddress,
       functionName: 'grantRole',
       functionArgs: [TIMELOCK_ADMIN_ROLE, newGovAddress],
     },
     {
-      contractNameOrAbi: 'UnlockProtocolTimelock',
+      contractNameOrAbi: GovernorUnlockProtocolTimelock.abi,
       contractAddress: timeLockAddress,
       functionName: 'grantRole',
       functionArgs: [PROPOSER_ROLE, newGovAddress],
     },
     {
-      contractNameOrAbi: 'UnlockProtocolTimelock',
+      contractNameOrAbi: GovernorUnlockProtocolTimelock.abi,
       contractAddress: timeLockAddress,
       functionName: 'revokeRole',
       functionArgs: [TIMELOCK_ADMIN_ROLE, oldGovAddress],
     },
     {
-      contractNameOrAbi: 'UnlockProtocolTimelock',
+      contractNameOrAbi: GovernorUnlockProtocolTimelock.abi,
       contractAddress: timeLockAddress,
       functionName: 'revokeRole',
       functionArgs: [PROPOSER_ROLE, oldGovAddress],

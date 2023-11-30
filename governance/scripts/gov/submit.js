@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
-const { submitProposal } = require('@unlock-protocol/hardhat-helpers')
-const { impersonate } = require('../../test/helpers')
+const { submitProposal } = require('../../helpers/gov')
+const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ proposal, proposerAddress, govAddress }) {
   // env settings
