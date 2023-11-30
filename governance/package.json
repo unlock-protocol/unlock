@@ -3,6 +3,7 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
+    "@nomicfoundation/hardhat-network-helpers": "1.0.9",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
     "@openzeppelin/test-helpers": "0.5.16",
