@@ -5,7 +5,8 @@ const USDC_ABI = require('./ABIs/USDC.json')
 const { abi: WETH_ABI } = require('./ABIs/weth.json')
 
 const { MAX_UINT } = require('./constants')
-const { getNetwork, getUnlock, getUdt, getTokens } = require('./unlock')
+const { getNetwork, getUnlock, getUdt } = require('./unlock')
+const { getTokens } = require('./tokens')
 
 const getChainId = () => {
   const chainId = parseInt(process.env.RUN_FORK)
