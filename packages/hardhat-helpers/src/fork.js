@@ -133,7 +133,8 @@ const addERC20 = async function (
   if (tokenAddress.toLowerCase() === wrapped.toLowerCase()) {
     await addSomeETH(address)
     const weth = await ethers.getContractAt(WETH_ABI, wrapped)
-    await weth.deposit({ value: amount.toString() })
+    const signer = await impersonate(address)
+    const tx = await weth.connect(signer).deposit({ value: amount.toString() })
     return weth
   }
 

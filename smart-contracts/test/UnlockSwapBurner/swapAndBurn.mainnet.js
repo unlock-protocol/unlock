@@ -3,13 +3,11 @@ const { expect } = require('chai')
 const {
   getBalance,
   PERMIT2_ADDRESS,
-  udtAddress,
   addSomeETH,
   addERC20,
   impersonate,
   getUniswapTokens,
   getNetwork,
-  getUdt,
   getUnlock,
   ADDRESS_ZERO,
   // reverts,
@@ -176,7 +174,6 @@ describe(`swapAndBurn`, function () {
         })
 
         it('emits a SwapBurn event', async () => {
-          // console.log(events)
           const { args } = events.find(({ event }) => event === 'SwapBurn')
           expect(args.tokenAddress).to.equal(
             token.isNative ? wrappedAddress : tokenAddress
