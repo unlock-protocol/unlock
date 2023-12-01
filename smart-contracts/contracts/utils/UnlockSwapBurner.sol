@@ -6,6 +6,8 @@ import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IPermit2.sol";
 import "../interfaces/IUnlock.sol";
+import "../interfaces/IWETH.sol";
+import "hardhat/console.sol";
 
 library SafeCast160 {
   error UnsafeCast();
@@ -23,51 +25,38 @@ contract UnlockSwapBurner {
   using SafeCast160 for uint256;
 
   // addresses on current chain
-  address public udtAddress;
+  address public unlockAddress;
 
   // required by Uniswap Universal Router
   address public permit2;
-  mapping(address => bool) public uniswapRouters;
+  address public uniswapRouter;
 
   // dead address to burn
   address public constant burnAddress =
     0x000000000000000000000000000000000000dEaD;
 
-  address public constant UNI_V2_UDT =
-    0x9cA8AEf2372c705d6848fddA3C1267a7F51267C1;
-  //
-  // set the default pool fee to 0.3%.
-  // uint24 public constant poolFee = 3000;
-
   // events
   event SwapBurn(address tokenAddress, uint amountSpent, uint amountBurnt);
 
   // errors
-  error UDTSwapFailed(
-    address uniswapRouter,
-    address tokenIn,
-    uint amount,
-    bytes callData
-  );
+  error UDTSwapFailed(address uniswapRouter, address tokenIn, uint amount);
   error InsufficientBalance();
   error UnautorizedRouter(address routerAddress);
-  error UnauthorizedBalanceChange();
+  error UnauthorizedSwap();
 
   /**
    * Set the address of Uniswap Permit2 helper contract
-   * @param _udtAddress the address of UDT contract
+   * @param _unlockAddress the address of the Unlock factory contract
    * @param _permit2Address the address of Uniswap PERMIT2 contract
    */
   constructor(
-    address _udtAddress,
+    address _unlockAddress,
     address _permit2Address,
-    address[] memory _uniswapRouters
+    address _uniswapRouter
   ) {
-    udtAddress = _udtAddress;
+    unlockAddress = _unlockAddress;
     permit2 = _permit2Address;
-    for (uint i = 0; i < _uniswapRouters.length; i++) {
-      uniswapRouters[_uniswapRouters[i]] = true;
-    }
+    uniswapRouter = _uniswapRouter;
   }
 
   /**
@@ -81,79 +70,76 @@ contract UnlockSwapBurner {
         : IMintableERC20(token).balanceOf(address(this));
   }
 
-  // NB: unused for now
-  function _encodeSwapPath(
-    address[] memory _path,
-    uint24[] memory _fees
-  ) internal pure returns (bytes memory path) {
-    path = abi.encodePacked(_path[0]);
-    for (uint i = 0; i < _fees.length; i++) {
-      path = abi.encodePacked(path, _fees[i], _path[i + 1]);
-    }
-    path = abi.encodePacked(path, UNI_V2_UDT);
-  }
-
   /**
    * Swap tokens to UDT and burn the tokens
    */
   function swapAndBurn(
     address tokenAddress,
-    address swapRouter,
-    uint amount,
-    bytes memory path
-  ) public payable returns (bytes memory) {
-    // make sure given uniswapRouter is whitelisted
-    if (uniswapRouters[swapRouter] != true) {
-      revert UnautorizedRouter(swapRouter);
-    }
+    uint24 poolFee
+  ) public payable returns (uint amount) {
+    // get info from unlock
+    address udtAddress = IUnlock(unlockAddress).udt();
+    address wrappedAddress = IUnlock(unlockAddress).weth();
 
     // get balances before swap
-    uint balanceTokenBefore = getBalance(tokenAddress);
-    uint balanceUdtBefore = getBalance(udtAddress);
+    uint tokenAmount = getBalance(tokenAddress);
 
+    if (tokenAddress == udtAddress) {
+      revert UnauthorizedSwap();
+    }
+
+    // approve ERC20 spending
     if (tokenAddress != address(0)) {
       // Approve the router to spend src ERC20
-      TransferHelper.safeApprove(tokenAddress, swapRouter, amount);
+      TransferHelper.safeApprove(tokenAddress, uniswapRouter, tokenAmount);
 
       // approve PERMIT2 to manipulate the token
-      IERC20(tokenAddress).approve(permit2, amount);
+      IERC20(tokenAddress).approve(permit2, tokenAmount);
+    } else {
+      // wrapped native tokens
+      IWETH(wrappedAddress).deposit{value: tokenAmount}();
+      tokenAddress = wrappedAddress;
+      tokenAmount = getBalance(tokenAddress);
+      console.log(tokenAmount);
     }
 
     // issue PERMIT2 Allowance
     IPermit2(permit2).approve(
       tokenAddress,
-      swapRouter,
-      amount.toUint160(),
+      uniswapRouter,
+      tokenAmount.toUint160(),
       uint48(block.timestamp + 60) // expires after 1min
     );
 
-    // executes the swap
-    // bytes memory path = _encodeSwapPath(_path, _fees);
+    bytes memory defaultPath = abi.encodePacked(
+      wrappedAddress,
+      uint24(3000), // default UDT pool fee is set to 0.3%
+      udtAddress
+    );
 
+    // executes the swap token > WETH > UDT
     ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
-      path: path,
+      path: tokenAddress == wrappedAddress
+        ? defaultPath
+        : abi.encodePacked(tokenAddress, poolFee, defaultPath),
       recipient: address(this),
       deadline: block.timestamp,
-      amountIn: amount,
+      amountIn: tokenAmount,
       amountOutMinimum: 0
     });
 
     // Executes the swap.
-    uint amountOut = ISwapRouter(swapRouter).exactInput(params);
+    uint amountUDTOut = ISwapRouter(uniswapRouter).exactInput(params);
 
-    // if (success == false) {
-    //   revert UDTSwapFailed(swapRouter, tokenAddress, amount, swapCalldata);
-    // }
-
-    // TODO: check that Unlock did not spend more than it received
-    uint balanceUdtAfter = getBalance(udtAddress);
-    if (
-      getBalance(tokenAddress) - balanceTokenBefore < 0 ||
-      balanceUdtAfter - balanceUdtBefore < 0
-    ) {
-      // balance too low
-      revert UnauthorizedBalanceChange();
+    // burn the UDT
+    bool success = IERC20(udtAddress).transfer(burnAddress, amountUDTOut);
+    if (success == false) {
+      revert UDTSwapFailed(uniswapRouter, tokenAddress, tokenAmount);
+    } else {
+      emit SwapBurn(tokenAddress, tokenAmount, amountUDTOut);
     }
+
+    return amountUDTOut;
   }
 
   // required to withdraw WETH

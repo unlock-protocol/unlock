@@ -3,21 +3,28 @@ const { expect } = require('chai')
 const {
   getBalance,
   PERMIT2_ADDRESS,
-  UDT,
+  udtAddress,
   addSomeETH,
   addERC20,
   impersonate,
-  getUDTSwapPath,
   getUniswapTokens,
   getNetwork,
   getUdt,
+  getUnlock,
   ADDRESS_ZERO,
   // reverts,
 } = require('@unlock-protocol/hardhat-helpers')
 
+const { compareBigNumbers } = require('../helpers')
+
 let scenarios
+
+const routerAddress = '0xE592427A0AEce92De3Edee1F18E0157C05861564'
+// const routerAddress = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' // swaRouter02
+
 describe(`swapAndBurn`, function () {
-  let swapBurner, unlockAddress, routerAddress, tokenAddress, udt
+  let swapBurner, unlockAddress, tokenAddress, udt, unlock
+
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
@@ -30,29 +37,34 @@ describe(`swapAndBurn`, function () {
 
     // get uniswap-formatted tokens
     const { chainId } = await ethers.provider.getNetwork()
-    const { native, usdc, dai, wBtc } = await getUniswapTokens(chainId)
-    scenarios = [native, usdc, dai, wBtc]
+    const { native, usdc, dai, wBtc, weth } = await getUniswapTokens(chainId)
+    scenarios = [native, usdc, dai, wBtc, weth]
 
     // get mainnet values
     ;({
-      uniswapV3: { universalRouterAddress: routerAddress },
+      // uniswapV3: { universalRouterAddress: routerAddress },
       unlockAddress,
     } = await getNetwork())
     udt = await getUdt()
+    unlock = await getUnlock(unlockAddress)
+
+    expect(await unlock.weth()).to.equal(weth.address)
 
     // deploy swapper
     const UnlockSwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
-    swapBurner = await UnlockSwapBurner.deploy(udt.address, PERMIT2_ADDRESS, [
-      routerAddress,
-    ])
+    swapBurner = await UnlockSwapBurner.deploy(
+      unlockAddress,
+      PERMIT2_ADDRESS,
+      routerAddress
+    )
   })
 
   describe('constructor', () => {
-    it('udt is set properly', async () => {
-      expect(await swapBurner.udtAddress()).to.equal(udt.address)
+    it('unlock is set properly', async () => {
+      expect(await swapBurner.unlockAddress()).to.equal(unlockAddress)
     })
     it('uniswap routers are set properly', async () => {
-      expect(await swapBurner.uniswapRouters(routerAddress)).to.be.true
+      expect(await swapBurner.uniswapRouter()).to.equal(routerAddress)
     })
     it('permit2 is set properly', async () => {
       expect(await swapBurner.permit2()).to.equal(PERMIT2_ADDRESS)
@@ -62,9 +74,17 @@ describe(`swapAndBurn`, function () {
   it('swaps', () => {
     scenarios.forEach((token) => {
       describe(`swap ${token.symbol} for UDT`, () => {
-        let amount
+        let amount,
+          balanceSwapBurnBefore,
+          udtSwapBurnBalanceBefore,
+          udtBurnAddressBalanceBefore,
+          events
+
         before(async () => {
-          amount = ethers.utils.parseUnits('50', token.decimals)
+          amount = ethers.utils.parseUnits(
+            token.isNative ? '1' : '50',
+            token.decimals
+          )
           tokenAddress = token.address || ADDRESS_ZERO
 
           // Unlock has some token
@@ -76,62 +96,90 @@ describe(`swapAndBurn`, function () {
           const balance = await getBalance(unlockAddress, tokenAddress)
           expect(balance.toString()).to.equal(amount.toString())
 
-          // burner has not UDT
+          // burner has not udtAddress
           expect(
-            (await getBalance(swapBurner.address, UDT)).toString()
+            (await getBalance(swapBurner.address, udt.address)).toString()
           ).to.equal('0')
 
           // transfer these token to burner
           const unlockSigner = await impersonate(unlockAddress)
-          if (!token.isNative) {
+          if (token.isNative) {
+            await await unlockSigner.sendTransaction({
+              to: swapBurner.address,
+              value: amount,
+            })
+          } else {
             const tokenContract = await ethers.getContractAt(
               'IERC20',
               tokenAddress,
               unlockSigner
             )
             await tokenContract.transfer(swapBurner.address, amount)
-          } else {
-            await await unlockSigner.sendTransaction({
-              to: swapBurner.address,
-              value: amount,
-            })
           }
-          const balanceBurner = await getBalance(
+
+          // balances
+          balanceSwapBurnBefore = await getBalance(
             swapBurner.address,
             tokenAddress
           )
-          expect(balanceBurner.toString()).to.equal(amount.toString())
+          udtSwapBurnBalanceBefore = await getBalance(
+            swapBurner.address,
+            udtAddress
+          )
+          udtBurnAddressBalanceBefore = await getBalance(
+            swapBurner.burnAddress(),
+            udtAddress
+          )
+
+          expect(balanceSwapBurnBefore.toString()).to.equal(amount.toString())
+
+          // lets go
+          const tx = await swapBurner.swapAndBurn(tokenAddress, 3000)
+          ;({ events } = await tx.wait())
         })
 
-        it('burns token entire balance', async () => {
-          const { path, value, swapRouter } = await getUDTSwapPath({
-            amountIn: amount,
-            tokenIn: token,
-            recipient: swapBurner.address,
-          })
-          const balanceBurnerBefore = await getBalance(
-            swapBurner.address,
-            tokenAddress
-          )
-          const udtBalanceBurnerBefore = await getBalance(
-            swapBurner.address,
-            UDT
-          )
-
-          await swapBurner.swapAndBurn(tokenAddress, swapRouter, amount, path, {
-            value,
-          })
+        it('swap the entire token balance', async () => {
           const balanceBurner = await getBalance(
             swapBurner.address,
             tokenAddress
           )
-          expect(balanceBurnerBefore.minus(balanceBurner).toString()).to.equal(
+          compareBigNumbers(balanceBurner, '0')
+        })
+
+        it('UDT balance remains unchanged', async () => {
+          const udtSwapBurn = await getBalance(swapBurner.address, udtAddress)
+          compareBigNumbers(udtSwapBurn.sub(udtSwapBurnBalanceBefore), '0')
+        })
+
+        it('burns the entire UDT that have been swapped', async () => {
+          const udtBurnAddressBalance = await getBalance(
+            swapBurner.burnAddress(),
+            udtAddress
+          )
+          compareBigNumbers(
+            udtBurnAddressBalance.sub(udtBurnAddressBalanceBefore),
             '0'
           )
-          const udtBalanceBurner = await getBalance(swapBurner.address, UDT)
-          expect(
-            udtBalanceBurner.minus(udtBalanceBurnerBefore).get(0)
-          ).to.equal(true)
+        })
+
+        it('emits a SwapBurn event', async () => {
+          console.log(events)
+          const { args } = events.find(({ event }) => event === 'SwapBurn')
+          expect(args.tokenAddress).to.equal(tokenAddress)
+          compareBigNumbers(args.amountSpent, amount)
+
+          const udtBurnAddressBalance = await getBalance(
+            swapBurner.burnAddress(),
+            udtAddress
+          )
+          console.log({
+            udtBurnAddressBalanceBefore: udtBurnAddressBalanceBefore.toString(),
+            udtBurnAddressBalance: udtBurnAddressBalance.toString(),
+          })
+          const amountBurn = udtBurnAddressBalanceBefore.sub(
+            udtBurnAddressBalance
+          )
+          compareBigNumbers(args.amountBurnt, amountBurn)
         })
       })
     })

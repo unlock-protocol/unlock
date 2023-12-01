@@ -35,6 +35,7 @@ import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
+import "./interfaces/ISwapBurner.sol";
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -114,6 +115,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__MISSING_LOCK_TEMPLATE();
   error Unlock__MISSING_LOCK(address lockAddress);
   error Unlock__INVALID_AMOUNT();
+  error Unlock__INVALID_TOKEN();
 
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
@@ -680,15 +682,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * decrease UDT suplt in circulation.
    * @notice This function can be called by anyone (not only the contract owner)
    * @param token the address of the tokem (zero address for native)
-   * @param amount the amount of tokens to send (use zero to send entire balance)
+   * @param amount the amount of tokens to send
    */
-  function sendToSwapBurner(address token, uint256 amount) public {
-    if (amount == 0) {
-      amount = token == address(0)
-        ? address(this).balance
-        : IMintableERC20(token).balanceOf(address(this));
+  function swapAndBurn(address token, uint256 amount, uint24 poolFee) public {
+    if (token == udt) {
+      revert Unlock__INVALID_TOKEN();
     }
     _transfer(token, swapBurnerAddress, amount);
+    ISwapBurner(swapBurnerAddress).swapAndBurn(token, poolFee);
   }
 
   /**
