@@ -20,8 +20,9 @@ const getForkUrl = () => {
   return `https://rpc.unlock-protocol.com/${getChainId()}`
 }
 
-async function getWhales(chainId = 137) {
-  const tokens = getTokens()
+async function getWhales(chainId = 1) {
+  const tokens = await getTokens()
+  const { address: UDT } = await getUdt()
   switch (chainId) {
     case 1:
       return {
@@ -125,7 +126,7 @@ const addERC20 = async function (
 ) {
   const { ethers } = require('hardhat')
   const {
-    nativeToken: { wrapped },
+    nativeCurrency: { wrapped },
   } = await getNetwork()
 
   // wrapped some ETH
