@@ -17982,12 +17982,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/qrcode.react@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@types/qrcode.react@npm:1.0.4"
+"@types/qrcode.react@npm:1.0.5":
+  version: 1.0.5
+  resolution: "@types/qrcode.react@npm:1.0.5"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 5178ded1d335bd7c9ff1d01bc06667fcc9f21134e66866fb26cc11a80eaea6d1757a35d1943ccd280f0c7e9f1d3fd5f5b3f00a4cfe08f9ca4d0036b77d4fe48e
+  checksum: eea7526180988a1bc4937f12c0b82951a9be9a68817a01ab10cfae68796f9a4629cdbf3a47d24b87cb10a9ca55ebd3d0690516d33637f95767a46e1961eb6b9d
   languageName: node
   linkType: hard
 
@@ -19626,7 +19626,7 @@ __metadata:
     "@tw-classed/react": "npm:1.5.2"
     "@types/file-saver": "npm:2.0.6"
     "@types/postmate": "npm:1.5.3"
-    "@types/qrcode.react": "npm:1.0.4"
+    "@types/qrcode.react": "npm:1.0.5"
     "@types/react": "npm:18.2.0"
     "@types/react-google-recaptcha": "npm:2.1.7"
     "@types/react-gtm-module": "npm:2.0.2"
