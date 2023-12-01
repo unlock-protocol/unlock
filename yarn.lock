@@ -18943,9 +18943,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/smart-order-router@npm:3.19.0":
-  version: 3.19.0
-  resolution: "@uniswap/smart-order-router@npm:3.19.0"
+"@uniswap/smart-order-router@npm:3.19.2":
+  version: 3.19.2
+  resolution: "@uniswap/smart-order-router@npm:3.19.2"
   dependencies:
     "@uniswap/default-token-list": "npm:^11.2.0"
     "@uniswap/permit2-sdk": "npm:^1.2.0"
@@ -18971,7 +18971,7 @@ __metadata:
     stats-lite: "npm:^2.2.0"
   peerDependencies:
     jsbi: ^3.2.0
-  checksum: 9e63a0c49f73ab632ac226d0404a88813868b9f46508e515b8fe950f937ab987cd5c3aa02d382e1a75efda2057c465892958e3b12bc44fb1f2c045848cf050ca
+  checksum: 95c705790d51a6e54e4cfbdfe23bdb302b68e84c3e0d482c112edfd7d0683d6dad5b84ab0d81ca6dfe64f84bb0f54ff6349c9c2b4519b6ecd10e2e6bc0ee3b7d
   languageName: node
   linkType: hard
 
@@ -19273,7 +19273,7 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": "npm:1.28.0"
     "@uniswap/permit2-sdk": "npm:1.2.0"
     "@uniswap/sdk-core": "npm:4.0.9"
-    "@uniswap/smart-order-router": "npm:3.19.0"
+    "@uniswap/smart-order-router": "npm:3.19.2"
     "@uniswap/v3-sdk": "npm:3.10.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
