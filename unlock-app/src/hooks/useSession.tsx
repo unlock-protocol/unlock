@@ -3,6 +3,7 @@ import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
 import { getAccessToken, getCurrentAccount } from '~/utils/session'
 import { ReactNode, createContext, useContext } from 'react'
+import { Auth } from '@unlock-protocol/unlock-js'
 
 export const useSessionUser = () => {
   return useQuery(
@@ -13,7 +14,7 @@ export const useSessionUser = () => {
       try {
         if (!accessToken) return null
         const response = await storage.user()
-        return response.data!.walletAddress
+        return response.data!
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401 && accessToken) {
@@ -21,7 +22,9 @@ export const useSessionUser = () => {
           }
           // To handle temporary network errors and fallback if locksmith is not behaving correctly
           if (accessToken) {
-            return address
+            return {
+              walletAddress: address,
+            } as Auth
           }
           return null
         }
@@ -38,8 +41,8 @@ export const useSessionUser = () => {
 
 interface SessionContextType {
   isInitialLoading: boolean
-  session?: string | null
-  refetchSession: () => Promise<UseQueryResult<string | null | undefined>>
+  session?: any
+  refetchSession: () => Promise<UseQueryResult<any | null | undefined>>
 }
 
 export const SessionContext = createContext<SessionContextType>({
@@ -56,6 +59,7 @@ interface Props {
 
 export const SessionProvider = ({ children }: Props) => {
   const { data: session, refetch, isInitialLoading } = useSessionUser()
+
   return (
     <SessionContext.Provider
       value={{ session, refetchSession: refetch, isInitialLoading }}

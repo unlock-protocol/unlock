@@ -1,6 +1,4 @@
-import useTermsOfService from '~/hooks/useTermsOfService'
-import { useConfig } from '~/utils/withConfig'
-import { Button, Footer, HeaderNav, Modal } from '@unlock-protocol/ui'
+import { Button, Footer, HeaderNav } from '@unlock-protocol/ui'
 import { Container } from '../Container'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import React, { ReactNode } from 'react'
@@ -148,8 +146,6 @@ export const AppLayout = ({
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
-  const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
-  const config = useConfig()
   const { openConnectModal } = useConnectModal()
 
   const showLogin = authRequired && !account
@@ -181,41 +177,8 @@ export const AppLayout = ({
       : [],
   }
 
-  const showTermsModal = !termsLoading && !termsAccepted
-
   return (
     <div className="overflow-hidden bg-ui-secondary-200">
-      <Modal
-        isOpen={showTermsModal}
-        setIsOpen={() => {
-          saveTermsAccepted()
-        }}
-      >
-        <div className="flex flex-col justify-center gap-4 bg-white">
-          <span className="text-base">
-            No account required{' '}
-            <span role="img" aria-label="stars">
-              ✨
-            </span>
-            , but you need to agree to our{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/terms`}
-            >
-              Terms of Service
-            </a>{' '}
-            and{' '}
-            <a
-              className="outline-none text-brand-ui-primary"
-              href={`${config.unlockStaticUrl}/privacy`}
-            >
-              Privacy Policy
-            </a>
-            .
-          </span>
-          <Button onClick={saveTermsAccepted}>I agree</Button>
-        </div>
-      </Modal>
       <div className="w-full">
         {showHeader && (
           <div className="px-4 mx-auto lg:container">

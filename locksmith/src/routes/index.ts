@@ -36,6 +36,7 @@ import ogRouter from './v2/og'
 import eventsRouter from './v2/events'
 import hooksRooter from './v2/hooks'
 import emailSubscriptionRouter from './v2/emailSubscriptions'
+import userRouter2 from './v2/user'
 import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 import magicEdenRouter from './v2/magicEden'
 
@@ -80,6 +81,7 @@ router.use('/api/oauth', authRouter)
 router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
 router.use('/v2', authMiddleware)
+router.use('/v2/user', userRouter2)
 router.use('/v2/auth', authRouterV2)
 router.use('/v2/images', imagesRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
