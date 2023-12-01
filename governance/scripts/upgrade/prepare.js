@@ -1,9 +1,9 @@
-const { ethers, run, upgrades } = require('hardhat')
+const { run, upgrades } = require('hardhat')
 
 const {
-  copyAndBuildContractAtVersion,
+  copyAndBuildContractsAtVersion,
   cleanupContractVersions,
-} = require('./_helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
 // used to update contract implementation address in proxy admin
 async function main({ proxyAddress, contractName, contractVersion }) {
@@ -11,20 +11,19 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   let Contract
   if (contractVersion) {
     console.log(`Setting up version ${contractVersion} from package`)
-    Contract = await copyAndBuildContractAtVersion(
-      contractName,
-      contractVersion
-    )
+    Contract = await copyAndBuildContractsAtVersion(__dirname, [
+      {
+        contractName,
+        version: contractVersion,
+      },
+    ])
   } else {
-    console.log(
-      `Deploying development version of Unlock from local source code. Please pass a version number if you want to deploy from a stable release.`
-    )
-    Contract = await ethers.getContractFactory(
-      `contracts/${contractName}.sol:${contractName}`
-    )
+    throw Error('Need a version number --unlock-version')
   }
 
-  const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract)
+  const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
+    kind: 'transparent',
+  })
 
   console.log(`${contractName} implementation deployed at: ${implementation}`)
 
@@ -33,7 +32,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   })
 
   if (contractVersion) {
-    await cleanupContractVersions()
+    await cleanupContractVersions(__dirname)
   }
   return implementation
 }

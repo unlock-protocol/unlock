@@ -409,22 +409,17 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function getHasValidKey(
     address _keyOwner
   ) public view returns (bool isValid) {
-    // check hook directly with address if user has no valid keys
-    if (balanceOf(_keyOwner) == 0) {
-      if (address(onValidKeyHook) != address(0)) {
-        return
-          onValidKeyHook.isValidKey(
-            address(this),
-            msg.sender,
-            0, // no token specified
-            0, // no token specified
-            _keyOwner,
-            false
-          );
-      }
-    }
-    // `balanceOf` returns only valid keys
-    return balanceOf(_keyOwner) >= 1;
+    isValid = balanceOf(_keyOwner) > 0;
+
+    if (address(onValidKeyHook) != address(0))
+      isValid = onValidKeyHook.isValidKey(
+        address(this),
+        msg.sender,
+        0, // no token specified
+        0, // no token specified
+        _keyOwner,
+        isValid
+      );
   }
 
   /**

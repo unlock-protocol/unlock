@@ -3,11 +3,9 @@ import { createPricingForPurchase } from '../../utils/pricing'
 import { ethers } from 'ethers'
 import { getCreditCardEnabledStatus } from '../../operations/creditCardOperations'
 import * as Normalizer from '../../utils/normalizer'
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
 import * as pricingOperations from '../../operations/pricingOperations'
-import * as lockSettingOperations from '../../operations/lockSettingOperations'
 import { MIN_PAYMENT_STRIPE_ONRAMP } from '../../utils/constants'
+import logger from '../../logger'
 
 export const amount: RequestHandler = async (request, response) => {
   const network = Number(request.params.network || 1)
@@ -101,41 +99,18 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
   request,
   response
 ) => {
-  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-  const network = Number(request.params.network)
-
-  const web3Service = new Web3Service(networks)
-
-  const lock = await web3Service.getLock(lockAddress, network, {
-    fields: ['keyPrice', 'currencyContractAddress'],
-  })
-
-  const [defiLammaPricing, settingsPricing] = await Promise.all([
-    pricingOperations.getDefiLammaPrice({
+  try {
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+    const network = Number(request.params.network)
+    const creditCardEnabled = await getCreditCardEnabledStatus({
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
-      erc20Address: lock.currencyContractAddress,
-      amount: Number(`${lock.keyPrice}`),
-    }),
-    lockSettingOperations.getSettings({
-      lockAddress,
-      network,
-    }),
-  ])
-
-  let totalPriceInCents = (defiLammaPricing.priceInAmount ?? 0) * 100
-
-  // priority to pricing from settings if set
-  if (settingsPricing?.creditCardPrice) {
-    totalPriceInCents = settingsPricing.creditCardPrice // this price is already in cents
+    })
+    return response.status(200).send({ creditCardEnabled })
+  } catch (error) {
+    logger.error(error)
+    return response.status(200).send({ creditCardEnabled: false })
   }
-
-  const creditCardEnabled = await getCreditCardEnabledStatus({
-    lockAddress: Normalizer.ethereumAddress(lockAddress),
-    network,
-    totalPriceInCents,
-  })
-
-  return response.status(200).send({ creditCardEnabled })
 }
 
 /**
