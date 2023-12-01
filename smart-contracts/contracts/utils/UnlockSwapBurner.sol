@@ -7,6 +7,7 @@ import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IPermit2.sol";
 import "../interfaces/IUnlock.sol";
 import "../interfaces/IWETH.sol";
+import "hardhat/console.sol";
 
 library SafeCast160 {
   error UnsafeCast();
@@ -80,7 +81,7 @@ contract UnlockSwapBurner {
     address udtAddress = IUnlock(unlockAddress).udt();
     address wrappedAddress = IUnlock(unlockAddress).weth();
 
-    // get balances before swap
+    // get total balance of token to swap
     uint tokenAmount = getBalance(tokenAddress);
 
     if (tokenAddress == udtAddress) {
@@ -130,6 +131,9 @@ contract UnlockSwapBurner {
 
     // Executes the swap.
     uint amountUDTOut = ISwapRouter(uniswapRouter).exactInput(params);
+    if (amountUDTOut == 0) {
+      revert UDTSwapFailed(uniswapRouter, tokenAddress, tokenAmount);
+    }
 
     // burn the UDT
     bool success = IERC20(udtAddress).transfer(burnAddress, amountUDTOut);
