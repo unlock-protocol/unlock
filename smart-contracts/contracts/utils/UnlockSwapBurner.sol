@@ -7,7 +7,6 @@ import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IPermit2.sol";
 import "../interfaces/IUnlock.sol";
 import "../interfaces/IWETH.sol";
-import "hardhat/console.sol";
 
 library SafeCast160 {
   error UnsafeCast();
@@ -88,6 +87,13 @@ contract UnlockSwapBurner {
       revert UnauthorizedSwap();
     }
 
+    // wrap native tokens
+    if (tokenAddress == address(0)) {
+      IWETH(wrappedAddress).deposit{value: tokenAmount}();
+      tokenAddress = wrappedAddress;
+      tokenAmount = getBalance(tokenAddress);
+    }
+
     // approve ERC20 spending
     if (tokenAddress != address(0)) {
       // Approve the router to spend src ERC20
@@ -95,12 +101,6 @@ contract UnlockSwapBurner {
 
       // approve PERMIT2 to manipulate the token
       IERC20(tokenAddress).approve(permit2, tokenAmount);
-    } else {
-      // wrapped native tokens
-      IWETH(wrappedAddress).deposit{value: tokenAmount}();
-      tokenAddress = wrappedAddress;
-      tokenAmount = getBalance(tokenAddress);
-      console.log(tokenAmount);
     }
 
     // issue PERMIT2 Allowance

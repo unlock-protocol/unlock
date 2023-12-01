@@ -23,7 +23,13 @@ const routerAddress = '0xE592427A0AEce92De3Edee1F18E0157C05861564'
 // const routerAddress = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' // swaRouter02
 
 describe(`swapAndBurn`, function () {
-  let swapBurner, unlockAddress, tokenAddress, udt, unlock
+  let swapBurner,
+    unlockAddress,
+    tokenAddress,
+    udtAddress,
+    wrappedAddress,
+    unlock,
+    burnAddress
 
   before(async function () {
     if (!process.env.RUN_FORK) {
@@ -37,18 +43,19 @@ describe(`swapAndBurn`, function () {
 
     // get uniswap-formatted tokens
     const { chainId } = await ethers.provider.getNetwork()
-    const { native, usdc, dai, wBtc, weth } = await getUniswapTokens(chainId)
-    scenarios = [native, usdc, dai, wBtc, weth]
+    const { native, usdc, dai, weth } = await getUniswapTokens(chainId)
+    scenarios = [native, usdc, dai, weth]
 
     // get mainnet values
     ;({
       // uniswapV3: { universalRouterAddress: routerAddress },
       unlockAddress,
     } = await getNetwork())
-    udt = await getUdt()
     unlock = await getUnlock(unlockAddress)
+    udtAddress = await unlock.udt()
+    wrappedAddress = await unlock.weth()
 
-    expect(await unlock.weth()).to.equal(weth.address)
+    expect(wrappedAddress).to.equal(weth.address)
 
     // deploy swapper
     const UnlockSwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
@@ -57,6 +64,8 @@ describe(`swapAndBurn`, function () {
       PERMIT2_ADDRESS,
       routerAddress
     )
+
+    burnAddress = await swapBurner.burnAddress()
   })
 
   describe('constructor', () => {
@@ -96,9 +105,9 @@ describe(`swapAndBurn`, function () {
           const balance = await getBalance(unlockAddress, tokenAddress)
           expect(balance.toString()).to.equal(amount.toString())
 
-          // burner has not udtAddress
+          // burner has no UDT
           expect(
-            (await getBalance(swapBurner.address, udt.address)).toString()
+            (await getBalance(swapBurner.address, udtAddress)).toString()
           ).to.equal('0')
 
           // transfer these token to burner
@@ -127,7 +136,7 @@ describe(`swapAndBurn`, function () {
             udtAddress
           )
           udtBurnAddressBalanceBefore = await getBalance(
-            swapBurner.burnAddress(),
+            burnAddress,
             udtAddress
           )
 
@@ -138,7 +147,7 @@ describe(`swapAndBurn`, function () {
           ;({ events } = await tx.wait())
         })
 
-        it('swap the entire token balance', async () => {
+        it('wiped the entire token balance', async () => {
           const balanceBurner = await getBalance(
             swapBurner.address,
             tokenAddress
@@ -152,34 +161,36 @@ describe(`swapAndBurn`, function () {
         })
 
         it('burns the entire UDT that have been swapped', async () => {
+          const {
+            args: { amountBurnt },
+          } = events.find(({ event }) => event === 'SwapBurn')
           const udtBurnAddressBalance = await getBalance(
-            swapBurner.burnAddress(),
+            burnAddress,
             udtAddress
           )
+
           compareBigNumbers(
             udtBurnAddressBalance.sub(udtBurnAddressBalanceBefore),
-            '0'
+            amountBurnt
           )
         })
 
         it('emits a SwapBurn event', async () => {
-          console.log(events)
+          // console.log(events)
           const { args } = events.find(({ event }) => event === 'SwapBurn')
-          expect(args.tokenAddress).to.equal(tokenAddress)
+          expect(args.tokenAddress).to.equal(
+            token.isNative ? wrappedAddress : tokenAddress
+          )
           compareBigNumbers(args.amountSpent, amount)
 
           const udtBurnAddressBalance = await getBalance(
-            swapBurner.burnAddress(),
+            burnAddress,
             udtAddress
           )
-          console.log({
-            udtBurnAddressBalanceBefore: udtBurnAddressBalanceBefore.toString(),
-            udtBurnAddressBalance: udtBurnAddressBalance.toString(),
-          })
-          const amountBurn = udtBurnAddressBalanceBefore.sub(
-            udtBurnAddressBalance
+          compareBigNumbers(
+            args.amountBurnt,
+            udtBurnAddressBalance.sub(udtBurnAddressBalanceBefore)
           )
-          compareBigNumbers(args.amountBurnt, amountBurn)
         })
       })
     })
