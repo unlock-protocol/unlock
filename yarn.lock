@@ -19707,9 +19707,9 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     ethers: "npm:5.7.2"
     passport-custom: "npm:1.1.1"
-    prettier: "npm:3.0.0"
+    prettier: "npm:3.1.0"
   peerDependencies:
-    passport: ^0.6.x
+    passport: ^0.6.x || ^0.7.0
   languageName: unknown
   linkType: soft
 
@@ -43453,14 +43453,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"passport@npm:0.6.0":
-  version: 0.6.0
-  resolution: "passport@npm:0.6.0"
+"passport@npm:0.7.0":
+  version: 0.7.0
+  resolution: "passport@npm:0.7.0"
   dependencies:
     passport-strategy: "npm:1.x.x"
     pause: "npm:0.0.1"
     utils-merge: "npm:^1.0.1"
-  checksum: 5051e1d773ac0d802d4d71315f5fee566b8765b9731396b60c1d6822b7983bef31ae2f51af94d973ade94fb040efae0816e736e534b55294d0fbd10efcdf2d36
+  checksum: 0ebd4de8e3cba6731b1fddd09b95b8332526f316afded9c9589ff68751e10001c9f1c007170a516e8c1909f9fafdc378c12feb82820241856775005924735b29
   languageName: node
   linkType: hard
 
@@ -45075,6 +45075,15 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 399292638280988ecd44db6532e908246b7c9468e6f5f571b3835a5206b7f1132cb674c12be430d921474901dc85398429dfd2dc31b282eef9affebd3ce72cef
+  languageName: node
+  linkType: hard
+
+"prettier@npm:3.1.0":
+  version: 3.1.0
+  resolution: "prettier@npm:3.1.0"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: e95e8f93c6b9aea2ac1e86bebe329bee90c8c50d9a23d1f593eba8d7f39b33b3641eb28785001505b6723c47895a5322ad12a2fb855b289cb7bae450ffc34425
   languageName: node
   linkType: hard
 
@@ -53360,7 +53369,7 @@ __metadata:
     "@unlock-protocol/unlock-express": "workspace:^"
     express: "npm:4.18.2"
     express-session: "npm:1.17.3"
-    passport: "npm:0.6.0"
+    passport: "npm:0.7.0"
   languageName: unknown
   linkType: soft
 
