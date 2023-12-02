@@ -19578,7 +19578,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:4.1.0"
     autoprefixer: "npm:10.4.16"
     ethers: "npm:5.7.2"
-    postcss: "npm:8.4.31"
+    postcss: "npm:8.4.32"
     prism-react-renderer: "npm:2.1.0"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -19664,7 +19664,7 @@ __metadata:
     next-seo: "npm:6.1.0"
     node-forge: "npm:1.3.1"
     parse-domain: "npm:7.0.1"
-    postcss: "npm:8.4.31"
+    postcss: "npm:8.4.32"
     postmate: "npm:1.5.2"
     prettier: "npm:3.0.0"
     prop-types: "npm:15.8.1"
@@ -19785,7 +19785,7 @@ __metadata:
     next-transpile-modules: "npm:10.0.1"
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
-    postcss: "npm:8.4.31"
+    postcss: "npm:8.4.32"
     prettier: "npm:3.0.0"
     raw-loader: "npm:4.0.2"
     react: "npm:18.2.0"
@@ -41256,6 +41256,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.7":
+  version: 3.3.7
+  resolution: "nanoid@npm:3.3.7"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: ac1eb60f615b272bccb0e2b9cd933720dad30bf9708424f691b8113826bb91aca7e9d14ef5d9415a6ba15c266b37817256f58d8ce980c82b0ba3185352565679
+  languageName: node
+  linkType: hard
+
 "nanomatch@npm:^1.2.9":
   version: 1.2.13
   resolution: "nanomatch@npm:1.2.13"
@@ -44742,6 +44751,17 @@ __metadata:
     picocolors: "npm:^1.0.0"
     source-map-js: "npm:^1.0.2"
   checksum: 1a6653e72105907377f9d4f2cd341d8d90e3fde823a5ddea1e2237aaa56933ea07853f0f2758c28892a1d70c53bbaca200eb8b80f8ed55f13093003dbec5afa0
+  languageName: node
+  linkType: hard
+
+"postcss@npm:8.4.32":
+  version: 8.4.32
+  resolution: "postcss@npm:8.4.32"
+  dependencies:
+    nanoid: "npm:^3.3.7"
+    picocolors: "npm:^1.0.0"
+    source-map-js: "npm:^1.0.2"
+  checksum: 28084864122f29148e1f632261c408444f5ead0e0b9ea9bd9729d0468818ebe73fe5dc0075acd50c1365dbe639b46a79cba27d355ec857723a24bc9af0f18525
   languageName: node
   linkType: hard
 
