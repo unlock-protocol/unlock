@@ -7,6 +7,7 @@ interface GasSettings {
   maxFeePerGas?: ethers.BigNumber
   maxPriorityFeePerGas?: ethers.BigNumber
   gasPrice?: ethers.BigNumber
+  lastBaseFeePerGas?: ethers.BigNumber
 }
 
 /**
@@ -14,22 +15,30 @@ interface GasSettings {
  * @returns
  */
 export const setMaxFeePerGas = ({
+  gasPrice,
   maxPriorityFeePerGas,
-  maxFeePerGas,
+  lastBaseFeePerGas,
 }: GasSettings): GasSettings => {
-  if (
-    maxPriorityFeePerGas &&
-    maxFeePerGas &&
-    maxPriorityFeePerGas.gt(maxFeePerGas)
-  ) {
+  // If we have EIP1559 numbers
+  if (maxPriorityFeePerGas && lastBaseFeePerGas) {
+    // We just double the current priority fee
+    const ourMaxPriorityFee = maxPriorityFeePerGas?.mul(2)
+    // And we assume the base fee _could_ double
+    const maxFeePerGas = lastBaseFeePerGas.mul(2).add(ourMaxPriorityFee)
+    // TODO: check if this is 10x higher than gasPrice... and if so , just use gasPrice!
+    // This is probably a bug/issue in the API that returns the gas prices
+    if (gasPrice && maxFeePerGas.gt(gasPrice.mul(10))) {
+      return {
+        gasPrice,
+      }
+    }
     return {
-      maxPriorityFeePerGas,
-      maxFeePerGas: maxPriorityFeePerGas,
+      maxPriorityFeePerGas: ourMaxPriorityFee,
+      maxFeePerGas: maxFeePerGas,
     }
   }
   return {
-    maxPriorityFeePerGas,
-    maxFeePerGas,
+    gasPrice,
   }
 }
 
@@ -51,10 +60,10 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
         'gwei'
       )
 
-      return setMaxFeePerGas({
+      return {
         maxFeePerGas,
         maxPriorityFeePerGas,
-      })
+      }
     } catch (error) {
       logger.error(`Could not retrieve fee data from ${network}, ${error}`)
     }
@@ -73,24 +82,26 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   }
 
   if (feedata) {
-    const { gasPrice, maxFeePerGas } = feedata
+    // @ts-expect-error
+    return setMaxFeePerGas(feedata)
+  }
 
-    // We double to increase speed of execution
-    // We may end up paying *more* but we get mined earlier
-    if (maxFeePerGas) {
-      return setMaxFeePerGas({
-        maxPriorityFeePerGas: maxFeePerGas?.mul(2),
-        maxFeePerGas: maxFeePerGas,
-      })
+  try {
+    const gasPrice = await provider.getGasPrice()
+    if (gasPrice) {
+      return {
+        gasPrice,
+      }
     }
-    return {
-      gasPrice: gasPrice?.mul(2),
-    }
-  } else {
-    logger.error(`Fee data unavailable from ${network}`)
+  } catch (error) {
+    logger.error(`Could not retrieve gas price from ${network}, ${error}`)
   }
 
   // fallback to 40 gwei if no feeData
+  logger.info(
+    `Fee data or gas price unavailable from ${network}. Using default of 40 gwei`
+  )
+
   return {
     gasPrice: ethers.BigNumber.from(40000000000),
   }
