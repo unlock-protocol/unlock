@@ -21,20 +21,20 @@ export const setMaxFeePerGas = ({
 }: GasSettings): GasSettings => {
   // If we have EIP1559 numbers
   if (maxPriorityFeePerGas && lastBaseFeePerGas) {
-    // We just double the current priority fee
-    const ourMaxPriorityFee = maxPriorityFeePerGas?.mul(2)
+    // If maxPriorityFeePerGas is MUCH larger than GasPrice, then we just use GasPrice
+    let ourMaxPriorityFee
+    if (gasPrice && maxPriorityFeePerGas.gt(gasPrice)) {
+      ourMaxPriorityFee = gasPrice
+    } else {
+      ourMaxPriorityFee = maxPriorityFeePerGas.mul(2)
+    }
+
     // And we assume the base fee _could_ double
     const maxFeePerGas = lastBaseFeePerGas.mul(2).add(ourMaxPriorityFee)
-    // TODO: check if this is 10x higher than gasPrice... and if so , just use gasPrice!
-    // This is probably a bug/issue in the API that returns the gas prices
-    if (gasPrice && maxFeePerGas.gt(gasPrice.mul(10))) {
-      return {
-        gasPrice,
-      }
-    }
     return {
       maxPriorityFeePerGas: ourMaxPriorityFee,
       maxFeePerGas: maxFeePerGas,
+      gasPrice,
     }
   }
   return {
