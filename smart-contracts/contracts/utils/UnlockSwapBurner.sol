@@ -41,7 +41,6 @@ contract UnlockSwapBurner {
   // errors
   error UDTSwapFailed(address uniswapRouter, address tokenIn, uint amount);
   error InsufficientBalance();
-  error UnautorizedRouter(address routerAddress);
   error UnauthorizedSwap();
 
   /**
