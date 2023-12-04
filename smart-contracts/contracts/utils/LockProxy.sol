@@ -1,13 +1,12 @@
 // Sources flattened with hardhat v2.18.3 https://hardhat.org
-
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.21;
 
 // File @openzeppelin/contracts/interfaces/draft-IERC1822.sol@v4.9.3
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.5.0) (interfaces/draft-IERC1822.sol)
 
-pragma solidity ^0.8.0;
 
 /**
  * @dev ERC1822: Universal Upgradeable Proxy Standard (UUPS) documents a method for upgradeability through a simplified
@@ -31,7 +30,7 @@ interface IERC1822Proxiable {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (interfaces/IERC1967.sol)
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev ERC-1967: Proxy Storage Slots. This interface contains the events defined in the ERC.
@@ -61,7 +60,7 @@ interface IERC1967 {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (proxy/beacon/IBeacon.sol)
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev This is the interface that {BeaconProxy} expects of its beacon.
@@ -81,7 +80,7 @@ interface IBeacon {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Address.sol)
 
-pragma solidity ^0.8.1;
+
 
 /**
  * @dev Collection of functions related to the address type
@@ -330,7 +329,7 @@ library Address {
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/StorageSlot.sol)
 // This file was procedurally generated from scripts/generate/templates/StorageSlot.js.
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev Library for reading and writing primitive types to specific storage slots.
@@ -471,7 +470,7 @@ library StorageSlot {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (proxy/ERC1967/ERC1967Upgrade.sol)
 
-pragma solidity ^0.8.2;
+
 
 
 
@@ -630,7 +629,7 @@ abstract contract ERC1967Upgrade is IERC1967 {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.6.0) (proxy/Proxy.sol)
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev This abstract contract provides a fallback function that delegates all calls to another contract using the EVM
@@ -720,7 +719,7 @@ abstract contract Proxy {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.7.0) (proxy/ERC1967/ERC1967Proxy.sol)
 
-pragma solidity ^0.8.0;
+
 
 
 /**
@@ -754,7 +753,7 @@ contract ERC1967Proxy is Proxy, ERC1967Upgrade {
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (proxy/transparent/TransparentUpgradeableProxy.sol)
 
-pragma solidity ^0.8.0;
+
 
 /**
  * @dev Interface for {TransparentUpgradeableProxy}. In order to implement transparency, {TransparentUpgradeableProxy}

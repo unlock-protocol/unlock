@@ -28,7 +28,7 @@ pragma solidity ^0.8.21;
  */
 
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
-import "./utils/LockProxy.sol";
+import {LockProxy} from "./utils/LockProxy.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
@@ -325,7 +325,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert Unlock__MISSING_TEMPLATE();
     }
 
-    ILockProxy proxy = ILockProxy(lockAddress);
+    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(lockAddress);
 
     proxyAdmin.upgrade(proxy, impl);
 
