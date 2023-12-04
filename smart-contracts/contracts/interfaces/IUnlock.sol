@@ -321,8 +321,9 @@ interface IUnlock {
    * @notice This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
    * @param token the address of the token (zero address for native) to swap and burn
    * @param amount the amount of tokens to swap and burn
+   * @param poolFee the poolFee of the token <> WETH/Wrapped Native asset to  use for the swap
    */
-  function sendToSwapBurner(address token, uint256 amount) external;
+  function swapAndBurn(address token, uint256 amount, uint24 poolFee) external;
 
   /**
    * Set the UDT Swap and Burn contract address
