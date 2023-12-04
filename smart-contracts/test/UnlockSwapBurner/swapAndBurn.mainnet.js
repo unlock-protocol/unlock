@@ -89,7 +89,7 @@ describe(`swapAndBurn`, function () {
 
         before(async () => {
           amount = ethers.utils.parseUnits(
-            token.isNative ? '1' : '50',
+            token.isNative || token.address == wrappedAddress ? '1' : '50',
             token.decimals
           )
           tokenAddress = token.address || ADDRESS_ZERO
