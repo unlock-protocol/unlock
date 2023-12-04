@@ -122,7 +122,7 @@ contract UnlockSwapBurner {
         ? defaultPath
         : abi.encodePacked(tokenAddress, poolFee, defaultPath),
       recipient: address(this),
-      deadline: block.timestamp,
+      deadline: block.timestamp + 60, // expires after 1min
       amountIn: tokenAmount,
       amountOutMinimum: 0
     });
