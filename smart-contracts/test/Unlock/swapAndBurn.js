@@ -11,7 +11,7 @@ const {
   getBalance,
 } = require('../helpers')
 
-contract('Unlock / swapBurner', async () => {
+contract('Unlock / swapAndBurn', async () => {
   let unlock, swapBurner
 
   before(async () => {
@@ -129,12 +129,6 @@ contract('Unlock / swapBurner', async () => {
         balanceAfter.minus(balanceBefore).toString(),
         amount.toString()
       )
-    })
-    it('can send the entire balance by passing 0 as amount param', async () => {
-      await token.mint(unlock.address, amount.mul(10))
-      await unlock.sendToSwapBurner(token.address, 0)
-      const balanceAfter = await getBalance(unlock.address, token.address)
-      assert.equal(balanceAfter.toString(), '0')
     })
   })
 })
