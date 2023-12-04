@@ -678,11 +678,10 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   /**
    * Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the
-   * contract can later be swapped for UDT and will remain in the burner contract in order to
-   * decrease UDT suplt in circulation.
-   * @notice This function can be called by anyone (not only the contract owner)
-   * @param token the address of the tokem (zero address for native)
-   * @param amount the amount of tokens to send
+   * contract are then swapped for UDT and UDT itself will be sent to a burner address.
+   * @notice This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
+   * @param token the address of the token (zero address for native) to swap and burn
+   * @param amount the amount of tokens to swap and burn
    */
   function swapAndBurn(address token, uint256 amount, uint24 poolFee) public {
     if (token == udt) {
