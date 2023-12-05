@@ -95,7 +95,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@types/cookie-parser": "1.4.5",
+    "@types/cookie-parser": "1.4.6",
     "@types/cors": "2.8.15",
     "@types/geoip-country": "4.0.1",
     "@types/isomorphic-fetch": "0.0.38",
