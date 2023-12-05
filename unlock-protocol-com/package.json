@@ -7,7 +7,7 @@
     "@headlessui/react": "1.7.17",
     "@radix-ui/react-avatar": "1.0.4",
     "@tanstack/react-query": "4.36.1",
-    "@testing-library/react": "14.0.0",
+    "@testing-library/react": "14.1.2",
     "@types/next": "8.0.7",
     "@types/node": "20.10.1",
     "@types/react": "18.0.32",
