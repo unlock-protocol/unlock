@@ -80,11 +80,19 @@ export const useCrossChainRoutes = ({
       }
 
       // @ts-expect-error For some reason Typescript does not like that the type of the accumulator and the currnet value are different
-      return routes.reduce<CrossChainRoute>(
-        // @ts-expect-error For some reason Typescript does not like that the type of the accumulator and the currnet value are different
-        reduce,
-        [] as CrossChainRoute[]
-      )
+      return routes
+        .map((route) => {
+          delete route.tx.gasLimit
+          delete route.tx.maxFeePerGas
+          delete route.tx.maxPriorityFeePerGas
+          delete route.tx.gasPrice
+          return route
+        })
+        .reduce<CrossChainRoute>(
+          // @ts-expect-error For some reason Typescript does not like that the type of the accumulator and the currnet value are different
+          reduce,
+          [] as CrossChainRoute[]
+        )
     },
     {
       enabled,

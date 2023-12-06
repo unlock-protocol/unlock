@@ -370,12 +370,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {isLoadingMoreRoutes && !enableClaim && (
-              <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
-                <LoadingIcon size={16} /> Loading more payment options...
-              </div>
-            )}
-
             {!isUniswapRoutesLoading &&
               !enableClaim &&
               uniswapRoutes?.map((route, index) => {
@@ -474,6 +468,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   </button>
                 )
               })}
+
+            {isLoadingMoreRoutes && !enableClaim && (
+              <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
+                <LoadingIcon size={16} /> Loading more payment options...
+              </div>
+            )}
+
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">
