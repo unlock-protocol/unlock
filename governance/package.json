@@ -17,7 +17,7 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "eslint": "8.54.0",
     "fs-extra": "11.1.1",
-    "hardhat": "2.18.3",
+    "hardhat": "2.19.2",
     "solhint": "4.0.0"
   },
   "scripts": {
