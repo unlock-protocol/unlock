@@ -69,6 +69,8 @@ To set up a network for deployment, change `networks.js` to add your networks an
 
 We use the `DEPLOYER_PRIVATE_KEY` environment variable to interact with contracts. Please set it.
 
+======== Move to Goevrnance?
+
 ### Run the UDT contract upgrade
 
 Once your network are setup, you can run the UDT contract upgrade

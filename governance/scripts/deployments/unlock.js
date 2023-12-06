@@ -13,6 +13,7 @@ async function main({ unlockVersion } = {}) {
   if (!unlockVersion) {
     throw 'Need to set --unlock-version'
   }
+  console.log(Unlock.interface)
 
   console.log(`Setting up version ${unlockVersion} from package`)
 
