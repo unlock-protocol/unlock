@@ -2,6 +2,8 @@
 
 **This folder contains versions of Unlock protocol contracts that are currently UNDER DEVELOPMENT. For applications, please refer to the code in [@unlock-protocol/contracts](../packages/contracts) or directly use the npm package [`@unlock-protocol/contracts`](https://npmjs.com/package/@unlock-protocol/contracts)**
 
+You can also use the `../governance` folder to deploy Unlock on new networks and/or perform upgrades of existing networks.
+
 ---
 
 See [our docs](https://docs.unlock-protocol.com/developers/smart-contracts-architecture) for an overview of the smart contracts and [the smart-contract-extensions repo](https://github.com/unlock-protocol/unlock/tree/master/smart-contract-extensions) for integration examples. The deployment process itself is [on our wiki](https://github.com/unlock-protocol/unlock/wiki/Releasing-a-new-version-of-the-contracts).
