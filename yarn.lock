@@ -17676,10 +17676,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geoip-country@npm:4.0.1":
-  version: 4.0.1
-  resolution: "@types/geoip-country@npm:4.0.1"
-  checksum: 0a9cba8fbca1983fe0efd6bdde4fa41342833840df4848e6d84cd394daaff26b377e5a6e73562498b65746778273172bd84254f38009a710e32285daacf9563c
+"@types/geoip-country@npm:4.0.2":
+  version: 4.0.2
+  resolution: "@types/geoip-country@npm:4.0.2"
+  checksum: bdabdea429d1fba8f93cab50a3f601ba4ddb55d24eaa00f04967e6261c6540d42104ef7b8fed314cf65f4ae466f858b8880c454beb8742abe299d2f02a035e19
   languageName: node
   linkType: hard
 
@@ -19680,7 +19680,7 @@ __metadata:
     "@types/connect-timeout": "npm:0.0.39"
     "@types/cookie-parser": "npm:1.4.6"
     "@types/cors": "npm:2.8.15"
-    "@types/geoip-country": "npm:4.0.1"
+    "@types/geoip-country": "npm:4.0.2"
     "@types/isomorphic-fetch": "npm:0.0.39"
     "@types/multer": "npm:1.4.11"
     "@types/multer-s3": "npm:3.0.3"
