@@ -103,7 +103,7 @@
     "@types/multer-s3": "3.0.3",
     "@types/nock": "10.0.3",
     "@types/node": "20.8.10",
-    "@types/node-cron": "3.0.10",
+    "@types/node-cron": "3.0.11",
     "@types/request-promise-native": "1.0.20",
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.16",
