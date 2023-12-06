@@ -19455,7 +19455,7 @@ __metadata:
     run-script-os: "npm:1.1.6"
     satori: "npm:0.9.1"
     sequelize: "npm:6.32.1"
-    sequelize-cli: "npm:6.6.1"
+    sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.1.4"
     stripe: "npm:12.8.0"
     supertest: "npm:6.3.3"
@@ -49073,9 +49073,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sequelize-cli@npm:6.6.1":
-  version: 6.6.1
-  resolution: "sequelize-cli@npm:6.6.1"
+"sequelize-cli@npm:6.6.2":
+  version: 6.6.2
+  resolution: "sequelize-cli@npm:6.6.2"
   dependencies:
     cli-color: "npm:^2.0.3"
     fs-extra: "npm:^9.1.0"
@@ -49087,7 +49087,7 @@ __metadata:
   bin:
     sequelize: lib/sequelize
     sequelize-cli: lib/sequelize
-  checksum: bce80ec04d8381736bc36b7fb85d2a83866b516e74eec50d6fa0f9f40d5123ed1fb51064d8a7507e169a015b98383149d964630c129265f9f22231a2b679cfd0
+  checksum: eb74375de921fb41be7d6ad707084c58f33651202c2bde80465ecb1761d7cc662b2b4ac5100629d467328c738695bd071f58feda0e352f3afac10ad2a14747ba
   languageName: node
   linkType: hard
 
