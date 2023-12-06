@@ -12,13 +12,14 @@ async function main({ unlockVersion } = {}) {
   // need to fetch previous unlock versions
   if (unlockVersion) {
     console.log(`Setting up version ${unlockVersion} from package`)
-    Unlock = await copyAndBuildContractsAtVersion(__dirname, [
-      { contractName: 'Unlock', version: unlockVersion },
-    ])
+    Unlock = (
+      await copyAndBuildContractsAtVersion(__dirname, [
+        { contractName: 'Unlock', version: unlockVersion },
+      ])
+    )[0]
   } else {
     throw 'Need to set --unlock-version'
   }
-  console.log(Unlock.interface)
 
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
