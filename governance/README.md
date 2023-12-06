@@ -51,7 +51,7 @@ When using an async function to parse a proposal, you can pass params to the fun
 **CLI call**
 
 ```sh
-RUN_FORK=1 yarn hardhat gov --gov-address 0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94 \
+RUN_FORK=1 yarn hardhat gov --gov-address 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 \
   --proposal proposals/my-proposal.js
   0x000000 1000
 ```
@@ -89,7 +89,7 @@ check [`./proposals/002-set-protocol-fee.js`](./proposals/002-set-protocol-fee.j
 2. Test you proposal locally on a mainnet fork
 
 ```shell
-RUN_FORK=1 yarn hardhat gov --gov-address 0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94 \
+RUN_FORK=1 yarn hardhat gov --gov-address 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 \
   --proposal proposals/<your-proposal>.js
 ```
 
