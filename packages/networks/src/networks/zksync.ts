@@ -1,4 +1,4 @@
-import { HookType, NetworkConfig } from '@unlock-protocol/types'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 export const zksync: NetworkConfig = {
   blockScan: {
@@ -23,86 +23,59 @@ export const zksync: NetworkConfig = {
   id: 324,
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  multisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
-  name: 'Polygon',
+  multisig: 'TK',
+  name: 'zkSync Era',
   nativeCurrency: {
-    coingecko: 'matic-network',
+    coingecko: 'zksync-eth',
     decimals: 18,
-    name: 'Matic',
-    symbol: 'MATIC',
-    wrapped: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+    name: 'zkSync Ether',
+    symbol: 'ETH',
   },
-  opensea: {
-    collectionUrl: (lockAddress: string) =>
-      `https://opensea.io/assets/matic/${lockAddress}`,
-    tokenUrl: (lockAddress: string, tokenId: string) =>
-      `https://opensea.io/assets/matic/${lockAddress}/${tokenId}`,
-  },
-  previousDeploys: [
-    {
-      startBlock: 15714206,
-      unlockAddress: '0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863',
-    },
-  ],
-  provider: 'https://rpc.unlock-protocol.com/137',
+  previousDeploys: [],
+  provider: 'https://rpc.unlock-protocol.com/324',
   publicLockVersionToDeploy: 13,
-  publicProvider: 'https://polygon-rpc.com/',
-  startBlock: 21986688,
+  publicProvider: 'https://mainnet.era.zksync.io',
+  startBlock: 0,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
+    endpoint: '',
+    endpointV2: '',
     networkName: 'matic',
   },
-  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   tokens: [
     {
-      address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+      address: '0x000000000000000000000000000000000000800A',
       decimals: 18,
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
     {
-      address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
+      address: '0x4B9eb6c0b6ea15176BBF62841C6B2A8a398cb656',
       decimals: 18,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
 
     {
-      address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
+      address: '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C',
       decimals: 6,
       name: 'Tether USD',
       symbol: 'USDT',
     },
     {
-      address: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
+      address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
       decimals: 6,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
-      address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
+      address: '0xBBeB516fb02a01611cBBE0453Fe3c580D7281011',
       decimals: 8,
       name: 'Wrapped BTC',
       symbol: 'WBTC',
     },
   ],
-  uniswapV3: {
-    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
-    positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
-    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
-    universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
-  },
-  universalCard: {
-    cardPurchaserAddress: '0xAB355a589CFbBA7a21b91E5B6063bF822dCc0016',
-    stripeDestinationCurrency: 'usdc',
-    stripeDestinationNetwork: 'polygon',
-  },
-  unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
-  unlockDiscountToken: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
-  url: 'https://polygon.technology/',
+  unlockAddress: '',
+  url: 'https://zksync.io/',
 }
 
-export default polygon
+export default zksync

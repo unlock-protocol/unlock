@@ -18,6 +18,7 @@ async function main({ unlockVersion } = {}) {
   } else {
     throw 'Need to set --unlock-version'
   }
+  console.log(Unlock.interface)
 
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
