@@ -17676,10 +17676,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/geoip-country@npm:4.0.1":
-  version: 4.0.1
-  resolution: "@types/geoip-country@npm:4.0.1"
-  checksum: 0a9cba8fbca1983fe0efd6bdde4fa41342833840df4848e6d84cd394daaff26b377e5a6e73562498b65746778273172bd84254f38009a710e32285daacf9563c
+"@types/geoip-country@npm:4.0.2":
+  version: 4.0.2
+  resolution: "@types/geoip-country@npm:4.0.2"
+  checksum: bdabdea429d1fba8f93cab50a3f601ba4ddb55d24eaa00f04967e6261c6540d42104ef7b8fed314cf65f4ae466f858b8880c454beb8742abe299d2f02a035e19
   languageName: node
   linkType: hard
 
@@ -19558,7 +19558,7 @@ __metadata:
     "@types/connect-timeout": "npm:0.0.38"
     "@types/cookie-parser": "npm:1.4.6"
     "@types/cors": "npm:2.8.15"
-    "@types/geoip-country": "npm:4.0.1"
+    "@types/geoip-country": "npm:4.0.2"
     "@types/isomorphic-fetch": "npm:0.0.39"
     "@types/multer": "npm:1.4.9"
     "@types/multer-s3": "npm:3.0.3"
@@ -53212,11 +53212,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>":
   version: 5.3.2
-  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 43c3346528a1b410b9ee7f218d709ce8d1336eb8e47b0f8bb43954f98ed43fd11e35de398c9a5f4a085b6889c89782362789b00db7aac862bd09d083058a01a2
+  checksum: 1b45cdfb577a78ae7a9a9d0b77a7b772142cb98ba05e4e5aefba7044a028ded885bcecef63166407a5986645cea816fe4986894336aacd5e791796ea79a6a7ed
   languageName: node
   linkType: hard
 

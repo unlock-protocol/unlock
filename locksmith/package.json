@@ -97,7 +97,7 @@
   "devDependencies": {
     "@types/cookie-parser": "1.4.6",
     "@types/cors": "2.8.15",
-    "@types/geoip-country": "4.0.1",
+    "@types/geoip-country": "4.0.2",
     "@types/isomorphic-fetch": "0.0.39",
     "@types/multer": "1.4.9",
     "@types/multer-s3": "3.0.3",
