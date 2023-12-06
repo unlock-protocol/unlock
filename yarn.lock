@@ -18061,10 +18061,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/random-words@npm:1.1.3":
-  version: 1.1.3
-  resolution: "@types/random-words@npm:1.1.3"
-  checksum: 6a6f26c69554f4301e0ecf4b826ffcb3d68d1484c6b84366d7d6c0f043cb052bc2814cc44314f50b333b4ccf2648b804c92b420880c1e4a8ebd2caa75870a717
+"@types/random-words@npm:1.1.4":
+  version: 1.1.4
+  resolution: "@types/random-words@npm:1.1.4"
+  checksum: c027e08d1165dc427bb1c98f098a872be12f06305a423175beb35c17c743e06fbe0e1e7bdb637fadbf798a86edc6cc463c3b2361606dc114aec457ee1ce06959
   languageName: node
   linkType: hard
 
@@ -19403,7 +19403,7 @@ __metadata:
     "@types/nock": "npm:10.0.3"
     "@types/node": "npm:20.8.10"
     "@types/node-cron": "npm:3.0.10"
-    "@types/random-words": "npm:1.1.3"
+    "@types/random-words": "npm:1.1.4"
     "@types/request-promise-native": "npm:1.0.20"
     "@types/stripe": "npm:8.0.416"
     "@types/supertest": "npm:2.0.15"
