@@ -5,6 +5,9 @@ require('@nomicfoundation/hardhat-ethers')
 require('@nomicfoundation/hardhat-verify')
 require('@openzeppelin/hardhat-upgrades')
 
+require('@matterlabs/hardhat-zksync-deploy')
+require('@matterlabs/hardhat-zksync-solc')
+
 // import helpers
 const {
   etherscan,
@@ -51,6 +54,7 @@ require('./tasks/set')
 require('./tasks/unlock')
 require('./tasks/lock')
 
+console.log(networks)
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
@@ -62,5 +66,9 @@ module.exports = {
   },
   sourcify: {
     enabled: true,
+  },
+  zksolc: {
+    version: 'latest',
+    settings: {},
   },
 }
