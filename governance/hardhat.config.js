@@ -54,7 +54,6 @@ require('./tasks/set')
 require('./tasks/unlock')
 require('./tasks/lock')
 
-console.log(networks)
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
