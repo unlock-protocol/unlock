@@ -34,7 +34,6 @@ export const setMaxFeePerGas = ({
     return {
       maxPriorityFeePerGas: ourMaxPriorityFee,
       maxFeePerGas: maxFeePerGas,
-      gasPrice,
     }
   }
   return {
