@@ -17770,10 +17770,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mocha@npm:10.0.3":
-  version: 10.0.3
-  resolution: "@types/mocha@npm:10.0.3"
-  checksum: 31d44b6a45e20dba3f349a62b0f6fc23b054155e7b7e558e1be76b1bc5e91a6902062fdd7b9167beeed7b0083d351bd2b94352a677bf1a03b4d42c767497213f
+"@types/mocha@npm:10.0.6":
+  version: 10.0.6
+  resolution: "@types/mocha@npm:10.0.6"
+  checksum: fc73626e81e89c32d06b7ff9b72c4177b46d579cdd932f796614adc026852d84cb849d743473ba572cb4d9ea6d8c04e3749552d326c26495ec1c4b46e6e0a0c0
   languageName: node
   linkType: hard
 
@@ -19356,7 +19356,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@types/chai": "npm:4.3.11"
     "@types/fs-extra": "npm:11.0.3"
-    "@types/mocha": "npm:10.0.3"
+    "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.10.1"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
@@ -53035,11 +53035,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>":
   version: 5.3.2
-  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 43c3346528a1b410b9ee7f218d709ce8d1336eb8e47b0f8bb43954f98ed43fd11e35de398c9a5f4a085b6889c89782362789b00db7aac862bd09d083058a01a2
+  checksum: 1b45cdfb577a78ae7a9a9d0b77a7b772142cb98ba05e4e5aefba7044a028ded885bcecef63166407a5986645cea816fe4986894336aacd5e791796ea79a6a7ed
   languageName: node
   linkType: hard
 
