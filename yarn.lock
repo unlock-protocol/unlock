@@ -18111,10 +18111,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-gtm-module@npm:2.0.2":
-  version: 2.0.2
-  resolution: "@types/react-gtm-module@npm:2.0.2"
-  checksum: c04ebeae214e43fefdf2821719b601b70ef4b9c86d5d598b238f479979cb18aa48e52870cc24fab0a39fc4afe615ba1c89da77d0e9104f8e4440d7c5ac885d2c
+"@types/react-gtm-module@npm:2.0.3":
+  version: 2.0.3
+  resolution: "@types/react-gtm-module@npm:2.0.3"
+  checksum: b4b892c9efe93f6f624a42ffe5de37ef7615139191eccc127f7dc2006a70b0540aacb0dc882e3452c344498fdc7f2d4eafc53fe3a33696c1e60fc6852ac650f5
   languageName: node
   linkType: hard
 
@@ -19692,7 +19692,7 @@ __metadata:
     "@types/qrcode.react": "npm:1.0.4"
     "@types/react": "npm:18.2.0"
     "@types/react-google-recaptcha": "npm:2.1.7"
-    "@types/react-gtm-module": "npm:2.0.2"
+    "@types/react-gtm-module": "npm:2.0.3"
     "@uniswap/sdk-core": "npm:4.0.9"
     "@uniswap/smart-order-router": "npm:3.17.2"
     "@unlock-protocol/core": "workspace:./packages/core"
