@@ -17973,12 +17973,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/multer@npm:1.4.9":
-  version: 1.4.9
-  resolution: "@types/multer@npm:1.4.9"
+"@types/multer@npm:1.4.11":
+  version: 1.4.11
+  resolution: "@types/multer@npm:1.4.11"
   dependencies:
     "@types/express": "npm:*"
-  checksum: 57479183efade065fc311f2a2cd56cc0e96488eb0a6565ca9f12eae60f18adc310861792d7b81daf21d777ab5bd0671e90588924037b231ce7adf1aadf980e64
+  checksum: 5abbc9a8b0d7bb817a52429c52f052152ebe2fb212e7138359c0c0b9207486ef7b1e54f65915c968300a0874cee546dbfc850415584fc9d14eff2b27bb926e7f
   languageName: node
   linkType: hard
 
@@ -19560,7 +19560,7 @@ __metadata:
     "@types/cors": "npm:2.8.15"
     "@types/geoip-country": "npm:4.0.1"
     "@types/isomorphic-fetch": "npm:0.0.39"
-    "@types/multer": "npm:1.4.9"
+    "@types/multer": "npm:1.4.11"
     "@types/multer-s3": "npm:3.0.3"
     "@types/nock": "npm:10.0.3"
     "@types/node": "npm:20.8.10"
@@ -53212,11 +53212,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>":
   version: 5.3.2
-  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 43c3346528a1b410b9ee7f218d709ce8d1336eb8e47b0f8bb43954f98ed43fd11e35de398c9a5f4a085b6889c89782362789b00db7aac862bd09d083058a01a2
+  checksum: 1b45cdfb577a78ae7a9a9d0b77a7b772142cb98ba05e4e5aefba7044a028ded885bcecef63166407a5986645cea816fe4986894336aacd5e791796ea79a6a7ed
   languageName: node
   linkType: hard
 
