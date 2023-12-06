@@ -17853,10 +17853,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:3.0.10":
-  version: 3.0.10
-  resolution: "@types/node-cron@npm:3.0.10"
-  checksum: d1e7618208a17130ac0f134b21db3cb0185a9a8112c3cc4d5dc9c1deb154c41e711d38a475c2c39b8823c738b438623bf4a84bdcb9a507e76bdccb6fed44a8b2
+"@types/node-cron@npm:3.0.11":
+  version: 3.0.11
+  resolution: "@types/node-cron@npm:3.0.11"
+  checksum: a73f69bcca52a5f3b1671cfb00a8e4a1d150d0aef36a611564a2f94e66b6981bade577e267ceeeca6fcee241768902d55eb8cf3a81f9ef4ed767a23112fdb16d
   languageName: node
   linkType: hard
 
@@ -19402,7 +19402,7 @@ __metadata:
     "@types/multer-s3": "npm:3.0.3"
     "@types/nock": "npm:10.0.3"
     "@types/node": "npm:20.8.10"
-    "@types/node-cron": "npm:3.0.10"
+    "@types/node-cron": "npm:3.0.11"
     "@types/random-words": "npm:1.1.4"
     "@types/request-promise-native": "npm:1.0.20"
     "@types/stripe": "npm:8.0.416"
@@ -53035,11 +53035,11 @@ __metadata:
 
 "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>":
   version: 5.3.2
-  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=29ae49"
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#optional!builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 43c3346528a1b410b9ee7f218d709ce8d1336eb8e47b0f8bb43954f98ed43fd11e35de398c9a5f4a085b6889c89782362789b00db7aac862bd09d083058a01a2
+  checksum: 1b45cdfb577a78ae7a9a9d0b77a7b772142cb98ba05e4e5aefba7044a028ded885bcecef63166407a5986645cea816fe4986894336aacd5e791796ea79a6a7ed
   languageName: node
   linkType: hard
 
