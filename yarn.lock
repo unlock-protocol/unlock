@@ -19243,7 +19243,7 @@ __metadata:
     tsup: "npm:7.2.0"
     tsx: "npm:3.14.0"
     typescript: "npm:5.2.2"
-    vite: "npm:4.4.8"
+    vite: "npm:4.4.12"
     vite-plugin-svgr: "npm:3.3.0"
     vite-tsconfig-paths: "npm:4.2.1"
   peerDependencies:
@@ -19498,7 +19498,7 @@ __metadata:
     next: "npm:13.5.6"
     prettier: "npm:3.1.0"
     typescript: "npm:5.3.2"
-    vite: "npm:4.5.0"
+    vite: "npm:4.5.1"
     vite-plugin-node-polyfills: "npm:0.17.0"
   languageName: unknown
   linkType: soft
@@ -19656,7 +19656,7 @@ __metadata:
     tsx: "npm:3.14.0"
     typescript: "npm:5.2.2"
     url-loader: "npm:4.1.1"
-    vite: "npm:4.5.0"
+    vite: "npm:4.5.1"
     vite-plugin-node-polyfills: "npm:0.15.0"
     vite-plugin-svgr: "npm:3.3.0"
     vite-tsconfig-paths: "npm:4.2.1"
@@ -54454,6 +54454,46 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vite@npm:4.4.12":
+  version: 4.4.12
+  resolution: "vite@npm:4.4.12"
+  dependencies:
+    esbuild: "npm:^0.18.10"
+    fsevents: "npm:~2.3.2"
+    postcss: "npm:^8.4.27"
+    rollup: "npm:^3.27.1"
+  peerDependencies:
+    "@types/node": ">= 14"
+    less: "*"
+    lightningcss: ^1.21.0
+    sass: "*"
+    stylus: "*"
+    sugarss: "*"
+    terser: ^5.4.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  peerDependenciesMeta:
+    "@types/node":
+      optional: true
+    less:
+      optional: true
+    lightningcss:
+      optional: true
+    sass:
+      optional: true
+    stylus:
+      optional: true
+    sugarss:
+      optional: true
+    terser:
+      optional: true
+  bin:
+    vite: bin/vite.js
+  checksum: 5f44dc16c1e66ff5fe003403f2d74d9306682181981cdbfe2ef62a4497cc740c3888dedb028b7d35c1d2a44a47598cf3cc145988e80cd5d44d200d2d25e30600
+  languageName: node
+  linkType: hard
+
 "vite@npm:4.4.7":
   version: 4.4.7
   resolution: "vite@npm:4.4.7"
@@ -54494,49 +54534,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.4.8":
-  version: 4.4.8
-  resolution: "vite@npm:4.4.8"
-  dependencies:
-    esbuild: "npm:^0.18.10"
-    fsevents: "npm:~2.3.2"
-    postcss: "npm:^8.4.26"
-    rollup: "npm:^3.25.2"
-  peerDependencies:
-    "@types/node": ">= 14"
-    less: "*"
-    lightningcss: ^1.21.0
-    sass: "*"
-    stylus: "*"
-    sugarss: "*"
-    terser: ^5.4.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 4d1319af9f02cb60f0e0a3db0f025ef42ae82da7587c999e8938c31b7ae960667215f18ad65b2cf20f85e9c8371ae50fae370232dc083e517aae571235e144be
-  languageName: node
-  linkType: hard
-
-"vite@npm:4.5.0":
-  version: 4.5.0
-  resolution: "vite@npm:4.5.0"
+"vite@npm:4.5.1":
+  version: 4.5.1
+  resolution: "vite@npm:4.5.1"
   dependencies:
     esbuild: "npm:^0.18.10"
     fsevents: "npm:~2.3.2"
@@ -54570,7 +54570,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: b262ea4880ba7de8a77b0a665c771561ae3cb7f0d6c5b90e65298039755192550bf90cb96a2910d564506e2d499aa20e9becd330b835c34d414249083ac6e40c
+  checksum: 2ea9c030a5718ca0adaaa0ecc54402a725cff59131cf80bc84d0237f59c98168803ee59d23e697b98b1184be3af6c6edc2e81517f769c62159f11531b3341a4e
   languageName: node
   linkType: hard
 
