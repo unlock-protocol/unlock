@@ -1,5 +1,9 @@
 # Changes
 
+# 0.40.2
+
+- claim now supports a `referrer` param
+
 # 0.40.1
 
 - adding missing ABI for locksmiths
