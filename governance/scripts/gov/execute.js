@@ -44,7 +44,6 @@ async function main({ proposal, govAddress }) {
         )} to eta ${new Date(eta * 1000)}`
       )
       if (currentTime < eta) {
-        const hexNum = ethers.BigNumber.from(eta + 1).toHexString(16)
         await network.provider.request({
           method: 'evm_setNextBlockTimestamp',
           params: [eta.add(1).toNumber()],
