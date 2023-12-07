@@ -6,7 +6,6 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.9",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
-    "@openzeppelin/test-helpers": "0.5.16",
     "@safe-global/safe-core-sdk": "3.3.5",
     "@safe-global/safe-ethers-lib": "1.9.3",
     "@safe-global/safe-service-client": "2.0.3",

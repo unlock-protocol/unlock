@@ -1,5 +1,4 @@
-const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
+const { ethers, network } = require('hardhat')
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 
 const {
@@ -36,14 +35,19 @@ async function main({ proposal, govAddress }) {
         return
       }
     } else {
-      const currentTime = (await time.latest()).toNumber()
+      const { timestamp: currentTime } = await ethers.provider.getBlock(
+        'latest'
+      )
       console.log(
         `GOV EXEC > : increasing currentTime ${new Date(
           currentTime * 1000
         )} to eta ${new Date(eta * 1000)}`
       )
       if (currentTime < eta) {
-        await time.increaseTo(eta + 1)
+        await network.provider.request({
+          method: 'evm_setNextBlockTimestamp',
+          params: [eta.add(1).toNumber()],
+        })
       }
       state = await getProposalState(proposalId, govAddress)
     }
