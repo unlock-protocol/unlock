@@ -188,7 +188,6 @@ module.exports = async () => {
   ])
 
   // migrate the tokens
-  console.log(migrationArgs)
   const migrationCalldata = migrator.interface.encodeFunctionData('migrate', [
     migrationArgs,
   ])
