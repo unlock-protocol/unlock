@@ -101,7 +101,6 @@ const migratorABI = [
 
 module.exports = async () => {
   // impersontate timelock for testing
-  await impersonate(timelockAddress)
   const signer = await ethers.getSigner(timelockAddress)
 
   // parse call data for function call
@@ -134,22 +133,18 @@ module.exports = async () => {
   // to determine the amount of tokens owned by the timelock in the pool
   const lp0 = liquidity.mul(reserve0).div(totalSupply)
   const lp1 = liquidity.mul(reserve1).div(totalSupply)
-  console.log(
-    `amount in the pool: ${ethers.utils.formatEther(
-      lp0
-    )} ${symbol0}, ${ethers.utils.formatEther(lp1)} ${symbol1}`
-  )
 
   // deadline
-  const currentBlock = await ethers.provider.getBlockNumber()
-  const deadline = currentBlock + 1000
+  const { timestamp } = await ethers.provider.getBlock()
+  const deadline = timestamp + 60 // 1 min
 
   // TODO: set 10% only for starters
   const percentageToMigrate = 100
 
-  // include pool fee in token amounts
-  const amount0Min = lp0.sub(lp0.mul('3000').div('100000')) // include pool fee
-  const amount1Min = lp1
+  // include pool fee in
+  // token amounts = 90 % of balance
+  const amount0Min = lp0.sub(lp0.mul('90000').div('100000')) // include pool fee
+  const amount1Min = lp1.sub(lp1.mul('90000').div('100000'))
 
   // info from pool v3
   const poolV3 = await createOrGetUniswapV3Pool(token0, token1, fee, [
@@ -188,20 +183,44 @@ module.exports = async () => {
   const migrator = await ethers.getContractAt(migratorABI, migratorAddress)
 
   // approve migrator to manipulate pool tokens
-  await poolV2.connect(signer).approve(migrator.address, liquidity)
-  console.log(
-    `allowance: ${await poolV2.allowance(signer.address, migrator.address)}`
-  )
+  const approvalCalldata = poolV2.interface.encodeFunctionData('approve', [
+    migrator.address,
+    liquidity,
+  ])
 
   // migrate the tokens
   console.log(migrationArgs)
-  await migrator.connect(signer).migrate(migrationArgs)
+  const migrationCalldata = migrator.interface.encodeFunctionData('migrate', [
+    migrationArgs,
+  ])
 
   // return all calls parsed for the DAO to process
-  const calls = []
+  const calls = [
+    {
+      contractAddress: poolV2.address,
+      calldata: approvalCalldata,
+      functionName: 'approve',
+    },
+    {
+      contractAddress: migrator.address,
+      calldata: migrationCalldata,
+      functionName: 'migrate',
+    },
+  ]
   const proposalName = `Migrating Uniswap v2 pool to v3
+
+  Amount of DAO's treasury liquidity in the V2 pool: ${ethers.utils.formatEther(
+    lp0
+  )} ${symbol0}, ${ethers.utils.formatEther(lp1)} ${symbol1}
+
+  
+  Migration args: 
+
+  ${Object.keys(migrationArgs).map((k) => `-${k}: ${migrationArgs[k]} \n`)}
   `
+
   console.log(proposalName)
+
   // send to multisig / DAO
   return {
     proposalName,
