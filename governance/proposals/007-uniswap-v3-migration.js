@@ -136,7 +136,7 @@ module.exports = async () => {
 
   // deadline
   const { timestamp } = await ethers.provider.getBlock()
-  const deadline = timestamp + 60 // 1 min
+  const deadline = timestamp + 60 * 60 * 24 * 60 // add 60 days for full execution
 
   // TODO: set 10% only for starters
   const percentageToMigrate = 100
