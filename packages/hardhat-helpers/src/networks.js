@@ -55,8 +55,10 @@ Object.keys(networks).forEach((key) => {
       name: networks[key].name,
       url: networks[key].provider,
       accounts: getAccounts(networks[key].name),
+      zksync: key === 'zkync',
     }
   }
+
   // duplicate xdai record as gnosis
   if (key === 'xdai') {
     hardhatNetworks['gnosis'] = {
