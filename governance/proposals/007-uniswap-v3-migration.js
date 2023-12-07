@@ -127,7 +127,7 @@ module.exports = async () => {
   console.log(`Pair ${symbol0}/${symbol1} - at ${poolV2.address}`)
 
   // how many ERC20 owned by the timelock
-  const liquidity = (await poolV2.balanceOf(timelockAddress)).div(10)
+  const liquidity = await poolV2.balanceOf(timelockAddress)
 
   // calculate the share of the entire liquidity for each token
   // to determine the amount of tokens owned by the timelock in the pool
@@ -138,13 +138,12 @@ module.exports = async () => {
   const { timestamp } = await ethers.provider.getBlock()
   const deadline = timestamp + 60 * 60 * 24 * 60 // add 60 days for full execution
 
-  // TODO: set 10% only for starters
-  const percentageToMigrate = 100
+  // set to 10% only for starters
+  const percentageToMigrate = 10
 
-  // include pool fee in
-  // token amounts = 90 % of balance
-  const amount0Min = lp0.sub(lp0.mul('90000').div('100000')) // include pool fee
-  const amount1Min = lp1.sub(lp1.mul('90000').div('100000'))
+  // token amounts = 10 % of balance
+  const amount0Min = lp0.mul('10000').div('100000')
+  const amount1Min = lp1.mul('10000').div('100000')
 
   // info from pool v3
   const poolV3 = await createOrGetUniswapV3Pool(token0, token1, fee, [
@@ -207,17 +206,38 @@ module.exports = async () => {
       functionName: 'migrate',
     },
   ]
-  const proposalName = `Migrating Uniswap v2 pool to v3
+  const proposalName = `Migrating UDT/WETH Liquidity Position from Uniswap v2 pool to v3
 
-  Amount of DAO's treasury liquidity in the V2 pool: ${ethers.utils.formatEther(
+This proposal aims at migrating the liquidity provided by the DAO’s treasury from Uniswap [V2 pool]((https://etherscan.io/address/${
+    poolV3.address
+  }) to the [V3 pool](https://etherscan.io/address/${
+    poolV2.address
+  }). The migration will provide more efficient trading and routing capabilities. The process will be split in two proposals, by transferring 10% of the existing position first, followed by the remaining 90%. This is done to reduce fluctuations in UDT price during and after the migration process.
+
+
+- The total amount of DAO's treasury liquidity currently in the V2 pool: ${ethers.utils.formatEther(
     lp0
   )} ${symbol0}, ${ethers.utils.formatEther(lp1)} ${symbol1}
 
-  
-  Migration args: 
+- The amounts of liquidty to be transferred to the v3 pool (~10%): ${ethers.utils.formatEther(
+    amount0Min
+  )} ${symbol0}, ${ethers.utils.formatEther(amount1Min)} ${symbol1}
 
-  ${Object.keys(migrationArgs).map((k) => `-${k}: ${migrationArgs[k]} \n`)}
-  `
+The two calls contained in the proposal are as follow
+
+1) set approval on v2 pool to allow Uniswap migrator contract to manipulate the existing position \`approve(
+  ${migrator.address},
+  ${liquidity})\`
+
+2) call the \`migrator.migrate\` function to carry out the migration with the following arguments:
+
+${Object.keys(migrationArgs)
+  .map((k) => `- ${k}: ${migrationArgs[k]}`)
+  .join('\n')}
+  
+Once approved and executed, the proposal will create a position in the Uniswap V3 pool and a NFT represented the position will be sent to the dao timelock.
+
+Thank you!`
 
   console.log(proposalName)
 
