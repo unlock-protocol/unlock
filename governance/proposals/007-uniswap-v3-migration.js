@@ -17,7 +17,7 @@ const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 const timelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 
 const fee = 3000
-const migratorAddress = '0xA5644E29708357803b5A882D272c41cC0dF92B34'
+const migratorAddress = '0xA5644E29708357803b5A882D272c41cC0dF92B34' // From https://docs.uniswap.org/contracts/v3/reference/deployments
 const udtWethV2poolAddress = '0x9ca8aef2372c705d6848fdda3c1267a7f51267c1'
 
 const poolV2Abi = [
