@@ -18,8 +18,7 @@
     "eslint": "8.54.0",
     "fs-extra": "11.1.1",
     "hardhat": "2.19.2",
-    "solhint": "4.0.0",
-    "zksync2-js": "0.4.0"
+    "solhint": "4.0.0"
   },
   "scripts": {
     "test": "hardhat test",
@@ -27,9 +26,5 @@
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code"
-  },
-  "devDependencies": {
-    "@matterlabs/hardhat-zksync-deploy": "1.0.1",
-    "@matterlabs/hardhat-zksync-solc": "1.0.3"
   }
 }

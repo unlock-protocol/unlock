@@ -12,6 +12,7 @@ import { getTotalPurchasePriceInCrypto } from '../../utils/claim'
 const ClaimBody = z.object({
   data: z.string().optional(),
   recipient: z.string().optional(),
+  referrer: z.string().optional(),
   email: z
     .string()
     .email()
@@ -31,7 +32,9 @@ export const LOCKS_WITH_DISABLED_CLAIMS = [
  * @returns
  */
 export const claim: RequestHandler = async (request, response: Response) => {
-  const { data, recipient, email } = await ClaimBody.parseAsync(request.body)
+  const { data, recipient, email, referrer } = await ClaimBody.parseAsync(
+    request.body
+  )
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
 

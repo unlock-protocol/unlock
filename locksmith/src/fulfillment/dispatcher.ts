@@ -374,10 +374,11 @@ export default class Dispatcher {
       network: number
       data?: string
       keyManager?: string
+      referrer?: string
     },
     cb?: (error: any, hash: string | null) => Promise<unknown>
   ) {
-    const { network, lockAddress, owner, data, keyManager } = options
+    const { network, lockAddress, owner, data, keyManager, referrer } = options
     const walletService = new WalletService(networks)
 
     // get any purchaser, as the address is not required here.
@@ -396,6 +397,7 @@ export default class Dispatcher {
           owner,
           data,
           keyManager,
+          referrer,
         },
         { maxFeePerGas, maxPriorityFeePerGas },
         cb
