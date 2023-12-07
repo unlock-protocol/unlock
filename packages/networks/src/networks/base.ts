@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { NetworkConfig, HookType } from '@unlock-protocol/types'
 
 export const base: NetworkConfig = {
   blockScan: {
@@ -20,7 +20,13 @@ export const base: NetworkConfig = {
   featured: true,
   fullySubsidizedGas: false,
   hooks: {
-    onKeyPurchaseHook: [],
+    onKeyPurchaseHook: [
+      {
+        address: '0x7455DdA870f8421b7C1920Efb84DFF7398c6A73E',
+        id: HookType.PASSWORD,
+        name: 'Password required',
+      },
+    ],
   },
   id: 8453,
   isTestNetwork: false,
