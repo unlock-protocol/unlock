@@ -179,7 +179,7 @@ export const ReceiptBaseForm = ({
             </div>
             <Input
               type="text"
-              maxLength="6"
+              maxLength={6}
               step="any"
               disabled={disabledInput || !prefix}
               error={errors?.prefix?.message}
