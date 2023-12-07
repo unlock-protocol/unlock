@@ -11,6 +11,7 @@ import { storage } from '~/config/storage'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
 
 const SupplierSchema = z.object({
+  prefix: z.string().optional(),
   vat: z.string().optional(),
   vatRatePercentage: z.number().nullish().default(null),
   supplierName: z.string().optional(),
@@ -56,6 +57,7 @@ export const ReceiptBaseForm = ({
   network,
 }: ReceiptBaseFormProps) => {
   const [vatPercentage, setVatPercentage] = useState(false)
+  const [prefix, setPrefix] = useState(false)
   const {
     register,
     handleSubmit,
@@ -124,6 +126,7 @@ export const ReceiptBaseForm = ({
     if (receiptsBase) {
       reset(receiptsBase)
       setVatPercentage(receiptsBase?.vatRatePercentage > 0) // enable when percentage is set
+      setPrefix(receiptsBase?.prefix.length > 0)
     }
   }, [receiptsBase, reset])
 
@@ -156,6 +159,40 @@ export const ReceiptBaseForm = ({
             label="Supplier name"
             {...register('supplierName')}
           />
+          <div>
+            <div className="flex items-center justify-between">
+              <label className="px-1 text-base" htmlFor="">
+                Receipt prefix
+              </label>
+              <ToggleSwitch
+                title="Enable"
+                enabled={prefix}
+                setEnabled={setPrefix}
+                onChange={(enabled) => {
+                  if (!enabled) {
+                    setValue('prefix', '', {
+                      shouldValidate: true,
+                    })
+                  }
+                }}
+              />
+            </div>
+            <Input
+              type="text"
+              maxLength="6"
+              step="any"
+              disabled={disabledInput || !prefix}
+              error={errors?.prefix?.message}
+              {...register('prefix', {
+                onChange: (e) =>
+                  setValue('prefix', e.target.value.toUpperCase()),
+                required: {
+                  value: prefix,
+                  message: 'This value is required.',
+                },
+              })}
+            />
+          </div>
           <div className="grid grid-cols-1 col-span-2 gap-4 md:grid-cols-2">
             <div className="mt-1">
               <Input
