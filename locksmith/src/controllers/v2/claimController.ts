@@ -163,6 +163,7 @@ export const claim: RequestHandler = async (request, response: Response) => {
       owner,
       network,
       data,
+      referrer,
       keyManager: email ? keyManagerAddress : owner,
     },
     async (_, transactionHash) => {
