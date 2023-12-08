@@ -106,23 +106,26 @@ function getTickAtSqrtRatio(sqrtPriceX96) {
 }
 
 // Calculate the amount of token for lp in v3 pool based on the current tick
-const getAmounts = (liquidity, sqrtPriceX96) => {
+const getAmounts = (liquidity, sqrtPriceX96, percentageToMigrate = 100) => {
   const currentTick = getTickAtSqrtRatio(sqrtPriceX96)
   const currentRatio = 1.0001 ** currentTick
-  const amount1 = ethers.BigNumber.from(`${liquidity * currentRatio}`)
-  return { amount0: liquidity, amount1, currentRatio }
+  const amount0 = liquidity.mul(percentageToMigrate).div('100')
+  const amount1 = ethers.BigNumber.from(`${amount0 * currentRatio}`)
+  return {
+    amount0,
+    amount1,
+    currentRatio,
+  }
 }
 
 module.exports = async () => {
-  // impersontate timelock for testing
-  const signer = await ethers.getSigner(timelockAddress)
+  // set to 10% only for starters
+  const percentageToMigrate = 10
+
+  console.log(`Migrate ${percentageToMigrate}% of liquidity from v2 to v3`)
 
   // parse call data for function call
-  const poolV2 = await ethers.getContractAt(
-    poolV2Abi,
-    udtWethV2poolAddress,
-    signer
-  )
+  const poolV2 = await ethers.getContractAt(poolV2Abi, udtWethV2poolAddress)
 
   // pool v2 info
   const [token0, token1, [reserve0, reserve1], totalSupply] = await Promise.all(
@@ -138,7 +141,6 @@ module.exports = async () => {
     await getTokenInfo(token0),
     await getTokenInfo(token1),
   ])
-  console.log(`Pair ${symbol0}/${symbol1} (v2) - at ${poolV2.address}`)
 
   // how many ERC20 owned by the timelock
   const liquidity = await poolV2.balanceOf(timelockAddress)
@@ -148,29 +150,15 @@ module.exports = async () => {
   const lp0 = liquidity.mul(reserve0).div(totalSupply)
   const lp1 = liquidity.mul(reserve1).div(totalSupply)
 
-  console.log('price in v2 pool')
-  console.log(`- Token0 (1 ${symbol0}): ${reserve1 / reserve0} ${symbol1}`)
-  console.log(`- Token1 (1 ${symbol1}): ${reserve0 / reserve1} ${symbol0}`)
-
-  console.log(
-    `Total liquidity in V2 pool: ${ethers.utils.formatEther(
-      lp0
-    )} ${symbol0}, ${ethers.utils.formatEther(lp1)} ${symbol1}`
-  )
-
   // deadline
   const { timestamp } = await ethers.provider.getBlock()
   const deadline = timestamp + 60 * 60 * 24 * 60 // add 60 days for full execution
-
-  // set to 10% only for starters
-  const percentageToMigrate = 10
 
   // info from pool v3
   const poolV3 = await createOrGetUniswapV3Pool(token0, token1, fee, [
     reserve0,
     reserve1,
   ])
-  console.log(`Pool ${symbol0}/${symbol1} (v3) - at ${poolV3.address}`)
 
   // calculate ticks
   const { tick: currentTick, sqrtPriceX96 } = await getPoolState(poolV3)
@@ -192,23 +180,10 @@ module.exports = async () => {
   // Get the amount of liquidity to provide to match current UDT price/tick in v3
   // how many UDT do we need to put in pool with the wETH we currently have
   const { currentRatio, amount0, amount1 } = await getAmounts(
-    lp0.mul('10').div('100'),
+    lp0,
     sqrtPriceX96,
-    tickLower,
-    tickUpper
+    percentageToMigrate
   )
-
-  console.log(`Current trading price in v3 pool: 
-  - Token0 (1 ${symbol0}): ${currentRatio} ${symbol1}
-  - Token1 (1 ${symbol1}): ${1 / currentRatio} ${symbol0}`)
-
-  console.log(`Liquidity tokens to add to v3 pool to migrate ${percentageToMigrate}% of the pool: 
-    - Token0 (${symbol0}) : ${ethers.utils.formatEther(
-      amount0.toString()
-    )} ${symbol0} (${amount0})
-    - Token1 (${symbol1}) : ${ethers.utils.formatEther(
-      amount1.toString()
-    )} ${symbol1} (${amount1})`)
 
   // parse (include pool fee?)
   const amount0Min = amount0
@@ -260,6 +235,9 @@ module.exports = async () => {
   ]
   const proposalName = `Migrating UDT/WETH Liquidity Position from Uniswap v2 pool to v3
 
+
+### Goal of the proposal
+
 This proposal aims at migrating the liquidity provided by the DAO’s treasury from Uniswap [V2 pool]((https://etherscan.io/address/${
     poolV3.address
   }) to the [V3 pool](https://etherscan.io/address/${
@@ -267,13 +245,38 @@ This proposal aims at migrating the liquidity provided by the DAO’s treasury f
   }). The migration will provide more efficient trading and routing capabilities. The process will be split in two proposals, by transferring 10% of the existing position first, followed by the remaining 90%. This is done to reduce fluctuations in UDT price during and after the migration process.
 
 
-- The total amount of DAO's treasury liquidity currently in the V2 pool: ${ethers.utils.formatEther(
-    lp0
-  )} ${symbol0}, ${ethers.utils.formatEther(lp1)} ${symbol1}
+### v2 ${symbol0}/${symbol1} pool 
 
-- The amounts of liquidty to be transferred to the v3 pool (~10%): ${ethers.utils.formatEther(
-    amount0Min
-  )} ${symbol0}, ${ethers.utils.formatEther(amount1Min)} ${symbol1}
+Address: ${poolV2.address}
+
+Total DAO's liquidity tokens in V2 pool: 
+- ${ethers.utils.formatEther(lp0)} ${symbol0}
+- ${ethers.utils.formatEther(lp1)} ${symbol1}
+
+Current trading price in v2 pool
+- 1 ${symbol0} = ${reserve1 / reserve0} ${symbol1}
+- 1 ${symbol1} = ${reserve0 / reserve1} ${symbol0}
+
+### v3 ${symbol0}/${symbol1} pool 
+
+Address: ${poolV3.address}
+
+Current trading price in v3 pool: 
+- 1 ${symbol0} = ${currentRatio} ${symbol1}
+- 1 ${symbol1} = ${1 / currentRatio} ${symbol0}
+
+To match the difference in price btw the v2 and v3 pool, we need to add liquidity at the current v3 rate.
+
+The liquidity tokens to add to v3 pool to migrate ${percentageToMigrate}% of the pool: 
+- (${symbol0}) : ${ethers.utils.formatEther(
+    amount0.toString()
+  )} ${symbol0} (${amount0})
+- (${symbol1}) : ${ethers.utils.formatEther(
+    amount1.toString()
+  )} ${symbol1} (${amount1})
+
+
+### About the proposal
 
 The two calls contained in the proposal are as follow
 
