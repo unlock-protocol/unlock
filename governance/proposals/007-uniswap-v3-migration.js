@@ -4,14 +4,15 @@
  */
 const { ethers } = require('hardhat')
 const {
-  getMinTick,
-  getMaxTick,
   getTokenInfo,
   createOrGetUniswapV3Pool,
   getPoolState,
   getPoolImmutables,
 } = require('../helpers/uniswap')
-const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const { nearestUsableTick } = require('@uniswap/v3-sdk')
+const JSBI = require('jsbi')
+
+const Q96 = JSBI.exponentiate(JSBI.BigInt(2), JSBI.BigInt(96))
 
 // const daoAddress = '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591'
 const timelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
@@ -99,6 +100,19 @@ const migratorABI = [
   },
 ]
 
+function getTickAtSqrtRatio(sqrtPriceX96) {
+  let tick = Math.floor(Math.log((sqrtPriceX96 / Q96) ** 2) / Math.log(1.0001))
+  return tick
+}
+
+// Calculate the amount of token for lp in v3 pool based on the current tick
+const getAmounts = (liquidity, sqrtPriceX96) => {
+  const currentTick = getTickAtSqrtRatio(sqrtPriceX96)
+  const currentRatio = 1.0001 ** currentTick
+  const amount1 = ethers.BigNumber.from(`${liquidity * currentRatio}`)
+  return { amount0: liquidity, amount1, currentRatio }
+}
+
 module.exports = async () => {
   // impersontate timelock for testing
   const signer = await ethers.getSigner(timelockAddress)
@@ -124,7 +138,7 @@ module.exports = async () => {
     await getTokenInfo(token0),
     await getTokenInfo(token1),
   ])
-  console.log(`Pair ${symbol0}/${symbol1} - at ${poolV2.address}`)
+  console.log(`Pair ${symbol0}/${symbol1} (v2) - at ${poolV2.address}`)
 
   // how many ERC20 owned by the timelock
   const liquidity = await poolV2.balanceOf(timelockAddress)
@@ -134,6 +148,16 @@ module.exports = async () => {
   const lp0 = liquidity.mul(reserve0).div(totalSupply)
   const lp1 = liquidity.mul(reserve1).div(totalSupply)
 
+  console.log('price in v2 pool')
+  console.log(`- Token0 (1 ${symbol0}): ${reserve1 / reserve0} ${symbol1}`)
+  console.log(`- Token1 (1 ${symbol1}): ${reserve0 / reserve1} ${symbol0}`)
+
+  console.log(
+    `Total liquidity in V2 pool: ${ethers.utils.formatEther(
+      lp0
+    )} ${symbol0}, ${ethers.utils.formatEther(lp1)} ${symbol1}`
+  )
+
   // deadline
   const { timestamp } = await ethers.provider.getBlock()
   const deadline = timestamp + 60 * 60 * 24 * 60 // add 60 days for full execution
@@ -141,25 +165,54 @@ module.exports = async () => {
   // set to 10% only for starters
   const percentageToMigrate = 10
 
-  // token amounts = 10 % of balance
-  const amount0Min = lp0.mul('10000').div('100000')
-  const amount1Min = lp1.mul('10000').div('100000')
-
   // info from pool v3
   const poolV3 = await createOrGetUniswapV3Pool(token0, token1, fee, [
     reserve0,
     reserve1,
   ])
-  console.log(`pool v3: ${poolV3.address}`)
+  console.log(`Pool ${symbol0}/${symbol1} (v3) - at ${poolV3.address}`)
 
   // calculate ticks
-  const { tick } = await getPoolState(poolV3)
+  const { tick: currentTick, sqrtPriceX96 } = await getPoolState(poolV3)
   const { tickSpacing } = await getPoolImmutables(poolV3)
 
-  // get tick index
-  const nearestIndex = Math.floor(tick / tickSpacing) * tickSpacing
-  const tickLowerIndex = nearestIndex - 60 * 100
-  const tickUpperIndex = nearestIndex + 60 * 100
+  const tickRange = 2
+  let tickLower =
+    nearestUsableTick(currentTick, tickSpacing) - tickSpacing * tickRange
+  let tickUpper =
+    nearestUsableTick(currentTick, tickSpacing) + tickSpacing * tickRange
+
+  if (
+    token0 !== (await poolV3.token0()) ||
+    token1 !== (await poolV3.token1())
+  ) {
+    throw new Error(`mismach pool tokens`)
+  }
+
+  // Get the amount of liquidity to provide to match current UDT price/tick in v3
+  // how many UDT do we need to put in pool with the wETH we currently have
+  const { currentRatio, amount0, amount1 } = await getAmounts(
+    lp0.mul('10').div('100'),
+    sqrtPriceX96,
+    tickLower,
+    tickUpper
+  )
+
+  console.log(`Current trading price in v3 pool: 
+  - Token0 (1 ${symbol0}): ${currentRatio} ${symbol1}
+  - Token1 (1 ${symbol1}): ${1 / currentRatio} ${symbol0}`)
+
+  console.log(`Liquidity tokens to add to v3 pool to migrate ${percentageToMigrate}% of the pool: 
+    - Token0 (${symbol0}) : ${ethers.utils.formatEther(
+      amount0.toString()
+    )} ${symbol0} (${amount0})
+    - Token1 (${symbol1}) : ${ethers.utils.formatEther(
+      amount1.toString()
+    )} ${symbol1} (${amount1})`)
+
+  // parse (include pool fee?)
+  const amount0Min = amount0
+  const amount1Min = amount1
 
   // parse args
   const migrationArgs = {
@@ -169,8 +222,8 @@ module.exports = async () => {
     token0,
     token1,
     fee,
-    tickLower: tickLowerIndex,
-    tickUpper: tickUpperIndex,
+    tickLower,
+    tickUpper,
     amount0Min,
     amount1Min,
     recipient: timelockAddress,
@@ -240,6 +293,15 @@ Once approved and executed, the proposal will create a position in the Uniswap V
 Thank you!`
 
   console.log(proposalName)
+  console.log(calls)
+
+  // const txs = calls.map((c) => ({
+  //   call: c.calldata,
+  //   to: c.contractAddress,
+  //   from: timelockAddress,
+  // }))
+  // console.log(txs)
+  // await Promise.all(txs.map((tx) => signer.sendTransaction(tx)))
 
   // send to multisig / DAO
   return {
