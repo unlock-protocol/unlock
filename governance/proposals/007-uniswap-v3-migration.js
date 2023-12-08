@@ -177,7 +177,7 @@ module.exports = async () => {
     throw new Error(`mismach pool tokens`)
   }
 
-  // Get the amount of liquidity to provide to match current UDT price/tick in v3
+  // Get the amount of liquidity to provide to match current UDT price point/tick in v3
   // how many UDT do we need to put in pool with the wETH we currently have
   const { currentRatio, amount0, amount1 } = await getAmounts(
     lp0,
@@ -265,14 +265,14 @@ Current trading price in v3 pool:
 - 1 ${symbol0} = ${currentRatio} ${symbol1}
 - 1 ${symbol1} = ${1 / currentRatio} ${symbol0}
 
-To match the difference in price btw the v2 and v3 pool, we need to add liquidity at the current v3 rate.
+To provide liquidity at current v3 pool price, we need to adjust the amount of tokens to provide as liquidity to the current pool rate.
 
-The liquidity tokens to add to v3 pool to migrate ${percentageToMigrate}% of the pool: 
+The liquidity tokens to add to v3 pool to migrate ${percentageToMigrate}% of the pool:
 - (${symbol0}) : ${ethers.utils.formatEther(
-    amount0.toString()
+    amount0Min.toString()
   )} ${symbol0} (${amount0})
 - (${symbol1}) : ${ethers.utils.formatEther(
-    amount1.toString()
+    amount1Min.toString()
   )} ${symbol1} (${amount1})
 
 
