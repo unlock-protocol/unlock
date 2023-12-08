@@ -7,7 +7,6 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-verify": "2.0.4",
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@openzeppelin/hardhat-upgrades": "3.0.2",
     "@openzeppelin/upgrades-core": "1.32.2",
     "@safe-global/api-kit": "2.0.0",
@@ -23,7 +22,7 @@
     "fs-extra": "11.2.0",
     "hardhat": "2.19.5",
     "solhint": "4.0.0",
-    "zksync2-js": "0.4.0"
+    "zksync-web3": "0.14.3"
   },
   "scripts": {
     "test": "hardhat test",
@@ -33,7 +32,7 @@
     "lint": "yarn lint:contracts && yarn lint:code"
   },
   "devDependencies": {
-    "@matterlabs/hardhat-zksync-deploy": "1.0.1",
-    "@matterlabs/hardhat-zksync-solc": "1.0.3"
+    "@matterlabs/hardhat-zksync-deploy": "0.6.5",
+    "@matterlabs/hardhat-zksync-solc": "0.4.2"
   }
 }

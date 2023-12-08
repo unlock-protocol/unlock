@@ -9240,24 +9240,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-deploy@npm:1.0.1":
-  version: 1.0.1
-  resolution: "@matterlabs/hardhat-zksync-deploy@npm:1.0.1"
+"@matterlabs/hardhat-zksync-deploy@npm:0.6.5":
+  version: 0.6.5
+  resolution: "@matterlabs/hardhat-zksync-deploy@npm:0.6.5"
   dependencies:
-    "@matterlabs/hardhat-zksync-solc": "npm:1.0.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:0.4.2"
     chalk: "npm:4.1.2"
-    ts-morph: "npm:^20.0.0"
+    ts-morph: "npm:^19.0.0"
   peerDependencies:
-    ethers: ^6.7.1
-    hardhat: ^2.18.1
-    zksync2-js: ^0.4.0
-  checksum: a682234c68d6918ed53f02ff673a4ca8f135eb6e830ada1215bb4a93ccc6dc0f6683e81ffe28161b63792e448078d6540c440c008cdc2b58b82bd29b18bf0b3e
+    ethers: ~5.7.2
+    hardhat: ^2.14.0
+    zksync-web3: ^0.14.3
+  checksum: 8df3ac554d31c37289f40ea479edb786e12be69a93c0190ee04dd7ffdf54e5a0f3f88a8eedd5569d3c5e7c22158f6c739cafc3864a1a20bae951daacef03cc70
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.0.0"
+"@matterlabs/hardhat-zksync-solc@npm:0.4.2":
+  version: 0.4.2
+  resolution: "@matterlabs/hardhat-zksync-solc@npm:0.4.2"
   dependencies:
     "@nomiclabs/hardhat-docker": "npm:^2.0.0"
     chalk: "npm:4.1.2"
@@ -9266,24 +9266,8 @@ __metadata:
     proper-lockfile: "npm:^4.1.2"
     semver: "npm:^7.5.1"
   peerDependencies:
-    hardhat: ^2.18.1
-  checksum: c572c58ef18075fe7de71698dacdb089691013e47096794c7e5800c46b7bd93e9ba08f9bd9c8355121d075bef04675ea75437e3aa7adfc6421a838cad108cfbe
-  languageName: node
-  linkType: hard
-
-"@matterlabs/hardhat-zksync-solc@npm:1.0.3":
-  version: 1.0.3
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.0.3"
-  dependencies:
-    "@nomiclabs/hardhat-docker": "npm:^2.0.0"
-    chalk: "npm:4.1.2"
-    dockerode: "npm:^4.0.0"
-    fs-extra: "npm:^11.1.1"
-    proper-lockfile: "npm:^4.1.2"
-    semver: "npm:^7.5.1"
-  peerDependencies:
-    hardhat: ^2.18.1
-  checksum: 3fc46977c60cb0f844e1450168c2c9060fc355f7eb1ae8351f8d863fa01f317cb1939fcb948ca209a55e793eefccf5ddf6c2c42b087b588e95add07414e2c9c0
+    hardhat: ^2.14.0
+  checksum: e282d67147b254f4243cacdfb2fec3721d82aa57354cfafa0cc5beb2254460d75933143d291cbfdad2a15d9daab5c9b468061abd1ca61d77635aa13570b2b0be
   languageName: node
   linkType: hard
 
@@ -17079,15 +17063,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.21.0":
-  version: 0.21.0
-  resolution: "@ts-morph/common@npm:0.21.0"
+"@ts-morph/common@npm:~0.20.0":
+  version: 0.20.0
+  resolution: "@ts-morph/common@npm:0.20.0"
   dependencies:
     fast-glob: "npm:^3.2.12"
     minimatch: "npm:^7.4.3"
     mkdirp: "npm:^2.1.6"
     path-browserify: "npm:^1.0.1"
-  checksum: dbfffae478bb9da71182faf87c14f578de21afe098a388bbcbdeebc5864e9f17e136526dbad6a8e760fe20e5bb943b2dfa62dc47d14b8e6e9077ce08f6de6242
+  checksum: 853cf73885ebb227134ca6e9c8660f4126c97227b837fe2609aec5b9212d5af7c0c2d48c2c13c48687c003d1a00270dd63d3ab3b5693a1d7b2413a017c1f4c82
   languageName: node
   linkType: hard
 
@@ -19559,13 +19543,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@matterlabs/hardhat-zksync-deploy": "npm:1.0.1"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.0.3"
+    "@matterlabs/hardhat-zksync-deploy": "npm:0.6.5"
+    "@matterlabs/hardhat-zksync-solc": "npm:0.4.2"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
     "@nomicfoundation/hardhat-verify": "npm:2.0.4"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
     "@openzeppelin/upgrades-core": "npm:1.32.2"
     "@safe-global/api-kit": "npm:2.0.0"
@@ -19581,7 +19564,7 @@ __metadata:
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.19.5"
     solhint: "npm:4.0.0"
-    zksync2-js: "npm:0.4.0"
+    zksync-web3: "npm:0.14.3"
   languageName: unknown
   linkType: soft
 
@@ -28835,18 +28818,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docker-modem@npm:^5.0.0":
-  version: 5.0.1
-  resolution: "docker-modem@npm:5.0.1"
-  dependencies:
-    debug: "npm:^4.1.1"
-    readable-stream: "npm:^3.5.0"
-    split-ca: "npm:^1.0.1"
-    ssh2: "npm:^1.11.0"
-  checksum: 91a054bfddfe50e40ede58f859c28698e973b2aec68428d78e109f3a107ce55ea6155d5ed97e7e39d8fbcf7b6a3ec6c1cf8d52b54518ce8dc6cd9d34e02d9ba4
-  languageName: node
-  linkType: hard
-
 "dockerode@npm:2.5.8, dockerode@npm:^2.5.8":
   version: 2.5.8
   resolution: "dockerode@npm:2.5.8"
@@ -28866,17 +28837,6 @@ __metadata:
     docker-modem: "npm:^3.0.0"
     tar-fs: "npm:~2.0.1"
   checksum: 1748e8d96f88fe71bb165a4c05726904937f5863b69eaeb4a3c1bb3bbf66940c7bef13b349ff757dc43664b4367611aab76f35c1ba468f07dcbaba567e6acd88
-  languageName: node
-  linkType: hard
-
-"dockerode@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "dockerode@npm:4.0.0"
-  dependencies:
-    "@balena/dockerignore": "npm:^1.0.2"
-    docker-modem: "npm:^5.0.0"
-    tar-fs: "npm:~2.0.1"
-  checksum: e92b7f03252945dc6f04661d78a72ac9e9f3e5128dc04ab3687a648662f572d73e561cce878699870f64c6cd941c90970481791901d7a087d263de0807474eab
   languageName: node
   linkType: hard
 
@@ -29366,14 +29326,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"electron-to-chromium@npm:^1.3.47":
-  version: 1.4.623
-  resolution: "electron-to-chromium@npm:1.4.623"
-  checksum: 483640dbbedf46d627f264aae7bd2ef723326488fa5b7730fbe9c53f5bdde25ce421e54134b88ef85649e4473f42e73709692da5bbfb6aec7c08cdfe8c0037e2
-  languageName: node
-  linkType: hard
-
-"electron-to-chromium@npm:^1.4.284":
+"electron-to-chromium@npm:^1.3.47, electron-to-chromium@npm:^1.4.284":
   version: 1.4.397
   resolution: "electron-to-chromium@npm:1.4.397"
   checksum: 4a1c8753dfc47eb7a1a9e425b76ebc7a38f437e3c6f0212c1882ae0dab4f741063a77ceab8bb74d0b596791d0bd6483bdd99cfe22d48c96da782860da40eac5b
@@ -53981,13 +53934,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:^20.0.0":
-  version: 20.0.0
-  resolution: "ts-morph@npm:20.0.0"
+"ts-morph@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "ts-morph@npm:19.0.0"
   dependencies:
-    "@ts-morph/common": "npm:~0.21.0"
+    "@ts-morph/common": "npm:~0.20.0"
     code-block-writer: "npm:^12.0.0"
-  checksum: e93cf96fd347d45c1031de90f50146707959e1564d6e0bdd4abefc32004717f4f2adf5e155956c80f04fca55f6f1bce79193077c0041616ce9fe619bc15159d0
+  checksum: edb3542e4540c91ce7752f723386e11804c0ee81e7a6e52907488abb7edf516a3956d404622a008ebaff4d0739e59c7f188cd51c23d3c41158b5f996ada82b09
   languageName: node
   linkType: hard
 
@@ -60055,21 +60008,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"zksync-web3@npm:0.14.3":
+  version: 0.14.3
+  resolution: "zksync-web3@npm:0.14.3"
+  peerDependencies:
+    ethers: ^5.7.0
+  checksum: 169952c1200211348261f0ad7ea5ca73094d54e8b83769e746fe28cc9534d01d273404d8a44e7e702197ca2d4425a780ad7cb7dcc24e2c4a4c4f262c327c1b8d
+  languageName: node
+  linkType: hard
+
 "zksync-web3@npm:^0.14.3":
   version: 0.14.4
   resolution: "zksync-web3@npm:0.14.4"
   peerDependencies:
     ethers: ^5.7.0
   checksum: a1566a2a2ba34a3026680f3b4000ffa02593e02d9c73a4dd143bde929b5e39b09544d429bccad0479070670cfdad5f6836cb686c4b8d7954b4d930826be91c92
-  languageName: node
-  linkType: hard
-
-"zksync2-js@npm:0.4.0":
-  version: 0.4.0
-  resolution: "zksync2-js@npm:0.4.0"
-  peerDependencies:
-    ethers: ^6.7.1
-  checksum: 0bdd60a70a6fd6eca827f112a69b27f3462ab04aa4ffa54b65651d995d0fbfd6e4d11bef363eddac73682888e368b71f2fe1036edb8417727ac5f85bfb49edd9
   languageName: node
   linkType: hard
 

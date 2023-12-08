@@ -30,7 +30,7 @@ async function copyAndBuildContractsAtVersion(dirname, contracts) {
   )
 
   // re-compile contract
-  await run('compile')
+  await run('compile', { network: 'zksync' })
 
   // get factory using fully qualified path
   const qualifiedPaths = await Promise.all(
