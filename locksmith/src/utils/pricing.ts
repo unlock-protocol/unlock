@@ -129,10 +129,22 @@ export const getUnlockServiceFee = (
 ) => {
   if (
     normalizer.ethereumAddress(options?.lockAddress) ===
-    normalizer.ethereumAddress('0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B')
+      normalizer.ethereumAddress(
+        '0xb9d79698599b3efa025c654b4c6f2c760c15d0d0'
+      ) ||
+    normalizer.ethereumAddress(options?.lockAddress) ===
+      normalizer.ethereumAddress(
+        '0xc94b031ce1837277ddabafe2d993e0a9a2fc4e92'
+      ) ||
+    normalizer.ethereumAddress(options?.lockAddress) ===
+      normalizer.ethereumAddress(
+        '0xcbef4c0e59a224b56d408ce72c59f0d275e7adae'
+      ) ||
+    normalizer.ethereumAddress(options?.lockAddress) ===
+      normalizer.ethereumAddress('0x3ebe147ecd6970f49fde34b5042996e140f63c22')
   ) {
-    // For EthVietnam, the fee is 2%
-    return Math.ceil(cost * 0.02)
+    // For LexDAO, we take 3% only
+    return Math.ceil(cost * 0.03)
   }
 
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
