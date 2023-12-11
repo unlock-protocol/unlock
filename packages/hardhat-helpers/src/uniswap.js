@@ -10,7 +10,7 @@ const {
 
 const JSBI = require('jsbi')
 const { getTokens } = require('./tokens')
-const { getNetwork } = require('./unlock')
+const { getNetwork, getUdt } = require('./unlock')
 
 const {
   AlphaRouter,
@@ -100,14 +100,15 @@ async function getUniswapRoute({
 }
 
 const getUniswapTokens = async (chainId = 1) => {
-  const { DAI, WETH, USDC, UDT, WBTC } = await getTokens()
+  const { DAI, WETH, USDC, WBTC } = await getTokens()
+  const udt = await getUdt()
 
   return {
     native: nativeOnChain(chainId),
     dai: new Token(chainId, DAI, 18, 'DAI'),
     weth: new Token(chainId, WETH, 18, 'WETH'),
     usdc: new Token(chainId, USDC, 6, 'USDC'),
-    udt: new Token(chainId, UDT, 18, 'UDT'),
+    udt: new Token(chainId, udt.address, 18, 'UDT'),
     wBtc: new Token(chainId, WBTC, 18, 'wBTC'),
   }
 }
