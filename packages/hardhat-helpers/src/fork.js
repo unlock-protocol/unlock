@@ -5,7 +5,8 @@ const USDC_ABI = require('./ABIs/USDC.json')
 const { abi: WETH_ABI } = require('./ABIs/weth.json')
 
 const { MAX_UINT } = require('./constants')
-const { getNetwork, getUnlock, getUdt, getTokens } = require('./unlock')
+const { getNetwork, getUnlock, getUdt } = require('./unlock')
+const { getTokens } = require('./tokens')
 
 const getChainId = () => {
   const chainId = parseInt(process.env.RUN_FORK)
@@ -19,8 +20,9 @@ const getForkUrl = () => {
   return `https://rpc.unlock-protocol.com/${getChainId()}`
 }
 
-async function getWhales(chainId = 137) {
-  const tokens = getTokens()
+async function getWhales(chainId = 1) {
+  const tokens = await getTokens()
+  const { address: UDT } = await getUdt()
   switch (chainId) {
     case 1:
       return {
@@ -124,14 +126,15 @@ const addERC20 = async function (
 ) {
   const { ethers } = require('hardhat')
   const {
-    nativeToken: { wrapped },
+    nativeCurrency: { wrapped },
   } = await getNetwork()
 
   // wrapped some ETH
   if (tokenAddress.toLowerCase() === wrapped.toLowerCase()) {
     await addSomeETH(address)
     const weth = await ethers.getContractAt(WETH_ABI, wrapped)
-    await weth.deposit({ value: amount.toString() })
+    const signer = await impersonate(address)
+    const tx = await weth.connect(signer).deposit({ value: amount.toString() })
     return weth
   }
 

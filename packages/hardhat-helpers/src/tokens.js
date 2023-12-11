@@ -1,6 +1,6 @@
 import { getNetwork } from './unlock'
 
-const getTokens = async () => {
+export const getTokens = async () => {
   const { tokens } = await getNetwork()
   return tokens.reduce((prev, { symbol, address }) => {
     prev[symbol] = address
@@ -9,7 +9,7 @@ const getTokens = async () => {
 }
 
 // fetch wrapped token USD price
-const fetchPriceInUSD = async (symbol = 'ETH') => {
+export const fetchPriceInUSD = async (symbol = 'ETH') => {
   console.log(`Fetching ${symbol} price...`)
   const response = await fetch(
     `https://api.coinbase.com/v2/prices/${symbol}-USD/buy`
