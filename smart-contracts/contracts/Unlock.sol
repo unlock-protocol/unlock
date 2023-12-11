@@ -27,8 +27,8 @@ pragma solidity ^0.8.21;
  *  b. Keeping track of GNP
  */
 
-import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
+import {Clones} from "@openzeppelin/contracts/proxy/Clones.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
@@ -106,6 +106,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // UDT SwapBurner contract address
   address public swapBurnerAddress;
 
+  // proxy contract to use as a reference when deploying locks
+  address public lockProxyAddress;
+
   // errors
   error Unlock__MANAGER_ONLY();
   error Unlock__VERSION_TOO_HIGH();
@@ -113,6 +116,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__ALREADY_DEPLOYED();
   error Unlock__MISSING_PROXY_ADMIN();
   error Unlock__MISSING_LOCK_TEMPLATE();
+  error Unlock__MISSING_LOCK_PROXY();
   error Unlock__MISSING_LOCK(address lockAddress);
   error Unlock__INVALID_AMOUNT();
   error Unlock__INVALID_TOKEN();
@@ -173,6 +177,13 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     proxyAdmin = new ProxyAdmin();
     proxyAdminAddress = address(proxyAdmin);
     return address(proxyAdmin);
+  }
+
+  function setLockProxyAddress(address _lockProxyAddress) public onlyOwner {
+    if (_lockProxyAddress.code.length == 0) {
+      revert Unlock__MISSING_LOCK_PROXY();
+    }
+    lockProxyAddress = _lockProxyAddress;
   }
 
   /**
@@ -285,12 +296,19 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert Unlock__MISSING_LOCK_TEMPLATE();
     }
 
+    // make sure we have a proxy impl to clone
+    if (lockProxyAddress == address(0)) {
+      revert Unlock__MISSING_LOCK_PROXY();
+    }
+
     // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
-      publicLockImpl,
-      proxyAdminAddress,
-      data
-    );
+    address newLockProxy = Clones.clone(lockProxyAddress);
+
+    // TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+    //   publicLockImpl,
+    //   proxyAdminAddress,
+    //   data
+    // );
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
