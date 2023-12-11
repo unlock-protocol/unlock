@@ -5,7 +5,6 @@ const {
   reverts,
   purchaseKey,
   compareBigNumbers,
-  getBalanceEthers,
 } = require('../helpers')
 
 contract('Lock / transferFee', (accounts) => {
@@ -39,6 +38,7 @@ contract('Lock / transferFee', (accounts) => {
     let fee1
     let fee2
     let fee3
+
     before(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
@@ -147,12 +147,10 @@ contract('Lock / transferFee', (accounts) => {
   })
 
   describe('when the key is transferred by a lock manager', () => {
-    let balanceBefore
     before(async () => {
       // Change the fee to 0.25%
       await lock.updateTransferFee(25)
       await lock.addLockManager(lockManager.address)
-      balanceBefore = await getBalanceEthers(lockManager.address)
       ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
     })
 
@@ -163,16 +161,19 @@ contract('Lock / transferFee', (accounts) => {
 
     it('does not pay the fee when transferring', async () => {
       assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+      const expirationBefore = await lock.keyExpirationTimestampFor(tokenId)
 
       await lock
         .connect(lockManager)
         .transferFrom(keyOwner.address, newOwner.address, tokenId)
 
-      //make sure
+      // make sure the transfer happened correctly
       assert.equal(await lock.ownerOf(tokenId), newOwner.address)
+
+      // balance stay unchanged
       compareBigNumbers(
-        balanceBefore,
-        await getBalanceEthers(lockManager.address)
+        expirationBefore,
+        await lock.keyExpirationTimestampFor(tokenId)
       )
     })
   })
