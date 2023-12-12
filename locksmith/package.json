@@ -38,7 +38,7 @@
     "@logtail/node": "0.4.12",
     "@logtail/winston": "0.4.12",
     "@nuintun/qrcode": "3.3.5",
-    "@openzeppelin/defender-relay-client": "1.47.1",
+    "@openzeppelin/defender-relay-client": "1.54.1",
     "@resvg/resvg-js": "2.4.1",
     "@sentry/node": "7.54.0",
     "@sentry/tracing": "7.54.0",
