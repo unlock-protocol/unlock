@@ -72,37 +72,38 @@ module.exports = async () => {
       functionName: 'transfer', // explainer
     },
   ]
-  const proposalName = `Migrating UDT/WETH Liquidity Position from Uniswap v2 pool
+  const proposalName = `Migrating 50% of UDT/WETH Liquidity Position from Uniswap v2 pool
 
 
 ### Goal of the proposal
 
-This proposal aims at moving the liquidity provided by the DAO’s treasury from Uniswap [V2 pool]((https://etherscan.io/address/${
+This proposal aims at moving 50% of the liquidity tokens owned by the DAO in [Uniswap V2 UDT/WETH pool](https://etherscan.io/address/${
     poolV2.address
-  }) to a multisig owned by trustees, so the liquidity can be migrated later on the v3 pool.
+  }) to a [multisig](https://etherscan.io/address/${multisigAddress}) owned by trustees . This transfer is a necessary step towards the end goal: migrate the current V2 liquidty position to the UDT/WETH Uniswap v3 pool (without risking a sandwich attack during the migration).
 
 
-### v2 ${symbol0}/${symbol1} pool 
+### Current situation of the ${symbol0}/${symbol1} V2 pool 
 
 Address: ${poolV2.address}
 
-DAO's liquidity in V2 pool: 
-- total : ${liquidity.toString()}
-- to transfer: ${amountToTransfer.toString()}
+#### DAO's liquidity tokens in V2 pool
 
-For reference, the total DAO's liquidity in V2 pool is: 
-- ${ethers.utils.formatEther(lp0)} ${symbol0}
-- ${ethers.utils.formatEther(lp1)} ${symbol1}
+- total : ${liquidity.toString()}
+- **to transfer:${amountToTransfer.toString()}**
+
+For reference, the total DAO's liquidity in V2 pool is ${ethers.utils.formatEther(
+    lp0
+  )} ${symbol0} and ${ethers.utils.formatEther(lp1)} ${symbol1}.
 
 
 ### About the proposal
 
-The proposal contains a single call that will transfer half of tht liquidity tokens
-to the multisig.
+The proposal contains a single call to the v2 pool \`transfer\` function that will transfer half of that liquidity tokens to the multisig - \`transfer(${multisigAddress},${amountToTransfer.toString()})\`.
 
-Once approved and executed, the tokens will be transferred.
+Once approved and executed, the tokens will be transferred. The 5 signers of the multisig will take care of migrating the v2 position to the v3 pool.
 
-Thank you!`
+Thank you!
+The Unlock Team`
 
   console.log(proposalName)
   console.log(calls)
