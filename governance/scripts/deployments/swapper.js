@@ -1,6 +1,6 @@
 const { ethers, unlock, run } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
-const uniswapRouterAddresses = require('../uniswap/routerAddresses.json')
+const { getUniswapRouters } = require('../../test/helpers')
 
 async function main() {
   const [deployer] = await ethers.getSigners()
@@ -9,12 +9,11 @@ async function main() {
   const chainId = await deployer.getChainId()
   const { unlockAddress } = unlock.networks[chainId]
 
-  if (!uniswapRouterAddresses[chainId]) {
+  const routers = getUniswapRouters(chainId)
+  if (!routers.length) {
     console.log('Uniswap undefined for this network')
     return
   }
-  const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[chainId]
-  const routers = [UniversalRouter, SwapRouter02]
 
   console.log(
     `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routers: ${routers.toString()}) `
