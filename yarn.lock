@@ -13128,16 +13128,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-base-client@npm:1.47.0":
-  version: 1.47.0
-  resolution: "@openzeppelin/defender-base-client@npm:1.47.0"
+"@openzeppelin/defender-base-client@npm:1.54.1":
+  version: 1.54.1
+  resolution: "@openzeppelin/defender-base-client@npm:1.54.1"
   dependencies:
     amazon-cognito-identity-js: "npm:^6.0.1"
     async-retry: "npm:^1.3.3"
     axios: "npm:^1.4.0"
     lodash: "npm:^4.17.19"
     node-fetch: "npm:^2.6.0"
-  checksum: 3bafc01d01013ebcf75ef4aea34f8fb0cf418566f5eb2d7cce6037ea01f086b73d9b4fceb2bee0f0ec76bb02a75ccca3f72ff92ac0777bd77727eb124cf871b2
+  checksum: 56a3cbba49820a8c68c22ae168a99a94790bda95cee52b4b880dd8adcf5656526c0a7903cc5a168164199d59e987484846fe468349872af0f65cc48b89087c90
   languageName: node
   linkType: hard
 
@@ -13154,11 +13154,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-relay-client@npm:1.47.1":
-  version: 1.47.1
-  resolution: "@openzeppelin/defender-relay-client@npm:1.47.1"
+"@openzeppelin/defender-relay-client@npm:1.54.1":
+  version: 1.54.1
+  resolution: "@openzeppelin/defender-relay-client@npm:1.54.1"
   dependencies:
-    "@openzeppelin/defender-base-client": "npm:1.47.0"
+    "@openzeppelin/defender-base-client": "npm:1.54.1"
     amazon-cognito-identity-js: "npm:^6.0.1"
     axios: "npm:^1.4.0"
     lodash: "npm:^4.17.19"
@@ -13171,7 +13171,7 @@ __metadata:
     "@ethersproject/transactions": ^5.6.2
     web3-core: ^1.8.2
     web3-core-helpers: ^1.8.2
-  checksum: 7265475fd7845b24e627c6fc70c0b728e8477cefbaa8ebaf14909d0e80e4c7dbaa52938ff8c904037aa569759016cbff6188a44cbcc3f7fa776f887f21504579
+  checksum: 484fd4eae9e000857a601cd41e6bdb4d8965f1b180a461ebafb4c7b6321a318ddaf675d5e5e7e72fd6cb44e6c350de702fa0cb37bdbc8cf36f0acda84895386e
   languageName: node
   linkType: hard
 
@@ -20430,7 +20430,7 @@ __metadata:
     "@logtail/node": "npm:0.4.12"
     "@logtail/winston": "npm:0.4.12"
     "@nuintun/qrcode": "npm:3.3.5"
-    "@openzeppelin/defender-relay-client": "npm:1.47.1"
+    "@openzeppelin/defender-relay-client": "npm:1.54.1"
     "@resvg/resvg-js": "npm:2.4.1"
     "@sentry/node": "npm:7.54.0"
     "@sentry/tracing": "npm:7.54.0"
