@@ -14,6 +14,7 @@ const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
   tokenId: 'token',
   email: 'email',
+  transactionHash: 'transactionsHash',
 }
 /**
  * Filters keys base on query
@@ -75,6 +76,7 @@ export const buildKeysWithMetadata = (
           // defaults to the owner when the manager is not set
           keyManager: key?.manager || key?.owner,
           lockAddress: lock?.address,
+          transactionsHash: key?.transactionsHash,
           ...metadata,
         }
         return merged

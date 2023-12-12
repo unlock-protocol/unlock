@@ -19,6 +19,7 @@ const lock = {
       tokenId: '1',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+      transactionsHash: ['0x'],
     },
     {
       manager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
@@ -26,6 +27,7 @@ const lock = {
       tokenId: '2',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+      transactionsHash: ['0x'],
     },
     {
       manager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
@@ -33,6 +35,7 @@ const lock = {
       tokenId: '3',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+      transactionsHash: ['0x'],
     },
     {
       manager: '0xff24307539a043e7fa40c4582090b3029de26b41',
@@ -40,6 +43,7 @@ const lock = {
       tokenId: '42',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+      transactionsHash: ['0x'],
     },
     {
       manager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
@@ -47,6 +51,7 @@ const lock = {
       tokenId: '43',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
+      transactionsHash: ['0x'],
     },
   ],
 }
@@ -131,6 +136,7 @@ describe('keysOperations operations', () => {
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
           token: '1',
+          transactionsHash: ['0x'],
         },
         {
           checkedInAt: 1660812066160,
@@ -141,6 +147,7 @@ describe('keysOperations operations', () => {
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
           token: '2',
+          transactionsHash: ['0x'],
         },
         {
           expiration:
@@ -150,6 +157,7 @@ describe('keysOperations operations', () => {
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
           token: '3',
+          transactionsHash: ['0x'],
         },
         {
           address: 'email address',
@@ -162,6 +170,7 @@ describe('keysOperations operations', () => {
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
           token: '42',
+          transactionsHash: ['0x'],
         },
         {
           address: 'brescia',
@@ -174,6 +183,7 @@ describe('keysOperations operations', () => {
           lockAddress: '0xxee',
           lockName: 'Alice in Borderlands',
           token: '43',
+          transactionsHash: ['0x'],
         },
       ])
     })
@@ -192,6 +202,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '2',
@@ -201,6 +212,7 @@ describe('keysOperations operations', () => {
           keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '3',
@@ -210,6 +222,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '42',
@@ -219,6 +232,7 @@ describe('keysOperations operations', () => {
           keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '43',
@@ -228,6 +242,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
       ])
     })
@@ -270,6 +285,7 @@ describe('keysOperations operations', () => {
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
           checkedInAt: 1660812048626,
+          transactionsHash: ['0x'],
         },
         {
           token: '2',
@@ -280,6 +296,7 @@ describe('keysOperations operations', () => {
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
           checkedInAt: 1660812066160,
+          transactionsHash: ['0x'],
         },
         {
           token: '3',
@@ -289,6 +306,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '42',
@@ -301,6 +319,7 @@ describe('keysOperations operations', () => {
           email: 'kld.diagne@gmail.com',
           address: 'email address',
           firstname: 'kalidou',
+          transactionsHash: ['0x'],
         },
         {
           token: '43',
@@ -313,6 +332,7 @@ describe('keysOperations operations', () => {
           email: 'example@gmai.com',
           address: 'brescia',
           firstname: 'mario rossi',
+          transactionsHash: ['0x'],
         },
       ])
     })
@@ -337,6 +357,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           keyholderAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '2',
@@ -346,6 +367,7 @@ describe('keysOperations operations', () => {
           keyManager: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           keyholderAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '3',
@@ -355,6 +377,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           keyholderAddress: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '42',
@@ -364,6 +387,7 @@ describe('keysOperations operations', () => {
           keyManager: '0xff24307539a043e7fa40c4582090b3029de26b41',
           keyholderAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
         {
           token: '43',
@@ -373,6 +397,7 @@ describe('keysOperations operations', () => {
           keyManager: '0x8D33b257bce083eE0c7504C7635D1840b3858AFD',
           keyholderAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
           lockAddress: '0xxee',
+          transactionsHash: ['0x'],
         },
       ])
     })
