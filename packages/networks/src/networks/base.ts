@@ -48,7 +48,7 @@ export const base: NetworkConfig = {
 
   publicLockVersionToDeploy: 13,
 
-  publicProvider: 'https://developer-access-mainnet.base.org',
+  publicProvider: 'https://mainnet.base.org',
 
   startBlock: 1750000,
   subgraph: {
