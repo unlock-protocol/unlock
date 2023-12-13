@@ -1,5 +1,5 @@
 import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Property } from '../locks/metadata/custom/AddProperty'
 import { Level } from '../locks/metadata/custom/AddLevel'
@@ -107,6 +107,9 @@ export const KeyInfo = ({
   const isERC20 =
     lock.tokenAddress &&
     lock.tokenAddress !== ethers.constants.AddressZero.toString()
+  const videoRef = useRef(null)
+  const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
+
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
@@ -174,6 +177,24 @@ export const KeyInfo = ({
   const isLoading =
     isKeyMetadataLoading && isKeyPriceLoading && isSubscriptionsLoading
 
+  const checkIfImageUrlIsVideo = async () => {
+    const video = videoRef.current
+    if (video) {
+      try {
+        await video.play()
+        setCanPlayImageAsVideo(true)
+      } catch (error) {
+        setCanPlayImageAsVideo(false)
+      }
+    }
+  }
+
+  const onLoadingStatusChangeOfImage = useCallback((status) => {
+    if (status === 'error') {
+      checkIfImageUrlIsVideo()
+    }
+  }, [])
+
   if (isLoading) {
     return <LoadingIcon />
   }
@@ -209,12 +230,23 @@ export const KeyInfo = ({
             src={imageURL || keyMetadata?.image}
             width={250}
             height={250}
+            onLoadingStatusChange={onLoadingStatusChangeOfImage}
           />
           <AvatarFallback
             className="w-80 h-80 aspect-1 rounded-xl"
             delayMs={100}
           >
-            <img src="/images/lock-placeholder.png" alt={name} />
+            {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
+            <video
+              className="w-full h-full rounded-xl aspect-1"
+              autoPlay
+              loop
+              muted
+              playsInline
+              src={imageURL || keyMetadata?.image}
+              ref={videoRef}
+              style={{ display: canPlayImageAsVideo ? 'block' : 'none' }}
+            />
           </AvatarFallback>
         </Avatar>
         <h1 className="text-xl font-bold">{name}</h1>
