@@ -31,10 +31,10 @@
     "@unlock-protocol/types": "workspace:^",
     "chai": "4.3.10",
     "copyfiles": "2.4.1",
-    "eslint": "8.52.0",
-    "fs-extra": "11.1.1",
-    "hardhat": "2.18.3",
-    "typescript": "5.2.2"
+    "eslint": "8.54.0",
+    "fs-extra": "11.2.0",
+    "hardhat": "2.19.2",
+    "typescript": "5.3.2"
   },
   "files": [
     "dist"

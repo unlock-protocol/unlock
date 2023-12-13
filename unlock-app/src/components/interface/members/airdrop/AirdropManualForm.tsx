@@ -108,13 +108,18 @@ export function AirdropForm({
 
   const onSubmitHandler = useCallback(
     async (member: AirdropMember) => {
-      const address = await getAddressForName(member.wallet)
-      member.wallet = address
-      const parsed = AirdropMember.parse(member)
-      console.log(parsed)
-      add(parsed)
-      reset()
-      setValue('wallet', '')
+      try {
+        const address = await getAddressForName(member.wallet)
+        member.wallet = address
+        console.log(member)
+        const parsed = AirdropMember.parse(member)
+        add(parsed)
+        reset()
+        setValue('wallet', '')
+      } catch (error) {
+        ToastHelper.error("There was an error with the member's info. ")
+        console.error(error)
+      }
     },
     [add, reset, setValue]
   )
@@ -305,9 +310,12 @@ export function AirdropManualForm({
 }: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
-  const expiration = new Date(formatDate(lock.expirationDuration || 0))
-    .toISOString()
-    .substring(0, 16)
+  const expiration =
+    lock.expirationDuration > 0
+      ? new Date(formatDate(lock.expirationDuration || 0))
+          .toISOString()
+          .substring(0, 16)
+      : undefined
   const [isConfirming, setIsConfirming] = useState(false)
 
   return (

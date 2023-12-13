@@ -3,6 +3,7 @@ import { networks } from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import config from '../../../config/config'
 import { getRenewalKeys } from '../../taskUtils/getRenewalKeys'
+import normalizer from '../../../utils/normalizer'
 
 export const createAddRenewalJobs = (within: number) => {
   const addRenewalJobs: Task = async (_, helper) => {
@@ -26,9 +27,9 @@ export const createAddRenewalJobs = (within: number) => {
             'fiatRenewalJob',
             {
               keyId: key.tokenId,
-              lockAddress: key.lock.address,
+              lockAddress: normalizer.ethereumAddress(key.lock.address),
               network: network.id,
-              userAddress: key.owner,
+              userAddress: normalizer.ethereumAddress(key.owner),
             },
             {
               jobKey: `fiat-renewal-${key.tokenId}-${key.lock.address}-${network.id}`,
@@ -41,9 +42,9 @@ export const createAddRenewalJobs = (within: number) => {
             'cryptoRenewalJob',
             {
               keyId: key.tokenId,
-              lockAddress: key.lock.address,
+              lockAddress: normalizer.ethereumAddress(key.lock.address),
               network: network.id,
-              userAddress: key.owner,
+              userAddress: normalizer.ethereumAddress(key.owner),
             },
             {
               jobKey: `crypto-renewal-${key.tokenId}-${key.lock.address}-${network.id}`,

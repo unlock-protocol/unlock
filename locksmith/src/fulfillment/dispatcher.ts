@@ -2,6 +2,7 @@ import {
   DefenderRelaySigner,
   DefenderRelayProvider,
 } from '@openzeppelin/defender-relay-client/lib/ethers'
+import { Relayer } from '@openzeppelin/defender-relay-client'
 
 import {
   KeyManager,
@@ -47,6 +48,13 @@ interface PurchaserArgs {
   address?: string
 }
 
+// Helper function to get the local purchaser, if the address does not matter
+export const getLocalPurchaser = async function ({ network = 1 }) {
+  const provider = await getPublicProviderForNetwork(network)
+  const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+  return wallet
+}
+
 /**
  * Helper function that yields a provider and connected wallet based on the config
  * @param network
@@ -64,7 +72,15 @@ export const getPurchaser = async function ({
       speed: 'fast',
     })
     if (!address || address === (await wallet.getAddress())) {
-      return wallet
+      const relayer = new Relayer(defenderRelayCredential)
+      const relayerStatus = await relayer.getRelayerStatus()
+      if (!relayerStatus.paused) {
+        return wallet
+      } else {
+        logger.warn(
+          `The OpenZeppelin Relayer purchaser at ${address} is paused! We will use the local purchaser instead.`
+        )
+      }
     }
   }
   const provider = await getPublicProviderForNetwork(network)
@@ -374,16 +390,18 @@ export default class Dispatcher {
       network: number
       data?: string
       keyManager?: string
+      referrer?: string
     },
     cb?: (error: any, hash: string | null) => Promise<unknown>
   ) {
-    const { network, lockAddress, owner, data, keyManager } = options
+    const { network, lockAddress, owner, data, keyManager, referrer } = options
     const walletService = new WalletService(networks)
 
-    // get any purchaser, as the address is not required here.
+    // get any purchaser, as a specific address is not required here.
+    // we also use the local purchaser, because these are low value transactions
     const [provider, wallet] = await Promise.all([
       getProviderForNetwork(network),
-      getPurchaser({ network }),
+      getLocalPurchaser({ network }),
     ])
     await walletService.connect(provider, wallet)
 
@@ -396,6 +414,7 @@ export default class Dispatcher {
           owner,
           data,
           keyManager,
+          referrer,
         },
         { maxFeePerGas, maxPriorityFeePerGas },
         cb
