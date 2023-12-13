@@ -61,6 +61,21 @@ export const isWorthRenewing = async (
   try {
     const lock = await web3Service.getLockContract(lockAddress, provider)
 
+    const isRenewable = await lock
+      .isRenewable(keyId, constants.AddressZero)
+      .catch((error: any) => {
+        logger.info(
+          `Key ${keyId} on ${lockAddress} from network ${network} is not renewable: ${error.errorName}`
+        )
+        return false
+      })
+
+    if (!isRenewable) {
+      return {
+        shouldRenew: false,
+      }
+    }
+
     // get gas refund from contract
     const gasRefund = await lock.gasRefundValue()
 
