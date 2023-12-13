@@ -5,7 +5,7 @@ import { vi } from 'vitest'
 import { renewKey, isWorthRenewing } from '../../src/worker/helpers/renewKey'
 
 const renewalInfo = {
-  network: 11297108109,
+  network: 10,
   keyId: '1',
   lockAddress: '0xaaa',
 }
@@ -21,6 +21,7 @@ const mockLock = {
   renewMembershipFor: async () => ({
     hash: 'txhash',
   }),
+  isRenewable: async () => true,
 }
 
 const mockLockFunctions = vi.fn((lockAddress: string) => {

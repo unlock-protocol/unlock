@@ -39,7 +39,7 @@ describe('certificationKeyAirdropped', () => {
     )
   })
 
-  it.only('should have keychainUrl if user wallet', () => {
+  it('should have keychainUrl if user wallet', () => {
     expect.assertions(2)
 
     const content = asHtml(
