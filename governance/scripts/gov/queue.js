@@ -1,11 +1,14 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
+const { mineUpTo } = require('@nomicfoundation/hardhat-network-helpers')
+
 const {
   queueProposal,
   getProposalState,
   getProposalVotes,
   getProposalId,
-} = require('@unlock-protocol/hardhat-helpers')
+} = require('../../helpers/gov')
+
+const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 
 async function main({ proposal, govAddress }) {
   // env settings
@@ -18,7 +21,7 @@ async function main({ proposal, govAddress }) {
   }
 
   // contract instance
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
   let state = await getProposalState(proposalId, govAddress)
 
   // close voting period
@@ -29,7 +32,7 @@ async function main({ proposal, govAddress }) {
       console.log(
         `GOV QUEUE > closing voting period (advancing to block ${deadline.toNumber()})`
       )
-      await time.advanceBlockTo(deadline.toNumber() + 1)
+      await mineUpTo(deadline.toNumber() + 1)
       state = await getProposalState(proposalId, govAddress)
     }
   }

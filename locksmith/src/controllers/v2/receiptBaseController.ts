@@ -7,6 +7,7 @@ import * as receiptBasesOperations from '../../../src/operations/receiptBasesOpe
 
 export const SupplierBody = z.object({
   supplierName: z.string().optional().default(''),
+  prefix: z.string().optional().default(''),
   vat: z.string().optional().default(''),
   servicePerformed: z.string().optional().default(''),
   addressLine1: z.string().optional().default(''),

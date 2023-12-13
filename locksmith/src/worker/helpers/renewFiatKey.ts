@@ -42,11 +42,25 @@ export async function renewFiatKey({
     )
 
     if (!stripeEnabled) {
-      throw new Error('Stripe connect is not enabled')
+      logger.info(
+        `Stripe connect is not enabled for lock ${lockAddress} on ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     if (!stripeAccount) {
-      throw new Error('No stripe connect account associated with the lock')
+      logger.info(
+        `No stripe connect account associated with the lock ${lockAddress} on ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const subscription = await KeySubscription.findOne({
@@ -61,11 +75,25 @@ export async function renewFiatKey({
     })
 
     if (!subscription) {
-      throw new Error('No subscription found')
+      logger.info(
+        `No subscription found for key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     if (subscription.userAddress !== userAddress) {
-      throw new Error('Key owner is not the subscriber')
+      logger.info(
+        `Key owner is not the subscriber key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const customer = await stripe.customers.retrieve(
@@ -76,7 +104,14 @@ export async function renewFiatKey({
     )
 
     if (customer.deleted) {
-      throw new Error('Customer does not exist anymore')
+      logger.info(
+        `Customer does not exist anymore for key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const paymentMethod = await stripe.paymentMethods.list(
@@ -92,7 +127,14 @@ export async function renewFiatKey({
     const paymentMethodId = paymentMethod.data?.[0]?.id
 
     if (!paymentMethodId) {
-      throw new Error('No payment method available on the customer profile.')
+      logger.info(
+        `No payment method available on the customer profile for key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const web3Service = new Web3Service(networks)

@@ -1,6 +1,9 @@
 // hardhat.config.js
-const { copySync } = require('fs-extra')
-const { networks, etherscan } = require('@unlock-protocol/hardhat-helpers')
+const {
+  networks,
+  etherscan,
+  parseForkUrl,
+} = require('@unlock-protocol/hardhat-helpers')
 
 require('@nomiclabs/hardhat-ethers')
 require('@nomiclabs/hardhat-truffle5')
@@ -46,27 +49,7 @@ const settings = {
 
 // mainnet fork
 if (process.env.RUN_FORK) {
-  const chainId = parseInt(process.env.RUN_FORK)
-  if (isNaN(chainId)) {
-    throw Error(`chain id ('${process.env.RUN_FORK}') should be a number`)
-  }
-  console.log(`Running a fork (chainId : ${chainId})...`)
-  networks.hardhat = {
-    chainId,
-    forking: {
-      url: `https://rpc.unlock-protocol.com/${chainId}`,
-    },
-  }
-
-  // needed for Uniswap Router to compute routes on local forks
-  networks.hardhat.blockGasLimit = 1_000_000_000
-
-  // set the correct chainId to use with local node over RPC
-  networks.localhost.chainId = chainId
-  networks.localhost.url = 'http://localhost:8545'
-
-  // replace localhost manifest by mainnet one
-  copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
+  parseForkUrl(networks)
 }
 
 // tasks
