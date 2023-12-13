@@ -247,16 +247,15 @@ const getPool = async (token0, token1, fee) => {
 }
 
 // initialize pool at 1:1
-const createPool = async function (token0 = WETH, token1 = UDT, fee = FEE) {
+const createPool = async function (
+  token0 = WETH,
+  token1 = UDT,
+  fee = FEE,
+  [reserve0, reserve1]
+) {
   const { positionManager } = await getUniswapV3Contracts()
 
-  const { decimals: token1Decimals } = await getTokenInfo(token0)
-  const { decimals: token0Decimals } = await getTokenInfo(token1)
-
-  const sqrtPriceX96 = encodePriceSqrt(
-    ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals),
-    ethers.utils.parseUnits(BASIS_POINTS.toString(), token0Decimals)
-  )
+  const sqrtPriceX96 = encodePriceSqrt(reserve1, reserve0)
 
   const tx = await positionManager.createAndInitializePoolIfNecessary(
     token0,
@@ -275,7 +274,8 @@ const createPool = async function (token0 = WETH, token1 = UDT, fee = FEE) {
 const createOrGetPool = async function (
   token0 = WETH,
   token1 = UDT,
-  fee = FEE
+  fee = FEE,
+  reserves = []
 ) {
   const { symbol: token0Symbol } = await getTokenInfo(token0)
   const { symbol: token1Symbol } = await getTokenInfo(token1)
@@ -285,7 +285,7 @@ const createOrGetPool = async function (
 
   if (pool.address === ADDRESS_ZERO) {
     console.log(`Pool doesn't exist, creating pool...`)
-    pool = await createPool(token0, token1, fee)
+    pool = await createPool(token0, token1, fee, reserves)
     await pool.increaseObservationCardinalityNext(10)
   }
 
@@ -301,7 +301,10 @@ const deployUniswapV3Oracle = async function () {
 }
 
 module.exports = {
+  getMinTick,
+  getMaxTick,
   addLiquidity,
+  encodePriceSqrt,
   createOrGetUniswapV3Pool: createOrGetPool,
   deployUniswapV3Oracle,
   getTokenInfo,
