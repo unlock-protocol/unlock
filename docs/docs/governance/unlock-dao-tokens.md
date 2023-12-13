@@ -10,9 +10,15 @@ The Unlock DAO Tokens — previously known as Unlock Discount Tokens — (UDT) a
 UDT are perfectly _optional_. Creators can deploy locks without knowledge of UDT and their members can similarly purchase membership without knowing about UDT.
 :::
 
-UDT tokens were created on Ethereum at this address: [`0x90de74265a416e1393a450752175aed98fe11517`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517), and have also been bridged to multiple side-chains and networks such as Polygon, Gnosis Chain and others. The DAO may decide to add support for more networks.
+UDT tokens were created on Ethereum, and have also been bridged to multiple side-chains and networks such as Polygon, Gnosis Chain and others. The DAO may decide to add support for more networks:
 
-The contract uses OpenZeppelin's ERC20 libraries. It was initally deployed to be upgradable but **the proxy admin renounced its role**, making the contract not upgradable anymore.
+| Chain        | Address                                                                                                                  | Bridge Address                                                                                                                                                     |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Ethereum     | [`0x90de74265a416e1393a450752175aed98fe11517`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517)    | N/A                                                                                                                                                                |
+| Polygon      | [`0xf7e78d9c4c74df889a83c8c8d6d05bf70ff75876`](https://polygonscan.com/token/0xf7e78d9c4c74df889a83c8c8d6d05bf70ff75876) | [`0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517?a=0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf) |
+| Gnosis Chain | [`0x8c84142c4a716a16a89d0e61707164d6107a9811`](https://gnosisscan.io/token/0x8c84142c4a716a16a89d0e61707164d6107a9811)   | [`0x41a4ee2855a7dc328524babb07d7f505b201133e`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517?a=0x41a4ee2855a7dc328524babb07d7f505b201133e) |
+
+On Ethereum Mainnet, the contract uses OpenZeppelin's ERC20 libraries. It was initally deployed to be upgradable but **the proxy admin renounced its role**, making the contract not upgradable anymore.
 
 UDT can optionnaly be distributed by the protocol itself when membership tokens are purchased or renewed. Please see below for details.
 
