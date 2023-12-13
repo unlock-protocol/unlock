@@ -122,8 +122,6 @@ export const getKeyIcon = async ({
   lockAddress: string
   keyId: string
 }): Promise<IconType | null> => {
-  console.log({ lockAddress, keyId })
-
   // Temporary icon for FilBangalore
   if (
     network == 42161 &&
