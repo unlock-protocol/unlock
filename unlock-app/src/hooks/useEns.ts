@@ -5,17 +5,15 @@ import configure from '../config'
 const config = configure()
 
 export const getNameOrAddressForAddress = async (
-  _address: string
+  _address: string,
+  _network: number
 ): Promise<string> => {
   try {
     const address = _address.trim()
-    const isNotENS = ethers.utils.isAddress(address)
-    if (isNotENS) {
-      return address
-    }
     const result = await new ethers.providers.JsonRpcBatchProvider(
-      config.networks[1].provider
+      config.networks[_network].provider
     ).lookupAddress(address)
+
     if (result) {
       return result
     }
@@ -49,16 +47,16 @@ export const getAddressForName = async (_name: string): Promise<string> => {
  * This hook reverse resolves any Ethereum address using the Ethereum Name Service
  * @param {*} address
  */
-export const useEns = (address: string) => {
+export const useEns = (address: string, network: number) => {
   const [name, setName] = useState(address)
 
-  const getNameForAddress = async (_address: string) => {
-    setName(await getNameOrAddressForAddress(_address))
+  const getNameForAddress = async (_address: string, _network: number) => {
+    setName(await getNameOrAddressForAddress(_address, _network))
   }
 
   useEffect(() => {
-    getNameForAddress(address)
-  }, [address])
+    getNameForAddress(address, network)
+  }, [address, network])
 
   return name
 }
