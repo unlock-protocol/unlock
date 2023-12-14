@@ -205,7 +205,6 @@ export const ExtendKeysDrawer = ({
 }: ExtendKeyDrawerProps) => {
   const owner = selectedKey?.owner
   const addressToEns = useEns(owner!)
-
   const {
     lockAddress,
     tokenId,

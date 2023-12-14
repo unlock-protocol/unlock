@@ -9,13 +9,11 @@ export const getNameOrAddressForAddress = async (
 ): Promise<string> => {
   try {
     const address = _address.trim()
-    const isNotENS = ethers.utils.isAddress(address)
-    if (isNotENS) {
-      return address
-    }
     const result = await new ethers.providers.JsonRpcBatchProvider(
+      // It was decided to always do lookup on Mainnet
       config.networks[1].provider
     ).lookupAddress(address)
+
     if (result) {
       return result
     }
