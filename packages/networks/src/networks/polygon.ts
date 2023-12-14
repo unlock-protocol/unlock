@@ -133,7 +133,10 @@ export const polygon: NetworkConfig = {
     stripeDestinationNetwork: 'polygon',
   },
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
-  unlockDiscountToken: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+  unlockDaoToken: {
+    address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+    mainnetBridge: '0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf',
+  },
   url: 'https://polygon.technology/',
 }
 

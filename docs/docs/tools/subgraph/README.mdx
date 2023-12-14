@@ -23,7 +23,6 @@ The links below provide a rudimentary tool to build and test your queries.
   {Object.keys(networks).map((network) => {
     if (network !== 'localhost') {
       const endpoint = networks[network].subgraph.endpointV2
-      console.log(endpoint)
       const m = endpoint.match(/unlock\-protocol\/(.*)/)
       return (
         <li>
