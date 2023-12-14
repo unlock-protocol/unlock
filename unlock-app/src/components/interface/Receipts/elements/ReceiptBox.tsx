@@ -97,7 +97,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     }
   )
 
-  const receiptPrefix = supplier.prefix ? supplier.prefix + '-' : ''
+  const receiptPrefix = supplier?.prefix ? supplier.prefix + '-' : ''
 
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
