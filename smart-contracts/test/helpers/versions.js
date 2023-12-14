@@ -16,7 +16,7 @@ function getUnlockVersionNumbers() {
   return (
     Array(LATEST_UNLOCK_VERSION)
       .fill(0)
-      .map((_, i) => i)
+      .map((_, i) => i + 1)
       // skip the contracts before v6
       .filter((v) => v > 5)
   )
@@ -35,7 +35,8 @@ function getMatchingLockVersion(unlockVersion) {
   // after v10, they start decoupling
   publicLockVersions[10] = 9
   publicLockVersions[11] = 11
-  publicLockVersions[12] = 11
+  publicLockVersions[12] = 12
+  publicLockVersions[13] = 14
 
   return publicLockVersions[unlockVersion]
 }
