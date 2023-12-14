@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/networks",
-  "version": "0.0.17",
+  "version": "0.0.19",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
