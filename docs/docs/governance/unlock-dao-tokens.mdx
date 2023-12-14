@@ -4,15 +4,60 @@ description: The Unlock Token (UDT) and its tokenomics.
 sidebar_position: 3
 ---
 
+import { networks } from '@unlock-protocol/networks'
+
 The Unlock DAO Tokens — previously known as Unlock Discount Tokens — (UDT) are the governance tokens for the Unlock Protocol. Holders of UDT collectively form the [Unlock DAO](./unlock-dao.md).
 
 :::info
 UDT are perfectly _optional_. Creators can deploy locks without knowledge of UDT and their members can similarly purchase membership without knowing about UDT.
 :::
 
-UDT tokens were created on Ethereum at this address: [`0x90de74265a416e1393a450752175aed98fe11517`](https://etherscan.io/token/0x90de74265a416e1393a450752175aed98fe11517), and have also been bridged to multiple side-chains and networks such as Polygon, Gnosis Chain and others. The DAO may decide to add support for more networks.
+UDT tokens were created on Ethereum, and have also been bridged to multiple side-chains and networks such as Polygon, Gnosis Chain and others. The DAO may decide to add support for more networks:
 
-The contract uses OpenZeppelin's ERC20 libraries. It was initally deployed to be upgradable but **the proxy admin renounced its role**, making the contract not upgradable anymore.
+<table>
+  <thead>
+    <tr>
+      <th>Chain</th>
+      <th>Address</th>
+      <th>Bridge Address</th>
+    </tr>
+  </thead>
+  {Object.keys(networks).map((networkId) => {
+    if (networks[networkId].unlockDaoToken) {
+      const network = networks[networkId]
+      return (
+        <tr>
+          <td>{network.name}</td>
+          <td>
+            <a
+              target="_blank"
+              href={network.explorer.urls.token(
+                network.unlockDaoToken?.address
+              )}
+            >
+              <code>{network.unlockDaoToken?.address}</code>
+            </a>
+          </td>
+          <td>
+            {network.unlockDaoToken?.mainnetBridge && (
+              <a
+                target="_blank"
+                href={`${networks[1].explorer.urls.token(
+                  networks[1].unlockDaoToken.address,
+                  network.unlockDaoToken?.mainnetBridge
+                )}`}
+              >
+                <code>{network.unlockDaoToken?.mainnetBridge}</code>
+              </a>
+            )}
+          </td>
+        </tr>
+      )
+    }
+  })}
+</table>
+
+On Ethereum Mainnet, the contract uses OpenZeppelin's ERC20 libraries. It was initally deployed to be upgradable but **the proxy admin renounced its role**, making the contract not upgradable anymore.
 
 UDT can optionnaly be distributed by the protocol itself when membership tokens are purchased or renewed. Please see below for details.
 

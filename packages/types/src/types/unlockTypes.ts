@@ -110,7 +110,10 @@ export interface NetworkConfig {
   }>
   swapPurchaser?: string
   unlockOwner?: string
-  unlockDiscountToken?: string
+  unlockDaoToken?: {
+    address: string
+    mainnetBridge?: string
+  }
   explorer?: {
     name: string
     urls: {
