@@ -12,7 +12,6 @@ const {
   getContractFactoryAtVersion,
   getUnlockVersionNumbers,
   getMatchingLockVersion,
-
   deployUpgreadableContract,
   upgradeUpgreadableContract,
 } = require('../helpers')
@@ -416,8 +415,18 @@ contract('Unlock / upgrades', async (accounts) => {
 
       async function purchaseKey(lock) {
         const publicLockVersion = await lock.publicLockVersion()
-        if (publicLockVersion >= 11) {
+
+        // set multiple purchases per address
+        if (publicLockVersion >= 12) {
+          await lock.updateLockConfig(
+            await lock.expirationDuration(),
+            await lock.maxNumberOfKeys(),
+            10
+          )
+        } else if (publicLockVersion >= 11) {
           await lock.setMaxKeysPerAddress(10)
+        }
+        if (publicLockVersion >= 11) {
           // Lock Version 11 multiple purchases
           return await lock
             .connect(lockOwner)
