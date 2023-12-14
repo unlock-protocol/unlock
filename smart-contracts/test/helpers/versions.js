@@ -16,7 +16,7 @@ function getUnlockVersionNumbers() {
   return (
     Array(LATEST_UNLOCK_VERSION)
       .fill(0)
-      .map((_, i) => i)
+      .map((_, i) => i + 1)
       // skip the contracts before v6
       .filter((v) => v > 5)
   )
