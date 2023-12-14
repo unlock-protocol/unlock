@@ -142,7 +142,7 @@ contract MixinLockCore is MixinRoles, MixinFunds, MixinDisable {
 
   // The version number of the current implementation on this network
   function publicLockVersion() public pure returns (uint16) {
-    return 13;
+    return 14;
   }
 
   /**
