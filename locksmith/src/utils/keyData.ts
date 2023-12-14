@@ -31,7 +31,7 @@ export default class KeyData {
         TIMEOUT_ON_SUBGRAPH,
         () => {
           logger.error(
-            `Timed out after 3s while retrieving info from Subgraph for metadata ${lockAddress} ${tokenId} on ${network}`
+            `Timed out after ${TIMEOUT_ON_SUBGRAPH}ms while retrieving info from Subgraph for metadata ${lockAddress} ${tokenId} on ${network}`
           )
           return {}
         }
