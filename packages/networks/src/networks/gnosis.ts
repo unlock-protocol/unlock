@@ -13,8 +13,8 @@ export const gnosis: NetworkConfig = {
       address: (address) =>
         `https://gnosisscan.io/address/${address}/transactions`,
       base: `https://gnosisscan.io/`,
-      token: (address, _holder) =>
-        `https://gnosisscan.io/token/${address}/token-holders#holders`,
+      token: (address, holder) =>
+        `https://gnosisscan.io/token/${address}?a=${holder}`,
       transaction: (hash) => `https://gnosisscan.io/tx/${hash}`,
     },
   },
@@ -92,6 +92,10 @@ export const gnosis: NetworkConfig = {
     },
   ],
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
+  unlockDaoToken: {
+    address: '0x8c84142c4a716a16a89d0e61707164d6107a9811',
+    mainnetBridge: '0x41a4ee2855a7dc328524babb07d7f505b201133e',
+  },
   url: 'https://www.gnosis.io/',
 }
 export default gnosis

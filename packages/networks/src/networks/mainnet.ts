@@ -130,7 +130,10 @@ export const mainnet: NetworkConfig = {
     universalRouterAddress: '0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B',
   },
   unlockAddress: '0xe79B93f8E22676774F2A8dAd469175ebd00029FA',
-  unlockDiscountToken: '0x90DE74265a416e1393A450752175AED98fe11517',
+  unlockDaoToken: {
+    address: '0x90DE74265a416e1393A450752175AED98fe11517',
+  },
+
   url: 'https://ethereum.org/en/',
   // universalCard: {
   //   cardPurchaserAddress: '0x49814dd8a03594bE78a18455CC4Df3876ecFbD69',
