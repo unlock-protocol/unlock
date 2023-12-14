@@ -49,8 +49,7 @@ const executeStudioDeployWithVersionIncrement = async (
   if (stderr) {
     if (stderr.includes('Version label already exists')) {
       console.log(
-        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${
-          parseInt(patch) + 1
+        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch) + 1
         }`
       )
       return executeStudioDeployWithVersionIncrement(
@@ -212,10 +211,9 @@ const deployOnlyStudio = async (network, graphLabel) => {
     `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioEndpoint})`
   )
 }
-// Note: the palm network is not supported by
-//
+
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'palm', 'localhost'].includes(d)
+  (d) => !['networks', 'default', 'localhost'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
