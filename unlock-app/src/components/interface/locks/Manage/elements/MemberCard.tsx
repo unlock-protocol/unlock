@@ -41,7 +41,7 @@ export const MemberCard = ({
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
 
-  const addressToEns = useEns(owner, network)
+  const addressToEns = useEns(owner)
 
   const resolvedAddress =
     addressToEns === owner ? addressMinify(owner) : addressToEns

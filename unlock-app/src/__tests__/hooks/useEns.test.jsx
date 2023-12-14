@@ -23,8 +23,7 @@ describe('getNameOrAddressForAddress', () => {
   it('should yield the name if there is one', async () => {
     expect.assertions(1)
     const name = await getNameOrAddressForAddress(
-      '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E',
-      1
+      '0xE5Cd62AC8d2Ca2A62a04958f07Dd239c1Ffe1a9E'
     )
     expect(name).toEqual('julien51.eth')
   })

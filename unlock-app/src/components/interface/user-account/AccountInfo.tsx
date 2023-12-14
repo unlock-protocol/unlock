@@ -4,8 +4,8 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import useEns from '../../../hooks/useEns'
 
 export const AccountInfo = () => {
-  const { account, email, network } = useContext(AuthenticationContext)
-  const name = useEns(account || '', network!)
+  const { account, email } = useContext(AuthenticationContext)
+  const name = useEns(account || '')
 
   return (
     <div className="grid max-w-4xl gap-4 grid-cols-[repeat(12,[col-start]_1fr)">

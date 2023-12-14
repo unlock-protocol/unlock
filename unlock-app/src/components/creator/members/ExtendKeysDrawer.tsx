@@ -204,14 +204,13 @@ export const ExtendKeysDrawer = ({
   resetSearchFilters,
 }: ExtendKeyDrawerProps) => {
   const owner = selectedKey?.owner
+  const addressToEns = useEns(owner!)
   const {
     lockAddress,
     tokenId,
     network,
     expiration: currentExpiration,
   } = selectedKey ?? {}
-
-  const addressToEns = useEns(owner!, network)
 
   if (!lockAddress && !tokenId) return null
 
