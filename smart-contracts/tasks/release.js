@@ -1,7 +1,8 @@
 const { task } = require('hardhat/config')
 const fs = require('fs-extra')
 const path = require('path')
-const { exec } = require('child_process')
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 
 task('release', 'Release a new version of the contract')
   .addParam('contract', 'The contract path')
@@ -35,6 +36,9 @@ task('release', 'Release a new version of the contract')
       `${versioned}.json`
     )
     const artifact = await hre.artifacts.readArtifact(contractName)
+    // version path in artifact
+    artifact.contractName = versioned
+    artifact.sourceName = `contracts/${contractName}/${versioned}.sol`
     await fs.writeJSON(abiPath, artifact, { spaces: 2 })
     console.log(`Artifact for ${contractName} at: ${abiPath}`)
 
@@ -46,10 +50,13 @@ task('release', 'Release a new version of the contract')
       `${versioned}.sol`
     )
     // NB: this uses a shell child process bcz hardhat flatten output only to stdout
-    exec(`hardhat flatten ${contract} > ${solPath}`)
+    await exec(`hardhat flatten ${contract} > ${solPath}`)
 
-    // remove duplicate licenses and keep only one MIT (skip line 5 to keep 1 license)
-    exec(`sed -i '' '5! /SPDX/d' ${solPath}`)
+    // replace contract name with versioned name in contracts
+    await exec(
+      `sed -i '' 's/contract ${contractName} is/contract ${versioned} is/g' ${solPath}`
+    )
+
     console.log(
       `Solidity contract for ${contractName} flattened at: ${solPath}`
     )
@@ -65,6 +72,12 @@ task('release', 'Release a new version of the contract')
       path.resolve('contracts', 'interfaces', `I${contractName}.sol`),
       interfacePath
     )
+
+    // replace interface name with versioned name in interface
+    await exec(
+      `sed -i '' 's/interface I${contractName}/interface I${versioned}/g' ${interfacePath}`
+    )
+
     console.log(
       `Solidity interface for ${contractName} copied to: ${interfacePath}`
     )
