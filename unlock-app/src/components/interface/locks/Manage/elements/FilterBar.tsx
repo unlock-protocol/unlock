@@ -34,6 +34,7 @@ const FILTER_ITEMS: Filter[] = [
     hideSearch: true,
     onlyLockManager: true,
   },
+  { key: 'transactionHash', label: 'Transaction Hash' },
 ]
 
 export enum ExpirationStatus {

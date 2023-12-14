@@ -197,15 +197,8 @@ export function Connected({
 
   useEffect(() => {
     const autoSignIn = async () => {
-      if (
-        !isSignedIn &&
-        !signing &&
-        connected &&
-        (isUnlockAccount || useDelegatedProvider)
-      ) {
-        setSigning(true)
+      if (!isSignedIn && !signing && connected && isUnlockAccount) {
         await signIn()
-        setSigning(false)
       }
     }
     autoSignIn()
@@ -224,8 +217,26 @@ export function Connected({
     } else console.debug(`Connected as ${account}`)
   }, [account])
 
-  if (useDelegatedProvider) {
-    return <div className="space-y-2">{children}</div>
+  const signToSignIn = async () => {
+    setSigning(true)
+    await signIn()
+    setSigning(false)
+  }
+
+  if (useDelegatedProvider || isUnlockAccount) {
+    if (isSignedIn) {
+      return <div className="space-y-2">{children}</div>
+    }
+    return (
+      <Button
+        disabled={!connected || signing}
+        loading={signing}
+        onClick={signToSignIn}
+        className="w-full"
+      >
+        Sign the message
+      </Button>
+    )
   }
 
   const onDisconnect = async () => {

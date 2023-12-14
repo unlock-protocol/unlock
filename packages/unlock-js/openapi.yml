@@ -1665,6 +1665,9 @@ paths:
                 recipient:
                   type: string
                   description: Recipient address for key
+                referrer:
+                  type: string
+                  description: Referrer address used to mint. This may get overwritten.
 
       responses:
         200:

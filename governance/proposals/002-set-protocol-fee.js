@@ -16,6 +16,7 @@
  */
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
+const { UnlockV12 } = require('@unlock-protocol/contracts')
 
 async function main([
   unlockAddress = '0x15334fe6F1cb0e286E1F9e1268B44E4221E169B7',
@@ -36,7 +37,7 @@ async function main([
 
   const calls = [
     {
-      contractNameOrAbi: 'Unlock',
+      contractNameOrAbi: UnlockV12.abi,
       contractAddress: unlockAddress,
       functionName: 'setProtocolFee',
       functionArgs: [protocolFee],
