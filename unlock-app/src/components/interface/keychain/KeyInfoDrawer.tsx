@@ -239,8 +239,6 @@ export const KeyInfo = ({
             {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
             <video
               className="w-full h-full rounded-xl aspect-1"
-              autoPlay
-              loop
               muted
               playsInline
               src={imageURL || keyMetadata?.image}

@@ -499,8 +499,6 @@ function Key({ ownedKey, account, network }: Props) {
             {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
             <video
               className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
-              autoPlay
-              loop
               muted
               playsInline
               src={metadata.image}
