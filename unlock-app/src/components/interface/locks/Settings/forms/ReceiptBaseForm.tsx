@@ -126,7 +126,7 @@ export const ReceiptBaseForm = ({
     if (receiptsBase) {
       reset(receiptsBase)
       setVatPercentage(receiptsBase?.vatRatePercentage > 0) // enable when percentage is set
-      setPrefix(receiptsBase?.prefix.length > 0)
+      setPrefix(receiptsBase?.prefix?.length > 0)
     }
   }, [receiptsBase, reset])
 
