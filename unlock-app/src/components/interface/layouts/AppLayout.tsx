@@ -10,6 +10,7 @@ import { config } from '~/config/app'
 import { addressMinify } from '~/utils/strings'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import useEns from '~/hooks/useEns'
 
 interface DashboardLayoutProps {
   title?: ReactNode
@@ -153,7 +154,7 @@ export const AppLayout = ({
   const { openConnectModal } = useConnectModal()
 
   const showLogin = authRequired && !account
-
+  const userEns = useEns(account || '')
   const logoSrc = logoImageUrl || '/images/svg/unlock-logo.svg'
   const logoRedirectUri = logoRedirectUrl || '/'
 
@@ -233,7 +234,7 @@ export const AppLayout = ({
                       >
                         <div className="flex items-center gap-2">
                           <span className="text-brand-ui-primary">
-                            {addressMinify(account)}
+                            {addressMinify(userEns)}
                           </span>
                           <DisconnectIcon
                             className="text-brand-ui-primary"

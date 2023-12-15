@@ -24,10 +24,13 @@ export function minifyEmail(email: string) {
   return minifiedEmail
 }
 
-export function addressMinify(address: string): string {
-  return `${address?.substring(0, 6)}...${address?.substring(
-    address.length - 4
-  )}`
+export function addressMinify(addressOrName: string): string {
+  if (addressOrName.length == 42) {
+    return `${addressOrName?.substring(0, 6)}...${addressOrName?.substring(
+      addressOrName.length - 4
+    )}`
+  }
+  return addressOrName
 }
 
 /**
