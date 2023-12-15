@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
+pragma solidity 0.8.21;
 
 /**
  * @title The Unlock contract
@@ -27,8 +27,7 @@ pragma solidity ^0.8.21;
  *  b. Keeping track of GNP
  */
 
-import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
-import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
+import {ProxyAdmin, StorageSlot, TransparentUpgradeableProxy, ITransparentUpgradeableProxy} from "./utils/UnlockProxyAdmin.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
@@ -505,7 +504,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
-    return 12;
+    return 13;
   }
 
   /**

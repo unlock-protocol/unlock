@@ -9,7 +9,7 @@ import {
 import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { getAddressForName } from '~/hooks/useEns'
+import useEns, { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { storage } from '~/config/storage'
 import { onResolveName } from '~/utils/resolvers'
@@ -53,7 +53,7 @@ const VerifierCard = ({
   const isCurrentAccount =
     account?.toLowerCase() === verifier?.address?.toLowerCase()
 
-  const address = verifier.address
+  const address = useEns(verifier.address)
 
   return (
     <div className="flex flex-col items-center justify-between px-4 py-2 border border-gray-200 rounded-lg md:flex-row">

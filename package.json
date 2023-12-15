@@ -85,6 +85,6 @@
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
     "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",
-    "*.sol": "yarn lint:contracts"
+    "*.sol": "yarn lint:contracts --noPrompt"
   }
 }
