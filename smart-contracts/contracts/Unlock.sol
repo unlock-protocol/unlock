@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
+pragma solidity 0.8.21;
 
 /**
  * @title The Unlock contract
@@ -27,8 +27,7 @@ pragma solidity ^0.8.21;
  *  b. Keeping track of GNP
  */
 
-import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
-import {LockProxy} from "./utils/LockProxy.sol";
+import {ProxyAdmin, StorageSlot, TransparentUpgradeableProxy, ITransparentUpgradeableProxy} from "./utils/UnlockProxyAdmin.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
@@ -286,7 +285,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     }
 
     // deploy a proxy pointing to impl
-    LockProxy proxy = new LockProxy(publicLockImpl, proxyAdminAddress, data);
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(
+      publicLockImpl,
+      proxyAdminAddress,
+      data
+    );
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
@@ -335,7 +338,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
       revert Unlock__MISSING_TEMPLATE();
     }
 
-    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(lockAddress);
+    ITransparentUpgradeableProxy proxy = ITransparentUpgradeableProxy(
+      lockAddress
+    );
 
     proxyAdmin.upgrade(proxy, impl);
 
