@@ -1,3 +1,4 @@
+/* solhint-disable no-inline-assembly */
 // Sources flattened with hardhat v2.18.3 https://hardhat.org
 
 // SPDX-License-Identifier: MIT
