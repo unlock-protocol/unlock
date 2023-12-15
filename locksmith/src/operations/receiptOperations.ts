@@ -29,7 +29,6 @@ export const getSingleReceiptDetails = async ({
       network,
     }
   )
-
   return receipt
 }
 

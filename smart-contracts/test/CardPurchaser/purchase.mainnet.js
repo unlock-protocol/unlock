@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const { expect } = require('chai')
 const {
   deployLock,
-  UNLOCK_ADDRESS,
+  getUnlockAddress,
   reverts,
   addSomeETH,
   addSomeUSDC,
@@ -107,7 +107,7 @@ const signLockPurchase = async ({
 }
 
 describe(`purchase`, function () {
-  let chainId, unlock, cardPurchaser, signer, lock
+  let chainId, unlock, cardPurchaser, signer, lock, unlockAddress
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
@@ -118,13 +118,14 @@ describe(`purchase`, function () {
     await addSomeETH(signer.address)
 
     // get Unlock contract
-    unlock = await ethers.getContractAt('Unlock', UNLOCK_ADDRESS)
+    unlockAddress = await getUnlockAddress()
+    unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
     // deploy CardPurchaser
     const UnlockSwapPurchaser = await ethers.getContractFactory('CardPurchaser')
     cardPurchaser = await UnlockSwapPurchaser.deploy(
       signer.address,
-      UNLOCK_ADDRESS,
+      unlockAddress,
       USDC
     )
 
@@ -143,7 +144,7 @@ describe(`purchase`, function () {
   })
 
   it('should have the right values', async () => {
-    expect(await cardPurchaser.unlockAddress()).to.equal(UNLOCK_ADDRESS)
+    expect(await cardPurchaser.unlockAddress()).to.equal(unlockAddress)
     expect(await cardPurchaser.usdc()).to.equal(USDC)
     expect(await cardPurchaser.name()).to.equal('Card Purchaser')
     expect(await cardPurchaser.version()).to.equal('1')

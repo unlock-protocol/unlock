@@ -16,12 +16,12 @@ const {
   addERC20,
   MAX_UINT,
   MAX_UINT160,
-  getBalance,
-  V3_SWAP_ROUTER_ADDRESS,
+  logBalance,
   PERMIT2_ADDRESS,
+  getNetwork,
   makePermit,
   generatePermitSignature,
-} = require('../../test/helpers')
+} = require('@unlock-protocol/hardhat-helpers')
 
 const PERMIT2_APPROVE_ABI = [
   {
@@ -54,21 +54,16 @@ const PERMIT2_APPROVE_ABI = [
   },
 ]
 
-const logBalance = async (token, signer) => {
-  const balance = await getBalance(signer.address, token.address)
-  console.log(
-    `${signer.address}: ${token.symbol} balance: `,
-    balance.toString()
-  )
-}
-
 const isStable = (token) => ['DAI', 'USDC'].includes(token.symbol)
 
 async function main({
   // do we want to use signed message or send a tx?
   usePermit2Sig = false,
 } = {}) {
-  const tokens = getUniswapTokens()
+  const {
+    uniswapV3: { routerAddress },
+  } = await getNetwork()
+  const tokens = await getUniswapTokens()
   // const pair = [tokens.native, tokens.usdc] // works
   // const pair = [tokens.usdc, tokens.native]
   const pair = [tokens.usdc, tokens.dai]
@@ -109,7 +104,7 @@ async function main({
       token0 === isStable(token1) ? '5000' : '2',
       token0.decimals
     )
-    permit = makePermit(token0.address, permitAmount.toString())
+    permit = await makePermit(token0.address, permitAmount.toString())
     signature = await generatePermitSignature(permit, spender, 1)
   } else {
     const permit2 = await ethers.getContractAt(
@@ -118,7 +113,7 @@ async function main({
     )
     const txApproval = await permit2.approve(
       token0.address,
-      V3_SWAP_ROUTER_ADDRESS,
+      routerAddress,
       MAX_UINT160,
       20_000_000_000_000 // expiration
     )

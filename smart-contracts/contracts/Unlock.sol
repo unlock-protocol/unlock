@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.21;
+pragma solidity 0.8.21;
 
 /**
  * @title The Unlock contract
@@ -27,14 +27,14 @@ pragma solidity ^0.8.21;
  *  b. Keeping track of GNP
  */
 
-import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
-import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
+import {ProxyAdmin, StorageSlot, TransparentUpgradeableProxy, ITransparentUpgradeableProxy} from "./utils/UnlockProxyAdmin.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces//IUniswapOracleV3.sol";
 import "./interfaces/IPublicLock.sol";
 import "./interfaces/IUnlock.sol";
 import "./interfaces/IMintableERC20.sol";
+import "./interfaces/ISwapBurner.sol";
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
@@ -102,6 +102,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   // protocol fee
   uint public protocolFee;
 
+  // UDT SwapBurner contract address
+  address public swapBurnerAddress;
+
   // errors
   error Unlock__MANAGER_ONLY();
   error Unlock__VERSION_TOO_HIGH();
@@ -111,6 +114,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   error Unlock__MISSING_LOCK_TEMPLATE();
   error Unlock__MISSING_LOCK(address lockAddress);
   error Unlock__INVALID_AMOUNT();
+  error Unlock__INVALID_TOKEN();
 
   // Events
   event NewLock(address indexed lockOwner, address indexed newLockAddress);
@@ -139,6 +143,11 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   event ResetTrackedValue(uint grossNetworkProduct, uint totalDiscountGranted);
 
   event UnlockTemplateAdded(address indexed impl, uint16 indexed version);
+
+  event SwapBurnerChanged(
+    address indexed oldAddress,
+    address indexed newAddress
+  );
 
   // Use initialize instead of a constructor to support proxies (for upgradeability via OZ).
   function initialize(address _unlockOwner) public initializer {
@@ -495,7 +504,7 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
 
   // The version number of the current Unlock implementation on this network
   function unlockVersion() external pure returns (uint16) {
-    return 12;
+    return 13;
   }
 
   /**
@@ -504,6 +513,16 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    */
   function setProtocolFee(uint _protocolFee) external onlyOwner {
     protocolFee = _protocolFee;
+  }
+
+  /**
+   * Set the UDT Swap and Burn contract address
+   * @param _swapBurnerAddress the address of the SwapBurner contract instance
+   */
+  function setSwapBurner(address _swapBurnerAddress) external onlyOwner {
+    address prevSwapBurnerAddress = swapBurnerAddress;
+    swapBurnerAddress = _swapBurnerAddress;
+    emit SwapBurnerChanged(prevSwapBurnerAddress, swapBurnerAddress);
   }
 
   /**
@@ -630,6 +649,17 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   }
 
   /**
+   * Internal helper to transfer token held by this contract
+   */
+  function _transfer(address token, address to, uint256 amount) internal {
+    if (token != address(0)) {
+      IMintableERC20(token).transfer(to, amount);
+    } else {
+      payable(to).transfer(amount);
+    }
+  }
+
+  /**
    * Functions which transfers tokens held by the contract
    * It handles both ERC20 and the base currency.
    * @dev This function is onlyOwner
@@ -642,11 +672,22 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     address to,
     uint256 amount
   ) public onlyOwner {
-    if (token != address(0)) {
-      IMintableERC20(token).transfer(to, amount);
-    } else {
-      payable(to).transfer(amount);
+    _transfer(token, to, amount);
+  }
+
+  /**
+   * Send tokens held by this contract to the UDT SwapBurner contract. The tokens sent to the
+   * contract are then swapped for UDT and UDT itself will be sent to a burner address.
+   * @notice This function can be called by anyone (not only the contract owner) as a way to ensure decentralization.
+   * @param token the address of the token (zero address for native) to swap and burn
+   * @param amount the amount of tokens to swap and burn
+   */
+  function swapAndBurn(address token, uint256 amount, uint24 poolFee) public {
+    if (token == udt) {
+      revert Unlock__INVALID_TOKEN();
     }
+    _transfer(token, swapBurnerAddress, amount);
+    ISwapBurner(swapBurnerAddress).swapAndBurn(token, poolFee);
   }
 
   /**

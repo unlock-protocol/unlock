@@ -17,6 +17,7 @@ export class ReceiptBase extends Model<
   // receipts details
   declare vatBasisPointsRate?: number | null
   declare supplierName?: string
+  declare prefix?: string
   declare vat?: string
   declare servicePerformed?: string
   declare addressLine1?: string
@@ -47,6 +48,10 @@ ReceiptBase.init(
       allowNull: true,
     },
     supplierName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    prefix: {
       type: DataTypes.STRING,
       allowNull: true,
     },

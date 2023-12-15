@@ -1,10 +1,11 @@
-const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
+const { ethers, network } = require('hardhat')
+const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
+
 const {
   getProposalState,
   executeProposal,
   getProposalId,
-} = require('@unlock-protocol/hardhat-helpers')
+} = require('../../helpers/gov')
 
 async function main({ proposal, govAddress }) {
   // env settings
@@ -19,7 +20,7 @@ async function main({ proposal, govAddress }) {
 
   // contract instance etc
   let state = await getProposalState(proposalId, govAddress)
-  const gov = await ethers.getContractAt('UnlockProtocolGovernor', govAddress)
+  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
 
   if (state === 'Queued') {
     // check if time is ripe
@@ -34,14 +35,19 @@ async function main({ proposal, govAddress }) {
         return
       }
     } else {
-      const currentTime = (await time.latest()).toNumber()
+      const { timestamp: currentTime } = await ethers.provider.getBlock(
+        'latest'
+      )
       console.log(
         `GOV EXEC > : increasing currentTime ${new Date(
           currentTime * 1000
         )} to eta ${new Date(eta * 1000)}`
       )
       if (currentTime < eta) {
-        await time.increaseTo(eta + 1)
+        await network.provider.request({
+          method: 'evm_setNextBlockTimestamp',
+          params: [eta.add(1).toNumber()],
+        })
       }
       state = await getProposalState(proposalId, govAddress)
     }
