@@ -26,6 +26,11 @@ export const base: NetworkConfig = {
         id: HookType.PASSWORD,
         name: 'Password required',
       },
+      {
+        address: '0x7311378caC9daEA75188b6053Cb7d462F328e09C',
+        id: HookType.PROMOCODE,
+        name: 'Discount code',
+      },
     ],
   },
   id: 8453,
