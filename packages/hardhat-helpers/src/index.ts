@@ -11,6 +11,7 @@ import tokens from './tokens'
 import uniswap from './uniswap'
 import unlock from './unlock'
 import upgrades from './upgrades'
+import localhost from './localhost'
 
 module.exports = {
   ...balance,
@@ -26,4 +27,5 @@ module.exports = {
   ...uniswap,
   ...unlock,
   ...upgrades,
+  ...localhost,
 }
