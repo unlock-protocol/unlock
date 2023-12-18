@@ -62,6 +62,7 @@ export const polygon: NetworkConfig = {
     decimals: 18,
     name: 'Matic',
     symbol: 'MATIC',
+    wrapped: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
   },
   opensea: {
     collectionUrl: (lockAddress: string) =>
@@ -122,6 +123,7 @@ export const polygon: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
+    positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },
@@ -131,6 +133,10 @@ export const polygon: NetworkConfig = {
     stripeDestinationNetwork: 'polygon',
   },
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
+  unlockDaoToken: {
+    address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+    mainnetBridge: '0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf',
+  },
   url: 'https://polygon.technology/',
 }
 

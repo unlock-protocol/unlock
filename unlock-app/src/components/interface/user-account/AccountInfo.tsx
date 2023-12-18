@@ -16,7 +16,9 @@ export const AccountInfo = () => {
         </Item>
       )}
       <Item title="Wallet Address" count="half">
-        <span className="flex h-5 mx-1 my-3 text-black">{name}</span>
+        <span className="flex h-5 mx-1 my-3 text-black">
+          {account} {name !== account ? `(${name})` : ''}
+        </span>
       </Item>
     </div>
   )

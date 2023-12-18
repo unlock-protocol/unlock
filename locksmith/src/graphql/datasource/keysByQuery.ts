@@ -20,6 +20,7 @@ interface KeyByFilterProps {
   filter: KeyFilter
   tokenId?: number
   owners?: string[]
+  transactionHash?: string[]
 }
 
 const locksByFilter = async ({
@@ -31,6 +32,7 @@ const locksByFilter = async ({
   expireTimestamp,
   addresses = [],
   owners = [],
+  transactionHash = [],
 }: KeyByFilterProps): Promise<any> => {
   const subgraph = new SubgraphService()
 
@@ -50,6 +52,10 @@ const locksByFilter = async ({
 
   if (owners?.length) {
     keyFilter.owner_in = owners?.map((owner) => owner.toLowerCase()) // lowercase address
+  }
+
+  if (transactionHash?.length) {
+    keyFilter.transactionsHash_contains_nocase = transactionHash
   }
 
   const lockFilter: LockFilter = {
@@ -111,6 +117,9 @@ export const keysByQuery = async ({
     // Filter by owners
     const owners = filterKey === 'owner' && search ? [search] : undefined
 
+    const transactionHash =
+      filterKey === 'transactionHash' && search ? [search] : undefined
+
     const getData = async (getFromPage: number) => {
       const skip = parseInt(`${getFromPage}`, 10) * first
       // The Graph does not support skipping more than 5000
@@ -124,6 +133,7 @@ export const keysByQuery = async ({
         tokenId,
         expireTimestamp,
         filter: expiration,
+        transactionHash,
       })
     }
 

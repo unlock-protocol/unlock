@@ -18,16 +18,16 @@
     "@types/next": "8.0.7",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
     "next": "13.5.6",
-    "vite-plugin-node-polyfills": "0.15.0"
+    "vite-plugin-node-polyfills": "0.17.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "8.52.0",
-    "prettier": "3.0.0",
-    "typescript": "5.2.2",
-    "vite": "4.5.0"
+    "eslint": "8.54.0",
+    "prettier": "3.1.0",
+    "typescript": "5.3.2",
+    "vite": "4.5.1"
   },
   "browserslist": [
     "defaults",

@@ -56,6 +56,7 @@ export const bsc: NetworkConfig = {
     decimals: 18,
     name: 'BNB',
     symbol: 'BNB',
+    wrapped: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
   },
   opensea: {
     collectionUrl: (lockAddress) =>
@@ -114,7 +115,9 @@ export const bsc: NetworkConfig = {
     },
   ],
   uniswapV3: {
-    universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
+    factoryAddress: '0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7',
+    positionManager: '0x7b8A01B39D58278b5DE7e48c8449c9f4F5170613',
+    universalRouterAddress: '0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B',
   },
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   url: 'https://www.bnbchain.org/en',

@@ -97,6 +97,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     }
   )
 
+  const receiptPrefix = supplier?.prefix ? supplier.prefix + '-' : ''
+
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
     receiptDetails?.payer?.toLowerCase() === account?.toLowerCase()
@@ -107,7 +109,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails && receiptDetails.timestamp
       ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
       : ''
-  const receiptNumber = receiptDetails?.receiptNumber || ''
+  const receiptNumber = receiptPrefix + (receiptDetails?.receiptNumber || '')
 
   const PurchaseDetails = () => {
     return (
