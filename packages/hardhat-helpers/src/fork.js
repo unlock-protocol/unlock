@@ -86,7 +86,7 @@ const addSomeETH = async (
   amount = ethers.utils.parseEther('1000')
 ) => {
   const { network } = require('hardhat')
-  const balance = ethers.utils.hexStripZeros(amount)
+  const balance = `0x${BigInt(amount.toString()).toString(16)}`
   await network.provider.send('hardhat_setBalance', [address, balance])
 }
 
@@ -122,7 +122,7 @@ const stopImpersonate = async (address) => {
 const addERC20 = async function (
   tokenAddress,
   address,
-  amount = ethers.utils.parseEther('1000')
+  amount = ethers.parseEther('1000')
 ) {
   const { ethers } = require('hardhat')
   const {
@@ -159,7 +159,7 @@ const addERC20 = async function (
 }
 
 const toBytes32 = (bn) => {
-  return ethers.utils.hexlify(ethers.utils.zeroPad(bn.toHexString(), 32))
+  return ethers.hexlify(ethers.zeroPad(bn.toHexString(), 32))
 }
 
 const addUDT = async (recipientAddress, amount = 1000, udt) => {
@@ -170,14 +170,13 @@ const addUDT = async (recipientAddress, amount = 1000, udt) => {
   }
 
   // UDT contract
-  const udtAmount = ethers.BigNumber.isBigNumber(amount)
-    ? amount
-    : ethers.utils.parseEther(`${amount}`)
+  const udtAmount =
+    typeof amount === 'bigint' ? amount : ethers.parseEther(`${amount}`)
 
   if (chainId === 1 || chainId === 5) {
     // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
     // Get storage slot index
-    const index = ethers.utils.solidityKeccak256(
+    const index = ethers.solidityKeccak256(
       ['uint256', 'uint256'],
       [recipientAddress, 51] // key, slot
     )

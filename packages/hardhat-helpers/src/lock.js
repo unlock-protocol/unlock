@@ -6,7 +6,7 @@ const createLockCalldata = async ({
   signature = 'initialize(address,uint256,address,uint256,uint256,string)', // solidity signature string
 }) => {
   const abi = [`function ${signature}`]
-  const iface = new ethers.utils.Interface(abi)
+  const iface = new ethers.Interface(abi)
   const calldata = await iface.encodeFunctionData(signature, [from, ...args])
   return calldata
 }

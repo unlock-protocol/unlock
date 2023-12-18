@@ -93,7 +93,7 @@ describe('Scripts/deploy:lock', () => {
             Locks[name].keyPrice,
             Locks[name].maxNumberOfKeys,
             Locks[name].lockName,
-            ethers.utils.hexlify(ethers.utils.randomBytes(12)),
+            ethers.hexlify(ethers.randomBytes(12)),
           ]
           const tx = await unlock.createLock(...lockArgs)
           const { events } = await tx.wait()
@@ -117,7 +117,7 @@ describe('Scripts/deploy:lock', () => {
         unlockAddress,
         unlockVersion: 8,
         serializedLock: serialized,
-        salt: ethers.utils.hexlify(ethers.utils.randomBytes(12)),
+        salt: ethers.hexlify(ethers.randomBytes(12)),
       })
 
       // make sure values are identical
@@ -141,7 +141,7 @@ describe('Scripts/deploy:lock', () => {
       unlockAddress,
       unlockVersion: 8,
       serializedLock: serialized,
-      salt: ethers.utils.hexlify(ethers.utils.randomBytes(12)),
+      salt: ethers.hexlify(ethers.randomBytes(12)),
     })
 
     // make sure values are identical
