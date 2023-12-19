@@ -47,7 +47,7 @@ describe('DiscountHook', function () {
     )
   })
 
-  it('should work as a hook', async function () {
+  it('should work as a hook and apply a discount', async function () {
     const [user] = await ethers.getSigners()
 
     await unlock.deployProtocol()
@@ -110,6 +110,67 @@ describe('DiscountHook', function () {
         [user.address],
         [user.address],
         [data],
+        {
+          value: price,
+        }
+      )
+    ).wait()
+
+    expect((await lock.balanceOf(user.address)).toNumber()).to.equal(1)
+  })
+
+  it('should work as a hook even when a bad signature is provided', async function () {
+    const [user] = await ethers.getSigners()
+
+    await unlock.deployProtocol()
+    const expirationDuration = 60 * 60 * 24 * 7
+    const maxNumberOfKeys = 100
+    const keyPrice = ethers.utils.parseEther('0.1')
+
+    const { lock } = await unlock.createLock({
+      expirationDuration,
+      maxNumberOfKeys,
+      keyPrice,
+      name: 'ticket',
+    })
+    const DiscountHook = await ethers.getContractFactory('DiscountHook')
+    const hook = await DiscountHook.deploy()
+    await hook.deployed()
+
+    await (
+      await lock.setEventHooks(
+        hook.address,
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero,
+        ethers.constants.AddressZero
+      )
+    ).wait()
+    // Let's get the price without a promo code
+    const priceWithout = await lock.purchasePriceFor(
+      user.address,
+      user.address,
+      []
+    )
+    assert.equal(
+      ethers.utils.formatEther(priceWithout),
+      ethers.utils.formatEther(keyPrice)
+    )
+
+    // Let's get the price without a promo code
+    const price = await lock.purchasePriceFor(user.address, user.address, [])
+    assert.equal(ethers.utils.formatEther(price), '0.1')
+
+    // Let's make a purchase!
+    await (
+      await lock.purchase(
+        [price],
+        [user.address],
+        [user.address],
+        [user.address],
+        [[]],
         {
           value: price,
         }
