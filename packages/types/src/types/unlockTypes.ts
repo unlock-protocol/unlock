@@ -38,6 +38,7 @@ export interface Token {
   coinbase?: string
   mainnetAddress?: string
   wrapped?: string
+  featured?: boolean
 }
 
 export enum HookType {

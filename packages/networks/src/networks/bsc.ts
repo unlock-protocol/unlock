@@ -92,24 +92,28 @@ export const bsc: NetworkConfig = {
     {
       address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
       decimals: 18,
+      featured: true,
       name: 'Ethereum',
       symbol: 'ETH',
     },
     {
       address: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
       decimals: 18,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
       address: '0x55d398326f99059ff775485246999027b3197955',
       decimals: 18,
+      featured: true,
       name: 'Tether',
       symbol: 'USDT',
     },
     {
       address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
       decimals: 18,
+      featured: true,
       name: 'Dai',
       symbol: 'DAI',
     },
