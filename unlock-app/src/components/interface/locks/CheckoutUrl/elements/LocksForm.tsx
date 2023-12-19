@@ -78,15 +78,6 @@ export const BasicConfigForm: React.FC<Props> = ({
         {...register('name')}
       />
       <Input
-        label="Number of Renewals"
-        size="small"
-        type="text"
-        description={PaywallLockConfig.shape.recurringPayments.description}
-        {...register('recurringPayments', {
-          valueAsNumber: true,
-        })}
-      />
-      <Input
         label="Max Recipients"
         type="text"
         size="small"
@@ -569,8 +560,7 @@ export const LocksForm = ({
                     <div className="bg-white ">
                       <div className="flex flex-col p-4">
                         <div className="px-4 py-2 mb-2 text-base text-gray-800 bg-gray-100 rounded-lg whitespace-nowrap">
-                          Lock Address: <br />
-                          {lockAddress}
+                          Address: {lockAddress}
                         </div>
                         <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
                           Settings

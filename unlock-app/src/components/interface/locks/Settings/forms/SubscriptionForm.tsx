@@ -98,16 +98,8 @@ export const SubscriptionForm = ({
             {gasRefund <= 0 && (
               <li>
                 <span className="text-red-500">
-                  Gas refund value is not set. You can change it from{' '}
-                  <button
-                    onClick={(event) => {
-                      event.preventDefault()
-                      setTab(1)
-                    }}
-                    className="font-semibold text-brand-ui-primary hover:underline"
-                  >
-                    Membership terms settings.
-                  </button>
+                  Gas refund value is not set. The gas refund is an incentive
+                  for network participants to execute the renewal transactions.
                 </span>
               </li>
             )}
