@@ -66,7 +66,7 @@ export const SelectCurrencyModal = ({
         symbol: defaultCurrency?.symbol,
         address: ZERO,
       },
-      ...tokenItems,
+      ...tokenItems.filter((token: Token) => !!token.featured),
     ])
   }, [defaultCurrency?.name, defaultCurrency?.symbol, network, tokenItems])
 

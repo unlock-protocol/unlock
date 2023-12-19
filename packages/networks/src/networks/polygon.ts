@@ -91,31 +91,35 @@ export const polygon: NetworkConfig = {
     {
       address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
       decimals: 18,
+      featured: true,
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
     {
       address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
       decimals: 18,
+      featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
-
     {
       address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
       decimals: 6,
+      featured: true,
       name: 'Tether USD',
       symbol: 'USDT',
     },
     {
       address: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
       decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
       address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
       decimals: 8,
+      featured: true,
       name: 'Wrapped BTC',
       symbol: 'WBTC',
     },

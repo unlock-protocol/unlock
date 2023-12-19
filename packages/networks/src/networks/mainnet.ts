@@ -81,18 +81,21 @@ export const mainnet: NetworkConfig = {
     {
       address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       decimals: 18,
+      featured: true,
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
     {
       address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
       decimals: 18,
+      featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
       address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
@@ -111,6 +114,7 @@ export const mainnet: NetworkConfig = {
     {
       address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
       decimals: 8,
+      featured: true,
       name: 'Wrapped BTC',
       symbol: 'WBTC',
     },
@@ -119,6 +123,12 @@ export const mainnet: NetworkConfig = {
       decimals: 18,
       name: 'Basic Attention Token',
       symbol: 'BAT',
+    },
+    {
+      address: '0xd7C1EB0fe4A30d3B2a846C04aa6300888f087A5F',
+      decimals: 18,
+      name: 'POINTS',
+      symbol: 'POINTS',
     },
   ],
   uniswapV3: {

@@ -75,12 +75,14 @@ export const base: NetworkConfig = {
     {
       address: '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
       decimals: 18,
+      featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
       address: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
       decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
