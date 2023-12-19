@@ -148,7 +148,7 @@ export const AppLayout = ({
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
-  const { account } = useAuth()
+  const { account, email } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
   const config = useConfig()
   const { openConnectModal } = useConnectModal()
@@ -233,8 +233,12 @@ export const AppLayout = ({
                         }}
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-brand-ui-primary">
-                            {addressMinify(userEns)}
+                          <span className="text-brand-ui-primary text-right">
+                            {userEns === account
+                              ? email
+                                ? email
+                                : addressMinify(userEns)
+                              : userEns}
                           </span>
                           <DisconnectIcon
                             className="text-brand-ui-primary"
