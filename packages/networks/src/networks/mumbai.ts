@@ -71,6 +71,7 @@ export const mumbai: NetworkConfig = {
     {
       address: '0x0FA8781a83E46826621b3BC094Ea2A0212e71B23',
       decimals: 6,
+      featured: true,
       mainnetAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       name: 'USD Coin',
       symbol: 'USDC',
@@ -78,6 +79,7 @@ export const mumbai: NetworkConfig = {
     {
       address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa',
       decimals: 18,
+      featured: true,
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       name: 'Wrapped Ether',
       symbol: 'WETH',
@@ -85,6 +87,7 @@ export const mumbai: NetworkConfig = {
     {
       address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
       decimals: 18,
+      featured: true,
       mainnetAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
       name: 'Wrapped Matic',
       symbol: 'WMATIC',
@@ -92,6 +95,7 @@ export const mumbai: NetworkConfig = {
     {
       address: '0xcB1e72786A6eb3b44C2a2429e317c8a2462CFeb1',
       decimals: 18,
+      featured: true,
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
       name: 'Dai Stablecoin',
       symbol: 'DAI',
