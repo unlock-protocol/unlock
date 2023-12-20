@@ -93,9 +93,15 @@ export const optimism: NetworkConfig = {
     {
       address: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
       decimals: 6,
+      name: 'USD Coin (Bridged from Ethereum)',
+      symbol: 'USDC.e',
+    },
+    {
+      address: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+      decimals: 6,
       featured: true,
       name: 'USD Coin',
-      symbol: 'USDC',
+      symbol: 'USDC.e',
     },
     {
       address: '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58',
