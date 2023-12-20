@@ -9,7 +9,7 @@ module.exports = ([recipientAddress]) => {
   const amount = ethers.utils.parseUnits('0.01', 18)
 
   return {
-    proposalName: `#000 Retroactive Funding: transfer ${ethers.utils.formatEther(
+    proposalName: `Retroactive Funding: transfer ${ethers.utils.formatEther(
       amount
     )} UDT to ${recipientAddress}`,
     calls: [
