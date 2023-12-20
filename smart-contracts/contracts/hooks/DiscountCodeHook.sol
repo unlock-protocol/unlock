@@ -71,6 +71,9 @@ contract DiscountHook {
     uint256 /*minKeyPrice*/,
     uint256 /*pricePaid*/
   ) external {
+    if (signature.length == 0) {
+      return;
+    }
     address signer = getSigner(toString(recipient), signature);
     counters[msg.sender][signer] += 1;
   }
