@@ -81,12 +81,14 @@ export const gnosis: NetworkConfig = {
     {
       address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
       decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
       address: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
       decimals: 6,
+      featured: true,
       name: 'Tether USD',
       symbol: 'USDT',
     },
