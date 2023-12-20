@@ -1,4 +1,5 @@
-const { ethers } = require('ethers')
+const { ethers, Interface } = require('ethers')
+const { ADDRESS_ZERO } = require('./constants')
 
 const createLockCalldata = async ({
   args, // func args to unpack
@@ -6,7 +7,7 @@ const createLockCalldata = async ({
   signature = 'initialize(address,uint256,address,uint256,uint256,string)', // solidity signature string
 }) => {
   const abi = [`function ${signature}`]
-  const iface = new ethers.Interface(abi)
+  const { interface: iface } = new ethers.Contract(ADDRESS_ZERO, abi)
   const calldata = await iface.encodeFunctionData(signature, [from, ...args])
   return calldata
 }
