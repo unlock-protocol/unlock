@@ -60,7 +60,7 @@ export const CancelAndRefundModal = ({
       lockAddress,
       tokenId,
     }
-    if (subscription.type === 'Stripe') {
+    if (subscription.type === 'stripe') {
       await storage.cancelSubscription(network, lockAddress, tokenId)
     } else {
       const walletService = await getWalletService(network)
