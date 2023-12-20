@@ -17,6 +17,7 @@ import { monitor } from './tasks/monitor'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
+import { downloadReceipts } from './tasks/receipts'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -70,6 +71,7 @@ export async function startWorker() {
       sendHook,
       fiatRenewalJob,
       cryptoRenewalJob,
+      downloadReceipts,
     },
   })
 
