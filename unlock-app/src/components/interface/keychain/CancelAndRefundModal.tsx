@@ -95,6 +95,9 @@ export const CancelAndRefundModal = ({
 
   if (!lock) return <span>No lock selected</span>
 
+  // was this purchased by card?
+  // if so, what happens?
+
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {isLoading ? (
@@ -119,7 +122,7 @@ export const CancelAndRefundModal = ({
                     <span>
                       {currency} {parseFloat(`${refundAmount}`!).toFixed(3)}
                     </span>
-                    {` will be refunded, Do you want to proceed?`}
+                    {` will be refunded, do you want to proceed?`}
                   </>
                 ) : (
                   <span>
