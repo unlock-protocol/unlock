@@ -122,6 +122,9 @@ export const KeyInfo = ({
     }
   )
 
+  const isExpired =
+    expiration !== MAX_UINT && Number(expiration) > new Date().getTime() / 1000
+
   const { data: keyPrice, isLoading: isKeyPriceLoading } = useQuery(
     ['keyPrice', lock.address, network],
     async () => {
@@ -252,14 +255,16 @@ export const KeyInfo = ({
               balance={subscription.balance as any}
             />
           )}
-        {lock.expirationDuration !== MAX_UINT && (
-          <KeyItem label="Duration">
-            {durationAsText(lock.expirationDuration)}
-          </KeyItem>
-        )}
+        {lock.expirationDuration !== MAX_UINT &&
+          lock.expirationDuration !== -1 && (
+            <KeyItem label="Duration">
+              {durationAsText(lock.expirationDuration)}
+            </KeyItem>
+          )}
       </div>
 
-      {subscription &&
+      {!isExpired &&
+        subscription &&
         (subscription.type === 'crypto' ||
           Number(subscription.approvedRenewals) > 0) && (
           <Button onClick={() => setShowCancelModal(true)}>
