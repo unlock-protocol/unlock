@@ -100,7 +100,7 @@ export const linea: NetworkConfig = {
       decimals: 6,
       featured: true,
       name: 'USD Coin',
-      symbol: 'USDC',
+      symbol: 'USDC.e',
     },
     {
       address: '0x3aAB2285ddcDdaD8edf438C1bAB47e1a9D05a9b4',
