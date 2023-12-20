@@ -88,6 +88,12 @@ export const arbitrum: NetworkConfig = {
     {
       address: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
       decimals: 6,
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+    },
+    {
+      address: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+      decimals: 6,
       featured: true,
       name: 'USD Coin',
       symbol: 'USDC',

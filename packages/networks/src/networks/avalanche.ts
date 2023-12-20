@@ -72,6 +72,12 @@ export const avalanche: NetworkConfig = {
     {
       address: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
       decimals: 6,
+      name: 'Bridged USDC',
+      symbol: 'USDC.e',
+    },
+    {
+      address: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
+      decimals: 6,
       featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
