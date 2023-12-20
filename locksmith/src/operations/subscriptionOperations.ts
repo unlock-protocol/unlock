@@ -9,9 +9,9 @@ import {
 } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import { KeySubscription } from '../models'
-import { Op } from 'sequelize'
 
 import dayjs from '../config/dayjs'
+import { ethereumAddress } from '../utils/normalizer'
 
 interface Amount {
   amount: string
@@ -25,7 +25,7 @@ export interface Subscription {
   price: Amount
   possibleRenewals: string
   approvedRenewals: string
-  type: 'Crypto' | 'Stripe'
+  type: 'crypto' | 'stripe'
 }
 
 interface GetSubscriptionsProps {
@@ -54,26 +54,55 @@ export const getSubscriptionsForLockByOwner = async ({
   )
 
   // If no key is found or not erc20 or version < 11 which we don't fully support, return nothing.
-  if (
-    !key ||
-    key.lock.tokenAddress === ethers.constants.AddressZero ||
-    parseInt(key.lock.version) < 11
-  ) {
+  if (!key || parseInt(key.lock.version) < 11) {
     return []
   }
 
   const web3Service = new Web3Service(networks)
   const provider = web3Service.providerForNetwork(network)
-  const [userBalance, decimals, userAllowance, symbol] = await Promise.all([
-    getErc20BalanceForAddress(key.lock.tokenAddress, key.owner, provider),
-    getErc20Decimals(key.lock.tokenAddress, provider),
-    getAllowance(key.lock.tokenAddress, key.lock.address, provider, key.owner),
-    getErc20TokenSymbol(key.lock.tokenAddress, provider),
-  ])
-
-  const balance = ethers.utils.formatUnits(userBalance, decimals)
 
   const price = key.lock.price
+
+  let userBalance,
+    decimals,
+    userAllowance,
+    symbol,
+    numberOfRenewalsApprovedValue,
+    numberOfRenewalsApproved
+
+  if (
+    key.lock.tokenAddress &&
+    key.lock.tokenAddress !== ethers.constants.AddressZero
+  ) {
+    ;[userBalance, decimals, userAllowance, symbol] = await Promise.all([
+      getErc20BalanceForAddress(key.lock.tokenAddress, key.owner, provider),
+      getErc20Decimals(key.lock.tokenAddress, provider),
+      getAllowance(
+        key.lock.tokenAddress,
+        key.lock.address,
+        provider,
+        key.owner
+      ),
+      getErc20TokenSymbol(key.lock.tokenAddress, provider),
+    ])
+
+    // Approved renewals
+    numberOfRenewalsApprovedValue =
+      userAllowance.gt(0) && parseFloat(price) > 0
+        ? userAllowance.div(price)
+        : ethers.BigNumber.from(0)
+
+    numberOfRenewalsApproved = numberOfRenewalsApprovedValue.toString()
+  } else {
+    userBalance = await provider.getBalance(key.owner)
+    decimals = networks[network].nativeCurrency.decimals
+    userAllowance = 0
+    symbol = networks[network].nativeCurrency.symbol
+    numberOfRenewalsApprovedValue = '0'
+    numberOfRenewalsApproved = '0'
+  }
+
+  const balance = ethers.utils.formatUnits(userBalance, decimals)
 
   const next =
     key.expiration === ethers.constants.MaxUint256.toString()
@@ -81,14 +110,6 @@ export const getSubscriptionsForLockByOwner = async ({
       : dayjs.unix(key.expiration).isBefore(dayjs())
       ? null
       : parseInt(key.expiration)
-
-  // Approved renewals
-  const numberOfRenewalsApprovedValue =
-    userAllowance.gt(0) && parseFloat(price) > 0
-      ? userAllowance.div(price)
-      : ethers.BigNumber.from(0)
-
-  const numberOfRenewalsApproved = numberOfRenewalsApprovedValue.toString()
 
   const info = {
     next,
@@ -109,10 +130,7 @@ export const getSubscriptionsForLockByOwner = async ({
       keyId: tokenId,
       lockAddress,
       network,
-      userAddress: key.owner,
-      recurring: {
-        [Op.gt]: 0,
-      },
+      userAddress: ethereumAddress(key.owner),
     },
   })
 
@@ -126,7 +144,7 @@ export const getSubscriptionsForLockByOwner = async ({
       ...info,
       approvedRenewals,
       possibleRenewals: approvedRenewals,
-      type: 'Stripe',
+      type: 'stripe',
     })
   }
 
@@ -141,7 +159,7 @@ export const getSubscriptionsForLockByOwner = async ({
     ...info,
     approvedRenewals: numberOfRenewalsApproved,
     possibleRenewals,
-    type: 'Crypto',
+    type: 'crypto',
   }
 
   subscriptions.push(cryptoSubscription)

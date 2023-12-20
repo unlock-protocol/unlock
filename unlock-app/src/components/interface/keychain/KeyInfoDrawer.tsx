@@ -1,5 +1,5 @@
-import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
-import React, { ReactNode } from 'react'
+import { Button, Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
+import React, { ReactNode, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Property } from '../locks/metadata/custom/AddProperty'
 import { Level } from '../locks/metadata/custom/AddLevel'
@@ -28,6 +28,7 @@ import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
 import { getEventDate, getEventEndDate } from '~/components/content/event/utils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { CancelAndRefundModal } from './CancelAndRefundModal'
 
 dayjs.extend(relative)
 dayjs.extend(duration)
@@ -101,6 +102,7 @@ export const KeyInfo = ({
   expiration,
   imageURL,
 }: KeyInfoProps) => {
+  const [showCancelModal, setShowCancelModal] = useState(false)
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const config = useConfig()
@@ -136,11 +138,8 @@ export const KeyInfo = ({
         }
       } else {
         const native = config.networks[network]?.nativeCurrency
-        const decimals = native.decimals
-        const amount = ethers.utils.formatUnits(
-          lock.price,
-          native.decimals || 18
-        )
+        const decimals = native.decimals || 18
+        const amount = ethers.utils.formatUnits(lock.price, decimals)
         const symbol = native.symbol || ''
         return {
           amount,
@@ -151,25 +150,28 @@ export const KeyInfo = ({
     }
   )
 
-  const { data: subscriptions, isInitialLoading: isSubscriptionsLoading } =
-    useQuery(
-      ['subscriptions', lock.address, tokenId, network],
-      async () => {
-        const response = await storage.getSubscription(
-          network,
-          lock.address,
-          tokenId
-        )
-        return response.data.subscriptions
+  const {
+    data: subscriptions,
+    isInitialLoading: isSubscriptionsLoading,
+    refetch,
+  } = useQuery(
+    ['subscriptions', lock.address, tokenId, network],
+    async () => {
+      const response = await storage.getSubscription(
+        network,
+        lock.address,
+        tokenId
+      )
+      return response.data.subscriptions
+    },
+    {
+      retry: 0,
+      enabled: !!(lock?.address && account),
+      onError(error) {
+        console.error(error)
       },
-      {
-        retry: 0,
-        enabled: !!(lock?.address && account),
-        onError(error) {
-          console.error(error)
-        },
-      }
-    )
+    }
+  )
 
   const isLoading =
     isKeyMetadataLoading && isKeyPriceLoading && isSubscriptionsLoading
@@ -192,15 +194,23 @@ export const KeyInfo = ({
     Object.keys(keyMetadata?.userMetadata?.protected || {}).length === 0 &&
     Object.keys(keyMetadata?.userMetadata?.public || {}).length === 0
 
-  const isTicketInfoNotAvailable = Object.keys(ticket || {}).length === 0
-
-  const starDate = getEventDate(ticket)
+  const startDate = getEventDate(ticket)
   const endDate = getEventEndDate(ticket)
 
-  const isSameDay = dayjs(starDate).isSame(endDate, 'day')
+  const isSameDay = dayjs(startDate).isSame(endDate, 'day')
 
   return (
     <div className="grid gap-6">
+      <CancelAndRefundModal
+        isOpen={showCancelModal}
+        setIsOpen={setShowCancelModal}
+        lock={lock}
+        tokenId={tokenId}
+        account={account}
+        network={network}
+        subscription={subscription}
+        onExpireAndRefund={refetch}
+      />
       <header className="flex flex-col items-center w-full gap-6">
         <Avatar className="flex items-center justify-center">
           <AvatarImage
@@ -233,34 +243,67 @@ export const KeyInfo = ({
             {`${keyPrice.amount} ${keyPrice.symbol}`}
           </KeyItem>
         )}
-        {subscription && (
-          <KeyRenewal
-            possibleRenewals={subscription.possibleRenewals!}
-            approvedRenewals={subscription.approvedRenewals!}
-            balance={subscription.balance as any}
-          />
-        )}
+        {subscription &&
+          subscription.price?.symbol !==
+            config.networks[network]?.nativeCurrency.symbol && (
+            <KeyRenewal
+              possibleRenewals={subscription.possibleRenewals!}
+              approvedRenewals={subscription.approvedRenewals!}
+              balance={subscription.balance as any}
+            />
+          )}
         {lock.expirationDuration !== MAX_UINT && (
-          <KeyItem label="Renewal Duration">
+          <KeyItem label="Duration">
             {durationAsText(lock.expirationDuration)}
           </KeyItem>
         )}
       </div>
-      {!isTicketInfoNotAvailable && (
+
+      {subscription &&
+        (subscription.type === 'crypto' ||
+          Number(subscription.approvedRenewals) > 0) && (
+          <Button onClick={() => setShowCancelModal(true)}>
+            Cancel {startDate ? 'Ticket' : 'Membership'}
+          </Button>
+        )}
+
+      {/* User info */}
+      {!isUserInfoNotAvailable && (
+        <div>
+          <h3 className="text-lg font-bold"> User Information </h3>
+          <div className="divide-y divide-brand-dark">
+            {Object.entries(keyMetadata?.userMetadata?.public || {}).map(
+              ([key, value]: any) => (
+                <KeyItem label={key} key={key}>
+                  {value || null}
+                </KeyItem>
+              )
+            )}
+            {Object.entries(keyMetadata?.userMetadata?.protected || {}).map(
+              ([key, value]: any) => (
+                <KeyItem label={key} key={key}>
+                  {value || null}
+                </KeyItem>
+              )
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Event Details */}
+      {startDate && (
         <div>
           <h3 className="text-lg font-bold"> Event Information </h3>
           <div className="divide-y divide-brand-dark">
-            {starDate && (
-              <KeyItem label={isSameDay ? 'Event Date' : 'Event Start Date'}>
-                {starDate?.toLocaleDateString(undefined, {
-                  timeZone: ticket?.event_timezone,
-                  weekday: 'long',
-                  year: 'numeric',
-                  month: 'short',
-                  day: 'numeric',
-                })}
-              </KeyItem>
-            )}
+            <KeyItem label={isSameDay ? 'Event Date' : 'Event Start Date'}>
+              {startDate?.toLocaleDateString(undefined, {
+                timeZone: ticket?.event_timezone,
+                weekday: 'long',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </KeyItem>
             {endDate && !isSameDay && (
               <KeyItem label="Event End Date">
                 {endDate?.toLocaleDateString(undefined, {
@@ -282,7 +325,7 @@ export const KeyInfo = ({
                 <KeyItem label={isSameDay ? 'Event Time' : 'Event Start Time'}>
                   <div className="flex gap-1">
                     <span>
-                      {starDate?.toLocaleTimeString(
+                      {startDate?.toLocaleTimeString(
                         navigator.language || 'en-US',
                         {
                           timeZone: ticket.event_timezone,
@@ -326,27 +369,7 @@ export const KeyInfo = ({
         </div>
       )}
 
-      {!isUserInfoNotAvailable && (
-        <div>
-          <h3 className="text-lg font-bold"> User Information </h3>
-          <div className="divide-y divide-brand-dark">
-            {Object.entries(keyMetadata?.userMetadata?.public || {}).map(
-              ([key, value]: any) => (
-                <KeyItem label={key} key={key}>
-                  {value || null}
-                </KeyItem>
-              )
-            )}
-            {Object.entries(keyMetadata?.userMetadata?.protected || {}).map(
-              ([key, value]: any) => (
-                <KeyItem label={key} key={key}>
-                  {value || null}
-                </KeyItem>
-              )
-            )}
-          </div>
-        </div>
-      )}
+      {/* Other Metadata */}
       <div className="grid gap-6">
         {!!properties?.length && (
           <Disclosure label="Properties">

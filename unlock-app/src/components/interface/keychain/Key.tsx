@@ -6,7 +6,6 @@ import {
   Root as Avatar,
   Fallback as AvatarFallback,
 } from '@radix-ui/react-avatar'
-import { BsTrashFill as CancelIcon } from 'react-icons/bs'
 import {
   FaWallet as WalletIcon,
   FaCheckCircle as CheckIcon,
@@ -24,7 +23,6 @@ import WedlockServiceContext from '../../../contexts/WedlocksContext'
 import { useAuth } from '../../../contexts/AuthenticationContext'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
-import { CancelAndRefundModal } from './CancelAndRefundModal'
 import { KeyInfoDrawer } from './KeyInfoDrawer'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
@@ -37,10 +35,7 @@ import {
   RiNavigationFill as ExploreIcon,
   RiQrCodeLine as QrCodeIcon,
 } from 'react-icons/ri'
-import {
-  RiFileCopyLine as CopyLineIcon,
-  RiExternalLinkFill as ExternalIcon,
-} from 'react-icons/ri'
+import { RiFileCopyLine as CopyLineIcon } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
@@ -76,12 +71,9 @@ function Key({ ownedKey, account, network }: Props) {
   const [showingQR, setShowingQR] = useState(false)
   const [showMoreInfo, setShowMoreInfo] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
-  const [showCancelModal, setShowCancelModal] = useState(false)
-  const [expireAndRefunded, setExpireAndRefunded] = useState(false)
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
   const [showApplePassModal, setShowApplePassModal] = useState(false)
   const [applePassUrl, setPassUrl] = useState<string>()
-  const isKeyExpired = isExpired || expireAndRefunded
 
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
@@ -89,6 +81,7 @@ function Key({ ownedKey, account, network }: Props) {
       return web3Service.getLock(lock.address, network)
     }
   )
+
   const metadata = useMetadata(lock.address, tokenId, network)
   const [_, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -169,8 +162,6 @@ function Key({ ownedKey, account, network }: Props) {
       ? baseSymbol
       : lockTickerSymbol(lockData, baseSymbol)
 
-  const isRefundable = !isLockDataLoading && !isKeyExpired
-
   const networkName = networks[ownedKey.network]?.name
 
   const { isLoading: isLoadingUrl, data: receiptsPageUrl } =
@@ -193,22 +184,16 @@ function Key({ ownedKey, account, network }: Props) {
         isOpen={showMoreInfo}
         setIsOpen={setShowMoreInfo}
         account={account}
-        lock={lock}
+        lock={{
+          ...lock,
+          ...lockData,
+        }}
         tokenId={tokenId}
         network={network}
         expiration={expiration}
         imageURL={metadata.image}
       />
-      <CancelAndRefundModal
-        isOpen={showCancelModal}
-        setIsOpen={setShowCancelModal}
-        lock={lock}
-        tokenId={tokenId}
-        account={account}
-        currency={symbol}
-        network={network}
-        onExpireAndRefund={() => setExpireAndRefunded(true)}
-      />
+
       <QRModal
         lock={lock}
         isOpen={!!(showingQR && signature)}
@@ -234,7 +219,7 @@ function Key({ ownedKey, account, network }: Props) {
       />
       <div className="flex items-center justify-between">
         <div>
-          {isKeyExpired ? (
+          {isExpired ? (
             <Badge
               size="small"
               variant="red"
@@ -268,7 +253,7 @@ function Key({ ownedKey, account, network }: Props) {
                 variant="outlined-primary"
                 iconLeft={<ToolsIcon key="options" />}
               >
-                Options
+                Actions
               </Button>
             </Menu.Button>
             <Transition
@@ -410,40 +395,25 @@ function Key({ ownedKey, account, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  <Menu.Item disabled={!isExtendable}>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setShowExtendMembership(true)
-                        }}
-                      >
-                        <ExtendMembershipIcon />
-                        {isRenewable && !isKeyExpired
-                          ? 'Renew membership'
-                          : 'Extend membership'}
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
-                </div>
-                <div className="p-1">
-                  <Menu.Item disabled={!isRefundable}>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setShowCancelModal(!showCancelModal)
-                        }}
-                      >
-                        <CancelIcon />
-                        Cancel and refund
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
+                  {!isUnlockAccount && (
+                    <Menu.Item disabled={!isExtendable}>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled}
+                          active={active}
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setShowExtendMembership(true)
+                          }}
+                        >
+                          <ExtendMembershipIcon />
+                          {isRenewable && !isExpired
+                            ? 'Renew membership'
+                            : 'Extend membership'}
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  )}
                 </div>
               </Menu.Items>
             </Transition>
@@ -486,16 +456,6 @@ function Key({ ownedKey, account, network }: Props) {
               <CopyLineIcon size={18} />
             </button>
           </div>
-          <a
-            href={config.networks?.[network]?.explorer?.urls.address(
-              lock.address
-            )}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-ui-main-500 px-2 py-0.5 rounded-lg bg-ui-main-50 hover:bg-ui-main-100 hover:text-ui-main-600"
-          >
-            View <ExternalIcon size={18} />
-          </a>
         </div>
         <h3 className="text-xl font-bold rounded">{lock.name}</h3>
         {networkName && (

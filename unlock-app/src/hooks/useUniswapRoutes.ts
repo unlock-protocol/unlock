@@ -148,10 +148,13 @@ export const useUniswapRoutes = ({
               route.tokenIn instanceof Token ? route.tokenIn.address : null,
               route.network
             )
+            console.log(balance)
             // If the balance is less than the quote, we cannot make the swap.
             if (Number(balance) < Number(response.quote.toFixed())) {
               console.log(
-                `Insufficient balance of ${response.quote.currency.symbol}`
+                `Insufficient balance of ${
+                  response.quote.currency.symbol
+                }, ${Number(balance)} for ${Number(response.quote.toFixed())}`
               )
               return null
             }

@@ -4,16 +4,17 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useKeychain } from '~/hooks/useKeychain'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { storage } from '~/config/storage'
 
 export interface CancelAndRefundProps {
   isOpen: boolean
   lock: any
   setIsOpen: (open: boolean) => void
   account: string
-  currency: string
   tokenId: string
   network: number
   onExpireAndRefund?: () => void
+  subscription: any
 }
 
 const MAX_TRANSFER_FEE = 10000
@@ -23,10 +24,10 @@ export const CancelAndRefundModal = ({
   lock,
   setIsOpen,
   account: owner,
-  currency,
   tokenId,
   network,
   onExpireAndRefund,
+  subscription,
 }: CancelAndRefundProps) => {
   const { getWalletService } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
@@ -43,7 +44,7 @@ export const CancelAndRefundModal = ({
     ['getAmounts', lockAddress],
     getAmounts,
     {
-      enabled: isOpen, // execute query only when the modal is open
+      enabled: isOpen && subscription.type !== 'Stripe',
       refetchInterval: false,
       meta: {
         errorMessage:
@@ -59,18 +60,22 @@ export const CancelAndRefundModal = ({
       lockAddress,
       tokenId,
     }
-    const walletService = await getWalletService(network)
+    if (subscription.type === 'Stripe') {
+      await storage.cancelSubscription(network, lockAddress, tokenId)
+    } else {
+      const walletService = await getWalletService(network)
 
-    return walletService.cancelAndRefund(
-      params,
-      {} /** transactionParams */,
-      () => true
-    )
+      return walletService.cancelAndRefund(
+        params,
+        {} /** transactionParams */,
+        () => true
+      )
+    }
   }
 
   const cancelRefundMutation = useMutation(cancelAndRefund, {
     onSuccess: () => {
-      ToastHelper.success('Key cancelled and successfully refunded.')
+      ToastHelper.success('Key cancelled.')
       setIsOpen(false)
       if (typeof onExpireAndRefund === 'function') {
         onExpireAndRefund()
@@ -86,17 +91,12 @@ export const CancelAndRefundModal = ({
     },
   })
 
-  const hasMaxCancellationFee = Number(transferFee) >= MAX_TRANSFER_FEE
-  const isRefundable =
-    !hasMaxCancellationFee && refundAmount <= Number(lockBalance)
+  const hasRefund =
+    Number(transferFee) < MAX_TRANSFER_FEE || subscription.type !== 'Stripe'
+  const isRefundable = refundAmount <= Number(lockBalance)
 
   const buttonDisabled =
     isLoading || !isRefundable || cancelRefundMutation?.isLoading
-
-  if (!lock) return <span>No lock selected</span>
-
-  // was this purchased by card?
-  // if so, what happens?
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -115,21 +115,23 @@ export const CancelAndRefundModal = ({
                 Cancel and Refund
               </h3>
               <p className="mt-2 text-md">
-                {hasMaxCancellationFee ? (
+                {hasRefund ? (
                   <span>This key is not refundable.</span>
                 ) : isRefundable ? (
                   <>
                     <span>
-                      {currency} {parseFloat(`${refundAmount}`!).toFixed(3)}
+                      {lock.currencySymbol}{' '}
+                      {parseFloat(`${refundAmount}`!).toFixed(3)}
                     </span>
-                    {` will be refunded, do you want to proceed?`}
+                    {` will be refunded.`}
                   </>
                 ) : (
                   <span>
                     Refund is not possible because the contract does not have
                     funds to cover it.
                   </span>
-                )}
+                )}{' '}
+                Do you want to proceed?
               </p>
             </div>
             <Button
