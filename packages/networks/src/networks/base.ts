@@ -27,7 +27,7 @@ export const base: NetworkConfig = {
         name: 'Password required',
       },
       {
-        address: '0x7311378caC9daEA75188b6053Cb7d462F328e09C',
+        address: '0x8c573E1A64D7C6726B3b2E119206e9FD1f5Bc0a0',
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
@@ -75,12 +75,14 @@ export const base: NetworkConfig = {
     {
       address: '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
       decimals: 18,
+      featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
       address: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
       decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
