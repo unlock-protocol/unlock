@@ -39,7 +39,8 @@ export const useProvider = (config: any) => {
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
 
-  const isUnlockAccount = !!provider?.isUnlock
+  const isUnlockAccount =
+    !!provider?.isUnlock || (!provider && getStorage('provider') === 'UNLOCK')
   const email = provider?.emailAddress || getStorage('email')
   const encryptedPrivateKey = provider?.passwordEncryptedPrivateKey
 

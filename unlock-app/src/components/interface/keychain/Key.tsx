@@ -69,10 +69,9 @@ export interface Props {
 function Key({ ownedKey, account, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { getWalletService } = useAuth()
+  const { getWalletService, isUnlockAccount, watchAsset } = useAuth()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
-  const { watchAsset } = useAuth()
   const config = useConfig()
   const [showingQR, setShowingQR] = useState(false)
   const [showMoreInfo, setShowMoreInfo] = useState(false)
@@ -307,18 +306,20 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  <Menu.Item>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={addToWallet}
-                      >
-                        <WalletIcon />
-                        Add to my crypto wallet
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
+                  {!isUnlockAccount && (
+                    <Menu.Item>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled}
+                          active={active}
+                          onClick={addToWallet}
+                        >
+                          <WalletIcon />
+                          Add to my crypto wallet
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  )}
                   {tokenId && isEthPassSupported(network) && (
                     <>
                       <Menu.Item>
