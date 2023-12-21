@@ -1,7 +1,6 @@
 const { ethers } = require('ethers')
 const { MAX_UINT } = require('./constants')
 
-console.log(ethers)
 let publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days
   expirationTimestamp: 0, // Not used

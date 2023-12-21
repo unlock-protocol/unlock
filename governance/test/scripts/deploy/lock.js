@@ -6,6 +6,7 @@ const { assert } = require('chai')
 const {
   lockFixtures: Locks,
   ADDRESS_ZERO,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 const deployLock = require('../../../scripts/deployments/lock')
 
@@ -60,7 +61,6 @@ describe('Scripts/deploy:lock', () => {
       UnlockV9.bytecode
     )
     const unlock = await Unlock.deploy()
-    await unlock.deployed()
 
     // deploy template
     PublicLock = await ethers.getContractFactory(
@@ -68,11 +68,12 @@ describe('Scripts/deploy:lock', () => {
       PublicLockV8.bytecode
     )
     const publicLock = await PublicLock.deploy()
-    await publicLock.deployed()
 
     // set unlock
     await unlock.initialize(unlockOwner.address)
-    await unlock.connect(unlockOwner).setLockTemplate(publicLock.address)
+    await unlock
+      .connect(unlockOwner)
+      .setLockTemplate(await publicLock.getAddress())
 
     // deploy serializer
     const LockSerializerFactory = await ethers.getContractFactory(
@@ -80,7 +81,6 @@ describe('Scripts/deploy:lock', () => {
       LockSerializer.bytecode
     )
     serializer = await LockSerializerFactory.deploy()
-    await serializer.deployed()
 
     // deploy locks
     await Promise.all(
@@ -90,20 +90,20 @@ describe('Scripts/deploy:lock', () => {
           const lockArgs = [
             Locks[name].expirationDuration,
             ADDRESS_ZERO,
-            Locks[name].keyPrice,
+            Locks[name].keyPrice.toString(),
             Locks[name].maxNumberOfKeys,
             Locks[name].lockName,
             ethers.hexlify(ethers.randomBytes(12)),
           ]
           const tx = await unlock.createLock(...lockArgs)
-          const { events } = await tx.wait()
-          const { args } = events.find((v) => v.event === 'NewLock')
+          const receipt = await tx.wait()
+          const { args } = await getEvent(receipt, 'NewLock')
           locks[name] = await PublicLock.attach(args.newLockAddress)
           locks[name].params = Locks[name]
         })
     )
 
-    unlockAddress = unlock.address
+    unlockAddress = await unlock.getAddress()
   })
 
   it('identical init args', async () => {
@@ -134,7 +134,7 @@ describe('Scripts/deploy:lock', () => {
     await lock.connect(manager).updateRefundPenalty(2222, 2222)
     await lock.connect(manager).updateTransferFee(2222)
 
-    const serialized = await serializer.serialize(lock.address)
+    const serialized = await serializer.serialize(await lock.getAddress())
 
     // redeploy our lock
     const newLockAddress = await deployLock({
