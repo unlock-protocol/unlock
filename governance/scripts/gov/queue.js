@@ -6,9 +6,11 @@ const {
   getProposalState,
   getProposalVotes,
   getProposalId,
+  etaToDate,
 } = require('../../helpers/gov')
 
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ proposal, govAddress }) {
   // env settings
@@ -30,9 +32,9 @@ async function main({ proposal, govAddress }) {
     const currentBlock = await ethers.provider.getBlockNumber()
     if (currentBlock < deadline) {
       console.log(
-        `GOV QUEUE > closing voting period (advancing to block ${deadline.toNumber()})`
+        `GOV QUEUE > closing voting period (advancing to block ${deadline})`
       )
-      await mineUpTo(deadline.toNumber() + 1)
+      await mineUpTo(deadline + BigInt(1))
       state = await getProposalState(proposalId, govAddress)
     }
   }
@@ -45,20 +47,16 @@ async function main({ proposal, govAddress }) {
   // queue proposal
   if (state === 'Succeeded') {
     const tx = await queueProposal({ proposal, govAddress })
-    const { events, transactionHash } = await tx.wait()
-    const evt = events.find((v) => v.event === 'ProposalQueued')
-    const { eta } = evt.args
+    const receipt = await tx.wait()
+    const { event, hash } = await getEvent(receipt, 'ProposalQueued')
+    const { eta } = event.args
     console.log(
-      `GOV QUEUE > Proposal queued. ETA :${new Date(
-        eta.toNumber() * 1000
-      )} (tx: ${transactionHash})`
+      `GOV QUEUE > Proposal queued. ETA :${etaToDate(eta)} (tx: ${hash})`
     )
   } else if (state === 'Queued') {
     const eta = await gov.proposalEta(proposalId)
     console.log(
-      `GOV QUEUE > Proposal is queued for execution. ETA :${new Date(
-        eta.toNumber() * 1000
-      )}`
+      `GOV QUEUE > Proposal is queued for execution. ETA :${etaToDate(eta)}`
     )
   } else if (state === 'Active') {
     const deadline = await gov.proposalDeadline(proposalId)
