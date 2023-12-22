@@ -16,6 +16,7 @@ export const useLockManager = ({
   lockAddress,
   network,
 }: UseLocKManagerProps) => {
+  console.log({ lockAddress, network })
   const web3Service = useWeb3Service()
   const { account } = useAuth()
 

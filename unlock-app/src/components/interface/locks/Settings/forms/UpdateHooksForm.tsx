@@ -11,6 +11,7 @@ import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
 import { GuildContractHook } from './hooksComponents/GuildContractHook'
+import { PromoCodeHook } from './hooksComponents/PromoCodeHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
 import { ConnectForm } from '../../CheckoutUrl/ChooseConfiguration'
 
@@ -84,6 +85,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Guild.xyz',
         value: HookType.GUILD,
         component: (args) => <GuildContractHook {...args} />,
+      },
+      {
+        label: 'Discount code',
+        value: HookType.PROMO_CODE_CAPPED,
+        component: (args) => <PromoCodeHook {...args} />,
       },
     ],
   },

@@ -17,6 +17,7 @@ export class LockSetting extends Model<
   declare checkoutConfigId?: string | null
   declare crossmintClientId?: string | null
   declare hookGuildId?: number | null
+  declare hasHooks?: any | null
   declare unlockFeeChargedToUser?: boolean
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
@@ -81,6 +82,11 @@ LockSetting.init(
       type: DataTypes.STRING,
       allowNull: false,
       defaultValue: 'usd', // let's use 'usd' as default currency for all the locks that does not have the value set
+    },
+    hooks: {
+      type: DataTypes.JSON,
+      allowNull: true,
+      defaultValue: {},
     },
     createdAt: {
       allowNull: false,
