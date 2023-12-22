@@ -234,7 +234,7 @@ export function Connected({
         onClick={signToSignIn}
         className="w-full"
       >
-        Sign the message
+        Continue
       </Button>
     )
   }
