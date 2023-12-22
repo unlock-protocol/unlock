@@ -12,6 +12,7 @@ import uniswap from './uniswap'
 import unlock from './unlock'
 import upgrades from './upgrades'
 import localhost from './localhost'
+import events from './events'
 
 module.exports = {
   ...balance,
@@ -28,4 +29,5 @@ module.exports = {
   ...unlock,
   ...upgrades,
   ...localhost,
+  ...events,
 }
