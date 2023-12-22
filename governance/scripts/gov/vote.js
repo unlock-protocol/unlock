@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { mineUpTo } = require('@nomicfoundation/hardhat-network-helpers')
 const { getProposalState, getDelegates } = require('../../helpers/gov')
-const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const { impersonate, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 
 const vote = async (gov, voter, proposalId) => {
@@ -9,32 +9,29 @@ const vote = async (gov, voter, proposalId) => {
 
   console.log(
     'GOV VOTE >',
-    `voter ${voter.address}: power ${ethers.utils.formatUnits(
+    `voter ${voter.address}: power ${ethers.formatUnits(
       await gov.getVotes(voter.address, currentBlock - 1),
       18
     )} `,
-    `(quorum ${ethers.utils.formatUnits(
-      await gov.quorum(currentBlock - 1),
-      18
-    )})`
+    `(quorum ${ethers.formatUnits(await gov.quorum(currentBlock - 1), 18)})`
   )
 
   const tx = await gov.connect(voter).castVote(proposalId, '1')
-  const { events, transactionHash } = await tx.wait()
-  const evt = events.find((v) => v.event === 'VoteCast')
+  const receipt = await tx.wait()
+  const { event, hash } = await getEvent(receipt, 'VoteCast')
 
   // double check vote happened
   const hasVotedAfter = await gov.hasVoted(proposalId, voter.address)
 
   // check for failure
-  if (!evt || !hasVotedAfter) {
+  if (!event || !hasVotedAfter) {
     throw new Error('GOV VOTE > Vote not casted.')
   }
   // eslint-disable-next-line no-console
   console.log(
     `GOV VOTE > vote casted: ${
       voter.address
-    } approves (weigth: ${evt.args.weight.toString()}) (txid: ${transactionHash})`
+    } approves (weigth: ${event.args.weight.toString()}) (txid: ${hash})`
   )
 }
 
@@ -72,8 +69,8 @@ async function main({ voterAddress, proposalId, govAddress, proposalBlock }) {
       const votingDelay = await gov.votingDelay()
       const currentBlock = await ethers.provider.getBlockNumber()
       // if proposal block not specified, default to currentBlock
-      const originBlock = ethers.BigNumber.from(proposalBlock || currentBlock)
-      const targetBlock = originBlock.add(votingDelay).add('1')
+      const originBlock = BigInt(proposalBlock || currentBlock)
+      const targetBlock = originBlock + votingDelay + BigInt('1')
       console.log(
         `GOV VOTE (dev): Skipping voting delay. Advancing time from block ${currentBlock} to ${targetBlock}`
       )

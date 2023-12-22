@@ -11,7 +11,7 @@ async function main({ account, udtAddress }) {
   // eslint-disable-next-line no-console
   console.log(
     `Voting power: ${udtAddress}`,
-    ethers.utils.formatUnits(await udt.getVotes(account), 18)
+    ethers.formatUnits(await udt.getVotes(account), 18)
   )
 }
 

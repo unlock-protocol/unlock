@@ -1,10 +1,13 @@
 const { ethers, network } = require('hardhat')
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   getProposalState,
   executeProposal,
   getProposalId,
+  etaToDate,
+  isAlreadyPast,
 } = require('../../helpers/gov')
 
 async function main({ proposal, govAddress }) {
@@ -26,12 +29,8 @@ async function main({ proposal, govAddress }) {
     // check if time is ripe
     const eta = await gov.proposalEta(proposalId)
     if (!isDev) {
-      if (eta.toNumber() * 1000 > Date.now()) {
-        console.log(
-          `GOV EXEC > Proposal still queued until: ${new Date(
-            eta.toNumber() * 1000
-          )}`
-        )
+      if (isAlreadyPast(eta)) {
+        console.log(`GOV EXEC > Proposal still queued until: ${etaToDate(eta)}`)
         return
       }
     } else {
@@ -39,14 +38,14 @@ async function main({ proposal, govAddress }) {
         'latest'
       )
       console.log(
-        `GOV EXEC > : increasing currentTime ${new Date(
-          currentTime * 1000
-        )} to eta ${new Date(eta * 1000)}`
+        `GOV EXEC > : increasing currentTime ${etaToDate(
+          currentTime
+        )} to eta ${etaToDate(eta)}`
       )
       if (currentTime < eta) {
         await network.provider.request({
           method: 'evm_setNextBlockTimestamp',
-          params: [eta.add(1).toNumber()],
+          params: [parseInt(eta.toString()) + 1],
         })
       }
       state = await getProposalState(proposalId, govAddress)
@@ -54,13 +53,11 @@ async function main({ proposal, govAddress }) {
 
     // execute the tx
     const tx = await executeProposal({ proposal, govAddress })
-    const { events, transactionHash } = await tx.wait()
-    const evt = events.find((v) => v.event === 'ProposalExecuted')
-    if (evt) {
+    const receipt = await tx.wait()
+    const { event, hash } = await getEvent(receipt, 'ProposalExecuted')
+    if (event) {
       // eslint-disable-next-line no-console
-      console.log(
-        `GOV EXEC > Proposal executed successfully (txid: ${transactionHash})`
-      )
+      console.log(`GOV EXEC > Proposal executed successfully (txid: ${hash})`)
     }
   } else if (state === 'Executed') {
     console.log('GOV EXEC > Proposal has already been executed')

@@ -11,13 +11,11 @@ const {
 } = require('../helpers/gov')
 
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated but deterministic for tests
+const { ADRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 
 const contractNameOrAbi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 const functionName = 'transfer'
-const functionArgs = [
-  tokenRecipientAddress,
-  ethers.utils.parseUnits('0.01', 18),
-]
+const functionArgs = [tokenRecipientAddress, ethers.parseEther('0.01')]
 
 const calldataEncoded =
   '0xa9059cbb0000000000000000000000008d533d1a48b0d5dddef513a0b0a3677e991f3915000000000000000000000000000000000000000000000000002386f26fc10000'
@@ -49,7 +47,7 @@ describe('Proposal Helper', () => {
 
   describe('parseProposal', () => {
     it('parse gov args correctly', async () => {
-      const contractAddress = ethers.constants.AddressZero
+      const contractAddress = ADRESS_ZERO
       const proposalName = 'Send some tokens to a grantee'
 
       const encoded = await encodeProposalArgs({
@@ -81,7 +79,7 @@ describe('Proposal Helper', () => {
       const gov = await Gov.deploy()
       const proposalIdFromContract = await getProposalIdFromContract(
         proposalExample,
-        gov.address
+        await gov.getAddress()
       )
       assert.equal(proposalId.toString(), proposalIdFromContract.toString())
     })

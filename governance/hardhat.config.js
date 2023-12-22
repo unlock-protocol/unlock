@@ -1,10 +1,8 @@
 // hardhat.config.js
 const { copySync } = require('fs-extra')
 
-require('@nomiclabs/hardhat-ethers')
-require('@nomiclabs/hardhat-etherscan')
-require('@nomiclabs/hardhat-waffle')
-
+require('@nomicfoundation/hardhat-ethers')
+require('@nomicfoundation/hardhat-verify')
 require('@openzeppelin/hardhat-upgrades')
 
 // import helpers

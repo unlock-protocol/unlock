@@ -1,11 +1,11 @@
 /* eslint-disable global-require */
-const { ethers, run, upgrades } = require('hardhat')
+const { ethers, run, upgrades, network } = require('hardhat')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { networks } = require('@unlock-protocol/networks')
 const createLock = require('../lock/create')
-const { getUnlock } = require('@unlock-protocol/hardhat-helpers')
+const { getUnlock, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 
-const { MaxUint256 } = ethers.constants
+const { MaxUint256 } = ethers
 
 const log = (...message) => {
   // eslint-disable-next-line no-console
@@ -34,7 +34,7 @@ async function main({
   const [deployer, minter] = await ethers.getSigners()
 
   // fetch chain info
-  const chainId = await deployer.getChainId()
+  const { chainId } = await ethers.provider.getNetwork()
   const networkName = networks[chainId].name
   const isLocalNet = networkName === 'localhost'
   log(
@@ -66,11 +66,11 @@ async function main({
   }
 
   if (!udtAddress) {
-    udtAddress = '0x0000000000000000000000000000000000000000'
+    udtAddress = ADDRESS_ZERO
   }
 
   // If UDT is not set for this network, let's not worry about it
-  if (udtAddress !== '0x0000000000000000000000000000000000000000') {
+  if (udtAddress !== ADDRESS_ZERO) {
     // pre-mint some UDTs, then delegate mint caps to contract
     if (isLocalNet || premintAmount) {
       const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
@@ -79,7 +79,7 @@ async function main({
       udt = udt.connect(minter)
       await udt.mint(
         deployer.address,
-        ethers.utils.parseEther(premintAmount || '1000000.0')
+        ethers.parseEther(premintAmount || '1000000.0')
       )
       log(`Pre-minted ${premintAmount || '1000000.0'} UDT to deployer`)
 
@@ -98,7 +98,7 @@ async function main({
 
     // deploy uniswap v2 if needed
     if ((!uniswapFactoryAddress || !uniswapRouterAddress) && isLocalNet) {
-      if (!wethAddress || wethAddress === ethers.constants.AddressZero) {
+      if (!wethAddress || wethAddress === ADDRESS_ZERO) {
         throw new Error(
           'Missing wethAddress. Cannot deploy Uniswap factory. Please use --weth-address'
         )
@@ -133,17 +133,17 @@ async function main({
       const amountLiquidity = liquidity || '1000.0'
       await udt
         .connect(deployer)
-        .approve(uniswapRouterAddress, ethers.utils.parseEther(amountLiquidity))
+        .approve(uniswapRouterAddress, ethers.parseEther(amountLiquidity))
       log(`UDT approved Uniswap Router for ${amountLiquidity} ETH`)
 
       await uniswapRouter.connect(deployer).addLiquidityETH(
         udtAddress,
-        ethers.utils.parseEther(amountLiquidity), // pool size
+        ethers.parseEther(amountLiquidity), // pool size
         '1',
         '1',
         deployer.address, // receiver
         MaxUint256, // max timestamp
-        { value: ethers.utils.parseEther('10.0') }
+        { value: ethers.parseEther('10.0') }
       )
       log(`added liquidity to uniswap ${amountLiquidity}`)
     }
@@ -160,16 +160,13 @@ async function main({
   await run('set:unlock-config', {
     unlockAddress,
     udtAddress,
-    wethAddress: wethAddress || ethers.constants.AddressZero,
+    wethAddress: wethAddress || ADDRESS_ZERO,
     estimatedGasForPurchase,
     locksmithURI,
     isLocalNet,
   })
 
-  if (
-    udtAddress !== '0x0000000000000000000000000000000000000000' &&
-    oracleAddress
-  ) {
+  if (udtAddress !== ADDRESS_ZERO && oracleAddress) {
     // Add Oracle for UDT (note: Oracle is also used to compute GDP of non-native-currency locks)
     await run('set:unlock-oracle', {
       unlockAddress,

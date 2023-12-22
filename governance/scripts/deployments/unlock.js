@@ -1,7 +1,7 @@
 const { ethers, upgrades, run } = require('hardhat')
-const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 
 const {
+  isLocalhost,
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
 } = require('@unlock-protocol/hardhat-helpers')
@@ -21,23 +21,25 @@ async function main({ unlockVersion } = {}) {
     throw 'Need to set --unlock-version'
   }
 
+  // deploy proxy w impl
   const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
   })
-  await unlock.deployed()
+  await unlock.waitForDeployment()
+  const { hash } = await unlock.deploymentTransaction()
 
-  // eslint-disable-next-line no-console
-  const implementation = await getImplementationAddress(
-    ethers.provider,
-    unlock.address
+  // get addresses
+  const unlockAddress = await unlock.getAddress()
+  const implementation = await upgrades.erc1967.getImplementationAddress(
+    unlockAddress
   )
+  // eslint-disable-next-line no-console
   console.log(
-    `UNLOCK SETUP > Unlock proxy deployed to: ${unlock.address} (tx: ${unlock.deployTransaction.hash}) `,
+    `UNLOCK SETUP > Unlock proxy deployed to: ${unlockAddress} (tx: ${hash}) `,
     `- implementation at: ${implementation}`
   )
 
-  const { chainId } = await ethers.provider.getNetwork()
-  if (chainId !== 31337) {
+  if (!isLocalhost()) {
     await run('verify:verify', { address: implementation })
   }
 
@@ -46,7 +48,7 @@ async function main({ unlockVersion } = {}) {
     await cleanupContractVersions(__dirname)
   }
 
-  return unlock.address
+  return unlockAddress
 }
 
 // execute as standalone

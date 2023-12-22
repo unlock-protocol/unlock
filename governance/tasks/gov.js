@@ -124,7 +124,7 @@ task('gov:votes', 'Show votes for a specific proposal')
       )
 
       const quorum = await getQuorum(govAddress)
-      const { formatEther } = ethers.utils
+      const { formatEther } = ethers
 
       // eslint-disable-next-line no-console
       console.log(
@@ -171,7 +171,7 @@ task('gov:quorum', 'Retrieve current quorum')
   .setAction(async ({ govAddress }, { ethers }) => {
     const { getQuorum } = require('../helpers/gov')
     const q = await getQuorum(govAddress)
-    const quorum = ethers.utils.formatEther(q.toString())
+    const quorum = ethers.formatEther(q.toString())
     // eslint-disable-next-line no-console
     console.log(`GOV > quorum: ${quorum} UDT`)
 

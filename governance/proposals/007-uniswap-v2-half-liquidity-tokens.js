@@ -91,9 +91,9 @@ Address: ${poolV2.address}
 - total : ${liquidity.toString()}
 - **to transfer:${amountToTransfer.toString()}**
 
-For reference, the total DAO's liquidity in V2 pool is ${ethers.utils.formatEther(
+For reference, the total DAO's liquidity in V2 pool is ${ethers.formatEther(
     lp0
-  )} ${symbol0} and ${ethers.utils.formatEther(lp1)} ${symbol1}.
+  )} ${symbol0} and ${ethers.formatEther(lp1)} ${symbol1}.
 
 
 ### About the proposal

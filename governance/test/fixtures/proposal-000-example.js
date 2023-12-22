@@ -10,10 +10,7 @@ module.exports = {
       contractAddress: '0x90DE74265a416e1393A450752175AED98fe11517',
       contractNameOrAbi: UnlockDiscountTokenV2.abi,
       functionName: 'transfer',
-      functionArgs: [
-        tokenRecipientAddress,
-        ethers.utils.parseUnits('0.01', 18),
-      ],
+      functionArgs: [tokenRecipientAddress, ethers.parseEther('0.01')],
     },
   ],
   proposerAddress,

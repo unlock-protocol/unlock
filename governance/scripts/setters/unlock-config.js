@@ -67,12 +67,10 @@ async function main({
       chainId
     )
 
-  const { transactionHash } = await tx.wait()
+  const { hash } = await tx.wait()
 
   // eslint-disable-next-line no-console
-  console.log(
-    `UNLOCK CONFIG > Unlock configured properly. (tx: ${transactionHash})`
-  )
+  console.log(`UNLOCK CONFIG > Unlock configured properly. (tx: ${hash})`)
 }
 
 // execute as standalone

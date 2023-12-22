@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { mine } = require('@nomicfoundation/hardhat-network-helpers')
 const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
-const { addUDT } = require('@unlock-protocol/hardhat-helpers')
+const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
 // workflow
@@ -31,20 +31,20 @@ async function main({ proposal, govAddress }) {
       UnlockDiscountTokenV2.abi,
       udtAddress
     )
-    await addUDT(signer.address, quorum.mul(2), udt)
+    await addUDT(signer.address, quorum * BigInt(2), udt)
 
     // delegate 30k to voter
     const tx = await udt.delegate(signer.address)
 
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'DelegateVotesChanged')
-    if (evt) {
+    const receipt = await tx.wait()
+    const { event, hash } = await getEvent(receipt, 'DelegateVotesChanged')
+    if (event) {
       // eslint-disable-next-line no-console
       console.log(
         `GOV VOTE (dev) > ${signer.address} delegated quorum to ${signer.address}`,
-        `(total votes: ${ethers.utils.formatEther(
+        `(total votes: ${ethers.formatEther(
           await udt.getVotes(signer.address)
-        )},quorum: ${ethers.utils.formatEther(quorum)})`
+        )},quorum: ${ethers.formatEther(quorum)})`
       )
     }
 

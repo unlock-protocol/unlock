@@ -28,11 +28,9 @@ async function main([
     ;({ unlockAddress } = networks[chainId])
   }
 
-  const protocolFee = ethers.utils.parseEther(protocolFeeStr)
+  const protocolFee = ethers.parseEther(protocolFeeStr)
 
-  console.log(`Proposol to set protocolFee to ${ethers.utils.formatEther(
-    protocolFee
-  )}
+  console.log(`Proposol to set protocolFee to ${ethers.formatEther(protocolFee)}
   - unlock : ${unlockAddress}`)
 
   const calls = [

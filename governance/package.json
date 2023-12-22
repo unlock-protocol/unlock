@@ -3,9 +3,13 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
+    "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.9",
+    "@nomicfoundation/hardhat-verify": "2.0.2",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
+    "@openzeppelin/hardhat-upgrades": "3.0.0",
+    "@openzeppelin/upgrades-core": "1.32.1",
     "@safe-global/safe-core-sdk": "3.3.5",
     "@safe-global/safe-ethers-lib": "1.9.3",
     "@safe-global/safe-service-client": "2.0.3",
@@ -15,6 +19,7 @@
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "eslint": "8.54.0",
+    "ethers": "6.9.0",
     "fs-extra": "11.1.1",
     "hardhat": "2.19.2",
     "solhint": "4.0.0"
