@@ -20386,7 +20386,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:8.54.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.19.2"
+    hardhat: "npm:2.19.4"
     typescript: "npm:5.3.2"
   languageName: unknown
   linkType: soft
@@ -20511,7 +20511,7 @@ __metadata:
     eslint: "npm:8.54.0"
     ethers: "npm:6.9.0"
     fs-extra: "npm:11.1.1"
-    hardhat: "npm:2.19.2"
+    hardhat: "npm:2.19.4"
     solhint: "npm:4.0.0"
   languageName: unknown
   linkType: soft
@@ -20532,7 +20532,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
-    hardhat: "npm:2.19.2"
+    hardhat: "npm:2.19.4"
     tsup: "npm:7.2.0"
     typescript: "npm:5.3.2"
   languageName: unknown
@@ -20554,7 +20554,7 @@ __metadata:
     chai: "npm:4.3.10"
     eslint: "npm:8.54.0"
     eslint-plugin-mocha: "npm:10.2.0"
-    hardhat: "npm:2.19.2"
+    hardhat: "npm:2.19.4"
     mocha: "npm:10.2.0"
     prettier: "npm:3.1.0"
     ts-mocha: "npm:10.0.0"
@@ -35545,9 +35545,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.19.2":
-  version: 2.19.2
-  resolution: "hardhat@npm:2.19.2"
+"hardhat@npm:2.19.4":
+  version: 2.19.4
+  resolution: "hardhat@npm:2.19.4"
   dependencies:
     "@ethersproject/abi": "npm:^5.1.2"
     "@metamask/eth-sig-util": "npm:^4.0.0"
@@ -35607,7 +35607,7 @@ __metadata:
       optional: true
   bin:
     hardhat: internal/cli/bootstrap.js
-  checksum: 74913ce606e5e7ebe4b798767d68bd11b838738a35fab578d555dafaa9d4033e401ad2287248720add83503a8ed671b2b34f88560154299911739412711561f1
+  checksum: f8548a32c6d81af40a0377d4e7cfffbdae22c1c5ac1d8f106ec14d98d219ce8c8d67799abbd609f69e9593a43820c98c4fc8bc1273d995d43692f272b54da58c
   languageName: node
   linkType: hard
 
