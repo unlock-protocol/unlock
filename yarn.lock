@@ -12696,7 +12696,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-etherscan@npm:3.1.7, @nomiclabs/hardhat-etherscan@npm:^3.0.0":
+"@nomiclabs/hardhat-etherscan@npm:3.1.8":
+  version: 3.1.8
+  resolution: "@nomiclabs/hardhat-etherscan@npm:3.1.8"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.1.2"
+    "@ethersproject/address": "npm:^5.0.2"
+    cbor: "npm:^8.1.0"
+    chalk: "npm:^2.4.2"
+    debug: "npm:^4.1.1"
+    fs-extra: "npm:^7.0.1"
+    lodash: "npm:^4.17.11"
+    semver: "npm:^6.3.0"
+    table: "npm:^6.8.0"
+    undici: "npm:^5.14.0"
+  peerDependencies:
+    hardhat: ^2.0.4
+  checksum: 0f855f8418c4c8d2439c46b4a4789f131285356978d60579d57e6893441ebdbc1f2977c422c03be6a39b4d56b907086771fcafe8add012bbf1f0dd4e2abff946
+  languageName: node
+  linkType: hard
+
+"@nomiclabs/hardhat-etherscan@npm:^3.0.0":
   version: 3.1.7
   resolution: "@nomiclabs/hardhat-etherscan@npm:3.1.7"
   dependencies:
@@ -20377,7 +20397,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
-    "@nomiclabs/hardhat-etherscan": "npm:3.1.7"
+    "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
     "@primitivefi/hardhat-dodoc": "npm:0.2.3"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -20497,7 +20517,7 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.9"
     "@nomicfoundation/hardhat-verify": "npm:2.0.2"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@nomiclabs/hardhat-etherscan": "npm:3.1.7"
+    "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.0"
     "@openzeppelin/upgrades-core": "npm:1.32.1"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
@@ -20719,7 +20739,7 @@ __metadata:
   dependencies:
     "@connext/interfaces": "npm:2.0.5"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@nomiclabs/hardhat-etherscan": "npm:3.1.7"
+    "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
     "@nomiclabs/hardhat-truffle5": "npm:2.0.7"
     "@nomiclabs/hardhat-waffle": "npm:2.0.5"
     "@nomiclabs/hardhat-web3": "npm:2.0.0"
