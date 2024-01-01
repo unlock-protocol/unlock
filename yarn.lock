@@ -20635,7 +20635,7 @@ __metadata:
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.3"
     random-words: "npm:2.0.0"
-    rate-limiter-flexible: "npm:3.0.4"
+    rate-limiter-flexible: "npm:3.0.6"
     react: "npm:18.2.0"
     remark-html: "npm:15.0.2"
     remark-parse: "npm:10.0.2"
@@ -47455,10 +47455,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:3.0.4":
-  version: 3.0.4
-  resolution: "rate-limiter-flexible@npm:3.0.4"
-  checksum: 321241cbbcce50b0d8815ca9cffa4d89e13212ec1b4794e156bb15889b150529e1de7c4ae3a3e7120fd22adf20c69de43675ffd9f477b4ce6f9ccb8f88abcca0
+"rate-limiter-flexible@npm:3.0.6":
+  version: 3.0.6
+  resolution: "rate-limiter-flexible@npm:3.0.6"
+  checksum: 6a65c467c83e9121c32fee2609e91b3aa3500cf1d3a1de4718652ccae604fd9c604b25d3e97d38d34908b4d7fce0d77b6f6909fc55631d43d6561859bd039c22
   languageName: node
   linkType: hard
 
