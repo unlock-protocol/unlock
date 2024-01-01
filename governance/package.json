@@ -5,7 +5,7 @@
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.9",
-    "@nomicfoundation/hardhat-verify": "2.0.2",
+    "@nomicfoundation/hardhat-verify": "2.0.3",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.7",
     "@openzeppelin/hardhat-upgrades": "3.0.0",
