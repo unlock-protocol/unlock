@@ -13516,6 +13516,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pkgr/core@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@pkgr/core@npm:0.1.0"
+  checksum: eeff0e0e517b1ed10eb4c1a8971413a8349bbfdab727dbe7d4085fd94eab95f0c3beb51b9245fef30562849d2a7a119e07ca48c343c8c4ec4e64ee289f50fe5e
+  languageName: node
+  linkType: hard
+
 "@pkgr/utils@npm:^2.3.1":
   version: 2.4.0
   resolution: "@pkgr/utils@npm:2.4.0"
@@ -31229,6 +31236,26 @@ __metadata:
     eslint-config-prettier:
       optional: true
   checksum: 1a43dcca90f61fde0167347e0e870b579835ba6b9d697a862c29c76097a7bb0e8f07a7cf88be33517ca11203d9d4aa335d794c377640c2fe5acd06871db67d34
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-prettier@npm:5.1.2":
+  version: 5.1.2
+  resolution: "eslint-plugin-prettier@npm:5.1.2"
+  dependencies:
+    prettier-linter-helpers: "npm:^1.0.0"
+    synckit: "npm:^0.8.6"
+  peerDependencies:
+    "@types/eslint": ">=8.0.0"
+    eslint: ">=8.0.0"
+    eslint-config-prettier: "*"
+    prettier: ">=3.0.0"
+  peerDependenciesMeta:
+    "@types/eslint":
+      optional: true
+    eslint-config-prettier:
+      optional: true
+  checksum: 2d99eabbf6fb146fef85c84bd37acede2e26be6d908bf9efd663e6d7cb82cb6d9dfca9aab5f39bdc1c4987d5f88400f1756f5e8ac93db70cd1073ff1e873f2e4
   languageName: node
   linkType: hard
 
@@ -52701,6 +52728,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"synckit@npm:^0.8.6":
+  version: 0.8.8
+  resolution: "synckit@npm:0.8.8"
+  dependencies:
+    "@pkgr/core": "npm:^0.1.0"
+    tslib: "npm:^2.6.2"
+  checksum: 2864a5c3e689ad5b991bebbd8a583c5682c4fa08a4f39986b510b6b5d160c08fc3672444069f8f96ed6a9d12772879c674c1f61e728573eadfa90af40a765b74
+  languageName: node
+  linkType: hard
+
 "table-layout@npm:^1.0.2":
   version: 1.0.2
   resolution: "table-layout@npm:1.0.2"
@@ -53887,6 +53924,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.6.2":
+  version: 2.6.2
+  resolution: "tslib@npm:2.6.2"
+  checksum: bd26c22d36736513980091a1e356378e8b662ded04204453d353a7f34a4c21ed0afc59b5f90719d4ba756e581a162ecbf93118dc9c6be5acf70aa309188166ca
+  languageName: node
+  linkType: hard
+
 "tslib@npm:~2.4.0":
   version: 2.4.1
   resolution: "tslib@npm:2.4.1"
@@ -54969,7 +55013,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:6.13.1"
     babel-plugin-polyfill-corejs2: "npm:0.4.6"
     eslint: "npm:8.54.0"
-    eslint-plugin-prettier: "npm:5.0.1"
+    eslint-plugin-prettier: "npm:5.1.2"
     eslint-plugin-vitest: "npm:0.3.0"
     husky: "npm:8.0.3"
     lint-staged: "npm:15.1.0"
