@@ -24,7 +24,7 @@
     "directory": "packages/contracts"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-etherscan": "3.1.7",
+    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
