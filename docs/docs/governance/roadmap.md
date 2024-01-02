@@ -8,7 +8,7 @@ sidebar_position: 5
 
 # Roadmap
 
-As of Janiary 2024, the Unlock ecosystem consists of the following:
+As of January 2024, the Unlock ecosystem consists of the following:
 
 - A set of smart contracts (the [core protocol](../core-protocol/)) which let creators deploy their locks, as well as lets consumers unlock the locks, deployed on [multiple networks](../core-protocol/unlock/networks).
 - An [unlock-js](https://www.npmjs.com/package/@unlock-protocol/unlock-js) library that developers can use to interact with the contracts,
