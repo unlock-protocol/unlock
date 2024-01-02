@@ -21069,7 +21069,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:1.14.0"
-    tailwindcss: "npm:3.3.5"
+    tailwindcss: "npm:3.4.0"
     typescript: "npm:5.3.2"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:0.34.6"
