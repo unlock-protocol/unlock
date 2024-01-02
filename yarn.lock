@@ -55063,7 +55063,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:6.13.1"
     babel-plugin-polyfill-corejs2: "npm:0.4.6"
     eslint: "npm:8.54.0"
-    eslint-plugin-prettier: "npm:5.0.1"
+    eslint-plugin-prettier: "npm:5.1.2"
     eslint-plugin-vitest: "npm:0.3.0"
     husky: "npm:8.0.3"
     lint-staged: "npm:15.1.0"
