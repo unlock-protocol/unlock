@@ -1,12 +1,12 @@
 ---
 title: Unlock Token (UDT)
 description: The Unlock Token (UDT) and its tokenomics.
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 import { networks } from '@unlock-protocol/networks'
 
-The Unlock DAO Tokens — previously known as Unlock Discount Tokens — (UDT) are the governance tokens for the Unlock Protocol. Holders of UDT collectively form the [Unlock DAO](./unlock-dao.md).
+The Unlock DAO Tokens — previously known as Unlock Discount Tokens — (UDT) are the governance tokens for the Unlock Protocol. Holders of UDT collectively form the [Unlock DAO](./unlock-dao).
 
 :::info
 UDT are perfectly _optional_. Creators can deploy locks without knowledge of UDT and their members can similarly purchase membership without knowing about UDT.
@@ -94,9 +94,11 @@ This design achieves the following characteristics:
 - Earlier transactions yield a larger amount of UDT tokens, everything else being equal,
 - The cost of buying UDT on a decentralized exchange is always lower than the cost of sending "fake" transactions to the network in order to collect UDT.
 
+Another way to earn UDT and join the DAO is to [apply for grants](./grants-bounties).
+
 ## Protocol Fee
 
-As of Unlock version 13, the protocol includes a "fee switch" but the fee is currently set to be 0%. This value could be changed by [DAO members](./unlock-dao.md) through an onchain proposal and vote.
+As of Unlock version 13, the protocol includes a "fee switch" but the fee is currently set to be 0%. This value could be changed by [DAO members](./unlock-dao) through an onchain proposal and vote.
 
 If the fee amount is larger than 0%, on every transaction for which there is a payment ([`purchase`](/core-protocol/smart-contracts-api/PublicLock#purchase), [`extend`](/core-protocol/smart-contracts-api/PublicLock#extend) or [`renewMembershipFor`](/core-protocol/smart-contracts-api/PublicLock#renewmembershipfor)), the lock contract will send a portion of the payment to the Unlock contract.
 

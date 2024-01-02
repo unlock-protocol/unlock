@@ -30,6 +30,6 @@ Contrary to the previous method, the granter can also customize the expiration o
 
 ### Protocol Fee
 
-As for version 13, the protocol includes a fee switch. The **fee is initially set to 0**. If the [DAO community](../../governance/unlock-dao.md) decides to change this, then a share of the payment will be sent to the Unlock contract on the chain on which the lock has been deployed.
+As for version 13, the protocol includes a fee switch. The **fee is initially set to 0**. If the [DAO community](../../governance/unlock-dao) decides to change this, then a share of the payment will be sent to the Unlock contract on the chain on which the lock has been deployed.
 
 This protocol fee aims at making the protocol economically sustainable by providing a budget to the DAO.

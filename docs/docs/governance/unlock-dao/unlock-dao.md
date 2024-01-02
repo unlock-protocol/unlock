@@ -3,15 +3,13 @@ title: Unlock DAO
 description: >-
   The Unlock Protocol is a public good aimed at being governed by a DAO of its
   users and developers.
-sidebar_position: 2
+sidebar_position: 1
 ---
 
-Collectively, [UDT holders](./unlock-dao-tokens.mdx) are members of the Unlock DAO. The Unlock DAO aims at governing the Unlock Protocol. In order to facilitate decision making, the Unlock DAO uses OpenZeppelin's [Governor Contracts](https://blog.openzeppelin.com/governor-smart-contract/) which can be found at these addresses on the [Ethereum network](https://ethereum.org/en/):
+Collectively, [UDT holders](../unlock-dao-tokens.mdx) are members of the Unlock DAO. The Unlock DAO aims at governing the Unlock Protocol. In order to facilitate decision making, the Unlock DAO uses OpenZeppelin's [Governor Contracts](https://blog.openzeppelin.com/governor-smart-contract/) which can be found at these addresses on the [Ethereum network](https://ethereum.org/en/):
 
 - [Governor Contract](https://etherscan.io/address/0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591) \(`0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591`\): where proposals and votes are handled,
 - [TimeLock Contract](https://etherscan.io/address/0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b) \(`0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b`\): where proposals are executed and funds are managed.
-
-> We recommend the use of [Tally's front-end application](https://www.tally.xyz/gov/unlock) to delegate votes, submit proposals as well as vote on the proposals previously submitted, but it is possible to access the contracts _without_ using Tally (by using another front-end, or no front-end at all).
 
 ### Initial settings
 
@@ -21,7 +19,7 @@ The governor contract has been configured with the following initial characteris
 - Proposal Delay: 6 days
 - Voting period: 6 days
 - Quorum: 7,500 votes
-- Time lock duration: 7 days.
+- Time-lock duration: 7 days.
 
 All of these settings can be changed by the Unlock DAO community through an onchain proposal.
 
@@ -30,14 +28,14 @@ All of these settings can be changed by the Unlock DAO community through an onch
 As part of the launch of the DAO, Unlock Inc. has allocated the following to the Time Lock contract \(which manages the funds of the DAO\):
 
 - 100,000 UDT that the DAO uses to pay bounties, grants or perform retro-active funding.
-- 170.23 Uniswap Liquidity Provider tokens from the UDT/Eth pool
+- 170.23 Uniswap Liquidity Provider tokens from the UDT/ETH pool
 - We have also subsequently transfered the remainder of the first community airdrop to the DAO.
 
 In June 2023, the Governor contract was upgraded from `0x7757f7f21f5fa9b1fd168642b79416051cd0bb94` to `0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591` via a [DAO proposal that the community approved and executed onchain](https://www.tally.xyz/gov/unlock-old/proposal/36208249270120864100503453462134662510103434369621143761091232235939585571890). This upgrade is the result of a vulnerability in the OpenZeppelin library and the new Governor contract is now upgradable.
 
 ### Voting
 
-The DAO can execute any transaction as long as the transaction was approved by token holders. These transactions range from transfering some if its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
+The Governor can execute any transaction as long as the transaction was approved by token holders. These transactions range from transfering some if its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
 
 #### Making a proposal
 
@@ -45,9 +43,11 @@ A proposal is code that will be executed by the Timelock smart contract if it ha
 
 At this point, _anyone_ can make a proposal by submitting it to the DAO contract. The [Tally UI](https://www.tally.xyz/gov/unlock) offers and easy way to make these proposals, but you are welcome to use any other relevant tool as well.
 
-Once the proposal has been submitted, the delegates (see below) have a period to express their preferences, between voting in "favor", "against" or "abstain". Proposals have to be carefully tested by each delegate to assert what impact they will actually have, and if they are indeed desirable for the protocol. Given their _unstoppable_ nature, and the fact that a rogue or buggy proposal could not be reverted, it is absolutely critical that every single vote is done thoughtfuly. Additionaly, some delegates might want to consult the token holders who have delegated to them before making a final decision.
-
 Given how much scrutiny is expected by voters, we strongly advise anyone who intends to make a proposal to advertise it _before_ submitting it in order to raise as much awareness as possible and give enough time to make a decision. This can happen on the [Unlock forum website](https://unlock.community/), on [Discord](https://discord.unlock-protocol.com/), or any other place where community members and delegates are expected to be able to ask questions and get answers.
+
+Similarly, we encourage proposers to first submit an offchain "temperature check" from the community before submitting onchain proposals using a tool like [Snapshot](https://snapshot.org/#/unlock-protocol.eth). Even though offchain votes are non-binding, this helps [delegates (see below)](#delegating) get a sense of whether the community wants to see a specific proposal be executed or not.
+
+Once the proposal has been submitted on chain, the [delegates (see below)](#delegating) have a period to express their preferences, between voting in "favor", "against" or "abstain". Proposals have to be **carefully tested by each delegate** to assert what impact they will actually have, and if they are indeed desirable for the protocol. Given their _unstoppable_ nature, and the fact that a rogue or buggy proposal could not be reverted, it is absolutely critical that every single vote is done thoughtfuly. Additionaly, some delegates might want to consult the token holders who have delegated to them before making a final decision.
 
 #### Delegating
 
@@ -76,10 +76,6 @@ As of April 2023, our delegates are the following:
 
 If you or your team is interested in becoming a delegate, please reach out.
 
-#### Gasless voting
-
-Even though offchain votes are non-binding, we suggest the use of [Snapshot](https://snapshot.org/#/unlock-protocol.eth) as a way to get a a "temperature check" from the community before submitting onchain proposals.
-
 ### Cross-chain Governance
 
-The Unlock contract has been deployed on multiple networks. In Q2 2023, we will introduce a mechanism for the DAO on Ethereum mainnet to control the Unlock contract deployed on each of these networks. Stay tuned.
+The Unlock contract has been deployed on multiple networks. In 2023, the Unlock Labs team introduced a mechanism for the DAO on Ethereum mainnet to control the Unlock contract deployed on each of these networks, [enabling cross-chain governance](./cross-chain-governance.mdx).
