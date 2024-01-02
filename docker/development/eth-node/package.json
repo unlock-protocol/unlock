@@ -17,7 +17,7 @@
     "ethers": "5.7.2",
     "hardhat": "2.19.2",
     "hardhat-erc1820": "0.1.0",
-    "ts-node": "10.9.1",
+    "ts-node": "10.9.2",
     "typescript": "5.3.2"
   }
 }
