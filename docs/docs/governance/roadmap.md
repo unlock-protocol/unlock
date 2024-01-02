@@ -3,54 +3,69 @@ title: Roadmap
 description: >-
   Regularly updated roadmap of the bigger picture goals being worked
   on for Unlock Protocol.
+sidebar_position: 5
 ---
 
 # Roadmap
 
-As of March 2023, the Unlock ecosystem consists of the following:
+As of Janiary 2024, the Unlock ecosystem consists of the following:
 
-- A set of smart contracts which let creators deploy their locks, as well as lets consumers unlock the locks, deployed on [multiple networks](../core-protocol/unlock/networks).
+- A set of smart contracts (the [core protocol](../core-protocol/)) which let creators deploy their locks, as well as lets consumers unlock the locks, deployed on [multiple networks](../core-protocol/unlock/networks).
 - An [unlock-js](https://www.npmjs.com/package/@unlock-protocol/unlock-js) library that developers can use to interact with the contracts,
 - A [paywall application](https://paywall.unlock-protocol.com) that can be embedded on any website or application to limit access to members and then lets users purchase keys to unlock content,
 - An [unlock-app](https://app.unlock-protocol.com/locks) application that lets creators deploy their lock and view their members, as well as lets consumers view the keys they purchased and interact with them (keychain). The Unlock app also provides user accounts that enable people to create an account with their email and password and then purchase keys with their credit cards through Unlock Inc,
-- The [Unlock Tokens](/governance/unlock-dao-tokens), a governance token for the Unlock ecosystem, is used to share ownership, as well as incentivize the use of the protocol.
+- The [Unlock DAO Tokens](/governance/unlock-dao-tokens), aka UDT, a governance token for the Unlock ecosystem, is used to share ownership, as well as incentivize the use of the protocol.
 - The [Unlock DAO](https://unlock-protocol.com/blog/unlock-dao), a set of contracts that lets anyone who owns Unlock tokens submit proposals and vote on them in order to effectively govern the protocol and its treasury
 
-# June 30th 2023
+# June 30th 2024
 
 - Dashboard:
-  - Universal credit cards
-  - Events By Unlock 2.0
-- Dev tools:
-  - TBD
-- Contracts:
-  - Meta-transactions
+  - "Favorite" locks in dashboard
+  - Event app with user pre-approval
+  - UI to manage caps on Discount and Password Hooks
+  - Showing Key granters in settings
+- Paywall:
+  - Dark Mode, color customization
+- Subgraphs
+  - All decentralized
+  - Single endpoint
+- Core Protocol (contracts):
+  - More network supported
+  - Recurring Cross-chain
+  - Recurring Swap and Purchase
+  - Support for better meta-tx
+  - Transfer to Unlock Account
+- Governance:
+  - UDT bridged to more networks
 
-# March 31th 2023
+# December 31th 2023
+
+- Dashboard:
+  - Universal credit cards ✅
+  - Events By Unlock 2.0 ✅
+    - Hook configuration UI ✅
+- Contracts:
+  - Swap and Pay ✅
+  - Cross-chain purchases (pay from X, receive NFT on Y) with [Connext](https://www.connext.network/) ✅
+  - Protocol fee: a small percentage is captured on every purchase transaction ✅ (Fee set to 0% but DAO can change its value)
+- Governance:
+  - Cross-chain governance ([Connext](https://www.connext.network/)) ✅
+
+# June 31th 2023
 
 - Dashboard:
   - Image Uploader ✅
   - Custom Email content ✅
   - Wallet-less airdrops ✅
-  - "Action" driven lock deployment ⏰
-  - Hook configuration UI ⏰
 - Checkout:
   - Apple/Google wallet passes ✅
   - Promo codes ✅
-  - Swap and Pay ⏰
-- Dev tools:
-  - Integrations: Ghost, Webflow, Wix ⏰
 - Contracts:
   - Swap and Pay ✅
-  - Cross-chain purchases (pay from X, receive NFT on Y) with [Connext](https://www.connext.network/) ⏰
-  - Protocol fee: a small percentage is captured on every purchase transaction ⏰
-- Governance:
-  - Cross-chain governance ([Connext](https://www.connext.network/)) ⏰
 
 # December 31th 2022
 
 - Fully refactored Dashboard:
-  - "action" driven lock deployment ⏰
   - Checkout configuration UI ✅
   - NFT metadata configuration ✅
 - Locksmith
@@ -58,13 +73,7 @@ As of March 2023, the Unlock ecosystem consists of the following:
 - Dev tools:
   - OpenAPI generation ✅
   - Refactored Subgraphs ✅
-  - Integrations: Ghost, Webflow, Wix ⏰
-- Contracts:
-  - Cross-chain purchases (pay from X, receive NFT on Y) with [Connext](https://www.connext.network/) ⏰
-  - Protocol fee: a small percentage is captured on every purchase transaction ⏰
   - Move to Uniswap v3 for oracle ✅
-- Governance:
-  - Cross-chain governance ([Connext](https://www.connext.network/)) ⏰
 
 # June 30th 2022
 
@@ -140,12 +149,3 @@ As of March 2023, the Unlock ecosystem consists of the following:
 - Developer forum launched on Discourse. ✅
 
 Misc: more/better docs, more 3rd party integrations... etc
-
-## Beyond
-
-These are opportunities we will eventually work on, based on user demand or available bandwidth.
-
-### Tooling
-
-- Better integration tests ⏰
-- IPFS front-end (partial ✅)

@@ -1,15 +1,15 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 title: Cross-Chain Governance
 description: >-
   Workflow to propagate DAO proposals accross multiple chains
 ---
 
-import { networks } from "@unlock-protocol/networks";
+import { networks } from '@unlock-protocol/networks'
 
 To fully decentralize the maintenance and management of the protocol contracts, we use a cross-chain governance that allows for a DAO proposal on Ethereum mainnet to reach the Unlock contracts on other networks.
 
-# How it works
+## How it works
 
 To reach other chains, calls emitted from the mainnet DAO go though the [Connext bridge](https://www.connext.network/) and are executed on the other side of the bridge, after a period of cooldown.
 
@@ -29,44 +29,41 @@ The workflow is as follows
 
 NB: The cooldown period is useful to prevent malicious or errored calls from being executed if the bridge itself has been compromised.
 
+## Supported Networks
 
-# Supported Networks
-
-To work, this workflow requires the Connext bridge, SAFE contracts and Unlock Protocol to be deployed 
+To work, this workflow requires the [Connext bridge](https://bridge.connext.network/), [SAFE contracts](https://safe.global/) and Unlock Protocol to be deployed
 and active on the network.
 
 The list of supported networks are:
 
-
-
-export const supportedChains = Object.keys(networks).filter((chainId) => !!networks[chainId].governanceBridge?.modules && !networks[chainId].isTestNetwork)
-
+export const supportedChains = Object.keys(networks).filter(
+  (chainId) =>
+    !!networks[chainId].governanceBridge?.modules &&
+    !networks[chainId].isTestNetwork
+)
 
 <ul>
-{
-Object.values(networks)
-  .filter((network) => supportedChains.includes(network.id.toString()))
-  .map((network) => {
-  return (
-    <li key={network.id}>
-      <p>{network.name}</p>
-    </li>
-  );  
-})
-}
+  {Object.values(networks)
+    .filter((network) => supportedChains.includes(network.id.toString()))
+    .map((network) => {
+      return (
+        <li key={network.id}>
+          <p>{network.name}</p>
+        </li>
+      )
+    })}
 </ul>
 
-
-# How to setup the multisig on the "remote" chain
+## How to setup the multisig on the "remote" chain
 
 On every receiving chain, we need a [SAFE](https://safe.global/) multisig configured with two [Zodiac](https://zodiac.wiki/index.php/ZODIAC.WIKI) plugins, namely:
 
 - one [Zodiac Connext](https://github.com/gnosis/zodiac-module-connext/) bridge receiver
 - one [Delay](https://zodiac.wiki/index.php/Category:Delay_Modifier)
 
-Important note: we use a multisig here, but no signature is required for transactions to be executed. The Safe contracts are actually flexible enough to include the ability to execute transactions directly as long as they have been through pre-configured modules. 
+Important note: we use a multisig here, but no signature is required for transactions to be executed. The Safe contracts are actually flexible enough to include the ability to execute transactions directly as long as they have been through pre-configured modules.
 
-## Using the Gnosis web UI
+### Using the Gnosis web UI
 
 1. Go to Apps > Zodiac
 2. Add the Delay module (cooldown : 2 days, expiration: 90 days)
@@ -75,11 +72,10 @@ Important note: we use a multisig here, but no signature is required for transac
 5. Get the Connext module address then remove the Connext module
 6. Go to Delay > write > `enableModule` with the Connext module address
 
-## Using scripts 
+### Using scripts
 
-
-- Deploy the Delay module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md)) 
-(NB: You can use the `deploy_multisig_mods` script in the `smart-contracts` folder to help you parse the commands)
+- Deploy the Delay module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md))
+  (NB: You can use the `deploy_multisig_mods` script in the `smart-contracts` folder to help you parse the commands)
 - Add the `delayMod` to the `bridge.modules` object in the `networks` package
 - Deploy the Connext module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md)) (NB: you can use the `deploy_multisig_mods` script to help you parse the commands)
 - Add the `connextMod` to the `bridge.modules` object in the `networks` package
@@ -88,7 +84,7 @@ Important note: we use a multisig here, but no signature is required for transac
 
 Now the multisig can receive calls from the bridge through the `connextMod` that will pass the call to the `delayMod` which will put it in cooldown.
 
-## Write a multichain DAO proposal
+### Write a multichain DAO proposal
 
 We have a parser for DAO proposals that relies on an object being formatted as follows:
 
@@ -126,7 +122,7 @@ Here the `<arguments>` passed to the cli as POSIT args are passed to the proposa
 yarn hardhat gov:submit --gov-address 0xE85696a3419162452e6925816D8073374e4190b7 --proposal proposals/006-cross-bridge-proposal.js --network gnosis 137 0xfa2709Aa98F051c4190d70dE38F7c7A330c60ab7 0x2411336105D4451713d23B5156038A48569EcE3a
 ```
 
-## Executing a call
+### Executing a call
 
 Once a call has passed the cooldown delay, it can be executed by anyone (the address submitting the transaction does not need to be a signer on the multisig) via the `executeNextTx` in the Delay module.
 
@@ -142,8 +138,8 @@ yarn hardhat safe:bridge:execute --bridge-tx <tx hash> --delay-mod <contract add
 
 `delay-mod` : the address of the Zodiac Delay module of the Safe that contains the tx
 
-## Cancel a call
+### Canceling a call
 
-During the cooldown period, a call can be cancelled by the Safe multisig signers. That can prevent malicious or errored calls from being executed. 
+During the cooldown period, a call can be cancelled by the Safe multisig signers. That can prevent malicious or errored calls from being executed.
 
 To cancel a call, you need to call `setTxNonce` from the multisig with the value returned by `queueNonce()`. That way, the nonce will increase past the malicious tx, making the queue appear empty.
