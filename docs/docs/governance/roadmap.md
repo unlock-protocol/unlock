@@ -30,7 +30,7 @@ As of January 2024, the Unlock ecosystem consists of the following:
   - All decentralized
   - Single endpoint
 - Core Protocol (contracts):
-  - More network supported
+  - More networks supported
   - Recurring Cross-chain
   - Recurring Swap and Purchase
   - Support for better meta-tx
