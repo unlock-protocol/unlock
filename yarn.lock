@@ -20500,7 +20500,7 @@ __metadata:
     typescript: "npm:5.3.2"
     vite: "npm:4.5.1"
     vite-plugin-svgr: "npm:3.3.0"
-    vite-tsconfig-paths: "npm:4.2.1"
+    vite-tsconfig-paths: "npm:4.2.3"
   peerDependencies:
     react: 18.2.0
     react-dom: 18.2.0
@@ -20918,7 +20918,7 @@ __metadata:
     vite: "npm:4.5.1"
     vite-plugin-node-polyfills: "npm:0.19.0"
     vite-plugin-svgr: "npm:3.3.0"
-    vite-tsconfig-paths: "npm:4.2.1"
+    vite-tsconfig-paths: "npm:4.2.3"
   peerDependencies:
     "@headlessui/react": 1.7.17
     react: 18.2.0
@@ -55960,9 +55960,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:4.2.1":
-  version: 4.2.1
-  resolution: "vite-tsconfig-paths@npm:4.2.1"
+"vite-tsconfig-paths@npm:4.2.3":
+  version: 4.2.3
+  resolution: "vite-tsconfig-paths@npm:4.2.3"
   dependencies:
     debug: "npm:^4.1.1"
     globrex: "npm:^0.1.2"
@@ -55972,7 +55972,7 @@ __metadata:
   peerDependenciesMeta:
     vite:
       optional: true
-  checksum: fd21e99a9bcd4ddb995727a9cf7b87ca95308b0b67e69bee2b836024aabe962b2206fbb62e66645638a1298fd171f8a2b0b55202da7cc801a31b3efa41a3fb2f
+  checksum: ba6abe5d18fc1c1e494e1f1d8a7db56445c2a40e15aadb5d47a9c66cc5372d6f69b94ff0b1e47b67659d6ecaeddebab0a9d11e40b1c3c36c0115800736a6c760
   languageName: node
   linkType: hard
 
