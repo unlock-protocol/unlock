@@ -13419,9 +13419,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.32.1, @openzeppelin/upgrades-core@npm:^1.32.0":
-  version: 1.32.1
-  resolution: "@openzeppelin/upgrades-core@npm:1.32.1"
+"@openzeppelin/upgrades-core@npm:1.32.2":
+  version: 1.32.2
+  resolution: "@openzeppelin/upgrades-core@npm:1.32.2"
   dependencies:
     cbor: "npm:^9.0.0"
     chalk: "npm:^4.1.0"
@@ -13433,7 +13433,7 @@ __metadata:
     solidity-ast: "npm:^0.4.51"
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 133a00e09920b294e7cdaf1a5bb709d3b423c083f17d9d69c675797492bc9862dd02eeda3a9d515c182e6dfdb1ca31c66d48d301d6d6542bd6dd2bb2502aa21a
+  checksum: 4c99aa23542c59c2df15625f328746d9afafd28b77d8fa034eb1c3729e3a221683772982f3e54bc7e027298dd425b87676a776159ca130a95d98c26afe92508c
   languageName: node
   linkType: hard
 
@@ -13452,6 +13452,24 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 268d10c52344ef0fe2f9b43ffb857d10b6ab3d74a419c004ecd814bfd7da62ac90729b3f4ae33f8cd2eefa29641b4458e39f9d48b58d497320bdff4f41bb5718
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.32.0":
+  version: 1.32.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.32.1"
+  dependencies:
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 133a00e09920b294e7cdaf1a5bb709d3b423c083f17d9d69c675797492bc9862dd02eeda3a9d515c182e6dfdb1ca31c66d48d301d6d6542bd6dd2bb2502aa21a
   languageName: node
   linkType: hard
 
@@ -20531,7 +20549,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-etherscan": "npm:3.1.7"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.0"
-    "@openzeppelin/upgrades-core": "npm:1.32.1"
+    "@openzeppelin/upgrades-core": "npm:1.32.2"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
     "@safe-global/safe-service-client": "npm:2.0.3"
