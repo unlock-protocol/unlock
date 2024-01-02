@@ -86,6 +86,6 @@
     "vite": "4.5.1",
     "vite-plugin-node-polyfills": "0.19.0",
     "vite-plugin-svgr": "3.3.0",
-    "vite-tsconfig-paths": "4.2.1"
+    "vite-tsconfig-paths": "4.2.3"
   }
 }
