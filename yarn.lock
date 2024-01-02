@@ -18082,10 +18082,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/core@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@tw-classed/core@npm:1.6.0"
-  checksum: de11784b698b215754b5d353d3d4d1fdf65022db589b85bc7953d562c8b8dc87c0bed5a79281f438f01b348ba976e2dfd9e83f1a5d551ac919ea1c3f1d311826
+"@tw-classed/core@npm:1.7.0":
+  version: 1.7.0
+  resolution: "@tw-classed/core@npm:1.7.0"
+  checksum: 7a3e1fb154a2297276d46d0be5847124b01dcea30e13b2b6b82cf2b99b8dacd59f6cbb88124a1dfffae274d71eb62c38df1086abd9485d69e0327186c990f272
   languageName: node
   linkType: hard
 
@@ -18100,14 +18100,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tw-classed/react@npm:1.6.1":
-  version: 1.6.1
-  resolution: "@tw-classed/react@npm:1.6.1"
+"@tw-classed/react@npm:1.7.0":
+  version: 1.7.0
+  resolution: "@tw-classed/react@npm:1.7.0"
   dependencies:
-    "@tw-classed/core": "npm:1.6.0"
+    "@tw-classed/core": "npm:1.7.0"
   peerDependencies:
     react: ">=16.8.0"
-  checksum: 67e9436ac3fe1d43b367b7595bb4c33e6a045a422c9a043ceada551e99f91607f34eefd44d17f038e27bed3ef371206a3a82dfc9c48650a5af248f2983477fce
+  checksum: 40670eaf1a5f0da936683a8a96f301d822648dfa09f9a376eebfe630630a339c9d2892101bbca3bb4198717df778b7d47fe994b4ecba2b29f4523e808650c84e
   languageName: node
   linkType: hard
 
@@ -20831,7 +20831,7 @@ __metadata:
     "@tailwindcss/line-clamp": "npm:0.4.4"
     "@tailwindcss/typography": "npm:0.5.10"
     "@tanstack/react-query": "npm:4.36.1"
-    "@tw-classed/react": "npm:1.6.1"
+    "@tw-classed/react": "npm:1.7.0"
     "@types/react": "npm:18.2.0"
     "@types/react-dom": "npm:18.2.1"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -20844,18 +20844,18 @@ __metadata:
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
     react-dropzone: "npm:14.2.3"
-    react-hook-form: "npm:7.48.2"
+    react-hook-form: "npm:7.49.2"
     react-icons: "npm:4.12.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
     tailwind-merge: "npm:1.14.0"
-    tailwindcss: "npm:3.3.5"
+    tailwindcss: "npm:3.4.0"
     tsup: "npm:7.2.0"
     tsx: "npm:3.14.0"
     typescript: "npm:5.3.2"
     url-loader: "npm:4.1.1"
     vite: "npm:4.5.1"
-    vite-plugin-node-polyfills: "npm:0.17.0"
+    vite-plugin-node-polyfills: "npm:0.19.0"
     vite-plugin-svgr: "npm:3.3.0"
     vite-tsconfig-paths: "npm:4.2.1"
   peerDependencies:
@@ -47807,12 +47807,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.48.2":
-  version: 7.48.2
-  resolution: "react-hook-form@npm:7.48.2"
+"react-hook-form@npm:7.49.2":
+  version: 7.49.2
+  resolution: "react-hook-form@npm:7.49.2"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18
-  checksum: 6cb494f359675e78c14c49a33d1c568df1a03db4c750eab18d6554e622fd64e04195c57efa138db03f8988587d132c57d2a7f5f3dd9157be996cc9acd4362170
+  checksum: 7895d65b8458c42d46eb338803bb0fd1aab42fc69ecf80b47846eace9493a10cac5b05c9b744a5f9f1f7969a3e2703fc2118cdab97e49a7798a72d09f106383f
   languageName: node
   linkType: hard
 
@@ -52789,6 +52789,39 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tailwindcss@npm:3.4.0":
+  version: 3.4.0
+  resolution: "tailwindcss@npm:3.4.0"
+  dependencies:
+    "@alloc/quick-lru": "npm:^5.2.0"
+    arg: "npm:^5.0.2"
+    chokidar: "npm:^3.5.3"
+    didyoumean: "npm:^1.2.2"
+    dlv: "npm:^1.1.3"
+    fast-glob: "npm:^3.3.0"
+    glob-parent: "npm:^6.0.2"
+    is-glob: "npm:^4.0.3"
+    jiti: "npm:^1.19.1"
+    lilconfig: "npm:^2.1.0"
+    micromatch: "npm:^4.0.5"
+    normalize-path: "npm:^3.0.0"
+    object-hash: "npm:^3.0.0"
+    picocolors: "npm:^1.0.0"
+    postcss: "npm:^8.4.23"
+    postcss-import: "npm:^15.1.0"
+    postcss-js: "npm:^4.0.1"
+    postcss-load-config: "npm:^4.0.1"
+    postcss-nested: "npm:^6.0.1"
+    postcss-selector-parser: "npm:^6.0.11"
+    resolve: "npm:^1.22.2"
+    sucrase: "npm:^3.32.0"
+  bin:
+    tailwind: lib/cli.js
+    tailwindcss: lib/cli.js
+  checksum: e69de4856308b3a6bcd084cc6745b6e3dcf6623553414f042d0365adceb70d79e41ec97a2a38c3aea0d5a875aa1eb4e84e04ad35ea1f0f7debcb7150779eae52
+  languageName: node
+  linkType: hard
+
 "tapable@npm:^1.0.0":
   version: 1.1.3
   resolution: "tapable@npm:1.1.3"
@@ -55769,6 +55802,18 @@ __metadata:
   peerDependencies:
     vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
   checksum: 2e0f7c611a17c3d76ff2c72145351410254f2899444a0a13d2f54e75678d374d7d27b1385e289859e9e36be60998bb8c309c518e5fcb4f198f5169e0504579ae
+  languageName: node
+  linkType: hard
+
+"vite-plugin-node-polyfills@npm:0.19.0":
+  version: 0.19.0
+  resolution: "vite-plugin-node-polyfills@npm:0.19.0"
+  dependencies:
+    "@rollup/plugin-inject": "npm:^5.0.5"
+    node-stdlib-browser: "npm:^1.2.0"
+  peerDependencies:
+    vite: ^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: 7ac092feca3faefa0983914dd081d9878ec80955ba4c7805c8a6f266a6bfae1fa7b1603c4cc985d8fb373556182f40e060b3eb61ccdfa52f4cf9fd76055bf172
   languageName: node
   linkType: hard
 
