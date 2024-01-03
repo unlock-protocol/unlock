@@ -12524,14 +12524,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-network-helpers@npm:1.0.9":
-  version: 1.0.9
-  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.9"
+"@nomicfoundation/hardhat-network-helpers@npm:1.0.10":
+  version: 1.0.10
+  resolution: "@nomicfoundation/hardhat-network-helpers@npm:1.0.10"
   dependencies:
     ethereumjs-util: "npm:^7.1.4"
   peerDependencies:
     hardhat: ^2.9.5
-  checksum: 3d71d25ec3aed080727433213b37cc268e9535a1cda9cba37d978d7287ea56a8492665a7e55a3bde984c5f25aa964e8ebb5f05b29d2a350e2dc93e0ef2e38c78
+  checksum: 38953777f69fea6c82a6df0f5de5c52afd797aae9d9d38d710dc19a4a0ef6bba2b4320db6050e04e94fb4bb0ce4cf81a2911a4da5097e0ca6fc1017ca77c3bb9
   languageName: node
   linkType: hard
 
@@ -20564,7 +20564,7 @@ __metadata:
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
-    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.9"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
     "@nomicfoundation/hardhat-verify": "npm:2.0.3"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
