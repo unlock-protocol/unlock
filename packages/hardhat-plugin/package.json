@@ -54,7 +54,7 @@
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.3.0",
-    "typescript": "5.3.2"
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
