@@ -58,7 +58,7 @@
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
-    "ethers": "^5.7.x",
+    "ethers": "^5.7.x || ^6.0.0",
     "hardhat": "^2.12.x"
   },
   "dependencies": {
