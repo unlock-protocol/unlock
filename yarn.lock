@@ -7098,6 +7098,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.23.5":
+  version: 7.23.7
+  resolution: "@babel/runtime@npm:7.23.7"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: b29cf3ca6277aea8c5c823d9b86e7f7153757f07eaaa81d726f125de00ac0e7451c90845770f919826a94ade8f71a6bda9c0421410dfcc285ee17a40f8f8ca00
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.8.3":
   version: 7.22.11
   resolution: "@babel/runtime@npm:7.22.11"
@@ -20910,7 +20919,7 @@ __metadata:
     react-icons: "npm:4.12.0"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
-    tailwind-merge: "npm:1.14.0"
+    tailwind-merge: "npm:2.2.0"
     tailwindcss: "npm:3.4.0"
     tsup: "npm:7.2.0"
     tsx: "npm:3.14.0"
@@ -21009,7 +21018,7 @@ __metadata:
     react-use: "npm:17.4.1"
     react-use-clipboard: "npm:1.0.9"
     siwe: "npm:2.1.4"
-    tailwind-merge: "npm:1.14.0"
+    tailwind-merge: "npm:2.2.0"
     tailwindcss: "npm:3.3.5"
     typescript: "npm:5.1.6"
     validator: "npm:13.9.0"
@@ -21122,7 +21131,7 @@ __metadata:
     remark-html: "npm:15.0.2"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
-    tailwind-merge: "npm:1.14.0"
+    tailwind-merge: "npm:2.2.0"
     tailwindcss: "npm:3.4.0"
     typescript: "npm:5.3.2"
     use-local-storage: "npm:3.0.0"
@@ -52857,10 +52866,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:1.14.0":
-  version: 1.14.0
-  resolution: "tailwind-merge@npm:1.14.0"
-  checksum: 35ff3c3a7f89111acbdef879130064229ce7deee017fd75f17d07135aa4bcc213e049c35d6bd5000de4dc3219e25f7a03295952736d1fee1423535c55775b1e7
+"tailwind-merge@npm:2.2.0":
+  version: 2.2.0
+  resolution: "tailwind-merge@npm:2.2.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.5"
+  checksum: ec2a249da3c7afc2df935f93dd896843c719a701bd692cf051eafb2b2350989da158e7af9cc976227e49c833501a91b06c42b80aa6721457eec2187a999c9be7
   languageName: node
   linkType: hard
 
