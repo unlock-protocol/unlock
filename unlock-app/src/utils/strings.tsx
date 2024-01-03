@@ -25,12 +25,9 @@ export function minifyEmail(email: string) {
 }
 
 export function addressMinify(addressOrName: string): string {
-  if (addressOrName.length == 42) {
-    return `${addressOrName?.substring(0, 6)}...${addressOrName?.substring(
-      addressOrName.length - 4
-    )}`
-  }
-  return addressOrName
+  return `${addressOrName?.substring(0, 6)}...${addressOrName?.substring(
+    addressOrName.length - 4
+  )}`
 }
 
 /**

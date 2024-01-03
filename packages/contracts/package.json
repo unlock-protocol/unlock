@@ -24,7 +24,7 @@
     "directory": "packages/contracts"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-etherscan": "3.1.7",
+    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
@@ -33,7 +33,7 @@
     "copyfiles": "2.4.1",
     "eslint": "8.54.0",
     "fs-extra": "11.2.0",
-    "hardhat": "2.19.2",
+    "hardhat": "2.19.4",
     "typescript": "5.3.2"
   },
   "files": [

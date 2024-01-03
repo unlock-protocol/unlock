@@ -102,7 +102,7 @@ export const mainnet: NetworkConfig = {
     {
       address: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
       decimals: 18,
-      name: 'Polygon',
+      name: 'Matic Token',
       symbol: 'MATIC',
     },
     {
@@ -129,6 +129,36 @@ export const mainnet: NetworkConfig = {
       decimals: 18,
       name: 'POINTS',
       symbol: 'POINTS',
+    },
+    {
+      address: '0x58b6a8a3302369daec383334672404ee733ab239',
+      decimals: 18,
+      name: 'Livepeer Token',
+      symbol: 'LPT',
+    },
+    {
+      address: '0x95ad61b0a150d79219dcf64e1e6cc01f0b64c4ce',
+      decimals: 18,
+      name: 'SHIBA INU',
+      symbol: 'SHIB',
+    },
+    {
+      address: '0x514910771af9ca656af840dff83e8264ecf986ca',
+      decimals: 18,
+      name: 'ChainLink Token',
+      symbol: 'LINK',
+    },
+    {
+      address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
+      decimals: 18,
+      name: 'Uniswap',
+      symbol: 'UNI',
+    },
+    {
+      address: '0xb8c77482e45f1f44de1745f52c74426c631bdd52',
+      decimals: 18,
+      name: 'BNB',
+      symbol: 'BNB',
     },
   ],
   uniswapV3: {

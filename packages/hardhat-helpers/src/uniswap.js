@@ -42,7 +42,7 @@ const currencyAmountToBigNumber = (amount) => {
 async function getUniswapRoute({
   tokenIn,
   tokenOut,
-  amoutOut = ethers.utils.parseUnits('10', tokenOut.decimals),
+  amoutOut = ethers.parseUnits('10', tokenOut.decimals),
   recipient,
   slippageTolerance = new Percent(10, 100),
   deadline = Math.floor(new Date().getTime() / 1000 + 100000),

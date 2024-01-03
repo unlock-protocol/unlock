@@ -6,10 +6,10 @@ const ethers = require('ethers')
 const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
 module.exports = ([recipientAddress]) => {
-  const amount = ethers.utils.parseUnits('0.01', 18)
+  const amount = ethers.parseEthers('0.01')
 
   return {
-    proposalName: `#000 Retroactive Funding: transfer ${ethers.utils.formatEther(
+    proposalName: `Retroactive Funding: transfer ${ethers.formatEther(
       amount
     )} UDT to ${recipientAddress}`,
     calls: [

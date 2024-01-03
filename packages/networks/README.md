@@ -18,3 +18,10 @@ console.log(networks[1].name) // mainnet
 ```
 yarn start
 ```
+
+## Scripts
+
+- Check that networks are configured correctly: `yarn run check`. Some networks might be missing some properties.
+
+- Check that all tokens have the right values (symbol, name, decimals): `yarn run check-tokens`
+  (Use [this Dune Dashboard](https://dune.com/denze/evms-top-erc20s) to find popular coins!)

@@ -16,6 +16,7 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build": "tsup src/index.ts --dts --format esm,cjs",
+    "check-tokens": "tsx ./bin/check-tokens",
     "clean": "rm -rf ./dist",
     "check": "tsx ./bin/keys",
     "prepublish": "yarn build",
@@ -39,6 +40,7 @@
   ],
   "dependencies": {
     "eslint-plugin-sort-keys-fix": "1.1.2",
+    "ethers": "6.9.2",
     "tsx": "3.14.0"
   }
 }
