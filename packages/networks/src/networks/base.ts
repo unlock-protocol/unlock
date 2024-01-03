@@ -92,6 +92,12 @@ export const base: NetworkConfig = {
       name: 'USD Coin',
       symbol: 'USDC',
     },
+    {
+      address: '0x4200000000000000000000000000000000000006',
+      decimals: 18,
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',

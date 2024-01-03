@@ -99,8 +99,8 @@ export const linea: NetworkConfig = {
       address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
       decimals: 6,
       featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC.e',
+      name: 'USDC',
+      symbol: 'USDC',
     },
     {
       address: '0x3aAB2285ddcDdaD8edf438C1bAB47e1a9D05a9b4',
