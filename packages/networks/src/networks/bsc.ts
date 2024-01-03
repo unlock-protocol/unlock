@@ -93,7 +93,7 @@ export const bsc: NetworkConfig = {
       address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
       decimals: 18,
       featured: true,
-      name: 'Ethereum',
+      name: 'Ethereum Token',
       symbol: 'ETH',
     },
     {
@@ -107,15 +107,21 @@ export const bsc: NetworkConfig = {
       address: '0x55d398326f99059ff775485246999027b3197955',
       decimals: 18,
       featured: true,
-      name: 'Tether',
+      name: 'Tether USD',
       symbol: 'USDT',
     },
     {
       address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
       decimals: 18,
       featured: true,
-      name: 'Dai',
+      name: 'Dai Token',
       symbol: 'DAI',
+    },
+    {
+      address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+      decimals: 18,
+      name: 'Wrapped BNB',
+      symbol: 'WBNB',
     },
   ],
   uniswapV3: {
