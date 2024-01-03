@@ -19174,21 +19174,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.0.11":
-  version: 18.0.11
-  resolution: "@types/react-dom@npm:18.0.11"
+"@types/react-dom@npm:18.2.18":
+  version: 18.2.18
+  resolution: "@types/react-dom@npm:18.2.18"
   dependencies:
     "@types/react": "npm:*"
-  checksum: e6dd39b2ef65f6e6257f1792c62e997273a06c3e72e05f082185d0b8dfd8972340f9d5452408183b4bf03bd68cbb2fb9da89e063f1ba98c287a38953491febec
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:18.2.1":
-  version: 18.2.1
-  resolution: "@types/react-dom@npm:18.2.1"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 5c6bcd6bbd4ac4caf5e492d79102a7b615531e101692dd844daae5709657c7599d4dfcb70fd84e5e1d135a958cf8bb919dc85542601a09419e9604c5e03bfc92
+  checksum: 4ef7725b4cebd4a32e049097ddfdfd855a178e63ead97ab6d3084872e7d6c1acd71aa923488123cd1015f0e0b11489d2b44f674a1df8fe82d7827eabbec6dbf1
   languageName: node
   linkType: hard
 
@@ -19282,25 +19273,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.0.32":
-  version: 18.0.32
-  resolution: "@types/react@npm:18.0.32"
+"@types/react@npm:18.2.46":
+  version: 18.2.46
+  resolution: "@types/react@npm:18.2.46"
   dependencies:
     "@types/prop-types": "npm:*"
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
-  checksum: 1fbd2670b6af22668be703e3f196d12493c39653532da89f65a61218c7949fd7aeab66c3ac3e37848935d10a0a46d31d7d78f27f67b7d4d4789c358bfd406eef
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:18.2.0":
-  version: 18.2.0
-  resolution: "@types/react@npm:18.2.0"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: c5fe6b798ab0d4ba2c40173275fb7f1e85a67586d40c97b0bee25a514f44de032e7aa90a98482cc38e106e66102727cdf1be9a8413d29509b92cb384adf4864d
+  checksum: 10fb28a5b8504106512ce3b154c45d1ac045c31633786773a29f003b3079b434060368bb56f95ef6c39510835ceec4fb8fdc271d6ca2b9cdd979379cf53f126b
   languageName: node
   linkType: hard
 
@@ -20465,8 +20445,8 @@ __metadata:
     "@storybook/addon-postcss": "npm:3.0.0-alpha.1"
     "@storybook/react": "npm:7.0.18"
     "@storybook/react-vite": "npm:7.0.18"
-    "@types/react": "npm:18.0.32"
-    "@types/react-dom": "npm:18.0.11"
+    "@types/react": "npm:18.2.46"
+    "@types/react-dom": "npm:18.2.18"
     "@vitejs/plugin-react": "npm:4.2.0"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -20870,8 +20850,8 @@ __metadata:
     "@tailwindcss/typography": "npm:0.5.10"
     "@tanstack/react-query": "npm:4.36.1"
     "@tw-classed/react": "npm:1.7.0"
-    "@types/react": "npm:18.2.0"
-    "@types/react-dom": "npm:18.2.1"
+    "@types/react": "npm:18.2.46"
+    "@types/react-dom": "npm:18.2.18"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": "npm:4.2.1"
@@ -20926,7 +20906,7 @@ __metadata:
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:1.0.5"
-    "@types/react": "npm:18.2.0"
+    "@types/react": "npm:18.2.46"
     "@types/react-google-recaptcha": "npm:2.1.8"
     "@types/react-gtm-module": "npm:2.0.3"
     "@uniswap/sdk-core": "npm:4.0.9"
@@ -21058,7 +21038,7 @@ __metadata:
     "@testing-library/react": "npm:14.1.2"
     "@types/next": "npm:8.0.7"
     "@types/node": "npm:20.10.1"
-    "@types/react": "npm:18.0.32"
+    "@types/react": "npm:18.2.46"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"

@@ -10,7 +10,7 @@
     "@testing-library/react": "14.1.2",
     "@types/next": "8.0.7",
     "@types/node": "20.10.1",
-    "@types/react": "18.0.32",
+    "@types/react": "18.2.46",
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/ui": "workspace:./packages/ui",
