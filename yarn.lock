@@ -20776,7 +20776,7 @@ __metadata:
     postmate: "npm:1.5.2"
     tsup: "npm:7.1.0"
     typescript: "npm:5.1.6"
-    vite: "npm:4.4.7"
+    vite: "npm:4.4.12"
     vite-plugin-css-injected-by-js: "npm:3.2.1"
     vite-plugin-node-polyfills: "npm:0.9.0"
     vitest: "npm:0.33.0"
@@ -46391,7 +46391,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.11, postcss@npm:^8.4.14, postcss@npm:^8.4.17, postcss@npm:^8.4.21, postcss@npm:^8.4.26":
+"postcss@npm:^8.3.11, postcss@npm:^8.4.14, postcss@npm:^8.4.17, postcss@npm:^8.4.21":
   version: 8.4.27
   resolution: "postcss@npm:8.4.27"
   dependencies:
@@ -49677,20 +49677,6 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 22177d26e9345a12ec5f54ff632fad44afec6bc93f14eb887da45756eb27393d1d1719d00cb75920431d689f6c9eedeb7a8bd43efa258c91a89564a4816dadf8
-  languageName: node
-  linkType: hard
-
-"rollup@npm:^3.25.2":
-  version: 3.27.0
-  resolution: "rollup@npm:3.27.0"
-  dependencies:
-    fsevents: "npm:~2.3.2"
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: 87d0b9824a7c51f69e8ea1d73631706bcfc574e8b294ca11cc83b7aa46237f65c3762cce211928b0f0a6213ddaab4558ae924b205bc71b9769e5893c79882b40
   languageName: node
   linkType: hard
 
@@ -56011,14 +55997,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.4.7":
-  version: 4.4.7
-  resolution: "vite@npm:4.4.7"
+"vite@npm:4.4.12":
+  version: 4.4.12
+  resolution: "vite@npm:4.4.12"
   dependencies:
     esbuild: "npm:^0.18.10"
     fsevents: "npm:~2.3.2"
-    postcss: "npm:^8.4.26"
-    rollup: "npm:^3.25.2"
+    postcss: "npm:^8.4.27"
+    rollup: "npm:^3.27.1"
   peerDependencies:
     "@types/node": ">= 14"
     less: "*"
@@ -56047,7 +56033,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: a4c1d3dca01751cd422a46cde1cd961056e1084bb74a0d977d2d0ae8323ee1190fa2f88adc10d1def8eb334caa87f97de22c223270cc3d55cafa1188c2dad820
+  checksum: 5f44dc16c1e66ff5fe003403f2d74d9306682181981cdbfe2ef62a4497cc740c3888dedb028b7d35c1d2a44a47598cf3cc145988e80cd5d44d200d2d25e30600
   languageName: node
   linkType: hard
 
