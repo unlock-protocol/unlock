@@ -3,7 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi } from 'vitest'
 
-let lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+let lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const template = 'keyMinded'
 
 const network = 5

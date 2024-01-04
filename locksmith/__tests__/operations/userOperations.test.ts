@@ -68,7 +68,7 @@ describe('User creation', () => {
   /* details are crafted to ensure normalization downstream */
   const userCreationDetails = {
     emailAddress: 'USER@EXAMPLE.COM',
-    publicKey: '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
+    publicKey: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
     passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
     recoveryPhrase: 'recoveryPhrase',
   }
@@ -199,7 +199,7 @@ describe('Updating encrypted private key', () => {
     User.update = vi.fn(() => {})
 
     await UserOperations.updatePasswordEncryptedPrivateKey(
-      '0x21cc9c438d9751a3225496f6fd1f1215c7bd5d83',
+      '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
       '{"data" : "encryptedPassword"}'
     )
     expect(User.update).toHaveBeenCalledWith(

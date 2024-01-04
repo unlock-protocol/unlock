@@ -8,7 +8,7 @@ import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 import { PurchaserBody } from '../../../src/controllers/v2/receiptController'
 import { ethers } from 'ethers'
 
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const hash =
   '0x68bd005bd3fba4c467f3289afdb773a797d3f5fe63ca13fd3ec7f16794b3858b'

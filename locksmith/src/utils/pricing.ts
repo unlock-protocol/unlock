@@ -130,18 +130,18 @@ export const getUnlockServiceFee = (
   if (
     normalizer.ethereumAddress(options?.lockAddress) ===
       normalizer.ethereumAddress(
-        '0xb9d79698599b3efa025c654b4c6f2c760c15d0d0'
+        '0xB9d79698599B3efa025c654B4c6f2c760c15d0d0'
       ) ||
     normalizer.ethereumAddress(options?.lockAddress) ===
       normalizer.ethereumAddress(
-        '0xc94b031ce1837277ddabafe2d993e0a9a2fc4e92'
+        '0xc94b031cE1837277dDABaFE2d993e0A9a2FC4E92'
       ) ||
     normalizer.ethereumAddress(options?.lockAddress) ===
       normalizer.ethereumAddress(
-        '0xcbef4c0e59a224b56d408ce72c59f0d275e7adae'
+        '0xcbEF4c0E59A224B56D408CE72C59f0D275E7adAe'
       ) ||
     normalizer.ethereumAddress(options?.lockAddress) ===
-      normalizer.ethereumAddress('0x3ebe147ecd6970f49fde34b5042996e140f63c22')
+      normalizer.ethereumAddress('0x3EbE147eCd6970f49fde34b5042996e140f63c22')
   ) {
     // For LexDAO, we take 3% only
     return Math.ceil(cost * 0.03)
@@ -169,7 +169,7 @@ export const getFees = async (
 
   if (
     options?.lockAddress.toLowerCase() ===
-    '0x45accac0e5c953009cda713a3b722f87f2907f86'.toLowerCase()
+    '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'.toLowerCase()
   ) {
     // For CabinDAO, we cap the fee at 20 USDC
     unlockServiceFee = 2000

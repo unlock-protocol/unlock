@@ -12,10 +12,10 @@ const recipients = [
 ]
 const data = ['0x', '0x']
 
-const lockAddressWithSettings = '0xbd55144a3a30907e080595cabf652bc079728b2f'
-const lockWithEurCurrency = '0x1a1d8b22555521d9e664981af56438e8ace2134e'
+const lockAddressWithSettings = '0xBd55144A3A30907E080595cabF652Bc079728B2f'
+const lockWithEurCurrency = '0x1a1D8b22555521D9E664981Af56438e8aCe2134E'
 const currencyContractAddress = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
-const cabinDaoLock = '0x45accac0e5c953009cda713a3b722f87f2907f86'
+const cabinDaoLock = '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'
 
 const lockAddress = '0x551c6ecdf819Dc90c5287971072B4651119accD3'
 const network = 5

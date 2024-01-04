@@ -20,7 +20,7 @@ describe('encrypted private key retrevial', () => {
 
       const userCreationDetails = {
         emailAddress,
-        publicKey: '0x6635f83421bf059cd8111f180f0727128685bae4',
+        publicKey: '0x6635F83421Bf059cd8111f180f0727128685BaE4',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
         recoveryPhrase: 'a recovery phrase',
       }

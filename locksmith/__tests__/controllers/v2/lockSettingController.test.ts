@@ -5,7 +5,7 @@ import { expect, vi } from 'vitest'
 import { DEFAULT_LOCK_SETTINGS } from '../../../src/controllers/v2/lockSettingController'
 
 const network = 4
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const lockAddress2 = '0x060D07E7cCcD390B6F93B4D318E9FF203250D9be'
 const lockSettingMock = {
   lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',

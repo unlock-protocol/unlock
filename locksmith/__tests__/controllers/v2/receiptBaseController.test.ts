@@ -6,7 +6,7 @@ import app from '../../app'
 import { vi, expect } from 'vitest'
 import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const network = 5
 
 const supplier: z.infer<typeof SupplierBody> = {

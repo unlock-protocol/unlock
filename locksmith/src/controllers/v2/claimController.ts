@@ -21,7 +21,7 @@ const ClaimBody = z.object({
 })
 
 export const LOCKS_WITH_DISABLED_CLAIMS = [
-  '0xafcfff71f3e717fcdb0b6a1bf20026304fd41bee',
+  '0xAfcfff71F3e717fcDb0b6a1BF20026304fD41bEE',
 ].map((address) => normalizer.ethereumAddress(address))
 
 /**
