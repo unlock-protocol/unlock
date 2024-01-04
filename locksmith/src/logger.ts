@@ -35,6 +35,7 @@ if (process.env.NODE_ENV === 'production') {
 
   if (config.logtailSourceToken) {
     const logtail = new Logtail(config.logtailSourceToken)
+    // @ts-expect-error Argument of type 'import("/unlock/node_modules/@logtail/node/dist/es6/node").Node' is not assignable to parameter of type 'import("/unlock/node_modules/@logtail/winston/node_modules/@logtail/node/dist/es6/node").Node'.
     logger.add(new LogtailTransport(logtail))
   }
 }
