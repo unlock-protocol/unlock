@@ -5,7 +5,7 @@ let walletService, web3Service, lockAddress, chainId
 export default ({ publicLockVersion }) => {
   if (versionEqualOrAbove(publicLockVersion, 'v7')) {
     describe('expireAndRefundFor', () => {
-      let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
+      let keyOwner = '0x2F883401de65129fD1C368fE3Cb26d001c4Dc583'
       let expiration
       let tokenId
       beforeAll(async () => {

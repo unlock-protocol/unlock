@@ -84,34 +84,34 @@ export const optimism: NetworkConfig = {
   swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   tokens: [
     {
-      address: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+      address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
       decimals: 6,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
-      address: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+      address: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
       decimals: 6,
       featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
-      address: '0x94b008aa00579c1307b0ef2c499ad98a8ce58e58',
+      address: '0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',
       decimals: 6,
       featured: true,
       name: 'Tether USD',
       symbol: 'USDT',
     },
     {
-      address: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+      address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
       decimals: 18,
       featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
-      address: '0xdc6ff44d5d932cbd77b52e5612ba0529dc6226f1',
+      address: '0xdC6fF44d5d932Cbd77B52E5612Ba0529DC6226F1',
       decimals: 18,
       name: 'Worldcoin',
       symbol: 'WLD',
@@ -129,7 +129,7 @@ export const optimism: NetworkConfig = {
       symbol: 'WETH',
     },
     {
-      address: '0x68f180fcce6836688e9084f035309e29bf0a2095',
+      address: '0x68f180fcCe6836688e9084f035309E29Bf0A2095',
       decimals: 8,
       name: 'Wrapped BTC',
       symbol: 'WBTC',

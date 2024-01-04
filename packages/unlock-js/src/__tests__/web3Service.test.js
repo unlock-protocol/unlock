@@ -5,7 +5,7 @@ import { describe, it, expect, vi } from 'vitest'
 
 var web3Service = new Web3Service(networks)
 const lock = {
-  address: '0xe6a85e67905d41a479a32ff59892861351c825e8',
+  address: '0xe6A85e67905d41A479A32FF59892861351c825E8',
   network: 5,
 }
 

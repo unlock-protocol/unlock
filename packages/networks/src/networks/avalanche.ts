@@ -63,14 +63,14 @@ export const avalanche: NetworkConfig = {
   },
   tokens: [
     {
-      address: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab',
+      address: '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',
       decimals: 18,
       featured: true,
       name: 'Wrapped Ether',
       symbol: 'WETH.e',
     },
     {
-      address: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
+      address: '0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664',
       decimals: 6,
       name: 'USD Coin',
       symbol: 'USDC.e',
@@ -83,21 +83,21 @@ export const avalanche: NetworkConfig = {
       symbol: 'USDC',
     },
     {
-      address: '0xc7198437980c041c805a1edcba50c1ce5db95118',
+      address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',
       decimals: 6,
       featured: true,
       name: 'Tether USD',
       symbol: 'USDT.e',
     },
     {
-      address: '0xd586e7f844cea2f87f50152665bcbc2c279d8d70',
+      address: '0xd586E7F844cEa2F87f50152665BCbc2C279D8d70',
       decimals: 18,
       featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI.e',
     },
     {
-      address: '0x50b7545627a5162f82a992c33b87adc75187b218',
+      address: '0x50b7545627a5162F82A992c33b87aDc75187B218',
       decimals: 8,
       featured: true,
       name: 'Wrapped BTC',

@@ -110,7 +110,7 @@ export const polygon: NetworkConfig = {
       symbol: 'USDT',
     },
     {
-      address: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
+      address: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
       decimals: 6,
       featured: true,
       name: 'USD Coin',
@@ -124,7 +124,7 @@ export const polygon: NetworkConfig = {
       symbol: 'WBTC',
     },
     {
-      address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
       decimals: 6,
       name: 'USD Coin (PoS)',
       symbol: 'USDC',
@@ -136,7 +136,7 @@ export const polygon: NetworkConfig = {
       symbol: 'WMATIC',
     },
     {
-      address: '0xe06bd4f5aac8d0aa337d13ec88db6defc6eaeefe',
+      address: '0xE06Bd4F5aAc8D0aA337D13eC88dB6defC6eAEefE',
       decimals: 18,
       name: 'PlanetIX',
       symbol: 'IXT',
@@ -157,7 +157,7 @@ export const polygon: NetworkConfig = {
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
   unlockDaoToken: {
     address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
-    mainnetBridge: '0x40ec5b33f54e0e8a33a975908c5ba1c14e5bbbdf',
+    mainnetBridge: '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf',
   },
   url: 'https://polygon.technology/',
 }
