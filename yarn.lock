@@ -17895,6 +17895,7 @@ __metadata:
     eslint: "npm:8.56.0"
     eslint-config-next: "npm:13.5.6"
     eslint-config-prettier: "npm:9.1.0"
+    eslint-plugin-evm-address-to-checksummed: "npm:0.0.5"
     eslint-plugin-json: "npm:3.1.0"
     eslint-plugin-mocha: "npm:10.2.0"
     eslint-plugin-prettier: "npm:5.1.2"
@@ -28305,6 +28306,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-evm-address-to-checksummed@npm:0.0.5":
+  version: 0.0.5
+  resolution: "eslint-plugin-evm-address-to-checksummed@npm:0.0.5"
+  dependencies:
+    keccak: "npm:^3.0.4"
+    requireindex: "npm:^1.2.0"
+    web3-validator: "npm:^2.0.3"
+  peerDependencies:
+    eslint: ">=7"
+  checksum: a62e4fb6af6531820844ba4842360bcca31d46df05f4a998d06ee0b132d980f83b2fc9ea198751b97617cf5feb2d1b09c4548adf87d44aaaafca46c4c6451958
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-import@npm:^2.28.1":
   version: 2.29.1
   resolution: "eslint-plugin-import@npm:2.29.1"
@@ -36434,7 +36448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keccak@npm:^3.0.0, keccak@npm:^3.0.1, keccak@npm:^3.0.2":
+"keccak@npm:^3.0.0, keccak@npm:^3.0.1, keccak@npm:^3.0.2, keccak@npm:^3.0.4":
   version: 3.0.4
   resolution: "keccak@npm:3.0.4"
   dependencies:
@@ -45962,7 +45976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"requireindex@npm:~1.2.0":
+"requireindex@npm:^1.2.0, requireindex@npm:~1.2.0":
   version: 1.2.0
   resolution: "requireindex@npm:1.2.0"
   checksum: 266d1cb31f6cbc4b6cf2e898f5bbc45581f7919bcf61bba5c45d0adb69b722b9ff5a13727be3350cde4520d7cd37f39df45d58a29854baaa4552cd6b05ae4a1a
@@ -53692,6 +53706,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"web3-errors@npm:^1.1.3":
+  version: 1.1.4
+  resolution: "web3-errors@npm:1.1.4"
+  dependencies:
+    web3-types: "npm:^1.3.1"
+  checksum: b0773a7df2338efc624963e55719894386303703ce393e5ce677fef0c7b4a5293556530386577010f1086a9fa7534346b83c4fc014e79c1107950e20a047b2f2
+  languageName: node
+  linkType: hard
+
 "web3-eth-abi@npm:1.10.0":
   version: 1.10.0
   resolution: "web3-eth-abi@npm:1.10.0"
@@ -54871,6 +54894,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"web3-types@npm:^1.3.0, web3-types@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "web3-types@npm:1.3.1"
+  checksum: f4495471915e66de9dcc1a21095339707e9b0569a799f8347efac324c95fc54322c16e208a0b478a986d6ee2188dc3299898c5125d51664e46d860acd84fe2cc
+  languageName: node
+  linkType: hard
+
 "web3-utils@npm:1.10.0":
   version: 1.10.0
   resolution: "web3-utils@npm:1.10.0"
@@ -55024,6 +55054,19 @@ __metadata:
     randombytes: "npm:^2.1.0"
     utf8: "npm:3.0.0"
   checksum: 05d2091630a9bcf4e7e90cfabf46e62d47546511abaecc271f1cb442d42ba91232a6d41813f245544821214fca41c92d34635370ad00f744281305427dc68576
+  languageName: node
+  linkType: hard
+
+"web3-validator@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "web3-validator@npm:2.0.3"
+  dependencies:
+    ethereum-cryptography: "npm:^2.0.0"
+    util: "npm:^0.12.5"
+    web3-errors: "npm:^1.1.3"
+    web3-types: "npm:^1.3.0"
+    zod: "npm:^3.21.4"
+  checksum: 47186254edb56e196367a7957eee1fc4b926e7053521c63fa55d8b22c9ed402165b48adddf6f173014efaaab8859a709fc5642f8ceba5ba60fba0006f795ee76
   languageName: node
   linkType: hard
 
@@ -56422,7 +56465,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.22.4, zod@npm:^3.20.6":
+"zod@npm:3.22.4, zod@npm:^3.20.6, zod@npm:^3.21.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 73622ca36a916f785cf528fe612a884b3e0f183dbe6b33365a7d0fc92abdbedf7804c5e2bd8df0a278e1472106d46674281397a3dd800fa9031dc3429758c6ac
