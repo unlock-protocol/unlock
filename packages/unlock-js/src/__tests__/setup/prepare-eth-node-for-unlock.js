@@ -45,7 +45,7 @@ async function main() {
   await Ether.transfer(
     walletService.provider,
     await walletService.provider.getSigner(1), // Use the same signer for all Ether transfers
-    '0xa3056617a6f63478ca68a890c0d28b42f4135ae4',
+    '0xa3056617a6F63478cA68a890C0d28b42F4135AE4',
     '0.000000000000000001'
   )
 
