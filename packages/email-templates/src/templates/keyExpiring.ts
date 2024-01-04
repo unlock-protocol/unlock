@@ -1,4 +1,8 @@
-import { customContentStyle } from './helpers/customContentStyle'
+import Handlebars from 'handlebars'
+
+import { formattedCustomContent } from './helpers/customContent'
+
+Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
 export default {
   subject: 'Your "{{lockName}}" membership is about to expire!',
@@ -6,11 +10,7 @@ export default {
 
 <p>Your <strong>{{lockName}}</strong> membership (#{{keyId}}) will expire on #{{expirationDate}}</p>
 
-{{#if customContent}}
-<section style="${customContentStyle}">
-{{{customContent}}}
-  </section>
-{{/if}}
+{{formattedCustomContent "Membership Manager" customContent}}
 
 {{#if isRenewable}}
   <p>You can renew this membership from the <a href="{{keychainUrl}}">Unlock Keychain</a> so you don't lose any benefit.</p>

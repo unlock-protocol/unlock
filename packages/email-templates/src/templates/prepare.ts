@@ -1,20 +1,24 @@
-// @ts-nocheck
-import handlebars from 'handlebars'
+import Handlebars from 'handlebars'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 
-export const prepareAll = (template, opts = {}) => {
+export const prepareAll = (template: any, opts = {}) => {
   const prepared = { attachments: [], ...template }
   Object.keys(template).forEach((format) => {
     if (['html', 'text', 'subject'].indexOf(format) > -1) {
-      const [compiled, getImages] = prepare(template[format], opts)
+      const { compiledTemplate, getImages } = prepareTemplate(
+        template[format],
+        opts
+      )
 
-      prepared[format] = (args) => {
-        const content = compiled(args)
+      prepared[format] = (args: any) => {
+        const content = compiledTemplate(args)
         const images = getImages()
-        images?.forEach((image) => {
-          prepared.attachments.push(image)
-        })
+        if (Array.isArray(images)) {
+          images?.forEach((image) => {
+            prepared.attachments.push(image)
+          })
+        }
         return content
       }
     }
@@ -22,9 +26,19 @@ export const prepareAll = (template, opts = {}) => {
   return prepared
 }
 
-export const prepare = (content, opts = {}) => {
-  const images = []
-  handlebars.registerHelper('inlineImage', function (filename) {
+interface TemplateImage {
+  filename: string
+  path: string
+  cid: string
+}
+
+interface PrepareOptions {
+  context?: 'web' | 'email'
+}
+
+export const prepareTemplate = (content: string, opts: PrepareOptions = {}) => {
+  const images: TemplateImage[] = []
+  Handlebars.registerHelper('inlineImage', function (filename) {
     const path = join(__dirname, `/../../../static/attachments/${filename}`)
 
     if (opts?.context === 'web') {
@@ -40,8 +54,10 @@ export const prepare = (content, opts = {}) => {
     }
   })
 
-  const template = handlebars.compile(content)
-  return [template, () => images]
+  return {
+    compiledTemplate: Handlebars.compile(content),
+    getImages: function () {
+      return images
+    },
+  }
 }
-
-export default prepare

@@ -1,5 +1,10 @@
-import handlebars from 'handlebars'
-import { eventDetailStyle } from './customContentStyle'
+import Handlebars from 'handlebars'
+
+export const eventDetailStyle = `
+  margin: 18px 0px; 
+  padding: 18px 18px 10px 18px; 
+  background: #F8FAFC; 
+`
 
 export function eventDetails(
   lockName: string,
@@ -41,5 +46,5 @@ export function eventDetails(
     </div>
   </div>`
 
-  return new handlebars.SafeString(content)
+  return new Handlebars.SafeString(content)
 }

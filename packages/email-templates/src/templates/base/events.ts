@@ -111,7 +111,7 @@ export const base = `<!DOCTYPE html>
       }
 
       h1 {
-        font-size: 24px;
+        font-size: 20px;
         line-height: 32px;
         font-weight: bold;
         margin: 0;
@@ -127,6 +127,7 @@ export const base = `<!DOCTYPE html>
       }
       
       code {
+        font-size: 14px;
         border-radius: 0.375rem;
         font-weight: 500;
         border-style: solid;

@@ -1,4 +1,4 @@
-import handlebars from 'handlebars'
+import Handlebars from 'handlebars'
 
 export function links(txUrl: string, openSeaUrl: string, airdropped: boolean) {
   const hasTxUrl = txUrl?.length > 0
@@ -27,5 +27,5 @@ export function links(txUrl: string, openSeaUrl: string, airdropped: boolean) {
     </ol>
    `
   }
-  return new handlebars.SafeString(linksMessage)
+  return new Handlebars.SafeString(linksMessage)
 }
