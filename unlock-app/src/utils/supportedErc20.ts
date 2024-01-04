@@ -5,10 +5,10 @@
 ` */
 
 export const mainnet = {
-  dai: '0x6b175474e89094c44da98b954eedeac495271d0f',
-  sai: '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359',
-  usdc: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-  bat: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+  dai: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+  sai: '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359',
+  usdc: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  bat: '0x0D8775F648430679A709E98d2b0Cb6250d2887EF',
 }
 
 export const kovan = {
