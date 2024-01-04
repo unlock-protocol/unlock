@@ -1,7 +1,7 @@
 const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
 // use hardhat default local address for testing
-const proposerAddress = '0x9ded35aef86f3c826ff8fe9240f9e7a9fb2094e5'
+const proposerAddress = '0x9dED35Aef86F3c826Ff8fe9240f9e7a9Fb2094e5'
 
 module.exports = {
   proposalName: 'Marketing unlock - david moderator',
