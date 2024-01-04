@@ -8,7 +8,7 @@
     "@nomicfoundation/hardhat-verify": "2.0.3",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-etherscan": "3.1.8",
-    "@openzeppelin/hardhat-upgrades": "*",
+    "@openzeppelin/hardhat-upgrades": "3.0.1",
     "@openzeppelin/upgrades-core": "1.32.2",
     "@safe-global/safe-core-sdk": "3.3.5",
     "@safe-global/safe-ethers-lib": "1.9.3",

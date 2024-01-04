@@ -12156,7 +12156,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:*":
+"@openzeppelin/hardhat-upgrades@npm:1.28.0":
+  version: 1.28.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.28.0"
+  dependencies:
+    "@openzeppelin/defender-base-client": "npm:^1.46.0"
+    "@openzeppelin/platform-deploy-client": "npm:^0.8.0"
+    "@openzeppelin/upgrades-core": "npm:^1.27.0"
+    chalk: "npm:^4.1.0"
+    debug: "npm:^4.1.1"
+    proper-lockfile: "npm:^4.1.1"
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@nomiclabs/hardhat-etherscan": ^3.1.0
+    ethers: ^5.0.5
+    hardhat: ^2.0.2
+  peerDependenciesMeta:
+    "@nomiclabs/harhdat-etherscan":
+      optional: true
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 4179635243bbc7786c46d65ac0848ac217669d8496383fca89806544778a5f23b38ebeceea341dda8b4547d4e8b4ba67f0138aff9e8fac51e2619d11b517db27
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/hardhat-upgrades@npm:3.0.1":
   version: 3.0.1
   resolution: "@openzeppelin/hardhat-upgrades@npm:3.0.1"
   dependencies:
@@ -12181,30 +12205,6 @@ __metadata:
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
   checksum: 8bd77b661d38818537ff68da0e65b3d2f45568bc0b2f2a134073a8d40af61bf00123cf2bb716b6a4f02578ef14f8406c680f81d26e20bd1d0791ddbb67d7afeb
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/hardhat-upgrades@npm:1.28.0":
-  version: 1.28.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.28.0"
-  dependencies:
-    "@openzeppelin/defender-base-client": "npm:^1.46.0"
-    "@openzeppelin/platform-deploy-client": "npm:^0.8.0"
-    "@openzeppelin/upgrades-core": "npm:^1.27.0"
-    chalk: "npm:^4.1.0"
-    debug: "npm:^4.1.1"
-    proper-lockfile: "npm:^4.1.1"
-  peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    "@nomiclabs/hardhat-etherscan": ^3.1.0
-    ethers: ^5.0.5
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomiclabs/harhdat-etherscan":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 4179635243bbc7786c46d65ac0848ac217669d8496383fca89806544778a5f23b38ebeceea341dda8b4547d4e8b4ba67f0138aff9e8fac51e2619d11b517db27
   languageName: node
   linkType: hard
 
@@ -20071,7 +20071,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.3"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
-    "@openzeppelin/hardhat-upgrades": "npm:*"
+    "@openzeppelin/hardhat-upgrades": "npm:3.0.1"
     "@openzeppelin/upgrades-core": "npm:1.32.2"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
