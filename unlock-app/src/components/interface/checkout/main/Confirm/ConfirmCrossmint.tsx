@@ -1,5 +1,4 @@
 import {
-  CrossmintCheckoutEventUnion,
   CrossmintPaymentElement,
   useCrossmintEvents,
 } from '@crossmint/client-sdk-react-ui'
@@ -74,7 +73,7 @@ export function ConfirmCrossmint({
 
   // Handling payment events
   const onCrossmintPaymentEvent = useCallback(
-    (paymentEvent: CrossmintCheckoutEventUnion) => {
+    (paymentEvent: any) => {
       console.debug(paymentEvent)
       // We get the events from crossmint
       // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui

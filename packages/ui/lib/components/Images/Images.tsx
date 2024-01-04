@@ -1,12 +1,12 @@
-import { ReactComponent as Attention } from './../../assets/attention.svg'
-import { ReactComponent as CoinbaseWallet } from './../../assets/coinbaseWallet.svg'
-import { ReactComponent as Frame } from './../../assets/frame.svg'
-import { ReactComponent as Metamask } from './../../assets/metamask.svg'
-import { ReactComponent as Status } from './../../assets/status.svg'
-import { ReactComponent as Unlock } from './../../assets/unlock.svg'
-import { ReactComponent as UnlockMonogram } from './../../assets/unlockMonogram.svg'
-import { ReactComponent as UnlockWordMark } from './../../assets/unlock-word-mark.svg'
-import { ReactComponent as WalletConnect } from './../../assets/walletConnect.svg'
+import Attention from './../../assets/attention.svg?react'
+import CoinbaseWallet from './../../assets/coinbaseWallet.svg?react'
+import Frame from './../../assets/frame.svg?react'
+import Metamask from './../../assets/metamask.svg?react'
+import Status from './../../assets/status.svg?react'
+import Unlock from './../../assets/unlock.svg?react'
+import UnlockMonogram from './../../assets/unlockMonogram.svg?react'
+import UnlockWordMark from './../../assets/unlock-word-mark.svg?react'
+import WalletConnect from './../../assets/walletConnect.svg?react'
 
 export const Images = {
   Attention,
