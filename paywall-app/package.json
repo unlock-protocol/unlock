@@ -17,7 +17,7 @@
   "dependencies": {
     "@types/next": "8.0.7",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "13.5.6",
+    "next": "14.0.4",
     "vite-plugin-node-polyfills": "0.17.0"
   },
   "license": "MIT",
