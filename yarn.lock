@@ -19564,7 +19564,7 @@ __metadata:
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.19.5"
     solhint: "npm:4.0.0"
-    zksync-web3: "npm:0.14.3"
+    zksync-ethers: "npm:6.0.0"
   languageName: unknown
   linkType: soft
 
@@ -60008,12 +60008,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-web3@npm:0.14.3":
-  version: 0.14.3
-  resolution: "zksync-web3@npm:0.14.3"
+"zksync-ethers@npm:6.0.0":
+  version: 6.0.0
+  resolution: "zksync-ethers@npm:6.0.0"
   peerDependencies:
-    ethers: ^5.7.0
-  checksum: 169952c1200211348261f0ad7ea5ca73094d54e8b83769e746fe28cc9534d01d273404d8a44e7e702197ca2d4425a780ad7cb7dcc24e2c4a4c4f262c327c1b8d
+    ethers: ^6.7.1
+  checksum: 1135be59af2fdca1ffaf9947aa6859f7927aad646432ef052c3b1e77f5475b7cd504b226c0247fad80ca17b84b14c90e413b9acb9d393027aa7c39bac39f3cd7
   languageName: node
   linkType: hard
 

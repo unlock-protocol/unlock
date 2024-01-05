@@ -22,7 +22,7 @@
     "fs-extra": "11.2.0",
     "hardhat": "2.19.5",
     "solhint": "4.0.0",
-    "zksync-web3": "0.14.3"
+    "zksync-ethers": "6.0.0"
   },
   "scripts": {
     "test": "hardhat test",
