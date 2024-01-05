@@ -114,6 +114,10 @@ const getUniswapTokens = async (chainId = 1) => {
 }
 
 const routerAddresses = {
+  8453: {
+    SwapRouter02: '0x2626664c2603336E57B271c5C0b26F421741e481',
+    UniversalRouter: '0x198EF79F1F515F02dFE9e3115eD9fC07183f02fC',
+  },
   421613: {
     UniversalRouter: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
     UnsupportedProtocol: '0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B',
