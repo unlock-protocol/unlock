@@ -17906,7 +17906,6 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: "npm:4.3.10"
     eslint: "npm:8.54.0"
-    eslint-plugin-mocha: "npm:10.2.0"
     hardhat: "npm:2.19.4"
     mocha: "npm:10.2.0"
     prettier: "npm:3.1.0"
