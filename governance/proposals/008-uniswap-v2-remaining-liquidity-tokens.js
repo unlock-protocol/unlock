@@ -1,5 +1,5 @@
 /**
- * Migrating 50% of Unlock DAO's existing UDT/WETH Liquidity Position
+ * Migrating Unlock DAO's remaining UDT/WETH Liquidity Position
  * from Uniswap v2 pool to the Uniswap v3 pool
  */
 const { ethers } = require('hardhat')
@@ -8,8 +8,8 @@ const { getTokenInfo } = require('../helpers/uniswap')
 // const daoAddress = '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591'
 const timelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 
-// 50% only for starters
-const percentageToMigrate = 50
+// remaining lp tokens
+const percentageToMigrate = 100
 const multisigAddress = '0xc3F2bcBE6fB42faC83dd8a42893C6c0B3809e070'
 const udtWethV2poolAddress = '0x9cA8AEf2372c705d6848fddA3C1267a7F51267C1'
 
@@ -31,6 +31,7 @@ module.exports = async () => {
 
   // parse call data for function call
   const poolV2 = await ethers.getContractAt(poolV2Abi, udtWethV2poolAddress)
+  const poolV2Address = await poolV2.getAddress()
 
   // pool v2 info
   const [token0, token1, [reserve0, reserve1], totalSupply] = await Promise.all(
@@ -52,11 +53,11 @@ module.exports = async () => {
 
   // calculate the share of the entire liquidity for each token
   // to determine the amount of tokens owned by the timelock in the pool
-  const lp0 = liquidity.mul(reserve0).div(totalSupply)
-  const lp1 = liquidity.mul(reserve1).div(totalSupply)
+  const lp0 = (liquidity * reserve0) / totalSupply
+  const lp1 = (liquidity * reserve1) / totalSupply
 
-  // amount of LP tokens to transfer
-  const amountToTransfer = liquidity.mul('50').div('100')
+  // Total amount of LP tokens to be transferred
+  const amountToTransfer = liquidity
 
   // encode transfer call
   const transferCalldata = poolV2.interface.encodeFunctionData('transfer', [
@@ -67,24 +68,21 @@ module.exports = async () => {
   // return all calls parsed for the DAO to process
   const calls = [
     {
-      contractAddress: poolV2.address,
+      contractAddress: poolV2Address,
       calldata: transferCalldata,
       functionName: 'transfer', // explainer
     },
   ]
-  const proposalName = `Migrating 50% of UDT/WETH Liquidity Position from Uniswap v2 pool
-
+  const proposalName = `Migrating the remaining amount of UDT/WETH Liquidity Position from Uniswap v2 pool
 
 ### Goal of the proposal
 
-This proposal aims at moving 50% of the liquidity tokens owned by the DAO in [Uniswap V2 UDT/WETH pool](https://etherscan.io/address/${
-    poolV2.address
-  }) to a [multisig](https://etherscan.io/address/${multisigAddress}) owned by trustees . This transfer is a necessary step towards the end goal: migrate the current V2 liquidty position to the UDT/WETH Uniswap v3 pool (without risking a sandwich attack during the migration).
+This proposal aims at moving the remaining amount (100%) of the liquidity tokens currently owned by the DAO in [Uniswap V2 UDT/WETH pool](https://etherscan.io/address/${poolV2Address}) to a [multisig](https://etherscan.io/address/${multisigAddress}) owned by trustees . This transfer is a necessary step towards the end goal: migrate the current V2 liquidty position to the UDT/WETH Uniswap v3 pool (without risking a sandwich attack during the migration).
 
 
 ### Current situation of the ${symbol0}/${symbol1} V2 pool 
 
-Address: ${poolV2.address}
+Address: ${poolV2Address}
 
 #### DAO's liquidity tokens in V2 pool
 
