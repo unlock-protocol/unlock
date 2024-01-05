@@ -44,7 +44,7 @@ task('release', 'Release a new version of the contract')
       abiPath = path.resolve(
         libPath,
         'abis',
-        contract.replace('contracts/', '').replace('.sol', '')
+        contract.replace('contracts/', '').replace('.sol', '.json')
       )
       solPath = path.resolve(
         libPath,
