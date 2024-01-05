@@ -71,6 +71,7 @@ export const base: NetworkConfig = {
     networkName: 'base',
     studioEndpoint: 'unlock-protocol-base',
   },
+  swapPurchaser: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   tokens: [
     {
       address: '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
