@@ -1,6 +1,6 @@
 /**
- * Example of a bridged proposal that will be sent across Connext to multisigs
- * on the other side of the network.
+ * Migrating 50% of Unlock DAO's existing UDT/WETH Liquidity Position
+ * from Uniswap v2 pool to the Uniswap v3 pool
  */
 const { ethers } = require('hardhat')
 const { getTokenInfo } = require('../helpers/uniswap')
