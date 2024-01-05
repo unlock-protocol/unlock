@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "tsup": "7.2.0"
+    "tsup": "8.0.1"
   },
   "repository": {
     "type": "git",
