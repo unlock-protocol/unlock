@@ -6,7 +6,7 @@
     "build": "yarn build:cdn && yarn build:next",
     "build:next": "next build",
     "build:cdn": "yarn vite build",
-    "deploy": "yarn build && next export -o out",
+    "deploy": "yarn build && next export",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "next start",
