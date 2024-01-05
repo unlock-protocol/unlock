@@ -16,7 +16,10 @@
   },
   "devDependencies": {
     "eslint": "8.54.0",
+    "eslint-plugin-evm-address-to-checksummed": "0.0.5",
+    "eslint-plugin-mocha": "10.2.0",
     "eslint-plugin-prettier": "5.1.2",
+    "eslint-plugin-sort-keys-fix": "1.1.2",
     "eslint-plugin-vitest": "0.3.0",
     "husky": "8.0.3",
     "lint-staged": "15.1.0",

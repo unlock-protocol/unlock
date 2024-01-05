@@ -18100,7 +18100,6 @@ __metadata:
     chai: "npm:4.3.10"
     debug: "npm:4.3.4"
     eslint: "npm:8.46.0"
-    eslint-plugin-mocha: "npm:10.1.0"
     eth-gas-reporter: "npm:0.2.27"
     eth-sig-util: "npm:3.0.1"
     ethers: "npm:5.7.2"
@@ -18381,7 +18380,6 @@ __metadata:
     embla-carousel-react: "npm:7.1.0"
     eslint: "npm:8.54.0"
     eslint-config-next: "npm:14.0.4"
-    eslint-plugin-mocha: "npm:10.2.0"
     ethers: "npm:5.7.2"
     feed: "npm:4.2.2"
     gray-matter: "npm:4.0.3"
@@ -28221,18 +28219,6 @@ __metadata:
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
   checksum: 7a8e4498531a43d988ce2f12502a3f5ce96eacfec13f956cf927f24bb041b724fb7fc0f0306ea19d143bfc79e138bf25e25acca0822847206ac6bf5ce095e846
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-mocha@npm:10.1.0":
-  version: 10.1.0
-  resolution: "eslint-plugin-mocha@npm:10.1.0"
-  dependencies:
-    eslint-utils: "npm:^3.0.0"
-    rambda: "npm:^7.1.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  checksum: 26a79ccf1f575ac559425f0c4fd8489f0c23544477b5eceb110eab7664ff4e003a8eeb26079bdfde810db46798b2af1f71021e46d42052adab921512daf0064a
   languageName: node
   linkType: hard
 
@@ -44760,7 +44746,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rambda@npm:^7.1.0, rambda@npm:^7.4.0":
+"rambda@npm:^7.4.0":
   version: 7.5.0
   resolution: "rambda@npm:7.5.0"
   checksum: a87ee033803bf841ac35a12a04583cc36e2d8957e3bee97e45fc8944e64915f4534685724efe663a3088a8d719489f76febf444544b300642e7398c2e5412217
@@ -52137,7 +52123,10 @@ __metadata:
     "@typescript-eslint/parser": "npm:6.13.1"
     babel-plugin-polyfill-corejs2: "npm:0.4.7"
     eslint: "npm:8.54.0"
+    eslint-plugin-evm-address-to-checksummed: "npm:0.0.5"
+    eslint-plugin-mocha: "npm:10.2.0"
     eslint-plugin-prettier: "npm:5.1.2"
+    eslint-plugin-sort-keys-fix: "npm:1.1.2"
     eslint-plugin-vitest: "npm:0.3.0"
     husky: "npm:8.0.3"
     lint-staged: "npm:15.1.0"
