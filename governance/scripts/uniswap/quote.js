@@ -77,13 +77,13 @@ async function main({
   console.log(`recipient: ${recipient.address}`)
 
   // dest price is 1 ETH or 1000 USDC/DAI
-  const keyPrice = ethers.utils.parseUnits(
+  const keyPrice = ethers.parseUnits(
     isStable(token1) ? '1000' : '1',
     token1.decimals
   )
 
   console.log(
-    `Get quote for: ${token0.symbol} > ${ethers.utils.formatUnits(
+    `Get quote for: ${token0.symbol} > ${ethers.formatUnits(
       keyPrice.toString(),
       token1.decimals
     )} ${token1.symbol}`
@@ -100,7 +100,7 @@ async function main({
   let permit, signature
   if (usePermit2Sig) {
     // create signed permit
-    const permitAmount = ethers.utils.parseUnits(
+    const permitAmount = ethers.parseUnits(
       token0 === isStable(token1) ? '5000' : '2',
       token0.decimals
     )

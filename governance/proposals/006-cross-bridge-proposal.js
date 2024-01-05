@@ -75,9 +75,7 @@ module.exports = async () => {
     Math.floor(Math.random() * (max - min + 1)) + min
 
   const burnAddress = ADDRESS_ZERO
-  const tokenAmount = ethers.utils
-    .parseEther(`0.000001`)
-    .add(`${randInt(1, 999)}`)
+  const tokenAmount = ethers.parseEther(`0.000001`).add(`${randInt(1, 999)}`)
 
   const calldata = unlockInterface.encodeFunctionData('transferTokens', [
     ADDRESS_ZERO, // native tokens
@@ -121,7 +119,7 @@ module.exports = async () => {
       }
 
       // encode instructions to be executed by the SAFE
-      const moduleData = await ethers.utils.defaultAbiCoder.encode(
+      const moduleData = await ethers.defaultAbiCoder.encode(
         ['address', 'uint256', 'bytes', 'bool'],
         [
           unlockAddress, // to

@@ -3,8 +3,8 @@ import { it, describe, expect } from 'vitest'
 import hasValidKey from '../../utils/hasValidKey'
 
 const jsonRpcEndpoint = 'https://eth-mainnet.alchemyapi.io/jsonrpc/'
-const lockAddress = '0x75fa3aa7e999b9899010c5f05e52cd0543dab465'
-const userAddress = 'c0f32eba9a4192d93209e83e03b95be7f81036d7'
+const lockAddress = '0x75fA3Aa7E999B9899010C5f05E52cD0543dAb465'
+const userAddress = '0xc0f32EBa9A4192d93209E83e03b95bE7f81036D7'
 
 describe('hasValidKey', () => {
   it('should make the right request', async () => {
@@ -50,8 +50,8 @@ describe('hasValidKey', () => {
     )
     const expiration = await hasValidKey(
       'https://eth-mainnet.alchemyapi.io/jsonrpc/DazqAi1xewCexIggwLSZVkXdnztC-w0u',
-      '0x75fa3aa7e999b9899010c5f05e52cd0543dab465',
-      'c0f32eba9a4192d93209e83e03b95be7f81036d7'
+      '0x75fA3Aa7E999B9899010C5f05E52cD0543dAb465',
+      '0xc0f32EBa9A4192d93209E83e03b95bE7f81036D7'
     )
     expect(expiration).toEqual(false)
   })

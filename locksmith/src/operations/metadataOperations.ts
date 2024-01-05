@@ -116,7 +116,7 @@ export const getBaseTokenData = async (
   // Ok to remove after 03/31/2024
   // Uncoment for reveal!
   if (
-    address.toLowerCase() == '0x02c510be69fe87e052e065d8a40b437d55907b48' &&
+    address.toLowerCase() == '0x02c510bE69fe87E052E065D8A40B437d55907B48' &&
     network == 42161
   ) {
     result.image = `${host}/${network}/lock/${address}/icon?id=${keyId}`

@@ -10,7 +10,7 @@ import * as Base64 from '../../../src/utils/base64'
 
 const lockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
 const lockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-const keyOwner = '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
+const keyOwner = '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8'
 const weekInEthereumLockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
 const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'

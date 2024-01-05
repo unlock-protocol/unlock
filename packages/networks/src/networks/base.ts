@@ -73,24 +73,30 @@ export const base: NetworkConfig = {
   },
   tokens: [
     {
-      address: '0x50c5725949a6f0c72e6c4a641f24049a917db0cb',
+      address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
       decimals: 18,
       featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
-      address: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+      address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
       decimals: 6,
       name: 'USD Base Coin',
       symbol: 'USDbC',
     },
     {
-      address: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+      address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
       decimals: 6,
       featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
+    },
+    {
+      address: '0x4200000000000000000000000000000000000006',
+      decimals: 18,
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
     },
   ],
   uniswapV3: {

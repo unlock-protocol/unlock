@@ -11,7 +11,7 @@ const timelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 // 50% only for starters
 const percentageToMigrate = 50
 const multisigAddress = '0xc3F2bcBE6fB42faC83dd8a42893C6c0B3809e070'
-const udtWethV2poolAddress = '0x9ca8aef2372c705d6848fdda3c1267a7f51267c1'
+const udtWethV2poolAddress = '0x9cA8AEf2372c705d6848fddA3C1267a7F51267C1'
 
 const poolV2Abi = [
   'function getReserves() external view returns (uint112 reserve0, uint112 reserve1, uint32 blockTimestampLast)',
@@ -91,9 +91,9 @@ Address: ${poolV2.address}
 - total : ${liquidity.toString()}
 - **to transfer:${amountToTransfer.toString()}**
 
-For reference, the total DAO's liquidity in V2 pool is ${ethers.utils.formatEther(
+For reference, the total DAO's liquidity in V2 pool is ${ethers.formatEther(
     lp0
-  )} ${symbol0} and ${ethers.utils.formatEther(lp1)} ${symbol1}.
+  )} ${symbol0} and ${ethers.formatEther(lp1)} ${symbol1}.
 
 
 ### About the proposal
