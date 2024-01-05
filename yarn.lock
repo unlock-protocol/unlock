@@ -7871,18 +7871,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/preact@npm:2.3.0":
-  version: 2.3.0
-  resolution: "@mdx-js/preact@npm:2.3.0"
+"@mdx-js/preact@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@mdx-js/preact@npm:3.0.0"
   dependencies:
     "@types/mdx": "npm:^2.0.0"
   peerDependencies:
     preact: ">=10.0.0"
-  checksum: 41cfae63da426c43772002be6c234849c2fd7af80e7df7cc0b56955961638c5cff4d723376c8737012eec4588f4ce2774c84a60326b25f39ea82fe8c0268f43d
+  checksum: 8397a910caadc6eaf74d13697f756504c695ee00e5364ed7b54854081b2dbadf4d07f85d5beb4fbf9b41b62c8a87b2aab0fb41236f5218c9d0a01e4d9b206ac5
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:1.6.22, @mdx-js/react@npm:^1.6.22":
+"@mdx-js/react@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@mdx-js/react@npm:3.0.0"
+  dependencies:
+    "@types/mdx": "npm:^2.0.0"
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 6d05cd3871eabbcc86df5042981692eccea55b5c31cbf39952bef0f41b38f2c4abeb357fed456a16c1472a0877b2f7e842341117034a3f1ddcb40b4840c33731
+  languageName: node
+  linkType: hard
+
+"@mdx-js/react@npm:^1.6.22":
   version: 1.6.22
   resolution: "@mdx-js/react@npm:1.6.22"
   peerDependencies:
@@ -7891,7 +7903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:2.3.0, @mdx-js/react@npm:^2.1.5":
+"@mdx-js/react@npm:^2.1.5":
   version: 2.3.0
   resolution: "@mdx-js/react@npm:2.3.0"
   dependencies:
@@ -17861,7 +17873,7 @@ __metadata:
     "@docusaurus/plugin-client-redirects": "npm:2.4.3"
     "@docusaurus/plugin-content-docs": "npm:2.4.3"
     "@flockler/react-flockler-embed": "npm:1.0.4"
-    "@mdx-js/react": "npm:1.6.22"
+    "@mdx-js/react": "npm:3.0.0"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     clsx: "npm:2.1.0"
     docusaurus-gtm-plugin: "npm:0.0.2"
@@ -18224,8 +18236,8 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@headlessui/react": "npm:1.7.17"
-    "@mdx-js/preact": "npm:2.3.0"
-    "@mdx-js/react": "npm:2.3.0"
+    "@mdx-js/preact": "npm:3.0.0"
+    "@mdx-js/react": "npm:3.0.0"
     "@radix-ui/react-tooltip": "npm:1.0.7"
     "@storybook/addon-actions": "npm:7.6.3"
     "@storybook/addon-docs": "npm:7.6.3"
