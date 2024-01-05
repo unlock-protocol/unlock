@@ -9,7 +9,7 @@ const main = async () => {
   for (const file of files) {
     if (file.isFile()) {
       let name = getIconName(file.name.replace('.svg', ''))
-      importStatements.push(`import ${name} from '~/icons/${file.name}'`)
+      importStatements.push(`import ${name} from '~/icons/${file.name}?react'`)
       exportStatement.push(name)
     }
   }

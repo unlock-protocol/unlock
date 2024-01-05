@@ -19,11 +19,5 @@ export default defineConfig({
     },
     sourcemap: true,
   },
-  plugins: [
-    tsconfigPaths(),
-    react(),
-    svgr({
-      exportAsDefault: true,
-    }),
-  ],
+  plugins: [tsconfigPaths(), react(), svgr()],
 })
