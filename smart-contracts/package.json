@@ -36,7 +36,6 @@
     "bignumber.js": "9.1.2",
     "debug": "4.3.4",
     "eslint": "8.46.0",
-    "eslint-plugin-mocha": "10.1.0",
     "eth-gas-reporter": "0.2.27",
     "eth-sig-util": "3.0.1",
     "ethers": "5.7.2",

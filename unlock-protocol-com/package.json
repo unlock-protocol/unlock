@@ -62,7 +62,7 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
-    "deploy": "yarn build && next export -o out",
+    "deploy": "yarn build && next export",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
@@ -74,9 +74,5 @@
     "defaults",
     "not IE 11",
     "maintained node versions"
-  ],
-  "resolutions": {
-    "@types/react": "18.2.46",
-    "@types/react-dom": "18.2.46"
-  }
+  ]
 }
