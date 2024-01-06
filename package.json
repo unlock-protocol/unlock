@@ -16,6 +16,8 @@
   },
   "devDependencies": {
     "eslint": "8.54.0",
+    "eslint-plugin-evm-address-to-checksummed": "0.0.5",
+    "eslint-plugin-mocha": "10.2.0",
     "eslint-plugin-prettier": "5.1.2",
     "eslint-plugin-vitest": "0.3.0",
     "husky": "8.0.3",
@@ -72,12 +74,8 @@
   "bugs": {
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
-  "resolutions": {
-    "yargs": "17.7.2",
-    "yoga-layout-prebuilt@^1.10.0": "patch:yoga-layout-prebuilt@npm%3A1.10.0#./.yarn/patches/yoga-layout-prebuilt-npm-1.10.0-855b15449f.patch"
-  },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",

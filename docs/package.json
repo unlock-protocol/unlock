@@ -4,9 +4,9 @@
   "private": true,
   "dependencies": {
     "@babel/helper-get-function-arity": "7.16.7",
-    "@docusaurus/core": "3.0.1",
-    "@docusaurus/plugin-client-redirects": "3.0.1",
-    "@docusaurus/plugin-content-docs": "3.0.1",
+    "@docusaurus/core": "3.1.0",
+    "@docusaurus/plugin-client-redirects": "3.1.0",
+    "@docusaurus/plugin-content-docs": "3.1.0",
     "@flockler/react-flockler-embed": "1.0.4",
     "@mdx-js/react": "3.0.0",
     "@unlock-protocol/networks": "workspace:./packages/networks",
