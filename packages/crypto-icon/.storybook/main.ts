@@ -22,7 +22,6 @@ export default {
       plugins: [
         tsconfigPaths(),
         svgr({
-          exportAsDefault: true,
           exclude: ['lib/assets/*.svg'],
         }),
       ],
