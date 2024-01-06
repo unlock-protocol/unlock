@@ -21,7 +21,7 @@
     "@typescript-eslint/eslint-plugin": "6.16.0",
     "@typescript-eslint/parser": "6.16.0",
     "eslint": "8.56.0",
-    "eslint-config-next": "13.5.6",
+    "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.5",
     "eslint-plugin-json": "3.1.0",
