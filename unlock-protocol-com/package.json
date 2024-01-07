@@ -26,7 +26,7 @@
     "embla-carousel-react": "7.1.0",
     "eslint": "8.54.0",
     "ethers": "5.7.2",
-    "next": "13.5.6",
+    "next": "14.0.4",
     "next-seo": "6.4.0",
     "numeral": "2.0.6",
     "path-match": "1.2.4",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.4.16",
-    "eslint-config-next": "13.5.6",
+    "eslint-config-next": "14.0.4",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
     "next-transpile-modules": "10.0.1",
@@ -62,7 +62,7 @@
   "scripts": {
     "dev": "next dev -p 3002",
     "build": "next build",
-    "deploy": "yarn build && next export -o out",
+    "deploy": "yarn build",
     "deploy-netlify": "./scripts/deploy-netlify.sh",
     "deploy-fleek": "./scripts/deploy-fleek.sh",
     "start": "yarn build && NODE_ENV=production next start",
@@ -74,9 +74,5 @@
     "defaults",
     "not IE 11",
     "maintained node versions"
-  ],
-  "resolutions": {
-    "@types/react": "18.2.46",
-    "@types/react-dom": "18.2.46"
-  }
+  ]
 }
