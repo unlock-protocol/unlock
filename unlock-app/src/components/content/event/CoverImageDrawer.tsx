@@ -69,7 +69,7 @@ export const CoverImageDrawer = ({
           <div className="z-10 mt-2 space-y-6">
             <ImageUpload
               size="full"
-              description="This illustration will be used as cover image for your event page"
+              description="This illustration will be used as cover image for your event page. The recommended aspect ratio is 1400x300."
               preview={image}
               isUploading={isUploading}
               imageRatio="cover"
