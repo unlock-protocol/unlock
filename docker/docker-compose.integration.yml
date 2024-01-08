@@ -44,8 +44,8 @@ services:
         '/opt/startup.sh',
       ]
     volumes:
-      - ./development/subgraph/startup.sh:/opt/startup.sh
-      - ./development/subgraph/networks.json:/home/unlock/subgraph/networks.json
+      - ./development/eth-node/startup.sh:/opt/startup.sh
+      - ./development/eth-node/networks.json:/home/unlock/subgraph/networks.json
       - ./development/wait-for-it/wait-for-it.sh:/opt/wait-for-it.sh
     depends_on:
       - graph-node
@@ -60,7 +60,7 @@ services:
         BUILD_DIR: tests
     env_file: test.env
     volumes:
-      - ./development/subgraph/networks.json:/home/unlock/networks.json
+      - ./development/eth-node/networks.json:/home/unlock/networks.json
     depends_on:
       - graph-node
       - eth-node

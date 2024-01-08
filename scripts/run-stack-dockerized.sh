@@ -21,7 +21,7 @@ docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 docker-compose $COMPOSE_CONFIG exec -T eth-node yarn provision --network docker
 
 # Make the correct subgraph config
-docker-compose $COMPOSE_CONFIG exec -T eth-node cat networks.json > $BASE_DOCKER_FOLDER/development/subgraph/networks.json
+docker-compose $COMPOSE_CONFIG exec -T eth-node cat networks.json > $BASE_DOCKER_FOLDER/development/eth-node/networks.json
 
 # show subgraph networks config (for debug purposes)
 docker-compose $COMPOSE_CONFIG exec -T eth-node cat networks.json
