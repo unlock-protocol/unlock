@@ -282,6 +282,7 @@ export const UpdateHooksForm = ({
   })
 
   const onSubmit = async (fields: Partial<FormProps>) => {
+    console.trace()
     if (isValid) {
       const setEventsHooksPromise = setEventsHooksMutation.mutateAsync(fields)
       await ToastHelper.promise(setEventsHooksPromise, {
@@ -301,7 +302,7 @@ export const UpdateHooksForm = ({
     <FormProvider {...methods}>
       <form
         className="grid gap-6"
-        onSubmit={methods.handleSubmit(onSubmit)}
+        onSubmit={methods.handleSubmit(() => {})}
         onChange={() => {
           methods.trigger()
         }}

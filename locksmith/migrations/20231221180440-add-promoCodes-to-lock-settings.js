@@ -4,14 +4,14 @@ const table = 'LockSettings'
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn(table, 'hooks', {
-      type: Sequelize.JSON,
+    await queryInterface.addColumn(table, 'promoCodes', {
+      type: Sequelize.ARRAY(Sequelize.STRING),
       allowNull: true,
-      defaultValue: {},
+      defaultValue: [],
     })
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn(table, 'hooks')
+    await queryInterface.removeColumn(table, 'promoCodes')
   },
 }

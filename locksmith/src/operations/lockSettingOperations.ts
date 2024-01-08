@@ -50,6 +50,9 @@ export async function getSettings({
     },
   })
 
+  console.log('SETTINGS::::')
+  console.log({ settings })
+
   const res = settings || DEFAULT_LOCK_SETTINGS
 
   return res
