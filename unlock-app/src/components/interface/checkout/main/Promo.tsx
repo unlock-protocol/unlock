@@ -112,7 +112,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
         } else if (promoCodeDetails?.discount > 0) {
           return (
             <Badge variant="dark" size="tiny">
-              Code all used up
+              Code expired
             </Badge>
           )
         }

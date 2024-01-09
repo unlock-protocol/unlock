@@ -124,7 +124,7 @@ export const PromoCodeHook = ({
                 size="small"
                 onClick={addPromoCode}
               >
-                Save
+                Add
               </Button>
             </td>
           </tr>
