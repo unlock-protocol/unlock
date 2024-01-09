@@ -1,5 +1,5 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -11,9 +11,7 @@ import { useFormContext } from 'react-hook-form'
 
 const FAKE_PWD = 'fakepwd'
 export const PasswordContractHook = ({
-  name,
   disabled,
-  selectedOption,
   lockAddress,
   network,
   hookAddress,
@@ -23,8 +21,6 @@ export const PasswordContractHook = ({
   const web3Service = useWeb3Service()
   const [hookValue, setHookValue] = useState('')
   const [signer, setSigner] = useState('')
-  const [hasPassword, setHasPassword] = useState(false)
-  const [isEdit, setIsEdit] = useState(false)
 
   useEffect(() => {
     if (hookValue.length === 0) return
@@ -59,7 +55,6 @@ export const PasswordContractHook = ({
       onSuccess: (signers: string) => {
         if (signers && signers !== DEFAULT_USER_ACCOUNT_ADDRESS) {
           setHookValue(FAKE_PWD)
-          setHasPassword(true)
         }
       },
     }
@@ -70,56 +65,60 @@ export const PasswordContractHook = ({
 
   const savePasswordMutation = useMutation(onSavePassword, {
     onSuccess: () => {
-      setHasPassword(true)
       setHookValue(FAKE_PWD)
     },
   })
 
-  const handleSavePassword = async () => {
-    console.log('SAVE!')
-    // const promise = savePasswordMutation.mutateAsync()
+  const onSubmit = async ({ hook, ...rest }: any) => {
+    await setEventsHooksMutation.mutateAsync(rest)
 
-    // await ToastHelper.promise(promise, {
-    //   loading: 'Updating password...',
-    //   success: 'Password is set for the lock.',
-    //   error: 'There is an issue with password update.',
-    // })
+    const promise = savePasswordMutation.mutateAsync()
+    await ToastHelper.promise(promise, {
+      loading: 'Updating password...',
+      success: 'Password is set for the lock.',
+      error: 'There is an issue with password update.',
+    })
   }
 
-  const disabledInput =
-    disabled || savePasswordMutation.isLoading || (hasPassword && !isEdit)
-  const { getValues, formState, setValue } = useFormContext()
+  const disabledInput = disabled || savePasswordMutation.isLoading
 
-  const value = getValues(name)
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useFormContext()
 
   if (isLoading) {
     return (
-      <>
-        <Placeholder.Root className="flex flex-col">
-          <Placeholder.Line className="h-5 rounded-none" />
-          <div className="w-40 ml-auto">
-            <Placeholder.Line className="h-10" />
-          </div>
-        </Placeholder.Root>
-      </>
+      <Placeholder.Root className="flex flex-col">
+        <Placeholder.Line className="h-5 rounded-none" />
+        <div className="w-40 ml-auto">
+          <Placeholder.Line className="h-10" />
+        </div>
+      </Placeholder.Root>
     )
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
       <Input
         size="small"
         label="Password"
         type="password"
-        value={hookValue}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setHookValue(e?.target?.value)
-        }
+        {...register('hook.password', {
+          required: {
+            value: true,
+            message: 'Please enter a password',
+          },
+        })}
+        // @ts-expect-error Property 'password' does not exist on type 'FieldError'.
+        error={errors?.hook?.password?.message as unknown as string}
+        autoComplete="new-password"
         description={
           hasSigner && (
             <span>
               There is already a password set, enter and save a new one to
-              update.{' '}
+              update it.{' '}
             </span>
           )
         }
@@ -127,17 +126,16 @@ export const PasswordContractHook = ({
       />
       <div className="ml-auto">
         <Button
-          type="button"
+          type="submit"
           size="small"
+          loading={
+            savePasswordMutation.isLoading || setEventsHooksMutation.isLoading
+          }
           disabled={savePasswordMutation.isLoading || hookValue.length === 0}
-          onClick={async () => {
-            await handleSavePassword()
-            setValue(name, value)
-          }}
         >
           {hasSigner ? 'Update password' : 'Set password'}
         </Button>
       </div>
-    </div>
+    </form>
   )
 }

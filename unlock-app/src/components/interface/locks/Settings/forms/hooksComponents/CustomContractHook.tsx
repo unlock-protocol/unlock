@@ -31,7 +31,7 @@ export const CustomContractHook = ({
         })}
         disabled={disabled}
         placeholder="Contract address"
-        error={hasError && 'Enter a valid address'}
+        error={hasError ? 'Enter a valid address' : ''}
       />
       <div className="ml-auto">
         <Button size="small" loading={setEventsHooksMutation.isLoading}>

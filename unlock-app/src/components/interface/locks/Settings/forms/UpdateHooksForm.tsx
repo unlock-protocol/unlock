@@ -204,7 +204,7 @@ const HookSelect = ({
         label={label}
         defaultValue={defaultValue}
         disabled={disabled}
-        onChange={handleSelectChange}
+        onChange={(value) => handleSelectChange(value.toString())}
       />
       {Option?.component && (
         <div className="w-full p-4 border border-gray-500 rounded-lg">
@@ -252,7 +252,18 @@ export const UpdateHooksForm = ({
   const { reset } = methods
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
-    console.log({ fields })
+    const values = await getHookValues()
+    let dirty = false
+    Object.keys(fields).forEach((key) => {
+      // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'Partial<FormProps>'.
+      if (fields[key] !== values[key]) {
+        dirty = true
+      }
+    })
+    if (!dirty) {
+      return
+    }
+
     const walletService = await getWalletService(network)
 
     await ToastHelper.promise(
@@ -261,9 +272,9 @@ export const UpdateHooksForm = ({
         ...fields,
       }),
       {
-        success: 'Event hooks updated.',
-        loading: 'Updating Event hooks.',
-        error: 'Impossible to update event hooks.',
+        success: 'Contract hooks updated.',
+        loading: 'Updating hooks on the contract...',
+        error: "Failed to update the contract's hooks.",
       }
     )
   }
