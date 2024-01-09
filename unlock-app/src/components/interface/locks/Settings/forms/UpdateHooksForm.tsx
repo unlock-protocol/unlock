@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
-import { Button, Select } from '@unlock-protocol/ui'
+import { Select } from '@unlock-protocol/ui'
 import { useRef, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
@@ -54,6 +54,7 @@ export interface CustomComponentProps {
   network: number
   hookAddress: string
   defaultValue?: string
+  setEventsHooksMutation: any
 }
 
 const GENERAL_OPTIONS: OptionProps[] = [
@@ -126,12 +127,14 @@ interface HookSelectProps {
   network: number
   lockAddress: string
   defaultValues?: HooksFormProps
+  setEventsHooksMutation: any
 }
 
 const HookSelect = ({
   name,
   label,
   disabled,
+  setEventsHooksMutation,
   lockAddress,
   network,
   defaultValues,
@@ -141,6 +144,7 @@ const HookSelect = ({
   const firstRender = useRef(false)
   const { networks } = useConfig()
   const hooks = networks?.[network]?.hooks ?? {}
+  const { setValue, getValues } = useFormContext()
 
   const getHooks = () => {
     return hooks
@@ -159,71 +163,67 @@ const HookSelect = ({
     return id as string
   }
 
+  const hookAddress = getValues(name)
+  const hookOptionsByName = HookMapping[name]?.options ?? []
+  const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
+  const Option = options.find((option) => option.value === selectedOption)
+
+  const { hookName } = HookMapping[name]
+
+  let id = ''
+
+  const handleSelectChange = (hookType: string) => {
+    const hooks = getHooks()[hookName]
+
+    // get hook value from hooks of default one
+    const hookValue =
+      hooks?.find((hook: Hook) => {
+        return hook.id === hookType
+      })?.address || hookAddress
+
+    setSelectedOption(hookType)
+
+    if (hookValue) {
+      setValue(name, hookValue, {
+        shouldValidate: true,
+      })
+    }
+  }
+
+  // set default value when present on render
+  if (!firstRender.current && hookAddress?.length) {
+    id = getHookIdByAddress(hookName, hookAddress)
+    setDefaultValue(id)
+    firstRender.current = true
+  }
+
   return (
-    <ConnectForm>
-      {({ setValue, getValues }: any) => {
-        const value = getValues(name)
-        const hookOptionsByName = HookMapping[name]?.options ?? []
-        const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
-        const Option = options.find((option) => option.value === selectedOption)
-
-        const { hookName } = HookMapping[name]
-
-        let id = ''
-
-        const handleSelectChange = (id: string) => {
-          const hooks = getHooks()[hookName]
-
-          // get hook value from hooks of default one
-          const hookValue =
-            hooks?.find((hook: Hook) => {
-              return hook.id === id
-            })?.address || value
-
-          setSelectedOption(`${id}`)
-
-          if (hookValue) {
-            setValue(name, hookValue, {
-              shouldValidate: true,
-            })
-          }
-        }
-
-        // set default value when present on render
-        if (!firstRender.current && value?.length) {
-          id = getHookIdByAddress(hookName, value)
-          setDefaultValue(id)
-          firstRender.current = true
-        }
-
-        return (
-          <div className="flex flex-col gap-1">
-            <Select
-              options={options}
-              label={label}
-              defaultValue={defaultValue}
-              disabled={disabled}
-              onChange={(value) => {
-                handleSelectChange(`${value}`)
-              }}
-            />
-            {Option?.component && (
-              <div className="w-full p-4 border border-gray-500 rounded-lg">
-                {Option.component({
-                  name,
-                  disabled,
-                  selectedOption: selectedOption ?? '',
-                  lockAddress,
-                  network,
-                  hookAddress: value,
-                  defaultValue: defaultValues?.[name] ?? '',
-                })}
-              </div>
-            )}
-          </div>
-        )
-      }}
-    </ConnectForm>
+    <div className="flex flex-col gap-1">
+      <Select
+        options={options}
+        label={label}
+        defaultValue={defaultValue}
+        disabled={disabled}
+        onChange={(hookType: string) => {
+          console.log('changed', hookType)
+          handleSelectChange(hookType.toString())
+        }}
+      />
+      {Option?.component && (
+        <div className="w-full p-4 border border-gray-500 rounded-lg">
+          {Option.component({
+            name,
+            disabled,
+            selectedOption: selectedOption ?? '',
+            lockAddress,
+            network,
+            hookAddress,
+            defaultValue: defaultValues?.[name] ?? '',
+            setEventsHooksMutation,
+          })}
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -232,7 +232,6 @@ export type HooksFormProps = Partial<Record<FormPropsKey, string>>
 export const UpdateHooksForm = ({
   lockAddress,
   network,
-  isManager,
   disabled,
   version,
 }: UpdateHooksFormProps) => {
@@ -310,6 +309,7 @@ export const UpdateHooksForm = ({
 
             return (
               <HookSelect
+                setEventsHooksMutation={setEventsHooksMutation}
                 key={hookName}
                 label={label}
                 name={fieldName}
@@ -320,15 +320,6 @@ export const UpdateHooksForm = ({
               />
             )
           }
-        )}
-        {isManager && (
-          <Button
-            className="w-full md:w-1/3"
-            type="submit"
-            loading={setEventsHooksMutation.isLoading}
-          >
-            Apply
-          </Button>
         )}
       </form>
     </FormProvider>

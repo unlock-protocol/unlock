@@ -1,4 +1,4 @@
-import { Input } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { CustomComponentProps } from '../UpdateHooksForm'
@@ -8,7 +8,10 @@ export const CustomContractHook = ({
   name,
   disabled,
   selectedOption,
+  setEventsHooksMutation,
+  ...rest
 }: CustomComponentProps) => {
+  console.log(rest)
   return (
     <ConnectForm>
       {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
@@ -23,15 +26,25 @@ export const CustomContractHook = ({
 
         return (
           showInput && (
-            <Input
-              label="Contract address"
-              {...register(name, {
-                validate: ethers.utils.isAddress,
-              })}
-              disabled={disabled}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={hasError && 'Enter a valid address'}
-            />
+            <>
+              <Input
+                label="Contract address"
+                {...register(name, {
+                  validate: ethers.utils.isAddress,
+                })}
+                disabled={disabled}
+                placeholder="Contract address, for ex: 0x00000000000000000"
+                error={hasError && 'Enter a valid address'}
+              />
+              <Button
+                size="small"
+                className="w-full md:w-1/3"
+                type="submit"
+                loading={setEventsHooksMutation.isLoading}
+              >
+                Save
+              </Button>
+            </>
           )
         )
       }}

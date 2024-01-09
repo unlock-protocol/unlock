@@ -18,6 +18,14 @@ export const PasswordContractHook = ({
   network,
   hookAddress,
 }: CustomComponentProps) => {
+  console.log({
+    name,
+    disabled,
+    selectedOption,
+    lockAddress,
+    network,
+    hookAddress,
+  })
   const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const [hookValue, setHookValue] = useState('')
@@ -87,6 +95,7 @@ export const PasswordContractHook = ({
   const disabledInput =
     disabled || savePasswordMutation.isLoading || (hasPassword && !isEdit)
 
+  console.log({ disabled, savePasswordMutation, hasPassword, isEdit })
   return (
     <ConnectForm>
       {({ getValues, formState: { dirtyFields }, setValue }: any) => {
@@ -125,7 +134,8 @@ export const PasswordContractHook = ({
                 description={
                   hasSigner && (
                     <span>
-                      Password already set, add and save a new one to update.{' '}
+                      There is already a password set, enter and save a new one
+                      to update.{' '}
                     </span>
                   )
                 }
