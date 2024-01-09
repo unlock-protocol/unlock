@@ -7,7 +7,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { getEthersWalletFromPassword } from '~/utils/strings'
-import { ConnectForm } from '../../../CheckoutUrl/ChooseConfiguration'
+import { useFormContext } from 'react-hook-form'
 
 const FAKE_PWD = 'fakepwd'
 export const PasswordContractHook = ({
@@ -17,15 +17,8 @@ export const PasswordContractHook = ({
   lockAddress,
   network,
   hookAddress,
+  setEventsHooksMutation,
 }: CustomComponentProps) => {
-  console.log({
-    name,
-    disabled,
-    selectedOption,
-    lockAddress,
-    network,
-    hookAddress,
-  })
   const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const [hookValue, setHookValue] = useState('')
@@ -83,98 +76,68 @@ export const PasswordContractHook = ({
   })
 
   const handleSavePassword = async () => {
-    const promise = savePasswordMutation.mutateAsync()
+    console.log('SAVE!')
+    // const promise = savePasswordMutation.mutateAsync()
 
-    await ToastHelper.promise(promise, {
-      loading: 'Updating password...',
-      success: 'Password is set for the lock.',
-      error: 'There is an issue with password update.',
-    })
+    // await ToastHelper.promise(promise, {
+    //   loading: 'Updating password...',
+    //   success: 'Password is set for the lock.',
+    //   error: 'There is an issue with password update.',
+    // })
   }
 
   const disabledInput =
     disabled || savePasswordMutation.isLoading || (hasPassword && !isEdit)
+  const { getValues, formState, setValue } = useFormContext()
 
-  console.log({ disabled, savePasswordMutation, hasPassword, isEdit })
+  const value = getValues(name)
+
+  if (isLoading) {
+    return (
+      <>
+        <Placeholder.Root className="flex flex-col">
+          <Placeholder.Line className="h-5 rounded-none" />
+          <div className="w-40 ml-auto">
+            <Placeholder.Line className="h-10" />
+          </div>
+        </Placeholder.Root>
+      </>
+    )
+  }
+
   return (
-    <ConnectForm>
-      {({ getValues, formState: { dirtyFields }, setValue }: any) => {
-        const value = getValues(name)
-
-        const isFieldDirty = dirtyFields[name]
-
-        const showInput =
-          (value?.length > 0 && value !== DEFAULT_USER_ACCOUNT_ADDRESS) ||
-          (selectedOption ?? '')?.length > 0 ||
-          isFieldDirty
-
-        if (isLoading) {
-          return (
-            <>
-              <Placeholder.Root className="flex flex-col">
-                <Placeholder.Line className="h-5 rounded-none" />
-                <div className="w-40 ml-auto">
-                  <Placeholder.Line className="h-10" />
-                </div>
-              </Placeholder.Root>
-            </>
+    <div className="flex flex-col gap-2">
+      <Input
+        size="small"
+        label="Password"
+        type="password"
+        value={hookValue}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setHookValue(e?.target?.value)
+        }
+        description={
+          hasSigner && (
+            <span>
+              There is already a password set, enter and save a new one to
+              update.{' '}
+            </span>
           )
         }
-
-        return (
-          showInput && (
-            <div className="flex flex-col gap-2">
-              <Input
-                label="Password"
-                type="password"
-                value={hookValue}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setHookValue(e?.target?.value)
-                }
-                description={
-                  hasSigner && (
-                    <span>
-                      There is already a password set, enter and save a new one
-                      to update.{' '}
-                    </span>
-                  )
-                }
-                disabled={disabledInput}
-              />
-              <div className="ml-auto">
-                {hasPassword && !isEdit ? (
-                  <Button
-                    size="small"
-                    type="button"
-                    onClick={() => {
-                      setIsEdit(true)
-                      setHookValue('') // reset hook value
-                    }}
-                  >
-                    Edit password
-                  </Button>
-                ) : (
-                  <Button
-                    type="button"
-                    size="small"
-                    disabled={
-                      disabled ||
-                      savePasswordMutation.isLoading ||
-                      hookValue.length === 0
-                    }
-                    onClick={async () => {
-                      await handleSavePassword()
-                      setValue(name, value)
-                    }}
-                  >
-                    {hasSigner ? 'Update password' : 'Set password'}
-                  </Button>
-                )}
-              </div>
-            </div>
-          )
-        )
-      }}
-    </ConnectForm>
+        disabled={disabledInput}
+      />
+      <div className="ml-auto">
+        <Button
+          type="button"
+          size="small"
+          disabled={savePasswordMutation.isLoading || hookValue.length === 0}
+          onClick={async () => {
+            await handleSavePassword()
+            setValue(name, value)
+          }}
+        >
+          {hasSigner ? 'Update password' : 'Set password'}
+        </Button>
+      </div>
+    </div>
   )
 }

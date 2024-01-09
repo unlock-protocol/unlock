@@ -12,7 +12,6 @@ import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
 import { GuildContractHook } from './hooksComponents/GuildContractHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
-import { ConnectForm } from '../../CheckoutUrl/ChooseConfiguration'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -39,6 +38,7 @@ interface OptionProps {
   value: HookType | string
   component: (args: CustomComponentProps) => JSX.Element
 }
+
 interface HookValueProps {
   label: string
   fromPublicLockVersion: number
@@ -204,10 +204,7 @@ const HookSelect = ({
         label={label}
         defaultValue={defaultValue}
         disabled={disabled}
-        onChange={(hookType: string) => {
-          console.log('changed', hookType)
-          handleSelectChange(hookType.toString())
-        }}
+        onChange={handleSelectChange}
       />
       {Option?.component && (
         <div className="w-full p-4 border border-gray-500 rounded-lg">
@@ -252,17 +249,23 @@ export const UpdateHooksForm = ({
     },
   })
 
-  const {
-    formState: { isValid },
-    reset,
-  } = methods
+  const { reset } = methods
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
+    console.log({ fields })
     const walletService = await getWalletService(network)
-    return await walletService.setEventHooks({
-      lockAddress,
-      ...fields,
-    })
+
+    await ToastHelper.promise(
+      walletService.setEventHooks({
+        lockAddress,
+        ...fields,
+      }),
+      {
+        success: 'Event hooks updated.',
+        loading: 'Updating Event hooks.',
+        error: 'Impossible to update event hooks.',
+      }
+    )
   }
 
   const setEventsHooksMutation = useMutation(setEventsHooks, {
@@ -274,31 +277,12 @@ export const UpdateHooksForm = ({
     },
   })
 
-  const onSubmit = async (fields: Partial<FormProps>) => {
-    if (isValid) {
-      const setEventsHooksPromise = setEventsHooksMutation.mutateAsync(fields)
-      await ToastHelper.promise(setEventsHooksPromise, {
-        success: 'Event hooks updated.',
-        loading: 'Updating Event hooks.',
-        error: 'Impossible to update event hooks.',
-      })
-    } else {
-      ToastHelper.error('Form is not valid')
-    }
-  }
-
   const disabledInput =
     disabled || setEventsHooksMutation.isLoading || isLoading
 
   return (
     <FormProvider {...methods}>
-      <form
-        className="grid gap-6"
-        onSubmit={methods.handleSubmit(onSubmit)}
-        onChange={() => {
-          methods.trigger()
-        }}
-      >
+      <div className="flex gap-4 flex-col">
         {Object.entries(HookMapping)?.map(
           ([field, { label, fromPublicLockVersion = 0, hookName }]) => {
             const fieldName = field as FormPropsKey
@@ -311,7 +295,7 @@ export const UpdateHooksForm = ({
               <HookSelect
                 setEventsHooksMutation={setEventsHooksMutation}
                 key={hookName}
-                label={label}
+                label={`${label}:`}
                 name={fieldName}
                 disabled={disabledInput}
                 lockAddress={lockAddress}
@@ -321,7 +305,7 @@ export const UpdateHooksForm = ({
             )
           }
         )}
-      </form>
+      </div>
     </FormProvider>
   )
 }
