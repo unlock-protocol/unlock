@@ -4,7 +4,7 @@ import * as Normalizer from '../../src/utils/normalizer'
 import { UserReference } from '../../src/models/userReference'
 import nock from 'nock'
 import { User } from '../../src/models/user'
-const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
+const lockAddress = '0xf5D0C1cfE659902F9ABAE67A70d5923Ef8dbC1Dc'
 const stripeToken = 'sk_test_token'
 const mockVisaToken = 'tok_visa'
 const nockBack = nock.back
@@ -81,7 +81,7 @@ describe('PaymentProcessor', () => {
         // @ts-expect-error - Sequelize type does not support creating a relationship item in the create yet. This is a bug in Sequelize types.
         User: {
           publicKey: Normalizer.ethereumAddress(
-            '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
+            '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8'
           ),
           recoveryPhrase: 'a recovery phrase',
           passwordEncryptedPrivateKey: { a: 'blob' },
@@ -101,7 +101,7 @@ describe('PaymentProcessor', () => {
         // @ts-expect-error - Sequelize type does not support creating a relationship item in the create yet. This is a bug in Sequelize types.
         User: {
           publicKey: Normalizer.ethereumAddress(
-            '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3'
+            '0x9409bD2F87F0698f89C04cAeE8DdB2fD9e44bCc3'
           ),
           recoveryPhrase: 'a recovery phrase',
           passwordEncryptedPrivateKey: "{ a: 'blob' }",
@@ -120,7 +120,7 @@ describe('PaymentProcessor', () => {
         // @ts-expect-error - Sequelize type does not support creating a relationship item in the create yet. This is a bug in Sequelize types.
         User: {
           publicKey: Normalizer.ethereumAddress(
-            '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208'
+            '0xeF49773e0D59F607ceA8c8bE4Ce87bd26Fd8E208'
           ),
           recoveryPhrase: 'a recovery phrase',
           passwordEncryptedPrivateKey: "{ a: 'blob' }",
@@ -144,7 +144,7 @@ describe('PaymentProcessor', () => {
         expect.assertions(1)
         const user = await paymentProcessor.updateUserPaymentDetails(
           mockVisaToken,
-          '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
+          '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8'
         )
 
         expect(user).toBe(true)

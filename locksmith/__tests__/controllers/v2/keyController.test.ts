@@ -3,7 +3,7 @@ import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
 import { vi, expect } from 'vitest'
 
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
 
@@ -11,31 +11,31 @@ const lock = {
   address: lockAddress,
   keys: [
     {
-      owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
+      owner: '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff',
       tokenId: '1',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
+      owner: '0xf44fF7951688BFbBb573967FfcB0D8aabDaF36c9',
       tokenId: '2',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
+      owner: '0x3FEE1f4175001802d3828B76068B8d898E72a25a',
       tokenId: '3',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: '0xff24307539a043e7fa40c4582090b3029de26b41',
+      owner: '0xfF24307539A043E7fA40C4582090B3029de26b41',
       tokenId: '42',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
+      owner: '0x77ccc37a6d89a75A29cDaA74e757599efC4b30f5',
       tokenId: '43',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
@@ -45,15 +45,15 @@ const lock = {
 
 const metadatas = [
   {
-    userAddress: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
+    userAddress: '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff',
     data: { extraMetadata: { checkedInAt: 1660812048626 } },
   },
   {
-    userAddress: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
+    userAddress: '0xf44fF7951688BFbBb573967FfcB0D8aabDaF36c9',
     data: { extraMetadata: { checkedInAt: 1660812066160 } },
   },
   {
-    userAddress: '0xff24307539a043e7fa40c4582090b3029de26b41',
+    userAddress: '0xfF24307539A043E7fA40C4582090B3029de26b41',
     data: {
       userMetadata: {
         public: {},
@@ -67,7 +67,7 @@ const metadatas = [
     },
   },
   {
-    userAddress: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
+    userAddress: '0x77ccc37a6d89a75A29cDaA74e757599efC4b30f5',
     data: {
       userMetadata: {
         public: {},

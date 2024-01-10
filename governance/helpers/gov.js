@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { AddressZero } = ethers.constants
+const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 
 /**
@@ -71,14 +71,13 @@ const getProposalId = async (proposal) => {
     ...proposal,
   })
 
-  const descriptionHash = ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes(description)
-  )
+  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
 
   // solidityKeccak256
-  const proposalId = ethers.BigNumber.from(
-    ethers.utils.keccak256(
-      ethers.utils.defaultAbiCoder.encode(
+  const encoder = ethers.AbiCoder.defaultAbiCoder()
+  const proposalId = BigInt(
+    ethers.keccak256(
+      encoder.encode(
         ['address[]', 'uint256[]', 'bytes[]', 'bytes32'],
         [targets, values, calldata, descriptionHash]
       )
@@ -105,9 +104,7 @@ const getProposalIdFromContract = async (proposal, govAddress) => {
     proposerWallet
   )
 
-  const descriptionHash = ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes(description)
-  )
+  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
 
   const proposalId = await gov.hashProposal(
     to,
@@ -134,7 +131,7 @@ const encodeProposalArgs = async ({
   // use that pattern instead of `getContractFactory` so we support passing interfaces
   const { interface: contractInterface } = await ethers.getContractAt(
     contractNameOrAbi,
-    AddressZero
+    ADDRESS_ZERO
   )
 
   const calldata = contractInterface.encodeFunctionData(functionName, [
@@ -150,7 +147,7 @@ const decodeProposalArgs = async ({
 }) => {
   const { interface: contractInterface } = await ethers.getContractAt(
     contractNameOrAbi,
-    AddressZero
+    ADDRESS_ZERO
   )
   const decoded = contractInterface.decodeFunctionData(functionName, calldata)
   return decoded
@@ -160,9 +157,7 @@ const queueProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
   })
-  const descriptionHash = ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes(description)
-  )
+  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
   const { proposerAddress } = proposal
   let voterWallet
   if (!proposerAddress) {
@@ -185,9 +180,7 @@ const executeProposal = async ({ proposal, govAddress }) => {
   const [targets, values, calldatas, description] = await parseProposal({
     ...proposal,
   })
-  const descriptionHash = ethers.utils.keccak256(
-    ethers.utils.toUtf8Bytes(description)
-  )
+  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
   let voterWallet
   if (!proposerAddress) {
     ;[voterWallet] = await ethers.getSigners()
@@ -260,6 +253,10 @@ const loadProposal = async (proposalPath, params = []) => {
   }
 }
 
+const etaToDate = (eta) => new Date(parseInt(eta.toString()) * 1000)
+
+const isAlreadyPast = (eta) => new Date(parseInt(eta.toString())) > Date.now()
+
 module.exports = {
   loadProposal,
   getProposalVotes,
@@ -274,4 +271,6 @@ module.exports = {
   submitProposal,
   queueProposal,
   executeProposal,
+  etaToDate,
+  isAlreadyPast,
 }

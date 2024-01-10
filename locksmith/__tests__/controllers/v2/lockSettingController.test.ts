@@ -5,7 +5,7 @@ import { expect, vi } from 'vitest'
 import { DEFAULT_LOCK_SETTINGS } from '../../../src/controllers/v2/lockSettingController'
 
 const network = 4
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const lockAddress2 = '0x060D07E7cCcD390B6F93B4D318E9FF203250D9be'
 const lockSettingMock = {
   lockAddress: '0xF3850C690BFF6c1E343D2449bBbbb00b0E934f7b',
@@ -223,5 +223,37 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.emailSender).toBe(null)
     expect(response.checkoutConfigId).toBe(null)
     expect(response.hookGuildId).toBe(null)
+  })
+
+  it('should save hooks value without overriding the rest', async () => {
+    expect.assertions(5)
+
+    const { loginResponse } = await loginRandomUser(app)
+    // save settings
+    const saveSettingResponse = await request(app)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        checkoutConfigId: '123',
+      })
+
+    const response = saveSettingResponse.body
+    expect(saveSettingResponse.status).toBe(200)
+    expect(response.checkoutConfigId).toBe('123')
+
+    // Let's then save some promocodes!
+    const saveHooksSettingResponse = await request(app)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        promoCodes: ['abc', 'def'],
+      })
+
+    expect(saveHooksSettingResponse.status).toBe(200)
+    expect(saveHooksSettingResponse.body.checkoutConfigId).toBe('123')
+    expect(saveHooksSettingResponse.body.promoCodes).toStrictEqual([
+      'abc',
+      'def',
+    ])
   })
 })

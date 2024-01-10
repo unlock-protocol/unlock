@@ -2,12 +2,10 @@ const { ethers, upgrades } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const ZERO_ADDRESS = ethers.constants.AddressZero
 
-const TIMELOCK_ADMIN_ROLE = ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('TIMELOCK_ADMIN_ROLE')
+const TIMELOCK_ADMIN_ROLE = ethers.keccak256(
+  ethers.toUtf8Bytes('TIMELOCK_ADMIN_ROLE')
 )
-const PROPOSER_ROLE = ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
-)
+const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
 async function main({ udtAddress, timelockAddress, testing } = {}) {
   const [unlockOwner] = await ethers.getSigners()
@@ -67,7 +65,7 @@ async function main({ udtAddress, timelockAddress, testing } = {}) {
   // deploy governor proxy
   const votingPeriod = testing ? 20 : 45818 // 1 week
   const votingDelay = testing ? 20 : 45818 // 1 week
-  const quorum = ethers.utils.parseEther('15000') // 15k UDT as default
+  const quorum = ethers.parseEther('15000') // 15k UDT as default
   const governor = await upgrades.deployProxy(UnlockProtocolGovernor, [
     udtAddress,
     votingPeriod,

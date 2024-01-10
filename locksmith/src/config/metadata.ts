@@ -23,7 +23,7 @@ const metadata = [
     image: 'https://assets.unlock-protocol.com/forbes/forbes-1-week.png',
   },
   {
-    address: '0x98c0cbf0e9525f1a6975a51c9d5e8e063c034d6d',
+    address: '0x98c0cbF0e9525f1a6975A51c9D5E8e063c034D6D',
     name: 'Ticket for Berlin Open Source Salon 2019.',
     description:
       'One ticket for the Berlin Open Source Salon 2019. https://berlin.opensourcesalon.com/',
@@ -109,7 +109,7 @@ const metadata = [
     image: 'https://assets.unlock-protocol.com/nft-images/blue-checkmark.png',
   },
   {
-    address: '0x79c91241eff1f119cdf743730f6e6fb2af7fb279',
+    address: '0x79C91241eFf1F119CDf743730f6e6fB2aF7Fb279',
     name: 'Week in Ethereum News - 3 year anniversary Edition!',
     description:
       "A key to Evan Van Ness's special 3 year anniversary Edition of the Week In Ethereum News!",

@@ -3,10 +3,10 @@ const { task } = require('hardhat/config')
 task('balance', "Prints an account's ETH balance")
   .addParam('account', "The account's address")
   .setAction(async (taskArgs, { ethers }) => {
-    const account = ethers.utils.getAddress(taskArgs.account)
+    const account = ethers.getAddress(taskArgs.account)
     const balance = await ethers.provider.getBalance(account)
     // eslint-disable-next-line no-console
-    console.log(ethers.utils.formatUnits(balance, 'ether'), 'ETH')
+    console.log(ethers.formatUnits(balance, 'ether'), 'ETH')
   })
 
 task('balance:udt', "Prints an account's UDT balance")

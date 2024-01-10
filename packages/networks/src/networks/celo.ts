@@ -30,6 +30,11 @@ export const celo: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x55C7336ea96BABb0bEabD676C07880aa8b76584a',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 42220,
@@ -57,7 +62,7 @@ export const celo: NetworkConfig = {
   swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   tokens: [
     {
-      address: '0xef4229c8c3250c675f21bcefa42f58efbff6002a',
+      address: '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a',
       decimals: 6,
       featured: true,
       mainnetAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',

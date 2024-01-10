@@ -45,6 +45,11 @@ export const gnosis: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x5ff4d5733Cc2b0A069cFF409eCEad3C5C71Ee346',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 100,
@@ -79,24 +84,24 @@ export const gnosis: NetworkConfig = {
   },
   tokens: [
     {
-      address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+      address: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
       decimals: 6,
       featured: true,
-      name: 'USD Coin',
+      name: 'USD//C on xDai',
       symbol: 'USDC',
     },
     {
-      address: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
+      address: '0x4ECaBa5870353805a9F068101A40E0f32ed605C6',
       decimals: 6,
       featured: true,
-      name: 'Tether USD',
+      name: 'Tether USD on xDai',
       symbol: 'USDT',
     },
   ],
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
   unlockDaoToken: {
-    address: '0x8c84142c4a716a16a89d0e61707164d6107a9811',
-    mainnetBridge: '0x41a4ee2855a7dc328524babb07d7f505b201133e',
+    address: '0x8C84142c4a716a16a89d0e61707164d6107A9811',
+    mainnetBridge: '0x41a4ee2855A7Dc328524babB07d7f505B201133e',
   },
   url: 'https://www.gnosis.io/',
 }

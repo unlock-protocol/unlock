@@ -1,9 +1,12 @@
 const { ethers } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+  getLockVersion,
+} = require('@unlock-protocol/hardhat-helpers')
 
-const toBigNumber = (mayBN) =>
-  ethers.BigNumber.isBigNumber(mayBN) ? mayBN : ethers.BigNumber.from(mayBN)
+const toBigNumber = (mayBN) => BigInt(mayBN.toString())
 
 async function main({
   unlockAddress,
@@ -55,17 +58,21 @@ async function main({
     }
   }
 
-  const { events, transactionHash } = await tx.wait()
-  const { args } = events.find(({ event }) => event === 'NewLock')
+  const receipt = await tx.wait()
+  const { args, hash } = await getEvent(receipt, 'NewLock')
   const { newLockAddress } = args
 
   // eslint-disable-next-line no-console
-  console.log(
-    `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${transactionHash})`
-  )
+  console.log(`LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${hash})`)
 
   // get version of the original lock
-  const publicLockVersion = 8 // await unlock.publicLockVersion()
+  const publicLockVersion = await (
+    await ethers.getContractAt(
+      [`function publicLockVersion() view returns (uint16)`],
+      newLockAddress
+    )
+  ).publicLockVersion()
+
   const { abi: publicLockABI, bytecode: publicLockBytecode } =
     contracts[`PublicLockV${publicLockVersion}`]
   const PublicLock = await ethers.getContractFactory(
@@ -80,18 +87,18 @@ async function main({
 
   if (
     (freeTrialLength &&
-      !toBigNumber(freeTrialLength).eq(await lock.freeTrialLength())) ||
+      toBigNumber(freeTrialLength) !== (await lock.freeTrialLength())) ||
     (refundPenaltyBasisPoints &&
-      !toBigNumber(refundPenaltyBasisPoints).eq(
-        await lock.refundPenaltyBasisPoints()
-      ))
+      toBigNumber(refundPenaltyBasisPoints) !==
+        (await lock.refundPenaltyBasisPoints()))
   ) {
     lock.updateRefundPenalty(freeTrialLength, refundPenaltyBasisPoints)
   }
 
   if (
     transferFeeBasisPoints &&
-    !toBigNumber(transferFeeBasisPoints).eq(await lock.transferFeeBasisPoints())
+    toBigNumber(transferFeeBasisPoints) !==
+      (await lock.transferFeeBasisPoints())
   ) {
     lock.updateTransferFee(transferFeeBasisPoints)
   }

@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { submitProposal } = require('../../helpers/gov')
-const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const { impersonate, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ proposal, proposerAddress, govAddress }) {
   // env settings
@@ -30,20 +30,20 @@ async function main({ proposal, proposerAddress, govAddress }) {
     govAddress,
   })
 
-  const { events, transactionHash } = await proposalTx.wait()
-  const evt = events.find((v) => v.event === 'ProposalCreated')
+  const receipt = await proposalTx.wait()
+  const { event, hash } = await getEvent(receipt, 'ProposalCreated')
 
   // check for failure
-  if (!evt) {
+  if (!event) {
     throw new Error('GOV SUBMIT > Proposal not created.')
   }
 
   // success
-  const { proposalId } = evt.args
+  const { proposalId } = event.args
   const currentBlock = await ethers.provider.getBlockNumber()
 
   console.log(
-    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash}, block: ${currentBlock})`
+    `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${hash}, block: ${currentBlock})`
   )
 
   return proposalId
