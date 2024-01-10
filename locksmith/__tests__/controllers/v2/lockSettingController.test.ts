@@ -224,4 +224,36 @@ describe('LockSettings v2 endpoints for lock', () => {
     expect(response.checkoutConfigId).toBe(null)
     expect(response.hookGuildId).toBe(null)
   })
+
+  it('should save hooks value without overriding the rest', async () => {
+    expect.assertions(5)
+
+    const { loginResponse } = await loginRandomUser(app)
+    // save settings
+    const saveSettingResponse = await request(app)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        checkoutConfigId: '123',
+      })
+
+    const response = saveSettingResponse.body
+    expect(saveSettingResponse.status).toBe(200)
+    expect(response.checkoutConfigId).toBe('123')
+
+    // Let's then save some promocodes!
+    const saveHooksSettingResponse = await request(app)
+      .post(`/v2/lock-settings/${network}/locks/${lockSettingMock.lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        promoCodes: ['abc', 'def'],
+      })
+
+    expect(saveHooksSettingResponse.status).toBe(200)
+    expect(saveHooksSettingResponse.body.checkoutConfigId).toBe('123')
+    expect(saveHooksSettingResponse.body.promoCodes).toStrictEqual([
+      'abc',
+      'def',
+    ])
+  })
 })
