@@ -24,13 +24,18 @@ async function main() {
   console.log(
     "import UnlockSwapPurchaser from './abis/utils/UnlockSwapPurchaser.json'"
   )
+  console.log(
+    "import UnlockSwapBurner from './abis/utils/UnlockSwapBurner.json'"
+  )
   console.log('\n// exports')
 
   exports.forEach(({ contractName, versionNumber }) =>
     console.log(`export { ${contractName}${versionNumber} }`)
   )
 
-  console.log('export { LockSerializer, UnlockSwapPurchaser }')
+  console.log(
+    'export { LockSerializer, UnlockSwapPurchaser, UnlockSwapBurner }'
+  )
 }
 
 main()
