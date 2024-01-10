@@ -80,7 +80,19 @@ export function SendCustomEmail({
           rows={5}
           error={errors.content?.message}
           label="Content"
-          description="The content of the email"
+          description={
+            <>
+              The content of the email.{' '}
+              <a
+                className="text-brand-ui-primary hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://www.markdownguide.org/cheat-sheet"
+              >
+                Markdown is supported.
+              </a>
+            </>
+          }
           placeholder="New information on the event..."
           {...register('content', {
             required: 'This field is required',
