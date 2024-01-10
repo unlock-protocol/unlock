@@ -1264,8 +1264,9 @@ export default class WalletService extends UnlockService {
     })
 
     const discountBasisPoints = discountPercentage * 100
-    return contract
+    const transaction = await contract
       .connect(this.signer)
       .setSigner(lockAddress, signerAddress, discountBasisPoints, cap)
+    return transaction.wait()
   }
 }

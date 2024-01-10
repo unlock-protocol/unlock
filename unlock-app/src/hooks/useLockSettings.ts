@@ -85,7 +85,7 @@ interface SaveLockProps {
   hookGuildId?: string | null
   unlockFeeChargedToUser?: boolean
   creditCardCurrency?: string
-  promoCodes?: string[] | null
+  promoCodes?: string[]
 }
 
 export function useSaveLockSettings() {

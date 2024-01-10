@@ -35,7 +35,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors, isDirty },
+    formState: { isSubmitting, errors },
   } = useForm<FormData>()
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -125,6 +125,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         <form id="promo" className="space-y-4">
           <Input
+            // @ts-ignore
             iconRight={iconRight}
             label="Enter Promo Code"
             description="If you have a promo code to receive discounts, please enter it now."
