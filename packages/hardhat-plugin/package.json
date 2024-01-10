@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/chai": "4.3.11",
-    "@types/fs-extra": "11.0.3",
+    "@types/fs-extra": "11.0.4",
     "@types/mocha": "10.0.6",
     "@types/node": "20.10.1",
     "@unlock-protocol/contracts": "workspace:^",
@@ -46,15 +46,15 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "4.3.10",
     "eslint": "8.54.0",
-    "hardhat": "2.19.2",
+    "hardhat": "2.19.4",
     "mocha": "10.2.0",
     "prettier": "3.1.0",
     "ts-mocha": "10.0.0",
-    "ts-node": "10.9.1",
+    "ts-node": "10.9.2",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.3.0",
-    "typescript": "5.3.2"
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
@@ -62,7 +62,6 @@
     "hardhat": "^2.12.x"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "2.2.3",
-    "eslint-plugin-mocha": "10.2.0"
+    "@nomiclabs/hardhat-ethers": "2.2.3"
   }
 }

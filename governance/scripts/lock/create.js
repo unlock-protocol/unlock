@@ -3,11 +3,13 @@ const { networks } = require('@unlock-protocol/networks')
 const {
   createLockCalldata,
   getUnlock,
+  ADDRESS_ZERO,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const defaultParams = {
-  expirationDuration: ethers.BigNumber.from(60 * 60 * 24 * 30), // 30 days
-  keyPrice: ethers.utils.parseEther('0.01'), // in wei
+  expirationDuration: BigInt(60 * 60 * 24 * 30), // 30 days
+  keyPrice: ethers.parseEther('0.01'), // in wei
   maxNumberOfKeys: 100,
   lockName: 'Unlock-Protocol Lock',
 }
@@ -25,7 +27,7 @@ async function main({
   // set params
   const lockParams = [
     duration || defaultParams.expirationDuration,
-    tokenAddress || ethers.constants.AddressZero,
+    tokenAddress || ADDRESS_ZERO,
     price || defaultParams.keyPrice,
     maxNumberOfKeys || defaultParams.maxNumberOfKeys,
     name || defaultParams.lockName,
@@ -52,13 +54,13 @@ async function main({
   })
 
   const tx = await unlock.createUpgradeableLockAtVersion(calldata, lockVersion)
-  const { events, transactionHash } = await tx.wait()
-  const { args } = events.find(({ event }) => event === 'NewLock')
+  const receipt = await tx.wait()
+  const { args, hash } = await getEvent(receipt, 'NewLock')
   const { newLockAddress } = args
 
   // eslint-disable-next-line no-console
   console.log(
-    `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${transactionHash}) \n with params: ${lockParams.toString()}`
+    `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${hash}) \n with params: ${lockParams.toString()}`
   )
   return newLockAddress
 }

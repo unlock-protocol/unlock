@@ -3,7 +3,7 @@ const { impersonate } = require('@unlock-protocol/hardhat-helpers')
 
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const MULTISIG_ADDRESS_OWNER = '0x4ce2dd8373ece0d7baaa16e559a5817cc875b16a'
+const MULTISIG_ADDRESS_OWNER = '0x4Ce2DD8373ECe0d7baAA16E559A5817CC875b16a'
 
 // test helper to reach concensus on multisig
 const confirmMultisigTx = async ({

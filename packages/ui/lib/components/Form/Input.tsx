@@ -19,6 +19,7 @@ export interface Props
   error?: string
   description?: ReactNode
   icon?: IconType
+  iconRight?: IconType
   iconClass?: string
   copy?: boolean
   actions?: ReactNode
@@ -56,6 +57,7 @@ export const Input = forwardRef(
       description,
       label,
       icon,
+      iconRight,
       iconClass,
       actions,
       required,
@@ -82,7 +84,7 @@ export const Input = forwardRef(
       'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100',
       inputSizeStyle,
       inputStateStyles,
-      icon ? 'pl-10' : undefined
+      icon ? 'pl-10' : iconRight ? 'pr-10' : undefined
     )
 
     return (
@@ -112,6 +114,13 @@ export const Input = forwardRef(
             ref={ref}
             className={inputClass}
           />
+          {iconRight && (
+            <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+              <div className={iconClass}>
+                <Icon size={size} icon={iconRight} />
+              </div>
+            </span>
+          )}
           <div className="absolute inset-y-0 right-0 flex items-center pl-4 pr-1">
             {copy && !hidden && (
               <button onClick={() => setCopy()} className={inputButtonClass}>

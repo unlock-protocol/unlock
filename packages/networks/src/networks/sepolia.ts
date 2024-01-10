@@ -42,6 +42,11 @@ export const sepolia: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x0aC1a84AcaB08b630714d59dA74576D7274E68d5',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 11155111,
@@ -83,7 +88,7 @@ export const sepolia: NetworkConfig = {
   },
   tokens: [
     {
-      address: '0x7b79995e5f793a07bc00c21412e50ecae098e7f9',
+      address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',
       decimals: 18,
       featured: true,
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',

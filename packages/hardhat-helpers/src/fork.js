@@ -27,17 +27,17 @@ async function getWhales(chainId = 1) {
     case 1:
       return {
         [tokens.DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8', // PulseX
-        [tokens.USDC]: '0x8eb8a3b98659cce290402893d0123abb75e3ab28',
+        [tokens.USDC]: '0x8EB8a3b98659Cce290402893d0123abb75E3ab28',
         [tokens.WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
-        [tokens.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534', // unlock-protocol.eth
+        [tokens.UDT]: '0xF5C28ce24Acf47849988f147d5C75787c0103534', // unlock-protocol.eth
       }
 
     case 137:
       return {
-        [tokens.USDC]: '0xf977814e90da44bfa03b6295a0616a897441acec',
-        [tokens.DAI]: '0x91993f2101cc758d0deb7279d41e880f7defe827',
+        [tokens.USDC]: '0xF977814e90dA44bFA03b6295A0616a897441aceC',
+        [tokens.DAI]: '0x91993f2101cc758D0dEB7279d41e880F7dEFe827',
         [tokens.WBTC]: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
-        [tokens.UDT]: '0xf5c28ce24acf47849988f147d5c75787c0103534',
+        [tokens.UDT]: '0xF5C28ce24Acf47849988f147d5C75787c0103534',
       }
     default:
       break
@@ -86,7 +86,7 @@ const addSomeETH = async (
   amount = ethers.utils.parseEther('1000')
 ) => {
   const { network } = require('hardhat')
-  const balance = ethers.utils.hexStripZeros(amount)
+  const balance = `0x${BigInt(amount.toString()).toString(16)}`
   await network.provider.send('hardhat_setBalance', [address, balance])
 }
 
@@ -122,7 +122,7 @@ const stopImpersonate = async (address) => {
 const addERC20 = async function (
   tokenAddress,
   address,
-  amount = ethers.utils.parseEther('1000')
+  amount = ethers.parseEther('1000')
 ) {
   const { ethers } = require('hardhat')
   const {
@@ -159,7 +159,7 @@ const addERC20 = async function (
 }
 
 const toBytes32 = (bn) => {
-  return ethers.utils.hexlify(ethers.utils.zeroPad(bn.toHexString(), 32))
+  return ethers.hexlify(ethers.zeroPad(bn.toHexString(), 32))
 }
 
 const addUDT = async (recipientAddress, amount = 1000, udt) => {
@@ -170,14 +170,13 @@ const addUDT = async (recipientAddress, amount = 1000, udt) => {
   }
 
   // UDT contract
-  const udtAmount = ethers.BigNumber.isBigNumber(amount)
-    ? amount
-    : ethers.utils.parseEther(`${amount}`)
+  const udtAmount =
+    typeof amount === 'bigint' ? amount : ethers.parseEther(`${amount}`)
 
   if (chainId === 1 || chainId === 5) {
     // NB: slot has been found by using slot20 - see https://kndrck.co/posts/local_erc20_bal_mani_w_hh/
     // Get storage slot index
-    const index = ethers.utils.solidityKeccak256(
+    const index = ethers.solidityKeccak256(
       ['uint256', 'uint256'],
       [recipientAddress, 51] // key, slot
     )
@@ -190,7 +189,7 @@ const addUDT = async (recipientAddress, amount = 1000, udt) => {
     // Just mines to the next block
     await ethers.provider.send('evm_mine', [])
   } else {
-    const unlock_protocol_eth = '0xf5c28ce24acf47849988f147d5c75787c0103534'
+    const unlock_protocol_eth = '0xF5C28ce24Acf47849988f147d5C75787c0103534'
     const whale = await ethers.getSigner(unlock_protocol_eth)
     await impersonate(unlock_protocol_eth)
 
@@ -200,8 +199,8 @@ const addUDT = async (recipientAddress, amount = 1000, udt) => {
 }
 
 const delegates = [
-  '0x0d8410643ae7a4d833c7219e5c6fadfa5ce912cd',
-  '0x6aec5228fda60525f59afc773ada7df6a6d8e43f',
+  '0x0D8410643ae7a4d833C7219E5C6faDfa5Ce912CD',
+  '0x6aeC5228fDA60525F59AfC773Ada7df6a6d8e43f',
   '0xde22DE740609532FC0F48287b7F258776bE814FD',
 ]
 

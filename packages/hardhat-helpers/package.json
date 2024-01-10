@@ -18,18 +18,18 @@
     "@openzeppelin/hardhat-upgrades": "1.28.0",
     "@uniswap/permit2-sdk": "1.2.0",
     "@uniswap/sdk-core": "4.0.9",
-    "@uniswap/smart-order-router": "3.19.0",
+    "@uniswap/smart-order-router": "3.19.2",
     "@uniswap/v3-sdk": "3.10.0",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "hardhat": "2.19.2",
-    "typescript": "5.3.2"
+    "hardhat": "2.19.4",
+    "typescript": "5.3.3"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "tsup": "7.2.0"
+    "tsup": "8.0.1"
   },
   "repository": {
     "type": "git",

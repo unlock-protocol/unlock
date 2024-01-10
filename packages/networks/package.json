@@ -16,6 +16,7 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build": "tsup src/index.ts --dts --format esm,cjs",
+    "check-tokens": "tsx ./bin/check-tokens",
     "clean": "rm -rf ./dist",
     "check": "tsx ./bin/keys",
     "prepublish": "yarn build",
@@ -31,14 +32,15 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.54.0",
-    "tsup": "7.2.0",
-    "typescript": "5.3.2"
+    "tsup": "8.0.1",
+    "typescript": "5.3.3"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "eslint-plugin-sort-keys-fix": "1.1.2",
-    "tsx": "3.14.0"
+    "ethers": "6.9.2",
+    "tsx": "4.7.0"
   }
 }

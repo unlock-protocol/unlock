@@ -2,7 +2,7 @@ export const paywallConfig = {
   network: 1,
   pessimistic: true,
   locks: {
-    '0xb77030a7e47a5eb942a4748000125e70be598632': {
+    '0xb77030a7e47A5eb942a4748000125e70Be598632': {
       name: 'Unlock Community',
       network: 137,
     },

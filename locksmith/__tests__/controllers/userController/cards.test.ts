@@ -6,7 +6,7 @@ import { User, UserReference, StripeCustomer } from '../../../src/models'
 import UserOperations from '../../../src/operations/userOperations'
 import StripeOperations from '../../../src/operations/stripeOperations'
 import { vi } from 'vitest'
-const publicKey = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
+const publicKey = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
 
 function generateTypedData(message: any, messageKey: string) {
   return {
@@ -96,7 +96,7 @@ describe('when requesting cards', () => {
 
       const message = {
         'Get Card': {
-          publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
+          publicKey: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
         },
       }
 
@@ -154,7 +154,7 @@ describe('when updating cards', () => {
 
       const message = {
         'Save Card': {
-          publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
+          publicKey: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
           stripeTokenId: 'tok_visa',
         },
       }
@@ -277,7 +277,7 @@ describe('when deleting cards', () => {
 
       const message = {
         'Delete Card': {
-          publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
+          publicKey: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
         },
       }
 
@@ -303,7 +303,7 @@ describe('when deleting cards', () => {
 
       const message = {
         'Delete Card': {
-          publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
+          publicKey: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
         },
       }
 
@@ -336,7 +336,7 @@ describe('when deleting cards', () => {
 
       const message = {
         'Delete Card': {
-          publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
+          publicKey: '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a',
         },
       }
 
