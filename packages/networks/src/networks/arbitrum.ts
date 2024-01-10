@@ -43,6 +43,11 @@ export const arbitrum: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x1A9E2E085bF4E4fE5eE45C682a3Af26d55FA1431',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 42161,

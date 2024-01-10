@@ -42,6 +42,11 @@ export const sepolia: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x0aC1a84AcaB08b630714d59dA74576D7274E68d5',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 11155111,

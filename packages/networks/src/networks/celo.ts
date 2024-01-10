@@ -30,6 +30,11 @@ export const celo: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x55C7336ea96BABb0bEabD676C07880aa8b76584a',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 42220,
