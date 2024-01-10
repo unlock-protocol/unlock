@@ -11,7 +11,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   let Contract
   if (contractVersion) {
     console.log(`Setting up version ${contractVersion} from package`)
-    Contract = await copyAndBuildContractsAtVersion(__dirname, [
+    ;[Contract] = await copyAndBuildContractsAtVersion(__dirname, [
       {
         contractName,
         version: contractVersion,
