@@ -2785,7 +2785,7 @@ pragma solidity 0.8.21;
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract UnlockV13 is UnlockInitializable, UnlockOwnable {
+contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
