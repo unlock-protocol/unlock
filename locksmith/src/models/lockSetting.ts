@@ -17,10 +17,10 @@ export class LockSetting extends Model<
   declare checkoutConfigId?: string | null
   declare crossmintClientId?: string | null
   declare hookGuildId?: number | null
-  declare hasHooks?: any | null
   declare unlockFeeChargedToUser?: boolean
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
+  declare promoCodes?: string[] | null
 }
 
 LockSetting.init(

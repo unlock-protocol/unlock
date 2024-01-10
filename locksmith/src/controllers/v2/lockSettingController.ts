@@ -133,7 +133,6 @@ export const getSettings: RequestHandler = async (
     })
 
     if (settings) {
-      console.log(settings)
       return response.status(200).send(settings)
     }
 
