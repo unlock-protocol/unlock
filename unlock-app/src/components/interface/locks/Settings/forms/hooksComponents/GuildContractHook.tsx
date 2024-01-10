@@ -1,5 +1,5 @@
 import { CustomComponentProps } from '../UpdateHooksForm'
-import { Select } from '@unlock-protocol/ui'
+import { Button, Select } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useUserGuilds } from '~/hooks/useUserGuilds'
 import Link from 'next/link'
@@ -7,11 +7,15 @@ import {
   useGetLockSettings,
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
+import { useFormContext } from 'react-hook-form'
 
 export const GuildContractHook = ({
   lockAddress,
   network,
+  setEventsHooksMutation,
 }: CustomComponentProps) => {
+  const { handleSubmit } = useFormContext()
+
   const { isLoading: isLoadingSettings, data: settings } = useGetLockSettings({
     lockAddress,
     network,
@@ -26,15 +30,6 @@ export const GuildContractHook = ({
 
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
-  const onGuildSelected = async (guildId: string | number) => {
-    await saveSettingsMutation({
-      lockAddress,
-      network,
-      hookGuildId: guildId.toString(),
-    })
-    setHookGuildId(guildId.toString())
-  }
-
   const guildsAsOptions =
     guilds?.map(({ id, name }) => ({
       label: name,
@@ -43,8 +38,21 @@ export const GuildContractHook = ({
 
   const isLoading = isLoadingGuilds || isLoadingSettings
 
+  const onSubmit = async (values: any) => {
+    await saveSettingsMutation({
+      lockAddress,
+      network,
+      hookGuildId,
+    })
+
+    await setEventsHooksMutation.mutateAsync(values)
+  }
+
   return (
-    <div className="flex flex-col gap-2">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-2 text-sm"
+    >
       <p>
         With this hook, you can control membership purchases exclusively for
         members belonging to a{' '}
@@ -60,12 +68,22 @@ export const GuildContractHook = ({
       {isLoading && <span>Loading...</span>}
       {!isLoading && (
         <Select
-          onChange={onGuildSelected}
+          size="small"
+          onChange={(value) => setHookGuildId(value.toString())}
           options={guildsAsOptions}
           defaultValue={hookGuildId}
           description={<p>Select a Guild for which you are an admin. </p>}
         />
       )}
-    </div>
+      <div className="ml-auto">
+        <Button
+          size="small"
+          type="submit"
+          loading={setEventsHooksMutation.isLoading}
+        >
+          Save
+        </Button>
+      </div>
+    </form>
   )
 }
