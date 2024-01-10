@@ -2,8 +2,8 @@
 title: Unlock Protocol Upgrade Introduces Swap and Burn Mechanic
 subTitle: Improved mechanics for UDT token governance, improvements in existing features, gas optimisations and bug fixes
 authorName: Clément Renaud
-publishDate: Jan 9, 2023
-image: /images/blog/...
+publishDate: Jan 9, 2024
+image: /images/blog/protocol-upgrade-unlock-v13/swap-burn-share.png
 ---
 
 We are releasing a new version of the core Unlock Protocol smart contracts. This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes.
@@ -11,6 +11,8 @@ We are releasing a new version of the core Unlock Protocol smart contracts. This
 The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to be directly decrease the supply of UDT in circulation.
 
 The new Unlock Version (v13) and PublicLock version (v14) will be released using a cross-chain DAO proposal that, once passed, will deploy the upgrade on multiple chains at once.
+
+![UDT Swap and Burn](/images/blog/protocol-upgrade-unlock-v13/swap-burn-share.png)
 
 ## Swap and Burn: Linking governance tokens and protocol fees
 
