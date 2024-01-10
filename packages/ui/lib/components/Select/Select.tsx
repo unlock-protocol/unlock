@@ -146,8 +146,7 @@ export const Select = <T extends unknown>({
   // Set default value if present
   useEffect(() => {
     if (loading) return
-    if (defaultValue && selected?.value) return
-
+    if (!defaultValue || selected?.value) return
     onChangeOption(defaultValue as string)
   }, [defaultValue, loading, selected])
 
