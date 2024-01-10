@@ -49,6 +49,11 @@ export const polygon: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0xa10a55EF6E41dE1267cA8A98010B58a7b6B21418',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 137,

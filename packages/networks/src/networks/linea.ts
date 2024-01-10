@@ -41,6 +41,11 @@ export const linea: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x4Bf912519549DF750002814a2DcE7184b3971F06',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 59144,

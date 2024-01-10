@@ -1,5 +1,9 @@
 # Changes
 
+# 0.41.0
+
+- adding `setDiscountCodeWithCapHookSigner`
+
 # 0.40.2
 
 - claim now supports a `referrer` param

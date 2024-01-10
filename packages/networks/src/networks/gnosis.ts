@@ -45,6 +45,11 @@ export const gnosis: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x5ff4d5733Cc2b0A069cFF409eCEad3C5C71Ee346',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 100,

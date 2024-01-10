@@ -1,0 +1,116 @@
+export const discountCodeWithCapHookAbi = [
+  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
+  { inputs: [], name: 'NOT_AUTHORIZED', type: 'error' },
+  { inputs: [], name: 'TOO_BIG', type: 'error' },
+  {
+    inputs: [
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
+    ],
+    name: 'caps',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
+    ],
+    name: 'counters',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
+    ],
+    name: 'discounts',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'string', name: 'message', type: 'string' },
+      { internalType: 'bytes', name: 'signature', type: 'bytes' },
+    ],
+    name: 'getSigner',
+    outputs: [
+      { internalType: 'address', name: 'recoveredAddress', type: 'address' },
+    ],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: 'recipient', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'bytes', name: 'signature', type: 'bytes' },
+    ],
+    name: 'keyPurchasePrice',
+    outputs: [
+      { internalType: 'uint256', name: 'minKeyPrice', type: 'uint256' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: 'recipient', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'bytes', name: 'signature', type: 'bytes' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
+    ],
+    name: 'onKeyPurchase',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'lock', type: 'address' },
+      { internalType: 'address', name: 'signer', type: 'address' },
+      { internalType: 'uint256', name: 'discount', type: 'uint256' },
+      { internalType: 'uint256', name: 'cap', type: 'uint256' },
+    ],
+    name: 'setSigner',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'account', type: 'address' }],
+    name: 'toString',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'value', type: 'uint256' }],
+    name: 'toString',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes', name: 'data', type: 'bytes' }],
+    name: 'toString',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'bytes32', name: 'value', type: 'bytes32' }],
+    name: 'toString',
+    outputs: [{ internalType: 'string', name: '', type: 'string' }],
+    stateMutability: 'pure',
+    type: 'function',
+  },
+]

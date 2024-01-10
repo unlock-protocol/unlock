@@ -43,6 +43,11 @@ export const bsc: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x1Bc951F8ed90F6c135F01Fe62CA348F4c3F43D00',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 56,

@@ -11,6 +11,7 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   GUILD: 'guild',
   CAPTCHA: 'captcha',
   PROMOCODE: 'promocode',
+  PROMO_CODE_CAPPED: 'promocode',
 }
 
 export function useCheckoutHook(service: CheckoutService) {
@@ -49,7 +50,6 @@ export function useCheckoutHook(service: CheckoutService) {
                 : undefined
 
               // Get hook type from paywall config as fallback
-
               if (!hookType) {
                 const {
                   password = false,
