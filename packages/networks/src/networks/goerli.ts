@@ -49,6 +49,11 @@ export const goerli: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x6d1571813c8fEB24856594d23b323234B1adEfE1',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 5,

@@ -49,6 +49,11 @@ export const optimism: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0xD4385fd4A79B6636828eC8BC6795766a797E9CF5',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 10,
