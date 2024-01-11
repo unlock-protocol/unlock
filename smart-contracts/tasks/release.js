@@ -69,11 +69,6 @@ task('release', 'Release a new version of the contract')
     await exec(`hardhat flatten ${contract} > ${solPath}`)
 
     if (isVersioned) {
-      // replace contract name with versioned name in contracts
-      await exec(
-        `sed -i '' 's/contract ${contractName} is/contract ${versioned} is/g' ${solPath}`
-      )
-
       console.log(
         `Solidity contract for ${contractName} flattened at: ${solPath}`
       )

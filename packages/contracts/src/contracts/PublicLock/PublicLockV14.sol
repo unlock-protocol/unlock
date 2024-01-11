@@ -5347,7 +5347,7 @@ pragma solidity ^0.8.21;
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://eips.ethereum.org/EIPS/eip-721
  */
-contract PublicLockV14 is
+contract PublicLock is
   Initializable,
   ERC165StorageUpgradeable,
   MixinRoles,
