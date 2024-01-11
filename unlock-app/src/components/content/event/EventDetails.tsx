@@ -112,6 +112,7 @@ export const EventDetails = ({
           timeZone: event.ticket.event_timezone,
           hour: '2-digit',
           minute: '2-digit',
+          timeZoneName: 'short',
         })
       : undefined
 
@@ -132,6 +133,7 @@ export const EventDetails = ({
           timeZone: event.ticket.event_timezone,
           hour: '2-digit',
           minute: '2-digit',
+          timeZoneName: 'short',
         })
       : null
 
