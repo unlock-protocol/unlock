@@ -91,6 +91,11 @@ export const sepolia: NetworkConfig = {
       symbol: 'WETH',
     },
   ],
+  uniswapV3: {
+    factoryAddress: '0xB7f907f7A9eBC822a80BD25E224be42Ce0A698A0',
+    positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
+    universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+  },
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   url: 'https://github.com/eth-clients/sepolia',
 }
