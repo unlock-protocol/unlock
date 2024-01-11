@@ -44,6 +44,8 @@ export const Members = ({
 }: MembersProps) => {
   const web3Service = useWeb3Service()
 
+  console.log({ lockAddress, network })
+
   const getMembers = async () => {
     const keys = await storage.keys(
       network,

@@ -27,7 +27,7 @@ interface LockSettingsPageProps {
   defaultTab?: SettingTab
 }
 
-const NotManagerBanner = () => {
+export const NotManagerBanner = () => {
   const { account } = useAuth()
 
   return (

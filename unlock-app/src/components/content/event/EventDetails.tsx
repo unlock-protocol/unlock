@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
@@ -10,7 +9,6 @@ import {
   Icon,
   minifyAddress,
 } from '@unlock-protocol/ui'
-import { TbSettings as SettingsIcon } from 'react-icons/tb'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
@@ -173,16 +171,17 @@ export const EventDetails = ({
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
             <>
+              {/* Comimg soon
               <Button
                 onClick={() => {
                   router.push(`/event/${eventProp.slug}/settings`)
                 }}
               >
                 <div className="flex items-center gap-2">
-                  <Icon icon={SettingsIcon} size={20} />
+                  <Icon icon={TbSettings} size={20} />
                   <span>Settings</span>
                 </div>
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => {
                   router.push(`/event/${eventProp.slug}/attendees`)
@@ -355,7 +354,7 @@ export const EventDetails = ({
                 </div>
               </Disclosure>
 
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+              {/* <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
                     title="Manage Attendees"
@@ -388,7 +387,7 @@ export const EventDetails = ({
                     }
                   )}
                 </div>
-              </Card>
+              </Card> */}
 
               <Disclosure
                 label="Verifiers"

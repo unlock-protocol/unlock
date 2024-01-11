@@ -1,8 +1,12 @@
-import { EventPageProps } from '.'
-import { getServerSidePropsForEventPage } from './shared'
+import {
+  EventPageProps,
+  ServerSidePropsParams,
+  getServerSidePropsForEventPage,
+} from '.'
 
-export const getServerSideProps = getServerSidePropsForEventPage
-
+export const getServerSideProps = async ({ params }: ServerSidePropsParams) => {
+  return getServerSidePropsForEventPage(params.slug)
+}
 const Settings = (props: EventPageProps) => {
   console.log(props)
   return <p>Settings</p>

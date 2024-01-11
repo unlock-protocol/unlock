@@ -1,7 +1,34 @@
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
-import { getServerSidePropsForEventPage } from './shared'
+
+import { toFormData } from '~/components/interface/locks/metadata/utils'
+import { storage } from '~/config/storage'
+
+export interface ServerSidePropsParams {
+  params: {
+    slug: string
+  }
+}
+
+export const getServerSidePropsForEventPage = async (slug: string) => {
+  const { data: eventMetadata } = await storage.getEvent(slug)
+  return {
+    props: {
+      event: {
+        ...toFormData({
+          ...eventMetadata.data!,
+          slug: eventMetadata.slug,
+        }),
+      },
+      checkoutConfig: eventMetadata.checkoutConfig,
+    },
+  }
+}
+
+export const getServerSideProps = async ({ params }: ServerSidePropsParams) => {
+  return getServerSidePropsForEventPage(params.slug)
+}
 
 export interface EventPageProps {
   pageProps: {
@@ -12,8 +39,6 @@ export interface EventPageProps {
     }
   }
 }
-
-export const getServerSideProps = getServerSidePropsForEventPage
 
 const EventPage = (props: EventPageProps) => {
   return <EventContentWithProps {...props.pageProps}></EventContentWithProps>

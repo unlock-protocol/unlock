@@ -102,7 +102,7 @@ export const MemberCard = ({
         <div className="grid justify-between grid-cols-3 gap-4 md:grid-cols-7 md:gap-0">
           <Detail
             className="col-span-3 md:col-span-1 grow"
-            label="Token ID"
+            label="#"
             valueSize="medium"
           >
             {token}
