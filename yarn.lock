@@ -11757,17 +11757,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry-internal/tracing@npm:7.91.0":
-  version: 7.91.0
-  resolution: "@sentry-internal/tracing@npm:7.91.0"
-  dependencies:
-    "@sentry/core": "npm:7.91.0"
-    "@sentry/types": "npm:7.91.0"
-    "@sentry/utils": "npm:7.91.0"
-  checksum: 41718896e98d166c2dadf7b10516672c0f5694e74f83065026cd32c27d571902d8b1d8e9b1184ac037f0a5a4f7a7965386f15cbeb6480daad590e2c2f0fbb68f
-  languageName: node
-  linkType: hard
-
 "@sentry/browser@npm:7.77.0":
   version: 7.77.0
   resolution: "@sentry/browser@npm:7.77.0"
@@ -11838,16 +11827,6 @@ __metadata:
     "@sentry/types": "npm:7.77.0"
     "@sentry/utils": "npm:7.77.0"
   checksum: 1e019adeb4fde097894b59f5089c7d37758e64f0a010cadb58367959a8e660e9bb266354b0ea19e535d7e2a06df673d67158bc679f9ceb87573eb273d84f3b18
-  languageName: node
-  linkType: hard
-
-"@sentry/core@npm:7.91.0":
-  version: 7.91.0
-  resolution: "@sentry/core@npm:7.91.0"
-  dependencies:
-    "@sentry/types": "npm:7.91.0"
-    "@sentry/utils": "npm:7.91.0"
-  checksum: 19856cf6856cb5941082d82dc1def9fe02ada440c5da086623496f714897c5a0d3659a7a7bb81e1bb1d4fba64623a9005aac797777046eec74e8ff8b39418630
   languageName: node
   linkType: hard
 
@@ -11971,19 +11950,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.1.1":
-  version: 7.91.0
-  resolution: "@sentry/node@npm:7.91.0"
-  dependencies:
-    "@sentry-internal/tracing": "npm:7.91.0"
-    "@sentry/core": "npm:7.91.0"
-    "@sentry/types": "npm:7.91.0"
-    "@sentry/utils": "npm:7.91.0"
-    https-proxy-agent: "npm:^5.0.0"
-  checksum: 5aa2865a786c784255780cff9e9494c81c1ce1a18dea6e8c4681812e16e182abd14c44cb713dcf147c80652949d9b8e8e61924e8aee4693e388d6f7c647fb71e
-  languageName: node
-  linkType: hard
-
 "@sentry/react@npm:7.77.0":
   version: 7.77.0
   resolution: "@sentry/react@npm:7.77.0"
@@ -12060,13 +12026,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.91.0":
-  version: 7.91.0
-  resolution: "@sentry/types@npm:7.91.0"
-  checksum: e36fe0d112c3023c0f14beb0d781ac903e2744e8e3fabd04b6bc805467edbb44c1812e24f1aa3e54c9e38fdc3795d9eea62056aa8c7bda99b4fd9fc603fa9ad3
-  languageName: node
-  linkType: hard
-
 "@sentry/utils@npm:5.30.0":
   version: 5.30.0
   resolution: "@sentry/utils@npm:5.30.0"
@@ -12102,15 +12061,6 @@ __metadata:
   dependencies:
     "@sentry/types": "npm:7.77.0"
   checksum: e3e457b1eda43f933e7fc3b7fed615c5c1e336c843a0d53006248fb1e2dc9736afd631a9592ac58ce5592f4ffd1b491d1df2f0218959b61476e34af7aa13f367
-  languageName: node
-  linkType: hard
-
-"@sentry/utils@npm:7.91.0":
-  version: 7.91.0
-  resolution: "@sentry/utils@npm:7.91.0"
-  dependencies:
-    "@sentry/types": "npm:7.91.0"
-  checksum: 02e7ffceac56b12e1106d7bf7e609176372f8327199f75177053ffa241d2d9d8f40d8a888c8da1330c9716cc55c0dc0a8eb1c625604c26feb9ed88846c588216
   languageName: node
   linkType: hard
 
@@ -17993,7 +17943,6 @@ __metadata:
     vitest: "npm:0.31.4"
     vitest-fetch-mock: "npm:0.2.2"
     winston: "npm:3.9.0"
-    winston-transport-sentry-node: "npm:2.7.0"
     yargs: "npm:17.7.2"
     zod: "npm:3.22.4"
   languageName: unknown
@@ -56186,20 +56135,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston-transport-sentry-node@npm:2.7.0":
-  version: 2.7.0
-  resolution: "winston-transport-sentry-node@npm:2.7.0"
-  dependencies:
-    "@sentry/node": "npm:^7.1.1"
-    triple-beam: "npm:^1.3.0"
-    tslib: "npm:^2.3.1"
-    winston: "npm:^3.3.3"
-    winston-transport: "npm:^4.4.0"
-  checksum: 85fe0aa4eb79a601762023367a05ad5d5f47a18d1180acea41f4a150d2ffc36cfe2352605b78af7928b97982ef7e5acc7bd7d7d8e792b96a27a05005f2116028
-  languageName: node
-  linkType: hard
-
-"winston-transport@npm:^4.3.0, winston-transport@npm:^4.4.0, winston-transport@npm:^4.5.0":
+"winston-transport@npm:^4.3.0, winston-transport@npm:^4.5.0":
   version: 4.6.0
   resolution: "winston-transport@npm:4.6.0"
   dependencies:
@@ -56262,7 +56198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"winston@npm:^3.3.3, winston@npm:^3.8.2":
+"winston@npm:^3.8.2":
   version: 3.11.0
   resolution: "winston@npm:3.11.0"
   dependencies:
