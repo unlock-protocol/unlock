@@ -105,7 +105,6 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
               loading={loading}
               setPage={setPage}
               page={page}
-              onAirdropKeys={() => setAirdropKeys(!airdropKeys)}
             />
           </div>
         </div>

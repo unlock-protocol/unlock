@@ -8,6 +8,8 @@ import { getAddressForName } from '~/hooks/useEns'
 import React from 'react'
 import { FilterProps } from './Members'
 import { PaywallLocksConfigType } from '@unlock-protocol/core'
+import { addressMinify } from '~/utils/strings'
+import { FaFileContract } from 'react-icons/fa'
 
 interface FilterBarProps {
   locks?: PaywallLocksConfigType
@@ -99,6 +101,13 @@ export const FilterBar = ({
 
   useEffect(() => {
     if (typeof setFilters !== 'function') return
+    if (!query) {
+      return setFilters({
+        query: '',
+        filterKey: 'owner',
+        expiration,
+      })
+    }
     setFilters({
       filterKey,
       expiration,
@@ -130,38 +139,42 @@ export const FilterBar = ({
     )
   }
 
-  const disableSearch = filterKey === 'checkedInAt'
-
   const lockOptions = locks
     ? Object.keys(locks).map((address) => {
         return {
-          label: locks[address].name || address,
+          label: locks[address].name || addressMinify(address),
           value: address,
         }
       })
     : []
   return (
-    <div className="flex flex-col gap-4 px-2 py-4 rounded-lg md:px-8 bg-ui-secondary-400 text-sm">
-      <div className="flex items-center md:h-12 md:justify-between">
-        <div className="flex flex-col items-start gap-12 md:items-center md:flex-center md:flex-row">
+    <div className="flex md:h-16 justify-center  flex-col gap-4 px-4 py-2 rounded-lg  bg-ui-secondary-400 text-sm">
+      <div className="flex items-center md:justify-between">
+        <div className="flex flex-col items-start gap-4 md:gap-12 md:items-center md:flex-center md:flex-row">
           {lockOptions.length > 1 && (
-            <div className="flex flex-row gap-2 items-center">
-              <span className="font-medium">Contract</span>
-              <Select
-                size="small"
-                defaultValue={lockAddress}
-                onChange={(newValue) => {
-                  setLockAddress && setLockAddress(newValue.toString())
-                }}
-                options={lockOptions}
-              />
+            <div className="flex flex-row gap-2">
+              <div className="flex justify-center gap-1 items-center text-black font-medium text-sm p-0">
+                <FaFileContract size={18} />
+                <span>Contract</span>
+              </div>
+              <div className="md:mt-2">
+                <Select
+                  size="small"
+                  defaultValue={lockAddress}
+                  onChange={(newValue) => {
+                    setLockAddress && setLockAddress(newValue.toString())
+                  }}
+                  options={lockOptions}
+                />
+              </div>
             </div>
           )}
 
           {!hideFilter && (
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-row gap-2 items-start md:items-center">
               <Button
                 variant="borderless"
+                size="small"
                 onClick={() => setExpandFilter(!expandFilter)}
               >
                 <div className="flex items-center gap-1">
@@ -169,12 +182,13 @@ export const FilterBar = ({
                   <span>Filter</span>
                 </div>
               </Button>
-              {expandFilter && filterKey !== 'tokenId' && <Expiration />}
+              {expandFilter && <Expiration />}
             </div>
           )}
 
-          <div className="flex flex-row gap-2">
+          <div className="flex flex-row gap-2 items-start md:items-center">
             <Button
+              size="small"
               variant="borderless"
               onClick={() => setOpenSearch(!openSearch)}
             >
@@ -184,33 +198,24 @@ export const FilterBar = ({
               </div>
             </Button>
             {openSearch && (
-              <div className="flex flex-col gap-2 md:flex-row">
-                <div className="flex flex-col gap-4">
-                  <div className="flex flex-col items-start gap-2 md:items-center md:flex-row">
-                    <div className="w-full md:w-40">
-                      <Select
-                        size="small"
-                        options={filters}
-                        defaultValue={filterKey}
-                        onChange={(filter: any) => {
-                          setFilterKey(filter)
-                          setRawQueryValue('')
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-auto w-80">
-                  <Input
-                    size="small"
-                    onChange={(e: any) => {
-                      setIsTyping(true)
-                      setRawQueryValue(e?.target?.value)
-                    }}
-                    value={rawQueryValue}
-                    disabled={disableSearch}
-                  />
-                </div>
+              <div className="flex flex-col gap-2 md:flex-row w-full md:mt-2">
+                <Select
+                  size="small"
+                  options={filters}
+                  defaultValue={filterKey}
+                  onChange={(filter: any) => {
+                    setFilterKey(filter)
+                    setRawQueryValue('')
+                  }}
+                />
+                <Input
+                  size="small"
+                  onChange={(e: any) => {
+                    setIsTyping(true)
+                    setRawQueryValue(e?.target?.value)
+                  }}
+                  value={rawQueryValue}
+                />
               </div>
             )}
           </div>

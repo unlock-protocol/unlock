@@ -14,7 +14,7 @@ import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { Detail } from '@unlock-protocol/ui'
 
-interface MemberCardProps {
+export interface MemberCardProps {
   token: string
   owner: string
   expiration: string
