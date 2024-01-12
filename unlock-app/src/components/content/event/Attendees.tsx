@@ -27,6 +27,11 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const [lockAddress, setLockAddress] = useState(
+    checkoutConfig.config.locks
+      ? Object.keys(checkoutConfig.config.locks)[0]
+      : null
+  )
 
   const { data: isOrganizer, isLoading: isLoadingLockManager } =
     useEventOrganizer({
@@ -43,14 +48,9 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
   const [page, setPage] = useState(1)
 
   // Placeholders
-  const lockAddress = checkoutConfig.config.locks
-    ? Object.keys(checkoutConfig.config.locks)[0]
-    : null
   const lockNetwork = lockAddress
     ? checkoutConfig.config.locks[lockAddress].network
     : null
-
-  console.log(lockAddress)
 
   if (showNotManagerBanner) {
     return <NotManagerBanner />
@@ -88,7 +88,11 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
               setIsOpen={setAirdropKeys}
             />
             <FilterBar
+              hideFilter={true}
+              locks={checkoutConfig.config.locks}
+              lockAddress={lockAddress}
               filters={filters}
+              setLockAddress={setLockAddress}
               setFilters={setFilters}
               setLoading={setLoading}
               setPage={setPage}

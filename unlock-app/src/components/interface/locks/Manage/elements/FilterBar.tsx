@@ -7,8 +7,13 @@ import { useDebounce } from 'react-use'
 import { getAddressForName } from '~/hooks/useEns'
 import React from 'react'
 import { FilterProps } from './Members'
+import { PaywallLocksConfigType } from '@unlock-protocol/core'
 
 interface FilterBarProps {
+  locks?: PaywallLocksConfigType
+  lockAddress?: string
+  hideFilter?: boolean
+  setLockAddress?: (address: string) => void
   setFilters?: (filters: FilterProps) => void
   setLoading?: (loading: boolean) => void
   setPage: (page: number) => void
@@ -44,6 +49,10 @@ export enum ExpirationStatus {
 }
 
 export const FilterBar = ({
+  locks,
+  lockAddress,
+  hideFilter = false,
+  setLockAddress,
   setFilters,
   setLoading,
   filters: defaultFilters,
@@ -100,8 +109,7 @@ export const FilterBar = ({
 
   const Expiration = () => {
     return (
-      <div className="flex flex-col gap-4">
-        <span className="text-base">Expiration Status</span>
+      <div className="flex flex-row gap-4">
         <div className="flex gap-3">
           {expirations.map((value: ExpirationStatus, index) => {
             const isActive = value === expiration
@@ -124,68 +132,90 @@ export const FilterBar = ({
 
   const disableSearch = filterKey === 'checkedInAt'
 
+  const lockOptions = locks
+    ? Object.keys(locks).map((address) => {
+        return {
+          label: locks[address].name || address,
+          value: address,
+        }
+      })
+    : []
   return (
-    <div className="flex flex-col gap-4 px-2 py-4 rounded-lg md:px-8 bg-ui-secondary-400">
+    <div className="flex flex-col gap-4 px-2 py-4 rounded-lg md:px-8 bg-ui-secondary-400 text-sm">
       <div className="flex items-center md:h-12 md:justify-between">
-        <div className="flex flex-col items-start gap-8 md:items-center md:flex-center md:flex-row">
-          <Button
-            variant="borderless"
-            onClick={() => setExpandFilter(!expandFilter)}
-          >
-            <div className="flex items-center gap-2">
-              <span className="text-sm">Filter</span>
-              <FilterIcon size={18} />
+        <div className="flex flex-col items-start gap-12 md:items-center md:flex-center md:flex-row">
+          {lockOptions.length > 1 && (
+            <div className="flex flex-row gap-2 items-center">
+              <span className="font-medium">Contract</span>
+              <Select
+                size="small"
+                defaultValue={lockAddress}
+                onChange={(newValue) => {
+                  setLockAddress && setLockAddress(newValue.toString())
+                }}
+                options={lockOptions}
+              />
             </div>
-          </Button>
-          {openSearch ? (
-            <div className="flex flex-col gap-2 md:flex-row">
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col items-start gap-2 md:items-center md:flex-row">
-                  <span className="mb-1">Filter by</span>
-                  <div className="w-full md:w-40">
-                    <Select
-                      size="small"
-                      options={filters}
-                      defaultValue={filterKey}
-                      onChange={(filter: any) => {
-                        setFilterKey(filter)
-                        setRawQueryValue('')
-                      }}
-                    />
-                  </div>
+          )}
+
+          {!hideFilter && (
+            <div className="flex flex-row gap-2">
+              <Button
+                variant="borderless"
+                onClick={() => setExpandFilter(!expandFilter)}
+              >
+                <div className="flex items-center gap-1">
+                  <FilterIcon size={18} />
+                  <span>Filter</span>
                 </div>
-              </div>
-              <div className="mt-auto w-80">
-                <Input
-                  size="small"
-                  onChange={(e: any) => {
-                    setIsTyping(true)
-                    setRawQueryValue(e?.target?.value)
-                  }}
-                  value={rawQueryValue}
-                  disabled={disableSearch}
-                />
-              </div>
+              </Button>
+              {expandFilter && filterKey !== 'tokenId' && <Expiration />}
             </div>
-          ) : (
+          )}
+
+          <div className="flex flex-row gap-2">
             <Button
               variant="borderless"
-              onClick={() => setOpenSearch(true)}
-              className="p-0"
+              onClick={() => setOpenSearch(!openSearch)}
             >
-              <div className="flex items-center gap-2">
-                <span className="text-sm">Search</span>
+              <div className="flex items-center gap-1">
                 <SearchIcon size={18} />
+                <span>Search</span>
               </div>
             </Button>
-          )}
+            {openSearch && (
+              <div className="flex flex-col gap-2 md:flex-row">
+                <div className="flex flex-col gap-4">
+                  <div className="flex flex-col items-start gap-2 md:items-center md:flex-row">
+                    <div className="w-full md:w-40">
+                      <Select
+                        size="small"
+                        options={filters}
+                        defaultValue={filterKey}
+                        onChange={(filter: any) => {
+                          setFilterKey(filter)
+                          setRawQueryValue('')
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-auto w-80">
+                  <Input
+                    size="small"
+                    onChange={(e: any) => {
+                      setIsTyping(true)
+                      setRawQueryValue(e?.target?.value)
+                    }}
+                    value={rawQueryValue}
+                    disabled={disableSearch}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-      {expandFilter && filterKey !== 'tokenId' && (
-        <div className="block">
-          <Expiration />
-        </div>
-      )}
     </div>
   )
 }
