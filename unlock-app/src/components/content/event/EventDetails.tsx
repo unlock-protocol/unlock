@@ -1,9 +1,14 @@
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
-import { Button, Card, Disclosure, minifyAddress } from '@unlock-protocol/ui'
+import {
+  Button,
+  Card,
+  Disclosure,
+  Icon,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
 import { CopyUrlButton } from './CopyUrlButton'
@@ -26,6 +31,7 @@ import { RegistrationCard } from './RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { storage } from '~/config/storage'
+import { FaUsers } from 'react-icons/fa'
 
 interface EventDetailsProps {
   event: Event
@@ -163,7 +169,35 @@ export const EventDetails = ({
         }}
       />
 
-      <div className="relative">
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-row-reverse gap-2 ">
+          {isOrganizer && (
+            <>
+              {/* Comimg soon
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/settings`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={TbSettings} size={20} />
+                  <span>Settings</span>
+                </div>
+              </Button> */}
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/attendees`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={FaUsers} size={20} />
+                  <span>Attendees</span>
+                </div>
+              </Button>
+            </>
+          )}
+        </div>
+
         <div className="relative">
           <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
             {coverImage && (
@@ -209,11 +243,11 @@ export const EventDetails = ({
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
+        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3  lg:px-12 lg:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="text-4xl font-bold md:text-7xl">{event.name}</h1>
+            <h1 className="text-3xl font-bold md:text-7xl">{event.name}</h1>
             <section className="mt-4">
-              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
+              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
                     <div
@@ -235,8 +269,8 @@ export const EventDetails = ({
                 )}
                 {hasLocation && <EventLocation event={event} />}
               </div>
-              <div className="mt-14">
-                <h2 className="text-2xl font-bold">Event Information</h2>
+              <div className="mt-10">
+                <h2 className="text-xl font-bold">Event Information</h2>
                 {event.description && (
                   <div className="mt-4 markdown">
                     {/* eslint-disable-next-line react/no-children-prop */}
@@ -250,7 +284,7 @@ export const EventDetails = ({
         </section>
       </div>
 
-      <section className="flex flex-col mb-8">
+      <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
             <span className="text-2xl font-bold text-brand-dark">
@@ -322,7 +356,7 @@ export const EventDetails = ({
                 </div>
               </Disclosure>
 
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+              {/* <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
                     title="Manage Attendees"
@@ -355,7 +389,7 @@ export const EventDetails = ({
                     }
                   )}
                 </div>
-              </Card>
+              </Card> */}
 
               <Disclosure
                 label="Verifiers"

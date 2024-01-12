@@ -50,6 +50,7 @@ const keysToIgnore = [
   'checkedInAt',
   'email',
   'data',
+  'transactionsHash',
 ]
 
 interface KeyRenewalProps {
@@ -528,7 +529,7 @@ export const MetadataCard = ({
                       side="bottom"
                     >
                       <div className="flex items-center gap-2">
-                        <span>Key Owner </span>
+                        <span>Owner</span>
                         <InfoIcon />:
                         <div className="flex gap-2">
                           {/* show full address on desktop */}
@@ -564,7 +565,7 @@ export const MetadataCard = ({
                           onClick={() => setShowTransferKey(true)}
                           className="w-full md:w-auto"
                         >
-                          Transfer ownership
+                          Transfer
                         </Button>
                       )}
                       {ownerIsManager && (
@@ -602,7 +603,7 @@ export const MetadataCard = ({
                           side="right"
                         >
                           <div className="flex items-center gap-1">
-                            <span>Key Manager </span>
+                            <span>Manager</span>
                             <InfoIcon />:
                           </div>
                         </Tooltip>
@@ -633,7 +634,7 @@ export const MetadataCard = ({
                         network={network}
                         manager={manager}
                         tokenId={tokenId}
-                        label="Change key manager"
+                        label="Update"
                         onChange={(keyManager) => {
                           setData({
                             ...data,

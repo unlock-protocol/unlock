@@ -18,7 +18,7 @@ export const KeychainContent = () => {
     <AppLayout
       title={
         <div className="flex justify-between">
-          <h1 className="text-4xl font-bold">Member Keychain</h1>
+          <h1 className="text-3xl font-bold">Member Keychain</h1>
           {networkConfig && account && (
             <div className="flex gap-3">
               {networkConfig.blockScan && networkConfig.blockScan.url && (

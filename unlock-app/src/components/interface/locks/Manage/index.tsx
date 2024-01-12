@@ -65,7 +65,7 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
   const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
@@ -262,7 +262,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   )
 }
 
-const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
+export const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
 
   const { isManager } = useLockManager({
