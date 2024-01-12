@@ -1,5 +1,9 @@
 # Changes
 
+# 0.42.0
+
+- added support for `UnlockV13` and `PublicLockV14`
+
 # 0.41.0
 
 - adding `setDiscountCodeWithCapHookSigner`
