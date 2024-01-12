@@ -15,13 +15,24 @@ task('release', 'Release a new version of the contract')
     const isVersioned =
       ['Unlock', 'PublicLock'].includes(contractName) || !!contractVersion
 
+    // flatten the contract
+    const flattenPath = `contracts/${contractName}.flatten.sol`
+
+    // NB: this uses a shell child process bcz hardhat flatten output only to stdout
+    await exec(`hardhat flatten ${contract} > ${flattenPath}`)
+    console.log(
+      `Solidity contract for ${contractName} flattened at: ${flattenPath}`
+    )
+
     // get data
     await hre.run('compile', contractName)
 
     // parse specific paths for Unlock and PublicLock
     if (isVersioned) {
       // deploy to get version number from contract
-      const Contract = await hre.ethers.getContractFactory(contractName)
+      const Contract = await hre.ethers.getContractFactory(
+        `${flattenPath}:${contractName}`
+      )
       const instance = await Contract.deploy()
       await instance.deployed()
 
@@ -53,9 +64,14 @@ task('release', 'Release a new version of the contract')
       )
     }
 
-    console.log(abiPath, solPath)
+    // copy .sol file
+    await fs.copyFile(flattenPath, solPath)
+    console.log(`Solidity contracts for ${contractName} copied to: ${solPath}`)
+
     // write artifacts
-    const artifact = await hre.artifacts.readArtifact(contractName)
+    const artifact = await hre.artifacts.readArtifact(
+      `${flattenPath}:${contractName}`
+    )
     // add version path in artifact if necessary
     if (isVersioned) {
       artifact.contractName = versioned
@@ -64,15 +80,7 @@ task('release', 'Release a new version of the contract')
     await fs.writeJSON(abiPath, artifact, { spaces: 2 })
     console.log(`Artifact for ${contractName} at: ${abiPath}`)
 
-    // flatten the contract
-    // NB: this uses a shell child process bcz hardhat flatten output only to stdout
-    await exec(`hardhat flatten ${contract} > ${solPath}`)
-
     if (isVersioned) {
-      console.log(
-        `Solidity contract for ${contractName} flattened at: ${solPath}`
-      )
-
       // copy the interface the contract
       const interfacePath = path.resolve(
         libPath,
