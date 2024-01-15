@@ -1,4 +1,4 @@
-import Attendees from '~/components/content/event/Attendees'
+import Attendees from '~/components/content/event/attendees/Attendees'
 import {
   EventPageProps,
   ServerSidePropsParams,

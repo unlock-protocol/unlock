@@ -32,6 +32,7 @@ import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { MEMBERS_PER_PAGE } from '~/constants'
+import { ImageBar } from './elements/ImageBar'
 
 interface ActionBarProps {
   lockAddress: string
@@ -439,7 +440,33 @@ export const ManageLockPage = () => {
                   loading={loading}
                   setPage={setPage}
                   page={page}
-                  onAirdropKeys={toggleAirdropKeys}
+                  NoMemberNoFilter={() => {
+                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    return (
+                      <ImageBar
+                        src="/images/illustrations/no-member.svg"
+                        alt="No members"
+                        description={
+                          <span>
+                            Lock is deployed. You can{' '}
+                            <button
+                              onClick={toggleAirdropKeys}
+                              className="outline-none cursor-pointer text-brand-ui-primary"
+                            >
+                              Airdrop Keys
+                            </button>{' '}
+                            or{' '}
+                            <Link href={checkoutLink}>
+                              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                                Share a purchase link
+                              </span>
+                            </Link>{' '}
+                            to your community.
+                          </span>
+                        }
+                      />
+                    )
+                  }}
                 />
               </div>
             </div>
