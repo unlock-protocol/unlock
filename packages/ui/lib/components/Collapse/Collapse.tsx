@@ -41,7 +41,7 @@ export const Collapse = ({
             </div>
           </Button>
         </div>
-        <div className="w-full">{content}</div>
+        {content}
       </div>
       {isOpen && <div className="p-4">{children}</div>}
     </Card>

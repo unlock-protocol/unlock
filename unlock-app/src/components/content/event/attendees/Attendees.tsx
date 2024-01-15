@@ -14,6 +14,8 @@ import { NotManagerBanner } from '~/components/interface/locks/Settings'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
+import { MemberCard } from '~/components/interface/locks/Manage/elements/MemberCard'
+import { AttendeeInfo } from './AttendeeInfo'
 
 interface AttendeesProps {
   event: Event
@@ -105,6 +107,58 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
               loading={loading}
               setPage={setPage}
               page={page}
+              MemberCard={({
+                token,
+                owner,
+                expiration,
+                version,
+                metadata,
+                lockAddress,
+                network,
+                expirationDuration,
+                lockSettings,
+              }) => {
+                console.log(metadata)
+                return (
+                  <MemberCard
+                    token={token}
+                    owner={owner}
+                    expiration={expiration}
+                    showExpiration={false}
+                    version={version}
+                    metadata={metadata}
+                    lockAddress={lockAddress!}
+                    network={network}
+                    expirationDuration={expirationDuration}
+                    lockSettings={lockSettings}
+                    MemberInfo={() => (
+                      <AttendeeInfo
+                        network={network}
+                        lockAddress={lockAddress}
+                        owner={owner}
+                        token={token}
+                        metadata={metadata}
+                      />
+                    )}
+                    fieldsToShow={[
+                      {
+                        name: 'email',
+                        label: 'Email',
+                      },
+                      {
+                        name: 'fullname',
+                        label: 'Full name',
+                      },
+                    ]}
+                  />
+                )
+              }}
+              NoMemberNoFilter={() => {
+                return <p>No ticket minted from this contract yet!</p>
+              }}
+              NoMemberWithFilter={() => {
+                return <p>No ticket matches your filter.</p>
+              }}
             />
           </div>
         </div>
