@@ -39,9 +39,13 @@ export interface NewEventForm {
 
 interface GoogleMapsAutoCompleteProps {
   onChange: (value: string) => void
+  defaultValue?: string
 }
 
-const GoogleMapsAutoComplete = ({ onChange }: GoogleMapsAutoCompleteProps) => {
+export const GoogleMapsAutoComplete = ({
+  onChange,
+  defaultValue,
+}: GoogleMapsAutoCompleteProps) => {
   const { ref } = usePlacesWidget({
     options: {
       types: [],
@@ -52,6 +56,7 @@ const GoogleMapsAutoComplete = ({ onChange }: GoogleMapsAutoCompleteProps) => {
 
   return (
     <Input
+      defaultValue={defaultValue}
       // @ts-expect-error Type 'RefObject<null>' is not assignable to type 'Ref<HTMLInputElement> | undefined'.
       ref={ref}
       type="text"
@@ -300,15 +305,15 @@ export const Form = ({ onSubmit }: FormProps) => {
                           message: 'Add a start date to your event',
                         },
                       })}
-                      onChange={(event) => {
+                      onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                         if (
                           !details.metadata?.ticket?.event_end_date ||
                           new Date(details.metadata?.ticket?.event_end_date) <
-                            new Date(event.target.value)
+                            new Date(evt.target.value)
                         ) {
                           setValue(
                             'metadata.ticket.event_end_date',
-                            event.target.value
+                            evt.target.value
                           )
                           setValue('metadata.ticket.event_start_time', '12:00')
                         }
@@ -329,11 +334,11 @@ export const Form = ({ onSubmit }: FormProps) => {
                         // @ts-expect-error Property 'event_start_time' does not exist on type 'FieldError | Merge<FieldError, FieldErrorsImpl<any>>'.
                         errors.metadata?.ticket?.event_start_time?.message || ''
                       }
-                      onChange={(event) => {
+                      onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                         if (!details.metadata?.ticket?.event_end_time) {
                           setValue(
                             'metadata.ticket.event_end_time',
-                            event.target.value
+                            evt.target.value
                           )
                         }
                       }}
