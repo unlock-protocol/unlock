@@ -221,7 +221,7 @@ export const Select = <T extends unknown>({
                   </div>
                 </div>
               </Listbox.Button>
-              <Listbox.Options className="absolute z-10 w-full mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
+              <Listbox.Options className="absolute z-10 mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
                 {options?.map((option: Option) => {
                   const hasAnyAppend = options?.some((option) => option.append)
                   const hasAnyPrepend = options?.some(

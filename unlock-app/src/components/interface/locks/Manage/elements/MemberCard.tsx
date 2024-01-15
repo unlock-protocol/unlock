@@ -1,4 +1,4 @@
-import { Button, Collapse } from '@unlock-protocol/ui'
+import { Button, Collapse, Detail } from '@unlock-protocol/ui'
 import React, { useState, useEffect } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { MAX_UINT } from '~/constants'
@@ -12,9 +12,8 @@ import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
 import { useLockManager } from '~/hooks/useLockManager'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
-import { Detail } from '@unlock-protocol/ui'
 
-interface MemberCardProps {
+export interface MemberCardProps {
   token: string
   owner: string
   expiration: string
@@ -24,10 +23,12 @@ interface MemberCardProps {
   network: number
   expirationDuration: string
   lockSettings?: Record<string, any>
+  showExpiration?: boolean
+  fieldsToShow?: Record<string, any>[]
+  MemberInfo?: React.FC
 }
 
 export const MemberCard = ({
-  token,
   owner,
   expiration,
   version,
@@ -36,6 +37,9 @@ export const MemberCard = ({
   network,
   expirationDuration,
   lockSettings,
+  showExpiration = true,
+  fieldsToShow = [],
+  MemberInfo,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
@@ -73,7 +77,7 @@ export const MemberCard = ({
 
   const { token: tokenId, lockName } = metadata ?? {}
 
-  const MemberInfo = () => {
+  const MemberInfoDefault = () => {
     return (
       <>
         <ExpireAndRefundModal
@@ -99,19 +103,13 @@ export const MemberCard = ({
             }!
           }
         />
-        <div className="grid justify-between grid-cols-3 gap-4 md:grid-cols-7 md:gap-0">
-          <Detail
-            className="col-span-3 md:col-span-1 grow"
-            label="#"
-            valueSize="medium"
-          >
-            {token}
+
+        <div className="flex md:flex-row flex-col gap-4 w-full">
+          <Detail label="#" valueSize="medium" className="w-8">
+            {tokenId}
           </Detail>
-          <Detail
-            className="col-span-3 md:col-span-2"
-            label="Owner"
-            valueSize="medium"
-          >
+
+          <Detail label="Owner" valueSize="medium" className="grow md:w-1/4">
             <div className="flex self-start gap-2">
               <div>{resolvedAddress}</div>
               <div className="mt-auto">
@@ -125,13 +123,25 @@ export const MemberCard = ({
               </div>
             </div>
           </Detail>
-          <Detail
-            className="col-span-3 md:col-span-2"
-            label="Expiration"
-            valueSize="medium"
-          >
-            {expirationAsDate(expiration)}
-          </Detail>
+
+          {fieldsToShow.map((field) => {
+            return (
+              <Detail
+                key={field.name}
+                label={field.label}
+                valueSize="medium"
+                className="grow"
+              >
+                {metadata[field.name]}
+              </Detail>
+            )
+          })}
+
+          {showExpiration && (
+            <Detail label="Expiration" valueSize="medium" className="grow">
+              {expirationAsDate(expiration)}
+            </Detail>
+          )}
 
           {isManager && (
             <div className="w-full col-span-3 gap-3 mx-auto md:mx-0 md:ml-auto md:col-span-2 md:w-auto">
@@ -171,7 +181,7 @@ export const MemberCard = ({
       isOpen={isOpen}
       setIsOpen={setIsOpen}
       disabled={!isManager}
-      content={<MemberInfo />}
+      content={MemberInfo ? <MemberInfo /> : <MemberInfoDefault />}
     >
       <MetadataCard
         expirationDuration={expirationDuration}
