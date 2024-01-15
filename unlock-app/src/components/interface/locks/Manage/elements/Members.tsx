@@ -1,17 +1,36 @@
 import { useQueries } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ImageBar } from './ImageBar'
-import { MemberCard } from './MemberCard'
+import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
 import { ExpirationStatus } from './FilterBar'
-import Link from 'next/link'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MEMBERS_PER_PAGE } from '~/constants'
+
+const DefaultNoMemberNoFilter = () => {
+  return (
+    <ImageBar
+      src="/images/illustrations/no-member.svg"
+      alt="No members"
+      description="Your lock does not have any member yet."
+    />
+  )
+}
+
+const DefaultNoMemberWithFilter = () => {
+  return (
+    <ImageBar
+      src="/images/illustrations/no-member.svg"
+      alt="No results"
+      description="No key matches your filter."
+    />
+  )
+}
 
 interface MembersProps {
   lockAddress: string
@@ -20,7 +39,9 @@ interface MembersProps {
   setPage: (page: number) => void
   page: number
   filters?: FilterProps
-  onAirdropKeys?: () => void
+  MemberCard?: React.FC<MemberCardProps>
+  NoMemberNoFilter?: React.FC
+  NoMemberWithFilter?: React.FC
 }
 
 export interface FilterProps {
@@ -35,22 +56,25 @@ export const Members = ({
   loading: loadingFilters,
   setPage,
   page,
-  onAirdropKeys,
   filters = {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
   },
+  MemberCard = DefaultMemberCard,
+  NoMemberWithFilter = DefaultNoMemberWithFilter,
+  NoMemberNoFilter = DefaultNoMemberNoFilter,
 }: MembersProps) => {
   const web3Service = useWeb3Service()
 
   const getMembers = async () => {
+    const { query, filterKey, expiration } = filters
     const keys = await storage.keys(
       network,
       lockAddress,
-      filters.query,
-      filters.filterKey,
-      filters.expiration,
+      query,
+      filterKey,
+      expiration,
       page - 1, // API starts at 0
       MEMBERS_PER_PAGE
     )
@@ -119,8 +143,6 @@ export const Members = ({
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
 
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
-
   if (loading) {
     return (
       <>
@@ -144,40 +166,11 @@ export const Members = ({
   }
 
   if (noItems && !hasActiveFilter) {
-    return (
-      <ImageBar
-        src="/images/illustrations/no-member.svg"
-        alt="No members"
-        description={
-          <span>
-            Lock is deployed. You can{' '}
-            <button
-              onClick={onAirdropKeys}
-              className="outline-none cursor-pointer text-brand-ui-primary"
-            >
-              Airdrop Keys
-            </button>{' '}
-            or{' '}
-            <Link href={checkoutLink}>
-              <span className="outline-none cursor-pointer text-brand-ui-primary">
-                Share a purchase link
-              </span>
-            </Link>{' '}
-            to your community.
-          </span>
-        }
-      />
-    )
+    return <NoMemberNoFilter />
   }
 
   if (noItems && hasActiveFilter) {
-    return (
-      <ImageBar
-        src="/images/illustrations/no-member.svg"
-        alt="No results"
-        description="No key matches your filter."
-      />
-    )
+    return <NoMemberWithFilter />
   }
 
   const pageOffset = page - 1 ?? 0
