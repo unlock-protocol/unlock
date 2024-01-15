@@ -65,7 +65,7 @@ export const EventSettings = ({
             setTab: setSelectedIndex,
           }}
         >
-          <div className="flex flex-row items-start gap-4 align-center items-center">
+          <div className="flex flex-row gap-4 align-center items-center">
             <Link href={`/event/${event.slug}`}>
               <ArrowBackIcon size={20} />
             </Link>
