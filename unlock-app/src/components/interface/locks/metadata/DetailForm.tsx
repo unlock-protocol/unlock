@@ -2,15 +2,12 @@ import { Disclosure, Input, TextBox, ImageUpload } from '@unlock-protocol/ui'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { SLUG_REGEXP } from '~/constants'
-import { storage } from '~/config/storage'
 
 interface Props {
   disabled?: boolean
-  defaultValues?: any
 }
 
-export function DetailForm({ disabled, defaultValues }: Props) {
+export function DetailForm({ disabled }: Props) {
   const {
     register,
     setValue,
