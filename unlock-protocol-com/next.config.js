@@ -14,7 +14,7 @@ const dev = {
   tagManagerArgs: {},
   urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
   unlockApp:
-    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com/locks',
+    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com',
 }
 
 const staging = {
@@ -69,6 +69,8 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
 })
 
 const nextConfig = {
+  output: 'export',
+  distDir: 'out',
   images: {
     unoptimized: true,
   },

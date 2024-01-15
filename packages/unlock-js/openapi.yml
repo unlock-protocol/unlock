@@ -88,8 +88,6 @@ components:
     CheckoutConfig:
       type: object
       required:
-        - 'id'
-        - 'by'
         - 'config'
         - 'name'
       properties:
@@ -102,14 +100,45 @@ components:
         config:
           type: object
           additionalProperties: true
-
+          properties:
+            locks:
+              type: object
         createdAt:
           type: string
           format: date-time
-
         updatedAt:
           type: string
           format: date-time
+
+    Event:
+      type: object
+      required:
+        - 'name'
+        - 'slug'
+        - 'image'
+        - 'description'
+        - 'attributes'
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        image:
+          type: string
+        description:
+          type: string
+        attributes:
+          type: array
+          items:
+            type: object
+            required:
+              - trait_type
+              - value
+            properties:
+              trait_type:
+                type: string
+              value:
+                type: string
 
     Verifier:
       type: object
@@ -409,6 +438,10 @@ components:
         crossmintClientId:
           type: string
           nullable: true
+        promoCodes:
+          type: array
+          items:
+            type: string
 
     EventDetails:
       type: object
@@ -1300,7 +1333,12 @@ paths:
           name: page
           schema:
             type: integer
-          description: Pagination
+          description: Page number when paginating
+        - in: query
+          name: max
+          schema:
+            type: integer
+          description: Maximum number of items to get by page
       responses:
         200:
           description: List of keys matching the query
@@ -1631,6 +1669,9 @@ paths:
                 recipient:
                   type: string
                   description: Recipient address for key
+                referrer:
+                  type: string
+                  description: Referrer address used to mint. This may get overwritten.
 
       responses:
         200:
@@ -1820,8 +1861,27 @@ paths:
               schema:
                 type: object
                 properties:
+                  countrySpec:
+                    type: object
+                    properties:
+                      supported_payment_currencies:
+                        type: array
+                        items:
+                          type: string
                   account:
-                    type: string
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      charges_enabled:
+                        type: boolean
+                      payouts_enabled:
+                        type: boolean
+                      requirements:
+                        type: object
+                        properties:
+                          disabled_reason:
+                            type: string
                   connected:
                     type: number
 
@@ -2646,6 +2706,7 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
+  # TODO: Deprecate me!
   /v2/events/{network}/{lockAddress}:
     get:
       operationId: getEventDetails
@@ -3203,6 +3264,7 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/email-subscriptions/unsubscribe/{network}/locks/{lockAddress}:
     post:
       operationId: unsubscribeEmail
@@ -3228,6 +3290,7 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/email-subscriptions/subscribe/{network}/locks/{lockAddress}:
     post:
       operationId: reSubscribeEmail
@@ -3303,14 +3366,10 @@ paths:
               properties:
                 id:
                   type: number
-                name:
-                  type: string
                 data:
                   type: object
-                locks:
-                  type: array
-                  items:
-                    type: string
+                checkoutConfig:
+                  $ref: '#/components/schemas/CheckoutConfig'
 
       responses:
         200:
@@ -3326,10 +3385,42 @@ paths:
                     type: string
                   data:
                     type: object
+                  slug:
+                    type: string
                   locks:
                     type: array
                     items:
                       type: string
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}:
+    get:
+      operationId: getEvent
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      description: Retrieves an event based on its slug
+
+      responses:
+        200:
+          description: Successfully retrieves the event along with its checkout config
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  data:
+                    $ref: '#/components/schemas/Event'
+                  checkoutConfig:
+                    $ref: '#/components/schemas/CheckoutConfig'
+                  slug:
+                    type: string
+
         400:
           $ref: '#/components/responses/400.Invalid'
 

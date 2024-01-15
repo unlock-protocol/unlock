@@ -1,5 +1,15 @@
-import { Button } from '@unlock-protocol/ui'
-import React from 'react'
+import { Button, Modal } from '@unlock-protocol/ui'
+import { FaRegCalendarPlus } from 'react-icons/fa'
+
+import {
+  SiGooglecalendar,
+  SiMicrosoftoffice,
+  SiMicrosoftoutlook,
+} from 'react-icons/si'
+import { BsCalendarDate } from 'react-icons/bs'
+
+import { google, outlook, office365, ics } from 'calendar-link'
+import React, { useState } from 'react'
 import {
   FiCalendar as CalendarIcon,
   FiMapPin as MapPinIcon,
@@ -27,6 +37,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   event,
   disabled,
 }) => {
+  const [isOpen, setOpen] = useState(false)
   const location = event?.location ?? ''
   const startDate = dayjs(event?.start?.date || event?.start?.dateTime)
   const endDate = dayjs(event?.end?.date || event?.end?.dateTime)
@@ -47,8 +58,65 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
   const extraClassDisabled = disabled ? 'opacity-60 pointer-events-none' : ''
 
+  const calendarEvent = {
+    title: event.summary,
+    start: event.start.dateTime || event.start.date,
+    location,
+    description: event.description,
+    end: event.end.dateTime || event.end.date,
+    url: event.url,
+    allDay: !event.start.dateTime,
+  }
+
   return (
     <div className="flex flex-col h-full gap-4 p-7 glass-pane rounded-xl">
+      <Modal isOpen={isOpen} setIsOpen={setOpen}>
+        <div className="w-full">
+          <p className="mb-2">Select your calendar application:</p>
+          <ul className="flex flex-col justify-between w-full">
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={google(calendarEvent)}
+              >
+                <SiGooglecalendar className="inline w-8 h-8 mr-3" />
+                Google Calendar
+              </Link>
+            </li>
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={outlook(calendarEvent)}
+              >
+                <SiMicrosoftoutlook className="inline w-8 h-8 mr-3" />
+                Microsoft Outlook
+              </Link>
+            </li>
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={office365(calendarEvent)}
+              >
+                <SiMicrosoftoffice className="inline w-8 h-8 mr-3" />
+                Microsoft Office 365
+              </Link>
+            </li>
+            <li className="flex py-3">
+              <Link
+                target="_blank"
+                className="hover:underline"
+                href={ics(calendarEvent)}
+              >
+                <BsCalendarDate className="inline w-8 h-8 mr-3" />
+                ICS file
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </Modal>
       <div className="flex items-center gap-2">
         <CalendarIcon className="stroke-brand-ui-primary" />
         <span
@@ -108,9 +176,13 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
           </div>
         )}
         {!disabled && (
-          <Link href={event.url ?? '#'}>
-            <Button className="w-full">Add to Calendar</Button>
-          </Link>
+          <Button
+            onClick={() => setOpen(true)}
+            className="w-full"
+            iconLeft={<FaRegCalendarPlus />}
+          >
+            Add to Calendar
+          </Button>
         )}
       </div>
     </div>

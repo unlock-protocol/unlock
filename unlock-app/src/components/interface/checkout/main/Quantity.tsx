@@ -32,10 +32,10 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   const lockConfig = paywallConfig.locks[lock.address]
 
   const maxRecipients =
-    lockConfig.maxRecipients || paywallConfig.maxRecipients || 1
+    lockConfig?.maxRecipients || paywallConfig.maxRecipients || 1
 
   const minRecipients =
-    lockConfig.minRecipients || paywallConfig.minRecipients || 1
+    lockConfig?.minRecipients || paywallConfig.minRecipients || 1
 
   const [quantityInput, setQuantityInput] = useState(
     selectedQuantity?.toString() || minRecipients.toString()

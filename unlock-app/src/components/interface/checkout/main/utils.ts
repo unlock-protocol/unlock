@@ -1,5 +1,4 @@
-import { PaywallLockConfigType } from '@unlock-protocol/core'
-import { PaywallConfig } from '~/unlockTypes'
+import { PaywallConfigType, PaywallLockConfigType } from '@unlock-protocol/core'
 interface FetchRecipientsDataOptions {
   recipients: string[]
   network: number
@@ -57,10 +56,10 @@ export function formatFiatPriceFromCents(priceInCents: number, currency = '$') {
     maximumFractionDigits: 2,
     minimumFractionDigits: 2,
   })
-  return `${currency} ${formatted}`
+  return `${formatted} ${currency}`
 }
 interface Options {
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfigType
   lock?: PaywallLockConfigType
 }
 

@@ -7,7 +7,7 @@ import { vi } from 'vitest'
 
 const keyHolder = [
   '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-  '0x6f7a54d6629b7416e17fc472b4003ae8ef18ef4c',
+  '0x6F7a54D6629b7416E17fc472B4003aE8EF18EF4c',
 ]
 const lockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
 const wallet = new ethers.Wallet(

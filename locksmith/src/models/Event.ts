@@ -5,6 +5,8 @@ import type {
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
+import { CheckoutConfig } from './checkoutConfig'
+import config from '../config/config'
 
 export class EventData extends Model<
   InferAttributes<EventData>,
@@ -12,11 +14,13 @@ export class EventData extends Model<
 > {
   declare id: CreationOptional<number>
   declare name: string
-  declare data: any
-  declare locks: string[]
+  declare data: any // TODO: TYPE maybe change to json as well?
   declare createdBy: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
+  declare slug: string
+  declare checkoutConfigId: string | null
+  declare eventUrl: string | null
 }
 
 EventData.init(
@@ -34,11 +38,6 @@ EventData.init(
       type: DataTypes.JSONB,
       allowNull: false,
     },
-    locks: {
-      type: DataTypes.ARRAY(DataTypes.STRING),
-      allowNull: false,
-      defaultValue: [],
-    },
     createdBy: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -51,10 +50,32 @@ EventData.init(
       allowNull: false,
       type: DataTypes.DATE,
     },
+    slug: {
+      allowNull: false,
+      type: DataTypes.STRING,
+    },
+    checkoutConfigId: {
+      allowNull: true,
+      type: DataTypes.STRING,
+    },
+    eventUrl: {
+      type: DataTypes.VIRTUAL,
+      get() {
+        return `${config.unlockApp}/event/${this.getDataValue('slug')}`
+      },
+    },
   },
   {
+    defaultScope: {
+      attributes: { exclude: ['id'] },
+    },
     sequelize,
     modelName: 'EventData',
     tableName: 'EventData',
   }
 )
+
+EventData.belongsTo(CheckoutConfig, {
+  foreignKey: 'checkoutConfigId',
+  as: 'checkoutConfig',
+})

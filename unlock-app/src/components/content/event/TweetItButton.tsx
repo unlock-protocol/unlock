@@ -6,11 +6,11 @@ import { getEventDate } from './utils'
 
 interface TweetItButtonProps {
   event: Partial<Metadata>
+  eventUrl: string
 }
 
-export const TweetItButton = ({ event }: TweetItButtonProps) => {
+export const TweetItButton = ({ event, eventUrl }: TweetItButtonProps) => {
   const eventDate = getEventDate(event.ticket)
-
   if (!event.name || !eventDate) {
     return null
   }
@@ -27,9 +27,9 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
         month: 'long',
         day: 'numeric',
       }
-    )}. \n\nGet your ticket with @unlockProtocol!`
+    )}. \n\nGet your ticket with @unlockProtocol!\n\n`
   )
-  tweetIntent.searchParams.set('url', window.location.toString())
+  tweetIntent.searchParams.set('url', eventUrl.toString())
 
   return (
     <Tooltip
@@ -40,7 +40,7 @@ export const TweetItButton = ({ event }: TweetItButtonProps) => {
     >
       <Link
         target="_blank"
-        href={tweetIntent}
+        href={tweetIntent.toString()}
         className="w-12 h-12 flex justify-center items-center"
       >
         <FiTwitter className="w-6 h-6" />

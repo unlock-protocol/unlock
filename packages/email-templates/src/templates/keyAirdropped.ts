@@ -1,8 +1,9 @@
-import handlebars from 'handlebars'
-import { customContentStyle } from './helpers/customContentStyle'
+import Handlebars from 'handlebars'
 import { links } from './helpers/links'
+import { formattedCustomContent } from './helpers/customContent'
 
-handlebars.registerHelper('links', links)
+Handlebars.registerHelper('links', links)
+Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
 export default {
   subject: 'You have received a new NFT!',
@@ -10,13 +11,9 @@ export default {
 
 <p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just airdropped for you!</p>
 
-{{#if customContent}}
-  <section style="${customContentStyle}">
-    {{{customContent}}}
-  </section>
-{{/if}}
+{{formattedCustomContent "Membership Manager" customContent}}
 
-<p> You can transfer it to your own wallet by going to <a href="{{transferUrl}}">here</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
+<p> You can transfer it to your own wallet <a href="{{transferUrl}}">by going there</a>. You can also print Membership NFT as a signed QR code attached to this email. </p>
 
 {{links txUrl openSeaUrl true}}
 

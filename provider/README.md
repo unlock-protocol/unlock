@@ -16,11 +16,17 @@ To add support for a new network, just update `src/index.ts`
 
 # Deployment
 
-You can use the `yarn wrangler` CLI (version 2) from Cloudflare to run locally with `yarn wrangler publish`.
+You can use the `yarn wrangler` CLI (version 2) from Cloudflare to deploy with `yarn wrangler publish`.
 
 # Adding new networks
 
-To add a new network, make sure you first add it to `supportedNetworks` (you will need its chain id), and then set the environment variable accordingly through the dashboard. (Adding to the `wrangler.toml` file would make these public...)
+To add a new network, make sure you first add it to `supportedNetworks` and `types.ts` (you will need the new network's chain id), and then set the environment variable accordingly. (Adding to the `wrangler.toml` file would make it public...):
+
+```bash
+  yarn wrangler secret put <NETWORK NAME>_PROVIDER
+```
+
+And then type the provider address.
 
 ## TODO
 

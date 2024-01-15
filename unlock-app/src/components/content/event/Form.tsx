@@ -44,7 +44,7 @@ interface GoogleMapsAutoCompleteProps {
 const GoogleMapsAutoComplete = ({ onChange }: GoogleMapsAutoCompleteProps) => {
   const { ref } = usePlacesWidget({
     options: {
-      types: ['address'],
+      types: [],
     },
     apiKey: config.googleMapsApiKey,
     onPlaceSelected: (place) => onChange(place.formatted_address),
@@ -268,11 +268,11 @@ export const Form = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
-          <Disclosure label="Location, date and time" defaultOpen>
+          <Disclosure label="Location, Date and Time" defaultOpen>
             <div className="grid">
               <p className="mb-5">
                 This information will be public and included on each of the NFT
-                tickets. There again, it can be adjusted later.
+                tickets. Again, it can be adjusted later.
               </p>
               <div className="grid items-center gap-4 align-top sm:grid-cols-2">
                 <div className="flex flex-col self-start gap-4 justify-top">
@@ -301,7 +301,11 @@ export const Form = ({ onSubmit }: FormProps) => {
                         },
                       })}
                       onChange={(event) => {
-                        if (!details.metadata?.ticket?.event_end_date) {
+                        if (
+                          !details.metadata?.ticket?.event_end_date ||
+                          new Date(details.metadata?.ticket?.event_end_date) <
+                            new Date(event.target.value)
+                        ) {
                           setValue(
                             'metadata.ticket.event_end_date',
                             event.target.value
@@ -432,7 +436,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
-          <Disclosure label="Price and capacity" defaultOpen>
+          <Disclosure label="Price and Capacity" defaultOpen>
             <div className="grid ">
               <p>
                 These settings can also be changed, but only by sending on-chain

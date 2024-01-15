@@ -1,7 +1,6 @@
 {
   "name": "tests",
   "description": "Integration tests for Unlock",
-  "packageManager": "yarn@3.1.0-rc.7",
   "scripts": {
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
@@ -30,7 +29,7 @@
     "eslint": "8.46.0",
     "ethers": "^5.4.7",
     "graphql": "^16.6.0",
-    "hardhat": "2.12.6",
+    "hardhat": "2.18.3",
     "hardhat-gas-reporter": "^1.0.8",
     "isomorphic-fetch": "^3.0.0",
     "solidity-coverage": "0.8.2",

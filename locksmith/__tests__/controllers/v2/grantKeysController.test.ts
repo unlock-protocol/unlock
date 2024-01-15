@@ -63,7 +63,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: new Date().getTime() / 1000 + 60 * 60 * 24,
             manager: address,
           },
@@ -87,7 +87,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -109,7 +109,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -134,7 +134,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -160,7 +160,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -186,14 +186,14 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
         ],
       })
     expect(response.body.error).toBe('Gas fees too high to grant keys')
-    expect(response.status).toBe(500)
+    expect(response.status).toBe(422)
   })
 
   it('returns an error when the purchaser does not have enough funds', async () => {
@@ -212,7 +212,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -221,6 +221,6 @@ describe('grantKeys endpoint', () => {
     expect(response.body.error).toBe(
       'Purchaser does not have enough to pay for gas on 2000'
     )
-    expect(response.status).toBe(500)
+    expect(response.status).toBe(422)
   })
 })

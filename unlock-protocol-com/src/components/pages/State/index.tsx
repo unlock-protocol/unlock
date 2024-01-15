@@ -2,7 +2,7 @@ import { Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
 import { ActiveLock, Lock, Key } from '../../icons'
 import numeral from 'numeral'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import dynamic from 'next/dynamic'
 import { networks } from '@unlock-protocol/networks'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
@@ -443,7 +443,7 @@ export function State() {
           }
         })
       )
-      setSubgraphData(subgraphData.filter((item) => item))
+      setSubgraphData(subgraphData.filter((item) => item && item.data))
     }
     run()
   }, [currentDay])

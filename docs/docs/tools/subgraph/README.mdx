@@ -7,7 +7,7 @@ description: >-
   elements from a contract, use our subgraph!
 ---
 
-import { networks } from "@unlock-protocol/networks";
+import { networks } from '@unlock-protocol/networks'
 
 # Unlock Subgraph Introduction
 
@@ -21,33 +21,27 @@ The links below provide a rudimentary tool to build and test your queries.
 
 <ul>
   {Object.keys(networks).map((network) => {
-    if (network !== "localhost") {
-      const endpoint = networks[network].subgraph.endpointV2;
+    if (network !== 'localhost') {
+      const endpoint = networks[network].subgraph.endpointV2
       const m = endpoint.match(/unlock\-protocol\/(.*)/)
-      if (m && m[1]) {
-        return (
-          <li>
-            <a href={`https://thegraph.com/hosted-service/subgraph/unlock-protocol/${m[1]}`}>
-              {networks[network].name}
-            </a>
-          </li>
-        );
-      } else {
-        return null
-      }
+      return (
+        <li>
+          <a
+            href={
+              m && m[1]
+                ? `https://thegraph.com/hosted-service/subgraph/unlock-protocol/${m[1]}`
+                : endpoint
+            }
+          >
+            {networks[network].name}
+          </a>
+        </li>
+      )
     }
   })}
 </ul>
 
-## Ethereum Decentralized Mainnet
+## Helpful The Graph Resources
 
-- [Explorer Page](https://thegraph.com/explorer/subgraphs/8u7KcVRxjtTDRgEJup3UuPJk6YoRDTHNpSMk5BEpdw42?view=Overview)
-- Graphql Endpoint: https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock
-- [Code Repo](https://github.com/unlock-protocol/unlock/tree/master/subgraph)
-
-## Helpful Resources
-
-- [Video Tutorial on creating an API Key](https://www.youtube.com/watch?v=UrfIpm-Vlgs)
-- [Managing your API Key & setting your indexer preferences](https://thegraph.com/docs/en/studio/managing-api-keys/)
 - [Querying from an application](https://thegraph.com/docs/en/developer/querying-from-your-app/)
 - [How to use the explorer and playground to query on-chain data](https://medium.com/@chidubem_/how-to-query-on-chain-data-with-the-graph-f8507488215)

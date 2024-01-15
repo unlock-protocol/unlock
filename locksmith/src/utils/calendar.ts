@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs from '../config/dayjs'
 import { EventAttributes, createEvent } from 'ics'
 import logger from '../logger'
 

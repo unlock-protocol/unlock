@@ -1,6 +1,6 @@
 # Integration tests
 
-This folder contains tests to make sure that the different parts of the Unlock Protocol plays nicely together (i.e. contracts, subgraph, server, ui, etc...).
+This folder contains tests to make sure that the different parts of the Unlock Protocol play nicely together (i.e. contracts, subgraph, server, ui, etc...).
 
 ## Run the tests
 
@@ -40,7 +40,7 @@ yarn test --network localhost
 
 ## Add a test
 
-1. Run the The Unlock protocol on your machine (see the Development section above)
+1. Run The Unlock protocol on your machine (see the Development section above)
 
 2. Create a file in the `/test` folder with your logic.
 

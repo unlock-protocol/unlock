@@ -75,7 +75,9 @@ contract MixinTransfer is
       block.timestamp;
 
     // get the transfer fee based on amount of time wanted share
-    uint fee = getTransferFee(_tokenIdFrom, _timeShared);
+    uint fee = isLockManager(msg.sender)
+      ? 0
+      : getTransferFee(_tokenIdFrom, _timeShared);
     uint timePlusFee = _timeShared + fee;
 
     // ensure that we don't try to share too much
@@ -86,7 +88,9 @@ contract MixinTransfer is
       _timeMachine(_tokenIdFrom, timePlusFee, false);
     } else {
       // we have to recalculate the fee here
-      fee = getTransferFee(_tokenIdFrom, timeRemaining);
+      fee = isLockManager(msg.sender)
+        ? 0
+        : getTransferFee(_tokenIdFrom, _timeShared);
       time = timeRemaining - fee;
       _keys[_tokenIdFrom].expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenIdFrom);
@@ -109,7 +113,7 @@ contract MixinTransfer is
    * @param _recipient the address that will receive the token
    * @param _tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either {approve} or {setApprovalForAll}.
+   * either `approve` or `setApprovalForAll`.
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(
@@ -199,7 +203,11 @@ contract MixinTransfer is
     }
 
     // subtract the fee from the senders key before the transfer
-    _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);
+    _timeMachine(
+      _tokenId,
+      isLockManager(msg.sender) ? 0 : getTransferFee(_tokenId, 0),
+      false
+    );
 
     // transfer a token
     Key storage key = _keys[_tokenId];

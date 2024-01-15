@@ -4,6 +4,7 @@ import { EmailTemplatePreview } from './EmailTemplatePreview'
 import { SettingCard } from './SettingCard'
 import { useMetadata } from '~/hooks/metadata'
 import { SendCustomEmail } from '../forms/SendCustomEmail'
+import { useGetLockSettings } from '~/hooks/useLockSettings'
 
 interface SettingEmailProps {
   lockAddress: string
@@ -23,15 +24,15 @@ interface TemplateProps {
 const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
   isEvent: [
     {
-      label: 'Event key purchased',
+      label: 'Purchase confirmation template',
       description:
-        'Customize the content of the email sent when a event ticket is purchased. Emails are only sent if you selected the Collect Email option on the checkout.',
+        'Customize the content of the email sent when a event ticket is purchased. ',
       templateId: 'eventKeyMined',
     },
     {
-      label: 'Event key airdropped',
+      label: 'Airdrop confirmation template',
       description:
-        'Customize the content of the email sent when an event ticket has been airdropped. Emails are only sent if you supplied them when you airdropped the memberships.',
+        'Customize the content of the email sent when an event ticket has been airdropped. ',
       templateId: 'eventKeyAirdropped',
     },
   ],
@@ -54,13 +55,13 @@ const TemplateByLockType: Record<keyof LockType, TemplateProps[]> = {
 
 const DEFAULT_EMAIL_TEMPLATES: TemplateProps[] = [
   {
-    label: 'Key purchased template',
+    label: 'Purchase confirmation template',
     description:
       'Customize the content of the email sent when a new membership has been purchased. Emails are only sent if you selected the Collect Email option on the checkout.',
     templateId: 'keyMined',
   },
   {
-    label: 'Key airdropped template',
+    label: 'Airdrop confirmation template',
     description:
       'Customize the content of the email sent when a new membership has been airdropped. Emails are only sent if you supplied them when you airdropped the memberships.',
     templateId: 'keyAirdropped',
@@ -78,6 +79,11 @@ export const SettingEmail = ({
     network,
   })
 
+  const { data: { replyTo, emailSender } = {} } = useGetLockSettings({
+    network,
+    lockAddress,
+  })
+
   const types = getLockTypeByMetadata(metadata)
 
   // find lock type
@@ -91,8 +97,8 @@ export const SettingEmail = ({
   return (
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
-        label="Email Options"
-        description={`Enable or disable emails sent by Unlock Labs for a lock and customize options.`}
+        label="Send Emails"
+        description={`Enable or disable emails sent by Unlock Labs, and set the sender details.`}
         isLoading={isLoading}
       >
         <SendEmailForm
@@ -116,14 +122,15 @@ export const SettingEmail = ({
               lockAddress={lockAddress}
               network={network}
               isManager={isManager}
+              sendingParams={{ replyTo, emailSender }}
             />
           </SettingCard>
         )
       })}
       <SettingCard
         disabled={!isManager}
-        label="Send Email"
-        description="Send email to all members"
+        label="Send a custom email now"
+        description="Send an email to all token holders"
         isLoading={isLoading}
       >
         <SendCustomEmail lockAddress={lockAddress} network={network} />

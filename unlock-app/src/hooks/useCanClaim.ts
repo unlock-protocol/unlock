@@ -16,7 +16,7 @@ export const useCanClaim = (
   > & { initialData?: (() => undefined) | undefined }
 ) => {
   return useQuery(
-    [network, lockAddress, recipients, data],
+    ['canClaim', network, lockAddress, recipients, data],
     async () => {
       try {
         const response = await storage.checkClaim(network, lockAddress, {
@@ -24,7 +24,8 @@ export const useCanClaim = (
           data,
         })
         return !!response.data?.canClaim
-      } catch {
+      } catch (error) {
+        console.error(error)
         return false
       }
     },

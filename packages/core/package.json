@@ -22,16 +22,17 @@
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "tsup": "7.2.0",
-    "typescript": "5.2.2"
+    "@vitest/coverage-v8": "0.34.6",
+    "tsup": "8.0.1",
+    "typescript": "5.3.3"
   },
   "peerDependencies": {
-    "zod": "3.22.2"
+    "zod": "3.22.4"
   },
   "dependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "@vitest/coverage-c8": "0.31.4",
-    "eslint": "8.48.0",
-    "vitest": "0.31.4"
+    "@vitest/coverage-c8": "0.33.0",
+    "eslint": "8.54.0",
+    "vitest": "0.34.6"
   }
 }

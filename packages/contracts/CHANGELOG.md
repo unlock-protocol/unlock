@@ -28,3 +28,7 @@ PublicLockV13 & UnlockV12:
 ## 0.0.16
 
 - added PublicLock v13 and Unlock v12
+
+## 0.0.17
+
+- added PublicLock v14 and Unlock v13

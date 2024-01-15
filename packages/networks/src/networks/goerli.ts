@@ -4,10 +4,6 @@ export const goerli: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  bridge: {
-    connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
-    domainId: 1735353714,
-  },
   chain: 'goerli',
   description: 'Main Ethereum test network. Do not use for production.',
   explorer: {
@@ -23,6 +19,14 @@ export const goerli: NetworkConfig = {
   faucet: 'https://goerlifaucet.com/',
   featured: true,
   fullySubsidizedGas: true,
+  governanceBridge: {
+    connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
+    domainId: 1735353714,
+    modules: {
+      connextMod: '0xce58DB94DE48A8a9Ea47cBe4376F19724D154DF2',
+      delayMod: '0x46FdC1d73486E20406D1C6dAcDD22b6599AEA32d',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -31,7 +35,7 @@ export const goerli: NetworkConfig = {
         name: 'Password required',
       },
       {
-        address: '0x0e646EF3F880eB9C5C97f0D6c113c40b2f442dbe',
+        address: '0xDF2A7C8be199C0e9e825750586be7F331F30dC29',
         id: HookType.CAPTCHA,
         name: 'Captcha',
       },
@@ -44,6 +48,11 @@ export const goerli: NetworkConfig = {
         address: '0x850c015A6A88756a59Dc025fca988494fF90DBB7',
         id: HookType.PROMOCODE,
         name: 'Discount code',
+      },
+      {
+        address: '0x6d1571813c8fEB24856594d23b323234B1adEfE1',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
       },
     ],
   },
@@ -58,6 +67,7 @@ export const goerli: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
   },
   opensea: {
     collectionUrl: (lockAddress) =>
@@ -81,6 +91,7 @@ export const goerli: NetworkConfig = {
     {
       address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
       decimals: 6,
+      featured: true,
       mainnetAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       name: 'USD Coin',
       symbol: 'USDC',
@@ -88,6 +99,7 @@ export const goerli: NetworkConfig = {
     {
       address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
       decimals: 18,
+      featured: true,
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       name: 'Wrapped Ether',
       symbol: 'WETH',
@@ -95,6 +107,7 @@ export const goerli: NetworkConfig = {
     {
       address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
       decimals: 18,
+      featured: true,
       mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
       name: 'Uniswap',
       symbol: 'UNI',
@@ -103,6 +116,7 @@ export const goerli: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
+    positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     universalRouterAddress: '0x4648a43B2C14Da09FdF82B161150d3F634f40491',
   },
   universalCard: {

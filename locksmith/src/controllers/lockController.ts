@@ -5,7 +5,11 @@ import { LockIcons } from '../models'
 import { Request, RequestHandler, Response } from 'express'
 import logger from '../logger'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { getGeneratedLockIcon, getLockIcon } from '../operations/lockOperations'
+import {
+  getGeneratedLockIcon,
+  getLockIcon,
+  getKeyIcon,
+} from '../operations/lockOperations'
 
 export const connectStripe = async (req: Request, res: Response) => {
   const { message } = JSON.parse(decodeURIComponent(req.query.data!.toString()))
@@ -43,14 +47,17 @@ export const connectStripe = async (req: Request, res: Response) => {
 
 export const stripeConnected = async (req: Request, res: Response) => {
   try {
-    const { stripeEnabled, stripeAccount: account } =
-      await stripeOperations.getStripeConnectForLock(
-        Normalizer.ethereumAddress(req.params.lockAddress),
-        req.chain
-      )
+    const {
+      stripeEnabled,
+      stripeAccount: account,
+      countrySpec,
+    } = await stripeOperations.getStripeConnectForLock(
+      Normalizer.ethereumAddress(req.params.lockAddress),
+      req.chain
+    )
 
     if (stripeEnabled) {
-      return res.json({ connected: 1, account })
+      return res.json({ connected: 1, account, countrySpec })
     }
 
     return res.json({
@@ -73,18 +80,32 @@ export const stripeConnected = async (req: Request, res: Response) => {
  */
 export const lockIcon = async (req: Request, res: Response) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
+  const network = parseInt(req.params.network) || 1 // defaults to mainnet
   const { original } = req.query
-  const lockIcon = await getLockIcon({
+
+  let icon = await getLockIcon({
     lockAddress,
     original: original === '1',
     requestUrl: Normalizer.getRequestURL(req).toString(),
   })
 
-  if (lockIcon.isURL) {
-    return res.redirect(lockIcon.icon)
+  if (req.query.id) {
+    // Check if there is a custom icon for this key
+    const keyIcon = await getKeyIcon({
+      network,
+      lockAddress,
+      keyId: String(req.query.id || ''),
+    })
+    if (keyIcon) {
+      icon = keyIcon
+    }
+  }
+
+  if (icon.isURL) {
+    return res.redirect(icon.icon)
   } else {
-    res.setHeader('Content-Type', lockIcon.type)
-    return res.send(lockIcon.icon)
+    res.setHeader('Content-Type', icon.type!)
+    return res.send(icon.icon)
   }
 }
 
@@ -128,7 +149,7 @@ export const getTokenURIImage: RequestHandler<{
     if (lockIcon.isURL) {
       return response.redirect(lockIcon.icon)
     } else {
-      response.setHeader('Content-Type', lockIcon.type)
+      response.setHeader('Content-Type', lockIcon.type!)
       return response.send(lockIcon.icon)
     }
   } catch (error) {

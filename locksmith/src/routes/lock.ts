@@ -29,6 +29,12 @@ router.get(
 )
 
 router.get(
+  '/:network/lock/:lockAddress/icon',
+  createCacheMiddleware(),
+  lockController.lockIcon
+)
+
+router.get(
   '/image/:network/:lockAddress/:keyId?',
   lockController.getTokenURIImage
 )

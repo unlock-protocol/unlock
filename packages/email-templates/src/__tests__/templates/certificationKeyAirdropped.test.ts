@@ -39,7 +39,7 @@ describe('certificationKeyAirdropped', () => {
     )
   })
 
-  it.only('should have keychainUrl if user wallet', () => {
+  it('should have keychainUrl if user wallet', () => {
     expect.assertions(2)
 
     const content = asHtml(
@@ -59,7 +59,7 @@ describe('certificationKeyAirdropped', () => {
     )
   })
 
-  it('should have transferUrl if user email', () => {
+  it('should have details about how to view and print the certification!', () => {
     expect.assertions(1)
 
     const content = asHtml(
@@ -72,13 +72,12 @@ describe('certificationKeyAirdropped', () => {
         isUserAddress: true,
       })
     )
-
     expect(content.textContent).toContain(
       `It has also been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!`
     )
   })
 
-  it('should have transferUrl if user email', () => {
+  it('should have transferUrl', () => {
     expect.assertions(1)
 
     const content = asHtml(
@@ -93,7 +92,28 @@ describe('certificationKeyAirdropped', () => {
     )
 
     expect(content.textContent).toContain(
-      `You can transfer it to your own wallet by going to here.`
+      `You can transfer it to your own wallet by going there.`
+    )
+  })
+
+  it('should have the custom content', () => {
+    expect.assertions(1)
+
+    const content = asHtml(
+      prepareAll(certificationKeyAirdropped).html({
+        keyId: '1337',
+        lockName: 'How To Deploy a Lock',
+        keychainUrl: 'https://app.unlock-protocol.com/keychain',
+        network: 'Polygon',
+        certificationUrl: 'https://app.unlock-protocol.com/certification',
+        isUserAddress: false,
+        customContent:
+          'Please make sure to renew your certification next year!',
+      })
+    )
+
+    expect(content.textContent).toContain(
+      `Please make sure to renew your certification next year!`
     )
   })
 })

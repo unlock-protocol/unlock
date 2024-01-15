@@ -19,7 +19,9 @@ import {
   TradeType,
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
-import { networks } from '@unlock-protocol/networks'
+import { UnlockUniswapRoute } from '@unlock-protocol/types'
+import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
+
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -678,6 +680,24 @@ export default class Web3Service extends UnlockService {
     return id.toNumber()
   }
 
+  // Return the latest key ID of owner.
+  async latestTokenOfOwner(
+    lockAddress: string,
+    owner: string,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalKeys = await lockContract.totalKeys(owner)
+    if (totalKeys.gt(0)) {
+      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys.sub(1))
+      return id.toNumber()
+    }
+    return null
+  }
+
   /**
    * Returns the number of keys already sold
    * @param lockAddress
@@ -1009,7 +1029,7 @@ export default class Web3Service extends UnlockService {
       recipient: string
       network: number
     }
-  }) {
+  }): Promise<UnlockUniswapRoute> {
     const provider: any = this.providerForNetwork(network)
     const networkConfig = this.networks[network]
     const router = new AlphaRouter({
@@ -1144,5 +1164,31 @@ export default class Web3Service extends UnlockService {
       signerAddress
     )
     return ethers.BigNumber.from(discountForSigner).toNumber()
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getDiscountHookWithCapValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeWithCapHookAbi,
+    })
+    const discount = await contract.discounts(lockAddress, signerAddress)
+    const cap = await contract.caps(lockAddress, signerAddress)
+    const count = await contract.counters(lockAddress, signerAddress)
+    return {
+      discount: ethers.BigNumber.from(discount).toNumber(),
+      cap: ethers.BigNumber.from(cap).toNumber(),
+      count: ethers.BigNumber.from(count).toNumber(),
+    }
   }
 }

@@ -46,14 +46,14 @@ const lockPayload = {
   keys: [
     {
       owner: {
-        address: '0xf91c12615592195626a464cc9a8ddebb88a79b59',
+        address: '0xF91C12615592195626A464cc9a8DdEBb88A79b59',
       },
       keyId: '1',
       expiration: '1658416869',
     },
   ],
-  address: '0x0b9def7d8595b19d9d5464929c107074aa594304',
-  owner: '0x7e44d95df5cc9a2e85f17a08120b28f4ee8a04cc',
+  address: '0x0b9dEf7D8595B19D9D5464929c107074aa594304',
+  owner: '0x7e44d95dF5CC9A2E85F17a08120b28F4ee8a04CC',
 }
 
 describe('Metadata v2 endpoints for locksmith', () => {
@@ -375,6 +375,8 @@ describe('Metadata v2 endpoints for locksmith', () => {
         'Test Lock is a lock created using contracts from Unlock Labs. Unlock is a protocol for memberships. https://unlock-protocol.com/',
       image: `https://staging-locksmith.unlock-protocol.com/lock/${lockAddress}/icon`,
       name: 'Test Lock',
+      attributes: [],
+      external_url: null,
     })
   })
 

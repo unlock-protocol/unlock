@@ -28,7 +28,7 @@ const executeComanndErrorReturn = async (command) => {
   try {
     const { stdout, stderr } = await exec(command)
     if (stderr) {
-      return stderr;
+      return stderr
     }
     console.log('stdout:', stdout)
   } catch (e) {
@@ -37,15 +37,25 @@ const executeComanndErrorReturn = async (command) => {
   }
 }
 
-const executeStudioDeployWithVersionIncrement = async (subgraphName, version) => {
-  let [major, minor, patch] = version
-    .split('.')
-  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${parseInt(patch)}`
+const executeStudioDeployWithVersionIncrement = async (
+  subgraphName,
+  version
+) => {
+  let [major, minor, patch] = version.split('.')
+  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${parseInt(
+    patch
+  )}`
   let stderr = await executeComanndErrorReturn(cmd)
   if (stderr) {
-    if (stderr.includes("Version label already exists")) {
-      console.log(`Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch) + 1}`)
-      return executeStudioDeployWithVersionIncrement(subgraphName, `${major}.${minor}.${parseInt(patch) + 1}`)
+    if (stderr.includes('Version label already exists')) {
+      console.log(
+        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch) + 1
+        }`
+      )
+      return executeStudioDeployWithVersionIncrement(
+        subgraphName,
+        `${major}.${minor}.${parseInt(patch) + 1}`
+      )
     }
   }
 }
@@ -100,6 +110,19 @@ const deployHosted = async (subgraphName) => {
 }
 
 /**
+ *
+ * @notice This is a temporray workaround as Linea is not available in The Graph yet.
+ * This requires the IP to be whitelisted, as specified in
+ * https://docs.linea.build/build-on-linea/tooling/data-indexers/thegraph#custom-subgraph-and-deployments
+ * @param subgraphName Deploy on Linea graph hosted  service
+ * @returns
+ */
+const deployLinea = async (subgraphName) => {
+  const cmd = `graph deploy --node 'https://graph-deploy.linea.build' --ipfs 'https://graph-ipfs.linea.build' --version-label '0.0.1' ${subgraphName}`
+  return executeCommand(cmd)
+}
+
+/**
  * Deploys subgraph with studio
  * @param version
  * @param subgraphName
@@ -116,10 +139,10 @@ const deployStudio = async (version, subgraphName) => {
 
 /**
  * deploy command
- * @param network 
- * @param studioName 
- * @param graphLabel 
- * @returns 
+ * @param network
+ * @param studioName
+ * @param graphLabel
+ * @returns
  */
 const deploy = async (network, studioName, graphLabel) => {
   if (!network) {
@@ -134,7 +157,7 @@ const deploy = async (network, studioName, graphLabel) => {
     'https://api.thegraph.com/subgraphs/name/(.*)'
   )
 
-  const studioEndpoint = networks[network].subgraph.studioEndpoint;
+  const studioEndpoint = networks[network].subgraph.studioEndpoint
 
   if (studioName && graphLabel) {
     return deployStudio(graphLabel, studioName)
@@ -152,6 +175,11 @@ const deploy = async (network, studioName, graphLabel) => {
     return deployHosted(matchHosted[1])
   }
 
+  // TODO: remove that Linea special case once the chain is available on The Graph
+  if (networks[network]?.id === 59144) {
+    return deployLinea('unlock-protocol')
+  }
+
   throw new Error(
     `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2}) (${networks[network].subgraph.studioEndpoint})`
   )
@@ -159,9 +187,9 @@ const deploy = async (network, studioName, graphLabel) => {
 
 /**
  * deploy only studio command
- * @param network 
- * @param graphLabel 
- * @returns 
+ * @param network
+ * @param graphLabel
+ * @returns
  */
 const deployOnlyStudio = async (network, graphLabel) => {
   if (!network) {
@@ -170,10 +198,10 @@ const deployOnlyStudio = async (network, graphLabel) => {
 
   if (!networks[network]?.subgraph?.studioEndpoint) {
     console.log(`Missing subgraph studioEndpoint for ${network}`)
-    return;
+    return
   }
 
-  const studioEndpoint = networks[network].subgraph.studioEndpoint;
+  const studioEndpoint = networks[network].subgraph.studioEndpoint
 
   if (studioEndpoint && graphLabel) {
     return deployStudio(graphLabel, studioEndpoint)
@@ -183,10 +211,9 @@ const deployOnlyStudio = async (network, graphLabel) => {
     `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioEndpoint})`
   )
 }
-// Note: the palm network is not supported by
-//
+
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'palm', 'localhost'].includes(d)
+  (d) => !['networks', 'default', 'localhost'].includes(d)
 )
 
 require('yargs/yargs')(hideBin(process.argv))
@@ -245,10 +272,14 @@ require('yargs/yargs')(hideBin(process.argv))
     'Deploy subgraphs to studio on all decentralized networks',
     {},
     async ({ label }) => {
-      let studioChoices = choices.filter((c) => networks[c].subgraph.studioEndpoint != null);
+      let studioChoices = choices.filter(
+        (c) => networks[c].subgraph.studioEndpoint != null
+      )
       // check config
       console.log(
-        `Deploying subgraphs to studio for:\n${studioChoices.map((c) => ` - ${c}\n`).join('')}`
+        `Deploying subgraphs to studio for:\n${studioChoices
+          .map((c) => ` - ${c}\n`)
+          .join('')}`
       )
       // build and deploy each network
       for (const network of studioChoices) {

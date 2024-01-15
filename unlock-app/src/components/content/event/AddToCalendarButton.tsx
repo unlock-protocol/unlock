@@ -15,9 +15,13 @@ import {
 
 interface AddToCalendarButtonProps {
   event: Partial<Metadata>
+  eventUrl: string
 }
 
-export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
+export const AddToCalendarButton = ({
+  event,
+  eventUrl,
+}: AddToCalendarButtonProps) => {
   const [isOpen, setOpen] = useState(false)
   const eventDate = getEventDate(event.ticket)
 
@@ -32,10 +36,10 @@ export const AddToCalendarButton = ({ event }: AddToCalendarButtonProps) => {
     title: event.name,
     start: eventDate,
     location: event.ticket.event_address,
-    description: event.description || '',
+    description: `${event.description}\n\n${eventUrl}`,
     allDay: !event.ticket.event_start_date,
     end: endDate,
-    url: window.location.toString(),
+    url: eventUrl,
   }
 
   return (

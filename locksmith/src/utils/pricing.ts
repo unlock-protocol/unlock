@@ -129,10 +129,22 @@ export const getUnlockServiceFee = (
 ) => {
   if (
     normalizer.ethereumAddress(options?.lockAddress) ===
-    normalizer.ethereumAddress('0x251EcF11D2DAc388D23a64428Aa9EE1387f7fF6B')
+      normalizer.ethereumAddress(
+        '0xB9d79698599B3efa025c654B4c6f2c760c15d0d0'
+      ) ||
+    normalizer.ethereumAddress(options?.lockAddress) ===
+      normalizer.ethereumAddress(
+        '0xc94b031cE1837277dDABaFE2d993e0A9a2FC4E92'
+      ) ||
+    normalizer.ethereumAddress(options?.lockAddress) ===
+      normalizer.ethereumAddress(
+        '0xcbEF4c0E59A224B56D408CE72C59f0D275E7adAe'
+      ) ||
+    normalizer.ethereumAddress(options?.lockAddress) ===
+      normalizer.ethereumAddress('0x3EbE147eCd6970f49fde34b5042996e140f63c22')
   ) {
-    // For EthVietnam, the fee is 2%
-    return Math.ceil(cost * 0.02)
+    // For LexDAO, we take 3% only
+    return Math.ceil(cost * 0.03)
   }
 
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
@@ -157,7 +169,7 @@ export const getFees = async (
 
   if (
     options?.lockAddress.toLowerCase() ===
-    '0x45accac0e5c953009cda713a3b722f87f2907f86'.toLowerCase()
+    '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'.toLowerCase()
   ) {
     // For CabinDAO, we cap the fee at 20 USDC
     unlockServiceFee = 2000

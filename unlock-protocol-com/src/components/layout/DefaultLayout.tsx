@@ -41,7 +41,7 @@ const MENU = {
   actions: [
     {
       title: 'Launch App',
-      url: `${unlockConfig.appURL}/locks`,
+      url: `${unlockConfig.appURL}`,
       icon: ArrowRight,
     },
   ],
@@ -103,6 +103,10 @@ export function Layout({ children }: Props) {
           { label: 'Blog', url: '/blog' },
           { label: 'Events', url: '/upcoming-events' },
           { label: 'Grants', url: '/grants' },
+          {
+            label: 'Ambassadors',
+            url: 'https://unlockprotocol.notion.site/Unlock-Protocol-Locksmith-Ambassador-Program-11e7ea8513fc4ad8b1f93c1efe0f98cd',
+          },
         ],
       },
       {

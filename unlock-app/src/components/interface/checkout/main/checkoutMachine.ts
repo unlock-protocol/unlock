@@ -1,6 +1,6 @@
 import { Lock } from '~/unlockTypes'
 import {
-  PaywallConfigType as PaywallConfig,
+  PaywallConfigType,
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
@@ -97,7 +97,7 @@ interface UnlockAccountEvent {
 }
 interface UpdatePaywallConfigEvent {
   type: 'UPDATE_PAYWALL_CONFIG'
-  config: PaywallConfig
+  config: PaywallConfigType
 }
 
 interface BackEvent {
@@ -139,6 +139,10 @@ type Payment =
       route?: any
     }
   | {
+      method: 'crosschain_purchase'
+      route?: any
+    }
+  | {
       method: 'universal_card'
       cardId?: string
     }
@@ -149,12 +153,13 @@ type Payment =
 export type TransactionStatus = 'ERROR' | 'PROCESSING' | 'FINISHED'
 
 export interface Transaction {
+  network?: number
   status: TransactionStatus
   transactionHash?: string
 }
 
 export interface CheckoutMachineContext {
-  paywallConfig: PaywallConfig
+  paywallConfig: PaywallConfigType
   lock?: LockState
   payment: Payment
   messageToSign?: {
@@ -175,7 +180,7 @@ export interface CheckoutMachineContext {
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
-  paywallConfig: {} as PaywallConfig,
+  paywallConfig: {} as PaywallConfigType,
   skipRecipient: true,
   lock: undefined,
   messageToSign: undefined,
@@ -641,10 +646,11 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (_, { status, transactionHash }) => {
+        mint: (_, { status, transactionHash, network }) => {
           return {
             status,
             transactionHash,
+            network,
           } as const
         },
       }),

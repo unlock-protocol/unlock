@@ -40,6 +40,7 @@ export function AirdropForm({
     handleSubmit,
     register,
     reset,
+    resetField,
     setValue,
     watch,
     control,
@@ -107,12 +108,18 @@ export function AirdropForm({
 
   const onSubmitHandler = useCallback(
     async (member: AirdropMember) => {
-      const address = await getAddressForName(member.wallet)
-      member.wallet = address
-      const parsed = AirdropMember.parse(member)
-      add(parsed)
-      reset()
-      setValue('wallet', '')
+      try {
+        const address = await getAddressForName(member.wallet)
+        member.wallet = address
+        console.log(member)
+        const parsed = AirdropMember.parse(member)
+        add(parsed)
+        reset()
+        setValue('wallet', '')
+      } catch (error) {
+        ToastHelper.error("There was an error with the member's info. ")
+        console.error(error)
+      }
     },
     [add, reset, setValue]
   )
@@ -158,6 +165,8 @@ export function AirdropForm({
                   <Toggle
                     value={useEmail}
                     onChange={(value: boolean) => {
+                      resetField('email')
+                      resetField('wallet')
                       setUseEmail(value)
                     }}
                   />
@@ -192,6 +201,7 @@ export function AirdropForm({
                           onChange={(value: any) => {
                             setValue('wallet', value)
                           }}
+                          required
                           onResolveName={onResolveName}
                         />
                       </>
@@ -276,7 +286,7 @@ export function AirdropForm({
           {...register('manager', {
             onChange: addressFieldChanged('manager'),
           })}
-          description="Key manager will be grant the permission to transfer, cancel the membership. By default, your address is set as manager."
+          description="Key manager will be granted the permission to transfer or to cancel the membership. By default, your address is set as manager."
           error={errors.manager?.message}
         />
       )}
@@ -300,9 +310,12 @@ export function AirdropManualForm({
 }: AirdropManualFormProps) {
   const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
   const { account } = useAuth()
-  const expiration = new Date(
-    formatDate(lock.expirationDuration || 0)
-  ).getTime()
+  const expiration =
+    lock.expirationDuration > 0
+      ? new Date(formatDate(lock.expirationDuration || 0))
+          .toISOString()
+          .substring(0, 16)
+      : undefined
   const [isConfirming, setIsConfirming] = useState(false)
 
   return (

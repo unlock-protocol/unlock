@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO, MAX_UINT, deployContracts } = require('../helpers')
 const PublicLock = artifacts.require('PublicLock')
-const createLockHash = require('../helpers/createLockCalldata')
+const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 let unlock
 
@@ -21,7 +21,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
-      const calldata = await createLockHash({ args })
+      const calldata = await createLockCalldata({ args })
       transaction = await unlock.createUpgradeableLock(calldata)
     })
 
@@ -48,7 +48,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         'Zero-Key Lock',
         // '0x000000000000000000000001',
       ]
-      const calldata = await createLockHash({ args })
+      const calldata = await createLockCalldata({ args })
       transaction = await unlock.createUpgradeableLock(calldata)
     })
 

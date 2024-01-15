@@ -1,24 +1,20 @@
-import handlebars from 'handlebars'
-import { customContentStyle } from './helpers/customContentStyle'
+import Handlebars from 'handlebars'
 import { links } from './helpers/links'
 import { certificationLink } from './helpers/certificationLink'
+import { formattedCustomContent } from './helpers/customContent'
 
-handlebars.registerHelper('links', links)
-handlebars.registerHelper('certificationLink', certificationLink)
+Handlebars.registerHelper('links', links)
+Handlebars.registerHelper('certificationLink', certificationLink)
+Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
 export default {
   subject: `Your certification for {{{lockName}}}`,
   html: `<h1>A NFT certification for "{{lockName}}" was sent to you!</h1>
 {{certificationLink lockName certificationUrl}}
 
-{{#if customContent}}
-<section style="${customContentStyle}">
-{{{customContent}}}
-  </section>
-{{/if}}
+{{formattedCustomContent "Certification Authority" customContent}}
 
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and its metadata.</p>
 
-{{links txUrl openSeaUrl true}}
 `,
 }

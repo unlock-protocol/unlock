@@ -3,10 +3,11 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 import { storage } from '~/config/storage'
 import { getCurrencySymbol } from './currency'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
@@ -100,9 +101,9 @@ export const convertedKeyPrice = async (
   // priority to credit card price if present
   if (creditCardPrice) {
     // format price with selected currency for lock
-    const priceInUsd = `~${creditCardCurrencySymbol}${(
+    const priceInUsd = `~${(
       parseFloat(`${creditCardPrice / 100}`) * numberOfRecipients
-    ).toFixed(2)}`
+    ).toFixed(2)} ${creditCardCurrencySymbol}`
     return priceInUsd
   }
 
@@ -148,18 +149,25 @@ export const inClaimDisallowList = (address: string) => {
  * Helper function that returns a valid referrer address
  * @param recipient
  * @param paywallConfig
+ * @param lockAddress
  * @returns
  */
 export const getReferrer = (
   recipient: string,
-  paywallConfig?: PaywallConfig
+  paywallConfig?: PaywallConfigType,
+  lockAddress?: string
 ): string => {
-  if (
-    paywallConfig &&
-    paywallConfig.referrer &&
-    isAccount(paywallConfig.referrer)
-  ) {
-    return paywallConfig.referrer
+  if (paywallConfig) {
+    if (
+      lockAddress &&
+      paywallConfig.locks[lockAddress] &&
+      isAccount(paywallConfig.locks[lockAddress].referrer)
+    ) {
+      return paywallConfig.locks[lockAddress].referrer!
+    }
+    if (paywallConfig.referrer && isAccount(paywallConfig.referrer)) {
+      return paywallConfig.referrer
+    }
   }
   return recipient
 }

@@ -23,7 +23,7 @@ To complement our disclosure of the full reports, here is a summary of the most 
 
 This issue is by far the most significant one that was identified, as it could create an issue with the UDT supply. _We have now implemented a mechanism to prevent it._
 
-The amount of tokens minted on every transaction is based on the gas spent by the person submitting a transaction [more info](../governance/unlock-dao-tokens.md#earning-udt). A malicious miner could set a very high gas price for a transaction where they would purchase an expensive membership on a lock for which they are the beneficiary. By doing so, they would not actually spend any real funds but would be able to earn a large amount of UDT.
+The amount of tokens minted on every transaction is based on the gas spent by the person submitting a transaction [more info](../governance/unlock-dao-tokens.mdx#earning-udt). A malicious miner could set a very high gas price for a transaction where they would purchase an expensive membership on a lock for which they are the beneficiary. By doing so, they would not actually spend any real funds but would be able to earn a large amount of UDT.
 
 We implement a preventative measure by not using the gas price submitted by the transaction sender, but by instead using the blockchain’s current `baseFee`. This value itself cannot be manipulated by miners and is computed based on transactions in the previous blocks, rendering this vulnerability no-op.
 

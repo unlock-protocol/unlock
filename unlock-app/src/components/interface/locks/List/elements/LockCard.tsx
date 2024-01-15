@@ -118,7 +118,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             <LockIcon lock={lock} />
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-bold">{lock.name}</span>
-              <AddressLink lockAddress={lock.address} network={network} />
+              <AddressLink address={lock.address} network={network} />
             </div>
           </div>
           <div className="grid items-center grid-cols-2 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">

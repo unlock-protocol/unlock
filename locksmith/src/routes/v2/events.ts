@@ -1,12 +1,22 @@
 import express from 'express'
 import {
-  getEventDetails,
+  getEventDetailsByLock,
   saveEventDetails,
+  getEvent,
+  getAllEvents,
 } from '../../controllers/v2/eventsController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
+import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizerMiddleware'
 const router = express.Router({ mergeParams: true })
 
-router.get('/:network/:lockAddress', getEventDetails)
-router.post('/save', authenticatedMiddleware, saveEventDetails)
+router.get('/:network/:lockAddress', getEventDetailsByLock)
+router.get('/:slug', getEvent)
+router.get('/', getAllEvents)
+router.post(
+  '/save',
+  authenticatedMiddleware,
+  eventOrganizerMiddleware,
+  saveEventDetails
+)
 
 export default router

@@ -99,6 +99,10 @@ export const preview = async (args) => {
   return JSON.stringify(await buildEmail(template, templateParams, args))
 }
 
+export const list = async () => {
+  return JSON.stringify(templates)
+}
+
 export default {
   route,
 }

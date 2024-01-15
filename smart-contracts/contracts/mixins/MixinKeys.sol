@@ -24,9 +24,8 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   // Emitted when the expiration of a key is modified
   event ExpirationChanged(
     uint indexed tokenId,
-    uint newExpiration,
-    uint amount,
-    bool timeAdded
+    uint prevExpiration,
+    uint newExpiration
   );
 
   // fire when a key is extended
@@ -353,7 +352,7 @@ contract MixinKeys is MixinErrors, MixinLockCore {
    */
   function _cancelKey(uint _tokenId) internal {
     // expire the key
-    _keys[_tokenId].expirationTimestamp = block.timestamp;
+    _setKeyExpiration(_tokenId, block.timestamp);
   }
 
   /**
@@ -410,22 +409,17 @@ contract MixinKeys is MixinErrors, MixinLockCore {
   function getHasValidKey(
     address _keyOwner
   ) public view returns (bool isValid) {
-    // check hook directly with address if user has no valid keys
-    if (balanceOf(_keyOwner) == 0) {
-      if (address(onValidKeyHook) != address(0)) {
-        return
-          onValidKeyHook.isValidKey(
-            address(this),
-            msg.sender,
-            0, // no token specified
-            0, // no token specified
-            _keyOwner,
-            false
-          );
-      }
-    }
-    // `balanceOf` returns only valid keys
-    return balanceOf(_keyOwner) >= 1;
+    isValid = balanceOf(_keyOwner) > 0;
+
+    if (address(onValidKeyHook) != address(0))
+      isValid = onValidKeyHook.isValidKey(
+        address(this),
+        msg.sender,
+        0, // no token specified
+        0, // no token specified
+        _keyOwner,
+        isValid
+      );
   }
 
   /**
@@ -553,25 +547,25 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     _isKey(_tokenId);
 
     uint formerTimestamp = _keys[_tokenId].expirationTimestamp;
+    uint newTimestamp;
 
     if (_addTime) {
+      // cant add to a non-expiring key
+      if (formerTimestamp == type(uint).max) {
+        revert OUT_OF_RANGE();
+      }
       if (formerTimestamp > block.timestamp) {
         // append to valid key
-        _keys[_tokenId].expirationTimestamp = formerTimestamp + _deltaT;
+        newTimestamp = formerTimestamp + _deltaT;
       } else {
         // add from now if key is expired
-        _keys[_tokenId].expirationTimestamp = block.timestamp + _deltaT;
+        newTimestamp = block.timestamp + _deltaT;
       }
     } else {
-      _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
+      newTimestamp = formerTimestamp - _deltaT;
     }
 
-    emit ExpirationChanged(
-      _tokenId,
-      _keys[_tokenId].expirationTimestamp,
-      _deltaT,
-      _addTime
-    );
+    _setKeyExpiration(_tokenId, newTimestamp);
   }
 
   /**
@@ -617,6 +611,33 @@ contract MixinKeys is MixinErrors, MixinLockCore {
       _maxNumberOfKeys,
       _maxKeysPerAddress
     );
+  }
+
+  /**
+   * Set the expiration of a key
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function _setKeyExpiration(uint _tokenId, uint _newExpiration) internal {
+    uint prevExpiration = _keys[_tokenId].expirationTimestamp;
+    // update expiration
+    _keys[_tokenId].expirationTimestamp = _newExpiration;
+
+    emit ExpirationChanged(
+      _tokenId,
+      prevExpiration,
+      _keys[_tokenId].expirationTimestamp
+    );
+  }
+
+  /**
+   * Set the expiration of a key
+   * @param _tokenId the id of the key
+   * @param _newExpiration the new timestamp to use
+   */
+  function setKeyExpiration(uint _tokenId, uint _newExpiration) public {
+    _onlyLockManager();
+    _setKeyExpiration(_tokenId, _newExpiration);
   }
 
   /**

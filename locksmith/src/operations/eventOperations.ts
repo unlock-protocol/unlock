@@ -1,6 +1,10 @@
-import dayjs from 'dayjs'
+import dayjs from '../config/dayjs'
+import { kebabCase } from 'lodash'
 import * as metadataOperations from './metadataOperations'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
+import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { EventData } from '../models'
+import { saveCheckoutConfig } from './checkoutConfigOperations'
+import { EventBodyType } from '../controllers/v2/eventsController'
 
 interface AttributeProps {
   value: string
@@ -15,6 +19,7 @@ export interface EventProps {
   eventName: string
   startDate: Date | null
   endDate: Date | null
+  eventUrl: string | null
 }
 
 const getEventDate = (
@@ -31,7 +36,7 @@ const getEventDate = (
   return null
 }
 
-export const getEventDetail = async (
+export const getEventDataForLock = async (
   lockAddress: string,
   network?: number
 ): Promise<EventProps | undefined> => {
@@ -46,8 +51,9 @@ export const getEventDetail = async (
 
   const types = getLockTypeByMetadata(lockMetadata)
 
-  const attributes: AttributeProps[] = lockMetadata?.attributes
+  const attributes: AttributeProps[] = lockMetadata?.attributes || []
 
+  // Util function!
   const getAttribute = (name: string): string | undefined => {
     return (
       attributes?.find(({ trait_type }: AttributeProps) => trait_type === name)
@@ -57,7 +63,6 @@ export const getEventDetail = async (
 
   if (types.isEvent) {
     const timeZone = getAttribute('event_timezone')
-
     const startDate =
       getEventDate(
         getAttribute('event_start_date'),
@@ -82,6 +87,7 @@ export const getEventDetail = async (
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+      timeZone,
     })
 
     const eventEndDate = endDate?.toLocaleDateString(undefined, {
@@ -89,6 +95,7 @@ export const getEventDetail = async (
       year: 'numeric',
       month: 'long',
       day: 'numeric',
+      timeZone,
     })
 
     const eventStartTime = startDate?.toLocaleTimeString('en-US', {
@@ -109,15 +116,76 @@ export const getEventDetail = async (
       : `${eventStartTime}`
 
     eventDetail = {
-      eventName: lockMetadata?.name,
+      eventName: lockMetadata?.name || '',
       eventDescription: lockMetadata?.description,
       eventDate,
       eventTime,
       eventAddress,
       startDate,
+      eventUrl: lockMetadata?.external_url,
       endDate,
     }
   }
 
   return eventDetail
+}
+
+export const getEventBySlug = async (slug: string) => {
+  return await EventData.findOne({
+    where: {
+      slug,
+    },
+  })
+}
+
+export const createEventSlug = async (
+  name: string,
+  eventId?: number,
+  index: number | undefined = undefined
+): Promise<string> => {
+  const slug = index ? kebabCase([name, index].join('-')) : kebabCase(name)
+  const event = await getEventBySlug(slug)
+  if (!!event && event.id !== eventId) {
+    return createEventSlug(name, eventId, index ? index + 1 : 1)
+  }
+  return slug
+}
+
+export const saveEvent = async (
+  parsed: EventBodyType,
+  walletAddress: string
+): Promise<[EventData, boolean]> => {
+  const slug =
+    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
+
+  const [savedEvent, created] = await EventData.upsert(
+    {
+      id: parsed.id,
+      name: parsed.data.name,
+      slug,
+      data: {
+        ...parsed.data,
+        slug, // Making sure we add the slug to the data as well.
+      },
+      createdBy: walletAddress,
+    },
+    {
+      conflictFields: ['slug'],
+    }
+  )
+
+  if (!savedEvent.checkoutConfigId) {
+    const checkoutConfig = await PaywallConfig.strip().parseAsync(
+      parsed.checkoutConfig.config
+    )
+    const createdConfig = await saveCheckoutConfig({
+      name: `Checkout config for ${savedEvent.name}`,
+      config: checkoutConfig,
+      createdBy: walletAddress,
+    })
+    // And now attach the id to the savedEvent
+    savedEvent.checkoutConfigId = createdConfig.id
+    await savedEvent.save()
+  }
+  return [savedEvent, !!created]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.39.3",
+  "version": "0.42.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -47,18 +47,18 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "8.46.0",
-    "hardhat": "2.17.2",
+    "hardhat": "2.18.3",
     "prettier": "3.0.0",
-    "tsup": "7.2.0",
+    "tsup": "8.0.1",
     "typescript": "5.1.6",
-    "vitest": "0.34.1"
+    "vitest": "0.34.6"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "4.0.6",
-    "@uniswap/smart-order-router": "3.16.21",
-    "graphql": "16.7.1",
+    "@uniswap/sdk-core": "4.0.9",
+    "@uniswap/smart-order-router": "3.17.2",
+    "graphql": "16.8.1",
     "graphql-request": "6.1.0",
-    "react-to-print": "2.14.13",
+    "react-to-print": "2.14.15",
     "siwe": "2.1.4"
   }
 }

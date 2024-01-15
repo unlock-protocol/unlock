@@ -9,6 +9,10 @@ import ReCaptcha from 'react-google-recaptcha'
 import { toast } from 'react-hot-toast'
 import { AxiosError } from 'axios'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useLockData } from '~/hooks/useLockData'
+import { useTransferFee } from '~/hooks/useTransferFee'
+import { useQuery } from '@tanstack/react-query'
 
 interface SendTransferFormProps {
   createTransferCode: ReturnType<typeof useTransferCode>['createTransferCode']
@@ -91,6 +95,7 @@ interface Props {
 export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
   const config = useConfig()
   const router = useRouter()
+  const web3Service = useWeb3Service()
   const manager = new KeyManager(config.networks)
   const { getWalletService } = useAuth()
   const {
@@ -101,12 +106,17 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
     reValidateMode: 'onBlur',
   })
 
+  const { lock } = useLockData({
+    lockAddress: transferObject.lock,
+    network,
+  })
+
   const { transferDone } = useTransferDone()
 
   const onSubmit = async ({ transferCode }: ConfirmTransferData) => {
     const walletService = await getWalletService(network)
-
     const signer = walletService.signer
+
     const transferSignature = [
       '0x',
       Buffer.from(
@@ -136,22 +146,35 @@ export const ConfirmTransferForm = ({ transferObject, network }: Props) => {
     )
 
     try {
-      const tx = await manager.transfer({
-        network: network!,
-        params: {
-          transferSignature,
-          deadline: transferObject.deadline,
-          lock: transferObject.lock,
-          token: transferObject.token,
-          owner: transferObject.owner,
-        },
-        signer,
-      })
-      await tx.wait()
-      // Push to keychain on success
-      router.push('/keychain')
-    } catch (error) {
-      console.log(error)
+      const total = await web3Service.totalKeys(
+        transferObject.lock,
+        await signer.getAddress(),
+        network
+      )
+      const maxKeysPerAddress = lock?.maxKeysPerAddress ?? 1
+
+      if (total >= maxKeysPerAddress) {
+        toast.error(
+          'You already have the maximum number of NFTs for this contract. Please connect with another wallet.'
+        )
+      } else {
+        const tx = await manager.transfer({
+          network: network!,
+          params: {
+            transferSignature,
+            deadline: transferObject.deadline,
+            lock: transferObject.lock,
+            token: transferObject.token,
+            owner: transferObject.owner,
+          },
+          signer,
+        })
+        await tx.wait()
+        // Push to keychain on success
+        router.push('/keychain')
+      }
+    } catch (error: any) {
+      console.log(error.message)
       toast.error('Error transferring key. Please try again later.')
     }
   }
@@ -217,11 +240,29 @@ export const Transfer = () => {
     (TransferObject & { transferCode: string }) | undefined
   >(transfer)
 
-  const { createTransferCode, isLoading } = useTransferCode({
+  const { createTransferCode, isLoading: isLoadingTransferCode } =
+    useTransferCode({
+      network: props.network!,
+      lockAddress: props.lockAddress!,
+      keyId: props.keyId!,
+    })
+
+  const { getTransferFeeBasisPoints } = useTransferFee({
     network: props.network!,
     lockAddress: props.lockAddress!,
-    keyId: props.keyId!,
   })
+
+  const {
+    isLoading: isLoadingTransferFeeBasisPoints,
+    data: transferFeeBasisPoints,
+  } = useQuery(
+    ['getTransferFeeBasisPoints', props.lockAddress!, props.network!],
+    async () => getTransferFeeBasisPoints()
+  )
+
+  const isLoading = isLoadingTransferCode || isLoadingTransferFeeBasisPoints
+  // TODO: check is the key manager is also lock manager
+  const transferEnabled = transferFeeBasisPoints !== 10000
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -233,15 +274,6 @@ export const Transfer = () => {
       </header>
       <main className="grid gap-6">
         {!isReady && <div> Invalid transfer URL </div>}
-        {isReady && (
-          <SendTransferForm
-            isLoading={isLoading}
-            createTransferCode={createTransferCode}
-            onTransferCodeReceived={(obj) => {
-              setTransferObject(obj)
-            }}
-          />
-        )}
         {isLoading && (
           <Placeholder.Root className="p-6 bg-white border rounded-lg">
             <Placeholder.Line size="lg" />
@@ -250,11 +282,35 @@ export const Transfer = () => {
             <Placeholder.Line size="lg" />
           </Placeholder.Root>
         )}
-        {transferObject && !isLoading && (
-          <ConfirmTransferForm
-            network={props.network}
-            transferObject={transferObject}
-          />
+        {!isLoading && isReady && (
+          <>
+            {transferEnabled && (
+              <>
+                <SendTransferForm
+                  isLoading={isLoading}
+                  createTransferCode={createTransferCode}
+                  onTransferCodeReceived={(obj) => {
+                    setTransferObject(obj)
+                  }}
+                />
+                {transferObject && !isLoading && (
+                  <ConfirmTransferForm
+                    network={props.network}
+                    transferObject={transferObject}
+                  />
+                )}
+              </>
+            )}
+            {!transferEnabled && (
+              <div className="space-y-1">
+                <p className="text-gray-800">
+                  Transfers for this contract are currently disabled. Please
+                  contact the manager of the contract to transfer your
+                  individual membership.
+                </p>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>

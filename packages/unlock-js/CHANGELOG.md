@@ -1,5 +1,29 @@
 # Changes
 
+# 0.42.0
+
+- added support for `UnlockV13` and `PublicLockV14`
+
+# 0.41.0
+
+- adding `setDiscountCodeWithCapHookSigner`
+
+# 0.40.2
+
+- claim now supports a `referrer` param
+
+# 0.40.1
+
+- adding missing ABI for locksmiths
+
+# 0.40.0
+
+- adding `latestTokenOfOwner`
+
+# 0.39.4
+
+- add `referrerFees` to `lock` in subgraphs
+
 # 0.39.3
 
 - handling cases where `supply` is larger than `maxNumberOfKeys` when calling `updateLockConfig`.

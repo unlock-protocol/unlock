@@ -66,7 +66,9 @@ export function getCurrencySymbol(currency?: string) {
   return (
     Currencies.find(
       (item) => item?.currency?.toLowerCase() === currency?.toLowerCase()
-    )?.symbol || '$'
+    )?.symbol ||
+    currency?.toUpperCase() ||
+    '$'
   )
 }
 
@@ -129,6 +131,7 @@ export const getPricingFromSettings = async ({
   return null
 }
 
+// TODO: add cache!
 export async function getDefiLammaPrice({
   network,
   erc20Address,

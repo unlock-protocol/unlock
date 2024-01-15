@@ -8,8 +8,6 @@ import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSaveLockSettings } from '~/hooks/useLockSettings'
-import { getSlugForName } from '~/utils/slugs'
 
 export interface TransactionDetails {
   hash: string
@@ -22,8 +20,6 @@ export const NewEvent = () => {
   const [slug, setSlug] = useState<string | undefined>(undefined)
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
-
-  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
@@ -54,27 +50,26 @@ export const NewEvent = () => {
       console.error(error)
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
-    formData.metadata.slug = await getSlugForName(formData.lock.name)
     if (lockAddress) {
-      // Save this:
-      await storage.updateLockMetadata(formData.network, lockAddress!, {
-        metadata: formDataToMetadata({
+      const { data: event } = await storage.saveEventData({
+        data: formDataToMetadata({
           name: formData.lock.name,
           ...formData.metadata,
         }),
+        checkoutConfig: {
+          name: `Checkout config for ${formData.lock.name}`,
+          config: {
+            locks: {
+              [lockAddress]: {
+                network: formData.network,
+              },
+            },
+          },
+        },
       })
-
       // Save slug for URL if present
-      setSlug(formData?.metadata?.slug)
+      setSlug(event.slug)
 
-      const slug = formData?.metadata.slug
-      if (slug) {
-        await saveSettingsMutation({
-          lockAddress,
-          network: formData.network,
-          slug,
-        })
-      }
       // Finally
       setLockAddress(lockAddress)
     }

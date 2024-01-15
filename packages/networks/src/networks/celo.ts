@@ -30,6 +30,11 @@ export const celo: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x55C7336ea96BABb0bEabD676C07880aa8b76584a',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 42220,
@@ -44,9 +49,6 @@ export const celo: NetworkConfig = {
     name: 'CELO',
     symbol: 'CELO',
   },
-  opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
-  },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/42220',
   publicLockVersionToDeploy: 13,
@@ -60,8 +62,9 @@ export const celo: NetworkConfig = {
   swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   tokens: [
     {
-      address: '0xef4229c8c3250c675f21bcefa42f58efbff6002a',
+      address: '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a',
       decimals: 6,
+      featured: true,
       mainnetAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       name: 'USD Coin',
       symbol: 'USDC',
@@ -69,6 +72,7 @@ export const celo: NetworkConfig = {
     {
       address: '0xE4fE50cdD716522A56204352f00AA110F731932d',
       decimals: 18,
+      featured: true,
       mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
       name: 'Dai Stablecoin',
       symbol: 'DAI',

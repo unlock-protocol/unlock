@@ -1,11 +1,10 @@
 import { classed } from '@tw-classed/react'
-import { PaywallConfig } from '~/unlockTypes'
 import React, { ReactNode, useEffect, useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { Input, Placeholder, Select } from '@unlock-protocol/ui'
-import { useController } from 'react-hook-form'
-import { ConnectForm } from './elements/DynamicForm'
+import { useController, useFormContext } from 'react-hook-form'
 import { Configuration } from '.'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
   variants: {
@@ -18,7 +17,7 @@ const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
 export interface CheckoutConfig {
   id: string | null
   name: string
-  config: PaywallConfig
+  config: PaywallConfigType
 }
 
 interface ConfigurationOptions {
@@ -62,6 +61,11 @@ const ChooseConfigurationPlaceholder = () => {
       </Placeholder.Root>
     </Placeholder.Root>
   )
+}
+
+export const ConnectForm = ({ children }: any) => {
+  const methods = useFormContext()
+  return children({ ...methods })
 }
 
 export function ChooseConfiguration({

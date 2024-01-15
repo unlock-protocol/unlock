@@ -1,6 +1,3 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-import timezone from 'dayjs/plugin/timezone'
 import * as Normalizer from '../utils/normalizer'
 import config from '../config/config'
 import { logger } from '../logger'
@@ -14,7 +11,7 @@ import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as userMetadataOperations from './userMetadataOperations'
 import { createEventIcs } from '../utils/calendar'
-import { EventProps, getEventDetail } from './eventOperations'
+import { EventProps, getEventDataForLock } from './eventOperations'
 import { LockSetting } from '../models/lockSetting'
 import {
   DEFAULT_LOCK_SETTINGS,
@@ -25,9 +22,6 @@ import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
 import { svgStringToDataURI } from '../utils/image'
 import { createCertificate } from '../utils/certification'
-
-dayjs.extend(utc)
-dayjs.extend(timezone)
 
 type Params = {
   [key: string]: string | number | undefined | boolean
@@ -418,7 +412,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
 
     // get event details only when lock is event
     if (isEvent) {
-      eventDetail = await getEventDetail(lockAddress, network)
+      eventDetail = await getEventDataForLock(lockAddress, network)
     }
 
     if (isCertification && tokenId) {
@@ -499,9 +493,9 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
         // add event details props
         eventName: eventDetail?.eventName,
         eventDate: eventDetail?.eventDate,
-        eventDescription: eventDetail?.eventDescription,
         eventTime: eventDetail?.eventTime,
         eventAddress: eventDetail?.eventAddress,
+        eventUrl: eventDetail?.eventUrl || '',
         // add certification props
         ...certificationDetail,
       },

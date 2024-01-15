@@ -1,7 +1,7 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PaywallConfigType as PaywallConfig } from '@unlock-protocol/core'
+import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
   CheckoutShareOrDownload,
@@ -114,7 +114,7 @@ export const CheckoutUrlPage = () => {
       icon: '',
       pessimistic: true,
       skipRecipient: true,
-    } as PaywallConfig
+    } as PaywallConfigType
   }, [recurringSetting, lockAddress, network])
 
   const {
@@ -185,7 +185,7 @@ export const CheckoutUrlPage = () => {
     setCheckoutConfig({
       id: result?.id || null,
       name: result?.name || 'config',
-      config: (result?.config as PaywallConfig) || DEFAULT_CONFIG,
+      config: (result?.config as PaywallConfigType) || DEFAULT_CONFIG,
     })
     setDeleteConfirmation(false)
   }, [
@@ -201,9 +201,9 @@ export const CheckoutUrlPage = () => {
     if (!checkout) return
 
     setCheckoutConfig({
-      id: checkout.id,
+      id: checkout.id!,
       name: checkout.name,
-      config: checkout.config as PaywallConfig,
+      config: checkout.config as PaywallConfigType,
     })
   }, [checkoutConfigList])
 
@@ -219,7 +219,7 @@ export const CheckoutUrlPage = () => {
     })
   }
 
-  const onBasicConfigChange = async (fields: Partial<PaywallConfig>) => {
+  const onBasicConfigChange = async (fields: Partial<PaywallConfigType>) => {
     const hasDefaultLock =
       Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
 
@@ -262,26 +262,38 @@ export const CheckoutUrlPage = () => {
 
   const configName = watch('configName')
 
-  const handleSetConfiguration = async ({
-    config,
-    ...rest
-  }: CheckoutConfig) => {
-    const option = {
-      ...rest,
-      config: config || DEFAULT_CONFIG,
+  const handleSetConfiguration = useCallback(
+    async ({ config, ...rest }: CheckoutConfig) => {
+      const option = {
+        ...rest,
+        config: config || DEFAULT_CONFIG,
+      }
+      setCheckoutConfig(option)
+      if (!option.id) {
+        const response = await updateConfig(option)
+        setCheckoutConfig({
+          id: response.id!,
+          config: response.config as PaywallConfigType,
+          name: response.name,
+        })
+        setValue('configName', '') // reset field after new configuration is set
+        await refetchConfigList()
+      }
+    },
+    [DEFAULT_CONFIG, refetchConfigList, setValue, updateConfig]
+  )
+
+  useEffect(() => {
+    if (checkoutConfigList?.length && !!query.id) {
+      const config = checkoutConfigList.find((c) => c.id === query.id)
+      if (config) {
+        // @ts-expect-error Type 'undefined' is not assignable to type 'string | null'. (but id is not undefined)
+        handleSetConfiguration(config)
+      } else {
+        // TODO: handle the case where the user is a lock manager but the config was not created by them
+      }
     }
-    setCheckoutConfig(option)
-    if (!option.id) {
-      const response = await updateConfig(option)
-      setCheckoutConfig({
-        id: response.id,
-        config: response.config as PaywallConfig,
-        name: response.name,
-      })
-      setValue('configName', '') // reset field after new configuration is set
-      await refetchConfigList()
-    }
-  }
+  }, [checkoutConfigList, query.id, handleSetConfiguration])
 
   const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
 

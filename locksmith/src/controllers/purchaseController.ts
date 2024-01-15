@@ -72,16 +72,17 @@ export class PurchaseController {
       purchaseType,
     } = await PaymentCaptureBody.parseAsync(request.body)
     const dispatcher = new Dispatcher()
-    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
-      network
-    )
+
+    const [hasEnoughToPayForGas, soldOut] = await Promise.all([
+      dispatcher.hasFundsForTransaction(network),
+      isSoldOut(lockAddress, network, recipients.length),
+    ])
+
     if (!hasEnoughToPayForGas) {
       return response.status(400).send({
         error: `Purchaser does not have enough to pay for gas on ${network}`,
       })
     }
-
-    const soldOut = await isSoldOut(lockAddress, network, recipients.length)
 
     if (soldOut) {
       // TODO: Cancel authorization
@@ -136,17 +137,17 @@ export class PurchaseController {
           transactionHash,
         })
       }
-      const fulfillmentDispatcher = new Dispatcher()
 
+      const fulfillmentDispatcher = new Dispatcher()
       const paymentIntentRecipients = paymentIntent.metadata.recipient
         .split(',')
         .map((recipient) => ({
           recipient,
         }))
       const paymentIntentNetwork = Number(paymentIntent.metadata.network)
+
       // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
       // This should be fine though since grantKeys transaction should succeed anyway
-
       let items: Record<'id' | 'owner', string>[] | null = []
 
       if (purchaseType === 'purchase') {
@@ -216,7 +217,6 @@ export class PurchaseController {
           conflictFields: ['network', 'lockAddress', 'keyId', 'userAddress'],
         }
       )
-      console.log(subscription)
       logger.info(`Subscription updated for id: ${subscription?.id}`)
     } catch (error) {
       console.log(error)
@@ -260,16 +260,16 @@ export class PurchaseController {
         pricer.canAffordGrant(network),
       ])
 
-      if (!hasEnoughToPayForGas) {
-        return response.status(500).send({
-          message:
-            'Purchaser does not have enough funds to allow claiming the membership',
+      if (!canAffordGas.canAfford) {
+        return response.status(400).send({
+          message: canAffordGas.reason,
         })
       }
 
-      if (!canAffordGas) {
-        return response.status(500).send({
-          message: 'Gas fees is too pricey.',
+      if (!hasEnoughToPayForGas) {
+        return response.status(400).send({
+          message:
+            'Purchaser does not have enough funds to allow claiming the membership',
         })
       }
 

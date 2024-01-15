@@ -25,7 +25,7 @@ interface Props {
   userMetadata: Record<string, any>
   network: number
   invalid?: string
-  checkedInAt?: number
+  checkedInAt?: number | number[]
   owner: string
   keyId: string
   children?: ReactNode
@@ -48,14 +48,21 @@ export function MembershipCard({
   children = null,
 }: Props) {
   const timeSinceSigned = dayjs().from(timestamp, true)
-  const timeSinceCheckedIn = dayjs().from(checkedInAt, true)
+  const lastCheckedInAt = Array.isArray(checkedInAt)
+    ? checkedInAt[checkedInAt.length - 1]
+    : checkedInAt
+  const timeSinceCheckedIn = dayjs().from(lastCheckedInAt, true)
   const config = useConfig()
 
   return (
     <div className="w-full max-w-sm bg-white rounded-xl">
       <div
         className={` ${
-          invalid ? 'bg-red-500' : checkedInAt ? 'bg-amber-300' : 'bg-green-500'
+          invalid
+            ? 'bg-red-500'
+            : lastCheckedInAt
+            ? 'bg-amber-300'
+            : 'bg-green-500'
         }   rounded-t-xl`}
       >
         <div className="flex items-center justify-end">
@@ -88,7 +95,7 @@ export function MembershipCard({
           <p className="text-xl font-bold text-white">
             {invalid
               ? invalid
-              : checkedInAt
+              : lastCheckedInAt
               ? `Checked-in ${timeSinceCheckedIn} ago`
               : `${name}`}
           </p>
@@ -115,12 +122,12 @@ export function MembershipCard({
         </div>
         <div className="space-y-2">
           <Item label="Lock">
-            <AddressLink lockAddress={lockAddress} network={network} />
+            <AddressLink address={lockAddress} network={network} />
           </Item>
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
           <Item label="Owner">
-            <AddressLink lockAddress={owner} network={network} />
+            <AddressLink address={owner} network={network} />
           </Item>
 
           {!!userMetadata?.public && (
@@ -128,6 +135,16 @@ export function MembershipCard({
           )}
           {!!userMetadata?.protected && (
             <MetadataItems metadata={userMetadata.protected} />
+          )}
+
+          {Array.isArray(checkedInAt) && checkedInAt.length > 0 && (
+            <Item label="Checked-in">
+              <ul>
+                {checkedInAt.map((timestamp) => (
+                  <li key={timestamp}>{dayjs(timestamp).fromNow()}</li>
+                ))}
+              </ul>
+            </Item>
           )}
         </div>
         {children}
@@ -144,7 +161,7 @@ interface ItemProps {
 
 export function Item({ label, value, children }: ItemProps) {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-start gap-2">
       <span className="text-gray-500"> {label}: </span>
       {value && <span className="font-medium">{value}</span>}
       {children}

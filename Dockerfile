@@ -1,6 +1,7 @@
 # syntax = docker/dockerfile:experimental
 
-ARG NODE_VERSION=18.15.0
+ARG NODE_VERSION=20.10.0-bullseye
+# the graph cli binary does not work with bookworm which is the default for Node 20 images. Once the graph-cli binary has been updated to not use https://www.npmjs.com/package/binary-install-raw we can use bookworm.
 
 ###################################################################
 # Stage 1: Install all workspaces (dev)dependencies               #
@@ -22,7 +23,7 @@ RUN apt-get update \
     python3 \
     postgresql \
     default-jdk \
-    openjdk-11-jre \
+    openjdk-17-jre \
     build-essential \
     ca-certificates
 

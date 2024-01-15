@@ -1,40 +1,43 @@
-import { Input } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
-import { ConnectForm } from '../../../CheckoutUrl/elements/DynamicForm'
 import { CustomComponentProps } from '../UpdateHooksForm'
+import { useFormContext } from 'react-hook-form'
 
 export const CustomContractHook = ({
   name,
   disabled,
-  selectedOption,
+  setEventsHooksMutation,
 }: CustomComponentProps) => {
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useFormContext()
+
+  const hasError = errors?.[name] ?? false
+
+  const onSubmit = async (values: any) => {
+    // Just save the addresses!
+    setEventsHooksMutation.mutateAsync(values)
+  }
+
   return (
-    <ConnectForm>
-      {({ register, getValues, formState: { errors, dirtyFields } }: any) => {
-        const hasError = errors?.[name] ?? false
-        const value = getValues(name)
-        const isFieldDirty = dirtyFields[name]
-
-        const showInput =
-          (value?.length > 0 && value !== DEFAULT_USER_ACCOUNT_ADDRESS) ||
-          (selectedOption ?? '')?.length > 0 ||
-          isFieldDirty
-
-        return (
-          showInput && (
-            <Input
-              label="Contract address"
-              {...register(name, {
-                validate: ethers.utils.isAddress,
-              })}
-              disabled={disabled}
-              placeholder="Contract address, for ex: 0x00000000000000000"
-              error={hasError && 'Enter a valid address'}
-            />
-          )
-        )
-      }}
-    </ConnectForm>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+      <Input
+        size="small"
+        label="Contract address:"
+        {...register(name, {
+          validate: ethers.utils.isAddress,
+        })}
+        disabled={disabled}
+        placeholder="Contract address"
+        error={hasError ? 'Enter a valid address' : ''}
+      />
+      <div className="ml-auto">
+        <Button size="small" loading={setEventsHooksMutation.isLoading}>
+          Save
+        </Button>
+      </div>
+    </form>
   )
 }

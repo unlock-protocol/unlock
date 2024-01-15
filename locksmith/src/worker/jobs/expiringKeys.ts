@@ -5,7 +5,7 @@ import {
   OrderDirection,
   SubgraphService,
 } from '@unlock-protocol/unlock-js'
-import dayjs from 'dayjs'
+import dayjs from '../../config/dayjs'
 
 import { logger } from '../../logger'
 import { hasReminderAlreadySent } from '../../operations/keyExpirationReminderOperations'

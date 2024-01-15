@@ -18,6 +18,14 @@ export const arbitrum: NetworkConfig = {
     },
   },
   featured: true,
+  governanceBridge: {
+    connext: '0xEE9deC2712cCE65174B561151701Bf54b99C24C8',
+    domainId: 1634886255,
+    modules: {
+      connextMod: '0x4A553635774b3d6fB6273A83b5B49577dF450227',
+      delayMod: '0xF241F12506fb6Bf1909c6bC176A199166414007a',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
@@ -35,12 +43,17 @@ export const arbitrum: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x1A9E2E085bF4E4fE5eE45C682a3Af26d55FA1431',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 42161,
   isTestNetwork: false,
   keyManagerAddress: '0x520294E736167303efa038205D4391b58261BC9c',
-  maxFreeClaimCost: 100,
+  maxFreeClaimCost: 1,
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   name: 'Arbitrum',
   nativeCurrency: {
@@ -48,6 +61,7 @@ export const arbitrum: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
   },
   opensea: {
     collectionUrl: (lockAddress) =>
@@ -70,39 +84,57 @@ export const arbitrum: NetworkConfig = {
   swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
   tokens: [
     {
-      address: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+      address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
       decimals: 18,
-      name: 'Ethereum',
+      featured: true,
+      name: 'Wrapped Ether',
       symbol: 'WETH',
     },
     {
-      address: '0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+      address: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
       decimals: 6,
+      name: 'USD Coin (Arb1)',
+      symbol: 'USDC',
+    },
+    {
+      address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+      decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
-      address: '0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+      address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',
       decimals: 6,
-      name: 'Tether',
+      featured: true,
+      name: 'Tether USD',
       symbol: 'USDT',
     },
     {
-      address: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+      address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
       decimals: 18,
-      name: 'Dai',
+      featured: true,
+      name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
-      address: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+      address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
       decimals: 8,
-      name: 'Wrapped Bitcoin',
+      featured: true,
+      name: 'Wrapped BTC',
       symbol: 'WBTC',
+    },
+    {
+      address: '0x912CE59144191C1204E64559FE8253a0e49E6548',
+      decimals: 18,
+      name: 'Arbitrum',
+      symbol: 'ARB',
     },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
+    positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },

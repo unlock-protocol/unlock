@@ -1,6 +1,8 @@
 const { ethers } = require('hardhat')
-const createLockHash = require('../../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const {
+  ADDRESS_ZERO,
+  createLockCalldata,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const PublicLock = artifacts.require('PublicLock')
 
@@ -24,7 +26,7 @@ exports.shouldCreateLock = (options) => {
           100, // maxNumberOfKeys
           'New Lock',
         ]
-        const calldata = await createLockHash({ args, from: accounts[0] })
+        const calldata = await createLockCalldata({ args, from: accounts[0] })
         transaction = await unlock.createUpgradeableLock(calldata, {
           gas: 6000000,
         })

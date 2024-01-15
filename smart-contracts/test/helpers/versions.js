@@ -1,31 +1,16 @@
 const contracts = require('@unlock-protocol/contracts')
-const { config, ethers, run } = require('hardhat')
-const { TASK_COMPILE } = require('hardhat/builtin-tasks/task-names')
-const path = require('path')
-const fs = require('fs-extra')
+const { ethers } = require('hardhat')
 const {
   abi: proxyAbi,
   bytecode: proxyBytecode,
-} = require('./ABIs/TransparentUpgradeableProxy.json')
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/TransparentUpgradeableProxy.json')
 const {
   abi: proxyAdminAbi,
   bytecode: proxyAdminBytecode,
-} = require('./ABIs/ProxyAdmin.json')
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
-const LATEST_UNLOCK_VERSION = 12
-const LATEST_PUBLIC_LOCK_VERSION = 13
-
-// files path
-const CONTRACTS_PATH = path.resolve(
-  config.paths.root,
-  'contracts',
-  'past-versions'
-)
-const ARTIFACTS_PATH = path.resolve(
-  config.paths.root,
-  'artifacts',
-  'past-versions'
-)
+const LATEST_UNLOCK_VERSION = 13
+const LATEST_PUBLIC_LOCK_VERSION = 14
 
 function getUnlockVersionNumbers() {
   return (
@@ -50,25 +35,10 @@ function getMatchingLockVersion(unlockVersion) {
   // after v10, they start decoupling
   publicLockVersions[10] = 9
   publicLockVersions[11] = 11
-  publicLockVersions[12] = 11
+  publicLockVersions[12] = 12
+  publicLockVersions[13] = 14
 
   return publicLockVersions[unlockVersion]
-}
-
-async function getContractFactoryFromSolFiles(contractName, versionNumber) {
-  // copy contract file
-  await fs.copy(
-    require.resolve(
-      `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${versionNumber}.sol`
-    ),
-    path.resolve(CONTRACTS_PATH, `${contractName}V${versionNumber}.sol`)
-  )
-  // Recompile
-  await run(TASK_COMPILE, { quiet: true })
-  // return factory
-  return await ethers.getContractFactory(
-    `contracts/past-versions/${contractName}V${versionNumber}.sol:${contractName}`
-  )
 }
 
 async function getContractFactoryAtVersion(contractName, versionNumber) {
@@ -167,11 +137,6 @@ async function getContractAtVersion(
   )
 }
 
-async function cleanupPastContracts() {
-  await fs.remove(CONTRACTS_PATH)
-  await fs.remove(ARTIFACTS_PATH)
-}
-
 module.exports = {
   LATEST_UNLOCK_VERSION,
   LATEST_PUBLIC_LOCK_VERSION,
@@ -179,8 +144,6 @@ module.exports = {
   getUnlockVersionNumbers,
   getMatchingLockVersion,
   getContractFactoryAtVersion,
-  getContractFactoryFromSolFiles,
-  cleanupPastContracts,
   deployUpgreadableContract,
   upgradeUpgreadableContract,
 }

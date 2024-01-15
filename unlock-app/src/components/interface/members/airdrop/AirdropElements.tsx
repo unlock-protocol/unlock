@@ -8,11 +8,7 @@ export const AirdropMember = z
   .object({
     wallet: z.string(),
     count: z.preprocess((item) => Number(item), z.number().default(1)),
-    expiration: z.preprocess((value) => {
-      if (value) {
-        return new Date(value.toString()).getTime()
-      }
-    }, z.number().optional()),
+    expiration: z.string().optional(),
     neverExpire: z.preprocess(
       (value) => !!value,
       z.boolean().optional().default(false)

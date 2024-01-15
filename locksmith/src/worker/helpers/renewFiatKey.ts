@@ -36,17 +36,31 @@ export async function renewFiatKey({
       lockAddress,
     }
 
-    const { stripeEnabled, stripeAccount = '' } = await getStripeConnectForLock(
+    const { stripeEnabled, stripeAccount } = await getStripeConnectForLock(
       lockAddress,
       network
     )
 
     if (!stripeEnabled) {
-      throw new Error('Stripe connect is not enabled')
+      logger.info(
+        `Stripe connect is not enabled for lock ${lockAddress} on ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     if (!stripeAccount) {
-      throw new Error('No stripe connect account associated with the lock')
+      logger.info(
+        `No stripe connect account associated with the lock ${lockAddress} on ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const subscription = await KeySubscription.findOne({
@@ -61,22 +75,43 @@ export async function renewFiatKey({
     })
 
     if (!subscription) {
-      throw new Error('No subscription found')
+      logger.info(
+        `No subscription found for key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     if (subscription.userAddress !== userAddress) {
-      throw new Error('Key owner is not the subscriber')
+      logger.info(
+        `Key owner is not the subscriber key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const customer = await stripe.customers.retrieve(
       subscription.connectedCustomer,
       {
-        stripeAccount,
+        stripeAccount: stripeAccount.id,
       }
     )
 
     if (customer.deleted) {
-      throw new Error('Customer does not exist anymore')
+      logger.info(
+        `Customer does not exist anymore for key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const paymentMethod = await stripe.paymentMethods.list(
@@ -85,14 +120,21 @@ export async function renewFiatKey({
         type: 'card',
       },
       {
-        stripeAccount,
+        stripeAccount: stripeAccount.id,
       }
     )
 
     const paymentMethodId = paymentMethod.data?.[0]?.id
 
     if (!paymentMethodId) {
-      throw new Error('No payment method available on the customer profile.')
+      logger.info(
+        `No payment method available on the customer profile for key ${keyId} on ${lockAddress} on network ${network}`
+      )
+      return {
+        keyId,
+        lockAddress,
+        network,
+      }
     }
 
     const web3Service = new Web3Service(networks)
@@ -129,7 +171,7 @@ export async function renewFiatKey({
         },
       },
       {
-        stripeAccount,
+        stripeAccount: stripeAccount.id,
       }
     )
 
@@ -158,7 +200,7 @@ export async function renewFiatKey({
 
           // Capture it on the connected stripe account
           const intent = await stripe.paymentIntents.capture(paymentIntent.id, {
-            stripeAccount,
+            stripeAccount: stripeAccount.id,
           })
 
           switch (intent.status) {
@@ -177,7 +219,7 @@ export async function renewFiatKey({
                   },
                 },
                 {
-                  stripeAccount,
+                  stripeAccount: stripeAccount.id,
                 }
               )
               await KeyRenewal.create(recordedrenewalInfo)
