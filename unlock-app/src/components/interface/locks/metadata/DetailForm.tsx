@@ -74,7 +74,7 @@ export function DetailForm({ disabled, defaultValues }: Props) {
               }}
             />
           </div>
-          <div className="grid order-1 gap-6 md:order-2">
+          <div className="flex flex-col order-1 gap-6 md:order-2">
             <Input
               {...register('name', {
                 required: {
