@@ -1,5 +1,5 @@
 import { Lock } from '~/unlockTypes'
-import { CreditCardForm } from '../forms/CreditCardForm'
+import { CreditCardWithStripeForm } from '../forms/CreditCardWithStripeForm'
 import { ReceiptBaseForm } from '../forms/ReceiptBaseForm'
 import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
@@ -38,11 +38,11 @@ export const SettingPayments = ({
       </SettingCard>
 
       <SettingCard
-        label="Credit Card Payment"
+        label="Credit Card Payment with Stripe"
         description="Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member."
         isLoading={isLoading}
       >
-        <CreditCardForm
+        <CreditCardWithStripeForm
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
