@@ -58,6 +58,18 @@ export const isWorthRenewing = async (
     networks[network].provider
   )
 
+  // locks for which renewals are disabled
+  // TODO: move to database
+  if (
+    ['0xa99fBa0E795b7Ac1a38BD5Ec02176aC28BaC9EC8'].indexOf(lockAddress) > -1
+  ) {
+    logger.info(`Renewals disabled for ${lockAddress} on network ${network}.`)
+
+    return {
+      shouldRenew: false,
+    }
+  }
+
   try {
     const lock = await web3Service.getLockContract(lockAddress, provider)
 
