@@ -98,7 +98,7 @@ export const Form = ({
     <FormProvider {...methods}>
       <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
         <div className="grid gap-6">
-          <DetailForm defaultValues={defaultValues} />
+          <DetailForm />
           {!isEvent && (
             <CertificationMetadataForm
               lockAddress={lockAddress}
