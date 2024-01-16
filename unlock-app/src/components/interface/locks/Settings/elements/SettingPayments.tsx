@@ -5,6 +5,7 @@ import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { SettingCard } from './SettingCard'
 import { UpdateGasRefundForm } from '../forms/UpdateGasRefundForm'
+import Link from 'next/link'
 
 interface SettingPaymentsProps {
   lockAddress: string
@@ -40,6 +41,32 @@ export const SettingPayments = ({
       <SettingCard
         label="Credit Card Payment with Stripe"
         description="Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member."
+        isLoading={isLoading}
+      >
+        <CreditCardWithStripeForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+
+      <SettingCard
+        label="Payments with Crossmint"
+        description={
+          <>
+            Enabling payment with{' '}
+            <Link
+              href="https://www.crossmint.com/products/nft-checkout"
+              target="_blank"
+            >
+              Crossmint
+            </Link>{' '}
+            will allow your members to pay with any ERC20 token. Crossmint will
+            convert the ERC20 token to the currency of your choice and send it
+            to your lock.
+          </>
+        }
         isLoading={isLoading}
       >
         <CreditCardWithStripeForm
