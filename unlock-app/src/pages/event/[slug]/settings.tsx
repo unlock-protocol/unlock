@@ -1,3 +1,4 @@
+import { EventSettings } from '~/components/content/event/Settings/EventSettings'
 import {
   EventPageProps,
   ServerSidePropsParams,
@@ -7,9 +8,9 @@ import {
 export const getServerSideProps = async ({ params }: ServerSidePropsParams) => {
   return getServerSidePropsForEventPage(params.slug)
 }
+
 const Settings = (props: EventPageProps) => {
-  console.log(props)
-  return <p>Settings</p>
+  return <EventSettings {...props.pageProps} />
 }
 
 export default Settings

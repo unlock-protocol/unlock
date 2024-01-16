@@ -14,6 +14,8 @@ export type SettingTab =
   | 'roles'
   | 'advanced'
   | 'emails'
+  | 'verifiers'
+  | 'checkout'
 
 const Settings: NextPage = () => {
   const { query } = useRouter()

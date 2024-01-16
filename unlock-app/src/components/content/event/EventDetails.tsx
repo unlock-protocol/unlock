@@ -32,6 +32,7 @@ import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
+import { TbSettings } from 'react-icons/tb'
 
 interface EventDetailsProps {
   event: Event
@@ -173,7 +174,6 @@ export const EventDetails = ({
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
             <>
-              {/* Comimg soon
               <Button
                 onClick={() => {
                   router.push(`/event/${eventProp.slug}/settings`)
@@ -183,7 +183,7 @@ export const EventDetails = ({
                   <Icon icon={TbSettings} size={20} />
                   <span>Settings</span>
                 </div>
-              </Button> */}
+              </Button>
               <Button
                 onClick={() => {
                   router.push(`/event/${eventProp.slug}/attendees`)
