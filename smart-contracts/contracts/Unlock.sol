@@ -195,10 +195,14 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
    * @dev This will initialize the template and revokeOwnership.
    */
   function addLockTemplate(address impl, uint16 version) public onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "");
-    IPublicLock(impl).renounceLockManager();
+    // if the template has not been initialized,
+    // claim the template so that no-one else could
+    try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
+      // renounce the lock manager role that was added during initialization
+      IPublicLock(impl).renounceLockManager();
+    } catch {
+      // failure means that the template is already initialized
+    }
 
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;

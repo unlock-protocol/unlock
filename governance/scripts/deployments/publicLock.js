@@ -1,5 +1,8 @@
 const { ethers, run } = require('hardhat')
-const { isLocalhost } = require('@unlock-protocol/hardhat-helpers')
+const {
+  isLocalhost,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 const contracts = require('@unlock-protocol/contracts')
 
 async function main({ publicLockVersion }) {
@@ -22,10 +25,24 @@ async function main({ publicLockVersion }) {
   const { hash } = await publicLock.deploymentTransaction()
   const publicLockAddress = await publicLock.getAddress()
 
-  // eslint-disable-next-line no-console
   console.log(
     `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress} (tx: ${hash})`
   )
+
+  // initialize the template to prevent someone else from doing it
+  const { hash: txInitHash } = await publicLock.initialize(
+    signer.address,
+    0,
+    ADDRESS_ZERO,
+    0,
+    0,
+    ''
+  )
+  console.log(`PUBLIC LOCK > Template initialized (tx: ${txInitHash})`)
+
+  // renounce the manager role that was added during initilization
+  const { hash: txRenounceHash } = await publicLock.renounceLockManager()
+  console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
 
   if (!isLocalhost()) {
     await run('verify:verify', { address: publicLockAddress })
