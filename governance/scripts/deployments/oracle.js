@@ -35,16 +35,17 @@ async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
   }
 
   const oracle = await Oracle.deploy(uniswapFactoryAddress)
-  await oracle.deployed()
+  await oracle.waitForDeployment()
+  const { hash } = await oracle.deploymentTransaction()
 
-  // eslint-disable-next-line no-console
+  // get addresses
+  const oracleAddress = await oracle.getAddress()
+
   console.log(
-    'UNISWAP ORACLE > Oracle deployed at:',
-    oracle.address,
-    ` (tx: ${oracle.deployTransaction.hash})`
+    `UNISWAP ORACLE > Oracle deployed at ${oracleAddress} (tx: ${hash})`
   )
 
-  return oracle.address
+  return oracleAddress
 }
 
 // execute as standalone
