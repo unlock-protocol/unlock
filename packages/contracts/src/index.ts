@@ -39,6 +39,7 @@ import GovernorUnlockProtocolTimelock from './abis/Governor/UnlockProtocolTimelo
 import LockSerializer from './abis/utils/LockSerializer.json'
 import UnlockSwapPurchaser from './abis/utils/UnlockSwapPurchaser.json'
 import UnlockSwapBurner from './abis/utils/UnlockSwapBurner.json'
+import UniswapOracleV3 from './abis/utils/UniswapOracleV3.json'
 
 // exports
 export { PublicLockV0 }
@@ -76,4 +77,9 @@ export { UnlockDiscountTokenV2 }
 export { UnlockDiscountTokenV3 }
 export { GovernorUnlockProtocol }
 export { GovernorUnlockProtocolTimelock }
-export { LockSerializer, UnlockSwapPurchaser, UnlockSwapBurner }
+export {
+  LockSerializer,
+  UnlockSwapPurchaser,
+  UnlockSwapBurner,
+  UniswapOracleV3,
+}
