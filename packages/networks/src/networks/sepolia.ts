@@ -53,7 +53,7 @@ export const sepolia: NetworkConfig = {
   isTestNetwork: true,
   keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
   maxFreeClaimCost: 1000,
-  multisig: '', // SAFE does not support Sepolia as of October 11th 2023
+  multisig: '0x95fE514fe7F60722AFF0FD009ebeE4Ba2013924c',
   name: 'Sepolia',
   nativeCurrency: {
     coingecko: 'ethereum',
@@ -96,6 +96,11 @@ export const sepolia: NetworkConfig = {
       symbol: 'WETH',
     },
   ],
+  uniswapV3: {
+    factoryAddress: '0xB7f907f7A9eBC822a80BD25E224be42Ce0A698A0',
+    positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
+    universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+  },
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   url: 'https://github.com/eth-clients/sepolia',
 }
