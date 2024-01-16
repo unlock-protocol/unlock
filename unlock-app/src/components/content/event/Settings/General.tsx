@@ -35,7 +35,6 @@ const today = dayjs().format('YYYY-MM-DD')
 
 export const General = ({ event, checkoutConfig }: GeneralProps) => {
   const [isInPerson, setIsInPerson] = useState(true)
-
   const {
     register,
     getValues,
@@ -53,6 +52,9 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
       ticket: event.ticket,
     },
   })
+  const [mapAddress, setMapAddress] = useState(
+    encodeURIComponent(getValues('ticket.event_address') || 'Ethereum')
+  )
 
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
 
@@ -62,10 +64,6 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
   )
   const minEndTime = isSameDay ? event.ticket?.event_start_time : undefined
   const minEndDate = dayjs(event.ticket?.event_start_date).format('YYYY-MM-DD')
-
-  const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
-    event?.ticket?.event_address || 'Ethereum'
-  )}&key=${config.googleMapsApiKey}`
 
   const save = async (values: {
     name: string
@@ -174,13 +172,19 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
         <div className="grid">
           <p className="mb-5">
             This information will be public and included on each of the NFT
-            tickets. Again, it can be adjusted later.
+            tickets.
           </p>
           <div className="grid items-center gap-4 align-top sm:grid-cols-2">
             <div className="flex flex-col self-start gap-4 justify-top">
               <div className="h-80">
                 {isInPerson && (
-                  <iframe width="100%" height="350" src={mapAddress}></iframe>
+                  <iframe
+                    width="100%"
+                    height="350"
+                    src={`https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+                      mapAddress
+                    )}&key=${config.googleMapsApiKey}`}
+                  ></iframe>
                 )}
                 {!isInPerson && (
                   <div className="flex h-80 items-center justify-center">
@@ -306,6 +310,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
                     name="ticket.event_address"
                     control={control}
                     render={({ field: { onChange } }) => {
+                      setMapAddress(getValues('ticket.event_address'))
                       return (
                         <GoogleMapsAutoComplete
                           defaultValue={event.ticket.event_address}

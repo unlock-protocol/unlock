@@ -9,7 +9,7 @@ import {
 } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'
 import { useConfig } from '~/utils/withConfig'
 import { TransactionDetails } from './NewEvent'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getEventPath } from './utils'
 
 interface LockDeployingProps {
@@ -25,6 +25,7 @@ export const LockDeploying = ({
 }: LockDeployingProps) => {
   const config = useConfig()
   const router = useRouter()
+  const [loadingEventPage, setLoadingEventPage] = useState(false)
   const { hash: transactionHash, network } = transactionDetails
 
   let status: DeployStatus = 'progress'
@@ -44,6 +45,7 @@ export const LockDeploying = ({
 
   const goToEventPage = () => {
     if (lockAddress && network) {
+      setLoadingEventPage(true)
       router.push(
         getEventPath({
           lockAddress,
@@ -88,7 +90,11 @@ export const LockDeploying = ({
         {status === 'deployed' && (
           <div className="flex flex-col items-center content-center text-center">
             <p>We made a page for your event! Go check it out!</p>
-            <Button className="my-4" onClick={goToEventPage}>
+            <Button
+              loading={loadingEventPage}
+              className="my-4"
+              onClick={goToEventPage}
+            >
               View event page
             </Button>
           </div>

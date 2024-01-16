@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import React, { useEffect } from 'react'
 import type { AppProps } from 'next/app'
 import TagManager from 'react-gtm-module'
@@ -22,18 +23,21 @@ const UnlockApp = ({ Component, pageProps }: AppProps) => {
   }, [])
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SessionProvider>
-        <ConnectModalProvider>
-          <GlobalWrapper>
-            <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
-              <Component pageProps={pageProps} />
-            </ErrorBoundary>
-            <Toaster />
-          </GlobalWrapper>
-        </ConnectModalProvider>
-      </SessionProvider>
-    </QueryClientProvider>
+    <>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider>
+          <ConnectModalProvider>
+            <GlobalWrapper>
+              <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
+                <Component pageProps={pageProps} />
+              </ErrorBoundary>
+              <Toaster />
+            </GlobalWrapper>
+          </ConnectModalProvider>
+        </SessionProvider>
+      </QueryClientProvider>
+      <SpeedInsights />
+    </>
   )
 }
 
