@@ -17657,6 +17657,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@vercel/speed-insights": "npm:1.0.4"
     "@vitejs/plugin-react": "npm:4.0.4"
     "@vitest/coverage-c8": "npm:0.33.0"
     "@walletconnect/client": "npm:1.8.0"
@@ -17891,6 +17892,13 @@ __metadata:
   bin:
     nft: out/cli.js
   checksum: e22fc2ec8961b748cc9c23a24c2549760a7d09addcb48a60dcf5c8c43bc0004504964c10e92866245f8c5405e527c010f3d80f612d5c8415cb1ffc9773e76095
+  languageName: node
+  linkType: hard
+
+"@vercel/speed-insights@npm:1.0.4":
+  version: 1.0.4
+  resolution: "@vercel/speed-insights@npm:1.0.4"
+  checksum: 946c80ad3473aa2bfb4e4d15a630734ab558e6a92b58953587118e32f9bfde1685fc0f5277097b523a0bad79a0ce3f6dcec07d28e9226ebaf67080e9060193bd
   languageName: node
   linkType: hard
 
