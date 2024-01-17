@@ -244,7 +244,7 @@ This is a proposal for an upgrade of the core Unlock Protocol smart contracts - 
 
 ## About the upgrade
 
-This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to be directly decrease the supply of UDT in circulation.
+This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to directly decrease the supply of UDT in circulation.
 
 ## A cross-chain proposal
 
