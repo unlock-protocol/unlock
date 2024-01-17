@@ -166,6 +166,7 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
 module.exports = async () => {
   const targetChains = Object.keys(networks)
     .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
+    .filter((id) => id != 1)
     .map((id) => networks[id])
 
   // src info
@@ -178,8 +179,12 @@ module.exports = async () => {
     governanceBridge: { connext: bridgeAddress },
   } = networks[chainId]
 
+  // store some explanations
+  const explainers = {}
+
   // parse calls for mainnet
   const mainnetCalls = await parseCalls(networks[1])
+  explainers[1] = mainnetCalls
 
   // parse all calls for dest chains
   const contractCalls = await Promise.all(
@@ -190,7 +195,7 @@ module.exports = async () => {
   const bridgeCalls = []
   await Promise.all(
     targetChains.map(async (network, i) => {
-      const { governanceBridge } = network
+      const { governanceBridge, id: destChainId } = network
 
       // make sure we have bridge info in networks package
       if (!governanceBridge) return {}
@@ -205,6 +210,10 @@ module.exports = async () => {
       }
 
       const destCalls = contractCalls[i]
+
+      // store explainers
+      explainers[destChainId] = destCalls
+
       const abiCoder = ethers.AbiCoder.defaultAbiCoder()
       await Promise.all(
         destCalls.map(async ({ contractAddress, calldata, explainer }) => {
@@ -241,6 +250,7 @@ module.exports = async () => {
   )
 
   const calls = [...mainnetCalls, ...bridgeCalls]
+  console.log(calls)
 
   // set proposal name and text
   const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
@@ -251,7 +261,7 @@ This is a proposal for an upgrade of the core Unlock Protocol smart contracts - 
 
 ## About the upgrade
 
-This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to directly decrease the supply of UDT in circulation.
+This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to directly decrease the supply of UDT in circulation. A \`SwapBurner\` helper contract has been deployed on mainnet and polygon and will added as setting to the main Unlock contract on both chains.
 
 ## A cross-chain proposal
 
@@ -259,13 +269,15 @@ The proposal uses a cross-chain proposal pattern that, once passed, will deploy 
 
 ## The calls
 
-All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}:
+They are ${
+    calls.length
+  } contract calls in this proposals. All calls are sent to the Connext bridge at ${bridgeAddress} on mainnet, except the 3 mainnet ones that are directly targeted at the Unlock factory contract. The Connext bridge will dispatch the relevant calls to each destination chain.
   
-${Object.keys(calls)
+${Object.keys(explainers)
   .map((id) => {
     const lines = ['\n']
     lines.push(`### ${networks[id].name} (chain ${id}) \n`)
-    calls[id].forEach(({ explainer, contractAddress }) =>
+    explainers[id].forEach(({ explainer, contractAddress }) =>
       lines.push(
         `- \`${explainer}\` - ${
           explainer.includes('upgrade') ? 'ProxyAdmin' : 'Unlock'
