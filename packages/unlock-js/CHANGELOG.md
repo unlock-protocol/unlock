@@ -1,5 +1,9 @@
 # Changes
 
+# 0.43.0
+
+- allowing `maxNumberOfKeys` to be 0 when deploying locks.
+
 # 0.42.0
 
 - added support for `UnlockV13` and `PublicLockV14`
