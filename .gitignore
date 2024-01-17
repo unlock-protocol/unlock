@@ -38,3 +38,9 @@ yarn-error.log
 .netlify
 .vercel
 governance/.openzeppelin/unknown-31337.json
+
+# solidity vs-code extension
+cache
+
+# jetbrains misc
+.idea

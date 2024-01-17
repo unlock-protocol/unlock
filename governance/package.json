@@ -3,6 +3,9 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
+    "@matterlabs/hardhat-zksync-deploy": "1.1.2",
+    "@matterlabs/hardhat-zksync-solc": "1.0.6",
+    "@matterlabs/hardhat-zksync-verify": "1.2.2",
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-verify": "2.0.3",
@@ -21,7 +24,8 @@
     "ethers": "6.9.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.19.4",
-    "solhint": "4.0.0"
+    "solhint": "4.0.0",
+    "zksync-ethers": "6.0.0"
   },
   "scripts": {
     "test": "hardhat test",

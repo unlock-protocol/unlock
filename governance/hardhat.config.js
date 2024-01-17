@@ -5,6 +5,11 @@ require('@nomicfoundation/hardhat-ethers')
 require('@nomicfoundation/hardhat-verify')
 require('@openzeppelin/hardhat-upgrades')
 
+// zksync-related
+require('@matterlabs/hardhat-zksync-deploy')
+require('@matterlabs/hardhat-zksync-solc')
+require('@matterlabs/hardhat-zksync-verify')
+
 // import helpers
 const {
   etherscan,
@@ -49,5 +54,9 @@ module.exports = {
   etherscan,
   solidity: {
     compilers: [{ version: '0.8.21', settings }],
+  },
+  zksolc: {
+    version: '1.3.19',
+    settings: {},
   },
 }

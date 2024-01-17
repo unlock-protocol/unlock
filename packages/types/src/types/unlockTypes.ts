@@ -116,6 +116,7 @@ export interface NetworkConfig {
     address: string
     mainnetBridge?: string
   }
+  ethNetwork?: string
   explorer?: {
     name: string
     urls: {

@@ -65,6 +65,18 @@ Object.keys(networks).forEach((key) => {
       url: networks[key].provider,
     }
   }
+
+  if (key === 'zkSyncSepolia' || key === 'zksync') {
+    hardhatNetworks['zkSyncSepolia'] = {
+      chainId: networks[key].id,
+      name: networks[key].name,
+      url: networks[key].provider,
+      zksync: true,
+      accounts: [DEPLOYER_PRIVATE_KEY],
+      verifyURL: networks[key].verifyURL,
+      ethNetwork: networks[key].ethNetwork,
+    }
+  }
 })
 
 export default hardhatNetworks
