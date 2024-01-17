@@ -13,46 +13,40 @@ const {
 // addresses
 const deployedContracts = {
   10: {
-    swapBurnerAddress: null,
     publicLockAddress: '0x530Ff2dAED410cA7D70C25f18dc770f106201151',
     unlockImplAddress: '0x508619074f542b6544c5835f260CC704E988cf65',
   },
   56: {
-    swapBurnerAddress: null,
     publicLockAddress: '0xA8BB5AF09B599794136B14B112e137FAf83Acf1f',
     unlockImplAddress: '0xfe9fD6af67E48D9f05Aa88679Ac294E3f28532eE',
   },
   100: {
     // verif files (Error Details: Missing or invalid ApiKey)
-    swapBurnerAddress: null,
     publicLockAddress: '0xeAd6d1877452383ab5F74c689b6C3d0538Fd3008', // not verified
     unlockImplAddress: '0x24BF5517Ecc83caB64478Ab3D69950aA1567eB89', // not verified
   },
   137: {
-    swapBurnerAddress: null,
     publicLockAddress: '0x8231d6fD0221C01FCAc5827EdD20D1aeC28EeBe3',
     unlockImplAddress: '0x4132f269168375DBf7DcDb2cfEA348F453FD4B40',
   },
-  42161: {
-    // need ARB funds
-    swapBurnerAddress: null,
-    publicLockAddress: null,
-    unlockImplAddress: null,
-  },
+  // 42161: {
+  //   // need ARB funds
+  //   publicLockAddress: null,
+  //   unlockImplAddress: null,
+  // },
 }
 
 const parseCalls = async ({ unlockAddress, name, id }) => {
   const publicLockVersion = 14
 
   //
-  const { swapBurnerAddress, publicLockAddress, unlockImplAddress } =
-    deployedContracts[id]
+  const { publicLockAddress, unlockImplAddress } = deployedContracts[id]
 
-  if (!swapBurnerAddress || !publicLockAddress || !unlockImplAddress) {
+  if (!publicLockAddress || !unlockImplAddress) {
     throw Error(`missing contract on chain ${name}(${id})`)
   }
 
-  console.log(`Deploying to ${name}(${id}) - Unlock: ${unlockAddress}`)
+  console.log(`Parsing calls for ${name}(${id}) - Unlock: ${unlockAddress}`)
 
   // submit template to Unlock
   const { interface: unlockInterface } = await ethers.getContractAt(
@@ -89,13 +83,6 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
       calldata: proxyAdminInterface.encodeFunctionData('upgrade', [
         unlockAddress,
         unlockImplAddress,
-      ]),
-    },
-    {
-      contractAddress: unlockAddress,
-      functionName: 'setSwapBurner', // explainer
-      calldata: unlockInterface.encodeFunctionData('setSwapBurner', [
-        swapBurnerAddress,
       ]),
     },
   ]
