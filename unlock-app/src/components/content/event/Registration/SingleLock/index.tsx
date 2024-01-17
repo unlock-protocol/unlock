@@ -80,7 +80,7 @@ export const RegistrationCardSingleLock = ({
         keysLeft={keysLeft}
         showContract={true}
       />
-      {isClaimable && (
+      {!isSoldOut && isClaimable && (
         <WalletlessRegistrationForm
           lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
           network={
@@ -91,7 +91,7 @@ export const RegistrationCardSingleLock = ({
           refresh={refresh}
         />
       )}
-      {!isClaimable && (
+      {!isSoldOut && !isClaimable && (
         <EmbeddedCheckout checkoutConfig={checkoutConfig} refresh={refresh} />
       )}
     </>
