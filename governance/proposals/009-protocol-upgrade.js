@@ -69,10 +69,6 @@ const abiIConnext = [
 
 // addresses
 const deployedContracts = {
-  1: {
-    unlockImplAddress: '0xd8250925527e769d90C6F2Fc55384B9110f26b62',
-    publicLockAddress: '0xc9577b38ADA2B1b251EE99e54cC399027d547B68',
-  },
   10: {
     publicLockAddress: '0x530Ff2dAED410cA7D70C25f18dc770f106201151',
     unlockImplAddress: '0x508619074f542b6544c5835f260CC704E988cf65',
@@ -91,7 +87,7 @@ const deployedContracts = {
     unlockImplAddress: '0x4132f269168375DBf7DcDb2cfEA348F453FD4B40',
   },
   42161: {
-    publicLockAddress: 'null',
+    publicLockAddress: '0x04664b4290fa1F4001ED25d9576f7C2d980aC64d',
     unlockImplAddress: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
   },
 }
@@ -153,7 +149,6 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
 module.exports = async () => {
   const targetChains = Object.keys(networks)
     .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
-    .filter((id) => id != 1)
     .map((id) => networks[id])
 
   // src info
@@ -167,17 +162,15 @@ module.exports = async () => {
   } = networks[chainId]
 
   // parse all calls for dest chains
-  const calls = await Promise.all(
+  const contractCalls = await Promise.all(
     targetChains.map((targetChain) => parseCalls(targetChain))
   )
 
   // get all the calls
   const bridgeCalls = []
-  const explainers = {}
-
   await Promise.all(
     targetChains.map(async (network, i) => {
-      const { governanceBridge, id: destChainId } = network
+      const { governanceBridge } = network
 
       // make sure we have bridge info in networks package
       if (!governanceBridge) return {}
@@ -191,9 +184,7 @@ module.exports = async () => {
         throw Error('Missing bridge information')
       }
 
-      const destCalls = calls[i]
-      explainers[destChainId] = []
-
+      const destCalls = contractCalls[i]
       const abiCoder = ethers.AbiCoder.defaultAbiCoder()
       await Promise.all(
         destCalls.map(async ({ contractAddress, calldata, explainer }) => {
@@ -208,10 +199,6 @@ module.exports = async () => {
               // 0,
             ]
           )
-          console.log(moduleData)
-
-          // organized explanations per chain
-          explainers[destChainId].push({ explainer, contractAddress })
 
           // add to the list of calls to be passed to the bridge
           bridgeCalls.push({
@@ -233,9 +220,9 @@ module.exports = async () => {
     })
   )
 
-  console.log(bridgeCalls)
+  const calls = bridgeCalls
 
-  // set proposal name
+  // set proposal name and text
   const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
   
 ## Goal of the proposal
@@ -254,11 +241,11 @@ The proposal uses a cross-chain proposal pattern that, once passed, will deploy 
 
 All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}:
   
-${Object.keys(explainers)
+${Object.keys(calls)
   .map((id) => {
     const lines = ['\n']
     lines.push(`### ${networks[id].name} (chain ${id}) \n`)
-    explainers[id].forEach(({ explainer, contractAddress }) =>
+    calls[id].forEach(({ explainer, contractAddress }) =>
       lines.push(
         `- \`${explainer}\` - ${
           explainer.includes('upgrade') ? 'ProxyAdmin' : 'Unlock'
@@ -277,6 +264,6 @@ The Unlock Protocol Team
   console.log(proposalName)
   return {
     proposalName,
-    calls: bridgeCalls,
+    calls,
   }
 }
