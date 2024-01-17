@@ -69,6 +69,11 @@ const abiIConnext = [
 
 // addresses
 const deployedContracts = {
+  1: {
+    unlockSwapBurner: '0x316A4650e70594FA3D947a43A237bEF427Bd80d6',
+    unlockImplAddress: '0xd8250925527e769d90C6F2Fc55384B9110f26b62',
+    publicLockAddress: '0xc9577b38ADA2B1b251EE99e54cC399027d547B68',
+  },
   10: {
     publicLockAddress: '0x530Ff2dAED410cA7D70C25f18dc770f106201151',
     unlockImplAddress: '0x508619074f542b6544c5835f260CC704E988cf65',
@@ -85,6 +90,7 @@ const deployedContracts = {
   137: {
     publicLockAddress: '0x8231d6fD0221C01FCAc5827EdD20D1aeC28EeBe3',
     unlockImplAddress: '0x4132f269168375DBf7DcDb2cfEA348F453FD4B40',
+    unlockSwapBurner: '0x9B538FE47e7BE0F5D10F9dD277F63B27b5a9c69f',
   },
   42161: {
     publicLockAddress: '0x04664b4290fa1F4001ED25d9576f7C2d980aC64d',
@@ -96,7 +102,8 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
   const publicLockVersion = 14
 
   //
-  const { publicLockAddress, unlockImplAddress } = deployedContracts[id]
+  const { publicLockAddress, unlockImplAddress, unlockSwapBurner } =
+    deployedContracts[id]
 
   if (!publicLockAddress || !unlockImplAddress) {
     throw Error(`missing contract on chain ${name}(${id})`)
@@ -143,6 +150,16 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
     },
   ]
 
+  if (unlockSwapBurner) {
+    calls.push({
+      contractAddress: unlockAddress,
+      explainer: `setSwapBurner(${unlockSwapBurner})`,
+      calldata: unlockInterface.encodeFunctionData('setSwapBurner', [
+        unlockSwapBurner,
+      ]),
+    })
+  }
+
   return calls
 }
 
@@ -160,6 +177,9 @@ module.exports = async () => {
   const {
     governanceBridge: { connext: bridgeAddress },
   } = networks[chainId]
+
+  // parse calls for mainnet
+  const mainnetCalls = await parseCalls(networks[1])
 
   // parse all calls for dest chains
   const contractCalls = await Promise.all(
@@ -220,7 +240,7 @@ module.exports = async () => {
     })
   )
 
-  const calls = bridgeCalls
+  const calls = [...mainnetCalls, ...bridgeCalls]
 
   // set proposal name and text
   const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
