@@ -144,14 +144,77 @@ export const WalletlessRegistrationForm = ({
 }: FormProps) => {
   const [claimResult, setClaimResult] = useState<any>()
   const [isClaimOpen, setClaimOpen] = useState(false)
-  const config = useConfig()
-  const recaptchaRef = useRef<any>()
-  const [loading, setLoading] = useState<boolean>(false)
-  const { account } = useAuth()
   const { mutateAsync: claim } = useClaim({
     lockAddress,
     network,
   })
+
+  const onRSVP = async ({
+    email,
+    recipient,
+    fullname,
+    captcha,
+  }: {
+    email: string
+    recipient: string
+    fullname: string
+    captcha: string
+  }) => {
+    const { hash, owner, message } = await claim({
+      metadata: {
+        fullname,
+      },
+      email,
+      recipient,
+      captcha,
+    })
+    if (message) {
+      ToastHelper.error(message)
+    }
+    if (hash && owner) {
+      setClaimResult({ hash, owner })
+      setClaimOpen(true)
+      ToastHelper.success('Transaction successfully sent!')
+    }
+  }
+
+  return (
+    <>
+      <Modal isOpen={isClaimOpen} setIsOpen={setClaimOpen} empty={true}>
+        <WalletlessRegistrationClaiming
+          lockAddress={lockAddress}
+          network={network}
+          handleClose={() => {
+            setClaimOpen(false)
+            refresh()
+          }}
+          claimResult={claimResult}
+        />
+      </Modal>
+      <RegistrationForm onRSVP={onRSVP} />
+    </>
+  )
+}
+
+export const RegistrationForm = ({
+  onRSVP,
+}: {
+  onRSVP: ({
+    email,
+    recipient,
+    fullname,
+    captcha,
+  }: {
+    email: string
+    recipient: string
+    fullname: string
+    captcha: string
+  }) => void
+}) => {
+  const config = useConfig()
+  const recaptchaRef = useRef<any>()
+  const [loading, setLoading] = useState<boolean>(false)
+  const { account } = useAuth()
 
   const localForm = useForm<RsvpFormProps>({
     mode: 'onChange',
@@ -179,22 +242,8 @@ export const WalletlessRegistrationForm = ({
     try {
       await recaptchaRef.current?.reset()
       const captcha = await recaptchaRef.current?.executeAsync()
-      const { hash, owner, message } = await claim({
-        metadata: {
-          fullname,
-        },
-        email,
-        recipient,
-        captcha,
-      })
-      if (message) {
-        ToastHelper.error(message)
-      }
-      if (hash && owner) {
-        setClaimResult({ hash, owner })
-        setClaimOpen(true)
-        ToastHelper.success('Transaction successfully sent!')
-      }
+      await onRSVP({ email, recipient, fullname, captcha })
+      reset()
     } catch (error: any) {
       ToastHelper.error(
         'There was an error during registration. Please try again.'
@@ -208,18 +257,6 @@ export const WalletlessRegistrationForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col w-full gap-6 py-4"
     >
-      <Modal isOpen={isClaimOpen} setIsOpen={setClaimOpen} empty={true}>
-        <WalletlessRegistrationClaiming
-          lockAddress={lockAddress}
-          network={network}
-          handleClose={() => {
-            setClaimOpen(false)
-            refresh()
-            reset()
-          }}
-          claimResult={claimResult}
-        />
-      </Modal>
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}

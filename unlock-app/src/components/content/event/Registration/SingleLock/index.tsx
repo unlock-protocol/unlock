@@ -1,5 +1,5 @@
 import { useCanClaim } from '~/hooks/useCanClaim'
-import { WalletlessRegistrationForm } from '../../WalletlessRegistration'
+import { WalletlessRegistrationForm } from '../WalletlessRegistration'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { LockPriceInternals } from '../LockPriceDetails'
@@ -59,6 +59,8 @@ export const RegistrationCardSingleLock = ({
     contractAddress: lock?.currencyContractAddress,
   })
 
+  const requiresApproval = lock?.maxNumberOfKeys == 0
+
   if (isLockLoading || isClaimableLoading || !lock) {
     return (
       <Placeholder.Root inline>
@@ -80,6 +82,7 @@ export const RegistrationCardSingleLock = ({
         keysLeft={keysLeft}
         showContract={true}
       />
+      {requiresApproval && <p>APPLY!</p>}
       {!isSoldOut && isClaimable && (
         <WalletlessRegistrationForm
           lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
