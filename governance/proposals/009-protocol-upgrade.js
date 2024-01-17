@@ -69,6 +69,10 @@ const abiIConnext = [
 
 // addresses
 const deployedContracts = {
+  1: {
+    unlockImplAddress: '0xd8250925527e769d90C6F2Fc55384B9110f26b62',
+    publicLockAddress: '0xc9577b38ADA2B1b251EE99e54cC399027d547B68',
+  },
   10: {
     publicLockAddress: '0x530Ff2dAED410cA7D70C25f18dc770f106201151',
     unlockImplAddress: '0x508619074f542b6544c5835f260CC704E988cf65',
@@ -86,11 +90,10 @@ const deployedContracts = {
     publicLockAddress: '0x8231d6fD0221C01FCAc5827EdD20D1aeC28EeBe3',
     unlockImplAddress: '0x4132f269168375DBf7DcDb2cfEA348F453FD4B40',
   },
-  // 42161: {
-  //   // need ARB funds
-  //   publicLockAddress: null,
-  //   unlockImplAddress: null,
-  // },
+  42161: {
+    publicLockAddress: 'null',
+    unlockImplAddress: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
+  },
 }
 
 const parseCalls = async ({ unlockAddress, name, id }) => {
@@ -150,6 +153,7 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
 module.exports = async () => {
   const targetChains = Object.keys(networks)
     .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
+    .filter((id) => id != 1)
     .map((id) => networks[id])
 
   // src info
@@ -173,7 +177,7 @@ module.exports = async () => {
 
   await Promise.all(
     targetChains.map(async (network, i) => {
-      const { governanceBridge, id: destChainId, name: destChainName } = network
+      const { governanceBridge, id: destChainId } = network
 
       // make sure we have bridge info in networks package
       if (!governanceBridge) return {}
@@ -234,38 +238,37 @@ module.exports = async () => {
   // set proposal name
   const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
   
-  ### Goal of the proposal
+## Goal of the proposal
 
-  This is a proposal for an upgrade of the core Unlock Protocol smart contracts - with the new Unlock Version (v13) and PublicLock version (v14). 
+This is a proposal for an upgrade of the core Unlock Protocol smart contracts - with the new Unlock Version (v13) and PublicLock version (v14). 
 
-  # About the upgrade
+## About the upgrade
+
+This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to be directly decrease the supply of UDT in circulation.
+
+## A cross-chain proposal
+
+The proposal uses a cross-chain proposal pattern that, once passed, will deploy the upgrade on multiple chains at once. This pattern has been introduced and tested in a [previous proposal](https://www.tally.xyz/gov/unlock/proposal/1926572528290918174819693611122933562560576845671089759587616947457423587439).
+
+## The calls
+
+All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}:
   
-  This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to be directly decrease the supply of UDT in circulation.
-
-  # A cross-chain proposal
-
-  The proposal uses a cross-chain proposal pattern that, once passed, will deploy the upgrade on multiple chains at once. This pattern has been introduced and tested in a [previous proposal](https://www.tally.xyz/gov/unlock/proposal/1926572528290918174819693611122933562560576845671089759587616947457423587439).
-
-  # The calls
-
-  All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}:
-  
-  ${Object.keys(explainers)
-    .map((id) => {
-      const lines = ['\n']
-      lines.push(`### Chain (${id})`)
-      explainers[id].forEach(({ explainer, contractAddress }) =>
-        lines.push(
-          `- \`${explainer}\` - ${
-            explainer.includes('upgrade') ? 'ProxyAdmin' : 'Unlock'
-          } at ${contractAddress}`
-        )
+${Object.keys(explainers)
+  .map((id) => {
+    const lines = ['\n']
+    lines.push(`### ${networks[id].name} (chain ${id}) \n`)
+    explainers[id].forEach(({ explainer, contractAddress }) =>
+      lines.push(
+        `- \`${explainer}\` - ${
+          explainer.includes('upgrade') ? 'ProxyAdmin' : 'Unlock'
+        } at ${contractAddress}`
       )
-      return lines
-    })
-    .flat()
-    .join('\n')}
-  
+    )
+    return lines
+  })
+  .flat()
+  .join('\n')}
   
 Onwards !
 
