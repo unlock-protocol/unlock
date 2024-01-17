@@ -20,11 +20,10 @@ interface RegistrationCardProps {
   }
 }
 
-export const RegistrationCardInternal = ({
+export const RegistrationCardInternalMultipleLocks = ({
   checkoutConfig,
 }: RegistrationCardProps) => {
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
-  const { account } = useAuth()
   const config = useConfig()
   const injectedProvider = selectProvider(config)
 
@@ -38,20 +37,35 @@ export const RegistrationCardInternal = ({
   )
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
-  const { isInitialLoading: isClaimableLoading, data: isClaimable } =
-    useCanClaim(
-      {
-        recipients: [account || ZERO],
-        lockAddress: Object.keys(checkoutConfig.config.locks)[0],
-        network: (checkoutConfig.config.locks[
-          Object.keys(checkoutConfig.config.locks)[0]
-        ].network || checkoutConfig.config.network)!,
-        data: [],
-      },
-      { enabled: Object.keys(checkoutConfig.config.locks).length === 1 }
-    )
+  const { account } = useAuth()
+  // const { isInitialLoading: isClaimableLoading, data: isClaimable } =
+  //   useCanClaim(
+  //     {
+  //       recipients: [account || ZERO],
+  //       lockAddress: Object.keys(checkoutConfig.config.locks)[0],
+  //       network: (checkoutConfig.config.locks[
+  //         Object.keys(checkoutConfig.config.locks)[0]
+  //       ].network || checkoutConfig.config.network)!,
+  //       data: [],
+  //     },
+  //     { enabled: Object.keys(checkoutConfig.config.locks).length === 1 }
+  //   )
 
-  if (isLoadingValidKeys || isClaimableLoading) {
+  // if (isClaimable) {
+  //   return (
+  //     <WalletlessRegistrationForm
+  //       lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
+  //       network={
+  //         (checkoutConfig.config.locks[
+  //           Object.keys(checkoutConfig.config.locks)[0]
+  //         ].network || checkoutConfig.config.network)!
+  //       }
+  //       refresh={refresh}
+  //     />
+  //   )
+  // }
+
+  if (isLoadingValidKeys) {
     return <Placeholder.Card size="md" />
   }
 
@@ -64,20 +78,6 @@ export const RegistrationCardInternal = ({
         </Link>
         .
       </p>
-    )
-  }
-
-  if (isClaimable) {
-    return (
-      <WalletlessRegistrationForm
-        lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
-        network={
-          (checkoutConfig.config.locks[
-            Object.keys(checkoutConfig.config.locks)[0]
-          ].network || checkoutConfig.config.network)!
-        }
-        refresh={refresh}
-      />
     )
   }
 
@@ -96,7 +96,6 @@ export const RegistrationCardInternal = ({
       <Button
         variant="primary"
         size="medium"
-        disabled={isClaimableLoading}
         onClick={() => {
           setCheckoutOpen(true)
         }}
@@ -111,6 +110,12 @@ export const RegistrationCard = ({
   event,
   checkoutConfig,
 }: RegistrationCardProps) => {
+  // We need to behave differently if there is only one lock
+  // If there is one single lock
+  if (Object.keys(checkoutConfig.config.locks) == 1) {
+  }
+
+  // Multiple locks!
   return (
     <Card className="grid gap-6 mt-10 lg:mt-0">
       <div className="grid gap-6 md:gap-8">
@@ -131,7 +136,46 @@ export const RegistrationCard = ({
           }
         )}
       </div>
-      <RegistrationCardInternal checkoutConfig={checkoutConfig} event={event} />
+      <RegistrationCardInternalMultipleLocks
+        checkoutConfig={checkoutConfig}
+        event={event}
+      />
+    </Card>
+  )
+}
+
+export const RegistrationCardSingleLock = ({
+  event,
+  checkoutConfig,
+}: RegistrationCardProps) => {
+  // If there is one single lock
+  // Check if if it is sold out
+  // or of it it is a free event
+
+  return (
+    <Card className="grid gap-6 mt-10 lg:mt-0">
+      <div className="grid gap-6 md:gap-8">
+        {Object.keys(checkoutConfig.config.locks)?.map(
+          (lockAddress: string) => {
+            return (
+              <LockPriceDetails
+                key={lockAddress}
+                lockAddress={lockAddress}
+                network={
+                  (checkoutConfig.config.locks[
+                    Object.keys(checkoutConfig.config.locks)[0]
+                  ].network || checkoutConfig.config.network)!
+                }
+                showContract
+              />
+            )
+          }
+        )}
+      </div>
+      {/* <RegistrationCardInternalMultipleLocks
+        checkoutConfig={checkoutConfig}
+        event={event}
+      /> */}
     </Card>
   )
 }
