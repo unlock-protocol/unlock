@@ -121,7 +121,7 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
   const calls = [
     {
       contractAddress: unlockAddress,
-      functionName: 'addLockTemplate', // explainer
+      explainer: `addLockTemplate(${publicLockAddress},${publicLockVersion})`,
       calldata: unlockInterface.encodeFunctionData('addLockTemplate', [
         publicLockAddress,
         publicLockVersion,
@@ -129,14 +129,14 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
     },
     {
       contractAddress: unlockAddress,
-      functionName: 'setLockTemplate', // explainer
+      explainer: `setLockTemplate(${publicLockAddress})`,
       calldata: unlockInterface.encodeFunctionData('setLockTemplate', [
         publicLockAddress,
       ]),
     },
     {
       contractAddress: proxyAdminAddress,
-      functionName: 'upgrade',
+      explainer: `upgrade(${unlockAddress},${unlockImplAddress})`,
       calldata: proxyAdminInterface.encodeFunctionData('upgrade', [
         unlockAddress,
         unlockImplAddress,
@@ -169,7 +169,7 @@ module.exports = async () => {
 
   // get all the calls
   const bridgeCalls = []
-  const explainers = []
+  const explainers = {}
 
   await Promise.all(
     targetChains.map(async (network, i) => {
@@ -188,10 +188,11 @@ module.exports = async () => {
       }
 
       const destCalls = calls[i]
+      explainers[destChainId] = []
 
       const abiCoder = ethers.AbiCoder.defaultAbiCoder()
       await Promise.all(
-        destCalls.map(async ({ contractAddress, calldata, functionName }) => {
+        destCalls.map(async ({ contractAddress, calldata, explainer }) => {
           // encode instructions to be executed by the SAFE
           const moduleData = await abiCoder.encode(
             ['address', 'uint256', 'bytes', 'bool'],
@@ -205,13 +206,8 @@ module.exports = async () => {
           )
           console.log(moduleData)
 
-          // add a small explanation
-          explainers.push([
-            destChainId,
-            destChainName,
-            functionName,
-            contractAddress,
-          ])
+          // organized explanations per chain
+          explainers[destChainId].push({ explainer, contractAddress })
 
           // add to the list of calls to be passed to the bridge
           bridgeCalls.push({
@@ -238,15 +234,36 @@ module.exports = async () => {
   // set proposal name
   const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
   
+  ### Goal of the proposal
+
+  This is a proposal for an upgrade of the core Unlock Protocol smart contracts - with the new Unlock Version (v13) and PublicLock version (v14). 
+
+  # About the upgrade
+  
+  This upgrade includes improved mechanics for UDT token governance, several improvements in existing features, gas optimisations and bug fixes. The main novelty is the new “swap and burn” feature that will allow fees collected by the protocol to be directly decrease the supply of UDT in circulation.
+
+  # A cross-chain proposal
+
+  The proposal uses a cross-chain proposal pattern that, once passed, will deploy the upgrade on multiple chains at once. This pattern has been introduced and tested in a [previous proposal](https://www.tally.xyz/gov/unlock/proposal/1926572528290918174819693611122933562560576845671089759587616947457423587439).
+
   # The calls
 
   All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}:
   
-  ${explainers
-    .map(
-      ([destChainId, destChainName, functionName, destAddress]) =>
-        `- \`${functionName}\` from ${destAddress} on chain ${destChainName} (${destChainId})`
-    )
+  ${Object.keys(explainers)
+    .map((id) => {
+      const lines = ['\n']
+      lines.push(`### Chain (${id})`)
+      explainers[id].forEach(({ explainer, contractAddress }) =>
+        lines.push(
+          `- \`${explainer}\` - ${
+            explainer.includes('upgrade') ? 'ProxyAdmin' : 'Unlock'
+          } at ${contractAddress}`
+        )
+      )
+      return lines
+    })
+    .flat()
     .join('\n')}
   
   
@@ -254,9 +271,9 @@ Onwards !
 
 The Unlock Protocol Team
 `
-
+  console.log(proposalName)
   return {
     proposalName,
-    bridgeCalls,
+    calls: bridgeCalls,
   }
 }
