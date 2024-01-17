@@ -59,15 +59,12 @@ async function main({ proxyAddress, contractName, contractVersion }) {
 
   console.log(`${contractName} implementation deployed at: ${implementation}`)
 
-  if (!isLocalhost()) {
+  if (!(await isLocalhost())) {
     await run('verify:verify', {
       address: implementation,
     })
   }
 
-  if (contractVersion) {
-    await cleanupContractVersions(__dirname)
-  }
   return implementation
 }
 
