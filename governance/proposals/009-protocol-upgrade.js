@@ -5,10 +5,67 @@
 const { network, ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
-const { getProxyAdminAddress } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getProxyAdminAddress,
+  getNetwork,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
+
+// TODO: move to hardhat-helpers
+const abiIConnext = [
+  {
+    inputs: [
+      {
+        internalType: 'uint32',
+        name: '_destination',
+        type: 'uint32',
+      },
+      {
+        internalType: 'address',
+        name: '_to',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_asset',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: '_delegate',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: '_slippage',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes',
+        name: '_callData',
+        type: 'bytes',
+      },
+    ],
+    name: 'xcall',
+    outputs: [
+      {
+        internalType: 'bytes32',
+        name: '',
+        type: 'bytes32',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+]
 
 // addresses
 const deployedContracts = {
@@ -95,18 +152,111 @@ module.exports = async () => {
     .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
     .map((id) => networks[id])
 
-  // parse all calls
+  // src info
+  const { id: chainId } = await getNetwork()
+  console.log(
+    `from ${chainId} to chains ${targetChains.map(({ id }) => id).join(' - ')}`
+  )
+
+  const {
+    governanceBridge: { connext: bridgeAddress },
+  } = networks[chainId]
+
+  // parse all calls for dest chains
   const calls = await Promise.all(
     targetChains.map((targetChain) => parseCalls(targetChain))
   )
 
-  console.log(calls)
+  // get all the calls
+  const bridgeCalls = []
+  const explainers = []
+
+  await Promise.all(
+    targetChains.map(async (network, i) => {
+      const { governanceBridge, id: destChainId, name: destChainName } = network
+
+      // make sure we have bridge info in networks package
+      if (!governanceBridge) return {}
+
+      const {
+        domainId: destDomainId,
+        modules: { connextMod: destAddress },
+      } = governanceBridge
+
+      if (!destDomainId || !destAddress) {
+        throw Error('Missing bridge information')
+      }
+
+      const destCalls = calls[i]
+
+      const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+      await Promise.all(
+        destCalls.map(async ({ contractAddress, calldata, functionName }) => {
+          // encode instructions to be executed by the SAFE
+          const moduleData = await abiCoder.encode(
+            ['address', 'uint256', 'bytes', 'bool'],
+            [
+              contractAddress, // to
+              0, // value
+              calldata, // data
+              0, // operation: 0 for CALL, 1 for DELEGATECALL
+              // 0,
+            ]
+          )
+          console.log(moduleData)
+
+          // add a small explanation
+          explainers.push([
+            destChainId,
+            destChainName,
+            functionName,
+            contractAddress,
+          ])
+
+          // add to the list of calls to be passed to the bridge
+          bridgeCalls.push({
+            contractAddress: bridgeAddress,
+            contractNameOrAbi: abiIConnext,
+            functionName: 'xcall',
+            functionArgs: [
+              destDomainId,
+              destAddress, // destMultisigAddress,
+              ADDRESS_ZERO, // asset
+              ADDRESS_ZERO, // delegate
+              0, // amount
+              30, // slippage
+              moduleData, // calldata
+            ],
+          })
+        })
+      )
+    })
+  )
+
+  console.log(bridgeCalls)
 
   // set proposal name
-  const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14`
+  const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
+  
+  # The calls
+
+  All calls are sent to the Connext bridge at ${bridgeAddress} on chain ${chainId}:
+  
+  ${explainers
+    .map(
+      ([destChainId, destChainName, functionName, destAddress]) =>
+        `- \`${functionName}\` from ${destAddress} on chain ${destChainName} (${destChainId})`
+    )
+    .join('\n')}
+  
+  
+Onwards !
+
+The Unlock Protocol Team
+`
 
   return {
     proposalName,
-    calls,
+    bridgeCalls,
   }
 }
