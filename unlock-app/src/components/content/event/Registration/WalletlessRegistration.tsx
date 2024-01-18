@@ -24,8 +24,6 @@ import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
 import { IoWarningOutline } from 'react-icons/io5'
 
-// TODO: once we have saved checkout config, use the metadata fields from there.
-// In the meantime, use email + wallet address
 const rsvpForm = z.object({
   email: z
     .string({
@@ -296,14 +294,13 @@ export const RegistrationForm = ({
     setLoading(true)
     console.log(data)
     try {
-      // TODO: uncomment me!
-      // await recaptchaRef.current?.reset()
-      // const captcha = await recaptchaRef.current?.executeAsync()
+      await recaptchaRef.current?.reset()
+      const captcha = await recaptchaRef.current?.executeAsync()
       await onRSVP({
         email,
         recipient,
         data,
-        captcha: '', // TODO: uncomment above!
+        captcha,
       })
       reset()
     } catch (error: any) {
