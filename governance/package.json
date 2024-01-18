@@ -5,6 +5,7 @@
   "dependencies": {
     "@matterlabs/hardhat-zksync-deploy": "1.1.2",
     "@matterlabs/hardhat-zksync-solc": "1.0.6",
+    "@matterlabs/hardhat-zksync-upgradable": "1.2.1",
     "@matterlabs/hardhat-zksync-verify": "1.2.2",
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",

@@ -13,22 +13,20 @@ async function main() {
     throw new Error('Private key not detected! Add it to the .env file!')
   }
   const CONTRACT_NAME = 'MockUSDC'
-  const [_, __, deployer] = setupDeployer(
+  const CONTRACT_ARGS = ['oUSDC', 'oUSDC', 18]
+  const { deployer, artifact } = setupDeployer(
     'https://sepolia.era.zksync.dev',
-    DEPLOYER_PRIVATE_KEY
+    DEPLOYER_PRIVATE_KEY,
+    CONTRACT_NAME
   )
-  const token = await deployContract(deployer, 'MockUSDC', [
-    'oUSDC',
-    'oUSDC',
-    18,
-  ])
+  const token = await deployContract(deployer, artifact, CONTRACT_ARGS)
   await token.waitForDeployment()
   const tokenAddress = await token.getAddress()
-  console.log(`MockUSDC deployed at ${tokenAddress}`)
+  console.log(`Contract deployed at ${tokenAddress}`)
   await hre.run('verify:verify', {
     address: tokenAddress,
     contract: `contracts/mocks/${CONTRACT_NAME}.sol:${CONTRACT_NAME}`,
-    constructorArguments: ['oUSDC', 'oUSDC', 18],
+    constructorArguments: CONTRACT_ARGS,
   })
 }
 
