@@ -6,7 +6,7 @@ dotenv.config()
 
 const DEPLOYER_PRIVATE_KEY = process.env.DEPLOYER_PRIVATE_KEY || ''
 
-const PROXY_ADDRESS = '0x1364840337396EE0D4CA2d38A24612Be539bc7B2'
+const PROXY_ADDRESS = 'PROXY_ADDRESS_HERE'
 
 if (!DEPLOYER_PRIVATE_KEY) {
   throw '⛔️ Private key not detected! Add it to the .env file!'
