@@ -1,20 +1,40 @@
-const { ethers, upgrades } = require('hardhat')
+const { ethers, upgrades, run } = require('hardhat')
+const {
+  copyAndBuildContractsAtVersion,
+  isLocalhost,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main() {
   const [minter] = await ethers.getSigners()
 
-  const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
+  await copyAndBuildContractsAtVersion(__dirname, [
+    {
+      contractName: 'UnlockDiscountToken',
+      version: 3,
+    },
+  ])
+
+  const UDT = await ethers.getContractFactory(
+    'contracts/past-versions/UnlockDiscountTokenV3.sol:UnlockDiscountTokenV3'
+  )
+
   const udt = await upgrades.deployProxy(UDT, [minter.address], {
     initializer: 'initialize(address)',
   })
-  await udt.deployed()
+  await udt.waitForDeployment()
+  const { hash } = await udt.deploymentTransaction()
+  const udtAddress = await udt.getAddress()
 
   // eslint-disable-next-line no-console
   console.log(
-    `UDT SETUP > UDT v3 (w proxy) deployed to: ${udt.address} (tx: ${udt.deployTransaction.hash})`
+    `UDT SETUP > UDT v3 (w proxy) deployed to: ${udtAddress} (tx: ${hash})`
   )
 
-  return udt.address
+  if (!(await isLocalhost())) {
+    await run('verify:verify', { address: udtAddress })
+  }
+
+  return udtAddress
 }
 
 // execute as standalone

@@ -39,7 +39,7 @@ async function main({ unlockVersion } = {}) {
     `- implementation at: ${implementation}`
   )
 
-  if (!isLocalhost()) {
+  if (!(await isLocalhost())) {
     await run('verify:verify', { address: implementation })
   }
 

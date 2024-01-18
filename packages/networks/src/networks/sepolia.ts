@@ -102,6 +102,9 @@ export const sepolia: NetworkConfig = {
     universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
   },
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
+  unlockDaoToken: {
+    address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
+  },
   url: 'https://github.com/eth-clients/sepolia',
 }
 
