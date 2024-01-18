@@ -66,7 +66,7 @@ const parseForkUrl = (networks) => {
             balance: '10000000000000000000000', // 1000 ETH yah
           },
         ]
-      : null,
+      : undefined,
   }
 
   // needed for Uniswap Router to compute routes on local forks
