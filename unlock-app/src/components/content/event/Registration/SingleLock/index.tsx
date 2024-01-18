@@ -35,16 +35,16 @@ export const RegistrationCardSingleLock = ({
   })
 
   const { account } = useAuth()
-  const { isInitialLoading: isClaimableLoading, data: isClaimable } =
-    useCanClaim(
-      {
-        recipients: [account || ZERO],
-        lockAddress,
-        network,
-        data: [],
-      },
-      { enabled: Object.keys(checkoutConfig.config.locks).length === 1 }
-    )
+
+  const { isInitialLoading: isClaimableLoading, data: canClaim } = useCanClaim(
+    {
+      recipients: [account || ZERO],
+      lockAddress,
+      network,
+      data: [],
+    },
+    { enabled: Object.keys(checkoutConfig.config.locks).length === 1 }
+  )
 
   const price =
     lock?.keyPrice && parseFloat(lock?.keyPrice) === 0 ? 'FREE' : lock?.keyPrice
@@ -55,6 +55,8 @@ export const RegistrationCardSingleLock = ({
   const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
 
   const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
+
+  const isClaimable = canClaim && !isSoldOut
 
   const { data: symbol } = useGetLockCurrencySymbol({
     lockAddress,
@@ -93,6 +95,9 @@ export const RegistrationCardSingleLock = ({
       )}
       {!isSoldOut && isClaimable && (
         <WalletlessRegistrationClaim
+          metadataInputs={
+            checkoutConfig.config.locks[lockAddress].metadataInputs
+          }
           lockAddress={lockAddress}
           network={network}
           refresh={refresh}

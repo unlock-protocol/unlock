@@ -138,6 +138,7 @@ const WalletlessRegistrationClaiming = ({
 }
 
 export const WalletlessRegistrationClaim = ({
+  metadataInputs,
   lockAddress,
   network,
   refresh,
@@ -193,7 +194,7 @@ export const WalletlessRegistrationClaim = ({
           claimResult={claimResult}
         />
       </Modal>
-      <RegistrationForm onRSVP={onRSVP} />
+      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
     </>
   )
 }
@@ -242,11 +243,12 @@ export const WalletlessRegistrationApply = ({
     ToastHelper.success('Application successfully sent!')
   }
 
-  return <RegistrationForm onRSVP={onRSVP} />
+  return <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
 }
 
 export const RegistrationForm = ({
   onRSVP,
+  metadataInputs,
 }: {
   onRSVP: ({
     email,
@@ -370,6 +372,35 @@ export const RegistrationForm = ({
           )
         }}
       />
+      {metadataInputs.map((metadataInputItem: any) => {
+        const {
+          name,
+          label,
+          defaultValue,
+          placeholder,
+          type,
+          required,
+          value,
+        } = metadataInputItem ?? {}
+        const inputLabel = label || name
+        return (
+          <Input
+            key={name}
+            label={`${inputLabel}:`}
+            autoComplete={inputLabel}
+            defaultValue={defaultValue}
+            size="small"
+            placeholder={placeholder}
+            type={type}
+            // // error={errors?.metadata?.[id]?.[name]?.message}
+            // {...register(`metadata.${id}.${name}`, {
+            //   required: required && `${inputLabel} is required`,
+            //   value,
+            // })}
+          />
+        )
+      })}
+
       <Button disabled={loading} loading={loading} type="submit">
         RSVP now
       </Button>
