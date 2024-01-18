@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
 const getOwners = require('../multisig/owners')
+const submitTx = require('../multisig/submitTx')
 const yesno = require('yesno')
 
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
@@ -75,6 +76,22 @@ async function main({ contractAddress, newOwner }) {
 
   const previousOwner = await contract.owner()
 
+  // check if previous owner is a multisig
+  let isMultisig = false
+  try {
+    const currentMultisigOwners = await getOwners({
+      safeAddress: previousOwner,
+    })
+    isMultisig = true
+    console.log(
+      `> The current owner is a multisig (${currentMultisigOwners.length} owners)`
+    )
+  } catch {
+    console.log(
+      `> The current owner is not a multisig : ${address(newOwner)} \n`
+    )
+  }
+
   let multisigOwners
   try {
     multisigOwners = await getOwners({ safeAddress: newOwner })
@@ -93,11 +110,32 @@ async function main({ contractAddress, newOwner }) {
   })
 
   if (ok) {
-    const tx = await contract.transferOwnership(newOwner)
-    const { transactionHash } = await tx.wait()
-    console.log(
-      `TRANSFER > Contract ownership transferred (tx: ${transactionHash}).`
-    )
+    if (isMultisig) {
+      // submit a tx to the multisig
+      const txArgs = {
+        safeAddress: previousOwner,
+        tx: {
+          contractAddress: contractAddress,
+          functionName: 'transferOwnership', // just for explainer
+          functionArgs: [newOwner], // just for explainer
+          value: 0, // ETH value
+          calldata: contract.interface.encodeFunctionData('transferOwnership', [
+            newOwner,
+          ]),
+        },
+        // signer,
+      }
+      const transactionId = await submitTx(txArgs)
+      console.log(
+        `TRANSFER > Contract ownership tx sent to multisig (id: ${transactionId}).`
+      )
+    } else {
+      const tx = await contract.transferOwnership(newOwner)
+      const { transactionHash } = await tx.wait()
+      console.log(
+        `TRANSFER > Contract ownership transferred (tx: ${transactionHash}).`
+      )
+    }
   } else {
     console.log('Transfer aborted.')
   }
