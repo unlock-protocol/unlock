@@ -269,7 +269,7 @@ The proposal uses a cross-chain proposal pattern that, once passed, will deploy 
 
 ## The calls
 
-They are ${
+There are ${
     calls.length
   } contract calls in this proposals. All calls are sent to the Connext bridge at ${bridgeAddress} on mainnet, except the 3 mainnet ones that are directly targeted at the Unlock factory contract. The Connext bridge will dispatch the relevant calls to each destination chain.
   
