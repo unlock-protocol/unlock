@@ -1,26 +1,22 @@
 import { RequestHandler } from 'express'
 import fetch from 'isomorphic-fetch'
-import config, { isProduction, isStaging } from '../../config/config'
+import config from '../../config/config'
 import normalizer from '../normalizer'
-import logger from '../../logger'
 
 /**
  * A list of authenticated users who are making calls for which we should bypass the captcha veification
  */
-const allowList = [].map((address: string) =>
-  normalizer.ethereumAddress(address)
-)
+const allowList = [
+  '0xFac55e21630b08B58119C58AA5a7f808424D777e', // Protocol Labs
+  '0xEedb7dd2D6317F31E4ECB60ED5f4c8971e2E4FF9', // Protocol Labs
+  '0xAA5E881Ca7c2d4e0253b61A89D0086E71ce9cb1e', // Protocol Labs
+].map((address: string) => normalizer.ethereumAddress(address))
 
 export const captchaMiddleware: RequestHandler = async (
   request,
   response,
   next
 ) => {
-  if (!isProduction && !isStaging) {
-    logger.debug('Skip captcha in development')
-    return next()
-  }
-
   if (
     request.user?.walletAddress &&
     allowList.indexOf(normalizer.ethereumAddress(request.user?.walletAddress)) >

@@ -12,6 +12,7 @@ import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useLockData } from '~/hooks/useLockData'
 import { EmbeddedCheckout } from '../EmbeddedCheckout'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { emailInput } from '~/components/interface/checkout/main/Metadata'
 
 export interface RegistrationCardSingleLockProps {
   checkoutConfig: {
@@ -75,6 +76,13 @@ export const RegistrationCardSingleLock = ({
     )
   }
 
+  const metadataInputs =
+    checkoutConfig.config.metadataInputs ||
+    checkoutConfig.config.locks[lockAddress].metadataInputs
+  const emailRequired =
+    checkoutConfig.config.emailRequired ||
+    checkoutConfig.config.locks[lockAddress].emailRequired
+
   return (
     <>
       <LockPriceInternals
@@ -89,6 +97,11 @@ export const RegistrationCardSingleLock = ({
       />
       {requiresApproval && (
         <WalletlessRegistrationApply
+          metadataInputs={
+            emailRequired && metadataInputs
+              ? [emailInput, ...metadataInputs]
+              : metadataInputs
+          }
           lockAddress={lockAddress}
           network={network}
         />
@@ -96,7 +109,9 @@ export const RegistrationCardSingleLock = ({
       {!isSoldOut && isClaimable && (
         <WalletlessRegistrationClaim
           metadataInputs={
-            checkoutConfig.config.locks[lockAddress].metadataInputs
+            emailRequired && metadataInputs
+              ? [emailInput, ...metadataInputs]
+              : metadataInputs
           }
           lockAddress={lockAddress}
           network={network}

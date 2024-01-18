@@ -20,6 +20,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { MetadataInputType } from '@unlock-protocol/core'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -51,6 +52,7 @@ interface WalletlessRegistrationProps {
 }
 
 interface FormProps {
+  metadataInputs?: MetadataInputType[]
   lockAddress: string
   network: number
   refresh?: () => void
@@ -200,6 +202,7 @@ export const WalletlessRegistrationClaim = ({
 }
 
 export const WalletlessRegistrationApply = ({
+  metadataInputs,
   lockAddress,
   network,
 }: FormProps) => {
@@ -250,6 +253,7 @@ export const RegistrationForm = ({
   onRSVP,
   metadataInputs,
 }: {
+  metadataInputs?: MetadataInputType[]
   onRSVP: ({
     email,
     recipient,
@@ -316,37 +320,71 @@ export const RegistrationForm = ({
         size="invisible"
         badge="bottomleft"
       />
-      <Input
-        {...register('email', {
-          required: {
-            value: true,
-            message: 'This field is required.',
-          },
-        })}
-        required
-        type="email"
-        placeholder="your@email.com"
-        label="Email address"
-        description={
-          'Please enter your email address to get a QR code by email.'
-        }
-        error={errors?.email?.message}
-      />
-      <Input
-        {...register('fullname', {
-          required: {
-            value: true,
-            message: 'This field is required.',
-          },
-        })}
-        required
-        placeholder="Satoshi Nakamoto"
-        label="Full Name"
-        description={
-          'Please enter your your full name to be added to the RSVP list.'
-        }
-        error={errors?.fullname?.message}
-      />
+
+      {(!metadataInputs || metadataInputs.length === 0) && (
+        <>
+          <Input
+            {...register('email', {
+              required: {
+                value: true,
+                message: 'This field is required.',
+              },
+            })}
+            required
+            type="email"
+            placeholder="your@email.com"
+            label="Email address"
+            description={
+              'Please enter your email address to get a QR code by email.'
+            }
+            error={errors?.email?.message}
+          />
+          <Input
+            {...register('fullname', {
+              required: {
+                value: true,
+                message: 'This field is required.',
+              },
+            })}
+            required
+            placeholder="Satoshi Nakamoto"
+            label="Full Name"
+            description={
+              'Please enter your your full name to be added to the RSVP list.'
+            }
+            error={errors?.fullname?.message}
+          />
+        </>
+      )}
+
+      {metadataInputs?.map((metadataInputItem: any) => {
+        const {
+          name,
+          label,
+          defaultValue,
+          placeholder,
+          type,
+          required,
+          value,
+        } = metadataInputItem ?? {}
+        const inputLabel = label || name
+        return (
+          <Input
+            key={name}
+            label={`${inputLabel}:`}
+            autoComplete={inputLabel}
+            defaultValue={defaultValue}
+            placeholder={placeholder}
+            type={type}
+            // // error={errors?.metadata?.[id]?.[name]?.message}
+            {...register(name, {
+              required: required && `${inputLabel} is required`,
+              value,
+            })}
+          />
+        )
+      })}
+
       <Controller
         name="recipient"
         control={control}
@@ -372,34 +410,6 @@ export const RegistrationForm = ({
           )
         }}
       />
-      {metadataInputs.map((metadataInputItem: any) => {
-        const {
-          name,
-          label,
-          defaultValue,
-          placeholder,
-          type,
-          required,
-          value,
-        } = metadataInputItem ?? {}
-        const inputLabel = label || name
-        return (
-          <Input
-            key={name}
-            label={`${inputLabel}:`}
-            autoComplete={inputLabel}
-            defaultValue={defaultValue}
-            size="small"
-            placeholder={placeholder}
-            type={type}
-            // // error={errors?.metadata?.[id]?.[name]?.message}
-            // {...register(`metadata.${id}.${name}`, {
-            //   required: required && `${inputLabel} is required`,
-            //   value,
-            // })}
-          />
-        )
-      })}
 
       <Button disabled={loading} loading={loading} type="submit">
         RSVP now
