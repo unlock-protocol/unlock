@@ -1,13 +1,8 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { z } from 'zod'
 import normalizer from '../../utils/normalizer'
-import networks from '@unlock-protocol/networks'
 import { Request, Response } from 'express'
-import {
-  addMetadata,
-  upsertUserMetadata,
-} from '../../operations/userMetadataOperations'
-import { KeyManager, Web3Service } from '@unlock-protocol/unlock-js'
+import { upsertUserMetadata } from '../../operations/userMetadataOperations'
+import { KeyManager } from '@unlock-protocol/unlock-js'
 import { UserMetadata } from './metadataController'
 import { Rsvp } from '../../models'
 
@@ -62,7 +57,7 @@ export const rsvp = async (request: Request, response: Response) => {
     metadata,
   })
 
-  const [rsvp, created] = await Rsvp.findOrCreate({
+  const [rsvp] = await Rsvp.findOrCreate({
     where: {
       network,
       userAddress,
