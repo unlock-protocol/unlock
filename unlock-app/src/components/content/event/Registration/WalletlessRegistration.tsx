@@ -22,6 +22,7 @@ import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
+import { IoWarningOutline } from 'react-icons/io5'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -156,18 +157,16 @@ export const WalletlessRegistrationClaim = ({
   const onRSVP = async ({
     email,
     recipient,
-    fullname,
+    data,
     captcha,
   }: {
     email: string
     recipient: string
-    fullname: string
+    data: any
     captcha: string
   }) => {
     const { hash, owner, message } = await claim({
-      metadata: {
-        fullname,
-      },
+      metadata: data,
       email,
       recipient,
       captcha,
@@ -215,29 +214,40 @@ export const WalletlessRegistrationApply = ({
   const onRSVP = async ({
     email,
     recipient,
-    fullname,
     captcha,
+    data,
   }: {
     email: string
     recipient: string
-    fullname: string
+    data: any
     captcha: string
   }) => {
-    const { message } = await rsvp({
-      metadata: {
-        fullname,
-      },
+    const result = await rsvp({
+      data,
       email,
       recipient,
       captcha,
     })
-    if (message) {
-      ToastHelper.error(message)
+    if (result.message) {
+      ToastHelper.error(result.message)
     }
-    ToastHelper.success('Application successfully sent!')
+    ToastHelper.success(
+      'Application successfully sent! The organizer will contact you if you are accepted!'
+    )
   }
 
-  return <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
+  return (
+    <>
+      <div className="flex rounded-md bg-[#FFF7E8] p-2">
+        <IoWarningOutline size="32" className="w-24" />
+        <p>
+          This event requires a vetting process, please submit the following
+          form & wait for the approval by the organizers!
+        </p>
+      </div>
+      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
+    </>
+  )
 }
 
 export const RegistrationForm = ({
@@ -248,12 +258,12 @@ export const RegistrationForm = ({
   onRSVP: ({
     email,
     recipient,
-    fullname,
     captcha,
+    data,
   }: {
     email: string
     recipient: string
-    fullname: string
+    data: any
     captcha: string
   }) => void
 }) => {
@@ -267,7 +277,6 @@ export const RegistrationForm = ({
     defaultValues: {
       email: '',
       recipient: account || '',
-      fullname: '',
     },
   })
   const {
@@ -283,13 +292,19 @@ export const RegistrationForm = ({
     control,
   })
 
-  const onSubmit = async ({ email, recipient, fullname }: RsvpFormProps) => {
+  const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
     setLoading(true)
+    console.log(data)
     try {
       // TODO: uncomment me!
       // await recaptchaRef.current?.reset()
       // const captcha = await recaptchaRef.current?.executeAsync()
-      await onRSVP({ email, recipient, fullname, captcha: '' })
+      await onRSVP({
+        email,
+        recipient,
+        data,
+        captcha: '', // TODO: uncomment above!
+      })
       reset()
     } catch (error: any) {
       console.error(error)
@@ -367,7 +382,8 @@ export const RegistrationForm = ({
             defaultValue={defaultValue}
             placeholder={placeholder}
             type={type}
-            // // error={errors?.metadata?.[id]?.[name]?.message}
+            // @ts-expect-error Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'FieldErrors<{ email: string; recipient: string; fullname: string; }>'.
+            error={errors[name]?.message}
             {...register(name, {
               required: required && `${inputLabel} is required`,
               value,
