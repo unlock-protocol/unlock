@@ -1,8 +1,8 @@
 const { ethers } = require('hardhat')
-const getOwners = require('./owners')
+const getOwners = require('../multisig/owners')
 const yesno = require('yesno')
 
-const { networks } = require('@unlock-protocol/networks')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 const abi = [
   {
@@ -52,16 +52,16 @@ const abi = [
   },
 ]
 
-async function main({ contractAddress, safeAddress }) {
-  const { chainId } = await ethers.provider.getNetwork()
-  if (!safeAddress) {
-    const { multisig } = networks[chainId]
-    if (multisig) {
-      safeAddress = multisig
-    }
-  }
+async function main({ contractAddress, newOwner }) {
+  const {
+    multisig,
+    explorer: {
+      urls: { address },
+    },
+  } = await getNetwork()
+  newOwner = newOwner || multisig
 
-  if (!safeAddress) {
+  if (!newOwner) {
     throw Error('TRANSFER > missing safe address')
   }
 
@@ -74,16 +74,26 @@ async function main({ contractAddress, safeAddress }) {
   const contract = await ethers.getContractAt(abi, contractAddress, signer)
 
   const previousOwner = await contract.owner()
-  const multisigOwners = await getOwners({ safeAddress })
+
+  let multisigOwners
+  try {
+    multisigOwners = await getOwners({ safeAddress: newOwner })
+    console.log(
+      `> The new owner is a multisig (${multisigOwners.length} owners)`
+    )
+  } catch {
+    console.log(`⚠️: The new owner is not a multisig : ${address(newOwner)}`)
+  }
+
   console.log(
-    `TRANSFER > Changing contract (${contractAddress}) ownership from ${previousOwner} to multisig ${safeAddress} (${multisigOwners.length} owners)`
+    `TRANSFER > Changing contract (${contractAddress}) ownership from ${previousOwner} to ${newOwner}`
   )
   const ok = await yesno({
     question: 'Are you sure you want to continue?',
   })
 
   if (ok) {
-    const tx = await contract.transferOwnership(safeAddress)
+    const tx = await contract.transferOwnership(newOwner)
     const { transactionHash } = await tx.wait()
     console.log(
       `TRANSFER > Contract ownership transferred (tx: ${transactionHash}).`

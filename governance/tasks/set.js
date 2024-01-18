@@ -130,3 +130,14 @@ task('set:template', 'Set PublicLock address in Unlock contract')
       unlockVersion,
     })
   })
+
+task('ownership:transfer', 'transfer the contract ownership to a new owner')
+  .addParam('contractAddress', 'the address of the ownable contract')
+  .addOptionalParam(
+    'newOwner',
+    'the address of the new owner (default to the team multisig)'
+  )
+  .setAction(async ({ newOwner, contractAddress }) => {
+    const transferOwnership = require('../scripts/setters/transferOwnership')
+    await transferOwnership({ contractAddress, newOwner })
+  })
