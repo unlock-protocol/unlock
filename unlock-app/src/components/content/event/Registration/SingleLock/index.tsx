@@ -1,5 +1,8 @@
 import { useCanClaim } from '~/hooks/useCanClaim'
-import { WalletlessRegistrationForm } from '../WalletlessRegistration'
+import {
+  WalletlessRegistrationApply,
+  WalletlessRegistrationClaim,
+} from '../WalletlessRegistration'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { LockPriceInternals } from '../LockPriceDetails'
@@ -82,15 +85,16 @@ export const RegistrationCardSingleLock = ({
         keysLeft={keysLeft}
         showContract={true}
       />
-      {requiresApproval && <p>APPLY!</p>}
+      {requiresApproval && (
+        <WalletlessRegistrationApply
+          lockAddress={lockAddress}
+          network={network}
+        />
+      )}
       {!isSoldOut && isClaimable && (
-        <WalletlessRegistrationForm
-          lockAddress={Object.keys(checkoutConfig.config.locks)[0]}
-          network={
-            (checkoutConfig.config.locks[
-              Object.keys(checkoutConfig.config.locks)[0]
-            ].network || checkoutConfig.config.network)!
-          }
+        <WalletlessRegistrationClaim
+          lockAddress={lockAddress}
+          network={network}
           refresh={refresh}
         />
       )}

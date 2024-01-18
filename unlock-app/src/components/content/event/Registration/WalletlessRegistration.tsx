@@ -53,7 +53,7 @@ interface WalletlessRegistrationProps {
 interface FormProps {
   lockAddress: string
   network: number
-  refresh: () => void
+  refresh?: () => void
 }
 
 const WalletlessRegistrationClaiming = ({
@@ -137,7 +137,7 @@ const WalletlessRegistrationClaiming = ({
   )
 }
 
-export const WalletlessRegistrationForm = ({
+export const WalletlessRegistrationClaim = ({
   lockAddress,
   network,
   refresh,
@@ -186,7 +186,9 @@ export const WalletlessRegistrationForm = ({
           network={network}
           handleClose={() => {
             setClaimOpen(false)
-            refresh()
+            if (refresh) {
+              refresh()
+            }
           }}
           claimResult={claimResult}
         />
@@ -194,6 +196,53 @@ export const WalletlessRegistrationForm = ({
       <RegistrationForm onRSVP={onRSVP} />
     </>
   )
+}
+
+export const WalletlessRegistrationApply = ({
+  lockAddress,
+  network,
+}: FormProps) => {
+  // const { mutateAsync: apply } = useRSVP({
+  //   lockAddress,
+  //   network,
+  // })
+
+  const onRSVP = async ({
+    email,
+    recipient,
+    fullname,
+    captcha,
+  }: {
+    email: string
+    recipient: string
+    fullname: string
+    captcha: string
+  }) => {
+    console.log({
+      lockAddress,
+      network,
+      metadata: {
+        fullname,
+      },
+      email,
+      recipient,
+      captcha,
+    })
+    // const { message } = await apply({
+    //   metadata: {
+    //     fullname,
+    //   },
+    //   email,
+    //   recipient,
+    //   captcha,
+    // })
+    // if (message) {
+    //   ToastHelper.error(message)
+    // }
+    ToastHelper.success('Application successfully sent!')
+  }
+
+  return <RegistrationForm onRSVP={onRSVP} />
 }
 
 export const RegistrationForm = ({
@@ -240,11 +289,13 @@ export const RegistrationForm = ({
   const onSubmit = async ({ email, recipient, fullname }: RsvpFormProps) => {
     setLoading(true)
     try {
-      await recaptchaRef.current?.reset()
-      const captcha = await recaptchaRef.current?.executeAsync()
-      await onRSVP({ email, recipient, fullname, captcha })
+      // TODO: uncomment me!
+      // await recaptchaRef.current?.reset()
+      // const captcha = await recaptchaRef.current?.executeAsync()
+      await onRSVP({ email, recipient, fullname, captcha: '' })
       reset()
     } catch (error: any) {
+      console.error(error)
       ToastHelper.error(
         'There was an error during registration. Please try again.'
       )
