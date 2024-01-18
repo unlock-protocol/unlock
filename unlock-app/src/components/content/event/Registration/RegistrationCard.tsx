@@ -38,38 +38,32 @@ export const RegistrationCard = ({ checkoutConfig }: RegistrationCardProps) => {
   // If there is one single lock
   if (Object.keys(checkoutConfig.config.locks).length == 1) {
     return (
-      <Card className="grid gap-6 mt-10 lg:mt-0">
-        <div className="grid gap-6 md:gap-8">
-          <RegistrationCardSingleLock
-            refresh={refresh}
-            checkoutConfig={checkoutConfig}
-          />
-        </div>
+      <Card className="grid gap-4 mt-10 lg:mt-0">
+        <RegistrationCardSingleLock
+          refresh={refresh}
+          checkoutConfig={checkoutConfig}
+        />
       </Card>
     )
   }
 
   // Multiple locks!
   return (
-    <Card className="grid gap-6 mt-10 lg:mt-0">
-      <div className="grid gap-6 md:gap-8">
-        {Object.keys(checkoutConfig.config.locks)?.map(
-          (lockAddress: string) => {
-            return (
-              <LockPriceDetails
-                key={lockAddress}
-                lockAddress={lockAddress}
-                network={
-                  (checkoutConfig.config.locks[
-                    Object.keys(checkoutConfig.config.locks)[0]
-                  ].network || checkoutConfig.config.network)!
-                }
-                showContract
-              />
-            )
-          }
-        )}
-      </div>
+    <Card className="grid gap-4 mt-10 lg:mt-0">
+      {Object.keys(checkoutConfig.config.locks)?.map((lockAddress: string) => {
+        return (
+          <LockPriceDetails
+            key={lockAddress}
+            lockAddress={lockAddress}
+            network={
+              (checkoutConfig.config.locks[
+                Object.keys(checkoutConfig.config.locks)[0]
+              ].network || checkoutConfig.config.network)!
+            }
+            showContract
+          />
+        )
+      })}
       <EmbeddedCheckout checkoutConfig={checkoutConfig} refresh={refresh} />
     </Card>
   )

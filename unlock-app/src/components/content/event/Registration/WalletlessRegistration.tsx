@@ -21,6 +21,7 @@ import { TransactionStatus } from '~/components/interface/checkout/main/checkout
 import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { MetadataInputType } from '@unlock-protocol/core'
+import { useRsvp } from '~/hooks/useRsvp'
 
 // TODO: once we have saved checkout config, use the metadata fields from there.
 // In the meantime, use email + wallet address
@@ -206,10 +207,10 @@ export const WalletlessRegistrationApply = ({
   lockAddress,
   network,
 }: FormProps) => {
-  // const { mutateAsync: apply } = useRSVP({
-  //   lockAddress,
-  //   network,
-  // })
+  const { mutateAsync: rsvp } = useRsvp({
+    lockAddress,
+    network,
+  })
 
   const onRSVP = async ({
     email,
@@ -222,9 +223,7 @@ export const WalletlessRegistrationApply = ({
     fullname: string
     captcha: string
   }) => {
-    console.log({
-      lockAddress,
-      network,
+    const { message } = await rsvp({
       metadata: {
         fullname,
       },
@@ -232,17 +231,9 @@ export const WalletlessRegistrationApply = ({
       recipient,
       captcha,
     })
-    // const { message } = await apply({
-    //   metadata: {
-    //     fullname,
-    //   },
-    //   email,
-    //   recipient,
-    //   captcha,
-    // })
-    // if (message) {
-    //   ToastHelper.error(message)
-    // }
+    if (message) {
+      ToastHelper.error(message)
+    }
     ToastHelper.success('Application successfully sent!')
   }
 
@@ -312,7 +303,7 @@ export const RegistrationForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col w-full gap-6 py-4"
+      className="flex flex-col w-full gap-4"
     >
       <ReCaptcha
         ref={recaptchaRef}

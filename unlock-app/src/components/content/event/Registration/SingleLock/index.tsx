@@ -72,6 +72,7 @@ export const RegistrationCardSingleLock = ({
       <Placeholder.Root inline>
         <Placeholder.Line width="sm" />
         <Placeholder.Line width="sm" />
+        <Placeholder.Line width="lg" />
       </Placeholder.Root>
     )
   }
@@ -85,16 +86,18 @@ export const RegistrationCardSingleLock = ({
 
   return (
     <>
-      <LockPriceInternals
-        lock={lock}
-        network={network}
-        symbol={symbol}
-        price={price!}
-        hasUnlimitedKeys={hasUnlimitedKeys}
-        isSoldOut={isSoldOut}
-        keysLeft={keysLeft}
-        showContract={true}
-      />
+      {!requiresApproval && (
+        <LockPriceInternals
+          lock={lock}
+          network={network}
+          symbol={symbol}
+          price={price!}
+          hasUnlimitedKeys={hasUnlimitedKeys}
+          isSoldOut={isSoldOut}
+          keysLeft={keysLeft}
+          showContract={true}
+        />
+      )}
       {requiresApproval && (
         <WalletlessRegistrationApply
           metadataInputs={
