@@ -5,6 +5,8 @@ import { upsertUserMetadata } from '../../operations/userMetadataOperations'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { UserMetadata } from './metadataController'
 import { Rsvp } from '../../models'
+import { sendEmail } from '../../operations/wedlocksOperations'
+import { getEventDataForLock } from '../../operations/eventOperations'
 
 const RsvpBody = z.object({
   data: z.record(z.string(), z.string()),
@@ -57,7 +59,7 @@ export const rsvp = async (request: Request, response: Response) => {
     metadata,
   })
 
-  const [rsvp] = await Rsvp.findOrCreate({
+  const [rsvp, created] = await Rsvp.findOrCreate({
     where: {
       network,
       userAddress,
@@ -70,5 +72,22 @@ export const rsvp = async (request: Request, response: Response) => {
       approval: 'pending',
     },
   })
+  if (created) {
+    const eventDetail = await getEventDataForLock(lockAddress, network)
+    await sendEmail({
+      network,
+      template: 'eventRsvpSubmitted',
+      failoverTemplate: 'eventRsvpSubmitted',
+      recipient: email,
+      // @ts-expect-error
+      params: {
+        eventName: eventDetail?.eventName,
+        eventDate: eventDetail?.eventDate,
+        eventTime: eventDetail?.eventTime,
+        eventUrl: eventDetail?.eventUrl || '',
+      },
+      attachments: [],
+    })
+  }
   return response.status(200).send(rsvp.toJSON())
 }
