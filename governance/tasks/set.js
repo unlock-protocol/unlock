@@ -130,3 +130,21 @@ task('set:template', 'Set PublicLock address in Unlock contract')
       unlockVersion,
     })
   })
+
+task('block:increase', 'Increase blocks')
+  .addParam('n', 'number of blocks')
+  .setAction(async ({ n }, { ethers }) => {
+    const params = [
+      ethers.toQuantity(BigInt(n)), // hex encoded number of blocks to increase
+    ]
+    await ethers.provider.send('evm_increaseBlocks', params)
+    console.log(`> advancing ${n} blocks`)
+  })
+
+task('time:increase', 'Increase blocks')
+  .addParam('n', 'number of minutes')
+  .setAction(async ({ n }, { ethers }) => {
+    const params = [ethers.toQuantity(BigInt(n * 60))]
+    await ethers.provider.send('evm_increaseTime', params)
+    console.log(`> advancing ${n * 60} minutes`)
+  })
