@@ -251,7 +251,7 @@ export const MetadataInputs = ({
   )
 }
 
-const emailInput: MetadataInput = {
+export const emailInput: MetadataInput = {
   type: 'email',
   name: 'email',
   label: 'Email',

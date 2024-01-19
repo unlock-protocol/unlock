@@ -27,7 +27,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
-import { RegistrationCard } from './RegistrationCard'
+import { RegistrationCard } from './Registration/RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { storage } from '~/config/storage'
@@ -280,7 +280,7 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-          <RegistrationCard checkoutConfig={checkoutConfig} event={event} />
+          <RegistrationCard checkoutConfig={checkoutConfig} />
         </section>
       </div>
 

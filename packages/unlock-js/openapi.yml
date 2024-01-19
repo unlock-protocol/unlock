@@ -3426,3 +3426,52 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}:
+    post:
+      operationId: rsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+
+      description: User applies to attend an event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                email:
+                  type: string
+                data:
+                  type: object
+                  additionalProperties: true
+      responses:
+        200:
+          description: Successfully applied to event
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lockAddress:
+                    type: string
+                  userAddress:
+                    type: string
+                  approval:
+                    type: string
+                  network:
+                    type: number
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'

@@ -61,10 +61,6 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       <Stepper service={checkoutService} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex justify-center">
-          {/* 
-            todo: Type '{}' is not assignable to type 'ReactNode'.
-              
-            @ts-ignore */}
           <ReCAPTCHA
             sitekey={config.recaptchaKey}
             onChange={(token) => setRecaptchaValue(token)}
