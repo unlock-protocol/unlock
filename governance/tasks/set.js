@@ -141,3 +141,21 @@ task('ownership:transfer', 'transfer the contract ownership to a new owner')
     const transferOwnership = require('../scripts/setters/transferOwnership')
     await transferOwnership({ contractAddress, newOwner })
   })
+
+task('block:increase', 'Increase blocks')
+  .addParam('n', 'number of blocks')
+  .setAction(async ({ n }, { ethers }) => {
+    const params = [
+      ethers.toQuantity(BigInt(n)), // hex encoded number of blocks to increase
+    ]
+    await ethers.provider.send('evm_increaseBlocks', params)
+    console.log(`> advancing ${n} blocks`)
+  })
+
+task('time:increase', 'Increase blocks')
+  .addParam('n', 'number of minutes')
+  .setAction(async ({ n }, { ethers }) => {
+    const params = [ethers.toQuantity(BigInt(n * 60))]
+    await ethers.provider.send('evm_increaseTime', params)
+    console.log(`> advancing ${n * 60} minutes`)
+  })
