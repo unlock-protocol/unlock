@@ -65,7 +65,9 @@ export const RegistrationCardSingleLock = ({
     contractAddress: lock?.currencyContractAddress,
   })
 
-  const requiresApproval = lock?.maxNumberOfKeys == 0
+  const requiresApproval =
+    lock?.maxNumberOfKeys == 0 ||
+    lockAddress === '0x7E61cF5C4c2F1b8aa22C69CD5716343c53fd34bf'
 
   if (isLockLoading || isClaimableLoading || !lock) {
     return (
