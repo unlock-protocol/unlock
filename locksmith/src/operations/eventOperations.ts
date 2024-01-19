@@ -140,13 +140,12 @@ export const getEventBySlug = async (slug: string) => {
 
 export const createEventSlug = async (
   name: string,
-  eventId?: number,
   index: number | undefined = undefined
 ): Promise<string> => {
   const slug = index ? kebabCase([name, index].join('-')) : kebabCase(name)
   const event = await getEventBySlug(slug)
-  if (!!event && event.id !== eventId) {
-    return createEventSlug(name, eventId, index ? index + 1 : 1)
+  if (event) {
+    return createEventSlug(name, index ? index + 1 : 1)
   }
   return slug
 }
@@ -155,12 +154,9 @@ export const saveEvent = async (
   parsed: EventBodyType,
   walletAddress: string
 ): Promise<[EventData, boolean]> => {
-  const slug =
-    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
-
+  const slug = parsed.data.slug || (await createEventSlug(parsed.data.name))
   const [savedEvent, created] = await EventData.upsert(
     {
-      id: parsed.id,
       name: parsed.data.name,
       slug,
       data: {
@@ -173,13 +169,12 @@ export const saveEvent = async (
       conflictFields: ['slug'],
     }
   )
-
   if (!savedEvent.checkoutConfigId) {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(
       parsed.checkoutConfig.config
     )
     const createdConfig = await saveCheckoutConfig({
-      name: `Checkout config for ${savedEvent.name}`,
+      name: `Checkout config for ${savedEvent.name} (${savedEvent.slug})`,
       config: checkoutConfig,
       createdBy: walletAddress,
     })
