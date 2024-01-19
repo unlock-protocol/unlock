@@ -292,6 +292,7 @@ export const RegistrationForm = ({
 
   const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
     setLoading(true)
+    console.log(data)
     try {
       await recaptchaRef.current?.reset()
       const captcha = await recaptchaRef.current?.executeAsync()
