@@ -73,6 +73,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
   const { network, account } = useAuth()
   const [isInPerson, setIsInPerson] = useState(true)
+  const [screeningEnabled, enableScreening] = useState(false)
   const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
@@ -441,103 +442,125 @@ export const Form = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
-          <Disclosure label="Price and Capacity" defaultOpen>
-            <div className="grid ">
+          <Disclosure label="Attendee Screening" defaultOpen>
+            <div className="flex ">
               <p>
-                These settings can also be changed, but only by sending on-chain
-                transactions.
+                Enable this feature so guest can apply to attend your event &
+                get your approval before receiving the NFT ticket.
               </p>
-              <div className="relative flex flex-col mt-4">
-                <div className="flex items-center justify-between">
+              <ToggleSwitch
+                enabled={screeningEnabled}
+                setEnabled={enableScreening}
+                onChange={(enabled: boolean) => {
+                  if (enabled) {
+                    setValue('lock.maxNumberOfKeys', 0)
+                  }
+                }}
+              />
+            </div>
+          </Disclosure>
+
+          {!screeningEnabled && (
+            <Disclosure label="Price and Capacity" defaultOpen>
+              <div className="grid ">
+                <p>
+                  These settings can also be changed, but only by sending
+                  on-chain transactions.
+                </p>
+
+                <div className="relative flex flex-col mt-4">
+                  <div className="flex items-center justify-between">
+                    <label className="" htmlFor="">
+                      Currency & Price:
+                    </label>
+                    <ToggleSwitch
+                      title="Free"
+                      enabled={isFree}
+                      setEnabled={setIsFree}
+                      onChange={(enable: boolean) => {
+                        if (enable) {
+                          setValue('lock.keyPrice', '0')
+                        }
+                      }}
+                    />
+                  </div>
+
+                  <div className="relative">
+                    <SelectCurrencyModal
+                      isOpen={isCurrencyModalOpen}
+                      setIsOpen={setCurrencyModalOpen}
+                      network={Number(details.network)}
+                      onSelect={(token: Token) => {
+                        setValue('lock.currencyContractAddress', token.address)
+                        setValue('currencySymbol', token.symbol)
+                      }}
+                    />
+                    <div className="grid grid-cols-2 gap-2 justify-items-stretch">
+                      <div className="flex flex-col gap-1.5">
+                        <div
+                          onClick={() => setCurrencyModalOpen(true)}
+                          className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+                        >
+                          <CryptoIcon symbol={details.currencySymbol!} />
+                          <span>{details.currencySymbol}</span>
+                        </div>
+                        <div className="pl-1"></div>
+                      </div>
+
+                      <Input
+                        type="number"
+                        autoComplete="off"
+                        placeholder="0.00"
+                        step="any"
+                        disabled={isFree}
+                        {...register('lock.keyPrice', {
+                          valueAsNumber: true,
+                          required: !isFree,
+                        })}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between mt-4">
                   <label className="" htmlFor="">
-                    Currency & Price:
+                    Capacity:
                   </label>
                   <ToggleSwitch
-                    title="Free"
-                    enabled={isFree}
-                    setEnabled={setIsFree}
-                    onChange={(enable: boolean) => {
-                      if (enable) {
-                        setValue('lock.keyPrice', '0')
+                    title="Unlimited"
+                    enabled={isUnlimitedCapacity}
+                    setEnabled={setIsUnlimitedCapacity}
+                    onChange={(enabled) => {
+                      if (enabled) {
+                        setValue('lock.maxNumberOfKeys', undefined)
                       }
                     }}
                   />
                 </div>
 
-                <div className="relative">
-                  <SelectCurrencyModal
-                    isOpen={isCurrencyModalOpen}
-                    setIsOpen={setCurrencyModalOpen}
-                    network={Number(details.network)}
-                    onSelect={(token: Token) => {
-                      setValue('lock.currencyContractAddress', token.address)
-                      setValue('currencySymbol', token.symbol)
-                    }}
-                  />
-                  <div className="grid grid-cols-2 gap-2 justify-items-stretch">
-                    <div className="flex flex-col gap-1.5">
-                      <div
-                        onClick={() => setCurrencyModalOpen(true)}
-                        className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
-                      >
-                        <CryptoIcon symbol={details.currencySymbol!} />
-                        <span>{details.currencySymbol}</span>
-                      </div>
-                      <div className="pl-1"></div>
-                    </div>
-
-                    <Input
-                      type="number"
-                      autoComplete="off"
-                      placeholder="0.00"
-                      step="any"
-                      disabled={isFree}
-                      {...register('lock.keyPrice', {
-                        valueAsNumber: true,
-                        required: !isFree,
-                      })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between mt-4">
-                <label className="" htmlFor="">
-                  Capacity:
-                </label>
-                <ToggleSwitch
-                  title="Unlimited"
-                  enabled={isUnlimitedCapacity}
-                  setEnabled={setIsUnlimitedCapacity}
-                  onChange={(enabled) => {
-                    if (enabled) {
-                      setValue('lock.maxNumberOfKeys', undefined)
-                    }
-                  }}
+                <Input
+                  {...register('lock.maxNumberOfKeys', {
+                    min: 0,
+                    valueAsNumber: true,
+                    required: {
+                      value: !isUnlimitedCapacity,
+                      message: 'Capacity is required. ',
+                    },
+                  })}
+                  disabled={isUnlimitedCapacity}
+                  autoComplete="off"
+                  step={1}
+                  pattern="\d+"
+                  type="number"
+                  placeholder="Capacity"
+                  description={
+                    'This is the maximum number of tickets for your event. '
+                  }
+                  error={errors.lock?.maxNumberOfKeys?.message}
                 />
               </div>
-              <Input
-                {...register('lock.maxNumberOfKeys', {
-                  min: 0,
-                  valueAsNumber: true,
-                  required: {
-                    value: !isUnlimitedCapacity,
-                    message: 'Capacity is required. ',
-                  },
-                })}
-                disabled={isUnlimitedCapacity}
-                autoComplete="off"
-                step={1}
-                pattern="\d+"
-                type="number"
-                placeholder="Capacity"
-                description={
-                  'This is the maximum number of tickets for your event. '
-                }
-                error={errors.lock?.maxNumberOfKeys?.message}
-              />
-            </div>
-          </Disclosure>
+            </Disclosure>
+          )}
 
           <div className="flex flex-col justify-center gap-6">
             {Object.keys(errors).length > 0 && (
