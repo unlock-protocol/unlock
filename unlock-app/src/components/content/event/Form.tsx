@@ -445,7 +445,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           <Disclosure label="Attendee Screening" defaultOpen>
             <div className="flex ">
               <p>
-                Enable this feature so guest can apply to attend your event &
+                Enable this feature so guests can apply to attend your event &
                 get your approval before receiving the NFT ticket.
               </p>
               <ToggleSwitch
