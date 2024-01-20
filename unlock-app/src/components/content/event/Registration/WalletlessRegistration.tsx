@@ -239,8 +239,8 @@ export const WalletlessRegistrationApply = ({
       <div className="flex rounded-md bg-[#FFF7E8] p-2">
         <IoWarningOutline size="32" className="w-24" />
         <p>
-          This event requires a vetting process, please submit the following
-          form & wait for the approval by the organizers!
+          This event requires approval, once approved you will receive an email
+          with your ticket and location details!{' '}
         </p>
       </div>
       <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
