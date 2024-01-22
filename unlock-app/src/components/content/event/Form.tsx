@@ -70,6 +70,7 @@ interface FormProps {
 }
 
 export const Form = ({ onSubmit }: FormProps) => {
+  const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
   const { network, account } = useAuth()
   const [isInPerson, setIsInPerson] = useState(true)
@@ -116,6 +117,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     control,
     register,
     setValue,
+    getValues,
     formState: { errors },
     watch,
   } = methods
@@ -453,7 +455,12 @@ export const Form = ({ onSubmit }: FormProps) => {
                 setEnabled={enableScreening}
                 onChange={(enabled: boolean) => {
                   if (enabled) {
+                    setOldMaxNumberOfKeys(
+                      getValues('lock.maxNumberOfKeys') || 100
+                    )
                     setValue('lock.maxNumberOfKeys', 0)
+                  } else {
+                    setValue('lock.maxNumberOfKeys', oldMaxNumberOfKeys)
                   }
                 }}
               />
