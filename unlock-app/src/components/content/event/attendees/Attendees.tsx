@@ -25,7 +25,7 @@ interface AttendeesProps {
   }
 }
 
-export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
+export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
