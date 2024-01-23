@@ -26,6 +26,7 @@ interface AttendeesProps {
 }
 
 export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
+  console.log(event.requiresApproval)
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
