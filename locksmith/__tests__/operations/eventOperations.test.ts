@@ -1,6 +1,7 @@
 import { CheckoutConfig, EventData } from '../../src/models'
 import {
   createEventSlug,
+  getEventBySlug,
   saveEvent,
 } from '../../src/operations/eventOperations'
 describe('eventOperations', () => {
@@ -55,6 +56,18 @@ describe('eventOperations', () => {
         '0x123'
       )
       expect(sameEvent.slug).toEqual(event.slug)
+    })
+
+    it('should save requiresAppoval when applicable', async () => {
+      expect.assertions(2)
+      const eventParams = {
+        data: { name: 'my rsvp party', requiresApproval: true },
+        checkoutConfig: { config: { locks: {} } },
+      }
+      const [{ slug }] = await saveEvent(eventParams, '0x123')
+      const savedEvent = await getEventBySlug(slug)
+      expect(savedEvent.slug).toEqual('my-rsvp-party')
+      expect(savedEvent?.data.requiresApproval).toEqual(true)
     })
   })
 })
