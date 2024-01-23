@@ -282,8 +282,6 @@ export const RegistrationForm = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
-    getValues,
     control,
     reset,
   } = localForm
@@ -291,11 +289,6 @@ export const RegistrationForm = ({
   const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
     setLoading(true)
     try {
-      console.log({
-        email,
-        recipient,
-        data,
-      })
       const captcha = await getCaptchaValue()
       await onRSVP({
         email,
@@ -303,7 +296,7 @@ export const RegistrationForm = ({
         data,
         captcha,
       })
-      // reset()
+      reset()
     } catch (error: any) {
       console.error(error)
       ToastHelper.error(
