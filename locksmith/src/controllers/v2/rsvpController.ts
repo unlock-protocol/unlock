@@ -23,7 +23,6 @@ const RsvpBody = z.object({
 export const rsvp = async (request: Request, response: Response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  console.log(request.body)
   const { recipient, data, email } = await RsvpBody.parseAsync(request.body)
 
   let userAddress = recipient
@@ -38,8 +37,6 @@ export const rsvp = async (request: Request, response: Response) => {
       },
     })
   }
-
-  console.log({ recipient, data, email, userAddress })
 
   // By default we protect all metadata
   const protectedMetadata = {
@@ -82,9 +79,10 @@ export const rsvp = async (request: Request, response: Response) => {
     lockAddress,
     metadata,
   })
+
   // Then, send email
   const eventDetail = await getEventDataForLock(lockAddress, network)
-  await sendEmail({
+  sendEmail({
     network,
     template: 'eventRsvpSubmitted',
     failoverTemplate: 'eventRsvpSubmitted',
@@ -98,5 +96,5 @@ export const rsvp = async (request: Request, response: Response) => {
     },
     attachments: [],
   })
-  return rsvp
+  return response.status(200).send(rsvp.toJSON())
 }
