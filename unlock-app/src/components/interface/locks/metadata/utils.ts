@@ -64,10 +64,12 @@ export function toFormData({
   youtube_url,
   background_color,
   image,
+  ...rest
 }: Partial<Metadata>) {
   const categorizedAttrs = categorizeAttributes(attributes || [])
   const metadata = {
     ...categorizedAttrs,
+    ...rest,
   } as MetadataFormData
 
   if (slug) {

@@ -107,8 +107,8 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
-        slug: '',
         image: '',
+        requiresAppoval: false,
       },
     },
   })
@@ -454,6 +454,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                 enabled={screeningEnabled}
                 setEnabled={enableScreening}
                 onChange={(enabled: boolean) => {
+                  setValue('metadata.requiresAppoval', enabled)
                   if (enabled) {
                     setOldMaxNumberOfKeys(
                       getValues('lock.maxNumberOfKeys') || 100

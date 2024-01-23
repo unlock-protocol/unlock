@@ -52,10 +52,13 @@ export const NewEvent = () => {
     }
     if (lockAddress) {
       const { data: event } = await storage.saveEventData({
-        data: formDataToMetadata({
-          name: formData.lock.name,
+        data: {
+          ...formDataToMetadata({
+            name: formData.lock.name,
+            ...formData.metadata,
+          }),
           ...formData.metadata,
-        }),
+        },
         checkoutConfig: {
           name: `Checkout config for ${formData.lock.name}`,
           config: {
