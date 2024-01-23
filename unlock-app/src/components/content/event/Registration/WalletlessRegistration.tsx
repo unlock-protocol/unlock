@@ -23,6 +23,7 @@ import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
 import { IoWarningOutline } from 'react-icons/io5'
+import { useCaptcha } from '~/hooks/useCaptcha'
 
 const rsvpForm = z.object({
   email: z
@@ -266,7 +267,7 @@ export const RegistrationForm = ({
   }) => void
 }) => {
   const config = useConfig()
-  const recaptchaRef = useRef<any>()
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
   const [loading, setLoading] = useState<boolean>(false)
   const { account } = useAuth()
 
@@ -282,27 +283,27 @@ export const RegistrationForm = ({
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
     control,
     reset,
   } = localForm
 
-  const { recipient = '' } = useWatch({
-    control,
-  })
-
   const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
     setLoading(true)
-    console.log(data)
     try {
-      await recaptchaRef.current?.reset()
-      const captcha = await recaptchaRef.current?.executeAsync()
+      console.log({
+        email,
+        recipient,
+        data,
+      })
+      const captcha = await getCaptchaValue()
       await onRSVP({
         email,
         recipient,
         data,
         captcha,
       })
-      reset()
+      // reset()
     } catch (error: any) {
       console.error(error)
       ToastHelper.error(
@@ -397,19 +398,16 @@ export const RegistrationForm = ({
             return !address || isAddressOrEns(address)
           },
         }}
-        render={() => {
+        render={({ field }) => {
           return (
             <AddressInput
               optional
-              value={recipient}
               withIcon
               placeholder="0x..."
               label="Wallet address or ENS"
-              onChange={(value: any) => {
-                setValue('recipient', value)
-              }}
               description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
               onResolveName={onResolveName}
+              {...field}
             />
           )
         }}

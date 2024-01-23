@@ -23,13 +23,8 @@ const RsvpBody = z.object({
 export const rsvp = async (request: Request, response: Response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
+  console.log(request.body)
   const { recipient, data, email } = await RsvpBody.parseAsync(request.body)
-
-  // By default we protect all metadata
-  const protectedMetadata = {
-    ...data,
-    email,
-  }
 
   let userAddress = recipient
   // Support for walletless RSVP
@@ -44,6 +39,14 @@ export const rsvp = async (request: Request, response: Response) => {
     })
   }
 
+  console.log({ recipient, data, email, userAddress })
+
+  // By default we protect all metadata
+  const protectedMetadata = {
+    ...data,
+    email,
+  }
+
   // Ok cool, then for each record, let's store the UserTokenMetadata
   // And then let's just add the network, lockAddress, userAddress to a new Table called RSVPs, with a state?
   const metadata = await UserMetadata.parseAsync({
@@ -52,42 +55,48 @@ export const rsvp = async (request: Request, response: Response) => {
       ...protectedMetadata,
     },
   })
+
+  let rsvp = await Rsvp.findOne({
+    where: {
+      network,
+      userAddress,
+      lockAddress,
+    },
+  })
+  if (rsvp) {
+    // We do not overwrite the metadata, on purpose. First come, first serve for wallets!
+    return response.status(200).send(rsvp.toJSON())
+  }
+  // Let's try to create a new RSVP
+  rsvp = await Rsvp.create({
+    network,
+    userAddress,
+    lockAddress,
+    approval: 'pending',
+  })
+
+  // then save metadata
   await upsertUserMetadata({
     network,
     userAddress,
     lockAddress,
     metadata,
   })
-
-  const [rsvp, created] = await Rsvp.findOrCreate({
-    where: {
-      network,
-      userAddress,
-      lockAddress,
+  // Then, send email
+  const eventDetail = await getEventDataForLock(lockAddress, network)
+  await sendEmail({
+    network,
+    template: 'eventRsvpSubmitted',
+    failoverTemplate: 'eventRsvpSubmitted',
+    recipient: email,
+    // @ts-expect-error
+    params: {
+      eventName: eventDetail?.eventName,
+      eventDate: eventDetail?.eventDate,
+      eventTime: eventDetail?.eventTime,
+      eventUrl: eventDetail?.eventUrl || '',
     },
-    defaults: {
-      network,
-      userAddress,
-      lockAddress,
-      approval: 'pending',
-    },
+    attachments: [],
   })
-  if (created) {
-    const eventDetail = await getEventDataForLock(lockAddress, network)
-    await sendEmail({
-      network,
-      template: 'eventRsvpSubmitted',
-      failoverTemplate: 'eventRsvpSubmitted',
-      recipient: email,
-      // @ts-expect-error
-      params: {
-        eventName: eventDetail?.eventName,
-        eventDate: eventDetail?.eventDate,
-        eventTime: eventDetail?.eventTime,
-        eventUrl: eventDetail?.eventUrl || '',
-      },
-      attachments: [],
-    })
-  }
-  return response.status(200).send(rsvp.toJSON())
+  return rsvp
 }
