@@ -14,14 +14,6 @@ task('deploy', 'Deploy the entire Unlock protocol')
   .addOptionalParam('publicLockVersion', 'the version of public Lock to deploy')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam(
-    'uniswapFactoryAddress',
-    'the address of an existing Uniswap V2 Factory contract'
-  )
-  .addOptionalParam(
-    'uniswapRouterAddress',
-    'the address of an existing Uniswap V2 Router contract'
-  )
-  .addOptionalParam(
     'oracleAddress',
     'the address of an existing Uniswap Oracle contract'
   )
@@ -50,14 +42,12 @@ task('deploy', 'Deploy the entire Unlock protocol')
         udtAddress,
         publicLockAddress,
         wethAddress,
-        uniswapFactoryAddress,
         oracleAddress,
         premintAmount,
         liquidity,
         setTemplate,
         estimatedGasForPurchase,
         locksmithURI,
-        uniswapRouterAddress,
         owner,
       },
       { ethers }
@@ -77,8 +67,6 @@ task('deploy', 'Deploy the entire Unlock protocol')
         udtAddress,
         publicLockAddress,
         wethAddress,
-        uniswapRouterAddress,
-        uniswapFactoryAddress,
         oracleAddress,
         premintAmount,
         liquidity,
@@ -109,14 +97,6 @@ task('deploy:weth', 'Deploy WETH contract').setAction(async () => {
   const wethDeployer = require('../scripts/deployments/weth')
   return await wethDeployer()
 })
-
-task('deploy:uniswap', 'Deploy Uniswap V2 Factory and Router')
-  .addOptionalParam('wethAddress', 'the address of the WETH token contract')
-  .setAction(async ({ wethAddress }) => {
-    // eslint-disable-next-line global-require
-    const uniswapDeployer = require('../scripts/deployments/uniswap-v2')
-    return await uniswapDeployer({ wethAddress })
-  })
 
 task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   .addOptionalParam(
