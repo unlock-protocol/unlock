@@ -5,9 +5,6 @@ require('@nomicfoundation/hardhat-ethers')
 require('@nomicfoundation/hardhat-verify')
 require('@openzeppelin/hardhat-upgrades')
 
-const tdly = require('@tenderly/hardhat-tenderly')
-tdly.setup()
-
 // import helpers
 const {
   etherscan,
@@ -37,6 +34,8 @@ if (process.env.RUN_FORK) {
 
 // add tenderly if needed
 if (process.env.TENDERLY_FORK) {
+  const tdly = require('@tenderly/hardhat-tenderly')
+  tdly.setup()
   networks.tenderly = {
     url: process.env.TENDERLY_FORK,
     accounts: networks.mainnet.accounts,

@@ -1,6 +1,10 @@
 const { ethers, run } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
-const { getNetwork, isLocalhost } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getNetwork,
+  isLocalhost,
+  deployContract,
+} = require('@unlock-protocol/hardhat-helpers')
 const { UnlockSwapBurner } = require('@unlock-protocol/contracts')
 
 async function main() {
@@ -29,16 +33,20 @@ async function main() {
     UnlockSwapBurner.bytecode
   )
 
-  const swapper = await SwapAndBurn.deploy(
-    unlockAddress,
-    PERMIT2_ADDRESS,
-    routerAddress
+  console.log(`   waiting for tx to be mined for contract verification...`)
+  const {
+    contract: swapper,
+    hash,
+    address: swapperAddress,
+  } = await deployContract(
+    SwapAndBurn,
+    [unlockAddress, PERMIT2_ADDRESS, routerAddress],
+    { wait: 5 }
   )
-  console.log(`  swapper deployed at ${await swapper.getAddress()}`)
 
-  if (await isLocalhost()) {
-    console.log(`   waiting for tx to be mined for contract verification...`)
-    await swapper.waitForDeployment(5)
+  console.log(`SwapAndBurn deployed at ${swapperAddress} (tx: ${hash})`)
+
+  if (!(await isLocalhost())) {
     await run('verify:verify', {
       address: await swapper.getAddress(),
       constructorArguments: [unlockAddress, PERMIT2_ADDRESS, routerAddress],

@@ -2,6 +2,7 @@ const { ethers, run } = require('hardhat')
 const {
   isLocalhost,
   ADDRESS_ZERO,
+  deployContract,
   copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -9,22 +10,23 @@ async function main({ publicLockVersion }) {
   // fetch chain info
   const [signer] = await ethers.getSigners()
 
-  let PublicLock
-  if (publicLockVersion) {
-    console.log(
-      `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
-    )
-    ;[PublicLock] = await copyAndBuildContractsAtVersion(__dirname, [
-      { contractName: 'PublicLock', version: publicLockVersion },
-    ])
-  } else {
+  if (!publicLockVersion) {
     throw Error('Need to set --public-lock-version')
   }
 
-  const publicLock = await PublicLock.deploy()
-  await publicLock.waitForDeployment()
-  const { hash } = await publicLock.deploymentTransaction()
-  const publicLockAddress = await publicLock.getAddress()
+  console.log(
+    `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
+  )
+
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'PublicLock', version: publicLockVersion },
+  ])
+
+  const {
+    contract: publicLock,
+    hash,
+    address: publicLockAddress,
+  } = await deployContract(qualifiedPath)
 
   console.log(
     `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress} (tx: ${hash})`
