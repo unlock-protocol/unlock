@@ -126,6 +126,9 @@ export const getBaseTokenData = async (
 }
 
 export const getKeyCentricData = async (address: string, tokenId: string) => {
+  if (!tokenId) {
+    return {}
+  }
   const keyCentricData = await KeyMetadata.findOne({
     where: {
       address,

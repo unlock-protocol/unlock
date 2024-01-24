@@ -1,6 +1,8 @@
+import { MEMBERS_PER_PAGE } from '~/constants'
+
 export const paginate = ({
   page = 0,
-  itemsPerPage = 30,
+  itemsPerPage = MEMBERS_PER_PAGE,
   totalItems = 1000,
 }: {
   page: number

@@ -401,5 +401,9 @@ describe('keysOperations operations', () => {
         },
       ])
     })
+
+    describe('pending keys', () => {
+      it('should return the list of pending keys when prompted')
+    })
   })
 })

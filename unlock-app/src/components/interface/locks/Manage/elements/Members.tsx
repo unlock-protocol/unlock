@@ -142,6 +142,7 @@ export const Members = ({
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
+    filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
@@ -168,22 +169,30 @@ export const Members = ({
     )
   }
 
+  const pageOffset = page - 1 ?? 0
+  const { maxNumbersOfPage } = paginate({
+    page: pageOffset,
+    itemsPerPage: MEMBERS_PER_PAGE,
+    totalItems:
+      filters?.approval !== 'minted' ? 100 : chainLock.outstandingKeys, // TODO: replace with data from API call to simplify!
+  })
+
   if (noItems && !hasActiveFilter) {
     return <NoMemberNoFilter />
   }
 
   if (noItems && hasActiveFilter) {
-    return <NoMemberWithFilter />
+    return (
+      <>
+        <NoMemberWithFilter />{' '}
+        <PaginationBar
+          maxNumbersOfPage={maxNumbersOfPage}
+          setPage={setPage}
+          page={page}
+        />
+      </>
+    )
   }
-
-  const pageOffset = page - 1 ?? 0
-  const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: MEMBERS_PER_PAGE,
-    totalItems: chainLock.outstandingKeys,
-  })
-
-  const showPagination = maxNumbersOfPage > 1
 
   return (
     <div className="grid grid-cols-1 gap-6">
@@ -204,13 +213,11 @@ export const Members = ({
           />
         )
       })}
-      {showPagination && (
-        <PaginationBar
-          maxNumbersOfPage={maxNumbersOfPage}
-          setPage={setPage}
-          page={page}
-        />
-      )}
+      <PaginationBar
+        maxNumbersOfPage={maxNumbersOfPage}
+        setPage={setPage}
+        page={page}
+      />
     </div>
   )
 }

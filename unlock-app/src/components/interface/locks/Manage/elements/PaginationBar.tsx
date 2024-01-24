@@ -59,18 +59,19 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
     <div className="flex flex-wrap gap-2">
       {pagesToShow.map((currentPage, index) => {
         const showDots = pagesToShow[index - 1] < currentPage - 1
-
-        return (
-          <>
-            {showDots && <span>...</span>}
-            <Page
-              key={index}
-              page={currentPage}
-              active={currentPage === page}
-              setPage={setPage}
-            />
-          </>
-        )
+        if (currentPage > 0 && currentPage <= maxNumbersOfPage) {
+          return (
+            <>
+              {showDots && <span>...</span>}
+              <Page
+                key={index}
+                page={currentPage}
+                active={currentPage === page}
+                setPage={setPage}
+              />
+            </>
+          )
+        }
       })}
     </div>
   )
@@ -81,7 +82,7 @@ export const PaginationBar = ({
   page,
   setPage,
 }: PaginationBarProps) => {
-  const backDisabled = page === 1
+  const backDisabled = page <= 1
   const nextDisabled = maxNumbersOfPage === page
 
   return (

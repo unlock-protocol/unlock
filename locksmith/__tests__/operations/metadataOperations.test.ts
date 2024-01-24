@@ -56,4 +56,7 @@ describe('metadataOperations', () => {
       })
     })
   })
+  describe('getKeyCentricData', () => {
+    it('should not fail if no tokenId is passed')
+  })
 })

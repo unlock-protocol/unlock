@@ -9,6 +9,7 @@ import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
 import { getUserAddressesMatchingData } from './userMetadataOperations'
+import { Rsvp } from '../models'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -130,11 +131,36 @@ export async function getKeysWithMetadata({
     }
   }
 
-  const [lock] = await keysByQuery({
-    network,
-    addresses: [lockAddress],
-    filters: keysFilter,
-  })
+  let lock: any
+  if (filters.approval !== 'minted') {
+    const rsvps = await Rsvp.findAll({
+      where: {
+        lockAddress,
+        network,
+        approval: filters.approval,
+      },
+      limit: filters.max,
+      offset: filters.page * filters.max,
+    })
+    lock = {
+      address: lockAddress,
+      network,
+      keys: rsvps.map((r) => {
+        return {
+          owner: r.userAddress,
+        }
+      }),
+    }
+  } else {
+    // Get from subgraph!
+    lock = (
+      await keysByQuery({
+        network,
+        addresses: [lockAddress],
+        filters: keysFilter,
+      })
+    )[0]
+  }
 
   // only lock manager can see metadata
   if (isLockOwner) {
