@@ -27,6 +27,10 @@ async function main({ safeAddress, tx, signer }) {
     ;[signer] = await ethers.getSigners()
   }
 
+  if (process.env.RUN_FORK) {
+    throw Error(`Can not send multisig tx on a forked network`)
+  }
+
   // check safe version
   const version = await getSafeVersion(safeAddress)
 
