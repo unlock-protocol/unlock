@@ -1,6 +1,6 @@
 const { ethers, run } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
-const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork, isLocalhost } = require('@unlock-protocol/hardhat-helpers')
 const { UnlockSwapBurner } = require('@unlock-protocol/contracts')
 
 async function main() {
@@ -36,7 +36,7 @@ async function main() {
   )
   console.log(`  swapper deployed at ${await swapper.getAddress()}`)
 
-  if (chainId !== 31337) {
+  if (await isLocalhost()) {
     console.log(`   waiting for tx to be mined for contract verification...`)
     await swapper.waitForDeployment(5)
     await run('verify:verify', {

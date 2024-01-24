@@ -20,6 +20,15 @@ There is a dedicated script to verify the proxy used by Unlock to create locks
 yarn hardhat verify-proxy <...>
 ```
 
+## Use a tenderly fork
+
+```
+export TENDERLY_FORK=https://rpc.tenderly.co/fork/xxx-xxx-xxx-xx
+
+# then use any command with tenderly as a network
+yarn hardhat deploy:template --network tenderly
+```
+
 ## DAO Proposals
 
 ### Make a DAO proposal
