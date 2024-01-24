@@ -2,6 +2,7 @@ const { ethers, run } = require('hardhat')
 const {
   isLocalhost,
   ADDRESS_ZERO,
+  deployContract,
 } = require('@unlock-protocol/hardhat-helpers')
 const contracts = require('@unlock-protocol/contracts')
 
@@ -20,10 +21,11 @@ async function main({ publicLockVersion }) {
     throw Error('Need to set --public-lock-version')
   }
 
-  const publicLock = await PublicLock.deploy()
-  await publicLock.waitForDeployment()
-  const { hash } = await publicLock.deploymentTransaction()
-  const publicLockAddress = await publicLock.getAddress()
+  const {
+    contract: publicLock,
+    hash,
+    address: publicLockAddress,
+  } = await deployContract(PublicLock)
 
   console.log(
     `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress} (tx: ${hash})`
