@@ -142,6 +142,11 @@ async function main({
     maxNumberOfKeys: 100,
     name: 'Test Lock',
   })
+
+  return {
+    unlockAddress,
+    publicLockAddress,
+  }
 }
 
 // execute as standalone

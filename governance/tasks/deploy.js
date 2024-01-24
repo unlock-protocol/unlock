@@ -60,7 +60,10 @@ task('deploy', 'Deploy the entire Unlock protocol')
 
       // eslint-disable-next-line global-require
       const mainDeployer = require('../scripts/deployments')
-      await mainDeployer({
+      const {
+        unlockAddress: newUnlockAddress,
+        publicLockAddress: newPublicLockAddress,
+      } = await mainDeployer({
         unlockAddress,
         unlockVersion,
         publicLockVersion,
@@ -75,6 +78,11 @@ task('deploy', 'Deploy the entire Unlock protocol')
         locksmithURI,
         owner,
       })
+
+      return {
+        unlockAddress: newUnlockAddress,
+        publicLockAddress: newPublicLockAddress,
+      }
     }
   )
 
