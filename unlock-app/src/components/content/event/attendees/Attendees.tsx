@@ -17,6 +17,8 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { MemberCard } from '~/components/interface/locks/Manage/elements/MemberCard'
 import { AttendeeInfo } from './AttendeeInfo'
+import { ApplicantInfo } from './ApplicantInfo'
+import { Detail } from '@unlock-protocol/ui'
 
 interface AttendeesProps {
   event: Event
@@ -135,25 +137,52 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                     network={network}
                     expirationDuration={expirationDuration}
                     lockSettings={lockSettings}
-                    MemberInfo={() => (
-                      <AttendeeInfo
-                        network={network}
-                        lockAddress={lockAddress}
-                        owner={owner}
-                        token={token}
-                        metadata={metadata}
-                      />
-                    )}
-                    fieldsToShow={[
-                      {
-                        name: 'email',
-                        label: 'Email',
-                      },
-                      {
-                        name: 'fullname',
-                        label: 'Full name',
-                      },
-                    ]}
+                    MetadataCard={
+                      <div className="flex flex-col divide-y divide-gray-400">
+                        {Object.entries(metadata || {})
+                          .filter(([key]) => {
+                            return ![
+                              'keyholderAddress',
+                              'keyManager',
+                              'lockAddress',
+                            ].includes(key)
+                          })
+                          .map(([key, value]: any, index: number) => {
+                            return (
+                              <Detail
+                                className="py-2"
+                                key={`${key}-${index}`}
+                                label={`${key}: `}
+                                inline
+                                justify={false}
+                              >
+                                {value || null}
+                              </Detail>
+                            )
+                          })}
+                      </div>
+                    }
+                    MemberInfo={() => {
+                      if (!token) {
+                        return (
+                          <ApplicantInfo
+                            network={network}
+                            lockAddress={lockAddress}
+                            owner={owner}
+                            metadata={metadata}
+                          />
+                        )
+                      }
+                      return (
+                        <AttendeeInfo
+                          network={network}
+                          lockAddress={lockAddress}
+                          owner={owner}
+                          token={token}
+                          metadata={metadata}
+                        />
+                      )
+                    }}
                   />
                 )
               }}
