@@ -1,8 +1,17 @@
 export const deployContract = async (
-  Factory,
+  contractNameOrFullyQualifiedNameOrEthersFactory,
   deployArgs = [],
   deployOptions = { wait: 1 }
 ) => {
+  let Factory
+  if (typeof contractNameOrFullyQualifiedNameOrEthersFactory === 'string') {
+    const { ethers } = require('hardhat')
+    Factory = await ethers.getContractFactory(
+      contractNameOrFullyQualifiedNameOrEthersFactory
+    )
+  } else {
+    Factory = contractNameOrFullyQualifiedNameOrEthersFactory
+  }
   const contract = await Factory.deploy(...deployArgs)
   await contract.waitForDeployment(deployOptions.wait)
   const { hash } = await contract.deploymentTransaction()
@@ -16,11 +25,14 @@ export const deployContract = async (
 }
 
 export const deployUpgradeableContract = async (
-  Factory,
+  contractNameOrFullyQualifiedName,
   deployArgs = [],
   deployOptions = {}
 ) => {
-  const { upgrades } = require('hardhat')
+  const { ethers, upgrades } = require('hardhat')
+  const Factory = await ethers.getContractFactory(
+    contractNameOrFullyQualifiedName
+  )
   const contract = await upgrades.deployProxy(
     Factory,
     deployArgs,

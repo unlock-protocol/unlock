@@ -22,13 +22,11 @@ async function main({ publicLockVersion }) {
     { contractName: 'PublicLock', version: publicLockVersion },
   ])
 
-  const PublicLock = await ethers.getContractFactory(qualifiedPath)
-
   const {
     contract: publicLock,
     hash,
     address: publicLockAddress,
-  } = await deployContract(PublicLock)
+  } = await deployContract(qualifiedPath)
 
   console.log(
     `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress} (tx: ${hash})`

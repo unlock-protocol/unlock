@@ -9,26 +9,26 @@ const {
 
 async function main({ unlockVersion } = {}) {
   const [deployer] = await ethers.getSigners()
-  let Unlock
   // need to fetch previous unlock versions
-  if (unlockVersion) {
-    console.log(`Setting up version ${unlockVersion} from package`)
-    const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
-      { contractName: 'Unlock', version: unlockVersion },
-    ])
-    Unlock = await ethers.getContractFactory(qualifiedPath)
-  } else {
+  if (!unlockVersion) {
     throw 'Need to set --unlock-version'
   }
+
+  console.log(`Setting up version ${unlockVersion} from package`)
+
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'Unlock', version: unlockVersion },
+  ])
 
   // deploy proxy w impl
   const {
     address: unlockAddress,
     implementation,
     hash,
-  } = await deployUpgradeableContract(Unlock, [deployer.address], {
+  } = await deployUpgradeableContract(qualifiedPath, [deployer.address], {
     initializer: 'initialize(address)',
   })
+
   // eslint-disable-next-line no-console
   console.log(
     `UNLOCK SETUP > Unlock proxy deployed to: ${unlockAddress} (tx: ${hash}) `,

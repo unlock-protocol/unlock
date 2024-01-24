@@ -16,12 +16,8 @@ async function main() {
     },
   ])
 
-  const UDT = await ethers.getContractFactory(
-    'contracts/past-versions/UnlockDiscountTokenV3.sol:UnlockDiscountTokenV3'
-  )
-
   const { hash, address: udtAddress } = await deployUpgradeableContract(
-    UDT,
+    'contracts/past-versions/UnlockDiscountTokenV3.sol:UnlockDiscountTokenV3',
     [minter.address],
     {
       initializer: 'initialize(address)',
