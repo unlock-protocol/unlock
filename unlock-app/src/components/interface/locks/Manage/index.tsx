@@ -86,6 +86,7 @@ export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
       '',
       'owner',
       'all',
+      'minted',
       page - 1,
       MEMBERS_PER_PAGE
     )

@@ -94,7 +94,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
               setIsOpen={setAirdropKeys}
             />
             <FilterBar
-              hideExpirationFilter={false}
+              hideExpirationFilter={true}
               hideApprovalFilter={false}
               locks={checkoutConfig.config.locks}
               lockAddress={lockAddress}

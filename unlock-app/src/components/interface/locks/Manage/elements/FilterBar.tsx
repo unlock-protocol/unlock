@@ -109,10 +109,6 @@ export const FilterBar = ({
       ...filters,
       ...newFilter,
     })
-    console.log({
-      ...filters,
-      ...newFilter,
-    })
     setPage(1)
   }
 
