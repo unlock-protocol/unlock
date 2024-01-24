@@ -60,4 +60,7 @@ module.exports = {
   solidity: {
     compilers: [{ version: '0.8.21', settings }],
   },
+  sourcify: {
+    enabled: true,
+  },
 }
