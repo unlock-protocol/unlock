@@ -1,11 +1,13 @@
 import { Button, Detail } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
+import { use, useEffect, useState } from 'react'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '@unlock-protocol/core'
+import { ApproveAttendeeModalModal } from './ApproveAttendeeModal'
+import { DenyAttendeeModalModal } from './DenyAttendeeModalModal'
 
 interface ApplicantInfoProps {
   network: number
@@ -20,6 +22,9 @@ export const ApplicantInfo = ({
   owner,
   metadata,
 }: ApplicantInfoProps) => {
+  const [approveAttendeeModalOpen, setApproveAttendeeModalOpen] =
+    useState(false)
+  const [denyAttendeeModalOpen, setDenyAttendeeModalOpen] = useState(false)
   const addressToEns = useEns(owner)
   const resolvedAddress =
     addressToEns === owner ? addressMinify(owner) : addressToEns
@@ -36,6 +41,21 @@ export const ApplicantInfo = ({
 
   return (
     <>
+      <ApproveAttendeeModalModal
+        network={network}
+        isOpen={approveAttendeeModalOpen}
+        setIsOpen={setApproveAttendeeModalOpen}
+        lockAddress={lockAddress}
+        keyOwner={owner}
+      />
+      <DenyAttendeeModalModal
+        network={network}
+        isOpen={denyAttendeeModalOpen}
+        setIsOpen={setDenyAttendeeModalOpen}
+        lockAddress={lockAddress}
+        keyOwner={owner}
+      />
+
       <div className="flex md:flex-row flex-col gap-4 space-between w-full">
         <Detail label="Full Name" valueSize="medium" className="grow w-24">
           {metadata.fullname}
@@ -63,7 +83,7 @@ export const ApplicantInfo = ({
         <div className="gap-1 flex flex-col w-auto">
           <Button
             size="small"
-            onClick={() => alert('approve!')}
+            onClick={() => setApproveAttendeeModalOpen(true)}
             className="w-full"
           >
             Approve
@@ -71,7 +91,7 @@ export const ApplicantInfo = ({
           <Button
             variant="secondary"
             size="small"
-            onClick={() => alert('deny!')}
+            onClick={() => setDenyAttendeeModalOpen(true)}
             className="w-full"
           >
             Deny
