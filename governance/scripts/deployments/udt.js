@@ -1,7 +1,8 @@
-const { ethers, upgrades, run } = require('hardhat')
+const { ethers, run } = require('hardhat')
 const {
   copyAndBuildContractsAtVersion,
   isLocalhost,
+  deployUpgradeableContract,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function main() {
@@ -10,6 +11,7 @@ async function main() {
   await copyAndBuildContractsAtVersion(__dirname, [
     {
       contractName: 'UnlockDiscountToken',
+      contractFullName: 'UnlockDiscountTokenV3',
       version: 3,
     },
   ])
@@ -18,12 +20,13 @@ async function main() {
     'contracts/past-versions/UnlockDiscountTokenV3.sol:UnlockDiscountTokenV3'
   )
 
-  const udt = await upgrades.deployProxy(UDT, [minter.address], {
-    initializer: 'initialize(address)',
-  })
-  await udt.waitForDeployment()
-  const { hash } = await udt.deploymentTransaction()
-  const udtAddress = await udt.getAddress()
+  const { hash, address: udtAddress } = await deployUpgradeableContract(
+    UDT,
+    [minter.address],
+    {
+      initializer: 'initialize(address)',
+    }
+  )
 
   // eslint-disable-next-line no-console
   console.log(

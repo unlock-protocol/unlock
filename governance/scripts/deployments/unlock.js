@@ -1,9 +1,10 @@
-const { ethers, upgrades, run } = require('hardhat')
+const { ethers, run } = require('hardhat')
 
 const {
   isLocalhost,
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
+  deployUpgradeableContract,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ unlockVersion } = {}) {
@@ -22,17 +23,13 @@ async function main({ unlockVersion } = {}) {
   }
 
   // deploy proxy w impl
-  const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
+  const {
+    address: unlockAddress,
+    implementation,
+    hash,
+  } = await deployUpgradeableContract(Unlock, [deployer.address], {
     initializer: 'initialize(address)',
   })
-  await unlock.waitForDeployment()
-  const { hash } = await unlock.deploymentTransaction()
-
-  // get addresses
-  const unlockAddress = await unlock.getAddress()
-  const implementation = await upgrades.erc1967.getImplementationAddress(
-    unlockAddress
-  )
   // eslint-disable-next-line no-console
   console.log(
     `UNLOCK SETUP > Unlock proxy deployed to: ${unlockAddress} (tx: ${hash}) `,

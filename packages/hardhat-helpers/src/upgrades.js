@@ -34,9 +34,9 @@ async function copyAndBuildContractsAtVersion(dirname, contracts) {
 
   // get factory using fully qualified path
   const Contracts = await Promise.all(
-    contracts.map(({ contractName, version }) => {
+    contracts.map(({ contractName, version, contractFullName }) => {
       return ethers.getContractFactory(
-        `contracts/past-versions/${contractName}V${version}.sol:${contractName}`
+        `contracts/past-versions/${contractName}V${version}.sol:${contractFullName}`
       )
     })
   )
