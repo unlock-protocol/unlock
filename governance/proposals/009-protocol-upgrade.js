@@ -118,7 +118,7 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
   )
 
   // submit Unlock upgrade
-  const proxyAdminAddress = await getProxyAdminAddress({ network })
+  const proxyAdminAddress = await getProxyAdminAddress({ chainId: id })
   const { interface: proxyAdminInterface } = await ethers.getContractAt(
     proxyAdminABI,
     proxyAdminAddress
