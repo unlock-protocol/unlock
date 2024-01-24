@@ -5,7 +5,7 @@ import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
-import { ExpirationStatus } from './FilterBar'
+import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
@@ -48,6 +48,7 @@ export interface FilterProps {
   query: string
   filterKey: string
   expiration: ExpirationStatus
+  approval: ApprovalStatus
 }
 
 export const Members = ({
@@ -60,6 +61,7 @@ export const Members = ({
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   },
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
@@ -68,13 +70,14 @@ export const Members = ({
   const web3Service = useWeb3Service()
 
   const getMembers = async () => {
-    const { query, filterKey, expiration } = filters
+    const { query, filterKey, expiration, approval } = filters
     const keys = await storage.keys(
       network,
       lockAddress,
       query,
       filterKey,
       expiration,
+      approval,
       page - 1, // API starts at 0
       MEMBERS_PER_PAGE
     )

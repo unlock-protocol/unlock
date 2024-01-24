@@ -1330,6 +1330,11 @@ paths:
             type: string
           description: Expiration time
         - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
           name: page
           schema:
             type: integer

@@ -12,8 +12,8 @@ import {
   Modal,
 } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Controller, useForm, useWatch } from 'react-hook-form'
-import { useEffect, useRef, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { MintingScreen } from '~/components/interface/checkout/main/Minting'
 import { ToastHelper } from '~/components/helpers/toast.helper'

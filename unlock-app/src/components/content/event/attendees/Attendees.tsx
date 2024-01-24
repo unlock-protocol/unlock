@@ -6,6 +6,7 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useRouter } from 'next/router'
 import { ActionBar } from '~/components/interface/locks/Manage'
 import {
+  ApprovalStatus,
   ExpirationStatus,
   FilterBar,
 } from '~/components/interface/locks/Manage/elements/FilterBar'
@@ -26,7 +27,6 @@ interface AttendeesProps {
 }
 
 export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
-  console.log(event.requiresApproval)
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -47,6 +47,9 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: event.requiresApproval
+      ? ApprovalStatus.PENDING
+      : ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
 
@@ -91,7 +94,8 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
               setIsOpen={setAirdropKeys}
             />
             <FilterBar
-              hideFilter={true}
+              hideExpirationFilter={false}
+              hideApprovalFilter={false}
               locks={checkoutConfig.config.locks}
               lockAddress={lockAddress}
               filters={filters}
@@ -119,7 +123,6 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                 expirationDuration,
                 lockSettings,
               }) => {
-                console.log(metadata)
                 return (
                   <MemberCard
                     token={token}
