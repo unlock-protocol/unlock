@@ -599,9 +599,6 @@ contract MixinKeys is MixinErrors, MixinLockCore {
     if (_maxKeysPerAcccount == 0) {
       revert NULL_VALUE();
     }
-    if (_maxNumberOfKeys < _totalSupply) {
-      revert CANT_BE_SMALLER_THAN_SUPPLY();
-    }
     _maxKeysPerAddress = _maxKeysPerAcccount;
     expirationDuration = _newExpirationDuration;
     maxNumberOfKeys = _maxNumberOfKeys;
