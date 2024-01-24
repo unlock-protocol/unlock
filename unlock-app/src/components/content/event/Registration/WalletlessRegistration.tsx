@@ -20,9 +20,10 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { TransactionStatus } from '~/components/interface/checkout/main/checkoutMachine'
 import { onResolveName } from '~/utils/resolvers'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { MetadataInputType } from '@unlock-protocol/core'
+import { useRsvp } from '~/hooks/useRsvp'
+import { IoWarningOutline } from 'react-icons/io5'
 
-// TODO: once we have saved checkout config, use the metadata fields from there.
-// In the meantime, use email + wallet address
 const rsvpForm = z.object({
   email: z
     .string({
@@ -51,9 +52,10 @@ interface WalletlessRegistrationProps {
 }
 
 interface FormProps {
+  metadataInputs?: MetadataInputType[]
   lockAddress: string
   network: number
-  refresh: () => void
+  refresh?: () => void
 }
 
 const WalletlessRegistrationClaiming = ({
@@ -137,28 +139,142 @@ const WalletlessRegistrationClaiming = ({
   )
 }
 
-export const WalletlessRegistrationForm = ({
+export const WalletlessRegistrationClaim = ({
+  metadataInputs,
   lockAddress,
   network,
   refresh,
 }: FormProps) => {
   const [claimResult, setClaimResult] = useState<any>()
   const [isClaimOpen, setClaimOpen] = useState(false)
-  const config = useConfig()
-  const recaptchaRef = useRef<any>()
-  const [loading, setLoading] = useState<boolean>(false)
-  const { account } = useAuth()
   const { mutateAsync: claim } = useClaim({
     lockAddress,
     network,
   })
+
+  const onRSVP = async ({
+    email,
+    recipient,
+    data,
+    captcha,
+  }: {
+    email: string
+    recipient: string
+    data: any
+    captcha: string
+  }) => {
+    const { hash, owner, message } = await claim({
+      metadata: data,
+      email,
+      recipient,
+      captcha,
+    })
+    if (message) {
+      ToastHelper.error(message)
+    }
+    if (hash && owner) {
+      setClaimResult({ hash, owner })
+      setClaimOpen(true)
+      ToastHelper.success('Transaction successfully sent!')
+    }
+  }
+
+  return (
+    <>
+      <Modal isOpen={isClaimOpen} setIsOpen={setClaimOpen} empty={true}>
+        <WalletlessRegistrationClaiming
+          lockAddress={lockAddress}
+          network={network}
+          handleClose={() => {
+            setClaimOpen(false)
+            if (refresh) {
+              refresh()
+            }
+          }}
+          claimResult={claimResult}
+        />
+      </Modal>
+      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
+    </>
+  )
+}
+
+export const WalletlessRegistrationApply = ({
+  metadataInputs,
+  lockAddress,
+  network,
+}: FormProps) => {
+  const { mutateAsync: rsvp } = useRsvp({
+    lockAddress,
+    network,
+  })
+
+  const onRSVP = async ({
+    email,
+    recipient,
+    captcha,
+    data,
+  }: {
+    email: string
+    recipient: string
+    data: any
+    captcha: string
+  }) => {
+    const result = await rsvp({
+      data,
+      email,
+      recipient,
+      captcha,
+    })
+    if (result.message) {
+      ToastHelper.error(result.message)
+    }
+    ToastHelper.success(
+      'Application successfully sent! The organizer will contact you if you are accepted!'
+    )
+  }
+
+  return (
+    <>
+      <div className="flex rounded-md bg-[#FFF7E8] p-2">
+        <IoWarningOutline size="32" className="w-24" />
+        <p>
+          This event requires approval, once approved you will receive an email
+          with your ticket and location details!{' '}
+        </p>
+      </div>
+      <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
+    </>
+  )
+}
+
+export const RegistrationForm = ({
+  onRSVP,
+  metadataInputs,
+}: {
+  metadataInputs?: MetadataInputType[]
+  onRSVP: ({
+    email,
+    recipient,
+    captcha,
+    data,
+  }: {
+    email: string
+    recipient: string
+    data: any
+    captcha: string
+  }) => void
+}) => {
+  const config = useConfig()
+  const recaptchaRef = useRef<any>()
+  const [loading, setLoading] = useState<boolean>(false)
+  const { account } = useAuth()
 
   const localForm = useForm<RsvpFormProps>({
     mode: 'onChange',
     defaultValues: {
       email: '',
       recipient: account || '',
-      fullname: '',
     },
   })
   const {
@@ -174,28 +290,21 @@ export const WalletlessRegistrationForm = ({
     control,
   })
 
-  const onSubmit = async ({ email, recipient, fullname }: RsvpFormProps) => {
+  const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
     setLoading(true)
+    console.log(data)
     try {
       await recaptchaRef.current?.reset()
       const captcha = await recaptchaRef.current?.executeAsync()
-      const { hash, owner, message } = await claim({
-        metadata: {
-          fullname,
-        },
+      await onRSVP({
         email,
         recipient,
+        data,
         captcha,
       })
-      if (message) {
-        ToastHelper.error(message)
-      }
-      if (hash && owner) {
-        setClaimResult({ hash, owner })
-        setClaimOpen(true)
-        ToastHelper.success('Transaction successfully sent!')
-      }
+      reset()
     } catch (error: any) {
+      console.error(error)
       ToastHelper.error(
         'There was an error during registration. Please try again.'
       )
@@ -206,57 +315,80 @@ export const WalletlessRegistrationForm = ({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col w-full gap-6 py-4"
+      className="flex flex-col w-full gap-4"
     >
-      <Modal isOpen={isClaimOpen} setIsOpen={setClaimOpen} empty={true}>
-        <WalletlessRegistrationClaiming
-          lockAddress={lockAddress}
-          network={network}
-          handleClose={() => {
-            setClaimOpen(false)
-            refresh()
-            reset()
-          }}
-          claimResult={claimResult}
-        />
-      </Modal>
       <ReCaptcha
         ref={recaptchaRef}
         sitekey={config.recaptchaKey}
         size="invisible"
         badge="bottomleft"
       />
-      <Input
-        {...register('email', {
-          required: {
-            value: true,
-            message: 'This field is required.',
-          },
-        })}
-        required
-        type="email"
-        placeholder="your@email.com"
-        label="Email address"
-        description={
-          'Please enter your email address to get a QR code by email.'
-        }
-        error={errors?.email?.message}
-      />
-      <Input
-        {...register('fullname', {
-          required: {
-            value: true,
-            message: 'This field is required.',
-          },
-        })}
-        required
-        placeholder="Satoshi Nakamoto"
-        label="Full Name"
-        description={
-          'Please enter your your full name to be added to the RSVP list.'
-        }
-        error={errors?.fullname?.message}
-      />
+
+      {(!metadataInputs || metadataInputs.length === 0) && (
+        <>
+          <Input
+            {...register('email', {
+              required: {
+                value: true,
+                message: 'This field is required.',
+              },
+            })}
+            required
+            type="email"
+            placeholder="your@email.com"
+            label="Email address"
+            description={
+              'Please enter your email address to get a QR code by email.'
+            }
+            error={errors?.email?.message}
+          />
+          <Input
+            {...register('fullname', {
+              required: {
+                value: true,
+                message: 'This field is required.',
+              },
+            })}
+            required
+            placeholder="Satoshi Nakamoto"
+            label="Full Name"
+            description={
+              'Please enter your your full name to be added to the RSVP list.'
+            }
+            error={errors?.fullname?.message}
+          />
+        </>
+      )}
+
+      {metadataInputs?.map((metadataInputItem: any) => {
+        const {
+          name,
+          label,
+          defaultValue,
+          placeholder,
+          type,
+          required,
+          value,
+        } = metadataInputItem ?? {}
+        const inputLabel = label || name
+        return (
+          <Input
+            key={name}
+            label={`${inputLabel}:`}
+            autoComplete={inputLabel}
+            defaultValue={defaultValue}
+            placeholder={placeholder}
+            type={type}
+            // @ts-expect-error Element implicitly has an 'any' type because expression of type 'any' can't be used to index type 'FieldErrors<{ email: string; recipient: string; fullname: string; }>'.
+            error={errors[name]?.message}
+            {...register(name, {
+              required: required && `${inputLabel} is required`,
+              value,
+            })}
+          />
+        )
+      })}
+
       <Controller
         name="recipient"
         control={control}
@@ -282,6 +414,7 @@ export const WalletlessRegistrationForm = ({
           )
         }}
       />
+
       <Button disabled={loading} loading={loading} type="submit">
         RSVP now
       </Button>
