@@ -1,4 +1,4 @@
-const { run, upgrades } = require('hardhat')
+const { run, upgrades, ethers } = require('hardhat')
 
 const {
   copyAndBuildContractsAtVersion,
@@ -11,14 +11,15 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   let Contract
   if (contractVersion) {
     console.log(`Setting up version ${contractVersion} from package`)
-    ;[Contract] = await copyAndBuildContractsAtVersion(__dirname, [
+    const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
       {
         contractName,
         version: contractVersion,
       },
     ])
+    Contract = await ethers.getContractFactory(qualifiedPath)
   } else {
-    throw Error('Need a version number --unlock-version')
+    throw Error('Need a version number')
   }
 
   const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
