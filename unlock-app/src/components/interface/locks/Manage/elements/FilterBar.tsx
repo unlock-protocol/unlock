@@ -158,10 +158,10 @@ export const FilterBar = ({
       })
     : []
   return (
-    <div className="px-2 py-2 flex flex-col bg-ui-secondary-400 items-start gap-4 md:gap-6 md:items-center sm:flex-center sm:flex-row flex-wrap">
+    <div className="px-2 py-4 flex flex-col bg-ui-secondary-400 gap-4 md:gap-6 flex-wrap md:flex-row">
       {lockOptions.length > 1 && (
-        <div className="flex flex-row gap-2">
-          <div className="flex justify-start gap-1 items-center text-black font-medium text-sm p-0 w-24">
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+          <div className="flex justify-start gap-1 items-center text-black font-medium text-sm p-0 w-24 md:w-fit">
             <FaFileContract size={18} />
             <span>Contract</span>
           </div>
@@ -179,14 +179,14 @@ export const FilterBar = ({
       )}
 
       {!hideExpirationFilter && (
-        <div className="flex flex-row gap-2 items-center">
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
           <Button
             className="justify-start"
             variant="borderless"
             size="small"
             onClick={() => setExpandExpirationFilter(!expandExpirationFilter)}
           >
-            <div className="w-24  flex items-center gap-1">
+            <div className="w-24 md:w-fit  flex items-center gap-1">
               <FilterIcon size={18} />
               <span>Expiration</span>
             </div>
@@ -206,14 +206,14 @@ export const FilterBar = ({
       )}
 
       {!hideApprovalFilter && (
-        <div className="flex flex-row gap-2 items-center">
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
           <Button
             className="justify-start"
             variant="borderless"
             size="small"
             onClick={() => setExpandApprovalFilter(!expandApprovalFilter)}
           >
-            <div className="w-24  flex items-center gap-1">
+            <div className="w-24 md:w-fit  flex items-center gap-1">
               <FilterIcon size={18} />
               <span>Approval</span>
             </div>
@@ -231,14 +231,14 @@ export const FilterBar = ({
           )}
         </div>
       )}
-      <div className="flex flex-row gap-2 items-center">
+      <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
         <Button
           className="justify-start"
           size="small"
           variant="borderless"
           onClick={() => setOpenSearch(!openSearch)}
         >
-          <div className="w-24 flex items-center gap-1">
+          <div className="w-24 md:w-fit flex items-center gap-1">
             <SearchIcon size={18} />
             <span>Search</span>
           </div>
