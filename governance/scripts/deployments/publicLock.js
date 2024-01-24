@@ -10,17 +10,19 @@ async function main({ publicLockVersion }) {
   // fetch chain info
   const [signer] = await ethers.getSigners()
 
-  let PublicLock
-  if (publicLockVersion) {
-    console.log(
-      `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
-    )
-    ;[PublicLock] = await copyAndBuildContractsAtVersion(__dirname, [
-      { contractName: 'PublicLock', version: publicLockVersion },
-    ])
-  } else {
+  if (!publicLockVersion) {
     throw Error('Need to set --public-lock-version')
   }
+
+  console.log(
+    `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
+  )
+
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'PublicLock', version: publicLockVersion },
+  ])
+
+  const PublicLock = await ethers.getContractFactory(qualifiedPath)
 
   const {
     contract: publicLock,
