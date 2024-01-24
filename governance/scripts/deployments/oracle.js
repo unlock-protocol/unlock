@@ -2,12 +2,14 @@ const { ethers } = require('hardhat')
 const UniswapOracleV2 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/UniswapV2Oracle.json')
 const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
 
-const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getNetwork,
+  deployContract,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // TODO: check if oracle has already been deployed and skips if one already exists!
 async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
   if (!uniswapFactoryAddress) {
-    console.log(await getNetwork())
     const {
       uniswapV3: { factoryAddress },
     } = await getNetwork()
@@ -34,13 +36,9 @@ async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
     )
   }
 
-  const oracle = await Oracle.deploy(uniswapFactoryAddress)
-  await oracle.waitForDeployment()
-  const { hash } = await oracle.deploymentTransaction()
-
-  // get addresses
-  const oracleAddress = await oracle.getAddress()
-
+  const { hash, address: oracleAddress } = await deployContract(Oracle, [
+    uniswapFactoryAddress,
+  ])
   console.log(
     `UNISWAP ORACLE > Oracle deployed at ${oracleAddress} (tx: ${hash})`
   )

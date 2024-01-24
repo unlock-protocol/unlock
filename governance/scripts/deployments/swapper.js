@@ -3,6 +3,8 @@ const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const {
   uniswapRouterAddresses,
   getNetwork,
+  isLocalhost,
+  deployContract,
 } = require('@unlock-protocol/hardhat-helpers')
 const { UnlockSwapPurchaser } = require('@unlock-protocol/contracts')
 
@@ -11,7 +13,7 @@ async function main() {
   const { unlockAddress, id: chainId } = await getNetwork()
 
   const routers = Object.values(uniswapRouterAddresses[chainId])
-  console.log(`Deploying Swapper to ${chainId}
+  console.log(`Deploying SwapPurchaser to ${chainId}
   - unlockAddress: ${unlockAddress}
   - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
   - routers: ${routers}`)
@@ -24,19 +26,26 @@ async function main() {
   console.log(
     `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routers: ${routers.toString()}) `
   )
-  const Swapper = await ethers.getContractFactory(
+  const SwapPurchaser = await ethers.getContractFactory(
     UnlockSwapPurchaser.abi,
     UnlockSwapPurchaser.bytecode
   )
 
-  const swapper = await Swapper.deploy(unlockAddress, PERMIT2_ADDRESS, routers)
-  console.log(`  swapper deployed at ${swapper.address}`)
+  console.log(`   waiting for tx to be mined for contract verification...`)
+  const {
+    contract: swapPurchaser,
+    hash,
+    address: swapPurchaserAddress,
+  } = await deployContract(
+    SwapPurchaser,
+    [unlockAddress, PERMIT2_ADDRESS, routers],
+    { wait: 5 }
+  )
+  console.log(`SwapPurchaser deployed at ${swapPurchaserAddress} (tx: ${hash})`)
 
-  if (chainId !== 31337) {
-    console.log(`   waiting for tx to be mined for contract verification...`)
-    await swapper.waitForDeployment(5)
+  if (!(await isLocalhost())) {
     await run('verify:verify', {
-      address: await swapper.getAddress(),
+      address: await swapPurchaser.getAddress(),
       constructorArguments: [unlockAddress, PERMIT2_ADDRESS, routers],
     })
   }
