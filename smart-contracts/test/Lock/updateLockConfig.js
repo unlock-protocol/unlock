@@ -74,15 +74,12 @@ contract('Lock / updateLockConfig', (accounts) => {
       await lock.updateLockConfig(expirationDuration, 201, maxKeysPerAddress)
       assert.equal((await lock.maxNumberOfKeys()).toNumber(), 201)
     })
-    it('should prevent from setting a value lower than total supply', async () => {
+    it('should allow setting a value lower than total supply', async () => {
       // buy 10 keys
       await purchaseKeys(lock, 10)
 
-      // increase supply
-      await reverts(
-        lock.updateLockConfig(expirationDuration, 5, maxKeysPerAddress),
-        'SMALLER_THAN_SUPPLY'
-      )
+      await lock.updateLockConfig(expirationDuration, 0, maxKeysPerAddress)
+      assert.equal((await lock.maxNumberOfKeys()).toNumber(), 0)
     })
     it('should allow setting a value equal to current total supply', async () => {
       // redeploy lock
