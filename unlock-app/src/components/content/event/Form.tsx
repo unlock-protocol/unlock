@@ -108,7 +108,7 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_address: '',
         },
         image: '',
-        requiresAppoval: false,
+        requiresApproval: false,
       },
     },
   })
@@ -454,7 +454,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                 enabled={screeningEnabled}
                 setEnabled={enableScreening}
                 onChange={(enabled: boolean) => {
-                  setValue('metadata.requiresAppoval', enabled)
+                  setValue('metadata.requiresApproval', enabled)
                   if (enabled) {
                     setOldMaxNumberOfKeys(
                       getValues('lock.maxNumberOfKeys') || 100

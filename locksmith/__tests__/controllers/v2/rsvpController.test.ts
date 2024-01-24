@@ -34,7 +34,7 @@ describe('RSVP', () => {
       '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
     )
     expect(response.body.approval).toEqual('pending')
-    expect(response.body.network).toEqual('5')
+    expect(response.body.network).toEqual(5)
   })
 
   it('stores the RSVP in the right table even if there is no wallet', async () => {
