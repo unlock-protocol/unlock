@@ -48,12 +48,25 @@ async function getWhales(chainId = 1) {
 const parseForkUrl = (networks) => {
   const chainId = getChainId()
   const url = getForkUrl()
-  console.log(`Running a fork (chainId : ${chainId})...`)
+  const slug = Object.keys(networks).find(
+    (n) => networks[n].chainId === chainId
+  )
+  const { name } = networks[slug]
+  console.log(`Running a fork of ${name} (${chainId})...`)
   networks.hardhat = {
     chainId,
     forking: {
       url,
     },
+    name: `${name} (forked locally)`,
+    accounts: process.env.DEPLOYER_PRIVATE_KEY
+      ? [
+          {
+            privateKey: process.env.DEPLOYER_PRIVATE_KEY,
+            balance: '10000000000000000000000', // 1000 ETH yah
+          },
+        ]
+      : undefined,
   }
 
   // needed for Uniswap Router to compute routes on local forks

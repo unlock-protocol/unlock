@@ -1,10 +1,11 @@
 const { ethers } = require('hardhat')
 const { getProvider, getSafeAddress } = require('./_helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ chainId, safeAddress }) {
   if (!chainId) {
-    ;({ chainId } = await ethers.provider.getNetwork())
+    ;({ chainId } = await getNetwork())
   }
   const { provider } = await getProvider(chainId)
   if (!safeAddress) {

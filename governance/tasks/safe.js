@@ -10,14 +10,6 @@ task('safe:create', 'Create a Safe from a list of owners')
     return await safeDeployer({ owners, threshold })
   })
 
-task('safe:transfer', 'transfer the contract ownership to a multisig')
-  .addParam('contractAddress', 'the address of the ownable contract')
-  .addOptionalParam('safeAddress', 'the address of the multisig contract')
-  .setAction(async ({ safeAddress, contractAddress }) => {
-    const transferOwnership = require('../scripts/multisig/transferOwnership')
-    await transferOwnership({ safeAddress, contractAddress })
-  })
-
 task('safe:address', 'Get the address of a safe')
   .addOptionalParam(
     'chainId',
