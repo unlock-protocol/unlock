@@ -3,6 +3,7 @@ const { run, upgrades, ethers } = require('hardhat')
 const {
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
+  isLocalhost,
 } = require('@unlock-protocol/hardhat-helpers')
 
 // used to update contract implementation address in proxy admin
@@ -12,6 +13,7 @@ async function main({ proxyAddress, contractName, contractVersion }) {
   if (contractVersion) {
     console.log(`Setting up version ${contractVersion} from package`)
     const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    await copyAndBuildContractsAtVersion(__dirname, [
       {
         contractName,
         version: contractVersion,
@@ -22,19 +24,46 @@ async function main({ proxyAddress, contractName, contractVersion }) {
     throw Error('Need a version number')
   }
 
-  const implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
-    kind: 'transparent',
-  })
+  let implementation
+  try {
+    implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
+      kind: 'transparent',
+    })
+  } catch (error) {
+    if (error.message.includes('is not registered')) {
+      console.log('Importing missing layout of previous impl...')
+    }
+    await copyAndBuildContractsAtVersion(__dirname, [
+      {
+        contractName,
+        version: contractVersion - 1,
+      },
+    ])
+    const PreviousContract = await ethers.getContractFactory(
+      `contracts/past-versions/${contractName}V${
+        contractVersion - 1
+      }.sol:${contractName}`
+    )
+
+    // import previous layout
+    await upgrades.forceImport(proxyAddress, PreviousContract, {
+      kind: 'transparent',
+    })
+
+    // deploy the new implementation
+    implementation = await upgrades.prepareUpgrade(proxyAddress, Contract, {
+      kind: 'transparent',
+    })
+  }
 
   console.log(`${contractName} implementation deployed at: ${implementation}`)
 
-  await run('verify:verify', {
-    address: implementation,
-  })
-
-  if (contractVersion) {
-    await cleanupContractVersions(__dirname)
+  if (!(await isLocalhost())) {
+    await run('verify:verify', {
+      address: implementation,
+    })
   }
+
   return implementation
 }
 

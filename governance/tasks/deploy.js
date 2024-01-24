@@ -165,3 +165,33 @@ task('deploy:keyManager', 'Deploy KeyManager contract')
     const keyManagerDeployer = require('../scripts/deployments/keyManager')
     return await keyManagerDeployer(locksmithsArray)
   })
+
+task(
+  'deploy:protocol-upgrade',
+  'Deploy latest versions of Unlock and PublicLock contracts'
+)
+  .addParam('publicLockVersion', 'version for publicLock')
+  .addParam('unlockVersion', 'version for Unlock')
+  .setAction(async ({ publicLockVersion, unlockVersion }, { ethers }) => {
+    // eslint-disable-next-line global-require
+    const deployPublicLock = require('../scripts/deployments/publicLock')
+
+    // eslint-disable-next-line global-require
+    const deployImpl = require('../scripts/upgrade/prepare')
+
+    const { chainId } = await ethers.provider.getNetwork()
+    const { unlockAddress, name } = networks[chainId]
+    console.log(`Deploying to ${name}(${chainId}) - Unlock: ${unlockAddress}`)
+
+    // deploy publicLock
+    const publicLockAddress = await deployPublicLock({ publicLockVersion })
+
+    // deploy unlock impl
+    const unlockImplAddress = await deployImpl({
+      proxyAddress: unlockAddress,
+      contractName: 'Unlock',
+      contractVersion: unlockVersion,
+    })
+
+    return { publicLockAddress, unlockImplAddress }
+  })

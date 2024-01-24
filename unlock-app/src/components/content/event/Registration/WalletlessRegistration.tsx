@@ -12,8 +12,8 @@ import {
   Modal,
 } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Controller, useForm, useWatch } from 'react-hook-form'
-import { useEffect, useRef, useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { MintingScreen } from '~/components/interface/checkout/main/Minting'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -23,6 +23,7 @@ import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
 import { IoWarningOutline } from 'react-icons/io5'
+import { useCaptcha } from '~/hooks/useCaptcha'
 
 const rsvpForm = z.object({
   email: z
@@ -266,7 +267,7 @@ export const RegistrationForm = ({
   }) => void
 }) => {
   const config = useConfig()
-  const recaptchaRef = useRef<any>()
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
   const [loading, setLoading] = useState<boolean>(false)
   const { account } = useAuth()
 
@@ -281,21 +282,14 @@ export const RegistrationForm = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     control,
     reset,
   } = localForm
 
-  const { recipient = '' } = useWatch({
-    control,
-  })
-
   const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
     setLoading(true)
-    console.log(data)
     try {
-      await recaptchaRef.current?.reset()
-      const captcha = await recaptchaRef.current?.executeAsync()
+      const captcha = await getCaptchaValue()
       await onRSVP({
         email,
         recipient,
@@ -397,19 +391,16 @@ export const RegistrationForm = ({
             return !address || isAddressOrEns(address)
           },
         }}
-        render={() => {
+        render={({ field }) => {
           return (
             <AddressInput
               optional
-              value={recipient}
               withIcon
               placeholder="0x..."
               label="Wallet address or ENS"
-              onChange={(value: any) => {
-                setValue('recipient', value)
-              }}
               description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
               onResolveName={onResolveName}
+              {...field}
             />
           )
         }}

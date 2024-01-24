@@ -3,8 +3,8 @@ const {
   isLocalhost,
   ADDRESS_ZERO,
   deployContract,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
-const contracts = require('@unlock-protocol/contracts')
 
 async function main({ publicLockVersion }) {
   // fetch chain info
@@ -12,11 +12,12 @@ async function main({ publicLockVersion }) {
 
   let PublicLock
   if (publicLockVersion) {
-    const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
     console.log(
       `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
     )
-    PublicLock = await ethers.getContractFactory(abi, bytecode)
+    ;[PublicLock] = await copyAndBuildContractsAtVersion(__dirname, [
+      { contractName: 'PublicLock', version: publicLockVersion },
+    ])
   } else {
     throw Error('Need to set --public-lock-version')
   }
@@ -46,7 +47,7 @@ async function main({ publicLockVersion }) {
   const { hash: txRenounceHash } = await publicLock.renounceLockManager()
   console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
 
-  if (!isLocalhost()) {
+  if (!(await isLocalhost())) {
     await run('verify:verify', { address: publicLockAddress })
   }
 
