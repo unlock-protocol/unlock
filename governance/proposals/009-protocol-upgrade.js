@@ -2,9 +2,10 @@
  * This proposal upgrade the protocol to new versions of the main contracts
  * Unlock v13 and PublicLock v14
  */
-const { network, ethers } = require('hardhat')
+const { ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
+
 const {
   getProxyAdminAddress,
   getNetwork,
@@ -124,7 +125,17 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
     proxyAdminAddress
   )
 
+  // upgrade first so we dont have a revert when
+  // template is initialized
   const calls = [
+    {
+      contractAddress: proxyAdminAddress,
+      explainer: `upgrade(${unlockAddress},${unlockImplAddress})`,
+      calldata: proxyAdminInterface.encodeFunctionData('upgrade', [
+        unlockAddress,
+        unlockImplAddress,
+      ]),
+    },
     {
       contractAddress: unlockAddress,
       explainer: `addLockTemplate(${publicLockAddress},${publicLockVersion})`,
@@ -138,14 +149,6 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
       explainer: `setLockTemplate(${publicLockAddress})`,
       calldata: unlockInterface.encodeFunctionData('setLockTemplate', [
         publicLockAddress,
-      ]),
-    },
-    {
-      contractAddress: proxyAdminAddress,
-      explainer: `upgrade(${unlockAddress},${unlockImplAddress})`,
-      calldata: proxyAdminInterface.encodeFunctionData('upgrade', [
-        unlockAddress,
-        unlockImplAddress,
       ]),
     },
   ]
