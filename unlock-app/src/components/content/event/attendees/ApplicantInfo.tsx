@@ -47,6 +47,7 @@ export const ApplicantInfo = ({
         setIsOpen={setApproveAttendeeModalOpen}
         lockAddress={lockAddress}
         keyOwner={owner}
+        metadata={metadata}
       />
       <DenyAttendeeModalModal
         network={network}
@@ -81,21 +82,25 @@ export const ApplicantInfo = ({
         </Detail>
 
         <div className="gap-1 flex flex-col w-auto">
-          <Button
-            size="small"
-            onClick={() => setApproveAttendeeModalOpen(true)}
-            className="w-full"
-          >
-            Approve
-          </Button>
-          <Button
-            variant="secondary"
-            size="small"
-            onClick={() => setDenyAttendeeModalOpen(true)}
-            className="w-full"
-          >
-            Deny
-          </Button>
+          {metadata.approval !== 'approved' && (
+            <Button
+              size="small"
+              onClick={() => setApproveAttendeeModalOpen(true)}
+              className="w-full"
+            >
+              Approve
+            </Button>
+          )}
+          {metadata.approval !== 'denied' && (
+            <Button
+              variant="secondary"
+              size="small"
+              onClick={() => setDenyAttendeeModalOpen(true)}
+              className="w-full"
+            >
+              Deny
+            </Button>
+          )}
         </div>
       </div>
     </>

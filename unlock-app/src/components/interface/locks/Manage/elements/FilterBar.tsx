@@ -53,6 +53,7 @@ export enum ExpirationStatus {
 
 export enum ApprovalStatus {
   MINTED = 'minted',
+  // APPROVED = 'approved', // approved but not minted
   PENDING = 'pending',
   DENIED = 'denied',
 }

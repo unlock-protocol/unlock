@@ -56,17 +56,19 @@ export const buildKeysWithMetadata = (
     lock?.keys
       ?.map((key: Partial<SubgraphKey>) => {
         // get key metadata for the owner
-        const { userMetadata, extraMetadata } =
+        const metadataItem =
           metadataItems?.find(
             (metadata) =>
               normalizer.ethereumAddress(metadata?.userAddress) ===
               normalizer.ethereumAddress(key?.owner)
           )?.data ?? {}
+        const { userMetadata, extraMetadata } = metadataItem
 
         const metadata = {
           ...userMetadata?.public,
           ...userMetadata?.protected,
           ...extraMetadata,
+          ...key,
         }
 
         const merged = {
@@ -147,6 +149,7 @@ export async function getKeysWithMetadata({
       network,
       keys: rsvps.map((r) => {
         return {
+          approval: r.approval,
           owner: r.userAddress,
         }
       }),

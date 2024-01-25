@@ -11,14 +11,14 @@ router.post(
   '/:network/:lockAddress/deny/:userAddress',
   authenticatedMiddleware,
   lockManagerMiddleware,
-  update('deny')
+  update('denied')
 )
 
 router.post(
   '/:network/:lockAddress/approve/:userAddress',
   authenticatedMiddleware,
   lockManagerMiddleware,
-  update('approve')
+  update('approved')
 )
 
 export default router

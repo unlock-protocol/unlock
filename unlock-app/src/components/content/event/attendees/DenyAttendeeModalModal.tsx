@@ -42,7 +42,7 @@ export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={onCloseCallback}>
       <div className="flex flex-col gap-3">
-        <p className="text-sm">Are you sure?</p>
+        <p className="text-lg">Are you sure?</p>
         <Button
           type="button"
           onClick={confirm}

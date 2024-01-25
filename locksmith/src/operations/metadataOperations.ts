@@ -224,19 +224,11 @@ export const getKeysMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const owners: { owner: string; tokenId: string }[] = keys?.map(
-    ({ owner, tokenId }: any) => {
-      return {
-        owner,
-        tokenId,
-      }
-    }
-  )
-
-  const mergedDataList = owners.map(async ({ owner, tokenId }) => {
+  const mergedDataList = keys?.map(async ({ owner, tokenId, approval }) => {
     let metadata: Record<string, any> = {
       owner,
       tokenId,
+      approval,
     }
     const keyData = await getKeyCentricData(lockAddress, tokenId)
     const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
