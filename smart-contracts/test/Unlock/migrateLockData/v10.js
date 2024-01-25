@@ -74,9 +74,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    ;[PublicLockPast, PublicLockLatest] = await copyAndBuildContractsAtVersion(
-      dirname,
-      [
+    const [pathPublicLockPast, pathPublicLockLatest] =
+      await copyAndBuildContractsAtVersion(dirname, [
         {
           contractName: 'PublicLock',
           version: previousVersionNumber,
@@ -85,8 +84,11 @@ describe('upgradeLock / data migration v9 > v10', () => {
           contractName: 'PublicLock',
           version: previousVersionNumber + 1,
         },
-      ]
-    )
+      ])
+
+    PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
+    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)
+
     // deploy latest version
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
