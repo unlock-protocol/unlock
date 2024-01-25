@@ -2,28 +2,24 @@ const { run, upgrades, ethers } = require('hardhat')
 
 const {
   copyAndBuildContractsAtVersion,
-  cleanupContractVersions,
   isLocalhost,
 } = require('@unlock-protocol/hardhat-helpers')
 
 // used to update contract implementation address in proxy admin
 async function main({ proxyAddress, contractName, contractVersion }) {
   // need to fetch previous
-  let Contract
-  if (contractVersion) {
-    console.log(`Setting up version ${contractVersion} from package`)
-    await copyAndBuildContractsAtVersion(__dirname, [
-      {
-        contractName,
-        version: contractVersion,
-      },
-    ])
-    Contract = await ethers.getContractFactory(
-      `contracts/past-versions/${contractName}V${contractVersion}.sol:${contractName}`
-    )
-  } else {
-    throw Error('Need a version number --unlock-version')
+  if (!contractVersion) {
+    throw Error('Need a version number')
   }
+
+  console.log(`Setting up version ${contractVersion} from package`)
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    {
+      contractName,
+      version: contractVersion,
+    },
+  ])
+  const Contract = await ethers.getContractFactory(qualifiedPath)
 
   let implementation
   try {
