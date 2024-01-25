@@ -40,7 +40,6 @@ contract MixinErrors {
   error OWNER_CANT_BE_ADDRESS_ZERO();
   error MAX_KEYS_REACHED();
   error KEY_TRANSFERS_DISABLED();
-  error CANT_BE_SMALLER_THAN_SUPPLY();
 
   // transfers and approvals
   error TRANSFER_TO_SELF();

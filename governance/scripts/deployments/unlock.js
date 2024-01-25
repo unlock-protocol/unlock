@@ -1,38 +1,34 @@
-const { ethers, upgrades, run } = require('hardhat')
+const { ethers, run } = require('hardhat')
 
 const {
   isLocalhost,
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
+  deployUpgradeableContract,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ unlockVersion } = {}) {
   const [deployer] = await ethers.getSigners()
-  let Unlock
   // need to fetch previous unlock versions
-  if (unlockVersion) {
-    console.log(`Setting up version ${unlockVersion} from package`)
-    Unlock = (
-      await copyAndBuildContractsAtVersion(__dirname, [
-        { contractName: 'Unlock', version: unlockVersion },
-      ])
-    )[0]
-  } else {
+  if (!unlockVersion) {
     throw 'Need to set --unlock-version'
   }
 
+  console.log(`Setting up version ${unlockVersion} from package`)
+
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'Unlock', version: unlockVersion },
+  ])
+
   // deploy proxy w impl
-  const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
+  const {
+    address: unlockAddress,
+    implementation,
+    hash,
+  } = await deployUpgradeableContract(qualifiedPath, [deployer.address], {
     initializer: 'initialize(address)',
   })
-  await unlock.waitForDeployment()
-  const { hash } = await unlock.deploymentTransaction()
 
-  // get addresses
-  const unlockAddress = await unlock.getAddress()
-  const implementation = await upgrades.erc1967.getImplementationAddress(
-    unlockAddress
-  )
   // eslint-disable-next-line no-console
   console.log(
     `UNLOCK SETUP > Unlock proxy deployed to: ${unlockAddress} (tx: ${hash}) `,

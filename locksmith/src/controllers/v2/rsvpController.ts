@@ -98,3 +98,25 @@ export const rsvp = async (request: Request, response: Response) => {
   })
   return response.status(200).send(rsvp.toJSON())
 }
+
+export const update = (approval: 'approved' | 'denied') => {
+  return async (request: Request, response: Response) => {
+    const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
+    const network = Number(request.params.network)
+    const userAddress = normalizer.ethereumAddress(request.params.userAddress)
+
+    const rsvp = await Rsvp.findOne({
+      where: {
+        network,
+        userAddress,
+        lockAddress,
+      },
+    })
+    if (!rsvp) {
+      return response.status(404)
+    }
+    rsvp.approval = approval
+    await rsvp.save()
+    return response.status(200).send(rsvp.toJSON())
+  }
+}
