@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { storage } from '~/config/storage'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean
@@ -25,17 +26,16 @@ export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
   }
 
   const confirm = async () => {
-    setLoading(true)
-
     try {
+      setLoading(true)
+      await storage.denyRsvp(network, lockAddress, keyOwner)
+      setLoading(false)
+      ToastHelper.success(
+        'The attendee was successfuly denied. You can still approve them later if needed.'
+      )
       onCloseCallback()
     } catch (err: any) {
-      onCloseCallback()
-      ToastHelper.error(
-        err?.error?.message ??
-          err?.message ??
-          'There was an error in refund process. Please try again.'
-      )
+      console.error(err)
     }
   }
 
