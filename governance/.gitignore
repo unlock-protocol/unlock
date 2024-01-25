@@ -5,4 +5,5 @@ artifacts
 # zksync
 zk-artifacts
 zk-cache
+artifacts-zk
 cache-zk
