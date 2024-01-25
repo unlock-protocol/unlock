@@ -1,5 +1,5 @@
 import { Button, Detail } from '@unlock-protocol/ui'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'

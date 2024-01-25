@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Detail, Input, Modal } from '@unlock-protocol/ui'
+import { Button, Detail, Modal } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '@unlock-protocol/core'
