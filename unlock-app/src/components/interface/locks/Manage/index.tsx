@@ -30,8 +30,7 @@ import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
 
 interface ActionBarProps {
@@ -83,7 +82,7 @@ export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
       'owner',
       'all',
       page - 1,
-      MEMBERS_PER_PAGE
+      PAGE_SIZE
     )
     const members = response.data
     const cols: string[] = []
