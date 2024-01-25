@@ -9,7 +9,11 @@ import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import { ExpirationStatus, FilterBar } from './elements/FilterBar'
+import {
+  ApprovalStatus,
+  ExpirationStatus,
+  FilterBar,
+} from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
@@ -343,6 +347,7 @@ export const ManageLockPage = () => {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
 

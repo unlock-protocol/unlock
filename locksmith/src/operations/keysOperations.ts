@@ -69,6 +69,7 @@ export const buildKeysWithMetadata = (
           ...userMetadata?.public,
           ...userMetadata?.protected,
           ...extraMetadata,
+          ...key,
         }
 
         // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)

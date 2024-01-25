@@ -6,6 +6,7 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { useRouter } from 'next/router'
 import { ActionBar } from '~/components/interface/locks/Manage'
 import {
+  ApprovalStatus,
   ExpirationStatus,
   FilterBar,
 } from '~/components/interface/locks/Manage/elements/FilterBar'
@@ -16,6 +17,8 @@ import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { MemberCard } from '~/components/interface/locks/Manage/elements/MemberCard'
 import { AttendeeInfo } from './AttendeeInfo'
+import { ApplicantInfo } from './ApplicantInfo'
+import { Detail } from '@unlock-protocol/ui'
 
 interface AttendeesProps {
   event: Event
@@ -25,7 +28,7 @@ interface AttendeesProps {
   }
 }
 
-export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
+export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
   const router = useRouter()
@@ -46,6 +49,9 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: event.requiresApproval
+      ? ApprovalStatus.PENDING
+      : ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
 
@@ -90,7 +96,8 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
               setIsOpen={setAirdropKeys}
             />
             <FilterBar
-              hideFilter={true}
+              hideExpirationFilter={true}
+              hideApprovalFilter={false}
               locks={checkoutConfig.config.locks}
               lockAddress={lockAddress}
               filters={filters}
@@ -118,7 +125,6 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
                 expirationDuration,
                 lockSettings,
               }) => {
-                console.log(metadata)
                 return (
                   <MemberCard
                     token={token}
@@ -131,25 +137,52 @@ export const Attendees = ({ checkoutConfig }: AttendeesProps) => {
                     network={network}
                     expirationDuration={expirationDuration}
                     lockSettings={lockSettings}
-                    MemberInfo={() => (
-                      <AttendeeInfo
-                        network={network}
-                        lockAddress={lockAddress}
-                        owner={owner}
-                        token={token}
-                        metadata={metadata}
-                      />
-                    )}
-                    fieldsToShow={[
-                      {
-                        name: 'email',
-                        label: 'Email',
-                      },
-                      {
-                        name: 'fullname',
-                        label: 'Full name',
-                      },
-                    ]}
+                    MetadataCard={
+                      <div className="flex flex-col divide-y divide-gray-400">
+                        {Object.entries(metadata || {})
+                          .filter(([key]) => {
+                            return ![
+                              'keyholderAddress',
+                              'keyManager',
+                              'lockAddress',
+                            ].includes(key)
+                          })
+                          .map(([key, value]: any, index: number) => {
+                            return (
+                              <Detail
+                                className="py-2"
+                                key={`${key}-${index}`}
+                                label={`${key}: `}
+                                inline
+                                justify={false}
+                              >
+                                {value || null}
+                              </Detail>
+                            )
+                          })}
+                      </div>
+                    }
+                    MemberInfo={() => {
+                      if (!token) {
+                        return (
+                          <ApplicantInfo
+                            network={network}
+                            lockAddress={lockAddress}
+                            owner={owner}
+                            metadata={metadata}
+                          />
+                        )
+                      }
+                      return (
+                        <AttendeeInfo
+                          network={network}
+                          lockAddress={lockAddress}
+                          owner={owner}
+                          token={token}
+                          metadata={metadata}
+                        />
+                      )
+                    }}
                   />
                 )
               }}
