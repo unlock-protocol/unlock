@@ -75,6 +75,7 @@ export const Members = ({
       query,
       filterKey,
       expiration,
+      'minted',
       page - 1, // API starts at 0
       PAGE_SIZE
     )
