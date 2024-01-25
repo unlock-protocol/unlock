@@ -386,11 +386,6 @@ export const RegistrationForm = ({
       <Controller
         name="recipient"
         control={control}
-        rules={{
-          validate: (address: string) => {
-            return !address || isAddressOrEns(address)
-          },
-        }}
         render={({ field }) => {
           return (
             <AddressInput
