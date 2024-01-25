@@ -125,7 +125,7 @@ export const getBaseTokenData = async (
   return result
 }
 
-export const getKeyCentricData = async (address: string, tokenId: string) => {
+export const getKeyCentricData = async (address: string, tokenId?: string) => {
   if (!tokenId) {
     return {}
   }

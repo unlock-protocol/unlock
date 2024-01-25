@@ -10,6 +10,7 @@ import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
 import { getUserAddressesMatchingData } from './userMetadataOperations'
 import { Rsvp } from '../models'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -139,6 +140,8 @@ export async function getKeysWithMetadata({
   }
 
   let lock: any
+  const limit = filters.max || PAGE_SIZE
+  const page = filters.page || 0
   if (['pending', 'denied'].indexOf(filters.approval) > -1) {
     const rsvps = await Rsvp.findAll({
       where: {
@@ -146,8 +149,8 @@ export async function getKeysWithMetadata({
         network,
         approval: filters.approval,
       },
-      limit: filters.max,
-      offset: filters.page * filters.max,
+      limit,
+      offset: page * limit,
     })
     lock = {
       address: lockAddress,
