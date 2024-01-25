@@ -34,9 +34,5 @@
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code"
-  },
-  "devDependencies": {
-    "@matterlabs/hardhat-zksync-deploy": "1.1.2",
-    "@matterlabs/hardhat-zksync-solc": "1.1.0"
   }
 }
