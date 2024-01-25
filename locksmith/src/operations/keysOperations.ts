@@ -68,7 +68,12 @@ export const buildKeysWithMetadata = (
           ...userMetadata?.public,
           ...userMetadata?.protected,
           ...extraMetadata,
-          ...key,
+        }
+
+        // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)
+        if (key.approval) {
+          // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)
+          metadata.approval = key.approval
         }
 
         const merged = {
@@ -134,7 +139,7 @@ export async function getKeysWithMetadata({
   }
 
   let lock: any
-  if (filters.approval !== 'minted') {
+  if (['pending', 'denied'].indexOf(filters.approval) > -1) {
     const rsvps = await Rsvp.findAll({
       where: {
         lockAddress,
