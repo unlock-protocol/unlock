@@ -57,6 +57,11 @@ describe('metadataOperations', () => {
     })
   })
   describe('getKeyCentricData', () => {
-    it('should not fail if no tokenId is passed')
+    it('should not fail if no tokenId is passed as it is not defined for pending RSVP keys', async () => {
+      expect.assertions(1)
+      const address = '0x123'
+      const data = await metadataOperations.getKeyCentricData(address)
+      expect(data).toEqual({})
+    })
   })
 })

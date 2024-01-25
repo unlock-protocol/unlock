@@ -10,6 +10,7 @@ import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
 import { getUserAddressesMatchingData } from './userMetadataOperations'
 import { Rsvp } from '../models'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -69,6 +70,12 @@ export const buildKeysWithMetadata = (
           ...userMetadata?.protected,
           ...extraMetadata,
           ...key,
+        }
+
+        // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)
+        if (key.approval) {
+          // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)
+          metadata.approval = key.approval
         }
 
         const merged = {
@@ -134,15 +141,17 @@ export async function getKeysWithMetadata({
   }
 
   let lock: any
-  if (filters.approval !== 'minted') {
+  const limit = filters.max || PAGE_SIZE
+  const page = filters.page || 0
+  if (['pending', 'denied'].indexOf(filters.approval) > -1) {
     const rsvps = await Rsvp.findAll({
       where: {
         lockAddress,
         network,
         approval: filters.approval,
       },
-      limit: filters.max,
-      offset: filters.page * filters.max,
+      limit,
+      offset: page * limit,
     })
     lock = {
       address: lockAddress,
