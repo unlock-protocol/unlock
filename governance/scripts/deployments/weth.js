@@ -1,15 +1,12 @@
 const { ethers } = require('hardhat')
+const { deployContract } = require('@unlock-protocol/hardhat-helpers')
 const WETH = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
 
 async function main() {
   const Weth = await ethers.getContractFactory(WETH.abi, WETH.bytecode)
-  const weth = await Weth.deploy()
-  await weth.deployed()
+  const { contract: weth, address, hash } = await deployContract(Weth)
 
-  // eslint-disable-next-line no-console
-  console.log(
-    `WETH > deployed to : ${weth.address} (tx: ${weth.deployTransaction.hash}`
-  )
+  console.log(`WETH > deployed to : ${address} (tx: ${hash}`)
   return weth.address
 }
 
