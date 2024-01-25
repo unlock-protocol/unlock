@@ -5,15 +5,20 @@ require('@nomicfoundation/hardhat-ethers')
 require('@nomicfoundation/hardhat-verify')
 require('@openzeppelin/hardhat-upgrades')
 
-require('@matterlabs/hardhat-zksync-deploy')
-require('@matterlabs/hardhat-zksync-solc')
-
 // import helpers
 const {
   etherscan,
   networks,
   parseForkUrl,
 } = require('@unlock-protocol/hardhat-helpers')
+
+// zksync-related
+if (process.env.ZK_SYNC) {
+  require('@matterlabs/hardhat-zksync-deploy')
+  require('@matterlabs/hardhat-zksync-solc')
+  require('@matterlabs/hardhat-zksync-verify')
+  require('@matterlabs/hardhat-zksync-upgradable')
+}
 
 const settings = {
   optimizer: {
@@ -44,6 +49,7 @@ if (process.env.TENDERLY_FORK) {
     accounts: networks.mainnet.accounts,
   }
 }
+
 // tasks
 require('./tasks/balance')
 require('./tasks/safe')
@@ -57,7 +63,7 @@ require('./tasks/lock')
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
-module.exports = {
+const config = {
   networks,
   etherscan,
   solidity: {
@@ -66,8 +72,13 @@ module.exports = {
   sourcify: {
     enabled: true,
   },
-  zksolc: {
+}
+
+if (process.env.ZK_SYNC) {
+  config.zksolc = {
     version: 'latest',
     settings: {},
-  },
+  }
 }
+
+module.exports = config
