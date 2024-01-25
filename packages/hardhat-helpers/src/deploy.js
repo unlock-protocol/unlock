@@ -1,3 +1,5 @@
+import zkSync from './zkSync'
+
 export const deployContract = async (
   contractNameOrFullyQualifiedNameOrEthersFactory,
   deployArgs = [],
@@ -56,6 +58,8 @@ export const deployUpgradeableContract = async (
 }
 
 export default {
-  deployContract,
-  deployUpgradeableContract,
+  deployContract: process.env.ZK_SYNC ? zkSync.deployContract : deployContract,
+  deployUpgradeableContract: process.env.ZK_SYNC
+    ? zkSync.deployUpgradeableContract
+    : deployUpgradeableContract,
 }
