@@ -14,13 +14,14 @@ import { FaFileContract } from 'react-icons/fa'
 interface FilterBarProps {
   locks?: PaywallLocksConfigType
   lockAddress?: string
-  hideFilter?: boolean
+  hideExpirationFilter?: boolean
+  hideApprovalFilter?: boolean
   setLockAddress?: (address: string) => void
-  setFilters?: (filters: FilterProps) => void
+  setFilters: (filters: FilterProps) => void
   setLoading?: (loading: boolean) => void
   setPage: (page: number) => void
   page?: number
-  filters?: FilterProps
+  filters: FilterProps
 }
 
 interface Filter {
@@ -50,25 +51,75 @@ export enum ExpirationStatus {
   EXPIRED = 'expired',
 }
 
+export enum ApprovalStatus {
+  MINTED = 'minted',
+  // APPROVED = 'approved', // approved but not minted
+  PENDING = 'pending',
+  DENIED = 'denied',
+}
+
+interface AttributeFilterProps {
+  values: any
+  currentValue: string
+  onChange: (value: string) => void
+}
+
+const AttributeFilter = ({
+  values,
+  currentValue,
+  onChange,
+}: AttributeFilterProps) => {
+  return (
+    <div className="flex gap-1 flex-wrap md:flex-nowrap">
+      {Object.values(values as string[]).map((value: string, index) => {
+        const isActive = value === currentValue
+        const variant = isActive ? 'primary' : 'outlined-primary'
+        return (
+          <Button
+            key={index}
+            size="small"
+            variant={variant}
+            onClick={() => {
+              return onChange(value as string)
+            }}
+          >
+            {value?.toUpperCase()}
+          </Button>
+        )
+      })}
+    </div>
+  )
+}
+
 export const FilterBar = ({
   locks,
   lockAddress,
-  hideFilter = false,
+  hideExpirationFilter = false,
+  hideApprovalFilter = true,
   setLockAddress,
   setFilters,
   setLoading,
-  filters: defaultFilters,
+  filters,
   setPage,
 }: FilterBarProps) => {
   const [isTyping, setIsTyping] = useState(false)
-  const [query, setQuery] = useState('')
   const [rawQueryValue, setRawQueryValue] = useState('')
+
+  const setFiltersAndResetPage = (newFilter: any) => {
+    setFilters({
+      ...filters,
+      ...newFilter,
+    })
+    setPage(1)
+  }
 
   const [_isReady] = useDebounce(
     async () => {
       const ensToAddress = await getAddressForName(rawQueryValue)
       const search = ensToAddress || rawQueryValue
-      setQuery(search)
+      setFiltersAndResetPage({
+        query: search,
+      })
       setIsTyping(false)
     },
     500,
@@ -81,63 +132,19 @@ export const FilterBar = ({
     }
   }, [setLoading, isTyping])
 
-  const expirations = Object.values(ExpirationStatus ?? {})
   const [openSearch, setOpenSearch] = useState(false)
-  const [expandFilter, setExpandFilter] = useState(false)
-  const [expiration, setExpiration] = useState<ExpirationStatus>(
-    defaultFilters!.expiration
-  )
-  const [filterKey, setFilterKey] = useState(
-    defaultFilters?.filterKey ?? 'owner'
-  )
+  const [expandExpirationFilter, setExpandExpirationFilter] = useState(false)
+  const [expandApprovalFilter, setExpandApprovalFilter] = useState(false)
+
+  const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
 
   // show only allowed filter, some filter are visible only to lockManager (`email` and `checkedInAt`)
-  const filters = FILTER_ITEMS.filter(
+  const filterOptions = FILTER_ITEMS.filter(
     (filter: Filter) => !filter.onlyLockManager || true
   ).map(({ key: value, label }: Filter) => ({
     value,
     label,
   }))
-
-  useEffect(() => {
-    if (typeof setFilters !== 'function') return
-    if (!query) {
-      return setFilters({
-        query: '',
-        filterKey: 'owner',
-        expiration,
-      })
-    }
-    setFilters({
-      filterKey,
-      expiration,
-      query,
-    })
-    setPage(1) // set default page on search to show results
-  }, [expiration, filterKey, query, setFilters, setPage])
-
-  const Expiration = () => {
-    return (
-      <div className="flex flex-row gap-4">
-        <div className="flex gap-3">
-          {expirations.map((value: ExpirationStatus, index) => {
-            const isActive = value === expiration
-            const variant = isActive ? 'primary' : 'outlined-primary'
-            return (
-              <Button
-                key={index}
-                size="small"
-                variant={variant}
-                onClick={() => setExpiration(value)}
-              >
-                {value?.toUpperCase()}
-              </Button>
-            )
-          })}
-        </div>
-      </div>
-    )
-  }
 
   const lockOptions = locks
     ? Object.keys(locks).map((address) => {
@@ -148,78 +155,112 @@ export const FilterBar = ({
       })
     : []
   return (
-    <div className="flex md:h-16 justify-center  flex-col gap-4 px-4 py-2 rounded-lg  bg-ui-secondary-400 text-sm">
-      <div className="flex items-center md:justify-between">
-        <div className="flex flex-col items-start gap-4 md:gap-12 md:items-center md:flex-center md:flex-row">
-          {lockOptions.length > 1 && (
-            <div className="flex flex-row gap-2">
-              <div className="flex justify-center gap-1 items-center text-black font-medium text-sm p-0">
-                <FaFileContract size={18} />
-                <span>Contract</span>
-              </div>
-              <div className="md:mt-2">
-                <Select
-                  size="small"
-                  defaultValue={lockAddress}
-                  onChange={(newValue) => {
-                    setLockAddress && setLockAddress(newValue.toString())
-                  }}
-                  options={lockOptions}
-                />
-              </div>
-            </div>
-          )}
-
-          {!hideFilter && (
-            <div className="flex flex-row gap-2 items-start md:items-center">
-              <Button
-                variant="borderless"
-                size="small"
-                onClick={() => setExpandFilter(!expandFilter)}
-              >
-                <div className="flex items-center gap-1">
-                  <FilterIcon size={18} />
-                  <span>Filter</span>
-                </div>
-              </Button>
-              {expandFilter && <Expiration />}
-            </div>
-          )}
-
-          <div className="flex flex-row gap-2 items-start md:items-center">
-            <Button
+    <div className="px-2 py-4 flex flex-col bg-ui-secondary-400 gap-4 md:gap-6 flex-wrap md:flex-row">
+      {lockOptions.length > 1 && (
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+          <div className="flex justify-start gap-1 items-center text-black font-medium text-sm p-0 w-24 md:w-fit">
+            <FaFileContract size={18} />
+            <span>Contract</span>
+          </div>
+          <div className="md:mt-2">
+            <Select
               size="small"
-              variant="borderless"
-              onClick={() => setOpenSearch(!openSearch)}
-            >
-              <div className="flex items-center gap-1">
-                <SearchIcon size={18} />
-                <span>Search</span>
-              </div>
-            </Button>
-            {openSearch && (
-              <div className="flex flex-col gap-2 md:flex-row w-full md:mt-2">
-                <Select
-                  size="small"
-                  options={filters}
-                  defaultValue={filterKey}
-                  onChange={(filter: any) => {
-                    setFilterKey(filter)
-                    setRawQueryValue('')
-                  }}
-                />
-                <Input
-                  size="small"
-                  onChange={(e: any) => {
-                    setIsTyping(true)
-                    setRawQueryValue(e?.target?.value)
-                  }}
-                  value={rawQueryValue}
-                />
-              </div>
-            )}
+              defaultValue={lockAddress}
+              onChange={(newValue) => {
+                setLockAddress && setLockAddress(newValue.toString())
+              }}
+              options={lockOptions}
+            />
           </div>
         </div>
+      )}
+
+      {!hideExpirationFilter && (
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+          <Button
+            className="justify-start"
+            variant="borderless"
+            size="small"
+            onClick={() => setExpandExpirationFilter(!expandExpirationFilter)}
+          >
+            <div className="w-24 md:w-fit  flex items-center gap-1">
+              <FilterIcon size={18} />
+              <span>Expiration</span>
+            </div>
+          </Button>
+          {expandExpirationFilter && (
+            <AttributeFilter
+              values={ExpirationStatus}
+              currentValue={filters.expiration}
+              onChange={(expiration: string) => {
+                setFiltersAndResetPage({
+                  expiration: expiration as ExpirationStatus,
+                })
+              }}
+            />
+          )}
+        </div>
+      )}
+
+      {!hideApprovalFilter && (
+        <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+          <Button
+            className="justify-start"
+            variant="borderless"
+            size="small"
+            onClick={() => setExpandApprovalFilter(!expandApprovalFilter)}
+          >
+            <div className="w-24 md:w-fit  flex items-center gap-1">
+              <FilterIcon size={18} />
+              <span>Approval</span>
+            </div>
+          </Button>
+          {expandApprovalFilter && (
+            <AttributeFilter
+              values={ApprovalStatus}
+              currentValue={filters.approval}
+              onChange={(approval: string) => {
+                setFiltersAndResetPage({
+                  approval: approval as ApprovalStatus,
+                })
+              }}
+            />
+          )}
+        </div>
+      )}
+      <div className="flex flex-row gap-2 items-start md:items-center md:h-6">
+        <Button
+          className="justify-start"
+          size="small"
+          variant="borderless"
+          onClick={() => setOpenSearch(!openSearch)}
+        >
+          <div className="w-24 md:w-fit flex items-center gap-1">
+            <SearchIcon size={18} />
+            <span>Search</span>
+          </div>
+        </Button>
+        {openSearch && (
+          <div className="flex flex-col gap-2 md:flex-row w-full md:mt-2">
+            <Select
+              size="small"
+              options={filterOptions}
+              defaultValue={filterKey}
+              onChange={(filter: any) => {
+                setFilterKey(filter)
+                setRawQueryValue('')
+              }}
+            />
+            <Input
+              size="small"
+              onChange={(e: any) => {
+                setIsTyping(true)
+                setRawQueryValue(e?.target?.value)
+              }}
+              value={rawQueryValue}
+            />
+          </div>
+        )}
       </div>
     </div>
   )
