@@ -4,13 +4,7 @@ import { ethers } from 'ethers'
 
 import ReCaptcha from 'react-google-recaptcha'
 
-import {
-  Button,
-  Input,
-  AddressInput,
-  isAddressOrEns,
-  Modal,
-} from '@unlock-protocol/ui'
+import { Button, Input, AddressInput, Modal } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Controller, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
@@ -296,7 +290,10 @@ export const RegistrationForm = ({
         data,
         captcha,
       })
-      reset()
+      reset({
+        email: '',
+        recipient: '',
+      })
     } catch (error: any) {
       console.error(error)
       ToastHelper.error(

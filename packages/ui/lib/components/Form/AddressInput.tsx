@@ -68,12 +68,6 @@ export const WrappedAddressInput = ({
     setSuccess('')
   }
 
-  useEffect(() => {
-    if (value !== address && typeof onChange === 'function') {
-      onChange(address as any)
-    }
-  }, [value])
-
   const resolveNameMutation = useMutation(onResolveName, {
     onMutate: () => {
       onReset() // restore state when typing
