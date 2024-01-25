@@ -9,11 +9,7 @@ import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import {
-  ApprovalStatus,
-  ExpirationStatus,
-  FilterBar,
-} from './elements/FilterBar'
+import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
@@ -86,7 +82,6 @@ export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
       '',
       'owner',
       'all',
-      'minted',
       page - 1,
       MEMBERS_PER_PAGE
     )
@@ -348,7 +343,6 @@ export const ManageLockPage = () => {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
-    approval: ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
 
