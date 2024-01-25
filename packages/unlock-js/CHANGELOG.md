@@ -1,5 +1,9 @@
 # Changes
 
+# 0.43.1
+
+- adding the ability to add a filter for approval when listing keys.
+
 # 0.43.0
 
 - allowing `maxNumberOfKeys` to be 0 when deploying locks.
