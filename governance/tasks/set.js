@@ -142,7 +142,6 @@ task('ownership:transfer', 'transfer the contract ownership to a new owner')
     await transferOwnership({ contractAddress, newOwner })
   })
 
-
 task('block:increase', 'Increase blocks')
   .addParam('n', 'number of blocks')
   .setAction(async ({ n }, { ethers }) => {
