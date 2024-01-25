@@ -12,13 +12,9 @@ const {
   parseForkUrl,
 } = require('@unlock-protocol/hardhat-helpers')
 
-// zksync-related
+// zksync
 if (process.env.ZK_SYNC) {
-  require('@matterlabs/hardhat-zksync-deploy')
   require('@matterlabs/hardhat-zksync-solc')
-  require('@matterlabs/hardhat-zksync-verify')
-  // throws currently
-  // require('@matterlabs/hardhat-zksync-upgradable')
 }
 
 const settings = {
