@@ -187,7 +187,7 @@ const config = {
       ({
         api: {
           sidebarCollapsed: false,
-          path: "./openapi.yml",
+          path: "../packages/unlock-js/openapi.yml",
           routeBasePath: "/api/locksmith",
         },
         docs: {
