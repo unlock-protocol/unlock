@@ -30,9 +30,7 @@ export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
       setLoading(true)
       await storage.denyRsvp(network, lockAddress, keyOwner)
       setLoading(false)
-      ToastHelper.success(
-        'The attendee was successfuly denied. You can still approve them later if needed.'
-      )
+      ToastHelper.success('The attendee was denied. ')
       onCloseCallback()
     } catch (err: any) {
       console.error(err)
@@ -42,7 +40,12 @@ export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={onCloseCallback}>
       <div className="flex flex-col gap-3">
-        <p className="text-lg">Are you sure?</p>
+        <h1 className="text-2xl font-bold">Are you sure?</h1>
+        <p>
+          The user will <em>not</em> receive an email and you can still approve
+          them later if needed.
+        </p>
+
         <Button
           type="button"
           onClick={confirm}

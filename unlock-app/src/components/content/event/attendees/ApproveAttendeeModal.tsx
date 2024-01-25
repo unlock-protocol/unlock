@@ -72,7 +72,9 @@ export const ApproveAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
         await storage.approveRsvp(network, lockAddress, keyOwner)
       }
 
-      ToastHelper.success('Ticket successfuly airdropped!')
+      ToastHelper.success(
+        `The ticket for ${metadata.email} was successfuly airdropped!`
+      )
       onCloseCallback()
     } catch (err: any) {
       onCloseCallback()
