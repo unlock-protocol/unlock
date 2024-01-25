@@ -3,7 +3,7 @@ import * as rtl from '@testing-library/react'
 
 import Home from '../../pages/index'
 
-import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
+import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 import configure from '../../config'
 import { vi } from 'vitest'
@@ -27,8 +27,6 @@ const account = {
   privateKey: 'deadbeef',
   balance: '200',
 }
-
-ETHEREUM_NETWORKS_NAMES[network.name] = 'A Name'
 
 const ConfigProvider = ConfigContext.Provider
 

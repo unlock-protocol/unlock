@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import * as keysOperations from '../../operations/keysOperations'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 export default class KeyController {
   /**
    * List of keys with additional metadata when caller is the lockManager
@@ -14,7 +15,7 @@ export default class KeyController {
       const {
         query = '',
         page = 0,
-        max = 100,
+        max = PAGE_SIZE,
         filterKey,
         expiration = 'active',
       } = request.query ?? {}
