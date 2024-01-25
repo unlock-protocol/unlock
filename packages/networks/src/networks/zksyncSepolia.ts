@@ -32,7 +32,9 @@ export const zksyncSepolia: NetworkConfig = {
     symbol: 'ETH',
   },
   previousDeploys: [],
-  provider: 'https://rpc.unlock-protocol.com/300',
+  // TODO: add to unlock providers
+  // provider: 'https://rpc.unlock-protocol.com/300',
+  provider: 'https://sepolia.era.zksync.dev',
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://sepolia.era.zksync.dev',
   startBlock: 0,
