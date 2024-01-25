@@ -9,6 +9,8 @@ import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
 import normalizer from '../utils/normalizer'
 import { getUserAddressesMatchingData } from './userMetadataOperations'
+import { Rsvp } from '../models'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
@@ -55,17 +57,24 @@ export const buildKeysWithMetadata = (
     lock?.keys
       ?.map((key: Partial<SubgraphKey>) => {
         // get key metadata for the owner
-        const { userMetadata, extraMetadata } =
+        const metadataItem =
           metadataItems?.find(
             (metadata) =>
               normalizer.ethereumAddress(metadata?.userAddress) ===
               normalizer.ethereumAddress(key?.owner)
           )?.data ?? {}
+        const { userMetadata, extraMetadata } = metadataItem
 
         const metadata = {
           ...userMetadata?.public,
           ...userMetadata?.protected,
           ...extraMetadata,
+        }
+
+        // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)
+        if (key.approval) {
+          // @ts-expect-error Property 'approval' does not exist on type 'Partial<Key>'. (but it exists on the keys constructred from RSVP)
+          metadata.approval = key.approval
         }
 
         const merged = {
@@ -130,11 +139,39 @@ export async function getKeysWithMetadata({
     }
   }
 
-  const [lock] = await keysByQuery({
-    network,
-    addresses: [lockAddress],
-    filters: keysFilter,
-  })
+  let lock: any
+  const limit = filters.max || PAGE_SIZE
+  const page = filters.page || 0
+  if (['pending', 'denied'].indexOf(filters.approval) > -1) {
+    const rsvps = await Rsvp.findAll({
+      where: {
+        lockAddress,
+        network,
+        approval: filters.approval,
+      },
+      limit,
+      offset: page * limit,
+    })
+    lock = {
+      address: lockAddress,
+      network,
+      keys: rsvps.map((r) => {
+        return {
+          approval: r.approval,
+          owner: r.userAddress,
+        }
+      }),
+    }
+  } else {
+    // Get from subgraph!
+    lock = (
+      await keysByQuery({
+        network,
+        addresses: [lockAddress],
+        filters: keysFilter,
+      })
+    )[0]
+  }
 
   // only lock manager can see metadata
   if (isLockOwner) {

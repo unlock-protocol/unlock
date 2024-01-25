@@ -292,6 +292,7 @@ export const EventObject = z.object({
   slug: z.string(),
   image: z.string().url(),
   description: z.string(),
+  requiresApproval: z.boolean(),
   ticket: z.object({
     event_cover_image: z.string(),
     event_start_date: z.string(),

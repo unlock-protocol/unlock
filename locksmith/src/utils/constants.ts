@@ -6,3 +6,4 @@ export const GAS_COST_TO_GRANT = 350000
 export const MIN_PAYMENT_STRIPE_ONRAMP = 100
 export const MIN_PAYMENT_STRIPE_CREDIT_CARD = 50
 export const TIMEOUT_ON_SUBGRAPH = 5000
+export const PAGE_SIZE = 30

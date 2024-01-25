@@ -10,7 +10,7 @@ describe('eventOperations', () => {
     await CheckoutConfig.truncate()
   })
   describe('createEventSlug', () => {
-    it('should merge keys items with the corresponding metadata', async () => {
+    it('should create the event with the correct slug', async () => {
       expect.assertions(2)
       const slug = await createEventSlug('Exclusive event')
       expect(slug).toEqual('exclusive-event')
