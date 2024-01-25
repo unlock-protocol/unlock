@@ -1,8 +1,8 @@
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 export const paginate = ({
   page = 0,
-  itemsPerPage = MEMBERS_PER_PAGE,
+  itemsPerPage = PAGE_SIZE,
   totalItems = 1000,
 }: {
   page: number

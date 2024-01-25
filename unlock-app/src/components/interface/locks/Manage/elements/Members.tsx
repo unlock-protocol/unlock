@@ -10,7 +10,7 @@ import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -79,7 +79,7 @@ export const Members = ({
       expiration,
       approval,
       page - 1, // API starts at 0
-      MEMBERS_PER_PAGE
+      PAGE_SIZE
     )
     return keys.data
   }
@@ -169,14 +169,6 @@ export const Members = ({
     )
   }
 
-  const pageOffset = page - 1 ?? 0
-  const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: MEMBERS_PER_PAGE,
-    totalItems:
-      filters?.approval !== 'minted' ? 100 : chainLock.outstandingKeys, // TODO: replace with data from API call to simplify!
-  })
-
   if (noItems && !hasActiveFilter) {
     return <NoMemberNoFilter />
   }
@@ -193,6 +185,13 @@ export const Members = ({
       </>
     )
   }
+
+  const pageOffset = page - 1 ?? 0
+  const { maxNumbersOfPage } = paginate({
+    page: pageOffset,
+    itemsPerPage: PAGE_SIZE,
+    totalItems: chainLock.outstandingKeys,
+  })
 
   return (
     <div className="grid grid-cols-1 gap-6">
