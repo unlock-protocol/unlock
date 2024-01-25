@@ -19707,6 +19707,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
+    "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
+    "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.1"
+    "@matterlabs/hardhat-zksync-verify": "npm:1.3.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
     "@openzeppelin/hardhat-upgrades": "npm:1.28.0"
@@ -19719,9 +19723,11 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
+    ethers: "npm:6"
     hardhat: "npm:2.19.5"
     tsup: "npm:8.0.1"
     typescript: "npm:5.3.3"
+    zksync-ethers: "npm:6.1.0"
   languageName: unknown
   linkType: soft
 
@@ -31909,6 +31915,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ethers@npm:6, ethers@npm:^6.8.1":
+  version: 6.10.0
+  resolution: "ethers@npm:6.10.0"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.0"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.5.0"
+  checksum: 04fdd3f76ea93a8b45b2fe4d9c8e2bd0d688823faba672897dd19cc3303c202a166902fe6058004562f13aaecf9f77a9f70ff113f995e94107efef2457b016dd
+  languageName: node
+  linkType: hard
+
 "ethers@npm:6.9.0":
   version: 6.9.0
   resolution: "ethers@npm:6.9.0"
@@ -31953,21 +31974,6 @@ __metadata:
     uuid: "npm:2.0.1"
     xmlhttprequest: "npm:1.8.0"
   checksum: a4cec0254f940a0fb118317d23676faa46eb5540fc0a3b9177b8aef71318f509ed19b8264f102b1a2a32d0256274ecc526fd926bd22a4a4ac25cd8e0e6560f12
-  languageName: node
-  linkType: hard
-
-"ethers@npm:^6.8.1":
-  version: 6.10.0
-  resolution: "ethers@npm:6.10.0"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.0"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.5.0"
-  checksum: 04fdd3f76ea93a8b45b2fe4d9c8e2bd0d688823faba672897dd19cc3303c202a166902fe6058004562f13aaecf9f77a9f70ff113f995e94107efef2457b016dd
   languageName: node
   linkType: hard
 
