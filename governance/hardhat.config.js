@@ -15,6 +15,7 @@ const {
 // zksync
 if (process.env.ZK_SYNC) {
   require('@matterlabs/hardhat-zksync-solc')
+  require('@matterlabs/hardhat-zksync-verify')
 }
 
 const settings = {
