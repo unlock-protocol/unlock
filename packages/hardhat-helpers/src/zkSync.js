@@ -57,9 +57,7 @@ export async function deployUpgradeableContract(
 }
 
 async function zkSyncSetupDeployer() {
-  const { Deployer } = require('@matterlabs/hardhat-zksync-deploy')
   const hre = require('hardhat')
-  console.log(hre)
 
   // set provider and accounts
   const { chainId, accounts } = hre.network.config
