@@ -78,6 +78,10 @@ if (process.env.ZK_SYNC) {
     version: 'latest',
     settings: {},
   }
+
+  // workaround to prevent [HH209] error with tasks being overridden
+  const { Deployer } = require('@matterlabs/hardhat-zksync-deploy')
+  config.Deployer = Deployer
 }
 
 module.exports = config

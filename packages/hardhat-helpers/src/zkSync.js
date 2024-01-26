@@ -1,5 +1,4 @@
 const { Wallet, Provider } = require('zksync-ethers')
-const { Deployer } = require('@matterlabs/hardhat-zksync-deploy')
 const { getNetwork } = require('./unlock')
 
 const ethers = require('ethers')
@@ -70,6 +69,8 @@ async function zkSyncSetupDeployer() {
     wallet = Wallet.fromMnemonic(accounts.mnemonic, provider)
   }
 
+  // set deployer
+  const { Deployer } = hre.config
   const deployer = new Deployer(hre, wallet)
 
   return { provider, wallet, deployer }
