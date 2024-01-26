@@ -1,92 +1,167 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
-import * as z from 'zod'
-import logger from '../../../src/logger'
+import { KeyManager } from '@unlock-protocol/unlock-js'
+
 import app from '../../app'
-import { vi } from 'vitest'
-import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
-import { PurchaserBody } from '../../../src/controllers/v2/receiptController'
-import { ethers } from 'ethers'
 import { Rsvp } from '../../../src/models'
+import { vi } from 'vitest'
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
+const userAddress = '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
 const network = 5
+
+// eslint-disable-next-line
+var mockWeb3Service = {
+  isLockManager: vi.fn(() => Promise.resolve(false)),
+}
+
+vi.mock('@unlock-protocol/unlock-js', () => ({
+  Web3Service: function Web3Service() {
+    return mockWeb3Service
+  },
+  KeyManager: function KeyManager() {
+    return {
+      createTransferAddress: (params: any) =>
+        '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f',
+    }
+  },
+}))
 
 describe('RSVP', () => {
   beforeEach(async () => {
     await Rsvp.truncate()
   })
-  it('stores the RSVP in the right table', async () => {
-    expect.assertions(5)
-    const response = await request(app)
-      .post(`/v2/rsvp/${network}/${lockAddress}/`)
-      .send({
-        recipient: '0x81Dd955D02D337DB81BA6c9C5F6213E647672052',
-        email: 'julien@unlock-protocol.com',
-        data: {
-          fullname: 'Julien Genestoux',
-        },
-      })
 
-    expect(response.status).toBe(200)
-    expect(response.body.lockAddress).toEqual(lockAddress)
-    expect(response.body.userAddress).toEqual(
-      '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
-    )
-    expect(response.body.approval).toEqual('pending')
-    expect(response.body.network).toEqual('5')
-  })
+  describe('rsvp', () => {
+    it('stores the RSVP in the right table', async () => {
+      expect.assertions(5)
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/`)
+        .send({
+          recipient: '0x81Dd955D02D337DB81BA6c9C5F6213E647672052',
+          email: 'julien@unlock-protocol.com',
+          data: {
+            fullname: 'Julien Genestoux',
+          },
+        })
 
-  it('stores the RSVP in the right table even if there is no wallet', async () => {
-    expect.assertions(3)
-    const response = await request(app)
-      .post(`/v2/rsvp/${network}/${lockAddress}/`)
-      .send({
-        email: 'julien@unlock-protocol.com',
-        data: {
-          fullname: 'Julien Genestoux',
-        },
-      })
-
-    expect(response.status).toBe(200)
-    expect(response.body.approval).toBe('pending')
-    expect(response.body.userAddress).toEqual(
-      '0xa00B5f0Eb8b6D009A30D1510785F1383691D4829'
-    )
-  })
-
-  it('does not override the state of an approved participant', async () => {
-    expect.assertions(4)
-    const response = await request(app)
-      .post(`/v2/rsvp/${network}/${lockAddress}/`)
-      .send({
-        email: 'ccarfi@unlock-protocol.com',
-        data: {
-          fullname: 'Chris Carfi',
-        },
-      })
-
-    expect(response.status).toBe(200)
-    expect(response.body.approval).toEqual('pending')
-
-    const rsvp = await Rsvp.findOne({
-      where: {
-        userAddress: response.body.userAddress,
-        lockAddress: response.body.lockAddress,
-        network: response.body.network,
-      },
+      expect(response.status).toBe(200)
+      expect(response.body.lockAddress).toEqual(lockAddress)
+      expect(response.body.userAddress).toEqual(
+        '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
+      )
+      expect(response.body.approval).toEqual('pending')
+      expect(response.body.network).toEqual(5)
     })
-    expect(rsvp!.approval).toEqual('pending')
-    rsvp!.approval = 'approved'
-    await rsvp?.save()
-    const responseAfterUpdate = await request(app)
-      .post(`/v2/rsvp/${network}/${lockAddress}/`)
-      .send({
-        email: 'ccarfi@unlock-protocol.com',
-        data: {
-          fullname: 'Chris Carfi',
+
+    it('stores the RSVP in the right table even if there is no wallet', async () => {
+      expect.assertions(3)
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/`)
+        .send({
+          email: 'julien@unlock-protocol.com',
+          data: {
+            fullname: 'Julien Genestoux',
+          },
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.body.approval).toBe('pending')
+      expect(response.body.userAddress).toEqual(
+        '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f'
+      )
+    })
+
+    it('does not override the state of an approved participant', async () => {
+      expect.assertions(4)
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/`)
+        .send({
+          email: 'ccarfi@unlock-protocol.com',
+          data: {
+            fullname: 'Chris Carfi',
+          },
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.body.approval).toEqual('pending')
+
+      const rsvp = await Rsvp.findOne({
+        where: {
+          userAddress: response.body.userAddress,
+          lockAddress: response.body.lockAddress,
+          network: response.body.network,
         },
       })
-    expect(responseAfterUpdate.body.approval).toEqual('approved')
+      expect(rsvp!.approval).toEqual('pending')
+      rsvp!.approval = 'approved'
+      await rsvp?.save()
+      const responseAfterUpdate = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/`)
+        .send({
+          email: 'ccarfi@unlock-protocol.com',
+          data: {
+            fullname: 'Chris Carfi',
+          },
+        })
+      expect(responseAfterUpdate.body.approval).toEqual('approved')
+    })
+  })
+  describe('approval/denials', () => {
+    beforeEach(async () => {
+      // CReate an RSVP
+      await Rsvp.create({
+        network,
+        userAddress,
+        lockAddress,
+        approval: 'pending',
+      })
+    })
+    it('should require the user to be authenticated', async () => {
+      expect.assertions(1)
+      const response = await request(app).post(
+        `/v2/rsvp/${network}/${lockAddress}/approve/${userAddress}`
+      )
+      expect(response.status).toBe(401)
+    })
+    it('should require the user to be authenticated as a lock manager', async () => {
+      expect.assertions(2)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/approve/${userAddress}`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(403)
+    })
+
+    it('should change the RSVP approval when approved by a lock manager', async () => {
+      expect.assertions(3)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
+
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/approve/${userAddress}`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(200)
+      expect(response.body.approval).toEqual('approved')
+    })
+
+    it('should change the RSVP approval when denied by a lock manager', async () => {
+      expect.assertions(3)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
+
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/deny/${userAddress}`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(200)
+      expect(response.body.approval).toEqual('denied')
+    })
   })
 })

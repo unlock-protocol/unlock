@@ -1,6 +1,7 @@
 import { CheckoutConfig, EventData } from '../../src/models'
 import {
   createEventSlug,
+  getEventBySlug,
   saveEvent,
 } from '../../src/operations/eventOperations'
 describe('eventOperations', () => {
@@ -9,7 +10,7 @@ describe('eventOperations', () => {
     await CheckoutConfig.truncate()
   })
   describe('createEventSlug', () => {
-    it('should merge keys items with the corresponding metadata', async () => {
+    it('should create the event with the correct slug', async () => {
       expect.assertions(2)
       const slug = await createEventSlug('Exclusive event')
       expect(slug).toEqual('exclusive-event')
@@ -55,6 +56,18 @@ describe('eventOperations', () => {
         '0x123'
       )
       expect(sameEvent.slug).toEqual(event.slug)
+    })
+
+    it('should save requiresAppoval when applicable', async () => {
+      expect.assertions(2)
+      const eventParams = {
+        data: { name: 'my rsvp party', requiresApproval: true },
+        checkoutConfig: { config: { locks: {} } },
+      }
+      const [{ slug }] = await saveEvent(eventParams, '0x123')
+      const savedEvent = await getEventBySlug(slug)
+      expect(savedEvent.slug).toEqual('my-rsvp-party')
+      expect(savedEvent?.data.requiresApproval).toEqual(true)
     })
   })
 })

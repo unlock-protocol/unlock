@@ -4,7 +4,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { MAX_UINT } from '~/constants'
 import { KeyMetadata } from '~/unlockTypes'
 import { expirationAsDate } from '~/utils/durations'
-import { MetadataCard } from './MetadataCard'
+import { MetadataCard as MetadataCardDefault } from './MetadataCard'
 import useClipboard from 'react-use-clipboard'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
@@ -24,8 +24,8 @@ export interface MemberCardProps {
   expirationDuration: string
   lockSettings?: Record<string, any>
   showExpiration?: boolean
-  fieldsToShow?: Record<string, any>[]
   MemberInfo?: React.FC
+  MetadataCard?: any
 }
 
 export const MemberCard = ({
@@ -38,8 +38,8 @@ export const MemberCard = ({
   expirationDuration,
   lockSettings,
   showExpiration = true,
-  fieldsToShow = [],
   MemberInfo,
+  MetadataCard,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
@@ -124,19 +124,6 @@ export const MemberCard = ({
             </div>
           </Detail>
 
-          {fieldsToShow.map((field) => {
-            return (
-              <Detail
-                key={field.name}
-                label={field.label}
-                valueSize="medium"
-                className="grow"
-              >
-                {metadata[field.name]}
-              </Detail>
-            )
-          })}
-
           {showExpiration && (
             <Detail label="Expiration" valueSize="medium" className="grow">
               {expirationAsDate(expiration)}
@@ -183,13 +170,17 @@ export const MemberCard = ({
       disabled={!isManager}
       content={MemberInfo ? <MemberInfo /> : <MemberInfoDefault />}
     >
-      <MetadataCard
-        expirationDuration={expirationDuration}
-        metadata={metadata}
-        owner={owner}
-        network={network}
-        lockSettings={lockSettings}
-      />
+      {MetadataCard ? (
+        MetadataCard
+      ) : (
+        <MetadataCardDefault
+          expirationDuration={expirationDuration}
+          metadata={metadata}
+          owner={owner}
+          network={network}
+          lockSettings={lockSettings}
+        />
+      )}
     </Collapse>
   )
 }
