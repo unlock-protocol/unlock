@@ -30,16 +30,19 @@ export async function deployContract(
 
 export async function deployUpgradeableContract(
   contractNameOrFullyQualifiedName,
-  deployArgs = []
+  deployArgs = [],
+  deployOptions = {}
 ) {
   const { zkUpgrades } = require('hardhat')
+  console.log(zkUpgrades)
   const { deployer } = await zkSyncSetupDeployer()
   const artifact = await deployer.loadArtifact(contractNameOrFullyQualifiedName)
 
   const contract = await zkUpgrades.deployProxy(
     deployer.zkWallet,
     artifact,
-    deployArgs
+    deployArgs,
+    deployOptions
   )
 
   await contract.waitForDeployment()
@@ -54,7 +57,9 @@ export async function deployUpgradeableContract(
 }
 
 async function zkSyncSetupDeployer() {
+  const { Deployer } = require('@matterlabs/hardhat-zksync-deploy')
   const hre = require('hardhat')
+  console.log(hre)
 
   // set provider and accounts
   const { chainId, accounts } = hre.network.config
