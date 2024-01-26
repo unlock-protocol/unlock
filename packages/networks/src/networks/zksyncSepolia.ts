@@ -7,6 +7,7 @@ export const zksyncSepolia: NetworkConfig = {
   chain: 'zksyncSepolia',
   description:
     "zkSync is a Layer-2 protocol that scales Ethereum with cutting-edge ZK tech. Our mission is not only to merely increase Ethereum's throughput, but to fully preserve its foundational values – freedom, self-sovereignty, decentralization – at scale.",
+  ethNetwork: 'sepolia',
   explorer: {
     name: 'zkSync Era Block Explorer - Sepolia',
     urls: {
@@ -31,6 +32,7 @@ export const zksyncSepolia: NetworkConfig = {
     name: 'zkSync Ether',
     symbol: 'ETH',
   },
+
   previousDeploys: [],
   // TODO: add to unlock providers
   // provider: 'https://rpc.unlock-protocol.com/300',
