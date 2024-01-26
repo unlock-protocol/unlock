@@ -33,7 +33,6 @@ export async function deployUpgradeableContract(
   deployOptions = {}
 ) {
   const { zkUpgrades } = require('hardhat')
-  console.log(zkUpgrades)
   const { deployer } = await zkSyncSetupDeployer()
   const artifact = await deployer.loadArtifact(contractNameOrFullyQualifiedName)
 
