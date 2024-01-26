@@ -169,6 +169,13 @@ export const Members = ({
     )
   }
 
+  const pageOffset = page - 1 ?? 0
+  const { maxNumbersOfPage } = paginate({
+    page: pageOffset,
+    itemsPerPage: PAGE_SIZE,
+    totalItems: chainLock?.outstandingKeys || 0,
+  })
+
   if (noItems && !hasActiveFilter) {
     return <NoMemberNoFilter />
   }
@@ -185,13 +192,6 @@ export const Members = ({
       </>
     )
   }
-
-  const pageOffset = page - 1 ?? 0
-  const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: PAGE_SIZE,
-    totalItems: chainLock.outstandingKeys,
-  })
 
   return (
     <div className="grid grid-cols-1 gap-6">
