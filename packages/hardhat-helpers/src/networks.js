@@ -55,7 +55,7 @@ Object.keys(networks).forEach((key) => {
       name: networks[key].name,
       url: networks[key].provider,
       accounts: getAccounts(networks[key].name),
-      zksync: key === 'zksync',
+      zksync: key.includes('zksync'),
     }
   }
 
