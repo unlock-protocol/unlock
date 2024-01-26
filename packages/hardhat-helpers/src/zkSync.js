@@ -9,17 +9,13 @@ export async function deployContract(
   deployArgs = []
 ) {
   const { deployer } = await zkSyncSetupDeployer()
-  const deploymentFee = await deployer.estimateDeployFee(
-    contractNameOrFullyQualifiedName,
-    deployArgs
-  )
+  const artifact = await deployer.loadArtifact(contractNameOrFullyQualifiedName)
+
+  const deploymentFee = await deployer.estimateDeployFee(artifact, deployArgs)
   const parsedFee = ethers.formatEther(deploymentFee.toString())
   console.log(`Deployment is estimated to cost ${parsedFee} ETH`)
 
-  const contract = await deployer.deploy(
-    contractNameOrFullyQualifiedName,
-    deployArgs
-  )
+  const contract = await deployer.deploy(artifact, deployArgs)
 
   await contract.waitForDeployment()
   const address = await contract.getAddress()
@@ -38,10 +34,11 @@ export async function deployUpgradeableContract(
 ) {
   const { zkUpgrades } = require('hardhat')
   const { deployer } = await zkSyncSetupDeployer()
+  const artifact = await deployer.loadArtifact(contractNameOrFullyQualifiedName)
 
   const contract = await zkUpgrades.deployProxy(
     deployer.zkWallet,
-    contractNameOrFullyQualifiedName,
+    artifact,
     deployArgs
   )
 
@@ -59,21 +56,17 @@ export async function deployUpgradeableContract(
 async function zkSyncSetupDeployer() {
   const hre = require('hardhat')
 
-  const { id, provider: providerUrl } = await getNetwork()
-  console.log(hre.networks[id])
-  const { accounts } = hre.networks[id]
-  console.log(accounts)
-
-  let privateKey
+  // set provider and accounts
+  const { chainId, accounts } = hre.network.config
+  const { provider: providerUrl } = await getNetwork(chainId)
+  const provider = new Provider(providerUrl)
+  let wallet
   if (process.env.DEPLOYER_PRIVATE_KEY) {
-    privateKey = process.env.DEPLOYER_PRIVATE_KEY
+    wallet = new Wallet(process.env.DEPLOYER_PRIVATE_KEY, provider)
   } else {
-    privateKey = accounts[0].privKey
+    wallet = Wallet.fromMnemonic(accounts.mnemonic, provider)
   }
 
-  // setup deployer
-  const provider = new Provider(providerUrl)
-  const wallet = new Wallet(privateKey, provider)
   const deployer = new Deployer(hre, wallet)
 
   return { provider, wallet, deployer }
