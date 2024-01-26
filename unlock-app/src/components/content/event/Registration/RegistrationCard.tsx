@@ -12,9 +12,13 @@ export interface RegistrationCardProps {
     id?: string
     config: PaywallConfigType
   }
+  requiresApproval: boolean
 }
 
-export const RegistrationCard = ({ checkoutConfig }: RegistrationCardProps) => {
+export const RegistrationCard = ({
+  requiresApproval,
+  checkoutConfig,
+}: RegistrationCardProps) => {
   // Check if the user has a key!
   const queries = useValidKeyBulk(checkoutConfig.config.locks)
   const refresh = () => {
@@ -40,6 +44,7 @@ export const RegistrationCard = ({ checkoutConfig }: RegistrationCardProps) => {
     return (
       <Card className="grid gap-4 mt-10 lg:mt-0">
         <RegistrationCardSingleLock
+          requiresApproval={requiresApproval}
           refresh={refresh}
           checkoutConfig={checkoutConfig}
         />

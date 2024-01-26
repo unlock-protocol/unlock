@@ -32,6 +32,15 @@ if (process.env.RUN_FORK) {
   copySync('.openzeppelin/mainnet.json', '.openzeppelin/unknown-31337.json')
 }
 
+// add tenderly if needed
+if (process.env.TENDERLY_FORK) {
+  const tdly = require('@tenderly/hardhat-tenderly')
+  tdly.setup()
+  networks.tenderly = {
+    url: process.env.TENDERLY_FORK,
+    accounts: networks.mainnet.accounts,
+  }
+}
 // tasks
 require('./tasks/balance')
 require('./tasks/safe')
@@ -49,5 +58,8 @@ module.exports = {
   etherscan,
   solidity: {
     compilers: [{ version: '0.8.21', settings }],
+  },
+  sourcify: {
+    enabled: true,
   },
 }

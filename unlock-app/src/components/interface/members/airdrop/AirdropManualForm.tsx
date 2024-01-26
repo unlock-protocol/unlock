@@ -111,7 +111,6 @@ export function AirdropForm({
       try {
         const address = await getAddressForName(member.wallet)
         member.wallet = address
-        console.log(member)
         const parsed = AirdropMember.parse(member)
         add(parsed)
         reset()
@@ -138,7 +137,7 @@ export function AirdropForm({
               }
 
               try {
-                const numberOfMemberships = await web3Service.balanceOf(
+                const numberOfMemberships = await web3Service.totalKeys(
                   lock!.address,
                   address,
                   lock!.network
@@ -194,17 +193,15 @@ export function AirdropForm({
                   }}
                   render={() => {
                     return (
-                      <>
-                        <AddressInput
-                          withIcon
-                          value={wallet}
-                          onChange={(value: any) => {
-                            setValue('wallet', value)
-                          }}
-                          required
-                          onResolveName={onResolveName}
-                        />
-                      </>
+                      <AddressInput
+                        withIcon
+                        value={wallet}
+                        onChange={(value: any) => {
+                          setValue('wallet', value)
+                        }}
+                        required
+                        onResolveName={onResolveName}
+                      />
                     )
                   }}
                 />

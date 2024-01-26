@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import * as keysOperations from '../../operations/keysOperations'
+import { PAGE_SIZE } from '@unlock-protocol/core'
+
 export default class KeyController {
   /**
    * List of keys with additional metadata when caller is the lockManager
@@ -14,9 +16,10 @@ export default class KeyController {
       const {
         query = '',
         page = 0,
-        max = 100,
+        max = PAGE_SIZE,
         filterKey,
         expiration = 'active',
+        approval = 'minted',
       } = request.query ?? {}
 
       if (!filterKey) {
@@ -30,7 +33,8 @@ export default class KeyController {
         page: Number(page),
         filterKey,
         expiration,
-        max: Math.min(100, Number(max)),
+        approval,
+        max: Math.min(PAGE_SIZE, Number(max)),
       }
 
       const loggedInUserAddress = Normalizer.ethereumAddress(

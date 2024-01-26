@@ -5,12 +5,12 @@ import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
-import { ExpirationStatus } from './FilterBar'
+import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -48,6 +48,7 @@ export interface FilterProps {
   query: string
   filterKey: string
   expiration: ExpirationStatus
+  approval: ApprovalStatus
 }
 
 export const Members = ({
@@ -60,6 +61,7 @@ export const Members = ({
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   },
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
@@ -68,15 +70,16 @@ export const Members = ({
   const web3Service = useWeb3Service()
 
   const getMembers = async () => {
-    const { query, filterKey, expiration } = filters
+    const { query, filterKey, expiration, approval } = filters
     const keys = await storage.keys(
       network,
       lockAddress,
       query,
       filterKey,
       expiration,
+      approval,
       page - 1, // API starts at 0
-      MEMBERS_PER_PAGE
+      PAGE_SIZE
     )
     return keys.data
   }
@@ -139,6 +142,7 @@ export const Members = ({
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
+    filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
@@ -165,22 +169,29 @@ export const Members = ({
     )
   }
 
+  const pageOffset = page - 1 ?? 0
+  const { maxNumbersOfPage } = paginate({
+    page: pageOffset,
+    itemsPerPage: PAGE_SIZE,
+    totalItems: chainLock?.outstandingKeys || 0,
+  })
+
   if (noItems && !hasActiveFilter) {
     return <NoMemberNoFilter />
   }
 
   if (noItems && hasActiveFilter) {
-    return <NoMemberWithFilter />
+    return (
+      <>
+        <NoMemberWithFilter />{' '}
+        <PaginationBar
+          maxNumbersOfPage={maxNumbersOfPage}
+          setPage={setPage}
+          page={page}
+        />
+      </>
+    )
   }
-
-  const pageOffset = page - 1 ?? 0
-  const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: MEMBERS_PER_PAGE,
-    totalItems: chainLock.outstandingKeys,
-  })
-
-  const showPagination = maxNumbersOfPage > 1
 
   return (
     <div className="grid grid-cols-1 gap-6">
@@ -201,13 +212,11 @@ export const Members = ({
           />
         )
       })}
-      {showPagination && (
-        <PaginationBar
-          maxNumbersOfPage={maxNumbersOfPage}
-          setPage={setPage}
-          page={page}
-        />
-      )}
+      <PaginationBar
+        maxNumbersOfPage={maxNumbersOfPage}
+        setPage={setPage}
+        page={page}
+      />
     </div>
   )
 }

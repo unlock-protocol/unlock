@@ -280,7 +280,10 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-          <RegistrationCard checkoutConfig={checkoutConfig} />
+          <RegistrationCard
+            requiresApproval={event.requiresApproval}
+            checkoutConfig={checkoutConfig}
+          />
         </section>
       </div>
 

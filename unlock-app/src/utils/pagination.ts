@@ -1,6 +1,8 @@
+import { PAGE_SIZE } from '@unlock-protocol/core'
+
 export const paginate = ({
   page = 0,
-  itemsPerPage = 30,
+  itemsPerPage = PAGE_SIZE,
   totalItems = 1000,
 }: {
   page: number

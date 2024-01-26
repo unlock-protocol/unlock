@@ -70,6 +70,7 @@ interface FormProps {
 }
 
 export const Form = ({ onSubmit }: FormProps) => {
+  const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
   const { network, account } = useAuth()
   const [isInPerson, setIsInPerson] = useState(true)
@@ -106,8 +107,8 @@ export const Form = ({ onSubmit }: FormProps) => {
           event_timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           event_address: '',
         },
-        slug: '',
         image: '',
+        requiresApproval: false,
       },
     },
   })
@@ -116,6 +117,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     control,
     register,
     setValue,
+    getValues,
     formState: { errors },
     watch,
   } = methods
@@ -452,8 +454,14 @@ export const Form = ({ onSubmit }: FormProps) => {
                 enabled={screeningEnabled}
                 setEnabled={enableScreening}
                 onChange={(enabled: boolean) => {
+                  setValue('metadata.requiresApproval', enabled)
                   if (enabled) {
+                    setOldMaxNumberOfKeys(
+                      getValues('lock.maxNumberOfKeys') || 100
+                    )
                     setValue('lock.maxNumberOfKeys', 0)
+                  } else {
+                    setValue('lock.maxNumberOfKeys', oldMaxNumberOfKeys)
                   }
                 }}
               />

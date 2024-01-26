@@ -2,28 +2,31 @@ const { ethers, run } = require('hardhat')
 const {
   isLocalhost,
   ADDRESS_ZERO,
+  deployContract,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
-const contracts = require('@unlock-protocol/contracts')
 
 async function main({ publicLockVersion }) {
   // fetch chain info
   const [signer] = await ethers.getSigners()
 
-  let PublicLock
-  if (publicLockVersion) {
-    const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
-    console.log(
-      `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
-    )
-    PublicLock = await ethers.getContractFactory(abi, bytecode)
-  } else {
+  if (!publicLockVersion) {
     throw Error('Need to set --public-lock-version')
   }
 
-  const publicLock = await PublicLock.deploy()
-  await publicLock.waitForDeployment()
-  const { hash } = await publicLock.deploymentTransaction()
-  const publicLockAddress = await publicLock.getAddress()
+  console.log(
+    `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
+  )
+
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'PublicLock', version: publicLockVersion },
+  ])
+
+  const {
+    contract: publicLock,
+    hash,
+    address: publicLockAddress,
+  } = await deployContract(qualifiedPath)
 
   console.log(
     `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress} (tx: ${hash})`
@@ -44,7 +47,7 @@ async function main({ publicLockVersion }) {
   const { hash: txRenounceHash } = await publicLock.renounceLockManager()
   console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
 
-  if (!isLocalhost()) {
+  if (!(await isLocalhost())) {
     await run('verify:verify', { address: publicLockAddress })
   }
 

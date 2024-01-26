@@ -20,11 +20,13 @@ export interface RegistrationCardSingleLockProps {
     config: PaywallConfigType
   }
   refresh: any
+  requiresApproval: boolean
 }
 
 export const RegistrationCardSingleLock = ({
   checkoutConfig,
   refresh,
+  requiresApproval,
 }: RegistrationCardSingleLockProps) => {
   const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
   const network = (checkoutConfig.config.locks[lockAddress].network ||
@@ -65,9 +67,7 @@ export const RegistrationCardSingleLock = ({
     contractAddress: lock?.currencyContractAddress,
   })
 
-  const requiresApproval =
-    lock?.maxNumberOfKeys == 0 ||
-    lockAddress === '0x7E61cF5C4c2F1b8aa22C69CD5716343c53fd34bf'
+  const showApplication = requiresApproval || lock?.maxNumberOfKeys == 0
 
   if (isLockLoading || isClaimableLoading || !lock) {
     return (
@@ -88,7 +88,7 @@ export const RegistrationCardSingleLock = ({
 
   return (
     <>
-      {!requiresApproval && (
+      {!showApplication && (
         <LockPriceInternals
           lock={lock}
           network={network}
@@ -100,7 +100,7 @@ export const RegistrationCardSingleLock = ({
           showContract={true}
         />
       )}
-      {requiresApproval && (
+      {showApplication && (
         <WalletlessRegistrationApply
           metadataInputs={
             emailRequired && metadataInputs
