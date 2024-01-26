@@ -20,7 +20,7 @@ const copyContractFiles = async (dirname, contractName, version) => {
 }
 
 async function copyAndBuildContractsAtVersion(dirname, contracts) {
-  const { ethers, run } = require('hardhat')
+  const { ethers, run, network } = require('hardhat')
 
   // copy all files
   await Promise.all(
@@ -29,8 +29,10 @@ async function copyAndBuildContractsAtVersion(dirname, contracts) {
     )
   )
 
-  // re-compile contract
-  await run('compile', { network: 'zksync' })
+  // re-compile contract (and checking if zksync)
+  const { zksync } = network.config
+  const compileArgs = zksync ? { network: 'zksync' } : {}
+  await run('compile', compileArgs)
 
   // get factory using fully qualified path
   const qualifiedPaths = await Promise.all(
