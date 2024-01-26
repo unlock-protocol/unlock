@@ -55,7 +55,14 @@ Object.keys(networks).forEach((key) => {
       name: networks[key].name,
       url: networks[key].provider,
       accounts: getAccounts(networks[key].name),
-      zksync: key.includes('zksync'),
+    }
+  }
+
+  if (key.includes('zksync')) {
+    hardhatNetworks[key] = {
+      ...hardhatNetworks[key],
+      zksync: true,
+      ethNetwork: networks[key].ethNetwork,
     }
   }
 
