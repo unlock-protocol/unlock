@@ -7,7 +7,6 @@ export const zksync: NetworkConfig = {
   chain: 'zksync',
   description:
     "zkSync is a Layer-2 protocol that scales Ethereum with cutting-edge ZK tech. Our mission is not only to merely increase Ethereum's throughput, but to fully preserve its foundational values – freedom, self-sovereignty, decentralization – at scale.",
-  ethNetwork: 'mainnet',
   explorer: {
     name: 'zkSync Era Block Explorer',
     urls: {

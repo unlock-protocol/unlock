@@ -146,7 +146,6 @@ export interface NetworkConfig {
   description: string
   url?: string
   faucet?: string
-  ethNetwork?: string
   tokens?: Token[]
   hooks?: Partial<Record<HookName, Hook[]>>
   fullySubsidizedGas?: boolean
