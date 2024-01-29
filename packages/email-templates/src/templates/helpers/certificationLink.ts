@@ -1,4 +1,4 @@
-import handlebars from 'handlebars'
+import Handlebars from 'handlebars'
 
 export function certificationLink(lockName: string, certificationUrl: string) {
   let linkText = ''
@@ -6,6 +6,5 @@ export function certificationLink(lockName: string, certificationUrl: string) {
   if (lockName && certificationUrl) {
     linkText = `<p>Congratulations! You can view and share your certificate for <strong>${lockName}</strong> on LinkedIn <a href="${certificationUrl}">there</a>.</p>`
   }
-
-  return new handlebars.SafeString(linkText)
+  return new Handlebars.SafeString(linkText)
 }

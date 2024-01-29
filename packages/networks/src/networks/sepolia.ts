@@ -42,13 +42,18 @@ export const sepolia: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x0aC1a84AcaB08b630714d59dA74576D7274E68d5',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 11155111,
   isTestNetwork: true,
   keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
   maxFreeClaimCost: 1000,
-  multisig: '', // SAFE does not support Sepolia as of October 11th 2023
+  multisig: '0x95fE514fe7F60722AFF0FD009ebeE4Ba2013924c',
   name: 'Sepolia',
   nativeCurrency: {
     coingecko: 'ethereum',
@@ -83,7 +88,7 @@ export const sepolia: NetworkConfig = {
   },
   tokens: [
     {
-      address: '0x7b79995e5f793a07bc00c21412e50ecae098e7f9',
+      address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',
       decimals: 18,
       featured: true,
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
@@ -91,7 +96,15 @@ export const sepolia: NetworkConfig = {
       symbol: 'WETH',
     },
   ],
+  uniswapV3: {
+    factoryAddress: '0xB7f907f7A9eBC822a80BD25E224be42Ce0A698A0',
+    positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
+    universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+  },
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
+  unlockDaoToken: {
+    address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
+  },
   url: 'https://github.com/eth-clients/sepolia',
 }
 

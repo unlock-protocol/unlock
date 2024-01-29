@@ -9,7 +9,11 @@ import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 import { useMutation } from '@tanstack/react-query'
-import { ExpirationStatus, FilterBar } from './elements/FilterBar'
+import {
+  ApprovalStatus,
+  ExpirationStatus,
+  FilterBar,
+} from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
@@ -30,8 +34,8 @@ import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
-import { getLockTypeByMetadata } from '@unlock-protocol/core'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { ImageBar } from './elements/ImageBar'
 
 interface ActionBarProps {
   lockAddress: string
@@ -65,7 +69,7 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
   const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
@@ -81,8 +85,9 @@ const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
       '',
       'owner',
       'all',
+      'minted',
       page - 1,
-      MEMBERS_PER_PAGE
+      PAGE_SIZE
     )
     const members = response.data
     const cols: string[] = []
@@ -262,7 +267,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   )
 }
 
-const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
+export const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
 
   const { isManager } = useLockManager({
@@ -342,6 +347,7 @@ export const ManageLockPage = () => {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
 
@@ -439,7 +445,33 @@ export const ManageLockPage = () => {
                   loading={loading}
                   setPage={setPage}
                   page={page}
-                  onAirdropKeys={toggleAirdropKeys}
+                  NoMemberNoFilter={() => {
+                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    return (
+                      <ImageBar
+                        src="/images/illustrations/no-member.svg"
+                        alt="No members"
+                        description={
+                          <span>
+                            Lock is deployed. You can{' '}
+                            <button
+                              onClick={toggleAirdropKeys}
+                              className="outline-none cursor-pointer text-brand-ui-primary"
+                            >
+                              Airdrop Keys
+                            </button>{' '}
+                            or{' '}
+                            <Link href={checkoutLink}>
+                              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                                Share a purchase link
+                              </span>
+                            </Link>{' '}
+                            to your community.
+                          </span>
+                        }
+                      />
+                    )
+                  }}
                 />
               </div>
             </div>

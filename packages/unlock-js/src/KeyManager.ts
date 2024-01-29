@@ -176,7 +176,9 @@ export class KeyManager {
       email: params.email.trim().toLowerCase(),
       lock: params.lockAddress.trim().toLowerCase(),
     }
-    return ethers.utils.id(JSON.stringify(item)).slice(0, 42)
+    return ethers.utils.getAddress(
+      ethers.utils.id(JSON.stringify(item)).slice(0, 42)
+    )
   }
 
   /**

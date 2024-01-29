@@ -488,7 +488,7 @@ interface IPublicLock {
    * - `from`, `to` cannot be zero.
    * - `tokenId` must be owned by `from`.
    * - If the caller is not `from`, it must be have been allowed to move this
-   * NFT by either {approve} or {setApprovalForAll}.
+   * NFT by either `approve` or `setApprovalForAll`.
    */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
 
@@ -498,7 +498,7 @@ interface IPublicLock {
    * @param to the address that will receive the token
    * @param tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either {approve} or {setApprovalForAll}.
+   * either `approve` or `setApprovalForAll`.
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(address from, address to, uint256 tokenId) external;
@@ -1038,7 +1038,7 @@ interface IUnlock {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Address.sol)
@@ -1504,6 +1504,7 @@ abstract contract UnlockOwnable is
 
 // File contracts/utils/UnlockProxyAdmin.sol
 
+/* solhint-disable no-inline-assembly */
 // Sources flattened with hardhat v2.18.3 https://hardhat.org
 
 // Original license: SPDX_License_Identifier: MIT
@@ -2764,7 +2765,7 @@ pragma solidity 0.8.21;
 
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
-contract UnlockV13 is UnlockInitializable, UnlockOwnable {
+contract Unlock is UnlockInitializable, UnlockOwnable {
   /**
    * The struct for a lock
    * We use deployed to keep track of deployments.
@@ -2921,10 +2922,14 @@ contract UnlockV13 is UnlockInitializable, UnlockOwnable {
    * @dev This will initialize the template and revokeOwnership.
    */
   function addLockTemplate(address impl, uint16 version) public onlyOwner {
-    // First claim the template so that no-one else could
-    // this will revert if the template was already initialized.
-    IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "");
-    IPublicLock(impl).renounceLockManager();
+    // if the template has not been initialized,
+    // claim the template so that no-one else could
+    try IPublicLock(impl).initialize(address(this), 0, address(0), 0, 0, "") {
+      // renounce the lock manager role that was added during initialization
+      IPublicLock(impl).renounceLockManager();
+    } catch {
+      // failure means that the template is already initialized
+    }
 
     _publicLockVersions[impl] = version;
     _publicLockImpls[version] = impl;

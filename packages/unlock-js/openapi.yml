@@ -438,6 +438,10 @@ components:
         crossmintClientId:
           type: string
           nullable: true
+        promoCodes:
+          type: array
+          items:
+            type: string
 
     EventDetails:
       type: object
@@ -457,6 +461,19 @@ components:
           type: string
         endDate:
           type: string
+
+    Rsvp:
+      type: object
+      nullable: false
+      properties:
+        lockAddress:
+          type: string
+        userAddress:
+          type: string
+        approval:
+          type: string
+        network:
+          type: number
 
   parameters:
     Network:
@@ -1325,6 +1342,11 @@ paths:
           schema:
             type: string
           description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
         - in: query
           name: page
           schema:
@@ -3416,6 +3438,99 @@ paths:
                     $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}:
+    post:
+      operationId: rsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+
+      description: User applies to attend an event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                email:
+                  type: string
+                data:
+                  type: object
+                  additionalProperties: true
+      responses:
+        200:
+          description: Successfully applied to event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/approve/{userAddress}:
+    post:
+      operationId: approveRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
+      description: Approves a user to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully approves the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/deny/{userAddress}:
+    post:
+      operationId: denyRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
+      description: Denies a user to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully denied the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
 
         400:
           $ref: '#/components/responses/400.Invalid'

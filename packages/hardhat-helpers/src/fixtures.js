@@ -5,7 +5,7 @@ let publicLock = {
   expirationDuration: 60 * 60 * 24 * 30, // 30 days
   expirationTimestamp: 0, // Not used
   keyPriceCalculator: null,
-  keyPrice: ethers.utils.parseUnits('0.01', 'ether'),
+  keyPrice: ethers.utils.parseEther('0.01'),
   maxNumberOfKeys: 10,
   lockName: 'Unlock-Protocol Lock',
   maxKeysPerAddress: 10,

@@ -20,14 +20,24 @@ async function main() {
     console.log(`import ${contractName}${versionNumber} from '${abiPath}'`)
   )
 
-  console.log("import LockSerializer from './abis/utils/LockSerializer.json'")
+  const utils = [
+    'LockSerializer',
+    'UnlockSwapPurchaser',
+    'UnlockSwapBurner',
+    'UniswapOracleV3',
+  ]
+
+  utils.forEach((util) => {
+    console.log(`import ${util} from './abis/utils/${util}.json'`)
+  })
+
   console.log('\n// exports')
 
   exports.forEach(({ contractName, versionNumber }) =>
     console.log(`export { ${contractName}${versionNumber} }`)
   )
 
-  console.log('export { LockSerializer }')
+  console.log(`export { ${utils.toString()} }`)
 }
 
 main()

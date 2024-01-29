@@ -1,17 +1,36 @@
 import { useQueries } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ImageBar } from './ImageBar'
-import { MemberCard } from './MemberCard'
+import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
-import { ExpirationStatus } from './FilterBar'
-import Link from 'next/link'
+import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE } from '@unlock-protocol/core'
+
+const DefaultNoMemberNoFilter = () => {
+  return (
+    <ImageBar
+      src="/images/illustrations/no-member.svg"
+      alt="No members"
+      description="Your lock does not have any member yet."
+    />
+  )
+}
+
+const DefaultNoMemberWithFilter = () => {
+  return (
+    <ImageBar
+      src="/images/illustrations/no-member.svg"
+      alt="No results"
+      description="No key matches your filter."
+    />
+  )
+}
 
 interface MembersProps {
   lockAddress: string
@@ -20,13 +39,16 @@ interface MembersProps {
   setPage: (page: number) => void
   page: number
   filters?: FilterProps
-  onAirdropKeys?: () => void
+  MemberCard?: React.FC<MemberCardProps>
+  NoMemberNoFilter?: React.FC
+  NoMemberWithFilter?: React.FC
 }
 
 export interface FilterProps {
   query: string
   filterKey: string
   expiration: ExpirationStatus
+  approval: ApprovalStatus
 }
 
 export const Members = ({
@@ -35,24 +57,29 @@ export const Members = ({
   loading: loadingFilters,
   setPage,
   page,
-  onAirdropKeys,
   filters = {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   },
+  MemberCard = DefaultMemberCard,
+  NoMemberWithFilter = DefaultNoMemberWithFilter,
+  NoMemberNoFilter = DefaultNoMemberNoFilter,
 }: MembersProps) => {
   const web3Service = useWeb3Service()
 
   const getMembers = async () => {
+    const { query, filterKey, expiration, approval } = filters
     const keys = await storage.keys(
       network,
       lockAddress,
-      filters.query,
-      filters.filterKey,
-      filters.expiration,
+      query,
+      filterKey,
+      expiration,
+      approval,
       page - 1, // API starts at 0
-      MEMBERS_PER_PAGE
+      PAGE_SIZE
     )
     return keys.data
   }
@@ -115,11 +142,10 @@ export const Members = ({
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
+    filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
-
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
 
   if (loading) {
     return (
@@ -143,51 +169,29 @@ export const Members = ({
     )
   }
 
+  const pageOffset = page - 1 ?? 0
+  const { maxNumbersOfPage } = paginate({
+    page: pageOffset,
+    itemsPerPage: PAGE_SIZE,
+    totalItems: chainLock?.outstandingKeys || 0,
+  })
+
   if (noItems && !hasActiveFilter) {
-    return (
-      <ImageBar
-        src="/images/illustrations/no-member.svg"
-        alt="No members"
-        description={
-          <span>
-            Lock is deployed. You can{' '}
-            <button
-              onClick={onAirdropKeys}
-              className="outline-none cursor-pointer text-brand-ui-primary"
-            >
-              Airdrop Keys
-            </button>{' '}
-            or{' '}
-            <Link href={checkoutLink}>
-              <span className="outline-none cursor-pointer text-brand-ui-primary">
-                Share a purchase link
-              </span>
-            </Link>{' '}
-            to your community.
-          </span>
-        }
-      />
-    )
+    return <NoMemberNoFilter />
   }
 
   if (noItems && hasActiveFilter) {
     return (
-      <ImageBar
-        src="/images/illustrations/no-member.svg"
-        alt="No results"
-        description="No key matches your filter."
-      />
+      <>
+        <NoMemberWithFilter />{' '}
+        <PaginationBar
+          maxNumbersOfPage={maxNumbersOfPage}
+          setPage={setPage}
+          page={page}
+        />
+      </>
     )
   }
-
-  const pageOffset = page - 1 ?? 0
-  const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: MEMBERS_PER_PAGE,
-    totalItems: chainLock.outstandingKeys,
-  })
-
-  const showPagination = maxNumbersOfPage > 1
 
   return (
     <div className="grid grid-cols-1 gap-6">
@@ -208,13 +212,11 @@ export const Members = ({
           />
         )
       })}
-      {showPagination && (
-        <PaginationBar
-          maxNumbersOfPage={maxNumbersOfPage}
-          setPage={setPage}
-          page={page}
-        />
-      )}
+      <PaginationBar
+        maxNumbersOfPage={maxNumbersOfPage}
+        setPage={setPage}
+        page={page}
+      />
     </div>
   )
 }

@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: MIT
 
-// File @openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (access/IAccessControl.sol)
@@ -94,7 +94,7 @@ interface IAccessControlUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Address.sol)
@@ -342,7 +342,7 @@ library AddressUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (proxy/utils/Initializable.sol)
@@ -510,10 +510,10 @@ abstract contract Initializable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
-// OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
+// OpenZeppelin Contracts (last updated v4.9.4) (utils/Context.sol)
 
 pragma solidity ^0.8.0;
 
@@ -541,6 +541,10 @@ abstract contract ContextUpgradeable is Initializable {
         return msg.data;
     }
 
+    function _contextSuffixLength() internal view virtual returns (uint256) {
+        return 0;
+    }
+
     /**
      * @dev This empty reserved space is put in place to allow future versions to add new
      * variables without shifting down storage in the inheritance chain.
@@ -550,7 +554,7 @@ abstract contract ContextUpgradeable is Initializable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
@@ -579,7 +583,7 @@ interface IERC165Upgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
@@ -623,7 +627,7 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/math/MathUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/math/MathUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/math/Math.sol)
@@ -966,7 +970,7 @@ library MathUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/math/SignedMathUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/math/SignedMathUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (utils/math/SignedMath.sol)
@@ -1013,7 +1017,7 @@ library SignedMathUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Strings.sol)
@@ -1100,7 +1104,7 @@ library StringsUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (access/AccessControl.sol)
@@ -1151,11 +1155,6 @@ pragma solidity ^0.8.0;
  * to enforce additional security measures for this role.
  */
 abstract contract AccessControlUpgradeable is Initializable, ContextUpgradeable, IAccessControlUpgradeable, ERC165Upgradeable {
-    function __AccessControl_init() internal onlyInitializing {
-    }
-
-    function __AccessControl_init_unchained() internal onlyInitializing {
-    }
     struct RoleData {
         mapping(address => bool) members;
         bytes32 adminRole;
@@ -1180,6 +1179,11 @@ abstract contract AccessControlUpgradeable is Initializable, ContextUpgradeable,
         _;
     }
 
+    function __AccessControl_init() internal onlyInitializing {
+    }
+
+    function __AccessControl_init_unchained() internal onlyInitializing {
+    }
     /**
      * @dev See {IERC165-supportsInterface}.
      */
@@ -1363,10 +1367,10 @@ abstract contract AccessControlUpgradeable is Initializable, ContextUpgradeable,
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20PermitUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20PermitUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
-// OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/extensions/IERC20Permit.sol)
+// OpenZeppelin Contracts (last updated v4.9.4) (token/ERC20/extensions/IERC20Permit.sol)
 
 pragma solidity ^0.8.0;
 
@@ -1377,6 +1381,34 @@ pragma solidity ^0.8.0;
  * Adds the {permit} method, which can be used to change an account's ERC20 allowance (see {IERC20-allowance}) by
  * presenting a message signed by the account. By not relying on {IERC20-approve}, the token holder account doesn't
  * need to send a transaction, and thus is not required to hold Ether at all.
+ *
+ * ==== Security Considerations
+ *
+ * There are two important considerations concerning the use of `permit`. The first is that a valid permit signature
+ * expresses an allowance, and it should not be assumed to convey additional meaning. In particular, it should not be
+ * considered as an intention to spend the allowance in any specific way. The second is that because permits have
+ * built-in replay protection and can be submitted by anyone, they can be frontrun. A protocol that uses permits should
+ * take this into consideration and allow a `permit` call to fail. Combining these two aspects, a pattern that may be
+ * generally recommended is:
+ *
+ * ```solidity
+ * function doThingWithPermit(..., uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s) public {
+ *     try token.permit(msg.sender, address(this), value, deadline, v, r, s) {} catch {}
+ *     doThing(..., value);
+ * }
+ *
+ * function doThing(..., uint256 value) public {
+ *     token.safeTransferFrom(msg.sender, address(this), value);
+ *     ...
+ * }
+ * ```
+ *
+ * Observe that: 1) `msg.sender` is used as the owner, leaving no ambiguity as to the signer intent, and 2) the use of
+ * `try/catch` allows the permit to fail and makes the code tolerant to frontrunning. (See also
+ * {SafeERC20-safeTransferFrom}).
+ *
+ * Additionally, note that smart contract wallets (such as Argent or Safe) are not able to produce permit signatures, so
+ * contracts should have entry points that don't rely on permit.
  */
 interface IERC20PermitUpgradeable {
     /**
@@ -1399,6 +1431,8 @@ interface IERC20PermitUpgradeable {
      * For more information on the signature format, see the
      * https://eips.ethereum.org/EIPS/eip-2612#specification[relevant EIP
      * section].
+     *
+     * CAUTION: See Security Considerations above.
      */
     function permit(
         address owner,
@@ -1427,7 +1461,7 @@ interface IERC20PermitUpgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (token/ERC20/IERC20.sol)
@@ -1509,7 +1543,7 @@ interface IERC20Upgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.3) (token/ERC20/utils/SafeERC20.sol)
@@ -1654,7 +1688,7 @@ library SafeERC20Upgradeable {
 }
 
 
-// File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165Storage.sol)
@@ -1669,16 +1703,16 @@ pragma solidity ^0.8.0;
  * their support of an interface.
  */
 abstract contract ERC165StorageUpgradeable is Initializable, ERC165Upgradeable {
-    function __ERC165Storage_init() internal onlyInitializing {
-    }
-
-    function __ERC165Storage_init_unchained() internal onlyInitializing {
-    }
     /**
      * @dev Mapping of interface ids to whether or not it's supported.
      */
     mapping(bytes4 => bool) private _supportedInterfaces;
 
+    function __ERC165Storage_init() internal onlyInitializing {
+    }
+
+    function __ERC165Storage_init_unchained() internal onlyInitializing {
+    }
     /**
      * @dev See {IERC165-supportsInterface}.
      */
@@ -1711,7 +1745,7 @@ abstract contract ERC165StorageUpgradeable is Initializable, ERC165Upgradeable {
 }
 
 
-// File @openzeppelin/contracts/utils/math/Math.sol@v4.9.3
+// File @openzeppelin/contracts/utils/math/Math.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/math/Math.sol)
@@ -2054,7 +2088,7 @@ library Math {
 }
 
 
-// File @openzeppelin/contracts/utils/math/SignedMath.sol@v4.9.3
+// File @openzeppelin/contracts/utils/math/SignedMath.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.8.0) (utils/math/SignedMath.sol)
@@ -2101,7 +2135,7 @@ library SignedMath {
 }
 
 
-// File @openzeppelin/contracts/utils/Strings.sol@v4.9.3
+// File @openzeppelin/contracts/utils/Strings.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.9.0) (utils/Strings.sol)
@@ -4808,7 +4842,7 @@ contract MixinRefunds is
 }
 
 
-// File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.9.3
+// File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.9.5
 
 // Original license: SPDX_License_Identifier: MIT
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
@@ -4954,7 +4988,7 @@ contract MixinTransfer is
    * @param _recipient the address that will receive the token
    * @param _tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either {approve} or {setApprovalForAll}.
+   * either `approve` or `setApprovalForAll`.
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(
@@ -5234,7 +5268,7 @@ pragma solidity ^0.8.21;
  * Every ERC-721 compliant contract must implement the ERC165 interface.
  * https://eips.ethereum.org/EIPS/eip-721
  */
-contract PublicLockV14 is
+contract PublicLock is
   Initializable,
   ERC165StorageUpgradeable,
   MixinRoles,

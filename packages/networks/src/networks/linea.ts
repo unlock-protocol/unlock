@@ -41,6 +41,11 @@ export const linea: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x4Bf912519549DF750002814a2DcE7184b3971F06',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 59144,
@@ -99,7 +104,7 @@ export const linea: NetworkConfig = {
       address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
       decimals: 6,
       featured: true,
-      name: 'USD Coin',
+      name: 'USDC',
       symbol: 'USDC',
     },
     {

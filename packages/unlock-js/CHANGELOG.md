@@ -1,5 +1,21 @@
 # Changes
 
+# 0.43.1
+
+- adding the ability to add a filter for approval when listing keys.
+
+# 0.43.0
+
+- allowing `maxNumberOfKeys` to be 0 when deploying locks.
+
+# 0.42.0
+
+- added support for `UnlockV13` and `PublicLockV14`
+
+# 0.41.0
+
+- adding `setDiscountCodeWithCapHookSigner`
+
 # 0.40.2
 
 - claim now supports a `referrer` param

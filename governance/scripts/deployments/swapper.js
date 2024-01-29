@@ -1,15 +1,23 @@
-const { ethers, unlock, run } = require('hardhat')
+const { ethers, run } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
-const { getUniswapRouters } = require('../../test/helpers')
+const {
+  uniswapRouterAddresses,
+  getNetwork,
+  isLocalhost,
+  deployContract,
+} = require('@unlock-protocol/hardhat-helpers')
+const { UnlockSwapPurchaser } = require('@unlock-protocol/contracts')
 
 async function main() {
-  const [deployer] = await ethers.getSigners()
-
   // fetch chain info
-  const chainId = await deployer.getChainId()
-  const { unlockAddress } = unlock.networks[chainId]
+  const { unlockAddress, id: chainId } = await getNetwork()
 
-  const routers = getUniswapRouters(chainId)
+  const routers = Object.values(uniswapRouterAddresses[chainId])
+  console.log(`Deploying SwapPurchaser to ${chainId}
+  - unlockAddress: ${unlockAddress}
+  - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
+  - routers: ${routers}`)
+
   if (!routers.length) {
     console.log('Uniswap undefined for this network')
     return
@@ -18,23 +26,26 @@ async function main() {
   console.log(
     `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routers: ${routers.toString()}) `
   )
-  const UnlockSwapPurchaser = await ethers.getContractFactory(
-    'UnlockSwapPurchaser'
+  const SwapPurchaser = await ethers.getContractFactory(
+    UnlockSwapPurchaser.abi,
+    UnlockSwapPurchaser.bytecode
   )
 
-  const swapper = await UnlockSwapPurchaser.deploy(
-    unlockAddress,
-    PERMIT2_ADDRESS,
-    routers
+  console.log(`   waiting for tx to be mined for contract verification...`)
+  const {
+    contract: swapPurchaser,
+    hash,
+    address: swapPurchaserAddress,
+  } = await deployContract(
+    SwapPurchaser,
+    [unlockAddress, PERMIT2_ADDRESS, routers],
+    { wait: 5 }
   )
-  console.log(`  swapper deployed at ${swapper.address}`)
+  console.log(`SwapPurchaser deployed at ${swapPurchaserAddress} (tx: ${hash})`)
 
-  if (chainId !== 31337) {
-    console.log(`   waiting for tx to be mined for contract verification...`)
-    await swapper.deployTransaction.wait(5)
-
+  if (!(await isLocalhost())) {
     await run('verify:verify', {
-      address: swapper.address,
+      address: await swapPurchaser.getAddress(),
       constructorArguments: [unlockAddress, PERMIT2_ADDRESS, routers],
     })
   }

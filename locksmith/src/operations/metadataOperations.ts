@@ -116,7 +116,7 @@ export const getBaseTokenData = async (
   // Ok to remove after 03/31/2024
   // Uncoment for reveal!
   if (
-    address.toLowerCase() == '0x02c510be69fe87e052e065d8a40b437d55907b48' &&
+    address.toLowerCase() == '0x02c510bE69fe87E052E065D8A40B437d55907B48' &&
     network == 42161
   ) {
     result.image = `${host}/${network}/lock/${address}/icon?id=${keyId}`
@@ -125,7 +125,10 @@ export const getBaseTokenData = async (
   return result
 }
 
-export const getKeyCentricData = async (address: string, tokenId: string) => {
+export const getKeyCentricData = async (address: string, tokenId?: string) => {
+  if (!tokenId) {
+    return {}
+  }
   const keyCentricData = await KeyMetadata.findOne({
     where: {
       address,
@@ -221,19 +224,11 @@ export const getKeysMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const owners: { owner: string; tokenId: string }[] = keys?.map(
-    ({ owner, tokenId }: any) => {
-      return {
-        owner,
-        tokenId,
-      }
-    }
-  )
-
-  const mergedDataList = owners.map(async ({ owner, tokenId }) => {
+  const mergedDataList = keys?.map(async ({ owner, tokenId, approval }) => {
     let metadata: Record<string, any> = {
       owner,
       tokenId,
+      approval,
     }
     const keyData = await getKeyCentricData(lockAddress, tokenId)
     const [keyMetadata] = await lockOperations.getKeyHolderMetadata(

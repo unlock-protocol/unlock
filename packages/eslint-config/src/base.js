@@ -15,6 +15,7 @@ module.exports = {
     'eslint-plugin-prettier',
     'eslint-plugin-mocha',
     '@typescript-eslint',
+    'evm-address-to-checksummed',
   ],
   parser: '@typescript-eslint/parser',
   settings: {
@@ -55,5 +56,6 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/no-namespace': 'warn',
     '@typescript-eslint/ban-ts-comment': 'warn',
-  },
+    'evm-address-to-checksummed/evm-address-to-checksummed': 'error',
+  }
 }
