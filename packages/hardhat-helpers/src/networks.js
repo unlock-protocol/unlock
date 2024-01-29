@@ -45,6 +45,7 @@ const hardhatNetworks = {
     chainId: 31337,
     url: `http://${testHost}:8545`,
     name: 'localhost',
+    zksync: !!process.env.ZK_SYNC, // allow zksync on localhost
   },
 }
 
@@ -62,7 +63,7 @@ Object.keys(networks).forEach((key) => {
     hardhatNetworks[key] = {
       ...hardhatNetworks[key],
       zksync: true,
-      ethNetwork: networks[key].ethNetwork,
+      ethNetwork: networks[key].isTestNetwork ? 'sepolia' : 'mainnet',
     }
   }
 
@@ -72,6 +73,13 @@ Object.keys(networks).forEach((key) => {
       chainId: 100,
       name: 'gnosis',
       url: networks[key].provider,
+    }
+  }
+
+  // allow zksync on hardhat default network
+  if (process.env.ZK_SYNC) {
+    hardhatNetworks.hardhat = {
+      zksync: true,
     }
   }
 })
