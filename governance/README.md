@@ -22,6 +22,8 @@ yarn hardhat verify-proxy <...>
 
 ## Use a tenderly fork
 
+Forks on [Tenderly](https://docs.tenderly.co/forks) can be very useful to test behaviours of new settings and contracts before actually deploying them. A fork of a network allows to simulate the execution of multiple successive txs - which is very useful while working on a batch of changes.
+
 ```
 export TENDERLY_FORK=https://rpc.tenderly.co/fork/xxx-xxx-xxx-xx
 
