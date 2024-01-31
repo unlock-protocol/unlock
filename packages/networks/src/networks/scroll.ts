@@ -1,7 +1,7 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const scroll: NetworkConfig = {
-  chain: 'ethereum',
+  chain: 'scroll',
   description:
     'Scroll seamlessly extends Ethereum’s capabilities through zero knowledge tech and EVM compatibility. The L2 network built by Ethereum devs for Ethereum devs.',
   explorer: {
