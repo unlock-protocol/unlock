@@ -55,6 +55,14 @@ const etherscan = {
         browserURL: 'https://lineascan.build/',
       },
     },
+    {
+      network: 'scroll',
+      chainId: 534352,
+      urls: {
+        apiURL: 'https://api.scrollscan.com/api',
+        browserURL: 'https://scrollscan.com/',
+      },
+    },
   ],
 }
 
