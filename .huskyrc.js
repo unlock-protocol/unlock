@@ -24,6 +24,7 @@ const subDirs = [
   'locksmith',
   'paywall',
   'smart-contracts',
+  'governance',
   'tests',
   'unlock-app',
   'paywall',
