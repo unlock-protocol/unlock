@@ -62,7 +62,7 @@ async function main({
   console.log(
     `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${hash}) \n with params: ${lockParams.toString()}`
   )
-  return newLockAddress
+  return { newLockAddress, hash }
 }
 
 // execute as standalone
