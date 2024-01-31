@@ -5,7 +5,7 @@ export const scroll: NetworkConfig = {
   description:
     'The original and most secure EVM network. Gas fees are expensive on this network.',
   explorer: {
-    name: 'Etherscan',
+    name: 'Scrollscan',
     urls: {
       address: (address) => `https://scrollscan.com/address/${address}`,
       base: 'https://scrollscan.com/',
