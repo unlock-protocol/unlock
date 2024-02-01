@@ -68,7 +68,10 @@ export const CreateLockForm = ({
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { account, network } = useAuth()
+  const { account } = useAuth()
+  const networkOptions = useAvailableNetworks()
+  const network = networkOptions[0]?.value
+
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const [unlimitedDuration, setUnlimitedDuration] = useState(
@@ -148,8 +151,6 @@ export const CreateLockForm = ({
   )?.toLowerCase()
 
   const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
-
-  const networkOptions = useAvailableNetworks()
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {

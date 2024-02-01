@@ -40,7 +40,9 @@ interface FormProps {
 
 export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { account } = useAuth()
+  const networkOptions = useAvailableNetworks()
+  const network = networkOptions[0]?.value
 
   const [isFree, setIsFree] = useState(true)
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
@@ -108,8 +110,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       return await getAccountTokenBalance(Web3Service, account!, null, network!)
     }
   )
-
-  const networkOptions = useAvailableNetworks()
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
 
