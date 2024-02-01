@@ -1,3 +1,5 @@
+import { isLocalhost } from './localhost'
+
 export const deployContract = async (
   contractNameOrFullyQualifiedNameOrEthersFactory,
   deployArgs = [],
@@ -16,6 +18,12 @@ export const deployContract = async (
   await contract.waitForDeployment(deployOptions.wait)
   const { hash } = await contract.deploymentTransaction()
   const address = await contract.getAddress()
+
+  console.log(` > contract deployed at : ${address} (tx: ${hash})`)
+
+  if (!(await isLocalhost())) {
+    await verify(address, deployArgs)
+  }
 
   return {
     contract,
@@ -47,11 +55,29 @@ export const deployUpgradeableContract = async (
     address
   )
 
+  if (!(await isLocalhost())) {
+    await verify(address, deployArgs)
+  }
+
   return {
     contract,
     hash,
     address,
     implementation,
+  }
+}
+
+export const verify = async (address, deployArgs) => {
+  const { run } = require('hardhat')
+  try {
+    await run('verify:verify', {
+      address,
+      constructorArguments: deployArgs,
+    })
+  } catch (error) {
+    console.log(`FAIL: Verification failed for contract at ${address} 
+    with args :${deployArgs.toString()}`)
+    console.log(error)
   }
 }
 

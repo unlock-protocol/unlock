@@ -1,7 +1,6 @@
-const { ethers, run } = require('hardhat')
+const { ethers } = require('hardhat')
 
 const {
-  isLocalhost,
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
   deployUpgradeableContract,
@@ -34,10 +33,6 @@ async function main({ unlockVersion } = {}) {
     `UNLOCK SETUP > Unlock proxy deployed to: ${unlockAddress} (tx: ${hash}) `,
     `- implementation at: ${implementation}`
   )
-
-  if (!(await isLocalhost())) {
-    await run('verify:verify', { address: implementation })
-  }
 
   // delete remaining files if we are using a packaged version
   if (unlockVersion) {
