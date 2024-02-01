@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 
 // get the correct provider if chainId is specified
@@ -7,10 +8,10 @@ const getProvider = async (chainId) => {
   let provider
   if (chainId) {
     const { publicProvider } = networks[chainId]
-    provider = new ethers.providers.JsonRpcBatchProvider(publicProvider)
+    provider = new ethers.JsonRpcProvider(publicProvider)
   } else {
     ;({ provider } = ethers)
-    ;({ chainId } = await provider.getNetwork())
+    ;({ chainId } = await getNetwork())
   }
   return { provider, chainId }
 }
