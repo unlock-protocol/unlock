@@ -1,6 +1,5 @@
-const { ethers, run } = require('hardhat')
+const { ethers } = require('hardhat')
 const {
-  isLocalhost,
   ADDRESS_ZERO,
   deployContract,
   copyAndBuildContractsAtVersion,
@@ -22,16 +21,12 @@ async function main({ publicLockVersion }) {
     { contractName: 'PublicLock', version: publicLockVersion },
   ])
 
-  const {
-    contract: publicLock,
-    hash,
-    address: publicLockAddress,
-  } = await deployContract(qualifiedPath)
+  const { contract: publicLock, address: publicLockAddress } =
+    await deployContract(qualifiedPath)
 
   console.log(
-    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress} (tx: ${hash})`
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress}`
   )
-
   // initialize the template to prevent someone else from doing it
   const { hash: txInitHash } = await publicLock.initialize(
     signer.address,
@@ -46,10 +41,6 @@ async function main({ publicLockVersion }) {
   // renounce the manager role that was added during initilization
   const { hash: txRenounceHash } = await publicLock.renounceLockManager()
   console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
-
-  if (!(await isLocalhost())) {
-    await run('verify:verify', { address: publicLockAddress })
-  }
 
   return publicLockAddress
 }
