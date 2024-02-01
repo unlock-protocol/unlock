@@ -1,3 +1,5 @@
+import { MdAssignmentLate } from 'react-icons/md'
+
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -70,6 +72,7 @@ export const EventDetails = ({
     event,
   })
   // Migrate legacy event and/or redirect
+  // TODO: remove by June 1st 2024
   useEffect(() => {
     const migrateAndRedirect = async () => {
       if (router.pathname === '/event') {
@@ -98,8 +101,11 @@ export const EventDetails = ({
     successDuration: 1000,
   })
 
-  const eventDate = getEventDate(event.ticket)
+  const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
+  const hasPassed = eventEndDate
+    ? dayjs().isAfter(eventEndDate)
+    : dayjs().isAfter(eventDate)
 
   const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
@@ -280,10 +286,22 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-          <RegistrationCard
-            requiresApproval={event.requiresApproval}
-            checkoutConfig={checkoutConfig}
-          />
+
+          {!hasPassed && (
+            <RegistrationCard
+              requiresApproval={event.requiresApproval}
+              checkoutConfig={checkoutConfig}
+            />
+          )}
+          {hasPassed && (
+            <Card className="grid gap-4 mt-10 lg:mt-0">
+              <p className="text-lg">
+                <MdAssignmentLate />
+                This event is over. It is not possible to register for it
+                anymore.
+              </p>
+            </Card>
+          )}
         </section>
       </div>
 
