@@ -33,8 +33,9 @@ export const zkevm: NetworkConfig = {
   publicProvider: 'https://polygon-zkevm.drpc.org',
   startBlock: 0,
   subgraph: {
-    endpoint: '',
-    studioEndpoint: 'unlock-protocol-zkevm',
+    endpoint:
+      'https://api.studio.thegraph.com/query/21867/unlock-protocol-zkevm/0.0.1',
+    networkName: 'polygon-zkevm',
   },
   tokens: [
     {
