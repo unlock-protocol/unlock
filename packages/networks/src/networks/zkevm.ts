@@ -72,7 +72,7 @@ export const zkevm: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
-  unlockAddress: '',
+  unlockAddress: '0x259813B665C8f6074391028ef782e27B65840d89',
   url: 'https://polygon.technology/polygon-zkevm',
 }
 
