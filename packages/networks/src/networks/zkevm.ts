@@ -18,7 +18,7 @@ export const zkevm: NetworkConfig = {
   id: 1101,
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  multisig: '',
+  multisig: '0xD62EF39c54d9100B17c8fA3C2D15e0262338AED0',
   name: 'zkEVM (Polygon)',
   nativeCurrency: {
     decimals: 18,
