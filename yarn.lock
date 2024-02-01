@@ -6837,15 +6837,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.7.17":
-  version: 1.7.17
-  resolution: "@headlessui/react@npm:1.7.17"
+"@headlessui/react@npm:1.7.18":
+  version: 1.7.18
+  resolution: "@headlessui/react@npm:1.7.18"
   dependencies:
+    "@tanstack/react-virtual": "npm:^3.0.0-beta.60"
     client-only: "npm:^0.0.1"
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
-  checksum: 00ad7db43bc1904a149925693f9d99d000e237d6e7206d0ded6bf43089070e0cb5b7188bef6f2f7d0d9175039dc90838f1cb9d0cc2b7479d6139da40de637fb7
+  checksum: 9615f7b709842f2e56b3ef1a8f1a77faed7982e86af52f057a5c2a9950d073672073a6c09829f0c26ed7287e298f5e2345f3898dbc2cc13318af10598ceb4bbc
   languageName: node
   linkType: hard
 
@@ -14574,6 +14575,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-virtual@npm:^3.0.0-beta.60":
+  version: 3.0.2
+  resolution: "@tanstack/react-virtual@npm:3.0.2"
+  dependencies:
+    "@tanstack/virtual-core": "npm:3.0.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 3794940cac5e17aa390905fc8e3c058e5a2570e54dc594c6c701622b3bcbec2e9551a769df3ae0210f33affa648c9935f65ee3c59373b8595bb7edaa474d516d
+  languageName: node
+  linkType: hard
+
+"@tanstack/virtual-core@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@tanstack/virtual-core@npm:3.0.0"
+  checksum: 667941444b70773a8fc37b907718fcdbcf90b15660f427b06d6c140b72eea636d8609a8ba5ee3d2cb363066a8085fbf5b804fd08d5cfefd432cf1a14fa7c2355
+  languageName: node
+  linkType: hard
+
 "@tenderly/hardhat-tenderly@npm:2.1.0":
   version: 2.1.0
   resolution: "@tenderly/hardhat-tenderly@npm:2.1.0"
@@ -17642,7 +17662,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@headlessui/react": "npm:1.7.17"
+    "@headlessui/react": "npm:1.7.18"
     "@mdx-js/preact": "npm:3.0.0"
     "@mdx-js/react": "npm:3.0.0"
     "@radix-ui/react-tooltip": "npm:1.0.7"
@@ -17686,7 +17706,7 @@ __metadata:
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.2.3"
   peerDependencies:
-    "@headlessui/react": 1.7.17
+    "@headlessui/react": 1.7.18
     react: 18.2.0
     react-dom: 18.2.0
   languageName: unknown
@@ -17699,7 +17719,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:1.1.3"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:1.1.1"
-    "@headlessui/react": "npm:1.7.17"
+    "@headlessui/react": "npm:1.7.18"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.1.1"
     "@radix-ui/react-avatar": "npm:1.0.4"
@@ -17841,7 +17861,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": "npm:7.21.5"
-    "@headlessui/react": "npm:1.7.17"
+    "@headlessui/react": "npm:1.7.18"
     "@radix-ui/react-avatar": "npm:1.0.4"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:14.1.2"
