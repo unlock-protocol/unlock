@@ -6837,15 +6837,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.7.17":
-  version: 1.7.17
-  resolution: "@headlessui/react@npm:1.7.17"
+"@headlessui/react@npm:1.7.18":
+  version: 1.7.18
+  resolution: "@headlessui/react@npm:1.7.18"
   dependencies:
+    "@tanstack/react-virtual": "npm:^3.0.0-beta.60"
     client-only: "npm:^0.0.1"
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
-  checksum: 00ad7db43bc1904a149925693f9d99d000e237d6e7206d0ded6bf43089070e0cb5b7188bef6f2f7d0d9175039dc90838f1cb9d0cc2b7479d6139da40de637fb7
+  checksum: 9615f7b709842f2e56b3ef1a8f1a77faed7982e86af52f057a5c2a9950d073672073a6c09829f0c26ed7287e298f5e2345f3898dbc2cc13318af10598ceb4bbc
   languageName: node
   linkType: hard
 
@@ -8817,9 +8818,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-verify@npm:2.0.3":
-  version: 2.0.3
-  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.3"
+"@nomicfoundation/hardhat-verify@npm:2.0.4":
+  version: 2.0.4
+  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.4"
   dependencies:
     "@ethersproject/abi": "npm:^5.1.2"
     "@ethersproject/address": "npm:^5.0.2"
@@ -8832,7 +8833,7 @@ __metadata:
     undici: "npm:^5.14.0"
   peerDependencies:
     hardhat: ^2.0.4
-  checksum: 4b461f9cd242ba570ab98b7f407d8d27fb3cd667ef8268489485e337e7b2d256d3946869b86c7b7285b51adbcbfe2eeff54066737fec139e186e24e6a0c7ec79
+  checksum: 731fd6b6865781c8f12f0ed329667075cd038a513d657c0206b6fb4275dc46f499968da833a8eb4aa65a443a65298a5790922122c0437c33199f847867469043
   languageName: node
   linkType: hard
 
@@ -14574,6 +14575,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-virtual@npm:^3.0.0-beta.60":
+  version: 3.0.2
+  resolution: "@tanstack/react-virtual@npm:3.0.2"
+  dependencies:
+    "@tanstack/virtual-core": "npm:3.0.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 3794940cac5e17aa390905fc8e3c058e5a2570e54dc594c6c701622b3bcbec2e9551a769df3ae0210f33affa648c9935f65ee3c59373b8595bb7edaa474d516d
+  languageName: node
+  linkType: hard
+
+"@tanstack/virtual-core@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@tanstack/virtual-core@npm:3.0.0"
+  checksum: 667941444b70773a8fc37b907718fcdbcf90b15660f427b06d6c140b72eea636d8609a8ba5ee3d2cb363066a8085fbf5b804fd08d5cfefd432cf1a14fa7c2355
+  languageName: node
+  linkType: hard
+
 "@tenderly/hardhat-tenderly@npm:2.1.0":
   version: 2.1.0
   resolution: "@tenderly/hardhat-tenderly@npm:2.1.0"
@@ -16063,12 +16083,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-google-recaptcha@npm:2.1.8":
-  version: 2.1.8
-  resolution: "@types/react-google-recaptcha@npm:2.1.8"
+"@types/react-google-recaptcha@npm:2.1.9":
+  version: 2.1.9
+  resolution: "@types/react-google-recaptcha@npm:2.1.9"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 9a19eceea432929588e0b9e3392905fcba92bdb6c9da66d4f54d66eefd0efca2d619371b6143b62462e3a96f8cfd74b9c8ef8dc13f2ac84dcab91ea5f04a3786
+  checksum: 5a90bb50fe0a49f2e2ceb7950859cfdbe019aa0a75261451fb50ad83dcd4aa360a1941ab6c9b3c627f2b7a0dab2c6c09d6297469d3d4d02ebaf36b3fc34429b6
   languageName: node
   linkType: hard
 
@@ -17223,7 +17243,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     eslint: "npm:8.54.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.19.4"
+    hardhat: "npm:2.19.5"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -17292,7 +17312,7 @@ __metadata:
     prism-react-renderer: "npm:2.0.6"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
-    react-icons: "npm:4.12.0"
+    react-icons: "npm:5.0.1"
   languageName: unknown
   linkType: soft
 
@@ -17317,7 +17337,7 @@ __metadata:
     eslint: "npm:8.56.0"
     eslint-config-next: "npm:14.0.4"
     eslint-config-prettier: "npm:9.1.0"
-    eslint-plugin-evm-address-to-checksummed: "npm:0.0.5"
+    eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-json: "npm:3.1.0"
     eslint-plugin-mocha: "npm:10.2.0"
     eslint-plugin-prettier: "npm:5.1.2"
@@ -17333,7 +17353,7 @@ __metadata:
   dependencies:
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
-    "@nomicfoundation/hardhat-verify": "npm:2.0.3"
+    "@nomicfoundation/hardhat-verify": "npm:2.0.4"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
@@ -17349,7 +17369,7 @@ __metadata:
     eslint: "npm:8.54.0"
     ethers: "npm:6.9.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.19.4"
+    hardhat: "npm:2.19.5"
     solhint: "npm:4.0.0"
   languageName: unknown
   linkType: soft
@@ -17370,7 +17390,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
-    hardhat: "npm:2.19.4"
+    hardhat: "npm:2.19.5"
     tsup: "npm:8.0.1"
     typescript: "npm:5.3.3"
   languageName: unknown
@@ -17391,7 +17411,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: "npm:4.3.10"
     eslint: "npm:8.54.0"
-    hardhat: "npm:2.19.4"
+    hardhat: "npm:2.19.5"
     mocha: "npm:10.2.0"
     prettier: "npm:3.1.0"
     ts-mocha: "npm:10.0.0"
@@ -17590,7 +17610,7 @@ __metadata:
     hardhat: "npm:2.18.3"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
-    hardhat-gas-reporter: "npm:1.0.9"
+    hardhat-gas-reporter: "npm:1.0.10"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:2.7.0"
     hardlydifficult-eth: "npm:1.1.4"
@@ -17642,7 +17662,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
-    "@headlessui/react": "npm:1.7.17"
+    "@headlessui/react": "npm:1.7.18"
     "@mdx-js/preact": "npm:3.0.0"
     "@mdx-js/react": "npm:3.0.0"
     "@radix-ui/react-tooltip": "npm:1.0.7"
@@ -17664,7 +17684,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": "npm:4.2.1"
-    autoprefixer: "npm:10.4.16"
+    autoprefixer: "npm:10.4.17"
     ethers: "npm:5.7.2"
     postcss: "npm:8.4.32"
     prism-react-renderer: "npm:2.3.0"
@@ -17672,7 +17692,7 @@ __metadata:
     react-dom: "npm:18.2.0"
     react-dropzone: "npm:14.2.3"
     react-hook-form: "npm:7.49.2"
-    react-icons: "npm:4.12.0"
+    react-icons: "npm:5.0.1"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
     tailwind-merge: "npm:2.2.0"
@@ -17686,7 +17706,7 @@ __metadata:
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.2.3"
   peerDependencies:
-    "@headlessui/react": 1.7.17
+    "@headlessui/react": 1.7.18
     react: 18.2.0
     react-dom: 18.2.0
   languageName: unknown
@@ -17699,7 +17719,7 @@ __metadata:
     "@crossmint/client-sdk-react-ui": "npm:1.1.3"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:1.1.1"
-    "@headlessui/react": "npm:1.7.17"
+    "@headlessui/react": "npm:1.7.18"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.1.1"
     "@radix-ui/react-avatar": "npm:1.0.4"
@@ -17716,7 +17736,7 @@ __metadata:
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:1.0.5"
     "@types/react": "npm:18.2.46"
-    "@types/react-google-recaptcha": "npm:2.1.8"
+    "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@uniswap/sdk-core": "npm:4.0.9"
     "@uniswap/smart-order-router": "npm:3.17.2"
@@ -17734,7 +17754,7 @@ __metadata:
     "@walletconnect/ethereum-provider": "npm:2.9.2"
     "@walletconnect/modal": "npm:2.6.2"
     "@xstate/react": "npm:3.2.2"
-    autoprefixer: "npm:10.4.16"
+    autoprefixer: "npm:10.4.17"
     axios: "npm:1.6.3"
     blockies-react-svg: "npm:0.0.13"
     calendar-link: "npm:2.5.1"
@@ -17767,7 +17787,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.44.3"
     react-hot-toast: "npm:2.4.1"
-    react-icons: "npm:4.10.1"
+    react-icons: "npm:5.0.1"
     react-jwt: "npm:1.2.0"
     react-markdown: "npm:8.0.7"
     react-test-renderer: "npm:18.2.0"
@@ -17841,7 +17861,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": "npm:7.21.5"
-    "@headlessui/react": "npm:1.7.17"
+    "@headlessui/react": "npm:1.7.18"
     "@radix-ui/react-avatar": "npm:1.0.4"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:14.1.2"
@@ -17853,7 +17873,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@zeit/next-source-maps": "npm:0.0.3"
     apexcharts: "npm:3.45.1"
-    autoprefixer: "npm:10.4.16"
+    autoprefixer: "npm:10.4.17"
     babel-loader: "npm:9.1.3"
     babel-plugin-require-context-hook: "npm:1.0.0"
     babel-preset-react-app: "npm:10.0.1"
@@ -20614,7 +20634,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:10.4.16, autoprefixer@npm:^10.4.12, autoprefixer@npm:^10.4.14":
+"autoprefixer@npm:10.4.17":
+  version: 10.4.17
+  resolution: "autoprefixer@npm:10.4.17"
+  dependencies:
+    browserslist: "npm:^4.22.2"
+    caniuse-lite: "npm:^1.0.30001578"
+    fraction.js: "npm:^4.3.7"
+    normalize-range: "npm:^0.1.2"
+    picocolors: "npm:^1.0.0"
+    postcss-value-parser: "npm:^4.2.0"
+  peerDependencies:
+    postcss: ^8.1.0
+  bin:
+    autoprefixer: bin/autoprefixer
+  checksum: ac4416e72643bf92c2a346af5a6a437eb39e3b852e5d48e1a0a3204a81cbf8eecc5489a9386cf63a288b7183fae3ad52cf3c24c458d7cbb5463e55e21dc7e6ed
+  languageName: node
+  linkType: hard
+
+"autoprefixer@npm:^10.4.12, autoprefixer@npm:^10.4.14":
   version: 10.4.16
   resolution: "autoprefixer@npm:10.4.16"
   dependencies:
@@ -22948,6 +22986,13 @@ __metadata:
   version: 1.0.30001574
   resolution: "caniuse-lite@npm:1.0.30001574"
   checksum: 159ebd04d9bbef11bd08499f058f70bf795a55641929be5efadf0f6b17216d4b923506778e59bbb939246834304b753b2e88ff1e2430f6a5aef0a86971f98bd3
+  languageName: node
+  linkType: hard
+
+"caniuse-lite@npm:^1.0.30001578":
+  version: 1.0.30001582
+  resolution: "caniuse-lite@npm:1.0.30001582"
+  checksum: a932dd237e0c28b5f1eb8d80f77ca0b6ce48075aaed70ba0044fd7870a899377cd6e333d13a0d3ae6d1bf030192b9625934f31def63f4636f8da8c22c2aea330
   languageName: node
   linkType: hard
 
@@ -27695,16 +27740,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-evm-address-to-checksummed@npm:0.0.5":
-  version: 0.0.5
-  resolution: "eslint-plugin-evm-address-to-checksummed@npm:0.0.5"
+"eslint-plugin-evm-address-to-checksummed@npm:0.0.6":
+  version: 0.0.6
+  resolution: "eslint-plugin-evm-address-to-checksummed@npm:0.0.6"
   dependencies:
     keccak: "npm:^3.0.4"
     requireindex: "npm:^1.2.0"
     web3-validator: "npm:^2.0.3"
   peerDependencies:
     eslint: ">=7"
-  checksum: a62e4fb6af6531820844ba4842360bcca31d46df05f4a998d06ee0b132d980f83b2fc9ea198751b97617cf5feb2d1b09c4548adf87d44aaaafca46c4c6451958
+  checksum: c658157446fa7dd85f12ba2a6db765458aca7fcf62feb09e38c2705d53082159feb17acf282fa752442441fe2b03100427c8331ee372021647aad37977462c43
   languageName: node
   linkType: hard
 
@@ -30534,7 +30579,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fraction.js@npm:^4.3.6":
+"fraction.js@npm:^4.3.6, fraction.js@npm:^4.3.7":
   version: 4.3.7
   resolution: "fraction.js@npm:4.3.7"
   checksum: bb5ebcdeeffcdc37b68ead3bdfc244e68de188e0c64e9702197333c72963b95cc798883ad16adc21588088b942bca5b6a6ff4aeb1362d19f6f3b629035dc15f5
@@ -31965,7 +32010,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-gas-reporter@npm:1.0.9, hardhat-gas-reporter@npm:^1.0.8":
+"hardhat-gas-reporter@npm:1.0.10":
+  version: 1.0.10
+  resolution: "hardhat-gas-reporter@npm:1.0.10"
+  dependencies:
+    array-uniq: "npm:1.0.3"
+    eth-gas-reporter: "npm:^0.2.25"
+    sha1: "npm:^1.1.1"
+  peerDependencies:
+    hardhat: ^2.0.2
+  checksum: ad6df4f87ebddea967d02243a728f824cd02a486bc400a0b5fb0bfc55b24eb08d445d4c2650e8d53fa622050f6f4a971e954179bb2ac02f2bbaba97f4464d33f
+  languageName: node
+  linkType: hard
+
+"hardhat-gas-reporter@npm:^1.0.8":
   version: 1.0.9
   resolution: "hardhat-gas-reporter@npm:1.0.9"
   dependencies:
@@ -32080,9 +32138,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.19.4":
-  version: 2.19.4
-  resolution: "hardhat@npm:2.19.4"
+"hardhat@npm:2.19.5":
+  version: 2.19.5
+  resolution: "hardhat@npm:2.19.5"
   dependencies:
     "@ethersproject/abi": "npm:^5.1.2"
     "@metamask/eth-sig-util": "npm:^4.0.0"
@@ -32103,6 +32161,7 @@ __metadata:
     adm-zip: "npm:^0.4.16"
     aggregate-error: "npm:^3.0.0"
     ansi-escapes: "npm:^4.3.0"
+    boxen: "npm:^5.1.2"
     chalk: "npm:^2.4.2"
     chokidar: "npm:^3.4.0"
     ci-info: "npm:^2.0.0"
@@ -32142,7 +32201,7 @@ __metadata:
       optional: true
   bin:
     hardhat: internal/cli/bootstrap.js
-  checksum: f8548a32c6d81af40a0377d4e7cfffbdae22c1c5ac1d8f106ec14d98d219ce8c8d67799abbd609f69e9593a43820c98c4fc8bc1273d995d43692f272b54da58c
+  checksum: 13f2ffeb790155a226960678ee1d5b6041be3754faf675e0f557723cf34b6bb00a8175141d166507bf03f8ea3f790279a64b2d05706a9a7f6b5544cb4160e58d
   languageName: node
   linkType: hard
 
@@ -44899,21 +44958,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:4.10.1":
-  version: 4.10.1
-  resolution: "react-icons@npm:4.10.1"
+"react-icons@npm:5.0.1":
+  version: 5.0.1
+  resolution: "react-icons@npm:5.0.1"
   peerDependencies:
     react: "*"
-  checksum: 727ad5d98da01615792f7e2052a4cd88438ee2eb7948e834930521219b31eef6d79cbd9acb889d0c870eb7c4b9f6e0c54afb456c47901bdcd6e62b566c2d948a
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:4.12.0":
-  version: 4.12.0
-  resolution: "react-icons@npm:4.12.0"
-  peerDependencies:
-    react: "*"
-  checksum: 5cc20509ca0b182f1e7bf42c271846c48f688c8922e2439f48728805adc93ba18476a13588cbe91ee43a2d03b2787e0dc0b5cc4b9c4e4ae3426f4464b3c1b734
+  checksum: c4458c643ae32a793ddebc5fa1235c7ec051be1b131205510e8199d15a4c89221a501f95a71fa21c2da93e8dd225290e2e24bb80abd3fb85801e43009e692098
   languageName: node
   linkType: hard
 
@@ -51925,7 +51975,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:6.13.1"
     babel-plugin-polyfill-corejs2: "npm:0.4.7"
     eslint: "npm:8.54.0"
-    eslint-plugin-evm-address-to-checksummed: "npm:0.0.5"
+    eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-mocha: "npm:10.2.0"
     eslint-plugin-prettier: "npm:5.1.2"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"

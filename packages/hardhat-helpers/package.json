@@ -24,7 +24,7 @@
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "hardhat": "2.19.4",
+    "hardhat": "2.19.5",
     "typescript": "5.3.3"
   },
   "devDependencies": {
