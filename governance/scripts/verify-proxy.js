@@ -22,95 +22,96 @@
  * can be picked up by the block explorer
  */
 const { ethers, run } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks')
 const {
-  createLockCalldata,
-  lockFixtures: Locks,
+  getUnlock,
+  getNetwork,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
 
-async function main({
-  calldata,
-  unlockAddress,
-  lockVersion,
-  publicLockAddress,
-  proxyAdminAddress,
-  transparentProxyAddress,
-}) {
-  if (!calldata) {
-    const name = 'FIRST'
-    const args = [
-      Locks[name].expirationDuration,
-      ethers.constants.AddressZero,
-      Locks[name].keyPrice,
-      Locks[name].maxNumberOfKeys,
-      Locks[name].lockName,
-    ]
-    calldata = await createLockCalldata({ args })
+const parseCreationTx = async (hash) => {
+  const { data } = await ethers.provider.getTransaction(hash)
+  const unlock = await getUnlock()
+  const [calldata, publicLockVersion] = unlock.interface.decodeFunctionData(
+    'createUpgradeableLockAtVersion(bytes,uint16)',
+    data
+  )
+
+  const publicLockAddress = await unlock.publicLockImpls(publicLockVersion)
+  const proxyAdminAddress = await unlock.proxyAdminAddress()
+
+  return [publicLockAddress, proxyAdminAddress, calldata]
+}
+
+async function main({ lockAddress, unlockAddress, creationTx, deployNew }) {
+  let args
+
+    // get Unlock contract
+  ;({ unlockAddress } = await getNetwork())
+
+  // check params
+  if (deployNew && lockAddress) {
+    throw Error('Cannot have both `lockAddress` and `deployNew` set')
+  }
+  if (lockAddress && !creationTx) {
+    throw Error('Please pass the --creation-tx arg')
   }
 
-  const { chainId } = await ethers.provider.getNetwork()
-  if (transparentProxyAddress) {
-    const lock = await ethers.getContractAt(
-      'PublicLock',
-      transparentProxyAddress
-    )
-    unlockAddress = await lock.unlockProtocol()
-  } else {
-    ;({ unlockAddress } = networks[chainId])
+  // deploy a new lock if no lock address
+  if (deployNew) {
+    const createLock = require('../lock/create')
+    const { newLockAddress, hash } = await createLock()
+    lockAddress = newLockAddress
+    args = await parseCreationTx(hash)
   }
 
-  if (lockVersion) {
-    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    publicLockAddress = await unlock.publicLockImpls(lockVersion)
-  }
-
-  if (!publicLockAddress) {
-    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    publicLockAddress = await unlock.publicLockAddress()
-  }
-
-  if (!proxyAdminAddress) {
-    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    proxyAdminAddress = await unlock.proxyAdminAddress()
+  // parse tx
+  if (creationTx) {
+    args = await parseCreationTx(creationTx)
   }
 
   console.table({
-    chainId,
     unlockAddress,
-    lockVersion,
-    publicLockAddress,
-    proxyAdminAddress,
-    calldata,
+    ...args,
   })
 
-  if (!transparentProxyAddress) {
-    const TransparentProxy = await ethers.getContractFactory(
-      '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy'
-    )
-    const transparentProxy = await TransparentProxy.deploy(
-      publicLockAddress,
-      proxyAdminAddress,
-      calldata
-    )
-    console.log(
-      `TransparentUpgradeableProxy > deployed to : ${transparentProxy.address} (tx: ${transparentProxy.deployTransaction.hash})`,
-      '\n waiting for 10 blocks to confirm the tx...'
-    )
+  // fetch correct proxy
+  const unlock = await getUnlock(unlockAddress)
+  const unlockVersion = await unlock.unlockVersion()
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'Unlock', version: unlockVersion },
+  ])
 
-    // wait for 10 confirmations
-    await transparentProxy.deployTransaction.wait(10)
-    transparentProxyAddress = transparentProxy.address
-  } else {
-    console.log(
-      `TransparentUpgradeableProxy already deployed to : ${transparentProxyAddress}`
-    )
-  }
+  // get transprent proxy path from unlock impl
+  const proxyPath = `${qualifiedPath.split(':')[0]}:TransparentUpgradeableProxy`
+  console.log(proxyPath)
+
+  // if (!transparentProxyAddress) {
+  //   const TransparentProxy = await ethers.getContractFactory(
+  //     '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy'
+  //   )
+  //   const transparentProxy = await TransparentProxy.deploy(
+  //     publicLockAddress,
+  //     proxyAdminAddress,
+  //     calldata
+  //   )
+  //   console.log(
+  //     `TransparentUpgradeableProxy > deployed to : ${transparentProxy.address} (tx: ${transparentProxy.deployTransaction.hash})`,
+  //     '\n waiting for 10 blocks to confirm the tx...'
+  //   )
+
+  //   // wait for 10 confirmations
+  //   await transparentProxy.deployTransaction.wait(10)
+  //   transparentProxyAddress = transparentProxy.address
+  // } else {
+  //   console.log(
+  //     `TransparentUpgradeableProxy already deployed to : ${transparentProxyAddress}`
+  //   )
+  // }
 
   await run('verify:verify', {
-    address: transparentProxyAddress,
-    contract:
-      '@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol:TransparentUpgradeableProxy',
-    constructorArguments: [publicLockAddress, proxyAdminAddress, calldata],
+    address: lockAddress,
+    contract: proxyPath,
+    constructorArguments: args,
   })
 }
 
