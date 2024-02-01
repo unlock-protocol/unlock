@@ -30,8 +30,10 @@ async function copyAndBuildContractsAtVersion(dirname, contracts) {
   )
 
   // re-compile contract (and checking if zksync)
-  const { zksync } = network.config
-  const compileArgs = zksync ? { network: 'zksync' } : {}
+  const { zksync, ethNetwork } = network.config
+  const compileArgs = zksync
+    ? { network: ethNetwork === 'mainnet' ? 'zksync' : 'zksyncSepolia' }
+    : {}
   await run('compile', compileArgs)
 
   // get factory using fully qualified path
