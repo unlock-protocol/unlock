@@ -105,10 +105,7 @@ export default class WalletService extends UnlockService {
       this.networkId = networkId
     }
 
-    if (!this.networks[networkId]) {
-      throw new Error(`Missing config for ${networkId}`)
-    }
-    if (this.networks[networkId].unlockAddress) {
+    if (this.networks[networkId]?.unlockAddress) {
       this.unlockAddress = this.networks[networkId].unlockAddress
     }
     return networkId
