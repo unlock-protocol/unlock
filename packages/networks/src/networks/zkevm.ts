@@ -27,12 +27,14 @@ export const zkevm: NetworkConfig = {
     wrapped: '0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9',
   },
   previousDeploys: [],
-  provider: 'https://rpc.unlock-protocol.com/1101',
+  // provider: 'https://rpc.unlock-protocol.com/1101',
+  provider: 'https://polygon-zkevm.drpc.org',
   publicLockVersionToDeploy: 14,
   publicProvider: 'https://polygon-zkevm.drpc.org',
   startBlock: 0,
   subgraph: {
     endpoint: '',
+    studioEndpoint: 'unlock-protocol-zkevm',
   },
   tokens: [
     {
