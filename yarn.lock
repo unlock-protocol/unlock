@@ -17292,7 +17292,7 @@ __metadata:
     prism-react-renderer: "npm:2.0.6"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
-    react-icons: "npm:4.12.0"
+    react-icons: "npm:5.0.1"
   languageName: unknown
   linkType: soft
 
@@ -17672,7 +17672,7 @@ __metadata:
     react-dom: "npm:18.2.0"
     react-dropzone: "npm:14.2.3"
     react-hook-form: "npm:7.49.2"
-    react-icons: "npm:4.12.0"
+    react-icons: "npm:5.0.1"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
     tailwind-merge: "npm:2.2.0"
@@ -17767,7 +17767,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.44.3"
     react-hot-toast: "npm:2.4.1"
-    react-icons: "npm:4.10.1"
+    react-icons: "npm:5.0.1"
     react-jwt: "npm:1.2.0"
     react-markdown: "npm:8.0.7"
     react-test-renderer: "npm:18.2.0"
@@ -44899,21 +44899,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:4.10.1":
-  version: 4.10.1
-  resolution: "react-icons@npm:4.10.1"
+"react-icons@npm:5.0.1":
+  version: 5.0.1
+  resolution: "react-icons@npm:5.0.1"
   peerDependencies:
     react: "*"
-  checksum: 727ad5d98da01615792f7e2052a4cd88438ee2eb7948e834930521219b31eef6d79cbd9acb889d0c870eb7c4b9f6e0c54afb456c47901bdcd6e62b566c2d948a
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:4.12.0":
-  version: 4.12.0
-  resolution: "react-icons@npm:4.12.0"
-  peerDependencies:
-    react: "*"
-  checksum: 5cc20509ca0b182f1e7bf42c271846c48f688c8922e2439f48728805adc93ba18476a13588cbe91ee43a2d03b2787e0dc0b5cc4b9c4e4ae3426f4464b3c1b734
+  checksum: c4458c643ae32a793ddebc5fa1235c7ec051be1b131205510e8199d15a4c89221a501f95a71fa21c2da93e8dd225290e2e24bb80abd3fb85801e43009e692098
   languageName: node
   linkType: hard
 
