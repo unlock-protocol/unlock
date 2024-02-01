@@ -17,7 +17,7 @@ export const scroll: NetworkConfig = {
   featured: false,
   id: 534352,
   isTestNetwork: false,
-  multisig: '',
+  multisig: '0x0feE9413A626a05a08AcB0E0e5D6A483e6A0a172',
   name: 'Scroll',
   nativeCurrency: {
     coingecko: 'ethereum',
