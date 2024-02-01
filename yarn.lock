@@ -16063,12 +16063,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-google-recaptcha@npm:2.1.8":
-  version: 2.1.8
-  resolution: "@types/react-google-recaptcha@npm:2.1.8"
+"@types/react-google-recaptcha@npm:2.1.9":
+  version: 2.1.9
+  resolution: "@types/react-google-recaptcha@npm:2.1.9"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 9a19eceea432929588e0b9e3392905fcba92bdb6c9da66d4f54d66eefd0efca2d619371b6143b62462e3a96f8cfd74b9c8ef8dc13f2ac84dcab91ea5f04a3786
+  checksum: 5a90bb50fe0a49f2e2ceb7950859cfdbe019aa0a75261451fb50ad83dcd4aa360a1941ab6c9b3c627f2b7a0dab2c6c09d6297469d3d4d02ebaf36b3fc34429b6
   languageName: node
   linkType: hard
 
@@ -17716,7 +17716,7 @@ __metadata:
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:1.0.5"
     "@types/react": "npm:18.2.46"
-    "@types/react-google-recaptcha": "npm:2.1.8"
+    "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@uniswap/sdk-core": "npm:4.0.9"
     "@uniswap/smart-order-router": "npm:3.17.2"
