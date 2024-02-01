@@ -23,7 +23,7 @@
     "eslint": "8.56.0",
     "eslint-config-next": "14.0.4",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-evm-address-to-checksummed": "0.0.5",
+    "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-json": "3.1.0",
     "eslint-plugin-mocha": "10.2.0",
     "eslint-plugin-prettier": "5.1.2",

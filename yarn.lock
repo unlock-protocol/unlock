@@ -17317,7 +17317,7 @@ __metadata:
     eslint: "npm:8.56.0"
     eslint-config-next: "npm:14.0.4"
     eslint-config-prettier: "npm:9.1.0"
-    eslint-plugin-evm-address-to-checksummed: "npm:0.0.5"
+    eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-json: "npm:3.1.0"
     eslint-plugin-mocha: "npm:10.2.0"
     eslint-plugin-prettier: "npm:5.1.2"
@@ -27695,16 +27695,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-evm-address-to-checksummed@npm:0.0.5":
-  version: 0.0.5
-  resolution: "eslint-plugin-evm-address-to-checksummed@npm:0.0.5"
+"eslint-plugin-evm-address-to-checksummed@npm:0.0.6":
+  version: 0.0.6
+  resolution: "eslint-plugin-evm-address-to-checksummed@npm:0.0.6"
   dependencies:
     keccak: "npm:^3.0.4"
     requireindex: "npm:^1.2.0"
     web3-validator: "npm:^2.0.3"
   peerDependencies:
     eslint: ">=7"
-  checksum: a62e4fb6af6531820844ba4842360bcca31d46df05f4a998d06ee0b132d980f83b2fc9ea198751b97617cf5feb2d1b09c4548adf87d44aaaafca46c4c6451958
+  checksum: c658157446fa7dd85f12ba2a6db765458aca7fcf62feb09e38c2705d53082159feb17acf282fa752442441fe2b03100427c8331ee372021647aad37977462c43
   languageName: node
   linkType: hard
 
@@ -51916,7 +51916,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:6.13.1"
     babel-plugin-polyfill-corejs2: "npm:0.4.7"
     eslint: "npm:8.54.0"
-    eslint-plugin-evm-address-to-checksummed: "npm:0.0.5"
+    eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-mocha: "npm:10.2.0"
     eslint-plugin-prettier: "npm:5.1.2"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
