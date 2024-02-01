@@ -72,7 +72,7 @@ interface FormProps {
 export const Form = ({ onSubmit }: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { account } = useAuth()
   const [isInPerson, setIsInPerson] = useState(true)
   const [screeningEnabled, enableScreening] = useState(false)
   const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
@@ -83,6 +83,8 @@ export const Form = ({ onSubmit }: FormProps) => {
   const web3Service = useWeb3Service()
 
   const today = dayjs().format('YYYY-MM-DD')
+  const networkOptions = useAvailableNetworks()
+  const network = networkOptions[0]?.value
 
   const methods = useForm<NewEventForm>({
     mode: 'onChange',
@@ -128,8 +130,6 @@ export const Form = ({ onSubmit }: FormProps) => {
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     details.metadata?.ticket?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
-
-  const networkOptions = useAvailableNetworks()
 
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', account, details.network],

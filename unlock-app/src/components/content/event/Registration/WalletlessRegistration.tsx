@@ -1,4 +1,3 @@
-import { z } from 'zod'
 import { useClaim } from '~/hooks/useClaim'
 import { ethers } from 'ethers'
 
@@ -18,26 +17,6 @@ import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
 import { IoWarningOutline } from 'react-icons/io5'
 import { useCaptcha } from '~/hooks/useCaptcha'
-
-const rsvpForm = z.object({
-  email: z
-    .string({
-      description: 'Email address that will receive the QR code.',
-    })
-    .default(''),
-  recipient: z
-    .string({
-      description: 'Wallet that will receive the ticket NFT.',
-    })
-    .default(''),
-  fullname: z
-    .string({
-      description: 'Full name of the attendee.',
-    })
-    .default(''),
-})
-
-type RsvpFormProps = z.infer<typeof rsvpForm>
 
 interface WalletlessRegistrationProps {
   lockAddress: string
@@ -147,21 +126,9 @@ export const WalletlessRegistrationClaim = ({
     network,
   })
 
-  const onRSVP = async ({
-    email,
-    recipient,
-    data,
-    captcha,
-  }: {
-    email: string
-    recipient: string
-    data: any
-    captcha: string
-  }) => {
+  const onRSVP = async ({ data, captcha }: { data: any; captcha: string }) => {
     const { hash, owner, message } = await claim({
       metadata: data,
-      email,
-      recipient,
       captcha,
     })
     if (message) {
@@ -205,19 +172,16 @@ export const WalletlessRegistrationApply = ({
   })
 
   const onRSVP = async ({
-    email,
     recipient,
     captcha,
     data,
   }: {
-    email: string
     recipient: string
     data: any
     captcha: string
   }) => {
     const result = await rsvp({
       data,
-      email,
       recipient,
       captcha,
     })
@@ -249,12 +213,10 @@ export const RegistrationForm = ({
 }: {
   metadataInputs?: MetadataInputType[]
   onRSVP: ({
-    email,
     recipient,
     captcha,
     data,
   }: {
-    email: string
     recipient: string
     data: any
     captcha: string
@@ -265,10 +227,9 @@ export const RegistrationForm = ({
   const [loading, setLoading] = useState<boolean>(false)
   const { account } = useAuth()
 
-  const localForm = useForm<RsvpFormProps>({
+  const localForm = useForm<any>({
     mode: 'onChange',
     defaultValues: {
-      email: '',
       recipient: account || '',
     },
   })
@@ -280,20 +241,16 @@ export const RegistrationForm = ({
     reset,
   } = localForm
 
-  const onSubmit = async ({ email, recipient, ...data }: RsvpFormProps) => {
+  const onSubmit = async ({ recipient, ...data }: any) => {
     setLoading(true)
     try {
       const captcha = await getCaptchaValue()
       await onRSVP({
-        email,
         recipient,
         data,
         captcha,
       })
-      reset({
-        email: '',
-        recipient: '',
-      })
+      reset(Object.keys(data).reduce((acc, key) => ({ ...acc, [key]: '' }), {}))
     } catch (error: any) {
       console.error(error)
       ToastHelper.error(
@@ -315,6 +272,7 @@ export const RegistrationForm = ({
         badge="bottomleft"
       />
 
+      {/* TODO: delete me after May 1st 2024 once all new events use `metadataInputs` */}
       {(!metadataInputs || metadataInputs.length === 0) && (
         <>
           <Input
@@ -331,6 +289,7 @@ export const RegistrationForm = ({
             description={
               'Please enter your email address to get a QR code by email.'
             }
+            // @ts-expect-error  Type 'FieldError' is not assignable to type 'string'.
             error={errors?.email?.message}
           />
           <Input
@@ -346,6 +305,7 @@ export const RegistrationForm = ({
             description={
               'Please enter your your full name to be added to the RSVP list.'
             }
+            // @ts-expect-error  Type 'FieldError' is not assignable to type 'string'.
             error={errors?.fullname?.message}
           />
         </>
