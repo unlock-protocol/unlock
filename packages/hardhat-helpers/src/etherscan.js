@@ -20,6 +20,7 @@ const etherscan = {
     base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
+    scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
   },
   // TODO : generate from networks package!
   customChains: [
@@ -53,6 +54,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.lineascan.build/api',
         browserURL: 'https://lineascan.build/',
+      },
+    },
+    {
+      network: 'scroll',
+      chainId: 534352,
+      urls: {
+        apiURL: 'https://api.scrollscan.com/api',
+        browserURL: 'https://scrollscan.com/',
       },
     },
   ],

@@ -19,6 +19,7 @@ const supportedNetworks = (env: Env, networkId: string): string | undefined => {
     '8453': env.BASE_PROVIDER,
     '11155111': env.SEPOLIA_PROVIDER,
     '59144': env.LINEA_PROVIDER,
+    '534352': env.SCROLL_PROVIDER,
   }[networkId]
 }
 
