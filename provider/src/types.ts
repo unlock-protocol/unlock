@@ -15,5 +15,6 @@ export interface Env {
   BASE_PROVIDER: string
   SEPOLIA_PROVIDER: string
   LINEA_PROVIDER: string
+  ZKEVM_PROVIDER: string
   SCROLL_PROVIDER: string
 }

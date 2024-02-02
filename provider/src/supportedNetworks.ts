@@ -10,6 +10,7 @@ const supportedNetworks = (env: Env, networkId: string): string | undefined => {
     '100': env.GNOSIS_PROVIDER,
     '137': env.POLYGON_PROVIDER,
     '324': env.ZKSYNC_PROVIDER,
+    '1101': env.ZKEVM_PROVIDER,
     '42161': env.ARBITRUM_PROVIDER,
     '42220': env.CELO_PROVIDER,
     '43114': env.AVALANCHE_PROVIDER,
