@@ -7,7 +7,7 @@ import { PAGE_SIZE } from '@unlock-protocol/core'
 export default class KeyController {
   /**
    * List of keys with additional metadata when caller is the lockManager
-   * Deprecated, prefer `keysWithPagination
+   * Deprecated, prefer `keysByPage`
    * @return {Array} keys list
    */
   async keys(request: Request, response: Response) {
