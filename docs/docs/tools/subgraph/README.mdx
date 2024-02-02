@@ -19,22 +19,32 @@ Unlock leverages the [Graph Protocol](https://thegraph.com) to simplify the proc
 
 The links below provide a rudimentary tool to build and test your queries.
 
+#### Production Networks
+
 <ul>
   {Object.keys(networks).map((network) => {
-    if (network !== 'localhost') {
-      const endpoint = networks[network].subgraph.endpointV2
-      const m = endpoint.match(/unlock\-protocol\/(.*)/)
+    const name = networks[network].name
+    if (name !== 'localhost' && !networks[network].isTestNetwork) {
+      const subgraph = networks[network].subgraph
       return (
         <li>
-          <a
-            href={
-              m && m[1]
-                ? `https://thegraph.com/hosted-service/subgraph/unlock-protocol/${m[1]}`
-                : endpoint
-            }
-          >
-            {networks[network].name}
-          </a>
+          <a href={subgraph.endpoint}>{name}</a>
+        </li>
+      )
+    }
+  })}
+</ul>
+
+#### Test Networks
+
+<ul>
+  {Object.keys(networks).map((network) => {
+    const name = networks[network].name
+    if (name !== 'localhost' && networks[network].isTestNetwork) {
+      const subgraph = networks[network].subgraph
+      return (
+        <li>
+          <a href={subgraph.endpoint}>{name}</a>
         </li>
       )
     }

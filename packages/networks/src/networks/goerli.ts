@@ -7,7 +7,7 @@ export const goerli: NetworkConfig = {
   chain: 'goerli',
   description: 'Main Ethereum test network. Do not use for production.',
   explorer: {
-    name: 'Goerli (Testnet)',
+    name: 'Goerli',
     urls: {
       address: (address) => `https://goerli.etherscan.io/address/${address}`,
       base: `https://goerli.etherscan.io/`,
@@ -61,7 +61,7 @@ export const goerli: NetworkConfig = {
   keyManagerAddress: '0xc328aE7fc36f975BE120aaa99f2d96C3E732e5b6',
   maxFreeClaimCost: 100000,
   multisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
-  name: 'Goerli (Testnet)',
+  name: 'Goerli',
   nativeCurrency: {
     coingecko: 'ethereum',
     decimals: 18,

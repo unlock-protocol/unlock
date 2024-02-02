@@ -24,7 +24,7 @@ export const baseGoerli: NetworkConfig = {
   keyManagerAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
   maxFreeClaimCost: 10000,
   multisig: '',
-  name: 'Base Goerli (Testnet)',
+  name: 'Base Goerli',
   nativeCurrency: {
     coingecko: 'ethereum',
     decimals: 18,
