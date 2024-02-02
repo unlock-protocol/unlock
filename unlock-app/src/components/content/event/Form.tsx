@@ -182,7 +182,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="order-2 md:order-1">
                 <ImageUpload
-                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                  description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
                   onChange={async (fileOrFileUrl: any) => {

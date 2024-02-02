@@ -57,7 +57,6 @@ export const NewEvent = () => {
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
-
     try {
       lockAddress = await walletService.createLock(
         {
@@ -84,6 +83,12 @@ export const NewEvent = () => {
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
     if (lockAddress) {
+      await storage.updateLockMetadata(formData.network, lockAddress, {
+        metadata: {
+          name: `Ticket for ${formData.lock.name}`,
+          image: formData.metadata.image,
+        },
+      })
       const { data: event } = await storage.saveEventData({
         data: {
           ...formDataToMetadata({
