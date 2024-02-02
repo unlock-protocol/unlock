@@ -89,16 +89,36 @@ export const RegistrationCardSingleLock = ({
   return (
     <>
       {!showApplication && (
-        <LockPriceInternals
-          lock={lock}
-          network={network}
-          symbol={symbol}
-          price={price!}
-          hasUnlimitedKeys={hasUnlimitedKeys}
-          isSoldOut={isSoldOut}
-          keysLeft={keysLeft}
-          showContract={true}
-        />
+        <>
+          <LockPriceInternals
+            lock={lock}
+            network={network}
+            symbol={symbol}
+            price={price!}
+            hasUnlimitedKeys={hasUnlimitedKeys}
+            isSoldOut={isSoldOut}
+            keysLeft={keysLeft}
+            showContract={true}
+          />
+          {!isSoldOut && isClaimable && (
+            <WalletlessRegistrationClaim
+              metadataInputs={
+                emailRequired && metadataInputs
+                  ? [emailInput, ...metadataInputs]
+                  : metadataInputs
+              }
+              lockAddress={lockAddress}
+              network={network}
+              refresh={refresh}
+            />
+          )}
+          {!isSoldOut && !isClaimable && (
+            <EmbeddedCheckout
+              checkoutConfig={checkoutConfig}
+              refresh={refresh}
+            />
+          )}
+        </>
       )}
       {showApplication && (
         <WalletlessRegistrationApply
@@ -110,21 +130,6 @@ export const RegistrationCardSingleLock = ({
           lockAddress={lockAddress}
           network={network}
         />
-      )}
-      {!isSoldOut && isClaimable && (
-        <WalletlessRegistrationClaim
-          metadataInputs={
-            emailRequired && metadataInputs
-              ? [emailInput, ...metadataInputs]
-              : metadataInputs
-          }
-          lockAddress={lockAddress}
-          network={network}
-          refresh={refresh}
-        />
-      )}
-      {!isSoldOut && !isClaimable && (
-        <EmbeddedCheckout checkoutConfig={checkoutConfig} refresh={refresh} />
       )}
     </>
   )
