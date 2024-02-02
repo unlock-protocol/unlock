@@ -17308,7 +17308,7 @@ __metadata:
     clsx: "npm:2.1.0"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
-    docusaurus-preset-openapi: "npm:0.7.2"
+    docusaurus-preset-openapi: "npm:0.7.3"
     prism-react-renderer: "npm:2.0.6"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -26298,9 +26298,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-openapi@npm:^0.7.2":
-  version: 0.7.2
-  resolution: "docusaurus-plugin-openapi@npm:0.7.2"
+"docusaurus-plugin-openapi@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "docusaurus-plugin-openapi@npm:0.7.3"
   dependencies:
     "@docusaurus/mdx-loader": "npm:^3.0.0"
     "@docusaurus/plugin-content-docs": "npm:^3.0.0"
@@ -26319,35 +26319,35 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 9738353e7f1394fcf6628ad1712cca5bb4f83a43d6ea28225bc31c9846e525438f5459513c346007bf5387dc226b7248bd559a6083ba010e171d1a5ffac9e113
+  checksum: fa89aa22bed1767eea8c9eacce712f890feab22159ecf25f954ae25d9cca93ca86e3adda04643e497276702a8d088f48af40e1744153bb769651d31225206736
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-proxy@npm:^0.7.2":
-  version: 0.7.2
-  resolution: "docusaurus-plugin-proxy@npm:0.7.2"
-  checksum: e3cd371736be631b48dc5f27fece141fd327786f9f90efd360f4ca6badaed0dea18f8cb6d768252e7db07dd341e5683dc9470ef9a0b87257ee16a0b12e36ed8c
+"docusaurus-plugin-proxy@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "docusaurus-plugin-proxy@npm:0.7.3"
+  checksum: d7652b3a571fc7e673db1a8c23c0c0ccf1b0c8a66817ce6bd049b98234fdcb46aff578de3c166417a63521d29413120422143cb072a2f45f4d43828a833cc744
   languageName: node
   linkType: hard
 
-"docusaurus-preset-openapi@npm:0.7.2":
-  version: 0.7.2
-  resolution: "docusaurus-preset-openapi@npm:0.7.2"
+"docusaurus-preset-openapi@npm:0.7.3":
+  version: 0.7.3
+  resolution: "docusaurus-preset-openapi@npm:0.7.3"
   dependencies:
     "@docusaurus/preset-classic": "npm:^3.0.0"
-    docusaurus-plugin-openapi: "npm:^0.7.2"
-    docusaurus-plugin-proxy: "npm:^0.7.2"
-    docusaurus-theme-openapi: "npm:^0.7.2"
+    docusaurus-plugin-openapi: "npm:^0.7.3"
+    docusaurus-plugin-proxy: "npm:^0.7.3"
+    docusaurus-theme-openapi: "npm:^0.7.3"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: e8d9d02ef6c8bbce0b681b62053912345c157aa4c5c35e520dee3e9fafa16b13b4a34036357584aa9267e6ace8980f225240926f2c348a1b2278d29eea3ea5c5
+  checksum: 2e777ac7a94bd392d053e157b1b7f20039f938e92c5c5e66e3249cdddf454362cb7ad13d044dba3ea396c9c2ad146f9c4ce744a5ce21d4a8a9596d7ca8203c2b
   languageName: node
   linkType: hard
 
-"docusaurus-theme-openapi@npm:^0.7.2":
-  version: 0.7.2
-  resolution: "docusaurus-theme-openapi@npm:0.7.2"
+"docusaurus-theme-openapi@npm:^0.7.3":
+  version: 0.7.3
+  resolution: "docusaurus-theme-openapi@npm:0.7.3"
   dependencies:
     "@docusaurus/theme-common": "npm:^3.0.0"
     "@mdx-js/react": "npm:^3.0.0"
@@ -26356,9 +26356,10 @@ __metadata:
     buffer: "npm:^6.0.3"
     clsx: "npm:^1.2.1"
     crypto-js: "npm:^4.1.1"
-    docusaurus-plugin-openapi: "npm:^0.7.2"
+    docusaurus-plugin-openapi: "npm:^0.7.3"
     immer: "npm:^9.0.7"
     lodash: "npm:^4.17.20"
+    marked: "npm:^11.0.0"
     monaco-editor: "npm:^0.31.1"
     postman-code-generators: "npm:^1.0.0"
     postman-collection: "npm:^4.1.0"
@@ -26368,11 +26369,12 @@ __metadata:
     react-redux: "npm:^7.2.0"
     redux-devtools-extension: "npm:^2.13.8"
     refractor: "npm:^4.8.1"
+    striptags: "npm:^3.2.0"
     webpack: "npm:^5.88.1"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 816fd6da1b3972220c56d70aff4359c918c830ed12bfd14f46c9f49728b36ccfdc6ae9f06935040db9c88a5ee7480b0ebd2ecd8b6b7a0465b6e0cce9ea7211f9
+  checksum: 382dd3452092b2833777b5203e83daac56f464b1805e3efe27b5e9021a8617bc250348bc9c5131e2360d5a4bc9fb4f948969b5db5fbf69856e704c5b625dbf60
   languageName: node
   linkType: hard
 
@@ -37609,6 +37611,15 @@ __metadata:
   bin:
     marked: bin/marked
   checksum: bf9fbcf9b4e04d64575c93694f3c68aee777809565229547cf30870308d7c5eca1376206b80a687613052e7472569af719d3028f12581e7a3b29485af2219a00
+  languageName: node
+  linkType: hard
+
+"marked@npm:^11.0.0":
+  version: 11.2.0
+  resolution: "marked@npm:11.2.0"
+  bin:
+    marked: bin/marked.js
+  checksum: 0c8c0d263617a04f066db6f5adfed811a8eb78a685850d4d0b8b9ef351e416fb871813ea7ee7f94f4d5f67da98c3a2a4259b8684e4f93a6a673733fe9d9f2868
   languageName: node
   linkType: hard
 
@@ -49290,6 +49301,13 @@ __metadata:
     "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
   checksum: 1cccdd196a566e004daad437e563b3407548e21af17e6719db9d1f7e0874cbfac48b4b563a9337404162e6999ca1410b695bfa6d1eb054eb39e74a6f39a96abc
+  languageName: node
+  linkType: hard
+
+"striptags@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "striptags@npm:3.2.0"
+  checksum: 0d430af5c2d702cfe6e3591b5d353773811d912264b9112e11596ac4d1c6e4185a9f9d92125d324d93cfebeb8ee658ba397f1a5d7a4e44ad7cff98ce40afcfc9
   languageName: node
   linkType: hard
 
