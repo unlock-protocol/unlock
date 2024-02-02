@@ -33,7 +33,7 @@ export const zkevm: NetworkConfig = {
   startBlock: 0,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-zkevm/0.0.1',
+      'https://api.studio.thegraph.com/query/21867/unlock-protocol-zkevm/latest',
     networkName: 'polygon-zkevm',
   },
   tokens: [
