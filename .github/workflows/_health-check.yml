@@ -2,15 +2,10 @@ name: Protocol Health Check
 
 on:
   workflow_call:
-    inputs:
-      chainId:
-        description: ''
-        type: string
-        required: true
 
 jobs:
   health-check:
-    name: Check the state of the Unlock Protocol for chain ${{ inputs.chainId }}
+    name: Check the state of the Unlock Protocol for all chains
     runs-on: ubuntu-22.04
     env:
       DOCKER_BUILDKIT: 1
@@ -21,4 +16,4 @@ jobs:
         run: yarn workspace @unlock-protocol/networks check
         shell: bash
       - name: Check Unlock info
-        run: cd governance && node ./all_networks unlock:info
+        run: yarn workspace @unlock-protocol/governance check
