@@ -170,11 +170,18 @@ const HookSelect = ({
   }
 
   const hookAddress = getValues(name)
-  const hookOptionsByName = HookMapping[name]?.options ?? []
+  const { hookName } = HookMapping[name]
+
+  const hookOptionsByName = (HookMapping[name]?.options ?? []).filter(
+    (option) => {
+      const wasDeployed = hooks[hookName]?.find((deployedHook: Hook) => {
+        return deployedHook.id === option.value
+      })
+      return wasDeployed
+    }
+  )
   const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
   const Option = options.find((option) => option.value === selectedOption)
-
-  const { hookName } = HookMapping[name]
 
   let id = ''
 
