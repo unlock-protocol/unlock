@@ -31,6 +31,7 @@
   "scripts": {
     "test": "hardhat test",
     "ci": "yarn lint && yarn test",
+    "check": "node ./all_networks unlock:info",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:contracts && yarn lint:code"
