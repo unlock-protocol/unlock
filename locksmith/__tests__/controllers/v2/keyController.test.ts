@@ -9,6 +9,7 @@ const network = 4
 
 const lock = {
   address: lockAddress,
+  totalKeys: 5,
   keys: [
     {
       owner: '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff',
@@ -306,5 +307,210 @@ describe('Keys v2 endpoints for lock', () => {
 
     expect(getKeysResponse.status).toBe(200)
     expect(getKeysResponse.body.length).toBe(2)
+  })
+})
+
+describe('Keys v2 endpoints for lock when using paginated endpoint', () => {
+  it('should throw an error when endpoint does not have query parameters', async () => {
+    expect.assertions(2)
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(getKeysResponse.status).toBe(404)
+  })
+
+  it('should contain metadata when caller is the lockManager', async () => {
+    expect.assertions(8)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const queryParams = {
+      query: '43',
+      filterKey: 'tokenId',
+      expiration: 'all',
+    }
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query(queryParams)
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.keys.length).toBe(1)
+    expect(getKeysResponse.body.keys[0].email).toBe('example@gmai.com')
+    expect(getKeysResponse.body.keys[0].address).toBe('brescia')
+    expect(getKeysResponse.body.keys[0].firstname).toBe('mario rossi')
+    expect(getKeysResponse.body.meta.total).toBe(5)
+    expect(getKeysResponse.body.meta.page).toBe(0)
+    expect(getKeysResponse.body.meta.byPage).toBe(30)
+  })
+
+  it('should not contains metadata when caller is not lockManager', async () => {
+    expect.assertions(8)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const lockAddress = wrongLockAddress
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '42',
+        filterKey: 'tokenId',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.keys.length).toBe(1)
+    expect(getKeysResponse.body.keys[0].email).toBe(undefined)
+    expect(getKeysResponse.body.keys[0].address).toBe(undefined)
+    expect(getKeysResponse.body.keys[0].firstname).toBe(undefined)
+    expect(getKeysResponse.body.meta.total).toBe(5)
+    expect(getKeysResponse.body.meta.page).toBe(0)
+    expect(getKeysResponse.body.meta.byPage).toBe(30)
+  })
+
+  it('should get all keys list without errors', async () => {
+    expect.assertions(3)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'owner',
+        expiration: 'active',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+
+    expect(Array.isArray(getKeysResponse.body.keys)).toStrictEqual(true)
+    expect(getKeysResponse.body.keys.length).toBe(5)
+  })
+
+  it('should not have results on query with non existing owner', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: 'NOT_VALID',
+        filterKey: 'owner',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+
+    expect(getKeysResponse.body.keys.length).toStrictEqual(0)
+  })
+
+  it('should return all keys when with empty email query', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'email',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+
+    expect(getKeysResponse.body.keys.length).toBe(5)
+  })
+
+  it('should search by specific keyHolderAddress', async () => {
+    expect.assertions(4)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '0xff24307539a043e7fa40c45820',
+        filterKey: 'owner',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+
+    expect(Array.isArray(getKeysResponse.body.keys)).toStrictEqual(true)
+    expect(getKeysResponse.body.keys.length).toBe(1)
+    expect(getKeysResponse.body.keys[0].token).toBe('42')
+  })
+
+  it('should return all keys when tokenId query is empty', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'tokenId',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.keys.length).toBe(5)
+  })
+
+  it('should return results with query on existing tokenId', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '2',
+        filterKey: 'tokenId',
+        expiration: 'active',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.keys.length).not.toBe(0)
+  })
+
+  it('should not have results with not valid tokenId query', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '424',
+        filterKey: 'tokenId',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.keys.length).toStrictEqual(0)
+  })
+
+  it('should get keys marked as checkedIn', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys-by-page`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'checkedInAt',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.keys.length).toBe(2)
   })
 })

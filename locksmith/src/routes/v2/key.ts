@@ -6,11 +6,20 @@ const router = express.Router({ mergeParams: true })
 
 const keyController = new KeyController()
 
+// Deprecated. Remove me by June 1st 2024
 router.get(
   '/:network/locks/:lockAddress/keys',
   authenticatedMiddleware,
   (req, res) => {
     keyController.keys(req, res)
+  }
+)
+
+router.get(
+  '/:network/locks/:lockAddress/keys-by-page',
+  authenticatedMiddleware,
+  (req, res) => {
+    keyController.keysByPage(req, res)
   }
 )
 
