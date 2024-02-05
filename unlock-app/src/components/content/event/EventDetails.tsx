@@ -13,6 +13,7 @@ import {
 } from '@unlock-protocol/ui'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
+import { CastItButton } from './CastItButton'
 import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
@@ -234,12 +235,15 @@ export const EventDetails = ({
                   src={event.image}
                 />
               </div>
-              <ul className="flex items-center gap-2 mt-auto md:gap-2">
+              <ul className="flex items-center gap-0 mt-auto md:gap-2">
                 <li>
                   <AddToCalendarButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
                   <TweetItButton event={event} eventUrl={eventUrl} />
+                </li>
+                <li>
+                  <CastItButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
                   <CopyUrlButton eventUrl={eventUrl} />
