@@ -17370,7 +17370,7 @@ __metadata:
     ethers: "npm:6.9.0"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.19.5"
-    solhint: "npm:4.0.0"
+    solhint: "npm:4.1.1"
   languageName: unknown
   linkType: soft
 
@@ -48210,6 +48210,38 @@ __metadata:
   bin:
     solhint: solhint.js
   checksum: 41e01c292ea16d9b1303d689c6381426aa845697911edd915ccf4019b58fae499af4ee7c47aa2c83601535f3824a1d27220735aa8e35816e03768518ccb18fb6
+  languageName: node
+  linkType: hard
+
+"solhint@npm:4.1.1":
+  version: 4.1.1
+  resolution: "solhint@npm:4.1.1"
+  dependencies:
+    "@solidity-parser/parser": "npm:^0.16.0"
+    ajv: "npm:^6.12.6"
+    antlr4: "npm:^4.11.0"
+    ast-parents: "npm:^0.0.1"
+    chalk: "npm:^4.1.2"
+    commander: "npm:^10.0.0"
+    cosmiconfig: "npm:^8.0.0"
+    fast-diff: "npm:^1.2.0"
+    glob: "npm:^8.0.3"
+    ignore: "npm:^5.2.4"
+    js-yaml: "npm:^4.1.0"
+    latest-version: "npm:^7.0.0"
+    lodash: "npm:^4.17.21"
+    pluralize: "npm:^8.0.0"
+    prettier: "npm:^2.8.3"
+    semver: "npm:^7.5.2"
+    strip-ansi: "npm:^6.0.1"
+    table: "npm:^6.8.1"
+    text-table: "npm:^0.2.0"
+  dependenciesMeta:
+    prettier:
+      optional: true
+  bin:
+    solhint: solhint.js
+  checksum: 34eb0674590f19f1dfbdc68d490099f119d712c741c7fa79f871fd67822594b21363406e22c168a042045524c710dd4779c0793966f07df642f1ecc58179d011
   languageName: node
   linkType: hard
 
