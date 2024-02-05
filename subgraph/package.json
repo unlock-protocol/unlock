@@ -24,7 +24,7 @@
     "prepare:test": "yarn copy-manifest && yarn copy-networks",
     "copy-networks": "rm -rf networks.json && cp ../docker/development/eth-node/networks.json networks.json",
     "copy-manifest": "rm -rf subgraph.yaml && cp ../tests/subgraph.test.yaml subgraph.yaml",
-    "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/ unlock-protocol-mainnet",
+    "deploy:studio": "graph deploy --node https://api.studio.thegraph.com/deploy/ --ipfs https://api.thegraph.com/ipfs/",
     "ci": "yarn prepare:abis && yarn copy-manifest && yarn codegen && yarn test -l",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/",
     "generate-manifest": "mustache config/\"$@\" subgraph.template.yaml > subgraph.yaml && graph codegen",
