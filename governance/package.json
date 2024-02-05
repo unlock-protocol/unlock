@@ -22,7 +22,7 @@
     "ethers": "6.9.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.19.5",
-    "solhint": "4.0.0"
+    "solhint": "4.1.1"
   },
   "scripts": {
     "test": "hardhat test",
