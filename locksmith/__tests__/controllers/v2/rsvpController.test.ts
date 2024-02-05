@@ -39,8 +39,8 @@ describe('RSVP', () => {
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
           recipient: '0x81Dd955D02D337DB81BA6c9C5F6213E647672052',
-          email: 'julien@unlock-protocol.com',
           data: {
+            email: 'julien@unlock-protocol.com',
             fullname: 'Julien Genestoux',
           },
         })
@@ -59,8 +59,8 @@ describe('RSVP', () => {
       const response = await request(app)
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
-          email: 'julien@unlock-protocol.com',
           data: {
+            email: 'julien@unlock-protocol.com',
             fullname: 'Julien Genestoux',
           },
         })
@@ -77,8 +77,8 @@ describe('RSVP', () => {
       const response = await request(app)
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
-          email: 'ccarfi@unlock-protocol.com',
           data: {
+            email: 'ccarfi@unlock-protocol.com',
             fullname: 'Chris Carfi',
           },
         })
@@ -99,8 +99,8 @@ describe('RSVP', () => {
       const responseAfterUpdate = await request(app)
         .post(`/v2/rsvp/${network}/${lockAddress}/`)
         .send({
-          email: 'ccarfi@unlock-protocol.com',
           data: {
+            email: 'ccarfi@unlock-protocol.com',
             fullname: 'Chris Carfi',
           },
         })

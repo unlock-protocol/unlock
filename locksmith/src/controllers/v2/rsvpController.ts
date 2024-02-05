@@ -19,7 +19,6 @@ const RsvpBody = z.object({
 export const rsvp = async (request: Request, response: Response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  console.log(request.body)
   const { recipient, data } = await RsvpBody.parseAsync(request.body)
 
   let userAddress = recipient
