@@ -12,6 +12,11 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: yarn
+      - run: yarn build
       - name: Check networks package
         run: yarn workspace @unlock-protocol/networks check
         shell: bash
