@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
@@ -24,6 +23,8 @@ import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
 import { sleeper } from '~/utils/promise'
+import { FaWallet as WalletIcon } from 'react-icons/fa'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface MintingScreenProps {
   lockName: string
@@ -56,7 +57,9 @@ export const MintingScreen = ({
 }: MintingScreenProps) => {
   const web3Service = useWeb3Service()
   const config = useConfig()
+  const { watchAsset } = useAuth()
   const transactionNetwork = mint.network || network
+  // TODO: This returns the Key with the lowest index for given lock dddres from the onwer causing weird behaviour when buying 2-nd... keys
   const { data: tokenId } = useQuery(
     ['userTokenId', mint, owner, lockAddress, transactionNetwork, web3Service],
     async () => {
@@ -103,65 +106,83 @@ export const MintingScreen = ({
         </a>
       )}
       {hasTokenId && isEthPassSupported(transactionNetwork) && (
-        <ul className="grid grid-cols-2 gap-3 pt-4">
-          {!isIOS && (
-            <li className="">
-              <AddToDeviceWallet
-                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                iconLeft={
-                  <Image
-                    width="20"
-                    height="20"
-                    alt="Google Wallet"
-                    src={`/images/illustrations/google-wallet.svg`}
-                  />
-                }
-                size="small"
-                variant="secondary"
-                platform={Platform.GOOGLE}
-                as={Button}
-                network={network}
-                lockAddress={lockAddress}
-                tokenId={tokenId}
-                name={lockName}
-                handlePassUrl={(url: string) => {
-                  window.location.assign(url)
-                }}
-              >
-                Add to Google Wallet
-              </AddToDeviceWallet>
-            </li>
-          )}
-          {!isAndroid && (
-            <li className="">
-              <AddToDeviceWallet
-                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                platform={Platform.APPLE}
-                size="small"
-                variant="secondary"
-                as={Button}
-                iconLeft={
-                  <Image
-                    className="justify-self-left"
-                    width="20"
-                    height="20"
-                    alt="Apple Wallet"
-                    src={`/images/illustrations/apple-wallet.svg`}
-                  />
-                }
-                network={network}
-                lockAddress={lockAddress}
-                tokenId={tokenId}
-                name={lockName}
-                handlePassUrl={(url: string) => {
-                  window.location.assign(url)
-                }}
-              >
-                Add to Apple Wallet
-              </AddToDeviceWallet>
-            </li>
-          )}
-        </ul>
+        <>
+          <div>
+            <button
+              className="w-full px-2 h-8 text-xs flex justify-between items-center text-center rounded-md bg-black text-white gap-2 font-bold"
+              onClick={() => {
+                console.log(tokenId)
+                watchAsset({
+                  network: network,
+                  address: lockAddress,
+                  tokenId: String(tokenId),
+                })
+              }}
+            >
+              <WalletIcon />
+              Add to crypto wallet
+            </button>
+          </div>
+          <ul className="grid grid-cols-2 gap-3 overflow-hidden">
+            {!isIOS && (
+              <li className="">
+                <AddToDeviceWallet
+                  className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                  iconLeft={
+                    <Image
+                      width="20"
+                      height="20"
+                      alt="Google Wallet"
+                      src={`/images/illustrations/google-wallet.svg`}
+                    />
+                  }
+                  size="small"
+                  variant="secondary"
+                  platform={Platform.GOOGLE}
+                  as={Button}
+                  network={network}
+                  lockAddress={lockAddress}
+                  tokenId={tokenId}
+                  name={lockName}
+                  handlePassUrl={(url: string) => {
+                    window.location.assign(url)
+                  }}
+                >
+                  Add to Google Wallet
+                </AddToDeviceWallet>
+              </li>
+            )}
+            {!isAndroid && (
+              <li className="">
+                <AddToDeviceWallet
+                  className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
+                  platform={Platform.APPLE}
+                  size="small"
+                  variant="secondary"
+                  as={Button}
+                  iconLeft={
+                    <Image
+                      className="justify-self-left"
+                      width="20"
+                      height="20"
+                      alt="Apple Wallet"
+                      src={`/images/illustrations/apple-wallet.svg`}
+                    />
+                  }
+                  network={network}
+                  lockAddress={lockAddress}
+                  tokenId={tokenId}
+                  name={lockName}
+                  handlePassUrl={(url: string) => {
+                    window.location.assign(url)
+                  }}
+                >
+                  Add to Apple Wallet
+                </AddToDeviceWallet>
+              </li>
+            )}
+          </ul>
+        </>
       )}
     </div>
   )
