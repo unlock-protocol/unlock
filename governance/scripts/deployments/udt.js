@@ -1,7 +1,6 @@
-const { ethers, run } = require('hardhat')
+const { ethers } = require('hardhat')
 const {
   copyAndBuildContractsAtVersion,
-  isLocalhost,
   deployUpgradeableContract,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -28,10 +27,6 @@ async function main() {
   console.log(
     `UDT SETUP > UDT v3 (w proxy) deployed to: ${udtAddress} (tx: ${hash})`
   )
-
-  if (!(await isLocalhost())) {
-    await run('verify:verify', { address: udtAddress })
-  }
 
   return udtAddress
 }

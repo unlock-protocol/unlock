@@ -72,7 +72,7 @@ interface FormProps {
 export const Form = ({ onSubmit }: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { account } = useAuth()
   const [isInPerson, setIsInPerson] = useState(true)
   const [screeningEnabled, enableScreening] = useState(false)
   const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
@@ -83,6 +83,8 @@ export const Form = ({ onSubmit }: FormProps) => {
   const web3Service = useWeb3Service()
 
   const today = dayjs().format('YYYY-MM-DD')
+  const networkOptions = useAvailableNetworks()
+  const network = networkOptions[0]?.value
 
   const methods = useForm<NewEventForm>({
     mode: 'onChange',
@@ -128,8 +130,6 @@ export const Form = ({ onSubmit }: FormProps) => {
   const mapAddress = `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
     details.metadata?.ticket?.event_address || 'Ethereum'
   )}&key=${config.googleMapsApiKey}`
-
-  const networkOptions = useAvailableNetworks()
 
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', account, details.network],
@@ -182,7 +182,7 @@ export const Form = ({ onSubmit }: FormProps) => {
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div className="order-2 md:order-1">
                 <ImageUpload
-                  description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+                  description="This illustration will be used for your event page, as well as the NFT tickets by default. Use 512 by 512 pixels for best results."
                   isUploading={isUploading}
                   preview={metadataImage!}
                   onChange={async (fileOrFileUrl: any) => {

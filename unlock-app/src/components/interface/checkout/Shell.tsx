@@ -1,8 +1,5 @@
 import React, { MouseEventHandler, forwardRef } from 'react'
-import {
-  RiCloseLine as CloseIcon,
-  RiArrowLeftLine as BackIcon,
-} from 'react-icons/ri'
+import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
 import SvgComponents from '../svg'
 import mintingAnimation from '~/animations/minting.json'
@@ -36,28 +33,6 @@ export const CloseButton = forwardRef<HTMLButtonElement, ButtonProps>(
 )
 
 CloseButton.displayName = 'Close Button'
-
-export const BackButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ onClick }, ref) => {
-    return (
-      <button
-        ref={ref}
-        onClick={onClick}
-        className="flex items-center justify-center rounded group"
-        aria-label="Close"
-        type="button"
-      >
-        <BackIcon
-          className="fill-black group-hover:fill-brand-ui-primary"
-          size={24}
-          key="close"
-        />
-      </button>
-    )
-  }
-)
-
-BackButton.displayName = 'Back Button'
 
 interface CheckoutHeadProps {
   title?: string
@@ -103,7 +78,6 @@ export function TopNavigation({ onClose, onBack }: NavigationProps) {
   }`
   return (
     <div className={navigationClass}>
-      {onBack && <BackButton onClick={() => onBack()} />}
       {onClose && <CloseButton onClick={() => onClose()} />}
     </div>
   )

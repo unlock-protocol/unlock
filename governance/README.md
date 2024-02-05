@@ -1,26 +1,115 @@
 # Unlock Protocol Governance
 
-This folders contains all the tools to manage the Unlock Protocol (DAO, contracts, etc).
+This folders contains all the tools to manage the Unlock Protocol (contracts, DAO, etc).
 
-## Verify contracts
+To get the list of all available tasks use `yarn hardhat --help`.
+
+## Deploy Unlock Protocol on a new network
+
+### List network in `@unlock-protocol/networks`
+
+First add your network to the list of supported networks:
+
+- create a `<your-network>.ts` file to `packages/networks/src`
+- add `export * from './<your-network>'` to `packages/networks/src/index.ts`
+
+Then you will need to edit the values for chain id, block explorer URLs, etc.
+
+When you are done, rebuild the networks package with
+
+```
+yarn workspace @unlock-protocol/networks build
+```
+
+## Add block explorer verification
+
+- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
+- optionally can add support for env variable
+
+When you are done, rebuild the helpers package with
+
+```
+yarn workspace @unlock-protocol/hardhat-helpers build
+```
+
+### Deploy contracts
+
+Now you need to deploy and configure the two main contracts
+
+- The factory contract `Unlock`
+- The template contract `PublicLock`
+
+This can be done with the following command:
+
+```
+yarn hardhat deploy --unlock-version 13 --public-lock-version 14 --network <your-network>
+```
+
+You can resume a pre-existing deployment by using the contract addresses instead of version number with the `--unlock-address` or `--public-lock-address`.
+
+#### Update the `networks` package
+
+Once the deployments are done, you need to add to the `packages/networks/src/<your-network>.ts` package
+
+- `unlockAddress`: the address of the deployed Unlock contract
+- `startBlock`: the block number to start indexing data (usually right before Unlock contract creation)
+
+### Configure the contracts
+
+The contracts should have been configured correctly during the deployment step. However you do the configuration manually
+
+#### Set a lock template in Unlock
+
+```
+yarn hardhat set:template
+```
+
+#### Configure Unlock
+
+Run `configUnlock` on the Unlock contract with the following params
+
+```
+yarn hardhat set:unlock-config
+```
+
+### Deploy the subgraph
+
+First you will need to create a new graph on [The Graph](https://thegraph.com) studio.
+
+Then the following commands
+
+```shell
+# got to the subgraph folder
+cd subgraph
+
+# create the subgraph.yaml and generate the files
+yarn build <your-network>
+
+yarn deploy:studio <your-subgraph-name>
+```
+
+The graph will now sync. In the `packages/networks/src/<your-network>.ts` config file, fill the `subgraph` object with a name in `studioEndpoint` and the API url in `endpoint`.
+
+### Verify contracts
 
 Contracts can be verified on all supported networks using the command line.
 
 ```
 # example
-export POLYGONSCAN_API_KEY=<xxx>
-yarn hardhat verify <address> --network polygon
+yarn hardhat verify <address> --network <your-network>
 ```
 
 ### Verify locks proxy
 
-There is a dedicated script to verify the proxy used by Unlock to create locks
+There is a dedicated script to verify the proxy used by the Unlock factory contract to create locks. You need to pass the hash of the tx creation as a param to the following function.
 
 ```
-yarn hardhat verify-proxy <...>
+yarn hardhat verify-proxy
 ```
 
 ## Use a tenderly fork
+
+Forks on [Tenderly](https://docs.tenderly.co/forks) can be very useful to test behaviours of new settings and contracts before actually deploying them. A fork of a network allows to simulate the execution of multiple successive txs - which is very useful while working on a batch of changes.
 
 ```
 export TENDERLY_FORK=https://rpc.tenderly.co/fork/xxx-xxx-xxx-xx
