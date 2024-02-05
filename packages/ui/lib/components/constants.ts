@@ -17,7 +17,7 @@ export const SOCIAL_LINKS: SocialLinkProps[] = [
     icon: GithubIcon,
   },
   {
-    url: 'https://discord.com/invite/Ah6ZEJyTDp',
+    url: 'https://discord.unlock-protocol.com/',
     icon: DiscordIcon,
   },
   {
