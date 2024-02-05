@@ -269,14 +269,14 @@ describe('keysOperations operations', () => {
       expect.assertions(2)
 
       const { address } = await loginRandomUser(app)
-      const items = await getKeysWithMetadata({
+      const { keys } = await getKeysWithMetadata({
         network,
         lockAddress,
         filters: {},
         loggedInUserAddress: address,
       })
-      expect(items.length).toBe(5)
-      expect(items).toEqual([
+      expect(keys.length).toBe(5)
+      expect(keys).toEqual([
         {
           token: '1',
           lockName: 'Alice in Borderlands',
@@ -342,14 +342,14 @@ describe('keysOperations operations', () => {
       expect.assertions(2)
 
       const { address } = await loginRandomUser(app)
-      const items = await getKeysWithMetadata({
+      const { keys } = await getKeysWithMetadata({
         network,
         lockAddress: wrongLockAddress,
         filters: {},
         loggedInUserAddress: address,
       })
-      expect(items.length).toBe(5)
-      expect(items).toEqual([
+      expect(keys.length).toBe(5)
+      expect(keys).toEqual([
         {
           token: '1',
           lockName: 'Alice in Borderlands',
@@ -417,7 +417,7 @@ describe('keysOperations operations', () => {
           lockAddress,
           approval: 'pending',
         })
-        const items = await getKeysWithMetadata({
+        const { keys } = await getKeysWithMetadata({
           network,
           lockAddress,
           filters: {
@@ -425,9 +425,9 @@ describe('keysOperations operations', () => {
           },
           loggedInUserAddress: address,
         })
-        expect(items.length).toBe(1)
-        expect(items[0].approval).toBe('pending')
-        expect(items[0].email).toBe('kld.diagne@gmail.com')
+        expect(keys.length).toBe(1)
+        expect(keys[0].approval).toBe('pending')
+        expect(keys[0].email).toBe('kld.diagne@gmail.com')
       })
     })
   })
