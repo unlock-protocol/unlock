@@ -361,7 +361,7 @@ export const base = `<!DOCTYPE html>
                           </td>
                           <td>
                             <a
-                              href="https://discord.com/invite/Ah6ZEJyTDp"
+                              href="https://discord.unlock-protocol.com/"
                               target="_blank"
                               ><img
                                 src="{{inlineImage 'discord.png'}}"

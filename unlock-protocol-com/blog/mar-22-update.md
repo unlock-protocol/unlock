@@ -39,4 +39,4 @@ And there are a _huge_ number of March 2022 product updates from Unlock! The tea
 
 - **Refactored unlock-express** - unlock-express now to use Passport (Node.js's most used authentication framework)
 
-Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
+Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.unlock-protocol.com/)!

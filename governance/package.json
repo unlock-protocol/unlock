@@ -12,7 +12,7 @@
     "@openzeppelin/upgrades-core": "1.32.2",
     "@safe-global/api-kit": "2.0.0",
     "@safe-global/protocol-kit": "2.0.0",
-    "@tenderly/hardhat-tenderly": "2.1.0",
+    "@tenderly/hardhat-tenderly": "2.1.1",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
@@ -22,7 +22,7 @@
     "ethers": "6.9.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.19.5",
-    "solhint": "4.0.0"
+    "solhint": "4.1.1"
   },
   "scripts": {
     "test": "hardhat test",
