@@ -50,7 +50,7 @@ An example of a lock with 5 minute renewal time below getting extended every 5 m
 
 ### Documentation
 
-- Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
+- Community & Support: [Join the Unlock Discord](https://discord.unlock-protocol.com/)
 
 - Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
 

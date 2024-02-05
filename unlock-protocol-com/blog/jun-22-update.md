@@ -45,4 +45,4 @@ image: /images/blog/june-22-update/june-22-banner.png
 - Added Mumbai Polygon network
 - Dependency cleanup and Eslint simplification
 
-Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
+Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.unlock-protocol.com/)!

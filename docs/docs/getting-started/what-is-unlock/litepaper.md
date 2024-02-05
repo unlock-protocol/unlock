@@ -319,7 +319,7 @@ The Unlock Protocol Github repositories can be found at [https://github.com/unlo
 
 ### Community / Discord
 
-At Unlock, our [Discord](https://discord.com/invite/Ah6ZEJyTDp) server is the central place for members, developers, creators, grantees, and others who are curious about Unlock. Developers and creators of all levels are welcome to ask questions and to participate in the community discussion.
+At Unlock, our [Discord](https://discord.unlock-protocol.com/) server is the central place for members, developers, creators, grantees, and others who are curious about Unlock. Developers and creators of all levels are welcome to ask questions and to participate in the community discussion.
 
 The Unlock Protocol Discord server can be found via a link at [https://www.unlock-protocol.com](https://www.unlock-protocol.com/).
 

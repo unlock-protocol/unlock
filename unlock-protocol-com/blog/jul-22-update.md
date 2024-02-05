@@ -51,4 +51,4 @@ image: /images/blog/july-22-update/july-22-banner.png
 - Launched an [upcoming community events](https://unlock-protocol.com/upcoming-events) page
 - Rinkeby network deprecation
 
-Want to know more and try stuff out? [Join our Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
+Want to know more and try stuff out? [Join our Unlock community in the Discord](https://discord.unlock-protocol.com/)!
