@@ -45,7 +45,17 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
   }
 
   const isLoading = isLoadingGuild || isLoadingGuildData
-  const disabled = !data || data.filter((d) => !d).length == 0
+  const disabled = !data || data.some((d) => !d)
+
+  const isFarCon =
+    guild &&
+    [
+      '0x238b522Fa4d04bFe0B9B875e9CcEa6d3f98d51d2',
+      '0x27fB25e111d2540B195a4A0C6e471a5E7e8Cd6Ec',
+      '0x456CC03543d41Eb1c9a7cA9FA86e9383B404f50d',
+    ]
+      .map((address) => address.toLowerCase())
+      .indexOf(lock!.address.toLowerCase()) > -1
 
   return (
     <Fragment>
@@ -63,7 +73,30 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             <Placeholder.Line size="lg" />
           </Placeholder.Root>
         )}
-        {guild && (
+        {isFarCon && (
+          <>
+            {disabled && (
+              <p>
+                ❌ Your wallet address is not on the list of approved attendees
+                for this{' '}
+                <Link
+                  className="underline text-brand-ui-primary"
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://farcon.xyz/"
+                >
+                  FarCon
+                </Link>{' '}
+                class of tickets. Please check that you have been approved and
+                use the address linked to your Farcaster account.
+              </p>
+            )}
+            {!disabled && !isLoading && (
+              <p>✅ Your wallet is on the list of approved attendees!</p>
+            )}
+          </>
+        )}
+        {guild && !isFarCon && (
           <>
             <p>
               Memberships to this lock are restricted to addresses that belong
