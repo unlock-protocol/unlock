@@ -77,8 +77,8 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
           <>
             {disabled && (
               <p>
-                Your wallet address is not on the list of approved attendees for{' '}
-                this{' '}
+                ❌ Your wallet address is not on the list of approved attendees
+                for this{' '}
                 <Link
                   className="underline text-brand-ui-primary"
                   target="_blank"
