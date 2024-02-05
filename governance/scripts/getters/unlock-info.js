@@ -1,11 +1,16 @@
-const { ethers, network } = require('hardhat')
+const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const {
   getUnlock,
   getProxyAdminAddress,
 } = require('@unlock-protocol/hardhat-helpers')
+const {
+  abi: proxyAdminABI,
+} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
 const getOwners = require('../multisig/owners')
+
+const errorLog = (txt) => console.log(`⚠️: ${txt}`)
 
 async function main({ unlockAddress }) {
   const { chainId } = await ethers.provider.getNetwork()
@@ -19,24 +24,34 @@ async function main({ unlockAddress }) {
   const unlockOwner = await unlock.owner()
   const isMultisig = safeAddress === unlockOwner
 
-  let proxyAdminAddress
+  let proxyAdminAddress, proxyAdminOwner
   try {
-    proxyAdminAddress = await getProxyAdminAddress({ network })
+    proxyAdminAddress = await getProxyAdminAddress({ chainId })
   } catch (error) {
-    console.log(`ERROR: Failed to fetch ProxyAdmin address`)
+    errorLog(`ERROR: Failed to fetch ProxyAdmin address`)
+  }
+
+  if (proxyAdminAddress) {
+    const proxyAdmin = await ethers.getContractAt(
+      proxyAdminABI,
+      proxyAdminAddress
+    )
+    proxyAdminOwner = await proxyAdmin.owner()
+  }
+
+  if (proxyAdminOwner !== unlockOwner) {
+    errorLog(`Unlock contract and ProxyAdmin have different owners!`)
   }
 
   let nbOwners
   try {
     nbOwners = (await getOwners({ safeAddress: unlockOwner })).length
   } catch (error) {
-    console.log(`⚠️: Unlock owner is not the team multisig !`)
+    errorLog(`Unlock owner is not the team multisig !`)
   }
 
   if (nbOwners && !isMultisig) {
-    console.log(
-      `⚠️: Multisig in networks package does not match with Unlock owner!`
-    )
+    errorLog(`Multisig in networks package does not match with Unlock owner!`)
   }
 
   // eslint-disable-next-line no-console
