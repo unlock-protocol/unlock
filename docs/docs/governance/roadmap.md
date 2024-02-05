@@ -145,7 +145,7 @@ As of January 2024, the Unlock ecosystem consists of the following:
 - Addition of a `/developer`landing page. ✅
 - Addition of a `/creator` landing page. ✅
 - Formal launch of grant program process ([see grants page](/governance/grants-bounties)). ✅
-- Move community from [Telegram](https://t.me/unlockprotocol) to [Discord](https://discord.com/invite/Ah6ZEJyTDp). ✅
+- Move community from [Telegram](https://t.me/unlockprotocol) to [Discord](https://discord.unlock-protocol.com/). ✅
 - Developer forum launched on Discourse. ✅
 
 Misc: more/better docs, more 3rd party integrations... etc

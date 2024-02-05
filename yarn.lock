@@ -14594,9 +14594,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@tenderly/hardhat-tenderly@npm:2.1.0"
+"@tenderly/hardhat-tenderly@npm:2.1.1":
+  version: 2.1.1
+  resolution: "@tenderly/hardhat-tenderly@npm:2.1.1"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.4"
@@ -14611,7 +14611,7 @@ __metadata:
   peerDependencies:
     ethers: ^6.8.1
     hardhat: ^2.19.0
-  checksum: 3cae76ce8bd920eb6325cb4df02db400759d03a64bb8092e19f6e611965cf13b1bb41ac818bc97f1bf611874b078ccfab6986cf346273837215947fd7caffe8e
+  checksum: 8941ca2853ae3323c0e578b94792d1035f8437fc97e84084f4e180eefbe2672c04a12d6c858661305c171ed5feead7957457d7476b9661b26df0c5a351540338
   languageName: node
   linkType: hard
 
@@ -17360,7 +17360,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.32.2"
     "@safe-global/api-kit": "npm:2.0.0"
     "@safe-global/protocol-kit": "npm:2.0.0"
-    "@tenderly/hardhat-tenderly": "npm:2.1.0"
+    "@tenderly/hardhat-tenderly": "npm:2.1.1"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
@@ -17370,7 +17370,7 @@ __metadata:
     ethers: "npm:6.9.0"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.19.5"
-    solhint: "npm:4.0.0"
+    solhint: "npm:4.1.1"
   languageName: unknown
   linkType: soft
 
@@ -17934,7 +17934,7 @@ __metadata:
     handlebars: "npm:4.7.8"
     netlify-cli: "npm:15.4.1"
     node-forge: "npm:1.3.1"
-    nodemailer: "npm:6.9.8"
+    nodemailer: "npm:6.9.9"
     prettier: "npm:3.0.0"
     regenerator-runtime: "npm:0.13.11"
     typescript: "npm:5.1.6"
@@ -40810,10 +40810,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:6.9.8":
-  version: 6.9.8
-  resolution: "nodemailer@npm:6.9.8"
-  checksum: 8c22b671bde4d507b6585758a323111aa2f7c97e0720fb91a645f1dee1da6661cdc4004bc42c63c95c712e7b1f7287518c623f9ac92e590f85b4d3f0f2ff7f65
+"nodemailer@npm:6.9.9":
+  version: 6.9.9
+  resolution: "nodemailer@npm:6.9.9"
+  checksum: d81f8613c35785aeb60dd0e3ead2c2c0171c709381fde17ada112f5ac635630814ad09492dacaf0fd30158492ed834abb82d9c58b49e9b495e5c675fbc5fffef
   languageName: node
   linkType: hard
 
@@ -48210,6 +48210,38 @@ __metadata:
   bin:
     solhint: solhint.js
   checksum: 41e01c292ea16d9b1303d689c6381426aa845697911edd915ccf4019b58fae499af4ee7c47aa2c83601535f3824a1d27220735aa8e35816e03768518ccb18fb6
+  languageName: node
+  linkType: hard
+
+"solhint@npm:4.1.1":
+  version: 4.1.1
+  resolution: "solhint@npm:4.1.1"
+  dependencies:
+    "@solidity-parser/parser": "npm:^0.16.0"
+    ajv: "npm:^6.12.6"
+    antlr4: "npm:^4.11.0"
+    ast-parents: "npm:^0.0.1"
+    chalk: "npm:^4.1.2"
+    commander: "npm:^10.0.0"
+    cosmiconfig: "npm:^8.0.0"
+    fast-diff: "npm:^1.2.0"
+    glob: "npm:^8.0.3"
+    ignore: "npm:^5.2.4"
+    js-yaml: "npm:^4.1.0"
+    latest-version: "npm:^7.0.0"
+    lodash: "npm:^4.17.21"
+    pluralize: "npm:^8.0.0"
+    prettier: "npm:^2.8.3"
+    semver: "npm:^7.5.2"
+    strip-ansi: "npm:^6.0.1"
+    table: "npm:^6.8.1"
+    text-table: "npm:^0.2.0"
+  dependenciesMeta:
+    prettier:
+      optional: true
+  bin:
+    solhint: solhint.js
+  checksum: 34eb0674590f19f1dfbdc68d490099f119d712c741c7fa79f871fd67822594b21363406e22c168a042045524c710dd4779c0793966f07df642f1ecc58179d011
   languageName: node
   linkType: hard
 
