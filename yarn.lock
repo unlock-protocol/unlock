@@ -14594,9 +14594,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@tenderly/hardhat-tenderly@npm:2.1.0"
+"@tenderly/hardhat-tenderly@npm:2.1.1":
+  version: 2.1.1
+  resolution: "@tenderly/hardhat-tenderly@npm:2.1.1"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.4"
@@ -14611,7 +14611,7 @@ __metadata:
   peerDependencies:
     ethers: ^6.8.1
     hardhat: ^2.19.0
-  checksum: 3cae76ce8bd920eb6325cb4df02db400759d03a64bb8092e19f6e611965cf13b1bb41ac818bc97f1bf611874b078ccfab6986cf346273837215947fd7caffe8e
+  checksum: 8941ca2853ae3323c0e578b94792d1035f8437fc97e84084f4e180eefbe2672c04a12d6c858661305c171ed5feead7957457d7476b9661b26df0c5a351540338
   languageName: node
   linkType: hard
 
@@ -17360,7 +17360,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.32.2"
     "@safe-global/api-kit": "npm:2.0.0"
     "@safe-global/protocol-kit": "npm:2.0.0"
-    "@tenderly/hardhat-tenderly": "npm:2.1.0"
+    "@tenderly/hardhat-tenderly": "npm:2.1.1"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
