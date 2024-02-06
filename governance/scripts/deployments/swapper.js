@@ -1,12 +1,10 @@
-const { ethers, run } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const {
   uniswapRouterAddresses,
   getNetwork,
-  isLocalhost,
+  copyAndBuildContractsAtVersion,
   deployContract,
 } = require('@unlock-protocol/hardhat-helpers')
-const { UnlockSwapPurchaser } = require('@unlock-protocol/contracts')
 
 async function main() {
   // fetch chain info
@@ -26,29 +24,17 @@ async function main() {
   console.log(
     `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routers: ${routers.toString()}) `
   )
-  const SwapPurchaser = await ethers.getContractFactory(
-    UnlockSwapPurchaser.abi,
-    UnlockSwapPurchaser.bytecode
-  )
 
-  console.log(`   waiting for tx to be mined for contract verification...`)
-  const {
-    contract: swapPurchaser,
-    hash,
-    address: swapPurchaserAddress,
-  } = await deployContract(
-    SwapPurchaser,
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'UnlockSwapPurchaser', subfolder: 'utils' },
+  ])
+
+  const { hash, address: swapPurchaserAddress } = await deployContract(
+    qualifiedPath,
     [unlockAddress, PERMIT2_ADDRESS, routers],
     { wait: 5 }
   )
   console.log(`SwapPurchaser deployed at ${swapPurchaserAddress} (tx: ${hash})`)
-
-  if (!(await isLocalhost())) {
-    await run('verify:verify', {
-      address: await swapPurchaser.getAddress(),
-      constructorArguments: [unlockAddress, PERMIT2_ADDRESS, routers],
-    })
-  }
 }
 
 // execute as standalone
