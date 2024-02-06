@@ -1,11 +1,12 @@
-const { ethers, unlock, run } = require('hardhat')
+const {
+  getNetwork,
+  deployContract,
+  copyAndBuildContractsAtVersion,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main() {
-  const [deployer] = await ethers.getSigners()
-
   // fetch chain info
-  const chainId = await deployer.getChainId()
-  const { unlockAddress, multisig, tokens } = unlock.networks[chainId]
+  const { id: chainId, unlockAddress, multisig, tokens } = await getNetwork()
 
   const USDC = tokens?.find((t) => t.symbol === 'USDC')
 
@@ -17,24 +18,16 @@ async function main() {
   console.log(
     `Deploying CardPurchaser on chain ${chainId} (unlock: ${unlockAddress}, multisig: ${multisig}, USDC: ${USDC.address})`
   )
-  const CardPurchaser = await ethers.getContractFactory('CardPurchaser')
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'CardPurchaser', subfolder: 'utils' },
+  ])
 
-  const cardPurchaser = await CardPurchaser.deploy(
+  const cardPurchaser = await deployContract(qualifiedPath, [
     multisig,
     unlockAddress,
-    USDC.address
-  )
+    USDC.address,
+  ])
   console.log(`  cardPurchaser deployed at ${cardPurchaser.address}`)
-
-  if (chainId !== 31337) {
-    console.log(`   waiting for tx to be mined for contract verification...`)
-    await cardPurchaser.deployTransaction.wait(5)
-
-    await run('verify:verify', {
-      address: cardPurchaser.address,
-      constructorArguments: [multisig, unlockAddress, USDC.address],
-    })
-  }
 }
 
 // execute as standalone

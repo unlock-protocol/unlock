@@ -1,10 +1,9 @@
-const { ethers } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const {
   getNetwork,
   deployContract,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
-const { UnlockSwapBurner } = require('@unlock-protocol/contracts')
 
 async function main() {
   // fetch chain info
@@ -27,14 +26,13 @@ async function main() {
   console.log(
     `Deploying UnlockSwapBurner on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routerAddress: ${routerAddress.toString()}) `
   )
-  const SwapAndBurn = await ethers.getContractFactory(
-    UnlockSwapBurner.abi,
-    UnlockSwapBurner.bytecode
-  )
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'UnlockSwapBurner', subfolder: 'utils' },
+  ])
 
   console.log(` waiting for tx to be mined for contract verification...`)
   const { address: swapperAddress } = await deployContract(
-    SwapAndBurn,
+    qualifiedPath,
     [unlockAddress, PERMIT2_ADDRESS, routerAddress],
     { wait: 5 }
   )
