@@ -50,7 +50,7 @@ const hardhatNetworks = {
 }
 
 Object.keys(networks).forEach((key) => {
-  if (['default', 'networks'].indexOf(key) === -1) {
+  if (['default', 'networks', 'localhost'].indexOf(key) === -1) {
     hardhatNetworks[key] = {
       chainId: networks[key].id,
       name: networks[key].name,

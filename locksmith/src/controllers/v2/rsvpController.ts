@@ -14,25 +14,21 @@ const RsvpBody = z.object({
     .string()
     .optional()
     .transform((item) => normalizer.ethereumAddress(item)),
-  email: z
-    .string()
-    .email()
-    .transform((value) => value.toLowerCase()),
 })
 
 export const rsvp = async (request: Request, response: Response) => {
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
-  const { recipient, data, email } = await RsvpBody.parseAsync(request.body)
+  const { recipient, data } = await RsvpBody.parseAsync(request.body)
 
   let userAddress = recipient
   // Support for walletless RSVP
-  if (!recipient && email) {
+  if (!recipient && data.email) {
     // We can build a recipient wallet address from the email address
     const keyManager = new KeyManager()
     userAddress = keyManager.createTransferAddress({
       params: {
-        email,
+        email: data.email,
         lockAddress,
       },
     })
@@ -41,7 +37,6 @@ export const rsvp = async (request: Request, response: Response) => {
   // By default we protect all metadata
   const protectedMetadata = {
     ...data,
-    email,
   }
 
   // Ok cool, then for each record, let's store the UserTokenMetadata
@@ -86,7 +81,7 @@ export const rsvp = async (request: Request, response: Response) => {
     network,
     template: 'eventRsvpSubmitted',
     failoverTemplate: 'eventRsvpSubmitted',
-    recipient: email,
+    recipient: data.email,
     // @ts-expect-error
     params: {
       eventName: eventDetail?.eventName,
