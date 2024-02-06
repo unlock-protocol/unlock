@@ -64,6 +64,9 @@ Object.keys(networks).forEach((key) => {
       ...hardhatNetworks[key],
       zksync: true,
       ethNetwork: networks[key].isTestNetwork ? 'sepolia' : 'mainnet',
+      verifyURL: networks[key].isTestNetwork
+        ? 'https://explorer.sepolia.era.zksync.dev/contract_verification'
+        : 'https://zksync2-mainnet-explorer.zksync.io/contract_verification',
     }
   }
 
