@@ -24,26 +24,26 @@ export const defaultEventCheckoutConfigForLockOnNetwork = (
     locks: {
       [lockAddress]: {
         network: network,
+        metadataInputs: [
+          {
+            name: 'email',
+            type: 'email',
+            label: 'Email address (will receive the QR code)',
+            required: true,
+            placeholder: 'your@email.com',
+            defaultValue: '',
+          },
+          {
+            name: 'fullname',
+            type: 'text',
+            label: 'Full name',
+            required: true,
+            placeholder: 'Satoshi Nakamoto',
+            defaultValue: '',
+          },
+        ],
       },
     },
-    metadataInputs: [
-      {
-        name: 'email',
-        type: 'email',
-        label: 'Email address (will receive the QR code)',
-        required: true,
-        placeholder: 'your@email.com',
-        defaultValue: '',
-      },
-      {
-        name: 'fullname',
-        type: 'text',
-        label: 'Full name',
-        required: true,
-        placeholder: 'Satoshi Nakamoto',
-        defaultValue: '',
-      },
-    ],
   } as PaywallConfigType
 }
 
