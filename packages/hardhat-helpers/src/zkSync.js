@@ -45,7 +45,7 @@ export async function deployUpgradeableContract(
 
   await contract.waitForDeployment()
   const contractAddress = await contract.getAddress()
-  const { hash } = await contract.deploymentTransaction()
+  const { hash } = contract.deployTransaction
 
   return {
     contract,
