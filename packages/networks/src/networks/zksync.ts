@@ -74,7 +74,7 @@ export const zksync: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
-  unlockAddress: '',
+  unlockAddress: '0x32CF553582159F12fBb1Ae1649b3670395610F24',
   url: 'https://zksync.io/',
 }
 
