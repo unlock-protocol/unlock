@@ -317,6 +317,7 @@ export const getLockMetadata = async ({
     lockMetadata = {
       ...event.data,
       ...lockMetadata, // priority to the lock metadata if it has been set
+      attributes: [...event.data.attributes, ...lockMetadata.attributes],
       external_url: getEventUrl(event),
     }
   }
