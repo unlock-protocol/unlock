@@ -40,7 +40,7 @@ export const getProviderForNetwork = async function (network = 1) {
  * @returns
  */
 export const getPublicProviderForNetwork = async function (network = 1) {
-  return new ethers.providers.JsonRpcProvider(networks[network].publicProvider)
+  return new ethers.providers.JsonRpcProvider(networks[network].provider)
 }
 
 interface PurchaserArgs {
