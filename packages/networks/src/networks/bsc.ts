@@ -91,7 +91,7 @@ export const bsc: NetworkConfig = {
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
   },
 
-  swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',
+  swapPurchaser: '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591',
 
   tokens: [
     {
