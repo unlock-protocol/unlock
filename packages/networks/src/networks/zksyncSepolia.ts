@@ -77,7 +77,7 @@ export const zksyncSepolia: NetworkConfig = {
       symbol: 'WBTC',
     },
   ],
-  unlockAddress: '',
+  unlockAddress: '0x3d5Dde761A008e752d2a93247E6B672bF60dbdBe',
   url: 'https://sepolia.era.zksync.dev',
 }
 
