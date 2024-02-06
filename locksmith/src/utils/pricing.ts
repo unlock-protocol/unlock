@@ -129,22 +129,24 @@ export const getUnlockServiceFee = (
 ) => {
   if (
     normalizer.ethereumAddress(options?.lockAddress) ===
-      normalizer.ethereumAddress(
-        '0xB9d79698599B3efa025c654B4c6f2c760c15d0d0'
-      ) ||
+      '0xB9d79698599B3efa025c654B4c6f2c760c15d0d0' ||
     normalizer.ethereumAddress(options?.lockAddress) ===
-      normalizer.ethereumAddress(
-        '0xc94b031cE1837277dDABaFE2d993e0A9a2FC4E92'
-      ) ||
+      '0xc94b031cE1837277dDABaFE2d993e0A9a2FC4E92' ||
     normalizer.ethereumAddress(options?.lockAddress) ===
-      normalizer.ethereumAddress(
-        '0xcbEF4c0E59A224B56D408CE72C59f0D275E7adAe'
-      ) ||
+      '0xcbEF4c0E59A224B56D408CE72C59f0D275E7adAe' ||
     normalizer.ethereumAddress(options?.lockAddress) ===
-      normalizer.ethereumAddress('0x3EbE147eCd6970f49fde34b5042996e140f63c22')
+      '0x3EbE147eCd6970f49fde34b5042996e140f63c22'
   ) {
     // For LexDAO, we take 3% only
     return Math.ceil(cost * 0.03)
+  }
+
+  if (
+    normalizer.ethereumAddress(options?.lockAddress) ===
+    '0x456CC03543d41Eb1c9a7cA9FA86e9383B404f50d'
+  ) {
+    // For FarCon Summit, we take 2.5% only
+    return Math.ceil(cost * 0.025)
   }
 
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
