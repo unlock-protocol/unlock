@@ -96,7 +96,14 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       qrModalOptions: {
         themeMode: 'light',
       },
-      chains,
+      optionalChains: chains,
+      metadata: {
+        name: 'Unlock Protocol App',
+        description:
+          'Unlock is a protocol for memberships, used for tickets, subscriptions, and more!',
+        url: 'https://unlock-protocol.com',
+        icons: ['https://app.unlock-protocol.com/images/svg/unlock-logo.svg'],
+      },
     })
 
     // Todo" consider handling this in our modal directly
