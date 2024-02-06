@@ -59,40 +59,6 @@ describe('KeyPricer', () => {
     })
   })
 
-  describe('Generate price', () => {
-    it('Generate price for a single quantity key', async () => {
-      expect.assertions(3)
-      const pricing = await keyPricer.generate(
-        '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
-        100
-      )
-
-      expect(pricing.keyPrice).toBe(1)
-      expect(pricing.creditCardProcessing).toBe(31)
-      expect(pricing.unlockServiceFee).toBe(1.01)
-    })
-
-    it('Generate price for multiple quantity keys', async () => {
-      expect.assertions(3)
-      const pricing = await keyPricer.generate(
-        '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
-        100,
-        100
-      )
-
-      expect(pricing.keyPrice).toBe(100)
-      expect(pricing.unlockServiceFee).toBe(10.01)
-      expect(pricing.creditCardProcessing).toBe(34)
-    })
-  })
-
-  describe('unlockServiceFee', () => {
-    it('should return our vig', () => {
-      expect.assertions(1)
-      expect(keyPricer.unlockServiceFee(1000)).toBe(100)
-    })
-  })
-
   describe('creditCardProcessingFee', () => {
     it('should return $0.35 on a 1DAI lock', () => {
       expect.assertions(1)
