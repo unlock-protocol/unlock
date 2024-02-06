@@ -82,8 +82,9 @@ export const rsvp = async (request: Request, response: Response) => {
     template: 'eventRsvpSubmitted',
     failoverTemplate: 'eventRsvpSubmitted',
     recipient: data.email,
-    // @ts-expect-error
+    // @ts-expect-error object incomplete
     params: {
+      lockAddress: lockAddress,
       eventName: eventDetail?.eventName,
       eventDate: eventDetail?.eventDate,
       eventTime: eventDetail?.eventTime,
