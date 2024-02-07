@@ -17,7 +17,6 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
-import { twMerge } from 'tailwind-merge'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { onResolveName } from '~/utils/resolvers'
 
@@ -151,13 +150,14 @@ export function AirdropInternalForm({
         render={({ field: { onChange, ref, onBlur } }) => {
           return (
             <div className="grid">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between mb-1">
                 <label className="text-base" htmlFor={label}>
                   {label}
                 </label>
                 <div className="flex items-center gap-2">
-                  <div className="text-base">No wallet address?</div>
+                  <span className="text-base">No wallet address?</span>
                   <Toggle
+                    size="small"
                     value={useEmail}
                     onChange={(value: boolean) => {
                       resetField('email')
@@ -171,7 +171,6 @@ export function AirdropInternalForm({
                 <Input
                   placeholder={placeholder}
                   name={label}
-                  id={label}
                   type="email"
                   onChange={(event) => {
                     onChange(onWalletChange(event))
@@ -242,7 +241,7 @@ export function AirdropInternalForm({
           error={errors.count?.message}
         />
 
-        <div className="space-y-0 grow">
+        <div className="grow">
           <div className="flex items-center justify-between">
             <span>Expiration</span>
             <ToggleSwitch

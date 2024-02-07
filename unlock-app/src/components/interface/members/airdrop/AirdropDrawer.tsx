@@ -32,21 +32,18 @@ export const AirdropForm = ({ locks }: PaywallLocksConfigType) => {
     isLockLoading: boolean
   }[]
   const [lock, setLock] = useState<Lock | null>(null)
-
+  const isStillLoading = results.some(({ isLockLoading }) => isLockLoading)
   const options = results
-    .map(({ lock, isLockLoading }) => {
-      if (isLockLoading || !lock) {
-        return false
-      }
+    .filter(({ isLockLoading }) => !isLockLoading)
+    .map(({ lock }) => {
       return {
         key: lock.address,
         value: lock,
         label: lock.name,
       }
     })
-    .filter((option) => !!option)
 
-  if (options.length == 0) {
+  if (isStillLoading) {
     return (
       <Placeholder.Root>
         {Array.from({ length: 8 }).map((_, index) => (
@@ -64,9 +61,10 @@ export const AirdropForm = ({ locks }: PaywallLocksConfigType) => {
         onChange={(newValue: Lock) => {
           setLock(newValue)
         }}
+        // @ts-expect-error Type 'Lock' is not assignable to type 'string | number'.
         options={options}
         description={
-          <p>Select the contract for which you want to airdrop new keys</p>
+          <p>Select the contract for which you want to airdrop new keys.</p>
         }
       />
       {lock && <AirdropFormForLock lock={lock} />}
