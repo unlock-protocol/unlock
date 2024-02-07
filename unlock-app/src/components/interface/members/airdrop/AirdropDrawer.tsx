@@ -21,12 +21,7 @@ dayjs.extend(customParseFormat)
 
 type Metadata = Record<'public' | 'protected', Record<string, string>>
 
-export interface Props {
-  locks: PaywallLocksConfigType
-}
-
-export const AirdropForm = ({ locks }: PaywallLocksConfigType) => {
-  // @ts-expect-error TODO: fix this
+export const AirdropForm = ({ locks }: { locks: PaywallLocksConfigType }) => {
   const results = useMultipleLockData(locks) as {
     lock: Lock
     isLockLoading: boolean
