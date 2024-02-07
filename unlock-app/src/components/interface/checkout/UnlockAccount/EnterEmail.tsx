@@ -5,7 +5,6 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService } from './unlockAccountMachine'
-import Link from 'next/link'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {

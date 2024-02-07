@@ -4,7 +4,7 @@ import { useActor } from '@xstate/react'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { addressMinify, minifyEmail } from '~/utils/strings'
+import { addressMinify } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
@@ -92,7 +92,7 @@ export function SignedOut({
       metamask: <SvgComponents.Metamask width={32} />,
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
       frame: <SvgComponents.Frame width={24} />,
-      rainbow: <SvgComponents.RainbowWallet width={24} />,
+      rainbow: <SvgComponents.Rainbow width={24} />,
       status: <SvgComponents.Status width={32} />,
     }
     const detected = detectInjectedProvider(injectedProvider)
