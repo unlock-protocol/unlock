@@ -84,19 +84,19 @@ export const useProvider = (config: any) => {
     // If the user is not connected, we open the connect modal
     if (!connected) {
       const response = await openConnectModalAsync()
-      closeConnectModal()
+      await closeConnectModal()
       pr = response?.provider
     }
     let walletServiceProvider: ethers.providers.Web3Provider = pr
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
       if (pr.isUnlock) {
-        walletServiceProvider = UnlockProvider.reconnect(
+        walletServiceProvider = (await UnlockProvider.reconnect(
           pr,
           networkConfig
-        ) as unknown as ethers.providers.Web3Provider
+        )) as unknown as ethers.providers.Web3Provider
       } else {
-        await switchWeb3ProviderNetwork(networkId).catch(console.error)
+        await switchWeb3ProviderNetwork(networkId)
         walletServiceProvider = new ethers.providers.Web3Provider(
           pr.provider,
           'any'

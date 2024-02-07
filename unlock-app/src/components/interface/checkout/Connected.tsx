@@ -4,7 +4,7 @@ import { useActor } from '@xstate/react'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { addressMinify, minifyEmail } from '~/utils/strings'
+import { addressMinify } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
@@ -31,7 +31,7 @@ export function SignedIn({
   let signOutText: string
 
   if (isUnlockAccount && email) {
-    userText = `User: ${minifyEmail(email)}`
+    userText = `User: ${email}`
     signOutText = 'Sign out'
   } else {
     userText = `Wallet: ${addressMinify(account!)}`
@@ -45,7 +45,7 @@ export function SignedIn({
         side="top"
         tip={`${
           isUnlockAccount ? 'Signing out' : 'Disconnecting'
-        } will reset the flow`}
+        } will reset the checkout`}
       >
         {onDisconnect && (
           <Button
@@ -55,7 +55,7 @@ export function SignedIn({
             onClick={onDisconnect}
             type="button"
           >
-            {signOutText}
+            ⤫ {signOutText}
           </Button>
         )}
       </Tooltip>
@@ -92,6 +92,7 @@ export function SignedOut({
       metamask: <SvgComponents.Metamask width={32} />,
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
       frame: <SvgComponents.Frame width={24} />,
+      rainbow: <SvgComponents.Rainbow width={24} />,
       status: <SvgComponents.Status width={32} />,
     }
     const detected = detectInjectedProvider(injectedProvider)
@@ -223,7 +224,7 @@ export function Connected({
     setSigning(false)
   }
 
-  if (useDelegatedProvider || isUnlockAccount) {
+  if (useDelegatedProvider) {
     if (isSignedIn) {
       return <div className="space-y-2">{children}</div>
     }

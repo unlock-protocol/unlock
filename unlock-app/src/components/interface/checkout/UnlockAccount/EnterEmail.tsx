@@ -5,7 +5,6 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService } from './unlockAccountMachine'
-import Link from 'next/link'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
@@ -67,24 +66,22 @@ export function EnterEmail({ unlockAccountService }: Props) {
           />
         </form>
         <p className="ml-0.5 text-sm grow">
-          This step enables you to log-in or create an{' '}
-          <Link
-            href="https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/unlock-accounts"
-            target="_blank"
-            rel="noopener noreferrer"
+          ⚠️ Do <strong>not</strong> create an Unlock account if you already
+          have a wallet,{' '}
+          <button
             className="underline text-ui-main-500"
+            onClick={() => send('BACK')}
           >
-            Unlock account
-          </Link>
-          . If you already have a crypto wallet, please connect it.
+            connect it
+          </button>
+          .
         </p>
         <section className="ml-0.5 text-sm mt-auto text-gray-500">
           <p className="font-bold">💡 Did you know?</p>
           <p>
-            {' '}
             You can pay by credit card card even if you logged-in with your
             crypto wallet!
-          </p>{' '}
+          </p>
         </section>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
