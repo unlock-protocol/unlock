@@ -22,3 +22,5 @@ jobs:
         shell: bash
       - name: Check Unlock info
         run: yarn workspace @unlock-protocol/governance check
+      - name: Check Subgraphs
+        run: yarn workspace @unlock-protocol/subgraph check
