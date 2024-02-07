@@ -24,3 +24,5 @@ jobs:
         run: yarn workspace @unlock-protocol/governance check
       - name: Check Subgraphs
         run: yarn workspace @unlock-protocol/subgraph check
+      - name: Check Team Multisigs
+        run: yarn workspace @unlock-protocol/governance check:multisig
