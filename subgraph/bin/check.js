@@ -9,43 +9,10 @@
 
 const { networks } = require('@unlock-protocol/networks')
 
-function parseSubgraphName({ endpoint, endpointv2, studioEndpoint }) {
-  const end = endpointv2 || endpoint
-  return end.includes('studio')
-    ? studioEndpoint
-    : `unlock-protocol/${end.split('/').pop()}`
-}
+const THE_GRAPH_URL = `https://api.thegraph.com/index-node/graphql`
 
-async function checkHealth({ subgraph }) {
-  console.log(subgraph)
-  const subgraphName = parseSubgraphName(subgraph)
-  console.log(subgraphName)
-  console.log('\n')
-
-  const query = `{
-  indexingStatusForCurrentVersion(subgraphName: "${subgraphName}") {
-    synced
-    health
-    fatalError {
-      message
-      block {
-        number
-        hash
-      }
-      handler
-    }
-    chains {
-      chainHeadBlock {
-        number
-      }
-      latestBlock {
-        number
-      }
-    }
-  }
-}`
-
-  const req = await fetch(`https://api.thegraph.com/index-node/graphql`, {
+const fetchGraph = async (query, url = THE_GRAPH_URL) => {
+  const req = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -54,21 +21,115 @@ async function checkHealth({ subgraph }) {
     body: JSON.stringify({ query }),
   })
 
-  const {
-    data: { indexingStatusForCurrentVersion: resp },
-  } = await req.json()
+  return await req.json()
+}
 
-  if (resp)
-    if (!resp.synced) {
-      console.log(`Subgraph ${subgraphName} is out of sync!`)
+const getLatestDeployment = async (url) => {
+  const query = `{
+    _meta{
+      deployment
     }
+  }`
+  const { data } = await fetchGraph(query, url)
+  if (!data._meta) console.log(data, url)
+  const { deployment } = data._meta
+  return deployment
+}
+
+const parseSubgraphType = ({ endpoint, endpointv2, studioEndpoint }) => {
+  // custom if not the graph
+  if (!endpoint.includes('thegraph')) return 'custom'
+  if (
+    // studioEndpoint ||
+    (endpoint || '').includes('studio') ||
+    (endpointv2 || '').includes('studio')
+  )
+    return 'studio'
+  return 'hosted'
+}
+
+const checkHealth = async ({ id, name, subgraph }) => {
+  const errors = []
+  const subgraphType = parseSubgraphType(subgraph)
+  if (subgraphType !== 'studio') {
+    errors.push(`⚠️: Subgraph not migrated to studio (${subgraphType})`)
+  }
+  if (subgraphType === 'custom') {
+    errors.push(`⚠️: Not hosted by The Graoh, couldn't fetch status.`)
+    return
+  }
+
+  const actualEndpoint = subgraph.endpointV2 || subgraph.endpoint
+  // get latest deployment id
+  let deploymentId
+  try {
+    deploymentId = await getLatestDeployment(actualEndpoint)
+  } catch (error) {
+    errors.push(
+      `❌ failed to fetch latest deployment from The Graph (${actualEndpoint})!`
+    )
+    errors.push(error)
+  }
+
+  let status
+  if (deploymentId) {
+    const query = `{
+      indexingStatuses(subgraphs: ["${deploymentId}"]) {
+        synced
+        health
+        fatalError {
+          message
+          block {
+            number
+            hash
+          }
+          handler
+        }
+        chains {
+          network
+        }
+      }
+    }`
+
+    const {
+      data: { indexingStatuses },
+    } = await fetchGraph(query)
+    ;[status] = indexingStatuses
+  }
+
+  // parse errors
+  if (status) {
+    if (!status.synced) {
+      errors.push(`❌ Subgraph is out of sync!`)
+    }
+    if (status.health !== 'healthy') {
+      errors.push(`❌ Subgraph is failing: ${status.fatalError?.message}`)
+    }
+  } else {
+    errors.push(`⚠️: Missing health status for subgraph `)
+  }
+
+  // log errors
+  if (errors.length) {
+    console.log(`${name} (${id}) -- ${subgraphType}`)
+    console.log(errors.join('\n'))
+    console.log(`------ \n`)
+  }
 }
 
 async function main() {
+  const networksToCheck = Object.keys(networks).filter(
+    (d) => !['31337'].includes(d)
+  )
+  console.log(
+    `Fetching graph statuses for: ${networksToCheck.map(
+      (id) => networks[id].name
+    )}\n`
+  )
   await Promise.all(
-    Object.keys(networks)
-      .filter((d) => !['networks', 'default', 'localhost'].includes(d))
-      .map((chainName) => checkHealth(networks[chainName]))
+    networksToCheck.map(
+      async (chainName) => await checkHealth(networks[chainName])
+    )
   )
 }
 
