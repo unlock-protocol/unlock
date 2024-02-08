@@ -156,11 +156,12 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
-  // TODO: OG for event!
   // const locksmithEventOG = new URL(
   //   `/v2/og/event/${network}/locks/${lockAddress}`,
   //   config.locksmithHost
   // ).toString()
+
+  console.log(router)
 
   return (
     <div>
@@ -171,7 +172,7 @@ export const EventDetails = ({
           images: [
             {
               alt: event.title,
-              url: 'locksmithEventOG',
+              url: `/api/og/event/${event.slug}`,
             },
           ],
         }}
