@@ -191,8 +191,11 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
       <AirdropKeysDrawer
         isOpen={airdropKeys}
         setIsOpen={setAirdropKeys}
-        lockAddress={lockAddress}
-        network={network!}
+        locks={{
+          [lockAddress]: {
+            network: network,
+          },
+        }}
       />
 
       <div className="">
@@ -404,8 +407,11 @@ export const ManageLockPage = () => {
       <AirdropKeysDrawer
         isOpen={airdropKeys}
         setIsOpen={setAirdropKeys}
-        lockAddress={lockAddress}
-        network={parseInt(network!, 10)}
+        locks={{
+          [lockAddress]: {
+            network: parseInt(network!, 10),
+          },
+        }}
       />
       <div className="min-h-screen bg-ui-secondary-200 pb-60">
         <LockSelection />

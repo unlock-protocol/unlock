@@ -10,33 +10,66 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { omit } from 'lodash'
-import { useLockData } from '~/hooks/useLockData'
+import { useMultipleLockData } from '~/hooks/useLockData'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import { PaywallLocksConfigType } from '@unlock-protocol/core'
+import { Select } from '@unlock-protocol/ui'
+import { useState } from 'react'
+import { Lock } from '~/unlockTypes'
 
 dayjs.extend(customParseFormat)
 
 type Metadata = Record<'public' | 'protected', Record<string, string>>
 
-export interface Props {
-  lockAddress: string
-  network: number
-  isOpen: boolean
-  setIsOpen(value: boolean): void
-  emailRequired?: boolean
+export const AirdropForm = ({ locks }: { locks: PaywallLocksConfigType }) => {
+  const results = useMultipleLockData(locks) as {
+    lock: Lock
+    isLockLoading: boolean
+  }[]
+  const [lock, setLock] = useState<Lock | null>(null)
+  const isStillLoading = results.some(({ isLockLoading }) => isLockLoading)
+  const options = results
+    .filter(({ isLockLoading }) => !isLockLoading)
+    .map(({ lock }) => {
+      return {
+        key: lock.address,
+        value: lock,
+        label: lock.name,
+      }
+    })
+
+  if (isStillLoading) {
+    return (
+      <Placeholder.Root>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <Placeholder.Line key={index} />
+        ))}
+      </Placeholder.Root>
+    )
+  }
+  if (options.length === 1 && options[0]) {
+    return <AirdropFormForLock lock={options[0].value as Lock} />
+  }
+  return (
+    <div className="mt-6 space-y-6">
+      <Select
+        onChange={(newValue: Lock) => {
+          setLock(newValue)
+        }}
+        // @ts-expect-error Type 'Lock' is not assignable to type 'string | number'.
+        options={options}
+        description={
+          <p>Select the contract for which you want to airdrop new keys.</p>
+        }
+      />
+      {lock && <AirdropFormForLock lock={lock} />}
+    </div>
+  )
 }
 
-export const AirdropForm = ({
-  lockAddress,
-  network,
-  emailRequired,
-}: Pick<Props, 'lockAddress' | 'network' | 'emailRequired'>) => {
+export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
   const { account, getWalletService } = useAuth()
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
-
-  const { lock: lockData, isLockLoading: isLockDataLoading } = useLockData({
-    lockAddress,
-    network,
-  })
 
   const handleConfirm = async (items: AirdropMember[]) => {
     // Create metadata
@@ -71,9 +104,9 @@ export const AirdropForm = ({
 
       const user = {
         userAddress,
-        lockAddress,
+        lockAddress: lock.address,
         metadata,
-        network,
+        network: lock.network,
       } as const
 
       return user
@@ -101,11 +134,11 @@ export const AirdropForm = ({
         ).toString()
       } else if (item.neverExpire) {
         expiration = MAX_UINT
-      } else if (lockData!.expirationDuration == -1) {
+      } else if (lock!.expirationDuration == -1) {
         expiration = MAX_UINT
       } else {
         expiration = Math.floor(
-          new Date(formatDate(lockData!.expirationDuration)).getTime() / 1000
+          new Date(formatDate(lock!.expirationDuration)).getTime() / 1000
         ).toString()
       }
 
@@ -118,14 +151,14 @@ export const AirdropForm = ({
       return prop
     }, initialValue)
 
-    const walletService = await getWalletService(network)
+    const walletService = await getWalletService(lock.network)
 
     // Grant keys
     await walletService
       .grantKeys(
         {
           ...options,
-          lockAddress,
+          lockAddress: lock.address,
         },
         {},
         (error) => {
@@ -146,60 +179,45 @@ export const AirdropForm = ({
 
   return (
     <div className="mt-2 space-y-6">
-      {isLockDataLoading ? (
-        <Placeholder.Root>
-          {Array.from({ length: 8 }).map((_, index) => (
-            <Placeholder.Line key={index} />
+      <Tab.Group defaultIndex={0}>
+        <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
+          {['Manual', 'Bulk'].map((text) => (
+            <Tab
+              key={text}
+              className={({ selected }) => {
+                return `font-medium ${selected ? 'text-brand-ui-primary' : ''}`
+              }}
+            >
+              {text}
+            </Tab>
           ))}
-        </Placeholder.Root>
-      ) : (
-        <Tab.Group defaultIndex={0}>
-          <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
-            {['Manual', 'Bulk'].map((text) => (
-              <Tab
-                key={text}
-                className={({ selected }) => {
-                  return `font-medium ${
-                    selected ? 'text-brand-ui-primary' : ''
-                  }`
-                }}
-              >
-                {text}
-              </Tab>
-            ))}
-          </Tab.List>
-          <Tab.Panels className="mt-6">
-            <Tab.Panel>
-              <AirdropManualForm
-                emailRequired={emailRequired}
-                lock={lockData!}
-                onConfirm={handleConfirm}
-              />
-            </Tab.Panel>
-            <Tab.Panel>
-              <AirdropBulkForm
-                lock={lockData!}
-                onConfirm={handleConfirm}
-                emailRequired={emailRequired}
-              />
-            </Tab.Panel>
-          </Tab.Panels>
-        </Tab.Group>
-      )}
+        </Tab.List>
+        <Tab.Panels className="mt-6">
+          <Tab.Panel>
+            <AirdropManualForm lock={lock} onConfirm={handleConfirm} />
+          </Tab.Panel>
+          <Tab.Panel>
+            <AirdropBulkForm lock={lock} onConfirm={handleConfirm} />
+          </Tab.Panel>
+        </Tab.Panels>
+      </Tab.Group>
     </div>
   )
 }
 
 export function AirdropKeysDrawer({
-  lockAddress,
-  network,
+  locks,
   isOpen,
   setIsOpen,
-}: Props) {
+}: {
+  locks: PaywallLocksConfigType
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}) {
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Airdrop Keys">
       <div className="mt-2 space-y-6">
-        <AirdropForm lockAddress={lockAddress} network={network}></AirdropForm>
+        <AirdropForm locks={locks} />
       </div>
     </Drawer>
   )
