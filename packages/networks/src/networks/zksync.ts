@@ -23,7 +23,7 @@ export const zksync: NetworkConfig = {
   id: 324,
   isTestNetwork: false,
   maxFreeClaimCost: 1,
-  multisig: 'TK',
+  multisig: '0xFa5592CE9C52FA5214ccEa10cB72Faa88eC80a3c',
   name: 'zkSync Era',
   nativeCurrency: {
     coingecko: 'zksync-eth',
