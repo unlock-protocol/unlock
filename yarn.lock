@@ -17287,7 +17287,7 @@ __metadata:
     typescript: "npm:5.3.3"
     vite: "npm:5.0.12"
     vite-plugin-svgr: "npm:4.2.0"
-    vite-tsconfig-paths: "npm:4.2.3"
+    vite-tsconfig-paths: "npm:4.3.1"
   peerDependencies:
     react: 18.2.0
     react-dom: 18.2.0
@@ -17492,7 +17492,7 @@ __metadata:
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.3"
     random-words: "npm:2.0.0"
-    rate-limiter-flexible: "npm:4.0.0"
+    rate-limiter-flexible: "npm:4.0.1"
     react: "npm:18.2.0"
     remark-html: "npm:15.0.2"
     remark-parse: "npm:10.0.2"
@@ -17755,7 +17755,7 @@ __metadata:
     "@walletconnect/modal": "npm:2.6.2"
     "@xstate/react": "npm:3.2.2"
     autoprefixer: "npm:10.4.17"
-    axios: "npm:1.6.3"
+    axios: "npm:1.6.7"
     blockies-react-svg: "npm:0.0.13"
     calendar-link: "npm:2.5.1"
     csv: "npm:6.3.6"
@@ -20722,14 +20722,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.6.3":
-  version: 1.6.3
-  resolution: "axios@npm:1.6.3"
+"axios@npm:1.6.7":
+  version: 1.6.7
+  resolution: "axios@npm:1.6.7"
   dependencies:
-    follow-redirects: "npm:^1.15.0"
+    follow-redirects: "npm:^1.15.4"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 78e72ec40ee49b85f076758e65d04dd966361cbf82f3789e53c5a1b6814ef57825098f8a997ec1846cf004fb7407655c7b96c496d8133d88ca0f73a98a9c452b
+  checksum: a1932b089ece759cd261f175d9ebf4d41c8994cf0c0767cda86055c7a19bcfdade8ae3464bf4cec4c8b142f4a657dc664fb77a41855e8376cf38b86d7a86518f
   languageName: node
   linkType: hard
 
@@ -30393,7 +30393,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.12.1, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.0, follow-redirects@npm:^1.15.4":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.12.1, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.4":
   version: 1.15.4
   resolution: "follow-redirects@npm:1.15.4"
   peerDependenciesMeta:
@@ -44606,10 +44606,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:4.0.0":
-  version: 4.0.0
-  resolution: "rate-limiter-flexible@npm:4.0.0"
-  checksum: f20ac7d4414cf13220c59376ce05ca05c578d2ce37de7736f6cbb132243867b08f7e09809bce28302732998c2de01a83067e214646c8bcc2185776d98c167bb2
+"rate-limiter-flexible@npm:4.0.1":
+  version: 4.0.1
+  resolution: "rate-limiter-flexible@npm:4.0.1"
+  checksum: c86b9b188396af3e030eb6f0ab95483057cbdf2480612a95a4fa660401b6daea2960b3155c7cd2f77e3ded3bc97163bb7513ea9ec21bfac7c128dfb5221ff800
   languageName: node
   linkType: hard
 
@@ -50941,20 +50941,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsconfck@npm:^2.1.0":
-  version: 2.1.2
-  resolution: "tsconfck@npm:2.1.2"
-  peerDependencies:
-    typescript: ^4.3.5 || ^5.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  bin:
-    tsconfck: bin/tsconfck.js
-  checksum: 61df3b03b334a25eabb0a52e67a0c8d85770c631f2739db7703af8fdd102a2ebd598f1c851cc5fc6d6a59f2497a26c845be71c934ea16d838a3ff95a885034fb
-  languageName: node
-  linkType: hard
-
 "tsconfck@npm:^3.0.1":
   version: 3.0.1
   resolution: "tsconfck@npm:3.0.1"
@@ -52889,22 +52875,6 @@ __metadata:
   peerDependencies:
     vite: ^2.6.0 || 3 || 4 || 5
   checksum: c860e65836509a144cf838eabcf420d848f35aea4c83044e75c9f9d00947f878217470536ea4098dc4e78510cb5fb683ec564f33cddde4dab0459e3a87f5ff79
-  languageName: node
-  linkType: hard
-
-"vite-tsconfig-paths@npm:4.2.3":
-  version: 4.2.3
-  resolution: "vite-tsconfig-paths@npm:4.2.3"
-  dependencies:
-    debug: "npm:^4.1.1"
-    globrex: "npm:^0.1.2"
-    tsconfck: "npm:^2.1.0"
-  peerDependencies:
-    vite: "*"
-  peerDependenciesMeta:
-    vite:
-      optional: true
-  checksum: ba6abe5d18fc1c1e494e1f1d8a7db56445c2a40e15aadb5d47a9c66cc5372d6f69b94ff0b1e47b67659d6ecaeddebab0a9d11e40b1c3c36c0115800736a6c760
   languageName: node
   linkType: hard
 
