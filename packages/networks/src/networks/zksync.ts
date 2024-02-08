@@ -39,7 +39,7 @@ export const zksync: NetworkConfig = {
   subgraph: {
     endpoint: '',
     endpointV2: '',
-    networkName: 'matic',
+    networkName: 'zksync-era',
   },
   tokens: [
     {
