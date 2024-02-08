@@ -25,9 +25,11 @@ export const getUnlockAddress = async () => {
   return unlockAddress
 }
 
-export const getNetwork = async () => {
+export const getNetwork = async (chainId) => {
   const { ethers } = require('hardhat')
-  const { chainId } = await ethers.provider.getNetwork()
+  if (!chainId) {
+    ;({ chainId } = await ethers.provider.getNetwork())
+  }
   return networks[chainId]
 }
 
