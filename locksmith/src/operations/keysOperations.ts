@@ -171,7 +171,7 @@ export async function getKeysWithMetadata({
           owner: r.userAddress,
         }
       }),
-      total,
+      totalKeys: total,
     }
   } else {
     // Get from subgraph!

@@ -1425,9 +1425,22 @@ paths:
             application/json:
               schema:
                 nullable: false
-                type: array
-                items:
-                  $ref: '#/components/schemas/KeyMetadata'
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      byPage:
+                        type: integer
+                  keys:
+                    nullable: false
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KeyMetadata'
 
         404:
           $ref: '#/components/responses/404.NotFound'
