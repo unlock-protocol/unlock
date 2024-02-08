@@ -37,6 +37,9 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
+      const name = request.params.verifierName
+        ? request.params.verifierName
+        : null
 
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
@@ -57,7 +60,8 @@ export default class VerifierController {
           lockAddress,
           address,
           loggedUserAddress,
-          network
+          network,
+          name
         )
         return response.status(201).send(createdVerifier)
       }
