@@ -9,7 +9,6 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import { useSession } from './useSession'
 import { getCurrentNetwork } from '~/utils/session'
 import { useConnectModal } from './useConnectModal'
-import { string } from 'zod'
 
 export interface EthereumWindow extends Window {
   web3: any
