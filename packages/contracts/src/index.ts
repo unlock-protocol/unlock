@@ -77,4 +77,9 @@ export { UnlockDiscountTokenV2 }
 export { UnlockDiscountTokenV3 }
 export { GovernorUnlockProtocol }
 export { GovernorUnlockProtocolTimelock }
-export { LockSerializer,UnlockSwapPurchaser,UnlockSwapBurner,UniswapOracleV3 }
+export {
+  LockSerializer,
+  UnlockSwapPurchaser,
+  UnlockSwapBurner,
+  UniswapOracleV3,
+}
