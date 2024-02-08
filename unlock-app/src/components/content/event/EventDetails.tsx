@@ -156,13 +156,6 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
-  // const locksmithEventOG = new URL(
-  //   `/v2/og/event/${network}/locks/${lockAddress}`,
-  //   config.locksmithHost
-  // ).toString()
-
-  console.log(router)
-
   return (
     <div>
       <NextSeo
