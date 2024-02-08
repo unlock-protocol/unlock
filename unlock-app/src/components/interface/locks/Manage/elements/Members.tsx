@@ -194,7 +194,7 @@ export const Members = ({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6">
+    <div className="flex flex-col  gap-6">
       {(members || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
