@@ -1,6 +1,5 @@
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
 const {
-  uniswapRouterAddresses,
   getNetwork,
   copyAndBuildContractsAtVersion,
   deployContract,
@@ -8,22 +7,23 @@ const {
 
 async function main() {
   // fetch chain info
-  const { unlockAddress, id: chainId } = await getNetwork()
+  const {
+    unlockAddress,
+    id: chainId,
+    uniswapV3: { universalRouterAddress },
+  } = await getNetwork()
 
-  const routers = Object.values(uniswapRouterAddresses[chainId])
+  const routers = [universalRouterAddress]
+
   console.log(`Deploying SwapPurchaser to ${chainId}
   - unlockAddress: ${unlockAddress}
   - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
   - routers: ${routers}`)
 
-  if (!routers.length) {
-    console.log('Uniswap undefined for this network')
+  if (!universalRouterAddress) {
+    console.log('`universalRouterAddress` undefined for this network')
     return
   }
-
-  console.log(
-    `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routers: ${routers.toString()}) `
-  )
 
   const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
     { contractName: 'UnlockSwapPurchaser', subfolder: 'utils' },
