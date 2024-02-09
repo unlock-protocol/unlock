@@ -17890,7 +17890,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@zeit/next-source-maps": "npm:0.0.3"
-    apexcharts: "npm:3.45.1"
+    apexcharts: "npm:3.45.2"
     autoprefixer: "npm:10.4.17"
     babel-loader: "npm:9.1.3"
     babel-plugin-require-context-hook: "npm:1.0.0"
@@ -19853,9 +19853,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:3.45.1":
-  version: 3.45.1
-  resolution: "apexcharts@npm:3.45.1"
+"apexcharts@npm:3.45.2":
+  version: 3.45.2
+  resolution: "apexcharts@npm:3.45.2"
   dependencies:
     "@yr/monotone-cubic-spline": "npm:^1.0.3"
     svg.draggable.js: "npm:^2.2.2"
@@ -19864,7 +19864,7 @@ __metadata:
     svg.pathmorphing.js: "npm:^0.1.3"
     svg.resize.js: "npm:^1.4.3"
     svg.select.js: "npm:^3.0.1"
-  checksum: 551452686a0e3a884201c46751975d5c96b44afc53f5fef0693fb92e38a26b2efd1550fc839e8b796a7d416651cda742223304a6609e45e672c72be611e7a776
+  checksum: a506604a1f61ecdaee5b75f3397e26b01365718cc14d97aa3222f94cae31cc25a9b9b548ae1576371357c32146dcc5dbe78ee2fce9eef320526f2a3868b9ce53
   languageName: node
   linkType: hard
 
