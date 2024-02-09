@@ -65,6 +65,7 @@ export const RegistrationCard = ({
                 Object.keys(checkoutConfig.config.locks)[0]
               ].network || checkoutConfig.config.network)!
             }
+            lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
             showContract
           />
         )
