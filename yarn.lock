@@ -8375,15 +8375,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/font@npm:14.1.0":
-  version: 14.1.0
-  resolution: "@next/font@npm:14.1.0"
-  peerDependencies:
-    next: "*"
-  checksum: 6d2b0fe7b68d02e59a17bd1600de79bb7b93842d6b974704d539d3b34ad515426120c148f87eb3cce3a986268bda4aabaedfc8e8829f0f1ed503115ab4704f68
-  languageName: node
-  linkType: hard
-
 "@next/swc-darwin-arm64@npm:13.4.19":
   version: 13.4.19
   resolution: "@next/swc-darwin-arm64@npm:13.4.19"
@@ -17753,7 +17744,6 @@ __metadata:
     "@headlessui/react": "npm:1.7.18"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.1.1"
-    "@next/font": "npm:14.1.0"
     "@radix-ui/react-avatar": "npm:1.0.4"
     "@rehooks/local-storage": "npm:2.4.5"
     "@sentry/nextjs": "npm:7.77.0"
