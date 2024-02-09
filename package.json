@@ -11,7 +11,7 @@
     "@babel/core": "7.21.5",
     "@typescript-eslint/eslint-plugin": "6.13.1",
     "@typescript-eslint/parser": "6.13.1",
-    "babel-plugin-polyfill-corejs2": "0.4.7",
+    "babel-plugin-polyfill-corejs2": "0.4.8",
     "typescript": "5.3.3"
   },
   "devDependencies": {
