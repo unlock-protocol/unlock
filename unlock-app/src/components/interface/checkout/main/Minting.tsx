@@ -78,7 +78,7 @@ export const MintingScreen = ({
         <AddToWalletDropdown
           network={network}
           lockAddress={lockAddress}
-          tokenId={tokenId}
+          tokenId={tokenId.toString()}
           tokenName={lockName}
         />
       )}
