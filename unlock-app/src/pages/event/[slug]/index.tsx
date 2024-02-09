@@ -12,7 +12,17 @@ export interface ServerSidePropsParams {
 }
 
 export const getServerSidePropsForEventPage = async (slug: string) => {
-  const { data: eventMetadata } = await storage.getEvent(slug)
+  const { data: eventMetadata } = await storage
+    .getEvent(slug)
+    .catch((error) => {
+      console.error(error)
+      return { data: null }
+    })
+  if (!eventMetadata) {
+    return {
+      notFound: true,
+    }
+  }
   return {
     props: {
       event: {
