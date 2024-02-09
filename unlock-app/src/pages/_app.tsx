@@ -13,6 +13,15 @@ import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 
+import { Inter } from 'next/font/google'
+
+const inter = Inter({
+  subsets: ['latin'],
+  style: ['normal'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+})
+
 const UnlockApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     if (!config.isServer) {
@@ -23,7 +32,7 @@ const UnlockApp = ({ Component, pageProps }: AppProps) => {
   }, [])
 
   return (
-    <>
+    <div className={inter.className}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
           <ConnectModalProvider>
@@ -37,7 +46,7 @@ const UnlockApp = ({ Component, pageProps }: AppProps) => {
         </SessionProvider>
       </QueryClientProvider>
       <SpeedInsights />
-    </>
+    </div>
   )
 }
 
