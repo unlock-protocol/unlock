@@ -58,15 +58,27 @@ export const ApplicantInfo = ({
       />
 
       <div className="flex md:flex-row flex-col gap-4 space-between w-full">
-        <Detail label="Full Name" valueSize="medium" className="grow w-24">
+        <Detail
+          label="Full Name"
+          valueSize="medium"
+          className="w-full overflow-auto min-w-24"
+        >
           {metadata.fullname}
         </Detail>
 
-        <Detail label="Email" valueSize="medium" className="grow w-32">
+        <Detail
+          label="Email"
+          valueSize="medium"
+          className="w-full overflow-auto min-w-24"
+        >
           {metadata.email}
         </Detail>
 
-        <Detail label="Wallet" valueSize="medium" className="grow">
+        <Detail
+          label="Wallet"
+          valueSize="medium"
+          className="w-full overflow-auto min-w-24"
+        >
           <div className="flex self-start gap-2">
             <div>{resolvedAddress}</div>
             <div className="mt-auto">

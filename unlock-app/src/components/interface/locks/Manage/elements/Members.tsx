@@ -9,7 +9,6 @@ import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const DefaultNoMemberNoFilter = () => {
@@ -67,11 +66,9 @@ export const Members = ({
   NoMemberWithFilter = DefaultNoMemberWithFilter,
   NoMemberNoFilter = DefaultNoMemberNoFilter,
 }: MembersProps) => {
-  const web3Service = useWeb3Service()
-
   const getMembers = async () => {
     const { query, filterKey, expiration, approval } = filters
-    const keys = await storage.keys(
+    const response = await storage.keysByPage(
       network,
       lockAddress,
       query,
@@ -81,7 +78,7 @@ export const Members = ({
       page - 1, // API starts at 0
       PAGE_SIZE
     )
-    return keys.data
+    return response.data
   }
 
   const getLockSettings = async () => {
@@ -89,16 +86,11 @@ export const Members = ({
   }
 
   const [
-    { isLoading: isChainLockLoading, data: chainLock },
-    { isLoading, data: members = [] },
+    { isLoading, data: { keys = [], meta = {} } = { keys: [] } },
     { isLoading: isLockLoading, data: lock, isError: hasLockLoadingError },
     { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
-      {
-        queryKey: ['getLock', lockAddress, network],
-        queryFn: () => web3Service.getLock(lockAddress, network),
-      },
       {
         queryFn: getMembers,
         queryKey: ['getMembers', page, lockAddress, network, filters],
@@ -133,13 +125,9 @@ export const Members = ({
   })
 
   const loading =
-    isChainLockLoading ||
-    isLockLoading ||
-    isLoading ||
-    loadingFilters ||
-    isLoadingSettings
+    isLockLoading || isLoading || loadingFilters || isLoadingSettings
 
-  const noItems = members?.length === 0 && !loading
+  const noItems = keys?.length === 0 && !loading
 
   const hasActiveFilter =
     filters?.approval !== 'minted' ||
@@ -169,11 +157,10 @@ export const Members = ({
     )
   }
 
-  const pageOffset = page - 1 ?? 0
   const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: PAGE_SIZE,
-    totalItems: chainLock?.outstandingKeys || 0,
+    page: meta.page || 0,
+    itemsPerPage: meta.byPage,
+    totalItems: meta.total,
   })
 
   if (noItems && !hasActiveFilter) {
@@ -194,8 +181,8 @@ export const Members = ({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6">
-      {(members || [])?.map((metadata: any) => {
+    <div className="flex flex-col  gap-6">
+      {(keys || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard
