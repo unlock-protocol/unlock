@@ -79,7 +79,6 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             <Placeholder.Line size="lg" />
           </Placeholder.Root>
         )}
-        {<p>Theer was an error</p>}
         {isFarCon && (
           <div className="">
             {disabled && (
