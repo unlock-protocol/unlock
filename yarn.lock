@@ -1846,6 +1846,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helper-define-polyfill-provider@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@babel/helper-define-polyfill-provider@npm:0.5.0"
+  dependencies:
+    "@babel/helper-compilation-targets": "npm:^7.22.6"
+    "@babel/helper-plugin-utils": "npm:^7.22.5"
+    debug: "npm:^4.1.1"
+    lodash.debounce: "npm:^4.0.8"
+    resolve: "npm:^1.14.2"
+  peerDependencies:
+    "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
+  checksum: f849e816ec4b182a3e8fa8e09ff016f88bb95259cd6b2190b815c48f83c3d3b68e973a8ec72acc5086bfe93705cbd46ec089c06476421d858597780e42235a03
+  languageName: node
+  linkType: hard
+
 "@babel/helper-environment-visitor@npm:^7.18.9, @babel/helper-environment-visitor@npm:^7.21.5, @babel/helper-environment-visitor@npm:^7.22.20":
   version: 7.22.20
   resolution: "@babel/helper-environment-visitor@npm:7.22.20"
@@ -10940,6 +10955,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@resvg/resvg-wasm@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@resvg/resvg-wasm@npm:2.4.0"
+  checksum: 82f0f734787f676259c78546f5c37a708b74061ee84e349746d4d89ce204423782a59125d48bc2a9cedcfbb8b1653d25113691c24adb06479288febd86afd8f5
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-commonjs@npm:24.0.0":
   version: 24.0.0
   resolution: "@rollup/plugin-commonjs@npm:24.0.0"
@@ -17696,7 +17718,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
     tailwind-merge: "npm:2.2.0"
-    tailwindcss: "npm:3.4.0"
+    tailwindcss: "npm:3.4.1"
     tsup: "npm:8.0.1"
     tsx: "npm:4.7.0"
     typescript: "npm:5.3.3"
@@ -17747,6 +17769,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@vercel/og": "npm:0.6.2"
     "@vercel/speed-insights": "npm:1.0.4"
     "@vitejs/plugin-react": "npm:4.0.4"
     "@vitest/coverage-c8": "npm:0.33.0"
@@ -17872,7 +17895,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@zeit/next-source-maps": "npm:0.0.3"
-    apexcharts: "npm:3.45.1"
+    apexcharts: "npm:3.45.2"
     autoprefixer: "npm:10.4.17"
     babel-loader: "npm:9.1.3"
     babel-plugin-require-context-hook: "npm:1.0.0"
@@ -17907,7 +17930,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:2.2.0"
-    tailwindcss: "npm:3.4.0"
+    tailwindcss: "npm:3.4.1"
     typescript: "npm:5.3.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:0.34.6"
@@ -17982,6 +18005,17 @@ __metadata:
   bin:
     nft: out/cli.js
   checksum: e22fc2ec8961b748cc9c23a24c2549760a7d09addcb48a60dcf5c8c43bc0004504964c10e92866245f8c5405e527c010f3d80f612d5c8415cb1ffc9773e76095
+  languageName: node
+  linkType: hard
+
+"@vercel/og@npm:0.6.2":
+  version: 0.6.2
+  resolution: "@vercel/og@npm:0.6.2"
+  dependencies:
+    "@resvg/resvg-wasm": "npm:2.4.0"
+    satori: "npm:0.10.9"
+    yoga-wasm-web: "npm:0.3.3"
+  checksum: 7844d692b7e6c78b99d3ce2baf8d7e95c0f3c9f5637dbd43862f01187b649a6bc4566e7c4cf0dcffab89f1b6651195df02cb5d83cd4692fb71b430aa2e77992b
   languageName: node
   linkType: hard
 
@@ -19824,9 +19858,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:3.45.1":
-  version: 3.45.1
-  resolution: "apexcharts@npm:3.45.1"
+"apexcharts@npm:3.45.2":
+  version: 3.45.2
+  resolution: "apexcharts@npm:3.45.2"
   dependencies:
     "@yr/monotone-cubic-spline": "npm:^1.0.3"
     svg.draggable.js: "npm:^2.2.2"
@@ -19835,7 +19869,7 @@ __metadata:
     svg.pathmorphing.js: "npm:^0.1.3"
     svg.resize.js: "npm:^1.4.3"
     svg.select.js: "npm:^3.0.1"
-  checksum: 551452686a0e3a884201c46751975d5c96b44afc53f5fef0693fb92e38a26b2efd1550fc839e8b796a7d416651cda742223304a6609e45e672c72be611e7a776
+  checksum: a506604a1f61ecdaee5b75f3397e26b01365718cc14d97aa3222f94cae31cc25a9b9b548ae1576371357c32146dcc5dbe78ee2fce9eef320526f2a3868b9ce53
   languageName: node
   linkType: hard
 
@@ -21052,16 +21086,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:0.4.7, babel-plugin-polyfill-corejs2@npm:^0.4.3, babel-plugin-polyfill-corejs2@npm:^0.4.4, babel-plugin-polyfill-corejs2@npm:^0.4.7":
-  version: 0.4.7
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.7"
+"babel-plugin-polyfill-corejs2@npm:0.4.8":
+  version: 0.4.8
+  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.8"
   dependencies:
     "@babel/compat-data": "npm:^7.22.6"
-    "@babel/helper-define-polyfill-provider": "npm:^0.4.4"
+    "@babel/helper-define-polyfill-provider": "npm:^0.5.0"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 3b61cdb275592f61b29d582ee8c738a13d9897c5dd201cddb0610b381f3ae139ebc988ac96f72978fc143c3d50c15d46618df865822e282c8e76c236e7378b63
+  checksum: 6b5a79bdc1c43edf857fd3a82966b3c7ff4a90eee00ca8d663e0a98304d6e285a05759d64a4dbc16e04a2a5ea1f248673d8bf789711be5e694e368f19884887c
   languageName: node
   linkType: hard
 
@@ -21075,6 +21109,19 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 78584305a614325894b47b88061621b442f3fd7ccf7c61c68e49522e9ec5da300f4e5f09d8738abf7f2e93e578560587bc0af19a3a0fd815cdd0fb16c23442ab
+  languageName: node
+  linkType: hard
+
+"babel-plugin-polyfill-corejs2@npm:^0.4.3, babel-plugin-polyfill-corejs2@npm:^0.4.4, babel-plugin-polyfill-corejs2@npm:^0.4.7":
+  version: 0.4.7
+  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.7"
+  dependencies:
+    "@babel/compat-data": "npm:^7.22.6"
+    "@babel/helper-define-polyfill-provider": "npm:^0.4.4"
+    semver: "npm:^6.3.1"
+  peerDependencies:
+    "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
+  checksum: 3b61cdb275592f61b29d582ee8c738a13d9897c5dd201cddb0610b381f3ae139ebc988ac96f72978fc143c3d50c15d46618df865822e282c8e76c236e7378b63
   languageName: node
   linkType: hard
 
@@ -47010,6 +47057,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"satori@npm:0.10.9":
+  version: 0.10.9
+  resolution: "satori@npm:0.10.9"
+  dependencies:
+    "@shuding/opentype.js": "npm:1.4.0-beta.0"
+    css-background-parser: "npm:^0.1.0"
+    css-box-shadow: "npm:1.0.0-3"
+    css-to-react-native: "npm:^3.0.0"
+    emoji-regex: "npm:^10.2.1"
+    escape-html: "npm:^1.0.3"
+    linebreak: "npm:^1.1.0"
+    parse-css-color: "npm:^0.2.1"
+    postcss-value-parser: "npm:^4.2.0"
+    yoga-wasm-web: "npm:^0.3.3"
+  checksum: 210b55f50f25cc7b00e670e2d20cdf805ebdd6be2e6bba09fd6244366abb9ebbd9456fd727ef2fd17c7bffee0563ac24373d7dbff90fa487f21e77d88b4c96d5
+  languageName: node
+  linkType: hard
+
 "satori@npm:0.9.1":
   version: 0.9.1
   resolution: "satori@npm:0.9.1"
@@ -49865,9 +49930,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.4.0":
-  version: 3.4.0
-  resolution: "tailwindcss@npm:3.4.0"
+"tailwindcss@npm:3.4.1":
+  version: 3.4.1
+  resolution: "tailwindcss@npm:3.4.1"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -49894,7 +49959,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: e69de4856308b3a6bcd084cc6745b6e3dcf6623553414f042d0365adceb70d79e41ec97a2a38c3aea0d5a875aa1eb4e84e04ad35ea1f0f7debcb7150779eae52
+  checksum: bf460657c674b1fb22ad7017ab5a9771c2884a3089d7767cee2395e8d9a54d74846170934ee00e285f39622c8e9e54d6f0e54bf38344efdc61544291c4d325c2
   languageName: node
   linkType: hard
 
@@ -52026,7 +52091,7 @@ __metadata:
     "@babel/core": "npm:7.21.5"
     "@typescript-eslint/eslint-plugin": "npm:6.13.1"
     "@typescript-eslint/parser": "npm:6.13.1"
-    babel-plugin-polyfill-corejs2: "npm:0.4.7"
+    babel-plugin-polyfill-corejs2: "npm:0.4.8"
     eslint: "npm:8.54.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-mocha: "npm:10.2.0"
@@ -56772,7 +56837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yoga-wasm-web@npm:^0.3.3":
+"yoga-wasm-web@npm:0.3.3, yoga-wasm-web@npm:^0.3.3":
   version: 0.3.3
   resolution: "yoga-wasm-web@npm:0.3.3"
   checksum: 7a60a7dbb6dc0383395f2b40c9fac6e4f7b322f934ebb07cefc92997baca597f3ef01f67fe37e5e61c128de917760aa7639980ed2f8d94c2dfbef83bd5f61e36

@@ -102,7 +102,7 @@ router.use('/v2/checkout', checkoutConfigRouter)
 router.use('/v2/stripe', stripeRouter)
 router.use('/v2/lock-settings', lockSettingsRouter)
 router.use('/v2/certificate', certificateRouter)
-router.use('/v2/og', ogRouter)
+router.use('/v2/og', ogRouter) // deprecated!
 router.use('/v2/events', eventsRouter)
 router.use('/v2/hooks', hooksRooter)
 router.use('/v2/email-subscriptions', emailSubscriptionRouter)

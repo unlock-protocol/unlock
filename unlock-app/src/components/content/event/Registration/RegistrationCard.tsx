@@ -62,7 +62,7 @@ export const RegistrationCard = ({
             (checkoutConfig.config.locks[m].order || 0)
           )
         })
-        .map((lockAddress: string) => {
+        ?.map((lockAddress: string) => {
           return (
             <LockPriceDetails
               key={lockAddress}
@@ -72,6 +72,7 @@ export const RegistrationCard = ({
                   Object.keys(checkoutConfig.config.locks)[0]
                 ].network || checkoutConfig.config.network)!
               }
+              lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
               showContract
             />
           )

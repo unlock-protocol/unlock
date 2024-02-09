@@ -118,7 +118,13 @@ export function secondsAsDays(seconds: number) {
  * @returns {string}
  */
 export function expirationAsDate(timestamp: any) {
-  if (!timestamp || timestamp === MAX_UINT || timestamp === -1) {
+  // 8640000000000000 is the largest possible timestamp in JS
+  if (
+    !timestamp ||
+    timestamp === MAX_UINT ||
+    timestamp === -1 ||
+    timestamp > 8640000000000000
+  ) {
     return 'Never'
   }
 
