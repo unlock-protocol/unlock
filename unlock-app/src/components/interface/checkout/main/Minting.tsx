@@ -21,7 +21,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
 import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { AddToWalletDropdown } from '../../keychain/AddToWalletDropdown'
+import { AddToWallet } from '../../keychain/AddToWallet'
 
 interface MintingScreenProps {
   lockName: string
@@ -74,14 +74,6 @@ export const MintingScreen = ({
 
   return (
     <div className="flex flex-col items-center justify-evenly h-full space-y-2">
-      {hasTokenId && isEthPassSupported(transactionNetwork) && (
-        <AddToWalletDropdown
-          network={network}
-          lockAddress={lockAddress}
-          tokenId={tokenId.toString()}
-          tokenName={lockName}
-        />
-      )}
       <TransactionAnimation status={mint?.status} />
       {mint?.transactionHash && (
         <a
@@ -114,6 +106,14 @@ export const MintingScreen = ({
           Open keychain
           <Icon icon={ExternalLinkIcon} size="small" />
         </Link>
+      )}
+      {hasTokenId && isEthPassSupported(transactionNetwork) && (
+        <AddToWallet
+          network={network}
+          lockAddress={lockAddress}
+          tokenId={tokenId.toString()}
+          tokenName={lockName}
+        />
       )}
     </div>
   )
