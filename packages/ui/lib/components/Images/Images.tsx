@@ -2,6 +2,7 @@ import Attention from './../../assets/attention.svg?react'
 import CoinbaseWallet from './../../assets/coinbaseWallet.svg?react'
 import Frame from './../../assets/frame.svg?react'
 import Metamask from './../../assets/metamask.svg?react'
+import Rainbow from './../../assets/rainbowWallet.svg?react'
 import Status from './../../assets/status.svg?react'
 import Unlock from './../../assets/unlock.svg?react'
 import UnlockMonogram from './../../assets/unlockMonogram.svg?react'
@@ -13,6 +14,7 @@ export const Images = {
   CoinbaseWallet,
   Frame,
   Metamask,
+  Rainbow,
   Status,
   Unlock,
   UnlockMonogram,
