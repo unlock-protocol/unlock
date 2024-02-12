@@ -49,7 +49,8 @@ const executeStudioDeployWithVersionIncrement = async (
   if (stderr) {
     if (stderr.includes('Version label already exists')) {
       console.log(
-        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch) + 1
+        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${
+          parseInt(patch) + 1
         }`
       )
       return executeStudioDeployWithVersionIncrement(
@@ -57,17 +58,6 @@ const executeStudioDeployWithVersionIncrement = async (
         `${major}.${minor}.${parseInt(patch) + 1}`
       )
     }
-  }
-}
-
-const checkHostedServiceAccessToken = () => {
-  if (!process.env.SUBGRAPH_DEPLOY_KEY) {
-    throw new Error(
-      `
-      Missing access token in SUBGRAPH_DEPLOY_KEY env.
-      You can get a token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol
-      `
-    )
   }
 }
 
@@ -96,20 +86,6 @@ const build = async (network) => {
 }
 
 /**
- * Deploys subgraph with hosted service
- * @param graphLabel
- * @param subgraphName
- * @param graphNode
- * @param ipfs
- * @returns
- */
-const deployHosted = async (subgraphName) => {
-  checkHostedServiceAccessToken()
-  const cmd = `graph auth --product=hosted-service ${process.env.SUBGRAPH_DEPLOY_KEY} && yarn deploy-hosted ${subgraphName} --access-token ${process.env.SUBGRAPH_DEPLOY_KEY}`
-  return executeCommand(cmd)
-}
-
-/**
  *
  * @notice This is a temporray workaround as Linea is not available in The Graph yet.
  * This requires the IP to be whitelisted, as specified in
@@ -133,7 +109,6 @@ const deployStudio = async (version, subgraphName) => {
   await executeCommand(
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
   )
-  const cmd = `yarn deploy-studio ${subgraphName} -l=${version}`
   return executeStudioDeployWithVersionIncrement(subgraphName, version)
 }
 
@@ -149,30 +124,22 @@ const deploy = async (network, studioName, graphLabel) => {
     throw new Error('Missing network name')
   }
 
-  if (!networks[network]?.subgraph?.endpointV2) {
+  if (!networks[network]?.subgraph?.endpoint) {
     throw new Error(`Missing subgraph configuration for ${network}`)
   }
 
-  const matchHosted = networks[network].subgraph.endpointV2.match(
-    'https://api.thegraph.com/subgraphs/name/(.*)'
-  )
-
-  const studioEndpoint = networks[network].subgraph.studioEndpoint
+  ;({ studioName } = networks[network].subgraph)
 
   if (studioName && graphLabel) {
     return deployStudio(graphLabel, studioName)
   }
 
-  if (studioEndpoint && graphLabel) {
-    return deployStudio(graphLabel, studioEndpoint)
+  if (studioName && graphLabel) {
+    return deployStudio(graphLabel, studioName)
   }
 
-  if (studioEndpoint) {
-    return deployStudio('v0.0.1', studioEndpoint)
-  }
-
-  if (matchHosted) {
-    return deployHosted(matchHosted[1])
+  if (studioName) {
+    return deployStudio('v0.0.1', studioName)
   }
 
   // TODO: remove that Linea special case once the chain is available on The Graph
@@ -181,7 +148,7 @@ const deploy = async (network, studioName, graphLabel) => {
   }
 
   throw new Error(
-    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2}) (${networks[network].subgraph.studioEndpoint})`
+    `Invalid subgraph configuration for ${network} (${studioName})`
   )
 }
 
@@ -196,19 +163,19 @@ const deployOnlyStudio = async (network, graphLabel) => {
     throw new Error('Missing network name')
   }
 
-  if (!networks[network]?.subgraph?.studioEndpoint) {
-    console.log(`Missing subgraph studioEndpoint for ${network}`)
+  if (!networks[network]?.subgraph?.studioName) {
+    console.log(`Missing subgraph studioName for ${network}`)
     return
   }
 
-  const studioEndpoint = networks[network].subgraph.studioEndpoint
+  const studioName = networks[network].subgraph.studioName
 
-  if (studioEndpoint && graphLabel) {
-    return deployStudio(graphLabel, studioEndpoint)
+  if (studioName && graphLabel) {
+    return deployStudio(graphLabel, studioName)
   }
 
   throw new Error(
-    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioEndpoint})`
+    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioName})`
   )
 }
 
@@ -273,7 +240,7 @@ require('yargs/yargs')(hideBin(process.argv))
     {},
     async ({ label }) => {
       let studioChoices = choices.filter(
-        (c) => networks[c].subgraph.studioEndpoint != null
+        (c) => networks[c].subgraph.studioName != null
       )
       // check config
       console.log(
