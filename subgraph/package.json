@@ -29,7 +29,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/",
     "generate-manifest": "mustache config/\"$@\" subgraph.template.yaml > subgraph.yaml && graph codegen",
     "deploy-hosted": "graph build && graph deploy --product hosted-service ",
-    "deploy-studio": "graph build && graph deploy --studio "
+    "deploy-studio": "graph build && graph deploy --product subgraph-studio "
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.62.0",
