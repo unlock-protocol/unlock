@@ -32,10 +32,8 @@ export const scroll: NetworkConfig = {
   startBlock: 2937779,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-scroll/version/latest',
-    endpointV2:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-scroll/version/latest',
-    studioEndpoint: 'unlock-protocol-scroll',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-scroll/version/latest',
+    studioName: 'unlock-protocol-scroll',
   },
   tokens: [
     {
