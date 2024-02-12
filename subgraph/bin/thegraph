@@ -72,17 +72,11 @@ const checkStudioAccessToken = () => {
   }
 }
 
-const codegen = async () => {
-  console.log('codegen...')
-  await executeCommand('yarn codegen')
-}
-
-// Creating subgraphs is only available from hosted-service dashboard
-// yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
+// Generate subgraph manifest
 const build = async (network) => {
-  await executeCommand(`yarn run prepare`)
   console.log(`Building subgraph for ${network} (${networkName(network)})`)
   await executeCommand(`yarn generate-manifest ${networkName(network)}.json`)
+  await executeCommand(`graph codegen`)
 }
 
 /**
@@ -152,33 +146,6 @@ const deploy = async (network, studioName, graphLabel) => {
   )
 }
 
-/**
- * deploy only studio command
- * @param network
- * @param graphLabel
- * @returns
- */
-const deployOnlyStudio = async (network, graphLabel) => {
-  if (!network) {
-    throw new Error('Missing network name')
-  }
-
-  if (!networks[network]?.subgraph?.studioName) {
-    console.log(`Missing subgraph studioName for ${network}`)
-    return
-  }
-
-  const studioName = networks[network].subgraph.studioName
-
-  if (studioName && graphLabel) {
-    return deployStudio(graphLabel, studioName)
-  }
-
-  throw new Error(
-    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioName})`
-  )
-}
-
 const choices = Object.keys(networks).filter(
   (d) => !['networks', 'default', 'localhost'].includes(d)
 )
@@ -192,7 +159,7 @@ require('yargs/yargs')(hideBin(process.argv))
   )
   .command(
     'build <network>',
-    'build with thegraph hosted service',
+    'build thegraph manifest and files',
     (yargs) =>
       yargs.positional('network', {
         describe: 'the network to deploy',
@@ -204,7 +171,7 @@ require('yargs/yargs')(hideBin(process.argv))
   )
   .command(
     'deploy <network>',
-    'deploy subgraph to thegraph hosted service',
+    'deploy subgraph to thegraph studio',
     (yargs) =>
       yargs.positional('network', {
         describe: 'the network to deploy',
@@ -232,29 +199,6 @@ require('yargs/yargs')(hideBin(process.argv))
       }
 
       console.log('Subgraph deployments done.')
-    }
-  )
-  .command(
-    'deploy-all-studio',
-    'Deploy subgraphs to studio on all decentralized networks',
-    {},
-    async ({ label }) => {
-      let studioChoices = choices.filter(
-        (c) => networks[c].subgraph.studioName != null
-      )
-      // check config
-      console.log(
-        `Deploying subgraphs to studio for:\n${studioChoices
-          .map((c) => ` - ${c}\n`)
-          .join('')}`
-      )
-      // build and deploy each network
-      for (const network of studioChoices) {
-        await build(network)
-        await deployOnlyStudio(network, label)
-      }
-
-      console.log('Subgraph studio deployments done.')
     }
   )
   .demandCommand()
