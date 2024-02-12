@@ -16,18 +16,6 @@ const executeCommand = async (command) => {
     const { stdout, stderr } = await exec(command)
     if (stderr) {
       console.log(`stderr: ${stderr}`)
-    }
-    console.log('stdout:', stdout)
-  } catch (e) {
-    // should contain code (exit code) and signal (that caused the termination).
-    console.error(`exec error: ${e}`)
-  }
-}
-
-const executeComanndErrorReturn = async (command) => {
-  try {
-    const { stdout, stderr } = await exec(command)
-    if (stderr) {
       return stderr
     }
     console.log('stdout:', stdout)
@@ -39,13 +27,13 @@ const executeComanndErrorReturn = async (command) => {
 
 const executeStudioDeployWithVersionIncrement = async (
   subgraphName,
-  version
+  version = 'v0.0.1' // TODO: fetch latest version
 ) => {
   let [major, minor, patch] = version.split('.')
-  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${parseInt(
+  const cmd = `graph deploy --product=subgraph-studio --version-label="${major}.${minor}.${parseInt(
     patch
-  )}`
-  let stderr = await executeComanndErrorReturn(cmd)
+  )}" ${subgraphName}`
+  let stderr = await executeCommand(cmd)
   if (stderr) {
     if (stderr.includes('Version label already exists')) {
       console.log(
@@ -80,25 +68,12 @@ const build = async (network) => {
 }
 
 /**
- *
- * @notice This is a temporray workaround as Linea is not available in The Graph yet.
- * This requires the IP to be whitelisted, as specified in
- * https://docs.linea.build/build-on-linea/tooling/data-indexers/thegraph#custom-subgraph-and-deployments
- * @param subgraphName Deploy on Linea graph hosted  service
- * @returns
- */
-const deployLinea = async (subgraphName) => {
-  const cmd = `graph deploy --node 'https://graph-deploy.linea.build' --ipfs 'https://graph-ipfs.linea.build' --version-label '0.0.1' ${subgraphName}`
-  return executeCommand(cmd)
-}
-
-/**
  * Deploys subgraph with studio
  * @param version
  * @param subgraphName
  * @returns
  */
-const deployStudio = async (version, subgraphName) => {
+const deployStudio = async (subgraphName, version) => {
   checkStudioAccessToken()
   await executeCommand(
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
@@ -122,28 +97,19 @@ const deploy = async (network, studioName, graphLabel) => {
     throw new Error(`Missing subgraph configuration for ${network}`)
   }
 
-  ;({ studioName } = networks[network].subgraph)
-
-  if (studioName && graphLabel) {
-    return deployStudio(graphLabel, studioName)
+  if (!studioName) {
+    ;({ studioName } = networks[network].subgraph)
   }
 
-  if (studioName && graphLabel) {
-    return deployStudio(graphLabel, studioName)
+  if (!studioName) {
+    throw new Error(
+      `Missing name for studio graph 
+(add it as 'studioName' to the '@unlock-protocol/networks' package 
+or use the '--studioName' flag)`
+    )
+  } else {
+    return deployStudio(studioName, graphLabel)
   }
-
-  if (studioName) {
-    return deployStudio('v0.0.1', studioName)
-  }
-
-  // TODO: remove that Linea special case once the chain is available on The Graph
-  if (networks[network]?.id === 59144) {
-    return deployLinea('unlock-protocol')
-  }
-
-  throw new Error(
-    `Invalid subgraph configuration for ${network} (${studioName})`
-  )
 }
 
 const choices = Object.keys(networks).filter(
@@ -151,12 +117,6 @@ const choices = Object.keys(networks).filter(
 )
 
 require('yargs/yargs')(hideBin(process.argv))
-  .command(
-    'codegen',
-    'Deploy subgraph on all networks',
-    {},
-    async () => await codegen()
-  )
   .command(
     'build <network>',
     'build thegraph manifest and files',
@@ -178,7 +138,7 @@ require('yargs/yargs')(hideBin(process.argv))
         choices,
       }),
     async ({ network, studioName, label }) => {
-      await build(network)
+      // await build(network)
       await deploy(network, studioName, label)
     }
   )
