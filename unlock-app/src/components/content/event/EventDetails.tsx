@@ -249,7 +249,9 @@ export const EventDetails = ({
 
         <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3  lg:px-12 lg:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="text-3xl font-bold md:text-7xl">{event.name}</h1>
+            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
+              {event.name}
+            </h1>
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
@@ -274,7 +276,6 @@ export const EventDetails = ({
                 {hasLocation && <EventLocation event={event} />}
               </div>
               <div className="mt-10">
-                <h2 className="text-xl font-bold">Event Information</h2>
                 {event.description && (
                   <div className="mt-4 markdown">
                     {/* eslint-disable-next-line react/no-children-prop */}
