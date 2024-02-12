@@ -14,37 +14,36 @@ const { networkName } = require('./networks')
 const executeCommand = async (command) => {
   try {
     const { stdout, stderr } = await exec(command)
+    console.log('stdout:', stdout)
     if (stderr) {
       console.log(`stderr: ${stderr}`)
       return stderr
     }
-    console.log('stdout:', stdout)
   } catch (e) {
     // should contain code (exit code) and signal (that caused the termination).
     console.error(`exec error: ${e}`)
   }
 }
 
-const executeStudioDeployWithVersionIncrement = async (
+const incrementVersion = (version) => {
+  const [major, minor, patch] = version.split('.')
+  return `v${major}.${minor}.${parseInt(patch + 1)}`
+}
+
+const executeStudioDeployWithVersionIncrement = async ({
   subgraphName,
-  version = 'v0.0.1' // TODO: fetch latest version
-) => {
-  let [major, minor, patch] = version.split('.')
-  const cmd = `graph deploy --product=subgraph-studio --version-label="${major}.${minor}.${parseInt(
-    patch
-  )}" ${subgraphName}`
+  version = 'v0.0.1', // TODO: fetch latest version
+  flags = '--product=subgraph-studio',
+}) => {
+  const cmd = `graph deploy --version-label="${version}" ${flags} ${subgraphName}`
   let stderr = await executeCommand(cmd)
   if (stderr) {
     if (stderr.includes('Version label already exists')) {
+      const nextVersion = incrementVersion(version)
       console.log(
-        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${
-          parseInt(patch) + 1
-        }`
+        `Studio version for ${subgraphName} exists - attempting deploy with version - ${nextVersion}`
       )
-      return executeStudioDeployWithVersionIncrement(
-        subgraphName,
-        `${major}.${minor}.${parseInt(patch) + 1}`
-      )
+      return executeStudioDeployWithVersionIncrement(subgraphName, nextVersion)
     }
   }
 }
@@ -78,7 +77,7 @@ const deployStudio = async (subgraphName, version) => {
   await executeCommand(
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
   )
-  return executeStudioDeployWithVersionIncrement(subgraphName, version)
+  return executeStudioDeployWithVersionIncrement({ subgraphName, version })
 }
 
 /**
@@ -93,8 +92,17 @@ const deploy = async (network, studioName, graphLabel) => {
     throw new Error('Missing network name')
   }
 
+  // TODO: remove from here once Linea is added on subgraph studio
+  if (network === 'linea') {
+    return await executeStudioDeployWithVersionIncrement({
+      subgraphName: 'linea-mainnet',
+      version: graphLabel,
+      flags: `--node 'https://graph-deploy.linea.build' --ipfs 'https://graph-ipfs.linea.build'`,
+    })
+  }
+
   if (!networks[network]?.subgraph?.endpoint) {
-    throw new Error(`Missing subgraph configuration for ${network}`)
+    // TODO: create subgraph automatically if necessary
   }
 
   if (!studioName) {
@@ -138,7 +146,7 @@ require('yargs/yargs')(hideBin(process.argv))
         choices,
       }),
     async ({ network, studioName, label }) => {
-      // await build(network)
+      await build(network)
       await deploy(network, studioName, label)
     }
   )
