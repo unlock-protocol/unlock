@@ -1,3 +1,4 @@
+import { TfiReload } from 'react-icons/tfi'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
@@ -29,7 +30,12 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
     network: lock!.network,
   })
 
-  const { data, isLoading: isLoadingGuildData } = useDataForGuild({
+  const {
+    data,
+    isLoading: isLoadingGuildData,
+    isFetching: isFetchingGuildData,
+    refetch,
+  } = useDataForGuild({
     lockAddress: lock!.address,
     network: lock!.network,
     recipients: users,
@@ -44,7 +50,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const isLoading = isLoadingGuild || isLoadingGuildData
+  const isLoading = isLoadingGuild || isLoadingGuildData || isFetchingGuildData
   const disabled = !data || data.some((d) => !d)
 
   const isFarCon =
@@ -64,7 +70,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
         {isLoading && !guild && (
           <Placeholder.Root
             data-testid="placeholder"
-            className="flex flex-col w-full gap-5 p-4"
+            className="flex flex-col w-full gap-5 "
           >
             <div className="flex flex-col gap-2">
               <Placeholder.Line />
@@ -74,27 +80,43 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
           </Placeholder.Root>
         )}
         {isFarCon && (
-          <>
+          <div className="">
             {disabled && (
-              <p>
-                ❌ Your wallet address is not on the list of approved attendees
-                for this{' '}
-                <Link
-                  className="underline text-brand-ui-primary"
-                  target="_blank"
-                  rel="noreferrer"
-                  href="https://farcon.xyz/"
+              <>
+                <p className="my-2">
+                  ❌ Your wallet address ({minifyAddress(users[0])}) is not on
+                  the list of approved attendees for this{' '}
+                  <Link
+                    className="underline text-brand-ui-primary"
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://farcon.xyz/"
+                  >
+                    FarCon
+                  </Link>{' '}
+                  class of tickets.
+                </p>
+                <p className="my-2">
+                  Please check that you have been approved and use the address
+                  linked to your Farcaster account.{' '}
+                </p>
+                <Button
+                  loading={isLoading}
+                  onClick={() => {
+                    console.log('refetch')
+                    refetch()
+                  }}
+                  iconLeft={<TfiReload />}
+                  size="tiny"
                 >
-                  FarCon
-                </Link>{' '}
-                class of tickets. Please check that you have been approved and
-                use the address linked to your Farcaster account.
-              </p>
+                  Check again
+                </Button>
+              </>
             )}
             {!disabled && !isLoading && (
               <p>✅ Your wallet is on the list of approved attendees!</p>
             )}
-          </>
+          </div>
         )}
         {guild && !isFarCon && (
           <>
@@ -150,23 +172,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             </ul>
             <>
               {disabled && users.length === 1 && (
-                <Button
-                  className="inline"
-                  as="a"
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`https://guild.xyz/${guild!.urlName}`}
-                  size="tiny"
-                >
-                  Join the Guild!
-                </Button>
-              )}
-            </>
-            <>
-              {disabled && users.length > 1 && (
-                <p>
-                  Some of the recipients that you have selected are not members
-                  of the Guild.{' '}
+                <div className="flex flex-row gap-2">
                   <Button
                     className="inline"
                     as="a"
@@ -177,6 +183,48 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   >
                     Join the Guild!
                   </Button>
+                  <Button
+                    loading={isLoading}
+                    onClick={() => {
+                      console.log('refetch')
+                      refetch()
+                    }}
+                    iconLeft={<TfiReload />}
+                    size="tiny"
+                  >
+                    Check again
+                  </Button>
+                </div>
+              )}
+            </>
+            <>
+              {disabled && users.length > 1 && (
+                <p>
+                  Some of the recipients that you have selected are not members
+                  of the Guild.{' '}
+                  <div className="flex flex-row gap-2">
+                    <Button
+                      className="inline"
+                      as="a"
+                      target="_blank"
+                      rel="noreferrer"
+                      href={`https://guild.xyz/${guild!.urlName}`}
+                      size="tiny"
+                    >
+                      Join the Guild!
+                    </Button>
+                    <Button
+                      loading={isLoading}
+                      onClick={() => {
+                        console.log('refetch')
+                        refetch()
+                      }}
+                      iconLeft={<TfiReload />}
+                      size="tiny"
+                    >
+                      Check again
+                    </Button>
+                  </div>
                 </p>
               )}
             </>

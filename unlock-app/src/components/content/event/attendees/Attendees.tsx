@@ -78,8 +78,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
         <AirdropKeysDrawer
           isOpen={airdropKeys}
           setIsOpen={setAirdropKeys}
-          lockAddress={lockAddress}
-          network={lockNetwork}
+          locks={checkoutConfig.config.locks}
         />
         <div className="min-h-screen bg-ui-secondary-200 pb-60 flex flex-col gap-4">
           <div className="flex flex-row-reverse gap-2">

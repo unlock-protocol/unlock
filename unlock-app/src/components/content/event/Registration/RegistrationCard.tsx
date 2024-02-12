@@ -55,20 +55,28 @@ export const RegistrationCard = ({
   // Multiple locks!
   return (
     <Card className="grid gap-4 mt-10 lg:mt-0">
-      {Object.keys(checkoutConfig.config.locks)?.map((lockAddress: string) => {
-        return (
-          <LockPriceDetails
-            key={lockAddress}
-            lockAddress={lockAddress}
-            network={
-              (checkoutConfig.config.locks[
-                Object.keys(checkoutConfig.config.locks)[0]
-              ].network || checkoutConfig.config.network)!
-            }
-            showContract
-          />
-        )
-      })}
+      {Object.keys(checkoutConfig.config.locks)
+        ?.sort((l, m) => {
+          return (
+            (checkoutConfig.config.locks[l].order || 0) -
+            (checkoutConfig.config.locks[m].order || 0)
+          )
+        })
+        ?.map((lockAddress: string) => {
+          return (
+            <LockPriceDetails
+              key={lockAddress}
+              lockAddress={lockAddress}
+              network={
+                (checkoutConfig.config.locks[
+                  Object.keys(checkoutConfig.config.locks)[0]
+                ].network || checkoutConfig.config.network)!
+              }
+              lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
+              showContract
+            />
+          )
+        })}
       <EmbeddedCheckout checkoutConfig={checkoutConfig} refresh={refresh} />
     </Card>
   )

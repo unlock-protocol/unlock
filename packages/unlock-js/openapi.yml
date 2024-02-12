@@ -1314,6 +1314,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  # deprecated, use keys-by-page
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       operationId: keys
@@ -1367,6 +1368,79 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/KeyMetadata'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/{network}/locks/{lockAddress}/keys-by-page:
+    get:
+      operationId: keysByPage
+      security:
+        - User: []
+        - Application: []
+
+      description: List of lock keys by network with additional metadata if the caller is the lockManager
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: Query you want to search for.
+        - in: query
+          name: filterKey
+          required: true
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page number when paginating
+        - in: query
+          name: max
+          schema:
+            type: integer
+          description: Maximum number of items to get by page
+      responses:
+        200:
+          description: List of keys matching the query
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      byPage:
+                        type: integer
+                  keys:
+                    nullable: false
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KeyMetadata'
 
         404:
           $ref: '#/components/responses/404.NotFound'

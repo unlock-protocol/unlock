@@ -2108,22 +2108,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-define-polyfill-provider@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@babel/helper-define-polyfill-provider@npm:0.4.0"
-  dependencies:
-    "@babel/helper-compilation-targets": "npm:^7.17.7"
-    "@babel/helper-plugin-utils": "npm:^7.16.7"
-    debug: "npm:^4.1.1"
-    lodash.debounce: "npm:^4.0.8"
-    resolve: "npm:^1.14.2"
-    semver: "npm:^6.1.2"
-  peerDependencies:
-    "@babel/core": ^7.4.0-0
-  checksum: 9aae8e941fa64ac3a39d9fae78de679c2abe38d9660377e7200bfc4c19c5f8a763407d7e16820915700f8694d2f1b7e1ff20b016a1c3bb06fc9b1e5047ba4664
-  languageName: node
-  linkType: hard
-
 "@babel/helper-define-polyfill-provider@npm:^0.4.2":
   version: 0.4.2
   resolution: "@babel/helper-define-polyfill-provider@npm:0.4.2"
@@ -2166,6 +2150,21 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
   checksum: 16c312e40ecf2ead81f3ab7275387079071012d2363022c04cf16d56fe0d781185f3a517b928f4556c716ae45e0567b817b636d5cd2fee8fb2ce2b18a04c5bcd
+  languageName: node
+  linkType: hard
+
+"@babel/helper-define-polyfill-provider@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "@babel/helper-define-polyfill-provider@npm:0.5.0"
+  dependencies:
+    "@babel/helper-compilation-targets": "npm:^7.22.6"
+    "@babel/helper-plugin-utils": "npm:^7.22.5"
+    debug: "npm:^4.1.1"
+    lodash.debounce: "npm:^4.0.8"
+    resolve: "npm:^1.14.2"
+  peerDependencies:
+    "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
+  checksum: f849e816ec4b182a3e8fa8e09ff016f88bb95259cd6b2190b815c48f83c3d3b68e973a8ec72acc5086bfe93705cbd46ec089c06476421d858597780e42235a03
   languageName: node
   linkType: hard
 
@@ -13131,6 +13130,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@resvg/resvg-wasm@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@resvg/resvg-wasm@npm:2.4.0"
+  checksum: 82f0f734787f676259c78546f5c37a708b74061ee84e349746d4d89ce204423782a59125d48bc2a9cedcfbb8b1653d25113691c24adb06479288febd86afd8f5
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-commonjs@npm:24.0.0":
   version: 24.0.0
   resolution: "@rollup/plugin-commonjs@npm:24.0.0"
@@ -19652,7 +19658,7 @@ __metadata:
     typescript: "npm:5.3.3"
     vite: "npm:5.0.12"
     vite-plugin-svgr: "npm:4.2.0"
-    vite-tsconfig-paths: "npm:4.2.3"
+    vite-tsconfig-paths: "npm:4.3.1"
   peerDependencies:
     react: 18.2.0
     react-dom: 18.2.0
@@ -19866,7 +19872,7 @@ __metadata:
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.3"
     random-words: "npm:2.0.0"
-    rate-limiter-flexible: "npm:4.0.0"
+    rate-limiter-flexible: "npm:4.0.1"
     react: "npm:18.2.0"
     remark-html: "npm:15.0.2"
     remark-parse: "npm:10.0.2"
@@ -20070,7 +20076,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
     tailwind-merge: "npm:2.2.0"
-    tailwindcss: "npm:3.4.0"
+    tailwindcss: "npm:3.4.1"
     tsup: "npm:8.0.1"
     tsx: "npm:4.7.0"
     typescript: "npm:5.3.3"
@@ -20121,6 +20127,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@vercel/og": "npm:0.6.2"
     "@vercel/speed-insights": "npm:1.0.4"
     "@vitejs/plugin-react": "npm:4.0.4"
     "@vitest/coverage-c8": "npm:0.33.0"
@@ -20129,7 +20136,7 @@ __metadata:
     "@walletconnect/modal": "npm:2.6.2"
     "@xstate/react": "npm:3.2.2"
     autoprefixer: "npm:10.4.17"
-    axios: "npm:1.6.3"
+    axios: "npm:1.6.7"
     blockies-react-svg: "npm:0.0.13"
     calendar-link: "npm:2.5.1"
     csv: "npm:6.3.6"
@@ -20246,7 +20253,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@zeit/next-source-maps": "npm:0.0.3"
-    apexcharts: "npm:3.45.1"
+    apexcharts: "npm:3.45.2"
     autoprefixer: "npm:10.4.17"
     babel-loader: "npm:9.1.3"
     babel-plugin-require-context-hook: "npm:1.0.0"
@@ -20281,7 +20288,7 @@ __metadata:
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:2.2.0"
-    tailwindcss: "npm:3.4.0"
+    tailwindcss: "npm:3.4.1"
     typescript: "npm:5.3.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:0.34.6"
@@ -20356,6 +20363,17 @@ __metadata:
   bin:
     nft: out/cli.js
   checksum: e22fc2ec8961b748cc9c23a24c2549760a7d09addcb48a60dcf5c8c43bc0004504964c10e92866245f8c5405e527c010f3d80f612d5c8415cb1ffc9773e76095
+  languageName: node
+  linkType: hard
+
+"@vercel/og@npm:0.6.2":
+  version: 0.6.2
+  resolution: "@vercel/og@npm:0.6.2"
+  dependencies:
+    "@resvg/resvg-wasm": "npm:2.4.0"
+    satori: "npm:0.10.9"
+    yoga-wasm-web: "npm:0.3.3"
+  checksum: 7844d692b7e6c78b99d3ce2baf8d7e95c0f3c9f5637dbd43862f01187b649a6bc4566e7c4cf0dcffab89f1b6651195df02cb5d83cd4692fb71b430aa2e77992b
   languageName: node
   linkType: hard
 
@@ -22259,9 +22277,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apexcharts@npm:3.45.1":
-  version: 3.45.1
-  resolution: "apexcharts@npm:3.45.1"
+"apexcharts@npm:3.45.2":
+  version: 3.45.2
+  resolution: "apexcharts@npm:3.45.2"
   dependencies:
     "@yr/monotone-cubic-spline": "npm:^1.0.3"
     svg.draggable.js: "npm:^2.2.2"
@@ -22270,7 +22288,7 @@ __metadata:
     svg.pathmorphing.js: "npm:^0.1.3"
     svg.resize.js: "npm:^1.4.3"
     svg.select.js: "npm:^3.0.1"
-  checksum: 551452686a0e3a884201c46751975d5c96b44afc53f5fef0693fb92e38a26b2efd1550fc839e8b796a7d416651cda742223304a6609e45e672c72be611e7a776
+  checksum: a506604a1f61ecdaee5b75f3397e26b01365718cc14d97aa3222f94cae31cc25a9b9b548ae1576371357c32146dcc5dbe78ee2fce9eef320526f2a3868b9ce53
   languageName: node
   linkType: hard
 
@@ -23157,14 +23175,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.6.3":
-  version: 1.6.3
-  resolution: "axios@npm:1.6.3"
+"axios@npm:1.6.7":
+  version: 1.6.7
+  resolution: "axios@npm:1.6.7"
   dependencies:
-    follow-redirects: "npm:^1.15.0"
+    follow-redirects: "npm:^1.15.4"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 78e72ec40ee49b85f076758e65d04dd966361cbf82f3789e53c5a1b6814ef57825098f8a997ec1846cf004fb7407655c7b96c496d8133d88ca0f73a98a9c452b
+  checksum: a1932b089ece759cd261f175d9ebf4d41c8994cf0c0767cda86055c7a19bcfdade8ae3464bf4cec4c8b142f4a657dc664fb77a41855e8376cf38b86d7a86518f
   languageName: node
   linkType: hard
 
@@ -23509,16 +23527,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:0.4.7, babel-plugin-polyfill-corejs2@npm:^0.4.7":
-  version: 0.4.7
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.7"
+"babel-plugin-polyfill-corejs2@npm:0.4.8":
+  version: 0.4.8
+  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.8"
   dependencies:
     "@babel/compat-data": "npm:^7.22.6"
-    "@babel/helper-define-polyfill-provider": "npm:^0.4.4"
+    "@babel/helper-define-polyfill-provider": "npm:^0.5.0"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
-  checksum: 3b61cdb275592f61b29d582ee8c738a13d9897c5dd201cddb0610b381f3ae139ebc988ac96f72978fc143c3d50c15d46618df865822e282c8e76c236e7378b63
+  checksum: 6b5a79bdc1c43edf857fd3a82966b3c7ff4a90eee00ca8d663e0a98304d6e285a05759d64a4dbc16e04a2a5ea1f248673d8bf789711be5e694e368f19884887c
   languageName: node
   linkType: hard
 
@@ -23535,16 +23553,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-polyfill-corejs2@npm:^0.4.3":
-  version: 0.4.3
-  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.3"
+"babel-plugin-polyfill-corejs2@npm:^0.4.3, babel-plugin-polyfill-corejs2@npm:^0.4.7":
+  version: 0.4.7
+  resolution: "babel-plugin-polyfill-corejs2@npm:0.4.7"
   dependencies:
-    "@babel/compat-data": "npm:^7.17.7"
-    "@babel/helper-define-polyfill-provider": "npm:^0.4.0"
-    semver: "npm:^6.1.1"
+    "@babel/compat-data": "npm:^7.22.6"
+    "@babel/helper-define-polyfill-provider": "npm:^0.4.4"
+    semver: "npm:^6.3.1"
   peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: d9004d1bf53804a4c1c226f8d8c711c650ee22cae0aca274374bc1ff025eb543b5972b3c7af85c68e6d22dd83b02e76d56bf63e7f212bb0bcbc46fce723b5e73
+    "@babel/core": ^7.4.0 || ^8.0.0-0 <8.0.0
+  checksum: 3b61cdb275592f61b29d582ee8c738a13d9897c5dd201cddb0610b381f3ae139ebc988ac96f72978fc143c3d50c15d46618df865822e282c8e76c236e7378b63
   languageName: node
   linkType: hard
 
@@ -47931,10 +47949,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:4.0.0":
-  version: 4.0.0
-  resolution: "rate-limiter-flexible@npm:4.0.0"
-  checksum: f20ac7d4414cf13220c59376ce05ca05c578d2ce37de7736f6cbb132243867b08f7e09809bce28302732998c2de01a83067e214646c8bcc2185776d98c167bb2
+"rate-limiter-flexible@npm:4.0.1":
+  version: 4.0.1
+  resolution: "rate-limiter-flexible@npm:4.0.1"
+  checksum: c86b9b188396af3e030eb6f0ab95483057cbdf2480612a95a4fa660401b6daea2960b3155c7cd2f77e3ded3bc97163bb7513ea9ec21bfac7c128dfb5221ff800
   languageName: node
   linkType: hard
 
@@ -50353,6 +50371,24 @@ __metadata:
     srcset: "npm:^1.0.0"
     xtend: "npm:^4.0.1"
   checksum: a7d06acb87ad326fa8a3749b6300ae32ef8effa1c0ce13b736a9063897c7ff2b809ba5cc2b57381099621e38073042c2744012c56bf1e4f2cb3ace65d5510dd8
+  languageName: node
+  linkType: hard
+
+"satori@npm:0.10.9":
+  version: 0.10.9
+  resolution: "satori@npm:0.10.9"
+  dependencies:
+    "@shuding/opentype.js": "npm:1.4.0-beta.0"
+    css-background-parser: "npm:^0.1.0"
+    css-box-shadow: "npm:1.0.0-3"
+    css-to-react-native: "npm:^3.0.0"
+    emoji-regex: "npm:^10.2.1"
+    escape-html: "npm:^1.0.3"
+    linebreak: "npm:^1.1.0"
+    parse-css-color: "npm:^0.2.1"
+    postcss-value-parser: "npm:^4.2.0"
+    yoga-wasm-web: "npm:^0.3.3"
+  checksum: 210b55f50f25cc7b00e670e2d20cdf805ebdd6be2e6bba09fd6244366abb9ebbd9456fd727ef2fd17c7bffee0563ac24373d7dbff90fa487f21e77d88b4c96d5
   languageName: node
   linkType: hard
 
@@ -53252,9 +53288,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.4.0":
-  version: 3.4.0
-  resolution: "tailwindcss@npm:3.4.0"
+"tailwindcss@npm:3.4.1":
+  version: 3.4.1
+  resolution: "tailwindcss@npm:3.4.1"
   dependencies:
     "@alloc/quick-lru": "npm:^5.2.0"
     arg: "npm:^5.0.2"
@@ -53281,7 +53317,7 @@ __metadata:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: e69de4856308b3a6bcd084cc6745b6e3dcf6623553414f042d0365adceb70d79e41ec97a2a38c3aea0d5a875aa1eb4e84e04ad35ea1f0f7debcb7150779eae52
+  checksum: bf460657c674b1fb22ad7017ab5a9771c2884a3089d7767cee2395e8d9a54d74846170934ee00e285f39622c8e9e54d6f0e54bf38344efdc61544291c4d325c2
   languageName: node
   linkType: hard
 
@@ -54354,20 +54390,6 @@ __metadata:
   version: 9.6.0
   resolution: "ts-toolbelt@npm:9.6.0"
   checksum: 2c2dea2631dbd7372a79cccc6d09a377a6ca2f319f767fd239d2e312cd1d9165a90f8c1777a047227bfdcda6aeba3addbadce88fdfc7f43caf4534d385a43c82
-  languageName: node
-  linkType: hard
-
-"tsconfck@npm:^2.1.0":
-  version: 2.1.2
-  resolution: "tsconfck@npm:2.1.2"
-  peerDependencies:
-    typescript: ^4.3.5 || ^5.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  bin:
-    tsconfck: bin/tsconfck.js
-  checksum: 61df3b03b334a25eabb0a52e67a0c8d85770c631f2739db7703af8fdd102a2ebd598f1c851cc5fc6d6a59f2497a26c845be71c934ea16d838a3ff95a885034fb
   languageName: node
   linkType: hard
 
@@ -55499,7 +55521,7 @@ __metadata:
     "@babel/core": "npm:7.21.5"
     "@typescript-eslint/eslint-plugin": "npm:6.13.1"
     "@typescript-eslint/parser": "npm:6.13.1"
-    babel-plugin-polyfill-corejs2: "npm:0.4.7"
+    babel-plugin-polyfill-corejs2: "npm:0.4.8"
     eslint: "npm:8.54.0"
     eslint-plugin-evm-address-to-checksummed: "npm:0.0.6"
     eslint-plugin-mocha: "npm:10.2.0"
@@ -56373,22 +56395,6 @@ __metadata:
   peerDependencies:
     vite: ^2.6.0 || 3 || 4 || 5
   checksum: c860e65836509a144cf838eabcf420d848f35aea4c83044e75c9f9d00947f878217470536ea4098dc4e78510cb5fb683ec564f33cddde4dab0459e3a87f5ff79
-  languageName: node
-  linkType: hard
-
-"vite-tsconfig-paths@npm:4.2.3":
-  version: 4.2.3
-  resolution: "vite-tsconfig-paths@npm:4.2.3"
-  dependencies:
-    debug: "npm:^4.1.1"
-    globrex: "npm:^0.1.2"
-    tsconfck: "npm:^2.1.0"
-  peerDependencies:
-    vite: "*"
-  peerDependenciesMeta:
-    vite:
-      optional: true
-  checksum: ba6abe5d18fc1c1e494e1f1d8a7db56445c2a40e15aadb5d47a9c66cc5372d6f69b94ff0b1e47b67659d6ecaeddebab0a9d11e40b1c3c36c0115800736a6c760
   languageName: node
   linkType: hard
 
@@ -60307,7 +60313,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yoga-wasm-web@npm:^0.3.3":
+"yoga-wasm-web@npm:0.3.3, yoga-wasm-web@npm:^0.3.3":
   version: 0.3.3
   resolution: "yoga-wasm-web@npm:0.3.3"
   checksum: 7a60a7dbb6dc0383395f2b40c9fac6e4f7b322f934ebb07cefc92997baca597f3ef01f67fe37e5e61c128de917760aa7639980ed2f8d94c2dfbef83bd5f61e36
