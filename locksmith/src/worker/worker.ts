@@ -1,5 +1,5 @@
 import { allJobs } from './tasks/allJobs'
-import { run } from 'graphile-worker'
+import { makeWorkerUtils, run } from 'graphile-worker'
 import config from '../config/config'
 import {
   addRenewalJobs,
@@ -48,12 +48,22 @@ const cronTabTesting = `
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
 export async function startWorker() {
+  const pgPool = new Pool({
+    connectionString: config.databaseUrl,
+    // @ts-expect-error - type is not defined properly
+    ssl: config.database?.dialectOptions?.ssl,
+  })
+
+  // Create worker utils for scheduling tasks
+  const workerUtils = await makeWorkerUtils({
+    pgPool,
+  })
+
+  // Jobs to start when worker starts!
+  await workerUtils.addJob('checkBalances', {})
+
   const runner = await run({
-    pgPool: new Pool({
-      connectionString: config.databaseUrl,
-      // @ts-expect-error - type is not defined properly
-      ssl: config.database?.dialectOptions?.ssl,
-    }),
+    pgPool,
     crontab,
     concurrency: 1, // very low concurrency to check if this could be causing issues with email sending
     noHandleSignals: false,
