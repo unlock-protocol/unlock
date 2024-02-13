@@ -1,5 +1,5 @@
 'use strict'
-const table = 'Verifier'
+const table = 'Verifiers'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
