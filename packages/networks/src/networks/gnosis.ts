@@ -63,7 +63,7 @@ export const gnosis: NetworkConfig = {
     coingecko: 'xdai',
     decimals: 18,
     name: 'xDAI',
-    symbol: 'DAI',
+    symbol: 'xDAI',
   },
   previousDeploys: [
     {
