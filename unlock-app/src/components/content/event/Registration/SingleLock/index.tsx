@@ -91,6 +91,7 @@ export const RegistrationCardSingleLock = ({
       {!showApplication && (
         <>
           <LockPriceInternals
+            lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
             lock={lock}
             network={network}
             symbol={symbol}

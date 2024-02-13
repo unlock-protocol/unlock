@@ -38,9 +38,9 @@ export const checkBalances: Task = async () => {
           }
           const balanceInUSD = usdPricing.price! * parseFloat(balance)
           if (balanceInUSD < MIN_BALANCE) {
-            Sentry.captureMessage(
-              `Insufficient balance (${balanceInUSD}) for ${address} for network ${network.id} (${network.name})`
-            )
+            const message = `Insufficient balance (${balanceInUSD}) for ${address} for network ${network.id} (${network.name})`
+            logger.warn(message)
+            Sentry.captureMessage(message, 'warning')
           }
         })
       } catch (error) {
