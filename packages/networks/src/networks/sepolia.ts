@@ -95,6 +95,13 @@ export const sepolia: NetworkConfig = {
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
+    {
+      address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      decimals: 6,
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0xB7f907f7A9eBC822a80BD25E224be42Ce0A698A0',
