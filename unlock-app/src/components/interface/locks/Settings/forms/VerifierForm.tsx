@@ -112,7 +112,13 @@ export const VerifierForm = ({
     return response.data.results || []
   }
 
-  const addVerifier = async (address: string, name: string) => {
+  const addVerifier = async ({
+    address,
+    name,
+  }: {
+    address: string
+    name?: string
+  }) => {
     const resolvedAddress = await getAddressForName(address)
     let response
     if (name) {
@@ -190,8 +196,8 @@ export const VerifierForm = ({
     }
   )
 
-  const onAddVerifier = async ({ verifier }: VerifierFormDataProps) => {
-    await addVerifierMutation.mutateAsync(verifier)
+  const onAddVerifier = async ({ verifier, name }: VerifierFormDataProps) => {
+    await addVerifierMutation.mutateAsync({ address: verifier, name })
   }
 
   const onDeleteVerifier = async (address: string) => {
