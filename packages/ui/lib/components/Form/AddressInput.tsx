@@ -63,7 +63,6 @@ export const WrappedAddressInput = ({
   const [errorMessage, setErrorMessage] = useState<any>('')
   const [success, setSuccess] = useState('')
   const [address, setAddress] = useState<string>(value as string)
-
   const onReset = () => {
     setErrorMessage('')
     setSuccess('')

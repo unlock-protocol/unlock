@@ -55,15 +55,31 @@ export const AttendeeInfo = ({
           {token}
         </Detail>
 
-        <Detail label="Full Name" valueSize="medium" className="grow w-24">
-          {metadata.fullname}
-        </Detail>
+        {metadata.fullname && (
+          <Detail
+            label="Full Name"
+            valueSize="medium"
+            className="w-full overflow-auto min-w-24"
+          >
+            {metadata.fullname}
+          </Detail>
+        )}
 
-        <Detail label="Email" valueSize="medium" className="grow w-32">
-          {metadata.email}
-        </Detail>
+        {metadata.email && (
+          <Detail
+            label="Email"
+            valueSize="medium"
+            className="w-full overflow-auto min-w-24"
+          >
+            {metadata.email}
+          </Detail>
+        )}
 
-        <Detail label="Wallet" valueSize="medium" className="grow">
+        <Detail
+          label="Wallet"
+          valueSize="medium"
+          className="w-full overflow-auto min-w-24"
+        >
           <div className="flex self-start gap-2">
             <div>{resolvedAddress}</div>
             <div className="mt-auto">
@@ -93,19 +109,7 @@ export const AttendeeInfo = ({
               >
                 Cancel
               </Button>
-            )}
-            {canExtendKey && (
-              <Button
-                variant="outlined-primary"
-                size="small"
-                onClick={() => setExtendKeysOpen(true)}
-                className="mt-1"
-              >
-                Extend
-              </Button>
-            )}
-          </div>
-        )} */}
+            )}  */}
       </div>
     </>
   )

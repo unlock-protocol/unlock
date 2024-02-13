@@ -21,7 +21,7 @@ The $4 million round was led by VC firms including [Betaworks](https://www.betaw
 
 > Monetization for the creator economy continues to be a huge issue and opportunity, but creators mostly have to lock themselves into platforms like Patreon to realize their value. A better method would be to have a membership system for creators which sat across several platforms.
 
-Stay tuned to this blog or [join the community in our Discord](https://discord.com/invite/Ah6ZEJyTDp) to participate in building or supporting the protocol. We have some big announcements coming very soon — so don't wait to join us!
+Stay tuned to this blog or [join the community in our Discord](https://discord.unlock-protocol.com/) to participate in building or supporting the protocol. We have some big announcements coming very soon — so don't wait to join us!
 
 Also, [we are hiring](https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c), please, make sure you check our jobs page!
 

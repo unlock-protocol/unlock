@@ -97,7 +97,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
         <div className="flex gap-4 flex-col md:flex-row">
           <div className="order-2 md:order-1">
             <ImageUpload
-              description="This illustration will be used for the NFT tickets. Use 512 by 512 pixels for best results."
+              description="This illustration will be used for the event page. Use 512 by 512 pixels for best results."
               isUploading={isUploading}
               preview={getValues('image') || event.image}
               onChange={async (fileOrFileUrl: any) => {
