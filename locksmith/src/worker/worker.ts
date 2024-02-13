@@ -14,6 +14,7 @@ import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmailJob } from './tasks/sendEmail'
 import { sendToAllJob } from './tasks/sendToAll'
 import { monitor } from './tasks/monitor'
+import { checkBalances } from './tasks/checkBalances'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
@@ -29,6 +30,7 @@ const crontabProduction = `
 */5 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
 0 0 * * * notifyExpiredKeysForNetwork
+0 /6 * * * * checkBalances
 `
 
 const cronTabTesting = `
@@ -57,6 +59,7 @@ export async function startWorker() {
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
+      checkBalances,
       monitor,
       allJobs,
       notifyExpiredKeysForNetwork,
