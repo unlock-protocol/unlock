@@ -1,7 +1,6 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect } from 'react'
@@ -13,17 +12,16 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
-import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
-import { isEthPassSupported, Platform } from '~/services/ethpass'
-import { isAndroid, isIOS } from 'react-device-detect'
+import { isEthPassSupported } from '~/services/ethpass'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
 import { sleeper } from '~/utils/promise'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { AddToWallet } from '../../keychain/AddToWallet'
 
 interface MintingScreenProps {
   lockName: string
@@ -57,6 +55,8 @@ export const MintingScreen = ({
   const web3Service = useWeb3Service()
   const config = useConfig()
   const transactionNetwork = mint.network || network
+
+  // TODO: This returns the Key with the lowest index for given lock dddres from the onwer causing weird behaviour when buying 2-nd... keys
   const { data: tokenId } = useQuery(
     ['userTokenId', mint, owner, lockAddress, transactionNetwork, web3Service],
     async () => {
@@ -73,11 +73,29 @@ export const MintingScreen = ({
   const hasTokenId = !!tokenId
 
   return (
-    <div className="flex flex-col items-center justify-center h-full space-y-2">
+    <div className="flex flex-col items-center justify-evenly h-full space-y-2">
       <TransactionAnimation status={mint?.status} />
-      <p className="text-lg font-bold text-brand-ui-primary">
-        {states[mint?.status]?.text}
-      </p>
+      {mint?.transactionHash && (
+        <a
+          href={config.networks[transactionNetwork].explorer.urls.transaction(
+            mint.transactionHash
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+        >
+          <p className="text-lg font-bold text-brand-ui-primary inline-flex items-center gap-2">
+            {/* 
+            This is not ideal realization, at least it works
+            mint.status === 'FINISHED' before the transaction is confirmed on chan
+             */}
+            {mint?.status === 'FINISHED' && !hasTokenId // TODO: Fix mint status
+              ? 'Minting NFT...'
+              : states[mint?.status]?.text}
+            <Icon icon={ExternalLinkIcon} size="small" />
+          </p>
+        </a>
+      )}
       {mint?.status === 'FINISHED' && hasTokenId && (
         <Link
           href="/keychain"
@@ -89,79 +107,13 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </Link>
       )}
-      {mint?.transactionHash && (
-        <a
-          href={config.networks[transactionNetwork].explorer.urls.transaction(
-            mint.transactionHash
-          )}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-        >
-          See in the block explorer
-          <Icon icon={ExternalLinkIcon} size="small" />
-        </a>
-      )}
       {hasTokenId && isEthPassSupported(transactionNetwork) && (
-        <ul className="grid grid-cols-2 gap-3 pt-4">
-          {!isIOS && (
-            <li className="">
-              <AddToDeviceWallet
-                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                iconLeft={
-                  <Image
-                    width="20"
-                    height="20"
-                    alt="Google Wallet"
-                    src={`/images/illustrations/google-wallet.svg`}
-                  />
-                }
-                size="small"
-                variant="secondary"
-                platform={Platform.GOOGLE}
-                as={Button}
-                network={network}
-                lockAddress={lockAddress}
-                tokenId={tokenId}
-                name={lockName}
-                handlePassUrl={(url: string) => {
-                  window.location.assign(url)
-                }}
-              >
-                Add to Google Wallet
-              </AddToDeviceWallet>
-            </li>
-          )}
-          {!isAndroid && (
-            <li className="">
-              <AddToDeviceWallet
-                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                platform={Platform.APPLE}
-                size="small"
-                variant="secondary"
-                as={Button}
-                iconLeft={
-                  <Image
-                    className="justify-self-left"
-                    width="20"
-                    height="20"
-                    alt="Apple Wallet"
-                    src={`/images/illustrations/apple-wallet.svg`}
-                  />
-                }
-                network={network}
-                lockAddress={lockAddress}
-                tokenId={tokenId}
-                name={lockName}
-                handlePassUrl={(url: string) => {
-                  window.location.assign(url)
-                }}
-              >
-                Add to Apple Wallet
-              </AddToDeviceWallet>
-            </li>
-          )}
-        </ul>
+        <AddToWallet
+          network={network}
+          lockAddress={lockAddress}
+          tokenId={tokenId.toString()}
+          tokenName={lockName}
+        />
       )}
     </div>
   )

@@ -17,9 +17,8 @@ export interface EthereumWindow extends Window {
 
 interface WatchAssetInterface {
   address: string
-  symbol: string
-  image: string
   network: number
+  tokenId: string
 }
 
 /**
@@ -225,20 +224,18 @@ export const useProvider = (config: any) => {
     setLoading(false)
   }
 
+  // More info https://docs.metamask.io/wallet/reference/wallet_watchasset/
   const watchAsset = async ({
     address,
-    symbol,
-    image,
     network,
+    tokenId,
   }: WatchAssetInterface) => {
     await switchWeb3ProviderNetwork(network)
     await provider.send('wallet_watchAsset', {
-      type: 'ERC20', // THIS IS A LIE, BUT AT LEAST WE CAN GET ADDED THERE!
+      type: 'ERC721',
       options: {
         address,
-        symbol,
-        decimals: 0,
-        image,
+        tokenId,
       },
     })
   }
