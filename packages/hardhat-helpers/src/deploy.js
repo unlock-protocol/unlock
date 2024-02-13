@@ -22,7 +22,14 @@ export const deployContract = async (
   console.log(` > contract deployed at : ${address} (tx: ${hash})`)
 
   if (!(await isLocalhost())) {
-    await verify(address, deployArgs)
+    await verify({
+      address,
+      deployArgs,
+      // pass fully qualified path for verification
+      contract: Factory
+        ? null
+        : contractNameOrFullyQualifiedNameOrEthersFactory,
+    })
   }
 
   return {
@@ -56,7 +63,7 @@ export const deployUpgradeableContract = async (
   )
 
   if (!(await isLocalhost())) {
-    await verify(address, deployArgs)
+    await verify({ address, deployArgs })
   }
 
   return {
@@ -67,11 +74,12 @@ export const deployUpgradeableContract = async (
   }
 }
 
-export const verify = async (address, deployArgs) => {
+export const verify = async ({ address, deployArgs, contract }) => {
   const { run } = require('hardhat')
   try {
     await run('verify:verify', {
       address,
+      contract,
       constructorArguments: deployArgs,
     })
   } catch (error) {
@@ -84,4 +92,5 @@ export const verify = async (address, deployArgs) => {
 export default {
   deployContract,
   deployUpgradeableContract,
+  verifyContract: verify,
 }

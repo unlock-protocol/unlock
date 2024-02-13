@@ -34,4 +34,4 @@ image: /images/blog/apr-22-update/apr-22-banner.jpg
 
 - **Community tab** — Based on website visitor feedback, added a new "Community" tab to the Unlock website
 
-Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
+Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.unlock-protocol.com/)!

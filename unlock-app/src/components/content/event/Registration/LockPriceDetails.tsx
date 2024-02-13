@@ -6,6 +6,7 @@ import { HiOutlineTicket as TicketIcon } from 'react-icons/hi'
 import { ExplorerLink } from '~/components/interface/AddressLink'
 import { Icon, Placeholder } from '@unlock-protocol/ui'
 import { Lock } from '~/unlockTypes'
+import { PaywallLockConfigType } from '@unlock-protocol/core'
 
 interface LockPriceInternalsProps {
   lock: Lock
@@ -16,6 +17,7 @@ interface LockPriceInternalsProps {
   isSoldOut: boolean
   keysLeft: number
   showContract?: boolean
+  lockCheckoutConfig: PaywallLockConfigType
 }
 export const LockPriceInternals = ({
   lock,
@@ -26,12 +28,14 @@ export const LockPriceInternals = ({
   isSoldOut,
   keysLeft,
   showContract = false,
+  lockCheckoutConfig,
 }: LockPriceInternalsProps) => {
+  const name = lockCheckoutConfig.name || lock.name
   return (
     <div className="flex flex-col gap-1">
       {showContract && (
         <div className="flex gap-2 flex-row text-brand-gray">
-          {lock!.name} <ExplorerLink address={lock.address} network={network} />
+          {name} <ExplorerLink address={lock.address} network={network} />
         </div>
       )}
       <div className="flex items-center gap-5">
@@ -63,11 +67,13 @@ interface LockPriceDetailsProps {
   lockAddress: string
   network: number
   showContract?: boolean
+  lockCheckoutConfig: PaywallLockConfigType
 }
 export const LockPriceDetails = ({
   lockAddress,
   network,
   showContract = false,
+  lockCheckoutConfig,
 }: LockPriceDetailsProps) => {
   const { lock, isLockLoading } = useLockData({
     lockAddress,
@@ -101,6 +107,7 @@ export const LockPriceDetails = ({
 
   return (
     <LockPriceInternals
+      lockCheckoutConfig={lockCheckoutConfig}
       lock={lock}
       network={network}
       symbol={symbol}

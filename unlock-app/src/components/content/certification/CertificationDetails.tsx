@@ -110,9 +110,11 @@ const CertificationManagerOptions = ({
           description="Automatically send NFT certifications to wallets or by email"
         >
           <AirdropForm
-            lockAddress={lockAddress}
-            network={network}
-            emailRequired
+            locks={{
+              [lockAddress]: {
+                network,
+              },
+            }}
           />
         </Disclosure>
       </div>

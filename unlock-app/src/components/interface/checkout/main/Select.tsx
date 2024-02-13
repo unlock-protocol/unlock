@@ -191,30 +191,36 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { paywallConfig, lock: selectedLock } = state.context
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
+
   const { isLoading: isLocksLoading, data: locks } = useQuery(
     ['locks', JSON.stringify(paywallConfig)],
     async () => {
       const items = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const networkId: number = props.network || paywallConfig.network || 1
-
-          const lockData = await web3Service.getLock(lock, networkId)
-          const fiatPricing = await getLockUsdPrice({
-            network: networkId,
-            currencyContractAddress: lockData?.currencyContractAddress,
-            amount: Number(lockData.keyPrice),
+        Object.entries(paywallConfig.locks)
+          .sort(([, l], [, m]) => {
+            return (l.order || 0) - (m.order || 0)
           })
+          .map(async ([lock, props]) => {
+            const networkId: number =
+              props.network || paywallConfig.network || 1
 
-          return {
-            ...props,
-            ...lockData,
-            name: props.name || lockData.name,
-            network: networkId,
-            address: lock,
-            fiatPricing,
-            isSoldOut: numberOfAvailableKeys(lockData) <= 0,
-          } as LockState
-        })
+            const lockData = await web3Service.getLock(lock, networkId)
+            const fiatPricing = await getLockUsdPrice({
+              network: networkId,
+              currencyContractAddress: lockData?.currencyContractAddress,
+              amount: Number(lockData.keyPrice),
+            })
+
+            return {
+              ...props,
+              ...lockData,
+              name: props.name || lockData.name,
+              network: networkId,
+              address: lock,
+              fiatPricing,
+              isSoldOut: numberOfAvailableKeys(lockData) <= 0,
+            } as LockState
+          })
       )
 
       const locks = items?.filter(
