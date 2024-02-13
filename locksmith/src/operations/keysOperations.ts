@@ -48,6 +48,7 @@ async function filterKeys(keys: any[], filters: any) {
 type Lock = Omit<Partial<SubgraphLock>, 'keys'> & {
   keys: Partial<SubgraphKey>[]
 }
+
 /** merge keys items with the corresponding metadata value */
 export const buildKeysWithMetadata = (
   lock: Lock,
@@ -130,7 +131,7 @@ export async function getKeysWithMetadata({
       filters.query
     )
     if (addresses.length === 0) {
-      return []
+      return { total: 0, keys: [] }
     }
     keysFilter = {
       ...filters,
@@ -152,6 +153,15 @@ export async function getKeysWithMetadata({
       limit,
       offset: page * limit,
     })
+    // Count the RSVPs
+    const total = await Rsvp.count({
+      where: {
+        lockAddress,
+        network,
+        approval: filters.approval,
+      },
+    })
+
     lock = {
       address: lockAddress,
       network,
@@ -161,6 +171,7 @@ export async function getKeysWithMetadata({
           owner: r.userAddress,
         }
       }),
+      totalKeys: total,
     }
   } else {
     // Get from subgraph!
@@ -183,6 +194,9 @@ export async function getKeysWithMetadata({
   }
 
   const keys = buildKeysWithMetadata(lock as Lock, metadataItems)
-
-  return filterKeys(keys, filters)
+  const filteredKeys = await filterKeys(keys, filters)
+  return {
+    keys: filteredKeys,
+    total: lock.totalKeys,
+  }
 }

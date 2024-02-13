@@ -3,9 +3,9 @@ const { deployERC20, deployContracts } = require('../helpers')
 
 const {
   getBalance,
+  getNetwork,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
-  uniswapRouterAddresses,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const someTokens = ethers.utils.parseUnits('10', 'ether')
@@ -32,10 +32,10 @@ contract('UnlockSwapPurchaser / withdraw', () => {
           'UnlockSwapPurchaser'
         )
         // use mainnet settings for testing purposes only
-        const chainId = 1
-        const { UniversalRouter, SwapRouter02 } =
-          uniswapRouterAddresses[chainId]
-        const routers = [UniversalRouter, SwapRouter02]
+        const {
+          uniswapV3: { universalRouterAddress },
+        } = await getNetwork(1)
+        const routers = [universalRouterAddress]
         swapper = await UnlockSwapPurchaser.deploy(
           unlock.address,
           PERMIT2_ADDRESS,

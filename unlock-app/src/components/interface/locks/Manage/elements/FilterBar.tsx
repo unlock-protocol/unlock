@@ -134,7 +134,9 @@ export const FilterBar = ({
 
   const [openSearch, setOpenSearch] = useState(false)
   const [expandExpirationFilter, setExpandExpirationFilter] = useState(false)
-  const [expandApprovalFilter, setExpandApprovalFilter] = useState(false)
+  const [expandApprovalFilter, setExpandApprovalFilter] = useState(
+    filters.approval !== ApprovalStatus.MINTED
+  )
 
   const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
 
