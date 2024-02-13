@@ -9,7 +9,9 @@ import { FieldLayout, Input } from '../Form'
 import { Tooltip } from '../Tooltip/Tooltip'
 import { HiQuestionMarkCircle as QuestionMark } from 'react-icons/hi'
 import { Placeholder } from '../Placeholder'
+
 export interface Option {
+  key?: string
   label: string
   value: string | number
   append?: React.ReactNode // element to add at the end of the select
@@ -23,7 +25,7 @@ export interface SelectProps<T> {
   tooltip?: ReactNode
   options: Option[]
   size?: Size
-  onChange?: (value: string | number, isCustom?: boolean) => void
+  onChange?: (value: string | number | any, isCustom?: boolean) => void
   defaultValue?: T
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
@@ -231,7 +233,7 @@ export const Select = <T extends unknown>({
 
                   return (
                     <Listbox.Option
-                      key={option.value}
+                      key={option.key || option.value}
                       value={option.value}
                       className={disabled ? '' : 'cursor-pointer'}
                       disabled={disabled}

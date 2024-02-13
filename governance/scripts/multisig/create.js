@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
-const { SafeFactory } = require('@safe-global/safe-core-sdk')
-const EthersAdapter = require('@safe-global/safe-ethers-lib').default
+const { SafeFactory, EthersAdapter } = require('@safe-global/protocol-kit')
 const getOwners = require('./owners')
 
 async function main({ owners, threshold = 4 }) {
@@ -19,7 +18,6 @@ async function main({ owners, threshold = 4 }) {
 
   const [deployer] = await ethers.getSigners()
   const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: deployer })
-
   const safeFactory = await SafeFactory.create({ ethAdapter })
 
   const safeAccountConfig = {
@@ -30,7 +28,7 @@ async function main({ owners, threshold = 4 }) {
   console.log('SAFE SETUP > Deploying new safe...')
 
   const safe = await safeFactory.deploySafe({ safeAccountConfig })
-  const safeAddress = safe.getAddress()
+  const safeAddress = await safe.getAddress()
 
   console.log('SAFE SETUP > New safe deployed at: ', safeAddress)
   console.log('SAFE SETUP > Owners: ')

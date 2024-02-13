@@ -466,6 +466,19 @@ components:
         endDate:
           type: string
 
+    Rsvp:
+      type: object
+      nullable: false
+      properties:
+        lockAddress:
+          type: string
+        userAddress:
+          type: string
+        approval:
+          type: string
+        network:
+          type: number
+
   parameters:
     Network:
       in: path
@@ -1341,6 +1354,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  # deprecated, use keys-by-page
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       operationId: keys
@@ -1370,6 +1384,11 @@ paths:
             type: string
           description: Expiration time
         - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
           name: page
           schema:
             type: integer
@@ -1389,6 +1408,79 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/KeyMetadata'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/{network}/locks/{lockAddress}/keys-by-page:
+    get:
+      operationId: keysByPage
+      security:
+        - User: []
+        - Application: []
+
+      description: List of lock keys by network with additional metadata if the caller is the lockManager
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: Query you want to search for.
+        - in: query
+          name: filterKey
+          required: true
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page number when paginating
+        - in: query
+          name: max
+          schema:
+            type: integer
+          description: Maximum number of items to get by page
+      responses:
+        200:
+          description: List of keys matching the query
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      byPage:
+                        type: integer
+                  keys:
+                    nullable: false
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KeyMetadata'
 
         404:
           $ref: '#/components/responses/404.NotFound'
@@ -3460,6 +3552,99 @@ paths:
                     $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}:
+    post:
+      operationId: rsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+
+      description: User applies to attend an event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                email:
+                  type: string
+                data:
+                  type: object
+                  additionalProperties: true
+      responses:
+        200:
+          description: Successfully applied to event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/approve/{userAddress}:
+    post:
+      operationId: approveRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
+      description: Approves a user to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully approves the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/deny/{userAddress}:
+    post:
+      operationId: denyRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
+      description: Denies a user to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully denied the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
 
         400:
           $ref: '#/components/responses/400.Invalid'

@@ -36,6 +36,11 @@ export const base: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x87AaA7498Daf5Bb0DB03806fB5389b260E8aCe92',
+        id: HookType.GUILD,
+        name: 'Guild',
+      },
     ],
   },
   id: 8453,

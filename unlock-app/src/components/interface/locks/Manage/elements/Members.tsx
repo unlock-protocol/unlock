@@ -5,12 +5,11 @@ import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
-import { ExpirationStatus } from './FilterBar'
+import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
 import { Placeholder } from '@unlock-protocol/ui'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const DefaultNoMemberNoFilter = () => {
   return (
@@ -48,6 +47,7 @@ export interface FilterProps {
   query: string
   filterKey: string
   expiration: ExpirationStatus
+  approval: ApprovalStatus
 }
 
 export const Members = ({
@@ -60,25 +60,25 @@ export const Members = ({
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   },
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
   NoMemberNoFilter = DefaultNoMemberNoFilter,
 }: MembersProps) => {
-  const web3Service = useWeb3Service()
-
   const getMembers = async () => {
-    const { query, filterKey, expiration } = filters
-    const keys = await storage.keys(
+    const { query, filterKey, expiration, approval } = filters
+    const response = await storage.keysByPage(
       network,
       lockAddress,
       query,
       filterKey,
       expiration,
+      approval,
       page - 1, // API starts at 0
-      MEMBERS_PER_PAGE
+      PAGE_SIZE
     )
-    return keys.data
+    return response.data
   }
 
   const getLockSettings = async () => {
@@ -86,16 +86,11 @@ export const Members = ({
   }
 
   const [
-    { isLoading: isChainLockLoading, data: chainLock },
-    { isLoading, data: members = [] },
+    { isLoading, data: { keys = [], meta = {} } = { keys: [] } },
     { isLoading: isLockLoading, data: lock, isError: hasLockLoadingError },
     { isLoading: isLoadingSettings, data: { data: lockSettings = {} } = {} },
   ] = useQueries({
     queries: [
-      {
-        queryKey: ['getLock', lockAddress, network],
-        queryFn: () => web3Service.getLock(lockAddress, network),
-      },
       {
         queryFn: getMembers,
         queryKey: ['getMembers', page, lockAddress, network, filters],
@@ -130,15 +125,12 @@ export const Members = ({
   })
 
   const loading =
-    isChainLockLoading ||
-    isLockLoading ||
-    isLoading ||
-    loadingFilters ||
-    isLoadingSettings
+    isLockLoading || isLoading || loadingFilters || isLoadingSettings
 
-  const noItems = members?.length === 0 && !loading
+  const noItems = keys?.length === 0 && !loading
 
   const hasActiveFilter =
+    filters?.approval !== 'minted' ||
     filters?.expiration !== 'all' ||
     filters?.filterKey !== 'owner' ||
     filters?.query?.length > 0
@@ -165,26 +157,32 @@ export const Members = ({
     )
   }
 
+  const { maxNumbersOfPage } = paginate({
+    page: meta.page || 0,
+    itemsPerPage: meta.byPage,
+    totalItems: meta.total,
+  })
+
   if (noItems && !hasActiveFilter) {
     return <NoMemberNoFilter />
   }
 
   if (noItems && hasActiveFilter) {
-    return <NoMemberWithFilter />
+    return (
+      <>
+        <NoMemberWithFilter />{' '}
+        <PaginationBar
+          maxNumbersOfPage={maxNumbersOfPage}
+          setPage={setPage}
+          page={page}
+        />
+      </>
+    )
   }
 
-  const pageOffset = page - 1 ?? 0
-  const { maxNumbersOfPage } = paginate({
-    page: pageOffset,
-    itemsPerPage: MEMBERS_PER_PAGE,
-    totalItems: chainLock.outstandingKeys,
-  })
-
-  const showPagination = maxNumbersOfPage > 1
-
   return (
-    <div className="grid grid-cols-1 gap-6">
-      {(members || [])?.map((metadata: any) => {
+    <div className="flex flex-col  gap-6">
+      {(keys || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard
@@ -201,13 +199,11 @@ export const Members = ({
           />
         )
       })}
-      {showPagination && (
-        <PaginationBar
-          maxNumbersOfPage={maxNumbersOfPage}
-          setPage={setPage}
-          page={page}
-        />
-      )}
+      <PaginationBar
+        maxNumbersOfPage={maxNumbersOfPage}
+        setPage={setPage}
+        page={page}
+      />
     </div>
   )
 }

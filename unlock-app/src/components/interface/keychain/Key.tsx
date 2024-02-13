@@ -459,7 +459,7 @@ function Key({ ownedKey, account, network }: Props) {
           className="flex items-center justify-center cursor-pointer hover:bg-gray-50"
         >
           <AvatarImage
-            className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
+            className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72 object-contain	"
             alt={lock.name!}
             src={metadata.image}
             width={250}
