@@ -205,7 +205,7 @@ Powered by Unlock Protocol`}
         </div>
 
         <div className="relative">
-          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
+          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl rounded-lg">
             {coverImage && (
               <img
                 className="object-cover w-full h-full"
@@ -227,10 +227,10 @@ Powered by Unlock Protocol`}
 
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
-              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
+              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 md:rounded-3xl rounded-xl">
                 <img
                   alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 rounded-2xl"
+                  className="object-cover w-full m-auto aspect-1 md:rounded-2xl rounded-lg"
                   src={event.image}
                 />
               </div>
