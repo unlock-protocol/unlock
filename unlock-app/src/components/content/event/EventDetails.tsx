@@ -36,6 +36,7 @@ import { SettingEmail } from '~/components/interface/locks/Settings/elements/Set
 import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
+import { config } from '~/config/app'
 
 interface EventDetailsProps {
   event: Event
@@ -159,13 +160,17 @@ export const EventDetails = ({
   return (
     <div>
       <NextSeo
-        title={event.title}
-        description={`${event.description}. Powered by Unlock Protocol.`}
+        title={event.name}
+        description={`${event.description} 
+Powered by Unlock Protocol`}
         openGraph={{
+          title: event.title,
+          type: 'website',
+          url: eventUrl,
           images: [
             {
               alt: event.title,
-              url: `/og/event/${event.slug}`,
+              url: `${config.unlockApp}/og/event/${event.slug}`,
             },
           ],
         }}
