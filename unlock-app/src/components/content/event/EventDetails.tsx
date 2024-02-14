@@ -165,7 +165,7 @@ export const EventDetails = ({
           images: [
             {
               alt: event.title,
-              url: `/api/og/event/${event.slug}`,
+              url: `/og/event/${event.slug}`,
             },
           ],
         }}
