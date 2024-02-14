@@ -18481,6 +18481,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/react@npm:18.2.52":
+  version: 18.2.52
+  resolution: "@types/react@npm:18.2.52"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    "@types/scheduler": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 0ab90a37fd82028c3559f18ce50790d01b262589a2ea49d014d8888291f47d9c91e65cb7db031a3e5d58818cb5376577afb4b593068473abfd0c695fa7e6b7c4
+  languageName: node
+  linkType: hard
+
 "@types/readable-stream@npm:^2.3.13":
   version: 2.3.15
   resolution: "@types/readable-stream@npm:2.3.15"
@@ -20033,7 +20044,7 @@ __metadata:
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:1.0.5"
-    "@types/react": "npm:18.2.46"
+    "@types/react": "npm:18.2.52"
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@uniswap/sdk-core": "npm:4.0.9"
