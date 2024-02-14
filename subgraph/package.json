@@ -23,7 +23,7 @@
     "test": "graph test -v 0.5.2"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.62.0",
+    "@graphprotocol/graph-cli": "0.68.0",
     "@graphprotocol/graph-ts": "0.31.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",

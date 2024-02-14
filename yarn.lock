@@ -8077,9 +8077,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.62.0":
-  version: 0.62.0
-  resolution: "@graphprotocol/graph-cli@npm:0.62.0"
+"@graphprotocol/graph-cli@npm:0.68.0":
+  version: 0.68.0
+  resolution: "@graphprotocol/graph-cli@npm:0.68.0"
   dependencies:
     "@float-capital/float-subgraph-uncrashable": "npm:^0.0.0-alpha.4"
     "@oclif/core": "npm:2.8.6"
@@ -8095,14 +8095,13 @@ __metadata:
     dockerode: "npm:2.5.8"
     fs-extra: "npm:9.1.0"
     glob: "npm:9.3.5"
-    gluegun: "npm:5.1.2"
+    gluegun: "npm:5.1.6"
     graphql: "npm:15.5.0"
     immutable: "npm:4.2.1"
     ipfs-http-client: "npm:55.0.0"
     jayson: "npm:4.0.0"
     js-yaml: "npm:3.14.1"
-    prettier: "npm:1.19.1"
-    request: "npm:2.88.2"
+    prettier: "npm:3.0.3"
     semver: "npm:7.4.0"
     sync-request: "npm:6.1.0"
     tmp-promise: "npm:3.0.3"
@@ -8111,7 +8110,7 @@ __metadata:
     yaml: "npm:1.10.2"
   bin:
     graph: bin/run
-  checksum: a83850de8571a3be70a03ca94cef724276cf0625b736acdb3a68f3010a654999f8a5085fde94090153b24d0f11c7c779f041d561b0493cd7df3cd3bf6185c5c8
+  checksum: 49bb2eb3e59bff98b1b6b4f6f20d2d6df439c95c552269e9b53d6215de8655a9d072157d802d9853ef79bbe61f0e5fe27d3b39336e04e4fa6d20857d1274fed1
   languageName: node
   linkType: hard
 
@@ -20008,7 +20007,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": "npm:0.62.0"
+    "@graphprotocol/graph-cli": "npm:0.68.0"
     "@graphprotocol/graph-ts": "npm:0.31.0"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
@@ -29537,14 +29536,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ejs@npm:3.1.6":
-  version: 3.1.6
-  resolution: "ejs@npm:3.1.6"
+"ejs@npm:3.1.8":
+  version: 3.1.8
+  resolution: "ejs@npm:3.1.8"
   dependencies:
-    jake: "npm:^10.6.1"
+    jake: "npm:^10.8.5"
   bin:
-    ejs: ./bin/cli.js
-  checksum: f3882b57655b53fd9044cb7acb585c04004da9a3c90ef96c69660ee31ca9572e7a0df0cf794bbc72c674c2b9ba396bbc4ae130fe0c8c65fb0ca53b0a488c2300
+    ejs: bin/cli.js
+  checksum: 879f84c8ee56d06dea7b47a8b493e1b398dba578ec7a701660cf77c8a6d565b932c5896639d1dc4a3be29204eccdb70ee4e1bdf634647c2490227f727d5d6a3d
   languageName: node
   linkType: hard
 
@@ -34521,9 +34520,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gluegun@npm:5.1.2":
-  version: 5.1.2
-  resolution: "gluegun@npm:5.1.2"
+"gluegun@npm:5.1.6":
+  version: 5.1.6
+  resolution: "gluegun@npm:5.1.6"
   dependencies:
     apisauce: "npm:^2.1.5"
     app-module-path: "npm:^2.2.0"
@@ -34531,7 +34530,7 @@ __metadata:
     colors: "npm:1.4.0"
     cosmiconfig: "npm:7.0.1"
     cross-spawn: "npm:7.0.3"
-    ejs: "npm:3.1.6"
+    ejs: "npm:3.1.8"
     enquirer: "npm:2.3.6"
     execa: "npm:5.1.1"
     fs-jetpack: "npm:4.3.1"
@@ -34557,7 +34556,7 @@ __metadata:
     yargs-parser: "npm:^21.0.0"
   bin:
     gluegun: bin/gluegun
-  checksum: c3a673d114953fd79090b4bd2e417e9f9cf819f8cb4c53d17659f814bd1f508597bed64be0e8041fcdd0d6ba0b06ffe95c8cb95708cd4a4a5e0c1d3867b56ae8
+  checksum: b6a9938307611e200b799158fca3d3631c194dc0d74e708211d21d894550a8de55ce4d15711d8ac746ea8d4a5538231e96abd1e0bac299f5c0fbd09a0763c433
   languageName: node
   linkType: hard
 
@@ -38188,20 +38187,6 @@ __metadata:
     "@pkgjs/parseargs":
       optional: true
   checksum: 6e6490d676af8c94a7b5b29b8fd5629f21346911ebe2e32931c2a54210134408171c24cee1a109df2ec19894ad04a429402a8438cbf5cc2794585d35428ace76
-  languageName: node
-  linkType: hard
-
-"jake@npm:^10.6.1":
-  version: 10.8.7
-  resolution: "jake@npm:10.8.7"
-  dependencies:
-    async: "npm:^3.2.3"
-    chalk: "npm:^4.0.2"
-    filelist: "npm:^1.0.4"
-    minimatch: "npm:^3.1.2"
-  bin:
-    jake: bin/cli.js
-  checksum: ad1cfe398836df4e6962954e5095597c21c5af1ea5a4182f6adf0869df8aca467a2eeca7869bf44f47120f4dd4ea52589d16050d295c87a5906c0d744775acc3
   languageName: node
   linkType: hard
 
@@ -47105,21 +47090,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:1.19.1":
-  version: 1.19.1
-  resolution: "prettier@npm:1.19.1"
-  bin:
-    prettier: ./bin-prettier.js
-  checksum: 21d245fe788d1123fd7df63a3759f7807d8c0bb7aaa2f4f02cc055998c3e1f92d7c614b6e2749a936c527cdbbb0f3c869bd9723eb32c5232b0fab9fac04b455d
-  languageName: node
-  linkType: hard
-
 "prettier@npm:3.0.0":
   version: 3.0.0
   resolution: "prettier@npm:3.0.0"
   bin:
     prettier: bin/prettier.cjs
   checksum: 399292638280988ecd44db6532e908246b7c9468e6f5f571b3835a5206b7f1132cb674c12be430d921474901dc85398429dfd2dc31b282eef9affebd3ce72cef
+  languageName: node
+  linkType: hard
+
+"prettier@npm:3.0.3":
+  version: 3.0.3
+  resolution: "prettier@npm:3.0.3"
+  bin:
+    prettier: bin/prettier.cjs
+  checksum: ccf1ead9794b017be6b42d0873f459070beef2069eb393c8b4c0d11aa3430acefc54f6d5f44a5b7ce9af05ad8daf694b912f0aa2808d1c22dfa86e61e9d563f8
   languageName: node
   linkType: hard
 
