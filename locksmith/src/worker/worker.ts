@@ -30,7 +30,7 @@ const crontabProduction = `
 */5 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
 0 0 * * * notifyExpiredKeysForNetwork
-0 */6 * * * checkBalances
+30 */6 * * * checkBalances
 `
 
 const cronTabTesting = `
