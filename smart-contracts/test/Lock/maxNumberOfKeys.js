@@ -23,7 +23,13 @@ contract('Lock / maxNumberOfKeys', () => {
 
       // create a new lock
       const tokenAddress = ADDRESS_ZERO
-      const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
+      const args = [
+        60 * 60 * 24 * 30,
+        tokenAddress,
+        keyPrice.toString(),
+        10,
+        'Test lock',
+      ]
 
       const calldata = await createLockCalldata({ args, from: from.address })
       const tx = await unlock.createUpgradeableLock(calldata)
