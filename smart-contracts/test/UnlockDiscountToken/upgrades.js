@@ -164,7 +164,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       const args = [
         Locks.FIRST.expirationDuration,
         ADDRESS_ZERO,
-        Locks.FIRST.keyPrice,
+        Locks.FIRST.keyPrice.toString(),
         Locks.FIRST.maxNumberOfKeys,
         Locks.FIRST.lockName,
       ]

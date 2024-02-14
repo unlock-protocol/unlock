@@ -115,7 +115,7 @@ contract('Unlock / upgrades', async (accounts) => {
             const args = [
               60 * 60 * 24, // expirationDuration 1 day
               ADDRESS_ZERO, // token address
-              keyPrice,
+              keyPrice.toString(),
               5, // maxNumberOfKeys
               `UpgradeTestingLock ${versionNumber}`,
             ]
@@ -357,7 +357,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 const args = [
                   60 * 60 * 24, // expirationDuration 1 day
                   ADDRESS_ZERO, // token address
-                  keyPrice,
+                  keyPrice.toString(),
                   5, // maxNumberOfKeys
                   'After-Upgrade Lock',
                 ]

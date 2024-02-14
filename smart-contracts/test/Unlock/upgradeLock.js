@@ -41,7 +41,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const args = [
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
-      ethers.utils.parseEther('0.01'),
+      ethers.utils.parseEther('0.01').toString(),
       10,
       'A neat upgradeable lock!',
     ]
@@ -141,7 +141,7 @@ describe('upgrades', async () => {
   const versions = {}
   const duration = 60 * 60 * 24 * 30 // 30 days
   const currency = ADDRESS_ZERO
-  const price = ethers.utils.parseEther('0.01')
+  const price = ethers.utils.parseEther('0.01').toString()
   const maxKeys = 10
   const name = 'A neat upgradeable lock!'
 

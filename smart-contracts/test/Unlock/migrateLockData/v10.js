@@ -117,7 +117,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const args = [
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
-      ethers.utils.parseEther('0.01'),
+      ethers.utils.parseEther('0.01').toString(),
       1000, // available keys
       'A neat upgradeable lock!',
     ]

@@ -7,7 +7,7 @@ const { ADDRESS_ZERO } = require('../helpers')
 const args = [
   60 * 60 * 24 * 30, // expirationDuration: 30 days
   ADDRESS_ZERO,
-  ethers.utils.parseEther('1'), // keyPrice: in wei
+  ethers.utils.parseEther('1').toString(), // keyPrice: in wei
   100, // maxNumberOfKeys
   'New Lock',
 ]
