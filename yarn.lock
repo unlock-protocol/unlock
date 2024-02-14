@@ -18120,27 +18120,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/next-server@npm:*":
-  version: 8.1.2
-  resolution: "@types/next-server@npm:8.1.2"
+"@types/next@npm:9.0.0":
+  version: 9.0.0
+  resolution: "@types/next@npm:9.0.0"
   dependencies:
-    "@types/next": "npm:*"
-    "@types/node": "npm:*"
-    "@types/react": "npm:*"
-    "@types/react-loadable": "npm:*"
-  checksum: d8f364392f48bff5844b61a825aef4deef6c8106242f82004bb15678ee72b798f8e79abd59c74a62f14461046eb401c5ddcdb4539e020453869a2ad19d0ce473
-  languageName: node
-  linkType: hard
-
-"@types/next@npm:*, @types/next@npm:8.0.7":
-  version: 8.0.7
-  resolution: "@types/next@npm:8.0.7"
-  dependencies:
-    "@types/next-server": "npm:*"
-    "@types/node": "npm:*"
-    "@types/node-fetch": "npm:*"
-    "@types/react": "npm:*"
-  checksum: 9dc1f426094ff322a5aea470d618895b0e5c48f21616c4e07d36b2588c7c4d42b7917d0f65e8844c505176c030801ed05014912d0facfe7ab970f221c72a8aec
+    next: "npm:*"
+  checksum: 3115931293e1928df5ecd9d0cbf8b9edc9e2d7f67467db468f3d92dac7b44199706dbd4226c33193a7fcd3fe230a1ec2c796a1a585911d40be9fdaf47e8cb16e
   languageName: node
   linkType: hard
 
@@ -18157,15 +18142,6 @@ __metadata:
   version: 3.0.11
   resolution: "@types/node-cron@npm:3.0.11"
   checksum: a73f69bcca52a5f3b1671cfb00a8e4a1d150d0aef36a611564a2f94e66b6981bade577e267ceeeca6fcee241768902d55eb8cf3a81f9ef4ed767a23112fdb16d
-  languageName: node
-  linkType: hard
-
-"@types/node-fetch@npm:*":
-  version: 3.0.2
-  resolution: "@types/node-fetch@npm:3.0.2"
-  dependencies:
-    node-fetch: "npm:*"
-  checksum: b9f97bc4219c37f70299133b36389719cf4adacad46cea80df70f77d4a9f6999ea5be18a1ab90b34239b684cae032adeec10756cce8d2ae81c17f5e4c56fd4e9
   languageName: node
   linkType: hard
 
@@ -18438,16 +18414,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-loadable@npm:*":
-  version: 5.5.11
-  resolution: "@types/react-loadable@npm:5.5.11"
-  dependencies:
-    "@types/react": "npm:*"
-    "@types/webpack": "npm:^4"
-  checksum: 2a7d5445040451b2ca6eed001360f04a8f5027a669bdfe726d33ccb914465cc6d6765dadc42ce250f4b7ef6178e1d6b88fad37310603b8411c10c13f6adfbe23
-  languageName: node
-  linkType: hard
-
 "@types/react-redux@npm:^7.1.20":
   version: 7.1.33
   resolution: "@types/react-redux@npm:7.1.33"
@@ -18511,6 +18477,17 @@ __metadata:
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10fb28a5b8504106512ce3b154c45d1ac045c31633786773a29f003b3079b434060368bb56f95ef6c39510835ceec4fb8fdc271d6ca2b9cdd979379cf53f126b
+  languageName: node
+  linkType: hard
+
+"@types/react@npm:18.2.52":
+  version: 18.2.52
+  resolution: "@types/react@npm:18.2.52"
+  dependencies:
+    "@types/prop-types": "npm:*"
+    "@types/scheduler": "npm:*"
+    csstype: "npm:^3.0.2"
+  checksum: 0ab90a37fd82028c3559f18ce50790d01b262589a2ea49d014d8888291f47d9c91e65cb7db031a3e5d58818cb5376577afb4b593068473abfd0c695fa7e6b7c4
   languageName: node
   linkType: hard
 
@@ -18664,13 +18641,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/source-list-map@npm:*":
-  version: 0.1.6
-  resolution: "@types/source-list-map@npm:0.1.6"
-  checksum: 9cd294c121f1562062de5d241fe4d10780b1131b01c57434845fe50968e9dcf67ede444591c2b1ad6d3f9b6bc646ac02cc8f51a3577c795f9c64cf4573dcc6b1
-  languageName: node
-  linkType: hard
-
 "@types/stack-trace@npm:^0.0.29":
   version: 0.0.29
   resolution: "@types/stack-trace@npm:0.0.29"
@@ -18708,13 +18678,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/tapable@npm:^1":
-  version: 1.0.12
-  resolution: "@types/tapable@npm:1.0.12"
-  checksum: adfb978a3097154be92c4a92184bb17f86a84473bd871a9a862f81676532ebec86ea61acdce999186447832e32a4d45d591d64b64131dd977ca41508165011d7
-  languageName: node
-  linkType: hard
-
 "@types/tough-cookie@npm:*":
   version: 4.0.5
   resolution: "@types/tough-cookie@npm:4.0.5"
@@ -18733,15 +18696,6 @@ __metadata:
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
   checksum: 8e4202766a65877efcf5d5a41b7dd458480b36195e580a3b1085ad21e948bc417d55d6f8af1fd2a7ad008015d4117d5fdfe432731157da3c68678487174e4ba3
-  languageName: node
-  linkType: hard
-
-"@types/uglify-js@npm:*":
-  version: 3.17.4
-  resolution: "@types/uglify-js@npm:3.17.4"
-  dependencies:
-    source-map: "npm:^0.6.1"
-  checksum: 4db22236be22bd5f227dcb9b4dc979342829402b02efe9043e1b70f736080f27a0808977e62657f071bc8dc9602a49d45ed398284f0cf130fd0865e120184aca
   languageName: node
   linkType: hard
 
@@ -18787,31 +18741,6 @@ __metadata:
     "@types/bn.js": "npm:*"
     "@types/underscore": "npm:*"
   checksum: bf61a77d63cafed92a431df32505ea7e5d91f044f50ecd57e22efa10c76ec1093367403c060b8e72021f4e52513aceebb9c3edfb801b90dee09dc16dc0339d25
-  languageName: node
-  linkType: hard
-
-"@types/webpack-sources@npm:*":
-  version: 3.2.3
-  resolution: "@types/webpack-sources@npm:3.2.3"
-  dependencies:
-    "@types/node": "npm:*"
-    "@types/source-list-map": "npm:*"
-    source-map: "npm:^0.7.3"
-  checksum: 7b557f242efaa10e4e3e18cc4171a0c98e22898570caefdd4f7b076fe8534b5abfac92c953c6604658dcb7218507f970230352511840fe9fdea31a9af3b9a906
-  languageName: node
-  linkType: hard
-
-"@types/webpack@npm:^4":
-  version: 4.41.38
-  resolution: "@types/webpack@npm:4.41.38"
-  dependencies:
-    "@types/node": "npm:*"
-    "@types/tapable": "npm:^1"
-    "@types/uglify-js": "npm:*"
-    "@types/webpack-sources": "npm:*"
-    anymatch: "npm:^3.0.0"
-    source-map: "npm:^0.6.0"
-  checksum: 63f2137371e9fd99242c95ae5a115e8da470e61344b6b10b3778c91bbe0ab173d4ad879b53a57e4950b3124b3f8627480bf14f70a11c730d3e66195d8e0c7d8c
   languageName: node
   linkType: hard
 
@@ -19915,7 +19844,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/paywall-app@workspace:paywall-app"
   dependencies:
-    "@types/next": "npm:8.0.7"
+    "@types/next": "npm:9.0.0"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -20114,7 +20043,7 @@ __metadata:
     "@types/file-saver": "npm:2.0.7"
     "@types/postmate": "npm:1.5.4"
     "@types/qrcode.react": "npm:1.0.5"
-    "@types/react": "npm:18.2.46"
+    "@types/react": "npm:18.2.52"
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@uniswap/sdk-core": "npm:4.0.9"
@@ -20245,7 +20174,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.0.4"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:14.1.2"
-    "@types/next": "npm:8.0.7"
+    "@types/next": "npm:9.0.0"
     "@types/node": "npm:20.10.1"
     "@types/react": "npm:18.2.46"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -22266,7 +22195,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"anymatch@npm:^3.0.0, anymatch@npm:^3.0.3, anymatch@npm:^3.1.3, anymatch@npm:~3.1.1, anymatch@npm:~3.1.2":
+"anymatch@npm:^3.0.3, anymatch@npm:^3.1.3, anymatch@npm:~3.1.1, anymatch@npm:~3.1.2":
   version: 3.1.3
   resolution: "anymatch@npm:3.1.3"
   dependencies:
@@ -43832,17 +43761,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:*, node-fetch@npm:^3.0.0, node-fetch@npm:^3.1.1, node-fetch@npm:^3.3.1":
-  version: 3.3.2
-  resolution: "node-fetch@npm:3.3.2"
-  dependencies:
-    data-uri-to-buffer: "npm:^4.0.0"
-    fetch-blob: "npm:^3.1.4"
-    formdata-polyfill: "npm:^4.0.10"
-  checksum: 24207ca8c81231c7c59151840e3fded461d67a31cf3e3b3968e12201a42f89ce4a0b5fb7079b1fa0a4655957b1ca9257553200f03a9f668b45ebad265ca5593d
-  languageName: node
-  linkType: hard
-
 "node-fetch@npm:2.6.11":
   version: 2.6.11
   resolution: "node-fetch@npm:2.6.11"
@@ -43868,6 +43786,17 @@ __metadata:
     encoding:
       optional: true
   checksum: b24f8a3dc937f388192e59bcf9d0857d7b6940a2496f328381641cb616efccc9866e89ec43f2ec956bbd6c3d3ee05524ce77fe7b29ccd34692b3a16f237d6676
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^3.0.0, node-fetch@npm:^3.1.1, node-fetch@npm:^3.3.1":
+  version: 3.3.2
+  resolution: "node-fetch@npm:3.3.2"
+  dependencies:
+    data-uri-to-buffer: "npm:^4.0.0"
+    fetch-blob: "npm:^3.1.4"
+    formdata-polyfill: "npm:^4.0.10"
+  checksum: 24207ca8c81231c7c59151840e3fded461d67a31cf3e3b3968e12201a42f89ce4a0b5fb7079b1fa0a4655957b1ca9257553200f03a9f668b45ebad265ca5593d
   languageName: node
   linkType: hard
 
@@ -51841,7 +51770,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"source-map@npm:^0.7.0, source-map@npm:^0.7.3":
+"source-map@npm:^0.7.0":
   version: 0.7.4
   resolution: "source-map@npm:0.7.4"
   checksum: a0f7c9b797eda93139842fd28648e868a9a03ea0ad0d9fa6602a0c1f17b7fb6a7dcca00c144476cccaeaae5042e99a285723b1a201e844ad67221bf5d428f1dc
