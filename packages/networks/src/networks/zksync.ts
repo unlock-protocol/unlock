@@ -33,7 +33,7 @@ export const zksync: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/324',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://mainnet.era.zksync.io',
   startBlock: 25905168,
   subgraph: {
