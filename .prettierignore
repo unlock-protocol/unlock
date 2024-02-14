@@ -4,3 +4,4 @@ subgraph/generated/**/*.ts
 **/artifacts
 **/dist
 **/.next
+packages/unlock-js/src/abis.ts
