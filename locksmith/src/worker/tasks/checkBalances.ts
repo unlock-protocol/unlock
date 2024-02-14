@@ -8,6 +8,7 @@ import { getDefiLammaPrice } from '../../operations/pricingOperations'
 import networks from '@unlock-protocol/networks'
 import logger from '../../logger'
 import { ethers } from 'ethers'
+import { isProduction } from '../../config/config'
 
 const MIN_BALANCE = 50
 
@@ -15,6 +16,7 @@ export const checkBalances: Task = async () => {
   // Look for balnces for all purchasers, trigger if they are below a threashold.
   Object.values(networks)
     .filter((network) => network.name !== 'localhost')
+    .filter((network) => isProduction || network.isTestNetwork)
     .map(async (network: any) => {
       try {
         const [provider, purchasers] = await Promise.all([
