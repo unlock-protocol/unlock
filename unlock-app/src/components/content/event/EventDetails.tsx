@@ -36,6 +36,7 @@ import { SettingEmail } from '~/components/interface/locks/Settings/elements/Set
 import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
+import { config } from '~/config/app'
 
 interface EventDetailsProps {
   event: Event
@@ -159,13 +160,17 @@ export const EventDetails = ({
   return (
     <div>
       <NextSeo
-        title={event.title}
-        description={`${event.description}. Powered by Unlock Protocol.`}
+        title={event.name}
+        description={`${event.description} 
+Powered by Unlock Protocol`}
         openGraph={{
+          title: event.title,
+          type: 'website',
+          url: eventUrl,
           images: [
             {
               alt: event.title,
-              url: `/og/event/${event.slug}`,
+              url: `${config.unlockApp}/og/event/${event.slug}`,
             },
           ],
         }}
@@ -200,7 +205,7 @@ export const EventDetails = ({
         </div>
 
         <div className="relative">
-          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
+          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl rounded-lg">
             {coverImage && (
               <img
                 className="object-cover w-full h-full"
@@ -222,10 +227,10 @@ export const EventDetails = ({
 
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
-              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
+              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 md:rounded-3xl rounded-xl">
                 <img
                   alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 rounded-2xl"
+                  className="object-cover w-full m-auto aspect-1 md:rounded-2xl rounded-lg"
                   src={event.image}
                 />
               </div>
