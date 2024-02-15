@@ -1,3 +1,4 @@
+import zkSync from './zkSync'
 import { isLocalhost } from './localhost'
 
 export const deployContract = async (
@@ -90,7 +91,9 @@ export const verify = async ({ address, deployArgs, contract }) => {
 }
 
 export default {
-  deployContract,
-  deployUpgradeableContract,
+  deployContract: process.env.ZK_SYNC ? zkSync.deployContract : deployContract,
+  deployUpgradeableContract: process.env.ZK_SYNC
+    ? zkSync.deployUpgradeableContract
+    : deployUpgradeableContract,
   verifyContract: verify,
 }
