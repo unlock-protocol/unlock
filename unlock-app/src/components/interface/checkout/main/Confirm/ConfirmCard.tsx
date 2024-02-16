@@ -44,7 +44,6 @@ interface CreditCardPricingBreakdownProps {
 
 export function CreditCardPricingBreakdown({
   unlockServiceFee,
-  total,
   creditCardProcessingFee,
   gasCosts,
   loading,
@@ -52,14 +51,14 @@ export function CreditCardPricingBreakdown({
   unlockFeeChargedToUser = true,
 }: CreditCardPricingBreakdownProps) {
   return (
-    <div className="flex flex-col gap-2 pt-4 text-sm">
+    <div className="flex flex-col gap-2 pt-4 text-xs">
       <h3 className="font-medium">
         Credit Card Fees{' '}
         <a
           href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-2 py-0.5 rounded-lg gap-2 text-xs hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
+          className="px-2 py-0.5 rounded-lg gap-2 hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
         >
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
@@ -68,7 +67,7 @@ export function CreditCardPricingBreakdown({
         {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
+            className="flex justify-between w-full py-2 text-xs border-t border-gray-300"
             label="Service Fee"
             labelSize="tiny"
             valueSize="tiny"
@@ -107,18 +106,6 @@ export function CreditCardPricingBreakdown({
             </div>
           </Detail>
         )}
-        <Detail
-          loading={loading}
-          className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
-          label="Total"
-          labelSize="tiny"
-          valueSize="tiny"
-          inline
-        >
-          <div className="font-normal">
-            {formatFiatPriceFromCents(total, symbol)}
-          </div>
-        </Detail>
       </div>
     </div>
   )
@@ -355,23 +342,30 @@ export function ConfirmCard({
             }
             usdPrice={
               usdTotalPricing
-                ? `~${formatNumber(
+                ? `${formatNumber(
                     usdTotalPricing
                   ).toLocaleString()} ${creditCardCurrencySymbol}`
                 : ''
             }
             isCardEnabled={!!creditCardEnabled}
-          />
-        )}
-        {!isError && pricingData && (
-          <CreditCardPricingBreakdown
-            loading={isTotalPricingDataLoading || !isTotalPricingDataFetched}
-            total={totalPricing?.total ?? 0}
-            creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
-            unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-            gasCosts={gasCosts}
-            symbol={creditCardCurrencySymbol}
-            unlockFeeChargedToUser={unlockFeeChargedToUser}
+            extra={
+              !isError &&
+              pricingData && (
+                <CreditCardPricingBreakdown
+                  loading={
+                    isTotalPricingDataLoading || !isTotalPricingDataFetched
+                  }
+                  total={totalPricing?.total ?? 0}
+                  creditCardProcessingFee={
+                    totalPricing?.creditCardProcessingFee
+                  }
+                  unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+                  gasCosts={gasCosts}
+                  symbol={creditCardCurrencySymbol}
+                  unlockFeeChargedToUser={unlockFeeChargedToUser}
+                />
+              )
+            }
           />
         )}
       </main>

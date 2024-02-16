@@ -3,6 +3,7 @@ interface PricingProps {
   usdPrice?: string
   keyPrice?: string
   loading?: boolean
+  extra?: React.ReactNode
 }
 
 export function Pricing({
@@ -10,6 +11,7 @@ export function Pricing({
   keyPrice,
   isCardEnabled,
   loading = false,
+  extra = null,
 }: PricingProps) {
   if (loading) {
     return (
@@ -19,19 +21,15 @@ export function Pricing({
       </div>
     )
   }
-  if (isCardEnabled && !usdPrice) {
-    return (
-      <div className="grid text-right whitespace-nowrap">
-        <span className="font-semibold">{keyPrice}</span>
-      </div>
-    )
-  }
+
   if (isCardEnabled) {
     return (
-      <div className="grid text-right whitespace-nowrap">
-        <span className="font-semibold">{usdPrice}</span>
-        <span className="text-sm text-gray-500">{keyPrice} </span>
-      </div>
+      <>
+        {extra}
+        <div className="grid text-right whitespace-nowrap">
+          <span className="font-semibold">{usdPrice}</span>
+        </div>
+      </>
     )
   }
   return (
