@@ -5,7 +5,7 @@
  * yarn hardhat run scripts/bridge/bump.js --network mainnet
  *
  * TODO:
- * - pass `multisig` and `txId` as args
+ * - make cli task to pass args
  *
  */
 const { ethers } = require('hardhat')
@@ -142,7 +142,7 @@ const bumpTransferABI = [
   'function xcall(uint32 _destination, address _to, address _asset, address _delegate, uint256 _amount, uint256 _slippage, bytes _callData) payable returns (bytes32)',
 ]
 
-const getTransferIds = async (hash) => {
+const getXCalledEvents = async (hash) => {
   const { interface } = await ethers.getContractAt(xCalledABI, ADDRESS_ZERO)
   const { logs } = await ethers.provider.getTransactionReceipt(hash)
   const parsedLogs = logs.map((log) => {
@@ -178,7 +178,9 @@ const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
 }
 
 async function main({
+  // TODO: pass this hash via cli
   txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
+  // default to DAO executor multisig
   multisig = '0xEFF26E4Cf0a0e71B3c406A763dacB8875469cbb2',
 } = {}) {
   const {
@@ -187,14 +189,17 @@ async function main({
 
   console.log(`Using multisig: ${multisig}`)
 
-  const xCalls = await getTransferIds(txId)
+  const xCalls = await getXCalledEvents(txId)
   const transferIds = xCalls.map(({ transferId }) => transferId)
 
   console.log(`Transfers to bump: ${transferIds.length}
 ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
 
   // parse bump fee calls
-  const bridge = await ethers.getContractAt(bumpTransferABI, bridgeAddress)
+  const { interface } = await ethers.getContractAt(
+    bumpTransferABI,
+    bridgeAddress
+  )
 
   // calculate relayer fee for each call/chains
   const fees = await Promise.all(
@@ -218,7 +223,7 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
   const calls = transferIds.map((transferId, i) => ({
     functionName: 'bumpTransfer',
     functionArgs: [transferId],
-    calldata: bridge.interface.encodeFunctionData('bumpTransfer', [transferId]),
+    calldata: interface.encodeFunctionData('bumpTransfer', [transferId]),
     contractAddress: bridgeAddress,
     value: fees[i],
   }))
