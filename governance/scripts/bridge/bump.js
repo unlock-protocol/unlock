@@ -190,12 +190,6 @@ async function main({
   console.log(`Transfers to bump: ${transferIds.length}
 ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
 
-  // parse bump fee calls
-  const { interface } = await ethers.getContractAt(
-    ['function bumpTransfer(bytes32 _transferId) payable'],
-    bridgeAddress
-  )
-
   // calculate relayer fee for each call/chains
   const fees = await Promise.all(
     xCalls.map(async (d) => {
@@ -215,6 +209,10 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
   console.log(`totalFee: ${ethers.formatEther(totalFee.toString())} ETH`)
 
   // parse calls
+  const { interface } = await ethers.getContractAt(
+    ['function bumpTransfer(bytes32 _transferId) payable'],
+    bridgeAddress
+  )
   const calls = transferIds.map((transferId, i) => ({
     functionName: 'bumpTransfer',
     functionArgs: [transferId],
