@@ -20,21 +20,16 @@ export const PasswordContractHook = ({
   const { getWalletService } = useAuth()
   const web3Service = useWeb3Service()
   const [hookValue, setHookValue] = useState('')
-  const [signer, setSigner] = useState('')
-
-  useEffect(() => {
-    if (hookValue.length === 0) return
-    const { address } = getEthersWalletFromPassword(hookValue) ?? {}
-    setSigner(address)
-  }, [hookValue])
 
   const onSavePassword = async () => {
+    const { address: signerAddress } =
+      getEthersWalletFromPassword(hookValue) ?? {}
     const walletService = await getWalletService(network)
     const tx = await walletService.setPasswordHookSigner(
       {
         lockAddress,
         contractAddress: hookAddress,
-        signerAddress: signer,
+        signerAddress,
         network,
       },
       walletService.signer
@@ -131,7 +126,7 @@ export const PasswordContractHook = ({
           loading={
             savePasswordMutation.isLoading || setEventsHooksMutation.isLoading
           }
-          disabled={savePasswordMutation.isLoading || hookValue.length === 0}
+          disabled={savePasswordMutation.isLoading}
         >
           {hasSigner ? 'Update password' : 'Set password'}
         </Button>
