@@ -350,7 +350,7 @@ export const RegistrationForm = ({
               withIcon
               placeholder="0x..."
               label="Wallet address or ENS"
-              description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
+              description=""
               onResolveName={onResolveName}
               defaultValue={field.value}
               {...field}
