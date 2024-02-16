@@ -1,5 +1,18 @@
+/**
+ * Pay fees to the bridge for all calls in a cross-call DAO tx after execution
+ *
+ * Usage:
+ * yarn hardhat run scripts/bridge/bump.js --network mainnet
+ *
+ * TODO:
+ * - pass `multisig` and `txId` as args
+ *
+ */
 const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const submitTx = require('../multisig/submitTx')
+
+const { create } = require('@connext/sdk')
 
 const xCalledABI = [
   {
@@ -125,6 +138,12 @@ const xCalledABI = [
     type: 'event',
   },
 ]
+
+const bumpTransferABI = [
+  'function bumpTransfer(bytes32 _transferId) payable',
+  'function xcall(uint32 _destination, address _to, address _asset, address _delegate, uint256 _amount, uint256 _slippage, bytes _callData) payable returns (bytes32)',
+]
+
 const getTransferIds = async (hash) => {
   const { interface } = await ethers.getContractAt(xCalledABI, ADDRESS_ZERO)
   const { logs } = await ethers.provider.getTransactionReceipt(hash)
@@ -136,25 +155,92 @@ const getTransferIds = async (hash) => {
     }
   })
 
-  console.log(parsedLogs)
-  const transferIds = parsedLogs
+  const xCalled = parsedLogs
     .filter((e) => e !== null)
     .filter(({ name }) => name === 'XCalled')
-    .map(({ args: [transferId] }) => transferId)
+    .map(({ args }) => args)
 
-  return transferIds
+  return xCalled
+}
+
+const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
+  const res = await fetch(
+    'https://sdk-server.mainnet.connext.ninja/estimateRelayerFee',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        originDomain: originDomain.toString(),
+        destinationDomain: destinationDomain.toString(),
+      }),
+    }
+  )
+
+  const { hex } = await res.json()
+  return BigInt(hex)
 }
 
 async function main({
   txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
+  multisig = '0xEFF26E4Cf0a0e71B3c406A763dacB8875469cbb2',
 } = {}) {
-  const transferIds = await getTransferIds(txId)
+  const {
+    multisig: teamMultisig,
+    governanceBridge: { connext: bridgeAddress },
+  } = await getNetwork()
+
+  // default to main multisig
+  if (!multisig) {
+    multisig = teamMultisig
+  }
+
+  console.log(`Using multisig: ${multisig}`)
+
+  const xCalls = await getTransferIds(txId)
+  const transferIds = xCalls.map(({ transferId }) => transferId)
 
   console.log(`Transfers to bump: ${transferIds.length}
-${transferIds.map((txId) => `- ${txId}`).join('\n')}`)
+${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
 
-  // TODO: call the bridge to pay fees for all transfers at once
-  // bridge.bump
+  // parse bump fee calls
+  const bridge = await ethers.getContractAt(bumpTransferABI, bridgeAddress)
+
+  // calculate relayer fee for each call/chains
+  const fees = await Promise.all(
+    xCalls.map(async (d) => {
+      const { originDomain, destinationDomain } = d.params
+      return await fetchRelayerFee({ originDomain, destinationDomain })
+    })
+  )
+
+  console.log(
+    `fees (in ETH): ${fees
+      .map((fee) => ethers.formatEther(fee.toString()))
+      .join(', ')}`
+  )
+
+  // calculate sum of fees
+  const totalFee = fees.reduce((prev, curr) => prev + curr, 0n)
+  console.log(totalFee)
+  console.log(`totalFee: ${ethers.formatEther(totalFee.toString())} ETH`)
+
+  // parse calls
+  const calls = transferIds.map((transferId) => ({
+    calldata: bridge.interface.encodeFunctionData('bumpTransfer', [transferId]),
+    contractAddress: bridgeAddress,
+  }))
+
+  // submit the calls to the multisig
+  const txArgs = {
+    safeAddress: multisig,
+    tx: calls,
+  }
+  console.log(txArgs)
+
+  // const transactionId = await submitTx(txArgs)
+  // console.log(
+  //   `TRANSFER > Submitted bump tx to multisig (id: ${transactionId}).`
+  // )
 }
 
 main()
