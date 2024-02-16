@@ -137,11 +137,6 @@ const xCalledABI = [
   },
 ]
 
-const bumpTransferABI = [
-  'function bumpTransfer(bytes32 _transferId) payable',
-  'function xcall(uint32 _destination, address _to, address _asset, address _delegate, uint256 _amount, uint256 _slippage, bytes _callData) payable returns (bytes32)',
-]
-
 const getXCalledEvents = async (hash) => {
   const { interface } = await ethers.getContractAt(xCalledABI, ADDRESS_ZERO)
   const { logs } = await ethers.provider.getTransactionReceipt(hash)
@@ -197,7 +192,7 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
 
   // parse bump fee calls
   const { interface } = await ethers.getContractAt(
-    bumpTransferABI,
+    ['function bumpTransfer(bytes32 _transferId) payable'],
     bridgeAddress
   )
 
