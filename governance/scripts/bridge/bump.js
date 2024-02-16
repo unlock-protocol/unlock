@@ -173,7 +173,6 @@ const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
       }),
     }
   )
-
   const { hex } = await res.json()
   return BigInt(hex)
 }
@@ -181,8 +180,6 @@ const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
 async function main({
   txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
   multisig = '0xEFF26E4Cf0a0e71B3c406A763dacB8875469cbb2',
-  // make optional as the Connext fee API hangs
-  calculateFee = false,
 } = {}) {
   const {
     governanceBridge: { connext: bridgeAddress },
@@ -199,32 +196,31 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
   // parse bump fee calls
   const bridge = await ethers.getContractAt(bumpTransferABI, bridgeAddress)
 
-  if (calculateFee) {
-    // calculate relayer fee for each call/chains
-    const fees = await Promise.all(
-      xCalls.map(async (d) => {
-        const { originDomain, destinationDomain } = d.params
-        return await fetchRelayerFee({ originDomain, destinationDomain })
-      })
-    )
+  // calculate relayer fee for each call/chains
+  const fees = await Promise.all(
+    xCalls.map(async (d) => {
+      const { originDomain, destinationDomain } = d.params
+      return await fetchRelayerFee({ originDomain, destinationDomain })
+    })
+  )
 
-    console.log(fees)
-    console.log(
-      `fees (in ETH): ${fees
-        .map((fee) => ethers.formatEther(fee.toString()))
-        .join(', ')}`
-    )
+  console.log(
+    `fees (in ETH): ${fees
+      .map((fee) => ethers.formatEther(fee.toString()))
+      .join(', ')}`
+  )
 
-    // calculate sum of fees
-    const totalFee = fees.reduce((prev, curr) => prev + curr, 0n)
-    console.log(totalFee)
-    console.log(`totalFee: ${ethers.formatEther(totalFee.toString())} ETH`)
-  }
+  // calculate sum of fees
+  const totalFee = fees.reduce((prev, curr) => prev + curr, 0n)
+  console.log(`totalFee: ${ethers.formatEther(totalFee.toString())} ETH`)
 
   // parse calls
-  const calls = transferIds.map((transferId) => ({
+  const calls = transferIds.map((transferId, i) => ({
+    functionName: 'bumpTransfer',
+    functionArgs: [transferId],
     calldata: bridge.interface.encodeFunctionData('bumpTransfer', [transferId]),
     contractAddress: bridgeAddress,
+    value: fees[i],
   }))
 
   // submit the calls to the multisig
