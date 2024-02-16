@@ -374,7 +374,7 @@ export const getUsdPricingForRecipient = async ({
     userAddress,
     data,
     network,
-    referrer,
+    referrer: referrer || networks[network]?.multisig || userAddress,
   })
 
   const amount = fromDecimal(purchasePrice, decimals)
