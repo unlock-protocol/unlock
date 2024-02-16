@@ -12,8 +12,6 @@ const { ethers } = require('hardhat')
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const submitTx = require('../multisig/submitTx')
 
-const { create } = require('@connext/sdk')
-
 const xCalledABI = [
   {
     anonymous: false,
@@ -185,14 +183,8 @@ async function main({
   multisig = '0xEFF26E4Cf0a0e71B3c406A763dacB8875469cbb2',
 } = {}) {
   const {
-    multisig: teamMultisig,
     governanceBridge: { connext: bridgeAddress },
   } = await getNetwork()
-
-  // default to main multisig
-  if (!multisig) {
-    multisig = teamMultisig
-  }
 
   console.log(`Using multisig: ${multisig}`)
 
@@ -213,6 +205,7 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
     })
   )
 
+  console.log(fees)
   console.log(
     `fees (in ETH): ${fees
       .map((fee) => ethers.formatEther(fee.toString()))
@@ -237,10 +230,10 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
   }
   console.log(txArgs)
 
-  // const transactionId = await submitTx(txArgs)
-  // console.log(
-  //   `TRANSFER > Submitted bump tx to multisig (id: ${transactionId}).`
-  // )
+  const transactionId = await submitTx(txArgs)
+  console.log(
+    `TRANSFER > Submitted bump tx to multisig (id: ${transactionId}).`
+  )
 }
 
 main()
