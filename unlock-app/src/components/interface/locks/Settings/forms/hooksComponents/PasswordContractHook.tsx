@@ -1,5 +1,5 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { useAuth } from '~/contexts/AuthenticationContext'
