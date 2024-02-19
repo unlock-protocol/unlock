@@ -14,7 +14,7 @@ const staging = {
 
 const dev = {
   paywallUrl: process.env.NEXT_PUBLIC_PAYWALL_URL || staging.paywallUrl,
-  locksmithHost: process.env.NEXT_PUBLIC_LOCKSMITH_URI || staging.locksmithHost,
+  locksmithHost: 'http://localhost:8080',
   unlockStaticUrl:
     process.env.NEXT_PUBLIC_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
   wedlocksUri: process.env.NEXT_PUBLIC_WEDLOCKS_URI || staging.wedlocksUri,

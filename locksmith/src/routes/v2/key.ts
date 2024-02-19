@@ -16,6 +16,22 @@ router.get(
 )
 
 router.get(
+  '/:network/locks/:lockAddress/allKeys',
+  //authenticatedMiddleware,
+  (req, res) => {
+    keyController.allKeys(req, res)
+  }
+)
+
+router.get(
+  '/job',
+  //authenticatedMiddleware,
+  (req, res) => {
+    keyController.getJobResult(req, res)
+  }
+)
+
+router.get(
   '/:network/locks/:lockAddress/keys-by-page',
   authenticatedMiddleware,
   (req, res) => {
