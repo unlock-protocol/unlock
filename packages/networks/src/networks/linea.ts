@@ -72,7 +72,9 @@ export const linea: NetworkConfig = {
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 560908,
   subgraph: {
-    endpoint: 'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-linea/version/latest',
+    studioName: 'unlock-protocol-linea',
   },
   tokens: [
     {

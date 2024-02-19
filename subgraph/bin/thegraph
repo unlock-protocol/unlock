@@ -92,15 +92,6 @@ const deploy = async (network, studioName, graphLabel) => {
     throw new Error('Missing network name')
   }
 
-  // TODO: remove from here once Linea is added on subgraph studio
-  if (network === 'linea') {
-    return await executeStudioDeployWithVersionIncrement({
-      subgraphName: 'linea-mainnet',
-      version: graphLabel,
-      flags: `--node 'https://graph-deploy.linea.build' --ipfs 'https://graph-ipfs.linea.build'`,
-    })
-  }
-
   if (!networks[network]?.subgraph?.endpoint) {
     // TODO: create subgraph automatically if necessary
   }
