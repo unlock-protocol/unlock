@@ -127,8 +127,17 @@ export const WalletlessRegistrationClaim = ({
     network,
   })
 
-  const onRSVP = async ({ data, captcha }: { data: any; captcha: string }) => {
+  const onRSVP = async ({
+    recipient,
+    data,
+    captcha,
+  }: {
+    recipient?: string
+    data: any
+    captcha: string
+  }) => {
     const { hash, owner, message } = await claim({
+      recipient,
       metadata: data,
       captcha,
     })
