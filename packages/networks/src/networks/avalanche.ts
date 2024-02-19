@@ -62,9 +62,8 @@ export const avalanche: NetworkConfig = {
   startBlock: 17188332,
   subgraph: {
     endpoint:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche-v2',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-avalanche/version/latest',
+    studioName: 'unlock-protocol-avalanche',
   },
   tokens: [
     {

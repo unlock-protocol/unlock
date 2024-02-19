@@ -33,7 +33,7 @@ export class SubgraphService {
   createSdk(networkId = 1) {
     const network = this.networks[networkId]
 
-    const client = new GraphQLClient(network.subgraph.endpointV2!)
+    const client = new GraphQLClient(network.subgraph.endpoint!)
     const sdk = getSdk(client)
     return sdk
   }

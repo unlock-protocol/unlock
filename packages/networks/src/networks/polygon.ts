@@ -86,10 +86,10 @@ export const polygon: NetworkConfig = {
   publicProvider: 'https://polygon-rpc.com/',
   startBlock: 21986688,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-polygon/version/latest',
     networkName: 'matic',
+    studioName: 'unlock-protocol-polygon',
   },
   swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   tokens: [
