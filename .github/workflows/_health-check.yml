@@ -2,6 +2,9 @@ name: Protocol Health Check
 
 on:
   workflow_call:
+    secrets:
+      SENTRY_PROTOCOL_HEALTH_DSN:
+        required: true
 
 jobs:
   health-check:
@@ -10,6 +13,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
+      SENTRY_DSN: ${{ secrets.SENTRY_PROTOCOL_HEALTH_DSN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -17,12 +21,29 @@ jobs:
           node-version: 20
       - run: yarn
       - run: yarn build
+      - name: Install Sentry CLI
+        shell: bash
+        run: npm install @sentry/cli -g
       - name: Check networks package
-        run: yarn workspace @unlock-protocol/networks check
+        run: |
+          yarn workspace @unlock-protocol/networks check >> networks.log
+          sentry-cli send-event -m "Networks" --logfile networks.log
+        shell: bash
+      - name: Check tokens in networks package
+        run: |
+          yarn workspace @unlock-protocol/networks check-tokens >> networks-tokens.log
+          sentry-cli send-event -m "Networks Tokens" --logfile networks-tokens.log
         shell: bash
       - name: Check Unlock info
-        run: yarn workspace @unlock-protocol/governance check
+        run: |
+          yarn workspace @unlock-protocol/governance check >> governance.log
+          sentry-cli send-event -m "Governance" --logfile governance.log
       - name: Check Subgraphs
-        run: yarn workspace @unlock-protocol/subgraph check
+        run: |
+          yarn workspace @unlock-protocol/subgraph check >> subgraph.log
+          sentry-cli send-event -m "Subgraph" --logfile subgraph.log
       - name: Check Team Multisigs
-        run: yarn workspace @unlock-protocol/governance check:multisig
+        run: |
+          yarn workspace @unlock-protocol/governance check:multisig >> multisig.log
+          sentry-cli send-event -m "Multisig" --logfile multisig.log
+        
