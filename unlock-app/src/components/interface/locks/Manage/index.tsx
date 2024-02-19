@@ -79,15 +79,13 @@ export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
 
   // this breaks when there is too many rows!
   const onDownloadCsv = async () => {
-    const response = await storage.keys(
+    const response = await storage.getAllKeys(
       network,
       lockAddress,
       '',
       'owner',
       'all',
-      'minted',
-      page - 1,
-      PAGE_SIZE
+      'minted'
     )
     const members = response.data
     const cols: string[] = []

@@ -168,9 +168,7 @@ export default class KeyController {
         return response.status(200).send(job.data)
       case 'failed':
         //JobStore.removeJob(jobId as string)
-        return response
-          .status(500)
-          .send({ message: `Job failed: ${job.data?.error}` })
+        return response.status(500).send({ message: `Job failed: ${job.data}` })
       default:
         //JobStore.removeJob(jobId as string)
         return response.status(400).send({ message: 'Invalid job status.' })

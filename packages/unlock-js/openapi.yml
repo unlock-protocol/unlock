@@ -475,6 +475,28 @@ components:
         network:
           type: number
 
+    Key:
+      type: object
+      properties:
+        token:
+          type: string
+        lockName:
+          type: string
+        expiration:
+          type: string
+        keyholderAddress:
+          type: string
+        keyManager:
+          type: string
+        lockAddress:
+          type: string
+        transactionsHash:
+          type: array
+          items:
+            type: string
+        email:
+          type: string
+
   parameters:
     Network:
       in: path
@@ -1447,6 +1469,80 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/{network}/locks/{lockAddress}/getAllKeys:
+    get:
+      operationId: getAllKeys
+      security:
+        - User: []
+        - Application: []
+      description: Retrieve all keys for a given lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: filterKey
+          required: true
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+      responses:
+        '200':
+          description: Successfully retrieved all keys
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  keys:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Key'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+
+  /v2/api/getKeyJob:
+    get:
+      operationId: getKeyJob
+      security:
+        - User: []
+        - Application: []
+      description: Get job result
+      parameters:
+        - in: query
+          name: jobId
+          required: true
+          schema:
+            type: string
+          description: The job ID to retrieve results for
+      responses:
+        '200':
+          description: Successfully retrieved job result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  data:
+                    type: object
+        '401':
+          description: Unauthorized
+        '404':
+          description: Job not found
 
   /purchase:
     get:
