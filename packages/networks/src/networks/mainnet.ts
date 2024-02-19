@@ -71,10 +71,9 @@ export const mainnet: NetworkConfig = {
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   startBlock: 16989000,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/mainnet-v2',
-    studioEndpoint: 'unlock-protocol-mainnet',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-mainnet/version/latest',
+    studioName: 'unlock-protocol-mainnet',
   },
   swapPurchaser: '0x02415541c7F4c976722493181cFdb0b46E1c94fb',
   tokens: [

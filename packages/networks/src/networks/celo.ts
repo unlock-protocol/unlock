@@ -53,11 +53,11 @@ export const celo: NetworkConfig = {
   provider: 'https://rpc.unlock-protocol.com/42220',
   publicLockVersionToDeploy: 13,
   publicProvider: 'https://forno.celo.org',
-  startBlock: 7179039,
+  startBlock: 13994123,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
+    studioName: 'unlock-protocol-celo',
   },
   swapPurchaser: '0x42F5c7839Bf00FAea6ca09517E96E82e7364384D',
   tokens: [
