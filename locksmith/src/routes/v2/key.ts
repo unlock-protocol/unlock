@@ -16,10 +16,10 @@ router.get(
 )
 
 router.get(
-  '/:network/locks/:lockAddress/allKeys',
+  '/:network/locks/:lockAddress/startKeyJob',
   authenticatedMiddleware,
   (req, res) => {
-    keyController.allKeys(req, res)
+    keyController.startKeyJob(req, res)
   }
 )
 

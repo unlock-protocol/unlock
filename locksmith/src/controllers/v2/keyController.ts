@@ -60,7 +60,10 @@ export default class KeyController {
     }
   }
 
-  async allKeys(request: Request, response: Response) {
+  async startKeyJob(request: Request, response: Response) {
+    // This is the best solution whithout using DB or S3
+    JobStore.cleanOldJobs()
+
     try {
       const jobId = randomUUID()
 
@@ -68,7 +71,7 @@ export default class KeyController {
 
       response.status(200).send({ jobId })
 
-      this.processAndStoreJsonData(request, jobId).catch((error) => {
+      this.processAndStoreKeyData(request, jobId).catch((error) => {
         console.error(
           `Failed to process data for job ${jobId}: ${error.message}`
         )
@@ -83,7 +86,7 @@ export default class KeyController {
     return
   }
 
-  async processAndStoreJsonData(request: Request, jobId: string) {
+  async processAndStoreKeyData(request: Request, jobId: string) {
     JobStore.updateJob(jobId, 'processing')
 
     try {
@@ -102,7 +105,9 @@ export default class KeyController {
         })
       }
 
-      // const loggedInUserAddress = Normalizer.ethereumAddress(request!.user!.walletAddress)
+      const loggedInUserAddress = Normalizer.ethereumAddress(
+        request!.user!.walletAddress
+      )
 
       let allKeys: any = []
       let page = 0
@@ -117,8 +122,10 @@ export default class KeyController {
           network,
           lockAddress,
           filters,
-          loggedInUserAddress: '0x13e8F3A5a8A52eBC7351f5bEc5B06F8D7208Fc05',
+          loggedInUserAddress,
         })
+
+        console.log(keys[0])
 
         allKeys = [...allKeys, ...keys]
         totalFetched += keys.length
@@ -153,7 +160,7 @@ export default class KeyController {
     console.log(jobId)
 
     const job = JobStore.getJob(jobId as string)
-    console.log(job)
+
     if (!job) {
       return response.status(404).send({ message: 'Job not found.' })
     }
@@ -164,13 +171,13 @@ export default class KeyController {
           .status(202)
           .send({ message: 'Job is still processing. Please retry later.' })
       case 'completed':
-        // JobStore.removeJob(jobId as string)
+        JobStore.removeJob(jobId as string)
         return response.status(200).send(job.data)
       case 'failed':
-        //JobStore.removeJob(jobId as string)
+        JobStore.removeJob(jobId as string)
         return response.status(500).send({ message: `Job failed: ${job.data}` })
       default:
-        //JobStore.removeJob(jobId as string)
+        JobStore.removeJob(jobId as string)
         return response.status(400).send({ message: 'Invalid job status.' })
     }
   }
