@@ -3,7 +3,7 @@ import { ForwardedRef, useState, useEffect } from 'react'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { isAddressOrEns, minifyAddress } from '../../utils'
+import { isAddress, isEns, minifyAddress } from '../../utils'
 import {
   useMutation,
   QueryClient,
@@ -62,17 +62,15 @@ export const WrappedAddressInput = ({
 }: Props) => {
   const [errorMessage, setErrorMessage] = useState<any>('')
   const [success, setSuccess] = useState('')
-  const [address, setAddress] = useState<string>(value as string)
+  const [addressOrEns, setAddressOrEns] = useState<string>(
+    (value as string) || (defaultValue as string)
+  )
   const onReset = () => {
     setErrorMessage('')
     setSuccess('')
   }
 
-  const resolveNameMutation = useMutation(onResolveName, {
-    onMutate: () => {
-      onReset() // restore state when typing
-    },
-  })
+  const resolveNameMutation = useMutation(onResolveName)
 
   const handleResolver = async (address: string) => {
     try {
@@ -102,11 +100,9 @@ export const WrappedAddressInput = ({
   }
 
   useEffect(() => {
-    if (
-      (typeof defaultValue === 'string' && defaultValue.length === 0) ||
-      (typeof value === 'string' && value === '')
-    ) {
-      setAddress('')
+    if (typeof value === 'string' && value !== addressOrEns) {
+      // Keeping in sync!
+      setAddressOrEns(value)
       onReset()
     }
   }, [defaultValue, value])
@@ -115,7 +111,7 @@ export const WrappedAddressInput = ({
     <Input
       {...inputProps}
       type="address"
-      value={address}
+      value={addressOrEns}
       label={label}
       size={size}
       error={error || errorMessage}
@@ -126,9 +122,15 @@ export const WrappedAddressInput = ({
       onChange={async (e) => {
         const value: string = e.target.value
         await resolveNameMutation.reset() // reset mutation
-        setAddress(value)
+        setAddressOrEns(value)
+        onReset() // restore state when typing
 
-        if (isAddressOrEns(value)) {
+        if (isAddress(value)) {
+          setSuccess(value)
+          if (typeof onChange === 'function') {
+            onChange(value as any)
+          }
+        } else if (isEns(value)) {
           try {
             const res = await handleResolver(value)
             if (typeof onChange === 'function' && res) {
@@ -136,9 +138,11 @@ export const WrappedAddressInput = ({
             }
           } catch (_err) {}
         } else {
-          setErrorMessage(`It's not a valid ens name or address`)
+          if (value.length !== 0) {
+            setErrorMessage(`It's not a valid ens name or address`)
+          }
           if (typeof onChange === 'function') {
-            onChange(value as any)
+            onChange('' as any)
           }
         }
       }}
