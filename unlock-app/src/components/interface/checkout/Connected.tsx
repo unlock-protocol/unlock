@@ -203,14 +203,8 @@ export function Connected({
       }
     }
     autoSignIn()
-  }, [
-    connected,
-    useDelegatedProvider,
-    isUnlockAccount,
-    signIn,
-    signing,
-    isSignedIn,
-  ])
+    // adding signIn creates an inifnite loop for some reason
+  }, [connected, useDelegatedProvider, isUnlockAccount, signing, isSignedIn])
 
   useEffect(() => {
     if (!account) {
