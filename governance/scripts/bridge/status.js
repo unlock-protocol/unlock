@@ -3,7 +3,13 @@ const {
   fetchOriginXCall,
   fetchDestinationXCall,
   getSupportedChainsByDomainId,
+  logStatus,
 } = require('./_lib')
+
+const fs = require('fs-extra')
+
+// small cache to prevent numerous calls to subgraph api
+const filepath = './xcalled.json.tmp'
 
 async function main({
   // TODO: pass this hash via cli
@@ -28,62 +34,62 @@ async function main({
   const destChains = await getSupportedChainsByDomainId()
 
   // store all status for all calls
-  const statuses = {}
-  await Promise.all(
-    Object.keys(sorted).map(async (domainId) => {
-      const xcalls = sorted[domainId]
-      const transferIds = xcalls.map(({ transferId }) => transferId)
+  let statuses = {}
+  if (await fs.exists(filepath)) {
+    console.log(`Cache file exists: ${filepath}. Using cache`)
+    statuses = await fs.readJSON(filepath)
+  } else {
+    console.log(`No file cache found: ${filepath}. Fetching results...`)
 
-      // get statuses for all calls
-      const originStatuses = await fetchOriginXCall({ transferIds })
-      originStatuses.forEach(
-        ({ transferId, status, transactionHash, originDomain }) => {
-          statuses[transferId] = {
-            origin: { status, originDomain, transactionHash },
+    // fetch statuses from Connext subgraphs for all calls
+    await Promise.all(
+      Object.keys(sorted).map(async (domainId) => {
+        const xcalls = sorted[domainId]
+        const transferIds = xcalls.map(({ transferId }) => transferId)
+
+        // get statuses for all calls
+        const originStatuses = await fetchOriginXCall({ transferIds })
+        originStatuses.forEach(
+          ({ transferId, status, transactionHash, originDomain, chainId }) => {
+            statuses[transferId] = {
+              origin: { status, chainId, originDomain, transactionHash },
+            }
           }
-        }
-      )
+        )
 
-      // get status on destination chain (mainnet)
-      const destStatuses = await fetchDestinationXCall({
-        transferIds,
-        chainId: destChains[domainId].id,
-      })
-      destStatuses.forEach(
-        ({
-          transferId,
-          status,
-          executedTransactionHash,
-          reconciledTransactionHash,
-          destinationDomain,
-        }) => {
-          statuses[transferId].dest = {
+        // get status on destination chain (mainnet)
+        const destStatuses = await fetchDestinationXCall({
+          transferIds,
+          chainId: destChains[domainId].id,
+        })
+        destStatuses.forEach(
+          ({
+            transferId,
             status,
-            destinationDomain,
+            chainId,
             executedTransactionHash,
             reconciledTransactionHash,
+            destinationDomain,
+          }) => {
+            statuses[transferId].dest = {
+              status,
+              chainId,
+              destinationDomain,
+              executedTransactionHash,
+              reconciledTransactionHash,
+            }
           }
-        }
-      )
-    })
-  )
+        )
+      })
+    )
+    await fs.outputJson(filepath, statuses)
+  }
 
   // log all results
-  Object.keys(statuses).forEach((transferId) => {
-    const { origin, dest } = statuses[transferId]
-    const { explorer, name, id } = destChains[dest.destinationDomain]
-    console.log(`To ${name} (${id}) - ${transferId}
-  - origin (${origin.status}) - tx : ${explorer.urls.transaction(
-    origin.transactionHash
-  )}
-  - dest (${dest.status})
-    - executedTransactionHash: ${explorer.urls.transaction(
-      dest.executedTransactionHash
-    )}
-    - reconciledTransactionHash ${explorer.urls.transaction(
-      dest.reconciledTransactionHash
-    )}\n`)
-  })
+
+  Object.keys(statuses).map((transferId) =>
+    logStatus(transferId, statuses[transferId])
+  )
 }
 
 // execute as standalone
