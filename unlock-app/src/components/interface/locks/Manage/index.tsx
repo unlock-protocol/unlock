@@ -36,6 +36,7 @@ import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface ActionBarProps {
   lockAddress: string
@@ -94,10 +95,15 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
         setIsKeysJobLoading(true)
       } else {
         console.error('Failed to start download job', response)
+        ToastHelper.error(`Failed to start download job: ${response}`)
       }
     },
     {
+      meta: {
+        errorMessage: 'Failed to download members list',
+      },
       onError: (error) => {
+        ToastHelper.error(`Failed to download members list: ${error}`)
         console.error('Failed to download members list', error)
         setIsKeysJobLoading(false)
       },
@@ -126,6 +132,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
           metadata: members.keys as any[],
         })
       } else {
+        ToastHelper.error(`Job failed or job status unknown: ${response}`)
         console.error('Job failed or job status unknown', response)
       }
     }

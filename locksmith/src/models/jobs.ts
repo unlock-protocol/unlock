@@ -39,11 +39,8 @@ class JobStore {
   }
 
   static cleanOldJobs(): void {
-    console.log('Clear')
     const time = Date.now() - 10 * 60 * 100 // 10 minutes in milliseconds
     this.jobs.forEach((job, id) => {
-      console.log('Time: ', time)
-      console.log('Job:', job.createdAt)
       if (job.createdAt < time) {
         this.jobs.delete(id)
       }

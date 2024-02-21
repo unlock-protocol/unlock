@@ -125,8 +125,6 @@ export default class KeyController {
           loggedInUserAddress,
         })
 
-        console.log(keys[0])
-
         allKeys = [...allKeys, ...keys]
         totalFetched += keys.length
         page++
@@ -156,8 +154,6 @@ export default class KeyController {
 
   async getJobResult(request: Request, response: Response) {
     const { jobId } = request.query
-
-    console.log(jobId)
 
     const job = JobStore.getJob(jobId as string)
 
