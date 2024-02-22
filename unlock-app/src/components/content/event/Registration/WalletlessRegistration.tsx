@@ -364,7 +364,7 @@ export const RegistrationForm = ({
               withIcon
               placeholder="0x..."
               label="Wallet address or ENS"
-              description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
+              description="Enter your address to get the NFT ticket right in your wallet."
               onResolveName={handleResolve.mutateAsync}
               {...field}
             />
