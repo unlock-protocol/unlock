@@ -1,3 +1,4 @@
+// TODO: cleanup this test
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
 const BigNumber = require('bignumber.js')
