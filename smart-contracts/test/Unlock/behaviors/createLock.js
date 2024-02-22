@@ -22,7 +22,7 @@ exports.shouldCreateLock = (options) => {
         const args = [
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           ADDRESS_ZERO,
-          ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
+          ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
           100, // maxNumberOfKeys
           'New Lock',
         ]
