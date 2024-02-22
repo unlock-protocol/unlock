@@ -53,8 +53,7 @@ const FILTER_ITEMS: Filter[] = [
   {
     key: 'email',
     label: 'Email',
-    show: (filters) => {
-      return filters.approval === 'minted'
+    show: () => {
       return true
     },
     placeholder: 'your@email.com',
@@ -128,10 +127,12 @@ export const FilterBar = ({
 }: FilterBarProps) => {
   const [isTyping, setIsTyping] = useState(false)
   const [rawQueryValue, setRawQueryValue] = useState('')
+  const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
 
   const setFiltersAndResetPage = (newFilter: any) => {
     setFilters({
       ...filters,
+      filterKey,
       ...newFilter,
     })
     setPage(1)
@@ -161,8 +162,6 @@ export const FilterBar = ({
   const [expandApprovalFilter, setExpandApprovalFilter] = useState(
     filters.approval !== ApprovalStatus.MINTED
   )
-
-  const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
 
   const filterOptions = FILTER_ITEMS.filter((filter: Filter) => {
     if (typeof filter.show !== 'function') {
