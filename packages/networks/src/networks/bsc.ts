@@ -86,7 +86,8 @@ export const bsc: NetworkConfig = {
   startBlock: 13079000,
 
   subgraph: {
-    endpoint: 'https://api.studio.thegraph.com/query/65299/unlock-protocol-bsc/version/latest',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-bsc/version/latest',
     studioName: 'unlock-protocol-bsc',
   },
 
