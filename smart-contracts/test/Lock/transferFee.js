@@ -7,7 +7,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-contract('Lock / transferFee', (accounts) => {
+contract('Lock / transferFee', () => {
   let lock
   let keyOwner, newOwner, randomSigner, lockManager
   const denominator = 10000
@@ -48,7 +48,7 @@ contract('Lock / transferFee', (accounts) => {
       const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = await lock.getTransferFee(tokenId, 0)
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await purchaseKey(lock, accounts[8])
+      await purchaseKey(lock, randomSigner.address)
 
       const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
