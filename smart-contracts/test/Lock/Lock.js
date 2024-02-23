@@ -1,6 +1,5 @@
-const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
-const { reverts, deployLock } = require('../helpers')
+const { reverts, deployLock, compareBigNumbers } = require('../helpers')
 
 const erc777abi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc777.json')
 
@@ -25,18 +24,11 @@ contract('Lock / Lock', (accounts) => {
       lock.totalSupply(),
       lock.numberOfOwners(),
     ])
-    expirationDuration = new BigNumber(expirationDuration)
-    maxNumberOfKeys = new BigNumber(maxNumberOfKeys)
-    totalSupply = new BigNumber(totalSupply)
-    numberOfOwners = new BigNumber(numberOfOwners)
-    assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
-    assert.strictEqual(
-      ethers.utils.formatUnits(ethers.BigNumber.from(keyPrice.toString())),
-      '0.01'
-    )
-    assert.equal(maxNumberOfKeys.toFixed(), 10)
-    assert.equal(totalSupply.toFixed(), 0)
-    assert.equal(numberOfOwners.toFixed(), 0)
+    compareBigNumbers(expirationDuration, 60 * 60 * 24 * 30)
+    assert.strictEqual(ethers.utils.formatUnits(keyPrice.toString()), '0.01')
+    compareBigNumbers(maxNumberOfKeys, 10)
+    compareBigNumbers(totalSupply, 0)
+    compareBigNumbers(numberOfOwners, 0)
   })
 
   it('Should fail on unknown calls', async () => {

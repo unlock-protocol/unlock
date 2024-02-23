@@ -5,10 +5,10 @@ function isBigNumber(object) {
 }
 
 function compareBigNumbers(bn1, bn2) {
-  // console.log(bn1, bn2)
   assert.equal(
     typeof bn1 === 'string' ? bn1 : bn1.toString(),
-    typeof bn2 === 'string' ? bn2 : bn2.toString()
+    typeof bn2 === 'string' ? bn2 : bn2.toString(),
+    `${bn1.toString()} does not match ${bn2.toString()}`
   )
 }
 
