@@ -1519,11 +1519,11 @@ paths:
 
   /v2/api/getKeyJob:
     get:
-      operationId: getKeyJob
+      operationId: getKeyJobResult
       security:
         - User: []
         - Application: []
-      description: Get job result
+      description: Get job result by job id
       parameters:
         - in: query
           name: jobId

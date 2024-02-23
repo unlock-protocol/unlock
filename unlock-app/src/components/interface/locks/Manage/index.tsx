@@ -113,28 +113,27 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   useEffect(() => {
     let intervalId: any = null
 
+    ToastHelper.success(
+      `It may take a few minutes for the file to be generated. Please do not close this page`
+    )
+
     const fetchKeysJob = async () => {
       if (!keysJobId) return
 
       const response = await storage.getKeyJob(keysJobId)
-      if (response.status === 202) {
+      if (response.status != 200) {
         return
       }
 
       clearInterval(intervalId)
       setIsKeysJobLoading(false)
 
-      if (response.status === 200) {
-        const members = response.data
-        const cols = members.keys ? Object.keys(members.keys[0]) : []
-        downloadAsCSV({
-          cols,
-          metadata: members.keys as any[],
-        })
-      } else {
-        ToastHelper.error(`Job failed or job status unknown: ${response}`)
-        console.error('Job failed or job status unknown', response)
-      }
+      const members = response.data
+      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      downloadAsCSV({
+        cols,
+        metadata: members.keys as any[],
+      })
     }
 
     if (isKeysJobLoading) {

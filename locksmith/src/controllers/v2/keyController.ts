@@ -4,7 +4,10 @@ import logger from '../../logger'
 import * as keysOperations from '../../operations/keysOperations'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { randomUUID } from 'node:crypto'
-import { JobStore } from '../../models/jobs'
+import WorkerUtilsSingleton from '../../worker/workerUtilsSingleton'
+import { LockKeyJobPayload } from '../../worker/tasks/processAndStoreLockKeys'
+import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
+import config from '../../config/config'
 
 export default class KeyController {
   /**
@@ -60,121 +63,69 @@ export default class KeyController {
     }
   }
 
+  /**
+   * Initiates worker task to get all the keys for a given lock
+   */
   async startKeyJob(request: Request, response: Response) {
-    // This is the best solution whithout using DB or S3
-    JobStore.cleanOldJobs()
-
     try {
       const jobId = randomUUID()
 
-      JobStore.createJob(jobId)
-
-      response.status(200).send({ jobId })
-
-      this.processAndStoreKeyData(request, jobId).catch((error) => {
-        console.error(
-          `Failed to process data for job ${jobId}: ${error.message}`
-        )
-        JobStore.updateJob(jobId, 'failed', { error: error.message })
+      const payload = LockKeyJobPayload.parse({
+        jobId: jobId as string,
+        lockAddress: Normalizer.ethereumAddress(request.params.lockAddress),
+        network: Number(request.params.network),
+        query: request.query.query ?? '',
+        filterKey: request.query.filterKey,
+        expiration: request.query.expiration ?? 'active',
+        approval: request.query.approval ?? 'minted',
+        loggedInUserAddress: Normalizer.ethereumAddress(
+          request.user!.walletAddress
+        ),
       })
+
+      const workerUtils = await WorkerUtilsSingleton.getInstance()
+
+      // Default priority for tasks is 0, we do not want to make clients wait
+      await workerUtils.addJob('processAndStoreLockKeys', payload, {
+        priority: -1,
+      })
+
+      return response.status(200).send({ jobId })
     } catch (error) {
       console.error(error.message)
       return response.status(500).send({
         message: 'An error occurred while starting the JSON processing job.',
       })
     }
-    return
   }
 
-  async processAndStoreKeyData(request: Request, jobId: string) {
-    JobStore.updateJob(jobId, 'processing')
+  /**
+   * Returns json with all the keys for a lock by worker job id
+   */
+  async getKeyJobResult(request: Request, response: Response) {
+    const { jobId } = request.query ?? {}
 
-    try {
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const network = Number(request.params.network)
-      const {
-        query = '',
-        filterKey,
-        expiration = 'active',
-        approval = 'minted',
-      } = request.query ?? {}
-
-      if (!filterKey) {
-        JobStore.updateJob(jobId, 'failed', {
-          error: 'No filterKey query found.',
-        })
-      }
-
-      const loggedInUserAddress = Normalizer.ethereumAddress(
-        request!.user!.walletAddress
-      )
-
-      let allKeys: any = []
-      let page = 0
-      const max = PAGE_SIZE
-      let totalFetched = 0
-      let totalPages = Infinity
-
-      while (page < totalPages) {
-        const filters = { query, page, filterKey, expiration, approval, max }
-
-        const { keys, total } = await keysOperations.getKeysWithMetadata({
-          network,
-          lockAddress,
-          filters,
-          loggedInUserAddress,
-        })
-
-        allKeys = [...allKeys, ...keys]
-        totalFetched += keys.length
-        page++
-
-        totalPages = Math.ceil(total / PAGE_SIZE)
-
-        if (keys.length === 0) {
-          break
-        }
-      }
-
-      JobStore.updateJob(jobId, 'completed', {
-        keys: allKeys,
-        meta: {
-          total: totalFetched,
-          pages: totalPages,
-          byPage: PAGE_SIZE,
-        },
-      })
-    } catch (error) {
-      console.error(error.message)
-      JobStore.updateJob(jobId, 'failed', {
-        error: error.message,
-      })
-    }
-  }
-
-  async getJobResult(request: Request, response: Response) {
-    const { jobId } = request.query
-
-    const job = JobStore.getJob(jobId as string)
-
-    if (!job) {
+    if (!jobId) {
       return response.status(404).send({ message: 'Job not found.' })
     }
 
-    switch (job.status) {
-      case 'processing':
+    try {
+      const file = await downloadJsonFromS3(
+        config.lockKeysBucket,
+        jobId as string
+      )
+
+      if (!file) {
         return response
           .status(202)
           .send({ message: 'Job is still processing. Please retry later.' })
-      case 'completed':
-        JobStore.removeJob(jobId as string)
-        return response.status(200).send(job.data)
-      case 'failed':
-        JobStore.removeJob(jobId as string)
-        return response.status(500).send({ message: `Job failed: ${job.data}` })
-      default:
-        JobStore.removeJob(jobId as string)
-        return response.status(400).send({ message: 'Invalid job status.' })
+      }
+
+      return response.status(200).send(file)
+    } catch (error) {
+      return response
+        .status(202)
+        .send({ message: `Unknown job status. Error ${error}` })
     }
   }
 

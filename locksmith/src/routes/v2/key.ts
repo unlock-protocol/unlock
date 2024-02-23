@@ -23,8 +23,8 @@ router.get(
   }
 )
 
-router.get('/getKeyJob', authenticatedMiddleware, (req, res) => {
-  keyController.getJobResult(req, res)
+router.get('/getKeyJobResult', authenticatedMiddleware, (req, res) => {
+  keyController.getKeyJobResult(req, res)
 })
 
 router.get(
