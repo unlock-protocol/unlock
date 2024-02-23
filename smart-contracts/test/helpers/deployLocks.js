@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const PublicLock = artifacts.require('contracts/PublicLock.sol:PublicLock')
 const deployContracts = require('../fixtures/deploy')
 const {
   ADDRESS_ZERO,
@@ -14,7 +13,6 @@ async function deployLock({
   tokenAddress = ADDRESS_ZERO,
   name = 'FIRST',
   keyPrice,
-  isEthers,
 } = {}) {
   if (!unlock) {
     ;({ unlock } = await deployContracts())
@@ -55,7 +53,10 @@ async function deployLock({
     evt = events.find((v) => v.event === 'NewLock')
   }
   const { newLockAddress } = evt.args
-  const lock = await PublicLock.at(newLockAddress)
+  const lock = await ethers.getContractAt(
+    'contracts/PublicLock.sol:PublicLock',
+    newLockAddress
+  )
 
   if (maxKeysPerAddress) {
     await lock.updateLockConfig(
@@ -66,12 +67,7 @@ async function deployLock({
     )
   }
 
-  return isEthers
-    ? await ethers.getContractAt(
-        'contracts/PublicLock.sol:PublicLock',
-        lock.address
-      )
-    : lock
+  return lock
 }
 
 async function deployAllLocks(unlock, from, tokenAddress = ADDRESS_ZERO) {
