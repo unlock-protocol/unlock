@@ -5,7 +5,7 @@ const erc777abi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc777.jso
 
 let lock
 
-contract('Lock / Lock', (accounts) => {
+contract('Lock / Lock', () => {
   before(async () => {
     lock = await deployLock()
   })
@@ -32,8 +32,8 @@ contract('Lock / Lock', (accounts) => {
   })
 
   it('Should fail on unknown calls', async () => {
-    const [, recipient] = accounts
+    const [, recipient] = await ethers.getSigners()
     const mock777 = await ethers.getContractAt(erc777abi, lock.address)
-    await reverts(mock777.send(recipient, 1, '0x'))
+    await reverts(mock777.send(recipient.address, 1, '0x'))
   })
 })
