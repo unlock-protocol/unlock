@@ -4,6 +4,10 @@ const { ethers } = require('hardhat')
 let lock
 let from, to, random, random2, random3
 
+const safeTransferFromSig = 'safeTransferFrom(address,address,uint256)'
+const safeTransferFromWithDataSig =
+  'safeTransferFrom(address,address,uint256,bytes)'
+
 contract('Lock / erc721 / safeTransferFrom', () => {
   // function safeTransferFrom() still uses transferFrom() under the hood
   // but adds an additional check afterwards. transferFrom is already well-tested,
@@ -14,23 +18,23 @@ contract('Lock / erc721 / safeTransferFrom', () => {
     ;[, from, to, random, random2, random3] = await ethers.getSigners()
     lock = await deployLock({ isEthers: true })
     await lock.updateTransferFee(0) // disable the transfer fee for this test
-
     // first, let's purchase a brand new key that we can transfer
     ;({ tokenId } = await purchaseKey(lock, from.address))
   })
 
   it('should work if no data is passed in', async () => {
-    await lock.connect(from).safeTransferFrom(from.address, to.address, tokenId)
+    await lock
+      .connect(from)
+      [safeTransferFromSig](from.address, to.address, tokenId)
     let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, to.address)
   })
 
   it('should work if some data is passed in', async () => {
     ;({ tokenId } = await purchaseKey(lock, random.address))
-    const method = 'safeTransferFrom(address,address,uint256,bytes)'
     await lock
       .connect(random)
-      .methods[method](
+      [safeTransferFromWithDataSig](
         random.address,
         random2.address,
         tokenId,
@@ -53,7 +57,9 @@ contract('Lock / erc721 / safeTransferFrom', () => {
     const { address } = await NonCompliantContract.deploy()
 
     await reverts(
-      lock.connect(random).safeTransferFrom(random.address, address, tokenId)
+      lock
+        .connect(random)
+        [safeTransferFromSig](random.address, address, tokenId)
     )
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf(tokenId)
@@ -70,7 +76,7 @@ contract('Lock / erc721 / safeTransferFrom', () => {
 
     await lock
       .connect(random3)
-      .safeTransferFrom(random3.address, compliantContract.address, tokenId)
+      [safeTransferFromSig](random3.address, compliantContract.address, tokenId)
 
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf(tokenId)
