@@ -1,10 +1,5 @@
 const { ethers } = require('hardhat')
-const {
-  deployLock,
-  getBalanceEthers,
-  purchaseKeys,
-  reverts,
-} = require('../helpers')
+const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
 
 contract('Lock / expireAndRefundFor', () => {
   let lock
@@ -30,8 +25,8 @@ contract('Lock / expireAndRefundFor', () => {
     let txFee
 
     before(async () => {
-      initialLockBalance = await getBalanceEthers(lock.address)
-      initialKeyOwnerBalance = await getBalanceEthers(keyOwners[0].address)
+      initialLockBalance = await getBalance(lock.address)
+      initialKeyOwnerBalance = await getBalance(keyOwners[0].address)
 
       const tx = await lock.expireAndRefundFor(tokenIds[0], refundAmount)
       const { events, gasUsed } = await tx.wait()
@@ -57,7 +52,7 @@ contract('Lock / expireAndRefundFor', () => {
     })
 
     it("should increase the owner's balance with the amount of funds refunded from the lock", async () => {
-      const finalOwnerBalance = await getBalanceEthers(keyOwners[0].address)
+      const finalOwnerBalance = await getBalance(keyOwners[0].address)
       assert(
         finalOwnerBalance.toString(),
         initialKeyOwnerBalance.add(keyPrice).sub(txFee).toString()
@@ -65,7 +60,7 @@ contract('Lock / expireAndRefundFor', () => {
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
-      const finalLockBalance = (await getBalanceEthers(lock.address)).sub(
+      const finalLockBalance = (await getBalance(lock.address)).sub(
         initialLockBalance
       )
 

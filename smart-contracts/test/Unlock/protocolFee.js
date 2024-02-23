@@ -7,7 +7,7 @@ const {
   purchaseKeys,
   reverts,
   ADDRESS_ZERO,
-  getBalanceEthers,
+  getBalance,
 } = require('../helpers')
 const { time } = require('@openzeppelin/test-helpers')
 
@@ -72,7 +72,7 @@ contract('Unlock / protocolFee', async () => {
 
       describe('pays fees to Unlock correctly when', () => {
         it('purchasing a single key', async () => {
-          const unlockBalanceBefore = await getBalanceEthers(
+          const unlockBalanceBefore = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -84,7 +84,7 @@ contract('Unlock / protocolFee', async () => {
             .mul(await unlock.protocolFee())
             .div(BASIS_POINT_DENOMINATOR)
 
-          const unlockBalanceAfter = await getBalanceEthers(
+          const unlockBalanceAfter = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -95,7 +95,7 @@ contract('Unlock / protocolFee', async () => {
         })
 
         it('purchasing multiple keys', async () => {
-          const unlockBalanceBefore = await getBalanceEthers(
+          const unlockBalanceBefore = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -103,7 +103,7 @@ contract('Unlock / protocolFee', async () => {
             await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(3))
           }
           await purchaseKeys(lock, 3, isErc20, keyOwner)
-          const unlockBalanceAfter = await getBalanceEthers(
+          const unlockBalanceAfter = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -114,7 +114,7 @@ contract('Unlock / protocolFee', async () => {
         })
 
         it('extending a key', async () => {
-          const unlockBalanceBefore = await getBalanceEthers(
+          const unlockBalanceBefore = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -132,7 +132,7 @@ contract('Unlock / protocolFee', async () => {
             .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
               value: isErc20 ? 0 : keyPrice,
             })
-          const unlockBalanceAfter = await getBalanceEthers(
+          const unlockBalanceAfter = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -144,7 +144,7 @@ contract('Unlock / protocolFee', async () => {
 
         if (isErc20) {
           it('renewing a key', async () => {
-            const unlockBalanceBefore = await getBalanceEthers(
+            const unlockBalanceBefore = await getBalance(
               unlock.address,
               tokenAddress
             )
@@ -155,7 +155,7 @@ contract('Unlock / protocolFee', async () => {
             await time.increaseTo(expirationTs.toNumber())
 
             await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-            const unlockBalanceAfter = await getBalanceEthers(
+            const unlockBalanceAfter = await getBalance(
               unlock.address,
               tokenAddress
             )

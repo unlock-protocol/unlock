@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { deployContracts, reverts, getBalanceEthers } = require('../helpers')
+const { deployContracts, reverts, getBalance } = require('../helpers')
 
 const oneEth = ethers.utils.parseEther('1')
 
@@ -13,14 +13,14 @@ contract('Unlock / receive', async () => {
 
   describe('Unlock contract receiving native tokens', () => {
     it('works correctly', async () => {
-      const balanceBefore = await getBalanceEthers(unlock.address)
+      const balanceBefore = await getBalance(unlock.address)
       await signer.sendTransaction({
         to: unlock.address,
         value: oneEth,
       })
       assert.equal(
         balanceBefore.add(oneEth).toString(),
-        (await getBalanceEthers(unlock.address)).toString()
+        (await getBalance(unlock.address)).toString()
       )
     })
     it('reverts with null value', async () => {

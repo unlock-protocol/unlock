@@ -3,7 +3,7 @@ const {
   ADDRESS_ZERO,
   deployLock,
   deployERC20,
-  getBalanceEthers,
+  getBalance,
   purchaseKeys,
   reverts,
 } = require('../helpers')
@@ -82,8 +82,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
     let txFee
 
     before(async () => {
-      initialLockBalance = await getBalanceEthers(lock.address)
-      initialKeyOwnerBalance = await getBalanceEthers(keyOwners[0].address)
+      initialLockBalance = await getBalance(lock.address)
+      initialKeyOwnerBalance = await getBalance(keyOwners[0].address)
       estimatedRefund = await lock.getCancelAndRefundValue(tokenIds[0])
 
       const tx = await lock.connect(keyOwners[0]).cancelAndRefund(tokenIds[0])
@@ -94,7 +94,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
         event,
         args: { refund },
       } = events.find(({ event }) => event === 'CancelKey'))
-      const lockBalance = await getBalanceEthers(lock.address)
+      const lockBalance = await getBalance(lock.address)
       withdrawalAmount = lockBalance.sub(initialLockBalance)
 
       // estimate tx gas cost
@@ -127,7 +127,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
-      const finalOwnerBalance = await getBalanceEthers(keyOwners[0].address)
+      const finalOwnerBalance = await getBalance(keyOwners[0].address)
       assert(
         finalOwnerBalance.toString(),
         initialKeyOwnerBalance.add(withdrawalAmount).sub(txFee).toString()
