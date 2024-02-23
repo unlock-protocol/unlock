@@ -69,22 +69,6 @@ async function deployLock({
   return lock
 }
 
-async function deployAllLocks(unlock, from, tokenAddress = ADDRESS_ZERO) {
-  const locks = await Promise.all(
-    Object.keys(Locks).map((name) =>
-      deployLock(unlock, from, tokenAddress, Locks[name])
-    )
-  )
-  return locks.reduce(
-    (acc, d, i) => ({
-      ...acc,
-      [Object.keys(Locks)[i]]: locks[i],
-    }),
-    {}
-  )
-}
-
 module.exports = {
   deployLock,
-  deployAllLocks,
 }
