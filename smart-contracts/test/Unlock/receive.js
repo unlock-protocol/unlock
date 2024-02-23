@@ -8,7 +8,7 @@ contract('Unlock / receive', async () => {
 
   before(async () => {
     ;[signer] = await ethers.getSigners()
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
   })
 
   describe('Unlock contract receiving native tokens', () => {

@@ -19,7 +19,7 @@ contract('Unlock / protocolFee', async () => {
   let unlock
 
   before(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
   })
 
   describe('setProtocolFee', () => {

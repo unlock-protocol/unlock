@@ -15,7 +15,7 @@ contract('Unlock / swapAndBurn', async () => {
   let unlock, swapBurner, udtAddress, udt, mockSwapBurner
 
   before(async () => {
-    ;({ unlockEthers: unlock, udt } = await deployContracts())
+    ;({ unlock, udt } = await deployContracts())
     udtAddress = udt.address
 
     // set UDT in unlock

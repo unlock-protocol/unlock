@@ -11,7 +11,7 @@ let unlock
 
 contract('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
   })
 
   describe('Create a Lock with infinite keys', () => {

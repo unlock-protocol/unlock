@@ -7,7 +7,7 @@ let signer
 
 contract('Lock / setLockTemplate', () => {
   beforeEach(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
 
     PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'

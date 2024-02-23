@@ -10,7 +10,7 @@ contract('Lock / expirationDuration', () => {
   let lock
 
   beforeEach(async () => {
-    const { unlockEthers: unlock } = await deployContracts()
+    const { unlock } = await deployContracts()
     const [from] = await ethers.getSigners()
 
     // create a new lock

@@ -26,7 +26,7 @@ contract('UnlockSwapPurchaser / withdraw', () => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       before(async () => {
         ;[owner] = await ethers.getSigners()
-        ;({ unlockEthers: unlock } = await deployContracts())
+        ;({ unlock } = await deployContracts())
 
         const UnlockSwapPurchaser = await ethers.getContractFactory(
           'UnlockSwapPurchaser'

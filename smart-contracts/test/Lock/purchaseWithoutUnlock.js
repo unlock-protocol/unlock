@@ -29,7 +29,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
 
   // setup proxy admin etc
   before(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
 
     // deploy a random contract to break Unlock implementation
     const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
