@@ -120,7 +120,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     const fetchKeysJob = async () => {
       if (!keysJobId) return
 
-      const response = await storage.getKeyJob(keysJobId)
+      const response = await storage.getKeyJobResult(keysJobId)
       if (response.status != 200) {
         return
       }
