@@ -85,7 +85,6 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       ToastHelper.success(
         `It may take a few minutes for the file to be generated. Please do not close this page`
       )
-
       const response = await storage.exportKeys(
         network,
         lockAddress,

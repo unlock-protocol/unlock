@@ -7,7 +7,7 @@ import { randomUUID } from 'node:crypto'
 import { ExportKeysJobPayload } from '../../worker/tasks/exportKeysJob'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import config from '../../config/config'
-const { quickAddJob } = require('graphile-worker')
+import { quickAddJob } from 'graphile-worker'
 
 export default class KeyController {
   /**
@@ -85,7 +85,11 @@ export default class KeyController {
 
       // Default priority for tasks is 0, we do not want to make clients wait
       await quickAddJob(
-        { connectionString: config.databaseUrl },
+        {
+          connectionString: config.databaseUrl,
+          // @ts-expect-error - type is not defined properly
+          ssl: config.database?.dialectOptions?.ssl,
+        },
         'exportKeysJob',
         payload,
         {
