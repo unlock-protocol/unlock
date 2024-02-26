@@ -1,5 +1,5 @@
 import { allJobs } from './tasks/allJobs'
-import { run } from 'graphile-worker'
+import { makeWorkerUtils, run } from 'graphile-worker'
 import config from '../config/config'
 import {
   addRenewalJobs,
@@ -18,8 +18,7 @@ import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { downloadReceipts } from './tasks/receipts'
-import WorkerUtilsSingleton from './workerUtilsSingleton'
-import processAndStoreLockKeys from './tasks/processAndStoreLockKeys'
+import exportKeysJob from './tasks/exportKeysJob'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -55,8 +54,10 @@ export async function startWorker() {
     ssl: config.database?.dialectOptions?.ssl,
   })
 
-  // Get worker utils for scheduling tasks
-  const workerUtils = await WorkerUtilsSingleton.getInstance()
+  // Create worker utils for scheduling tasks
+  const workerUtils = await makeWorkerUtils({
+    pgPool,
+  })
 
   // Jobs to start when worker starts!
   await workerUtils.addJob('checkBalances', {})
@@ -68,7 +69,7 @@ export async function startWorker() {
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
-      processAndStoreLockKeys,
+      exportKeysJob,
       checkBalances,
       monitor,
       allJobs,

@@ -16,7 +16,46 @@ export const LockKeyJobPayload = z.object({
   loggedInUserAddress: z.string(),
 })
 
-const processAndStoreLockKeys: Task = async (payload) => {
+const exportKeysJob: Task = async (payload) => {
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
+  console.log('Export')
+  console.log('Export')
+  console.log('Export')
+
   const parsed = await LockKeyJobPayload.parse(payload)
 
   let allKeys: any = []
@@ -55,7 +94,9 @@ const processAndStoreLockKeys: Task = async (payload) => {
 
   console.log(allKeys)
 
-  await uploadJsonToS3(config.lockKeysBucket, parsed.jobId, { keys: allKeys })
+  await uploadJsonToS3(config.storage.exportsBucket, parsed.jobId, {
+    keys: allKeys,
+  })
 }
 
-export default processAndStoreLockKeys
+export default exportKeysJob

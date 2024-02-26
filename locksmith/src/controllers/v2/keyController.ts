@@ -4,10 +4,10 @@ import logger from '../../logger'
 import * as keysOperations from '../../operations/keysOperations'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { randomUUID } from 'node:crypto'
-import WorkerUtilsSingleton from '../../worker/workerUtilsSingleton'
-import { LockKeyJobPayload } from '../../worker/tasks/processAndStoreLockKeys'
+import { LockKeyJobPayload } from '../../worker/tasks/exportKeysJob'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import config from '../../config/config'
+const { quickAddJob } = require('graphile-worker')
 
 export default class KeyController {
   /**
@@ -66,7 +66,7 @@ export default class KeyController {
   /**
    * Initiates worker task to get all the keys for a given lock
    */
-  async startKeyJob(request: Request, response: Response) {
+  async exportKeys(request: Request, response: Response) {
     try {
       const jobId = randomUUID()
 
@@ -83,12 +83,15 @@ export default class KeyController {
         ),
       })
 
-      const workerUtils = await WorkerUtilsSingleton.getInstance()
-
       // Default priority for tasks is 0, we do not want to make clients wait
-      await workerUtils.addJob('processAndStoreLockKeys', payload, {
-        priority: -1,
-      })
+      await quickAddJob(
+        { connectionString: config.databaseUrl },
+        'exportKeysJob',
+        payload,
+        {
+          priority: -1,
+        }
+      )
 
       return response.status(200).send({ jobId })
     } catch (error) {
@@ -102,8 +105,8 @@ export default class KeyController {
   /**
    * Returns json with all the keys for a lock by worker job id
    */
-  async getKeyJobResult(request: Request, response: Response) {
-    const { jobId } = request.query ?? {}
+  async getExportedKeys(request: Request, response: Response) {
+    const jobId = request.params.jobId
 
     if (!jobId) {
       return response.status(404).send({ message: 'Job not found.' })
@@ -111,7 +114,7 @@ export default class KeyController {
 
     try {
       const file = await downloadJsonFromS3(
-        config.lockKeysBucket,
+        config.storage.exportsBucket,
         jobId as string
       )
 

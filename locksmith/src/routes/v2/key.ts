@@ -16,16 +16,20 @@ router.get(
 )
 
 router.get(
-  '/:network/locks/:lockAddress/startKeyJob',
+  '/:network/locks/:lockAddress/export-keys',
   authenticatedMiddleware,
   (req, res) => {
-    keyController.startKeyJob(req, res)
+    keyController.exportKeys(req, res)
   }
 )
 
-router.get('/getKeyJobResult', authenticatedMiddleware, (req, res) => {
-  keyController.getKeyJobResult(req, res)
-})
+router.get(
+  '/:network/locks/:lockAddress/export-keys/:jobId',
+  authenticatedMiddleware,
+  (req, res) => {
+    keyController.getExportedKeys(req, res)
+  }
+)
 
 router.get(
   '/:network/locks/:lockAddress/keys-by-page',

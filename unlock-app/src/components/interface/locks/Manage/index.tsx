@@ -82,7 +82,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   const onDownloadCsvMutation = useMutation(
     async () => {
-      const response = await storage.startKeyJob(
+      const response = await storage.exportKeys(
         network,
         lockAddress,
         '',
@@ -120,7 +120,11 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     const fetchKeysJob = async () => {
       if (!keysJobId) return
 
-      const response = await storage.getKeyJobResult(keysJobId)
+      const response = await storage.getExportedKeys(
+        network,
+        lockAddress,
+        keysJobId
+      )
       if (response.status != 200) {
         return
       }

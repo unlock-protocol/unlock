@@ -562,6 +562,14 @@ components:
       schema:
         type: string
 
+    JobId:
+      in: path
+      name: jobId
+      required: true
+      description: Id of the exported job.
+      schema:
+        type: string
+
   responses:
     200.GenericSuccess:
       description: 'Successfully completed the request.'
@@ -1470,9 +1478,9 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/{network}/locks/{lockAddress}/startKeyJob:
+  /v2/api/{network}/locks/{lockAddress}/export-keys:
     get:
-      operationId: startKeyJob
+      operationId: exportKeys
       security:
         - User: []
         - Application: []
@@ -1517,20 +1525,17 @@ paths:
         '404':
           description: Not Found
 
-  /v2/api/getKeyJob:
+  /v2/api/{network}/locks/{lockAddress}/export-keys/{jobId}:
     get:
-      operationId: getKeyJobResult
+      operationId: getExportedKeys
       security:
         - User: []
         - Application: []
       description: Get job result by job id
       parameters:
-        - in: query
-          name: jobId
-          required: true
-          schema:
-            type: string
-          description: The job ID to retrieve results for
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/JobId'
       responses:
         '200':
           description: Successfully retrieved job result
