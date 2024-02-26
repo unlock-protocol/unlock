@@ -4,7 +4,7 @@ import logger from '../../logger'
 import * as keysOperations from '../../operations/keysOperations'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 import { randomUUID } from 'node:crypto'
-import { LockKeyJobPayload } from '../../worker/tasks/exportKeysJob'
+import { ExportKeysJobPayload } from '../../worker/tasks/exportKeysJob'
 import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
 import config from '../../config/config'
 const { quickAddJob } = require('graphile-worker')
@@ -70,7 +70,7 @@ export default class KeyController {
     try {
       const jobId = randomUUID()
 
-      const payload = LockKeyJobPayload.parse({
+      const payload = ExportKeysJobPayload.parse({
         jobId: jobId as string,
         lockAddress: Normalizer.ethereumAddress(request.params.lockAddress),
         network: Number(request.params.network),
@@ -97,7 +97,7 @@ export default class KeyController {
     } catch (error) {
       console.error(error.message)
       return response.status(500).send({
-        message: 'An error occurred while starting the JSON processing job.',
+        message: 'An error occurred while starting the job to export keys.',
       })
     }
   }

@@ -5,7 +5,7 @@ import { PAGE_SIZE } from '../../utils/constants'
 import { uploadJsonToS3 } from '../../utils/uploadJsonToS3'
 import config from '../../config/config'
 
-export const LockKeyJobPayload = z.object({
+export const ExportKeysJobPayload = z.object({
   jobId: z.string(),
   lockAddress: z.string(),
   network: z.number(),
@@ -17,7 +17,7 @@ export const LockKeyJobPayload = z.object({
 })
 
 const exportKeysJob: Task = async (payload) => {
-  const parsed = await LockKeyJobPayload.parse(payload)
+  const parsed = await ExportKeysJobPayload.parse(payload)
 
   let allKeys: any = []
   let page = 0
