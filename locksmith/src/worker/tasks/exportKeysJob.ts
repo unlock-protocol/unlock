@@ -17,45 +17,6 @@ export const LockKeyJobPayload = z.object({
 })
 
 const exportKeysJob: Task = async (payload) => {
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
-  console.log('Export')
-  console.log('Export')
-  console.log('Export')
-
   const parsed = await LockKeyJobPayload.parse(payload)
 
   let allKeys: any = []
@@ -91,8 +52,6 @@ const exportKeysJob: Task = async (payload) => {
       break
     }
   }
-
-  console.log(allKeys)
 
   await uploadJsonToS3(config.storage.exportsBucket, parsed.jobId, {
     keys: allKeys,
