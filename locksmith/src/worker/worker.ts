@@ -8,7 +8,6 @@ import {
 } from './tasks/renewal/addRenewalJobs'
 import { cryptoRenewalJob } from './tasks/renewal/cryptoRenewalJob'
 import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
-import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmailJob } from './tasks/sendEmail'
@@ -19,6 +18,7 @@ import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { downloadReceipts } from './tasks/receipts'
+import exportKeysJob from './tasks/exportKeysJob'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -69,6 +69,7 @@ export async function startWorker() {
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
+      exportKeysJob,
       checkBalances,
       monitor,
       allJobs,
@@ -77,7 +78,6 @@ export async function startWorker() {
       addRenewalJobs,
       addRenewalJobsDaily,
       addRenewalJobsWeekly,
-      addKeyJobs,
       addHookJobs,
       sendEmailJob,
       sendToAllJob,
