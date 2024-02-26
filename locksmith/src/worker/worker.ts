@@ -1,5 +1,5 @@
 import { allJobs } from './tasks/allJobs'
-import { makeWorkerUtils, run } from 'graphile-worker'
+import { makeWorkerUtils, run, quickAddJob } from 'graphile-worker'
 import config from '../config/config'
 import {
   addRenewalJobs,
@@ -46,6 +46,22 @@ const cronTabTesting = `
 `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
+
+export const addJob = async (jobName: string, payload: any, opts = {}) => {
+  // Default priority for tasks is 0, we do not want to make clients wait
+  return quickAddJob(
+    {
+      pgPool: new Pool({
+        connectionString: config.databaseUrl,
+        // @ts-expect-error - type is not defined properly
+        ssl: config.database?.dialectOptions?.ssl,
+      }),
+    },
+    jobName,
+    payload,
+    opts
+  )
+}
 
 export async function startWorker() {
   const pgPool = new Pool({
