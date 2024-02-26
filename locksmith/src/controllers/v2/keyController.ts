@@ -95,7 +95,7 @@ export default class KeyController {
 
       return response.status(200).send({ jobId })
     } catch (error) {
-      console.error(error.message)
+      logger.error(error.message)
       return response.status(500).send({
         message: 'An error occurred while starting the job to export keys.',
       })
