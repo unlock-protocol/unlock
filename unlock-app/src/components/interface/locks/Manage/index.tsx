@@ -82,6 +82,9 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   const onDownloadCsvMutation = useMutation(
     async () => {
+      ToastHelper.success(
+        `It may take a few minutes for the file to be generated. Please do not close this page`
+      )
       const response = await storage.exportKeys(
         network,
         lockAddress,
@@ -112,10 +115,6 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   useEffect(() => {
     let intervalId: any = null
-
-    ToastHelper.success(
-      `It may take a few minutes for the file to be generated. Please do not close this page`
-    )
 
     const fetchKeysJob = async () => {
       if (!keysJobId) return
