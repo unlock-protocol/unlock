@@ -72,7 +72,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
             </Detail>
           </div>
           <div className={wrapperClass}>
-            <Detail label="Key Sold" loading={loading} valueSize="large">
+            <Detail label="Key Minted" loading={loading} valueSize="large">
               {keySold}
             </Detail>
           </div>
