@@ -59,7 +59,7 @@ export const optimism: NetworkConfig = {
   id: 10,
   isTestNetwork: false,
   keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   name: 'Optimism',
   nativeCurrency: {
@@ -82,9 +82,8 @@ export const optimism: NetworkConfig = {
   startBlock: 302400,
   subgraph: {
     endpoint:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism-v2',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-optimism/version/latest',
+    studioName: 'unlock-protocol-optimism',
   },
   swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
   tokens: [

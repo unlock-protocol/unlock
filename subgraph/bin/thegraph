@@ -14,60 +14,37 @@ const { networkName } = require('./networks')
 const executeCommand = async (command) => {
   try {
     const { stdout, stderr } = await exec(command)
+    console.log('stdout:', stdout)
     if (stderr) {
       console.log(`stderr: ${stderr}`)
-    }
-    console.log('stdout:', stdout)
-  } catch (e) {
-    // should contain code (exit code) and signal (that caused the termination).
-    console.error(`exec error: ${e}`)
-  }
-}
-
-const executeComanndErrorReturn = async (command) => {
-  try {
-    const { stdout, stderr } = await exec(command)
-    if (stderr) {
       return stderr
     }
-    console.log('stdout:', stdout)
   } catch (e) {
     // should contain code (exit code) and signal (that caused the termination).
     console.error(`exec error: ${e}`)
   }
 }
 
-const executeStudioDeployWithVersionIncrement = async (
-  subgraphName,
-  version
-) => {
-  let [major, minor, patch] = version.split('.')
-  const cmd = `yarn deploy-studio ${subgraphName} -l=${major}.${minor}.${parseInt(
-    patch
-  )}`
-  let stderr = await executeComanndErrorReturn(cmd)
-  if (stderr) {
-    if (stderr.includes('Version label already exists')) {
-      console.log(
-        `Studio version for ${subgraphName} exists - attempting deploy with version - ${major}.${minor}.${parseInt(patch) + 1
-        }`
-      )
-      return executeStudioDeployWithVersionIncrement(
-        subgraphName,
-        `${major}.${minor}.${parseInt(patch) + 1}`
-      )
-    }
-  }
+const incrementVersion = (version) => {
+  const [major, minor, patch] = version.split('.')
+  return `v${major}.${minor}.${parseInt(patch + 1)}`
 }
 
-const checkHostedServiceAccessToken = () => {
-  if (!process.env.SUBGRAPH_DEPLOY_KEY) {
-    throw new Error(
-      `
-      Missing access token in SUBGRAPH_DEPLOY_KEY env.
-      You can get a token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol
-      `
-    )
+const executeStudioDeployWithVersionIncrement = async ({
+  subgraphName,
+  version = 'v0.0.1', // TODO: fetch latest version
+  flags = '--product=subgraph-studio',
+}) => {
+  const cmd = `graph deploy --version-label="${version}" ${flags} ${subgraphName}`
+  let stderr = await executeCommand(cmd)
+  if (stderr) {
+    if (stderr.includes('Version label already exists')) {
+      const nextVersion = incrementVersion(version)
+      console.log(
+        `Studio version for ${subgraphName} exists - attempting deploy with version - ${nextVersion}`
+      )
+      return executeStudioDeployWithVersionIncrement(subgraphName, nextVersion)
+    }
   }
 }
 
@@ -82,44 +59,11 @@ const checkStudioAccessToken = () => {
   }
 }
 
-const codegen = async () => {
-  console.log('codegen...')
-  await executeCommand('yarn codegen')
-}
-
-// Creating subgraphs is only available from hosted-service dashboard
-// yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
+// Generate subgraph manifest
 const build = async (network) => {
-  await executeCommand(`yarn run prepare`)
   console.log(`Building subgraph for ${network} (${networkName(network)})`)
   await executeCommand(`yarn generate-manifest ${networkName(network)}.json`)
-}
-
-/**
- * Deploys subgraph with hosted service
- * @param graphLabel
- * @param subgraphName
- * @param graphNode
- * @param ipfs
- * @returns
- */
-const deployHosted = async (subgraphName) => {
-  checkHostedServiceAccessToken()
-  const cmd = `graph auth --product=hosted-service ${process.env.SUBGRAPH_DEPLOY_KEY} && yarn deploy-hosted ${subgraphName} --access-token ${process.env.SUBGRAPH_DEPLOY_KEY}`
-  return executeCommand(cmd)
-}
-
-/**
- *
- * @notice This is a temporray workaround as Linea is not available in The Graph yet.
- * This requires the IP to be whitelisted, as specified in
- * https://docs.linea.build/build-on-linea/tooling/data-indexers/thegraph#custom-subgraph-and-deployments
- * @param subgraphName Deploy on Linea graph hosted  service
- * @returns
- */
-const deployLinea = async (subgraphName) => {
-  const cmd = `graph deploy --node 'https://graph-deploy.linea.build' --ipfs 'https://graph-ipfs.linea.build' --version-label '0.0.1' ${subgraphName}`
-  return executeCommand(cmd)
+  await executeCommand(`graph codegen`)
 }
 
 /**
@@ -128,13 +72,12 @@ const deployLinea = async (subgraphName) => {
  * @param subgraphName
  * @returns
  */
-const deployStudio = async (version, subgraphName) => {
+const deployStudio = async (subgraphName, version) => {
   checkStudioAccessToken()
   await executeCommand(
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
   )
-  const cmd = `yarn deploy-studio ${subgraphName} -l=${version}`
-  return executeStudioDeployWithVersionIncrement(subgraphName, version)
+  return executeStudioDeployWithVersionIncrement({ subgraphName, version })
 }
 
 /**
@@ -149,67 +92,23 @@ const deploy = async (network, studioName, graphLabel) => {
     throw new Error('Missing network name')
   }
 
-  if (!networks[network]?.subgraph?.endpointV2) {
-    throw new Error(`Missing subgraph configuration for ${network}`)
+  if (!networks[network]?.subgraph?.endpoint) {
+    // TODO: create subgraph automatically if necessary
   }
 
-  const matchHosted = networks[network].subgraph.endpointV2.match(
-    'https://api.thegraph.com/subgraphs/name/(.*)'
-  )
-
-  const studioEndpoint = networks[network].subgraph.studioEndpoint
-
-  if (studioName && graphLabel) {
-    return deployStudio(graphLabel, studioName)
+  if (!studioName) {
+    ;({ studioName } = networks[network].subgraph)
   }
 
-  if (studioEndpoint && graphLabel) {
-    return deployStudio(graphLabel, studioEndpoint)
+  if (!studioName) {
+    throw new Error(
+      `Missing name for studio graph 
+(add it as 'studioName' to the '@unlock-protocol/networks' package 
+or use the '--studioName' flag)`
+    )
+  } else {
+    return deployStudio(studioName, graphLabel)
   }
-
-  if (studioEndpoint) {
-    return deployStudio('v0.0.1', studioEndpoint)
-  }
-
-  if (matchHosted) {
-    return deployHosted(matchHosted[1])
-  }
-
-  // TODO: remove that Linea special case once the chain is available on The Graph
-  if (networks[network]?.id === 59144) {
-    return deployLinea('unlock-protocol')
-  }
-
-  throw new Error(
-    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.endpointV2}) (${networks[network].subgraph.studioEndpoint})`
-  )
-}
-
-/**
- * deploy only studio command
- * @param network
- * @param graphLabel
- * @returns
- */
-const deployOnlyStudio = async (network, graphLabel) => {
-  if (!network) {
-    throw new Error('Missing network name')
-  }
-
-  if (!networks[network]?.subgraph?.studioEndpoint) {
-    console.log(`Missing subgraph studioEndpoint for ${network}`)
-    return
-  }
-
-  const studioEndpoint = networks[network].subgraph.studioEndpoint
-
-  if (studioEndpoint && graphLabel) {
-    return deployStudio(graphLabel, studioEndpoint)
-  }
-
-  throw new Error(
-    `Invalid subgraph configuration for ${network} (${networks[network].subgraph.studioEndpoint})`
-  )
 }
 
 const choices = Object.keys(networks).filter(
@@ -218,14 +117,8 @@ const choices = Object.keys(networks).filter(
 
 require('yargs/yargs')(hideBin(process.argv))
   .command(
-    'codegen',
-    'Deploy subgraph on all networks',
-    {},
-    async () => await codegen()
-  )
-  .command(
     'build <network>',
-    'build with thegraph hosted service',
+    'build thegraph manifest and files',
     (yargs) =>
       yargs.positional('network', {
         describe: 'the network to deploy',
@@ -237,7 +130,7 @@ require('yargs/yargs')(hideBin(process.argv))
   )
   .command(
     'deploy <network>',
-    'deploy subgraph to thegraph hosted service',
+    'deploy subgraph to thegraph studio',
     (yargs) =>
       yargs.positional('network', {
         describe: 'the network to deploy',
@@ -265,29 +158,6 @@ require('yargs/yargs')(hideBin(process.argv))
       }
 
       console.log('Subgraph deployments done.')
-    }
-  )
-  .command(
-    'deploy-all-studio',
-    'Deploy subgraphs to studio on all decentralized networks',
-    {},
-    async ({ label }) => {
-      let studioChoices = choices.filter(
-        (c) => networks[c].subgraph.studioEndpoint != null
-      )
-      // check config
-      console.log(
-        `Deploying subgraphs to studio for:\n${studioChoices
-          .map((c) => ` - ${c}\n`)
-          .join('')}`
-      )
-      // build and deploy each network
-      for (const network of studioChoices) {
-        await build(network)
-        await deployOnlyStudio(network, label)
-      }
-
-      console.log('Subgraph studio deployments done.')
     }
   )
   .demandCommand()

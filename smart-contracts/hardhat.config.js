@@ -57,7 +57,6 @@ require('./tasks/accounts')
 require('./tasks/upgrade')
 require('./tasks/release')
 require('./tasks/utils')
-require('./tasks/lock')
 require('./tasks/keys')
 
 /**

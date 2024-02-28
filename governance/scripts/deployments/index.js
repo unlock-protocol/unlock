@@ -1,30 +1,22 @@
 /* eslint-disable global-require */
 const { ethers, run, upgrades, network } = require('hardhat')
-const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
 const { networks } = require('@unlock-protocol/networks')
 const createLock = require('../lock/create')
 const { getUnlock, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
-
-const { MaxUint256 } = ethers
 
 const log = (...message) => {
   // eslint-disable-next-line no-console
   console.log('UNLOCK DEPLOYMENT >', ...message)
 }
 
-// TODO: for each contract deployed, can we instantly verify them?
 // TODO: prompt user for each action before doing them and ask them for input?
 async function main({
-  premintAmount, // in ETH, must be a string
-  liquidity, // in ETH, must be a string
   unlockAddress,
   unlockVersion,
   publicLockVersion,
   udtAddress,
   publicLockAddress,
   wethAddress,
-  uniswapRouterAddress,
-  uniswapFactoryAddress,
   oracleAddress,
   estimatedGasForPurchase,
   locksmithURI,
@@ -72,16 +64,14 @@ async function main({
   // If UDT is not set for this network, let's not worry about it
   if (udtAddress !== ADDRESS_ZERO) {
     // pre-mint some UDTs, then delegate mint caps to contract
-    if (isLocalNet || premintAmount) {
+    if (isLocalNet) {
       const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
       udt = UDT.attach(udtAddress)
 
+      const premintAmount = '1000000.0'
       udt = udt.connect(minter)
-      await udt.mint(
-        deployer.address,
-        ethers.parseEther(premintAmount || '1000000.0')
-      )
-      log(`Pre-minted ${premintAmount || '1000000.0'} UDT to deployer`)
+      await udt.mint(deployer.address, ethers.parseEther())
+      log(`Pre-minted ${premintAmount} UDT to deployer`)
 
       await udt.addMinter(unlockAddress)
       log('grant minting permissions to the Unlock Contract')
@@ -94,65 +84,6 @@ async function main({
     if (!wethAddress && isLocalNet) {
       wethAddress = await run('deploy:weth')
       log(`WETH deployed to : ${wethAddress}`)
-    }
-
-    // deploy uniswap v2 if needed
-    if ((!uniswapFactoryAddress || !uniswapRouterAddress) && isLocalNet) {
-      if (!wethAddress || wethAddress === ADDRESS_ZERO) {
-        throw new Error(
-          'Missing wethAddress. Cannot deploy Uniswap factory. Please use --weth-address'
-        )
-      }
-      const { router, factory } = await run('deploy:uniswap', { wethAddress })
-      uniswapRouterAddress = router
-      uniswapFactoryAddress = factory
-    }
-
-    if (!uniswapRouterAddress) {
-      throw new Error(
-        'Missing uniswapRouterAddress. Cannot proceed. Please use --uniswap-router-address'
-      )
-    }
-
-    if (!uniswapFactoryAddress) {
-      throw new Error(
-        'Missing uniswapFactoryAddress. Cannot proceed. Please use --uniswap-factory-address'
-      )
-    }
-
-    // get uniswap instance
-    const Router = await ethers.getContractFactory(
-      UniswapV2Router02.abi,
-      UniswapV2Router02.bytecode
-    )
-    const uniswapRouter = Router.attach(uniswapRouterAddress)
-    uniswapFactoryAddress = await uniswapRouter.factory()
-
-    // add liquidity
-    if (isLocalNet) {
-      const amountLiquidity = liquidity || '1000.0'
-      await udt
-        .connect(deployer)
-        .approve(uniswapRouterAddress, ethers.parseEther(amountLiquidity))
-      log(`UDT approved Uniswap Router for ${amountLiquidity} ETH`)
-
-      await uniswapRouter.connect(deployer).addLiquidityETH(
-        udtAddress,
-        ethers.parseEther(amountLiquidity), // pool size
-        '1',
-        '1',
-        deployer.address, // receiver
-        MaxUint256, // max timestamp
-        { value: ethers.parseEther('10.0') }
-      )
-      log(`added liquidity to uniswap ${amountLiquidity}`)
-    }
-
-    // deploy oracle if needed
-    if (!oracleAddress) {
-      oracleAddress = await run('deploy:oracle', {
-        uniswapFactoryAddress,
-      })
     }
   }
 
@@ -211,6 +142,11 @@ async function main({
     maxNumberOfKeys: 100,
     name: 'Test Lock',
   })
+
+  return {
+    unlockAddress,
+    publicLockAddress,
+  }
 }
 
 // execute as standalone

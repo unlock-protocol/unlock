@@ -5,34 +5,30 @@ const {
   submitTxOldMultisig,
   confirmMultisigTx,
 } = require('./_helpers')
-const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
-const Safe = require('@safe-global/safe-core-sdk').default
-const SafeServiceClient = require('@safe-global/safe-service-client').default
-const EthersAdapter = require('@safe-global/safe-ethers-lib').default
+const { EthersAdapter } = require('@safe-global/protocol-kit')
+const Safe = require('@safe-global/protocol-kit').default
+const SafeApiKit = require('@safe-global/api-kit').default
 
-// see https://docs.safe.global/learn/safe-core/safe-core-api/available-services
+// custom services URL for network not supported by Safe
 const safeServiceURLs = {
-  1: 'https://safe-transaction-mainnet.safe.global/',
-  5: 'https://safe-transaction-goerli.safe.global/',
-  10: 'https://safe-transaction-optimism.safe.global/',
-  56: 'https://safe-transaction-bsc.safe.global/',
-  100: 'https://safe-transaction-gnosis-chain.safe.global/',
-  137: 'https://safe-transaction-polygon.safe.global/',
-  42161: 'https://safe-transaction-arbitrum.safe.global',
-  43114: 'https://safe-transaction-avalanche.safe.global/',
   42220: 'http://mainnet-tx-svc.celo-safe-prod.celo-networks-dev.org/',
   // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
   80001: 'http://localhost:8000/cgw/',
 }
 
 async function main({ safeAddress, tx, signer }) {
-  const { chainId } = await ethers.provider.getNetwork()
+  const { chainId, id } = await getNetwork()
   if (!safeAddress) {
     safeAddress = getSafeAddress(chainId)
   }
   if (!signer) {
     ;[signer] = await ethers.getSigners()
+  }
+
+  if (process.env.RUN_FORK) {
+    throw Error(`Can not send multisig tx on a forked network`)
   }
 
   // check safe version
@@ -50,19 +46,17 @@ async function main({ safeAddress, tx, signer }) {
     signerOrProvider: signer,
   })
 
-  // get Safe service
-  const id = await ethAdapter.getChainId()
+  // get Safe service URL if not default
   const txServiceUrl = safeServiceURLs[id]
   console.log(`Using Safe Global service at ${txServiceUrl} - chain ${id}`)
 
-  const safeService = new SafeServiceClient({
-    txServiceUrl,
-    ethAdapter,
+  const safeService = new SafeApiKit({
+    chainId: id,
+    txServiceUrl: txServiceUrl || null,
   })
 
   // create tx
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
-
   const txs = !Array.isArray(tx) ? [tx] : tx
 
   const explainer = txs
@@ -110,6 +104,7 @@ async function main({ safeAddress, tx, signer }) {
   )
   console.log(transactions)
 
+  // get correct nonce
   const nonce = await safeService.getNextNonce(safeAddress)
   const txOptions = {
     origin: explainer,
@@ -119,14 +114,13 @@ async function main({ safeAddress, tx, signer }) {
 
   // create a MultiSend tx
   const safeTransaction = await safeSdk.createTransaction({
-    safeTransactionData: transactions,
+    transactions,
     options: txOptions,
   })
 
   // now send tx via Safe Global web service
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
   const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
-  // const nonce = await safeService.getNextNonce(safeAddress)
 
   await safeService.proposeTransaction({
     safeAddress,

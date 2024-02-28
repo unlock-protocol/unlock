@@ -7,7 +7,7 @@ export const goerli: NetworkConfig = {
   chain: 'goerli',
   description: 'Main Ethereum test network. Do not use for production.',
   explorer: {
-    name: 'Goerli (Testnet)',
+    name: 'Goerli',
     urls: {
       address: (address) => `https://goerli.etherscan.io/address/${address}`,
       base: `https://goerli.etherscan.io/`,
@@ -61,7 +61,7 @@ export const goerli: NetworkConfig = {
   keyManagerAddress: '0xc328aE7fc36f975BE120aaa99f2d96C3E732e5b6',
   maxFreeClaimCost: 100000,
   multisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
-  name: 'Goerli (Testnet)',
+  name: 'Goerli',
   nativeCurrency: {
     coingecko: 'ethereum',
     decimals: 18,
@@ -82,9 +82,9 @@ export const goerli: NetworkConfig = {
     'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   startBlock: 7179039,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-goerli/version/latest',
+    studioName: 'unlock-protocol-goerli',
   },
   swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   tokens: [

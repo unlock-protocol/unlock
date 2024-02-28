@@ -6,6 +6,23 @@ import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import * as lockSettingOperations from './lockSettingOperations'
 import { Currencies } from '@unlock-protocol/core'
 import normalizer from '../utils/normalizer'
+import { MemoryCache } from 'memory-cache-node'
+
+interface DefiLamaResponse {
+  price?: number
+  symbol?: string
+  timestamp?: number
+  confidence?: number
+  priceInAmount?: number
+}
+
+// Price is cached for 5 minutes
+const pricingCacheDuration = 60 * 5
+// We check values every minute
+const defiLammaPriceCache = new MemoryCache<string, DefiLamaResponse>(
+  pricingCacheDuration / 5,
+  1000
+)
 
 interface Price {
   decimals: number
@@ -131,11 +148,9 @@ export const getPricingFromSettings = async ({
   return null
 }
 
-// TODO: add cache!
-export async function getDefiLammaPrice({
+export async function getDefiLammaPriceNoCache({
   network,
   erc20Address,
-  amount = 1,
 }: Options): Promise<PriceResults> {
   const networkConfig = networks[network]
   if (!network) {
@@ -177,12 +192,38 @@ export async function getDefiLammaPrice({
     return {}
   }
 
-  const priceInAmount = item.price * amount
-
   return {
     ...item,
-    priceInAmount,
   }
+}
+
+export async function getDefiLammaPrice({
+  network,
+  erc20Address,
+  amount = 1,
+}: Options): Promise<PriceResults> {
+  let pricing = defiLammaPriceCache.retrieveItemValue(
+    `${erc20Address}@${network}`
+  )
+  if (!pricing) {
+    pricing = await getDefiLammaPriceNoCache({
+      network,
+      erc20Address,
+      amount,
+    })
+    defiLammaPriceCache.storeExpiringItem(
+      `${erc20Address}@${network}`,
+      pricing,
+      pricingCacheDuration
+    )
+  }
+  if (pricing.price) {
+    return {
+      ...pricing,
+      priceInAmount: pricing.price * amount,
+    }
+  }
+  return pricing
 }
 
 /**
@@ -333,7 +374,7 @@ export const getUsdPricingForRecipient = async ({
     userAddress,
     data,
     network,
-    referrer,
+    referrer: referrer || networks[network]?.multisig || userAddress,
   })
 
   const amount = fromDecimal(purchasePrice, decimals)

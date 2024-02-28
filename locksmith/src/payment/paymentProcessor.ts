@@ -218,7 +218,7 @@ export class PaymentProcessor {
         application_fee_amount: !applicationFeeNotSupportedCountries.includes(
           account.country?.trim() || ''
         )
-          ? pricing.unlockServiceFee
+          ? pricing.unlockServiceFee + pricing.gasCost
           : undefined,
       },
       { stripeAccount }

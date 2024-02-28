@@ -8,10 +8,43 @@ import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 export interface TransactionDetails {
   hash: string
   network: number
+}
+
+export const defaultEventCheckoutConfigForLockOnNetwork = (
+  lockAddress: string,
+  network: number
+) => {
+  return {
+    title: 'Registration',
+    locks: {
+      [lockAddress]: {
+        network: network,
+        metadataInputs: [
+          {
+            name: 'email',
+            type: 'email',
+            label: 'Email address (will receive the QR code)',
+            required: true,
+            placeholder: 'your@email.com',
+            defaultValue: '',
+          },
+          {
+            name: 'fullname',
+            type: 'text',
+            label: 'Full name',
+            required: true,
+            placeholder: 'Satoshi Nakamoto',
+            defaultValue: '',
+          },
+        ],
+      },
+    },
+  } as PaywallConfigType
 }
 
 export const NewEvent = () => {
@@ -24,7 +57,6 @@ export const NewEvent = () => {
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
-
     try {
       lockAddress = await walletService.createLock(
         {
@@ -51,20 +83,26 @@ export const NewEvent = () => {
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
     if (lockAddress) {
+      await storage.updateLockMetadata(formData.network, lockAddress, {
+        metadata: {
+          name: `Ticket for ${formData.lock.name}`,
+          image: formData.metadata.image,
+        },
+      })
       const { data: event } = await storage.saveEventData({
-        data: formDataToMetadata({
-          name: formData.lock.name,
+        data: {
+          ...formDataToMetadata({
+            name: formData.lock.name,
+            ...formData.metadata,
+          }),
           ...formData.metadata,
-        }),
+        },
         checkoutConfig: {
           name: `Checkout config for ${formData.lock.name}`,
-          config: {
-            locks: {
-              [lockAddress]: {
-                network: formData.network,
-              },
-            },
-          },
+          config: defaultEventCheckoutConfigForLockOnNetwork(
+            lockAddress,
+            formData.network
+          ),
         },
       })
       // Save slug for URL if present

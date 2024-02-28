@@ -53,7 +53,7 @@ export const sepolia: NetworkConfig = {
   isTestNetwork: true,
   keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
   maxFreeClaimCost: 1000,
-  multisig: '', // SAFE does not support Sepolia as of October 11th 2023
+  multisig: '0x95fE514fe7F60722AFF0FD009ebeE4Ba2013924c',
   name: 'Sepolia',
   nativeCurrency: {
     coingecko: 'ethereum',
@@ -80,11 +80,9 @@ export const sepolia: NetworkConfig = {
   startBlock: 4381710,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia/version/latest',
-    endpointV2:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia/version/latest',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-sepolia/version/latest',
     networkName: 'sepolia',
-    studioEndpoint: 'unlock-protocol-sepolia',
+    studioName: 'unlock-protocol-sepolia',
   },
   tokens: [
     {
@@ -95,8 +93,23 @@ export const sepolia: NetworkConfig = {
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
+    {
+      address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      decimals: 6,
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
+    },
   ],
+  uniswapV3: {
+    factoryAddress: '0xB7f907f7A9eBC822a80BD25E224be42Ce0A698A0',
+    positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
+    universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+  },
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
+  unlockDaoToken: {
+    address: '0x447B1492C5038203f1927eB2a374F5Fcdc25999d',
+  },
   url: 'https://github.com/eth-clients/sepolia',
 }
 

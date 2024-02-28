@@ -187,7 +187,7 @@ const config = {
       ({
         api: {
           sidebarCollapsed: false,
-          path: "./openapi.yml",
+          path: "../packages/unlock-js/openapi.yml",
           routeBasePath: "/api/locksmith",
         },
         docs: {
@@ -346,7 +346,7 @@ const config = {
           items: [
             {
               label: "Discord",
-              href: "https://discord.com/invite/Ah6ZEJyTDp",
+              href: "https://discord.unlock-protocol.com/",
             },
             {
               label: "Twitter",
