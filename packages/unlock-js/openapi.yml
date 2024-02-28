@@ -864,6 +864,16 @@ paths:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/VerifierAddress'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
       responses:
         201:
           description: Added verifier.
@@ -907,34 +917,6 @@ paths:
 
         404:
           $ref: '#/components/responses/404.NotFound'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
-  /v2/api/verifier/{network}/{lockAddress}/{verifierAddress}/{verifierName}:
-    put:
-      operationId: createVerifierWithName
-      security:
-        - User: ['lockManager']
-      description: Create verifier with name.
-      parameters:
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/VerifierAddress'
-        - $ref: '#/components/parameters/VerifierName'
-      responses:
-        201:
-          description: Added verifier.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Verifier'
-
-        403:
-          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
-
-        409:
-          $ref: '#/components/responses/409.Conflict'
 
         500:
           $ref: '#/components/responses/500.InternalError'

@@ -3,6 +3,13 @@ import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 
 import VerifierOperations from '../../operations/verifierOperations'
+import { z } from 'zod'
+
+const AddVerifierBody = z
+  .object({
+    verifierName: z.string().optional(),
+  })
+  .optional()
 
 export default class VerifierController {
   // for a lock manager to list all verifiers for a specicifc lock address
@@ -37,8 +44,10 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
-      const name = request.params.verifierName
-        ? request.params.verifierName
+      const addVerifierBody = await AddVerifierBody.parseAsync(request.body)
+
+      const name = addVerifierBody?.verifierName
+        ? addVerifierBody?.verifierName
         : null
 
       const loggedUserAddress = Normalizer.ethereumAddress(

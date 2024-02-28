@@ -120,21 +120,15 @@ export const VerifierForm = ({
     name?: string
   }) => {
     const resolvedAddress = await getAddressForName(address)
-    let response
-    if (name) {
-      response = await storage.createVerifierWithName(
-        network,
-        lockAddress,
-        resolvedAddress,
-        name
-      )
-    } else {
-      response = await storage.createVerifier(
-        network,
-        lockAddress,
-        resolvedAddress
-      )
-    }
+
+    const response = await storage.createVerifier(
+      network,
+      lockAddress,
+      resolvedAddress,
+      {
+        verifierName: name,
+      }
+    )
 
     return response.data
   }

@@ -68,10 +68,9 @@ describe('Verifier v2 endpoints for locksmith', () => {
     expect(loginResponse.status).toBe(200)
 
     const addVerifierResponse = await request(app)
-      .put(
-        `/v2/api/verifier/${network}/${lockAddress}/${randomWallet}/${verifierName}`
-      )
+      .put(`/v2/api/verifier/${network}/${lockAddress}/${randomWallet}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({ verifierName: verifierName })
 
     expect(addVerifierResponse.status).toBe(201)
     expect(addVerifierResponse.body.name).toBe(verifierName)

@@ -20,12 +20,6 @@ router.put(
   (req, res) => verifierController.addVerifier(req, res)
 )
 
-router.put(
-  '/:network/:lockAddress/:verifierAddress/:verifierName',
-  lockManagerMiddleware,
-  (req, res) => verifierController.addVerifier(req, res)
-)
-
 router.delete(
   '/:network/:lockAddress/:verifierAddress',
   lockManagerMiddleware,
