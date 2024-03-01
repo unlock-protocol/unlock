@@ -12,12 +12,11 @@ const {
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const someTokens = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / onKeyExtendHook', (accounts) => {
+contract('Lock / onKeyExtendHook', () => {
   let lock
   let tokenId
   let keyOwner
-  let lockOwner
-  let testEventHooks
+  let lockOwner, testEventHooks
   let expirationDuration
   let tx
 
@@ -26,16 +25,12 @@ contract('Lock / onKeyExtendHook', (accounts) => {
 
     // ERC20 token setup
     const testToken = await deployERC20(lockOwner.address)
-    await testToken.mint(keyOwner.address, someTokens, {
-      from: lockOwner.address,
-    })
+    await testToken.mint(keyOwner.address, someTokens)
 
     // deploy ERC20 token
     const { address } = await deployLock({ tokenAddress: testToken.address })
     lock = await ethers.getContractAt('PublicLock', address)
-    await testToken.approve(lock.address, someTokens, {
-      from: keyOwner.address,
-    })
+    await testToken.connect(keyOwner).approve(lock.address, someTokens)
 
     // deploy mock events contract
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
@@ -133,7 +128,7 @@ contract('Lock / onKeyExtendHook', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
-        accounts[1],
+        keyOwner.address,
         ADDRESS_ZERO
       ),
       'INVALID_HOOK(5)'

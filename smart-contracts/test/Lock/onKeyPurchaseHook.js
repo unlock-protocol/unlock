@@ -31,6 +31,7 @@ contract('Lock / onKeyPurchaseHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
+    console.log({ testEventHooks: testEventHooks.address })
     keyPrice = await lock.keyPrice()
     ;({ events } = await tx.wait())
   })
