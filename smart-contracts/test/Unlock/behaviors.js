@@ -68,7 +68,7 @@ contract('Unlock / UnlockProxy', () => {
 
     it('should have kept track of the Lock inside Unlock with the right balances', async () => {
       let publicLock = await ethers.getContractAt(
-        'PublicLock',
+        'contracts/PublicLock.sol:PublicLock',
         newLockArgs.newLockAddress
       )
       // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
@@ -87,7 +87,7 @@ contract('Unlock / UnlockProxy', () => {
 
     it('should have created the lock with the right address for unlock', async () => {
       let publicLock = await ethers.getContractAt(
-        'PublicLock',
+        'contracts/PublicLock.sol:PublicLock',
         newLockArgs.newLockAddress
       )
       let unlockProtocol = await publicLock.unlockProtocol()
