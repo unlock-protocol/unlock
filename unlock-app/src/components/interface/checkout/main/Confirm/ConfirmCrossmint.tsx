@@ -50,12 +50,15 @@ export function ConfirmCrossmint({
 
   const { lock, recipients, paywallConfig, data, keyManagers } = state.context
 
-  const { isLoading: isCrossmintLoading, crossmintClientId } =
-    useCrossmintEnabled({
-      recipients,
-      network: lock!.network,
-      lockAddress: lock!.address,
-    })
+  const {
+    isLoading: isCrossmintLoading,
+    collectionId,
+    projectId,
+  } = useCrossmintEnabled({
+    recipients,
+    network: lock!.network,
+    lockAddress: lock!.address,
+  })
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
@@ -139,7 +142,8 @@ export function ConfirmCrossmint({
       email,
       wallet: recipients[0], // Crossmint only supports a single recipient for now!
     },
-    clientId: crossmintClientId!,
+    collectionId,
+    projectId,
     environment: crossmintEnv,
     mintConfig: {
       totalPrice: pricingData?.total.toString(),
