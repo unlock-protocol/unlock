@@ -3,7 +3,7 @@ import React from 'react'
 import Head from 'next/head'
 import { pageTitle } from '../../constants'
 import { useRouter } from 'next/router'
-import { AppLayout } from '../interface/layouts/AppLayout'
+import { AppLayout, FOOTER } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
@@ -61,7 +61,7 @@ export const EventContentWithProps = ({
 
   return (
     <AppLayout
-      showFooter={!event}
+      showFooter={{ ...FOOTER, subscriptionForm: undefined }}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"
