@@ -19627,7 +19627,7 @@ __metadata:
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.1.4"
     stripe: "npm:12.8.0"
-    supertest: "npm:6.3.3"
+    supertest: "npm:6.3.4"
     tsx: "npm:4.7.0"
     typescript: "npm:5.1.6"
     unified: "npm:10.1.2"
@@ -52625,7 +52625,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"superagent@npm:^8.0.5":
+"superagent@npm:^8.1.2":
   version: 8.1.2
   resolution: "superagent@npm:8.1.2"
   dependencies:
@@ -52650,13 +52650,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supertest@npm:6.3.3":
-  version: 6.3.3
-  resolution: "supertest@npm:6.3.3"
+"supertest@npm:6.3.4":
+  version: 6.3.4
+  resolution: "supertest@npm:6.3.4"
   dependencies:
     methods: "npm:^1.1.2"
-    superagent: "npm:^8.0.5"
-  checksum: 7a7da05bf0f43bc891fd377f6ee192c6fa115f01034f522d4f53c6305ab8866c760a5b0e7aedb3e422224e35be00a75b283613c446651cc1d9e35f80d9b461b3
+    superagent: "npm:^8.1.2"
+  checksum: 93015318f5a90398915a032747973d9eacf9aebec3f07b413eba9d8b3db83ff48fbf6f5a92f9526578cae50153b0f76a37de197141030d856db4371a711b86ee
   languageName: node
   linkType: hard
 
