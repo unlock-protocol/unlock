@@ -18,7 +18,7 @@ let lockManager,
   accountApproved,
   approvedAllAccount
 
-contract('Lock / erc721 / transferFrom', () => {
+describe('Lock / erc721 / transferFrom', () => {
   beforeEach(async () => {
     // init 2 locks
     lock = await deployLock()

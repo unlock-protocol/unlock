@@ -7,7 +7,7 @@ let lock
 let unlock
 let lockManager, someAccount
 
-contract('Lock / erc721 / tokenSymbol', () => {
+describe('Lock / erc721 / tokenSymbol', () => {
   before(async () => {
     ;[lockManager, someAccount] = await ethers.getSigners()
     ;({ unlock } = await deployContracts())

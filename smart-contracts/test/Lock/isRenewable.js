@@ -17,7 +17,7 @@ const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / isRenewable (ERC20 only)', () => {
+describe('Lock / isRenewable (ERC20 only)', () => {
   let tokenId
   let deployer, keyOwner
 

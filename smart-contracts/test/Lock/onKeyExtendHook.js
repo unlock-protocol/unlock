@@ -12,7 +12,7 @@ const {
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const someTokens = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / onKeyExtendHook', () => {
+describe('Lock / onKeyExtendHook', () => {
   let lock
   let tokenId
   let keyOwner

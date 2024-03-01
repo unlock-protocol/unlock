@@ -10,7 +10,7 @@ let lock
 let unlock
 const price = ethers.utils.parseUnits('0.01', 'ether')
 
-contract('Unlock / lockTotalSales', () => {
+describe('Unlock / lockTotalSales', () => {
   before(async () => {
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })

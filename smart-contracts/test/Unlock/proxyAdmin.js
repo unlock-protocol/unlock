@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 
-contract('proxyAdmin', () => {
+describe('proxyAdmin', () => {
   let unlock
 
   beforeEach(async () => {

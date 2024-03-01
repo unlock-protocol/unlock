@@ -5,7 +5,7 @@ let unlock, PublicLock
 let lockTemplate
 let signer
 
-contract('Lock / setLockTemplate', () => {
+describe('Lock / setLockTemplate', () => {
   beforeEach(async () => {
     ;({ unlock } = await deployContracts())
 

@@ -5,7 +5,7 @@ const { reverts } = require('../helpers')
 
 let keyManager, someAccount
 
-contract('KeyManager / locksmiths', () => {
+describe('KeyManager / locksmiths', () => {
   beforeEach(async () => {
     ;[, , , { address: someAccount }] = await ethers.getSigners()
     ;[keyManager] = await setup()

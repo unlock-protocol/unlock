@@ -8,7 +8,7 @@ const {
 const deployContracts = require('../fixtures/deploy')
 const { compareBigNumbers } = require('../helpers')
 
-contract('Unlock / UnlockProxy', () => {
+describe('Unlock / UnlockProxy', () => {
   let unlock
   let unlockOwner
   before(async () => {

@@ -3,7 +3,7 @@ const { assert } = require('chai')
 const { deployLock, purchaseKey, ADDRESS_ZERO } = require('../helpers')
 
 let keyOwner, rando
-contract('Lock / isValidKey', () => {
+describe('Lock / isValidKey', () => {
   let lock
   let tokenId
 
@@ -40,7 +40,7 @@ contract('Lock / isValidKey', () => {
   })
 })
 
-contract('Lock / isKey', () => {
+describe('Lock / isKey', () => {
   let lock
 
   beforeEach(async () => {

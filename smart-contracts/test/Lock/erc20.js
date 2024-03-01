@@ -9,7 +9,7 @@ const {
 } = require('../helpers')
 const { ADDRESS_ZERO, MAX_UINT } = require('@unlock-protocol/hardhat-helpers')
 
-contract('Lock / erc20', () => {
+describe('Lock / erc20', () => {
   let token
   let lock
   let lockManager, deployer, keyOwner, keyOwner2, keyOwner3, random

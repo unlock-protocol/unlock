@@ -8,7 +8,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-contract('Lock / maxKeysPerAddress', () => {
+describe('Lock / maxKeysPerAddress', () => {
   let keyOwner, someAccount, anotherAccount
   let lock
 

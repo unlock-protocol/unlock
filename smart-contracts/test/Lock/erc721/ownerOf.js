@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../../helpers')
 let lock
 
-contract('Lock / erc721 / ownerOf', () => {
+describe('Lock / erc721 / ownerOf', () => {
   let keyOwner, anotherAccount
   before(async () => {
     ;[, keyOwner, anotherAccount] = await ethers.getSigners()

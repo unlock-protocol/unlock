@@ -10,7 +10,7 @@ const {
 let lock
 let testEventHooks
 
-contract('Lock / onKeyGrantHook', () => {
+describe('Lock / onKeyGrantHook', () => {
   let lockManager
   let to
   let keyManager

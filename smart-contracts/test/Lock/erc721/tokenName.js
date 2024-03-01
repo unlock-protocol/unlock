@@ -6,7 +6,7 @@ let unnamedlock
 let namedLock
 let lockManager, someAccount
 
-contract('Lock / erc721 / name', () => {
+describe('Lock / erc721 / name', () => {
   before(async () => {
     ;[lockManager, someAccount] = await ethers.getSigners()
 

@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { purchaseKey, reverts, deployLock } = require('../helpers')
 
-contract('Lock / disableTransfers', () => {
+describe('Lock / disableTransfers', () => {
   let lock
   let tokenId
   let keyOwner, accountWithNoKey

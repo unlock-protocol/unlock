@@ -9,7 +9,7 @@ const {
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / mimick owner()', () => {
+describe('Lock / mimick owner()', () => {
   let lock
   let deployer
 

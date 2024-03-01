@@ -3,7 +3,7 @@ const metadata = require('../fixtures/metadata')
 
 const { deployLock, reverts } = require('../helpers')
 
-contract('Lock / setLockMetadata', () => {
+describe('Lock / setLockMetadata', () => {
   let lock
   let tx
 

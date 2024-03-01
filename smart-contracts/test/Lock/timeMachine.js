@@ -5,7 +5,7 @@ const ONE_DAY = 60 * 60 * 24
 const expirationDuration = ethers.BigNumber.from(`${ONE_DAY * 30}`)
 const tooMuchTime = ethers.BigNumber.from(`${ONE_DAY * 42}`) // 42 days
 
-contract('Lock / timeMachine', () => {
+describe('Lock / timeMachine', () => {
   let timeMachine
   let keyOwner
   let timestampBefore

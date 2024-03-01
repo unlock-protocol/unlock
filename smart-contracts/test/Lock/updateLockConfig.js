@@ -13,7 +13,7 @@ const maxKeysPerAddress = 1
 
 const defaultValues = [expirationDuration, maxNumberOfKeys, maxKeysPerAddress]
 
-contract('Lock / updateLockConfig', () => {
+describe('Lock / updateLockConfig', () => {
   let lock
 
   before(async () => {

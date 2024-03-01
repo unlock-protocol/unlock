@@ -9,7 +9,7 @@ const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
 )
 
-contract('UnlockProtocolGovernor', () => {
+describe('UnlockProtocolGovernor', () => {
   let gov
   let udt
   let updateTx

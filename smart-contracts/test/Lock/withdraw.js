@@ -13,7 +13,7 @@ const {
 const someTokens = ethers.utils.parseUnits('10', 'ether')
 const scenarios = [true, false]
 
-contract('Lock / withdraw', () => {
+describe('Lock / withdraw', () => {
   let lock
   let tokenAddress
   let testToken

@@ -8,7 +8,7 @@ const {
   parseInterface,
 } = require('../helpers')
 
-contract('Lock / initializers', () => {
+describe('Lock / initializers', () => {
   let unlockOwner, caller
   before(async () => {
     ;[unlockOwner, , , , , , , caller] = await ethers.getSigners()

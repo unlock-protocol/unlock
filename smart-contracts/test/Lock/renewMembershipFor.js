@@ -16,7 +16,7 @@ const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / Recurring memberships', () => {
+describe('Lock / Recurring memberships', () => {
   let lockOwner
   let keyOwner
   let randomSigner

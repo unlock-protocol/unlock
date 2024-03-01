@@ -7,7 +7,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-contract('Lock / transferFee', () => {
+describe('Lock / transferFee', () => {
   let lock
   let keyOwner, newOwner, randomSigner, lockManager
   const denominator = 10000

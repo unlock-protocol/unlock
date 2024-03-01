@@ -4,7 +4,7 @@ const { reverts, deployContracts } = require('../helpers')
 let unlock
 let unlockOwner, someAccount
 
-contract('Lock / configUnlock', () => {
+describe('Lock / configUnlock', () => {
   before(async () => {
     ;({ unlock } = await deployContracts())
     ;[unlockOwner, someAccount] = await ethers.getSigners()

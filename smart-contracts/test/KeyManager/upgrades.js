@@ -4,7 +4,7 @@ const { reverts } = require('../helpers')
 
 let proxy
 
-contract('KeyManager', () => {
+describe('KeyManager', () => {
   beforeEach(async () => {
     // deploy proxy
     const KeyManager = await ethers.getContractFactory('KeyManager')

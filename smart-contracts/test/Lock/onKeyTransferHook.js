@@ -8,7 +8,7 @@ const {
   canNotSetNonContractAddress,
 } = require('./behaviors/hooks.js')
 
-contract('Lock / onKeyTransfer hook', () => {
+describe('Lock / onKeyTransfer hook', () => {
   let lock
   let testEventHooks
   let events

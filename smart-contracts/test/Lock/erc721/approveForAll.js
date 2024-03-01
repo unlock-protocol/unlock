@@ -5,7 +5,7 @@ let lock
 let tokenId
 let keyOwner, approvedAccount, newApprovedAccount, signers
 
-contract('Lock / erc721 / approveForAll', () => {
+describe('Lock / erc721 / approveForAll', () => {
   before(async () => {
     lock = await deployLock()
     ;[, keyOwner, approvedAccount, newApprovedAccount, ...signers] =

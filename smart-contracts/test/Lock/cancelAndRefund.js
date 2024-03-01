@@ -13,7 +13,7 @@ let tokenIds
 
 const BASIS_POINTS = ethers.BigNumber.from(`10000`)
 
-contract('Lock / cancelAndRefund', (accounts) => {
+describe('Lock / cancelAndRefund', (accounts) => {
   let lock
   let lockFree
   let lockCreator

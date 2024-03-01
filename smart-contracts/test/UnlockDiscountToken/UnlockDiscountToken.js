@@ -3,7 +3,7 @@ const { reverts } = require('../helpers')
 
 const deployContracts = require('../fixtures/deploy')
 
-contract('udt', () => {
+describe('udt', () => {
   let udt
   let minter, recipient, accounts
 

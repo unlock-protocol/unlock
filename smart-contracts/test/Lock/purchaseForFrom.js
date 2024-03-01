@@ -1,7 +1,7 @@
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / purchaseForFrom', () => {
+describe('Lock / purchaseForFrom', () => {
   let lock
   let lockFree
   let keyOwner, referrer

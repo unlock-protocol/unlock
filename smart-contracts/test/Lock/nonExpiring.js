@@ -6,7 +6,7 @@ const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
 
 const FIVE_HUNDRED_YEARS = 5 * 100 * 365 * 24 * 60 * 60 * 1000
 
-contract('Lock / non expiring', () => {
+describe('Lock / non expiring', () => {
   let lock
   let keyOwner
   let keyPrice

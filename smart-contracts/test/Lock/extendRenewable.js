@@ -16,7 +16,7 @@ const someDai = ethers.utils.parseUnits('100', 'ether')
 let dai
 let lock
 
-contract('Lock / Extend with recurring memberships (ERC20 only)', () => {
+describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
   let lockOwner, keyOwner
 
   // const referrer = accounts[3]

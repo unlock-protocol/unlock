@@ -15,7 +15,7 @@ const scenarios = [false, true]
 const someDai = ethers.utils.parseEther('10')
 const BASIS_POINT_DENOMINATOR = 10000
 
-contract('Unlock / protocolFee', async () => {
+describe('Unlock / protocolFee', async () => {
   let unlock
 
   before(async () => {

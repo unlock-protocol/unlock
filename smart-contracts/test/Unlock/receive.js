@@ -3,7 +3,7 @@ const { deployContracts, reverts, getBalance } = require('../helpers')
 
 const oneEth = ethers.utils.parseEther('1')
 
-contract('Unlock / receive', async () => {
+describe('Unlock / receive', async () => {
   let unlock, signer
 
   before(async () => {

@@ -9,7 +9,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-contract('Lock / burn', () => {
+describe('Lock / burn', () => {
   let keyOwner
   let lock
   let tokenId

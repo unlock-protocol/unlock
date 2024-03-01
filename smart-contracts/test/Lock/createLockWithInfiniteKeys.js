@@ -9,7 +9,7 @@ const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 let unlock
 
-contract('Lock / createLockWithInfiniteKeys', () => {
+describe('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
     ;({ unlock } = await deployContracts())
   })

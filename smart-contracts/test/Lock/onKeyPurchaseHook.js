@@ -8,7 +8,7 @@ const {
 
 const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
 
-contract('Lock / onKeyPurchaseHook', () => {
+describe('Lock / onKeyPurchaseHook', () => {
   let lock
   let testEventHooks
   let events

@@ -5,7 +5,7 @@ const erc777abi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc777.jso
 
 let lock
 
-contract('Lock / Lock', () => {
+describe('Lock / Lock', () => {
   before(async () => {
     lock = await deployLock()
   })

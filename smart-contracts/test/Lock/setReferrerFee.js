@@ -14,7 +14,7 @@ const someDai = ethers.utils.parseUnits('10', 'ether')
 
 const scenarios = [false, true]
 
-contract('Lock / setReferrerFee', () => {
+describe('Lock / setReferrerFee', () => {
   let lock
   let deployer, keyOwner, referrer, renewer
   let dai

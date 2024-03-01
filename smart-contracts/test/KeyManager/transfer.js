@@ -18,7 +18,7 @@ const types = {
     { name: 'deadline', type: 'uint256' },
   ],
 }
-contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
+describe('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
   beforeEach(async () => {
     ;[keyManager, lock] = await setup()
     // Let's now aidrop a key to an address and set the keyManager as... keyManager!

@@ -11,7 +11,7 @@ let lockManager,
   receiver,
   random
 
-contract('Lock / lendKey', () => {
+describe('Lock / lendKey', () => {
   beforeEach(async () => {
     ;[
       lockManager,

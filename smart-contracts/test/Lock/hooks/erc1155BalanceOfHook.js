@@ -12,7 +12,7 @@ let nft
 
 const GOLD = 1
 
-contract('ERC1155BalanceOfHook', () => {
+describe('ERC1155BalanceOfHook', () => {
   let nftOwner
   let keyOwner
   let randomSigner

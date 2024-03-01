@@ -11,7 +11,7 @@ const { compareBigNumbers } = require('../helpers')
 
 const fee = 3000
 
-contract('Unlock / swapAndBurn', async () => {
+describe('Unlock / swapAndBurn', async () => {
   let unlock, swapBurner, udtAddress, udt, mockSwapBurner
 
   before(async () => {

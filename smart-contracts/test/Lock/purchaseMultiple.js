@@ -14,7 +14,7 @@ let testToken
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const allowance = '100000000000000000000'
 
-contract('Lock / purchase multiple keys at once', () => {
+describe('Lock / purchase multiple keys at once', () => {
   scenarios.forEach((isErc20) => {
     let lock
     let tokenAddress

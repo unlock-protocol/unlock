@@ -13,7 +13,7 @@ let unlock
 let lock
 let unlockOwner, keyOwner, anotherKeyOwner
 
-contract('Unlock / resetTrackedValue', () => {
+describe('Unlock / resetTrackedValue', () => {
   beforeEach(async () => {
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })

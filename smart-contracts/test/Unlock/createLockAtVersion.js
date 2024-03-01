@@ -12,7 +12,7 @@ const args = [
   'New Lock',
 ]
 
-contract('Unlock / createUpgradeableLockAtVersion', () => {
+describe('Unlock / createUpgradeableLockAtVersion', () => {
   let unlock
   let publicLock
   let publicLockUpgraded

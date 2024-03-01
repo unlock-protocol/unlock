@@ -26,7 +26,7 @@ const totalPrice = keyPrice.mul(5)
 const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
 const totalPriceUSDC = keyPriceUSDC.mul(5)
 
-contract('Unlock / uniswapValue', () => {
+describe('Unlock / uniswapValue', () => {
   let lock
   let unlock
   let token

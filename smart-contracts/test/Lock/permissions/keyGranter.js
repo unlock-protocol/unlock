@@ -9,7 +9,7 @@ const {
 let lock
 let lockCreator, notAuthorized, newKeyGranter
 
-contract('Permissions / KeyGranter', () => {
+describe('Permissions / KeyGranter', () => {
   before(async () => {
     ;[lockCreator, notAuthorized, newKeyGranter] = await ethers.getSigners()
     lock = await deployLock()

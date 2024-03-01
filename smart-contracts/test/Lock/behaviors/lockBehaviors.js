@@ -3,7 +3,7 @@ const lockTypes = ['FIRST', 'ERC20', 'FREE']
 
 const { deployERC20, deployAllLocks } = require('../../helpers')
 
-contract('Lock / lockBehaviors', (accounts) => {
+describe('Lock / lockBehaviors', (accounts) => {
   beforeEach(async () => {
     this.accounts = accounts
 

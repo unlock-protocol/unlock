@@ -11,7 +11,7 @@ let lock
 // 10 minutes
 const duration = 60 * 60 * 10
 
-contract('Lock / grantKeyExtension', () => {
+describe('Lock / grantKeyExtension', () => {
   let keyOwner, attacker
 
   let tokenId

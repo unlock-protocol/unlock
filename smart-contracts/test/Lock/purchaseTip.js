@@ -14,7 +14,7 @@ const scenarios = [false, true]
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const tip = ethers.utils.parseUnits('1', 'ether')
 
-contract('Lock / purchaseTip', () => {
+describe('Lock / purchaseTip', () => {
   scenarios.forEach((isErc20) => {
     let lock
     let tokenAddress

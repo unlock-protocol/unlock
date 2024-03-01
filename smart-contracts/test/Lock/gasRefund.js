@@ -61,7 +61,7 @@ const gasRefundedProperly = async ({
   compareBigNumbers(userBalanceAfter, expected)
 }
 
-contract('Lock / GasRefund', () => {
+describe('Lock / GasRefund', () => {
   let lock
   let tokenAddress = ADDRESS_ZERO
   let testToken

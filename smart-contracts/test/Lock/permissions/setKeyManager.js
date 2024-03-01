@@ -10,7 +10,7 @@ let lock
 let tokenId
 let keyOwner, keyManager, anotherKeyManager
 
-contract('Permissions / KeyManager', () => {
+describe('Permissions / KeyManager', () => {
   before(async () => {
     lock = await deployLock()
     ;[, keyOwner, keyManager, anotherKeyManager] = await ethers.getSigners()

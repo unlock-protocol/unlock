@@ -21,7 +21,7 @@ let swapper,
   swapperBalanceBefore
 const { assert } = require('chai')
 
-contract('UnlockSwapPurchaser / withdraw', () => {
+describe('UnlockSwapPurchaser / withdraw', () => {
   scenarios.forEach((isErc20) => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       before(async () => {

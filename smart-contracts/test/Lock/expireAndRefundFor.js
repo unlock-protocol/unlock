@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
 
-contract('Lock / expireAndRefundFor', () => {
+describe('Lock / expireAndRefundFor', () => {
   let lock
   let tokenIds
   let lockCreator

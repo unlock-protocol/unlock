@@ -17,7 +17,7 @@ let deployer, lockCreator, lockManager, random, invalidTokenAddress
 
 const newPrice = ethers.utils.parseUnits('0.3', 'ether')
 
-contract('Lock / updateKeyPricing', () => {
+describe('Lock / updateKeyPricing', () => {
   before(async () => {
     ;[
       ,

@@ -6,7 +6,7 @@ const {
 } = require('../../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / uniqueTokenIds', () => {
+describe('Lock / uniqueTokenIds', () => {
   let lock
   let tokenIds
 

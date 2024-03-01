@@ -11,7 +11,7 @@ let tokenIds
 let keyOwners
 let random
 
-contract('Lock / owners', () => {
+describe('Lock / owners', () => {
   before(async () => {
     random = (await ethers.getSigners())[10]
     lock = await deployLock()

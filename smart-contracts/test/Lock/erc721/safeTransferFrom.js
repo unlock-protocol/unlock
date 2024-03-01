@@ -8,7 +8,7 @@ const safeTransferFromSig = 'safeTransferFrom(address,address,uint256)'
 const safeTransferFromWithDataSig =
   'safeTransferFrom(address,address,uint256,bytes)'
 
-contract('Lock / erc721 / safeTransferFrom', () => {
+describe('Lock / erc721 / safeTransferFrom', () => {
   // function safeTransferFrom() still uses transferFrom() under the hood
   // but adds an additional check afterwards. transferFrom is already well-tested,
   // so here we add a few checks to test only the new functionality.

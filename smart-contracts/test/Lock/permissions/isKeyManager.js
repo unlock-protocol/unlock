@@ -5,7 +5,7 @@ let keyOwner, keyManager, random, notKeyManager
 let tokenId
 const expirationDuration = ethers.BigNumber.from(60 * 60 * 24 * 30)
 
-contract('Permissions / isKeyManager', () => {
+describe('Permissions / isKeyManager', () => {
   before(async () => {
     ;[, keyOwner, keyManager, random, notKeyManager] = await ethers.getSigners()
     // init template

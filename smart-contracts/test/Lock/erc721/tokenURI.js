@@ -30,7 +30,7 @@ function stringShifter(str) {
   return lowercaseAddress
 }
 
-contract('Lock / erc721 / tokenURI', () => {
+describe('Lock / erc721 / tokenURI', () => {
   before(async () => {
     ;[lockManager, someAccount] = await ethers.getSigners()
     ;({ unlock } = await deployContracts())

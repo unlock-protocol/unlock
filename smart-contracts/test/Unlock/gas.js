@@ -4,7 +4,7 @@ const WalletService = require('../helpers/walletServiceMock.js')
 const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
-contract('Unlock / gas', () => {
+describe('Unlock / gas', () => {
   it('gas used to createLock is less than wallet service limit', async () => {
     const { unlock } = await deployContracts()
     const [signer] = await ethers.getSigners()

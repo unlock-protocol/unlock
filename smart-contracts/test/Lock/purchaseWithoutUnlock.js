@@ -23,7 +23,7 @@ const fixUnlock = async (unlockAddress) => {
   await upgradeTx.wait()
 }
 
-contract('Lock / purchaseWithoutUnlock', () => {
+describe('Lock / purchaseWithoutUnlock', () => {
   let unlock
   let lock
 

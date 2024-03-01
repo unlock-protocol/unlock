@@ -8,7 +8,7 @@ const {
   MULTISIG_ADDRESS_OWNER,
 } = require('../helpers')
 
-contract('UnlockDiscountToken on mainnet', async () => {
+describe('UnlockDiscountToken on mainnet', async () => {
   let udt
   const chainId = 1 // mainnet
   let unlockAddress

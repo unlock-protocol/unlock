@@ -3,7 +3,7 @@ const { ethers } = require('hardhat')
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const WalletService = require('../helpers/walletServiceMock.js')
 
-contract('Lock / gas', () => {
+describe('Lock / gas', () => {
   it('gas used to purchaseFor is less than wallet service limit', async () => {
     const lock = await deployLock()
     const [signer] = await ethers.getSigners()

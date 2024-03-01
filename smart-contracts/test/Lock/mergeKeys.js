@@ -10,7 +10,7 @@ const {
 
 const timeAmount = ethers.BigNumber.from('1000')
 
-contract('Lock / mergeKeys', () => {
+describe('Lock / mergeKeys', () => {
   let tokenId, tokenId2
   let keyOwner, keyOwner2, keyManager, rando
   let lock

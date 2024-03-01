@@ -9,7 +9,7 @@ const {
 } = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01', 'ether')
-contract('Lock / purchaseFor', () => {
+describe('Lock / purchaseFor', () => {
   let lock
   let anotherLock
   let lockSingleKey

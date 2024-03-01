@@ -9,7 +9,7 @@ let keyOwner,
   someone, // the person who key is lended to
   random
 
-contract('Lock / unlendKey', () => {
+describe('Lock / unlendKey', () => {
   beforeEach(async () => {
     ;[keyOwner, receiver, someone, random] = await ethers.getSigners()
     lock = await deployLock()

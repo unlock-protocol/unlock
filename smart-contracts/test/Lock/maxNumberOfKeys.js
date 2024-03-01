@@ -11,7 +11,7 @@ const {
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / maxNumberOfKeys', () => {
+describe('Lock / maxNumberOfKeys', () => {
   let unlock
   let lock
 

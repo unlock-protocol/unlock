@@ -12,7 +12,7 @@ let lock
 let tokenId
 let keyOwner, approvedAccount
 
-contract('Lock / erc721 / approve', () => {
+describe('Lock / erc721 / approve', () => {
   before(async () => {
     ;[, keyOwner, approvedAccount] = await ethers.getSigners()
     lock = await deployLock()

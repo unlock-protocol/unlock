@@ -8,7 +8,7 @@ const {
 let lock
 let testEventHooks
 
-contract('Lock / onTokenURIHook', () => {
+describe('Lock / onTokenURIHook', () => {
   let tokenId
   let events
   let keyOwner, lockOwner

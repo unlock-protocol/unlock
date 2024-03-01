@@ -34,7 +34,7 @@ const round = (bn) => {
   return ethers.BigNumber.from(integral).add(remainer)
 }
 
-contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
+describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
   let rate
 
   before(async function () {

@@ -3,7 +3,7 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const { deployLock, ADDRESS_ZERO, compareBigNumbers } = require('../../helpers')
 
-contract('Lock / erc721 / balanceOf', () => {
+describe('Lock / erc721 / balanceOf', () => {
   let lock
   let keyOwner, someAccount, accountWithoutKey, keyReceiver
   before(async () => {

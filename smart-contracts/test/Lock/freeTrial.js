@@ -8,7 +8,7 @@ const {
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
-contract('Lock / freeTrial', () => {
+describe('Lock / freeTrial', () => {
   let lock
   let tokenId
   let keyOwner
