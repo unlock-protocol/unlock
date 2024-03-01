@@ -34,7 +34,7 @@
     "axios": "1.6.7",
     "blockies-react-svg": "0.0.13",
     "calendar-link": "2.5.1",
-    "csv": "6.3.6",
+    "csv": "6.3.8",
     "dayjs": "1.11.10",
     "deep-object-diff": "1.1.9",
     "dotenv": "16.3.1",
