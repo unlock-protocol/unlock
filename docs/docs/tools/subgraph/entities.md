@@ -21,7 +21,7 @@ Description: get specific details of the lock
 | address            | Bytes         | Address of the lock. |
 | name               | String        | A descriptive name for a collection of NFTs in this contract. |
 | symbol             | String        | Token symbol. |
-| expirationDuration | BigInt        | Duration is set the on the lock when you deploy and the expiration which is set on each key when they are minted. |
+| expirationDuration | BigInt        | Duration is set on the lock when you deploy and the expiration which is set on each key when they are minted. |
 | tokenAddress       | Bytes         | Address of the 'currency' ERC20 contract if the keys are priced using an ERC20.|
 | price              | BigInt        | Price of the keys sold the lock.|
 | lockManagers       | [Bytes]       | An assigned role set on a Lock contract which gives the highest level of permissions to the wallet address set to that role. |

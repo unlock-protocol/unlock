@@ -15,7 +15,7 @@ Gas fees on the Ethereum mainnet have now been outrageously high for more than a
 
 Don't get us wrong: in some ways, high gas fees are a good problem to have for the Ethereum community. They mean that demand for the very precious block space is much higher than the available supply.
 
-That said, the community has realized this for a long time, and multiple "layer 2" solutions have emerged. Vitalik Buterin [wrote many times](https://vitalik.ca/general/2021/12/06/endgame.html) about why he believes that "roll ups" are the way to scale beyond the limited block space, and we agree!
+That said, the community has realized this for a long time, and multiple "layer 2" solutions have emerged. Vitalik Buterin [wrote many times](https://vitalik.eth.limo/general/2021/12/06/endgame.html) about why he believes that "roll ups" are the way to scale beyond the limited block space, and we agree!
 
 ## Unlock on Optimism
 

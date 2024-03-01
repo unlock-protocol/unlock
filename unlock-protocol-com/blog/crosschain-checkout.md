@@ -8,13 +8,13 @@ image: /images/blog/crosschaincheckout/cross-chain-checkout-share.png
 
 It is now obvious that L2 (and side-chains before that) represent a required step to “scale” blockchains. All transactions will not happen on the same “virtual machine”, but across dozens of them. This is the reason why the Unlock Protocol has been deployed on 12 networks (and more to come), including [Ethereum mainnet](https://unlock-protocol.com/blog/announcing-v0), [Polygon](https://unlock-protocol.com/blog/unlock-on-polygon), [Gnosis Chain](https://unlock-protocol.com/blog/xdai) (neee xDAI), [Optimism](https://unlock-protocol.com/blog/optimism), [Arbitrum](https://unlock-protocol.com/blog/arbitrum) and more recently [Base](https://unlock-protocol.com/blog/base).
 
-This, however, also brings a new challenge for users: their wallets need to have tokens on each an every network they wish to use to transact. This meant a lot of manual bridging and a lot of headaches.
+This, however, also brings a new challenge for users: their wallets need to have tokens on each and every network they wish to use to transact. This meant a lot of manual bridging and a lot of headaches.
 
 Today, the Unlock Labs team is excited to announce, in partnership with [Decent.xyz](http://decent.xyz), a whole new feature in our “checkout” tool: the ability to make **cross-chain purchases**. 
 
 ## What is Unlock’s checkout?
 
-The [Unlock checkout](https://docs.unlock-protocol.com/tools/checkout/) is an interface that lets developers easily add the the ability to purchase memberships from their sites, without having to write too much code. It already has the following features:
+The [Unlock checkout](https://docs.unlock-protocol.com/tools/checkout/) is an interface that lets developers easily add the ability to purchase memberships from their sites, without having to write too much code. It already has the following features:
 
 - Connecting wallets (any web3 wallet)
 - Handling [Unlock accounts](https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/unlock-accounts) for users without a wallet
