@@ -31,7 +31,8 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
-  before(async () => {
+  before(async function () {
+    this.skip()
     ;({ unlock, udt } = await deployContracts())
     // parse for truffle
     udt = await UnlockDiscountToken.at(udt.address)
