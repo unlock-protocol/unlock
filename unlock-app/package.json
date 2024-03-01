@@ -28,7 +28,7 @@
     "@vercel/og": "0.6.2",
     "@vercel/speed-insights": "1.0.4",
     "@walletconnect/client": "1.8.0",
-    "@walletconnect/ethereum-provider": "2.11.1",
+    "@walletconnect/ethereum-provider": "2.11.2",
     "@walletconnect/modal": "2.6.2",
     "@xstate/react": "3.2.2",
     "axios": "1.6.7",
