@@ -27,8 +27,12 @@ contract('Lock / onTokenURIHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.adress))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
     ;({ events } = await tx.wait())
+  })
+
+  it('is set correctly', async () => {
+    assert.equal(await lock.onTokenURIHook(), testEventHooks.address)
   })
 
   it('emit the correct event', async () => {
@@ -50,6 +54,7 @@ contract('Lock / onTokenURIHook', () => {
       tokenId, // tokenId
     ]
 
+    assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
     const tokenURI = await lock.tokenURI(tokenId)
     assert.equal(tokenURI, `${baseTokenURI}${params.join('/')}`)
   })
