@@ -17527,10 +17527,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:4.3.11":
-  version: 4.3.11
-  resolution: "@types/chai@npm:4.3.11"
-  checksum: c83a00359684bf06114d5ad0ffa62c78b2fbfe09a985eda56e55cd3c191fe176052aef6e297a8c8a3608efb8ea7a44598cf7e0ae1a3a9311af892417e95b0b28
+"@types/chai@npm:4.3.12":
+  version: 4.3.12
+  resolution: "@types/chai@npm:4.3.12"
+  checksum: cf465151048f438b11e562ac431842f440b50817e74516f1fb349860a0db4fcdd665197f9fbee4387250d8d077496a1167fe2c75af88372bac6d8f093ee07b3a
   languageName: node
   linkType: hard
 
@@ -19709,7 +19709,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@types/chai": "npm:4.3.11"
+    "@types/chai": "npm:4.3.12"
     "@types/fs-extra": "npm:11.0.4"
     "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.10.1"
