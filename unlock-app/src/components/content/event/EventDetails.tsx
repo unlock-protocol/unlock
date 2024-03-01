@@ -252,7 +252,7 @@ Powered by Unlock Protocol`}
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3  lg:px-12 lg:mt-16 mt-8">
+        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 lg:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="mt-4 text-3xl font-bold md:text-6xl">
               {event.name}
