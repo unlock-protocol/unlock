@@ -20197,7 +20197,7 @@ __metadata:
     feed: "npm:4.2.2"
     gray-matter: "npm:4.0.3"
     next: "npm:14.0.4"
-    next-seo: "npm:6.4.0"
+    next-seo: "npm:6.5.0"
     next-transpile-modules: "npm:10.0.1"
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
@@ -43482,14 +43482,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next-seo@npm:6.4.0":
-  version: 6.4.0
-  resolution: "next-seo@npm:6.4.0"
+"next-seo@npm:6.5.0":
+  version: 6.5.0
+  resolution: "next-seo@npm:6.5.0"
   peerDependencies:
     next: ^8.1.1-canary.54 || >=9.0.0
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: acb7ea474f121f788d2cc312f9c8ec2061f72c28b4d9ef6beb89d0707f0319e7b5025d08c1970bad7d0cda451820751ecf9a40507c1b97098a18d00a99436856
+  checksum: e86e9056305379a03aeb9b4368db79870ed91dbb0e2463574f34ec2557e8257c614c006d83c5a5f19c7f91916ed6da91700de06ba491ff86ae647ab8988b354e
   languageName: node
   linkType: hard
 

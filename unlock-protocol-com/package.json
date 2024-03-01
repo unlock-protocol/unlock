@@ -27,7 +27,7 @@
     "eslint": "8.54.0",
     "ethers": "5.7.2",
     "next": "14.0.4",
-    "next-seo": "6.4.0",
+    "next-seo": "6.5.0",
     "numeral": "2.0.6",
     "path-match": "1.2.4",
     "prettier": "3.0.0",
