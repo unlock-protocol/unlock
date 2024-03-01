@@ -60,8 +60,8 @@
   },
   "devDependencies": {
     "@headlessui/react": "1.7.18",
-    "@mdx-js/preact": "3.0.0",
-    "@mdx-js/react": "3.0.0",
+    "@mdx-js/preact": "3.0.1",
+    "@mdx-js/react": "3.0.1",
     "@storybook/addon-actions": "7.6.3",
     "@storybook/addon-docs": "7.6.3",
     "@storybook/addon-essentials": "7.6.3",
