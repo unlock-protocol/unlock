@@ -9364,26 +9364,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/preact@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@mdx-js/preact@npm:3.0.0"
+"@mdx-js/preact@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@mdx-js/preact@npm:3.0.1"
   dependencies:
     "@types/mdx": "npm:^2.0.0"
   peerDependencies:
     preact: ">=10.0.0"
-  checksum: 8397a910caadc6eaf74d13697f756504c695ee00e5364ed7b54854081b2dbadf4d07f85d5beb4fbf9b41b62c8a87b2aab0fb41236f5218c9d0a01e4d9b206ac5
+  checksum: 66b2cf2a09fbc9739306920c65c3b4dd707c19804d11792dffd556e7ca053339ca3ca2034b73d3da22400234447893e8d77adc386d81925bdcc614ece65aeb7f
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:3.0.0, @mdx-js/react@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "@mdx-js/react@npm:3.0.0"
+"@mdx-js/react@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@mdx-js/react@npm:3.0.1"
   dependencies:
     "@types/mdx": "npm:^2.0.0"
   peerDependencies:
     "@types/react": ">=16"
     react: ">=16"
-  checksum: 6d05cd3871eabbcc86df5042981692eccea55b5c31cbf39952bef0f41b38f2c4abeb357fed456a16c1472a0877b2f7e842341117034a3f1ddcb40b4840c33731
+  checksum: d566407af11e76f498f8133fbfa8a9d8a2ad80dc7a66ca109d29fcb92e953a2d2d7aaedc0c28571d126f1967faeb126dd2e4ab4ea474c994bf5c76fa204c5997
   languageName: node
   linkType: hard
 
@@ -9396,6 +9396,18 @@ __metadata:
   peerDependencies:
     react: ">=16"
   checksum: bce1cb1dde0a9a2b786cd9167b9e2bc0e3be52c195a4a79aaf1677470566d1fd2979d01baca2380c76aa4a1a27cd89f051484e595fdc4144a428d6af39bb667a
+  languageName: node
+  linkType: hard
+
+"@mdx-js/react@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@mdx-js/react@npm:3.0.0"
+  dependencies:
+    "@types/mdx": "npm:^2.0.0"
+  peerDependencies:
+    "@types/react": ">=16"
+    react: ">=16"
+  checksum: 6d05cd3871eabbcc86df5042981692eccea55b5c31cbf39952bef0f41b38f2c4abeb357fed456a16c1472a0877b2f7e842341117034a3f1ddcb40b4840c33731
   languageName: node
   linkType: hard
 
@@ -19424,7 +19436,7 @@ __metadata:
     "@docusaurus/plugin-client-redirects": "npm:3.1.0"
     "@docusaurus/plugin-content-docs": "npm:3.1.0"
     "@flockler/react-flockler-embed": "npm:1.0.4"
-    "@mdx-js/react": "npm:3.0.0"
+    "@mdx-js/react": "npm:3.0.1"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     clsx: "npm:2.1.0"
     docusaurus-gtm-plugin: "npm:0.0.2"
@@ -19793,8 +19805,8 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@headlessui/react": "npm:1.7.18"
-    "@mdx-js/preact": "npm:3.0.0"
-    "@mdx-js/react": "npm:3.0.0"
+    "@mdx-js/preact": "npm:3.0.1"
+    "@mdx-js/react": "npm:3.0.1"
     "@radix-ui/react-tooltip": "npm:1.0.7"
     "@storybook/addon-actions": "npm:7.6.3"
     "@storybook/addon-docs": "npm:7.6.3"
