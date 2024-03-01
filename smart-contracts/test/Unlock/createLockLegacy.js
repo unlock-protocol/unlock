@@ -5,6 +5,7 @@ const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 let unlock
 let lock
 let publicLockUpgraded
+let currentVersion
 
 contract('Unlock / createLock (Legacy)', () => {
   before(async () => {
@@ -17,11 +18,10 @@ contract('Unlock / createLock (Legacy)', () => {
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
     await publicLockUpgraded.deployed()
-    const currentVersion = await unlock.publicLockLatestVersion()
-    await unlock.addLockTemplate(
-      publicLockUpgraded.address,
-      currentVersion.toNumber() + 1
-    )
+    currentVersion = await unlock.publicLockLatestVersion()
+
+    // add template for upgrade test
+    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
   })
 
   describe('Deploy correctly using legacy createLock method', () => {
@@ -49,7 +49,8 @@ contract('Unlock / createLock (Legacy)', () => {
             'Test Lock',
           ]
           const tx = await unlock.createLock(...args, salt)
-          const evt = tx.logs.find((v) => v.event === 'NewLock')
+          const { events } = await tx.wait()
+          const evt = events.find(({ event }) => event === 'NewLock')
           lock = await ethers.getContractAt(
             'contracts/PublicLock.sol:PublicLock',
             evt.args.newLockAddress
@@ -70,7 +71,10 @@ contract('Unlock / createLock (Legacy)', () => {
             lock.address,
             (await lock.publicLockVersion()) + 1
           )
-          assert.equal(tx.logs[0].event, 'LockUpgraded')
+          const { events } = await tx.wait()
+          const { args } = events.find(({ event }) => event === 'LockUpgraded')
+          assert.equal(args.lockAddress, lock.address)
+          assert.equal(args.version, currentVersion + 1)
         })
       })
     }

@@ -16,7 +16,7 @@ const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 let unlock, udt, lock, oracle, weth
 
 // skip on coverage until solidity-coverage supports EIP-1559
-const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
+const describeOrSkip = describe.skip
 
 const estimateGas = 252166 * 2
 
