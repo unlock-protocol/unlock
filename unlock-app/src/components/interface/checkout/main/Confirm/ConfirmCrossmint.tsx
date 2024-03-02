@@ -220,7 +220,9 @@ export function ConfirmCrossmint({
               />
             )}
             {!isPricingDataError && argumentsReady && (
-              <CrossmintPaymentElement {...crossmintConfig} />
+              <div className="[&>iframe]:w-full">
+                <CrossmintPaymentElement {...crossmintConfig} />
+              </div>
             )}
           </>
         )}
