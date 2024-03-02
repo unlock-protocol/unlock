@@ -1,3 +1,4 @@
+*.tmp
 cache
 contracts
 artifacts
