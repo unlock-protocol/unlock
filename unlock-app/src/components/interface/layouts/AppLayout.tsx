@@ -21,7 +21,7 @@ interface DashboardLayoutProps {
   showHeader?: boolean
   logoImageUrl?: string
   logoRedirectUrl?: string
-  showFooter?: boolean
+  showFooter?: any
 }
 
 export const WalletNotConnected = () => {
@@ -49,7 +49,7 @@ export const WalletNotConnected = () => {
   )
 }
 
-const FOOTER = {
+export const FOOTER = {
   subscriptionForm: {
     title: 'Sign up for Updates',
     description:
@@ -144,7 +144,7 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
-  showFooter = true,
+  showFooter = FOOTER,
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
@@ -288,7 +288,7 @@ export const AppLayout = ({
           )}
         </div>
 
-        {showFooter && <Footer {...FOOTER} />}
+        {showFooter && <Footer {...showFooter} />}
       </Container>
     </div>
   )

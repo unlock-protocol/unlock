@@ -32,7 +32,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.54.0",
-    "tsup": "8.0.1",
+    "tsup": "8.0.2",
     "typescript": "5.3.3"
   },
   "files": [
