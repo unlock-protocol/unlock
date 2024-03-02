@@ -37,7 +37,7 @@
     "@babel/core": "7.22.9",
     "@babel/preset-env": "7.22.9",
     "@graphql-codegen/cli": "4.0.1",
-    "@graphql-codegen/typescript": "4.0.1",
+    "@graphql-codegen/typescript": "4.0.6",
     "@graphql-codegen/typescript-graphql-request": "5.0.0",
     "@graphql-codegen/typescript-operations": "4.0.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
