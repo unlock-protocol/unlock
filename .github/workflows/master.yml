@@ -73,7 +73,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v1.3.1
+        uses: 1Password/load-secrets-action@v1.3.2
         with:
           export-env: true
         env:
