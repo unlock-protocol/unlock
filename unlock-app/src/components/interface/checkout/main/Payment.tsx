@@ -101,6 +101,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       recipients,
     })
 
+  const enableCrossmint = !state.context.renew && crossmintEnabled
+
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
     network: lock.network,
@@ -175,7 +177,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableClaim,
     enableCrypto,
     universalCardEnabled,
-    !!crossmintEnabled,
+    !!enableCrossmint,
   ].every((item) => !item)
 
   return (
@@ -271,7 +273,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Crossmint Payment */}
-            {crossmintEnabled && !enableClaim && (
+            {enableCrossmint && !enableClaim && (
               <div>
                 <button
                   onClick={(event) => {
