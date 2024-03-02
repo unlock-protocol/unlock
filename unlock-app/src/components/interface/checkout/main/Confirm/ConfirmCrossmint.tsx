@@ -41,6 +41,8 @@ export function ConfirmCrossmint({
   // onError,
   checkoutService,
 }: Props) {
+  const [error, setError] = useState<string | null>(null)
+  const [crossmintLoading, setCrossmintLoading] = useState(true)
   const { email } = useAuth()
   const [state] = useActor(checkoutService)
   const config = useConfig()
@@ -51,7 +53,7 @@ export function ConfirmCrossmint({
   const { lock, recipients, paywallConfig, data, keyManagers } = state.context
 
   const {
-    isLoading: isCrossmintLoading,
+    isLoading: isCrossmintEnabledLoading,
     collectionId,
     projectId,
   } = useCrossmintEnabled({
@@ -80,14 +82,18 @@ export function ConfirmCrossmint({
       console.debug(paymentEvent)
       // We get the events from crossmint
       // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
-      if (paymentEvent.type === 'quote:status.changed') {
+      if (paymentEvent.type === 'payment:preparation.failed') {
+        setError(
+          'There was an error with Crossmint and we are not able to collect payments with this method at this time. Please choose another method.'
+        )
+      } else if (paymentEvent.type === 'quote:status.changed') {
+        setCrossmintLoading(false)
         setQuote(paymentEvent.payload)
       } else if (paymentEvent.type === 'payment:process.started') {
         // Wait!
       } else if (paymentEvent.type === 'payment:process.succeeded') {
         setIsConfirming(true)
         listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
-          console.debug(mintingEvent)
           if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
             onConfirmed(lock!.address, mintingEvent.payload.txId)
           }
@@ -116,7 +122,11 @@ export function ConfirmCrossmint({
   })
 
   const isLoading =
-    isCrossmintLoading || isInitialDataLoading || isPricingDataLoading || !quote
+    !error &&
+    (isCrossmintEnabledLoading ||
+      isInitialDataLoading ||
+      isPricingDataLoading ||
+      crossmintLoading)
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig, lock!.address)
@@ -155,6 +165,8 @@ export function ConfirmCrossmint({
     onEvent: onCrossmintPaymentEvent,
   }
 
+  const showCrossmint = crossmintLoading || error ? 'hidden' : 'block'
+
   return (
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
@@ -178,23 +190,38 @@ export function ConfirmCrossmint({
                   </p>
                 </div>
               )}
+              {error && (
+                <div>
+                  <p className="text-sm font-bold">
+                    <ErrorIcon className="inline" />
+                    {error}
+                  </p>
+                </div>
+              )}
 
               {!isLoading && (
                 <div>
-                  {quote.lineItems.map((item: any, index: number) => {
+                  {quote?.lineItems.map((item: any, index: number) => {
                     const first = index <= 0
 
                     return (
-                      <div
-                        key={index}
-                        className={`flex border-b ${
-                          first ? 'border-t' : null
-                        } items-center justify-between text-sm px-0 py-2`}
-                      >
-                        <div>{item.metadata.description}</div>{' '}
-                        <div className="font-bold">
-                          {item.price.amount}{' '}
-                          {item.price.currency.toUpperCase()}
+                      <div key={index} className="text-sm ">
+                        <div
+                          className={`flex border-b ${
+                            first ? 'border-t' : null
+                          }  items-center justify-between px-0 py-2`}
+                        >
+                          <div>{item.metadata.description}</div>{' '}
+                          <div className="font-bold">
+                            {item.price.amount}{' '}
+                            {item.price.currency.toUpperCase()}
+                          </div>
+                        </div>
+                        <div
+                          className={`flex items-center justify-between px-0 py-2`}
+                        >
+                          <div>Gas fee</div>
+                          <div>{item.gasFee.amount} USD </div>
                         </div>
                       </div>
                     )
@@ -220,7 +247,7 @@ export function ConfirmCrossmint({
               />
             )}
             {!isPricingDataError && argumentsReady && (
-              <div className="[&>iframe]:w-full">
+              <div className={`[&>iframe]:w-full ${showCrossmint} `}>
                 <CrossmintPaymentElement {...crossmintConfig} />
               </div>
             )}
