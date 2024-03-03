@@ -11,10 +11,11 @@ export async function getCancelAndRefundValueFor(
   const value = await lockContract.getCancelAndRefundValue(tokenId)
 
   let refundValue
-  if (tokenAddress === ZERO) {
+  if (!tokenAddress || tokenAddress === ZERO) {
     refundValue = utils.fromWei(value, 'ether')
   } else {
-    refundValue = await getErc20Decimals(tokenAddress, this.provider)
+    const decimals = await getErc20Decimals(tokenAddress, this.provider)
+    refundValue = utils.fromDecimal(value, decimals)
   }
 
   return refundValue
