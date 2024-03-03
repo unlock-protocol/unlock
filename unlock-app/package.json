@@ -68,7 +68,7 @@
     "react-use-clipboard": "1.0.9",
     "siwe": "2.1.4",
     "tailwind-merge": "2.2.1",
-    "typescript": "5.1.6",
+    "typescript": "5.3.3",
     "validator": "13.9.0",
     "walletlink": "2.5.0",
     "xstate": "4.38.3",
