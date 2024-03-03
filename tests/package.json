@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@apollo/client": "3.6.9",
-    "@ethersproject/abi": "5.4.7",
-    "@ethersproject/providers": "5.4.7",
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/providers": "5.7.2",
     "@nomicfoundation/hardhat-chai-matchers": "2.0.6",
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-toolbox": "4.0.0",
@@ -27,7 +27,7 @@
     "apollo-link-http": "1.5.17",
     "chai": "4.2.0",
     "eslint": "8.46.0",
-    "ethers": "5.4.7",
+    "ethers": "5.7.2",
     "graphql": "16.6.0",
     "hardhat": "2.18.3",
     "hardhat-gas-reporter": "1.0.8",
@@ -35,6 +35,6 @@
     "solidity-coverage": "0.8.2",
     "ts-node": "8.0.0",
     "typechain": "8.1.0",
-    "typescript": "4.5.0"
+    "typescript": "5.3.3"
   }
 }
