@@ -58,8 +58,8 @@
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
-    "ethers": "^5.7.x",
-    "hardhat": "^2.12.x"
+    "ethers": "5.7",
+    "hardhat": "2.12"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.3"

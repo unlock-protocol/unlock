@@ -4,9 +4,6 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "description": "Unlock's base Typescript config",
-  "engines": {
-    "node": ">=12"
-  },
   "files": [
     "tsconfig.json"
   ],
