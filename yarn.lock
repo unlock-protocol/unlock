@@ -20147,7 +20147,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vercel/og": "npm:0.6.2"
-    "@vercel/speed-insights": "npm:1.0.4"
+    "@vercel/speed-insights": "npm:1.0.10"
     "@vitejs/plugin-react": "npm:4.0.4"
     "@vitest/coverage-c8": "npm:0.33.0"
     "@walletconnect/client": "npm:1.8.0"
@@ -20396,10 +20396,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/speed-insights@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@vercel/speed-insights@npm:1.0.4"
-  checksum: 946c80ad3473aa2bfb4e4d15a630734ab558e6a92b58953587118e32f9bfde1685fc0f5277097b523a0bad79a0ce3f6dcec07d28e9226ebaf67080e9060193bd
+"@vercel/speed-insights@npm:1.0.10":
+  version: 1.0.10
+  resolution: "@vercel/speed-insights@npm:1.0.10"
+  peerDependencies:
+    "@sveltejs/kit": ^1 || ^2
+    next: ">= 13"
+    react: ^18 || ^19
+    svelte: ^4
+    vue: ^3
+    vue-router: ^4
+  peerDependenciesMeta:
+    "@sveltejs/kit":
+      optional: true
+    next:
+      optional: true
+    react:
+      optional: true
+    svelte:
+      optional: true
+    vue:
+      optional: true
+    vue-router:
+      optional: true
+  checksum: 5ceaad884a37c539e19f70da383f46d4e937dbd6fbad3c0d27b2c5748ca60649ce2259d24788d8564fba051926c444bbbe6e8549e303d75eb9cfb6edc2dedbde
   languageName: node
   linkType: hard
 
