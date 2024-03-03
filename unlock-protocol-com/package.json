@@ -47,7 +47,7 @@
     "yaml-front-matter": "4.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.17",
+    "autoprefixer": "10.4.18",
     "eslint-config-next": "14.0.4",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
