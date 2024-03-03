@@ -17856,7 +17856,7 @@ __metadata:
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:1.0.10"
     hardhat-storage-layout: "npm:0.1.7"
-    hardhat-tracer: "npm:2.7.0"
+    hardhat-tracer: "npm:2.8.0"
     hardlydifficult-eth: "npm:1.1.4"
     hardlydifficult-ethereum-contracts: "npm:0.11.1"
     prettier: "npm:3.0.0"
@@ -32471,9 +32471,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:2.7.0":
-  version: 2.7.0
-  resolution: "hardhat-tracer@npm:2.7.0"
+"hardhat-tracer@npm:2.8.0":
+  version: 2.8.0
+  resolution: "hardhat-tracer@npm:2.8.0"
   dependencies:
     chalk: "npm:^4.1.2"
     debug: "npm:^4.3.4"
@@ -32481,7 +32481,7 @@ __metadata:
   peerDependencies:
     chai: 4.x
     hardhat: ">=2.16 <3.x"
-  checksum: 867330bd16f194619c9601ccc456eca7f7df633dbec58177e39e4cdc1c1cd5553e04e083f0e728aa56d3e68f1687f88b8c9d718945475ffac95452584a6503e0
+  checksum: 30201a110d00d5b2300bdeed2a0020778aa6f65c71b5cf358f7bc035fee410a32f472f3c720ef907153afd1b42233a4cf9d2932c446f64df49291edeb40d5070
   languageName: node
   linkType: hard
 
