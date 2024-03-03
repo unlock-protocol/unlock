@@ -33,7 +33,7 @@
     "copyfiles": "2.4.1",
     "eslint": "8.54.0",
     "fs-extra": "11.2.0",
-    "hardhat": "2.19.5",
+    "hardhat": "2.20.1",
     "typescript": "5.3.3"
   },
   "files": [
