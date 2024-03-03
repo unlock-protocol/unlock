@@ -20016,7 +20016,7 @@ __metadata:
     eslint: "npm:8.54.0"
     ethers: "npm:6.10.0"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.19.5"
+    hardhat: "npm:2.20.1"
     solhint: "npm:4.1.1"
     zksync-ethers: "npm:6.1.0"
   languageName: unknown
@@ -20042,7 +20042,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     ethers: "npm:6.10.0"
-    hardhat: "npm:2.19.5"
+    hardhat: "npm:2.20.1"
     tsup: "npm:8.0.2"
     typescript: "npm:5.3.3"
     zksync-ethers: "npm:6.1.0"
@@ -35667,7 +35667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat@npm:^2.19.4":
+"hardhat@npm:2.20.1, hardhat@npm:^2.19.4":
   version: 2.20.1
   resolution: "hardhat@npm:2.20.1"
   dependencies:
