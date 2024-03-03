@@ -9,7 +9,7 @@ description: >-
 
 # Unlock Smart Contracts
 
-The Unlock Protocol, at its core, is enabled by 2 primary Ethereum smart contracts, deployed on all networks supported by Unlock: [the Unlock](Unlock/) and the [PublicLock contracts](public-lock/) . We have a few more contracts, such as the governance token contract and the actual governance contract, but they are not actually required by the core protocol.
+The Unlock Protocol, at its core, is enabled by 2 primary Ethereum smart contracts, deployed on all networks supported by Unlock: [the Unlock](unlock/) and the [PublicLock contracts](public-lock/) . We have a few more contracts, such as the governance token contract and the actual governance contract, but they are not actually required by the core protocol.
 
 Our contracts have [been audited](audits.md) by 3 different teams.
 
@@ -25,15 +25,15 @@ yarn add @unlock-protocol/contracts
 
 ```js
 // get latest
-import unlock from "@unlock-protocol/contracts/abis/Unlock";
+import unlock from '@unlock-protocol/contracts/abis/Unlock'
 
 // get previous versions
-import unlock from "@unlock-protocol/contracts/abis/UnlockV0";
-import { UnlockV0 } from "@unlock-protocol/contracts";
+import unlock from '@unlock-protocol/contracts/abis/UnlockV0'
+import { UnlockV0 } from '@unlock-protocol/contracts'
 ```
 
 ```solidity
-import "@unlock-protocol/contracts/dist/Unlock/UnlockV0.sol";
+import '@unlock-protocol/contracts/dist/Unlock/UnlockV0.sol';
 ```
 
 ## Standards
