@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployLock, reverts, compareBigNumbers } = require('../helpers')
 const { ADDRESS_ZERO, MAX_UINT } = require('@unlock-protocol/hardhat-helpers')

@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { mainnet } = require('@unlock-protocol/networks')
 const { expect } = require('chai')

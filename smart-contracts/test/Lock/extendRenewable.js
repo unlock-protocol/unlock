@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const {
   deployLock,
   deployERC20,

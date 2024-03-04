@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { upgrades } = require('hardhat')
 const { deployContracts, getProxyAdminAddress } = require('../helpers')
 

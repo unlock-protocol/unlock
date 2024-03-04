@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { reverts } = require('../../helpers/errors')
 const { deployLock, purchaseKeys, compareBigNumbers } = require('../../helpers')
 

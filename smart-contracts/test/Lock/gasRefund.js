@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const {
   getBalance,
   ADDRESS_ZERO,

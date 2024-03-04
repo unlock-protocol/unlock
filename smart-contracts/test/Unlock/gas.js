@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 
 const WalletService = require('../helpers/walletServiceMock.js')
