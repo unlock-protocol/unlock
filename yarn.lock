@@ -8515,6 +8515,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-chai-matchers@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@nomicfoundation/hardhat-chai-matchers@npm:2.0.2"
+  dependencies:
+    "@types/chai-as-promised": "npm:^7.1.3"
+    chai-as-promised: "npm:^7.1.1"
+    deep-eql: "npm:^4.0.1"
+    ordinal: "npm:^1.0.3"
+  peerDependencies:
+    "@nomicfoundation/hardhat-ethers": ^3.0.0
+    chai: ^4.2.0
+    ethers: ^6.1.0
+    hardhat: ^2.9.4
+  checksum: 4134df881cc28a34bde704527ca3914c6b930e464016861d754574863fa5c55fef73d6518c5bbc02911a70a5dbb2f1d0ac883acf7f5b8fd09d23edf4b46c6290
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/hardhat-ethers@npm:3.0.5, @nomicfoundation/hardhat-ethers@npm:^3.0.4":
   version: 3.0.5
   resolution: "@nomicfoundation/hardhat-ethers@npm:3.0.5"
@@ -15066,6 +15083,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/chai-as-promised@npm:^7.1.3":
+  version: 7.1.8
+  resolution: "@types/chai-as-promised@npm:7.1.8"
+  dependencies:
+    "@types/chai": "npm:*"
+  checksum: 88e2d42f14d1de19ba1c7b5c35f263fef37d3ad241c71f5eb59b10763706f3902f4131b93854c9c6ed520081c7e36be555849f202418357f905bea71178b7d02
+  languageName: node
+  linkType: hard
+
 "@types/chai-subset@npm:^1.3.3":
   version: 1.3.5
   resolution: "@types/chai-subset@npm:1.3.5"
@@ -16628,7 +16654,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:^4, @uniswap/sdk-core@npm:^4.0.7, @uniswap/sdk-core@npm:^4.1.3":
+"@uniswap/sdk-core@npm:^4.0.7, @uniswap/sdk-core@npm:^4.1.3":
   version: 4.1.4
   resolution: "@uniswap/sdk-core@npm:4.1.4"
   dependencies:
@@ -16831,23 +16857,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-sdk@npm:3.10.0":
-  version: 3.10.0
-  resolution: "@uniswap/v3-sdk@npm:3.10.0"
-  dependencies:
-    "@ethersproject/abi": "npm:^5.0.12"
-    "@ethersproject/solidity": "npm:^5.0.9"
-    "@uniswap/sdk-core": "npm:^4"
-    "@uniswap/swap-router-contracts": "npm:^1.2.1"
-    "@uniswap/v3-periphery": "npm:^1.1.1"
-    "@uniswap/v3-staker": "npm:1.0.0"
-    tiny-invariant: "npm:^1.1.0"
-    tiny-warning: "npm:^1.0.3"
-  checksum: 523619bc6c6db8a8a732a84a124aa85bf41f9bc04011c0cec377a3aefed5ebf2d56f432c715e247241eb9356f06a9c5106dae36e36d4836796e8f4bc843d6492
-  languageName: node
-  linkType: hard
-
-"@uniswap/v3-sdk@npm:^3.10.0, @uniswap/v3-sdk@npm:^3.10.1":
+"@uniswap/v3-sdk@npm:3.10.2, @uniswap/v3-sdk@npm:^3.10.0, @uniswap/v3-sdk@npm:^3.10.1":
   version: 3.10.2
   resolution: "@uniswap/v3-sdk@npm:3.10.2"
   dependencies:
@@ -17035,7 +17045,7 @@ __metadata:
     "@uniswap/permit2-sdk": "npm:1.2.0"
     "@uniswap/sdk-core": "npm:4.0.9"
     "@uniswap/smart-order-router": "npm:3.19.2"
-    "@uniswap/v3-sdk": "npm:3.10.0"
+    "@uniswap/v3-sdk": "npm:3.10.2"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -22743,6 +22753,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chai-as-promised@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "chai-as-promised@npm:7.1.1"
+  dependencies:
+    check-error: "npm:^1.0.2"
+  peerDependencies:
+    chai: ">= 2.1.2 < 5"
+  checksum: 5d9ecab37b313047f5ea25d00b1cb6e7f2710c6e2f57d91aed7cfed5008d995cb65ea723af4e5d782bafd9a6eff5a4267af53dfe7212dc10dd1d92b9127bc531
+  languageName: node
+  linkType: hard
+
 "chai-bn@npm:^0.2.1":
   version: 0.2.2
   resolution: "chai-bn@npm:0.2.2"
@@ -25300,7 +25321,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-eql@npm:^4.1.3":
+"deep-eql@npm:^4.0.1, deep-eql@npm:^4.1.3":
   version: 4.1.3
   resolution: "deep-eql@npm:4.1.3"
   dependencies:
@@ -41412,6 +41433,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ordinal@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "ordinal@npm:1.0.3"
+  checksum: 6761c5b7606b6c4b0c22b4097dab4fe7ffcddacc49238eedf9c0ced877f5d4e4ad3f4fd43fefa1cc3f167cc54c7149267441b2ae85b81ccf13f45cf4b7947164
+  languageName: node
+  linkType: hard
+
 "os-browserify@npm:^0.3.0":
   version: 0.3.0
   resolution: "os-browserify@npm:0.3.0"
@@ -50172,6 +50200,7 @@ __metadata:
     "@apollo/client": "npm:3.6.9"
     "@ethersproject/abi": "npm:5.7.0"
     "@ethersproject/providers": "npm:5.7.2"
+    "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.2"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
     "@nomicfoundation/hardhat-toolbox": "npm:4.0.0"
