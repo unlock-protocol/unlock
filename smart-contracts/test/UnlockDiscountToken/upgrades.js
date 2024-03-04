@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const BigNumber = require('bignumber.js')
 const path = require('path')
 const fs = require('fs-extra')

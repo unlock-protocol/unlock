@@ -338,7 +338,7 @@ describe('Lock / setReferrerFee', () => {
             const { tokenId } = args
 
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-            await increaseTimeTo(expirationTs.toNumber())
+            await increaseTimeTo(expirationTs)
 
             // Mint some dais for testing
             await dai.mint(renewer.address, someDai)

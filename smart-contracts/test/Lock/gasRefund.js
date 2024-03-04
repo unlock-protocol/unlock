@@ -220,7 +220,7 @@ describe('Lock / GasRefund', () => {
 
               // advance time to expiration
               const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-              await increaseTimeTo(expirationTs.toString())
+              await increaseTimeTo(expirationTs)
 
               tx = await lock
                 .connect(keyOwner)

@@ -56,7 +56,7 @@ describe('Lock / erc721 / balanceOf', () => {
 
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await increaseTimeTo(expirationTs.add(10).toString())
+    await increaseTimeTo(expirationTs.add(10))
 
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
 

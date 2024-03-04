@@ -36,7 +36,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
 
     // expire the key
     const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-    await increaseTimeTo(expirationTs.toNumber())
+    await increaseTimeTo(expirationTs)
   })
 
   describe('return true', () => {

@@ -20,22 +20,8 @@ async function getLatestBlock() {
   return await helpers.time.latestBlock()
 }
 
-async function increaseTimeTo(expirationTs) {
-  expirationTs =
-    typeof expirationTs === 'number'
-      ? expirationTs
-      : expirationTs === 'string'
-      ? parseInt(expirationTs)
-      : expirationTs.toNumber()
-
-  const { timestamp } = await ethers.provider.getBlock('latest')
-
-  if (timestamp > expirationTs) {
-    throw new Error(
-      `Cannot increase time (${timestamp}) to the past (${expirationTs})`
-    )
-  }
-  await network.provider.send('evm_increaseTime', [expirationTs])
+async function increaseTimeTo(newTimestamp) {
+  await helpers.time.increaseTo(ethers.BigNumber.from(newTimestamp.toString()))
 }
 
 module.exports = {

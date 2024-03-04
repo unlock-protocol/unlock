@@ -43,7 +43,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      await increaseTimeTo(expirationTs.toNumber())
+      await increaseTimeTo(expirationTs)
 
       // renew once
       await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)

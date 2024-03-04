@@ -38,7 +38,7 @@ describe('Lock / totalKeys', () => {
   it('should count expired keys', async () => {
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await increaseTimeTo(expirationTs.add(10).toString())
+    await increaseTimeTo(expirationTs.add(10))
 
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
     compareBigNumbers(await lock.totalKeys(keyOwner.address), 3)
@@ -53,7 +53,7 @@ describe('Lock / totalKeys', () => {
 
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await increaseTimeTo(expirationTs.add(10).toString())
+    await increaseTimeTo(expirationTs.add(10))
 
     compareBigNumbers(await lock.totalKeys(keyOwner.address), 3)
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)

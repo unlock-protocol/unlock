@@ -114,7 +114,7 @@ describe('Lock / Recurring memberships', () => {
     beforeEach(async () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      await increaseTimeTo(expirationTs.toNumber())
+      await increaseTimeTo(expirationTs)
     })
 
     describe('fails when lock settings have changed', () => {
@@ -200,7 +200,7 @@ describe('Lock / Recurring memberships', () => {
           '0'
         )
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-        await increaseTimeTo(expirationTs.toNumber())
+        await increaseTimeTo(expirationTs)
         // now reverts
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
@@ -222,7 +222,7 @@ describe('Lock / Recurring memberships', () => {
 
         //
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-        await increaseTimeTo(expirationTs.toNumber())
+        await increaseTimeTo(expirationTs)
 
         // now funds are not enough
         await reverts(

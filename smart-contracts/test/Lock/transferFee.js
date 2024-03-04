@@ -109,7 +109,7 @@ describe('Lock / transferFee', () => {
       let fee
       before(async () => {
         const expirationBefore = await lock.keyExpirationTimestampFor(tokenId)
-        await increaseTimeTo(expirationBefore.toNumber())
+        await increaseTimeTo(expirationBefore)
         fee = await lock.getTransferFee(tokenId, 0)
       })
 

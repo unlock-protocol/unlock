@@ -153,7 +153,7 @@ describe('Unlock / protocolFee', async () => {
             await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
             const { tokenId } = await purchaseKey(lock, keyOwner.address, true)
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-            await increaseTimeTo(expirationTs.toNumber())
+            await increaseTimeTo(expirationTs)
 
             await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
             const unlockBalanceAfter = await getBalance(
