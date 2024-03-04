@@ -28,13 +28,13 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "ethers": "6.10.0",
-    "hardhat": "2.19.5",
+    "hardhat": "2.20.1",
     "typescript": "5.3.3",
     "zksync-ethers": "6.1.0"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "tsup": "8.0.1"
+    "tsup": "8.0.2"
   },
   "repository": {
     "type": "git",
