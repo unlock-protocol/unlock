@@ -173,7 +173,7 @@ describe('UnlockProtocolGovernor', () => {
         await advanceBlock()
 
         // make sure quorum has been changed succesfully
-        const changed = await gov.quorum(await lastBlock.toNumber())
+        const changed = await gov.quorum(lastBlock)
         assert.equal(changed.eq(quorum), true)
 
         // make sure event has been fired
