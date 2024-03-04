@@ -1,4 +1,5 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
+import Link from 'next/link'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import {
@@ -62,14 +63,28 @@ export const CrossmintSettingsForm = ({
   return (
     <div className="flex flex-col gap-2">
       <form
-        className="grid grid-cols-1 gap-6 text-left"
+        className="grid grid-cols-1 gap-2 text-left"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <p className="">
+          Follow{' '}
+          <Link
+            className="underline"
+            target="_blank"
+            href="https://unlock-protocol.com/guides/crossmint-credit-card-unlock/"
+          >
+            this guide on how to set Crossmint
+          </Link>{' '}
+          up and copy the following values from the Crossmint console.
+        </p>
         <div className="w-full md:w-1/2">
-          <Input label="Project ID" {...register('crossmintProjectId')} />
+          <Input label="Project ID:" {...register('crossmintProjectId')} />
         </div>
         <div className="w-full md:w-1/2">
-          <Input label="Collection ID" {...register('crossmintCollectionId')} />
+          <Input
+            label="Collection ID:"
+            {...register('crossmintCollectionId')}
+          />
         </div>
         {isManager && (
           <Button
