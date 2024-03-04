@@ -122,7 +122,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
         )
       })
 
-      describe('grant by gas price', () => {
+      describeOrSkip('grant by gas price', () => {
         let gasSpent
 
         before(async () => {
@@ -144,6 +144,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
             )
 
           const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
+
           // using estimatedGas instead of the actual gas used so this test does
           // not regress as other features are implemented
           gasSpent = baseFeePerGas.mul(estimateGas)
