@@ -5670,9 +5670,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.68.4":
-  version: 0.68.4
-  resolution: "@graphprotocol/graph-cli@npm:0.68.4"
+"@graphprotocol/graph-cli@npm:0.68.5":
+  version: 0.68.5
+  resolution: "@graphprotocol/graph-cli@npm:0.68.5"
   dependencies:
     "@float-capital/float-subgraph-uncrashable": "npm:^0.0.0-alpha.4"
     "@oclif/core": "npm:2.8.6"
@@ -5703,7 +5703,7 @@ __metadata:
     yaml: "npm:1.10.2"
   bin:
     graph: bin/run
-  checksum: c99e6f02d030d554d6161a48ab65e10edf1b3ffa76c4ae8c6e3e18d917d6170c20fb5cc17628b77b98bcbb5802f0e3890238243720464601cab5615d1cb1b97b
+  checksum: 231f18a26986ffc4102920ec252dea1a09db5fa0389a16e35b23c7b36f1fca86b5c1e3e37984c3ab31fc32f62ca86cbd7fb866aa001969d4dab4e8362d4958a7
   languageName: node
   linkType: hard
 
@@ -17290,7 +17290,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": "npm:0.68.4"
+    "@graphprotocol/graph-cli": "npm:0.68.5"
     "@graphprotocol/graph-ts": "npm:0.31.0"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
