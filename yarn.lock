@@ -9427,25 +9427,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.32.2":
-  version: 1.32.2
-  resolution: "@openzeppelin/upgrades-core@npm:1.32.2"
-  dependencies:
-    cbor: "npm:^9.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 4c99aa23542c59c2df15625f328746d9afafd28b77d8fa034eb1c3729e3a221683772982f3e54bc7e027298dd425b87676a776159ca130a95d98c26afe92508c
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:^1.27.0, @openzeppelin/upgrades-core@npm:^1.31.0, @openzeppelin/upgrades-core@npm:^1.31.3, @openzeppelin/upgrades-core@npm:^1.32.0":
+"@openzeppelin/upgrades-core@npm:1.32.5, @openzeppelin/upgrades-core@npm:^1.27.0, @openzeppelin/upgrades-core@npm:^1.31.0, @openzeppelin/upgrades-core@npm:^1.31.3, @openzeppelin/upgrades-core@npm:^1.32.0":
   version: 1.32.5
   resolution: "@openzeppelin/upgrades-core@npm:1.32.5"
   dependencies:
@@ -17014,7 +16996,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.4"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
-    "@openzeppelin/upgrades-core": "npm:1.32.2"
+    "@openzeppelin/upgrades-core": "npm:1.32.5"
     "@safe-global/api-kit": "npm:2.0.0"
     "@safe-global/protocol-kit": "npm:2.0.0"
     "@tenderly/hardhat-tenderly": "npm:2.1.1"
