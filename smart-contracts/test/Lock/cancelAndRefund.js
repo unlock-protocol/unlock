@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const { assert } = require('chai')
 const {
   ADDRESS_ZERO,
   deployLock,
