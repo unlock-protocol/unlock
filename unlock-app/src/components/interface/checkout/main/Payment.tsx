@@ -94,12 +94,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     symbol: lockTickerSymbol(lock, baseSymbol),
   })
 
-  const { isLoading: isCrossmintLoading, crossmintClientId } =
+  const { isLoading: isCrossmintLoading, crossmintEnabled } =
     useCrossmintEnabled({
       network: lock.network,
       lockAddress: lock.address,
       recipients,
     })
+
+  const enableCrossmint = !state.context.renew && crossmintEnabled
 
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
@@ -175,7 +177,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableClaim,
     enableCrypto,
     universalCardEnabled,
-    !!crossmintClientId,
+    !!enableCrossmint,
   ].every((item) => !item)
 
   return (
@@ -271,7 +273,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Crossmint Payment */}
-            {crossmintClientId && !enableClaim && (
+            {enableCrossmint && !enableClaim && (
               <div>
                 <button
                   onClick={(event) => {

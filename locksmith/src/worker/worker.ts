@@ -1,5 +1,5 @@
 import { allJobs } from './tasks/allJobs'
-import { makeWorkerUtils, run } from 'graphile-worker'
+import { makeWorkerUtils, run, quickAddJob } from 'graphile-worker'
 import config from '../config/config'
 import {
   addRenewalJobs,
@@ -8,7 +8,6 @@ import {
 } from './tasks/renewal/addRenewalJobs'
 import { cryptoRenewalJob } from './tasks/renewal/cryptoRenewalJob'
 import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
-import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmailJob } from './tasks/sendEmail'
@@ -19,6 +18,7 @@ import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { downloadReceipts } from './tasks/receipts'
+import exportKeysJob from './tasks/exportKeysJob'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -47,6 +47,22 @@ const cronTabTesting = `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
+export const addJob = async (jobName: string, payload: any, opts = {}) => {
+  // Default priority for tasks is 0, we do not want to make clients wait
+  return quickAddJob(
+    {
+      pgPool: new Pool({
+        connectionString: config.databaseUrl,
+        // @ts-expect-error - type is not defined properly
+        ssl: config.database?.dialectOptions?.ssl,
+      }),
+    },
+    jobName,
+    payload,
+    opts
+  )
+}
+
 export async function startWorker() {
   const pgPool = new Pool({
     connectionString: config.databaseUrl,
@@ -69,6 +85,7 @@ export async function startWorker() {
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
+      exportKeysJob,
       checkBalances,
       monitor,
       allJobs,
@@ -77,7 +94,6 @@ export async function startWorker() {
       addRenewalJobs,
       addRenewalJobsDaily,
       addRenewalJobsWeekly,
-      addKeyJobs,
       addHookJobs,
       sendEmailJob,
       sendToAllJob,

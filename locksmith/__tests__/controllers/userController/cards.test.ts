@@ -210,7 +210,7 @@ describe('when updating cards', () => {
     })
   })
 
-  describe("when unable to update the user's payment details with the the public key", () => {
+  describe("when unable to update the user's payment details with the public key", () => {
     it('returns 400', async () => {
       expect.assertions(1)
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -330,7 +330,7 @@ describe('when deleting cards', () => {
     })
   })
 
-  describe("when unable to delete the user's payment details with the the public key", () => {
+  describe("when unable to delete the user's payment details with the public key", () => {
     it('returns 400', async () => {
       expect.assertions(1)
 

@@ -1,6 +1,6 @@
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
@@ -34,8 +34,9 @@ import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
-import { PAGE_SIZE, getLockTypeByMetadata } from '@unlock-protocol/core'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface ActionBarProps {
   lockAddress: string
@@ -69,50 +70,85 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
   })
 
   const { isEvent } = getLockTypeByMetadata(metadata)
+  const [keysJobId, setKeysJobId] = useState<string | null>(null)
+  const [isKeysJobLoading, setIsKeysJobLoading] = useState<boolean>(false)
 
-  // this breaks when there is too many rows!
-  const onDownloadCsv = async () => {
-    const response = await storage.keys(
-      network,
-      lockAddress,
-      '',
-      'owner',
-      'all',
-      'minted',
-      page - 1,
-      PAGE_SIZE
-    )
-    const members = response.data
-    const cols: string[] = []
-    members?.map((member: any) => {
-      Object.keys(member).map((key: string) => {
-        if (!cols.includes(key)) {
-          cols.push(key) // add key once only if not present in list
-        }
+  const onDownloadCsvMutation = useMutation(
+    async () => {
+      ToastHelper.success(
+        `It may take a few minutes for the file to be generated. Please do not close this page`
+      )
+      const response = await storage.exportKeys(
+        network,
+        lockAddress,
+        '',
+        'owner',
+        'all',
+        'minted'
+      )
+      if (response.status === 200 && response.data.jobId) {
+        setKeysJobId(response.data.jobId)
+        setIsKeysJobLoading(true)
+      } else {
+        console.error('Failed to start download job', response)
+        ToastHelper.error(`Failed to start download job: ${response}`)
+      }
+    },
+    {
+      meta: {
+        errorMessage: 'Failed to download members list',
+      },
+      onError: (error) => {
+        ToastHelper.error(`Failed to download members list: ${error}`)
+        console.error('Failed to download members list', error)
+        setIsKeysJobLoading(false)
+      },
+    }
+  )
+
+  useEffect(() => {
+    let intervalId: any = null
+
+    const fetchKeysJob = async () => {
+      if (!keysJobId) return
+
+      const response = await storage.getExportedKeys(
+        network,
+        lockAddress,
+        keysJobId
+      )
+      if (response.status != 200) {
+        return
+      }
+
+      clearInterval(intervalId)
+      setIsKeysJobLoading(false)
+
+      const members = response.data
+      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      downloadAsCSV({
+        cols,
+        metadata: members.keys as any[],
       })
-    })
-    downloadAsCSV({
-      cols,
-      metadata: members,
-    })
-  }
+    }
+
+    if (isKeysJobLoading) {
+      intervalId = setInterval(fetchKeysJob, 2000)
+    }
+
+    return () => clearInterval(intervalId)
+  }, [keysJobId, isKeysJobLoading])
 
   const { isManager } = useLockManager({
     lockAddress,
-    network: network!,
-  })
-
-  const onDownloadMutation = useMutation(onDownloadCsv, {
-    meta: {
-      errorMessage: 'Failed to download members list',
-    },
+    network,
   })
 
   return (
@@ -126,10 +162,10 @@ export const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={isLoadingMetadata}
-              loading={onDownloadMutation.isLoading}
+              disabled={isLoadingMetadata || isKeysJobLoading}
+              loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
               iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-              onClick={() => onDownloadMutation.mutate()}
+              onClick={() => onDownloadCsvMutation.mutate()}
             >
               Download {isEvent ? 'attendee' : 'member'} list
             </Button>
