@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
 const {
   deployERC20,
   deployLock,
@@ -7,6 +6,7 @@ const {
   purchaseKey,
   reverts,
   almostEqual,
+  increaseTimeTo,
 } = require('../helpers')
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
@@ -105,7 +105,7 @@ describe('Lock / onKeyExtendHook', () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
       // expire key
       const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      await time.increaseTo(newExpirationTs.toNumber() - 1)
+      await increaseTimeTo(newExpirationTs.toNumber() - 1)
       // renew
       const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)

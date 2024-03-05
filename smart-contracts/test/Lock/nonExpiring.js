@@ -1,5 +1,5 @@
 const { assert } = require('chai')
-const { time } = require('@openzeppelin/test-helpers')
+const { increaseTimeTo } = require('../helpers')
 const { ethers } = require('hardhat')
 
 const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
@@ -36,7 +36,7 @@ describe('Lock / non expiring', () => {
     })
 
     it('should be valid far in the future', async () => {
-      await time.increaseTo(Date.now() + FIVE_HUNDRED_YEARS)
+      await increaseTimeTo(Date.now() + FIVE_HUNDRED_YEARS)
       assert.equal(await lock.isValidKey(tokenId), true)
       assert.equal(await lock.balanceOf(keyOwner.address), 1)
     })
@@ -50,7 +50,7 @@ describe('Lock / non expiring', () => {
           (await lock.getCancelAndRefundValue(tokenId)).toString(),
           keyPrice.toString()
         )
-        await time.increaseTo(Date.now() + FIVE_HUNDRED_YEARS)
+        await increaseTimeTo(Date.now() + FIVE_HUNDRED_YEARS)
         assert.equal(
           (await lock.getCancelAndRefundValue(tokenId)).toString(),
           keyPrice.toString()

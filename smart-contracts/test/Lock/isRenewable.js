@@ -1,4 +1,3 @@
-const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const {
   deployERC20,
@@ -6,6 +5,7 @@ const {
   deployLock,
   ADDRESS_ZERO,
   reverts,
+  increaseTimeTo,
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
@@ -36,7 +36,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
 
     // expire the key
     const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-    await time.increaseTo(expirationTs.toNumber())
+    await increaseTimeTo(expirationTs.toNumber())
   })
 
   describe('return true', () => {
@@ -102,7 +102,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
       ).toNumber()
       const lockDuration = (await lock.expirationDuration()).toNumber()
       const notCloseEnough = expirationTs - lockDuration + lockDuration * 0.89
-      await time.increaseTo(notCloseEnough)
+      await increaseTimeTo(notCloseEnough)
       await reverts(
         lock.isRenewable(tokenId, ADDRESS_ZERO),
         'NOT_READY_FOR_RENEWAL'
@@ -117,7 +117,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
       const lockDuration = (await lock.expirationDuration()).toNumber()
 
       const ninetyPercent = expirationTs - lockDuration + lockDuration * 0.9
-      await time.increaseTo(ninetyPercent)
+      await increaseTimeTo(ninetyPercent)
 
       assert.equal(await lock.isRenewable(tokenId, ADDRESS_ZERO), true)
     })

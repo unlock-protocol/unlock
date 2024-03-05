@@ -8,8 +8,8 @@ const {
   reverts,
   ADDRESS_ZERO,
   getBalance,
+  increaseTimeTo,
 } = require('../helpers')
-const { time } = require('@openzeppelin/test-helpers')
 
 const scenarios = [false, true]
 const someDai = ethers.utils.parseEther('10')
@@ -152,7 +152,7 @@ describe('Unlock / protocolFee', async () => {
             await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
             const { tokenId } = await purchaseKey(lock, keyOwner.address, true)
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-            await time.increaseTo(expirationTs.toNumber())
+            await increaseTimeTo(expirationTs.toNumber())
 
             await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
             const unlockBalanceAfter = await getBalance(

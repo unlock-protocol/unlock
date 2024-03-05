@@ -1,10 +1,10 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
 const {
   deployLock,
   reverts,
   deployERC20,
   compareBigNumbers,
+  increaseTimeTo,
 } = require('../helpers')
 
 const { ADDRESS_ZERO, getBalance } = require('@unlock-protocol/hardhat-helpers')
@@ -337,7 +337,7 @@ describe('Lock / setReferrerFee', () => {
             const { tokenId } = args
 
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-            await time.increaseTo(expirationTs.toNumber())
+            await increaseTimeTo(expirationTs.toNumber())
 
             // Mint some dais for testing
             await dai.mint(renewer.address, someDai)

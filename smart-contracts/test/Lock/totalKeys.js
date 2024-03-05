@@ -1,7 +1,11 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
 
-const { ADDRESS_ZERO, deployLock, compareBigNumbers } = require('../helpers')
+const {
+  ADDRESS_ZERO,
+  increaseTimeTo,
+  deployLock,
+  compareBigNumbers,
+} = require('../helpers')
 
 let lock
 let tokenIds
@@ -34,7 +38,7 @@ describe('Lock / totalKeys', () => {
   it('should count expired keys', async () => {
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await time.increaseTo(expirationTs.add(10).toString())
+    await increaseTimeTo(expirationTs.add(10).toString())
 
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
     compareBigNumbers(await lock.totalKeys(keyOwner.address), 3)
@@ -49,7 +53,7 @@ describe('Lock / totalKeys', () => {
 
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await time.increaseTo(expirationTs.add(10).toString())
+    await increaseTimeTo(expirationTs.add(10).toString())
 
     compareBigNumbers(await lock.totalKeys(keyOwner.address), 3)
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)

@@ -1,7 +1,7 @@
 // TODO: cleanup this test
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
-const { time } = require('@openzeppelin/test-helpers')
+const { assert } = require('chai')
 const { ethers, network } = require('hardhat')
 const {
   deployContracts,
@@ -9,6 +9,7 @@ const {
   ADDRESS_ZERO,
   createUniswapV2Exchange,
   compareBigNumbers,
+  increaseTime,
 } = require('../helpers')
 
 let unlock, udt, lock, oracle, weth
@@ -62,7 +63,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
     await unlock.setOracle(udt.address, oracle.address)
 
     // Advance time so 1 full period has past and then update again so we have data point to read
-    await time.increase(time.duration.hours(30))
+    await increaseTime(30)
     await oracle.update(weth.address, udt.address)
 
     // Purchase a valid key for the referrer

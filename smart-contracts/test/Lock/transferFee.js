@@ -1,10 +1,10 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
 const {
   deployLock,
   reverts,
   purchaseKey,
   compareBigNumbers,
+  increaseTimeTo,
 } = require('../helpers')
 
 describe('Lock / transferFee', () => {
@@ -108,7 +108,7 @@ describe('Lock / transferFee', () => {
       let fee
       before(async () => {
         const expirationBefore = await lock.keyExpirationTimestampFor(tokenId)
-        await time.increaseTo(expirationBefore.toNumber())
+        await increaseTimeTo(expirationBefore.toNumber())
         fee = await lock.getTransferFee(tokenId, 0)
       })
 

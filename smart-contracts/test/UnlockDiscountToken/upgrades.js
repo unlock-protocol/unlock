@@ -1,10 +1,9 @@
 const BigNumber = require('bignumber.js')
 const path = require('path')
 const fs = require('fs-extra')
-const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
 const { ADDRESS_ZERO } = require('../helpers')
-const { createUniswapV2Exchange } = require('../helpers')
+const { createUniswapV2Exchange, increaseTime } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const {
@@ -200,7 +199,7 @@ describe('UnlockDiscountToken upgrade', async () => {
       await unlock.setOracle(udt.address, oracle.address)
 
       // Advance time so 1 full period has past and then update again so we have data point to read
-      await time.increase(time.duration.hours(30))
+      await increaseTime(30)
       await oracle.update(weth.address, udt.address)
 
       // Purchase a valid key for the referrers

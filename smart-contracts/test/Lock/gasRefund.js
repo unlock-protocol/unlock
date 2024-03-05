@@ -1,4 +1,3 @@
-const { time } = require('@openzeppelin/test-helpers')
 const {
   getBalance,
   ADDRESS_ZERO,
@@ -7,6 +6,7 @@ const {
   deployERC20,
   compareBigNumbers,
   purchaseKey,
+  increaseTimeTo,
 } = require('../helpers')
 
 const { ethers } = require('hardhat')
@@ -219,7 +219,7 @@ describe('Lock / GasRefund', () => {
 
               // advance time to expiration
               const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-              await time.increaseTo(expirationTs.toString())
+              await increaseTimeTo(expirationTs.toString())
 
               tx = await lock
                 .connect(keyOwner)
