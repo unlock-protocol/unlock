@@ -9347,28 +9347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.1.0"
-  dependencies:
-    "@nomiclabs/hardhat-docker": "npm:^2.0.0"
-    chai: "npm:^4.3.6"
-    chalk: "npm:4.1.2"
-    debug: "npm:^4.3.4"
-    dockerode: "npm:^4.0.0"
-    fs-extra: "npm:^11.1.1"
-    proper-lockfile: "npm:^4.1.2"
-    semver: "npm:^7.5.1"
-    sinon: "npm:^16.0.0"
-    sinon-chai: "npm:^3.7.0"
-    undici: "npm:^5.14.0"
-  peerDependencies:
-    hardhat: ^2.19.4
-  checksum: 481b2eb6b0b0fef844ebb085d56253eeae9cf6aa355438b6877bd5f33962315ab264349f235e9d33c56311bd31258db077a8e2d622bcf3a1888688b230301cbf
-  languageName: node
-  linkType: hard
-
-"@matterlabs/hardhat-zksync-solc@npm:^1.0.3, @matterlabs/hardhat-zksync-solc@npm:^1.0.4":
+"@matterlabs/hardhat-zksync-solc@npm:1.1.4, @matterlabs/hardhat-zksync-solc@npm:^1.0.3, @matterlabs/hardhat-zksync-solc@npm:^1.0.4":
   version: 1.1.4
   resolution: "@matterlabs/hardhat-zksync-solc@npm:1.1.4"
   dependencies:
@@ -19759,7 +19738,7 @@ __metadata:
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.1.4"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.4"
     "@matterlabs/hardhat-zksync-verify": "npm:1.3.0"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
@@ -19790,7 +19769,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.1.4"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.1"
     "@matterlabs/hardhat-zksync-verify": "npm:1.3.0"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
@@ -28226,7 +28205,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dockerode@npm:^4.0.0, dockerode@npm:^4.0.2":
+"dockerode@npm:^4.0.2":
   version: 4.0.2
   resolution: "dockerode@npm:4.0.2"
   dependencies:
