@@ -17169,7 +17169,6 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.3"
-    random-words: "npm:2.0.1"
     rate-limiter-flexible: "npm:4.0.1"
     react: "npm:18.2.0"
     remark-html: "npm:15.0.2"
@@ -44479,15 +44478,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"random-words@npm:2.0.1":
-  version: 2.0.1
-  resolution: "random-words@npm:2.0.1"
-  dependencies:
-    seedrandom: "npm:^3.0.5"
-  checksum: 13385e573d91e64b898b9dd81df416718c3e2fa9ddb56181c5ed407732eacace2da8914d1d1da1d4b70f3c97d787f0b19280602d4352bf55ce1e81f5ddcd2982
-  languageName: node
-  linkType: hard
-
 "randombytes@npm:^2.0.0, randombytes@npm:^2.0.1, randombytes@npm:^2.0.5, randombytes@npm:^2.0.6, randombytes@npm:^2.1.0":
   version: 2.1.0
   resolution: "randombytes@npm:2.1.0"
@@ -47157,13 +47147,6 @@ __metadata:
   version: 3.0.1
   resolution: "seedrandom@npm:3.0.1"
   checksum: 12ae45baf9fe4e8338d3d0faaf93a7b584464a31c5ea60989619bfac1f9321a0b37a0cdb550804b472f89ce1979815da2cd89703be5e5036535644b2e6886205
-  languageName: node
-  linkType: hard
-
-"seedrandom@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "seedrandom@npm:3.0.5"
-  checksum: acad5e516c04289f61c2fb9848f449b95f58362b75406b79ec51e101ec885293fc57e3675d2f39f49716336559d7190f7273415d185fead8cd27b171ebf7d8fb
   languageName: node
   linkType: hard
 
