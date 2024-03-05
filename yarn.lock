@@ -10707,7 +10707,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@noble/hashes@npm:1.3.3, @noble/hashes@npm:^1.3.1, @noble/hashes@npm:^1.3.2, @noble/hashes@npm:~1.3.2":
+"@noble/hashes@npm:1.3.3, @noble/hashes@npm:^1.3.1, @noble/hashes@npm:^1.3.2, @noble/hashes@npm:^1.3.3, @noble/hashes@npm:~1.3.2":
   version: 1.3.3
   resolution: "@noble/hashes@npm:1.3.3"
   checksum: 1025ddde4d24630e95c0818e63d2d54ee131b980fe113312d17ed7468bc18f54486ac86c907685759f8a7e13c2f9b9e83ec7b67d1cc20836f36b5e4a65bb102d
@@ -13326,19 +13326,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:2.0.0":
-  version: 2.0.0
-  resolution: "@safe-global/api-kit@npm:2.0.0"
+"@safe-global/api-kit@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@safe-global/api-kit@npm:2.2.0"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^2.0.0"
-    "@safe-global/safe-core-sdk-types": "npm:^3.0.0"
+    "@safe-global/protocol-kit": "npm:^3.0.1"
+    "@safe-global/safe-core-sdk-types": "npm:^4.0.1"
     ethers: "npm:^6.7.1"
     node-fetch: "npm:^2.7.0"
-  checksum: 6a16aaa49954382ef308d736fb6193a37eb389f6e0d12f5784a86964f11a46892ddf9180b94e993dcb92e89b79073a574e64b5d93c2ac4bba05aca137c0d087b
+  checksum: 5e65e2346775f07c8ea9c509b0b2e2eb3d4062d20f894bebab5eaa8bef96e57b5bd77dd7fabf9ada5f058ff1b4e794143fdc0f97be532b30fd0f253a73133ba2
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:2.0.0, @safe-global/protocol-kit@npm:^2.0.0":
+"@safe-global/protocol-kit@npm:2.0.0":
   version: 2.0.0
   resolution: "@safe-global/protocol-kit@npm:2.0.0"
   dependencies:
@@ -13351,6 +13351,22 @@ __metadata:
     web3-core: "npm:^1.10.3"
     web3-utils: "npm:^1.10.3"
   checksum: d284447f7046bcc56c0a1e3ebb25d3e995df0e0cdc78dc8529628abc1b635e98c15edeb09d3b2b9d0da1751065af90c52ddd769601d71e9e3df3f99aa31ec239
+  languageName: node
+  linkType: hard
+
+"@safe-global/protocol-kit@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "@safe-global/protocol-kit@npm:3.0.1"
+  dependencies:
+    "@noble/hashes": "npm:^1.3.3"
+    "@safe-global/safe-deployments": "npm:^1.33.0"
+    ethereumjs-util: "npm:^7.1.5"
+    ethers: "npm:^6.7.1"
+    semver: "npm:^7.5.4"
+    web3: "npm:^1.10.3"
+    web3-core: "npm:^1.10.3"
+    web3-utils: "npm:^1.10.3"
+  checksum: cbf620e4b2a48db988d2acc36b7857c1601d6958fe9afe0d8f46ffdc30e411d5f95f0bcd21abd917b1800888a78225f6f98eea53b9cbaade919f8cb0e0602ebb
   languageName: node
   linkType: hard
 
@@ -13367,15 +13383,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-core-sdk-types@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "@safe-global/safe-core-sdk-types@npm:3.0.1"
+"@safe-global/safe-core-sdk-types@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@safe-global/safe-core-sdk-types@npm:4.0.1"
   dependencies:
-    "@safe-global/safe-deployments": "npm:^1.28.0"
+    "@safe-global/safe-deployments": "npm:^1.33.0"
     ethers: "npm:^6.7.1"
     web3-core: "npm:^1.10.3"
     web3-utils: "npm:^1.10.3"
-  checksum: afbe289dbcb99841fdb864f29ddad8e15ad9f75a66c2e3d1ff40f82e93f0665ef4eaaa6dc0cbbaf7bbdd2176f88d6c14eab1cb159a0ad3984c8931a3f02a1739
+  checksum: fc68538ab0bfa17a00c33fe3eb2ad80d150947edb2f345060c5794f3b753001f368653af87960e707d92addec1a37a30376463481f8d7a8aa23319ae5b3d9484
   languageName: node
   linkType: hard
 
@@ -13406,7 +13422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-deployments@npm:^1.20.2":
+"@safe-global/safe-deployments@npm:^1.20.2, @safe-global/safe-deployments@npm:^1.33.0":
   version: 1.33.0
   resolution: "@safe-global/safe-deployments@npm:1.33.0"
   dependencies:
@@ -19768,7 +19784,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
     "@openzeppelin/upgrades-core": "npm:1.32.5"
-    "@safe-global/api-kit": "npm:2.0.0"
+    "@safe-global/api-kit": "npm:2.2.0"
     "@safe-global/protocol-kit": "npm:2.0.0"
     "@tenderly/hardhat-tenderly": "npm:2.1.1"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
