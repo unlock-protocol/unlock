@@ -88,7 +88,7 @@ export const LockPriceDetails = ({
 
   const hasUnlimitedKeys = lock?.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
 
-  const isSoldOut = keysLeft === 0 && !hasUnlimitedKeys
+  const isSoldOut = keysLeft <= 0 && !hasUnlimitedKeys
 
   const { data: symbol } = useGetLockCurrencySymbol({
     lockAddress,

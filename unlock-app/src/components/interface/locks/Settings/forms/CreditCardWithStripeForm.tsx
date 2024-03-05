@@ -290,7 +290,7 @@ const StripeNotReady = ({
   )
 }
 
-export const CreditCardForm = ({
+export const CreditCardWithStripeForm = ({
   lockAddress,
   network,
   isManager,

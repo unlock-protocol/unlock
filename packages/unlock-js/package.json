@@ -30,14 +30,14 @@
   "license": "MIT",
   "peerDependencies": {
     "axios": "1.4.0",
-    "ethers": "^5.7.x"
+    "ethers": "5.7.2"
   },
   "devDependencies": {
     "@babel/cli": "7.22.9",
     "@babel/core": "7.22.9",
     "@babel/preset-env": "7.22.9",
     "@graphql-codegen/cli": "4.0.1",
-    "@graphql-codegen/typescript": "4.0.1",
+    "@graphql-codegen/typescript": "4.0.6",
     "@graphql-codegen/typescript-graphql-request": "5.0.0",
     "@graphql-codegen/typescript-operations": "4.0.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
@@ -47,10 +47,10 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
     "eslint": "8.46.0",
-    "hardhat": "2.18.3",
+    "hardhat": "2.20.1",
     "prettier": "3.0.0",
-    "tsup": "8.0.1",
-    "typescript": "5.1.6",
+    "tsup": "8.0.2",
+    "typescript": "5.3.3",
     "vitest": "0.34.6"
   },
   "dependencies": {

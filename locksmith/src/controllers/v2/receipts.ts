@@ -3,10 +3,8 @@ import { RequestHandler } from 'express'
 import { getAllReceipts } from '../../utils/receipts'
 import { Receipt, ReceiptBase } from '../../models'
 import normalizer from '../../utils/normalizer'
-import { quickAddJob } from 'graphile-worker'
-import { Pool } from 'pg'
-import config from '../../config/config'
 import { Payload } from '../../models/payload'
+import { addJob } from '../../worker/worker'
 
 export const allReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -74,14 +72,7 @@ export const createDownloadReceiptsRequest: RequestHandler = async (
   }
   const { id } = await payload.save()
 
-  await quickAddJob(
-    {
-      pgPool: new Pool({
-        connectionString: config.databaseUrl,
-        // @ts-expect-error - type is not defined properly
-        ssl: config.database?.dialectOptions?.ssl,
-      }),
-    },
+  await addJob(
     'downloadReceipts',
     {
       lockAddress,
