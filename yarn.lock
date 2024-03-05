@@ -11792,7 +11792,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-base-client@npm:^1.10.0":
+"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.9.0":
   version: 1.10.0
   resolution: "@openzeppelin/defender-sdk-base-client@npm:1.10.0"
   dependencies:
@@ -11812,7 +11812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-deploy-client@npm:^1.8.0":
+"@openzeppelin/defender-sdk-deploy-client@npm:^1.8.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.9.0":
   version: 1.10.0
   resolution: "@openzeppelin/defender-sdk-deploy-client@npm:1.10.0"
   dependencies:
@@ -11876,6 +11876,34 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/hardhat-upgrades@npm:^3.0.1":
+  version: 3.0.4
+  resolution: "@openzeppelin/hardhat-upgrades@npm:3.0.4"
+  dependencies:
+    "@openzeppelin/defender-admin-client": "npm:^1.52.0"
+    "@openzeppelin/defender-base-client": "npm:^1.52.0"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.9.0"
+    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.9.0"
+    "@openzeppelin/upgrades-core": "npm:^1.32.0"
+    chalk: "npm:^4.1.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.1.5"
+    proper-lockfile: "npm:^4.1.1"
+    undici: "npm:^5.28.2"
+  peerDependencies:
+    "@nomicfoundation/hardhat-ethers": ^3.0.0
+    "@nomicfoundation/hardhat-verify": ^2.0.0
+    ethers: ^6.6.0
+    hardhat: ^2.0.2
+  peerDependenciesMeta:
+    "@nomicfoundation/hardhat-verify":
+      optional: true
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 7e53c525317f8f57e0e67cddc509b2985cd89baab3ed84a61e96dd1268da909d4b6758ece5be8930bf823935d468f69bd4ed2ce6b26a43f1e1af0ef73cf39d00
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/platform-deploy-client@npm:^0.8.0":
   version: 0.8.0
   resolution: "@openzeppelin/platform-deploy-client@npm:0.8.0"
@@ -11907,7 +11935,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.32.5, @openzeppelin/upgrades-core@npm:^1.27.0":
+"@openzeppelin/upgrades-core@npm:1.32.5, @openzeppelin/upgrades-core@npm:^1.27.0, @openzeppelin/upgrades-core@npm:^1.32.2":
   version: 1.32.5
   resolution: "@openzeppelin/upgrades-core@npm:1.32.5"
   dependencies:
@@ -17439,24 +17467,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tenderly/hardhat-tenderly@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@tenderly/hardhat-tenderly@npm:2.1.1"
+"@tenderly/hardhat-tenderly@npm:2.2.2":
+  version: 2.2.2
+  resolution: "@tenderly/hardhat-tenderly@npm:2.2.2"
   dependencies:
     "@ethersproject/bignumber": "npm:^5.7.0"
     "@nomicfoundation/hardhat-ethers": "npm:^3.0.4"
-    axios: "npm:^0.27.2"
+    "@openzeppelin/hardhat-upgrades": "npm:^3.0.1"
+    "@openzeppelin/upgrades-core": "npm:^1.32.2"
+    axios: "npm:^1.6.7"
     ethers: "npm:^6.8.1"
     fs-extra: "npm:^10.1.0"
     hardhat-deploy: "npm:^0.11.43"
-    tenderly: "npm:^0.8.0"
+    tenderly: "npm:^0.9.1"
     ts-node: "npm:^10.9.1"
     tslog: "npm:^4.3.1"
     typescript: "npm:^5.2.2"
   peerDependencies:
     ethers: ^6.8.1
     hardhat: ^2.19.0
-  checksum: 8941ca2853ae3323c0e578b94792d1035f8437fc97e84084f4e180eefbe2672c04a12d6c858661305c171ed5feead7957457d7476b9661b26df0c5a351540338
+  checksum: 3294f063d58d9e99c0c49d3a1fbe1e74a4d08e4ee91e0174f1150a0a9d890ec192e7614162620c3e338931f6aa8caf050f34cbeb62b068f7ff067c07dff82463
   languageName: node
   linkType: hard
 
@@ -19770,7 +19800,7 @@ __metadata:
     "@openzeppelin/upgrades-core": "npm:1.32.5"
     "@safe-global/api-kit": "npm:2.0.0"
     "@safe-global/protocol-kit": "npm:2.0.0"
-    "@tenderly/hardhat-tenderly": "npm:2.1.1"
+    "@tenderly/hardhat-tenderly": "npm:2.2.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/hardhat-helpers": "workspace:^"
@@ -50943,9 +50973,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tenderly@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "tenderly@npm:0.8.0"
+"tenderly@npm:^0.9.1":
+  version: 0.9.1
+  resolution: "tenderly@npm:0.9.1"
   dependencies:
     axios: "npm:^0.27.2"
     cli-table3: "npm:^0.6.2"
@@ -50962,7 +50992,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 948c334d07531a7be29b58ce4a3799c15f7f0cc9b19ec3d49165795c55679ccba3d73aaa4445460dc4b8ec71924ee80047858bdb208c43b69bb4e9b6dbc42aa9
+  checksum: 04fc6f3df9f48d4c78fb583d9749e6fa497b44d2bf1001b5a9aa19c11e93d275168deaf2efb1291390b30db90ffdb4fce4e231d9ce1891e417172c1feed941b0
   languageName: node
   linkType: hard
 
