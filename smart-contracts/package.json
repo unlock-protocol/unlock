@@ -30,7 +30,7 @@
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
-    "chai": "4.3.10",
+    "chai": "5.1.0",
     "eslint": "8.46.0",
     "eth-gas-reporter": "0.2.27",
     "ethers": "5.7.2",
