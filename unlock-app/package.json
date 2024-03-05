@@ -15,7 +15,7 @@
     "@stripe/crypto": "0.0.4",
     "@stripe/react-stripe-js": "2.1.2",
     "@stripe/stripe-js": "1.54.2",
-    "@tanstack/react-query": "4.32.0",
+    "@tanstack/react-query": "5.25.0",
     "@tw-classed/react": "1.5.2",
     "@uniswap/sdk-core": "4.0.9",
     "@uniswap/smart-order-router": "3.17.2",

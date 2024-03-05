@@ -17368,55 +17368,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.32.0":
-  version: 4.32.0
-  resolution: "@tanstack/query-core@npm:4.32.0"
-  checksum: d81eabb1391aa92b95d94996798c9fc0077e3fee58cf050b7040aa07457693962fda449a6476371445461bc46f5e1d003d2b5cd286f3515bd5876fe57f5c9035
+"@tanstack/query-core@npm:5.25.0":
+  version: 5.25.0
+  resolution: "@tanstack/query-core@npm:5.25.0"
+  checksum: 763f61907e279440c3cdb2af07036e0338b5f7deb302de451a535f61382e64e5c86f4c499909496d4855bb0754a84f5697bdbb8c13f15de6f8a355fa942c8b0e
   languageName: node
   linkType: hard
 
-"@tanstack/query-core@npm:4.36.1":
-  version: 4.36.1
-  resolution: "@tanstack/query-core@npm:4.36.1"
-  checksum: 7c648872cd491bcab2aa4c18e0b7ca130c072f05c277a5876977fa3bfa87634bbfde46e9d249236587d78c39866889a02e4e202b478dc6074ff96093732ae56d
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:4.32.0":
-  version: 4.32.0
-  resolution: "@tanstack/react-query@npm:4.32.0"
+"@tanstack/react-query@npm:5.25.0":
+  version: 5.25.0
+  resolution: "@tanstack/react-query@npm:5.25.0"
   dependencies:
-    "@tanstack/query-core": "npm:4.32.0"
-    use-sync-external-store: "npm:^1.2.0"
+    "@tanstack/query-core": "npm:5.25.0"
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-native: "*"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: c48b2309ad2e49dc5c3b8845cc78f39ccb946a2d70e84900441ac8cd947443f0fb22ecaf1c7aa4fbd528973c45edb98a3e199b8e2daf73e7eadbd9bc662d3c72
-  languageName: node
-  linkType: hard
-
-"@tanstack/react-query@npm:4.36.1":
-  version: 4.36.1
-  resolution: "@tanstack/react-query@npm:4.36.1"
-  dependencies:
-    "@tanstack/query-core": "npm:4.36.1"
-    use-sync-external-store: "npm:^1.2.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-native: "*"
-  peerDependenciesMeta:
-    react-dom:
-      optional: true
-    react-native:
-      optional: true
-  checksum: 764b860c3ac8d254fc6b07e01054a0f58058644d59626c724b213293fbf1e31c198cbb26e4c32c0d16dcaec0353c0ae19147d9c667675b31f8cea1d64f1ff4ac
+    react: ^18.0.0
+  checksum: 760c1825ffcf57a9219c64856270c682372c566d7a32c5146eed47e7c51e0cda0a7239360e5bd46c8cc69cc802f8a4e161957c3c035afb895eb2bdf36f5b992a
   languageName: node
   linkType: hard
 
@@ -20083,7 +20049,7 @@ __metadata:
     "@tailwindcss/forms": "npm:0.5.7"
     "@tailwindcss/line-clamp": "npm:0.4.4"
     "@tailwindcss/typography": "npm:0.5.10"
-    "@tanstack/react-query": "npm:4.36.1"
+    "@tanstack/react-query": "npm:5.25.0"
     "@tw-classed/react": "npm:1.7.0"
     "@types/react": "npm:18.2.46"
     "@types/react-dom": "npm:18.2.18"
@@ -20134,7 +20100,7 @@ __metadata:
     "@stripe/crypto": "npm:0.0.4"
     "@stripe/react-stripe-js": "npm:2.1.2"
     "@stripe/stripe-js": "npm:1.54.2"
-    "@tanstack/react-query": "npm:4.32.0"
+    "@tanstack/react-query": "npm:5.25.0"
     "@testing-library/react": "npm:14.0.0"
     "@testing-library/react-hooks": "npm:8.0.1"
     "@tw-classed/react": "npm:1.5.2"
@@ -20270,7 +20236,7 @@ __metadata:
     "@babel/core": "npm:7.21.5"
     "@headlessui/react": "npm:1.7.18"
     "@radix-ui/react-avatar": "npm:1.0.4"
-    "@tanstack/react-query": "npm:4.36.1"
+    "@tanstack/react-query": "npm:5.25.0"
     "@testing-library/react": "npm:14.2.1"
     "@types/next": "npm:9.0.0"
     "@types/node": "npm:20.10.1"
@@ -53159,7 +53125,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.2.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
