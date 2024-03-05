@@ -110,8 +110,6 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
     throw Error(`missing contract on chain ${name}(${id})`)
   }
 
-  console.log(`Parsing calls for ${name}(${id}) - Unlock: ${unlockAddress}`)
-
   // submit template to Unlock
   const { interface: unlockInterface } = await ethers.getContractAt(
     UnlockV13.abi,
@@ -174,10 +172,6 @@ module.exports = async () => {
 
   // src info
   const { id: chainId } = await getNetwork()
-  console.log(
-    `from ${chainId} to chains ${targetChains.map(({ id }) => id).join(' - ')}`
-  )
-
   const {
     governanceBridge: { connext: bridgeAddress },
   } = networks[chainId]
@@ -253,7 +247,6 @@ module.exports = async () => {
   )
 
   const calls = [...mainnetCalls, ...bridgeCalls]
-  console.log(calls)
 
   // set proposal name and text
   const proposalName = `Upgrade protocol: switch to Unlock v13 and PublicLock v14
@@ -296,9 +289,9 @@ Onwards !
 
 The Unlock Protocol Team
 `
-  console.log(proposalName)
   return {
     proposalName,
     calls,
+    explainers,
   }
 }
