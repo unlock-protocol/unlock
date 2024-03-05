@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const {
   deployLock,
@@ -7,19 +8,19 @@ const {
   purchaseKeys,
   reverts,
   ADDRESS_ZERO,
-  getBalanceEthers,
+  getBalance,
+  increaseTimeTo,
 } = require('../helpers')
-const { time } = require('@openzeppelin/test-helpers')
 
 const scenarios = [false, true]
 const someDai = ethers.utils.parseEther('10')
 const BASIS_POINT_DENOMINATOR = 10000
 
-contract('Unlock / protocolFee', async () => {
+describe('Unlock / protocolFee', async () => {
   let unlock
 
   before(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
   })
 
   describe('setProtocolFee', () => {
@@ -72,7 +73,7 @@ contract('Unlock / protocolFee', async () => {
 
       describe('pays fees to Unlock correctly when', () => {
         it('purchasing a single key', async () => {
-          const unlockBalanceBefore = await getBalanceEthers(
+          const unlockBalanceBefore = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -84,7 +85,7 @@ contract('Unlock / protocolFee', async () => {
             .mul(await unlock.protocolFee())
             .div(BASIS_POINT_DENOMINATOR)
 
-          const unlockBalanceAfter = await getBalanceEthers(
+          const unlockBalanceAfter = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -95,7 +96,7 @@ contract('Unlock / protocolFee', async () => {
         })
 
         it('purchasing multiple keys', async () => {
-          const unlockBalanceBefore = await getBalanceEthers(
+          const unlockBalanceBefore = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -103,7 +104,7 @@ contract('Unlock / protocolFee', async () => {
             await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(3))
           }
           await purchaseKeys(lock, 3, isErc20, keyOwner)
-          const unlockBalanceAfter = await getBalanceEthers(
+          const unlockBalanceAfter = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -114,7 +115,7 @@ contract('Unlock / protocolFee', async () => {
         })
 
         it('extending a key', async () => {
-          const unlockBalanceBefore = await getBalanceEthers(
+          const unlockBalanceBefore = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -132,7 +133,7 @@ contract('Unlock / protocolFee', async () => {
             .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
               value: isErc20 ? 0 : keyPrice,
             })
-          const unlockBalanceAfter = await getBalanceEthers(
+          const unlockBalanceAfter = await getBalance(
             unlock.address,
             tokenAddress
           )
@@ -144,7 +145,7 @@ contract('Unlock / protocolFee', async () => {
 
         if (isErc20) {
           it('renewing a key', async () => {
-            const unlockBalanceBefore = await getBalanceEthers(
+            const unlockBalanceBefore = await getBalance(
               unlock.address,
               tokenAddress
             )
@@ -152,10 +153,10 @@ contract('Unlock / protocolFee', async () => {
             await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
             const { tokenId } = await purchaseKey(lock, keyOwner.address, true)
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-            await time.increaseTo(expirationTs.toNumber())
+            await increaseTimeTo(expirationTs)
 
             await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-            const unlockBalanceAfter = await getBalanceEthers(
+            const unlockBalanceAfter = await getBalance(
               unlock.address,
               tokenAddress
             )

@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
 
@@ -23,13 +24,13 @@ const fixUnlock = async (unlockAddress) => {
   await upgradeTx.wait()
 }
 
-contract('Lock / purchaseWithoutUnlock', () => {
+describe('Lock / purchaseWithoutUnlock', () => {
   let unlock
   let lock
 
   // setup proxy admin etc
   before(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
 
     // deploy a random contract to break Unlock implementation
     const BrokenUnlock = await ethers.getContractFactory('LockSerializer')

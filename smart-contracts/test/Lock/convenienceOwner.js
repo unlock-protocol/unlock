@@ -1,5 +1,6 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { expectRevert } = require('@openzeppelin/test-helpers')
+const { reverts } = require('../helpers')
 
 const deployContracts = require('../fixtures/deploy')
 const {
@@ -9,14 +10,14 @@ const {
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / mimick owner()', () => {
+describe('Lock / mimick owner()', () => {
   let lock
   let deployer
 
   beforeEach(async () => {
     ;[deployer] = await ethers.getSigners()
 
-    const { unlockEthers: unlock } = await deployContracts()
+    const { unlock } = await deployContracts()
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO
@@ -47,18 +48,18 @@ contract('Lock / mimick owner()', () => {
       assert.equal(await lock.owner(), wallet.address)
     })
     it('should revert on address zero', async () => {
-      await expectRevert(
+      await reverts(
         lock.connect(deployer).setOwner(ADDRESS_ZERO),
         'OWNER_CANT_BE_ADDRESS_ZERO'
       )
     })
     it('should revert if not lock manager', async () => {
       const [, notManager, anotherAddress] = await ethers.getSigners()
-      await expectRevert(
+      await reverts(
         lock.connect(notManager).setOwner(notManager.address),
         'ONLY_LOCK_MANAGER'
       )
-      await expectRevert(
+      await reverts(
         lock.connect(notManager).setOwner(anotherAddress.address),
         'ONLY_LOCK_MANAGER'
       )

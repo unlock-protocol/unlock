@@ -1,7 +1,8 @@
+const { assert } = require('chai')
 const { upgrades } = require('hardhat')
 const { deployContracts, getProxyAdminAddress } = require('../helpers')
 
-contract('Unlock / getAdmin', () => {
+describe('Unlock / getAdmin', () => {
   it('fetched correctly the proxy admin address', async () => {
     const { unlock } = await deployContracts()
     const admin = await unlock.getAdmin()

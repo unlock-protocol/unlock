@@ -6,7 +6,7 @@ const {
   compareInterfaces,
 } = require('../helpers')
 
-contract('Lock / interface', () => {
+describe('Lock / interface', () => {
   let lockContract
   let lockInterface
 

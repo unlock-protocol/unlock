@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const path = require('path')

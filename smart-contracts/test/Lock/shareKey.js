@@ -11,7 +11,7 @@ const {
 const ONE_DAY = ethers.BigNumber.from(60 * 60 * 24)
 const TOO_MUCH_TIME = 60 * 60 * 24 * 30 * 2 // 60 days
 
-contract('Lock / shareKey', () => {
+describe('Lock / shareKey', () => {
   let lock
   let tokenIds
 

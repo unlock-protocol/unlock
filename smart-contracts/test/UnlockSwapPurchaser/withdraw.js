@@ -21,12 +21,12 @@ let swapper,
   swapperBalanceBefore
 const { assert } = require('chai')
 
-contract('UnlockSwapPurchaser / withdraw', () => {
+describe('UnlockSwapPurchaser / withdraw', () => {
   scenarios.forEach((isErc20) => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       before(async () => {
         ;[owner] = await ethers.getSigners()
-        ;({ unlockEthers: unlock } = await deployContracts())
+        ;({ unlock } = await deployContracts())
 
         const UnlockSwapPurchaser = await ethers.getContractFactory(
           'UnlockSwapPurchaser'

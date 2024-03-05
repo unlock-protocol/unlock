@@ -1,6 +1,5 @@
-const { reverts, ADDRESS_ZERO } = require('../helpers')
+const { reverts, ADDRESS_ZERO, advanceBlock } = require('../helpers')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const proxyABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/proxy.json')
 
@@ -83,7 +82,7 @@ const upgradeContract = async () => {
   return UnlockDiscountTokenV3.attach(UDTProxyContractAddress)
 }
 
-contract('UnlockDiscountToken (on mainnet)', async () => {
+describe('UnlockDiscountToken (on mainnet)', async () => {
   let udt
   let deployer
 
@@ -524,7 +523,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
         assert(
           (await udt.getPriorVotes(recipient.address, blockNumber - 1)).eq(0)
         )
-        await time.advanceBlock()
+        await advanceBlock()
         assert(
           supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
         )

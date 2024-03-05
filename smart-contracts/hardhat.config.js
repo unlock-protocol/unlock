@@ -6,7 +6,6 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 
 require('@nomiclabs/hardhat-ethers')
-require('@nomiclabs/hardhat-truffle5')
 
 // full stack trace if needed
 require('hardhat-tracer')

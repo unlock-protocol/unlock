@@ -1,9 +1,10 @@
 const { ethers } = require('hardhat')
 const { setup } = require('./setup')
 const { reverts } = require('../helpers')
+const { assert } = require('chai')
 
 let lock
-let keyManager
+let keyManager, locksmith, grantee, attacker, realUser
 const OneMonthFromNow =
   Math.floor(new Date().getTime() / 1000) + 60 * 60 * 24 * 30
 const OneDayAgo = Math.floor(new Date().getTime() / 1000) - 60 * 60 * 24
@@ -18,12 +19,17 @@ const types = {
     { name: 'deadline', type: 'uint256' },
   ],
 }
-contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
+describe('KeyManager', () => {
   beforeEach(async () => {
     ;[keyManager, lock] = await setup()
+    ;[, locksmith, grantee, attacker, realUser] = await ethers.getSigners()
     // Let's now aidrop a key to an address and set the keyManager as... keyManager!
-    await keyManager.addLocksmith(locksmith)
-    await lock.grantKeys([grantee], [OneMonthFromNow], [keyManager.address])
+    await keyManager.addLocksmith(locksmith.address)
+    await lock.grantKeys(
+      [grantee.address],
+      [OneMonthFromNow],
+      [keyManager.address]
+    )
     const { chainId } = await ethers.provider.getNetwork()
     domain = {
       name: 'KeyManager',
@@ -37,10 +43,10 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     const transfer = {
       lock: lock.address,
       token: 1,
-      owner: grantee,
+      owner: grantee.address,
       deadline: OneDayAgo,
     }
-    const locksmithSigner = await ethers.getSigner(locksmith)
+    const locksmithSigner = await ethers.getSigner(locksmith.address)
     const signature = await locksmithSigner._signTypedData(
       domain,
       types,
@@ -62,10 +68,10 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     const transfer = {
       lock: lock.address,
       token: 1,
-      owner: grantee,
+      owner: grantee.address,
       deadline: OneHourFromNow,
     }
-    const attackerSigner = await ethers.getSigner(attacker)
+    const attackerSigner = await ethers.getSigner(attacker.address)
     const signature = await attackerSigner._signTypedData(
       domain,
       types,
@@ -87,11 +93,11 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     const transfer = {
       lock: lock.address,
       token: 1,
-      owner: grantee,
+      owner: grantee.address,
       deadline: OneHourFromNow,
     }
-    assert.notEqual(await lock.ownerOf(1), realUser)
-    const locksmithSigner = await ethers.getSigner(locksmith)
+    assert.notEqual(await lock.ownerOf(1), realUser.address)
+    const locksmithSigner = await ethers.getSigner(locksmith.address)
     const signature = await locksmithSigner._signTypedData(
       domain,
       types,
@@ -99,9 +105,9 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
     )
     assert.equal(
       ethers.utils.verifyTypedData(domain, types, transfer, signature),
-      locksmith
+      locksmith.address
     )
-    const realUserSigner = await ethers.getSigner(realUser)
+    const realUserSigner = await ethers.getSigner(realUser.address)
     await keyManager
       .connect(realUserSigner)
       .transfer(
@@ -111,7 +117,7 @@ contract('KeyManager', ([, locksmith, grantee, attacker, realUser]) => {
         transfer.deadline,
         signature
       )
-    assert.equal(await lock.ownerOf(1), realUser)
+    assert.equal(await lock.ownerOf(1), realUser.address)
     assert.equal(await lock.keyManagerOf(1), keyManager.address)
   })
 })

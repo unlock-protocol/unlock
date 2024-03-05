@@ -1,9 +1,10 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const compareValues = require('./_compareValues')
 
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 
-contract('LockSerializer', () => {
+describe('LockSerializer', () => {
   let lock
   let serializer
   let lockOwner

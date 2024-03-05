@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const {
   deployLock,
@@ -10,7 +11,7 @@ let lock
 let hook
 let nft
 
-contract('ERC721BalanceOfHook', () => {
+describe('ERC721BalanceOfHook', () => {
   let nftOwner
   let keyOwner
   let randomSigner

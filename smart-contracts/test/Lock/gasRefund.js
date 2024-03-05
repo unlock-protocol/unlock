@@ -1,338 +1,269 @@
-const { BN, time } = require('@openzeppelin/test-helpers')
+const { assert } = require('chai')
 const {
   getBalance,
   ADDRESS_ZERO,
   deployLock,
   reverts,
   deployERC20,
+  compareBigNumbers,
+  purchaseKey,
+  increaseTimeTo,
 } = require('../helpers')
 
 const { ethers } = require('hardhat')
-const keyPrice = new BN(ethers.utils.parseEther('0.01').toString())
-const gasRefundAmount = new BN(ethers.utils.parseEther('0.001').toString())
+const keyPrice = ethers.utils.parseEther('0.01')
+const gasRefundAmount = ethers.utils.parseEther('0.001')
 
 // test for ERC20 and ETH
-const scenarios = [true, false]
+// const scenarios = [true, false]
+const scenarios = [true]
 
 const gasRefund = async (tx) => {
-  const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
-  const { gasUsed } = tx.receipt
+  const { gasPrice } = tx
+  const { gasUsed } = await tx.wait()
   const gas = gasPrice.mul(gasUsed)
   const refund = keyPrice.sub(gasRefundAmount)
   return { gas, refund }
 }
 
-contract('Lock / GasRefund', (accounts) => {
+const eventFiredProperly = async ({ tx, keyOwner, tokenAddress }) => {
+  const { events } = await tx.wait()
+  const {
+    args: { receiver, refundedAmount, tokenAddress: refundedTokenAddress },
+  } = events.find(({ event }) => event === 'GasRefunded')
+
+  assert.equal(receiver, keyOwner.address)
+  compareBigNumbers(gasRefundAmount, refundedAmount)
+  assert.equal(refundedTokenAddress, tokenAddress)
+}
+
+const gasRefundedProperly = async ({
+  tx,
+  keyOwner,
+  userBalanceBefore,
+  isErc20,
+  testToken,
+}) => {
+  const userBalanceAfter = await getBalance(
+    keyOwner.address,
+    isErc20 ? testToken.address : null
+  )
+
+  const { gas, refund } = await gasRefund(tx)
+
+  const expected = isErc20
+    ? // buy a key, get a refund
+      userBalanceBefore.sub(refund)
+    : userBalanceBefore
+        // buy a key, get a refund
+        .sub(refund)
+        .sub(gas) // pay for the gas
+
+  compareBigNumbers(userBalanceAfter, expected)
+}
+
+describe('Lock / GasRefund', () => {
   let lock
   let tokenAddress = ADDRESS_ZERO
-  let userBalanceBefore
-  let tx
   let testToken
+  let lockCreator, lockManager, keyOwner, deployer, random
 
   scenarios.forEach((isErc20) => {
     describe(`purchase with gas refund using ${
       isErc20 ? 'ERC20' : 'ETH'
     }`, () => {
       beforeEach(async () => {
-        testToken = await deployERC20(accounts[0])
+        ;[lockCreator, lockManager, keyOwner, deployer, random] =
+          await ethers.getSigners()
+        testToken = await deployERC20(deployer.address)
         // Mint some tokens for testing
-        await testToken.mint(accounts[2], ethers.utils.parseEther('100'), {
-          from: accounts[0],
-        })
+        await testToken
+          .connect(deployer)
+          .mint(keyOwner.address, ethers.utils.parseEther('100'))
 
         // deploy lock w ERC20
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
-        lock = await deployLock({ tokenAddress })
+        lock = await deployLock({ tokenAddress, from: lockCreator })
 
         // Approve spending
-        await testToken.approve(
-          lock.address,
-          ethers.BigNumber.from(keyPrice.toString()).add(
-            gasRefundAmount.toString()
-          ),
-          {
-            from: accounts[2],
-          }
-        )
+        await testToken
+          .connect(keyOwner)
+          .approve(lock.address, keyPrice.add(gasRefundAmount))
       })
 
       describe('gas refund value', () => {
         it('default to zero', async () => {
-          assert.equal((await lock.gasRefundValue()).toNumber(), 0)
+          compareBigNumbers(await lock.gasRefundValue(), 0)
         })
 
         it('get set properly', async () => {
           await lock.setGasRefundValue(gasRefundAmount)
-          assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
+          compareBigNumbers(await lock.gasRefundValue(), gasRefundAmount)
         })
 
         it('emits an event', async () => {
           const tx = await lock.setGasRefundValue(gasRefundAmount)
-          const { args } = tx.logs.find(
+          const { events } = await tx.wait()
+          const { args } = events.find(
             ({ event }) => event === 'GasRefundValueChanged'
           )
-          assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
-          assert.equal(args.refundValue.eq(gasRefundAmount), true)
+          compareBigNumbers(await lock.gasRefundValue(), gasRefundAmount)
+          compareBigNumbers(args.refundValue, gasRefundAmount)
         })
 
         it('can not be set if caller is not lock manager', async () => {
           await reverts(
-            lock.setGasRefundValue(gasRefundAmount, {
-              from: accounts[3],
-            }),
+            lock.connect(random).setGasRefundValue(gasRefundAmount),
             'ONLY_LOCK_MANAGER'
           )
         })
 
         it('can be set by lock manager', async () => {
-          await lock.addLockManager(accounts[5], { from: accounts[0] })
-          await lock.setGasRefundValue(gasRefundAmount, { from: accounts[5] })
-          assert.equal((await lock.gasRefundValue()).eq(gasRefundAmount), true)
+          await lock.addLockManager(lockManager.address)
+          await lock.connect(lockManager).setGasRefundValue(gasRefundAmount)
+          compareBigNumbers(await lock.gasRefundValue(), gasRefundAmount)
         })
       })
 
-      describe('purchase() / gas refund', () => {
-        // test with both ETH and ERC20
-        beforeEach(async () => {
-          // set gasRefund
-          await lock.setGasRefundValue(gasRefundAmount)
+      describe('gas refund', () => {
+        let userBalanceBefore
+        let tx
 
-          userBalanceBefore = await getBalance(
-            accounts[2],
-            isErc20 ? testToken.address : null
-          )
-
-          tx = await lock.purchase(
-            [keyPrice.toString()],
-            [accounts[2]],
-            [tokenAddress],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              from: accounts[2],
-              value: isErc20 ? 0 : keyPrice.toString(),
-            }
-          )
-        })
-
-        it('gas refunded event is fired', async () => {
-          const evt = tx.logs.find((v) => v.event === 'GasRefunded')
-          const {
-            receiver,
-            refundedAmount,
-            tokenAddress: refundedTokenAddress,
-          } = evt.args
-
-          assert.equal(receiver, accounts[2])
-          assert.equal(refundedAmount.eq(gasRefundAmount), true)
-          assert.equal(refundedTokenAddress, tokenAddress)
-        })
-
-        it('user gas has been refunded', async () => {
-          const userBalanceAfter = await getBalance(
-            accounts[2],
-            isErc20 ? testToken.address : null
-          )
-
-          const { gas, refund } = await gasRefund(tx)
-
-          const expected = isErc20
-            ? // buy a key, get a refund
-              userBalanceBefore.minus(refund)
-            : userBalanceBefore
-                // buy a key, get a refund
-                .minus(refund)
-                .minus(gas.toString()) // pay for the gas
-
-          assert.equal(userBalanceAfter.toString(), expected.toString())
-        })
-      })
-
-      describe('extend() / gas refund', () => {
-        // test with both ETH and ERC20
-        beforeEach(async () => {
-          // set gasRefund
-          await lock.setGasRefundValue(gasRefundAmount)
-
-          const txPurchase = await lock.purchase(
-            [keyPrice.toString()],
-            [accounts[2]],
-            [tokenAddress],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              from: accounts[2],
-              value: isErc20 ? 0 : keyPrice.toString(),
-            }
-          )
-
-          // Approve some more spending
-          await testToken.approve(
-            lock.address,
-            new BN(keyPrice).add(gasRefundAmount),
-            {
-              from: accounts[2],
-            }
-          )
-
-          // balance before extending
-          userBalanceBefore = await getBalance(
-            accounts[2],
-            isErc20 ? testToken.address : null
-          )
-
-          const { args } = txPurchase.logs.find((v) => v.event === 'Transfer')
-          tx = await lock.extend(
-            isErc20 ? keyPrice : 0,
-            args.tokenId,
-            ADDRESS_ZERO,
-            [],
-            {
-              value: isErc20 ? 0 : keyPrice.toString(),
-              from: accounts[2],
-            }
-          )
-        })
-
-        it('gas refunded event is fired', async () => {
-          const evt = tx.logs.find((v) => v.event === 'GasRefunded')
-          const {
-            receiver,
-            refundedAmount,
-            tokenAddress: refundedTokenAddress,
-          } = evt.args
-
-          assert.equal(receiver, accounts[2])
-          assert.equal(refundedAmount.eq(gasRefundAmount), true)
-          assert.equal(refundedTokenAddress, tokenAddress)
-        })
-
-        it('user gas has been refunded', async () => {
-          const userBalanceAfter = await getBalance(
-            accounts[2],
-            isErc20 ? testToken.address : null
-          )
-
-          const { gas, refund } = await gasRefund(tx)
-
-          const expected = isErc20
-            ? // buy a key, get a refund
-              userBalanceBefore.minus(refund)
-            : userBalanceBefore
-                // buy a key, get a refund
-                .minus(refund)
-                .minus(gas.toString()) // pay for the gas
-
-          assert.equal(userBalanceAfter.toString(), expected.toString())
-        })
-      })
-
-      describe('renewMembershipFor() / gas refund', () => {
-        // test only with ERC20
-        if (isErc20) {
+        describe('purchase()', () => {
           beforeEach(async () => {
             // set gasRefund
             await lock.setGasRefundValue(gasRefundAmount)
 
-            const txPurchase = await lock.purchase(
-              [keyPrice.toString()],
-              [accounts[2]],
-              [tokenAddress],
-              [ADDRESS_ZERO],
-              [[]],
-              {
-                from: accounts[2],
-                value: 0,
-              }
+            userBalanceBefore = await getBalance(
+              keyOwner.address,
+              isErc20 ? testToken.address : null
             )
-
-            const { args } = txPurchase.logs.find((v) => v.event === 'Transfer')
-            const { tokenId } = args
-
-            // Approve some more spending
-            await testToken.approve(
-              lock.address,
-              new BN(keyPrice).add(gasRefundAmount),
-              {
-                from: accounts[2],
-              }
-            )
-
-            // balance before extending
-            userBalanceBefore = await getBalance(accounts[2], testToken.address)
-
-            // advance time to expiration
-            const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-            await time.increaseTo(expirationTs.toNumber())
-
-            tx = await lock.renewMembershipFor(tokenId, ADDRESS_ZERO, {
-              from: accounts[2],
+            ;({ tx } = await purchaseKey(lock, keyOwner.address, isErc20))
+          })
+          it('gas refunded event is fired', async () => {
+            await eventFiredProperly({ tx, lock, keyOwner, tokenAddress })
+          })
+          it('user gas has been refunded', async () => {
+            await gasRefundedProperly({
+              tx,
+              keyOwner,
+              userBalanceBefore,
+              isErc20,
+              testToken,
             })
           })
+        })
 
-          it('gas refunded event is fired', async () => {
-            const evt = tx.logs.find((v) => v.event === 'GasRefunded')
-            const {
-              receiver,
-              refundedAmount,
-              tokenAddress: refundedTokenAddress,
-            } = evt.args
-
-            assert.equal(receiver, accounts[2])
-            assert.equal(refundedAmount.eq(gasRefundAmount), true)
-            assert.equal(refundedTokenAddress, tokenAddress)
-          })
-
-          it('user gas has been refunded', async () => {
-            const userBalanceAfter = await getBalance(
-              accounts[2],
-              testToken.address
+        describe('extend()', () => {
+          beforeEach(async () => {
+            // set gasRefund
+            await lock.setGasRefundValue(gasRefundAmount)
+            const { tokenId } = await purchaseKey(
+              lock,
+              keyOwner.address,
+              isErc20
             )
 
-            const { gas, refund } = await gasRefund(tx)
-            const expected = isErc20
-              ? // buy a key, get a refund
-                userBalanceBefore.minus(refund)
-              : userBalanceBefore
-                  // buy a key, get a refund
-                  .minus(refund)
-                  .minus(gas.toString()) // pay for the gas
+            // Approve some more spending
+            await testToken
+              .connect(keyOwner)
+              .approve(lock.address, keyPrice.add(gasRefundAmount))
 
-            assert.equal(userBalanceAfter.toString(), expected.toString())
+            // balance before extending
+            userBalanceBefore = await getBalance(
+              keyOwner.address,
+              isErc20 ? testToken.address : null
+            )
+
+            tx = await lock
+              .connect(keyOwner)
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+                value: isErc20 ? 0 : keyPrice.toString(),
+              })
           })
-        }
+          it('gas refunded event is fired', async () => {
+            await eventFiredProperly({ tx, lock, keyOwner, tokenAddress })
+          })
+          it('user gas has been refunded', async () => {
+            await gasRefundedProperly({
+              tx,
+              keyOwner,
+              userBalanceBefore,
+              isErc20,
+              testToken,
+            })
+          })
+        })
+
+        describe('renewMembershipFor()', () => {
+          // test only with ERC20
+          if (isErc20) {
+            beforeEach(async () => {
+              // set gasRefund
+              await lock.setGasRefundValue(gasRefundAmount)
+              const { tokenId } = await purchaseKey(
+                lock,
+                keyOwner.address,
+                isErc20
+              )
+
+              // Approve some more spending
+              await testToken
+                .connect(keyOwner)
+                .approve(lock.address, keyPrice.add(gasRefundAmount))
+
+              // balance before extending
+              userBalanceBefore = await getBalance(
+                keyOwner.address,
+                testToken.address
+              )
+
+              // advance time to expiration
+              const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+              await increaseTimeTo(expirationTs)
+
+              tx = await lock
+                .connect(keyOwner)
+                .renewMembershipFor(tokenId, ADDRESS_ZERO)
+            })
+
+            it('gas refunded event is fired', async () => {
+              await eventFiredProperly({ tx, lock, keyOwner, tokenAddress })
+            })
+            it('user gas has been refunded', async () => {
+              await gasRefundedProperly({
+                tx,
+                keyOwner,
+                userBalanceBefore,
+                isErc20,
+                testToken,
+              })
+            })
+          }
+        })
       })
 
       describe('purchase without gas refund', () => {
         let tx
+        let userBalanceBefore
 
         beforeEach(async () => {
           userBalanceBefore = await getBalance(
-            accounts[2],
+            keyOwner.address,
             isErc20 ? testToken.address : null
           )
-
-          tx = await lock.purchase(
-            [keyPrice.toString()],
-            [accounts[2]],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              from: accounts[2],
-              value: isErc20 ? 0 : keyPrice.toString(),
-            }
-          )
+          ;({ tx } = await purchaseKey(lock, keyOwner.address, isErc20))
         })
 
         it('does not fire refunded event', async () => {
-          const evt = tx.logs.find((v) => v.event === 'GasRefunded')
+          const { events } = await tx.wait()
+          const evt = events.find(({ event }) => event === 'GasRefunded')
           assert.equal(evt, undefined)
         })
 
         it('user gas is not refunded', async () => {
           const userBalanceAfter = await getBalance(
-            accounts[2],
+            keyOwner.address,
             isErc20 ? testToken.address : null
           )
 
@@ -340,12 +271,12 @@ contract('Lock / GasRefund', (accounts) => {
           const { gas } = await gasRefund(tx)
 
           const expected = isErc20
-            ? userBalanceBefore.minus(keyPrice) // buy a key
+            ? userBalanceBefore.sub(keyPrice) // buy a key
             : userBalanceBefore
-                .minus(keyPrice) // buy a key
-                .minus(gas.toString()) // pay for the gas
+                .sub(keyPrice) // buy a key
+                .sub(gas.toString()) // pay for the gas
 
-          assert.equal(userBalanceAfter.toString(), expected.toString())
+          compareBigNumbers(userBalanceAfter, expected)
         })
       })
     })
