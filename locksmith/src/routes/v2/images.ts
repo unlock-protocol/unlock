@@ -31,6 +31,7 @@ export const upload = multer({
     }
   },
   storage: multerS3({
+    // @ts-expect-error Type 'import("/Users/julien/repos/unlock/node_modules/@aws-sdk/client-s3/dist-types/S3Client").S3Client' is not assignable to type 'import("/Users/julien/repos/unlock/node_modules/@types/multer-s3/node_modules/@aws-sdk/client-s3/dist-types/S3Client").S3Client'. Types of property 'config' are incompatible.
     s3: storageClient,
     // Cloudflare R2 does not support other ACLs schemes. See: https://developers.cloudflare.com/r2/data-access/s3-api/api/
     // That said, we only require public-read.
