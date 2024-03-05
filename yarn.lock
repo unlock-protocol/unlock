@@ -8824,14 +8824,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guildxyz/sdk@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@guildxyz/sdk@npm:1.1.1"
+"@guildxyz/sdk@npm:2.4.0":
+  version: 2.4.0
+  resolution: "@guildxyz/sdk@npm:2.4.0"
   dependencies:
-    axios: "npm:^0.26.1"
-    ethers: "npm:^5.5.4"
-    fast-json-stable-stringify: "npm:^2.1.0"
-  checksum: 28cc1ac4fb4e24207c3caa7aab4e39036153b5bf09fbfaffb56fab1c960a26919c045400e651f607e7f4d1b9d293a7963dffd9bac5f93440a6fa3edb8cb3e8e6
+    "@guildxyz/types": "npm:^1.4.2"
+    ethers: "npm:^6.7.1"
+    randombytes: "npm:^2.1.0"
+  checksum: c3cea62bad1b40e0f1236b7a56e3b43ae5273d499fa070deb29c89686c290c68ce6f3b972997bb33964aac37dc50b347854c2dba802e13a1ecd1567805b16c2b
+  languageName: node
+  linkType: hard
+
+"@guildxyz/types@npm:^1.4.2":
+  version: 1.7.20
+  resolution: "@guildxyz/types@npm:1.7.20"
+  dependencies:
+    zod: "npm:^3.22.4"
+  checksum: 4f831325812250dc21594349ce481d3ee6c492fa79e0948fb6fdad5dc6923c3d34f2c60a803b0d34f3ebbb764f5f502ef67e933da22c77a9ec1476bac5210036
   languageName: node
   linkType: hard
 
@@ -20124,7 +20133,7 @@ __metadata:
   dependencies:
     "@crossmint/client-sdk-react-ui": "npm:1.1.5"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
-    "@guildxyz/sdk": "npm:1.1.1"
+    "@guildxyz/sdk": "npm:2.4.0"
     "@headlessui/react": "npm:1.7.18"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.1.1"
@@ -30764,7 +30773,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.3.1, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -55945,7 +55954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:3.22.4, zod@npm:^3.20.6, zod@npm:^3.21.4":
+"zod@npm:3.22.4, zod@npm:^3.20.6, zod@npm:^3.21.4, zod@npm:^3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
   checksum: 73622ca36a916f785cf528fe612a884b3e0f183dbe6b33365a7d0fc92abdbedf7804c5e2bd8df0a278e1472106d46674281397a3dd800fa9031dc3429758c6ac
