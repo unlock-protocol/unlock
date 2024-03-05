@@ -14,7 +14,7 @@
     "@nomiclabs/hardhat-waffle": "2.0.6",
     "@openzeppelin/contracts": "4.9.5",
     "@openzeppelin/contracts-upgradeable": "4.9.5",
-    "@openzeppelin/hardhat-upgrades": "1.28.0",
+    "@openzeppelin/hardhat-upgrades": "3.0.4",
     "@openzeppelin/upgrades-core": "1.27.3",
     "@safe-global/safe-core-sdk": "3.3.5",
     "@safe-global/safe-ethers-lib": "1.9.3",
