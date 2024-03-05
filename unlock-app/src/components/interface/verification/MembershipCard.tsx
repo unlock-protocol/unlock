@@ -25,7 +25,7 @@ interface Props {
   userMetadata: Record<string, any>
   network: number
   invalid?: string
-  checkedInAt?: number | number[]
+  checkedInAt?: number | number[] | { at: number; verifierName: string }[]
   owner: string
   keyId: string
   children?: ReactNode
@@ -51,7 +51,10 @@ export function MembershipCard({
   const lastCheckedInAt = Array.isArray(checkedInAt)
     ? checkedInAt[checkedInAt.length - 1]
     : checkedInAt
-  const timeSinceCheckedIn = dayjs().from(lastCheckedInAt, true)
+  const timeSinceCheckedIn = dayjs().from(
+    typeof lastCheckedInAt === 'number' ? lastCheckedInAt : lastCheckedInAt?.at,
+    true
+  )
   const config = useConfig()
 
   return (
@@ -140,9 +143,20 @@ export function MembershipCard({
           {Array.isArray(checkedInAt) && checkedInAt.length > 0 && (
             <Item label="Checked-in">
               <ul>
-                {checkedInAt.map((timestamp) => (
-                  <li key={timestamp}>{dayjs(timestamp).fromNow()}</li>
-                ))}
+                {checkedInAt.map((checkedInItem) =>
+                  typeof checkedInItem === 'number' ? (
+                    <li key={checkedInItem}>
+                      {dayjs(checkedInItem).fromNow()}
+                    </li>
+                  ) : (
+                    <>
+                      <li key={checkedInItem.at}>
+                        {dayjs(checkedInItem.at).fromNow()} verified by{' '}
+                        {checkedInItem?.verifierName}
+                      </li>
+                    </>
+                  )
+                )}
               </ul>
             </Item>
           )}
