@@ -59,7 +59,7 @@
     "ethers": "5.7.2",
     "express": "5.0.0-beta.1",
     "express-winston": "4.2.0",
-    "fuse.js": "6.6.2",
+    "fuse.js": "7.0.0",
     "geoip-country": "4.1.59",
     "graphile-worker": "0.13.0",
     "graphql": "16.8.1",
