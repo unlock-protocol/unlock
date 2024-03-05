@@ -19781,7 +19781,7 @@ __metadata:
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
     solhint: "npm:4.1.1"
-    zksync-ethers: "npm:6.1.0"
+    zksync-ethers: "npm:6.5.0"
   languageName: unknown
   linkType: soft
 
@@ -19808,7 +19808,7 @@ __metadata:
     hardhat: "npm:2.20.1"
     tsup: "npm:8.0.2"
     typescript: "npm:5.3.3"
-    zksync-ethers: "npm:6.1.0"
+    zksync-ethers: "npm:6.5.0"
   languageName: unknown
   linkType: soft
 
@@ -55902,12 +55902,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-ethers@npm:6.1.0":
-  version: 6.1.0
-  resolution: "zksync-ethers@npm:6.1.0"
+"zksync-ethers@npm:6.5.0":
+  version: 6.5.0
+  resolution: "zksync-ethers@npm:6.5.0"
   peerDependencies:
     ethers: ^6.7.1
-  checksum: bf22ebaae03c01a1bff36b3c50944b7d9806d6f99182f40ac1451c674add8768554c590a081258e0b178246d19932900c454c8efbd83674d5e5fc6a03a32e353
+  checksum: 4a22d2211ede89e3cf34f306b5d818a1b0aa4b599e60f811c7b6f12ad5ec4f91b7af92dd3f709fe1abb5d89e938c00b00f4b7c35785883ce0710a1f28f7f8cd4
   languageName: node
   linkType: hard
 
