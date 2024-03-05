@@ -9313,18 +9313,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-deploy@npm:1.1.2":
-  version: 1.1.2
-  resolution: "@matterlabs/hardhat-zksync-deploy@npm:1.1.2"
+"@matterlabs/hardhat-zksync-deploy@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@matterlabs/hardhat-zksync-deploy@npm:1.2.1"
   dependencies:
     "@matterlabs/hardhat-zksync-solc": "npm:^1.0.4"
+    chai: "npm:^4.3.6"
     chalk: "npm:4.1.2"
+    fs-extra: "npm:^11.2.0"
+    glob: "npm:^10.3.10"
+    lodash: "npm:^4.17.21"
+    sinon: "npm:^17.0.1"
+    sinon-chai: "npm:^3.7.0"
     ts-morph: "npm:^21.0.1"
   peerDependencies:
     ethers: ^6.7.1
-    hardhat: ^2.19.2
+    hardhat: ^2.19.4
     zksync-ethers: ^6.0.0
-  checksum: 75b877240d709ebee86e35414e3a18f579f11d2c170a24b2da02aa8b08eb29f6ead8500d8ef6c4207bb047232974f22d801a5169a45da703d7784b9f95714f6d
+  checksum: 9237f56dd31e256b09840d0c8e3cd547c7674cf9434cfe1a7ad697f9ba131871270e16c9a7483e177ade73dd9114a7cbd74190a17d53c91bea565d6651773b16
   languageName: node
   linkType: hard
 
@@ -19758,7 +19764,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
+    "@matterlabs/hardhat-zksync-deploy": "npm:1.2.1"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.4"
     "@matterlabs/hardhat-zksync-verify": "npm:1.3.0"
@@ -19789,7 +19795,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
-    "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
+    "@matterlabs/hardhat-zksync-deploy": "npm:1.2.1"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.1"
     "@matterlabs/hardhat-zksync-verify": "npm:1.3.0"
