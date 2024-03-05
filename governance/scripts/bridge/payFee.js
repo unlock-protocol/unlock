@@ -5,7 +5,7 @@
  * yarn hardhat run scripts/bridge/bump.js --network mainnet
  *
  * TODO:
- * - make cli task to pass args
+ * - make cli task to pass txIx as args
  *
  */
 const { ethers } = require('hardhat')
