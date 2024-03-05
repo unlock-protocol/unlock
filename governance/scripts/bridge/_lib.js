@@ -699,13 +699,11 @@ const getDelayModule = async (delayModuleAddress) => {
 }
 
 const logStatus = (transferId, status) => {
-  const { origin, dest } = status
+  const { dest } = status
   const { explorer, name, id } = networks[dest.chainId]
-  console.log(`To ${name} (${id}) - ${transferId}
-  - origin (${origin.status}) - tx : ${explorer.urls.transaction(
-    origin.transactionHash
-  )}
-  - dest (${dest.status})
+  console.log(`To ${name} (${id}) https://connextscan.io/tx/${transferId} (${
+    dest.status
+  })
     - executedTransactionHash: ${explorer.urls.transaction(
       dest.executedTransactionHash
     )}
