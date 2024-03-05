@@ -1,6 +1,11 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { reverts, ADDRESS_ZERO, getProxyAddress } = require('../helpers')
-const { time } = require('@openzeppelin/test-helpers')
+const {
+  reverts,
+  ADDRESS_ZERO,
+  getProxyAddress,
+  advanceBlock,
+} = require('../helpers')
 
 const {
   resetNodeState,
@@ -8,7 +13,7 @@ const {
   MULTISIG_ADDRESS_OWNER,
 } = require('../helpers')
 
-contract('UnlockDiscountToken on mainnet', async () => {
+describe('UnlockDiscountToken on mainnet', async () => {
   let udt
   const chainId = 1 // mainnet
   let unlockAddress
@@ -121,7 +126,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
     describe('pastTotalSupply', async () => {
       it('corresponds to latest totalSupply', async () => {
         const blockNumber = await ethers.provider.getBlockNumber()
-        await time.advanceBlock()
+        await advanceBlock()
         const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
         const totalSupply = await udt.totalSupply()
         assert.isTrue(pastTotalSupply.eq(totalSupply))
@@ -131,7 +136,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
           ethers.utils.parseEther('1000')
         )
         const blockNumber = await ethers.provider.getBlockNumber()
-        await time.advanceBlock()
+        await advanceBlock()
         const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
 
         // mint some tokens
@@ -140,7 +145,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
         const unlock = await ethers.getSigner(unlockAddress)
         const tx = await udt.connect(unlock).mint(recipient.address, amount)
         const receipt = await tx.wait()
-        await time.advanceBlock()
+        await advanceBlock()
 
         const pastTotalSupplyAfter = await udt.getPastTotalSupply(
           receipt.blockNumber
@@ -297,7 +302,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
         assert(
           (await udt.getPriorVotes(recipient.address, blockNumber - 1)).eq(0)
         )
-        await time.advanceBlock()
+        await advanceBlock()
         assert(
           supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
         )

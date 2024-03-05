@@ -242,7 +242,10 @@ Powered by Unlock Protocol`}
                   <TweetItButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
-                  <CastItButton event={event} eventUrl={eventUrl} />
+                  <CastItButton
+                    event={event}
+                    eventUrl={`https://events-frame.unlock-protocol.com/events/s/${eventProp.slug}`}
+                  />
                 </li>
                 <li>
                   <CopyUrlButton eventUrl={eventUrl} />
