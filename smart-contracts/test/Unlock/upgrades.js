@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 
 const {
@@ -18,8 +19,9 @@ const {
 
 const unlockVersions = getUnlockVersionNumbers()
 
-contract('Unlock / upgrades', async (accounts) => {
-  const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
+describe('Unlock / upgrades', async () => {
+  const [unlockOwner, lockOwner, keyOwner, anotherAccount] =
+    await ethers.getSigners()
   const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
   after(async () => await cleanupContractVersions(__dirname))
@@ -296,7 +298,7 @@ contract('Unlock / upgrades', async (accounts) => {
               }
               const tx = await lock
                 .connect(keyOwner)
-                .transferFrom(keyOwner.address, accounts[8], id)
+                .transferFrom(keyOwner.address, anotherAccount.address, id)
               const { events } = await tx.wait()
               const evt = events.find(({ event }) => event === 'Transfer')
               assert.equal(evt.event, 'Transfer')

@@ -1,89 +1,101 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
-const { time } = require('@openzeppelin/test-helpers')
 
-const { deployLock, ADDRESS_ZERO } = require('../../helpers')
+const {
+  deployLock,
+  ADDRESS_ZERO,
+  compareBigNumbers,
+  increaseTimeTo,
+} = require('../../helpers')
 
-contract('Lock / erc721 / balanceOf', (accounts) => {
+describe('Lock / erc721 / balanceOf', () => {
   let lock
+  let keyOwner, someAccount, accountWithoutKey, keyReceiver
   before(async () => {
+    ;[, keyOwner, someAccount, accountWithoutKey, keyReceiver] =
+      await ethers.getSigners()
     lock = await deployLock()
   })
 
   it('should return 0 if the user has no key', async () => {
-    const balance = new BigNumber(await lock.balanceOf(accounts[3]))
-    assert.equal(balance.toFixed(), 0)
+    const balance = await lock.balanceOf(accountWithoutKey.address)
+    compareBigNumbers(balance, 0)
   })
 
   it('should return correct number of keys', async () => {
     await lock.purchase(
       [],
-      [accounts[1], accounts[1], accounts[1]],
+      [someAccount.address, someAccount.address, someAccount.address],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
         value: ethers.utils.parseUnits('0.03', 'ether'),
-        from: accounts[1],
       }
     )
-    const balance = new BigNumber(await lock.balanceOf(accounts[1]))
-    assert.equal(balance.toFixed(), 3)
+    compareBigNumbers(await lock.balanceOf(someAccount.address), 3)
   })
 
   it('should count only valid keys', async () => {
     const tx = await lock.purchase(
       [],
-      [accounts[1], accounts[1], accounts[1]],
+      [keyOwner.address, keyOwner.address, keyOwner.address],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
         value: ethers.utils.parseUnits('0.03', 'ether'),
-        from: accounts[1],
       }
     )
-
-    const tokenIds = tx.logs
+    const { events } = await tx.wait()
+    const tokenIds = events
       .filter((v) => v.event === 'Transfer')
       .map(({ args }) => args.tokenId)
 
+    compareBigNumbers(await lock.balanceOf(keyOwner.address), 3)
+
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await time.increaseTo(expirationTs.toNumber() + 10)
+    await increaseTimeTo(expirationTs.add(10))
 
-    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 0)
+    compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
 
     // renew one
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
       value: ethers.utils.parseUnits('0.03', 'ether'),
-      from: accounts[1],
     })
 
-    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 1)
+    compareBigNumbers(await lock.balanceOf(keyOwner.address), 1)
   })
 
   it('should return correct number after key transfers', async () => {
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
-      [accounts[6], accounts[6], accounts[6]],
+      [keyReceiver.address, keyReceiver.address, keyReceiver.address],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
         value: ethers.utils.parseUnits('0.03', 'ether'),
-        from: accounts[6],
       }
     )
-    let tokenId = await lock.tokenOfOwnerByIndex(accounts[6], 0)
-    assert.equal(accounts[6], await lock.ownerOf(tokenId))
-    assert.equal((await lock.balanceOf(accounts[6])).toNumber(), 3)
-    await lock.transferFrom(accounts[6], accounts[5], tokenId, {
-      from: accounts[6],
-    })
-    let balanceOf6 = await lock.balanceOf(accounts[6])
-    let balanceOf5 = await lock.balanceOf(accounts[5])
-    assert.equal(balanceOf6.toNumber(), 2)
-    assert.equal(balanceOf5.toNumber(), 1)
+    const { events } = await tx.wait()
+
+    const [tokenId] = events
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+
+    compareBigNumbers(await lock.balanceOf(keyReceiver.address), 3)
+    compareBigNumbers(
+      tokenId,
+      await lock.tokenOfOwnerByIndex(keyReceiver.address, 0)
+    )
+    assert.equal(keyReceiver.address, await lock.ownerOf(tokenId))
+
+    await lock
+      .connect(keyReceiver)
+      .transferFrom(keyReceiver.address, accountWithoutKey.address, tokenId)
+    assert.equal(await lock.balanceOf(keyReceiver.address), 2)
+    assert.equal(await lock.balanceOf(accountWithoutKey.address), 1)
   })
 })

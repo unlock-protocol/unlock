@@ -1,19 +1,22 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO, MAX_UINT, deployContracts } = require('../helpers')
-const PublicLock = artifacts.require('PublicLock')
+const {
+  ADDRESS_ZERO,
+  MAX_UINT,
+  deployContracts,
+  compareBigNumbers,
+} = require('../helpers')
 const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
 
 let unlock
 
-contract('Lock / createLockWithInfiniteKeys', () => {
+describe('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
     ;({ unlock } = await deployContracts())
   })
 
   describe('Create a Lock with infinite keys', () => {
-    let transaction
-    before(async () => {
+    it('should have created the lock with an infinite number of keys', async () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO, // token address
@@ -22,24 +25,19 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         'Infinite Keys Lock', // name
       ]
       const calldata = await createLockCalldata({ args })
-      transaction = await unlock.createUpgradeableLock(calldata)
-    })
-
-    it('should have created the lock with an infinite number of keys', async () => {
-      let publicLock = await PublicLock.at(
-        transaction.logs[0].args.newLockAddress
-      )
-      const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
-      assert.equal(
-        maxNumberOfKeys.toFixed(),
-        new BigNumber(2).pow(256).minus(1).toFixed()
-      )
+      const tx = await unlock.createUpgradeableLock(calldata)
+      const { events } = await tx.wait()
+      const {
+        args: { newLockAddress },
+      } = events.find(({ event }) => event === 'NewLock')
+      let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
+      const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
+      assert.equal(maxNumberOfKeys.toString(), MAX_UINT)
     })
   })
 
   describe('Create a Lock with 0 keys', () => {
-    let transaction
-    before(async () => {
+    it('should have created the lock with 0 keys', async () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
@@ -49,15 +47,14 @@ contract('Lock / createLockWithInfiniteKeys', () => {
         // '0x000000000000000000000001',
       ]
       const calldata = await createLockCalldata({ args })
-      transaction = await unlock.createUpgradeableLock(calldata)
-    })
+      const tx = await unlock.createUpgradeableLock(calldata)
 
-    it('should have created the lock with 0 keys', async () => {
-      let publicLock = await PublicLock.at(
-        transaction.logs[0].args.newLockAddress
-      )
-      const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
-      assert.equal(maxNumberOfKeys.toFixed(), 0)
+      const { events } = await tx.wait()
+      const {
+        args: { newLockAddress },
+      } = events.find(({ event }) => event === 'NewLock')
+      let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
+      compareBigNumbers(await publicLock.maxNumberOfKeys(), 0)
     })
   })
 })
