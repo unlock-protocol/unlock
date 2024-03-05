@@ -19906,7 +19906,7 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.3"
-    random-words: "npm:2.0.0"
+    random-words: "npm:2.0.1"
     rate-limiter-flexible: "npm:4.0.1"
     react: "npm:18.2.0"
     remark-html: "npm:15.0.2"
@@ -45645,12 +45645,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"random-words@npm:2.0.0":
-  version: 2.0.0
-  resolution: "random-words@npm:2.0.0"
+"random-words@npm:2.0.1":
+  version: 2.0.1
+  resolution: "random-words@npm:2.0.1"
   dependencies:
     seedrandom: "npm:^3.0.5"
-  checksum: b2f4adef329af9a63a3a3a9b960d0d5a1f9ea038a95d523c7cdb0829485870238f9d61ff0ac0c5ec45ffdcd5ca96093cea6c60c2ed44da4f02e3f5e5b6a54ade
+  checksum: 13385e573d91e64b898b9dd81df416718c3e2fa9ddb56181c5ed407732eacace2da8914d1d1da1d4b70f3c97d787f0b19280602d4352bf55ce1e81f5ddcd2982
   languageName: node
   linkType: hard
 
