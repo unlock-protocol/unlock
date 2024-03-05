@@ -63,6 +63,7 @@ export const retrieveEncryptedPrivatekey = async (
     const result = await ethers.Wallet.createRandom().encrypt(
       (Math.random() + 1).toString(36)
     )
+    console.log(result)
 
     return res.json({
       passwordEncryptedPrivateKey: result,
@@ -87,7 +88,8 @@ export const retrieveRecoveryPhrase = async (
   if (result) {
     return res.json({ recoveryPhrase: result })
   }
-  const recoveryPhrase = new DecoyUser().recoveryPhrase()
+  // Create a fake recoveryPhrase
+  const recoveryPhrase = (Math.random() + 1).toString(36)
   return res.json({ recoveryPhrase })
 }
 
