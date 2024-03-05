@@ -13,7 +13,7 @@
     "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@nomiclabs/hardhat-waffle": "2.0.6",
     "@openzeppelin/contracts": "4.9.5",
-    "@openzeppelin/contracts-upgradeable": "4.9.5",
+    "@openzeppelin/contracts-upgradeable": "4.9.6",
     "@openzeppelin/hardhat-upgrades": "1.28.0",
     "@openzeppelin/upgrades-core": "1.27.3",
     "@safe-global/safe-core-sdk": "3.3.5",
