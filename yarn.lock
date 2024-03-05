@@ -20160,7 +20160,7 @@ __metadata:
     "@walletconnect/client": "npm:1.8.0"
     "@walletconnect/ethereum-provider": "npm:2.11.2"
     "@walletconnect/modal": "npm:2.6.2"
-    "@xstate/react": "npm:3.2.2"
+    "@xstate/react": "npm:4.1.0"
     autoprefixer: "npm:10.4.18"
     axios: "npm:1.6.7"
     blockies-react-svg: "npm:0.0.13"
@@ -20209,7 +20209,7 @@ __metadata:
     vitest-fetch-mock: "npm:0.2.2"
     vitest-localstorage-mock: "npm:0.0.1"
     walletlink: "npm:2.5.0"
-    xstate: "npm:4.38.3"
+    xstate: "npm:5.9.1"
     zod: "npm:3.22.4"
     zod-to-json-schema: "npm:3.21.4"
   languageName: unknown
@@ -21531,22 +21531,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xstate/react@npm:3.2.2":
-  version: 3.2.2
-  resolution: "@xstate/react@npm:3.2.2"
+"@xstate/react@npm:4.1.0":
+  version: 4.1.0
+  resolution: "@xstate/react@npm:4.1.0"
   dependencies:
     use-isomorphic-layout-effect: "npm:^1.1.2"
     use-sync-external-store: "npm:^1.0.0"
   peerDependencies:
-    "@xstate/fsm": ^2.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    xstate: ^4.37.2
+    xstate: ^5.6.2
   peerDependenciesMeta:
-    "@xstate/fsm":
-      optional: true
     xstate:
       optional: true
-  checksum: 6368a9ac318402401ef978e799db43479b75151ae645420dee207ad03cc51b079ca26d6e65325458721d8fd398a256dad13989f04500b10fd023adadeba9fe6d
+  checksum: f0db22bcd1514449ada2bc173b8cbb57c6758f8c16981d2f2d65f0061d9ad22a98135bd2473de8f8d24cfad0a48b6146172d4e84409095e6bc12c80aa76b9c90
   languageName: node
   linkType: hard
 
@@ -55509,10 +55506,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"xstate@npm:4.38.3":
-  version: 4.38.3
-  resolution: "xstate@npm:4.38.3"
-  checksum: 82f30ed1d049d6be6274e54e34f46cad93fe773e4e333753acf363b8010f3685d256f154a91e5c1d615df654e14164dfc630c768af090925442b2c877cb9f11c
+"xstate@npm:5.9.1":
+  version: 5.9.1
+  resolution: "xstate@npm:5.9.1"
+  checksum: 79c6d4384fa4e359a6a85f6264572df5c281aba2828b900035c6fd621090865727c3279fcd9443e724eb81d51b2802ab8433c061ced8007ce577afa7243eb48d
   languageName: node
   linkType: hard
 
