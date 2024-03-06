@@ -160,6 +160,10 @@ components:
           type: integer
           nullable: false
 
+        name:
+          type: string
+          nullable: true
+
     KeyMetadata:
       type: object
       nullable: false
@@ -530,6 +534,14 @@ components:
       schema:
         type: string
 
+    VerifierName:
+      in: path
+      name: verifierName
+      required: true
+      description: Name to easily identify verifier
+      schema:
+        type: string
+
     KeyId:
       in: path
       name: keyId
@@ -882,6 +894,16 @@ paths:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/VerifierAddress'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
       responses:
         201:
           description: Added verifier.
