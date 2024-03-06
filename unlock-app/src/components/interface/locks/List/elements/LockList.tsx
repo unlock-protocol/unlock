@@ -17,7 +17,7 @@ export const NoItems = () => {
       src="/images/illustrations/no-locks.svg"
       description={
         <>
-          <span>No Locks created.</span>
+          <span>You have not created any membership contracts yet.</span>
         </>
       }
     />
