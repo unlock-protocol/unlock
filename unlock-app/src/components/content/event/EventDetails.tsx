@@ -1,5 +1,5 @@
 import { MdAssignmentLate } from 'react-icons/md'
-
+import { FrameMetadata } from '@coinbase/onchainkit'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -37,6 +37,7 @@ import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
+import { getFrame } from 'app/frame/event/[slug]/route'
 
 interface EventDetailsProps {
   event: Event
@@ -175,7 +176,7 @@ Powered by Unlock Protocol`}
           ],
         }}
       />
-
+      <FrameMetadata {...getFrame(event.slug)} />
       <div className="flex flex-col gap-4">
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
@@ -311,7 +312,6 @@ Powered by Unlock Protocol`}
           )}
         </section>
       </div>
-
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
