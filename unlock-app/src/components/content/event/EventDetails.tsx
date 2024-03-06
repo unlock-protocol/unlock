@@ -1,5 +1,4 @@
 import { MdAssignmentLate } from 'react-icons/md'
-import { FrameMetadata } from '@coinbase/onchainkit'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -37,7 +36,6 @@ import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
-import { getFrame } from 'app/frame/event/[slug]/route'
 
 interface EventDetailsProps {
   event: Event
@@ -175,8 +173,33 @@ Powered by Unlock Protocol`}
             },
           ],
         }}
+        additionalMetaTags={[
+          {
+            property: 'fc:frame',
+            content: 'vNext',
+          },
+          {
+            name: 'fc:frame:image',
+            content: `${config.unlockApp}/og/event/${event.slug}`,
+          },
+          {
+            name: 'fc:frame:image:aspect_ratio',
+            content: `1.91:1`,
+          },
+          {
+            name: 'fc:frame:post_url',
+            content: `${config.unlockApp}/frame/event/${event.slug}`,
+          },
+          {
+            name: 'fc:frame:button:1',
+            content: 'HAHA',
+          },
+          {
+            name: 'fc:frame:button:1:action',
+            content: 'post',
+          },
+        ]}
       />
-      <FrameMetadata {...getFrame(event.slug)} />
       <div className="flex flex-col gap-4">
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
