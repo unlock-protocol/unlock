@@ -74,7 +74,6 @@
     "p-retry": "6.0.0",
     "path-to-regexp": "6.2.1",
     "pg": "8.11.3",
-    "random-words": "2.0.0",
     "rate-limiter-flexible": "4.0.1",
     "react": "18.2.0",
     "remark-html": "15.0.2",
