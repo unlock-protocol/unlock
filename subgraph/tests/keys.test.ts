@@ -46,7 +46,6 @@ import {
 
 // mock contract functions
 import './mocks'
-import { Transfer } from '../generated/templates/PublicLock/PublicLock'
 
 const keyID = `${lockAddress}-${tokenId}`
 const keyIDV8 = `${lockAddressV8}-${tokenId}`

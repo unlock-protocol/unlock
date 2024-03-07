@@ -4,16 +4,8 @@ import {
   BigInt,
   Bytes,
   Wrapped,
-  log,
 } from '@graphprotocol/graph-ts'
-import {
-  keyOwnerAddress,
-  keyPrice,
-  lockAddress,
-  lockOwner,
-  tokenAddress,
-  tokenId,
-} from './constants'
+import { keyOwnerAddress, lockAddress, lockOwner, tokenId } from './constants'
 
 const defaultAddress = Address.fromString(
   '0xA16081F360e3847006dB660bae1c6d1b2e17eC2A'
@@ -21,7 +13,6 @@ const defaultAddress = Address.fromString(
 const defaultAddressBytes = defaultAddress as Bytes
 const defaultBigInt = BigInt.fromI32(1)
 const defaultIntBytes = Bytes.fromI32(1)
-const defaultEventDataLogType = 'default_log_type'
 
 function bigIntToBytes(bi: BigInt): Bytes {
   let hexString = bi.toHexString()

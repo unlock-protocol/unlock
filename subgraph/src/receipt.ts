@@ -1,9 +1,5 @@
 import { BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
-import {
-  ERC20_TRANSFER_TOPIC0,
-  lockAddress,
-  nullAddress,
-} from '../tests/constants'
+import { ERC20_TRANSFER_TOPIC0, nullAddress } from '../tests/constants'
 
 import { Lock, Receipt } from '../generated/schema'
 

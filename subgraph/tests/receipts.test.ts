@@ -6,7 +6,7 @@ import {
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { Lock, Key } from '../generated/schema'
 
 import {
@@ -26,8 +26,6 @@ import {
   createRenewKeyPurchaseEvent,
   createTransferEvent,
   mockDataSourceV11,
-  mockDataSourceV8,
-  updateExpiration,
 } from './keys-utils'
 
 import {

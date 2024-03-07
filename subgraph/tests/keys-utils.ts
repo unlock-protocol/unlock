@@ -7,7 +7,6 @@ import {
   ethereum,
   Address,
   BigInt,
-  log,
   DataSourceContext,
   Value,
   dataSource,
@@ -31,9 +30,7 @@ import {
   lockAddressV8,
   tokenId,
   keyOwnerAddress,
-  keyPrice,
   lockOwner,
-  tokenAddress,
 } from './constants'
 import { newTransactionReceipt } from './createCancelKeyEvent'
 
