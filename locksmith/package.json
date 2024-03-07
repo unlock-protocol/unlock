@@ -34,8 +34,8 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.489.0",
-    "@logtail/node": "0.4.17",
+    "@aws-sdk/client-s3": "3.525.0",
+    "@logtail/node": "0.4.19",
     "@logtail/winston": "0.4.12",
     "@nuintun/qrcode": "3.3.5",
     "@openzeppelin/defender-relay-client": "1.54.1",
@@ -74,7 +74,6 @@
     "p-retry": "6.0.0",
     "path-to-regexp": "6.2.1",
     "pg": "8.11.3",
-    "random-words": "2.0.0",
     "rate-limiter-flexible": "4.0.1",
     "react": "18.2.0",
     "remark-html": "15.0.2",
@@ -94,7 +93,7 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@types/cookie-parser": "1.4.6",
+    "@types/cookie-parser": "1.4.7",
     "@types/cors": "2.8.17",
     "@types/geoip-country": "4.0.2",
     "@types/isomorphic-fetch": "0.0.39",
@@ -115,9 +114,9 @@
     "node-mocks-http": "1.12.2",
     "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
-    "supertest": "6.3.3",
-    "tsx": "4.7.0",
-    "typescript": "5.1.6",
+    "supertest": "6.3.4",
+    "tsx": "4.7.1",
+    "typescript": "5.3.3",
     "vitest": "0.31.4"
   },
   "files": [

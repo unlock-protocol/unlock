@@ -95,7 +95,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
           form="confirmPassword"
           className="w-full"
         >
-          {isSigningUp ? 'Creating Account' : 'Create Accountaa'}
+          {isSigningUp ? 'Creating Account' : 'Create Account'}
         </Button>
         <PoweredByUnlock />
       </footer>

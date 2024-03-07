@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { isBigNumber } = require('./bigNumber')
 
 function notExpectEvent(events, eventName) {

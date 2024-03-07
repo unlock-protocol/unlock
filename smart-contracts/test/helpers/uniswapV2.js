@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
+const { increaseTime } = require('./time')
 
 const UniswapV2Factory = require('@uniswap/v2-core/build/UniswapV2Factory.json')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
@@ -80,7 +80,7 @@ const createUniswapV2Exchange = async ({
   )
 
   // Advancing time to avoid an intermittent test fail
-  await time.increase(time.duration.hours(1))
+  await increaseTime(1)
 
   // Do a swap so there is some data accumulated
   await uniswapRouter
