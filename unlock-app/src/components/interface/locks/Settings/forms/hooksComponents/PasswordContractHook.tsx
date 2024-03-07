@@ -1,5 +1,4 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
-import { useState } from 'react'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -9,7 +8,6 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import { useFormContext } from 'react-hook-form'
 
-const FAKE_PWD = 'fakepwd'
 export const PasswordContractHook = ({
   disabled,
   lockAddress,
