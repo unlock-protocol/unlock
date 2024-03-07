@@ -24,10 +24,10 @@
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.68.5",
-    "@graphprotocol/graph-ts": "0.33.0",
-    "@unlock-protocol/eslint-config": "workspace:*",
-    "@unlock-protocol/networks": "workspace:*",
-    "eslint": "8.57.0",
+    "@graphprotocol/graph-ts": "0.31.0",
+    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/networks": "workspace:^",
+    "eslint": "8.54.0",
     "fs-extra": "11.2.0",
     "handlebars": "4.7.8",
     "yargs": "17.7.2"
