@@ -1,16 +1,31 @@
 import { BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
-import { ERC20_TRANSFER_TOPIC0, nullAddress } from '../tests/constants'
+import {
+  ERC20_TRANSFER_TOPIC0,
+  lockAddress,
+  nullAddress,
+} from '../tests/constants'
 
 import { Lock, Receipt } from '../generated/schema'
 
 /**
- * Create Receipt object for subgraph for key 'purchase'/'extend'/'renewal'
- * @param {String} keyID - key id
- * @param {event} Object - Object event
+ * Create Receipt object for subgraph for key 'purchase'/'extend'/'renewal'/'cancel'
+ * @param {event} event - Object event
+ * @param {BigInt} refund - refund value for cancel
  * @return {void}
  */
-export function createReceipt(event: ethereum.Event): void {
+export function createReceipt(
+  event: ethereum.Event,
+  refund: BigInt | null = null
+): void {
   const hash = event.transaction.hash.toHexString()
+
+  // Check weather of not the cancel tx is with refund
+  if (refund && refund <= BigInt.fromU32(0)) {
+    log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
+      hash,
+    ])
+    return
+  }
 
   log.debug('Creating receipt for transaction {}', [hash])
 
@@ -33,10 +48,43 @@ export function createReceipt(event: ethereum.Event): void {
     ? lock.tokenAddress
     : Bytes.fromHexString(nullAddress)
 
-  // TODO: compile from contract ABI
-  // WARNING : For some tokens it may be different. In that case we would move to a list!
-  // TODO: for easier handling on future locks: trigger an "paid" event with the amount and data needed?
+  // Different logic for receipts
+  if (refund) {
+    createCancelReceiptLogic(event, tokenAddress, lockAddress, receipt, refund)
+  } else {
+    createReceiptLogic(event, tokenAddress, lockAddress, receipt)
+  }
 
+  const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
+  receipt.lockAddress = lockAddress
+  receipt.timestamp = event.block.timestamp
+  receipt.sender = event.transaction.from.toHexString()
+  receipt.tokenAddress = lock.tokenAddress.toHexString()
+  receipt.gasTotal = BigInt.fromString(totalGas.toString())
+
+  // save receipt, but only if we have a payer
+  // (i.e. this is a paid transaction)
+  if (receipt.payer !== null && receipt.amountTransferred > BigInt.fromI32(0)) {
+    // Updating the lock object
+    const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
+    lock.numberOfReceipts = newReceiptNumber
+    lock.save()
+
+    receipt.receiptNumber = newReceiptNumber
+    receipt.save()
+  } else {
+    log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
+      hash,
+    ])
+  }
+}
+
+export function createReceiptLogic(
+  event: ethereum.Event,
+  tokenAddress: Bytes,
+  lockAddress: string,
+  receipt: Receipt
+): void {
   if (tokenAddress != Bytes.fromHexString(nullAddress)) {
     log.debug('Creating receipt for ERC20 lock {} {}', [
       lockAddress,
@@ -85,71 +133,15 @@ export function createReceipt(event: ethereum.Event): void {
     receipt.payer = event.transaction.from.toHexString()
     receipt.amountTransferred = event.transaction.value
   }
-
-  const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
-  receipt.lockAddress = lockAddress
-  receipt.timestamp = event.block.timestamp
-  receipt.sender = event.transaction.from.toHexString()
-  receipt.tokenAddress = lock.tokenAddress.toHexString()
-  receipt.gasTotal = BigInt.fromString(totalGas.toString())
-
-  // save receipt, but only if we have a payer
-  // (i.e. this is a paid transaction)
-  if (receipt.payer !== null && receipt.amountTransferred > BigInt.fromI32(0)) {
-    // Updating the lock object
-    const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
-    lock.numberOfReceipts = newReceiptNumber
-    lock.save()
-
-    receipt.receiptNumber = newReceiptNumber
-    receipt.save()
-  } else {
-    log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
-      hash,
-    ])
-  }
 }
 
-/**
- * Create Receipt object for subgraph for key 'cancel'
- * @param {ethereum.Event} event - event
- * @param {BigInt} refund - Amount refunded
- * @return {void}
- */
-export function createRefundReceipt(
+export function createCancelReceiptLogic(
   event: ethereum.Event,
+  tokenAddress: Bytes,
+  lockAddress: string,
+  receipt: Receipt,
   refund: BigInt
 ): void {
-  const hash = event.transaction.hash.toHexString()
-
-  if (refund <= BigInt.fromU32(0)) {
-    log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
-      hash,
-    ])
-    return
-  }
-
-  log.debug('Creating receipt for transaction {}', [hash])
-
-  // Lock address is always the address of the contract emitting the `Transfer` event
-  const lockAddress = event.address.toHexString()
-
-  // Instantiate the receipt object
-  const receipt = new Receipt(hash)
-  receipt.amountTransferred = BigInt.fromI32(0) // default value
-
-  const lock = Lock.load(lockAddress)
-
-  // No need to go further if there is no matching lock object in the subgraph
-  if (!lock) {
-    log.debug('Missing Lock {}. Skipping receipt', [lockAddress])
-    return
-  }
-
-  const tokenAddress = lock.tokenAddress
-    ? lock.tokenAddress
-    : Bytes.fromHexString(nullAddress)
-
   if (tokenAddress != Bytes.fromHexString(nullAddress)) {
     log.debug('Creating receipt for ERC20 lock {} {}', [
       lockAddress,
@@ -179,39 +171,10 @@ export function createRefundReceipt(
           log.debug('Not the right kind of transfer!', [])
         }
       }
-      // If no ERC20 transfer event was found, this was not a "paid" transaction,
-      // which means we don't need to create a receipt.
     }
   } else {
     log.debug('Creating receipt for base currency lock {}', [lockAddress])
     receipt.payer = lockAddress
     receipt.amountTransferred = refund
-    log.debug('Base {} {}', [
-      receipt.payer as string,
-      receipt.amountTransferred.toString(),
-    ])
-  }
-
-  const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
-  receipt.lockAddress = lockAddress
-  receipt.timestamp = event.block.timestamp
-  receipt.sender = event.transaction.from.toHexString()
-  receipt.tokenAddress = lock.tokenAddress.toHexString()
-  receipt.gasTotal = BigInt.fromString(totalGas.toString())
-
-  // save receipt, but only if we have a payer
-  // (i.e. this is a paid transaction)
-  if (receipt.payer !== null && receipt.amountTransferred > BigInt.fromI32(0)) {
-    // Updating the lock object
-    const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
-    lock.numberOfReceipts = newReceiptNumber
-    lock.save()
-
-    receipt.receiptNumber = newReceiptNumber
-    receipt.save()
-  } else {
-    log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
-      hash,
-    ])
   }
 }
