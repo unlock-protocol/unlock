@@ -32,5 +32,11 @@ export const symbol = 'METAKEY'
 export const baseTokenURI = 'https:/custom-lock.com/api/key/'
 
 // default address used in newMockEvent() function
-export const defaultMockAddress = '0xa16081f360e3847006db660bae1c6d1b2e17ec2a'
+export const defaultMockAddress = '0xA16081F360e3847006dB660bae1c6d1b2e17eC2A'
 export const nullAddress = '0x0000000000000000000000000000000000000000'
+
+// TODO: compile from contract ABI
+// WARNING : For some tokens it may be different. In that case we would move to a list!
+// TODO: for easier handling on future locks: trigger an "paid" event with the amount and data needed?
+export const ERC20_TRANSFER_TOPIC0 =
+  '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'

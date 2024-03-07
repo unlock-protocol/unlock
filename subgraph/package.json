@@ -13,7 +13,7 @@
     "deploy": "node bin/thegraph deploy",
     "generate-manifest": "mustache config/\"$@\" subgraph.template.yaml > subgraph.yaml && graph codegen",
     "introspect:local": "INTROSPECT_NETWORK=31337 node bin/introspect.js",
-    "introspect": "/bin/sh -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
+    "introspect": "bash -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/",
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "prepare:networks": "node ./bin/networks.js",
@@ -23,11 +23,11 @@
     "test": "graph test -v 0.5.2"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.68.0",
-    "@graphprotocol/graph-ts": "0.31.0",
-    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "@unlock-protocol/networks": "workspace:^",
-    "eslint": "8.54.0",
+    "@graphprotocol/graph-cli": "0.68.5",
+    "@graphprotocol/graph-ts": "0.33.0",
+    "@unlock-protocol/eslint-config": "workspace:*",
+    "@unlock-protocol/networks": "workspace:*",
+    "eslint": "8.57.0",
     "fs-extra": "11.2.0",
     "handlebars": "4.7.8",
     "yargs": "17.7.2"

@@ -361,7 +361,11 @@ describe('Cancel keys', () => {
     mockDataSourceV11()
     // create a key
 
-    const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
+    const newCancelKey = createCancelKeyEvent(
+      Address.fromString(nullAddress),
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(0)
+    )
     handleCancelKey(newCancelKey)
     const hash = newCancelKey.transaction.hash.toHexString()
     // check for transactionHash
@@ -379,7 +383,11 @@ describe('Cancel keys', () => {
     )
     handleTransfer(newTransferEvent)
 
-    const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
+    const newCancelKey = createCancelKeyEvent(
+      Address.fromString(nullAddress),
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(0)
+    )
     handleCancelKey(newCancelKey)
     assert.fieldEquals('Key', keyID, 'cancelled', 'true')
     assert.fieldEquals('Key', keyID, 'owner', nullAddress)

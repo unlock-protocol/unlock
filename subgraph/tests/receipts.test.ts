@@ -21,6 +21,7 @@ import {
 } from './constants'
 
 import {
+  createCancelKeyEvent,
   createKeyExtendedEvent,
   createRenewKeyPurchaseEvent,
   createTransferEvent,
@@ -30,6 +31,7 @@ import {
 } from './keys-utils'
 
 import {
+  handleCancelKey,
   handleKeyExtended,
   handleRenewKeyPurchase,
   handleTransfer,
@@ -69,7 +71,7 @@ describe('Receipts for base currency locks', () => {
       Address.fromString(keyOwnerAddress),
       BigInt.fromU32(tokenId)
     )
-    newTransferEvent.transaction.value = BigInt.fromU32(0) // This is a grantKeys transaction
+    newTransferEvent.transaction.value = BigInt.fromU32(5) // This is a grantKeys transaction
     handleTransfer(newTransferEvent)
 
     // key is there
@@ -77,7 +79,7 @@ describe('Receipts for base currency locks', () => {
     assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
 
     // receipt is not there
-    assert.entityCount('Receipt', 0)
+    assert.entityCount('Receipt', 1)
   })
 
   test('Receipt has not been created for transfers with no value', () => {
@@ -254,6 +256,157 @@ describe('Receipts for an ERC20 locks', () => {
     assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
 
     // there is no receipt
+    assert.entityCount('Receipt', 0)
+  })
+})
+
+describe('Receipts for Cancel and refund', () => {
+  beforeEach(() => {
+    dataSourceMock.resetValues()
+    clearStore()
+  })
+
+  test('Receipt created after cancel with refund, ERC20 Token', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(tokenAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    const key = new Key(`${lockAddress}-${tokenId}`)
+    key.lock = lockAddress
+    key.tokenId = BigInt.fromU32(tokenId)
+    key.owner = Address.fromString(keyOwnerAddress)
+    key.expiration = BigInt.fromU32(1769984301) // does not really matter!
+    key.createdAtBlock = BigInt.fromI32(1)
+    key.createdAt = BigInt.fromU32(1769984301)
+    key.save()
+
+    // extend key event
+    const newCancelKey = createCancelKeyEvent(
+      Address.fromString(tokenAddress),
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(keyPrice)
+    )
+    handleCancelKey(newCancelKey)
+
+    // receipt is there
+    assert.entityCount('Receipt', 1)
+  })
+
+  test('Receipt has not been created for cancel without refund , ERC20 Token', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(tokenAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    const key = new Key(`${lockAddress}-${tokenId}`)
+    key.lock = lockAddress
+    key.tokenId = BigInt.fromU32(tokenId)
+    key.owner = Address.fromString(keyOwnerAddress)
+    key.expiration = BigInt.fromU32(1769984301) // does not really matter!
+    key.createdAtBlock = BigInt.fromI32(1)
+    key.createdAt = BigInt.fromU32(1769984301)
+    key.save()
+
+    // extend key event
+    const newCancelKey = createCancelKeyEvent(
+      Address.fromString(tokenAddress),
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(0)
+    )
+    handleCancelKey(newCancelKey)
+
+    // receipt is there
+    assert.entityCount('Receipt', 0)
+  })
+
+  test('Receipt created after cancel with refund, Base currecny', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(nullAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    const key = new Key(`${lockAddress}-${tokenId}`)
+    key.lock = lockAddress
+    key.tokenId = BigInt.fromU32(tokenId)
+    key.owner = Address.fromString(keyOwnerAddress)
+    key.expiration = BigInt.fromU32(1769984301) // does not really matter!
+    key.createdAtBlock = BigInt.fromI32(1)
+    key.createdAt = BigInt.fromU32(1769984301)
+    key.save()
+
+    // extend key event
+    const newCancelKey = createCancelKeyEvent(
+      Address.fromString(tokenAddress),
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(keyPrice)
+    )
+    handleCancelKey(newCancelKey)
+
+    // receipt is there
+    assert.entityCount('Receipt', 1)
+  })
+
+  test('Receipt has not been created for cancel without refund, Base currecny', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(nullAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    const key = new Key(`${lockAddress}-${tokenId}`)
+    key.lock = lockAddress
+    key.tokenId = BigInt.fromU32(tokenId)
+    key.owner = Address.fromString(keyOwnerAddress)
+    key.expiration = BigInt.fromU32(1769984301) // does not really matter!
+    key.createdAtBlock = BigInt.fromI32(1)
+    key.createdAt = BigInt.fromU32(1769984301)
+    key.save()
+
+    // extend key event
+    const newCancelKey = createCancelKeyEvent(
+      Address.fromString(tokenAddress),
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(0)
+    )
+    handleCancelKey(newCancelKey)
+
+    // receipt is there
     assert.entityCount('Receipt', 0)
   })
 })
