@@ -13,7 +13,7 @@
     "deploy": "node bin/thegraph deploy",
     "generate-manifest": "mustache config/\"$@\" subgraph.template.yaml > subgraph.yaml && graph codegen",
     "introspect:local": "INTROSPECT_NETWORK=31337 node bin/introspect.js",
-    "introspect": "bash -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
+    "introspect": "/bin/sh -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/",
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "prepare:networks": "node ./bin/networks.js",
