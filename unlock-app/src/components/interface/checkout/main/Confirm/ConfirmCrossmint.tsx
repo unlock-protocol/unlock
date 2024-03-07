@@ -152,7 +152,9 @@ export function ConfirmCrossmint({
       email,
       wallet: recipients[0], // Crossmint only supports a single recipient for now!
     },
-    collectionId,
+    collectionId: state.context.renew
+      ? collectionId
+      : [collectionId, 'extend'].join('-'),
     projectId,
     environment: crossmintEnv,
     mintConfig: {
