@@ -127,12 +127,30 @@ export class Paywall {
     config?: PaywallConfigType,
     unlockUrl?: string
   ) => {
-    if (this.iframe) {
-      this.showIframe()
-    } else {
-      await this.shakeHands(unlockUrl || unlockAppUrl)
-    }
-    this.setPaywallConfig(config || this.paywallConfig)
+    // eslint-disable-next-line no-async-promise-executor
+    return new Promise(async (resolve) => {
+      const returnValue: {
+        userAddress?: string
+        transactionInfo?: TransactionInfo
+      } = {}
+      const eventHandler = (name: string, data: any) => {
+        if (name == 'checkout.userInfo') {
+          returnValue.userAddress = data.address
+        }
+        if (name == 'checkout.transactionInfo') {
+          returnValue.transactionInfo = data
+        }
+        if (name === 'checkout.closeModal') {
+          return resolve(returnValue)
+        }
+      }
+      if (this.iframe) {
+        this.showIframe()
+      } else {
+        await this.shakeHands(unlockUrl || unlockAppUrl, eventHandler)
+      }
+      this.setPaywallConfig(config || this.paywallConfig)
+    })
   }
 
   setPaywallConfig = (config: PaywallConfigType) => {
@@ -152,7 +170,10 @@ export class Paywall {
     )
   }
 
-  shakeHands = async (unlockAppUrl: string) => {
+  shakeHands = async (
+    unlockAppUrl: string,
+    eventHandler?: (name: string, data?: any) => void
+  ) => {
     if (!postmateChild) {
       postmateChild = await new Postmate({
         url: `${unlockAppUrl}/checkout`,
@@ -163,18 +184,41 @@ export class Paywall {
     this.child = postmateChild
     this.iframe = document.getElementsByClassName(checkoutIframeClassName)[0]
     this.showIframe()
-    this.child!.on(CheckoutEvents.closeModal, this.hideIframe)
-    this.child!.on(CheckoutEvents.userInfo, this.handleUserInfoEvent)
-    this.child!.on(CheckoutEvents.methodCall, this.handleMethodCallEvent)
-    this.child!.on(CheckoutEvents.onEvent, this.handleOnEventEvent)
-    this.child!.on(CheckoutEvents.enable, this.handleEnable)
-    this.child!.on(CheckoutEvents.metadata, this.handleMetadataEvent)
-
-    // transactionInfo event also carries transaction hash.
-    this.child!.on(
-      CheckoutEvents.transactionInfo,
-      this.handleTransactionInfoEvent
-    )
+    this.child!.on(CheckoutEvents.closeModal, () => {
+      this.hideIframe()
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.closeModal)
+    })
+    this.child!.on(CheckoutEvents.userInfo, (data: any) => {
+      this.handleUserInfoEvent(data)
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.userInfo, data)
+    })
+    this.child!.on(CheckoutEvents.methodCall, (data: any) => {
+      this.handleMethodCallEvent(data)
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.methodCall, data)
+    })
+    this.child!.on(CheckoutEvents.onEvent, (data: any) => {
+      this.handleOnEventEvent(data)
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.onEvent, data)
+    })
+    this.child!.on(CheckoutEvents.enable, (data: any) => {
+      this.handleEnable()
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.enable, data)
+    })
+    this.child!.on(CheckoutEvents.metadata, (data: any) => {
+      this.handleMetadataEvent(data)
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.metadata, data)
+    })
+    this.child!.on(CheckoutEvents.transactionInfo, (data: any) => {
+      this.handleTransactionInfoEvent(data)
+      if (typeof eventHandler === 'function')
+        eventHandler(CheckoutEvents.transactionInfo, data)
+    })
 
     // flush the buffer of child calls from before the iframe was ready
     this.childCallBuffer.forEach((bufferedCall) =>
