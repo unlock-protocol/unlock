@@ -2,6 +2,11 @@ name: Protocol Health Check
 
 on:
   workflow_call:
+    secrets:
+      SENTRY_AUTH_TOKEN: 
+        required: true
+      SENTRY_DSN:
+        required: true
 
 jobs:
   health-check:
@@ -10,7 +15,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      SENTRY_AUTH_TOKEN: op://secrets/sentry-health-monitoring/credential
+      SENTRY_LOG_LEVEL: info
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,6 +26,9 @@ jobs:
       - name: Install Sentry CLI
         shell: bash
         run: npm install @sentry/cli -g
+      - name: Sentry CLI login
+        shell: bash
+        run: sentry-cli login --auth-token ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Check networks package
         run: |
           yarn workspace @unlock-protocol/networks check >> networks.log

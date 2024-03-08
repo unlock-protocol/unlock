@@ -7,6 +7,9 @@ jobs:
   # TODO: move to prod PR once dev is done
   health-check:
     uses: ./.github/workflows/_health-check.yml
+    secrets:
+      SENTRY_AUTH_TOKEN: op://secrets/sentry-health-monitoring/credential
+      SENTRY_DSN: op://secrets/sentry-health-monitoring/credential
     
   # check which folder changed in the repo
   check-changes:
