@@ -5,6 +5,10 @@ import normalizer from '../../utils/normalizer'
 import { getSettings } from '../../operations/lockSettingOperations'
 import { ethers } from 'ethers'
 import { getSignerFromOnKeyPurchaserHookOnLock } from '../../fulfillment/dispatcher'
+import {
+  checkMultipleScores,
+  submitAddressForScoring,
+} from '../../operations/gitcoinVerification'
 
 const guildHookQuery = z.object({
   network: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number()),
@@ -59,4 +63,97 @@ export const guildHook: RequestHandler = async (request, response) => {
   return response.status(200).send({
     result: accesses,
   })
+}
+
+// schema for validating and parsing incoming request queries using Zod
+const gitcoinHookQuery = z.object({
+  network: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number()),
+  lockAddress: z.string(),
+  recipients: z
+    .preprocess((a) => {
+      // preprocess to ensure recipients is always an array of strings
+      if (typeof a === 'string') return [a]
+      return a
+    }, z.array(z.string()))
+    // transform each recipient address using a normalization function
+    .transform((items) =>
+      items.map((item) => normalizer.ethereumAddress(item))
+    ),
+})
+
+/**
+ * The `gitcoinHook` function is designed to handle the scoring and verification process for recipients (typically wallet addresses)
+ * submitted through a request. This process involves several key steps:
+ * 1. Parsing and validating the input parameters from the request, including network details, recipient addresses, and lock address.
+ * 2. Submitting each recipient's address for scoring, initiating an asynchronous process that calculates their respective scores
+ *    based on predefined criteria (via `submitAddressForScoring`).
+ * 3. Retrieving a wallet that is capable of signing messages, which is necessary for generating cryptographic signatures as a form of
+ *    verification for recipients with scores above a certain threshold.
+ * 4. Fetching the scores for all submitted recipients, utilizing a batch or collective approach for efficiency.
+ * 5. Evaluating each recipient's score to determine if it exceeds the defined threshold (in this case, a score greater than 20).
+ *    Recipients with qualifying scores are then provided with a signature generated using the retrieved wallet, serving as a form
+ *    of validation or access granting. Recipients not meeting the score requirement receive an empty string, indicating a lack of
+ *    qualification.
+ * 6. Compiling and responding with the results, which include either signatures for qualified recipients or empty strings for
+ *    those who did not qualify, effectively communicating the outcome of the verification process.
+ *
+
+ */
+export const gitcoinHook: RequestHandler = async (request, response) => {
+  const { network, recipients, lockAddress } =
+    await gitcoinHookQuery.parseAsync(request.query)
+
+  try {
+    // submit each recipient for scoring
+    await Promise.all(
+      recipients.map((recipient) => submitAddressForScoring(recipient))
+    )
+
+    // retrieve the wallet for signing, ensuring it's available before generating signatures
+    const wallet = await getSignerFromOnKeyPurchaserHookOnLock({
+      lockAddress,
+      network,
+    })
+
+    if (!wallet) {
+      return response.status(422).json({
+        error: 'This lock has a misconfigured Gitcoin Passport hook.',
+      })
+    }
+
+    // retrieve scores for all submitted recipients
+    const scoresResponse = await checkMultipleScores()
+
+    // generate signatures for recipients with valid scores
+    const results = recipients.map((recipient) => {
+      const recipientData = scoresResponse.items.find(
+        (item: any) => item.address.toLowerCase() === recipient.toLowerCase()
+      )
+      if (recipientData && recipientData.score > 20) {
+        const message = recipient.toLowerCase()
+        const messageHash = ethers.utils.solidityKeccak256(
+          ['string'],
+          [message]
+        )
+        const signature = wallet.signMessage(ethers.utils.arrayify(messageHash))
+        return signature
+      } else {
+        return ''
+      }
+    })
+
+    // wait for all signatures to be generated
+    const signatures = await Promise.all(results)
+
+    // send the signatures
+    return response.status(200).send({
+      signatures,
+    })
+  } catch (error) {
+    // log and send errors if encountered
+    console.error('Error in Gitcoin score verification:', error)
+    return response
+      .status(500)
+      .json({ error: 'Error verifying Gitcoin scores.' })
+  }
 }
