@@ -1,7 +1,6 @@
-import { expect } from 'chai'
-
-import { ethers, unlock } from 'hardhat'
-import { reverts } from '../../helpers'
+const { expect } = require('chai')
+const { ethers, unlock } = require('hardhat')
+const { reverts } = require('../../helpers')
 
 describe('GitcoinHook', function () {
   it('should work as a hook', async function () {
