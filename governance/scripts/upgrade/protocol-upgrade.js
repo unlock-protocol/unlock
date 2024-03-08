@@ -86,7 +86,6 @@ async function main() {
   const { id, multisig, unlockAddress } = await getNetwork()
   const { unlockImplAddress, publicLockAddress } = deployedContracts[id]
 
-  console.log({ unlockAddress })
   let [signer] = await ethers.getSigners()
 
   // submit template to Unlock
@@ -99,22 +98,6 @@ async function main() {
 
   const unlockVersion = await unlock.unlockVersion()
   const publicLockVersion = await template.publicLockVersion()
-
-  // check versions are correct in all contracts
-  assert(unlockVersion === 12n, 'Wrong actual unlockVersion')
-  assert(
-    (await unlock.publicLockLatestVersion()) === 13n,
-    'Wrong actual publicLockVersion'
-  )
-  assert(
-    (await (
-      await ethers.getContractAt(UnlockV13.abi, unlockImplAddress)
-    ).unlockVersion()) === 13n,
-    'Wrong new unlockVersion'
-  )
-  assert(publicLockVersion === 14n, 'Wrong new publicLockVersion')
-  const unlockOwmer = await unlock.owner()
-  assert(unlockOwmer === multisig, `Owner ${unlockOwmer} is not a multisig`)
 
   // submit Unlock upgrade
   const proxyAdminAddress = await getProxyAdminAddress({ chainId: id })
@@ -131,6 +114,22 @@ async function main() {
   - multisig: ${multisig}
   - signer: ${signer.address}
   `)
+
+  // check versions are correct in all contracts
+  assert(unlockVersion === 12n, 'Wrong actual unlockVersion')
+  assert(
+    (await unlock.publicLockLatestVersion()) === 13n,
+    'Wrong actual publicLockVersion'
+  )
+  assert(
+    (await (
+      await ethers.getContractAt(UnlockV13.abi, unlockImplAddress)
+    ).unlockVersion()) === 13n,
+    'Wrong new unlockVersion'
+  )
+  assert(publicLockVersion === 14n, 'Wrong new publicLockVersion')
+  const unlockOwmer = await unlock.owner()
+  assert(unlockOwmer === multisig, `Owner ${unlockOwmer} is not a multisig`)
 
   // upgrade first so we dont have a revert when
   // template is initialized
