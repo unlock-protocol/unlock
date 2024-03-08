@@ -16,6 +16,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
       SENTRY_LOG_LEVEL: info
+      SENTRY_DSN: ${{secrets.SENTRY_DSN}}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
