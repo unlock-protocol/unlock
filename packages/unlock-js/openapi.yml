@@ -160,6 +160,10 @@ components:
           type: integer
           nullable: false
 
+        name:
+          type: string
+          nullable: true
+
     KeyMetadata:
       type: object
       nullable: false
@@ -475,6 +479,28 @@ components:
         network:
           type: number
 
+    Key:
+      type: object
+      properties:
+        token:
+          type: string
+        lockName:
+          type: string
+        expiration:
+          type: string
+        keyholderAddress:
+          type: string
+        keyManager:
+          type: string
+        lockAddress:
+          type: string
+        transactionsHash:
+          type: array
+          items:
+            type: string
+        email:
+          type: string
+
   parameters:
     Network:
       in: path
@@ -508,6 +534,14 @@ components:
       schema:
         type: string
 
+    VerifierName:
+      in: path
+      name: verifierName
+      required: true
+      description: Name to easily identify verifier
+      schema:
+        type: string
+
     KeyId:
       in: path
       name: keyId
@@ -537,6 +571,14 @@ components:
       name: slug
       required: true
       description: Slug
+      schema:
+        type: string
+
+    JobId:
+      in: path
+      name: jobId
+      required: true
+      description: Id of the exported job.
       schema:
         type: string
 
@@ -852,6 +894,16 @@ paths:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/VerifierAddress'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
       responses:
         201:
           description: Added verifier.
@@ -1447,6 +1499,92 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/{network}/locks/{lockAddress}/export-keys:
+    get:
+      operationId: exportKeys
+      security:
+        - User: []
+        - Application: []
+      description: Starts Job process to get all the keys for the given lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: Query you want to search for.
+        - in: query
+          name: filterKey
+          required: true
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+      responses:
+        '200':
+          description: Successfully started Keys Job
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+
+  /v2/api/{network}/locks/{lockAddress}/export-keys/{jobId}:
+    get:
+      operationId: getExportedKeys
+      security:
+        - User: []
+        - Application: []
+      description: Get job result by job id
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Successfully retrieved job result
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      byPage:
+                        type: integer
+                  keys:
+                    nullable: false
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KeyMetadata'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Job not found
 
   /purchase:
     get:

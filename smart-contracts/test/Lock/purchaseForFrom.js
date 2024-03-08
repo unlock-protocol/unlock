@@ -1,10 +1,13 @@
+const { assert } = require('chai')
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / purchaseForFrom', (accounts) => {
+describe('Lock / purchaseForFrom', () => {
   let lock
   let lockFree
+  let keyOwner, referrer
   before(async () => {
+    ;[, keyOwner, referrer] = await ethers.getSigners()
     lock = await deployLock()
     lockFree = await deployLock({ name: 'FREE' })
   })
@@ -13,8 +16,8 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [accounts[0]],
-        [accounts[1]],
+        [keyOwner.address],
+        [referrer.address],
         [ADDRESS_ZERO],
         [[]],
         {
@@ -28,7 +31,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [accounts[0]],
+        [keyOwner.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -38,8 +41,8 @@ contract('Lock / purchaseForFrom', (accounts) => {
       )
       await lock.purchase(
         [],
-        [accounts[1]],
-        [accounts[0]],
+        [referrer.address],
+        [keyOwner.address],
         [ADDRESS_ZERO],
         [[]],
         {
@@ -51,21 +54,23 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('can purchaseForFrom a free key', async () => {
       await lockFree.purchase(
         [],
-        [accounts[0]],
+        [keyOwner.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]]
       )
       const tx = await lockFree.purchase(
         [],
-        [accounts[2]],
-        [accounts[0]],
+        [keyOwner.address],
+        [referrer.address],
         [ADDRESS_ZERO],
         [[]]
       )
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+
+      const { events } = await tx.wait()
+      const { args } = events.find(({ event }) => event === 'Transfer')
+      assert.equal(args.from, 0)
+      assert.equal(args.to, keyOwner.address)
     })
   })
 })

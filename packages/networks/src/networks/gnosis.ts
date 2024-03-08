@@ -63,7 +63,7 @@ export const gnosis: NetworkConfig = {
     coingecko: 'xdai',
     decimals: 18,
     name: 'xDAI',
-    symbol: 'DAI',
+    symbol: 'xDAI',
   },
   previousDeploys: [
     {
@@ -77,10 +77,10 @@ export const gnosis: NetworkConfig = {
   startBlock: 19338700,
   // This is used in llama pricing API so can't rename.
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/gnosis-v2',
-    networkName: 'xdai',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-gnosis/version/latest',
+    networkName: 'gnosis',
+    studioName: 'unlock-protocol-gnosis',
   },
   tokens: [
     {

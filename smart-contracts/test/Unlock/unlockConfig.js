@@ -1,41 +1,36 @@
+const { ethers } = require('hardhat')
 const { reverts, deployContracts } = require('../helpers')
 
 let unlock
-let unlockOwner
+let unlockOwner, someAccount
 
-contract('Lock / configUnlock', (accounts) => {
+describe('Lock / configUnlock', () => {
   before(async () => {
     ;({ unlock } = await deployContracts())
-    ;[unlockOwner] = accounts
+    ;[unlockOwner, someAccount] = await ethers.getSigners()
   })
 
   describe('configuring the Unlock contract', () => {
     it('should let the owner configure the Unlock contract', async () => {
-      await unlock.configUnlock(
+      await unlock.connect(unlockOwner).configUnlock(
         await unlock.udt(),
         await unlock.weth(),
         0,
         '',
         '',
-        1, // mainnet
-        {
-          from: unlockOwner,
-        }
+        1 // mainnet
       )
     })
 
     it('should revert if called by other than the owner', async () => {
       await reverts(
-        unlock.configUnlock(
+        unlock.connect(someAccount).configUnlock(
           await unlock.udt(),
           await unlock.weth(),
           0,
           '',
           '',
-          1, // mainnet
-          {
-            from: accounts[7],
-          }
+          1 // mainnet
         ),
         'ONLY_OWNER'
       )

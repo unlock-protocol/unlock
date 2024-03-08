@@ -80,11 +80,9 @@ export const sepolia: NetworkConfig = {
   startBlock: 4381710,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia/version/latest',
-    endpointV2:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-sepolia/version/latest',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-sepolia/version/latest',
     networkName: 'sepolia',
-    studioEndpoint: 'unlock-protocol-sepolia',
+    studioName: 'unlock-protocol-sepolia',
   },
   tokens: [
     {
@@ -94,6 +92,13 @@ export const sepolia: NetworkConfig = {
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       name: 'Wrapped Ether',
       symbol: 'WETH',
+    },
+    {
+      address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      decimals: 6,
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
     },
   ],
   uniswapV3: {

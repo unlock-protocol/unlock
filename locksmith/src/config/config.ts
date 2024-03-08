@@ -74,6 +74,7 @@ const config = {
     bucket: process.env.STORAGE_BUCKET || 'images',
     publicHost:
       process.env.STORAGE_PUBLIC_HOST || defaultConfig.storage.publicHost,
+    exportsBucket: 'uploads',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   logtailSourceToken: process.env.LOGTAIL,

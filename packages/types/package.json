@@ -1,12 +1,9 @@
 {
   "name": "@unlock-protocol/types",
-  "version": "0.0.6",
+  "version": "0.0.8",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "description": "Unlock's base Typescript config",
-  "engines": {
-    "node": ">=12"
-  },
   "files": [
     "tsconfig.json"
   ],
@@ -28,7 +25,7 @@
   },
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "typescript": "5.0.4"
+    "typescript": "5.3.3"
   },
   "dependencies": {
     "ethers": "5.7.2"

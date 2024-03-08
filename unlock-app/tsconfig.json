@@ -29,7 +29,10 @@
       ],
       "@uniswap/smart-order-router": [
         "../packages/unlock-js/node_modules/@uniswap/smart-order-router"
-      ]
+      ],
+      
+      "react": [ "./node_modules/@types/react" ]
+      
     },
     "plugins": [
       {
