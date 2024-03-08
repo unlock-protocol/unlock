@@ -215,12 +215,14 @@ export function createCancelKeyEvent(
       ethereum.Value.fromUnsignedBigInt(tokenId)
     )
   )
+  // Does not really matter!
   cancelKeyEvent.parameters.push(
     new ethereum.EventParam(
       'owner',
       ethereum.Value.fromAddress(Address.fromString(lockOwner))
     )
   )
+  // Does not really matter!
   cancelKeyEvent.parameters.push(
     new ethereum.EventParam(
       'sendTo',

@@ -35,6 +35,7 @@ function addressToTopic(address: Address): Bytes {
   return Bytes.fromHexString('0x' + paddedHex) as Bytes
 }
 
+// Create CancelKey event log for the receipt
 function createCancelKeyEventLog(
   tokenId: BigInt,
   owner: Address,
@@ -64,6 +65,7 @@ function createCancelKeyEventLog(
   )
 }
 
+// Create transfrer event log for the receipt
 function createTransferEventLog(
   tokenAddress: Address,
   from: Address,
@@ -90,7 +92,7 @@ function createTransferEventLog(
   )
 }
 
-// Here you would insert these logs into your mock transaction receipt
+// Create transaction receipt for mock transaction
 export function newTransactionReceipt(
   tokenAddress: Address,
   refund: BigInt

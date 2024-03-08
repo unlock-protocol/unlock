@@ -288,7 +288,7 @@ describe('Receipts for Cancel and refund', () => {
     key.createdAt = BigInt.fromU32(1769984301)
     key.save()
 
-    // extend key event
+    // create mock cancel key event
     const newCancelKey = createCancelKeyEvent(
       Address.fromString(tokenAddress),
       BigInt.fromU32(tokenId),
@@ -324,7 +324,7 @@ describe('Receipts for Cancel and refund', () => {
     key.createdAt = BigInt.fromU32(1769984301)
     key.save()
 
-    // extend key event
+    // create mock cancel key event
     const newCancelKey = createCancelKeyEvent(
       Address.fromString(tokenAddress),
       BigInt.fromU32(tokenId),
@@ -360,7 +360,7 @@ describe('Receipts for Cancel and refund', () => {
     key.createdAt = BigInt.fromU32(1769984301)
     key.save()
 
-    // extend key event
+    // create mock cancel key event
     const newCancelKey = createCancelKeyEvent(
       Address.fromString(tokenAddress),
       BigInt.fromU32(tokenId),
@@ -396,7 +396,7 @@ describe('Receipts for Cancel and refund', () => {
     key.createdAt = BigInt.fromU32(1769984301)
     key.save()
 
-    // extend key event
+    // create mock cancel key event
     const newCancelKey = createCancelKeyEvent(
       Address.fromString(tokenAddress),
       BigInt.fromU32(tokenId),
@@ -404,7 +404,7 @@ describe('Receipts for Cancel and refund', () => {
     )
     handleCancelKey(newCancelKey)
 
-    // receipt is there
+    // receipt is not there
     assert.entityCount('Receipt', 0)
   })
 })
