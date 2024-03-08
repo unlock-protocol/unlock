@@ -65,7 +65,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
 
   const withdrawDisabled = false // parseFloat(`${balance}`) === 0) || loading
 
-  const formattedBalance = parseFloat(`${balance || 0}`)?.toFixed(3)
+  const formattedBalance = parseFloat(`${balance || 0}`)?.toFixed(2)
   const symbol = lock?.currencySymbol || baseCurrencySymbol
 
   const wrapperClass =
