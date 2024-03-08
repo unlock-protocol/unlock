@@ -46,9 +46,9 @@ export function createReceipt(
 
   // Different logic for receipts
   if (refund) {
-    createCancelReceiptLogic(event, tokenAddress, lockAddress, receipt, refund)
+    createCancelReceipt(event, tokenAddress, lockAddress, receipt, refund)
   } else {
-    createReceiptLogic(event, tokenAddress, lockAddress, receipt)
+    createPaymentReceipt(event, tokenAddress, lockAddress, receipt)
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
@@ -75,7 +75,7 @@ export function createReceipt(
   }
 }
 
-export function createReceiptLogic(
+export function createPaymentReceipt(
   event: ethereum.Event,
   tokenAddress: Bytes,
   lockAddress: string,
@@ -131,7 +131,7 @@ export function createReceiptLogic(
   }
 }
 
-export function createCancelReceiptLogic(
+export function createCancelReceipt(
   event: ethereum.Event,
   tokenAddress: Bytes,
   lockAddress: string,
