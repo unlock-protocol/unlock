@@ -1,4 +1,6 @@
-// ./app/page.tsx
+import { storage } from '../../../../src/config/storage'
+import { toFormData } from '../../../../src/components/interface/locks/metadata/utils'
+import dayjs from '../../../../src/utils/dayjs'
 
 import {
   FrameContainer,
@@ -10,6 +12,7 @@ import {
   FrameInput,
 } from 'frames.js/next/server'
 import { config } from '../../../../src/config/app'
+import { DefaultImage } from '../Components/DefaultImage'
 
 const reducer = (state, action) => {
   console.log('action')
@@ -28,15 +31,27 @@ interface HomeProps {
   searchParams: SearchParams
 }
 
-export default async function Home(props: HomeProps) {
+export default async function Frame(props: HomeProps) {
   const slug = props.params.slug
   const previousFrame = getPreviousFrame(props.searchParams)
   // await validateActionSignature(previousFrame.postBody)
   const [state, dispatch] = useFramesReducer(
     reducer,
-    { count: 0 },
+    { view: 'default' },
     previousFrame
   )
+
+  const { data: eventMetadata } = await storage
+    .getEvent(slug)
+    .catch((error) => {
+      console.error(error)
+      return { data: null }
+    })
+  if (!eventMetadata?.data) {
+    return new Response('Event not found', { status: 404 })
+  }
+
+  const { ticket: event, image } = toFormData(eventMetadata.data)
 
   return (
     <FrameContainer
@@ -45,11 +60,22 @@ export default async function Home(props: HomeProps) {
       state={{}}
       previousFrame={previousFrame}
     >
-      <FrameImage src={`${config.unlockApp}/og/event/${slug}`} />
+      <FrameImage>
+        <DefaultImage
+          // @ts-expect-error Property 'name' does not exist on type 'GetEvent200Response'.
+          name={eventMetadata.name}
+          startTime={dayjs
+            .tz(event.event_start_date, event.event_timezone)
+            .toDate()
+            .toDateString()}
+          location={event?.event_address}
+          bannerURL={event.event_cover_image}
+          iconURL={image}
+        />
+      </FrameImage>
       <FrameButton action="link" target={`${config.unlockApp}/event/${slug}`}>
         Register
       </FrameButton>
-      <FrameButton onClick={dispatch}>Show Location</FrameButton>
       <FrameButton onClick={dispatch}>See Description</FrameButton>
     </FrameContainer>
   )
