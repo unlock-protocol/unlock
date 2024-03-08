@@ -10,7 +10,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      SENTRY_DSN: op://secrets/sentry-health-monitoring/credential
+      SENTRY_AUTH_TOKEN: op://secrets/sentry-health-monitoring/credential
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
