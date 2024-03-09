@@ -147,7 +147,10 @@ export const DefaultFrame = ({
         Register
       </FrameButton>
       {/* @ts-expect-error Type '{ children: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & FrameButtonProvidedProps'. */}
-      <FrameButton onClick={dispatch}>See Description</FrameButton>
+      {/* <FrameButton onClick={dispatch}> */}
+      <FrameButton target={`${config.unlockApp}/frames/event?hahahahah!`}>
+        See Description!
+      </FrameButton>
     </Container>
   )
 }

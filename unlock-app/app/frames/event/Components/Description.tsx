@@ -25,8 +25,9 @@ export const Description = ({
       >
         Register
       </FrameButton>
-      {/* @ts-expect-error Type '{ children: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & FrameButtonProvidedProps'. */}
-      <FrameButton onClick={dispatch}>Back</FrameButton>
+      <FrameButton target={`${config.unlockApp}/frames/event?hahahahah!`}>
+        Back
+      </FrameButton>
     </Container>
   )
 }
