@@ -81,7 +81,7 @@ export async function startWorker() {
   const runner = await run({
     pgPool,
     crontab,
-    concurrency: 1, // very low concurrency to check if this could be causing issues with email sending
+    concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
