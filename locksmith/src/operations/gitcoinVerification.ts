@@ -4,7 +4,7 @@ import config from '../config/config'
 
 // Retrieve Gitcoin API key and Scorer ID from the configuration
 const gitcoinApiKey = config.gitcoinApiKey
-const gitcoinScoreId = config.gitcoinScoreId
+const gitcoinScorerId = config.gitcoinScorerId
 
 // Interface describing the structure of a score response from Gitcoin API
 interface ScoreResponse {
@@ -47,7 +47,7 @@ export async function submitAddressForScoring(address: string): Promise<void> {
 
   const body = JSON.stringify({
     address,
-    scorer_id: gitcoinScoreId,
+    scorer_id: gitcoinScorerId,
   })
 
   // Perform the POST request to submit the address for scoring
@@ -62,23 +62,25 @@ export async function submitAddressForScoring(address: string): Promise<void> {
 
   // Await and log the raw response for debugging purposes
   const rawResponse = await response.json()
-  console.log(rawResponse)
 
   // Handle non-200 response statuses by throwing a ScoreSubmissionError
   if (!response.ok) {
     throw new ScoreSubmissionError(
-      `Failed to submit address for scoring: ${response.statusText}`
+      `Failed to submit address for scoring: ${response.statusText} and ${gitcoinScorerId}`
     )
   }
+
+  return rawResponse
 }
 
 /**
- * Retrieves scores for all submitted addresses from the Gitcoin Passport API.
+ * Retrieves scores for submitted addresses from the Gitcoin Passport API and filters them to include only the scores for the specified recipients.
+ * @param {string[]} recipients An array of recipient addresses to filter the scores for.
  * @throws {Error} Throws an error if the Gitcoin API key is not defined.
  * @throws {ScoreRetrievalError} Throws a ScoreRetrievalError if fetching scores fails.
  * @returns {Promise<any>} A promise that resolves to the scores of recipients.
  */
-export async function checkMultipleScores(): Promise<any> {
+export async function checkMultipleScores(recipients: string[]): Promise<any> {
   if (!gitcoinApiKey) {
     throw new Error('Gitcoin API key is not defined.')
   }
@@ -90,7 +92,7 @@ export async function checkMultipleScores(): Promise<any> {
 
   // Perform the GET request to retrieve scores
   const response = await fetch(
-    `https://api.scorer.gitcoin.co/registry/score/${gitcoinScoreId}`,
+    `https://api.scorer.gitcoin.co/registry/score/${gitcoinScorerId}`,
     {
       method: 'GET',
       headers,
@@ -106,16 +108,21 @@ export async function checkMultipleScores(): Promise<any> {
 
   // Parse the JSON response and simplify it to include only relevant information
   const jsonResponse = await response.json()
-  const recipientScores = jsonResponse.items.map((item: any) => ({
-    address: item.address,
-    score: parseFloat(item.score), // Ensure score is treated as a number
-    status: item.status,
-  }))
+
+  const recipientScores = jsonResponse.items
+    .filter((item: any) =>
+      recipients.some(
+        (recipient) => recipient.toLowerCase() === item.address.toLowerCase()
+      )
+    )
+    .map((item: any) => ({
+      address: item.address,
+      score: parseFloat(item.score), // Ensure score is treated as a number
+      status: item.status,
+    }))
 
   // Return the simplified scores object
-  return {
-    recipientScores,
-  }
+  return recipientScores
 }
 
 /**
@@ -139,7 +146,7 @@ export async function checkSingleScore(
 
   // Perform the GET request to retrieve the score for a single address
   const response = await fetch(
-    `https://api.scorer.gitcoin.co/registry/score/${gitcoinScoreId}/${address}`,
+    `https://api.scorer.gitcoin.co/registry/score/${gitcoinScorerId}/${address}`,
     {
       method: 'GET',
       headers,

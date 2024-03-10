@@ -121,15 +121,16 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
       })
     }
 
+    // here, we wait for 3 seconds after submission, as the scores are being processed
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+
     // retrieve scores for all submitted recipients
-    const scoresResponse = await checkMultipleScores()
+    const scoresResponse = await checkMultipleScores(recipients)
 
     // generate signatures for recipients with valid scores
-    const results = recipients.map((recipient) => {
-      const recipientData = scoresResponse.items.find(
-        (item: any) => item.address.toLowerCase() === recipient.toLowerCase()
-      )
-      if (recipientData && recipientData.score > 20) {
+    const generatedSignatures = scoresResponse.map((recipient) => {
+      // only sign recipients who have a score greater than or equal to 20
+      if (recipient && recipient.score >= 20) {
         const message = recipient.toLowerCase()
         const messageHash = ethers.utils.solidityKeccak256(
           ['string'],
@@ -143,11 +144,11 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     })
 
     // wait for all signatures to be generated
-    const signatures = await Promise.all(results)
+    const signatures = await Promise.all(generatedSignatures)
 
     // send the signatures
     return response.status(200).send({
-      signatures,
+      result: signatures,
     })
   } catch (error) {
     // log and send errors if encountered
