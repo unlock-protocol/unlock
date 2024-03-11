@@ -13,8 +13,6 @@ import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
 import { isEthPassSupported } from '~/services/ethpass'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQuery } from '@tanstack/react-query'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -22,6 +20,7 @@ import { networks } from '@unlock-protocol/networks'
 import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface MintingScreenProps {
   lockName: string
@@ -52,20 +51,12 @@ export const MintingScreen = ({
   network,
   states = DEFAULT_STATES,
 }: MintingScreenProps) => {
-  const web3Service = useWeb3Service()
   const config = useConfig()
   const transactionNetwork = mint.network || network
 
   // TODO: This returns the Key with the lowest index for given lock dddres from the onwer causing weird behaviour when buying 2-nd... keys
-  const { data: tokenId } = useQuery(
-    ['userTokenId', mint, owner, lockAddress, transactionNetwork, web3Service],
-    async () => {
-      return web3Service.getTokenIdForOwner(
-        lockAddress,
-        owner!,
-        transactionNetwork
-      )
-    },
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: owner!, lockAddress, network },
     {
       enabled: mint?.status === 'FINISHED',
     }
