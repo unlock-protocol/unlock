@@ -54,7 +54,7 @@ const deployedContracts = {
     publicLockAddress: '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591',
   },
   8453: {
-    // avalanche
+    // base
     unlockImplAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
     publicLockAddress: '0x64A3328Cf61025720c26dE2a87B6d913fA6e376a',
   },
