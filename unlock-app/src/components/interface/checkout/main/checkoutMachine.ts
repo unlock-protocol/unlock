@@ -21,6 +21,7 @@ export type CheckoutPage =
   | 'PASSWORD'
   | 'PROMO'
   | 'GUILD'
+  | 'GITCOIN'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -31,7 +32,12 @@ export interface FiatPricing {
   }
 }
 
-export type CheckoutHookType = 'password' | 'promocode' | 'captcha' | 'guild'
+export type CheckoutHookType =
+  | 'password'
+  | 'promocode'
+  | 'captcha'
+  | 'guild'
+  | 'gitcoin'
 
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
@@ -225,6 +231,7 @@ export const checkoutMachine = createMachine(
       PASSWORD: 'PASSWORD',
       PROMO: 'PROMO',
       GUILD: 'GUILD',
+      GITCOIN: 'GITCOIN',
       CARD: 'CARD',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
@@ -299,6 +306,13 @@ export const checkoutMachine = createMachine(
             },
             {
               actions: ['selectLock'],
+              target: 'GITCOIN',
+              cond: (_, event) => {
+                return event.hook === 'gitcoin'
+              },
+            },
+            {
+              actions: ['selectLock'],
               target: 'PAYMENT',
             },
           ],
@@ -344,6 +358,11 @@ export const checkoutMachine = createMachine(
               cond: 'requireGuild',
             },
             {
+              target: 'GITCOIN',
+              actions: ['selectRecipients'],
+              cond: 'requireGitcoin',
+            },
+            {
               actions: ['selectRecipients'],
               target: 'PAYMENT',
             },
@@ -384,6 +403,11 @@ export const checkoutMachine = createMachine(
               actions: ['signMessage'],
               cond: 'requireCaptcha',
               target: 'CAPTCHA',
+            },
+            {
+              actions: ['signMessage'],
+              cond: 'requireGitcoin',
+              target: 'GITCOIN',
             },
             {
               actions: ['signMessage'],
@@ -474,6 +498,26 @@ export const checkoutMachine = createMachine(
           DISCONNECT,
         },
       },
+      GITCOIN: {
+        on: {
+          SUBMIT_DATA: [
+            {
+              target: 'PAYMENT',
+              actions: ['submitData'],
+            },
+          ],
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
+          DISCONNECT,
+        },
+      },
       PAYMENT: {
         on: {
           SELECT_PAYMENT_METHOD: [
@@ -505,6 +549,10 @@ export const checkoutMachine = createMachine(
             {
               cond: 'requireCaptcha',
               target: 'CAPTCHA',
+            },
+            {
+              cond: 'requireGitcoin',
+              target: 'GITCOIN',
             },
             {
               cond: 'requireMessageToSign',
@@ -672,6 +720,7 @@ export const checkoutMachine = createMachine(
       requirePassword: (context) => context && context?.hook === 'password',
       requirePromo: (context) => context && context?.hook === 'promocode',
       requireGuild: (context) => context && context?.hook === 'guild',
+      requireGitcoin: (context) => context && context?.hook === 'gitcoin',
       isCardPayment: (context) => ['card'].includes(context.payment.method),
     },
   }

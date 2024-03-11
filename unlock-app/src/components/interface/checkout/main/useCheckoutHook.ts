@@ -10,6 +10,7 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   PASSWORD: 'password',
   GUILD: 'guild',
   CAPTCHA: 'captcha',
+  GITCOIN: 'gitcoin',
   PROMOCODE: 'promocode',
   PROMO_CODE_CAPPED: 'promocode',
 }
