@@ -17,8 +17,8 @@ import {
 
 const defaultAddress = Address.fromString(defaultMockAddress)
 const defaultAddressBytes = defaultAddress as Bytes
-const defaultBigInt = BigInt.fromI32(keyPrice)
-const defaultIntBytes = Bytes.fromI32(keyPrice)
+const defaultBigInt = BigInt.fromU32(keyPrice)
+const defaultIntBytes = Bytes.fromUint8Array(defaultBigInt.reverse())
 const defaultZeroIntBytes = Bytes.fromI32(0)
 
 function bigIntToBytes(bi: BigInt): Bytes {

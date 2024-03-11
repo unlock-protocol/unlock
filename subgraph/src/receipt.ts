@@ -166,7 +166,10 @@ export function createCancelReceipt(event: ethereum.Event): void {
           .toAddress()
           .toHexString()
 
-        receipt.amountTransferred = BigInt.fromSignedBytes(txLog.data)
+        // EVM data is big-endian so need to reverse txLog data from subgraph
+        receipt.amountTransferred = BigInt.fromUnsignedBytes(
+          Bytes.fromUint8Array(txLog.data.reverse())
+        )
       } else if (
         tokenAddress == Bytes.fromHexString(nullAddress) &&
         txLog.address.toHexString() == lockAddress &&
@@ -174,7 +177,16 @@ export function createCancelReceipt(event: ethereum.Event): void {
       ) {
         log.debug('Creating receipt for base currency lock {}', [lockAddress])
         receipt.payer = lockAddress
-        receipt.amountTransferred = BigInt.fromSignedBytes(txLog.data)
+
+        receipt.recipient = ethereum
+          .decode('address', txLog.topics[2])!
+          .toAddress()
+          .toHexString()
+
+        // EVM data is big-endian so need to reverse txLog data from subgraph
+        receipt.amountTransferred = BigInt.fromUnsignedBytes(
+          Bytes.fromUint8Array(txLog.data.reverse())
+        )
       } else {
         log.debug('Not the right kind of transfer!', [])
       }

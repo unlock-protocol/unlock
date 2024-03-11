@@ -208,6 +208,7 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const fallbackTimestamp = event.block.timestamp
   const lockContract = PublicLock.bind(event.address)
   if (key) {
+    addTransactionHashToKey(key, event.transaction.hash.toHexString())
     // Due to a bug in v11, we need to check the version of the lock and fallback to the timestamp since expiration can be for a different key
     const lock = Lock.load(key.lock)
     if (lock && lock.version == BigInt.fromI32(11)) {
