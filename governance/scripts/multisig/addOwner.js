@@ -26,20 +26,25 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   })
 
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
-  const params = {
-    ownerAddress: newOwner,
-    // threshold
-  }
-  const safeTransaction = await safeSdk.createAddOwnerTx(params)
-
-  // Get the transaction hash of the safeTransaction
-  const safeTransactionHash = await safeSdk.getTransactionHash(safeTransaction)
-  console.log(`submitting tx with hash : ${safeTransactionHash}`)
-
   const safeService = new SafeApiKit({
     chainId: id,
   })
 
+  // get nonce so we make sure we dont erase current pending tx
+  const nonce = await safeService.getNextNonce(safeAddress)
+  const safeTransaction = await safeSdk.createAddOwnerTx(
+    {
+      ownerAddress: newOwner,
+      // threshold
+    },
+    { nonce }
+  )
+
+  // Get the transaction hash of the safeTransaction
+  const safeTransactionHash = await safeSdk.getTransactionHash(safeTransaction)
+  console.log(`submitting tx with  hash : ${safeTransactionHash} ...`)
+
+  // get signature
   const senderSignature = await safeSdk.signTransactionHash(safeTransactionHash)
 
   // Propose the transaction
@@ -50,9 +55,12 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
     senderAddress: signer.address,
     senderSignature: senderSignature.data,
   }
-  console.log()
+
   await safeService.proposeTransaction(txParams)
-  console.log(`tx submitted.`)
+  const { nonce: actualNonce } = await safeService.getTransaction(
+    safeTransactionHash
+  )
+  console.log(`tx submitted - nonce: [${actualNonce}].`)
 }
 
 // execute as standalone
