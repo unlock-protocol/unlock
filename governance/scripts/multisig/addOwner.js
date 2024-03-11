@@ -6,11 +6,15 @@ const { EthersAdapter } = require('@safe-global/protocol-kit')
 const SafeApiKit = require('@safe-global/api-kit').default
 
 async function main({ newOwner, safeAddress, threshold } = {}) {
-  const { id, multisig } = await getNetwork()
+  const { id, multisig, name } = await getNetwork()
   let [signer] = await ethers.getSigners()
 
   if (!safeAddress) {
     safeAddress = multisig
+  }
+
+  if (!safeAddress) {
+    throw new Error(`Missing multisig address for ${name} [${id}].`)
   }
 
   // default to ccarfi.eth
