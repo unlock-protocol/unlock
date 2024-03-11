@@ -5,14 +5,21 @@ import {
   Bytes,
   Wrapped,
 } from '@graphprotocol/graph-ts'
-import { keyOwnerAddress, lockAddress, lockOwner, tokenId } from './constants'
+import {
+  defaultMockAddress,
+  keyOwnerAddress,
+  keyPrice,
+  lockAddress,
+  lockOwner,
+  nullAddress,
+  tokenId,
+} from './constants'
 
-const defaultAddress = Address.fromString(
-  '0xA16081F360e3847006dB660bae1c6d1b2e17eC2A'
-)
+const defaultAddress = Address.fromString(defaultMockAddress)
 const defaultAddressBytes = defaultAddress as Bytes
-const defaultBigInt = BigInt.fromI32(1)
-const defaultIntBytes = Bytes.fromI32(1)
+const defaultBigInt = BigInt.fromI32(keyPrice)
+const defaultIntBytes = Bytes.fromI32(keyPrice)
+const defaultZeroIntBytes = Bytes.fromI32(0)
 
 function bigIntToBytes(bi: BigInt): Bytes {
   let hexString = bi.toHexString()
@@ -40,7 +47,7 @@ function createCancelKeyEventLog(
   tokenId: BigInt,
   owner: Address,
   sendTo: Address,
-  refund: BigInt
+  refund: Bytes
 ): ethereum.Log {
   const eventSignature = defaultAddressBytes
   const topics = [
@@ -49,11 +56,10 @@ function createCancelKeyEventLog(
     addressToTopic(owner),
     addressToTopic(sendTo),
   ]
-  const data = bigIntToBytes(refund)
   return new ethereum.Log(
     Address.fromString(lockAddress),
     topics,
-    data,
+    refund,
     defaultAddressBytes,
     defaultIntBytes,
     defaultAddressBytes,
@@ -70,17 +76,16 @@ function createTransferEventLog(
   tokenAddress: Address,
   from: Address,
   to: Address,
-  value: BigInt
+  value: Bytes
 ): ethereum.Log {
   const eventSignature = Bytes.fromHexString(
     '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef'
   )
   const topics = [eventSignature, addressToTopic(from), addressToTopic(to)]
-  const data = bigIntToBytes(value)
   return new ethereum.Log(
     tokenAddress,
     topics,
-    data,
+    value,
     defaultAddressBytes,
     defaultIntBytes,
     defaultAddressBytes,
@@ -110,13 +115,14 @@ export function newTransactionReceipt(
         BigInt.fromU32(tokenId),
         Address.fromString(lockOwner),
         Address.fromString(keyOwnerAddress),
-        refund
+        refund > BigInt.fromU32(0) ? defaultIntBytes : defaultZeroIntBytes
       ),
+      // This Log shouldn't be there if the tokenAddress is nullAddress but id does not really matter
       createTransferEventLog(
         tokenAddress,
         Address.fromString(lockAddress),
         Address.fromString(keyOwnerAddress),
-        refund
+        refund > BigInt.fromU32(0) ? defaultIntBytes : defaultZeroIntBytes
       ),
     ],
     defaultBigInt,

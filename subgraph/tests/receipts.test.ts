@@ -18,6 +18,7 @@ import {
   tokenAddress,
   lockManagers,
   expiration,
+  defaultMockAddress,
 } from './constants'
 
 import {
@@ -298,6 +299,37 @@ describe('Receipts for Cancel and refund', () => {
 
     // receipt is there
     assert.entityCount('Receipt', 1)
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'lockAddress',
+      lockAddress
+    )
+    assert.fieldEquals('Receipt', defaultMockAddress, 'payer', lockAddress)
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'sender',
+      defaultMockAddress
+    )
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'amountTransferred',
+      keyPrice.toString()
+    )
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'tokenAddress',
+      tokenAddress
+    )
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'recipient',
+      keyOwnerAddress
+    )
   })
 
   test('Receipt has not been created for cancel without refund , ERC20 Token', () => {
@@ -336,7 +368,7 @@ describe('Receipts for Cancel and refund', () => {
     assert.entityCount('Receipt', 0)
   })
 
-  test('Receipt created after cancel with refund, Base currecny', () => {
+  test('Receipt created after cancel with refund, Base currency', () => {
     mockDataSourceV11()
 
     // create fake ETH lock in subgraph
@@ -362,7 +394,7 @@ describe('Receipts for Cancel and refund', () => {
 
     // create mock cancel key event
     const newCancelKey = createCancelKeyEvent(
-      Address.fromString(tokenAddress),
+      Address.fromString(nullAddress),
       BigInt.fromU32(tokenId),
       BigInt.fromU32(keyPrice)
     )
@@ -370,9 +402,40 @@ describe('Receipts for Cancel and refund', () => {
 
     // receipt is there
     assert.entityCount('Receipt', 1)
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'lockAddress',
+      lockAddress
+    )
+    assert.fieldEquals('Receipt', defaultMockAddress, 'payer', lockAddress)
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'sender',
+      defaultMockAddress
+    )
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'amountTransferred',
+      BigInt.fromU32(keyPrice).toString()
+    )
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'tokenAddress',
+      nullAddress
+    )
+    assert.fieldEquals(
+      'Receipt',
+      defaultMockAddress,
+      'recipient',
+      keyOwnerAddress
+    )
   })
 
-  test('Receipt has not been created for cancel without refund, Base currecny', () => {
+  test('Receipt has not been created for cancel without refund, Base currency', () => {
     mockDataSourceV11()
 
     // create fake ETH lock in subgraph

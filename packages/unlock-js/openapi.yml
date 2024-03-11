@@ -2325,6 +2325,8 @@ paths:
                           type: string
                         payer:
                           type: string
+                        recipient:
+                          type: string
                         lockAddress:
                           type: string
                         tokenAddress:
@@ -2426,6 +2428,8 @@ paths:
                       sender:
                         type: string
                       payer:
+                        type: string
+                      recipient:
                         type: string
                       lockAddress:
                         type: string

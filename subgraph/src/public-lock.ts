@@ -34,7 +34,7 @@ import {
   LOCK_MANAGER,
   addTransactionHashToKey,
 } from './helpers'
-import { createReceipt } from './receipt'
+import { createCancelReceipt, createReceipt } from './receipt'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -224,7 +224,7 @@ export function handleCancelKey(event: CancelKeyEvent): void {
     key.cancelled = true
     key.save()
 
-    createReceipt(event, event.params.refund)
+    createCancelReceipt(event)
   }
 }
 
