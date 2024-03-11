@@ -47,6 +47,12 @@ export const sepolia: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        // should be replaced with unlock's deployed contract address
+        address: '0xD92546cE22f13304C41e92d18D4f000Ac295aDb7',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
   },
   id: 11155111,
