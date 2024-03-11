@@ -65,6 +65,7 @@ export const avalanche: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-avalanche/version/latest',
     studioName: 'unlock-protocol-avalanche',
   },
+  swapPurchaser: '0x5c67AD0CAfe61aF3706347aBc695D7ACcb38EFb3',
   tokens: [
     {
       address: '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',
@@ -108,6 +109,11 @@ export const avalanche: NetworkConfig = {
       symbol: 'WBTC.e',
     },
   ],
+  uniswapV3: {
+    factoryAddress: '0x740b1c1de25031C31FF4fC9A62f554A55cdC1baD',
+    positionManager: '0x655C406EBFa14EE2006250925e54ec43AD184f8B',
+    universalRouterAddress: '0x4Dae2f939ACf50408e13d58534Ff8c2776d45265',
+  },
   unlockAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
   url: 'https://www.avalabs.org/',
 }
