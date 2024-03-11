@@ -10,6 +10,7 @@ import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
 import { getVerifiersList } from '../../operations/verifierOperations'
+import { Verifier } from '../../models/verifier'
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -48,6 +49,14 @@ export class TicketsController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const id = request.params.keyId.toLowerCase()
+      const address = Normalizer.ethereumAddress(request.user!.walletAddress!)
+      const verifier = await Verifier.findOne({
+        where: {
+          lockAddress,
+          address,
+          network,
+        },
+      })
 
       const keyMetadata = await KeyMetadata.findOne({
         where: {
@@ -57,7 +66,9 @@ export class TicketsController {
       })
 
       const data = keyMetadata?.data as unknown as {
-        metadata: { checkedInAt: number | number[] }
+        metadata: {
+          checkedInAt: number | number[] | { at: number; verifierName: string }
+        }
       }
 
       const checkedInAt = []
@@ -66,7 +77,14 @@ export class TicketsController {
       } else if (typeof data?.metadata?.checkedInAt === 'number') {
         checkedInAt.push(data?.metadata?.checkedInAt, new Date().getTime())
       } else if (Array.isArray(data?.metadata?.checkedInAt)) {
-        checkedInAt.push(...data.metadata.checkedInAt, new Date().getTime())
+        if (verifier?.name) {
+          checkedInAt.push(...data.metadata.checkedInAt, {
+            at: new Date().getTime(),
+            verifierName: verifier.name,
+          })
+        } else {
+          checkedInAt.push(...data.metadata.checkedInAt, new Date().getTime())
+        }
       }
 
       await KeyMetadata.upsert(
@@ -319,6 +337,12 @@ export const getTicket: RequestHandler = async (request, response) => {
     .map((item: string) => Normalizer.ethereumAddress(item))
     .includes(Normalizer.ethereumAddress(userAddress))
 
+  const verifier = verifiers.find(
+    (item) =>
+      Normalizer.ethereumAddress(item.address) ===
+      Normalizer.ethereumAddress(userAddress)
+  )
+
   const isVerifier = verifiers
     ?.map((item) => Normalizer.ethereumAddress(item.address))
     .includes(Normalizer.ethereumAddress(userAddress))
@@ -353,5 +377,6 @@ export const getTicket: RequestHandler = async (request, response) => {
       protected: keyData?.userMetadata?.protected || {},
     },
     isVerifier: isVerifier || isManager,
+    verifierName: isVerifier ? verifier?.name : null,
   })
 }

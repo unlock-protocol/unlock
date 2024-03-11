@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
-import { DecoyUser } from '../utils/decoyUser'
 import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
+import { ethers } from 'ethers'
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -60,7 +60,10 @@ export const retrieveEncryptedPrivatekey = async (
   if (result) {
     return res.json({ passwordEncryptedPrivateKey: result })
   } else {
-    const result = await new DecoyUser().encryptedPrivateKey()
+    const result = await ethers.Wallet.createRandom().encrypt(
+      (Math.random() + 1).toString(36)
+    )
+    console.log(result)
 
     return res.json({
       passwordEncryptedPrivateKey: result,
@@ -85,7 +88,8 @@ export const retrieveRecoveryPhrase = async (
   if (result) {
     return res.json({ recoveryPhrase: result })
   }
-  const recoveryPhrase = new DecoyUser().recoveryPhrase()
+  // Create a fake recoveryPhrase
+  const recoveryPhrase = (Math.random() + 1).toString(36)
   return res.json({ recoveryPhrase })
 }
 

@@ -1,16 +1,25 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 
-const { getBalance, deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
+const {
+  getBalance,
+  deployLock,
+  reverts,
+  ADDRESS_ZERO,
+  compareBigNumbers,
+} = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01', 'ether')
-contract('Lock / purchaseFor', (accounts) => {
+describe('Lock / purchaseFor', () => {
   let lock
   let anotherLock
   let lockSingleKey
   let lockFree
+  let keyOwner, anotherKeyOwner
 
   beforeEach(async () => {
+    ;[, keyOwner, anotherKeyOwner] = await ethers.getSigners()
+
     lock = await deployLock()
     anotherLock = await deployLock()
     lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
@@ -20,19 +29,26 @@ contract('Lock / purchaseFor', (accounts) => {
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
       await reverts(
-        lock.purchase([], [accounts[0]], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-          value: ethers.utils.parseEther('0.0001', 'ether'),
-        }),
+        lock.purchase(
+          [],
+          [keyOwner.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
+          {
+            value: ethers.utils.parseEther('0.0001', 'ether'),
+          }
+        ),
         'INSUFFICIENT_VALUE'
       )
       // Making sure we do not have a key set!
-      assert.equal(await lock.keyExpirationTimestampFor(accounts[0]), 0)
+      assert.equal(await lock.keyExpirationTimestampFor(keyOwner.address), 0)
     })
 
     it('should fail if we reached the max number of keys', async () => {
       await lockSingleKey.purchase(
         [],
-        [accounts[0]],
+        [keyOwner.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -43,13 +59,12 @@ contract('Lock / purchaseFor', (accounts) => {
       await reverts(
         lockSingleKey.purchase(
           [],
-          [accounts[1]],
+          [anotherKeyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
           {
             value: keyPrice,
-            from: accounts[1],
           }
         ),
         'LOCK_SOLD_OUT'
@@ -59,7 +74,7 @@ contract('Lock / purchaseFor', (accounts) => {
     it('should trigger an event when successful', async () => {
       const tx = await lock.purchase(
         [],
-        [accounts[2]],
+        [anotherKeyOwner.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -67,11 +82,13 @@ contract('Lock / purchaseFor', (accounts) => {
           value: keyPrice,
         }
       )
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+      const { events } = await tx.wait()
+      const { args } = events.find((v) => v.event === 'Transfer')
+
+      assert.equal(args.from, 0)
+      assert.equal(args.to, anotherKeyOwner.address)
       // Verify that RenewKeyPurchase does not emit on a first key purchase
-      const includes = tx.logs.filter((l) => l.event === 'RenewKeyPurchase')
+      const includes = events.filter((l) => l.event === 'RenewKeyPurchase')
       assert.equal(includes.length, 0)
     })
 
@@ -79,7 +96,7 @@ contract('Lock / purchaseFor', (accounts) => {
       it('should create a new key', async () => {
         const tx = await anotherLock.purchase(
           [],
-          [accounts[4]],
+          [keyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -87,20 +104,21 @@ contract('Lock / purchaseFor', (accounts) => {
             value: keyPrice,
           }
         )
-        assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
-        assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
+        assert.equal(await anotherLock.balanceOf(keyOwner.address), 1)
+        assert.equal(await anotherLock.getHasValidKey(keyOwner.address), true)
 
         // let's now expire the key
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        const { events } = await tx.wait()
+        const { args } = events.find((v) => v.event === 'Transfer')
         await anotherLock.expireAndRefundFor(args.tokenId, 0)
-        assert.equal(await anotherLock.getHasValidKey(accounts[4]), false)
-        assert.equal(await anotherLock.balanceOf(accounts[4]), 0)
-        assert.equal(await anotherLock.totalKeys(accounts[4]), 1)
+        assert.equal(await anotherLock.getHasValidKey(keyOwner.address), false)
+        assert.equal(await anotherLock.balanceOf(keyOwner.address), 0)
+        assert.equal(await anotherLock.totalKeys(keyOwner.address), 1)
 
         // Purchase a new one
         await anotherLock.purchase(
           [],
-          [accounts[4]],
+          [keyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -108,9 +126,9 @@ contract('Lock / purchaseFor', (accounts) => {
             value: keyPrice,
           }
         )
-        assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
-        assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
-        assert.equal(await anotherLock.totalKeys(accounts[4]), 2)
+        assert.equal(await anotherLock.balanceOf(keyOwner.address), 1)
+        assert.equal(await anotherLock.getHasValidKey(keyOwner.address), true)
+        assert.equal(await anotherLock.totalKeys(keyOwner.address), 2)
       })
     })
 
@@ -118,7 +136,7 @@ contract('Lock / purchaseFor', (accounts) => {
       it('should create a new key', async () => {
         await lock.purchase(
           [],
-          [accounts[1]],
+          [anotherKeyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -126,10 +144,10 @@ contract('Lock / purchaseFor', (accounts) => {
             value: keyPrice,
           }
         )
-        assert.equal(await lock.balanceOf(accounts[1]), 1)
+        assert.equal(await lock.balanceOf(anotherKeyOwner.address), 1)
         await lock.purchase(
           [],
-          [accounts[1]],
+          [anotherKeyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -137,24 +155,24 @@ contract('Lock / purchaseFor', (accounts) => {
             value: keyPrice,
           }
         )
-        assert.equal(await lock.balanceOf(accounts[1]), 2)
+        assert.equal(await lock.balanceOf(anotherKeyOwner.address), 2)
       })
     })
 
     describe('when the key was successfuly purchased', () => {
-      let totalSupply
-      let numberOfOwners
-      let balance
+      let totalSupplyBefore
+      let numberOfOwnersBefore
+      let balanceBefore
       let now
       let tokenId
 
       beforeEach(async () => {
-        balance = await getBalance(lock.address)
-        totalSupply = new BigNumber(await lock.totalSupply())
-        numberOfOwners = new BigNumber(await lock.numberOfOwners())
-        const newKeyTx = await lock.purchase(
+        balanceBefore = await getBalance(lock.address)
+        totalSupplyBefore = await lock.totalSupply()
+        numberOfOwnersBefore = await lock.numberOfOwners()
+        const tx = await lock.purchase(
           [],
-          [accounts[0]],
+          [keyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -162,39 +180,37 @@ contract('Lock / purchaseFor', (accounts) => {
             value: keyPrice,
           }
         )
-        const { args } = newKeyTx.logs.find((v) => v.event === 'Transfer')
+        const { events, blockNumber } = await tx.wait()
+        const { args } = events.find((v) => v.event === 'Transfer')
         tokenId = args.tokenId
-        const transferBlock = await ethers.provider.getBlock(
-          newKeyTx.receipt.blockNumber
-        )
-        now = transferBlock.timestamp
+        ;({ timestamp: now } = await ethers.provider.getBlock(blockNumber))
       })
 
       it('should have the right expiration timestamp for the key', async () => {
-        const expirationTimestamp = new BigNumber(
-          await lock.keyExpirationTimestampFor(tokenId)
+        const expirationTimestamp = await lock.keyExpirationTimestampFor(
+          tokenId
         )
-        const expirationDuration = new BigNumber(
-          await lock.expirationDuration()
-        )
-        assert(expirationTimestamp.gte(expirationDuration.plus(now)))
+
+        const expirationDuration = await lock.expirationDuration()
+
+        assert(expirationTimestamp.gte(expirationDuration.add(now)))
       })
 
       it('should have added the funds to the contract', async () => {
-        const newBalance = await getBalance(lock.address)
-        assert.equal(newBalance.toString(), balance.plus(keyPrice.toString()))
+        compareBigNumbers(
+          await getBalance(lock.address),
+          balanceBefore.add(keyPrice)
+        )
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        const _totalSupply = new BigNumber(await lock.totalSupply())
-        assert.equal(_totalSupply.toFixed(), totalSupply.plus(1).toFixed())
+        compareBigNumbers(await lock.totalSupply(), totalSupplyBefore.add(1))
       })
 
       it('should have increased the number of owners', async () => {
-        const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
-        assert.equal(
-          _numberOfOwners.toFixed(),
-          numberOfOwners.plus(1).toFixed()
+        compareBigNumbers(
+          await lock.numberOfOwners(),
+          numberOfOwnersBefore.add(1)
         )
       })
     })
@@ -202,14 +218,15 @@ contract('Lock / purchaseFor', (accounts) => {
     it('can purchase a free key', async () => {
       const tx = await lockFree.purchase(
         [],
-        [accounts[2]],
+        [anotherKeyOwner.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]]
       )
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+      const { events } = await tx.wait()
+      const { args } = events.find((v) => v.event === 'Transfer')
+      assert.equal(args.from, 0)
+      assert.equal(args.to, anotherKeyOwner.address)
     })
   })
 })
