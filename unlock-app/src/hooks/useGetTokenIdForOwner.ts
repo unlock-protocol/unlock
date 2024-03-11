@@ -12,13 +12,10 @@ export const useGetTokenIdForOwner = (
   opts = {}
 ) => {
   const web3Service = useWeb3Service()
-  console.log('useGetTokenIdForOwner', opts)
   return useQuery(
-    ['userTokenId', account, lockAddress, web3Service],
+    ['userTokenId', account, lockAddress, network],
     async () => {
-      console.log('NOW!')
-      console.log(account, lockAddress)
-      if (!account || !lockAddress) return
+      if (!account || !lockAddress || !network) return
       return web3Service.getTokenIdForOwner(lockAddress, account!, network)
     },
     opts

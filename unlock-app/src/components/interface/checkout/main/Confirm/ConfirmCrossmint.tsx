@@ -169,6 +169,7 @@ export function ConfirmCrossmint({
     mintConfig: {},
     onEvent: onCrossmintPaymentEvent,
     projectId,
+    collectionId: '', // To be completed below!
   }
 
   if (!state.context?.renew) {
