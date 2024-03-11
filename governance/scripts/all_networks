@@ -15,10 +15,15 @@ const only = []
 
 // these networks will be excluded from run
 const toExclude = ['localhost', 'default', 'networks']
+const excludeTestnets = true
 
 const networks = only.length
   ? only
-  : Object.keys(allNetworks).filter((n) => !toExclude.includes(n))
+  : Object.keys(allNetworks).filter(
+      (n) =>
+        !toExclude.includes(n) &&
+        (excludeTestnets ? !allNetworks[n].isTestNetwork : true)
+    )
 
 console.log(`Running task for the following networks: ${networks.toString()}`)
 
