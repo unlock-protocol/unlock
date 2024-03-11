@@ -109,9 +109,9 @@ export function createReceipt(event: ethereum.Event): void {
 /**
  * Create Receipt object for subgraph for key 'cancel'/'expire and refund'/'
  * @param {event} event - Object event
- * @return {void}
+ * @return {boolean} - Weather or not the receipt was created
  */
-export function createCancelReceipt(event: ethereum.Event): void {
+export function tryCreateCancelReceipt(event: ethereum.Event): boolean {
   const hash = event.transaction.hash.toHexString()
 
   log.debug('Creating receipt for transaction {}', [hash])
@@ -128,7 +128,7 @@ export function createCancelReceipt(event: ethereum.Event): void {
   // No need to go further if there is no matching lock object in the subgraph
   if (!lock) {
     log.debug('Missing Lock {}. Skipping receipt', [lockAddress])
-    return
+    return false
   }
 
   const tokenAddress = lock.tokenAddress
@@ -210,9 +210,12 @@ export function createCancelReceipt(event: ethereum.Event): void {
 
     receipt.receiptNumber = newReceiptNumber
     receipt.save()
+
+    return true
   } else {
     log.debug('Skipping receipt for free (grantKeys or no value) transfer {}', [
       hash,
     ])
+    return false
   }
 }

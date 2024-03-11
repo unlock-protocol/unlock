@@ -34,7 +34,7 @@ import {
   LOCK_MANAGER,
   addTransactionHashToKey,
 } from './helpers'
-import { createCancelReceipt, createReceipt } from './receipt'
+import { tryCreateCancelReceipt, createReceipt } from './receipt'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -208,7 +208,6 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const fallbackTimestamp = event.block.timestamp
   const lockContract = PublicLock.bind(event.address)
   if (key) {
-    addTransactionHashToKey(key, event.transaction.hash.toHexString())
     // Due to a bug in v11, we need to check the version of the lock and fallback to the timestamp since expiration can be for a different key
     const lock = Lock.load(key.lock)
     if (lock && lock.version == BigInt.fromI32(11)) {
@@ -225,7 +224,10 @@ export function handleCancelKey(event: CancelKeyEvent): void {
     key.cancelled = true
     key.save()
 
-    createCancelReceipt(event)
+    // If the receipt was created add transaction hash to the key
+    if (tryCreateCancelReceipt(event)) {
+      addTransactionHashToKey(key, event.transaction.hash.toHexString())
+    }
   }
 }
 

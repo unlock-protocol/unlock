@@ -11,7 +11,6 @@ import {
   keyPrice,
   lockAddress,
   lockOwner,
-  nullAddress,
   tokenId,
 } from './constants'
 
