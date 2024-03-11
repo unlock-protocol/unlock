@@ -32,7 +32,12 @@ for (let i = 0; i < networks.length; i++) {
   const args = ['--network', networks[i], ...process.argv.slice(2)]
 
   console.log(cmd, args)
-  execSync(`${cmd} ${args.join(' ')}`, {
-    stdio: 'inherit',
-  })
+  try {
+    execSync(`${cmd} ${args.join(' ')}`, {
+      stdio: 'inherit',
+    })
+  } catch (error) {
+    console.log(`Network ${networks[i]} failed`)
+    console.log(error.message)
+  }
 }
