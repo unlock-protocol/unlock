@@ -5,15 +5,17 @@ const Safe = require('@safe-global/protocol-kit').default
 const { EthersAdapter } = require('@safe-global/protocol-kit')
 const SafeApiKit = require('@safe-global/api-kit').default
 
-async function main({
-  // default to ccarfi.eth
-  addressToAdd = '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f',
-} = {}) {
+async function main({ newOwner, safeAddress, threshold } = {}) {
   const { id, multisig } = await getNetwork()
   let [signer] = await ethers.getSigners()
 
-  console.log(`Adding signer ${addressToAdd} on chain on ${id}: 
-  - multisig: ${multisig}
+  if (!safeAddress) {
+    safeAddress = multisig
+  }
+
+  // default to ccarfi.eth
+  console.log(`Adding signer ${newOwner} on chain on ${id}: 
+  - multisig: ${safeAddress}
   - signer: ${signer.address}
   `)
 
@@ -23,10 +25,10 @@ async function main({
     signerOrProvider: signer,
   })
 
-  const safeSdk = await Safe.create({ ethAdapter, safeAddress: multisig })
+  const safeSdk = await Safe.create({ ethAdapter, safeAddress })
   const params = {
-    ownerAddress: addressToAdd,
-    // threshold, // Optional. If `threshold` isn't provided the current threshold won't change.
+    ownerAddress: newOwner,
+    // threshold
   }
   const safeTransaction = await safeSdk.createAddOwnerTx(params)
 
@@ -42,21 +44,14 @@ async function main({
 
   // Propose the transaction
   const txParams = {
-    safeAddress: multisig,
+    safeAddress,
     safeTransactionData: safeTransaction.data,
     safeTxHash: safeTransactionHash,
     senderAddress: signer.address,
     senderSignature: senderSignature.data,
   }
-  console.log(txParams)
-  const tx = await safeService.proposeTransaction({
-    safeAddress: multisig,
-    safeTransactionData: safeTransaction.data,
-    safeTxHash: safeTransactionHash,
-    senderAddress: signer.address,
-    senderSignature: senderSignature.data,
-  })
-
+  console.log()
+  await safeService.proposeTransaction(txParams)
   console.log(`tx submitted.`)
 }
 
