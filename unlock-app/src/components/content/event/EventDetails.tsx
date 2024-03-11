@@ -183,19 +183,29 @@ Powered by Unlock Protocol`}
             content: `${config.unlockApp}/og/event/${event.slug}`,
           },
           {
-            name: 'fc:frame:image:aspect_ratio',
-            content: `1.91:1`,
-          },
-          {
             name: 'fc:frame:post_url',
-            content: `${config.unlockApp}/frame/event/${event.slug}`,
+            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+              `${config.unlockApp}/frames/event/${event.slug}`
+            )}&s=${encodeURIComponent('{"view":"default"}')}`,
           },
           {
             name: 'fc:frame:button:1',
-            content: 'HAHA',
+            content: 'Register',
+          },
+          {
+            name: 'fc:frame:button:1:target',
+            content: eventUrl,
           },
           {
             name: 'fc:frame:button:1:action',
+            content: 'link',
+          },
+          {
+            name: 'fc:frame:button:2',
+            content: 'See description',
+          },
+          {
+            name: 'fc:frame:button:2:action',
             content: 'post',
           },
         ]}

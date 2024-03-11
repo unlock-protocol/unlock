@@ -25,7 +25,7 @@ export const Description = ({
       >
         Register
       </FrameButton>
-      <FrameButton target={`${config.unlockApp}/frames/event?hahahahah!`}>
+      <FrameButton target={`${config.unlockApp}/frames/event`}>
         Back
       </FrameButton>
     </Container>
