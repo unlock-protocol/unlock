@@ -19,6 +19,7 @@ import { ethers } from 'ethers'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface Props {
   injectedProvider: unknown
@@ -43,10 +44,11 @@ export function ConfirmCrossmint({
 }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
-  const { email } = useAuth()
+  const { email, account } = useAuth()
   const [state] = useActor(checkoutService)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
+
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
 
   const { lock, recipients, paywallConfig, data, keyManagers } = state.context
@@ -120,12 +122,20 @@ export function ConfirmCrossmint({
     ),
   })
 
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: account!, lockAddress: lock!.address, network: lock!.network },
+    {
+      enabled: state.context?.renew,
+    }
+  )
+
   const isLoading =
     !error &&
     (isCrossmintEnabledLoading ||
       isInitialDataLoading ||
       isPricingDataLoading ||
-      crossmintLoading)
+      crossmintLoading ||
+      (!tokenId && state.context?.renew))
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig, lock!.address)
@@ -140,7 +150,11 @@ export function ConfirmCrossmint({
       ]
     : []
 
-  const argumentsReady = referrers && purchaseData && pricingData
+  const argumentsReady =
+    referrers &&
+    purchaseData &&
+    pricingData &&
+    (tokenId || !state.context?.renew)
 
   // crossmint config
   const crossmintConfig = {
@@ -157,7 +171,6 @@ export function ConfirmCrossmint({
     projectId,
   }
 
-  console.log(state.context)
   if (!state.context?.renew) {
     crossmintConfig.collectionId = collectionId
     crossmintConfig.mintConfig = {
@@ -171,7 +184,7 @@ export function ConfirmCrossmint({
     crossmintConfig.collectionId = [collectionId, 'extend'].join('-')
     crossmintConfig.mintConfig = {
       totalPrice: pricingData?.total.toString(),
-      _tokenId: state.context?.tokenId,
+      _tokenId: tokenId,
       _value: values[0],
       _referrer: referrers[0],
       _data: purchaseData ? purchaseData[0] : '',
