@@ -10,6 +10,29 @@
       },
       "types": [
         {
+          "kind": "ENUM",
+          "name": "Aggregation_interval",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "hour",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "day",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
           "kind": "SCALAR",
           "name": "BigDecimal",
           "description": null,
@@ -5252,7 +5275,7 @@
               "deprecationReason": null
             },
             {
-              "name": "lockStats",
+              "name": "lockStats_collection",
               "description": null,
               "args": [
                 {
@@ -5402,7 +5425,7 @@
               "deprecationReason": null
             },
             {
-              "name": "unlockStats",
+              "name": "unlockStats_collection",
               "description": null,
               "args": [
                 {
@@ -5885,6 +5908,18 @@
             {
               "name": "payer",
               "description": "Payer in the case of an ERC20 lock renewal, the sender and payer might differ",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "recipient",
+              "description": "Fund receiver",
               "args": [],
               "type": {
                 "kind": "SCALAR",
@@ -8738,7 +8773,7 @@
               "deprecationReason": null
             },
             {
-              "name": "lockStats",
+              "name": "lockStats_collection",
               "description": null,
               "args": [
                 {
@@ -8888,7 +8923,7 @@
               "deprecationReason": null
             },
             {
-              "name": "unlockStats",
+              "name": "unlockStats_collection",
               "description": null,
               "args": [
                 {
@@ -10815,6 +10850,18 @@
               },
               "isDeprecated": false,
               "deprecationReason": null
+            },
+            {
+              "name": "parentHash",
+              "description": "The hash of the parent block",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Bytes",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
             }
           ],
           "inputFields": null,
@@ -10909,11 +10956,7 @@
         {
           "name": "skip",
           "description": null,
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -10934,11 +10977,7 @@
         {
           "name": "include",
           "description": null,
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -10959,17 +10998,13 @@
         {
           "name": "entity",
           "description": "Marks the GraphQL type as indexable entity.  Each type that should be an entity is required to be annotated with this directive.",
-          "locations": [
-            "OBJECT"
-          ],
+          "locations": ["OBJECT"],
           "args": []
         },
         {
           "name": "subgraphId",
           "description": "Defined a Subgraph ID for an object type",
-          "locations": [
-            "OBJECT"
-          ],
+          "locations": ["OBJECT"],
           "args": [
             {
               "name": "id",
@@ -10990,9 +11025,7 @@
         {
           "name": "derivedFrom",
           "description": "creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API.",
-          "locations": [
-            "FIELD_DEFINITION"
-          ],
+          "locations": ["FIELD_DEFINITION"],
           "args": [
             {
               "name": "field",
