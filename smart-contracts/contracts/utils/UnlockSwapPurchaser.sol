@@ -77,6 +77,29 @@ contract UnlockSwapPurchaser {
         : IMintableERC20(token).balanceOf(address(this));
   }
 
+  function getKeyPrice(
+    address lock,
+    bytes memory swapCalldata
+  ) public view returns (uint keyPrice) {
+    (
+      ,
+      uint[] memory keyPrices,
+      address[] memory recipients,
+      address[] memory referrers,
+      address[] memory keyManagers,
+      bytes[] memory purchaseData
+    ) = abi.decode(
+        swapCalldata,
+        (bytes4, uint[], address[], address[], address[], bytes[])
+      );
+
+    keyPrice = IPublicLock(lock).purchasePriceFor(
+      recipients[0],
+      referrers[0],
+      purchaseData[0]
+    );
+  }
+
   /**
    * Swap tokens and call a function a lock contract.
    *
@@ -173,19 +196,19 @@ contract UnlockSwapPurchaser {
         destToken == address(0)
           ? getBalance(destToken) - msg.value
           : getBalance(destToken)
-      ) < balanceTokenDestBefore + IPublicLock(lock).keyPrice()
+      ) < balanceTokenDestBefore + getKeyPrice(lock, swapCalldata)
     ) {
       revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
     if (destToken != address(0)) {
-      IMintableERC20(destToken).approve(lock, IPublicLock(lock).keyPrice());
+      IMintableERC20(destToken).approve(lock, getKeyPrice(lock, swapCalldata));
     }
 
     // call the lock
     (bool lockCallSuccess, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? IPublicLock(lock).keyPrice() : 0
+      value: destToken == address(0) ? getKeyPrice(lock, swapCalldata) : 0
     }(callData);
 
     if (lockCallSuccess == false) {
