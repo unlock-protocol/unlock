@@ -1,5 +1,9 @@
 # Changes
 
+# 0.43.2
+
+- using `totalKeys` when possible (lock v11 and further)
+
 # 0.43.1
 
 - adding the ability to add a filter for approval when listing keys.
