@@ -11,7 +11,7 @@ export default async function (lockAddress, owner, network) {
 
   const validTokens = []
   const allTokens = []
-  const balanceOfTokens = (await lockContract.totalKeys(owner)).toNumber()
+  const balanceOfTokens = (await lockContract.balanceOf(owner)).toNumber()
 
   let i = 0
   while (i < balanceOfTokens) {
