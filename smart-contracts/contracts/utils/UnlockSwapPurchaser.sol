@@ -196,19 +196,19 @@ contract UnlockSwapPurchaser {
         destToken == address(0)
           ? getBalance(destToken) - msg.value
           : getBalance(destToken)
-      ) < balanceTokenDestBefore + getKeyPrice(lock, swapCalldata)
+      ) < balanceTokenDestBefore + getKeyPrice(lock, callData)
     ) {
       revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
     if (destToken != address(0)) {
-      IMintableERC20(destToken).approve(lock, getKeyPrice(lock, swapCalldata));
+      IMintableERC20(destToken).approve(lock, getKeyPrice(lock, callData));
     }
 
     // call the lock
     (bool lockCallSuccess, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? getKeyPrice(lock, swapCalldata) : 0
+      value: destToken == address(0) ? getKeyPrice(lock, callData) : 0
     }(callData);
 
     if (lockCallSuccess == false) {
