@@ -17,7 +17,7 @@ jobs:
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
-      service: locksmith7df5e70995a89872e0ec80de04ca7251
+      service: locksmith
       app-name: unlock-locksmith-production
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
