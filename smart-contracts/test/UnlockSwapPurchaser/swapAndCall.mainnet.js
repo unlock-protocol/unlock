@@ -1,30 +1,43 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { expect } = require('chai')
-const { deployLock, purchaseKey, getUnlock, reverts } = require('../helpers')
+const { deployLock, purchaseKey, reverts } = require('../helpers')
 
 const {
-  uniswapRouterAddresses,
+  addSomeETH,
+  getNetwork,
   getUniswapTokens,
   getUniswapRoute,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
   getBalance,
   addERC20,
+  getUnlock,
 } = require('@unlock-protocol/hardhat-helpers')
 
 let scenarios = []
 
 describe(`swapAndCall`, function () {
   let unlock, swapPurchaser, tokens
+  let deployer, keyOwner
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
+
+    //
+    ;[deployer, keyOwner] = await ethers.getSigners()
+    await addSomeETH(deployer.address)
+
     // get uniswap-formatted tokens
-    const { chainId } = await ethers.provider.getNetwork()
+    const {
+      id: chainId,
+      uniswapV3: { universalRouterAddress },
+    } = await getNetwork()
     tokens = await getUniswapTokens(chainId)
+
+    const routers = [universalRouterAddress]
 
     scenarios = [
       [tokens.native, tokens.dai],
@@ -34,9 +47,6 @@ describe(`swapAndCall`, function () {
       [tokens.udt, tokens.native],
       // [tokens.native, tokens.wBtc] // Uniswap SDK failsto generate route and parse calldata
     ]
-
-    const { UniversalRouter, SwapRouter02 } = uniswapRouterAddresses[chainId]
-    const routers = [UniversalRouter, SwapRouter02]
 
     // get Unlock contract
     unlock = await getUnlock()
@@ -61,11 +71,10 @@ describe(`swapAndCall`, function () {
 
   it('swaps', () => {
     scenarios.forEach(([srcToken, lockToken]) => {
-      let keyOwner, lock, keyPrice
+      let lock, keyPrice
       let swapCalldata, value, swapRouter, amountInMax
       describe(`use ${srcToken.symbol} with a lock priced in ${lockToken.symbol}`, () => {
         before(async () => {
-          ;[, keyOwner] = await ethers.getSigners()
           // parse token decimals properly (100 USDC or 1 ETH)
           keyPrice = ethers.utils.parseUnits(
             lockToken.symbol === 'USDC' ? '100' : '1',
