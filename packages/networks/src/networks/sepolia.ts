@@ -48,8 +48,7 @@ export const sepolia: NetworkConfig = {
         name: 'Discount code with caps',
       },
       {
-        // should be replaced with unlock's deployed contract address
-        address: '0xD92546cE22f13304C41e92d18D4f000Ac295aDb7',
+        address: '0x323Fd488F101F2F9252ecE9f9fe3e56C48912880',
         id: HookType.GITCOIN,
         name: 'Gitcoin',
       },
