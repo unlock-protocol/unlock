@@ -19,6 +19,7 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
@@ -269,6 +270,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 defaultValue={network}
                 description={<NetworkDescription />}
               />
+              <NetworkWarning network={details.network} />
               <div className="mb-4">
                 {noBalance && (
                   <BalanceWarning

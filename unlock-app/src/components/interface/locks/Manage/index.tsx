@@ -8,6 +8,7 @@ import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
+import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { useMutation } from '@tanstack/react-query'
 import {
   ApprovalStatus,
@@ -455,6 +456,7 @@ export const ManageLockPage = () => {
           <div className="pt-9">
             <div className="flex flex-col gap-3 mb-7">
               <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
+              <NetworkWarning network={lockNetwork!} />
               {showNotManagerBanner && <NotManagerBanner />}
             </div>
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
