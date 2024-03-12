@@ -32,7 +32,6 @@ contract GitcoinHook is Ownable {
     if (address(msg.sender).code.length > 0) {
       return IPublicLockV13(msg.sender).keyPrice();
     }
-    return 0;
   }
 
   /**
