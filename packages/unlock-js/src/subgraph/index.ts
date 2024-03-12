@@ -25,8 +25,8 @@ interface QueryOptions {
 }
 
 export class SubgraphService {
-  networks: NetworkConfigs;
-  endpointUrl?: string;
+  networks: NetworkConfigs
+  endpointUrl?: string
   constructor(endpointUrl?: string, networks?: NetworkConfigs) {
     this.networks = networks || networkConfigs
     this.endpointUrl = endpointUrl
