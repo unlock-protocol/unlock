@@ -79,7 +79,7 @@ contract UnlockSwapPurchaser {
 
   function getKeyPrice(
     address lock,
-    bytes memory swapCalldata
+    bytes memory callData
   ) public view returns (uint keyPrice) {
     (
       ,
@@ -89,7 +89,7 @@ contract UnlockSwapPurchaser {
       address[] memory keyManagers,
       bytes[] memory purchaseData
     ) = abi.decode(
-        swapCalldata,
+        callData,
         (bytes4, uint[], address[], address[], address[], bytes[])
       );
 
