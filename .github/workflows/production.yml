@@ -10,14 +10,14 @@ jobs:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     uses: ./.github/workflows/_subgraph.yml
     secrets:
-      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
+      SUBGRAPH_STUDIO_DEPLOY_KEY: op://secrets/subgraph/studio-deploy-key
 
   deploy-locksmith-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
-      service: locksmith
+      service: locksmith7df5e70995a89872e0ec80de04ca7251
       app-name: unlock-locksmith-production
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
