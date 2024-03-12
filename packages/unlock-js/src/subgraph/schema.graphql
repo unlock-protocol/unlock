@@ -94,6 +94,7 @@ query AllReceipts(
     timestamp
     sender
     payer
+    recipient
     lockAddress
     tokenAddress
     gasTotal
