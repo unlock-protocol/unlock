@@ -1,4 +1,5 @@
 const { ethers } = require('ethers')
+const { ethers: ethersv5 } = require('ethersv5')
 
 const { AllowanceTransfer } = require('@uniswap/permit2-sdk')
 const {
@@ -47,18 +48,23 @@ async function getUniswapRoute({
   slippageTolerance = new Percent(10, 100),
   deadline = Math.floor(new Date().getTime() / 1000 + 100000),
   permitOptions: { usePermit2Sig = false, inputTokenPermit } = {},
-  chainId,
+  chainId = 1,
 }) {
   // init router
+
+  const provider = new ethersv5.providers.JsonRpcProvider(
+    `https://rpc.unlock-protocol.com/${chainId}`
+  )
+  console.log(provider)
   const router = new AlphaRouter({
     chainId,
-    provider: ethers.provider,
+    provider,
   })
 
   // parse router args
   const outputAmount = CurrencyAmount.fromRawAmount(
     tokenOut,
-    JSBI.BigInt(amoutOut)
+    amoutOut //JSBI.BigInt(amoutOut)
   )
   const routeArgs = [
     outputAmount,

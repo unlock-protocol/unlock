@@ -19585,38 +19585,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/smart-order-router@npm:3.19.2":
-  version: 3.19.2
-  resolution: "@uniswap/smart-order-router@npm:3.19.2"
-  dependencies:
-    "@uniswap/default-token-list": "npm:^11.2.0"
-    "@uniswap/permit2-sdk": "npm:^1.2.0"
-    "@uniswap/router-sdk": "npm:^1.6.0"
-    "@uniswap/sdk-core": "npm:^4.0.7"
-    "@uniswap/swap-router-contracts": "npm:^1.3.0"
-    "@uniswap/token-lists": "npm:^1.0.0-beta.31"
-    "@uniswap/universal-router": "npm:^1.0.1"
-    "@uniswap/universal-router-sdk": "npm:^1.5.8"
-    "@uniswap/v2-sdk": "npm:^3.2.3"
-    "@uniswap/v3-sdk": "npm:^3.10.0"
-    async-retry: "npm:^1.3.1"
-    await-timeout: "npm:^1.1.1"
-    axios: "npm:^0.21.1"
-    bunyan: "npm:^1.8.15"
-    bunyan-blackhole: "npm:^1.1.1"
-    ethers: "npm:^5.7.2"
-    graphql: "npm:^15.5.0"
-    graphql-request: "npm:^3.4.0"
-    lodash: "npm:^4.17.21"
-    mnemonist: "npm:^0.38.3"
-    node-cache: "npm:^5.1.2"
-    stats-lite: "npm:^2.2.0"
-  peerDependencies:
-    jsbi: ^3.2.0
-  checksum: 10/95c705790d51a6e54e4cfbdfe23bdb302b68e84c3e0d482c112edfd7d0683d6dad5b84ab0d81ca6dfe64f84bb0f54ff6349c9c2b4519b6ecd10e2e6bc0ee3b7d
-  languageName: node
-  linkType: hard
-
 "@uniswap/swap-router-contracts@npm:^1.1.0, @uniswap/swap-router-contracts@npm:^1.2.1, @uniswap/swap-router-contracts@npm:^1.3.0":
   version: 1.3.1
   resolution: "@uniswap/swap-router-contracts@npm:1.3.1"
@@ -19940,7 +19908,7 @@ __metadata:
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
     "@uniswap/permit2-sdk": "npm:1.2.0"
     "@uniswap/sdk-core": "npm:4.0.9"
-    "@uniswap/smart-order-router": "npm:3.19.2"
+    "@uniswap/smart-order-router": "npm:3.17.2"
     "@uniswap/v3-sdk": "npm:3.10.2"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -19948,6 +19916,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     ethers: "npm:6.10.0"
+    ethersv5: "npm:ethers@^5.7.2"
     hardhat: "npm:2.20.1"
     tsup: "npm:8.0.2"
     typescript: "npm:5.3.3"
@@ -30957,7 +30926,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2, ethersv5@npm:ethers@^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:

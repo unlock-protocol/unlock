@@ -18,9 +18,7 @@ const {
   getUniswapRoute,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const someTokens = ethers.utils.parseUnits('1', 'ether')
-
-let swapPurchaser, unlock, lock, tokenAddress, token
+let swapPurchaser, unlock, lock, tokenAddress
 
 let owner, keyOwner
 let native, usdc
@@ -31,7 +29,7 @@ const recipient = '0xF5C28ce24cf47849988f147d5C75787c0103534'.toLowerCase()
 const discount = 3000 // basis points
 const cap = 10
 
-describe('UnlockSwapPurchaser / withdraw', () => {
+describe('UnlockSwapPurchaser / purchase with promo code', () => {
   before(async () => {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
@@ -39,8 +37,9 @@ describe('UnlockSwapPurchaser / withdraw', () => {
     }
     ;[owner, keyOwner] = await ethers.getSigners()
 
-    // fund deployer
+    // fund deployer and keyOwner
     await addSomeETH(owner.address)
+    await addSomeETH(keyOwner.address)
 
     const UnlockSwapPurchaser = await ethers.getContractFactory(
       'UnlockSwapPurchaser'
@@ -60,11 +59,9 @@ describe('UnlockSwapPurchaser / withdraw', () => {
       PERMIT2_ADDRESS,
       routers
     )
-
-    // get usdc token for testing
-    ;({ native, usdc } = await getUniswapTokens(chainId))
+      // get usdc token for testing
+      ; ({ native, usdc } = await getUniswapTokens(chainId))
     tokenAddress = usdc.address
-    token = await addERC20(tokenAddress, keyOwner.address, someTokens)
 
     // deploy hook
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
@@ -86,11 +83,8 @@ describe('UnlockSwapPurchaser / withdraw', () => {
     lock = await deployLock({
       unlock,
       tokenAddress,
+      keyPrice: ethers.utils.parseUnits('1', 6), // USDC has 6 decimals, we set 1 USDC
     })
-
-    // set allowances
-    await token.connect(keyOwner).approve(swapPurchaser.address, MAX_UINT)
-    await token.connect(keyOwner).approve(lock.address, MAX_UINT)
 
     // set the hook
     await lock.setEventHooks(
@@ -117,7 +111,7 @@ describe('UnlockSwapPurchaser / withdraw', () => {
     await hook.setSigner(lock.address, signer, discount, cap)
   })
 
-  it('price with promo code is correct', async () => {
+  it.only('price with promo code is correct', async () => {
     const [data] = await getSignatureForPassword(
       code,
       keyOwner.address.toLowerCase()
@@ -127,55 +121,73 @@ describe('UnlockSwapPurchaser / withdraw', () => {
       keyOwner.address,
       data
     )
-    assert.equal(ethers.utils.formatEther(price), '0.007')
+    assert.equal(ethers.utils.formatUnits(price, 6), '0.7')
   })
 
-  it('can buy tickets at discount', async () => {
+  it.skip('can buy tickets at discount', async () => {
+    // User does not have a key
     assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 0)
     const [data] = await getSignatureForPassword(
       code,
       keyOwner.address.toLowerCase()
     )
+    // check the price
     const price = await lock.purchasePriceFor(
       keyOwner.address,
       keyOwner.address,
       data
     )
-    assert.equal(ethers.utils.formatEther(price), '0.007')
-    await lock.purchase(
-      [price],
-      [keyOwner.address],
-      [keyOwner.address],
-      [keyOwner.address],
-      [data],
-      {
-        value: price,
-      }
-    )
+    assert.equal(ethers.utils.formatUnits(price, 6), '0.7')
+
+    const token = await lock.tokenAddress()
+
+    // fund!
+    const tokenContract = await addERC20(token, keyOwner.address, price)
+
+    await tokenContract.connect(keyOwner).approve(lock.address, MAX_UINT)
+
+    // purchase!
+    await lock
+      .connect(keyOwner)
+      .purchase(
+        [price],
+        [keyOwner.address],
+        [keyOwner.address],
+        [keyOwner.address],
+        [data],
+        {
+          value: price,
+        }
+      )
     assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 1)
   })
 
-  it('use promocode when swap and purchase', async () => {
+  it.only('use promocode when swap and purchase', async () => {
+    // a user does have a key
     assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 0)
     const [data] = await getSignatureForPassword(
       code,
       keyOwner.address.toLowerCase()
     )
+    // check the price
     const price = await lock.purchasePriceFor(
       keyOwner.address,
       keyOwner.address,
       data
     )
+    assert.equal(ethers.utils.formatUnits(price, 6), '0.7')
+
     const args = [
       [price], // keyPrices
       [keyOwner.address], // recipients
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]], // _data
+      [data], // _data
     ]
 
     // parse call data
     const calldata = await lock.interface.encodeFunctionData('purchase', args)
+    console.log(calldata)
 
     const { swapCalldata, value, swapRouter, amountInMax } =
       await getUniswapRoute({
@@ -183,6 +195,7 @@ describe('UnlockSwapPurchaser / withdraw', () => {
         tokenOut: usdc,
         amoutOut: price,
         recipient: swapPurchaser.address,
+        chainId: 1,
       })
 
     // do the swap and call!

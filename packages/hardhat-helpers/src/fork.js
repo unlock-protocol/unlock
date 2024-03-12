@@ -61,11 +61,11 @@ const parseForkUrl = (networks) => {
     name: `${name} (forked locally)`,
     accounts: process.env.DEPLOYER_PRIVATE_KEY
       ? [
-          {
-            privateKey: process.env.DEPLOYER_PRIVATE_KEY,
-            balance: '10000000000000000000000', // 1000 ETH yah
-          },
-        ]
+        {
+          privateKey: process.env.DEPLOYER_PRIVATE_KEY,
+          balance: '10000000000000000000000', // 1000 ETH yah
+        },
+      ]
       : undefined,
   }
 
@@ -157,13 +157,20 @@ const addERC20 = async function (
   }
 
   // otherwise use transfer from whales
+  const erc20Contract = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   const whales = await getWhales()
   if (!whales[tokenAddress])
     throw Error(`No whale for this address: ${tokenAddress}`)
+
+  const whaleBalance = await erc20Contract.balanceOf(whales[tokenAddress])
+  if (whaleBalance.lt(amount)) {
+    throw Error(
+      `Whale at address: ${whales[tokenAddress]} does not have enough ${tokenAddress} to transfer ${amount} to ${address} (only has ${whaleBalance})`
+    )
+  }
   const whale = await ethers.getSigner(whales[tokenAddress])
   await impersonate(whale.address)
 
-  const erc20Contract = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   await erc20Contract.connect(whale).transfer(address, amount)
   return erc20Contract
 }

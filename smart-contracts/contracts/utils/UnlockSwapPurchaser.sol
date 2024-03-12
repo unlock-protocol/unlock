@@ -7,6 +7,7 @@ import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IPermit2.sol";
 import "../interfaces/IPublicLock.sol";
 import "../interfaces/IUnlock.sol";
+import "hardhat/console.sol";
 
 library SafeCast160 {
   error UnsafeCast();
