@@ -21,6 +21,7 @@ import { networkDescription } from '~/components/interface/locks/Create/elements
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
@@ -264,6 +265,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     </p>
                   }
                 />
+                <NetworkWarning network={details.network} />
                 <div className="mb-4">
                   {noBalance && (
                     <BalanceWarning
