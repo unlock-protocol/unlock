@@ -130,7 +130,7 @@ export function Minting({
   const [doneWaiting, setDoneWaiting] = useState(false)
 
   useEffect(() => {
-    if (doneWaiting) {
+    if (doneWaiting || !mint) {
       return
     }
     const waitForTokenIds = async (): Promise<string[]> => {
