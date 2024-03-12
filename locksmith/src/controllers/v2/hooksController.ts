@@ -128,7 +128,7 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     const scoresResponse = await checkMultipleScores(recipients)
 
     // generate signatures for recipients with valid scores
-    const generatedSignatures = scoresResponse.map((recipient) => {
+    const generatedSignatures = scoresResponse.map((recipient: any) => {
       // only sign recipients who have a score greater than or equal to 20
       if (recipient && recipient.score >= 20) {
         const message = recipient.toLowerCase()
