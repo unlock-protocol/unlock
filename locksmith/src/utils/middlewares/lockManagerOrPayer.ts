@@ -52,6 +52,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
   const isPayer =
     receipt?.payer?.toLocaleLowerCase() === userAddress?.toLocaleLowerCase()
 
+  // @ts-expect-error error TS2339: Property 'recipient' does not exist on type
   const isRecipient =
     receipt?.recipient?.toLowerCase() === userAddress?.toLowerCase()
 
