@@ -27,7 +27,7 @@ async function getWhales(chainId = 1) {
     case 1:
       return {
         [tokens.DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8', // PulseX
-        [tokens.USDC]: '0x8EB8a3b98659Cce290402893d0123abb75E3ab28',
+        [tokens.USDC]: '0xD6153F5af5679a75cC85D8974463545181f48772',
         [tokens.WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
         [tokens.UDT]: '0xF5C28ce24Acf47849988f147d5C75787c0103534', // unlock-protocol.eth
       }
@@ -94,10 +94,7 @@ const resetNodeState = async () => {
   })
 }
 
-const addSomeETH = async (
-  address,
-  amount = ethers.utils.parseEther('1000')
-) => {
+const addSomeETH = async (address, amount = ethers.parseEther('1000')) => {
   const { network } = require('hardhat')
   const balance = `0x${BigInt(amount.toString()).toString(16)}`
   await network.provider.send('hardhat_setBalance', [address, balance])
