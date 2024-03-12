@@ -2,7 +2,7 @@ import React from 'react'
 import dayjs from '../../../../src/utils/dayjs'
 import { toFormData } from '../../../../src/components/interface/locks/metadata/utils'
 
-export const DefaultImage = ({ event }) => {
+export const DefaultImage = ({ event }: { event: any }) => {
   const { ticket, image } = toFormData(event.data)
 
   const startTime = dayjs

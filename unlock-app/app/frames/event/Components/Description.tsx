@@ -7,12 +7,10 @@ export const Description = ({
   event,
   previousFrame,
   state,
-  dispatch,
 }: {
   event: any
   previousFrame: any
   state: any
-  dispatch: any
 }) => {
   return (
     <Container slug={event.slug} previousFrame={previousFrame} state={state}>

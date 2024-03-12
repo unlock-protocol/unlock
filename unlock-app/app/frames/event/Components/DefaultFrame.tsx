@@ -3,18 +3,15 @@ import Container from './Container'
 import { FrameButton, FrameImage } from 'frames.js/next/server'
 import { config } from '../../../../src/config/app'
 import { DefaultImage } from './DefaultImage'
-import { Event } from '@unlock-protocol/core'
 
 export const DefaultFrame = ({
   previousFrame,
   state,
   event,
-  dispatch,
 }: {
   previousFrame: any
   state: any
-  event: Event
-  dispatch: any
+  event: any
 }) => {
   return (
     <Container slug={event.slug} previousFrame={previousFrame} state={state}>
@@ -28,8 +25,7 @@ export const DefaultFrame = ({
         Register
       </FrameButton>
       {/* <FrameButton target={`${config.unlockApp}/frames/event?hahahahah!`}> */}
-      {/* @ts-expect-error Type '{ children: string; onClick: any; }' is not assignable to type 'IntrinsicAttributes & FrameButtonProvidedProps'. */}
-      <FrameButton onclick={dispatch}>See description</FrameButton>
+      <FrameButton>See description</FrameButton>
     </Container>
   )
 }

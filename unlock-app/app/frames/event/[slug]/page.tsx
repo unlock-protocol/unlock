@@ -28,11 +28,7 @@ export default async function Frame(props: HomeProps) {
   const previousFrame = getPreviousFrame(props.searchParams)
   // await validateActionSignature(previousFrame.postBody)
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const [state, dispatch] = useFramesReducer(
-    reducer,
-    { view: 'default' },
-    previousFrame
-  )
+  const [state] = useFramesReducer(reducer, { view: 'default' }, previousFrame)
 
   const { data: event } = await storage.getEvent(slug)
   if (!event?.data) {
@@ -41,20 +37,10 @@ export default async function Frame(props: HomeProps) {
 
   if (state.view === 'description') {
     return (
-      <Description
-        dispatch={dispatch}
-        state={state}
-        previousFrame={previousFrame}
-        event={event}
-      />
+      <Description state={state} previousFrame={previousFrame} event={event} />
     )
   }
   return (
-    <DefaultFrame
-      dispatch={dispatch}
-      state={state}
-      previousFrame={previousFrame}
-      event={event}
-    />
+    <DefaultFrame state={state} previousFrame={previousFrame} event={event} />
   )
 }
