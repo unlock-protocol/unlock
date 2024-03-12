@@ -1,5 +1,4 @@
 import { MdAssignmentLate } from 'react-icons/md'
-
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -174,8 +173,43 @@ Powered by Unlock Protocol`}
             },
           ],
         }}
+        additionalMetaTags={[
+          {
+            property: 'fc:frame',
+            content: 'vNext',
+          },
+          {
+            name: 'fc:frame:image',
+            content: `${config.unlockApp}/og/event/${event.slug}`,
+          },
+          {
+            name: 'fc:frame:post_url',
+            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+              `${config.unlockApp}/frames/event/${event.slug}`
+            )}&s=${encodeURIComponent('{"view":"default"}')}`,
+          },
+          {
+            name: 'fc:frame:button:1',
+            content: 'Register',
+          },
+          {
+            name: 'fc:frame:button:1:target',
+            content: eventUrl,
+          },
+          {
+            name: 'fc:frame:button:1:action',
+            content: 'link',
+          },
+          {
+            name: 'fc:frame:button:2',
+            content: 'See description',
+          },
+          {
+            name: 'fc:frame:button:2:action',
+            content: 'post',
+          },
+        ]}
       />
-
       <div className="flex flex-col gap-4">
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
@@ -311,7 +345,6 @@ Powered by Unlock Protocol`}
           )}
         </section>
       </div>
-
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
