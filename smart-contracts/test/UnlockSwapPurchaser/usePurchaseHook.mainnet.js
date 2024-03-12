@@ -189,24 +189,28 @@ describe('UnlockSwapPurchaser / purchase with promo code', () => {
     const calldata = await lock.interface.encodeFunctionData('purchase', args)
     console.log(calldata)
 
-    const { swapCalldata, value, swapRouter, amountInMax } =
-      await getUniswapRoute({
-        tokenIn: native,
-        tokenOut: usdc,
-        amoutOut: price,
-        recipient: swapPurchaser.address,
-        chainId: 1,
-      })
+    // const { swapCalldata, value, swapRouter, amountInMax } =
+    //   await getUniswapRoute({
+    //     tokenIn: native,
+    //     tokenOut: usdc,
+    //     amoutOut: price,
+    //     recipient: swapPurchaser.address,
+    //     chainId: 1,
+    //   })
 
     // do the swap and call!
+    const {
+      uniswapV3: { universalRouterAddress },
+    } = await getNetwork(1)
+
     await swapPurchaser.connect(keyOwner).swapAndCall(
       lock.address,
       tokenAddress,
-      amountInMax, // value in src token
-      swapRouter,
-      swapCalldata,
+      10000000, //amountInMax, // value in src token
+      universalRouterAddress, // swapRouter,
+      0, // swapCalldata,
       calldata,
-      { value }
+      { value: 100000000 }
     )
     assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 1)
   })

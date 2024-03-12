@@ -41,6 +41,7 @@ export const useUniswapRoutes = ({
     ['uniswapRoutes', account, lock, recipients, purchaseData],
     async () => {
       const networkConfig = networks[lock.network]
+      console.log(networkConfig)
       if (!networkConfig || !networkConfig.swapPurchaser) {
         return []
       }
@@ -126,40 +127,42 @@ export const useUniswapRoutes = ({
           route.tokenIn!.address.toLowerCase()
         )
       })
+      console.log(routesToLookup)
 
       const result = await Promise.all(
         routesToLookup.map(async (route: UniswapRoute) => {
-          try {
-            const params = {
-              network: route.network,
-              tokenIn: route.tokenIn,
-              tokenOut: route.tokenOut,
-              amountOut: route.amountOut,
-              recipient: route.recipient,
-            }
-            const response: UnlockUniswapRoute =
-              await web3Service.getUniswapRoute({
-                params,
-              })
+          // try {
+          const params = {
+            network: route.network,
+            tokenIn: route.tokenIn,
+            tokenOut: route.tokenOut,
+            amountOut: route.amountOut,
+            recipient: route.recipient,
+          }
+          const response: UnlockUniswapRoute =
+            await web3Service.getUniswapRoute({
+              params,
+            })
 
-            const balance = await getAccountTokenBalance(
-              web3Service,
-              account!,
-              route.tokenIn instanceof Token ? route.tokenIn.address : null,
-              route.network
+          console.log(response)
+          const balance = await getAccountTokenBalance(
+            web3Service,
+            account!,
+            route.tokenIn instanceof Token ? route.tokenIn.address : null,
+            route.network
+          )
+          // If the balance is less than the quote, we cannot make the swap.
+          if (Number(balance) < Number(response.quote.toFixed())) {
+            console.log(
+              `Insufficient balance of ${response.quote.currency.symbol}`
             )
-            // If the balance is less than the quote, we cannot make the swap.
-            if (Number(balance) < Number(response.quote.toFixed())) {
-              console.log(
-                `Insufficient balance of ${response.quote.currency.symbol}`
-              )
-              return null
-            }
-            return response
-          } catch (error) {
-            console.error(error)
             return null
           }
+          return response
+          // } catch (error) {
+          //   console.error(error)
+          //   return null
+          // }
         })
       )
       return result.filter((item) => !!item)
