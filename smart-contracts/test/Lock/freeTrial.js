@@ -1,23 +1,27 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
-const { deployLock, getBalance, purchaseKeys } = require('../helpers')
+const {
+  deployLock,
+  getBalance,
+  purchaseKey,
+  compareBigNumbers,
+} = require('../helpers')
 
-let tokenId
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
-contract('Lock / freeTrial', (accounts) => {
+describe('Lock / freeTrial', () => {
   let lock
-  const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+  let tokenId
+  let keyOwner
 
   beforeEach(async () => {
     lock = await deployLock()
-    const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
-    ;[tokenId] = tokenIds
+    ;[keyOwner] = await ethers.getSigners()
+    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
   })
 
   it('No free trial by default', async () => {
-    const freeTrialLength = new BigNumber(await lock.freeTrialLength())
-    assert.equal(freeTrialLength.toNumber(), 0)
+    compareBigNumbers(await lock.freeTrialLength(), 0)
   })
 
   describe('with a free trial defined', () => {
@@ -30,29 +34,25 @@ contract('Lock / freeTrial', (accounts) => {
 
     describe('should cancel and provide a full refund when enough time remains', () => {
       beforeEach(async () => {
-        await lock.cancelAndRefund(tokenId, {
-          from: keyOwners[0],
-        })
+        await lock.connect(keyOwner).cancelAndRefund(tokenId)
       })
 
       it('should provide a full refund', async () => {
-        const refundAmount = initialLockBalance.minus(
+        const refundAmount = initialLockBalance.sub(
           await getBalance(lock.address)
         )
-        assert.equal(refundAmount.toString(), keyPrice.toString())
+        compareBigNumbers(refundAmount, keyPrice)
       })
     })
 
     describe('should cancel and provide a partial refund after the trial expires', () => {
       beforeEach(async () => {
         await sleep(6000)
-        await lock.cancelAndRefund(tokenId, {
-          from: keyOwners[0],
-        })
+        await lock.connect(keyOwner).cancelAndRefund(tokenId)
       })
 
       it('should provide less than a full refund', async () => {
-        const refundAmount = initialLockBalance.minus(
+        const refundAmount = initialLockBalance.sub(
           await getBalance(lock.address)
         )
         assert.notEqual(refundAmount.toString(), keyPrice.toString())

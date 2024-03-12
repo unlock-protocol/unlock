@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 /**
  * Tests for the lock data migration for PublicLock v10
  */
