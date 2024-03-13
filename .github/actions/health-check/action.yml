@@ -5,7 +5,6 @@ env:
   DOCKER_BUILDKIT: 1
   BUILDKIT_PROGRESS: plain
   SENTRY_LOG_LEVEL: info
-  SENTRY_DSN: ${{secrets.SENTRY_DSN }}
 
 runs: 
   using: "composite"
@@ -24,8 +23,6 @@ runs:
       - name: Sentry CLI login
         shell: bash
         run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Check networks package
         run: |
           yarn workspace @unlock-protocol/networks check >> networks.log
@@ -40,13 +37,16 @@ runs:
         run: |
           yarn workspace @unlock-protocol/governance check >> governance.log
           sentry-cli send-event -m "Governance" --logfile governance.log
+        shell: bash
       - name: Check Subgraphs
         run: |
           yarn workspace @unlock-protocol/subgraph check >> subgraph.log
           sentry-cli send-event -m "Subgraph" --logfile subgraph.log
+        shell: bash
       - name: Check Team Multisigs
         run: |
           yarn workspace @unlock-protocol/governance check:multisig >> multisig.log
           sentry-cli send-event -m "Multisig" --logfile multisig.log
+        shell: bash
     
         
