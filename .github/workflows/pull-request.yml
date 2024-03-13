@@ -8,6 +8,9 @@ jobs:
   health-check:
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Load secrets from 1Password
         uses: 1Password/load-secrets-action@v1.3.2
         with:
