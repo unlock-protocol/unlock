@@ -128,6 +128,7 @@ export default async function (
             swap.uniswapRouter,
             swap.swapCallData,
             callData,
+            actualAmount,
             transactionOptions
           )
         : lockContract.estimateGas.purchase(
@@ -163,6 +164,7 @@ export default async function (
         swap.uniswapRouter,
         swap.swapCallData,
         callData,
+        actualAmount,
         transactionOptions
       )
     : lockContract.purchase(

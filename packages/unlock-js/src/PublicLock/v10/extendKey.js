@@ -135,6 +135,7 @@ export default async function (
             swap.uniswapRouter,
             swap.swapCallData,
             callData,
+            actualAmount,
             transactionOptions
           )
         : lockContract.estimateGas.extend(
@@ -169,6 +170,7 @@ export default async function (
         swap.uniswapRouter,
         swap.swapCallData,
         callData,
+        actualAmount,
         transactionOptions
       )
     : lockContract.populateTransaction.extend(

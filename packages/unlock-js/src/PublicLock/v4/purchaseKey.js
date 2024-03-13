@@ -87,6 +87,7 @@ export default async function (
         swap.uniswapRouter,
         swap.swapCallData,
         callData,
+        actualAmount,
         transactionOptions
       )
     : lockContract.purchaseFor(owner, transactionOptions)
