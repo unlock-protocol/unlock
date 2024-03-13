@@ -7,7 +7,6 @@ import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IPermit2.sol";
 import "../interfaces/IPublicLock.sol";
 import "../interfaces/IUnlock.sol";
-import "hardhat/console.sol";
 
 library SafeCast160 {
   error UnsafeCast();
@@ -78,27 +77,15 @@ contract UnlockSwapPurchaser {
         : IMintableERC20(token).balanceOf(address(this));
   }
 
-  function getKeyPrice(
-    address lock,
-    bytes memory callData
-  ) public view returns (uint keyPrice) {
-    (
-      ,
-      uint[] memory keyPrices,
-      address[] memory recipients,
-      address[] memory referrers,
-      address[] memory keyManagers,
-      bytes[] memory purchaseData
-    ) = abi.decode(
-        callData,
-        (bytes4, uint[], address[], address[], address[], bytes[])
-      );
-
-    keyPrice = IPublicLock(lock).purchasePriceFor(
-      recipients[0],
-      referrers[0],
-      purchaseData[0]
-    );
+  /**
+   * Check if lock exists
+   * @param lock address of the lock
+   */
+  function lockExists(address lock) internal view returns (bool lockExists) {
+    (lockExists, , ) = IUnlock(unlockAddress).locks(lock);
+    if (!lockExists) {
+      revert LockDoesntExist(lock);
+    }
   }
 
   /**
@@ -109,6 +96,7 @@ contract UnlockSwapPurchaser {
    *
    * @param lock the address of the lock
    * @param srcToken the address of the token sent by the user (ERC20 or address(0) for native)
+   * @param keyPrice the expected price of the token (calculated from the lock)
    * @param amountInMax the maximum amount the user want to spend in the swap
    * @param uniswapRouter the address of the uniswap router
    * @param swapCalldata the Uniswap quote calldata returned by the SDK, to be sent to the router contract
@@ -122,24 +110,18 @@ contract UnlockSwapPurchaser {
   function swapAndCall(
     address lock,
     address srcToken,
+    uint keyPrice,
     uint amountInMax,
     address uniswapRouter,
     bytes memory swapCalldata,
     bytes memory callData
   ) public payable returns (bytes memory) {
-    // check if lock exists
-    (bool lockExists, , ) = IUnlock(unlockAddress).locks(lock);
-    console.log("IN THE SWAP AND CALL FUNCTION");
-    if (!lockExists) {
-      revert LockDoesntExist(lock);
-    }
-    console.log("LOCK EXISTS");
+    // make sure the lock is registered in Unlock
+    lockExists(lock);
 
-    // make sure
     if (uniswapRouters[uniswapRouter] != true) {
       revert UnautorizedRouter(uniswapRouter);
     }
-    console.log("ROUTER OK");
 
     // get lock pricing
     address destToken = IPublicLock(lock).tokenAddress();
@@ -154,29 +136,21 @@ contract UnlockSwapPurchaser {
       ? getBalance(srcToken) - msg.value
       : getBalance(srcToken);
 
-    console.log("CHECKING TOKEN");
     if (srcToken != address(0)) {
       // Transfer the specified amount of src ERC20 to this contract
-      console.log("TRANSFERING TOKENS");
-      console.log(srcToken);
-      console.log(msg.sender);
-      console.log(address(this));
-      console.log(amountInMax);
       TransferHelper.safeTransferFrom(
         srcToken,
         msg.sender,
         address(this),
         amountInMax
       );
-      console.log("TOKENS TRANSFERED");
 
       // Approve the router to spend src ERC20
       TransferHelper.safeApprove(srcToken, uniswapRouter, amountInMax);
-      console.log("TOKENS APPROVDED");
+
       // approve PERMIT2 to manipulate the token
       IERC20(srcToken).approve(permit2, amountInMax);
     }
-    console.log("SO FAR SO GOOD");
 
     // issue PERMIT2 Allowance
     IPermit2(permit2).approve(
@@ -208,19 +182,19 @@ contract UnlockSwapPurchaser {
         destToken == address(0)
           ? getBalance(destToken) - msg.value
           : getBalance(destToken)
-      ) < balanceTokenDestBefore + getKeyPrice(lock, callData)
+      ) < balanceTokenDestBefore + keyPrice
     ) {
       revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
     if (destToken != address(0)) {
-      IMintableERC20(destToken).approve(lock, getKeyPrice(lock, callData));
+      IMintableERC20(destToken).approve(lock, keyPrice);
     }
 
     // call the lock
     (bool lockCallSuccess, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? getKeyPrice(lock, callData) : 0
+      value: destToken == address(0) ? keyPrice : 0
     }(callData);
 
     if (lockCallSuccess == false) {
