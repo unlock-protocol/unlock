@@ -1,4 +1,3 @@
-import { networks } from '@unlock-protocol/networks'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 export const getAllReceipts = async ({
