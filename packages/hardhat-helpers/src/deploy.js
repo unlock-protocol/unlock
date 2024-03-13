@@ -23,14 +23,15 @@ export const deployContract = async (
   console.log(` > contract deployed at : ${address} (tx: ${hash})`)
 
   if (!(await isLocalhost())) {
-    await verify({
+    const verifyArgs = {
       address,
       deployArgs,
-      // pass fully qualified path for verification
-      contract: Factory
-        ? null
-        : contractNameOrFullyQualifiedNameOrEthersFactory,
-    })
+    }
+    if (typeof contractNameOrFullyQualifiedNameOrEthersFactory === 'string') {
+      verifyArgs.contract = contractNameOrFullyQualifiedNameOrEthersFactory
+    }
+
+    await verify(verifyArgs)
   }
 
   return {
