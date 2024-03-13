@@ -3,7 +3,7 @@ import { Connected } from '../Connected'
 import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -13,8 +13,6 @@ import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
 import { isEthPassSupported } from '~/services/ethpass'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQuery } from '@tanstack/react-query'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -22,6 +20,7 @@ import { networks } from '@unlock-protocol/networks'
 import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface MintingScreenProps {
   lockName: string
@@ -52,26 +51,17 @@ export const MintingScreen = ({
   network,
   states = DEFAULT_STATES,
 }: MintingScreenProps) => {
-  const web3Service = useWeb3Service()
   const config = useConfig()
   const transactionNetwork = mint.network || network
 
   // TODO: This returns the Key with the lowest index for given lock dddres from the onwer causing weird behaviour when buying 2-nd... keys
-  const { data: tokenId } = useQuery(
-    ['userTokenId', mint, owner, lockAddress, transactionNetwork, web3Service],
-    async () => {
-      return web3Service.getTokenIdForOwner(
-        lockAddress,
-        owner!,
-        transactionNetwork
-      )
-    },
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: owner!, lockAddress, network },
     {
       enabled: mint?.status === 'FINISHED',
     }
   )
   const hasTokenId = !!tokenId
-
   return (
     <div className="flex flex-col items-center justify-evenly h-full space-y-2">
       <TransactionAnimation status={mint?.status} />
@@ -137,12 +127,12 @@ export function Minting({
   const config = useConfig()
   const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
+  const [doneWaiting, setDoneWaiting] = useState(false)
 
   useEffect(() => {
-    if (mint?.status !== 'PROCESSING') {
+    if (doneWaiting || !mint) {
       return
     }
-
     const waitForTokenIds = async (): Promise<string[]> => {
       const web3Service = new Web3Service(networks)
 
@@ -197,6 +187,7 @@ export function Minting({
             network: mint!.network,
             transactionHash: mint!.transactionHash!,
           })
+          setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
