@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { expect } = require('chai')
 const { ethers, unlock } = require('hardhat')
 

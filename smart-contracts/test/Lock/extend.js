@@ -15,7 +15,7 @@ let testToken
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const someTokens = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / extend keys', () => {
+describe('Lock / extend keys', () => {
   scenarios.forEach((isErc20) => {
     let lock
     let nonExpiringLock

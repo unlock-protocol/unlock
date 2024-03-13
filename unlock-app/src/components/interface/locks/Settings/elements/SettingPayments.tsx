@@ -1,10 +1,12 @@
 import { Lock } from '~/unlockTypes'
-import { CreditCardForm } from '../forms/CreditCardForm'
+import { CreditCardWithStripeForm } from '../forms/CreditCardWithStripeForm'
 import { ReceiptBaseForm } from '../forms/ReceiptBaseForm'
 import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { SettingCard } from './SettingCard'
 import { UpdateGasRefundForm } from '../forms/UpdateGasRefundForm'
+import Link from 'next/link'
+import { CrossmintSettingsForm } from '../forms/CrossmintSetting'
 
 interface SettingPaymentsProps {
   lockAddress: string
@@ -38,11 +40,37 @@ export const SettingPayments = ({
       </SettingCard>
 
       <SettingCard
-        label="Credit Card Payment"
+        label="Credit Card Payment with Stripe"
         description="Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member."
         isLoading={isLoading}
       >
-        <CreditCardForm
+        <CreditCardWithStripeForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      </SettingCard>
+
+      <SettingCard
+        label="Payments with Crossmint"
+        description={
+          <>
+            Enabling payment with{' '}
+            <Link
+              href="https://www.crossmint.com/products/nft-checkout"
+              target="_blank"
+              className="underline"
+            >
+              Crossmint
+            </Link>{' '}
+            will allow your members to pay with by card while you receive funds
+            on your lock contract directly.
+          </>
+        }
+        isLoading={isLoading}
+      >
+        <CrossmintSettingsForm
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}

@@ -17,6 +17,7 @@ import { MetadataInputType } from '@unlock-protocol/core'
 import { useRsvp } from '~/hooks/useRsvp'
 import { IoWarningOutline } from 'react-icons/io5'
 import { useCaptcha } from '~/hooks/useCaptcha'
+import { useMutation } from '@tanstack/react-query'
 
 interface WalletlessRegistrationProps {
   lockAddress: string
@@ -126,8 +127,17 @@ export const WalletlessRegistrationClaim = ({
     network,
   })
 
-  const onRSVP = async ({ data, captcha }: { data: any; captcha: string }) => {
+  const onRSVP = async ({
+    recipient,
+    data,
+    captcha,
+  }: {
+    recipient?: string
+    data: any
+    captcha: string
+  }) => {
     const { hash, owner, message } = await claim({
+      recipient,
       metadata: data,
       captcha,
     })
@@ -241,6 +251,8 @@ export const RegistrationForm = ({
     reset,
   } = localForm
 
+  const handleResolve = useMutation(onResolveName)
+
   const onSubmit = async ({ recipient, ...data }: any) => {
     setLoading(true)
     try {
@@ -259,6 +271,8 @@ export const RegistrationForm = ({
     }
     setLoading(false)
   }
+
+  const isLoading = loading || handleResolve.isLoading
 
   return (
     <form
@@ -350,16 +364,15 @@ export const RegistrationForm = ({
               withIcon
               placeholder="0x..."
               label="Wallet address or ENS"
-              description="Enter your address to get the NFT ticket right in your wallet and to save on gas fees."
-              onResolveName={onResolveName}
-              defaultValue={field.value}
+              description="Enter your address to get the NFT ticket right in your wallet."
+              onResolveName={handleResolve.mutateAsync}
               {...field}
             />
           )
         }}
       />
 
-      <Button disabled={loading} loading={loading} type="submit">
+      <Button disabled={isLoading} loading={isLoading} type="submit">
         RSVP now
       </Button>
     </form>

@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployContracts, reverts } = require('../helpers')
 
@@ -5,9 +6,9 @@ let unlock, PublicLock
 let lockTemplate
 let signer
 
-contract('Lock / setLockTemplate', () => {
+describe('Lock / setLockTemplate', () => {
   beforeEach(async () => {
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
 
     PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'

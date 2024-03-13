@@ -28,21 +28,44 @@ interface Filter {
   key: string
   label: string
   options?: MemberFilter[]
-  onlyLockManager?: boolean
   hideSearch?: boolean
+  placeholder?: string
+  show?: (filters: FilterProps) => boolean
 }
 
 const FILTER_ITEMS: Filter[] = [
-  { key: 'owner', label: 'Owner' },
-  { key: 'tokenId', label: 'Token id' },
-  { key: 'email', label: 'Email', onlyLockManager: true },
   {
-    key: 'checkedInAt',
-    label: 'Checked in time',
-    hideSearch: true,
-    onlyLockManager: true,
+    key: 'owner',
+    label: 'Owner',
+    placeholder: 'Wallet address or ENS',
+    show: () => {
+      return true
+    },
   },
-  { key: 'transactionHash', label: 'Transaction Hash' },
+  {
+    key: 'tokenId',
+    label: 'Token id',
+    show: (filters) => {
+      return filters.approval === 'minted'
+    },
+    placeholder: '123',
+  },
+  {
+    key: 'email',
+    label: 'Email',
+    show: () => {
+      return true
+    },
+    placeholder: 'your@email.com',
+  },
+  {
+    key: 'transactionHash',
+    label: 'Transaction Hash',
+    show: (filters) => {
+      return filters.approval === 'minted'
+    },
+    placeholder: '0x123...',
+  },
 ]
 
 export enum ExpirationStatus {
@@ -104,10 +127,12 @@ export const FilterBar = ({
 }: FilterBarProps) => {
   const [isTyping, setIsTyping] = useState(false)
   const [rawQueryValue, setRawQueryValue] = useState('')
+  const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
 
   const setFiltersAndResetPage = (newFilter: any) => {
     setFilters({
       ...filters,
+      filterKey,
       ...newFilter,
     })
     setPage(1)
@@ -138,15 +163,18 @@ export const FilterBar = ({
     filters.approval !== ApprovalStatus.MINTED
   )
 
-  const [filterKey, setFilterKey] = useState(filters.filterKey ?? 'owner')
-
-  // show only allowed filter, some filter are visible only to lockManager (`email` and `checkedInAt`)
-  const filterOptions = FILTER_ITEMS.filter(
-    (filter: Filter) => !filter.onlyLockManager || true
-  ).map(({ key: value, label }: Filter) => ({
+  const filterOptions = FILTER_ITEMS.filter((filter: Filter) => {
+    if (typeof filter.show !== 'function') {
+      return true
+    }
+    return filter.show(filters)
+  }).map(({ key: value, label }: Filter) => ({
     value,
     label,
   }))
+
+  const placeholder = FILTER_ITEMS.find((filter) => filter.key === filterKey)
+    ?.placeholder
 
   const lockOptions = locks
     ? Object.keys(locks).map((address) => {
@@ -254,6 +282,7 @@ export const FilterBar = ({
               }}
             />
             <Input
+              placeholder={placeholder}
               size="small"
               onChange={(e: any) => {
                 setIsTyping(true)

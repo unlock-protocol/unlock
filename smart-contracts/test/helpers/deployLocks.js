@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const PublicLock = artifacts.require('contracts/PublicLock.sol:PublicLock')
 const deployContracts = require('../fixtures/deploy')
 const {
   ADDRESS_ZERO,
@@ -14,14 +13,16 @@ async function deployLock({
   tokenAddress = ADDRESS_ZERO,
   name = 'FIRST',
   keyPrice,
-  isEthers,
 } = {}) {
   if (!unlock) {
     ;({ unlock } = await deployContracts())
   }
+
+  // parse deployer as ethers signer
   if (!deployer) {
-    const [defaultDeployer] = await ethers.getSigners()
-    deployer = defaultDeployer.address
+    ;[deployer] = await ethers.getSigners()
+  } else if (typeof deployer === 'string') {
+    deployer = await ethers.getSigner(deployer)
   }
 
   const {
@@ -43,53 +44,31 @@ async function deployLock({
     lockName,
   ]
 
-  const calldata = await createLockCalldata({ args, from: deployer })
+  const calldata = await createLockCalldata({ args, from: deployer.address })
 
-  // support passing unlock as either truffle or ethersjs contract instance
+  // attach Lock contract abi from newly created lock in Unlock event
   const tx = await unlock.createUpgradeableLock(calldata)
-  let evt
-  if (unlock.constructor.name === 'TruffleContract') {
-    evt = tx.logs.find((v) => v.event === 'NewLock')
-  } else {
-    const { events } = await tx.wait()
-    evt = events.find((v) => v.event === 'NewLock')
-  }
-  const { newLockAddress } = evt.args
-  const lock = await PublicLock.at(newLockAddress)
+  const { events } = await tx.wait()
+  const {
+    args: { newLockAddress },
+  } = events.find((v) => v.event === 'NewLock')
+
+  const lock = await ethers.getContractAt(
+    'contracts/PublicLock.sol:PublicLock',
+    newLockAddress
+  )
 
   if (maxKeysPerAddress) {
-    await lock.updateLockConfig(
+    await lock.connect(deployer).updateLockConfig(
       expirationDuration,
       maxNumberOfKeys,
-      10, // default maxKeysPerAddress to 10 for tests
-      { from: deployer }
+      10 // default maxKeysPerAddress to 10 for tests
     )
   }
 
-  return isEthers
-    ? await ethers.getContractAt(
-        'contracts/PublicLock.sol:PublicLock',
-        lock.address
-      )
-    : lock
-}
-
-async function deployAllLocks(unlock, from, tokenAddress = ADDRESS_ZERO) {
-  const locks = await Promise.all(
-    Object.keys(Locks).map((name) =>
-      deployLock(unlock, from, tokenAddress, Locks[name])
-    )
-  )
-  return locks.reduce(
-    (acc, d, i) => ({
-      ...acc,
-      [Object.keys(Locks)[i]]: locks[i],
-    }),
-    {}
-  )
+  return lock
 }
 
 module.exports = {
   deployLock,
-  deployAllLocks,
 }

@@ -32,9 +32,11 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                 Number(lock!.keyPrice)
               : 0
 
-          const symbol = payment?.route?.trade
-            ? payment.route.trade.inputAmount.currency.symbol
-            : item.symbol
+          const symbol = (
+            payment?.route?.trade
+              ? payment.route.trade.inputAmount.currency.symbol
+              : item.symbol
+          ).toUpperCase()
 
           return (
             <div
@@ -57,7 +59,7 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
 
               {/* We hide the unit prices since we don't have them when using swap and pay */}
               {!payment.route && (
-                <div className="font-bold">
+                <span className="font-bold whitespace-nowrap">
                   {item.amount <= 0
                     ? 'FREE'
                     : payment?.route
@@ -67,7 +69,7 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                           .toFixed()
                       ).toLocaleString()} ${symbol}`
                     : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
-                </div>
+                </span>
               )}
             </div>
           )

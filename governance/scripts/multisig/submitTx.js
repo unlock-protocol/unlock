@@ -13,7 +13,6 @@ const SafeApiKit = require('@safe-global/api-kit').default
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
-  42220: 'http://mainnet-tx-svc.celo-safe-prod.celo-networks-dev.org/',
   // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
   80001: 'http://localhost:8000/cgw/',
 }
@@ -60,9 +59,10 @@ async function main({ safeAddress, tx, signer }) {
   const txs = !Array.isArray(tx) ? [tx] : tx
 
   const explainer = txs
-    .map(
-      ({ functionName, functionArgs }) =>
-        `'${functionName}(${Object.values(functionArgs).toString()})'`
+    .map(({ functionName, functionArgs, explainer }) =>
+      explainer
+        ? explainer
+        : `'${functionName}(${Object.values(functionArgs).toString()})'`
     )
     .join(', ')
   console.log(`Submitting txs: ${explainer}`)

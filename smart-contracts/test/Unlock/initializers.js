@@ -1,7 +1,8 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { reverts, deployContracts, parseInterface } = require('../helpers')
 
-contract('Unlock / initializers', (accounts) => {
+describe('Unlock / initializers', () => {
   it('There is only 1 public initializer in Unlock', async () => {
     const { interface } = await ethers.getContractFactory('Unlock')
     const count = parseInterface(interface).filter(
@@ -12,6 +13,7 @@ contract('Unlock / initializers', (accounts) => {
 
   it('initialize may not be called again', async () => {
     const { unlock } = await deployContracts()
-    await reverts(unlock.initialize(accounts[0]), 'ALREADY_INITIALIZED')
+    const [, someAccount] = await ethers.getSigners()
+    await reverts(unlock.initialize(someAccount.address), 'ALREADY_INITIALIZED')
   })
 })

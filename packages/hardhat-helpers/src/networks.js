@@ -45,6 +45,7 @@ const hardhatNetworks = {
     chainId: 31337,
     url: `http://${testHost}:8545`,
     name: 'localhost',
+    zksync: !!process.env.ZK_SYNC, // allow zksync on localhost
   },
 }
 
@@ -57,12 +58,31 @@ Object.keys(networks).forEach((key) => {
       accounts: getAccounts(networks[key].name),
     }
   }
+
+  if (key.includes('zksync')) {
+    hardhatNetworks[key] = {
+      ...hardhatNetworks[key],
+      zksync: true,
+      ethNetwork: networks[key].isTestNetwork ? 'sepolia' : 'mainnet',
+      verifyURL: networks[key].isTestNetwork
+        ? 'https://explorer.sepolia.era.zksync.dev/contract_verification'
+        : 'https://zksync2-mainnet-explorer.zksync.io/contract_verification',
+    }
+  }
+
   // duplicate xdai record as gnosis
   if (key === 'xdai') {
     hardhatNetworks['gnosis'] = {
       chainId: 100,
       name: 'gnosis',
       url: networks[key].provider,
+    }
+  }
+
+  // allow zksync on hardhat default network
+  if (process.env.ZK_SYNC) {
+    hardhatNetworks.hardhat = {
+      zksync: true,
     }
   }
 })

@@ -83,6 +83,7 @@ export default async function (
     ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress || ZERO,
+        actualAmount,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,

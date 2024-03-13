@@ -1,7 +1,5 @@
-const { ethers, upgrades, artifacts } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 const { copySync } = require('fs-extra')
-
-const UnlockTruffle = artifacts.require('Unlock')
 
 module.exports = async () => {
   // when running a mainnet fork
@@ -42,8 +40,7 @@ module.exports = async () => {
   await udt.deployed()
 
   return {
-    unlock: await UnlockTruffle.at(unlock.address),
-    unlockEthers: unlock,
+    unlock,
     publicLock,
     udt,
   }

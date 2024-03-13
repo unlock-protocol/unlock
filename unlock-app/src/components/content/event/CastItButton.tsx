@@ -28,9 +28,6 @@ export const CastItButton = ({ event, eventUrl }: CastItButtonProps) => {
       }
     )}.\n\n${eventUrl.toString()}`
   )
-  // tweetIntent.searchParams.set('embeds&#91;&#93;', eventUrl.toString())
-  // console.log(tweetIntent.toString())
-
   return (
     <Tooltip
       delay={0}

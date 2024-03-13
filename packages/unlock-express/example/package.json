@@ -11,8 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "@unlock-protocol/unlock-express": "workspace:^",
-    "express": "4.18.2",
-    "express-session": "1.17.3",
+    "express": "4.18.3",
+    "express-session": "1.18.0",
     "passport": "0.7.0"
   }
 }

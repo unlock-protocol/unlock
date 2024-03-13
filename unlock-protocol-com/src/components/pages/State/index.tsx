@@ -354,7 +354,7 @@ export function State() {
           Object.keys(networks).map(async (key) => {
             if (!networks[key].isTestNetwork) {
               const { data } = await getSubgraph4GNP(
-                networks[key].subgraph.endpointV2,
+                networks[key].subgraph.endpoint,
                 currentDay - 1030 // why?
               )
               return data
@@ -387,7 +387,7 @@ export function State() {
         )
       } else {
         const { data } = await getSubgraph4GNP(
-          networks[selectedNetwork].subgraph.endpointV2,
+          networks[selectedNetwork].subgraph.endpoint,
           currentDay - 1030 // why?
         )
         setSelectedNetworkSubgraphData(data)
@@ -436,7 +436,7 @@ export function State() {
         Object.keys(networks).map(async (key) => {
           if (!networks[key].isTestNetwork) {
             const { data } = await getSubgraph4GNP(
-              networks[key].subgraph.endpointV2,
+              networks[key].subgraph.endpoint,
               currentDay - 1030 // why?
             )
             return { name: networks[key].name, data }

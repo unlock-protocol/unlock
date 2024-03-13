@@ -1,12 +1,16 @@
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
+
 const { reverts, deployLock, deployContracts } = require('../../helpers')
 const metadata = require('../../fixtures/metadata')
 
 let lock
 let unlock
-let txObj
+let lockManager, someAccount
 
-contract('Lock / erc721 / tokenSymbol', (accounts) => {
+describe('Lock / erc721 / tokenSymbol', () => {
   before(async () => {
+    ;[lockManager, someAccount] = await ethers.getSigners()
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })
   })
@@ -18,16 +22,13 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
 
     describe('set the global symbol', () => {
       beforeEach(async () => {
-        txObj = await unlock.configUnlock(
+        await unlock.connect(lockManager).configUnlock(
           await unlock.udt(),
           await unlock.weth(),
           0,
           'KEY',
           await unlock.globalBaseTokenURI(),
-          1, // mainnet
-          {
-            from: accounts[0],
-          }
+          1 // mainnet
         )
       })
 
@@ -45,16 +46,13 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
       await reverts(
-        unlock.configUnlock(
+        unlock.connect(someAccount).configUnlock(
           await unlock.udt(),
           await unlock.weth(),
           0,
           'BTC',
           await unlock.globalBaseTokenURI(),
-          1, // mainnet
-          {
-            from: accounts[1],
-          }
+          1 // mainnet
         )
       )
     })
@@ -62,25 +60,22 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
 
   describe('A custom token symbol stored in the lock', () => {
     it('should allow the lock owner to set a custom token symbol', async () => {
-      await lock.setLockMetadata(...Object.values(metadata), {
-        from: accounts[0],
-      })
+      await lock
+        .connect(lockManager)
+        .setLockMetadata(...Object.values(metadata))
       assert.equal(await lock.symbol(), metadata.symbol)
     })
 
     it('should emit the NewLockConfig event', async () => {
-      txObj = await lock.setLockMetadata(...Object.values(metadata), {
-        from: accounts[0],
-      })
-      const event = txObj.logs.find(({ event }) => event === 'LockMetadata')
+      const tx = await lock.setLockMetadata(...Object.values(metadata))
+      const { events } = await tx.wait()
+      const event = events.find(({ event }) => event === 'LockMetadata')
       assert.equal(event.args.symbol, metadata.symbol)
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {
       await reverts(
-        lock.setLockMetadata(...Object.values(metadata), {
-          from: accounts[1],
-        }),
+        lock.connect(someAccount).setLockMetadata(...Object.values(metadata)),
         'ONLY_LOCK_MANAGER'
       )
     })

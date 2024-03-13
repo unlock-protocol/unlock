@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.18.3 https://hardhat.org
+// Sources flattened with hardhat v2.20.1 https://hardhat.org
 
 // SPDX-License-Identifier: GPL-2.0-or-later AND MIT
 
@@ -749,9 +749,16 @@ interface IPublicLock {
    * - `from`, `to` cannot be zero.
    * - `tokenId` must be owned by `from`.
    * - If the caller is not `from`, it must be have been allowed to move this
-   * NFT by either {approve} or {setApprovalForAll}.
+   * NFT by either `approve` or `setApprovalForAll`.
    */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
+
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes calldata data
+  ) external;
 
   /**
    * an ERC721-like function to transfer a token from one account to another.
@@ -759,7 +766,7 @@ interface IPublicLock {
    * @param to the address that will receive the token
    * @param tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either {approve} or {setApprovalForAll}.
+   * either `approve` or `setApprovalForAll`.
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(address from, address to, uint256 tokenId) external;
@@ -815,13 +822,6 @@ interface IPublicLock {
     address _owner,
     address _operator
   ) external view returns (bool);
-
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId,
-    bytes calldata data
-  ) external;
 
   /**
    * Returns the total number of keys, including non-valid ones
@@ -1333,6 +1333,17 @@ contract UnlockSwapPurchaser {
   }
 
   /**
+   * Check if lock exists
+   * @param lock address of the lock
+   */
+  function lockExists(address lock) internal view returns (bool lockExists) {
+    (lockExists, , ) = IUnlock(unlockAddress).locks(lock);
+    if (!lockExists) {
+      revert LockDoesntExist(lock);
+    }
+  }
+
+  /**
    * Swap tokens and call a function a lock contract.
    *
    * Calling this function will 1) swap the token sent by the user into the token (ERCC20 or native) used by
@@ -1340,6 +1351,7 @@ contract UnlockSwapPurchaser {
    *
    * @param lock the address of the lock
    * @param srcToken the address of the token sent by the user (ERC20 or address(0) for native)
+   * @param keyPrice the expected price of the token (calculated from the lock)
    * @param amountInMax the maximum amount the user want to spend in the swap
    * @param uniswapRouter the address of the uniswap router
    * @param swapCalldata the Uniswap quote calldata returned by the SDK, to be sent to the router contract
@@ -1353,18 +1365,15 @@ contract UnlockSwapPurchaser {
   function swapAndCall(
     address lock,
     address srcToken,
+    uint keyPrice,
     uint amountInMax,
     address uniswapRouter,
     bytes memory swapCalldata,
     bytes memory callData
   ) public payable returns (bytes memory) {
-    // check if lock exists
-    (bool lockExists, , ) = IUnlock(unlockAddress).locks(lock);
-    if (!lockExists) {
-      revert LockDoesntExist(lock);
-    }
+    // make sure the lock is registered in Unlock
+    lockExists(lock);
 
-    // make sure
     if (uniswapRouters[uniswapRouter] != true) {
       revert UnautorizedRouter(uniswapRouter);
     }
@@ -1428,19 +1437,19 @@ contract UnlockSwapPurchaser {
         destToken == address(0)
           ? getBalance(destToken) - msg.value
           : getBalance(destToken)
-      ) < balanceTokenDestBefore + IPublicLock(lock).keyPrice()
+      ) < balanceTokenDestBefore + keyPrice
     ) {
       revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
     if (destToken != address(0)) {
-      IMintableERC20(destToken).approve(lock, IPublicLock(lock).keyPrice());
+      IMintableERC20(destToken).approve(lock, keyPrice);
     }
 
     // call the lock
     (bool lockCallSuccess, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? IPublicLock(lock).keyPrice() : 0
+      value: destToken == address(0) ? keyPrice : 0
     }(callData);
 
     if (lockCallSuccess == false) {

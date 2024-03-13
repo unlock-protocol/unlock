@@ -1,4 +1,3 @@
-const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const {
   deployERC20,
@@ -6,6 +5,7 @@ const {
   purchaseKey,
   ADDRESS_ZERO,
   deployLock,
+  increaseTimeTo,
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
@@ -16,7 +16,7 @@ const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / Recurring memberships', () => {
+describe('Lock / Recurring memberships', () => {
   let lockOwner
   let keyOwner
   let randomSigner
@@ -114,7 +114,7 @@ contract('Lock / Recurring memberships', () => {
     beforeEach(async () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      await time.increaseTo(expirationTs.toNumber())
+      await increaseTimeTo(expirationTs)
     })
 
     describe('fails when lock settings have changed', () => {
@@ -200,7 +200,7 @@ contract('Lock / Recurring memberships', () => {
           '0'
         )
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-        await time.increaseTo(expirationTs.toNumber())
+        await increaseTimeTo(expirationTs)
         // now reverts
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
@@ -222,7 +222,7 @@ contract('Lock / Recurring memberships', () => {
 
         //
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-        await time.increaseTo(expirationTs.toNumber())
+        await increaseTimeTo(expirationTs)
 
         // now funds are not enough
         await reverts(

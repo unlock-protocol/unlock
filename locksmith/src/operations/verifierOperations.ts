@@ -58,13 +58,15 @@ export const createVerifier = async (
   lockAddress: string,
   address: string,
   lockManager: string,
-  network: number
+  network: number,
+  name: string | null
 ) => {
   const newVerifier = new Verifier({
     lockAddress,
     address,
     lockManager,
     network,
+    name,
   })
   return newVerifier.save()
 }

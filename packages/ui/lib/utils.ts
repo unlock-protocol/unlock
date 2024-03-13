@@ -7,10 +7,17 @@ export const minifyAddress = (address: string) => {
     : address
 }
 
-export const isAddressOrEns = (address = '') => {
-  return (
-    address?.toLowerCase()?.includes('.eth') || ethers.utils.isAddress(address)
-  )
+export const isAddress = (address = '') => {
+  return ethers.utils.isAddress(address)
+}
+
+// TODO: support other TLDs
+export const isEns = (address = '') => {
+  return address?.toLowerCase()?.includes('.eth')
+}
+
+export const isAddressOrEns = (addressOrEns = '') => {
+  return isEns(addressOrEns) || isAddress(addressOrEns)
 }
 
 export const unlockEmailSubscription = async (email: string) => {

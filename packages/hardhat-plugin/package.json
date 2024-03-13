@@ -36,7 +36,7 @@
     "directory": "packages/hardhat-plugin"
   },
   "devDependencies": {
-    "@types/chai": "4.3.11",
+    "@types/chai": "4.3.12",
     "@types/fs-extra": "11.0.4",
     "@types/mocha": "10.0.6",
     "@types/node": "20.10.1",
@@ -46,7 +46,7 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "chai": "4.3.10",
     "eslint": "8.54.0",
-    "hardhat": "2.19.5",
+    "hardhat": "2.20.1",
     "mocha": "10.2.0",
     "prettier": "3.1.0",
     "ts-mocha": "10.0.0",
@@ -58,8 +58,7 @@
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
-    "ethers": "^5.7.x",
-    "hardhat": "^2.12.x"
+    "ethers": "5.7.2"
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.3"

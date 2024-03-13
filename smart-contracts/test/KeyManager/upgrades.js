@@ -4,7 +4,7 @@ const { reverts } = require('../helpers')
 
 let proxy
 
-contract('KeyManager', (accounts) => {
+describe('KeyManager', () => {
   beforeEach(async () => {
     // deploy proxy
     const KeyManager = await ethers.getContractFactory('KeyManager')
@@ -27,7 +27,7 @@ contract('KeyManager', (accounts) => {
   })
 
   it('should not be upgradable by an attacker', async () => {
-    const attacker = await ethers.getSigner(accounts[3])
+    const [, , , attacker] = await ethers.getSigners()
     const KeyManagerV2 = await ethers.getContractFactory(
       'KeyManagerV2',
       attacker

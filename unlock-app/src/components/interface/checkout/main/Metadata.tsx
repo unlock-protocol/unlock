@@ -114,99 +114,105 @@ export const MetadataInputs = ({
   )
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
+  const hideRecipient = shouldHideRecipient(paywallConfig, lock)
 
   return (
     <div className="grid gap-2">
-      {hideRecipientAddress ? (
-        <div className="space-y-1">
-          <div className="ml-1 text-sm">
-            {isUnlockAccount ? 'Email' : label}:
-          </div>
-          <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
-            <div className="w-32 text-sm truncate">
-              {isUnlockAccount ? email : recipient}
-            </div>
-            <Button
-              type="button"
-              onClick={(event) => {
-                event.preventDefault()
-                setHideRecipientAddress(false)
-              }}
-              size="tiny"
-            >
-              Change
-            </Button>
-          </div>
-          <p className="text-xs text-gray-600">
-            {isUnlockAccount
-              ? 'The email address that will receive the membership NFT'
-              : 'The wallet address that will receive the membership NFT'}
-          </p>
-        </div>
-      ) : (
-        <Controller
-          name={`metadata.${id}.recipient`}
-          rules={{
-            required,
-            validate: {
-              max_keys: async (value) => {
-                try {
-                  const address = await getAddressForName(value)
-                  const numberOfMemberships = await web3Service.balanceOf(
-                    lock!.address,
-                    address,
-                    lock!.network
-                  )
-                  return numberOfMemberships < (lock?.maxKeysPerAddress || 1)
-                    ? true
-                    : 'Address already holds the maximum number of memberships.'
-                } catch (error) {
-                  console.error(error)
-                  return 'There is a problem with using this address. Try another.'
-                }
-              },
-            },
-          }}
-          render={({ field: { onChange, ref, onBlur } }) => {
-            return (
-              <div className="grid ">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm" htmlFor={label}>
-                    {label}:
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm">No wallet address?</div>
-                    <Toggle
-                      value={useEmail}
-                      onChange={(value) => {
-                        setUseEmail(value)
-                      }}
-                      size="small"
-                    />
-                  </div>
-                </div>
-                <input
-                  className={inputClass}
-                  placeholder={placeholder}
-                  name={label}
-                  id={label}
-                  type={useEmail ? 'email' : 'text'}
-                  disabled={disabled}
-                  onChange={(event) => {
-                    onChange(onRecipientChange(event))
-                  }}
-                  ref={ref}
-                  onBlur={onBlur}
-                  autoComplete={useEmail ? 'email' : label}
-                />
-                {description && !error && (
-                  <p className="text-xs text-gray-600"> {description} </p>
-                )}
-                {error && <p className="text-xs text-red-500">{error}</p>}
+      {!hideRecipient && (
+        <>
+          {hideRecipientAddress ? (
+            <div className="space-y-1">
+              <div className="ml-1 text-sm">
+                {isUnlockAccount ? 'Email' : label}:
               </div>
-            )
-          }}
-        />
+              <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
+                <div className="w-32 text-sm truncate">
+                  {isUnlockAccount ? email : recipient}
+                </div>
+                <Button
+                  type="button"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    setHideRecipientAddress(false)
+                  }}
+                  size="tiny"
+                >
+                  Change
+                </Button>
+              </div>
+              <p className="text-xs text-gray-600">
+                {isUnlockAccount
+                  ? 'The email address that will receive the membership NFT'
+                  : 'The wallet address that will receive the membership NFT'}
+              </p>
+            </div>
+          ) : (
+            <Controller
+              name={`metadata.${id}.recipient`}
+              rules={{
+                required,
+                validate: {
+                  max_keys: async (value) => {
+                    try {
+                      const address = await getAddressForName(value)
+                      const numberOfMemberships = await web3Service.balanceOf(
+                        lock!.address,
+                        address,
+                        lock!.network
+                      )
+                      return numberOfMemberships <
+                        (lock?.maxKeysPerAddress || 1)
+                        ? true
+                        : 'Address already holds the maximum number of memberships.'
+                    } catch (error) {
+                      console.error(error)
+                      return 'There is a problem with using this address. Try another.'
+                    }
+                  },
+                },
+              }}
+              render={({ field: { onChange, ref, onBlur } }) => {
+                return (
+                  <div className="grid ">
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm" htmlFor={label}>
+                        {label}:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <div className="text-sm">No wallet address?</div>
+                        <Toggle
+                          value={useEmail}
+                          onChange={(value) => {
+                            setUseEmail(value)
+                          }}
+                          size="small"
+                        />
+                      </div>
+                    </div>
+                    <input
+                      className={inputClass}
+                      placeholder={placeholder}
+                      name={label}
+                      id={label}
+                      type={useEmail ? 'email' : 'text'}
+                      disabled={disabled}
+                      onChange={(event) => {
+                        onChange(onRecipientChange(event))
+                      }}
+                      ref={ref}
+                      onBlur={onBlur}
+                      autoComplete={useEmail ? 'email' : label}
+                    />
+                    {description && !error && (
+                      <p className="text-xs text-gray-600"> {description} </p>
+                    )}
+                    {error && <p className="text-xs text-red-500">{error}</p>}
+                  </div>
+                )
+              }}
+            />
+          )}
+        </>
       )}
 
       {metadataInputs
@@ -452,4 +458,13 @@ const recipientFromConfig = (
     return lockRecipient
   }
   return ''
+}
+
+const shouldHideRecipient = (
+  paywall: PaywallConfigType,
+  lock: Lock | LockState | undefined
+): boolean => {
+  return !!(
+    paywall.skipRecipient || paywall?.locks[lock!.address].skipRecipient
+  )
 }

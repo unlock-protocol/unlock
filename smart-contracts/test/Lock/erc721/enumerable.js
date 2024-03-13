@@ -1,17 +1,17 @@
+const { assert } = require('chai')
 const { reverts } = require('../../helpers/errors')
-const { deployLock, purchaseKeys } = require('../../helpers')
+const { deployLock, purchaseKeys, compareBigNumbers } = require('../../helpers')
 
 let lock
 let tokenIds
 let keyOwners
 
-contract('Lock / erc721 / enumerable', (accounts) => {
+describe('Lock / erc721 / enumerable', () => {
   before(async () => {
     lock = await deployLock()
 
     // Buy test keys for each account
-    keyOwners = accounts.slice(1, 6)
-    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
+    ;({ tokenIds, keyOwners } = await purchaseKeys(lock, 5))
   })
 
   it('tokenByIndex is a no-op', async () => {
@@ -29,11 +29,11 @@ contract('Lock / erc721 / enumerable', (accounts) => {
     for (let i = 0; i < keyOwners.length; i++) {
       const id = await lock.tokenOfOwnerByIndex(keyOwners[i], 0)
       const expected = tokenIds[i]
-      assert.equal(id.toString(), expected.toString())
+      compareBigNumbers(id, expected)
     }
   })
 
   it('tokenOfOwnerByIndex fails when index > 0', async () => {
-    await reverts(lock.tokenOfOwnerByIndex(accounts[0], 1))
+    await reverts(lock.tokenOfOwnerByIndex(keyOwners[0], 1))
   })
 })

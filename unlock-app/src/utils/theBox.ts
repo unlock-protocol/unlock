@@ -63,7 +63,7 @@ export const getCrossChainRoutes = async ({
     dstChainId: lock.network,
     dstToken: lock.currencyContractAddress || ethers.constants.AddressZero,
     slippage: 1, // 1%
-    actionType: 'nft-prefer-mint',
+    actionType: 'nft-mint',
     actionConfig: {
       contractAddress: lock.address,
       chainId: lock.network,

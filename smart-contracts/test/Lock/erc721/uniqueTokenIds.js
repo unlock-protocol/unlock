@@ -1,36 +1,32 @@
-const { ADDRESS_ZERO, purchaseKeys, deployLock } = require('../../helpers')
+const {
+  ADDRESS_ZERO,
+  purchaseKeys,
+  deployLock,
+  compareBigNumbers,
+} = require('../../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / uniqueTokenIds', (accounts) => {
+describe('Lock / uniqueTokenIds', () => {
   let lock
-  let lockOwner = accounts[9]
-  let keyOwner1 = accounts[1]
-  let keyOwner2 = accounts[2]
-  const keyOwners = [keyOwner1, keyOwner2, accounts[3], accounts[4]]
+  let tokenIds
 
   before(async () => {
-    lock = await deployLock({ from: lockOwner })
+    lock = await deployLock()
+    // buy some keys
+    ;({ tokenIds } = await purchaseKeys(lock, 5))
   })
 
   describe('extending keys', () => {
     it('should not duplicate tokenIDs', async () => {
-      // buy some keys
-      const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
-
-      const supply = await lock.totalSupply()
-      assert.equal(tokenIds[tokenIds.length - 1].toNumber(), supply.toNumber())
+      compareBigNumbers(tokenIds[tokenIds.length - 1], await lock.totalSupply())
 
       // extend a key
       await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
         value: ethers.utils.parseUnits('0.01', 'ether'),
-        from: keyOwner1,
       })
 
       // make sure no new keys have been created
-      assert.equal(
-        tokenIds[tokenIds.length - 1].toNumber(),
-        (await lock.totalSupply()).toNumber()
-      )
+      compareBigNumbers(tokenIds[tokenIds.length - 1], await lock.totalSupply())
     })
   })
 })

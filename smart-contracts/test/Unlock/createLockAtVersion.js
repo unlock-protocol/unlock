@@ -1,18 +1,17 @@
 const { expect, assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { expectRevert } = require('@openzeppelin/test-helpers')
 const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
-const { ADDRESS_ZERO } = require('../helpers')
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 // lock args
 const args = [
   60 * 60 * 24 * 30, // expirationDuration: 30 days
   ADDRESS_ZERO,
-  ethers.utils.parseEther('1'), // keyPrice: in wei
+  ethers.utils.parseEther('1').toString(), // keyPrice: in wei
   100, // maxNumberOfKeys
   'New Lock',
 ]
 
-contract('Unlock / createUpgradeableLockAtVersion', () => {
+describe('Unlock / createUpgradeableLockAtVersion', () => {
   let unlock
   let publicLock
   let publicLockUpgraded
@@ -97,7 +96,7 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
   })
 
   it('reverts if version is not set', async () => {
-    await expectRevert(
+    await reverts(
       unlock.createUpgradeableLockAtVersion(calldata, 3),
       'MISSING_LOCK_TEMPLATE'
     )

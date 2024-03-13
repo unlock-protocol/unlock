@@ -1,19 +1,13 @@
 const { ethers } = require('hardhat')
 const WethABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/weth.json')
-const TestERC20 = artifacts.require('TestERC20')
 
-const deployERC20 = async (deployer, isEthers = false) => {
+const deployERC20 = async (deployer) => {
   const signer =
     typeof deployer === 'string' ? await ethers.getSigner(deployer) : deployer
   const Token = await ethers.getContractFactory('TestERC20', signer)
   const token = await Token.deploy()
   await token.deployed()
-
-  if (isEthers) {
-    return token
-  }
-  // return truffle artifact as default
-  return TestERC20.at(token.address)
+  return token
 }
 
 const deployWETH = async (deployer) => {

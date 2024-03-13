@@ -1,13 +1,14 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
 const {
   deployLock,
   reverts,
   purchaseKey,
   compareBigNumbers,
+  increaseTimeTo,
 } = require('../helpers')
 
-contract('Lock / transferFee', (accounts) => {
+describe('Lock / transferFee', () => {
   let lock
   let keyOwner, newOwner, randomSigner, lockManager
   const denominator = 10000
@@ -48,7 +49,7 @@ contract('Lock / transferFee', (accounts) => {
       const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = await lock.getTransferFee(tokenId, 0)
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await purchaseKey(lock, accounts[8])
+      await purchaseKey(lock, randomSigner.address)
 
       const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
@@ -108,7 +109,7 @@ contract('Lock / transferFee', (accounts) => {
       let fee
       before(async () => {
         const expirationBefore = await lock.keyExpirationTimestampFor(tokenId)
-        await time.increaseTo(expirationBefore.toNumber())
+        await increaseTimeTo(expirationBefore)
         fee = await lock.getTransferFee(tokenId, 0)
       })
 

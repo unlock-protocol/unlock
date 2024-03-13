@@ -15,10 +15,10 @@
     "ci": "yarn test && yarn lint && yarn build"
   },
   "dependencies": {
-    "@types/next": "8.0.7",
+    "@types/next": "9.0.0",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
     "next": "14.0.4",
-    "vite-plugin-node-polyfills": "0.17.0"
+    "vite-plugin-node-polyfills": "0.21.0"
   },
   "license": "MIT",
   "devDependencies": {

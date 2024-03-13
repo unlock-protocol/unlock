@@ -82,11 +82,10 @@ export const goerli: NetworkConfig = {
     'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   startBlock: 7179039,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-goerli/version/latest',
+    studioName: 'unlock-protocol-goerli',
   },
-  swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   tokens: [
     {
       address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',

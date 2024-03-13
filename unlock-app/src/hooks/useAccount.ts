@@ -9,6 +9,7 @@ import {
   reEncryptPrivateKey,
 } from '../utils/accounts'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useSIWE } from './useSIWE'
 
 export const getAccountTokenBalance = async (
   web3Service: any,
@@ -29,6 +30,7 @@ export const getAccountTokenBalance = async (
 export const useAccount = (address: string) => {
   const config = useConfig()
   const wedlockService = useWedlockService()
+  const { signIn } = useSIWE()
 
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
@@ -52,6 +54,9 @@ export const useAccount = (address: string) => {
       if (!data.ok) {
         ToastHelper.error(result[0]?.message ?? 'Ops, something went wrong')
       } else {
+        // Sign the user in (sign siwe message)
+        await signIn()
+
         // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
         recoveryKey = await reEncryptPrivateKey(
           passwordEncryptedPrivateKey,

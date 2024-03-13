@@ -1,5 +1,5 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 
 const {
   getBalance,
@@ -8,60 +8,55 @@ const {
   reverts,
   purchaseKeys,
   ADDRESS_ZERO,
+  compareBigNumbers,
 } = require('../helpers')
 
 const someTokens = ethers.utils.parseUnits('10', 'ether')
-const scenarios = [true]
+const scenarios = [true, false]
 
-contract('Lock / withdraw', (accounts) => {
+describe('Lock / withdraw', () => {
   let lock
-  let tokenAddress = ADDRESS_ZERO
+  let tokenAddress
   let testToken
-  const owner = accounts[0]
+  let owner, attacker
 
   scenarios.forEach((isErc20) => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       before(async () => {
-        if (isErc20) {
-          testToken = await deployERC20(owner)
-          tokenAddress = testToken.address
+        ;[owner, attacker] = await ethers.getSigners()
 
-          // Mint some tokens for testing
-          await testToken.mint(owner, someTokens, {
-            from: owner,
-          })
-        }
+        testToken = await deployERC20(owner.addres)
+        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+
         lock = await deployLock({ tokenAddress })
 
         if (isErc20) {
-          await testToken.approve(lock.address, someTokens, {
-            from: owner,
-          })
+          await testToken.mint(owner.address, someTokens)
+          await testToken.approve(lock.address, someTokens)
         }
 
-        await purchaseKeys(lock, 2, isErc20)
+        await purchaseKeys(lock, 5, isErc20)
       })
 
       it('should only allow the owner to withdraw', async () => {
-        assert.notEqual(owner, accounts[1]) // Making sure
+        assert.notEqual(owner.address, attacker.address) // Making sure
         await reverts(
-          lock.withdraw(tokenAddress, accounts[1], 0, {
-            from: accounts[1],
-          }),
+          lock.connect(attacker).withdraw(tokenAddress, attacker.address, 0),
           'ONLY_LOCK_MANAGER'
         )
       })
 
       describe('when the owner withdraws funds', () => {
-        let tx
+        let gas
         let ownerBalance
         let contractBalance
         before(async () => {
-          ownerBalance = await getBalance(owner, tokenAddress)
+          ownerBalance = await getBalance(owner.address, tokenAddress)
           contractBalance = await getBalance(lock.address, tokenAddress)
-          tx = await lock.withdraw(tokenAddress, owner, 0, {
-            from: owner,
-          })
+          const tx = await lock.withdraw(tokenAddress, owner.address, 0)
+          const { gasPrice } = tx
+          const { gasUsed } = await tx.wait()
+          gas = gasPrice.mul(gasUsed)
         })
 
         it("should set the lock's balance to 0", async () => {
@@ -69,78 +64,61 @@ contract('Lock / withdraw', (accounts) => {
         })
 
         it("should increase the owner's balance with the funds from the lock", async () => {
-          const balance = await getBalance(owner, tokenAddress)
-
-          const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
-          const gasUsed = new BigNumber(tx.receipt.gasUsed)
-          const txFee = gasUsed.times(gasPrice.toString())
-          assert.equal(
-            balance.toString(),
-            ownerBalance
-              .plus(contractBalance.toString())
-              .minus(tokenAddress === ADDRESS_ZERO ? txFee : 0)
-              .toString()
+          compareBigNumbers(
+            await getBalance(owner.address, tokenAddress),
+            ownerBalance.add(contractBalance).sub(isErc20 ? 0 : gas)
           )
         })
 
         it('should fail if there is nothing left to withdraw', async () => {
           await reverts(
-            lock.withdraw(tokenAddress, owner, 0, {
-              from: owner,
-            }),
+            lock.withdraw(tokenAddress, owner.address, 0),
             'NOT_ENOUGH_FUNDS'
           )
         })
       })
 
       describe('when the owner partially withdraws funds', () => {
-        let tx
+        let gas
         let ownerBalance
         let contractBalance
+        const amount = 42
 
         before(async () => {
           await purchaseKeys(lock, 2, isErc20)
 
-          ownerBalance = await getBalance(owner, tokenAddress)
+          ownerBalance = await getBalance(owner.address, tokenAddress)
           contractBalance = await getBalance(lock.address, tokenAddress)
-          tx = await lock.withdraw(tokenAddress, owner, 42, {
-            from: owner,
-          })
+          const tx = await lock.withdraw(tokenAddress, owner.address, amount)
+
+          // calculate gas
+          const { gasPrice } = tx
+          const { gasUsed } = await tx.wait()
+          gas = gasPrice.mul(gasUsed)
         })
 
-        it("should reduce the lock's balance by 42", async () => {
-          assert.equal(
-            (await getBalance(lock.address, tokenAddress)).toString(),
-            contractBalance.minus(42).toString()
+        it(`should reduce the lock's balance by ${amount}`, async () => {
+          compareBigNumbers(
+            await getBalance(lock.address, tokenAddress),
+            contractBalance.sub(amount)
           )
         })
 
-        it("should increase the owner's balance by 42", async () => {
-          const balance = await getBalance(owner, tokenAddress)
-          const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
-          const gasUsed = new BigNumber(tx.receipt.gasUsed)
-          const txFee = gasUsed.times(gasPrice.toString())
-          assert.equal(
-            balance.toString(),
-            ownerBalance
-              .plus(42)
-              .minus(tokenAddress === ADDRESS_ZERO ? txFee.toString() : 0)
-              .toString()
+        it(`should increase the owner's balance by ${amount}`, async () => {
+          compareBigNumbers(
+            await getBalance(owner.address, tokenAddress),
+            ownerBalance.add(amount).sub(isErc20 ? 0 : gas)
           )
         })
 
         describe('when there is nothing left to withdraw', () => {
           before(async () => {
-            await lock.withdraw(tokenAddress, owner, 0, {
-              from: owner,
-            })
+            await lock.withdraw(tokenAddress, owner.address, 0)
           })
 
           it('withdraw should fail', async () => {
             await reverts(
-              lock.withdraw(tokenAddress, owner, 42, {
-                from: owner,
-              }),
+              lock.withdraw(tokenAddress, owner.address, 42),
               'NOT_ENOUGH_FUNDS'
             )
           })

@@ -1,6 +1,7 @@
 // tests adapted/imported from https://github.com/OpenZeppelin/openzeppelin-contracts/blob/7e41bf2259950c33e55604015875b7780b6a2e63/test/token/ERC20/extensions/ERC20VotesComp.test.js
 const { ethers } = require('hardhat')
-const { expectRevert, time } = require('@openzeppelin/test-helpers')
+const { assert } = require('chai')
+const { advanceBlock, reverts } = require('../helpers')
 
 const {
   ADDRESS_ZERO,
@@ -8,6 +9,7 @@ const {
   notExpectEvent,
   compareBigNumbers,
   compareBigNumberArrays,
+  getLatestBlock,
 } = require('../helpers')
 
 const supply = ethers.BigNumber.from('10000000000000000000000000')
@@ -45,7 +47,7 @@ describe('UDT ERC20VotesComp extension', () => {
     })
     it('minting restriction', async () => {
       const amount = ethers.BigNumber.from('2').pow('96')
-      await expectRevert(
+      await reverts(
         udt.mint(minter, amount),
         'ERC20Votes: total supply risks overflowing votes'
       )
@@ -73,7 +75,7 @@ describe('UDT ERC20VotesComp extension', () => {
 
       compareBigNumbers(supply, await udt.getCurrentVotes(holder))
       compareBigNumbers('0', await udt.getPriorVotes(holder, blockNumber - 1))
-      await time.advanceBlock()
+      await advanceBlock()
       compareBigNumbers(supply, await udt.getPriorVotes(holder, blockNumber))
     })
     it('delegation without balance', async () => {
@@ -134,7 +136,7 @@ describe('UDT ERC20VotesComp extension', () => {
           await udt.getPriorVotes(holderDelegatee, blockNumber - 1)
         )
 
-        await time.advanceBlock()
+        await advanceBlock()
         compareBigNumbers('0', await udt.getPriorVotes(holder, blockNumber))
 
         compareBigNumbers(
@@ -237,8 +239,8 @@ describe('UDT ERC20VotesComp extension', () => {
       compareBigNumbers(recipientVotes, await udt.getCurrentVotes(recipient))
 
       // need to advance 2 blocks to see the effect of a transfer on "getPriorVotes"
-      const blockNumber = (await time.latestBlock()).toString()
-      await time.advanceBlock()
+      const blockNumber = (await getLatestBlock()).toString()
+      await advanceBlock()
       compareBigNumbers(
         holderVotes,
         await udt.getPriorVotes(holder, blockNumber)
@@ -298,7 +300,7 @@ describe('UDT ERC20VotesComp extension', () => {
           '100',
         ])
 
-        await time.advanceBlock()
+        await advanceBlock()
         compareBigNumbers(
           '100',
           await udt.getPriorVotes(other1, t1.blockNumber)
@@ -317,7 +319,7 @@ describe('UDT ERC20VotesComp extension', () => {
 
     describe('getPriorVotes', () => {
       it('reverts if block number >= current block', async () => {
-        await expectRevert(
+        await reverts(
           udt.getPriorVotes(other1, 5e10),
           'ERC20Votes: block not yet mined'
         )
@@ -330,8 +332,8 @@ describe('UDT ERC20VotesComp extension', () => {
       it('returns the latest block if >= last checkpoint block', async () => {
         const t1 = await udt.connect(holderSigner).delegate(other1)
         const { blockNumber } = await t1.wait()
-        await time.advanceBlock()
-        await time.advanceBlock()
+        await advanceBlock()
+        await advanceBlock()
 
         compareBigNumbers(
           '10000000000000000000000000',
@@ -345,11 +347,11 @@ describe('UDT ERC20VotesComp extension', () => {
       })
 
       it('returns zero if < first checkpoint block', async () => {
-        await time.advanceBlock()
+        await advanceBlock()
         const t1 = await udt.connect(holderSigner).delegate(other1)
         const { blockNumber } = await t1.wait()
-        await time.advanceBlock()
-        await time.advanceBlock()
+        await advanceBlock()
+        await advanceBlock()
 
         compareBigNumbers('0', await udt.getPriorVotes(other1, blockNumber - 1))
 
@@ -361,19 +363,19 @@ describe('UDT ERC20VotesComp extension', () => {
 
       it('generally returns the voting balance at the appropriate checkpoint', async () => {
         const t1 = await udt.connect(holderSigner).delegate(other1)
-        await time.advanceBlock()
-        await time.advanceBlock()
+        await advanceBlock()
+        await advanceBlock()
         const t2 = await udt.connect(holderSigner).transfer(other2, 10)
-        await time.advanceBlock()
-        await time.advanceBlock()
+        await advanceBlock()
+        await advanceBlock()
         const t3 = await udt.connect(holderSigner).transfer(other2, 10)
-        await time.advanceBlock()
-        await time.advanceBlock()
+        await advanceBlock()
+        await advanceBlock()
         const t4 = await udt
           .connect(await ethers.getSigner(other2))
           .transfer(holder, 20)
-        await time.advanceBlock()
-        await time.advanceBlock()
+        await advanceBlock()
+        await advanceBlock()
 
         compareBigNumbers(
           '0',
@@ -421,7 +423,7 @@ describe('UDT ERC20VotesComp extension', () => {
     })
 
     it('reverts if block number >= current block', async () => {
-      await expectRevert(
+      await reverts(
         udt.getPastTotalSupply(5e10),
         'ERC20Votes: block not yet mined'
       )
@@ -434,8 +436,8 @@ describe('UDT ERC20VotesComp extension', () => {
     it('returns the latest block if >= last checkpoint block', async () => {
       const t1 = await udt.mint(holder, supply)
 
-      await time.advanceBlock()
-      await time.advanceBlock()
+      await advanceBlock()
+      await advanceBlock()
 
       compareBigNumbers(supply, await udt.getPastTotalSupply(t1.blockNumber))
 
@@ -446,10 +448,10 @@ describe('UDT ERC20VotesComp extension', () => {
     })
 
     it('returns zero if < first checkpoint block', async () => {
-      await time.advanceBlock()
+      await advanceBlock()
       const t1 = await udt.mint(holder, supply)
-      await time.advanceBlock()
-      await time.advanceBlock()
+      await advanceBlock()
+      await advanceBlock()
 
       compareBigNumbers('0', await udt.getPastTotalSupply(t1.blockNumber - 1))
 
@@ -461,17 +463,17 @@ describe('UDT ERC20VotesComp extension', () => {
 
     it('generally returns the voting balance at the appropriate checkpoint', async () => {
       const t1 = await udt.mint(holder, supply)
-      await time.advanceBlock()
-      await time.advanceBlock()
+      await advanceBlock()
+      await advanceBlock()
       const t2 = await udt.mint(holder, 10)
-      await time.advanceBlock()
-      await time.advanceBlock()
+      await advanceBlock()
+      await advanceBlock()
       const t3 = await udt.mint(holder, 10)
-      await time.advanceBlock()
-      await time.advanceBlock()
+      await advanceBlock()
+      await advanceBlock()
       const t4 = await udt.mint(holder, 20)
-      await time.advanceBlock()
-      await time.advanceBlock()
+      await advanceBlock()
+      await advanceBlock()
 
       compareBigNumbers('0', await udt.getPastTotalSupply(t1.blockNumber - 1))
 

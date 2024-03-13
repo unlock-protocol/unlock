@@ -1,44 +1,43 @@
+const { assert } = require('chai')
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / getHasValidKey', (accounts) => {
+describe('Lock / getHasValidKey', () => {
   let lock
   let tokenId
-  let keyOwner
-  let keyOwnerSigner
+  let keyOwner, receiver
 
   beforeEach(async () => {
-    lock = await deployLock({ isEthers: true })
-    ;[, keyOwnerSigner] = await ethers.getSigners()
-    keyOwner = keyOwnerSigner.address
+    lock = await deployLock()
+    ;[, keyOwner, receiver] = await ethers.getSigners()
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
   it('should be false before purchasing a key', async () => {
-    const isValid = await lock.getHasValidKey(keyOwner)
+    const isValid = await lock.getHasValidKey(keyOwner.address)
     assert.equal(isValid, false)
   })
 
   describe('after purchase', () => {
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner))
+      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
     })
 
     it('should be true', async () => {
-      assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 1)
-      const isValid = await lock.getHasValidKey(keyOwner)
+      assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 1)
+      const isValid = await lock.getHasValidKey(keyOwner.address)
       assert.equal(isValid, true)
     })
 
     describe('after transfering a previously purchased key', () => {
       beforeEach(async () => {
         await lock
-          .connect(keyOwnerSigner)
-          .transferFrom(keyOwner, accounts[5], tokenId)
+          .connect(keyOwner)
+          .transferFrom(keyOwner.address, receiver.address, tokenId)
       })
 
       it('should be false', async () => {
-        const isValid = await lock.getHasValidKey(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner.address)
         assert.equal(isValid, false)
       })
     })
@@ -49,7 +48,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     beforeEach(async () => {
       const tx = await lock.purchase(
         [],
-        [keyOwner, keyOwner, keyOwner],
+        [keyOwner.address, keyOwner.address, keyOwner.address],
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [[], [], []],
@@ -64,31 +63,31 @@ contract('Lock / getHasValidKey', (accounts) => {
     })
 
     it('should be true', async () => {
-      const isValid = await lock.getHasValidKey(keyOwner)
+      const isValid = await lock.getHasValidKey(keyOwner.address)
       assert.equal(isValid, true)
     })
 
     describe('after transfering one of the purchased key', () => {
       beforeEach(async () => {
         await lock
-          .connect(keyOwnerSigner)
-          .transferFrom(keyOwner, accounts[5], tokenIds[0])
+          .connect(keyOwner)
+          .transferFrom(keyOwner.address, receiver.address, tokenIds[0])
       })
 
       it('should still be true', async () => {
-        const isValid = await lock.getHasValidKey(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner.address)
         assert.equal(isValid, true)
-        assert.equal(await lock.getHasValidKey(accounts[5]), true)
+        assert.equal(await lock.getHasValidKey(receiver.address), true)
       })
     })
 
     describe('after cancelling one of the purchased key', () => {
       beforeEach(async () => {
-        await lock.connect(keyOwnerSigner).cancelAndRefund(tokenIds[1])
+        await lock.connect(keyOwner).cancelAndRefund(tokenIds[1])
       })
 
       it('should be true', async () => {
-        const isValid = await lock.getHasValidKey(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner.address)
         assert.equal(isValid, true)
       })
     })
@@ -97,15 +96,17 @@ contract('Lock / getHasValidKey', (accounts) => {
       beforeEach(async () => {
         await Promise.all(
           tokenIds.map((id) =>
-            lock.connect(keyOwnerSigner).transferFrom(keyOwner, accounts[5], id)
+            lock
+              .connect(keyOwner)
+              .transferFrom(keyOwner.address, receiver.address, id)
           )
         )
       })
 
       it('should be false', async () => {
-        assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 0)
-        assert.equal((await lock.balanceOf(accounts[5])).toNumber(), 3)
-        const isValid = await lock.getHasValidKey(keyOwner)
+        assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 0)
+        assert.equal((await lock.balanceOf(receiver.address)).toNumber(), 3)
+        const isValid = await lock.getHasValidKey(keyOwner.address)
         assert.equal(isValid, false)
       })
     })

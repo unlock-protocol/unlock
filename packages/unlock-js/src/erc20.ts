@@ -40,6 +40,7 @@ export async function getErc20Decimals(
   try {
     decimals = await contract.decimals()
   } catch (e) {
+    console.error(e)
     /** Some ERC20 contracts do not have the right decimals method. Defaults to 18 */
     return 18
   }

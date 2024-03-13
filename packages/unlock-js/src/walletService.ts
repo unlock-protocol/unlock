@@ -5,7 +5,8 @@ import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
-import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import UnlockSwapPurchaser from '@unlock-protocol/contracts/dist/abis/utils/UnlockSwapPurchaser.json'
+const UnlockSwapPurchaserABI = UnlockSwapPurchaser.abi
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 

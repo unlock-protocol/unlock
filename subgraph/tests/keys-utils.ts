@@ -7,7 +7,6 @@ import {
   ethereum,
   Address,
   BigInt,
-  log,
   DataSourceContext,
   Value,
   dataSource,
@@ -31,7 +30,9 @@ import {
   lockAddressV8,
   tokenId,
   keyOwnerAddress,
+  lockOwner,
 } from './constants'
+import { newTransactionReceipt } from './createCancelKeyEvent'
 
 export function mockDataSourceV8(): void {
   const v8context = new DataSourceContext()
@@ -195,13 +196,15 @@ export function createKeyManagerChangedEvent(
 }
 
 export function createCancelKeyEvent(
-  tokenId: BigInt
+  tokenAddress: Address,
+  tokenId: BigInt,
   // owner: Address,
   // sendTo: Address,
-  // refund: bigint
+  refund: BigInt
 ): CancelKey {
   const cancelKeyEvent = changetype<CancelKey>(newMockEvent())
 
+  cancelKeyEvent.receipt = newTransactionReceipt(tokenAddress, refund)
   cancelKeyEvent.address = dataSource.address()
 
   cancelKeyEvent.parameters = []
@@ -212,15 +215,23 @@ export function createCancelKeyEvent(
       ethereum.Value.fromUnsignedBigInt(tokenId)
     )
   )
-  // cancelKeyEvent.parameters.push(
-  //   new ethereum.EventParam('owner', ethereum.Value.fromAddress(owner))
-  // )
-  // cancelKeyEvent.parameters.push(
-  //   new ethereum.EventParam('sendTo', ethereum.Value.fromAddress(sendTo))
-  // )
-  // cancelKeyEvent.parameters.push(
-  //   new ethereum.EventParam('refund', ethereum.Value.fromUnsignedBigInt(refund))
-  // )
+  // Does not really matter!
+  cancelKeyEvent.parameters.push(
+    new ethereum.EventParam(
+      'owner',
+      ethereum.Value.fromAddress(Address.fromString(lockOwner))
+    )
+  )
+  // Does not really matter!
+  cancelKeyEvent.parameters.push(
+    new ethereum.EventParam(
+      'sendTo',
+      ethereum.Value.fromAddress(Address.fromString(lockOwner))
+    )
+  )
+  cancelKeyEvent.parameters.push(
+    new ethereum.EventParam('refund', ethereum.Value.fromUnsignedBigInt(refund))
+  )
 
   return cancelKeyEvent
 }

@@ -1,31 +1,45 @@
 const { ethers } = require('hardhat')
-const { assert } = require('chai')
 
-const { deployLock, reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
+const {
+  deployLock,
+  reverts,
+  ADDRESS_ZERO,
+  purchaseKey,
+  compareBigNumbers,
+} = require('../helpers')
 
-contract('Lock / maxKeysPerAddress', (accounts) => {
-  let keyOwner = accounts[1]
+describe('Lock / maxKeysPerAddress', () => {
+  let keyOwner, someAccount, anotherAccount
   let lock
 
   before(async () => {
+    ;[, keyOwner, { address: someAccount }, { address: anotherAccount }] =
+      await ethers.getSigners()
     lock = await deployLock({ name: 'NO_MAX_KEYS' })
   })
 
   describe('enforcing the number of keys per address', () => {
     let tokenId
     before(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner))
+      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
     })
 
     it('default to 1', async () => {
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1)
+      compareBigNumbers(await lock.maxKeysPerAddress(), 1)
     })
 
     it('prevent users to purchase more keys than allowed', async () => {
       await reverts(
-        lock.purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
-        }),
+        lock.purchase(
+          [],
+          [keyOwner.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
+          {
+            value: ethers.utils.parseUnits('0.01', 'ether'),
+          }
+        ),
         'MAX_KEYS'
       )
     })
@@ -34,7 +48,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
       await reverts(
         lock.purchase(
           [],
-          [accounts[9], accounts[9]],
+          [someAccount, someAccount],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[], []],
@@ -49,7 +63,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from sharing a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[9]],
+        [someAccount],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -58,9 +72,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.shareKey(accounts[9], tokenId, 1000, {
-          from: keyOwner,
-        }),
+        lock.connect(keyOwner).shareKey(someAccount, tokenId, 1000),
         'MAX_KEYS'
       )
     })
@@ -68,7 +80,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from transferring a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[8]],
+        [anotherAccount],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -77,9 +89,9 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.transferFrom(keyOwner, accounts[8], tokenId, {
-          from: keyOwner,
-        }),
+        lock
+          .connect(keyOwner)
+          .transferFrom(keyOwner.address, anotherAccount, tokenId),
         'MAX_KEYS'
       )
     })

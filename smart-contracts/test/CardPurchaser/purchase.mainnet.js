@@ -106,7 +106,7 @@ const signLockPurchase = async ({
   return { signature, message, domain, types }
 }
 
-describe(`purchase`, function () {
+describe(`CardPurchaser / purchase (mainnet only)`, function () {
   let chainId, unlock, cardPurchaser, signer, lock, unlockAddress
   before(async function () {
     if (!process.env.RUN_FORK) {

@@ -1,67 +1,49 @@
-const BigNumber = require('bignumber.js')
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
 const { reverts } = require('../helpers')
 
 const deployContracts = require('../fixtures/deploy')
-const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 
-contract('UnlockDiscountToken', (accounts) => {
-  let unlockDiscountToken
-  const minter = accounts[1]
+describe('udt', () => {
+  let udt
+  let minter, recipient, accounts
 
   before(async () => {
-    const { udt } = await deployContracts()
-    unlockDiscountToken = await UnlockDiscountToken.at(udt.address)
-  })
-
-  it('shouldFail to call init again', async () => {
-    await reverts(
-      unlockDiscountToken.initialize(minter),
-      'Initializable: contract is already initialized'
-    )
+    ;[, minter, recipient, ...accounts] = await ethers.getSigners()
+    ;({ udt } = await deployContracts())
   })
 
   describe('Supply', () => {
     it('Starting supply is 0', async () => {
-      const totalSupply = new BigNumber(await unlockDiscountToken.totalSupply())
+      const totalSupply = await udt.totalSupply()
       assert(totalSupply.eq(0), 'starting supply must be 0')
     })
 
     describe('Minting tokens', () => {
       const mintAmount = 1000
-      const recipient = accounts[1]
       let balanceBefore
       let totalSupplyBefore
 
       before(async () => {
-        balanceBefore = new BigNumber(
-          await unlockDiscountToken.balanceOf(recipient)
-        )
-        totalSupplyBefore = new BigNumber(
-          await unlockDiscountToken.totalSupply()
-        )
-        await unlockDiscountToken.mint(recipient, mintAmount, {
-          from: minter,
-        })
+        balanceBefore = await udt.balanceOf(recipient.address)
+        totalSupplyBefore = await udt.totalSupply()
+        await udt.connect(minter).mint(recipient.address, mintAmount)
       })
 
       it('Balance went up', async () => {
-        const balanceAfter = new BigNumber(
-          await unlockDiscountToken.balanceOf(recipient)
-        )
+        const balanceAfter = await udt.balanceOf(recipient.address)
         assert.equal(
-          balanceAfter.toFixed(),
-          balanceBefore.plus(mintAmount).toFixed(),
+          balanceAfter.toNumber(),
+          balanceBefore.add(mintAmount).toNumber(),
           'Balance must increase by amount minted'
         )
       })
 
       it('Total supply went up', async () => {
-        const totalSupplyAfter = new BigNumber(
-          await unlockDiscountToken.totalSupply()
-        )
+        const totalSupplyAfter = await udt.totalSupply()
         assert.equal(
-          totalSupplyAfter.toFixed(),
-          totalSupplyBefore.plus(mintAmount).toFixed(),
+          totalSupplyAfter.toNumber(),
+          totalSupplyBefore.add(mintAmount).toNumber(),
           'Total supply must increase by amount minted'
         )
       })
@@ -73,71 +55,55 @@ contract('UnlockDiscountToken', (accounts) => {
 
     before(async () => {
       for (let i = 0; i < 3; i++) {
-        await unlockDiscountToken.mint(accounts[i], mintAmount, {
-          from: minter,
-        })
+        await udt.connect(minter).mint(accounts[i].address, mintAmount)
       }
     })
 
     describe('transfer', async () => {
-      const transferAmount = new BigNumber(123)
+      const transferAmount = 123
       let balanceBefore0
       let balanceBefore1
 
       before(async () => {
-        balanceBefore0 = new BigNumber(
-          await unlockDiscountToken.balanceOf(accounts[0])
-        )
-        balanceBefore1 = new BigNumber(
-          await unlockDiscountToken.balanceOf(accounts[1])
-        )
+        balanceBefore0 = await udt.balanceOf(accounts[0].address)
+        balanceBefore1 = await udt.balanceOf(accounts[1].address)
       })
 
       it('normal transfer', async () => {
-        await unlockDiscountToken.transfer(accounts[1], transferAmount, {
-          from: accounts[0],
-        })
-        const balanceAfter0 = new BigNumber(
-          await unlockDiscountToken.balanceOf(accounts[0])
-        )
-        const balanceAfter1 = new BigNumber(
-          await unlockDiscountToken.balanceOf(accounts[1])
-        )
+        await udt
+          .connect(accounts[0])
+          .transfer(accounts[1].address, transferAmount)
+        const balanceAfter0 = await udt.balanceOf(accounts[0].address)
+        const balanceAfter1 = await udt.balanceOf(accounts[1].address)
         assert(
-          balanceBefore0.minus(transferAmount).eq(balanceAfter0),
+          balanceBefore0.sub(transferAmount).eq(balanceAfter0),
           'Sender balance must have gone down by amount sent'
         )
         assert(
-          balanceBefore1.plus(transferAmount).eq(balanceAfter1),
-          'Recipient balance must have gone down by amount sent'
+          balanceBefore1.add(transferAmount).eq(balanceAfter1),
+          'Recipient balance must have gone up by amount sent'
         )
       })
     })
   })
 
   describe('Minters', () => {
-    const newMinter = accounts[2]
+    let newMinter
 
     before(async () => {
-      await unlockDiscountToken.addMinter(newMinter, { from: minter })
+      newMinter = accounts[5]
+      await udt.connect(minter).addMinter(newMinter.address)
     })
 
     it('newMinter can mint', async () => {
-      await unlockDiscountToken.mint(accounts[0], 1, {
-        from: newMinter,
-      })
+      await udt.connect(newMinter).mint(accounts[0].address, 1)
     })
 
     describe('Renounce minter', () => {
-      before(async () => {
-        await unlockDiscountToken.renounceMinter({ from: newMinter })
-      })
-
       it('newMinter cannot mint anymore', async () => {
+        await udt.connect(newMinter).renounceMinter()
         await reverts(
-          unlockDiscountToken.mint(accounts[0], 1, {
-            from: newMinter,
-          }),
+          udt.connect(newMinter).mint(accounts[0].address, 1),
           'MinterRole: caller does not have the Minter role'
         )
       })

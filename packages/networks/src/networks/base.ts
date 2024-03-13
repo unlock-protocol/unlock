@@ -46,7 +46,7 @@ export const base: NetworkConfig = {
   id: 8453,
   isTestNetwork: false,
   keyManagerAddress: '0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6',
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   multisig: '0x8149FeaFa41DD1ee3CA62299b9c67e9ac12FA340',
   name: 'Base',
   nativeCurrency: {
@@ -75,13 +75,11 @@ export const base: NetworkConfig = {
   startBlock: 1750000,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/version/latest',
-    endpointV2:
-      'https://api.studio.thegraph.com/query/44190/unlock-protocol-base/version/latest',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-base/version/latest',
     networkName: 'base',
-    studioEndpoint: 'unlock-protocol-base',
+    studioName: 'unlock-protocol-base',
   },
-  swapPurchaser: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
+  swapPurchaser: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   tokens: [
     {
       address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',

@@ -75,7 +75,7 @@ const upgradeContract = async () => {
   return Unlock.attach(ProxyContractAddress)
 }
 
-contract('Unlock (on mainnet)', async () => {
+describe('Unlock (on mainnet)', async () => {
   let unlock
   let deployer
 

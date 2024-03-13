@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('../../helpers')
 const { getBalance } = require('../../helpers')

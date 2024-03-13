@@ -47,10 +47,10 @@ yarn run build <network-name>
 
 ### Deploying The Subgraph
 
-Deploy the latest subgraph code to the hosted-service.
+Deploy the latest code to subgraph studio
 
 ```sh
-export SUBGRAPH_DEPLOY_KEY=<api-key>
+export SUBGRAPH_STUDIO_DEPLOY_KEY=<api-key>
 
 # deploy a single network
 yarn run deploy <network-name>
@@ -59,40 +59,7 @@ yarn run deploy <network-name>
 yarn run deploy-all
 ```
 
-Deploy the latest subgraph code to the studio. If `studioName` option is set it will use it instead of the `studioEndpoint` set in `network.subgraph`. If `studioEndpoint` is not set or `studioName` is not passed as a parameter, it will deploy to the hosted service. If `label` option is not set, it will try to deploy from `v0.0.1` and increment by 1 until it succeeds.
-
-Deploying all will deploy all networks that have `studioEndpoint` set.
-
-```sh
-export SUBGRAPH_STUDIO_DEPLOY_KEY=<api-key>
-
-# deploy a single network
-yarn run deploy <network-name> --studioName=<Name of studio deployment> --label=<Studio version>
-
-yarn run deploy-all-studio --label=<Studio version>
-```
-
-Direct deployments can be made to the hosted service. This allows using a different endpoint than what is currently in @unlock-protocol/networks.
-
-```sh
-# build
-yarn run build <network-name>
-
-# deploy a single network. Example for <subgraph-deployment-slug> unlock-protocol/mainnet-v2
-yarn run deploy-hosted <subgraph-deployment-slug>
-
-```
-
-Direct deployments can be made to the studio. This allows using a different endpoint than what is currently in @unlock-protocol/networks.
-
-```sh
-# build
-yarn run build <network-name>
-
-# deploy a single network. Example for <subgraph-name> unlock-protocol-mainnet
-yarn run deploy-studio <subgraph-name> -l=<Studio version>
-
-```
+NB: You need to set `studioName` in the networks package. The `--label` flag can be passed manually else it will be increased automatically.
 
 ## Tests
 

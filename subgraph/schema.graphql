@@ -108,6 +108,8 @@ type Receipt @entity {
   sender: String!
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
   payer: String
+  "Fund receiver"
+  recipient: String
   "Address of the Lock smart contract"
   lockAddress: String!
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"

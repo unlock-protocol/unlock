@@ -15,10 +15,9 @@ import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
 import Image from 'next/image'
 import { isAndroid, isIOS } from 'react-device-detect'
 import { isEthPassSupported, Platform } from '~/services/ethpass'
-import { useQuery } from '@tanstack/react-query'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface Props {
   injectedProvider: unknown
@@ -35,7 +34,6 @@ export function Returning({
 }: Props) {
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const web3Service = useWeb3Service()
   const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
@@ -72,15 +70,8 @@ export function Returning({
     }
   }
 
-  const { data: tokenId } = useQuery(
-    ['userTokenId', account, lock, web3Service],
-    async () => {
-      return web3Service.getTokenIdForOwner(
-        lock!.address,
-        account!,
-        lock!.network
-      )
-    },
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: account!, lockAddress: lock!.address, network: lock!.network },
     {
       enabled: !!(account && lock),
     }

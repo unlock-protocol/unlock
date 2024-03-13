@@ -120,8 +120,7 @@ function Key({ ownedKey, account, network }: Props) {
     watchAsset({
       network,
       address: lock.address,
-      symbol: 'KEY',
-      image: `${config.services.storage.host}/lock/${lock.address}/icon`,
+      tokenId,
     })
   }
 

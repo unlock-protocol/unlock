@@ -59,6 +59,29 @@ describe('Verifier v2 endpoints for locksmith', () => {
     expect(deleteVerifierResponse.status).toBe(200)
   })
 
+  it('Add verifier with name and delete correctly', async () => {
+    expect.assertions(4)
+    const verifierName = 'randomUser'
+
+    const { loginResponse } = await loginRandomUser(app)
+    const randomWallet = await ethers.Wallet.createRandom().getAddress()
+    expect(loginResponse.status).toBe(200)
+
+    const addVerifierResponse = await request(app)
+      .put(`/v2/api/verifier/${network}/${lockAddress}/${randomWallet}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({ verifierName: verifierName })
+
+    expect(addVerifierResponse.status).toBe(201)
+    expect(addVerifierResponse.body.name).toBe(verifierName)
+
+    const deleteVerifierResponse = await request(app)
+      .delete(`/v2/api/verifier/${network}/${lockAddress}/${randomWallet}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(deleteVerifierResponse.status).toBe(200)
+  })
+
   it('Get verifiers list', async () => {
     expect.assertions(3)
 

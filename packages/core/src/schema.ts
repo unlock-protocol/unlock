@@ -51,6 +51,7 @@ export const MetadataInput = z.object({
 export type MetadataInputType = z.infer<typeof MetadataInput>
 
 export const PaywallLockConfig = z.object({
+  order: z.number().int().optional(),
   name: z
     .string({
       description: 'Name of the lock to display.',

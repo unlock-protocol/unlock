@@ -150,8 +150,8 @@ export const SIWEProvider = ({ children }: Props) => {
   }
 
   const signIn = async () => {
+    setStatus('loading')
     try {
-      setStatus('loading')
       if (!connected) {
         throw new Error('No wallet connected.')
       }
@@ -176,11 +176,12 @@ export const SIWEProvider = ({ children }: Props) => {
         await queryClient.refetchQueries()
         await refetchSession()
       }
-      setStatus('idle')
     } catch (error) {
+      console.error(error)
       onError(error)
       return null
     }
+    setStatus('idle')
   }
 
   const isSignedIn = !!session

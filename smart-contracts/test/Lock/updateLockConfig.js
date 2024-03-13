@@ -1,13 +1,19 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
-const { deployLock, purchaseKey, purchaseKeys, reverts } = require('../helpers')
+const {
+  deployLock,
+  purchaseKey,
+  purchaseKeys,
+  reverts,
+  compareBigNumbers,
+} = require('../helpers')
 const { lockFixtures } = require('@unlock-protocol/hardhat-helpers')
 const { maxNumberOfKeys, expirationDuration } = lockFixtures['NO_MAX_KEYS']
 const maxKeysPerAddress = 1
 
 const defaultValues = [expirationDuration, maxNumberOfKeys, maxKeysPerAddress]
 
-contract('Lock / updateLockConfig', (accounts) => {
+describe('Lock / updateLockConfig', () => {
   let lock
 
   before(async () => {
@@ -15,19 +21,15 @@ contract('Lock / updateLockConfig', (accounts) => {
   })
 
   it('set default values correctly', async () => {
-    assert.equal((await lock.maxKeysPerAddress()).toNumber(), maxKeysPerAddress)
-    assert.equal(
-      (await lock.expirationDuration()).toString(),
-      expirationDuration
-    )
-    assert.equal(await lock.maxNumberOfKeys(), maxNumberOfKeys)
+    compareBigNumbers(await lock.maxKeysPerAddress(), maxKeysPerAddress)
+    compareBigNumbers(await lock.expirationDuration(), expirationDuration)
+    compareBigNumbers(await lock.maxNumberOfKeys(), maxNumberOfKeys)
   })
 
   it('can only be invoked by lock manager', async () => {
+    const [, , rando] = await ethers.getSigners()
     await reverts(
-      lock.updateLockConfig(...defaultValues, {
-        from: accounts[5],
-      }),
+      lock.connect(rando).updateLockConfig(...defaultValues),
       'ONLY_LOCK_MANAGER'
     )
   })
@@ -42,44 +44,44 @@ contract('Lock / updateLockConfig', (accounts) => {
 
     it('update the maxKeysPerAddress correctly', async () => {
       await lock.updateLockConfig(expirationDuration, maxNumberOfKeys, 11)
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 11)
+      assert.equal(await lock.maxKeysPerAddress(), 11)
 
       await lock.updateLockConfig(
         maxNumberOfKeys,
         expirationDuration,
         1234567890
       )
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1234567890)
+      compareBigNumbers(await lock.maxKeysPerAddress(), 1234567890)
 
       await lock.updateLockConfig(expirationDuration, maxNumberOfKeys, 1)
-      assert.equal((await lock.maxKeysPerAddress()).toNumber(), 1)
+      compareBigNumbers(await lock.maxKeysPerAddress(), 1)
     })
   })
 
   describe('set expirationDuration', () => {
     it('update the expiration duration of an existing lock', async () => {
       await lock.updateLockConfig(1000, maxNumberOfKeys, maxKeysPerAddress)
-      assert.equal((await lock.expirationDuration()).toString(), '1000')
+      compareBigNumbers(await lock.expirationDuration(), '1000')
 
       await lock.updateLockConfig(0, maxNumberOfKeys, maxKeysPerAddress)
-      assert.equal((await lock.expirationDuration()).toString(), '0')
+      compareBigNumbers(await lock.expirationDuration(), '0')
     })
   })
 
   describe('set maxNumberofKeys', () => {
     it('update the expiration duration of an existing lock', async () => {
       await lock.updateLockConfig(expirationDuration, 20, maxKeysPerAddress)
-      assert.equal((await lock.maxNumberOfKeys()).toNumber(), 20)
+      compareBigNumbers(await lock.maxNumberOfKeys(), 20)
 
       await lock.updateLockConfig(expirationDuration, 201, maxKeysPerAddress)
-      assert.equal((await lock.maxNumberOfKeys()).toNumber(), 201)
+      compareBigNumbers(await lock.maxNumberOfKeys(), 201)
     })
     it('should allow setting a value lower than total supply', async () => {
       // buy 10 keys
       await purchaseKeys(lock, 10)
 
       await lock.updateLockConfig(expirationDuration, 0, maxKeysPerAddress)
-      assert.equal((await lock.maxNumberOfKeys()).toNumber(), 0)
+      compareBigNumbers(await lock.maxNumberOfKeys(), 0)
     })
     it('should allow setting a value equal to current total supply', async () => {
       // redeploy lock
@@ -96,10 +98,7 @@ contract('Lock / updateLockConfig', (accounts) => {
         totalSupply,
         await lock.maxKeysPerAddress()
       )
-      assert.equal(
-        (await lock.maxNumberOfKeys()).toString(),
-        totalSupply.toString()
-      )
+      compareBigNumbers(await lock.maxNumberOfKeys(), totalSupply)
 
       // try to buy another key exceding totalSupply
       await reverts(purchaseKey(lock, buyers[11].address), 'LOCK_SOLD_OUT')
@@ -109,11 +108,13 @@ contract('Lock / updateLockConfig', (accounts) => {
   describe('emit correct event', () => {
     it('update the expiration duration of an existing lock', async () => {
       const tx = await lock.updateLockConfig(10, 20, 30)
-      const { args } = tx.logs.find(({ event }) => event === 'LockConfig')
 
-      assert.equal(args.expirationDuration.toNumber(), 10)
-      assert.equal(args.maxNumberOfKeys.toNumber(), 20)
-      assert.equal(args.maxKeysPerAcccount.toNumber(), 30)
+      const { events } = await tx.wait()
+      const { args } = events.find(({ event }) => event === 'LockConfig')
+
+      assert.equal(args.expirationDuration, 10)
+      assert.equal(args.maxNumberOfKeys, 20)
+      assert.equal(args.maxKeysPerAcccount, 30)
     })
   })
 })

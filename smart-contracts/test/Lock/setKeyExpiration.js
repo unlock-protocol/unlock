@@ -5,7 +5,7 @@ const { reverts, deployLock, purchaseKey } = require('../helpers')
 
 const ONE_DAY = ethers.BigNumber.from(60 * 60 * 24)
 
-contract('Lock / setKeyExpiration', () => {
+describe('Lock / setKeyExpiration', () => {
   let lock
   let keyOwner
 

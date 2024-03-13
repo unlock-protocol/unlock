@@ -1,6 +1,7 @@
+const { assert } = require('chai')
 const { deployLock } = require('../helpers')
 
-contract('Lock / erc165', () => {
+describe('Lock / erc165', () => {
   let lock
   before(async () => {
     lock = await deployLock()

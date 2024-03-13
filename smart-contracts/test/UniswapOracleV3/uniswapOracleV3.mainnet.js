@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 const { ethers } = require('hardhat')
-const { expectRevert } = require('@openzeppelin/test-helpers')
+const { reverts } = require('../helpers')
 
 const { getTokens, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
@@ -81,7 +81,7 @@ describe(`oracle`, () => {
     })
     it('throws if pair doesnt exist', async () => {
       const [{ address: one }, { address: two }] = await ethers.getSigners()
-      expectRevert(
+      reverts(
         oracle.consult(one, ethers.utils.parseEther('1'), two),
         `MISSING_POOL(${one},${two})`
       )

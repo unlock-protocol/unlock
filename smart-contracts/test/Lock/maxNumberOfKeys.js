@@ -11,19 +11,25 @@ const {
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / maxNumberOfKeys', () => {
+describe('Lock / maxNumberOfKeys', () => {
   let unlock
   let lock
 
   describe('prevent from buying more keys than defined supply', () => {
     beforeEach(async () => {
-      const { unlockEthers: unlockDeployed } = await deployContracts()
+      const { unlock: unlockDeployed } = await deployContracts()
       unlock = unlockDeployed
       const [from] = await ethers.getSigners()
 
       // create a new lock
       const tokenAddress = ADDRESS_ZERO
-      const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
+      const args = [
+        60 * 60 * 24 * 30,
+        tokenAddress,
+        keyPrice.toString(),
+        10,
+        'Test lock',
+      ]
 
       const calldata = await createLockCalldata({ args, from: from.address })
       const tx = await unlock.createUpgradeableLock(calldata)
