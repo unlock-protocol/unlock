@@ -27,11 +27,11 @@ const PERMIT2_ADDRESS = '0x000000000022D473030F116dDEE9F6B43aC78BA3'
 // convert swap jsbi to ethers BigNumber
 const currencyAmountToBigNumber = (amount) => {
   const { decimals } = amount.currency
-  const fixed = ethers.FixedNumber.from(amount.toExact())
-  const tokenScale = ethers.FixedNumber.from(
-    ethers.BigNumber.from(10).pow(decimals)
+  const fixed = ethersv5.FixedNumber.from(amount.toExact())
+  const tokenScale = ethersv5.FixedNumber.from(
+    ethersv5.BigNumber.from(10).pow(decimals)
   )
-  return ethers.BigNumber.from(
+  return ethersv5.BigNumber.from(
     // have to remove trailing .0 "manually" :/
     fixed.mulUnsafe(tokenScale).floor().toString().split('.')[0]
   )
@@ -55,7 +55,6 @@ async function getUniswapRoute({
   const provider = new ethersv5.providers.JsonRpcProvider(
     `https://rpc.unlock-protocol.com/${chainId}`
   )
-  console.log(provider)
   const router = new AlphaRouter({
     chainId,
     provider,

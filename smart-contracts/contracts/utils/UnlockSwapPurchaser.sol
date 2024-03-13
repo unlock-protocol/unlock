@@ -129,14 +129,17 @@ contract UnlockSwapPurchaser {
   ) public payable returns (bytes memory) {
     // check if lock exists
     (bool lockExists, , ) = IUnlock(unlockAddress).locks(lock);
+    console.log("IN THE SWAP AND CALL FUNCTION");
     if (!lockExists) {
       revert LockDoesntExist(lock);
     }
+    console.log("LOCK EXISTS");
 
     // make sure
     if (uniswapRouters[uniswapRouter] != true) {
       revert UnautorizedRouter(uniswapRouter);
     }
+    console.log("ROUTER OK");
 
     // get lock pricing
     address destToken = IPublicLock(lock).tokenAddress();
@@ -151,21 +154,29 @@ contract UnlockSwapPurchaser {
       ? getBalance(srcToken) - msg.value
       : getBalance(srcToken);
 
+    console.log("CHECKING TOKEN");
     if (srcToken != address(0)) {
       // Transfer the specified amount of src ERC20 to this contract
+      console.log("TRANSFERING TOKENS");
+      console.log(srcToken);
+      console.log(msg.sender);
+      console.log(address(this));
+      console.log(amountInMax);
       TransferHelper.safeTransferFrom(
         srcToken,
         msg.sender,
         address(this),
         amountInMax
       );
+      console.log("TOKENS TRANSFERED");
 
       // Approve the router to spend src ERC20
       TransferHelper.safeApprove(srcToken, uniswapRouter, amountInMax);
-
+      console.log("TOKENS APPROVDED");
       // approve PERMIT2 to manipulate the token
       IERC20(srcToken).approve(permit2, amountInMax);
     }
+    console.log("SO FAR SO GOOD");
 
     // issue PERMIT2 Allowance
     IPermit2(permit2).approve(

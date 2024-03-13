@@ -53,7 +53,11 @@ describe('UnlockSwapPurchaser / purchase with promo code', () => {
 
     unlock = await getUnlock(unlockAddress)
 
-    const routers = [universalRouterAddress]
+    const routers = [
+      universalRouterAddress,
+      '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
+    ]
+
     swapPurchaser = await UnlockSwapPurchaser.deploy(
       unlock.address,
       PERMIT2_ADDRESS,
@@ -187,30 +191,49 @@ describe('UnlockSwapPurchaser / purchase with promo code', () => {
 
     // parse call data
     const calldata = await lock.interface.encodeFunctionData('purchase', args)
-    console.log(calldata)
 
-    // const { swapCalldata, value, swapRouter, amountInMax } =
-    //   await getUniswapRoute({
-    //     tokenIn: native,
-    //     tokenOut: usdc,
-    //     amoutOut: price,
-    //     recipient: swapPurchaser.address,
-    //     chainId: 1,
-    //   })
+    const { swapCalldata, value, swapRouter, amountInMax } =
+      await getUniswapRoute({
+        tokenIn: native,
+        tokenOut: usdc,
+        amoutOut: price,
+        recipient: swapPurchaser.address,
+        chainId: 1,
+      })
+
+    const token = await lock.tokenAddress()
+    const tokenContract = await addERC20(token, keyOwner.address, price)
+    console.log('APPROVAL')
+    console.log(`- contract: ${tokenContract.address}`)
+    console.log(`- approver: ${keyOwner.address}`)
+    console.log(`- approved: ${swapPurchaser.address}`)
+    console.log(`- amount  : ${MAX_UINT}`)
+    await tokenContract
+      .connect(keyOwner)
+      .approve(swapPurchaser.address, MAX_UINT)
+    console.log('APPROVAL DONE')
+
+    console.log(await tokenContract.balanceOf(keyOwner.address))
+    console.log(
+      await tokenContract.allowance(keyOwner.address, swapPurchaser.address)
+    )
+
+    // WHY DOES THIS FAIL?
+    await tokenContract
+      .connect(keyOwner)
+      .transferFrom(keyOwner.address, swapPurchaser.address, 1)
+
+    console.log('TRANSFERED')
 
     // do the swap and call!
-    const {
-      uniswapV3: { universalRouterAddress },
-    } = await getNetwork(1)
-
     await swapPurchaser.connect(keyOwner).swapAndCall(
       lock.address,
       tokenAddress,
-      10000000, //amountInMax, // value in src token
-      universalRouterAddress, // swapRouter,
-      0, // swapCalldata,
+      amountInMax, // value in src token
+      swapRouter,
+      swapCalldata,
       calldata,
-      { value: 100000000 }
+      { value }
     )
     assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 1)
   })
