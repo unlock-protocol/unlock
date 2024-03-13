@@ -19,6 +19,7 @@ export const deployContract = async (
   await contract.waitForDeployment(deployOptions.wait)
   const { hash } = await contract.deploymentTransaction()
   const address = await contract.getAddress()
+  console.log(address)
 
   console.log(` > contract deployed at : ${address} (tx: ${hash})`)
 
