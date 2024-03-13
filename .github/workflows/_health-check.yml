@@ -16,6 +16,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
       SENTRY_LOG_LEVEL: info
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       SENTRY_DSN: ${{secrets.SENTRY_DSN}}
     steps:
       - uses: actions/checkout@v4
@@ -29,7 +30,7 @@ jobs:
         run: npm install @sentry/cli -g
       - name: Sentry CLI login
         shell: bash
-        run: sentry-cli login --auth-token ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN
       - name: Check networks package
         run: |
           yarn workspace @unlock-protocol/networks check >> networks.log
