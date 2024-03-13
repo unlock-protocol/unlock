@@ -4,7 +4,6 @@ import {
 } from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
-import { useConfig } from '~/utils/withConfig'
 import { Fragment, useCallback, useState } from 'react'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
@@ -19,6 +18,8 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ethers } from 'ethers'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
+import { config } from '~/config/app'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface Props {
   injectedProvider: unknown
@@ -43,11 +44,11 @@ export function ConfirmCrossmint({
 }: Props) {
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
-  const { email } = useAuth()
+  const { email, account } = useAuth()
   const [state] = useActor(checkoutService)
-  const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
+
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
 
   const { lock, recipients, paywallConfig, data, keyManagers } = state.context
@@ -84,7 +85,7 @@ export function ConfirmCrossmint({
       // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
       if (paymentEvent.type === 'payment:preparation.failed') {
         setError(
-          'There was an error with Crossmint and we are not able to collect payments with this method at this time. Please choose another method.'
+          `There was an error with Crossmint. ${paymentEvent.payload.error?.message}`
         )
       } else if (paymentEvent.type === 'quote:status.changed') {
         setCrossmintLoading(false)
@@ -121,12 +122,20 @@ export function ConfirmCrossmint({
     ),
   })
 
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: account!, lockAddress: lock!.address, network: lock!.network },
+    {
+      enabled: state.context?.renew,
+    }
+  )
+
   const isLoading =
     !error &&
     (isCrossmintEnabledLoading ||
       isInitialDataLoading ||
       isPricingDataLoading ||
-      crossmintLoading)
+      crossmintLoading ||
+      (!tokenId && state.context?.renew))
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig, lock!.address)
@@ -141,7 +150,11 @@ export function ConfirmCrossmint({
       ]
     : []
 
-  const argumentsReady = referrers && purchaseData && pricingData
+  const argumentsReady =
+    referrers &&
+    purchaseData &&
+    pricingData &&
+    (tokenId || !state.context?.renew)
 
   // crossmint config
   const crossmintConfig = {
@@ -152,17 +165,31 @@ export function ConfirmCrossmint({
       email,
       wallet: recipients[0], // Crossmint only supports a single recipient for now!
     },
-    collectionId,
-    projectId,
     environment: crossmintEnv,
-    mintConfig: {
+    mintConfig: {},
+    onEvent: onCrossmintPaymentEvent,
+    projectId,
+    collectionId: '', // To be completed below!
+  }
+
+  if (!state.context?.renew) {
+    crossmintConfig.collectionId = collectionId
+    crossmintConfig.mintConfig = {
       totalPrice: pricingData?.total.toString(),
       _values: values,
       _referrers: referrers,
       _keyManagers: keyManagers || recipients,
       _data: purchaseData,
-    },
-    onEvent: onCrossmintPaymentEvent,
+    }
+  } else {
+    crossmintConfig.collectionId = [collectionId, 'extend'].join('-')
+    crossmintConfig.mintConfig = {
+      totalPrice: pricingData?.total.toString(),
+      _tokenId: tokenId,
+      _value: values[0],
+      _referrer: referrers[0],
+      _data: purchaseData ? purchaseData[0] : '',
+    }
   }
 
   const showCrossmint = crossmintLoading || error ? 'hidden' : 'block'
@@ -211,18 +238,22 @@ export function ConfirmCrossmint({
                             first ? 'border-t' : null
                           }  items-center justify-between px-0 py-2`}
                         >
-                          <div>{item.metadata.description}</div>{' '}
-                          <div className="font-bold">
+                          <div className="w-64 truncate ...">
+                            {item.metadata.description}
+                          </div>{' '}
+                          <div className="font-bold whitespace-nowrap">
                             {item.price.amount}{' '}
                             {item.price.currency.toUpperCase()}
                           </div>
                         </div>
-                        <div
-                          className={`flex items-center justify-between px-0 py-2`}
-                        >
-                          <div>Gas fee</div>
-                          <div>{item.gasFee.amount} USD </div>
-                        </div>
+                        {item.gasFee && (
+                          <div
+                            className={`flex items-center justify-between px-0 py-2`}
+                          >
+                            <div>Gas fee</div>
+                            <div>{item.gasFee?.amount} USD </div>
+                          </div>
+                        )}
                       </div>
                     )
                   })}

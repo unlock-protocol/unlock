@@ -78,6 +78,17 @@ contract UnlockSwapPurchaser {
   }
 
   /**
+   * Check if lock exists
+   * @param lock address of the lock
+   */
+  function lockExists(address lock) internal view returns (bool lockExists) {
+    (lockExists, , ) = IUnlock(unlockAddress).locks(lock);
+    if (!lockExists) {
+      revert LockDoesntExist(lock);
+    }
+  }
+
+  /**
    * Swap tokens and call a function a lock contract.
    *
    * Calling this function will 1) swap the token sent by the user into the token (ERCC20 or native) used by
@@ -85,6 +96,7 @@ contract UnlockSwapPurchaser {
    *
    * @param lock the address of the lock
    * @param srcToken the address of the token sent by the user (ERC20 or address(0) for native)
+   * @param keyPrice the expected price of the token (calculated from the lock)
    * @param amountInMax the maximum amount the user want to spend in the swap
    * @param uniswapRouter the address of the uniswap router
    * @param swapCalldata the Uniswap quote calldata returned by the SDK, to be sent to the router contract
@@ -98,18 +110,15 @@ contract UnlockSwapPurchaser {
   function swapAndCall(
     address lock,
     address srcToken,
+    uint keyPrice,
     uint amountInMax,
     address uniswapRouter,
     bytes memory swapCalldata,
     bytes memory callData
   ) public payable returns (bytes memory) {
-    // check if lock exists
-    (bool lockExists, , ) = IUnlock(unlockAddress).locks(lock);
-    if (!lockExists) {
-      revert LockDoesntExist(lock);
-    }
+    // make sure the lock is registered in Unlock
+    lockExists(lock);
 
-    // make sure
     if (uniswapRouters[uniswapRouter] != true) {
       revert UnautorizedRouter(uniswapRouter);
     }
@@ -173,19 +182,19 @@ contract UnlockSwapPurchaser {
         destToken == address(0)
           ? getBalance(destToken) - msg.value
           : getBalance(destToken)
-      ) < balanceTokenDestBefore + IPublicLock(lock).keyPrice()
+      ) < balanceTokenDestBefore + keyPrice
     ) {
       revert InsufficientBalance();
     }
 
     // approve ERC20 to call the lock
     if (destToken != address(0)) {
-      IMintableERC20(destToken).approve(lock, IPublicLock(lock).keyPrice());
+      IMintableERC20(destToken).approve(lock, keyPrice);
     }
 
     // call the lock
     (bool lockCallSuccess, bytes memory returnData) = lock.call{
-      value: destToken == address(0) ? IPublicLock(lock).keyPrice() : 0
+      value: destToken == address(0) ? keyPrice : 0
     }(callData);
 
     if (lockCallSuccess == false) {

@@ -80,7 +80,7 @@ export function useStepperItems(
       to: 'QUANTITY',
     },
     {
-      name: 'Add recipients',
+      name: 'Recipient(s)',
       to: 'METADATA',
       skip:
         (!hasOneLock
