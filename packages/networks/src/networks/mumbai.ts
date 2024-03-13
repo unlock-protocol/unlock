@@ -66,7 +66,7 @@ export const mumbai: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-mumbai/version/latest',
     studioName: 'unlock-protocol-mumbai',
   },
-  swapPurchaser: '0x302E9D970A657B42c1C124C69f3a1c1575CB4AD3',
+  swapPurchaser: '0xD7477B7c0CdA4204Cf860e4c27486061b15a5AC3',
   tokens: [
     {
       address: '0x0FA8781a83E46826621b3BC094Ea2A0212e71B23',
