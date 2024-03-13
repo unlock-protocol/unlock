@@ -134,5 +134,5 @@ async function main() {
 }
 
 main()
-  .then(() => console.log(``))
+  .then(() => console.log(`ok done.`))
   .catch((err) => console.error(err))
