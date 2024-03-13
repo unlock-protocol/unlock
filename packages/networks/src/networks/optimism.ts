@@ -85,7 +85,7 @@ export const optimism: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-optimism/version/latest',
     studioName: 'unlock-protocol-optimism',
   },
-  swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
+  swapPurchaser: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
   tokens: [
     {
       address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',

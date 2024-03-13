@@ -65,7 +65,7 @@ export const avalanche: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-avalanche/version/latest',
     studioName: 'unlock-protocol-avalanche',
   },
-  swapPurchaser: '0x5c67AD0CAfe61aF3706347aBc695D7ACcb38EFb3',
+  swapPurchaser: '0xc9F29DdBD4D828cFb2EB491E9d48013a9c0E3C89',
   tokens: [
     {
       address: '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',

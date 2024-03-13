@@ -84,7 +84,7 @@ export const sepolia: NetworkConfig = {
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },
-  swapPurchaser: '0x580A4a5a9612371e3832c4559026B9Ee3b23Cc11',
+  swapPurchaser: '0x692EFe2b44a531013A558E595C5dCf37DB2e4B94',
   tokens: [
     {
       address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',
