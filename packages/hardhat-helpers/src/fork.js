@@ -27,7 +27,7 @@ async function getWhales(chainId = 1) {
     case 1:
       return {
         [tokens.DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8', // PulseX
-        [tokens.USDC]: '0xD6153F5af5679a75cC85D8974463545181f48772',
+        [tokens.USDC]: '0x8EB8a3b98659Cce290402893d0123abb75E3ab28',
         [tokens.WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
         [tokens.UDT]: '0xF5C28ce24Acf47849988f147d5C75787c0103534', // unlock-protocol.eth
       }
@@ -61,11 +61,11 @@ const parseForkUrl = (networks) => {
     name: `${name} (forked locally)`,
     accounts: process.env.DEPLOYER_PRIVATE_KEY
       ? [
-        {
-          privateKey: process.env.DEPLOYER_PRIVATE_KEY,
-          balance: '10000000000000000000000', // 1000 ETH yah
-        },
-      ]
+          {
+            privateKey: process.env.DEPLOYER_PRIVATE_KEY,
+            balance: '10000000000000000000000', // 1000 ETH yah
+          },
+        ]
       : undefined,
   }
 
@@ -94,7 +94,10 @@ const resetNodeState = async () => {
   })
 }
 
-const addSomeETH = async (address, amount = ethers.parseEther('1000')) => {
+const addSomeETH = async (
+  address,
+  amount = ethers.utils.parseEther('1000')
+) => {
   const { network } = require('hardhat')
   const balance = `0x${BigInt(amount.toString()).toString(16)}`
   await network.provider.send('hardhat_setBalance', [address, balance])
@@ -157,20 +160,13 @@ const addERC20 = async function (
   }
 
   // otherwise use transfer from whales
-  const erc20Contract = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   const whales = await getWhales()
   if (!whales[tokenAddress])
     throw Error(`No whale for this address: ${tokenAddress}`)
-
-  const whaleBalance = await erc20Contract.balanceOf(whales[tokenAddress])
-  if (whaleBalance.lt(amount)) {
-    throw Error(
-      `Whale at address: ${whales[tokenAddress]} does not have enough ${tokenAddress} to transfer ${amount} to ${address} (only has ${whaleBalance})`
-    )
-  }
   const whale = await ethers.getSigner(whales[tokenAddress])
   await impersonate(whale.address)
 
+  const erc20Contract = await ethers.getContractAt(ERC20_ABI, tokenAddress)
   await erc20Contract.connect(whale).transfer(address, amount)
   return erc20Contract
 }

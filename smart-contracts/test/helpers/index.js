@@ -16,7 +16,6 @@ const versions = require('./versions')
 const bridge = require('./bridge')
 const events = require('./events')
 const bigNumber = require('./bigNumber')
-const password = require('./password')
 
 module.exports = {
   deployContracts,
@@ -37,5 +36,4 @@ module.exports = {
   ...bridge,
   ...events,
   ...bigNumber,
-  ...password,
 }
