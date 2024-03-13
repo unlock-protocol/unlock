@@ -26,8 +26,10 @@ const executeCommand = async (command) => {
 }
 
 const incrementVersion = (version) => {
-  const [major, minor, patch] = version.split('.')
-  return `v${major}.${minor}.${parseInt(patch + 1)}`
+  const [_, major, minor, patch] = version.match(
+    /v([0-9]*)\.([0-9]*)\.([0-9]*)/
+  )
+  return `v${major}.${minor}.${parseInt(patch) + 1}`
 }
 
 const executeStudioDeployWithVersionIncrement = async ({
@@ -38,12 +40,15 @@ const executeStudioDeployWithVersionIncrement = async ({
   const cmd = `graph deploy --version-label="${version}" ${flags} ${subgraphName}`
   let stderr = await executeCommand(cmd)
   if (stderr) {
-    if (stderr.includes('Version label already exists')) {
+    if (stderr.includes(`Version label already exists`)) {
       const nextVersion = incrementVersion(version)
       console.log(
         `Studio version for ${subgraphName} exists - attempting deploy with version - ${nextVersion}`
       )
-      return executeStudioDeployWithVersionIncrement(subgraphName, nextVersion)
+      return executeStudioDeployWithVersionIncrement({
+        subgraphName,
+        version: nextVersion,
+      })
     }
   }
 }
@@ -97,7 +102,7 @@ const deploy = async (network, studioName, graphLabel) => {
   }
 
   if (!studioName) {
-    ;({ studioName } = networks[network].subgraph)
+    ; ({ studioName } = networks[network].subgraph)
   }
 
   if (!studioName) {

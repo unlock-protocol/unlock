@@ -86,7 +86,6 @@ export const goerli: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-goerli/version/latest',
     studioName: 'unlock-protocol-goerli',
   },
-  swapPurchaser: '0x49aD0039B30De002d4C27A6E8Fc026c7e23d083C',
   tokens: [
     {
       address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
