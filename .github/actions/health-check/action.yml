@@ -1,31 +1,31 @@
 name: Protocol Health Check
+description: Check the state of the Unlock Protocol across all chains
 
-on:
-  workflow_call:
+env:
+  DOCKER_BUILDKIT: 1
+  BUILDKIT_PROGRESS: plain
+  SENTRY_LOG_LEVEL: info
+  SENTRY_DSN: ${{secrets.SENTRY_DSN }}
 
-jobs:
-  health-check:
-    name: Check the state of the Unlock Protocol for all chains
-    runs-on: ubuntu-22.04
-    env:
-      DOCKER_BUILDKIT: 1
-      BUILDKIT_PROGRESS: plain
-      SENTRY_LOG_LEVEL: info
-      SENTRY_DSN: ${{secrets.SENTRY_DSN }}
-      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-    steps:
+runs: 
+  using: "composite"
+  steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
       - run: yarn
+        shell: bash
       - run: yarn build
+        shell: bash
       - name: Install Sentry CLI
         shell: bash
         run: npm install @sentry/cli -g
       - name: Sentry CLI login
         shell: bash
-        run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN  
+        run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
       - name: Check networks package
         run: |
           yarn workspace @unlock-protocol/networks check >> networks.log
@@ -48,4 +48,5 @@ jobs:
         run: |
           yarn workspace @unlock-protocol/governance check:multisig >> multisig.log
           sentry-cli send-event -m "Multisig" --logfile multisig.log
+    
         
