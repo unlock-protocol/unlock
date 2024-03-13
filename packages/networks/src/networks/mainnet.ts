@@ -75,7 +75,6 @@ export const mainnet: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-mainnet/version/latest',
     studioName: 'unlock-protocol-mainnet',
   },
-  swapPurchaser: '0x02415541c7F4c976722493181cFdb0b46E1c94fb',
   tokens: [
     {
       address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
