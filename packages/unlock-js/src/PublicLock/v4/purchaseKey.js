@@ -83,11 +83,11 @@ export default async function (
     ? unlockSwapPurchaserContract?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress || ZERO,
+        actualAmount,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,
         callData,
-        actualAmount,
         transactionOptions
       )
     : lockContract.purchaseFor(owner, transactionOptions)

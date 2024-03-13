@@ -94,11 +94,11 @@ export default async function (options, transactionOptions = {}, callback) {
         ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
             lockAddress,
             swap.srcTokenAddress || ZERO,
+            totalPrice,
             swap.amountInMax,
             swap.uniswapRouter,
             swap.swapCallData,
             callData,
-            totalPrice,
             transactionOptions
           )
         : lockContract.estimateGas.purchase(
@@ -129,11 +129,11 @@ export default async function (options, transactionOptions = {}, callback) {
     ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress || ZERO,
+        totalPrice,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,
         callData,
-        totalPrice,
         transactionOptions
       )
     : lockContract.populateTransaction.purchase(

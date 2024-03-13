@@ -131,11 +131,11 @@ export default async function (
         ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
             lockAddress,
             swap.srcTokenAddress || ZERO,
+            actualAmount,
             swap.amountInMax,
             swap.uniswapRouter,
             swap.swapCallData,
             callData,
-            actualAmount,
             transactionOptions
           )
         : lockContract.estimateGas.extend(
@@ -166,11 +166,11 @@ export default async function (
     ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
         lockAddress,
         swap.srcTokenAddress || ZERO,
+        actualAmount,
         swap.amountInMax,
         swap.uniswapRouter,
         swap.swapCallData,
         callData,
-        actualAmount,
         transactionOptions
       )
     : lockContract.populateTransaction.extend(
