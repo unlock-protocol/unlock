@@ -7,7 +7,6 @@ import {
 import dayjs from 'dayjs'
 import { ethers } from 'ethers'
 import { MAX_UINT } from '~/constants'
-import { useConfig } from '~/utils/withConfig'
 
 interface Options {
   lockAddress?: string
@@ -18,8 +17,7 @@ interface Options {
 export type Key = NonNullable<ReturnType<typeof useKeys>['keys']>[0]
 
 export const useKeys = ({ networks, lockAddress, owner }: Options) => {
-  const config = useConfig()
-  const subgraph = new SubgraphService(config.networks)
+  const subgraph = new SubgraphService()
   const { data: keys, isLoading: isKeysLoading } = useQuery(
     ['keys', owner, networks, lockAddress],
     async () => {
