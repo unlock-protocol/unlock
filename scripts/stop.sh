@@ -16,10 +16,14 @@ REPO_ROOT=`pwd`/`dirname "$0"`/..
 echo "running from: $REPO_ROOT"
 COMPOSE_CONFIG="-f $REPO_ROOT/docker/docker-compose.yml -f $REPO_ROOT/docker/docker-compose.integration.yml"
 
-echo $COMPOSE_CONFIG
+# bring containers down
 docker-compose $COMPOSE_CONFIG down
+
+# delete locksmith db
 locksmith_postgres_instance=$(docker ps -a --no-trunc -q --filter name=^/locksmith-postgres)
 if [ -n "$locksmith_postgres_instance" ]; then
   docker rm -f $locksmith_postgres_instance
 fi
 
+# kill possible running apps
+# kill $(ps aux | grep unlock | awk '{print $2}')

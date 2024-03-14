@@ -47,6 +47,9 @@ yarn graph deploy testgraph --node=http://localhost:8020/ --ipfs=http://localhos
 yarn workspace @unlock-protocol/networks create-localhost ../../docker/development/eth-node/networks.json
 yarn workspace @unlock-protocol/networks build
 
+# rebuild unlock-js to get latest networks package
+yarn workspace @unlock-protocol/unlock-js build
+
 # start 2nd postgres instance for locksmith
 docker run --name locksmith-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=locksmith -d postgres
 
