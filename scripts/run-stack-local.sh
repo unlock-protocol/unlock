@@ -43,6 +43,7 @@ yarn provision --network localhost
 cd $REPO_ROOT/subgraph
 yarn prepare:abis
 
+# copy local networks files 
 yarn prepare:test
 yarn graph codegen
 yarn graph build --network localhost
@@ -51,6 +52,10 @@ yarn graph build --network localhost
 yarn workspace @unlock-protocol/subgraph graph create testgraph --node http://localhost:8020/
 yarn graph deploy testgraph --node=http://localhost:8020/ --ipfs=http://localhost:5001 --version-label=v0.0.1 --network=localhost
 
+# create localhost file in networks package
+yarn workspace @unlock-protocol/networks create-localhost ../../docker/development/eth-node/networks.json
+yarn workspace @unlock-protocol/networks build
+
 # start 2nd postgres instance for locksmith
 docker run --name locksmith-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -e POSTGRES_DB=locksmith -d postgres
 
@@ -58,14 +63,13 @@ docker run --name locksmith-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres 
 export DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5433/locksmith
 yarn workspace @unlock-protocol/locksmith db:migrate
 
-# run locksmith (detached)
+# run locksmith + workers (detached)
 nohup yarn workspace @unlock-protocol/locksmith dev &
+# nohup  yarn workspace @unlock-protocol/locksmith worker:dev &
 
 # run unlock-app
 export NEXT_PUBLIC_LOCKSMITH_URI=http://localhost:8080
 export NEXT_PUBLIC_UNLOCK_ENV=dev
 yarn workspace @unlock-protocol/unlock-app start
 
-# # TODO: run websub (detached)
-# nohup  yarn workspace @unlock-protocol/websub
 
