@@ -2,7 +2,6 @@ import React from 'react'
 import Container from './Container'
 import { FrameButton, FrameImage } from 'frames.js/next/server'
 import { config } from '../../../../src/config/app'
-import { DefaultImage } from './DefaultImage'
 
 export const DefaultFrame = ({
   previousFrame,
