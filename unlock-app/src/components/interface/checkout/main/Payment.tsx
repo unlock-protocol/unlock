@@ -101,7 +101,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       recipients,
     })
 
-  const enableCrossmint = !state.context.renew && crossmintEnabled
+  const enableCrossmint = crossmintEnabled
 
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
