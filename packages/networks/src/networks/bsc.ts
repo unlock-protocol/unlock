@@ -43,6 +43,11 @@ export const bsc: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x1Bc951F8ed90F6c135F01Fe62CA348F4c3F43D00',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 56,
@@ -81,12 +86,12 @@ export const bsc: NetworkConfig = {
   startBlock: 13079000,
 
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-bsc/version/latest',
+    studioName: 'unlock-protocol-bsc',
   },
 
-  swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',
+  swapPurchaser: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
 
   tokens: [
     {
@@ -127,7 +132,7 @@ export const bsc: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7',
     positionManager: '0x7b8A01B39D58278b5DE7e48c8449c9f4F5170613',
-    universalRouterAddress: '0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B',
+    universalRouterAddress: '0x5Dc88340E1c5c6366864Ee415d6034cadd1A9897',
   },
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   url: 'https://www.bnbchain.org/en',

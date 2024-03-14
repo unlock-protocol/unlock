@@ -13,6 +13,7 @@ import unlock from './unlock'
 import upgrades from './upgrades'
 import localhost from './localhost'
 import events from './events'
+import deploy from './deploy'
 
 module.exports = {
   ...balance,
@@ -30,4 +31,5 @@ module.exports = {
   ...upgrades,
   ...localhost,
   ...events,
+  ...deploy,
 }

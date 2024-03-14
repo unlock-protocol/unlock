@@ -6,19 +6,14 @@ on:
       - production
 
 jobs:
-  run-all-tests:
-    uses: ./.github/workflows/_tests.yml
-
   deploy-all-subgraphs:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
     uses: ./.github/workflows/_subgraph.yml
     secrets:
-      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
+      SUBGRAPH_STUDIO_DEPLOY_KEY: op://secrets/subgraph/studio-deploy-key
 
   deploy-locksmith-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
@@ -32,7 +27,6 @@ jobs:
   # Netlify Deployments
   deploy-paywall-app-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       bypass_diff_check: bypass
@@ -44,7 +38,6 @@ jobs:
 
   deploy-wedlocks:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
-    needs: run-all-tests
     uses: ./.github/workflows/_netlify.yml
     with:
       service: wedlocks
@@ -66,7 +59,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Load secrets from 1Password
-        uses: 1Password/load-secrets-action@v1.3.1
+        uses: 1Password/load-secrets-action@v1.3.2
         with:
           export-env: true
         env:

@@ -1,6 +1,6 @@
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
@@ -8,8 +8,13 @@ import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
+import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { useMutation } from '@tanstack/react-query'
-import { ExpirationStatus, FilterBar } from './elements/FilterBar'
+import {
+  ApprovalStatus,
+  ExpirationStatus,
+  FilterBar,
+} from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
@@ -31,7 +36,8 @@ import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
-import { MEMBERS_PER_PAGE } from '~/constants'
+import { ImageBar } from './elements/ImageBar'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface ActionBarProps {
   lockAddress: string
@@ -65,49 +71,85 @@ export function downloadAsCSV({
   FileSaver.saveAs(blob, fileName)
 }
 
-const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
+export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   const { isLoading: isLoadingMetadata, data: metadata } = useMetadata({
     lockAddress,
     network,
   })
 
   const { isEvent } = getLockTypeByMetadata(metadata)
+  const [keysJobId, setKeysJobId] = useState<string | null>(null)
+  const [isKeysJobLoading, setIsKeysJobLoading] = useState<boolean>(false)
 
-  // this breaks when there is too many rows!
-  const onDownloadCsv = async () => {
-    const response = await storage.keys(
-      network,
-      lockAddress,
-      '',
-      'owner',
-      'all',
-      page - 1,
-      MEMBERS_PER_PAGE
-    )
-    const members = response.data
-    const cols: string[] = []
-    members?.map((member: any) => {
-      Object.keys(member).map((key: string) => {
-        if (!cols.includes(key)) {
-          cols.push(key) // add key once only if not present in list
-        }
+  const onDownloadCsvMutation = useMutation(
+    async () => {
+      ToastHelper.success(
+        `It may take a few minutes for the file to be generated. Please do not close this page`
+      )
+      const response = await storage.exportKeys(
+        network,
+        lockAddress,
+        '',
+        'owner',
+        'all',
+        'minted'
+      )
+      if (response.status === 200 && response.data.jobId) {
+        setKeysJobId(response.data.jobId)
+        setIsKeysJobLoading(true)
+      } else {
+        console.error('Failed to start download job', response)
+        ToastHelper.error(`Failed to start download job: ${response}`)
+      }
+    },
+    {
+      meta: {
+        errorMessage: 'Failed to download members list',
+      },
+      onError: (error) => {
+        ToastHelper.error(`Failed to download members list: ${error}`)
+        console.error('Failed to download members list', error)
+        setIsKeysJobLoading(false)
+      },
+    }
+  )
+
+  useEffect(() => {
+    let intervalId: any = null
+
+    const fetchKeysJob = async () => {
+      if (!keysJobId) return
+
+      const response = await storage.getExportedKeys(
+        network,
+        lockAddress,
+        keysJobId
+      )
+      if (response.status != 200) {
+        return
+      }
+
+      clearInterval(intervalId)
+      setIsKeysJobLoading(false)
+
+      const members = response.data
+      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      downloadAsCSV({
+        cols,
+        metadata: members.keys as any[],
       })
-    })
-    downloadAsCSV({
-      cols,
-      metadata: members,
-    })
-  }
+    }
+
+    if (isKeysJobLoading) {
+      intervalId = setInterval(fetchKeysJob, 2000)
+    }
+
+    return () => clearInterval(intervalId)
+  }, [keysJobId, isKeysJobLoading])
 
   const { isManager } = useLockManager({
     lockAddress,
-    network: network!,
-  })
-
-  const onDownloadMutation = useMutation(onDownloadCsv, {
-    meta: {
-      errorMessage: 'Failed to download members list',
-    },
+    network,
   })
 
   return (
@@ -121,10 +163,10 @@ const ActionBar = ({ lockAddress, network, page }: ActionBarProps) => {
             <Button
               variant="outlined-primary"
               size="small"
-              disabled={isLoadingMetadata}
-              loading={onDownloadMutation.isLoading}
+              disabled={isLoadingMetadata || isKeysJobLoading}
+              loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
               iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-              onClick={() => onDownloadMutation.mutate()}
+              onClick={() => onDownloadCsvMutation.mutate()}
             >
               Download {isEvent ? 'attendee' : 'member'} list
             </Button>
@@ -186,8 +228,11 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
       <AirdropKeysDrawer
         isOpen={airdropKeys}
         setIsOpen={setAirdropKeys}
-        lockAddress={lockAddress}
-        network={network!}
+        locks={{
+          [lockAddress]: {
+            network: network,
+          },
+        }}
       />
 
       <div className="">
@@ -262,7 +307,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   )
 }
 
-const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
+export const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
 
   const { isManager } = useLockManager({
@@ -342,6 +387,7 @@ export const ManageLockPage = () => {
     query: '',
     filterKey: 'owner',
     expiration: ExpirationStatus.ALL,
+    approval: ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
 
@@ -398,8 +444,11 @@ export const ManageLockPage = () => {
       <AirdropKeysDrawer
         isOpen={airdropKeys}
         setIsOpen={setAirdropKeys}
-        lockAddress={lockAddress}
-        network={parseInt(network!, 10)}
+        locks={{
+          [lockAddress]: {
+            network: parseInt(network!, 10),
+          },
+        }}
       />
       <div className="min-h-screen bg-ui-secondary-200 pb-60">
         <LockSelection />
@@ -407,6 +456,7 @@ export const ManageLockPage = () => {
           <div className="pt-9">
             <div className="flex flex-col gap-3 mb-7">
               <TopActionBar lockAddress={lockAddress} network={lockNetwork!} />
+              <NetworkWarning network={lockNetwork!} />
               {showNotManagerBanner && <NotManagerBanner />}
             </div>
             <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
@@ -439,7 +489,33 @@ export const ManageLockPage = () => {
                   loading={loading}
                   setPage={setPage}
                   page={page}
-                  onAirdropKeys={toggleAirdropKeys}
+                  NoMemberNoFilter={() => {
+                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    return (
+                      <ImageBar
+                        src="/images/illustrations/no-member.svg"
+                        alt="No members"
+                        description={
+                          <span>
+                            Lock is deployed. You can{' '}
+                            <button
+                              onClick={toggleAirdropKeys}
+                              className="outline-none cursor-pointer text-brand-ui-primary"
+                            >
+                              Airdrop Keys
+                            </button>{' '}
+                            or{' '}
+                            <Link href={checkoutLink}>
+                              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                                Share a purchase link
+                              </span>
+                            </Link>{' '}
+                            to your community.
+                          </span>
+                        }
+                      />
+                    )
+                  }}
                 />
               </div>
             </div>

@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { reverts, ADDRESS_ZERO } = require('../helpers')
 
-contract('PublicLock template versions', () => {
+describe('PublicLock template versions', () => {
   let unlock
   let publicLock
   let publicLockUpgraded

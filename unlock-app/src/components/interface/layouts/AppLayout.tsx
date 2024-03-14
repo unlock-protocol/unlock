@@ -21,7 +21,7 @@ interface DashboardLayoutProps {
   showHeader?: boolean
   logoImageUrl?: string
   logoRedirectUrl?: string
-  showFooter?: boolean
+  showFooter?: any
 }
 
 export const WalletNotConnected = () => {
@@ -49,7 +49,7 @@ export const WalletNotConnected = () => {
   )
 }
 
-const FOOTER = {
+export const FOOTER = {
   subscriptionForm: {
     title: 'Sign up for Updates',
     description:
@@ -144,7 +144,7 @@ export const AppLayout = ({
   authRequired = true,
   showLinks = true,
   showHeader = true,
-  showFooter = true,
+  showFooter = FOOTER,
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
 }: DashboardLayoutProps) => {
@@ -217,84 +217,79 @@ export const AppLayout = ({
           <Button onClick={saveTermsAccepted}>I agree</Button>
         </div>
       </Modal>
-      <div className="w-full">
+      <Container>
         {showHeader && (
-          <div className="px-4 mx-auto lg:container">
-            <HeaderNav
-              {...MENU}
-              actions={[
-                {
-                  content: account ? (
-                    <div className="flex gap-2">
-                      <button
-                        onClick={(event) => {
-                          event.preventDefault()
-                          openConnectModal()
-                        }}
-                      >
-                        <div className="flex items-center gap-2">
-                          <span className="text-brand-ui-primary text-right">
-                            {userEns === account
-                              ? email
-                                ? email
-                                : addressMinify(userEns)
-                              : userEns}
-                          </span>
-                          <DisconnectIcon
-                            className="text-brand-ui-primary"
-                            size={20}
-                          />
-                        </div>
-                      </button>
-                    </div>
-                  ) : (
-                    <Button
+          <HeaderNav
+            {...MENU}
+            actions={[
+              {
+                content: account ? (
+                  <div className="flex gap-2">
+                    <button
                       onClick={(event) => {
                         event.preventDefault()
                         openConnectModal()
                       }}
                     >
-                      Connect
-                    </Button>
-                  ),
-                },
-              ]}
-            />
-          </div>
-        )}
-        <div className="min-w-full min-h-screen">
-          <div className="pt-8">
-            <Container>
-              <div className="flex flex-col gap-10">
-                {(title || description) && (
-                  <div className="flex flex-col gap-4">
-                    {title && typeof title === 'string' ? (
-                      <h1 className="text-4xl font-bold">{title}</h1>
-                    ) : (
-                      title
-                    )}
-                    {description && (
-                      <div className="w-full text-base text-gray-700">
-                        {description}
+                      <div className="flex items-center gap-2">
+                        <span className="text-brand-ui-primary text-right">
+                          {userEns === account
+                            ? email
+                              ? email
+                              : addressMinify(userEns)
+                            : userEns}
+                        </span>
+                        <DisconnectIcon
+                          className="text-brand-ui-primary"
+                          size={20}
+                        />
                       </div>
-                    )}
-                  </div>
-                )}
-                {showLogin ? (
-                  <div className="flex justify-center">
-                    <WalletNotConnected />
+                    </button>
                   </div>
                 ) : (
-                  <div>{children}</div>
-                )}
-              </div>
-            </Container>
-          </div>
+                  <Button
+                    onClick={(event) => {
+                      event.preventDefault()
+                      openConnectModal()
+                    }}
+                  >
+                    Connect
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        )}
+        <div
+          className={`flex flex-col gap-10 min-h-screen ${
+            showHeader ? '' : 'mt-8'
+          }`}
+        >
+          {(title || description) && (
+            <div className="flex flex-col gap-4">
+              {title && typeof title === 'string' ? (
+                <h1 className="text-3xl font-bold">{title}</h1>
+              ) : (
+                title
+              )}
+              {description && (
+                <div className="w-full text-base text-gray-700">
+                  {description}
+                </div>
+              )}
+            </div>
+          )}
+          {showLogin ? (
+            <div className="flex justify-center">
+              <WalletNotConnected />
+            </div>
+          ) : (
+            <div>{children}</div>
+          )}
         </div>
-        <div className="px-4 mx-auto lg:container">
-          {showFooter && <Footer {...FOOTER} />}
-        </div>
-      </div>
+
+        {showFooter && <Footer {...showFooter} />}
+      </Container>
     </div>
   )
 }

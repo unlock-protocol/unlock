@@ -41,6 +41,11 @@ export const linea: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x4Bf912519549DF750002814a2DcE7184b3971F06',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 59144,
@@ -67,11 +72,9 @@ export const linea: NetworkConfig = {
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 560908,
   subgraph: {
-    endpoint: 'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
-    endpointV2:
-      'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
-    // NB: this name should be changed once The Graph supports Linea
-    networkName: 'linea-mainnet',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-linea/version/latest',
+    studioName: 'unlock-protocol-linea',
   },
   tokens: [
     {

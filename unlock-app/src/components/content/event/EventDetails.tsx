@@ -1,11 +1,18 @@
+import { MdAssignmentLate } from 'react-icons/md'
 import { useEffect, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
-import { Button, Card, Disclosure, minifyAddress } from '@unlock-protocol/ui'
+import {
+  Button,
+  Card,
+  Disclosure,
+  Icon,
+  minifyAddress,
+} from '@unlock-protocol/ui'
 import AddToCalendarButton from './AddToCalendarButton'
 import { TweetItButton } from './TweetItButton'
+import { CastItButton } from './CastItButton'
 import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
@@ -22,10 +29,13 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
-import { RegistrationCard } from './RegistrationCard'
+import { RegistrationCard } from './Registration/RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { storage } from '~/config/storage'
+import { FaUsers } from 'react-icons/fa'
+import { TbSettings } from 'react-icons/tb'
+import { config } from '~/config/app'
 
 interface EventDetailsProps {
   event: Event
@@ -63,6 +73,7 @@ export const EventDetails = ({
     event,
   })
   // Migrate legacy event and/or redirect
+  // TODO: remove by June 1st 2024
   useEffect(() => {
     const migrateAndRedirect = async () => {
       if (router.pathname === '/event') {
@@ -91,8 +102,11 @@ export const EventDetails = ({
     successDuration: 1000,
   })
 
-  const eventDate = getEventDate(event.ticket)
+  const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
+  const hasPassed = eventEndDate
+    ? dayjs().isAfter(eventEndDate)
+    : dayjs().isAfter(eventDate)
 
   const isSameDay = dayjs(eventDate).isSame(eventEndDate, 'day')
 
@@ -112,6 +126,7 @@ export const EventDetails = ({
           timeZone: event.ticket.event_timezone,
           hour: '2-digit',
           minute: '2-digit',
+          timeZoneName: 'short',
         })
       : undefined
 
@@ -132,6 +147,7 @@ export const EventDetails = ({
           timeZone: event.ticket.event_timezone,
           hour: '2-digit',
           minute: '2-digit',
+          timeZoneName: 'short',
         })
       : null
 
@@ -140,30 +156,90 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
-  // TODO: OG for event!
-  // const locksmithEventOG = new URL(
-  //   `/v2/og/event/${network}/locks/${lockAddress}`,
-  //   config.locksmithHost
-  // ).toString()
-
   return (
     <div>
       <NextSeo
-        title={event.title}
-        description={`${event.description}. Powered by Unlock Protocol.`}
+        title={event.name}
+        description={`${event.description} 
+Powered by Unlock Protocol`}
         openGraph={{
+          title: event.title,
+          type: 'website',
+          url: eventUrl,
           images: [
             {
               alt: event.title,
-              url: 'locksmithEventOG',
+              url: `${config.unlockApp}/og/event/${event.slug}`,
             },
           ],
         }}
+        additionalMetaTags={[
+          {
+            property: 'fc:frame',
+            content: 'vNext',
+          },
+          {
+            name: 'fc:frame:image',
+            content: `${config.unlockApp}/og/event/${event.slug}`,
+          },
+          {
+            name: 'fc:frame:post_url',
+            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+              `${config.unlockApp}/frames/event/${event.slug}`
+            )}&s=${encodeURIComponent('{"view":"default"}')}`,
+          },
+          {
+            name: 'fc:frame:button:1',
+            content: 'Register',
+          },
+          {
+            name: 'fc:frame:button:1:target',
+            content: eventUrl,
+          },
+          {
+            name: 'fc:frame:button:1:action',
+            content: 'link',
+          },
+          {
+            name: 'fc:frame:button:2',
+            content: 'See description',
+          },
+          {
+            name: 'fc:frame:button:2:action',
+            content: 'post',
+          },
+        ]}
       />
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-row-reverse gap-2 ">
+          {isOrganizer && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/settings`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={TbSettings} size={20} />
+                  <span>Settings</span>
+                </div>
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/attendees`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={FaUsers} size={20} />
+                  <span>Attendees</span>
+                </div>
+              </Button>
+            </>
+          )}
+        </div>
 
-      <div className="relative">
         <div className="relative">
-          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
+          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl rounded-lg">
             {coverImage && (
               <img
                 className="object-cover w-full h-full"
@@ -185,19 +261,25 @@ export const EventDetails = ({
 
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
-              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
+              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 md:rounded-3xl rounded-xl">
                 <img
                   alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 rounded-2xl"
+                  className="object-cover w-full m-auto aspect-1 md:rounded-2xl rounded-lg"
                   src={event.image}
                 />
               </div>
-              <ul className="flex items-center gap-2 mt-auto md:gap-2">
+              <ul className="flex items-center gap-0 mt-auto md:gap-2">
                 <li>
                   <AddToCalendarButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
                   <TweetItButton event={event} eventUrl={eventUrl} />
+                </li>
+                <li>
+                  <CastItButton
+                    event={event}
+                    eventUrl={`https://events-frame.unlock-protocol.com/events/s/${eventProp.slug}`}
+                  />
                 </li>
                 <li>
                   <CopyUrlButton eventUrl={eventUrl} />
@@ -207,11 +289,13 @@ export const EventDetails = ({
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 mt-14 lg:px-12 lg:mt-28">
+        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 lg:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="text-4xl font-bold md:text-7xl">{event.name}</h1>
+            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
+              {event.name}
+            </h1>
             <section className="mt-4">
-              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-2xl">
+              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
                     <div
@@ -233,8 +317,7 @@ export const EventDetails = ({
                 )}
                 {hasLocation && <EventLocation event={event} />}
               </div>
-              <div className="mt-14">
-                <h2 className="text-2xl font-bold">Event Information</h2>
+              <div className="mt-10">
                 {event.description && (
                   <div className="mt-4 markdown">
                     {/* eslint-disable-next-line react/no-children-prop */}
@@ -244,11 +327,25 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-          <RegistrationCard checkoutConfig={checkoutConfig} event={event} />
+
+          {!hasPassed && (
+            <RegistrationCard
+              requiresApproval={event.requiresApproval}
+              checkoutConfig={checkoutConfig}
+            />
+          )}
+          {hasPassed && (
+            <Card className="grid gap-4 mt-10 lg:mt-0">
+              <p className="text-lg">
+                <MdAssignmentLate />
+                This event is over. It is not possible to register for it
+                anymore.
+              </p>
+            </Card>
+          )}
         </section>
       </div>
-
-      <section className="flex flex-col mb-8">
+      <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
             <span className="text-2xl font-bold text-brand-dark">
@@ -320,7 +417,7 @@ export const EventDetails = ({
                 </div>
               </Disclosure>
 
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+              {/* <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
                   <Card.Label
                     title="Manage Attendees"
@@ -353,7 +450,7 @@ export const EventDetails = ({
                     }
                   )}
                 </div>
-              </Card>
+              </Card> */}
 
               <Disclosure
                 label="Verifiers"

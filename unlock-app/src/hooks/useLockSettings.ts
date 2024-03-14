@@ -83,20 +83,10 @@ interface SaveLockProps {
   emailSender?: string | null
   checkoutConfigId?: string | null
   hookGuildId?: string | null
-}
-
-interface SaveLockProps {
-  lockAddress: string
-  network: number
-  sendEmail?: boolean
-  slug?: string
-  replyTo?: string | null
-  creditCardPrice?: number | null
-  emailSender?: string | null
-  checkoutConfigId?: string | null
-  hookGuildId?: string | null
   unlockFeeChargedToUser?: boolean
   creditCardCurrency?: string
+  promoCodes?: string[]
+  crossmintClientId?: string
 }
 
 export function useSaveLockSettings() {

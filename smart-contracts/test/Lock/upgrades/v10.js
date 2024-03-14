@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const path = require('path')
@@ -22,9 +23,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
   before(async function copyAndBuildContract() {
     this.timeout(200000)
-    ;[PublicLockPast, PublicLockLatest] = await copyAndBuildContractsAtVersion(
-      dirname,
-      [
+    const [pathPublicLockPast, pathPublicLockLatest] =
+      await copyAndBuildContractsAtVersion(dirname, [
         {
           contractName: 'PublicLock',
           version: versionNumber,
@@ -33,8 +33,11 @@ describe('PublicLock upgrade  v9 > v10', () => {
           contractName: 'PublicLock',
           version: versionNumber + 1,
         },
-      ]
-    )
+      ])
+
+    PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
+    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)
+
     // deploy latest version
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()

@@ -1,5 +1,5 @@
 import { allJobs } from './tasks/allJobs'
-import { run } from 'graphile-worker'
+import { makeWorkerUtils, run, quickAddJob } from 'graphile-worker'
 import config from '../config/config'
 import {
   addRenewalJobs,
@@ -8,16 +8,17 @@ import {
 } from './tasks/renewal/addRenewalJobs'
 import { cryptoRenewalJob } from './tasks/renewal/cryptoRenewalJob'
 import { fiatRenewalJob } from './tasks/renewal/fiatRenewalJob'
-import { addKeyJobs } from './tasks/addKeyJobs'
 import { addHookJobs } from './tasks/hooks/addHookJobs'
 import { sendHook } from './tasks/hooks/sendHook'
 import { sendEmailJob } from './tasks/sendEmail'
 import { sendToAllJob } from './tasks/sendToAll'
 import { monitor } from './tasks/monitor'
+import { checkBalances } from './tasks/checkBalances'
 import { Pool } from 'pg'
 import { notifyExpiredKeysForNetwork } from './jobs/expiredKeys'
 import { notifyExpiringKeysForNetwork } from './jobs/expiringKeys'
 import { downloadReceipts } from './tasks/receipts'
+import exportKeysJob from './tasks/exportKeysJob'
 
 const crontabProduction = `
 */5 * * * * monitor
@@ -29,6 +30,7 @@ const crontabProduction = `
 */5 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
 0 0 * * * notifyExpiredKeysForNetwork
+30 */6 * * * checkBalances
 `
 
 const cronTabTesting = `
@@ -45,18 +47,46 @@ const cronTabTesting = `
 
 const crontab = config.isProduction ? crontabProduction : cronTabTesting
 
+export const addJob = async (jobName: string, payload: any, opts = {}) => {
+  // Default priority for tasks is 0, we do not want to make clients wait
+  return quickAddJob(
+    {
+      pgPool: new Pool({
+        connectionString: config.databaseUrl,
+        // @ts-expect-error - type is not defined properly
+        ssl: config.database?.dialectOptions?.ssl,
+      }),
+    },
+    jobName,
+    payload,
+    opts
+  )
+}
+
 export async function startWorker() {
+  const pgPool = new Pool({
+    connectionString: config.databaseUrl,
+    // @ts-expect-error - type is not defined properly
+    ssl: config.database?.dialectOptions?.ssl,
+  })
+
+  // Create worker utils for scheduling tasks
+  const workerUtils = await makeWorkerUtils({
+    pgPool,
+  })
+
+  // Jobs to start when worker starts!
+  await workerUtils.addJob('checkBalances', {})
+
   const runner = await run({
-    pgPool: new Pool({
-      connectionString: config.databaseUrl,
-      // @ts-expect-error - type is not defined properly
-      ssl: config.database?.dialectOptions?.ssl,
-    }),
+    pgPool,
     crontab,
-    concurrency: 1, // very low concurrency to check if this could be causing issues with email sending
+    concurrency: 5,
     noHandleSignals: false,
     pollInterval: 1000,
     taskList: {
+      exportKeysJob,
+      checkBalances,
       monitor,
       allJobs,
       notifyExpiredKeysForNetwork,
@@ -64,7 +94,6 @@ export async function startWorker() {
       addRenewalJobs,
       addRenewalJobsDaily,
       addRenewalJobsWeekly,
-      addKeyJobs,
       addHookJobs,
       sendEmailJob,
       sendToAllJob,

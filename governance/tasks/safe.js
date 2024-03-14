@@ -10,14 +10,6 @@ task('safe:create', 'Create a Safe from a list of owners')
     return await safeDeployer({ owners, threshold })
   })
 
-task('safe:transfer', 'transfer the contract ownership to a multisig')
-  .addParam('contractAddress', 'the address of the ownable contract')
-  .addOptionalParam('safeAddress', 'the address of the multisig contract')
-  .setAction(async ({ safeAddress, contractAddress }) => {
-    const transferOwnership = require('../scripts/multisig/transferOwnership')
-    await transferOwnership({ safeAddress, contractAddress })
-  })
-
 task('safe:address', 'Get the address of a safe')
   .addOptionalParam(
     'chainId',
@@ -96,4 +88,14 @@ task('safe:submit', 'Submit to multisig from a proposal file')
     // eslint-disable-next-line global-require
     const submitTx = require('../scripts/multisig/submitTx')
     await submitTx({ safeAddress, tx: calls })
+  })
+
+task('safe:add-owner', 'Submit a new owner to a multisig')
+  .addParam('newOwner', 'The address of the new safe owner')
+  .addOptionalParam('safeAddress', 'the address of the multisig contract')
+  .addOptionalParam('threshold', 'new threshold for the multisig contract')
+  .setAction(async ({ newOwner, safeAddress }) => {
+    // eslint-disable-next-line global-require
+    const addOwner = require('../scripts/multisig/addOwner')
+    await addOwner({ safeAddress, newOwner })
   })

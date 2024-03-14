@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const path = require('path')
 
@@ -32,10 +33,11 @@ describe('PublicLock upgrade v13 > v14', () => {
     this.timeout(200000)
 
     // get contract versions
-    ;[PublicLockPast] = await copyAndBuildContractsAtVersion(dirname, [
+    const [pathPublicLockPast] = await copyAndBuildContractsAtVersion(dirname, [
       { contractName: 'PublicLock', version: previousVersionNumber },
     ])
 
+    PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
     PublicLockLatest = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
     )

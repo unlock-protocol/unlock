@@ -32,4 +32,4 @@ image: /images/blog/sept-22-update/sept-22-banner.png
 
 - [Subgraph upgrade](https://unlock-protocol.com/blog/subgraph-v2)
 
-Want to know more and try stuff out? [Join our Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
+Want to know more and try stuff out? [Join our Unlock community in the Discord](https://discord.unlock-protocol.com/)!

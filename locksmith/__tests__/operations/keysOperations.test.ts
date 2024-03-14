@@ -5,6 +5,7 @@ import {
 import { loginRandomUser } from '../test-helpers/utils'
 import app from '../app'
 import { vi, expect, describe, it } from 'vitest'
+import { Rsvp } from '../../src/models'
 const network = 4
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
@@ -268,14 +269,14 @@ describe('keysOperations operations', () => {
       expect.assertions(2)
 
       const { address } = await loginRandomUser(app)
-      const items = await getKeysWithMetadata({
+      const { keys } = await getKeysWithMetadata({
         network,
         lockAddress,
         filters: {},
         loggedInUserAddress: address,
       })
-      expect(items.length).toBe(5)
-      expect(items).toEqual([
+      expect(keys.length).toBe(5)
+      expect(keys).toEqual([
         {
           token: '1',
           lockName: 'Alice in Borderlands',
@@ -341,14 +342,14 @@ describe('keysOperations operations', () => {
       expect.assertions(2)
 
       const { address } = await loginRandomUser(app)
-      const items = await getKeysWithMetadata({
+      const { keys } = await getKeysWithMetadata({
         network,
         lockAddress: wrongLockAddress,
         filters: {},
         loggedInUserAddress: address,
       })
-      expect(items.length).toBe(5)
-      expect(items).toEqual([
+      expect(keys.length).toBe(5)
+      expect(keys).toEqual([
         {
           token: '1',
           lockName: 'Alice in Borderlands',
@@ -400,6 +401,34 @@ describe('keysOperations operations', () => {
           transactionsHash: ['0x'],
         },
       ])
+    })
+
+    describe('pending keys', () => {
+      beforeEach(async () => {
+        await Rsvp.truncate()
+      })
+      it('should return the list of pending keys when prompted', async () => {
+        expect.assertions(3)
+        const { address } = await loginRandomUser(app)
+        const userAddress = '0xfF24307539A043E7fA40C4582090B3029de26b41'
+        await Rsvp.create({
+          network,
+          userAddress,
+          lockAddress,
+          approval: 'pending',
+        })
+        const { keys } = await getKeysWithMetadata({
+          network,
+          lockAddress,
+          filters: {
+            approval: 'pending',
+          },
+          loggedInUserAddress: address,
+        })
+        expect(keys.length).toBe(1)
+        expect(keys[0].approval).toBe('pending')
+        expect(keys[0].email).toBe('kld.diagne@gmail.com')
+      })
     })
   })
 })

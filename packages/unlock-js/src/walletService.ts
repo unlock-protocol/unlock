@@ -4,7 +4,9 @@ import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
-import { UnlockSwapPurchaserABI } from './abis/UnlockSwapPurchaserABI'
+import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
+import UnlockSwapPurchaser from '@unlock-protocol/contracts/dist/abis/utils/UnlockSwapPurchaser.json'
+const UnlockSwapPurchaserABI = UnlockSwapPurchaser.abi
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
@@ -104,10 +106,7 @@ export default class WalletService extends UnlockService {
       this.networkId = networkId
     }
 
-    if (!this.networks[networkId]) {
-      throw new Error(`Missing config for ${networkId}`)
-    }
-    if (this.networks[networkId].unlockAddress) {
+    if (this.networks[networkId]?.unlockAddress) {
       this.unlockAddress = this.networks[networkId].unlockAddress
     }
     return networkId
@@ -1232,11 +1231,40 @@ export default class WalletService extends UnlockService {
     })
 
     const discountBasisPoints = discountPercentage * 100
-    const tx = await contract.setDiscountForLock(
+    return contract
+      .connect(this.signer)
+      .setDiscountForLock(lockAddress, signerAddress, discountBasisPoints)
+  }
+
+  /**
+   * Set signer for `Discount code` hook contract with cap
+   */
+  async setDiscountCodeWithCapHookSigner(params: {
+    lockAddress: string
+    signerAddress: string
+    contractAddress: string
+    network: number
+    discountPercentage: number
+    cap: number
+  }) {
+    const {
       lockAddress,
       signerAddress,
-      discountBasisPoints
-    )
-    return tx
+      contractAddress,
+      network,
+      discountPercentage = 0,
+      cap = ethers.constants.MaxUint256,
+    } = params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeWithCapHookAbi,
+    })
+
+    const discountBasisPoints = discountPercentage * 100
+    const transaction = await contract
+      .connect(this.signer)
+      .setSigner(lockAddress, signerAddress, discountBasisPoints, cap)
+    return transaction.wait()
   }
 }

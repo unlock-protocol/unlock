@@ -6,16 +6,16 @@ const { assert } = require('chai')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / expirationDuration', () => {
+describe('Lock / expirationDuration', () => {
   let lock
 
   beforeEach(async () => {
-    const { unlockEthers: unlock } = await deployContracts()
+    const { unlock } = await deployContracts()
     const [from] = await ethers.getSigners()
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO
-    const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
+    const args = [60 * 30, tokenAddress, keyPrice.toString(), 10, 'Test lock']
 
     const calldata = await createLockCalldata({ args, from: from.address })
     const tx = await unlock.createUpgradeableLock(calldata)

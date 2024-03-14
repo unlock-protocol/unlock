@@ -3,7 +3,7 @@ import { config } from './app'
 
 export const DEFAULT_SEO: DefaultSeoProps = {
   title: 'Unlock Protocol',
-  description: 'Unlock ',
+  description: 'Unlock',
   openGraph: {
     type: 'website',
     locale: 'en_US',

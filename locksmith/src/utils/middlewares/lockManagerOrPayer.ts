@@ -35,7 +35,7 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
     network
   )
 
-  const subgraph = new SubgraphService(networks)
+  const subgraph = new SubgraphService()
 
   // get receipt from subgraph
   const receipt = await subgraph.receipt(
@@ -52,7 +52,11 @@ export const lockManagerOrPayerMiddleware: RequestHandler = async (
   const isPayer =
     receipt?.payer?.toLocaleLowerCase() === userAddress?.toLocaleLowerCase()
 
-  if (!isLockManager && !isPayer) {
+  const isRecipient =
+    // @ts-expect-error error TS2339: Property 'recipient' does not exist on type
+    receipt?.recipient?.toLowerCase() === userAddress?.toLowerCase()
+
+  if (!isLockManager && !isPayer && !isRecipient) {
     return res.status(403).send({
       message: `${userAddress} is not a lock manager or payer of this transaction`,
     })

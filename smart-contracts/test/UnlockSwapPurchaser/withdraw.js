@@ -3,9 +3,9 @@ const { deployERC20, deployContracts } = require('../helpers')
 
 const {
   getBalance,
+  getNetwork,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
-  uniswapRouterAddresses,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const someTokens = ethers.utils.parseUnits('10', 'ether')
@@ -21,21 +21,21 @@ let swapper,
   swapperBalanceBefore
 const { assert } = require('chai')
 
-contract('UnlockSwapPurchaser / withdraw', () => {
+describe('UnlockSwapPurchaser / withdraw', () => {
   scenarios.forEach((isErc20) => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       before(async () => {
         ;[owner] = await ethers.getSigners()
-        ;({ unlockEthers: unlock } = await deployContracts())
+        ;({ unlock } = await deployContracts())
 
         const UnlockSwapPurchaser = await ethers.getContractFactory(
           'UnlockSwapPurchaser'
         )
         // use mainnet settings for testing purposes only
-        const chainId = 1
-        const { UniversalRouter, SwapRouter02 } =
-          uniswapRouterAddresses[chainId]
-        const routers = [UniversalRouter, SwapRouter02]
+        const {
+          uniswapV3: { universalRouterAddress },
+        } = await getNetwork(1)
+        const routers = [universalRouterAddress]
         swapper = await UnlockSwapPurchaser.deploy(
           unlock.address,
           PERMIT2_ADDRESS,

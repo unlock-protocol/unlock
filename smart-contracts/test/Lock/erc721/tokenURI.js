@@ -1,3 +1,6 @@
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
+
 const {
   deployLock,
   deployContracts,
@@ -10,8 +13,8 @@ const defaultTokenURI = 'https://globalBaseTokenURI.com/api/key/'
 
 let lock
 let unlock
-let txObj
 let baseTokenURI
+let lockManager, someAccount
 
 // Helper function to deal with the lock returning the address part of the URI in lowercase.
 function stringShifter(str) {
@@ -28,8 +31,9 @@ function stringShifter(str) {
   return lowercaseAddress
 }
 
-contract('Lock / erc721 / tokenURI', (accounts) => {
+describe('Lock / erc721 / tokenURI', () => {
   before(async () => {
+    ;[lockManager, someAccount] = await ethers.getSigners()
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })
   })
@@ -40,18 +44,18 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
     })
 
     describe('set global base URI', () => {
+      let configUnlockEvent
       beforeEach(async () => {
-        txObj = await unlock.configUnlock(
+        const tx = await unlock.connect(lockManager).configUnlock(
           await unlock.udt(),
           await unlock.weth(),
           0,
           await unlock.globalTokenSymbol(),
           defaultTokenURI,
-          1, // mainnet
-          {
-            from: accounts[0],
-          }
+          1 // mainnet
         )
+        const { events } = await tx.wait()
+        configUnlockEvent = events.find(({ event }) => event === 'ConfigUnlock')
       })
 
       it('should allow the owner to set the global base token URI', async () => {
@@ -66,44 +70,42 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       })
 
       it('should emit the ConfigUnlock event', async () => {
-        const event = txObj.logs.find(({ event }) => event === 'ConfigUnlock')
-        assert.equal(event.args.globalTokenURI, defaultTokenURI)
+        assert.equal(configUnlockEvent.args.globalTokenURI, defaultTokenURI)
       })
     })
 
     it('should fail if someone other than the owner tries to set the URI', async () => {
       await reverts(
-        unlock.configUnlock(
+        unlock.connect(someAccount).configUnlock(
           await unlock.udt(),
           await unlock.weth(),
           0,
           await unlock.globalTokenSymbol(),
           'https://fakeGlobalURI.com',
-          1, // mainnet
-          {
-            from: accounts[1],
-          }
+          1 // mainnet
         )
       )
     })
   })
 
   describe(' The custom tokenURI stored in the Lock', () => {
+    let lockMetadataEvent
     before(async () => {
-      txObj = await lock.setLockMetadata(...Object.values(metadata), {
-        from: accounts[0],
-      })
+      const tx = await lock
+        .connect(lockManager)
+        .setLockMetadata(...Object.values(metadata))
+      const { events } = await tx.wait()
+      lockMetadataEvent = events.find(({ event }) => event === 'LockMetadata')
     })
 
     it('should allow the lock creator to set a custom base tokenURI', async () => {
-      await purchaseKey(lock, accounts[0])
+      await purchaseKey(lock, lockManager.address)
       const uri = await lock.tokenURI(1)
       assert.equal(uri, `${metadata.baseTokenURI}1`)
     })
 
     it('should emit the LockMetadata event', async () => {
-      const event = txObj.logs.find(({ event }) => event === 'LockMetadata')
-      assert.equal(event.args.baseTokenURI, metadata.baseTokenURI)
+      assert.equal(lockMetadataEvent.args.baseTokenURI, metadata.baseTokenURI)
     })
 
     it('should let anyone get the baseTokenURI for a lock by passing tokenId 0', async () => {
@@ -113,13 +115,10 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
     })
 
     it('should allow the lock creator to to unset the custom URI and default to the global one', async () => {
-      await lock.setLockMetadata(
+      await lock.connect(lockManager).setLockMetadata(
         metadata.name,
         metadata.symbol,
-        '', //baseTokenURI
-        {
-          from: accounts[0],
-        }
+        '' //baseTokenURI
       )
 
       const baseTokenURI = await lock.tokenURI(0)
@@ -136,9 +135,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
 
   it('should fail if someone other than the owner tries to set the URI', async () => {
     await reverts(
-      lock.setLockMetadata(...Object.values(metadata), {
-        from: accounts[1],
-      }),
+      lock.connect(someAccount).setLockMetadata(...Object.values(metadata)),
       'ONLY_LOCK_MANAGER'
     )
   })

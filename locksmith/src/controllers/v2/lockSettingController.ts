@@ -63,6 +63,7 @@ const LockSettingSchema = z.object({
       description: 'Client Id for Crossmint if cards are enabled.',
     })
     .optional(),
+  promoCodes: z.array(z.string()).optional().optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -78,6 +79,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   hookGuildId: undefined,
   creditCardCurrency: 'usd',
   crossmintClientId: undefined,
+  promoCodes: [],
 }
 
 export const updateSettings: RequestHandler = async (

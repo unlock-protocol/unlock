@@ -19,6 +19,7 @@ import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useQuery } from '@tanstack/react-query'
@@ -40,7 +41,9 @@ interface FormProps {
 
 export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { account } = useAuth()
+  const networkOptions = useAvailableNetworks()
+  const network = networkOptions[0]?.value
 
   const [isFree, setIsFree] = useState(true)
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
@@ -108,8 +111,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
       return await getAccountTokenBalance(Web3Service, account!, null, network!)
     }
   )
-
-  const networkOptions = useAvailableNetworks()
 
   const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
 
@@ -269,6 +270,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 defaultValue={network}
                 description={<NetworkDescription />}
               />
+              <NetworkWarning network={details.network} />
               <div className="mb-4">
                 {noBalance && (
                   <BalanceWarning

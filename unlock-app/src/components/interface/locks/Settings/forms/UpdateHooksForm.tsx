@@ -11,6 +11,7 @@ import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
 import { GuildContractHook } from './hooksComponents/GuildContractHook'
+import { PromoCodeHook } from './hooksComponents/PromoCodeHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
 
 interface UpdateHooksFormProps {
@@ -85,6 +86,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Guild.xyz',
         value: HookType.GUILD,
         component: (args) => <GuildContractHook {...args} />,
+      },
+      {
+        label: 'Discount code',
+        value: HookType.PROMO_CODE_CAPPED,
+        component: (args) => <PromoCodeHook {...args} />,
       },
     ],
   },
@@ -164,11 +170,18 @@ const HookSelect = ({
   }
 
   const hookAddress = getValues(name)
-  const hookOptionsByName = HookMapping[name]?.options ?? []
+  const { hookName } = HookMapping[name]
+
+  const hookOptionsByName = (HookMapping[name]?.options ?? []).filter(
+    (option) => {
+      const wasDeployed = hooks[hookName]?.find((deployedHook: Hook) => {
+        return deployedHook.id === option.value
+      })
+      return wasDeployed
+    }
+  )
   const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
   const Option = options.find((option) => option.value === selectedOption)
-
-  const { hookName } = HookMapping[name]
 
   let id = ''
 

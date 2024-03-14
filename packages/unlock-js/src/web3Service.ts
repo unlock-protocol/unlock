@@ -19,8 +19,8 @@ import {
   TradeType,
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
-import { networks } from '@unlock-protocol/networks'
 import { UnlockUniswapRoute } from '@unlock-protocol/types'
+import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -1164,5 +1164,31 @@ export default class Web3Service extends UnlockService {
       signerAddress
     )
     return ethers.BigNumber.from(discountForSigner).toNumber()
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getDiscountHookWithCapValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeWithCapHookAbi,
+    })
+    const discount = await contract.discounts(lockAddress, signerAddress)
+    const cap = await contract.caps(lockAddress, signerAddress)
+    const count = await contract.counters(lockAddress, signerAddress)
+    return {
+      discount: ethers.BigNumber.from(discount).toNumber(),
+      cap: ethers.BigNumber.from(cap).toNumber(),
+      count: ethers.BigNumber.from(count).toNumber(),
+    }
   }
 }

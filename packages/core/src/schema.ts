@@ -51,6 +51,7 @@ export const MetadataInput = z.object({
 export type MetadataInputType = z.infer<typeof MetadataInput>
 
 export const PaywallLockConfig = z.object({
+  order: z.number().int().optional(),
   name: z
     .string({
       description: 'Name of the lock to display.',
@@ -292,6 +293,7 @@ export const EventObject = z.object({
   slug: z.string(),
   image: z.string().url(),
   description: z.string(),
+  requiresApproval: z.boolean(),
   ticket: z.object({
     event_cover_image: z.string(),
     event_start_date: z.string(),

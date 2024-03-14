@@ -49,6 +49,11 @@ export const polygon: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0xa10a55EF6E41dE1267cA8A98010B58a7b6B21418',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
     ],
   },
   id: 137,
@@ -81,12 +86,11 @@ export const polygon: NetworkConfig = {
   publicProvider: 'https://polygon-rpc.com/',
   startBlock: 21986688,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-polygon/version/latest',
     networkName: 'matic',
+    studioName: 'unlock-protocol-polygon',
   },
-  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
   tokens: [
     {
       address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
