@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+#
+# This will run an instance of the unlock protocol tooling (deploy contracts, graph, and apps)
+# from the local repository. This is useful when developing and testing things locally.
+#
+# You are required to run first `yarn && yarn build` from the root of this repo, to install and
+# prepare deps. Docker is required to run instances of infrastructure providers such as 
+# Ethereum node, Graph node,  Postgres db and IPFS.
+#
+# To run the protocol entirely with docker , see `run-stack-dockerized.sh`
+
+set -e
+
+REPO_ROOT=`pwd`/`dirname "$0"`/..
+echo "running from: $REPO_ROOT"
+COMPOSE_CONFIG="-f $REPO_ROOT/docker/docker-compose.yml -f $REPO_ROOT/docker/docker-compose.integration.yml"
+
+echo $COMPOSE_CONFIG
+docker-compose $COMPOSE_CONFIG down
+locksmith_postgres_instance=$(docker ps -a --no-trunc -q --filter name=^/locksmith-postgres)
+if [ -n "$locksmith_postgres_instance" ]; then
+  docker rm -f $locksmith_postgres_instance
+fi
+
