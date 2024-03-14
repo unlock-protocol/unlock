@@ -17,6 +17,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "check-tokens": "tsx ./bin/check-tokens",
+    "create-localhost": "tsx ./bin/localhost",
     "clean": "rm -rf ./dist",
     "check": "tsx ./bin/keys",
     "prepublish": "yarn build",
@@ -33,7 +34,8 @@
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.54.0",
     "tsup": "8.0.2",
-    "typescript": "5.3.3"
+    "typescript": "5.3.3",
+    "fs-extra": "11.2.0"
   },
   "files": [
     "dist"
