@@ -26,6 +26,10 @@ export UNLOCK_ENV=test
 
 # clean things up 
 docker-compose $COMPOSE_CONFIG down
+locksmith_postgres_instance=$(docker ps -a --no-trunc -q --filter name=^/locksmith-postgres)
+if [ -n "$locksmith_postgres_instance" ]; then
+  docker rm -f $locksmith_postgres_instance
+fi
 
 # Take db, IPFS, graph and postgres nodes up
 docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
@@ -54,15 +58,14 @@ docker run --name locksmith-postgres -p 5433:5432 -e POSTGRES_PASSWORD=postgres 
 export DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5433/locksmith
 yarn workspace @unlock-protocol/locksmith db:migrate
 
-# run locksmith 
-# TODO: detach lockmsith from shell
-yarn workspace @unlock-protocol/locksmith dev
+# run locksmith (detached)
+nohup yarn workspace @unlock-protocol/locksmith dev &
 
+# run unlock-app
+export NEXT_PUBLIC_LOCKSMITH_URI=http://localhost:8080
+export NEXT_PUBLIC_UNLOCK_ENV=dev
+yarn workspace @unlock-protocol/unlock-app start
 
-# TODO: run websub
-# yarn workspace @unlock-protocol/websub
+# # TODO: run websub (detached)
+# nohup  yarn workspace @unlock-protocol/websub
 
-# TODO: run unlock-app
-# export NEXT_PUBLIC_LOCKSMITH_URI=http://localhost:8080
-# export NEXT_PUBLIC_UNLOCK_ENV=dev
-# yarn workspace @unlock-protocol/unlock-app start
