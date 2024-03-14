@@ -36,8 +36,10 @@ const generateLocalhostNetworkFile = ({
     unlockAddress,
   }
 
-  // output to js file
+  // log for debug purposes
+  console.log(localhost)
 
+  // output to js file
   const parsed = `import { NetworkConfig } from '@unlock-protocol/types'
   
 // We use Partial<NetworkConfig> for localhost as we don't have all the information
@@ -57,6 +59,8 @@ const run = async () => {
       Unlock: { address: unlockAddress },
     },
   } = networkInfo
+
+  console.log(networkInfo)
 
   console.log(`Creating localhost file for unlockAddress ${unlockAddress}`)
 
