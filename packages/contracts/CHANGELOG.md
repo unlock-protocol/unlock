@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 0.0.23
+
+Add Unlock v13, PublicLock v14 and utils contracts
+
 ## 0.0.21
 
 - release fix post-attack on Fri Apr 21st 2023 #11690
