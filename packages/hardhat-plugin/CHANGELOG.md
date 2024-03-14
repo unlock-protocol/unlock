@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.1.3
+
+- Update default versions to Unlock 13 and PublicLock 14
+
 ### 0.1.2
 
 - Changing the lock deployed version to the latest
