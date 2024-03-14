@@ -54,7 +54,7 @@
     "version:check": "yarn version check --interactive",
     "bump": "yarn packages:version patch && yarn version:apply",
     "release": "yarn build && yarn bump && yarn packages:publish",
-    "start": "./scripts/start.sh",
+    "start": "./scripts/run-stack-local.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn packages --parallel run lint",
     "lint:contracts": "yarn workspace @unlock-protocol/smart-contracts lint:contracts --fix",
