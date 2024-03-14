@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks')
 const {
+  getNetwork,
   getUnlock,
   getProxyAdminAddress,
 } = require('@unlock-protocol/hardhat-helpers')
@@ -10,16 +10,15 @@ const {
 
 const getOwners = require('../multisig/owners')
 
-const errorLog = (txt) => console.log(`⚠️: ${txt}`)
-
-async function main({ unlockAddress }) {
-  const { chainId } = await ethers.provider.getNetwork()
+async function main({ unlockAddress, quiet = false }) {
   let safeAddress
+  const { id: chainId, name } = await getNetwork()
   if (!unlockAddress) {
-    ;({ unlockAddress, multisig: safeAddress } = networks[chainId])
+    ;({ unlockAddress, multisig: safeAddress } = await getNetwork())
   }
 
-  const { name } = networks[chainId]
+  const errorLog = (txt) => console.log(`[${name}]: ⚠️  ${txt}`)
+
   const unlock = await getUnlock(unlockAddress)
   const unlockOwner = await unlock.owner()
   const isMultisig = safeAddress === unlockOwner
@@ -54,15 +53,16 @@ async function main({ unlockAddress }) {
     errorLog(`Multisig in networks package does not match with Unlock owner!`)
   }
 
-  // eslint-disable-next-line no-console
-  console.log(
-    `Unlock deployed on ${name} \n`,
-    `-  address: ${unlockAddress} \n`,
-    `-  unlockVersion: ${await unlock.unlockVersion()} \n`,
-    `-  publicLockVersion: ${await unlock.publicLockLatestVersion()} \n`,
-    `-  owner: ${unlockOwner} ${nbOwners ? `(${nbOwners} owners)` : ''}\n`,
-    `-  proxyAdminAddress: ${proxyAdminAddress} \n`
-  )
+  if (!quiet) {
+    console.log(
+      `Unlock deployed on ${name} \n`,
+      `-  address: ${unlockAddress} \n`,
+      `-  unlockVersion: ${await unlock.unlockVersion()} \n`,
+      `-  publicLockVersion: ${await unlock.publicLockLatestVersion()} \n`,
+      `-  owner: ${unlockOwner} ${nbOwners ? `(${nbOwners} owners)` : ''}\n`,
+      `-  proxyAdminAddress: ${proxyAdminAddress} \n`
+    )
+  }
 }
 
 // execute as standalone
