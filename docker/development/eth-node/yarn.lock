@@ -1126,10 +1126,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@npm:0.0.22":
-  version: 0.0.22
-  resolution: "@unlock-protocol/contracts@npm:0.0.22"
-  checksum: 10/2c76124322020b3fdfcc4bbd33f27c2ddcf88a8fc8c7a40f6671e1be291df8906b3c8cb8627553396ee6fce0f419d757f876db62fa7796e2032453b33712e47b
+"@unlock-protocol/contracts@npm:0.0.23":
+  version: 0.0.23
+  resolution: "@unlock-protocol/contracts@npm:0.0.23"
+  checksum: 10/8a8344d573c0d86e449f9c3a5f07be60c196e165f8a86f2287563d13f8ad56574871798de3bfa8eb0bdc774bfb7eb0e6b7a7c8bf917242707b29ed4d3258fbf5
   languageName: node
   linkType: hard
 
@@ -1138,8 +1138,8 @@ __metadata:
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@unlock-protocol/contracts": "npm:0.0.22"
-    "@unlock-protocol/hardhat-plugin": "npm:0.1.3"
+    "@unlock-protocol/contracts": "npm:0.0.23"
+    "@unlock-protocol/hardhat-plugin": "npm:0.1.4"
     eslint: "npm:8.54.0"
     ethers: "npm:5.7.2"
     hardhat: "npm:2.20.1"
@@ -1149,17 +1149,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/hardhat-plugin@npm:0.1.3":
-  version: 0.1.3
-  resolution: "@unlock-protocol/hardhat-plugin@npm:0.1.3"
+"@unlock-protocol/hardhat-plugin@npm:0.1.4":
+  version: 0.1.4
+  resolution: "@unlock-protocol/hardhat-plugin@npm:0.1.4"
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    eslint-plugin-mocha: "npm:10.1.0"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
-    ethers: ^5.7.x
-    hardhat: ^2.12.x
-  checksum: 10/8e4c36196596694a2c56e3ecbebb24fef7a6e5f77db13db7b7d3065184c131ffa316067e5c6b744f0acecf2f0941ad4b5679dd1a7dda8d8262460e799609941f
+    ethers: 5.7.2
+  checksum: 10/504d912159f9ea42a5b13cf92d7175f3392009b515395477cafdb7dcfe413ba4055321d4ed45f73d2a18c225e73a3dfbfb4cdb50b4274c14841ac8fac4f254af
   languageName: node
   linkType: hard
 
@@ -1926,18 +1924,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:10.1.0":
-  version: 10.1.0
-  resolution: "eslint-plugin-mocha@npm:10.1.0"
-  dependencies:
-    eslint-utils: "npm:^3.0.0"
-    rambda: "npm:^7.1.0"
-  peerDependencies:
-    eslint: ">=7.0.0"
-  checksum: 10/26a79ccf1f575ac559425f0c4fd8489f0c23544477b5eceb110eab7664ff4e003a8eeb26079bdfde810db46798b2af1f71021e46d42052adab921512daf0064a
-  languageName: node
-  linkType: hard
-
 "eslint-scope@npm:^7.2.2":
   version: 7.2.2
   resolution: "eslint-scope@npm:7.2.2"
@@ -1945,24 +1931,6 @@ __metadata:
     esrecurse: "npm:^4.3.0"
     estraverse: "npm:^5.2.0"
   checksum: 10/5c660fb905d5883ad018a6fea2b49f3cb5b1cbf2cd4bd08e98646e9864f9bc2c74c0839bed2d292e90a4a328833accc197c8f0baed89cbe8d605d6f918465491
-  languageName: node
-  linkType: hard
-
-"eslint-utils@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "eslint-utils@npm:3.0.0"
-  dependencies:
-    eslint-visitor-keys: "npm:^2.0.0"
-  peerDependencies:
-    eslint: ">=5"
-  checksum: 10/7675260a6b220c70f13e4cdbf077e93cad0dfb388429a27d6c0b584b2b20dca24594508e8bdb00a460a5764bd364a5018e20c2b8b1d70f82bcc3fdc30692a4d2
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^2.0.0":
-  version: 2.1.0
-  resolution: "eslint-visitor-keys@npm:2.1.0"
-  checksum: 10/db4547eef5039122d518fa307e938ceb8589da5f6e8f5222efaf14dd62f748ce82e2d2becd3ff9412a50350b726bda95dbea8515a471074547daefa58aee8735
   languageName: node
   linkType: hard
 
@@ -3530,13 +3498,6 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: 10/72900df0616e473e824202113c3df6abae59150dfb73ed13273503127235320e9c8ca4aaaaccfd58cf417c6ca92a6e68ee9a5c3182886ae949a768639b388a7b
-  languageName: node
-  linkType: hard
-
-"rambda@npm:^7.1.0":
-  version: 7.5.0
-  resolution: "rambda@npm:7.5.0"
-  checksum: 10/a87ee033803bf841ac35a12a04583cc36e2d8957e3bee97e45fc8944e64915f4534685724efe663a3088a8d719489f76febf444544b300642e7398c2e5412217
   languageName: node
   linkType: hard
 
