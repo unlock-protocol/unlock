@@ -40,11 +40,11 @@ cd $REPO_ROOT/subgraph
 yarn prepare:abis
 
 yarn prepare:test
-yarn codegen
+yarn graph codegen
 yarn graph build --network localhost
 
 # now deploy the subgraph
-yarn workspace @unlock-protocol/subgraph run graph create testgraph --node http://localhost:8020/
+yarn workspace @unlock-protocol/subgraph graph create testgraph --node http://localhost:8020/
 yarn graph deploy testgraph --node=http://localhost:8020/ --ipfs=http://localhost:5001 --version-label=v0.0.1 --network=localhost
 
 # start 2nd postgres instance for locksmith
@@ -56,13 +56,13 @@ yarn workspace @unlock-protocol/locksmith db:migrate
 
 # run locksmith 
 # TODO: detach lockmsith from shell
-yarn workspace @unlock-protocol/locksmith start
+yarn workspace @unlock-protocol/locksmith dev
 
 
 # TODO: run websub
 # yarn workspace @unlock-protocol/websub
 
-# run unlock-app
-export NEXT_PUBLIC_LOCKSMITH_URI=http://localhost:8080
-export NEXT_PUBLIC_UNLOCK_ENV=dev
-yarn workspace @unlock-protocol/unlock-app start
+# TODO: run unlock-app
+# export NEXT_PUBLIC_LOCKSMITH_URI=http://localhost:8080
+# export NEXT_PUBLIC_UNLOCK_ENV=dev
+# yarn workspace @unlock-protocol/unlock-app start
