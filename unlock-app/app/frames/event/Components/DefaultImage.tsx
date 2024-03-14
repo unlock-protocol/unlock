@@ -1,6 +1,7 @@
 import React from 'react'
 import dayjs from '../../../../src/utils/dayjs'
 import { toFormData } from '../../../../src/components/interface/locks/metadata/utils'
+import { config } from '../../../../src/config/app'
 
 export const DefaultImage = ({ event }: { event: any }) => {
   const { ticket, image } = toFormData(event.data)
@@ -11,8 +12,13 @@ export const DefaultImage = ({ event }: { event: any }) => {
     .toDateString()
 
   return (
-    <div tw="flex flex-col bg-[#F5F5F5] h-full w-full">
-      <div tw="flex m-4 flex-row w-full">
+    <div tw="flex flex-col bg-[#F5F5F5] h-full w-full p-6">
+      <img
+        alt="Unlock Protocol Logo"
+        tw="w-24 mb-4"
+        src={`${config.unlockApp}/images/svg/logo-unlock-events.svg`}
+      />
+      <div tw="flex flex-row w-full">
         {image && (
           <img
             width="128"
@@ -22,9 +28,9 @@ export const DefaultImage = ({ event }: { event: any }) => {
             aria-label={event.name}
           />
         )}
-        <div tw="flex ml-4 flex-col">
-          <h1 tw="text-7xl m-0 p-0 rounded w-128">{event.name}</h1>
-          <div tw="flex items-center justify-between w-full mt-4">
+        <div tw="flex mt-4 ml-4 flex-col">
+          <div tw="text-6xl m-0 p-0 rounded w-128">{event.name}</div>
+          <div tw="flex items-center justify-between w-full mt-8">
             <div tw="flex flex-col">
               {startTime && (
                 <div tw="flex items-center bg-white/50 rounded-2xl px-4">
@@ -68,7 +74,7 @@ export const DefaultImage = ({ event }: { event: any }) => {
                       </clipPath>
                     </defs>
                   </svg>
-                  <p tw="text-4xl ml-6t font-semibold w-96">{startTime}</p>
+                  <p tw="text-2xl ml-6t w-96">{startTime}</p>
                 </div>
               )}
 
@@ -114,9 +120,7 @@ export const DefaultImage = ({ event }: { event: any }) => {
                       </clipPath>
                     </defs>
                   </svg>
-                  <p tw="text-4xl ml-6t font-semibold w-96">
-                    {ticket!.event_address}
-                  </p>
+                  <p tw="text-2xl ml-6t w-96">{ticket!.event_address}</p>
                 </div>
               )}
             </div>
