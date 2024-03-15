@@ -132,6 +132,16 @@ export const PaywallLockConfig = z.object({
         'Hardcoded address for the recipient of the NFT. Can be used with skipRecipient.',
     })
     .optional(),
+  paymentMethods: z
+    .object({
+      card: z.boolean().optional(),
+      crypto: z.boolean().optional(),
+      crossmint: z.boolean().optional(),
+      swap: z.boolean().optional(),
+      crosschain: z.boolean().optional(),
+      claim: z.boolean().optional(),
+    })
+    .optional(),
 })
 
 export type PaywallLockConfigType = z.infer<typeof PaywallLockConfig>
@@ -279,6 +289,16 @@ export const PaywallConfig = z
       .string({
         description:
           'Hardcoded address for the recipient of the NFT. Can be used with skipRecipient.',
+      })
+      .optional(),
+    paymentMethods: z
+      .object({
+        card: z.boolean().optional(),
+        crypto: z.boolean().optional(),
+        crossmint: z.boolean().optional(),
+        swap: z.boolean().optional(),
+        crosschain: z.boolean().optional(),
+        claim: z.boolean().optional(),
       })
       .optional(),
   })
