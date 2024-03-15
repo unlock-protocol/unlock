@@ -39,7 +39,7 @@ export const getSubscriptionsForLockByOwner = async ({
   lockAddress,
   network,
 }: GetSubscriptionsProps): Promise<Subscription[]> => {
-  const subgraphService = new SubgraphService(networks)
+  const subgraphService = new SubgraphService()
   // TODO: replace with web3Service when is possible to get specific fields again
   const key = await subgraphService.key(
     {

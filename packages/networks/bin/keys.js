@@ -9,12 +9,11 @@ Object.keys(networks).forEach((network) => {
         missingProperties.push(key)
       }
     })
-    if (missingProperties.length === 0) {
-      console.log(`\nNetwork: ${networks[network].name} ✅`)
-    } else {
-      console.log(`\nNetwork: ${networks[network].name}:`)
+    if (missingProperties.length !== 0) {
       missingProperties.forEach((missingProperty) => {
-        console.error(` ❌ Missing property ${missingProperty}`)
+        console.log(
+          `[${networks[network].name}]: ❌ Missing property ${missingProperty}`
+        )
       })
     }
   }

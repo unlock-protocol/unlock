@@ -84,8 +84,9 @@ task('unlock:prepare', 'Deploy an implementaton of the Unlock contract')
 
 task('unlock:info', 'Show the owner of the Unlock contract')
   .addOptionalParam('unlockAddress', 'The address of the Unlock contract')
-  .setAction(async ({ unlockAddress }) => {
+  .addFlag('quiet', 'Show only errors')
+  .setAction(async ({ unlockAddress, quiet }) => {
     // eslint-disable-next-line global-require
     const unlockInfo = require('../scripts/getters/unlock-info')
-    await unlockInfo({ unlockAddress })
+    await unlockInfo({ unlockAddress, quiet })
   })

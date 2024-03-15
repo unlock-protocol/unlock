@@ -4,18 +4,13 @@ const {
   getSafeVersion,
   submitTxOldMultisig,
   confirmMultisigTx,
+  safeServiceURLs,
 } = require('./_helpers')
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 const { EthersAdapter } = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
 const SafeApiKit = require('@safe-global/api-kit').default
-
-// custom services URL for network not supported by Safe
-const safeServiceURLs = {
-  // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
-  80001: 'http://localhost:8000/cgw/',
-}
 
 async function main({ safeAddress, tx, signer }) {
   const { chainId, id } = await getNetwork()

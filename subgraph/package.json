@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "yarn introspect && yarn prepare && node bin/thegraph build",
+    "check": "node bin/check.js",
     "ci": "yarn prepare:abis && yarn copy:manifest && graph codegen && yarn test -l",
     "clean": "rm -rf abis networks.json build generated",
     "copy:manifest": "rm -rf subgraph.yaml && cp ../tests/subgraph.test.yaml subgraph.yaml",

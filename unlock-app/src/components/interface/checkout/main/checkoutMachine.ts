@@ -143,10 +143,6 @@ type Payment =
       route?: any
     }
   | {
-      method: 'universal_card'
-      cardId?: string
-    }
-  | {
       method: 'crossmint'
     }
 
