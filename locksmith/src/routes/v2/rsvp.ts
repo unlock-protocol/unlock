@@ -6,6 +6,7 @@ import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 
 const router = express.Router({ mergeParams: true })
 
+// deprecated endpoints
 router.post('/:network/:lockAddress', captchaMiddleware, rsvp)
 router.post(
   '/:network/:lockAddress/deny/:userAddress',
@@ -13,7 +14,6 @@ router.post(
   lockManagerMiddleware,
   update('denied')
 )
-
 router.post(
   '/:network/:lockAddress/approve/:userAddress',
   authenticatedMiddleware,

@@ -16,14 +16,14 @@ const RsvpBody = z.object({
     .transform((item) => normalizer.ethereumAddress(item)),
 })
 
-export const rsvp = async (request: Request, response: Response) => {
-  const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-  const network = Number(request.params.network)
-  const { recipient, data } = await RsvpBody.parseAsync(request.body)
-
-  let userAddress = recipient
+const saveRsvpForLockAndNetwork = async (
+  userAddress: string,
+  network: number,
+  lockAddress: string,
+  data: any
+) => {
   // Support for walletless RSVP
-  if (!recipient && data.email) {
+  if (!userAddress && data.email) {
     // We can build a recipient wallet address from the email address
     const keyManager = new KeyManager()
     userAddress = keyManager.createTransferAddress({
@@ -56,8 +56,7 @@ export const rsvp = async (request: Request, response: Response) => {
     },
   })
   if (rsvp) {
-    // We do not overwrite the metadata, on purpose. First come, first serve for wallets!
-    return response.status(200).send(rsvp.toJSON())
+    return rsvp
   }
   // Let's try to create a new RSVP
   rsvp = await Rsvp.create({
@@ -75,6 +74,22 @@ export const rsvp = async (request: Request, response: Response) => {
     metadata,
   })
 
+  return rsvp
+}
+
+// Deprecated methods!
+export const rsvp = async (request: Request, response: Response) => {
+  const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const { recipient, data } = await RsvpBody.parseAsync(request.body)
+
+  // Create for the lock
+  const rsvp = await saveRsvpForLockAndNetwork(
+    recipient,
+    network,
+    lockAddress,
+    data
+  )
   // Then, send email
   const eventDetail = await getEventDataForLock(lockAddress, network)
   sendEmail({
@@ -84,7 +99,6 @@ export const rsvp = async (request: Request, response: Response) => {
     recipient: data.email,
     // @ts-expect-error object incomplete
     params: {
-      lockAddress: lockAddress,
       eventName: eventDetail?.eventName,
       eventDate: eventDetail?.eventDate,
       eventTime: eventDetail?.eventTime,
@@ -92,6 +106,7 @@ export const rsvp = async (request: Request, response: Response) => {
     },
     attachments: [],
   })
+
   return response.status(200).send(rsvp.toJSON())
 }
 
