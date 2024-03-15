@@ -53,6 +53,16 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   )
 }
 
+// All enabled by default.
+const defaultPaymentMethods = {
+  crypto: true,
+  card: true,
+  crossmint: true,
+  swap: true,
+  crosschain: true,
+  claim: true,
+}
+
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
@@ -62,6 +72,16 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+
+  const configPaymentMethods =
+    state.context.paywallConfig.locks[lock.address]?.paymentMethods ||
+    state.context.paywallConfig.paymentMethods ||
+    {}
+
+  const paymentMethods = {
+    ...defaultPaymentMethods,
+    ...configPaymentMethods,
+  }
 
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
     {
@@ -101,7 +121,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       recipients,
     })
 
-  const enableCrossmint = crossmintEnabled
+  const enableCrossmint = !!crossmintEnabled
 
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
@@ -166,7 +186,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableCreditCard,
     enableClaim,
     enableCrypto,
-    !!enableCrossmint,
+    enableCrossmint,
   ].every((item) => !item)
 
   return (
@@ -188,7 +208,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
         ) : (
           <div className="space-y-6">
             {/* Card Payment via Stripe! */}
-            {enableCreditCard && !enableClaim && (
+            {enableCreditCard && paymentMethods['card'] && !enableClaim && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -222,7 +242,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Crypto Payment */}
-            {enableCrypto && (
+            {enableCrypto && paymentMethods['crypto'] && (
               <button
                 disabled={!canAfford}
                 onClick={(event) => {
@@ -262,7 +282,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Crossmint Payment */}
-            {enableCrossmint && !enableClaim && (
+            {enableCrossmint && paymentMethods['crossmint'] && !enableClaim && (
               <div>
                 <button
                   onClick={(event) => {
@@ -304,7 +324,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Claim */}
-            {enableClaim && (
+            {enableClaim && paymentMethods['claim'] && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -335,6 +355,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {/* Swap and purchase */}
             {!isUniswapRoutesLoading &&
               !enableClaim &&
+              paymentMethods['swap'] &&
               uniswapRoutes?.map((route, index) => {
                 if (!route) {
                   return null
@@ -380,6 +401,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {/* Crosschain purchase */}
             {!isCrossChaingRoutesLoading &&
               !enableClaim &&
+              paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
                 return (
                   <button
@@ -432,12 +454,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 )
               })}
 
+            {/* Loading details */}
             {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading more payment options...
               </div>
             )}
 
+            {/* All disabled */}
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">
