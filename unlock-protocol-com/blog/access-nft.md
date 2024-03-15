@@ -57,7 +57,7 @@ The Willow Tree is a decentralized autonomous organization (community) of likemi
 
 ## Conclusion
 
-From what we've discussed in this article, it's apparent that access NFTs are here to stay and not some internet trend that'll fade into non-existence in a few years.
+From what we've discussed in this article, it's apparent that access NFTs are here to stay and not some internet trend that'll fade into non-existence in a few years..
 
 As more communities and creators continue to find different use cases for access NFTs, there's still potential for so much more to be done.
 
