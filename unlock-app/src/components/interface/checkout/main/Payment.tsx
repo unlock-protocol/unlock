@@ -63,9 +63,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
 
-  const paymentMethods = ['crossmint', 'crypto']
-  console.log(state.context.paywallConfig.locks[lock.address])
-
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
     {
       network: lock.network,
