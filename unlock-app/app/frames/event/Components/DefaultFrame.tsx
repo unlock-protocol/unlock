@@ -2,7 +2,6 @@ import React from 'react'
 import Container from './Container'
 import { FrameButton, FrameImage } from 'frames.js/next/server'
 import { config } from '../../../../src/config/app'
-import { DefaultImage } from './DefaultImage'
 
 export const DefaultFrame = ({
   previousFrame,
@@ -15,9 +14,7 @@ export const DefaultFrame = ({
 }) => {
   return (
     <Container slug={event.slug} previousFrame={previousFrame} state={state}>
-      <FrameImage>
-        <DefaultImage event={event} />
-      </FrameImage>
+      <FrameImage src={`${config.unlockApp}/og/event/${event.slug}`} />
       <FrameButton
         action="link"
         target={`${config.unlockApp}/event/${event.slug}`}

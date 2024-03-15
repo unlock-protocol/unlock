@@ -119,7 +119,7 @@ export function useStepperItems(
     {
       name: 'Add card',
       to: 'CARD',
-      skip: !['card', 'universal_card'].includes(payment?.method),
+      skip: !['card'].includes(payment?.method),
     },
     {
       name: 'Confirm',
