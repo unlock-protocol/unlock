@@ -1,6 +1,9 @@
 name: Fetch and Create Blog Posts
 description: Fetches the latest blog posts from the Unlock Protocol blog and creates new posts in the website repository.
 on:
+  pull_request:
+      branches:
+          - 'njokuScript:automate-blogpost-imports-with-rss'
   schedule:
     - cron: '0 0 * * *'  # Run once per day at midnight
 
