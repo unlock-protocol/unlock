@@ -156,6 +156,61 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
+  const frameMeta = [
+    {
+      property: 'fc:frame',
+      content: 'vNext',
+    },
+    {
+      name: 'fc:frame:image',
+      content: `${config.unlockApp}/og/event/${event.slug}`,
+    },
+    {
+      name: 'fc:frame:post_url',
+      content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+        `${config.unlockApp}/frames/event/${event.slug}`
+      )}&s=${encodeURIComponent('{"view":"default"}')}`,
+    },
+    {
+      name: 'fc:frame:button:1',
+      content: 'See description',
+    },
+    {
+      name: 'fc:frame:button:1:action',
+      content: 'post',
+    },
+  ]
+
+  if (hasPassed) {
+    // No need to add a button for RSVP!
+  } else if (event.requiresApproval) {
+    frameMeta.push(
+      {
+        name: 'fc:frame:button:2',
+        content: 'Apply',
+      },
+      {
+        name: 'fc:frame:button:2:action',
+        content: 'post',
+      }
+    )
+  } else {
+    frameMeta.push(
+      {
+        name: 'fc:frame:button:2',
+        content: 'Register',
+      },
+      {
+        name: 'fc:frame:button:2:target',
+        content: eventUrl,
+      },
+      {
+        name: 'fc:frame:button:2:action',
+        content: 'link',
+      }
+    )
+  }
+
   return (
     <div>
       <NextSeo
@@ -173,42 +228,7 @@ Powered by Unlock Protocol`}
             },
           ],
         }}
-        additionalMetaTags={[
-          {
-            property: 'fc:frame',
-            content: 'vNext',
-          },
-          {
-            name: 'fc:frame:image',
-            content: `${config.unlockApp}/og/event/${event.slug}`,
-          },
-          {
-            name: 'fc:frame:post_url',
-            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
-              `${config.unlockApp}/frames/event/${event.slug}`
-            )}&s=${encodeURIComponent('{"view":"default"}')}`,
-          },
-          {
-            name: 'fc:frame:button:1',
-            content: 'Register',
-          },
-          {
-            name: 'fc:frame:button:1:target',
-            content: eventUrl,
-          },
-          {
-            name: 'fc:frame:button:1:action',
-            content: 'link',
-          },
-          {
-            name: 'fc:frame:button:2',
-            content: 'See description',
-          },
-          {
-            name: 'fc:frame:button:2:action',
-            content: 'post',
-          },
-        ]}
+        additionalMetaTags={frameMeta}
       />
       <div className="flex flex-col gap-4">
         <div className="flex flex-row-reverse gap-2 ">

@@ -1,7 +1,7 @@
 import React from 'react'
 import Container from './Container'
 import { FrameButton, FrameImage } from 'frames.js/next/server'
-import { config } from '../../../../src/config/app'
+import { registerButton } from '../utils'
 
 export const Description = ({
   event,
@@ -17,15 +17,10 @@ export const Description = ({
       <FrameImage>
         <p tw="px-4">{event.data.description}</p>
       </FrameImage>
-      <FrameButton
-        action="link"
-        target={`${config.unlockApp}/event/${event.slug}`}
-      >
-        Register
-      </FrameButton>
-      <FrameButton target={`${config.unlockApp}/frames/event`}>
-        Back
-      </FrameButton>
+      <FrameButton>Back</FrameButton>
+      {registerButton(event)}
     </Container>
   )
 }
+
+export default Description
