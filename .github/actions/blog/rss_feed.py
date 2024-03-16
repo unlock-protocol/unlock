@@ -12,6 +12,17 @@ feed = feedparser.parse(rss_url)
 blog_dir = '../../../unlock-protocol-com/blog'
 os.makedirs(blog_dir, exist_ok=True)
 
+# Load the titles of existing blog posts to check for duplicates
+existing_titles = set()
+for filename in os.listdir(blog_dir):
+    if filename.endswith('.md'):
+        with open(os.path.join(blog_dir, filename), 'r') as f:
+            for line in f:
+                if line.startswith('title: '):
+                    existing_title = line.split('title: ')[1].strip().strip('"')
+                    existing_titles.add(existing_title)
+                    break
+
 # Iterate over each post in the feed
 for entry in feed.entries:
     # Extract post details
@@ -21,6 +32,10 @@ for entry in feed.entries:
     publish_date = entry.published
     description = entry.summary
     image_url = entry.image.href if 'image' in entry else ''
+
+    # Skip if the title already exists
+    if title in existing_titles:
+        continue
 
     # Generate a slug for the blog post
     slug = re.sub(r'[^\w\-_\. ]', '_', title).lower().replace(' ', '_')
@@ -58,3 +73,6 @@ image: "../../../unlock-protocol-com/public/images/blog/{slug}/{image_filename}"
     # Save the post to a file
     with open(post_file_path, 'w') as f:
         f.write(post_content)
+
+    # Add the title to the set of existing titles
+    existing_titles.add(title)
