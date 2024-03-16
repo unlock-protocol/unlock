@@ -12,6 +12,7 @@
     "@typescript-eslint/eslint-plugin": "7.1.0",
     "@typescript-eslint/parser": "7.1.0",
     "babel-plugin-polyfill-corejs2": "0.4.8",
+    "feedparser-promised": "2.0.1",
     "typescript": "5.3.3"
   },
   "devDependencies": {
