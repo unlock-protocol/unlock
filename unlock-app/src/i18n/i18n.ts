@@ -8,6 +8,7 @@ import es from './lang/es'
 import fr from './lang/fr'
 import ar from './lang/ar'
 import ko from './lang/ko'
+import zh from './lang/zh'
 
 const options = {
   // order and from where user language should be detected
@@ -50,6 +51,7 @@ i18n
       fr: { translation: fr },
       ar: { translation: ar },
       ko: { translation: ko },
+      zh: { translations: zh, 'zh-cn': zh },
     },
     react: {
       bindI18n: 'languageChanged editorSaved',
