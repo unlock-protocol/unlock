@@ -35117,6 +35117,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"i18next-browser-languagedetector@npm:7.2.0":
+  version: 7.2.0
+  resolution: "i18next-browser-languagedetector@npm:7.2.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.23.2"
+  checksum: 10/5117b4961e0f32818f0d4587e81767d38c3a8e27305f1734fff2b07fe8c256161e2cdbd453b766b3c097055813fe89c43bce68b1d8f765b5b7f694d9852fe703
+  languageName: node
+  linkType: hard
+
 "i18next@npm:23.10.1":
   version: 23.10.1
   resolution: "i18next@npm:23.10.1"
@@ -53106,6 +53115,7 @@ __metadata:
     eslint-plugin-vitest: "npm:0.3.0"
     husky: "npm:9.0.11"
     i18next: "npm:23.10.1"
+    i18next-browser-languagedetector: "npm:7.2.0"
     lint-staged: "npm:15.1.0"
     prettier: "npm:3.0.0"
     react-i18next: "npm:14.1.0"
