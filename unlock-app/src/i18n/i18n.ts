@@ -35,7 +35,7 @@ i18n
   .use(LanguageDetector)
   .init({
     detection: options,
-    fallbackLng: ['en', 'es', 'fr'],
+    fallbackLng: ['en'],
     // lng: 'cimode', remove comment for logging
     resources: {
       /**
