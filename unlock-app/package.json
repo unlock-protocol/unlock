@@ -46,6 +46,7 @@
     "graphql": "16.8.1",
     "i18next": "23.10.1",
     "i18next-browser-languagedetector": "7.2.0",
+    "i18next-http-backend": "2.5.0",
     "lottie-react": "2.4.0",
     "next": "13.4.19",
     "next-seo": "6.1.0",

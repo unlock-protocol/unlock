@@ -8,6 +8,7 @@ import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -73,7 +74,7 @@ export function MessageToSign({
             onClick={onSign}
             className="w-full"
           >
-            Sign the message
+            {translate('common.sign_message')}
           </Button>
         </Connected>
         <PoweredByUnlock />

@@ -16,6 +16,7 @@ import { Pricing } from '../Lock'
 import { ViewContract } from '../ViewContract'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -77,16 +78,16 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
             <div className="space-y-2">
               <div className="flex flex-wrap items-center gap-4">
                 <LabeledItem
-                  label="Duration"
+                  label={translate('common.duration')}
                   icon={DurationIcon}
                   value={formattedData?.formattedDuration}
                 />
                 <LabeledItem
-                  label="Quantity"
+                  label={translate('common.quantity')}
                   icon={QuantityIcon}
                   value={
                     formattedData?.isSoldOut
-                      ? 'Sold out'
+                      ? translate('common.sold_out')
                       : formattedData?.formattedKeysAvailable
                   }
                 />
@@ -98,7 +99,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
             </div>
             <div>
               <input
-                aria-label="Quantity"
+                aria-label={translate('common.quantity')}
                 onChange={(event) => {
                   event.preventDefault()
                   const count = event.target.value.replace(/\D/, '')
@@ -108,14 +109,22 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
                   if (maxAllowed) {
                     ToastHelper.error(
-                      `You cannot purchase more than ${maxRecipients} memberships at once`
+                      `${translate(
+                        'errors.purchase_more_fail'
+                      )} ${maxRecipients} ${translate(
+                        'common.memberships_at_once'
+                      )}`
                     )
                     return setQuantityInput(maxRecipients!.toString())
                   }
 
                   if (minAllowed) {
                     ToastHelper.error(
-                      `You cannot purchase less than ${minRecipients} memberships at once`
+                      `${translate(
+                        'errors.purchase_less_fail'
+                      )} ${minRecipients} ${translate(
+                        'common.memberships_at_once'
+                      )}`
                     )
                     return setQuantityInput(minRecipients!.toString())
                   }
@@ -147,7 +156,11 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                 })
               }}
             >
-              {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
+              {quantity > 1
+                ? `${translate('common.buy')} ${quantity} ${translate(
+                    'common.memberships'
+                  )}`
+                : translate('common.next')}
             </Button>
           </div>
         </Connected>

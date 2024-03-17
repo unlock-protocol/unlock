@@ -18,6 +18,7 @@ import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -87,7 +88,7 @@ export function Returning({
             animationData={unlockedAnimation}
           />
           <p className="text-lg font-bold text-brand-ui-primary">
-            Voila! This is unlocked!
+            {translate('success.viola')}
           </p>
           <a
             href={config.networks[lock!.network].explorer.urls.address(
@@ -97,7 +98,7 @@ export function Returning({
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
           >
-            See in the block explorer
+            {translate('success.block_explorer')}
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
           {tokenId && isEthPassSupported(lock!.network) && (
@@ -110,7 +111,7 @@ export function Returning({
                       <Image
                         width="20"
                         height="20"
-                        alt="Google Wallet"
+                        alt={translate('success.google_wallet')}
                         src={`/images/illustrations/google-wallet.svg`}
                       />
                     }
@@ -126,7 +127,7 @@ export function Returning({
                       window.location.assign(url)
                     }}
                   >
-                    Add to Google Wallet
+                    {translate('success.add_to_google_wallet')}
                   </AddToDeviceWallet>
                 </li>
               )}
@@ -143,7 +144,7 @@ export function Returning({
                         className="justify-self-left"
                         width="20"
                         height="20"
-                        alt="Apple Wallet"
+                        alt={translate('success.apple_wallet')}
                         src={`/images/illustrations/apple-wallet.svg`}
                       />
                     }
@@ -155,7 +156,7 @@ export function Returning({
                       window.location.assign(url)
                     }}
                   >
-                    Add to Apple Wallet
+                    {translate('success.add_to_apple_wallet')}
                   </AddToDeviceWallet>
                 </li>
               )}
@@ -176,7 +177,7 @@ export function Returning({
                 onClick={onSign}
                 className="w-full"
               >
-                Sign message
+                {translate('common.sign_message')}
               </Button>
             ) : (
               <div
@@ -198,7 +199,7 @@ export function Returning({
                       checkoutService.send('MAKE_ANOTHER_PURCHASE')
                     }
                   >
-                    Buy more
+                    {translate('common.buy_more')}
                   </Button>
                 )}
               </div>

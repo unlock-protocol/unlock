@@ -35,6 +35,7 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import { translate } from '~/i18n'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -99,12 +100,16 @@ export const MetadataInputs = ({
     [setValue, useEmail, id, lock, config.networks, networkConfig]
   )
 
-  const required = useEmail ? 'Email is required' : 'Wallet Address is required'
-  const labelText = useEmail ? 'Email' : 'Wallet'
+  const required = useEmail
+    ? translate('warnings.email_required')
+    : translate('warnings.wallet_required')
+  const labelText = useEmail
+    ? translate('common.email')
+    : translate('common.wallet')
   const label = id >= 1 ? `${labelText} #${id + 1}` : labelText
   const description = useEmail
-    ? 'Enter the email address that will receive the membership NFT'
-    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+    ? translate('common.description.enter_email')
+    : translate('common.description.enter_wallet')
   const error = errors?.metadata?.[id]?.recipient?.message
   const placeholder = useEmail ? 'user@email.com' : '0x...'
   const inputClass = twMerge(
@@ -137,13 +142,13 @@ export const MetadataInputs = ({
                   }}
                   size="tiny"
                 >
-                  Change
+                  {translate('common.change')}
                 </Button>
               </div>
               <p className="text-xs text-gray-600">
                 {isUnlockAccount
-                  ? 'The email address that will receive the membership NFT'
-                  : 'The wallet address that will receive the membership NFT'}
+                  ? translate('common.description.enter_email')
+                  : translate('common.description.enter_wallet')}
               </p>
             </div>
           ) : (
@@ -163,10 +168,10 @@ export const MetadataInputs = ({
                       return numberOfMemberships <
                         (lock?.maxKeysPerAddress || 1)
                         ? true
-                        : 'Address already holds the maximum number of memberships.'
+                        : translate('warnings.address_max')
                     } catch (error) {
                       console.error(error)
-                      return 'There is a problem with using this address. Try another.'
+                      return translate('errors.problem_address')
                     }
                   },
                 },
@@ -436,7 +441,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
             className="w-full"
             form="metadata"
           >
-            {isLoading ? 'Continuing' : 'Next'}
+            {isLoading
+              ? translate('common.continuing')
+              : translate('common.next')}
           </Button>
         </Connected>
         <PoweredByUnlock />

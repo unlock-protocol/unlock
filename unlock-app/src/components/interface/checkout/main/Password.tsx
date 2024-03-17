@@ -11,6 +11,7 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import { usePasswordHookSigner } from '~/hooks/useHooks'
+import { translate } from '~/i18n'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -68,8 +69,8 @@ export function Password({ injectedProvider, checkoutService }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         <form id="password" className="space-y-4">
           <Input
-            label="Enter password"
-            description="You need to enter the password to purchase the key. If password is wrong, purchase will fail."
+            label={translate('password.enter_password')}
+            description={translate('password.description')}
             required
             type="password"
             size="small"
@@ -81,7 +82,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
                 const { address } = getEthersWalletFromPassword(password) ?? {}
                 // check if password match
                 if (passwordSigner && passwordSigner !== address) {
-                  return 'Wrong password...'
+                  return translate('errors.wrong_password')
                 }
                 return true
               },
@@ -103,7 +104,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             loading={isSubmitting}
             onClick={handleSubmit(onSubmit)}
           >
-            Submit password
+            {translate('password.submit_password')}
           </Button>
         </Connected>
         <PoweredByUnlock />

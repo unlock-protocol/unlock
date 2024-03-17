@@ -14,6 +14,7 @@ import { getEthersWalletFromPassword } from '~/utils/strings'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
+import { translate } from '~/i18n'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -106,13 +107,13 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
         if (hasDiscount) {
           return (
             <Badge variant="green" size="tiny">
-              {promoCodeDetails.discount / 100}% Discount
+              {promoCodeDetails.discount / 100}% {translate('promo.discount')}
             </Badge>
           )
         } else if (promoCodeDetails?.discount > 0) {
           return (
             <Badge variant="dark" size="tiny">
-              Code expired
+              {translate('promo.code_expired')}
             </Badge>
           )
         }
@@ -127,8 +128,8 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
           <Input
             // @ts-ignore
             iconRight={iconRight}
-            label="Enter Promo Code"
-            description="If you have a promo code to receive discounts, please enter it now."
+            label={translate('promo.enter_promo_code')}
+            description={translate('promo.enter_promo_code_description')}
             type="text"
             size="small"
             {...register('promo')}
@@ -153,7 +154,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
             loading={isSubmitting}
             onClick={handleSubmit(onSubmit)}
           >
-            {hasDiscount ? 'Next' : 'Skip'}
+            {hasDiscount ? translate('common.next') : translate('common.skip')}
           </Button>
         </Connected>
         <PoweredByUnlock />

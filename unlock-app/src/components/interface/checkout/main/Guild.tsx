@@ -12,6 +12,7 @@ import Link from 'next/link'
 import { useDataForGuild } from '~/hooks/useDataForGuild'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import LoadingIcon from '../../Loading'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -84,22 +85,20 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             {disabled && (
               <>
                 <p className="my-2">
-                  ❌ Your wallet address ({minifyAddress(users[0])}) is not on
-                  the list of approved attendees for this{' '}
+                  ❌ {translate('guild.wallet_warning_1')} (
+                  {minifyAddress(users[0])})
+                  {translate('guild.wallet_warning_2')}{' '}
                   <Link
                     className="underline text-brand-ui-primary"
                     target="_blank"
                     rel="noreferrer"
                     href="https://farcon.xyz/"
                   >
-                    FarCon
+                    {translate('guild.farcon')}
                   </Link>{' '}
-                  class of tickets.
+                  {translate('guild.class_of_tickets')}
                 </p>
-                <p className="my-2">
-                  Please check that you have been approved and use the address
-                  linked to your Farcaster account.{' '}
-                </p>
+                <p className="my-2">{translate('guild.check')}</p>
                 <Button
                   loading={isLoading}
                   onClick={() => {
@@ -109,20 +108,19 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                   iconLeft={<TfiReload />}
                   size="tiny"
                 >
-                  Check again
+                  {translate('guild.check_again')}
                 </Button>
               </>
             )}
             {!disabled && !isLoading && (
-              <p>✅ Your wallet is on the list of approved attendees!</p>
+              <p>✅ {translate('guild.wallet_approve')}</p>
             )}
           </div>
         )}
         {guild && !isFarCon && (
           <>
             <p>
-              Memberships to this lock are restricted to addresses that belong
-              to the{' '}
+              {translate('guild.membership_restrict')}{' '}
               <Link
                 className="underline text-brand-ui-primary"
                 target="_blank"
@@ -181,7 +179,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                     href={`https://guild.xyz/${guild!.urlName}`}
                     size="tiny"
                   >
-                    Join the Guild!
+                    {translate('guild.join')}
                   </Button>
                   <Button
                     loading={isLoading}
@@ -192,7 +190,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                     iconLeft={<TfiReload />}
                     size="tiny"
                   >
-                    Check again
+                    {translate('guild.check_again')}
                   </Button>
                 </div>
               )}
@@ -200,8 +198,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             <>
               {disabled && users.length > 1 && (
                 <p>
-                  Some of the recipients that you have selected are not members
-                  of the Guild.{' '}
+                  {translate('guild.recipient_restrict')}{' '}
                   <div className="flex flex-row gap-2">
                     <Button
                       className="inline"
@@ -222,7 +219,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
                       iconLeft={<TfiReload />}
                       size="tiny"
                     >
-                      Check again
+                      {translate('guild.check_again')}
                     </Button>
                   </div>
                 </p>
@@ -243,7 +240,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
             loading={isLoading}
             onClick={onSubmit}
           >
-            Continue
+            {translate('common.continue')}
           </Button>
         </Connected>
         <PoweredByUnlock />

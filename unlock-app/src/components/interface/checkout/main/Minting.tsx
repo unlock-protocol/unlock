@@ -21,6 +21,7 @@ import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { translate } from '~/i18n'
 
 interface MintingScreenProps {
   lockName: string
@@ -162,7 +163,7 @@ export function Minting({
           )
 
           if (transaction.status !== 1) {
-            throw new Error('Transaction failed.')
+            throw new Error(translate('errors.transaction_failed'))
           }
 
           const tokenIds = await waitForTokenIds()

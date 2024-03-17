@@ -194,7 +194,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div>
             <p className="text-sm font-bold">
               <ErrorIcon className="inline" />
-              There was an error when preparing the transaction.
+              {translate('errors.transaction_error')}
             </p>
           </div>
         ) : (
@@ -214,7 +214,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via card </h3>
+                  <h3 className="font-bold">
+                    {' '}
+                    {translate('common.pay_via_card')}
+                  </h3>
                   <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />
@@ -222,8 +225,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    Use cards, Google Pay, or Apple Pay. <br />
-                    <span className="text-xs">Additional fees may apply</span>
+                    {translate('common.payment_method')} <br />
+                    <span className="text-xs">
+                      {translate('common.additional_fees')}
+                    </span>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -249,7 +254,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="grid w-full p-4 space-y-2 text-left border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex justify-between w-full">
-                  <h3 className="font-bold"> Pay with {symbol} </h3>
+                  <h3 className="font-bold">
+                    {translate('common.pay_with')} {symbol}{' '}
+                  </h3>
                   <AmountBadge
                     amount={pricingData?.total.toString() || ''}
                     symbol={symbol}
@@ -257,8 +264,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance of {symbol.toUpperCase()} on{' '}
-                    {networkConfig.name}:{' ~'}
+                    {translate('common.your_balance')} {''}
+                    {symbol.toUpperCase()} {translate('common.on')}{' '}
+                    {networkConfig.name}:{' '}
                     {formatNumber(Number(balance?.balance))}{' '}
                   </div>
                   <RightArrowIcon
@@ -268,7 +276,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="inline-flex text-sm text-start">
                   {!balance?.isGasPayable &&
-                    `You don't have enough ${baseSymbol} for gas fee.`}
+                    `${translate(
+                      'errors.gas_not_enough'
+                    )} ${baseSymbol} ${translate('errors.for_gas_fee')}`}
                 </div>
               </button>
             )}
@@ -303,8 +313,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   </div>
                   <div className="flex items-center justify-between w-full">
                     <div className="text-sm text-left text-gray-500">
-                      Use your card with Crossmint. <br />
-                      <span className="text-xs">Additional fees may apply</span>
+                      {translate('common.use_your_card')} <br />
+                      <span className="text-xs">
+                        {translate('common.additional_fees')}
+                      </span>
                     </div>
                     <RightArrowIcon
                       className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -330,7 +342,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via Stripe </h3>
+                  <h3 className="font-bold">
+                    {translate('common.pay_via_stripe')}
+                  </h3>
                   <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />
@@ -338,8 +352,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    Use cards, Google Pay, or Apple Pay. <br />
-                    <span className="text-xs">Additional fees may apply</span>
+                    {translate('common.payment_method')} <br />
+                    <span className="text-xs">
+                      {translate('common.additional_fees')}
+                    </span>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -363,10 +379,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 }}
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
-                <h3 className="font-bold"> Claim membership for free </h3>
+                <h3 className="font-bold">
+                  {translate('minting.claim_membership')}
+                </h3>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    We will airdrop this free membership to you!
+                    {translate('minting.airdrop')}
                   </div>
                   <div className="flex items-center justify-end">
                     <RightArrowIcon
@@ -402,7 +420,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   >
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold">
-                        Pay with {route!.trade.inputAmount.currency.symbol}
+                        {translate('common.pay_with')}{' '}
+                        {route!.trade.inputAmount.currency.symbol}
                       </h3>
                       <AmountBadge
                         amount={route!.quote.toFixed()}
@@ -411,8 +430,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Swap {route!.trade.inputAmount.currency.symbol} for{' '}
-                        {symbol.toUpperCase()} on {networkConfig.name} and pay{' '}
+                        {translate('common.swap')}{' '}
+                        {route!.trade.inputAmount.currency.symbol}{' '}
+                        {translate('common.for')} {symbol.toUpperCase()}{' '}
+                        {translate('common.on')} {networkConfig.name}{' '}
+                        {translate('common.and')} {translate('common.pay')}{' '}
                       </div>
                       <RightArrowIcon
                         className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -444,7 +466,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   >
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold">
-                        Pay with {route.symbol} on {route.networkName}
+                        {translate('common.pay_with')} {route.symbol}{' '}
+                        {translate('common.on')} {route.networkName}
                       </h3>
                       <AmountBadge
                         amount={formatNumber(
@@ -455,7 +478,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Pay{' '}
+                        {translate('common.pay')}{' '}
                         {formatNumber(
                           Number(ethers.utils.formatEther(route.tx.value))
                         )}{' '}
@@ -465,7 +488,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                           target="_blank"
                           href="https://www.decent.xyz/"
                         >
-                          Decent
+                          {translate('common.decent')}
                         </Link>
                         .
                       </div>
@@ -480,28 +503,26 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
             {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
-                <LoadingIcon size={16} /> Loading more payment options...
+                <LoadingIcon size={16} /> {translate('loading.loading_more')}
               </div>
             )}
 
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">
-                  Credit card payments have not been enabled for this
-                  membership.
+                  {translate('errors.credit_card_not_enabled')}
                 </p>
                 {isUnlockAccount && (
                   <>
                     <p className="mb-4">
-                      Ready to get your own wallet to purchase this membership
-                      with cryptocurrency?{' '}
+                      {translate('common.ready_to_get_wallet')}
                       <a
                         href="https://ethereum.org/en/wallets/find-wallet/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-sm text-gray-500 underline"
                       >
-                        <span>Click here</span>
+                        <span>{translate('common.click_here')}</span>
                         <ExternalLinkIcon />
                       </a>
                     </p>
