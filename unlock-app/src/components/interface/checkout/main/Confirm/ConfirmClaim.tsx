@@ -16,6 +16,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useConfig } from '~/utils/withConfig'
 import { PricingData } from './PricingData'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -92,7 +93,7 @@ export function ConfirmClaim({
     if (hash) {
       onConfirmed(lockAddress, hash)
     } else {
-      onError('No transaction hash returned. Failed to claim membership.')
+      onError(translate('errors.claiming_failed'))
     }
     setIsConfirming(false)
   }
@@ -117,7 +118,7 @@ export function ConfirmClaim({
             <div>
               <p className="text-sm font-bold">
                 <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
+                {translate('errors.transaction_error')}
               </p>
             </div>
           )}
@@ -169,7 +170,9 @@ export function ConfirmClaim({
                 onConfirmClaim()
               }}
             >
-              {isConfirming ? 'Claiming' : 'Claim'}
+              {isConfirming
+                ? translate('common.claiming')
+                : translate('common.claim')}
             </Button>
           </div>
         </Connected>

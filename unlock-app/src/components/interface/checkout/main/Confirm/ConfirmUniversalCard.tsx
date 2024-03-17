@@ -17,6 +17,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useUniversalCardPrice } from '~/hooks/useUniversalCardPrice'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -241,7 +242,7 @@ export function ConfirmUniversalCard({
                   setOnrampSession(null)
                 }}
               >
-                Restart
+                {translate('common.restart')}
               </Button>
             </Connected>
             <PoweredByUnlock />

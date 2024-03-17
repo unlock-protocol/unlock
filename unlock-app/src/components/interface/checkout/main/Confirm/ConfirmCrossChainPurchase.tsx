@@ -18,6 +18,7 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -109,9 +110,9 @@ export function ConfirmCrossChainPurchase({
 
   let buttonLabel = ''
   if (isConfirming) {
-    buttonLabel = 'Paying using crypto'
+    buttonLabel = translate('common.paying_using_crypto')
   } else {
-    buttonLabel = 'Pay using crypto'
+    buttonLabel = translate('common.pay_using_crypto')
   }
 
   return (
@@ -134,7 +135,7 @@ export function ConfirmCrossChainPurchase({
             <div>
               <p className="text-sm font-bold">
                 <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
+                {translate('errors.transaction_error')}
               </p>
             </div>
           )}
@@ -164,7 +165,7 @@ export function ConfirmCrossChainPurchase({
             isCardEnabled={false}
             keyPrice={
               pricingData.total <= 0
-                ? 'FREE'
+                ? translate('common.free')
                 : `${formatNumber(pricingData.total).toLocaleString()} ${
                     route.symbol
                   }`

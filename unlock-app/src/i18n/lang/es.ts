@@ -42,6 +42,14 @@ const es = {
     memberships: 'membresías',
     memberships_at_once: 'membresías a la vez',
     buy_more: 'Comprar más',
+    credit_card_fees: 'Credit Card Fees',
+    learn_more: 'Learn more',
+    claiming: 'Reclamando',
+    claim: 'Reclamar',
+    pay_using_crypto: 'Pagar usando cripto',
+    paying_using_crypto: 'Pagando con cripto',
+    confirming_payment: 'Confirmando pago',
+    restart: 'Reiniciar',
   },
   warnings: {
     email_required: 'Se requiere correo electrónico',
@@ -60,6 +68,19 @@ const es = {
       'La tarjeta de crédito no está habilitada para esta membresía',
     purchase_more_fail: 'No puedes comprar más de',
     purchase_less_fail: 'No puedes comprar menos de',
+    payment_error:
+      'Hubo un error al intentar capturar tu pago. Por favor, verifica con tu institución financiera.',
+    payment_failure: 'No se pudo confirmar el pago',
+    payment_intent_missing:
+      'Falta la intención de pago. Por favor, inténtalo de nuevo.',
+    stripe_loading_fail: 'Hubo un problema al cargar Stripe',
+    creating_payment_failed: 'Falló la creación de la intención de pago',
+    claiming_failed:
+      'No se devolvió el hash de la transacción. No se pudo reclamar la membresía.',
+    transaction_rejected: 'Transacción rechazada',
+    insufficient_funds_1: 'No tienes suficiente',
+    insufficient_funds_2: 'para pagar tarifas de transacción',
+    insufficient_funds_3: 'para completar esta compra',
   },
   captcha: {
     Solve_the_captcha: 'Resuelve el captcha para continuar',
@@ -103,7 +124,7 @@ const es = {
       'Si tienes un código promocional, introdúcelo aquí. Los códigos promocionales pueden ser usados para obtener descuentos en membresías.',
     promo_code: 'Código promocional',
   },
-  éxito: {
+  success: {
     viola: ' ¡Voilà! ¡Esto está desbloqueado!',
     block_explorer: 'Ver en el explorador de bloques',
     add_to_google_wallet: 'Agregar a Google Wallet',

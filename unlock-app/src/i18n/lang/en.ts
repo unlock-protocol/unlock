@@ -41,6 +41,14 @@ const en = {
     memberships: 'memberships',
     memberships_at_once: 'memberships at once',
     buy_more: 'Buy more',
+    credit_card_fees: 'Credit Card Fees',
+    learn_more: 'Learn more',
+    claiming: 'Claiming',
+    claim: 'Claim',
+    pay_using_crypto: 'Pay using crypto',
+    paying_using_crypto: 'Paying using crypto',
+    confirming_payment: 'Confirming payment',
+    restart: 'Restart',
   },
   warnings: {
     email_required: 'Email is required',
@@ -58,6 +66,18 @@ const en = {
     credit_card_not_enabled: 'Credit card is not enabled for this membership',
     purchase_more_fail: 'You cannot purchase more than',
     purchase_less_fail: 'You cannot purchase less than',
+    payment_error:
+      'There was an error while trying to capture your payment. Please check with your financial institution.',
+    payment_failure: 'Failed to confirm payment',
+    payment_intent_missing: 'Payment intent is missing. Please retry.',
+    stripe_loading_fail: 'There was a problem in loading stripe',
+    creating_payment_failed: 'Creating payment intent failed',
+    claiming_failed:
+      'No transaction hash returned. Failed to claim membership.',
+    transaction_rejected: 'Transaction rejected',
+    insufficient_funds_1: 'You do not have enough',
+    insufficient_funds_2: 'to pay transaction fees',
+    insufficient_funds_3: 'to complete this purchase',
   },
   captcha: {
     Solve_the_captcha: 'Solve the captcha to continue',

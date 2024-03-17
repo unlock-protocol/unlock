@@ -20,6 +20,7 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -213,7 +214,7 @@ export function ConfirmCrossmint({
                 <div>
                   <p className="text-sm font-bold">
                     <ErrorIcon className="inline" />
-                    There was an error when preparing the transaction.
+                    {translate('errors.transaction_error')}
                   </p>
                 </div>
               )}
@@ -288,7 +289,7 @@ export function ConfirmCrossmint({
           <div className="flex flex-col items-center justify-center h-full space-y-2">
             <TransactionAnimation status={'PROCESSING'} />
             <p className="text-lg font-bold text-brand-ui-primary">
-              Confirming payment
+              {translate('common.confirming_payment')}
             </p>
           </div>
         )}

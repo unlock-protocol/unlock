@@ -22,6 +22,7 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -211,7 +212,7 @@ export function ConfirmCrypto({
         case -32000:
         case 4001:
         case 'ACTION_REJECTED':
-          onError('Transaction rejected.')
+          onError(translate('errors.transaction_rejected'))
           break
         default:
           onError(error?.error?.message || error.message)
@@ -226,15 +227,15 @@ export function ConfirmCrypto({
 
   if (isFree) {
     if (isConfirming) {
-      buttonLabel = 'Claiming'
+      buttonLabel = translate('common.claiming')
     } else {
-      buttonLabel = 'Claim'
+      buttonLabel = translate('common.claim')
     }
   } else {
     if (isConfirming) {
-      buttonLabel = 'Paying using crypto'
+      buttonLabel = translate('common.paying_using_crypto')
     } else {
-      buttonLabel = 'Pay using crypto'
+      buttonLabel = translate('common.pay_using_crypto')
     }
   }
 
@@ -257,7 +258,7 @@ export function ConfirmCrypto({
             <div>
               <p className="text-sm font-bold">
                 <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
+                {translate('errors.transaction_error')}
               </p>
             </div>
           )}
@@ -320,14 +321,15 @@ export function ConfirmCrypto({
               <>
                 {!isPayable?.isTokenPayable && (
                   <small className="text-center text-red-500">
-                    You do not have enough {symbol} to complete this purchase.
+                    {translate('errors.insufficient_funds_1')} {symbol}{' '}
+                    {translate('errors.insufficient_funds_3')}
                   </small>
                 )}
                 {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
                   <small className="text-center text-red-500">
-                    You do not have enough{' '}
+                    {translate('errors.insufficient_funds_1')}{' '}
                     {config.networks[lock!.network].nativeCurrency.symbol} to
-                    pay transaction fees (gas).
+                    {translate('errors.insufficient_funds_2')} (gas).
                   </small>
                 )}
               </>

@@ -24,6 +24,7 @@ import { formatFiatPriceFromCents } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -53,14 +54,15 @@ export function CreditCardPricingBreakdown({
   return (
     <div className="flex flex-col gap-2 pt-4 text-xs">
       <h3 className="font-medium">
-        Credit Card Fees{' '}
+        {translate('common.credit_card_fees')}{' '}
         <a
           href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
           target="_blank"
           rel="noopener noreferrer"
           className="px-2 py-0.5 rounded-lg gap-2 hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
         >
-          <span>Learn more</span> <ExternalLinkIcon className="inline" />
+          <span>{translate('common.learn_more')}</span>{' '}
+          <ExternalLinkIcon className="inline" />
         </a>
       </h3>
       <div className="divide-y">
@@ -235,7 +237,7 @@ export function ConfirmCard({
     })
 
     if (!stripeIntent?.clientSecret) {
-      throw new Error('Creating payment intent failed')
+      throw new Error(translate('errors.creating_payment_failed'))
     }
 
     const stripe = await loadStripe(config.stripeApiKey, {
@@ -243,7 +245,7 @@ export function ConfirmCard({
     })
 
     if (!stripe) {
-      throw new Error('There was a problem in loading stripe')
+      throw new Error(translate('errors.stripe_loading_fail'))
     }
 
     const { paymentIntent } = await stripe.retrievePaymentIntent(
@@ -251,7 +253,7 @@ export function ConfirmCard({
     )
 
     if (!paymentIntent) {
-      throw new Error('Payment intent is missing. Please retry.')
+      throw new Error(translate('errors.payment_intent_missing'))
     }
 
     if (paymentIntent.status !== 'requires_capture') {
@@ -262,7 +264,9 @@ export function ConfirmCard({
         confirmation.error ||
         confirmation.paymentIntent?.status !== 'requires_capture'
       ) {
-        onError(confirmation.error?.message || 'Failed to confirm payment')
+        onError(
+          confirmation.error?.message || translate('errors.payment_failure')
+        )
         setIsConfirming(false)
         return
       }
@@ -276,9 +280,7 @@ export function ConfirmCard({
         setIsConfirming(false)
       })
       .catch((error) => {
-        onError(
-          'There was an error while trying to capture your payment. Please check with your financial institution.'
-        )
+        onError(translate('errors.payment_error'))
         console.log(error.response.data)
         setIsConfirming(false)
       })
@@ -304,7 +306,7 @@ export function ConfirmCard({
             <div>
               <p className="text-sm font-bold">
                 <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
+                {translate('errors.transaction_error')}
               </p>
             </div>
           )}

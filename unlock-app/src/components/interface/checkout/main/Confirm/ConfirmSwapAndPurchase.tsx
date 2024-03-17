@@ -20,6 +20,7 @@ import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { ethers } from 'ethers'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -118,7 +119,7 @@ export function ConfirmSwapAndPurchase({
       case -32000:
       case 4001:
       case 'ACTION_REJECTED':
-        ToastHelper.error('Transaction rejected.')
+        ToastHelper.error(translate('errors.transaction_rejected'))
         break
       default:
         ToastHelper.error(message || error?.error?.message || error.message)
@@ -202,9 +203,9 @@ export function ConfirmSwapAndPurchase({
 
   let buttonLabel = ''
   if (isConfirming) {
-    buttonLabel = 'Paying using crypto'
+    buttonLabel = translate('common.paying_using_crypto')
   } else {
-    buttonLabel = 'Pay using crypto'
+    buttonLabel = translate('common.pay_using_crypto')
   }
 
   return (
@@ -227,7 +228,7 @@ export function ConfirmSwapAndPurchase({
             <div>
               <p className="text-sm font-bold">
                 <ErrorIcon className="inline" />
-                There was an error when preparing the transaction.
+                {translate('errors.transaction_error')}
               </p>
             </div>
           )}
@@ -257,7 +258,7 @@ export function ConfirmSwapAndPurchase({
             isCardEnabled={false}
             keyPrice={
               pricingData.total <= 0
-                ? 'FREE'
+                ? translate('errors.transaction_error')
                 : `${formatNumber(
                     pricingData.total
                   ).toLocaleString()} ${symbol}`
