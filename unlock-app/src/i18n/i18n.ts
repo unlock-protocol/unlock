@@ -32,6 +32,14 @@ const options = {
   lookupFromSubdomainIndex: 0,
 }
 
+const locales = navigator.languages
+// The preferred language is the first element in the array, however, we fallback to en-US, especially for tests.
+const preferredLanguage: { languageTag: string; textDirection: 'ltr' | 'rtl' } =
+  {
+    languageTag: locales[0] || 'en-US',
+    textDirection: 'ltr',
+  }
+
 i18n
   .use(XHR)
   .use(initReactI18next)
@@ -39,7 +47,7 @@ i18n
   .init({
     detection: options,
     fallbackLng: ['en'],
-    // lng: 'cimode', remove comment for logging
+    lng: preferredLanguage.languageTag,
     resources: {
       /**
        * we need always include "*-US" for some valid language codes because when you change the system language,
