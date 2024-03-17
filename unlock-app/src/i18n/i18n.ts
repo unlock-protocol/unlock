@@ -43,3 +43,5 @@ type RecursiveKeyOfHandleValue<
   : TValue extends object
   ? Text | `${Text}${RecursiveKeyOfInner<TValue>}`
   : Text
+
+export default i18n

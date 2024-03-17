@@ -31,6 +31,7 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -46,7 +47,7 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
       {Number(amount) <= 0
-        ? 'FREE'
+        ? translate('common.free')
         : `${formatNumber(Number(amount))} ${symbol.toUpperCase()}`}
       <CryptoIcon size={16} symbol={symbol} />
     </div>

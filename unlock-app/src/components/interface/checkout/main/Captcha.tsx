@@ -10,6 +10,7 @@ import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { translate } from '~/i18n'
 
 interface Props {
   injectedProvider: unknown
@@ -82,10 +83,10 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
             }}
           >
             {!recaptchaValue
-              ? 'Solve captcha to continue'
+              ? translate('captcha.Solve_the_captcha')
               : isContinuing
-              ? 'Continuing'
-              : 'Continue'}
+              ? translate('common.continuing')
+              : translate('common.continue')}
           </Button>
         </Connected>
         <PoweredByUnlock />

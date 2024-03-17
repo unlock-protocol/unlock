@@ -20308,6 +20308,8 @@ __metadata:
     frames.js: "npm:0.8.0"
     from-exponential: "npm:1.1.1"
     graphql: "npm:16.8.1"
+    i18next: "npm:23.10.1"
+    i18next-browser-languagedetector: "npm:7.2.0"
     jsdom: "npm:24.0.0"
     lottie-react: "npm:2.4.0"
     next: "npm:13.4.19"
@@ -20328,6 +20330,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.44.3"
     react-hot-toast: "npm:2.4.1"
+    react-i18next: "npm:14.1.0"
     react-icons: "npm:5.0.1"
     react-jwt: "npm:1.2.0"
     react-markdown: "npm:8.0.7"
@@ -53114,11 +53117,8 @@ __metadata:
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     eslint-plugin-vitest: "npm:0.3.0"
     husky: "npm:9.0.11"
-    i18next: "npm:23.10.1"
-    i18next-browser-languagedetector: "npm:7.2.0"
     lint-staged: "npm:15.1.0"
     prettier: "npm:3.0.0"
-    react-i18next: "npm:14.1.0"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
