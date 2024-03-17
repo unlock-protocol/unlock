@@ -5,6 +5,7 @@ import XHR from 'i18next-http-backend'
 // if English isn't your default language, move Translations to the appropriate language file.
 import en, { Translations } from './lang/en'
 import es from './lang/es'
+import fr from './lang/fr'
 
 const options = {
   // order and from where user language should be detected
@@ -34,7 +35,7 @@ i18n
   .use(LanguageDetector)
   .init({
     detection: options,
-    fallbackLng: ['en', 'es', 'dev'],
+    fallbackLng: ['en', 'es', 'fr'],
     // lng: 'cimode', remove comment for logging
     resources: {
       /**
@@ -44,6 +45,7 @@ i18n
        */
       en: { translation: en, 'en-US': en },
       es: { translation: es },
+      fr: { translation: fr },
     },
     react: {
       bindI18n: 'languageChanged editorSaved',
