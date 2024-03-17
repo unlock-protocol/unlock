@@ -336,6 +336,13 @@ describe('Receipts for Cancel and refund', () => {
       'recipient',
       keyOwnerAddress
     )
+    assert.fieldEquals('Lock', lockAddress, 'numberOfReceipts', (0).toString())
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'numberOfCancelReceipts',
+      (1).toString()
+    )
   })
 
   test('Receipt has not been created for cancel without refund , ERC20 Token', () => {
@@ -440,6 +447,13 @@ describe('Receipts for Cancel and refund', () => {
       defaultMockAddress,
       'recipient',
       keyOwnerAddress
+    )
+    assert.fieldEquals('Lock', lockAddress, 'numberOfReceipts', (0).toString())
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'numberOfCancelReceipts',
+      (1).toString()
     )
   })
 
