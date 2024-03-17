@@ -30,6 +30,7 @@ import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import { translate } from '~/i18n'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -112,14 +113,14 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   {formattedData?.formattedDuration !== 'Forever' && (
                     <>
                       <LabeledItem
-                        label="Duration"
+                        label={translate('common.duration')}
                         icon={DurationIcon}
                         value={formattedData?.formattedDuration}
                       />
                       {!!lock.recurringPayments &&
                         parseInt(lock.recurringPayments.toString()) > 1 && (
                           <LabeledItem
-                            label="Renew"
+                            label={translate('common.renew')}
                             icon={RecurringIcon}
                             value={
                               typeof lock.recurringPayments === 'number'
@@ -132,11 +133,11 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   )}
                   {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
                     <LabeledItem
-                      label="Left"
+                      label={translate('common.left')}
                       icon={QuantityIcon}
                       value={
                         formattedData?.isSoldOut
-                          ? 'Sold out'
+                          ? translate('common.sold_out')
                           : formattedData?.formattedKeysAvailable
                       }
                     />
@@ -160,22 +161,22 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
               </div>
               {lock.isMember && (
                 <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
-                  You already have this membership{' '}
+                  {translate('errors.membership_exist')}{' '}
                   <Badge
                     size="tiny"
                     iconRight={<CheckMarkIcon />}
                     variant="green"
                   >
                     {' '}
-                    Valid{' '}
+                    {translate('common.valid')}{' '}
                   </Badge>
                 </div>
               )}
               {lock.isExpired && (
                 <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
-                  Your membership is expired.{' '}
+                  {translate('errors.membership_expired')}{' '}
                   <Badge size="tiny" iconRight={<WarningIcon />} variant="red">
-                    Expired
+                    {translate('common.expired')}
                   </Badge>
                 </div>
               )}

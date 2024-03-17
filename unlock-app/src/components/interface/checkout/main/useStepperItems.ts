@@ -7,6 +7,7 @@ import {
 } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { shouldSkip } from './utils'
+import { translate } from '~/i18n'
 
 export function useStepperItems(
   service: CheckoutService | UnlockAccountService,
@@ -26,14 +27,14 @@ export function useStepperItems(
   if (isUnlockAccount) {
     return [
       {
-        name: 'Enter email',
+        name: translate('common.enter_email'),
         to: 'ENTER_EMAIL',
       },
       {
-        name: 'Password',
+        name: translate('password.password_title'),
       },
       {
-        name: 'Signed in',
+        name: translate('common.signed_in'),
       },
     ]
   }
@@ -71,16 +72,16 @@ export function useStepperItems(
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
-      name: 'Select',
+      name: translate('common.select'),
       to: 'SELECT',
     },
     {
-      name: 'Choose quantity',
+      name: translate('common.choose_quantity'),
       skip: (!hasOneLock ? skipQuantity : skipLockQuantity) || isExpired,
       to: 'QUANTITY',
     },
     {
-      name: 'Recipient(s)',
+      name: translate('common.recipient'),
       to: 'METADATA',
       skip:
         (!hasOneLock
@@ -88,45 +89,45 @@ export function useStepperItems(
           : skipLockQuantity && skipLockRecipient && !isMember) || isExpired,
     },
     {
-      name: 'Sign message',
+      name: translate('common.sign_message_title'),
       skip: !paywallConfig.messageToSign,
       to: 'MESSAGE_TO_SIGN',
     },
     isPassword
       ? {
-          name: 'Submit password',
+          name: translate('password.submit_password'),
           to: 'PASSWORD',
         }
       : isPromo
       ? {
-          name: 'Enter promo code',
+          name: translate('promo.enter_promo_code'),
           to: 'PROMO',
         }
       : isGuild
       ? {
-          name: 'Guild',
+          name: translate('common.guild'),
           to: 'GUILD',
         }
       : {
-          name: 'Solve captcha',
+          name: translate('captcha.Captcha'),
           to: 'CAPTCHA',
           skip: !isCaptcha,
         },
     {
-      name: 'Payment method',
+      name: translate('common.payment_method_title'),
       to: 'PAYMENT',
     },
     {
-      name: 'Add card',
+      name: translate('common.add_card'),
       to: 'CARD',
       skip: !['card', 'universal_card'].includes(payment?.method),
     },
     {
-      name: 'Confirm',
+      name: translate('common.confirm'),
       to: 'CONFIRM',
     },
     {
-      name: 'Minting NFT',
+      name: translate('minting.minting_nft'),
     },
   ]
 

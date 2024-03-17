@@ -1,6 +1,11 @@
 const en = {
   common: {
     welcome: 'Hello to Unlock Protocol',
+    password: 'password',
+    guild: 'guild',
+    captcha: 'captcha',
+    promocode: 'promocode',
+    promo_code_capped: 'promocode',
     free: 'FREE',
     continue: 'Continue',
     continuing: 'Continuing',
@@ -49,6 +54,19 @@ const en = {
     paying_using_crypto: 'Paying using crypto',
     confirming_payment: 'Confirming payment',
     restart: 'Restart',
+    renew: 'Renew',
+    left: 'Left',
+    valid: 'Valid',
+    expired: 'Expired',
+    select: 'Select',
+    choose_quantity: 'Choose quantity',
+    recipient: 'Recipient(s)',
+    sign_message_title: 'Sign message',
+    payment_method_title: 'Payment method',
+    add_card: 'Add card',
+    confirm: 'Confirm',
+    enter_email: 'Enter email',
+    signed_in: 'Signed in',
   },
   warnings: {
     email_required: 'Email is required',
@@ -78,6 +96,8 @@ const en = {
     insufficient_funds_1: 'You do not have enough',
     insufficient_funds_2: 'to pay transaction fees',
     insufficient_funds_3: 'to complete this purchase',
+    membership_exist: 'You already have this membership',
+    membership_expired: 'You membership is expired',
   },
   captcha: {
     Solve_the_captcha: 'Solve the captcha to continue',
@@ -105,6 +125,7 @@ const en = {
     claim_membership: 'Claim Membership for free',
   },
   password: {
+    password_title: 'Password',
     enter_password: 'Enter password',
     description:
       'You need to enter the password to purchase the key. If password is wrong, purchase will fail.',

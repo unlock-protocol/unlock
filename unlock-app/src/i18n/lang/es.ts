@@ -1,6 +1,11 @@
 const es = {
   common: {
     welcome: 'Hola a Unlock Protocol',
+    password: 'contraseña',
+    guild: 'gremio',
+    captcha: 'captcha',
+    promocode: 'código promocional',
+    promo_code_capped: 'código promocional',
     free: 'GRATIS',
     continue: 'Continuar',
     continuing: 'Continuando',
@@ -50,6 +55,19 @@ const es = {
     paying_using_crypto: 'Pagando con cripto',
     confirming_payment: 'Confirmando pago',
     restart: 'Reiniciar',
+    renew: 'Renovar',
+    left: 'Restante',
+    valid: 'Válido',
+    expired: 'Expirado',
+    select: 'Seleccionar',
+    choose_quantity: 'Elegir cantidad',
+    recipient: 'Destinatario(s)',
+    sign_message_title: 'Firmar mensaje',
+    payment_method_title: 'Método de pago',
+    add_card: 'Agregar tarjeta',
+    confirm: 'Confirmar',
+    enter_email: 'Introducir correo',
+    signed_in: 'Conectado',
   },
   warnings: {
     email_required: 'Se requiere correo electrónico',
@@ -81,6 +99,8 @@ const es = {
     insufficient_funds_1: 'No tienes suficiente',
     insufficient_funds_2: 'para pagar tarifas de transacción',
     insufficient_funds_3: 'para completar esta compra',
+    membership_exist: 'Ya tienes esta membresía',
+    membership_expired: 'Tu membresía ha expirado',
   },
   captcha: {
     Solve_the_captcha: 'Resuelve el captcha para continuar',
@@ -108,6 +128,7 @@ const es = {
     claim_membership: 'Reclamar membresía gratis',
   },
   password: {
+    password_title: 'Contraseña',
     enter_password: 'Introducir contraseña',
     description:
       'Necesitas introducir la contraseña para comprar la llave. Si la contraseña es incorrecta, la compra fallará.',
