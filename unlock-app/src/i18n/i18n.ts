@@ -6,6 +6,8 @@ import XHR from 'i18next-http-backend'
 import en, { Translations } from './lang/en'
 import es from './lang/es'
 import fr from './lang/fr'
+import ar from './lang/ar'
+import ko from './lang/ko'
 
 const options = {
   // order and from where user language should be detected
@@ -46,6 +48,8 @@ i18n
       en: { translation: en, 'en-US': en },
       es: { translation: es },
       fr: { translation: fr },
+      ar: { translation: ar },
+      ko: { translation: ko },
     },
     react: {
       bindI18n: 'languageChanged editorSaved',
