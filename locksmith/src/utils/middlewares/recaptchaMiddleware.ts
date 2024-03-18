@@ -16,6 +16,7 @@ export const captchaMiddleware: RequestHandler = async (
   response,
   next
 ) => {
+  // Adding a way to bypass the captcha for 3rd party services.
   if (!isProduction && !isStaging) {
     logger.debug('Skip captcha in development')
     return next()
