@@ -51,6 +51,9 @@ const usePaywall = () => {
         [url.searchParams.get('lock')]: {
           network: parseInt(url.searchParams.get('network'), 10),
           emailRequired: true,
+          paymentMethods: {
+            creditCard: false,
+          },
         },
       },
       referrer,
