@@ -54,6 +54,17 @@ async function main() {
     console.log(`export { ${contractName}${versionNumber} }`)
   )
 
+  // alias for all contracts
+  console.log(
+    `const contracts = { ${exports
+      .map(
+        ({ contractName, versionNumber = '' }) =>
+          `${contractName}${versionNumber}`
+      )
+      .toString()} } 
+      export { contracts }`
+  )
+
   // alias for the newest versions
   console.log('\n// latest')
   findLatest(exports, 'PublicLock')
