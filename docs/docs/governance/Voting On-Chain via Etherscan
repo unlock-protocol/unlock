@@ -1,0 +1,30 @@
+Topic | Voting On-Chain via Etherscan
+
+Preemable: voting happens on-chain. Front-ends like Tally or Etherscan are optional. They can be replaced by any UI that can interact with the contracts. 
+There can be various reasons to vote through another channel. Here are the 5 steps to vote by using the Etherscan UI:
+
+Step 1 |
+Get the Governor contract details from [here](https://docs.unlock-protocol.com/governance/unlock-dao/) and copy them into [Etherscan](https://etherscan.io/).
+
+Step 2 |
+Essentially, paste this string (this is the Governor contract address): 0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591 into the search bar on Etherscan, which should get you [here](https://etherscan.io/address/0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591).
+
+Step 3 |
+Now head over to the “Contract” tab and select right underneath “Write as Proxy”:
+![Alt text](image link)
+
+Step 4 |
+Now, either head over to Tally and grab the Proposal ID from the proposal you wish to vote for:
+![Alt text](image link)
+
+Or even better, take a look at the “propose” transaction of your proposal here:
+![Alt text](image link)
+
+From there, navigate to the “Logs” tab to grab the proposal ID:
+![Alt text](image link)
+
+Step 5 |
+Lastly, please go ahead and return to your open Etherscan tab and paste the Proposal ID into the dedicated field under the castVote function (currently indexed 2). To vote, use the second field and enter either 0 = no or 1 = yes. 
+![Alt text](image link)
+
+*(PS: You can also use ‘castVoteWithReason’ to add a reason for your vote.)*
