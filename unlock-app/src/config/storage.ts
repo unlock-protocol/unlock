@@ -10,6 +10,14 @@ export const storageClient = axios.create()
 
 // Use interceptor to inject the token to requests
 storageClient.interceptors.request.use((request) => {
+  if (process.env.LOCKSMITH_API_KEY) {
+    console.log('GOT AN API KEY!!')
+    request.headers![
+      'Authorization'
+    ] = `api-key ${process.env.LOCKSMITH_API_KEY}`
+    return request
+  }
+
   const currentAccountAddress = getCurrentAccount()
   if (!currentAccountAddress) {
     return request
