@@ -37,9 +37,9 @@ import UnlockDiscountTokenV3 from './abis/UnlockDiscountToken/UnlockDiscountToke
 import GovernorUnlockProtocol from './abis/Governor/UnlockProtocolGovernor.json'
 import GovernorUnlockProtocolTimelock from './abis/Governor/UnlockProtocolTimelock.json'
 import LockSerializer from './abis/utils/LockSerializer.json'
-import UnlockSwapPurchaser from './abis/utils/UnlockSwapPurchaser.json'
-import UnlockSwapBurner from './abis/utils/UnlockSwapBurner.json'
 import UniswapOracleV3 from './abis/utils/UniswapOracleV3.json'
+import UnlockSwapBurner from './abis/utils/UnlockSwapBurner.json'
+import UnlockSwapPurchaser from './abis/utils/UnlockSwapPurchaser.json'
 
 // exports
 export { PublicLockV0 }
@@ -77,9 +77,15 @@ export { UnlockDiscountTokenV2 }
 export { UnlockDiscountTokenV3 }
 export { GovernorUnlockProtocol }
 export { GovernorUnlockProtocolTimelock }
-export {
-  LockSerializer,
-  UnlockSwapPurchaser,
-  UnlockSwapBurner,
-  UniswapOracleV3,
-}
+export { LockSerializer }
+export { UniswapOracleV3 }
+export { UnlockSwapBurner }
+export { UnlockSwapPurchaser }
+
+// latest
+export { PublicLockV14 as PublicLock }
+const PUBLICLOCK_LATEST_VERSION = 14
+export { PUBLICLOCK_LATEST_VERSION }
+export { UnlockV13 as Unlock }
+const UNLOCK_LATEST_VERSION = 13
+export { UNLOCK_LATEST_VERSION }
