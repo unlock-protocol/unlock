@@ -62,6 +62,13 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
+vi.mock('@unlock-protocol/networks', () => ({
+  31337: {
+    provider: 'http://127.0.0.1:8545',
+    publicProvider: 'http://127.0.0.1:8545',
+  },
+}))
+
 vi.mock('../../src/utils/gasSettings', () => ({
   getGasSettings: vi.fn(() => {
     return {
