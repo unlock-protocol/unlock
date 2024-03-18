@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.1.5
+
+- Use version number directly fromn contracts packages
+
 ### 0.1.2
 
 - Changing the lock deployed version to the latest
