@@ -204,8 +204,8 @@ export function tryCreateCancelReceipt(event: ethereum.Event): boolean {
   // (i.e. this is a paid transaction)
   if (receipt.payer !== null && receipt.amountTransferred > BigInt.fromI32(0)) {
     // Updating the lock object
-    const newReceiptNumber = lock.numberOfReceipts.plus(BigInt.fromI32(1))
-    lock.numberOfReceipts = newReceiptNumber
+    const newReceiptNumber = lock.numberOfCancelReceipts.plus(BigInt.fromI32(1))
+    lock.numberOfCancelReceipts = newReceiptNumber
     lock.save()
 
     receipt.receiptNumber = newReceiptNumber

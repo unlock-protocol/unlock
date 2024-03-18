@@ -75,6 +75,7 @@ export function handleNewLock(event: NewLock): void {
   lock.totalKeys = BigInt.fromI32(0)
   lock.deployer = event.params.lockOwner // The `lockOwner` name is wrong, as it is in fact msg.sender
   lock.numberOfReceipts = BigInt.fromI32(0)
+  lock.numberOfCancelReceipts = BigInt.fromI32(0)
 
   // default value
   const symbol = lockContract.try_symbol()

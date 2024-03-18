@@ -62,6 +62,7 @@ describe('Receipts for base currency locks', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     // transfer event
@@ -94,6 +95,7 @@ describe('Receipts for base currency locks', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     // transfer event
@@ -130,6 +132,7 @@ describe('Receipts for base currency locks', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     // renew event
@@ -172,6 +175,7 @@ describe('Receipts for base currency locks', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -234,6 +238,7 @@ describe('Receipts for an ERC20 locks', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     // transfer event
@@ -278,6 +283,7 @@ describe('Receipts for Cancel and refund', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -330,6 +336,13 @@ describe('Receipts for Cancel and refund', () => {
       'recipient',
       keyOwnerAddress
     )
+    assert.fieldEquals('Lock', lockAddress, 'numberOfReceipts', (0).toString())
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'numberOfCancelReceipts',
+      (1).toString()
+    )
   })
 
   test('Receipt has not been created for cancel without refund , ERC20 Token', () => {
@@ -345,6 +358,7 @@ describe('Receipts for Cancel and refund', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -381,6 +395,7 @@ describe('Receipts for Cancel and refund', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
@@ -433,6 +448,13 @@ describe('Receipts for Cancel and refund', () => {
       'recipient',
       keyOwnerAddress
     )
+    assert.fieldEquals('Lock', lockAddress, 'numberOfReceipts', (0).toString())
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'numberOfCancelReceipts',
+      (1).toString()
+    )
   })
 
   test('Receipt has not been created for cancel without refund, Base currency', () => {
@@ -448,6 +470,7 @@ describe('Receipts for Cancel and refund', () => {
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])
     lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
     lock.save()
 
     const key = new Key(`${lockAddress}-${tokenId}`)
