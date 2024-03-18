@@ -2,46 +2,14 @@
 
 This website (https://docs.unlock-protocol.com/) is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
 
-### Installation
+## Contributing
 
-```
-$ yarn
-```
+First of all, thank you! First, you need to have `git` installed on your machine. Then, create a fork of the main Unlock repo, located at [`https://github.com/unlock-protocol/unlock`](https://github.com/unlock-protocol/unlock). For this, you should follow [the steps provided by GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
 
-### Local Development
+Once cloned, using the terminal type `yarn` and `yarn build` at the root of the repository.
 
-```
-$ yarn start
-```
+After this, you're ready. You can hop into the `docs` folder and there, you can use the `yarn run  start` to build an serve the docs from your local machine.
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+Then do the changes you want to introduce to the docs (in the `docs` folder). Once you are done, make sure your changes are rendered as you expect them to be!
 
-### Build
-
-```
-$ yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-### Deployment
-
-Deployments are performed automatically by Github.
-
-## Updating docs
-
-The docs are using markdown and can be [updated in the repo](https://github.com/unlock-protocol/docs/tree/master/docs).
-
-### Auto-generated docs
-
-Some of the docs are automatically generated.
-
-#### Smart contracts
-
-The docs are generated from the `@unlock-protocol.com/contracts` package.
-You can modify any `.sol` file in the package following the [`hardhat-dodoc`](https://www.npmjs.com/package/@primitivefi/hardhat-dodoc) format.
-Once ready, you can easily open a pull request on the docs repo (make sure you also generate a PR for the mono repo or your changes will be overwritten by the next doc update) by using the following script: `scripts/docs-contracts-pr.sh` executed at the root of the monorepo.
-
-## Search
-
-We use algolia docs search on the docs site. Once every day, the algolia crawlers re-indexes our site with new entries. This can be changed from the [algolia crawler dashboard](https://crawler.algolia.com/admin/crawlers/). You should be able to trigger manual re-indexing from the same.
+Finally, you need to commit changes, and push them to Github. Once that is done you can [open a Pull-Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) against the main Unlock repository!
