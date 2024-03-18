@@ -48,6 +48,7 @@ export enum HookType {
   PROMO_CODE_CAPPED = 'PROMO_CODE_CAPPED',
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
+  GITCOIN = 'GITCOIN',
 }
 
 export const HooksName = [
