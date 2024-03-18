@@ -47,6 +47,8 @@ Given how much scrutiny is expected by voters, we strongly advise anyone who int
 
 Similarly, we encourage proposers to first submit an offchain "temperature check" from the community before submitting onchain proposals using a tool like [Snapshot](https://snapshot.org/#/unlock-protocol.eth). Even though offchain votes are non-binding, this helps [delegates (see below)](#delegating) get a sense of whether the community wants to see a specific proposal be executed or not.
 
+Finally in the interest of transparency, you should consider submitting a Pull-Request that includes the details of your proposal. This will make it easier for DAO members to test your proposal's code, as well as verify that it performs what it has been intended for. Please [check past proposals](https://github.com/unlock-protocol/unlock/tree/master/governance/proposals) to get a good idea of what is expected. You will also find helpers in this code to executed cross-chain proposals for example!
+
 Once the proposal has been submitted on chain, the [delegates (see below)](#delegating) have a period to express their preferences, between voting in "favor", "against" or "abstain". Proposals have to be **carefully tested by each delegate** to assert what impact they will actually have, and if they are indeed desirable for the protocol. Given their _unstoppable_ nature, and the fact that a rogue or buggy proposal could not be reverted, it is absolutely critical that every single vote is done thoughtfuly. Additionaly, some delegates might want to consult the token holders who have delegated to them before making a final decision.
 
 #### Delegating
