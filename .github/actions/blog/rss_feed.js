@@ -1,13 +1,11 @@
-import fs from 'fs-extra'
-import path from 'path'
-import fetch from 'node-fetch'
-import feedparser from 'feedparser-promised'
+const fs = require('fs-extra')
+const path = require('path')
+const fetch = require('node-fetch')
+const feedparser = require('feedparser-promised')
 
 // Fetch the RSS feed
 const rssUrl = 'https://paragraph.xyz/api/blogs/rss/@unlockprotocol'
-// Mock RSS URL
-// const rssUrl =
-//   'https://gist.githubusercontent.com/njokuScript/49c95765a21de9a7cf01c72f06149769/raw/5f62f27fc2a9c37e992d7834e86361a72cbfeeca/mock_rss_feed.xml'
+//const rssUrl = 'https://gist.githubusercontent.com/njokuScript/49c95765a21de9a7cf01c72f06149769/raw/5f62f27fc2a9c37e992d7834e86361a72cbfeeca/mock_rss_feed.xml'
 
 // Create the base directory for storing blog posts
 const blogDir = '../../../unlock-protocol-com/blog'
@@ -25,12 +23,40 @@ fs.readdirSync(blogDir).forEach((filename) => {
   }
 })
 
+const downloadImage = (url, filepath) => {
+  return fetch(url)
+    .then((res) => res.buffer())
+    .then((buffer) => fs.writeFile(filepath, buffer))
+    .catch((error) => console.error(`Error downloading image ${url}:`, error))
+}
+
+const extractAndDownloadImages = (content, postImagesDir, slug) => {
+  const imageRegex = /<img[^>]+src="([^">]+)"/g
+  let updatedContent = content
+  let match
+  const imagePromises = []
+
+  while ((match = imageRegex.exec(content)) !== null) {
+    const imageUrl = match[1]
+    const imageFilename = path.basename(imageUrl)
+    const localImagePath = path.join(postImagesDir, imageFilename)
+    // Extract and download images from the content and update the content with local image paths
+    const imagePromise = downloadImage(imageUrl, localImagePath).then(() => {
+      updatedContent = updatedContent.replace(
+        imageUrl,
+        `../../../unlock-protocol-com/public/images/blog/${slug}/${imageFilename}`
+      )
+    })
+    imagePromises.push(imagePromise)
+  }
+
+  return Promise.all(imagePromises).then(() => updatedContent)
+}
 // Iterate over each post in the feed
 feedparser
   .parse(rssUrl)
   .then((entries) => {
     entries.forEach((entry) => {
-      // Extract post details
       const title = entry.title
       const subtitle = entry.subtitle || ''
       const authorName = entry.author
@@ -42,53 +68,52 @@ feedparser
       if (existingTitles.has(title)) {
         return
       }
-
       // Generate a slug for the blog post
       const slug = title
         .replace(/[^\w\-_\. ]/g, '_')
         .toLowerCase()
         .replace(/ /g, '_')
-
-      // Create a directory for the blog post images
       const postImagesDir = path.join(
         '../../../unlock-protocol-com/public/images/blog',
         slug
       )
       fs.ensureDirSync(postImagesDir)
-
-      // Fetch and save the image locally
-      let localImagePath = ''
+      // Download the featured image and save it locally
+      let imageDownloadPromise = Promise.resolve()
       if (imageUrl) {
         const imageFilename = path.basename(imageUrl)
-        localImagePath = path.join(postImagesDir, imageFilename)
-        fetch(imageUrl)
-          .then((res) => res.buffer())
-          .then((buffer) => fs.writeFileSync(localImagePath, buffer))
+        const localImagePath = path.join(postImagesDir, imageFilename)
+        imageDownloadPromise = downloadImage(imageUrl, localImagePath)
       }
 
-      // Create the post content
-      const postContent = `---
+      // Create the post content with the updated content
+      imageDownloadPromise
+        .then(() => {
+          return extractAndDownloadImages(
+            entry.description,
+            postImagesDir,
+            slug
+          )
+        })
+        .then((updatedContent) => {
+          const postContent = `---
 title: "${title}"
 subtitle: "${subtitle}"
 authorName: "${authorName}"
 publishDate: "${publishDate}"
 description: "${description}"
-image: "../../../unlock-protocol-com/public/images/blog_mock/${slug}/${path.basename(
-        imageUrl
-      )}"
+image: "../../../unlock-protocol-com/public/images/blog/${slug}/${path.basename(
+            imageUrl
+          )}"
 ---
 
-${entry.description}`
+${updatedContent}`
 
-      // Generate the filename for the blog post
-      const postFilename = `${slug}.md`
-      const postFilePath = path.join(blogDir, postFilename)
-
-      // Save the post to a file
-      fs.writeFileSync(postFilePath, postContent)
-
-      // Add the title to the set of existing titles
-      existingTitles.add(title)
+          const postFilename = `${slug}.md`
+          const postFilePath = path.join(blogDir, postFilename)
+          fs.writeFileSync(postFilePath, postContent)
+          existingTitles.add(title)
+        })
     })
   })
   .catch((error) => {
