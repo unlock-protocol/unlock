@@ -4,9 +4,9 @@
   "scripts": {
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
-    "test": "yarn test:subgraph",
-    "test:subgraph": "hardhat test",
-    "ci": "hardhat test --network 0.0.0.0"
+    "test": "hardhat test",
+    "test:prepare": "sh prepare.sh",
+    "ci": "yarn test:prepare && yarn test --network 0.0.0.0"
   },
   "dependencies": {
     "@apollo/client": "3.6.9",
