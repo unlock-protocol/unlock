@@ -7,8 +7,8 @@ import logger from '../../logger'
 /**
  * A list of authenticated users who are making calls for which we should bypass the captcha veification
  */
-const allowList = [].map((address: string) =>
-  normalizer.ethereumAddress(address)
+const allowList = ['0xF5C28ce24Acf47849988f147d5C75787c0103534'].map(
+  (address: string) => normalizer.ethereumAddress(address)
 )
 
 export const captchaMiddleware: RequestHandler = async (
@@ -16,6 +16,7 @@ export const captchaMiddleware: RequestHandler = async (
   response,
   next
 ) => {
+  // Adding a way to bypass the captcha for 3rd party services.
   if (!isProduction && !isStaging) {
     logger.debug('Skip captcha in development')
     return next()
