@@ -18,11 +18,10 @@ const getProvider = async (chainId) => {
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
-  42220: 'http://mainnet-tx-svc.celo-safe-prod.celo-networks-dev.org/',
-  // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
-  80001: 'http://localhost:8000/cgw/',
-  // for some reasons, zkevm throws in lib
-  1101: 'https://safe-transaction-zkevm.safe.global',
+  324: 'https://safe-transaction-zksync.safe.global/api',
+  1101: 'https://safe-transaction-zkevm.safe.global/api',
+  534352: 'https://transaction.safe.scroll.xyz/api',
+  59144: 'https://safe.linea.build/api',
 }
 
 // get safeAddress directly from unlock if needed
