@@ -1,15 +1,17 @@
 import { getKeysToRenew } from '../../graphql/datasource'
 
+// gets keys to renew that expire(d) within start + now and end + now
+// Catch any key that will expire in the next hour :
+// createAddRenewalJobs(0, 60 * 60)
 export const getRenewalKeys = async ({
-  within,
+  start,
+  end,
   network,
 }: {
-  within: number
+  start: number
+  end: number
   network: number
 }) => {
-  // timeframe to check for renewal
-  const end = Math.floor(Date.now() / 1000)
-  const start = within ? end - within : undefined
   const items = []
   let more = true
   let page = 0

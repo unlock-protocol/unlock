@@ -5,7 +5,7 @@ import config from '../../../config/config'
 import { getRenewalKeys } from '../../taskUtils/getRenewalKeys'
 import normalizer from '../../../utils/normalizer'
 
-export const createAddRenewalJobs = (within: number) => {
+export const createAddRenewalJobs = (start: number, end: number) => {
   const addRenewalJobs: Task = async (_, helper) => {
     for (const network of Object.values(networks)) {
       if (network.isTestNetwork && config.isProduction) {
@@ -17,7 +17,8 @@ export const createAddRenewalJobs = (within: number) => {
       }
 
       const expiredKeys = await getRenewalKeys({
-        within,
+        start,
+        end,
         network: network.id,
       })
 
@@ -57,9 +58,12 @@ export const createAddRenewalJobs = (within: number) => {
   }
   return addRenewalJobs
 }
-// Run this job frequently to catch any expired keys in the last 30 minutes
-export const addRenewalJobs = createAddRenewalJobs(1800)
-// Run this job once a day to catch any keys that may have been missed during the last week
-export const addRenewalJobsDaily = createAddRenewalJobs(86400 * 7)
-// Run this job once a week to catch any keys that may have been missed during the last year
-export const addRenewalJobsWeekly = createAddRenewalJobs(86400 * 365)
+
+// Catch any key that will expire in the next 15 minutes or have expired 15 minutes ago
+export const addRenewalJobs = createAddRenewalJobs(60 * 15, 60 * 15)
+// Catch any key that will expire in the next hour (this should be most of them!)
+export const addRenewalJobsHourly = createAddRenewalJobs(0, 60 * 60)
+// Catch any keys that may have been missed during the last week
+export const addRenewalJobsDaily = createAddRenewalJobs(60 * 60 * 24 * 7, 0)
+// Catch any keys that may have been missed during the last year
+export const addRenewalJobsWeekly = createAddRenewalJobs(60 * 60 * 24 * 365, 0)
