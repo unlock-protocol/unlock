@@ -19,7 +19,7 @@ const etherscan = {
     baseGoerli: 'YourApiKeyToken',
     base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
-    polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
+    // polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
   },
   // TODO : generate from networks package!
