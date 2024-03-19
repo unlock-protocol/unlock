@@ -14,7 +14,8 @@ export const registerButton = (event: any) => {
     ? dayjs().isAfter(eventEndDate)
     : dayjs().isAfter(eventDate)
 
-  if (hasPassed) {
+  console.log('OK???')
+  if (false && hasPassed) {
     // No button
     return null
   }

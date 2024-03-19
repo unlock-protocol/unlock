@@ -16,7 +16,7 @@ export const DefaultFrame = ({
   return (
     <Container slug={event.slug} previousFrame={previousFrame} state={state}>
       <FrameImage src={`${config.unlockApp}/og/event/${event.slug}`} />
-      <FrameButton>See description</FrameButton>
+      <FrameButton>See description hahah</FrameButton>
       {registerButton(event)}
     </Container>
   )

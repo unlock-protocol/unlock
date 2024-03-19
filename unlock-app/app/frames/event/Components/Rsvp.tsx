@@ -48,7 +48,7 @@ export const Rsvp = ({
   }
 
   // We should sumit!!
-  console.log('SUBMIT', state.metadata, network, lockAddress, captcha)
+  console.log('SUBMIT', state.metadata, event)
   // const response = await storage.rsvp(network, lockAddress, captcha, {
   //   recipient,
   //   data,

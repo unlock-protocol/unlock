@@ -181,7 +181,8 @@ export const EventDetails = ({
     },
   ]
 
-  if (hasPassed) {
+  console.log(event)
+  if (false && hasPassed) {
     // No need to add a button for RSVP!
   } else if (event.requiresApproval) {
     frameMeta.push(
