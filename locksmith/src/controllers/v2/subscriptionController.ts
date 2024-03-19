@@ -7,7 +7,8 @@ import subscriptionOperations, {
 
 export class SubscriptionController {
   /**
-   * Get an active crypto or fiat subscription associated with the key. This will return next renewal date, possible number of renewals, approved number of renewals, and other details.
+   * Get an active crypto or fiat subscription associated with the key.
+   * This will return next renewal date, possible number of renewals, approved number of renewals, and other details.
    */
   async getSubscription(request: Request, response: Response) {
     const network = Number(request.params.network)
@@ -33,14 +34,19 @@ export class SubscriptionController {
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const keyId = Number(request.params.keyId)
     const userAddress = normalizer.ethereumAddress(request.user!.walletAddress)
-    await KeySubscription.destroy({
-      where: {
-        keyId,
-        lockAddress,
-        network,
-        userAddress,
+    await KeySubscription.update(
+      {
+        recurring: 0,
       },
-    })
+      {
+        where: {
+          keyId,
+          lockAddress,
+          network,
+          userAddress,
+        },
+      }
+    )
     return response.sendStatus(204)
   }
 }
