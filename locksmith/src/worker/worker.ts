@@ -3,6 +3,7 @@ import { makeWorkerUtils, run, quickAddJob } from 'graphile-worker'
 import config from '../config/config'
 import {
   addRenewalJobs,
+  addRenewalJobsHourly,
   addRenewalJobsWeekly,
   addRenewalJobsDaily,
 } from './tasks/renewal/addRenewalJobs'
@@ -23,9 +24,10 @@ import exportKeysJob from './tasks/exportKeysJob'
 const crontabProduction = `
 */5 * * * * monitor
 */2 * * * * allJobs
-*/5 * * * * addRenewalJobs
-0 0 * * * addRenewalJobsDaily
-0 0 * * 0 addRenewalJobsWeekly
+*/4 * * * * addRenewalJobs
+30 * * * * addRenewalJobsHourly
+15 0 * * * addRenewalJobsDaily
+45 6 * * 0 addRenewalJobsWeekly
 */5 * * * * addKeyJobs
 */5 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
@@ -36,9 +38,10 @@ const crontabProduction = `
 const cronTabTesting = `
 */1 * * * * monitor
 */2 * * * * allJobs
-*/1 * * * * addRenewalJobs
-0 0 * * * addRenewalJobsDaily
-0 0 * * * addRenewalJobsWeekly
+*/4 * * * * addRenewalJobs
+30 * * * * addRenewalJobsHourly
+15 0 * * * addRenewalJobsDaily
+45 6 * * 0 addRenewalJobsWeekly
 */1 * * * * addKeyJobs
 */1 * * * * addHookJobs
 0 0 * * * notifyExpiringKeysForNetwork
@@ -92,6 +95,7 @@ export async function startWorker() {
       notifyExpiredKeysForNetwork,
       notifyExpiringKeysForNetwork,
       addRenewalJobs,
+      addRenewalJobsHourly,
       addRenewalJobsDaily,
       addRenewalJobsWeekly,
       addHookJobs,
