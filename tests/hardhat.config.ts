@@ -2,18 +2,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import '@unlock-protocol/hardhat-plugin'
 
-import path from 'path'
-import fs from 'fs-extra'
-
-const SUBGRAPH_NETWORKS_CONFIG_PATH = process.env.CI
-  ? '/home/unlock/networks.json'
-  : path.join(__dirname, '..', './subgraph/networks.json')
-
-const { localhost: subgraphConfig } = fs.readJSONSync(
-  SUBGRAPH_NETWORKS_CONFIG_PATH
-)
-
-const unlockAddress = subgraphConfig.Unlock.address
+import { localhost } from '@unlock-protocol/networks'
 
 const config: HardhatUserConfig = {
   solidity: '0.8.9',
@@ -23,12 +12,9 @@ const config: HardhatUserConfig = {
     },
   },
   unlock: {
-    31337: {
-      unlockAddress,
-    },
-    docker: {
-      unlockAddress,
-    },
+    localhost,
+    31337: localhost,
+    docker: localhost,
   },
   mocha: {
     timeout: 2000000,
