@@ -56,7 +56,7 @@ export const linea: NetworkConfig = {
 
   maxFreeClaimCost: 10,
 
-  // multisig: '', // TODO
+  multisig: '0x0b441f6A255a56670B6fdb37B527e091a394eeB9',
 
   name: 'Linea',
 

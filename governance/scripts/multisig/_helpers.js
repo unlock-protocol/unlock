@@ -21,7 +21,7 @@ const safeServiceURLs = {
   324: 'https://safe-transaction-zksync.safe.global/api',
   1101: 'https://safe-transaction-zkevm.safe.global/api',
   534352: 'https://transaction.safe.scroll.xyz/api',
-  59144: 'https://safe.linea.build/api',
+  59144: 'https://transaction.safe.linea.build/api',
 }
 
 // get safeAddress directly from unlock if needed
