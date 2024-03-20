@@ -36,7 +36,7 @@ const generateLocalhostNetworkFile = ({
     unlockAddress,
   }
 
-  // log for debug purposes
+  // log for debug purposes on CI
   console.log(localhost)
 
   // output to js file
