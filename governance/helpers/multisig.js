@@ -1,7 +1,9 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig2.json')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
+const SafeApiKit = require('@safe-global/api-kit').default
 
 const prodSigners = [
   '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f', // cc
@@ -22,6 +24,61 @@ const getExpectedSigners = async (chainId) => {
   const { isTestNetwork } = await getNetwork(chainId)
   const expectedSigners = isTestNetwork ? devSigners : prodSigners
   return expectedSigners
+}
+
+const logError = (name, chainId, multisig, msg) =>
+  console.log(`[${name} (${chainId})]: ${multisig} ${msg}`)
+
+const getMultiSigInfo = async (chainId, multisig) => {
+  const errors = []
+  const { isTestNetwork } = networks[chainId]
+  const expectedSigners = isTestNetwork ? devSigners : prodSigners
+  const provider = await getProvider(chainId)
+  // get Safe service
+  const safeService = new SafeApiKit({
+    chainId,
+    txServiceUrl: safeServiceURLs[chainId] || null,
+  })
+
+  const { count } = await safeService.getPendingTransactions(multisig)
+  if (count) {
+    errors.push(`${count} pending txs are waiting to be signed`)
+  }
+  // the flags to get only un-executed transactions does not work
+  // filed here https://github.com/safe-global/safe-core-sdk/issues/690
+  // const allTxs = await safeService.getAllTransactions(multisig, {
+  //   executed: false,
+  //   trusted: false,
+  //   queued: false,
+  // })
+
+  if (!multisig) {
+    errors.push('Missing multisig')
+  } else {
+    const safe = new ethers.Contract(multisig, multisigABI, provider)
+    const owners = await safe.getOwners()
+    const policy = await safe.getThreshold()
+
+    if (isTestNetwork && policy < 2) {
+      errors.push('❌ Policy below 2!')
+    }
+    if (!isTestNetwork && policy < 4) {
+      errors.push(
+        `❌ Unexpected policy: ${policy}/${owners.length} for 4/${expectedSigners.length} expected`
+      )
+    }
+
+    let extraSigners = owners.filter((x) => !expectedSigners.includes(x))
+    if (extraSigners.length > 0) {
+      errors.push(`❌ Extra signers: ${[...extraSigners].sort()}`)
+    }
+
+    let missingSigners = expectedSigners.filter((x) => !owners.includes(x))
+    if (missingSigners.length > 0) {
+      errors.push(`❌ Missing signers: ${missingSigners}`)
+    }
+  }
+  return errors
 }
 
 // get the correct provider if chainId is specified
@@ -130,5 +187,7 @@ module.exports = {
   safeServiceURLs,
   prodSigners,
   devSigners,
+  getMultiSigInfo,
   getExpectedSigners,
+  logError,
 }
