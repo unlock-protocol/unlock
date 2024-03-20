@@ -6,7 +6,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
     "test": "hardhat test",
     "test:prepare": "sh bin/prepare.sh",
-    "ci": "yarn test:prepare && yarn test --network 0.0.0.0"
+    "ci": "yarn test:prepare && yarn test"
   },
   "dependencies": {
     "@apollo/client": "3.6.9",
