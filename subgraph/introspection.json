@@ -5934,6 +5934,18 @@
               "deprecationReason": null
             },
             {
+              "name": "recipient",
+              "description": "Fund receiver",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "lockAddress",
               "description": "Address of the Lock smart contract",
               "args": [],
@@ -10960,11 +10972,7 @@
         {
           "name": "skip",
           "description": null,
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -10985,11 +10993,7 @@
         {
           "name": "include",
           "description": null,
-          "locations": [
-            "FIELD",
-            "FRAGMENT_SPREAD",
-            "INLINE_FRAGMENT"
-          ],
+          "locations": ["FIELD", "FRAGMENT_SPREAD", "INLINE_FRAGMENT"],
           "args": [
             {
               "name": "if",
@@ -11010,17 +11014,13 @@
         {
           "name": "entity",
           "description": "Marks the GraphQL type as indexable entity.  Each type that should be an entity is required to be annotated with this directive.",
-          "locations": [
-            "OBJECT"
-          ],
+          "locations": ["OBJECT"],
           "args": []
         },
         {
           "name": "subgraphId",
           "description": "Defined a Subgraph ID for an object type",
-          "locations": [
-            "OBJECT"
-          ],
+          "locations": ["OBJECT"],
           "args": [
             {
               "name": "id",
@@ -11041,9 +11041,7 @@
         {
           "name": "derivedFrom",
           "description": "creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API.",
-          "locations": [
-            "FIELD_DEFINITION"
-          ],
+          "locations": ["FIELD_DEFINITION"],
           "args": [
             {
               "name": "field",
