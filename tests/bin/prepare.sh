@@ -27,7 +27,7 @@ if [ ! -n $unlock_adress ]; then
 fi
 
 # create localhost file in networks package
-yarn workspace @unlock-protocol/networks create-localhost "$unlock_adress"
+yarn workspace @unlock-protocol/networks create-localhost "$unlock_adress" http://graph-node:8000/subgraphs/name/testgraph
 
 # append to networks index
 echo "export * from './localhost'" >> "$FOLDER_ROOT/packages/networks/src/networks/index.ts"
