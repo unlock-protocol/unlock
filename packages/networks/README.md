@@ -34,6 +34,24 @@ echo "export * from './localhost'" >> src/networks/index.ts
 yarn build
 ```
 
+#### Read Unlock Address from a file
+
+Optionally, you can parse the Unlock address from a subgraph manifest file formatted as follow
+
+```json
+{
+  "localhost": {
+    "Unlock": { "address": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6" }
+  }
+}
+```
+
+with the following command
+
+```sh
+yarn workspace @unlock-protocol/networks unlock-address <filepath>.json
+```
+
 ## Scripts
 
 - Check that networks are configured correctly: `yarn run check`. Some networks might be missing some properties.

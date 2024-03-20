@@ -19,6 +19,7 @@
     "check-tokens": "tsx ./bin/check-tokens",
     "clean": "rm -rf ./dist",
     "create-localhost": "tsx ./bin/localhost",
+    "unlock-address": "tsx ./bin/readSubgraphInfo",
     "check": "tsx ./bin/keys",
     "prepublish": "yarn build",
     "doc": "node ./bin/doc.js",

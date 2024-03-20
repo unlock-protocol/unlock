@@ -20,7 +20,7 @@ else
 fi
 
 # parse Unlock address from network info file
-unlock_adress=$(cat "$INFO_FILE_PATH" | jq -r '.localhost.Unlock.address')
+unlock_adress=$(yarn workspace @unlock-protocol/networks unlock-address "$INFO_FILE_PATH")
 if [ ! -n $unlock_adress ]; then 
   echo "Missing Unlock Address"
   exit 1
