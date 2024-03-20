@@ -11,7 +11,7 @@
 const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const submitTx = require('../multisig/submitTx')
-const { getXCalledEvents } = require('./_lib')
+const { getXCalledEvents } = require('../../helpers/bridge')
 
 const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
   const res = await fetch(

@@ -13,7 +13,7 @@ const {
   fetchDestinationXCall,
   getSupportedChainsByDomainId,
   logStatus,
-} = require('./_lib')
+} = require('../../helpers/bridge')
 
 const fs = require('fs-extra')
 

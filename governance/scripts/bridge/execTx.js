@@ -7,8 +7,11 @@
  *
  */
 
-const { getDelayModule, logStatus, delayABI } = require('./_lib')
-const { fetchDataFromTx } = require('../../helpers/tx')
+const {
+  getDelayModule,
+  fetchDataFromTx,
+  logStatus,
+} = require('../../helpers/bridge')
 const fs = require('fs-extra')
 const { resolve } = require('path')
 const { ethers } = require('hardhat')
