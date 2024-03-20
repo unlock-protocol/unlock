@@ -9,7 +9,6 @@ const run = async () => {
       Unlock: { address: unlockAddress },
     },
   } = networkInfo
-  console.log(networkInfo)
   return unlockAddress
 }
 
