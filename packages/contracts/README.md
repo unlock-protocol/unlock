@@ -3,12 +3,22 @@
 ### Javascript usage
 
 ```js
-// get latest
-import unlock from '@unlock-protocol/contracts/Unlock'
+// get latest version
+import { Unlock } from '@unlock-protocol/contracts'
+import { PublicLock } from '@unlock-protocol/contracts'
 
-// get previous versions
-import unlock from '@unlock-protocol/contracts/UnlockV0'
-import { UnlockV0 } from '@unlock-protocol/contracts'
+// a previous version
+import UnlockV12 from '@unlock-protocol/contracts/UnlockV12'
+import { UnlockV12 } from '@unlock-protocol/contracts'
+
+// all contracts
+import { contracts } from '@unlock-protocol/contracts'
+
+// the number of latest versions available
+import {
+  PUBLICLOCK_LATEST_VERSION,
+  UNLOCK_LATEST_VERSION,
+} from '@unlock-protocol/contracts'
 ```
 
 ### Solidity usage
