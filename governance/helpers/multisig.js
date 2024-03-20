@@ -5,6 +5,14 @@ const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const SafeApiKit = require('@safe-global/api-kit').default
 
+// custom services URL for network not supported by Safe
+const safeServiceURLs = {
+  324: 'https://safe-transaction-zksync.safe.global/api',
+  1101: 'https://safe-transaction-zkevm.safe.global/api',
+  534352: 'https://transaction.safe.scroll.xyz/api',
+  59144: 'https://transaction.safe.linea.build/api',
+}
+
 const prodSigners = [
   '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f', // cc
   '0x4Ce2DD8373ECe0d7baAA16E559A5817CC875b16a', // jg
@@ -29,16 +37,24 @@ const getExpectedSigners = async (chainId) => {
 const logError = (name, chainId, multisig, msg) =>
   console.log(`[${name} (${chainId})]: ${multisig} ${msg}`)
 
+const getSafeService = async (chainId) => {
+  const txServiceUrl = safeServiceURLs[chainId] || null
+  console.log(`Using Safe Global service at ${txServiceUrl} - chain ${chainId}`)
+
+  const safeService = new SafeApiKit({
+    chainId,
+    txServiceUrl,
+  })
+
+  return safeService
+}
+
 const getMultiSigInfo = async (chainId, multisig) => {
   const errors = []
   const { isTestNetwork } = networks[chainId]
   const expectedSigners = isTestNetwork ? devSigners : prodSigners
   const provider = await getProvider(chainId)
-  // get Safe service
-  const safeService = new SafeApiKit({
-    chainId,
-    txServiceUrl: safeServiceURLs[chainId] || null,
-  })
+  const safeService = await getSafeService(chainId)
 
   const { count } = await safeService.getPendingTransactions(multisig)
   if (count) {
@@ -92,14 +108,6 @@ const getProvider = async (chainId) => {
     ;({ chainId } = await getNetwork())
   }
   return { provider, chainId }
-}
-
-// custom services URL for network not supported by Safe
-const safeServiceURLs = {
-  324: 'https://safe-transaction-zksync.safe.global/api',
-  1101: 'https://safe-transaction-zkevm.safe.global/api',
-  534352: 'https://transaction.safe.scroll.xyz/api',
-  59144: 'https://transaction.safe.linea.build/api',
 }
 
 // get safeAddress directly from unlock if needed
@@ -190,4 +198,5 @@ module.exports = {
   getMultiSigInfo,
   getExpectedSigners,
   logError,
+  getSafeService,
 }
