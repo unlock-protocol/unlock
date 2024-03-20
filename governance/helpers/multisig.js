@@ -3,6 +3,27 @@ const { networks } = require('@unlock-protocol/networks')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 
+const prodSigners = [
+  '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f', // cc
+  '0x4Ce2DD8373ECe0d7baAA16E559A5817CC875b16a', // jg
+  '0x4011d09a86D0acA8377a4A8baD691F1ACeeCd672', // nf
+  '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212', // aa
+  '0xccb5D94FbfBFDc4953Ca8a114f88773C2fF98e80', // sm
+  '0x246A13358Fb27523642D86367a51C2aEB137Ac6C', // cr
+].sort()
+
+const devSigners = [
+  '0x4Ce2DD8373ECe0d7baAA16E559A5817CC875b16a', // jg
+  '0x246A13358Fb27523642D86367a51C2aEB137Ac6C', // cr
+  '0x9d3ea9e9adde71141f4534dB3b9B80dF3D03Ee5f', // cc
+].sort()
+
+const getExpectedSigners = async (chainId) => {
+  const { isTestNetwork } = await getNetwork(chainId)
+  const expectedSigners = isTestNetwork ? devSigners : prodSigners
+  return expectedSigners
+}
+
 // get the correct provider if chainId is specified
 const getProvider = async (chainId) => {
   let provider
@@ -107,4 +128,7 @@ module.exports = {
   getSafeVersion,
   submitTxOldMultisig,
   safeServiceURLs,
+  prodSigners,
+  devSigners,
+  getExpectedSigners,
 }

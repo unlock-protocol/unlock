@@ -5,7 +5,7 @@ const {
   submitTxOldMultisig,
   confirmMultisigTx,
   safeServiceURLs,
-} = require('./_helpers')
+} = require('../../helpers/multisig')
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 const { EthersAdapter } = require('@safe-global/protocol-kit')
