@@ -5,6 +5,7 @@
 const { ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
+const { encodeMultiSendData } = require('@safe-global/protocol-kit')
 
 const {
   getProxyAdminAddress,
@@ -164,6 +165,22 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
   return calls
 }
 
+//
+const parseForSafe = async (calls) => {
+  console.log(calls)
+  const metaTxs = calls.map(({ contractAddress, calldata }) => ({
+    to: contractAddress,
+    value: 0,
+    data: calldata,
+    // TODO? need to fetch if proxy or not ?
+    operation: 0, // operation: 0 for CALL, 1 for DELEGATECALL
+  }))
+
+  // pack calls in a single multicall
+  const multicall = await encodeMultiSendData(metaTxs)
+  return multicall
+}
+
 module.exports = async () => {
   const targetChains = Object.keys(networks)
     .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
@@ -211,38 +228,24 @@ module.exports = async () => {
       // store explainers
       explainers[destChainId] = destCalls
 
-      const abiCoder = ethers.AbiCoder.defaultAbiCoder()
-      await Promise.all(
-        destCalls.map(async ({ contractAddress, calldata, explainer }) => {
-          // encode instructions to be executed by the SAFE
-          const moduleData = await abiCoder.encode(
-            ['address', 'uint256', 'bytes', 'bool'],
-            [
-              contractAddress, // to
-              0, // value
-              calldata, // data
-              0, // operation: 0 for CALL, 1 for DELEGATECALL
-              // 0,
-            ]
-          )
+      // parse calls for Safe
+      const moduleData = await parseForSafe(destCalls)
 
-          // add to the list of calls to be passed to the bridge
-          bridgeCalls.push({
-            contractAddress: bridgeAddress,
-            contractNameOrAbi: abiIConnext,
-            functionName: 'xcall',
-            functionArgs: [
-              destDomainId,
-              destAddress, // destMultisigAddress,
-              ADDRESS_ZERO, // asset
-              ADDRESS_ZERO, // delegate
-              0, // amount
-              30, // slippage
-              moduleData, // calldata
-            ],
-          })
-        })
-      )
+      // add to the list of calls to be passed to the bridge
+      bridgeCalls.push({
+        contractAddress: bridgeAddress,
+        contractNameOrAbi: abiIConnext,
+        functionName: 'xcall',
+        functionArgs: [
+          destDomainId,
+          destAddress, // destMultisigAddress,
+          ADDRESS_ZERO, // asset
+          ADDRESS_ZERO, // delegate
+          0, // amount
+          30, // slippage
+          moduleData, // calldata
+        ],
+      })
     })
   )
 
