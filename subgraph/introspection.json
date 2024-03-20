@@ -10,6 +10,29 @@
       },
       "types": [
         {
+          "kind": "ENUM",
+          "name": "Aggregation_interval",
+          "description": null,
+          "fields": null,
+          "inputFields": null,
+          "interfaces": null,
+          "enumValues": [
+            {
+              "name": "hour",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "day",
+              "description": null,
+              "isDeprecated": false,
+              "deprecationReason": null
+            }
+          ],
+          "possibleTypes": null
+        },
+        {
           "kind": "SCALAR",
           "name": "BigDecimal",
           "description": null,
@@ -2166,7 +2189,23 @@
             },
             {
               "name": "numberOfReceipts",
-              "description": "Total number of receipts of lock",
+              "description": "Number of receipts of lock",
+              "args": [],
+              "type": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "BigInt",
+                  "ofType": null
+                }
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "numberOfCancelReceipts",
+              "description": "Number of cancel receipts of lock",
               "args": [],
               "type": {
                 "kind": "NON_NULL",
@@ -5252,7 +5291,7 @@
               "deprecationReason": null
             },
             {
-              "name": "lockStats",
+              "name": "lockStats_collection",
               "description": null,
               "args": [
                 {
@@ -5402,7 +5441,7 @@
               "deprecationReason": null
             },
             {
-              "name": "unlockStats",
+              "name": "unlockStats_collection",
               "description": null,
               "args": [
                 {
@@ -8738,7 +8777,7 @@
               "deprecationReason": null
             },
             {
-              "name": "lockStats",
+              "name": "lockStats_collection",
               "description": null,
               "args": [
                 {
@@ -8888,7 +8927,7 @@
               "deprecationReason": null
             },
             {
-              "name": "unlockStats",
+              "name": "unlockStats_collection",
               "description": null,
               "args": [
                 {
@@ -10811,6 +10850,18 @@
               "type": {
                 "kind": "SCALAR",
                 "name": "Int",
+                "ofType": null
+              },
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
+              "name": "parentHash",
+              "description": "The hash of the parent block",
+              "args": [],
+              "type": {
+                "kind": "SCALAR",
+                "name": "Bytes",
                 "ofType": null
               },
               "isDeprecated": false,
