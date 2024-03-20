@@ -5,7 +5,7 @@
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
     "test": "hardhat test",
-    "test:prepare": "sh prepare.sh",
+    "test:prepare": "sh bin/prepare.sh",
     "ci": "yarn test:prepare && yarn test --network 0.0.0.0"
   },
   "dependencies": {
@@ -27,6 +27,7 @@
     "@types/node": "12.0.0",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
+    "@unlock-protocol/networks": "workspace:^",
     "apollo-link-http": "1.5.17",
     "chai": "4.2.0",
     "eslint": "8.46.0",
