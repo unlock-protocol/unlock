@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { getProvider, getSafeAddress } = require('./_helpers')
+const { getProvider, getSafeAddress } = require('../../helpers/multisig')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 

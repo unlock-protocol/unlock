@@ -99,3 +99,12 @@ task('safe:add-owner', 'Submit a new owner to a multisig')
     const addOwner = require('../scripts/multisig/addOwner')
     await addOwner({ safeAddress, newOwner })
   })
+
+task('safe:check', 'Check the state of a multisig')
+  .addOptionalParam('chainId', 'The id of the chain where multisig is deployed')
+  .addOptionalParam('safeAddress', 'the address of the multisig contract')
+  .setAction(async ({ chainId, safeAddress }) => {
+    // eslint-disable-next-line global-require
+    const check = require('../scripts/multisig/check')
+    await check({ chainId, safeAddress })
+  })

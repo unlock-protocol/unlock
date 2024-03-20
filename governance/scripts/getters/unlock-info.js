@@ -46,7 +46,7 @@ async function main({ unlockAddress, quiet = false }) {
   try {
     nbOwners = (await getOwners({ safeAddress: unlockOwner })).length
   } catch (error) {
-    errorLog(`Unlock owner is not the team multisig !`)
+    errorLog(`Unlock owner is not the team multisig (${safeAddress})!`)
   }
 
   if (nbOwners && !isMultisig) {
