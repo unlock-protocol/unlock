@@ -50,17 +50,7 @@ export default localhost
 }
 
 const run = async () => {
-  const [networkInfoPath, subgraphEnpoint] = process.argv.slice(2)
-
-  const networkInfo = await fs.readJSON(networkInfoPath)
-  const {
-    localhost: {
-      Unlock: { address: unlockAddress },
-    },
-  } = networkInfo
-
-  console.log(networkInfo)
-
+  const [unlockAddress, subgraphEnpoint] = process.argv.slice(2)
   console.log(`Creating localhost file for unlockAddress ${unlockAddress}`)
 
   if (!unlockAddress) {
