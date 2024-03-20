@@ -35,7 +35,6 @@
     "eslint": "8.54.0",
     "fs-extra": "11.2.0",
     "tsup": "8.0.2",
-
     "typescript": "5.3.3"
   },
   "files": [
