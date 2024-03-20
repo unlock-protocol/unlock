@@ -21,20 +21,29 @@ interface CreditCardStateProps {
 export const getCreditCardEnabledStatus = async ({
   lockAddress,
   network,
-}: CreditCardStateProps): Promise<boolean> => {
+}: CreditCardStateProps): Promise<{
+  creditCardEnabled: boolean
+  reason?: string
+}> => {
   const fulfillmentDispatcher = new Dispatcher()
 
   // Checks the DB + Stripe's API, but this should return false the most often
   const { stripeEnabled } = await getStripeConnectForLock(lockAddress, network)
   if (!stripeEnabled) {
-    return false
+    return {
+      creditCardEnabled: false,
+      reason: 'Stripe not enabled for lock',
+    }
   }
 
   // This does an onchain check, but should mostly return true
   const hasEnoughToPayForGas =
     await fulfillmentDispatcher.hasFundsForTransaction(network)
   if (!hasEnoughToPayForGas) {
-    return false
+    return {
+      creditCardEnabled: false,
+      reason: 'Not enough funds to pay for gas',
+    }
   }
 
   // Check if the lock has authorized credit card payments
@@ -48,12 +57,26 @@ export const getCreditCardEnabledStatus = async ({
       network,
     }),
   ])
+  if (!isAuthorizedForCreditCard) {
+    return {
+      creditCardEnabled: false,
+      reason: 'Locksmith is not a key granter',
+    }
+  }
 
+  if (totalPriceInCents <= MIN_PAYMENT_STRIPE_CREDIT_CARD) {
+    return {
+      creditCardEnabled: false,
+      reason: `Lock is not expensive enough to pay with credit card (Needs to be at least ${MIN_PAYMENT_STRIPE_CREDIT_CARD} vs ${totalPriceInCents})`,
+    }
+  }
   const creditCardEnabled =
     isAuthorizedForCreditCard &&
     totalPriceInCents > MIN_PAYMENT_STRIPE_CREDIT_CARD
 
-  return creditCardEnabled
+  return {
+    creditCardEnabled: creditCardEnabled,
+  }
 }
 
 const getTotalPriceToChargeInCentsForLock = async ({
@@ -75,6 +98,7 @@ const getTotalPriceToChargeInCentsForLock = async ({
   const lock = await web3Service.getLock(lockAddress, network, {
     fields: ['keyPrice', 'tokenAddress'],
   })
+
   // get lock's settings and convert price to $
   const defiLammaPricing = await pricingOperations.getDefiLammaPrice({
     network,
