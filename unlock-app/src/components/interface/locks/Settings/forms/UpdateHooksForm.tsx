@@ -272,6 +272,7 @@ export const UpdateHooksForm = ({
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
     const values = await getHookValues()
+    console.log(fields)
     let dirty = false
     Object.keys(fields).forEach((key) => {
       // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'Partial<FormProps>'.

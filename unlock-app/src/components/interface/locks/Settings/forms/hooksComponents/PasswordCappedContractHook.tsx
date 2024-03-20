@@ -10,6 +10,7 @@ import {
   useGetLockSettings,
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
+import { useEffect, useState } from 'react'
 
 export const PasswordCappedContractHook = ({
   lockAddress,
@@ -35,21 +36,22 @@ export const PasswordCappedContractHook = ({
 
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
-  const savePromoCode = async ({
+  const savePassword = async ({
     password,
     cap,
   }: {
     password: string
     cap: number
   }) => {
+    console.log({ password, cap, settings })
     // Save the code in lock settings
     const settingsPasswords = settings?.password ?? []
     // if (discount > 0) {
-    //   settingsPromoCodes.push(code)
+    //   settingsPasswords.push(code)
     //   await saveSettingsMutation({
     //     lockAddress,
     //     network,
-    //     promoCodes: settingsPromoCodes.filter(
+    //     promoCodes: settingsPasswords.filter(
     //       (value, index, array) => array.indexOf(value) === index
     //     ),
     //   })
@@ -57,7 +59,7 @@ export const PasswordCappedContractHook = ({
     //   await saveSettingsMutation({
     //     lockAddress,
     //     network,
-    //     promoCodes: settingsPromoCodes.filter((value) => value !== code),
+    //     promoCodes: settingsPasswords.filter((value) => value !== code),
     //   })
     // }
 
@@ -83,11 +85,11 @@ export const PasswordCappedContractHook = ({
     return
   }
 
-  const setPromoCodeMutation = useMutation(savePromoCode)
+  const setPasswordMutation = useMutation(savePassword)
 
-  const onSubmit = async ({ promo, ...hooks }: any) => {
+  const onSubmit = async ({ password, ...hooks }: any) => {
     await setEventsHooksMutation.mutateAsync(hooks)
-    await setPromoCodeMutation.mutateAsync(promo)
+    await setPasswordMutation.mutateAsync(password)
   }
 
   return (
@@ -126,14 +128,14 @@ export const PasswordCappedContractHook = ({
                 })}
               />
             </td>
-            <td className=" flex pt-7 flex-col items-center">
+            <td className="flex pt-7 flex-col items-center">
               <Button
                 type="submit"
-                className="w-24"
+                className=""
                 disabled={!isValid}
                 size="small"
                 loading={
-                  setPromoCodeMutation.isLoading ||
+                  setPasswordMutation.isLoading ||
                   setEventsHooksMutation.isLoading
                 }
               >
@@ -151,8 +153,8 @@ export const PasswordCappedContractHook = ({
           {!isLoading &&
             settings?.promoCodes?.map((code, i) => {
               return (
-                <PromoCode
-                  savePromoCode={savePromoCode}
+                <Password
+                  savePassword={savePassword}
                   code={code}
                   key={i}
                   lockAddress={lockAddress}
@@ -167,34 +169,33 @@ export const PasswordCappedContractHook = ({
   )
 }
 
-interface PromoCodeProps {
-  savePromoCode: (promo: any) => void
+interface PasswordProps {
+  savePassword: (password: any) => void
   code: string
   lockAddress: string
   network: number
   hookAddress: string
 }
 
-export const PromoCode = ({
-  savePromoCode,
+export const Password = ({
+  savePassword,
   code,
   lockAddress,
   hookAddress,
   network,
-}: PromoCodeProps) => {
+}: PasswordProps) => {
   const [loading, setLoading] = useState(false)
-  const [promoCodeDetails, setPromoCodeDetails] = useState<{
-    discount: number
+  const [passwordDetails, setPasswordDetails] = useState<{
     cap: number
     count: number
   } | null>(null)
 
   // Load the code details from the hook!
   useEffect(() => {
-    const getPromoCodeDetails = async () => {
+    const getPasswordDetails = async () => {
       const web3Service = new Web3Service(networks)
       const signerAddress = await getEthersWalletFromPassword(code).address
-      setPromoCodeDetails(
+      setPasswordDetails(
         await web3Service.getDiscountHookWithCapValues({
           lockAddress,
           contractAddress: hookAddress,
@@ -203,19 +204,19 @@ export const PromoCode = ({
         })
       )
     }
-    getPromoCodeDetails()
+    getPasswordDetails()
   }, [code, hookAddress, lockAddress, network])
 
-  if (!promoCodeDetails || promoCodeDetails.discount === 0) {
+  if (!passwordDetails || passwordDetails.discount === 0) {
     return null
   }
 
   return (
     <tr>
       <td className="pl-2">{code}</td>
-      <td className="pl-2">{promoCodeDetails.discount / 100}%</td>
+      <td className="pl-2">{passwordDetails.discount / 100}%</td>
       <td className="pl-2">
-        {promoCodeDetails.count}/{promoCodeDetails.cap}
+        {passwordDetails.count}/{passwordDetails.cap}
       </td>
       <td className="pl-2 flex flex-col items-center">
         {loading && <LoadingIcon size={24} />}
@@ -224,7 +225,7 @@ export const PromoCode = ({
             className="cursor-pointer"
             onClick={async () => {
               setLoading(true)
-              await savePromoCode({ code, discount: 0, cap: 0 })
+              await savePassword({ code, discount: 0, cap: 0 })
               setLoading(false)
             }}
           />
