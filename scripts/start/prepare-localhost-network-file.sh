@@ -9,6 +9,10 @@ if [ ! -z "${CI}" ]; then
   INFO_FILE_PATH='/home/unlock/networks.json'
 fi
 
+if [ -z "${SUBGRAPH_URL}" ]; then 
+  SUBGRAPH_URL=http://graph-node:8000/subgraphs/name/testgraph
+fi
+
 # make sure file exists
 if [ -f "$INFO_FILE_PATH" ]; then
   echo "Using subgraph file at: $INFO_FILE_PATH"
@@ -25,7 +29,7 @@ if [ ! -n $unlock_adress ]; then
 fi
 
 # create localhost file in networks package
-yarn workspace @unlock-protocol/networks create-localhost "$unlock_adress" http://graph-node:8000/subgraphs/name/testgraph
+yarn workspace @unlock-protocol/networks create-localhost "$unlock_adress" "$SUBGRAPH_URL"
 
 # append to networks index
 echo "export * from './localhost'" >> "$REPO_ROOT/packages/networks/src/networks/index.ts"
