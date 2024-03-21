@@ -446,6 +446,10 @@ components:
           type: array
           items:
             type: string
+        passwords:
+          type: array
+          items:
+            type: string
 
     EventDetails:
       type: object

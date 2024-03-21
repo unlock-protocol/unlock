@@ -64,6 +64,7 @@ const LockSettingSchema = z.object({
     })
     .optional(),
   promoCodes: z.array(z.string()).optional().optional(),
+  passwords: z.array(z.string()).optional().optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -80,6 +81,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   creditCardCurrency: 'usd',
   crossmintClientId: undefined,
   promoCodes: [],
+  passwords: [],
 }
 
 export const updateSettings: RequestHandler = async (
