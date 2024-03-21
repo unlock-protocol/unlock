@@ -1,9 +1,9 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { CustomComponentProps } from '../UpdateHooksForm'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useWeb3Service } from '~/utils/withWeb3Service'
+import { FaTrash as TrashIcon } from 'react-icons/fa'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import { useFormContext } from 'react-hook-form'
 import {
@@ -11,6 +11,7 @@ import {
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
 import { useEffect, useState } from 'react'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 export const PasswordCappedContractHook = ({
   lockAddress,
@@ -18,12 +19,17 @@ export const PasswordCappedContractHook = ({
   hookAddress,
   setEventsHooksMutation,
 }: CustomComponentProps) => {
+  const web3Service = useWeb3Service()
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors, isValid },
   } = useFormContext()
   const { getWalletService } = useAuth()
+  const [passwords, setPasswords] = useState<
+    { password: string; cap: number; count: number }[]
+  >([])
 
   const {
     isLoading: isLoading,
@@ -34,6 +40,28 @@ export const PasswordCappedContractHook = ({
     network,
   })
 
+  useEffect(() => {
+    const loadPasswordDetails = async () => {
+      if (settings?.passwords) {
+        const passwordDetails = await Promise.all(
+          settings.passwords.map(async (password) => {
+            const signerAddress = await getEthersWalletFromPassword(password)
+              .address
+            const details = await web3Service.getPasswordHookWithCapValues({
+              lockAddress,
+              signerAddress,
+              contractAddress: hookAddress,
+              network,
+            })
+            return { ...details, password }
+          })
+        )
+        setPasswords(passwordDetails.filter((value) => value.cap > 0))
+      }
+    }
+    loadPasswordDetails()
+  }, [settings])
+
   const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
   const savePassword = async ({
@@ -43,44 +71,35 @@ export const PasswordCappedContractHook = ({
     password: string
     cap: number
   }) => {
-    console.log({ password, cap, settings })
     // Save the code in lock settings
-    const settingsPasswords = settings?.password ?? []
-    // if (discount > 0) {
-    //   settingsPasswords.push(code)
-    //   await saveSettingsMutation({
-    //     lockAddress,
-    //     network,
-    //     promoCodes: settingsPasswords.filter(
-    //       (value, index, array) => array.indexOf(value) === index
-    //     ),
-    //   })
-    // } else {
-    //   await saveSettingsMutation({
-    //     lockAddress,
-    //     network,
-    //     promoCodes: settingsPasswords.filter((value) => value !== code),
-    //   })
-    // }
-
+    const settingsPasswords = settings?.passwords ?? []
+    if (!settingsPasswords.includes(password)) {
+      settingsPasswords.push(password)
+    }
+    await saveSettingsMutation({
+      lockAddress,
+      network,
+      passwords: settingsPasswords.filter(
+        (value, index, array) => array.indexOf(value) === index
+      ),
+    })
     // Save the password in the hook!
     const walletService = await getWalletService(network)
     const signerAddress = await getEthersWalletFromPassword(password).address
-    // await ToastHelper.promise(
-    //   walletService.setDiscountCodeWithCapHookSigner({
-    //     lockAddress,
-    //     signerAddress,
-    //     contractAddress: hookAddress,
-    //     network,
-    //     discountPercentage: discount,
-    //     cap,
-    //   }),
-    //   {
-    //     success: 'Promo code saved!',
-    //     loading: 'Saving the promo code onchain...',
-    //     error: 'Failed to save the promo code.',
-    //   }
-    // )
+    await ToastHelper.promise(
+      walletService.setPasswordWithCapHookSigner({
+        lockAddress,
+        signerAddress,
+        contractAddress: hookAddress,
+        network,
+        cap,
+      }),
+      {
+        success: 'Password saved!',
+        loading: 'Saving the password onchain...',
+        error: 'Failed to save the password.',
+      }
+    )
     await reloadSettings()
     return
   }
@@ -90,6 +109,7 @@ export const PasswordCappedContractHook = ({
   const onSubmit = async ({ password, ...hooks }: any) => {
     await setEventsHooksMutation.mutateAsync(hooks)
     await setPasswordMutation.mutateAsync(password)
+    reset()
   }
 
   return (
@@ -151,15 +171,14 @@ export const PasswordCappedContractHook = ({
             </Placeholder.Root>
           )}
           {!isLoading &&
-            settings?.promoCodes?.map((code, i) => {
+            passwords.map(({ password, cap, count }, i) => {
               return (
                 <Password
                   savePassword={savePassword}
-                  code={code}
+                  password={password}
+                  cap={cap}
                   key={i}
-                  lockAddress={lockAddress}
-                  hookAddress={hookAddress}
-                  network={network}
+                  count={count}
                 />
               )
             })}
@@ -171,65 +190,34 @@ export const PasswordCappedContractHook = ({
 
 interface PasswordProps {
   savePassword: (password: any) => void
-  code: string
-  lockAddress: string
-  network: number
-  hookAddress: string
+  password: string
+  cap: number
+  count: number
 }
 
 export const Password = ({
   savePassword,
-  code,
-  lockAddress,
-  hookAddress,
-  network,
+  password,
+  cap,
+  count,
 }: PasswordProps) => {
-  const [loading, setLoading] = useState(false)
-  const [passwordDetails, setPasswordDetails] = useState<{
-    cap: number
-    count: number
-  } | null>(null)
-
-  // Load the code details from the hook!
-  useEffect(() => {
-    const getPasswordDetails = async () => {
-      const web3Service = new Web3Service(networks)
-      const signerAddress = await getEthersWalletFromPassword(code).address
-      setPasswordDetails(
-        await web3Service.getDiscountHookWithCapValues({
-          lockAddress,
-          contractAddress: hookAddress,
-          network,
-          signerAddress,
-        })
-      )
-    }
-    getPasswordDetails()
-  }, [code, hookAddress, lockAddress, network])
-
-  if (!passwordDetails || passwordDetails.discount === 0) {
-    return null
+  const deletePassword = async (password: string) => {
+    await savePassword({ password, cap: 0 })
   }
 
   return (
     <tr>
-      <td className="pl-2">{code}</td>
-      <td className="pl-2">{passwordDetails.discount / 100}%</td>
+      <td className="pl-2">{password}</td>
       <td className="pl-2">
-        {passwordDetails.count}/{passwordDetails.cap}
+        {count}/{cap}
       </td>
       <td className="pl-2 flex flex-col items-center">
-        {loading && <LoadingIcon size={24} />}
-        {!loading && (
-          <TrashIcon
-            className="cursor-pointer"
-            onClick={async () => {
-              setLoading(true)
-              await savePassword({ code, discount: 0, cap: 0 })
-              setLoading(false)
-            }}
-          />
-        )}
+        <TrashIcon
+          className="cursor-pointer"
+          onClick={async () => {
+            await deletePassword(password)
+          }}
+        />
       </td>
     </tr>
   )
