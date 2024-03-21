@@ -2,8 +2,8 @@ name: Fetch and Create Blog Posts
 description: Fetches the latest blog posts from the Unlock Protocol blog and creates new posts in the website repository.
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run once per day at midnight
-  pull_request:
+    - cron: '0 0 * * *' # Run once per day at midnight
+  workflow_dispatch:
 
 jobs:
   fetch_and_create_posts:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-        
+
       - name: Install dependencies
         run: npm install
 
@@ -28,7 +28,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add new blog posts"
-          title: "New blog posts from RSS feed"
-          body: "Automatically generated PR to add new blog posts fetched from the RSS feed."
+          commit-message: 'Add new blog posts'
+          title: 'New blog posts from RSS feed'
+          body: 'Automatically generated PR to add new blog posts fetched from the RSS feed.'
           branch: new-blog-posts
