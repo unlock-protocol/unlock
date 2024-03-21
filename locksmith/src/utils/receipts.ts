@@ -1,4 +1,3 @@
-import { networks } from '@unlock-protocol/networks'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 export const getAllReceipts = async ({
@@ -8,7 +7,7 @@ export const getAllReceipts = async ({
   network: number
   lockAddress: string
 }) => {
-  const subgraph = new SubgraphService(networks)
+  const subgraph = new SubgraphService()
   const receipts: any[] = []
   const limit = 1000
   let skip = 0

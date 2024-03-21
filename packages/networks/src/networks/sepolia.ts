@@ -47,6 +47,11 @@ export const sepolia: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x323Fd488F101F2F9252ecE9f9fe3e56C48912880',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
   },
   id: 11155111,
@@ -84,6 +89,7 @@ export const sepolia: NetworkConfig = {
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },
+  swapPurchaser: '0x692EFe2b44a531013A558E595C5dCf37DB2e4B94',
   tokens: [
     {
       address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',

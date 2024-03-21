@@ -23,6 +23,9 @@ const config: HardhatUserConfig = {
         endpoint: 'here goes a subgraph URI',
       },
     },
+    1: {
+      unlockAddress: 'newAddress',
+    },
     12345: {
       name: 'New Network',
       id: 12345,

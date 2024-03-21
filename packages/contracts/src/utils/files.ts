@@ -36,6 +36,7 @@ export const getAbiPaths = async () => {
     'abis/Unlock',
     'abis/UnlockDiscountToken',
     'abis/Governor',
+    'abis/utils',
   ]
 
   const paths = await Promise.all(folders.map((f) => parseExports(f)))
