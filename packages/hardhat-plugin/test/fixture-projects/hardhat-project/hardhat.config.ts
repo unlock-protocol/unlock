@@ -19,8 +19,9 @@ const config: HardhatUserConfig = {
   },
   defaultNetwork: 'hardhat',
   unlock: {
-    31337: {
-      name: 'Custom Localhost Name',
+    // extend an existing network
+    100: {
+      name: 'Custom Polygon Name',
       subgraph: {
         endpoint: 'here goes a subgraph URI',
       },

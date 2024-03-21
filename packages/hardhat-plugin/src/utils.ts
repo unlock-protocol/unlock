@@ -1,7 +1,6 @@
 import { contracts } from '@unlock-protocol/contracts'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { Signer, Contract, ContractFactory } from 'ethers'
-
 import {
   bytecode as proxyBytecode,
   abi as proxyAbi,
