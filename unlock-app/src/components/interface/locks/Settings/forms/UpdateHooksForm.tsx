@@ -7,7 +7,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
-import { PasswordCappedContractHook } from './hooksComponents/PasswordCappedContractHook'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
@@ -77,11 +76,6 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Password',
         value: HookType.PASSWORD,
         component: (args) => <PasswordContractHook {...args} />,
-      },
-      {
-        label: 'Password with caps',
-        value: HookType.PASSWORD_CAPPED,
-        component: (args) => <PasswordCappedContractHook {...args} />,
       },
       {
         label: 'Captcha required',
@@ -272,7 +266,6 @@ export const UpdateHooksForm = ({
 
   const setEventsHooks = async (fields: Partial<FormProps>) => {
     const values = await getHookValues()
-    console.log(fields)
     let dirty = false
     Object.keys(fields).forEach((key) => {
       // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'Partial<FormProps>'.
