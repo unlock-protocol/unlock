@@ -22,12 +22,6 @@ export UNLOCK_ENV=test
 # clean things up 
 ./scripts/stop.sh
 
-# bring containers down
-docker-compose $COMPOSE_CONFIG down
-
-# Setting the right env var
-export UNLOCK_ENV=test
-
 # Take DB, IPFS, graph and postgres nodes up
 docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 
