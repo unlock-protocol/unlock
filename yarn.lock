@@ -51301,6 +51301,7 @@ __metadata:
     "@types/node": "npm:12.0.0"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/hardhat-plugin": "workspace:^"
+    "@unlock-protocol/networks": "workspace:^"
     apollo-link-http: "npm:1.5.17"
     chai: "npm:4.2.0"
     eslint: "npm:8.46.0"
