@@ -48,6 +48,11 @@ export const sepolia: NetworkConfig = {
         name: 'Discount code with caps',
       },
       {
+        address: '0x499C854E40Ce4056266822c86D1A326f0FE6491a',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
         address: '0x323Fd488F101F2F9252ecE9f9fe3e56C48912880',
         id: HookType.GITCOIN,
         name: 'Gitcoin',
