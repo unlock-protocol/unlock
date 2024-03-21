@@ -12,8 +12,9 @@
 
 set -e
 
-REPO_ROOT=`pwd`/`dirname "$0"`/..
-echo "running from: $REPO_ROOT"
+if [ ! -n "$REPO_ROOT" ]; then
+  REPO_ROOT=`pwd`/`dirname "$0"`/..
+fi
 COMPOSE_CONFIG="-f $REPO_ROOT/docker/docker-compose.yml -f $REPO_ROOT/docker/docker-compose.integration.yml"
 
 # bring containers down

@@ -12,7 +12,7 @@
 
 set -e
 
-REPO_ROOT=`pwd`/`dirname "$0"`/..
+export REPO_ROOT=$(realpath `pwd`/`dirname "$0"`/..)
 echo "running from: $REPO_ROOT"
 COMPOSE_CONFIG="-f $REPO_ROOT/docker/docker-compose.yml -f $REPO_ROOT/docker/docker-compose.integration.yml"
 
@@ -22,32 +22,22 @@ export UNLOCK_ENV=test
 # clean things up 
 ./scripts/stop.sh
 
-# Take db, IPFS, graph and postgres nodes up
+# bring containers down
+docker-compose $COMPOSE_CONFIG down
+
+# Setting the right env var
+export UNLOCK_ENV=test
+
+# Take DB, IPFS, graph and postgres nodes up
 docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 
-# deploy contracts
-cd $REPO_ROOT/docker/development/eth-node
-yarn
-yarn provision --network localhost
-
-# prepare subgraph deployment
-cd $REPO_ROOT/subgraph
-yarn prepare:abis
-
-# copy local networks files 
-yarn prepare:test
-yarn graph codegen
-yarn graph build --network localhost
-
-# now deploy the subgraph
-yarn workspace @unlock-protocol/subgraph graph create testgraph --node http://localhost:8020/
-yarn graph deploy testgraph --node=http://localhost:8020/ --ipfs=http://localhost:5001 --version-label=v0.0.1 --network=localhost
+# deploy contracts and subgraph
+./scripts/start/provision.sh
 
 # create localhost file in networks package
-yarn workspace @unlock-protocol/networks create-localhost ../../docker/development/eth-node/networks.json
-yarn workspace @unlock-protocol/networks build
+./scripts/start/prepare-localhost-network-file.sh
 
-# rebuild unlock-js to get latest networks package
+# rebuild unlock-js to include latest networks package
 yarn workspace @unlock-protocol/unlock-js build
 
 # start 2nd postgres instance for locksmith
