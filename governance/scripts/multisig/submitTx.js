@@ -4,22 +4,15 @@ const {
   getSafeVersion,
   submitTxOldMultisig,
   confirmMultisigTx,
-} = require('./_helpers')
+  getSafeService,
+} = require('../../helpers/multisig')
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 const { EthersAdapter } = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
-const SafeApiKit = require('@safe-global/api-kit').default
-
-// custom services URL for network not supported by Safe
-const safeServiceURLs = {
-  42220: 'http://mainnet-tx-svc.celo-safe-prod.celo-networks-dev.org/',
-  // mumbai isnt supported by Safe Global, you need to run Safe infrastructure locally
-  80001: 'http://localhost:8000/cgw/',
-}
 
 async function main({ safeAddress, tx, signer }) {
-  const { chainId, id } = await getNetwork()
+  const { id: chainId } = await getNetwork()
   if (!safeAddress) {
     safeAddress = getSafeAddress(chainId)
   }
@@ -47,22 +40,17 @@ async function main({ safeAddress, tx, signer }) {
   })
 
   // get Safe service URL if not default
-  const txServiceUrl = safeServiceURLs[id]
-  console.log(`Using Safe Global service at ${txServiceUrl} - chain ${id}`)
-
-  const safeService = new SafeApiKit({
-    chainId: id,
-    txServiceUrl: txServiceUrl || null,
-  })
+  const safeService = await getSafeService(chainId)
 
   // create tx
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
   const txs = !Array.isArray(tx) ? [tx] : tx
 
   const explainer = txs
-    .map(
-      ({ functionName, functionArgs }) =>
-        `'${functionName}(${Object.values(functionArgs).toString()})'`
+    .map(({ functionName, functionArgs, explainer }) =>
+      explainer
+        ? explainer
+        : `'${functionName}(${Object.values(functionArgs).toString()})'`
     )
     .join(', ')
   console.log(`Submitting txs: ${explainer}`)

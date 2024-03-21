@@ -103,6 +103,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
   const isPurchaser =
     receiptDetails?.payer?.toLowerCase() === account?.toLowerCase()
 
+  const isRecipient =
+    receiptDetails?.recipient?.toLowerCase() === account?.toLowerCase()
+
+  const isCancelReceipt = receiptDetails?.payer == lockAddress
+
   const disabledInput = isLoading || isUpdatingReceipt
 
   const transactionDate =
@@ -143,7 +148,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
               <h2 className="text-lg font-bold text-brand-ui-primary">
                 Service performed:
               </h2>
-              {supplier?.servicePerformed || 'NFT membership'}
+              {isCancelReceipt
+                ? 'NFT membership canceled'
+                : supplier?.servicePerformed || 'NFT membership'}
             </div>
             <div className="flex flex-col w-full gap-1 mt-5 md:ml-auto md:w-1/2 col-span-full">
               <h2 className="text-lg font-bold md:ml-auto text-brand-ui-primary">
@@ -161,7 +168,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
-                  {receiptPrice?.total} {symbol}
+                  {parseFloat(receiptPrice?.total).toFixed(2)} {symbol}
                 </Detail>
               </div>
             </div>
@@ -175,7 +182,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     return (
       <div className="grid gap-2">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold text-brand-ui-primary">Bill to:</h2>
+          <h2 className="text-lg font-bold text-brand-ui-primary">
+            {isCancelReceipt ? 'Refunded to:' : 'Bill to:'}
+          </h2>
           {isPurchaser && (
             <Button
               onClick={() => setPurchaserDrawer(!purchaserDrawer)}
@@ -197,7 +206,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           )}
           <span className="text-base">
             Wallet:{' '}
-            {receiptDetails?.payer?.length > 0
+            {isCancelReceipt
+              ? receiptDetails?.recipient?.length > 0
+                ? addressMinify(receiptDetails?.recipient)
+                : ''
+              : receiptDetails?.payer?.length > 0
               ? addressMinify(receiptDetails?.payer)
               : ''}
           </span>
@@ -232,7 +245,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     )
   }
 
-  if (!isManager && !isPurchaser) {
+  if (!isManager && !isPurchaser && !isRecipient) {
     return <NotAuthorizedBar />
   }
 
@@ -259,7 +272,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       <div className="grid w-full max-w-lg gap-4 mb-5">
         <div className="grid w-full">
           <Disclosure
-            label={`#${receiptNumber}`}
+            label={`#${
+              isCancelReceipt ? receiptNumber + ' (Refund)' : receiptNumber
+            }`}
             description={
               transactionUrl?.length && (
                 <div
