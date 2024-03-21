@@ -6,46 +6,44 @@ env:
   BUILDKIT_PROGRESS: plain
   SENTRY_LOG_LEVEL: info
 
-runs: 
-  using: "composite"
+runs:
+  using: 'composite'
   steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - run: yarn
-        shell: bash
-      - run: yarn build
-        shell: bash
-      - name: Install Sentry CLI
-        shell: bash
-        run: npm install @sentry/cli -g
-      - name: Sentry CLI login
-        shell: bash
-        run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN
-      - name: Check networks package
-        run: |
-          yarn workspace @unlock-protocol/networks check >> networks.log
-          sentry-cli send-event -m "Networks" --logfile networks.log
-        shell: bash
-      - name: Check tokens in networks package
-        run: |
-          yarn workspace @unlock-protocol/networks check-tokens >> networks-tokens.log
-          sentry-cli send-event -m "Networks Tokens" --logfile networks-tokens.log
-        shell: bash
-      - name: Check Unlock info
-        run: |
-          yarn workspace @unlock-protocol/governance check >> governance.log
-          sentry-cli send-event -m "Governance" --logfile governance.log
-        shell: bash
-      - name: Check Subgraphs
-        run: |
-          yarn workspace @unlock-protocol/subgraph check >> subgraph.log
-          sentry-cli send-event -m "Subgraph" --logfile subgraph.log
-        shell: bash
-      - name: Check Team Multisigs
-        run: |
-          yarn workspace @unlock-protocol/governance check:multisig >> multisig.log
-          sentry-cli send-event -m "Multisig" --logfile multisig.log
-        shell: bash
-    
-        
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - run: yarn
+      shell: bash
+    - run: yarn build
+      shell: bash
+    - name: Install Sentry CLI
+      shell: bash
+      run: npm install @sentry/cli -g
+    - name: Sentry CLI login
+      shell: bash
+      run: sentry-cli login --auth-token $SENTRY_AUTH_TOKEN
+    - name: Check networks package
+      run: |
+        yarn workspace @unlock-protocol/networks check >> networks.log
+        sentry-cli send-event -m "Networks" --logfile networks.log
+      shell: bash
+    - name: Check tokens in networks package
+      run: |
+        yarn workspace @unlock-protocol/networks check-tokens >> networks-tokens.log
+        sentry-cli send-event -m "Networks Tokens" --logfile networks-tokens.log
+      shell: bash
+    - name: Check Unlock info
+      run: |
+        yarn workspace @unlock-protocol/governance check >> governance.log
+        sentry-cli send-event -m "Governance" --logfile governance.log
+      shell: bash
+    - name: Check Subgraphs
+      run: |
+        yarn workspace @unlock-protocol/subgraph check >> subgraph.log
+        sentry-cli send-event -m "Subgraph" --logfile subgraph.log
+      shell: bash
+    - name: Check Team Multisigs
+      run: |
+        yarn workspace @unlock-protocol/governance check:multisig >> multisig.log
+        sentry-cli send-event -m "Multisig" --logfile multisig.log
+      shell: bash
