@@ -1,5 +1,17 @@
-cache
-.yarn
-!.yarn/releases
 networks.json
+
+# local deps
 packages
+
+# contracts
+cache
+
+# yarn
+.yarn/*
+.pnp.js
+# !.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
