@@ -44,7 +44,7 @@ const extractAndDownloadImages = (content, postImagesDir, slug) => {
     const imagePromise = downloadImage(imageUrl, localImagePath).then(() => {
       updatedContent = updatedContent.replace(
         imageUrl,
-        `../../../unlock-protocol-com/public/images/blog/${slug}/${imageFilename}`
+        `/images/blog/${slug}/${imageFilename}`
       )
     })
     imagePromises.push(imagePromise)
@@ -56,13 +56,23 @@ const extractAndDownloadImages = (content, postImagesDir, slug) => {
 feedparser
   .parse(rssUrl)
   .then((entries) => {
-    entries.forEach((entry) => {
+    entries.forEach((entry, count) => {
       const title = entry.title
       const subtitle = entry.subtitle || ''
-      const authorName = entry.author
+      const authorName = entry.author || 'Unlock Labs team'
       const publishDate = entry.pubDate
       const description = entry.summary
-      const imageUrl = entry.image && entry.image.href ? entry.image.href : ''
+      let imageUrl = entry.image && entry.image.href ? entry.image.href : ''
+
+      if (!imageUrl) {
+        const enclosuresImage = entry.enclosures.find((enclosure) => {
+          return enclosure.type.startsWith('image')
+
+        })
+        if (enclosuresImage) {
+          imageUrl = enclosuresImage.url
+        }
+      }
 
       // Skip if the title already exists
       if (existingTitles.has(title)) {
@@ -70,9 +80,9 @@ feedparser
       }
       // Generate a slug for the blog post
       const slug = title
-        .replace(/[^\w\-_\. ]/g, '_')
+        .replace(/[^\w\-_\. ]/g, '-')
         .toLowerCase()
-        .replace(/ /g, '_')
+        .replace(/ /g, '-')
       const postImagesDir = path.join(
         '../../../unlock-protocol-com/public/images/blog',
         slug
@@ -102,10 +112,12 @@ subtitle: "${subtitle}"
 authorName: "${authorName}"
 publishDate: "${publishDate}"
 description: "${description}"
-image: "../../../unlock-protocol-com/public/images/blog/${slug}/${path.basename(
+image: "/images/blog/${slug}/${path.basename(
             imageUrl
           )}"
 ---
+
+![${title}](${imageUrl})
 
 ${updatedContent}`
 
