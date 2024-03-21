@@ -12,10 +12,8 @@
 
 set -e
 
-if [ ! -n "$REPO_ROOT" ]; then
-  REPO_ROOT=`pwd`/`dirname "$0"`/..
-fi
-COMPOSE_CONFIG="-f $REPO_ROOT/docker/docker-compose.yml -f $REPO_ROOT/docker/docker-compose.integration.yml"
+# export envs
+source ./scripts/start/envs.sh
 
 # bring containers down
 docker-compose $COMPOSE_CONFIG down
