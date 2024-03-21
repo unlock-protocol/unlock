@@ -37,7 +37,7 @@ services:
       [
         '/opt/wait-for-it.sh',
         '-t',
-        '0',
+        '600',
         'graph-node:8020',
         '--',
         'sh',
