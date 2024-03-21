@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+# export required envs
+source ./scripts/start/envs.sh
+
 # run Unlock Protocol stack
 sh -c "$REPO_ROOT/scripts/start-infra.sh"
 
