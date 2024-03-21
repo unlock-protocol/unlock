@@ -7,10 +7,6 @@
  */
 const { hideBin } = require('yargs/helpers')
 const networks = require('@unlock-protocol/networks')
-const {
-  UNLOCK_LATEST_VERSION,
-  PUBLICLOCK_LATEST_VERSION,
-} = require('@unlock-protocol/contracts')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 const { networkName } = require('./networks')
@@ -29,12 +25,13 @@ const executeCommand = async (command) => {
   }
 }
 
+// use shorthand of git sha commit as version label
 const getVersion = () => {
   const gitSha = require('child_process')
     .execSync('git rev-parse --short HEAD')
     .toString()
     .trim()
-  return `v${UNLOCK_LATEST_VERSION}-${PUBLICLOCK_LATEST_VERSION}-${gitSha}`
+  return `${gitSha}`
 }
 
 const executeStudioDeploy = async ({
