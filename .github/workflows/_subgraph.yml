@@ -21,6 +21,8 @@ jobs:
           node-version: 20
       - run: yarn
       - run: yarn build
+      - name: Prepare the network files
+        run: yarn workspace @unlock-protocol/subgraph prepare
       - name: Deploying the subgraphs
-        run: cd subgraph && yarn deploy-all
+        run: yarn workspace @unlock-protocol/subgraph deploy-all
         shell: bash

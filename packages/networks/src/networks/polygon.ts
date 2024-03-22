@@ -91,6 +91,7 @@ export const polygon: NetworkConfig = {
     networkName: 'matic',
     studioName: 'unlock-protocol-polygon',
   },
+  swapPurchaser: '0x144C1ae588e3A67Db02D1f3C43671eB246b2f13b',
   tokens: [
     {
       address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',

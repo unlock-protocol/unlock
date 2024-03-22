@@ -4,3 +4,4 @@ artifacts
 cache
 docs-reorg
 docs
+src/index.ts

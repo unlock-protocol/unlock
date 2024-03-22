@@ -84,10 +84,16 @@ export const PaywallLockConfig = z.object({
     })
     .optional(),
   promo: z
-    .boolean({
-      description:
-        'If enabled, the user will be prompted to enter an optional promo code in order to receive discounts. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
-    })
+    .union([
+      z.boolean({
+        description:
+          'If enabled, the user will be prompted to enter an optional promo code in order to receive discounts. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
+      }),
+      z.string({
+        description:
+          'If set, the user optional promo code field will be pre-filled with this value. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
+      }),
+    ])
     .optional(),
   emailRequired: z
     .boolean({
@@ -236,10 +242,16 @@ export const PaywallConfig = z
       })
       .optional(),
     promo: z
-      .boolean({
-        description:
-          'If enabled, the user will be prompted to enter an optional promo code in order to receive discounts. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
-      })
+      .union([
+        z.boolean({
+          description:
+            'If enabled, the user will be prompted to enter an optional promo code in order to receive discounts. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
+        }),
+        z.string({
+          description:
+            'If set, the user optional promo code field will be pre-filled with this value. Warning: This only works if the lock is connected to a hook that will handle the promo codes. This cannot be used at the same time as the "Password Required" option above',
+        }),
+      ])
       .optional(),
     emailRequired: z
       .boolean({

@@ -2,7 +2,11 @@
 const { ethers, run, upgrades, network } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const createLock = require('../lock/create')
-const { getUnlock, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getUnlock,
+  ADDRESS_ZERO,
+  getNetwork,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const log = (...message) => {
   // eslint-disable-next-line no-console
@@ -26,8 +30,7 @@ async function main({
   const [deployer, minter] = await ethers.getSigners()
 
   // fetch chain info
-  const { chainId } = await ethers.provider.getNetwork()
-  const networkName = networks[chainId].name
+  const { id: chainId, name: networkName, multisig } = await getNetwork()
   const isLocalNet = networkName === 'localhost'
   log(
     `Deploying contracts on ${networkName} with the account: ${deployer.address}`
@@ -107,7 +110,6 @@ async function main({
   }
 
   // Transfer ownership of Unlock + Proxy admin
-  const multisig = networks[chainId.toString()].multisig
   if (!owner && multisig) {
     owner = multisig
     if (owner) {

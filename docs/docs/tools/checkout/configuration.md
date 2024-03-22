@@ -46,6 +46,7 @@ The `paywallConfig` is a JSON object which includes a set of customizations for 
 - `expectedAddress`: _optional string_. If set, the user will be asked to switch their wallet address before proceeding. This is useful if you want to ensure that the user is using the same address as the one they used to purchase a membership.
 
 - `skipSelect`: _optional boolean_. Skip selection screen if only single lock is available.
+- `promo`: _optional string_. If set, it is used to pre-fill the promo code field on the checkout. a `promo` query string can also be passed as a query param when using the checkout URL. (note: requires the use of the discount code hook!)
 
 ### Locks
 

@@ -272,7 +272,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       <div className="grid w-full max-w-lg gap-4 mb-5">
         <div className="grid w-full">
           <Disclosure
-            label={`#${receiptNumber}`}
+            label={`#${
+              isCancelReceipt ? receiptNumber + ' (Refund)' : receiptNumber
+            }`}
             description={
               transactionUrl?.length && (
                 <div

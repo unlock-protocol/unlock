@@ -34,30 +34,21 @@ task('deploy', 'Deploy the entire Unlock protocol')
   )
   .addFlag('setTemplate', 'set the PublicLock instance in Unlock')
   .setAction(
-    async (
-      {
-        unlockAddress,
-        unlockVersion,
-        publicLockVersion,
-        udtAddress,
-        publicLockAddress,
-        wethAddress,
-        oracleAddress,
-        premintAmount,
-        liquidity,
-        setTemplate,
-        estimatedGasForPurchase,
-        locksmithURI,
-        owner,
-      },
-      { ethers }
-    ) => {
-      const { chainId } = await ethers.provider.getNetwork()
-      const networkName = networks[chainId].name
-
-      // eslint-disable-next-line no-console
-      console.log(`Starting deployments on ${networkName}...`)
-
+    async ({
+      unlockAddress,
+      unlockVersion,
+      publicLockVersion,
+      udtAddress,
+      publicLockAddress,
+      wethAddress,
+      oracleAddress,
+      premintAmount,
+      liquidity,
+      setTemplate,
+      estimatedGasForPurchase,
+      locksmithURI,
+      owner,
+    }) => {
       // eslint-disable-next-line global-require
       const mainDeployer = require('../scripts/deployments')
       const {

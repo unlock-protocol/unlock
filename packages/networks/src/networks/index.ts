@@ -1,4 +1,3 @@
-export * from './localhost'
 export * from './mainnet'
 export * from './gnosis'
 export * from './polygon'

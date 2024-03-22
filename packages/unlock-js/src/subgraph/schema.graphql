@@ -94,7 +94,7 @@ query AllReceipts(
     timestamp
     sender
     payer
-    # recipient # removed until subgraph have been updated!
+    recipient
     lockAddress
     tokenAddress
     gasTotal

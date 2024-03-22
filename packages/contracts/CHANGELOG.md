@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.0.22
+
+- add `contracts` alias for all versions
+- add `PublicLock` and `Unlock` alias for all versions
+- add version numbers as constant
+
 ## 0.0.21
 
 - release fix post-attack on Fri Apr 21st 2023 #11690

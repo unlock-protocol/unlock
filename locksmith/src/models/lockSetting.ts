@@ -21,6 +21,7 @@ export class LockSetting extends Model<
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
   declare promoCodes?: string[] | null
+  declare passwords?: string[] | null
 }
 
 LockSetting.init(
@@ -84,6 +85,11 @@ LockSetting.init(
       defaultValue: 'usd', // let's use 'usd' as default currency for all the locks that does not have the value set
     },
     promoCodes: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+      defaultValue: [],
+    },
+    passwords: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
       defaultValue: [],
