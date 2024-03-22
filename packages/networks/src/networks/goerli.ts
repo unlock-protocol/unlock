@@ -17,7 +17,6 @@ export const goerli: NetworkConfig = {
     },
   },
   faucet: 'https://goerlifaucet.com/',
-  featured: true,
   fullySubsidizedGas: true,
   governanceBridge: {
     connext: '0xFCa08024A6D4bCc87275b1E4A1E22B71fAD7f649',
