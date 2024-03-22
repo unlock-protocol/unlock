@@ -5,7 +5,7 @@ set -e
 source ./scripts/start/envs.sh
 
 # run Unlock Protocol stack
-sh -c "$REPO_ROOT/scripts/start-infra.sh"
+sh -c "./scripts/start-infra.sh"
 
 # run the actual tests
 echo "Running integration tests \n"
