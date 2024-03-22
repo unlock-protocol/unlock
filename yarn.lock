@@ -20464,7 +20464,6 @@ __metadata:
     calendar-link: "npm:2.6.0"
     dayjs: "npm:1.11.10"
     dotenv: "npm:16.4.5"
-    embla-carousel-autoplay: "npm:7.1.0"
     embla-carousel-react: "npm:8.0.0"
     eslint: "npm:8.54.0"
     eslint-config-next: "npm:14.1.2"
@@ -29055,15 +29054,6 @@ __metadata:
     minimalistic-assert: "npm:^1.0.1"
     minimalistic-crypto-utils: "npm:^1.0.1"
   checksum: 10/2cd7ff4b69720dbb2ca1ca650b2cf889d1df60c96d4a99d331931e4fe21e45a7f3b8074e86618ca7e56366c4b6258007f234f9d61d9b0c87bbbc8ea990b99e94
-  languageName: node
-  linkType: hard
-
-"embla-carousel-autoplay@npm:7.1.0":
-  version: 7.1.0
-  resolution: "embla-carousel-autoplay@npm:7.1.0"
-  peerDependencies:
-    embla-carousel: 7.1.0
-  checksum: 10/d35e5a8c892df1c6307ca5e4522ca0bbded66b8b9b3a26f4474b4b8953cce5e6977b23a922cfefb42f814e3ea16b4de7ed39b37f974c4f4bfd5a70dbca9982c2
   languageName: node
   linkType: hard
 
