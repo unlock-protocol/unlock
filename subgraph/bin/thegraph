@@ -25,30 +25,27 @@ const executeCommand = async (command) => {
   }
 }
 
-const incrementVersion = (version) => {
-  const [_, major, minor, patch] = version.match(
-    /v([0-9]*)\.([0-9]*)\.([0-9]*)/
-  )
-  return `v${major}.${minor}.${parseInt(patch) + 1}`
+// use shorthand of git sha commit as version label
+const getVersion = () => {
+  const gitSha = require('child_process')
+    .execSync('git rev-parse --short HEAD')
+    .toString()
+    .trim()
+  return `${gitSha}`
 }
 
-const executeStudioDeployWithVersionIncrement = async ({
+const executeStudioDeploy = async ({
   subgraphName,
-  version = 'v0.0.1', // TODO: fetch latest version
+  version,
   flags = '--product=subgraph-studio',
 }) => {
   const cmd = `graph deploy --version-label="${version}" ${flags} ${subgraphName}`
   let stderr = await executeCommand(cmd)
   if (stderr) {
     if (stderr.includes(`Version label already exists`)) {
-      const nextVersion = incrementVersion(version)
       console.log(
-        `Studio version for ${subgraphName} exists - attempting deploy with version - ${nextVersion}`
+        `Studio version '${version}' for ${subgraphName} exists - skipping`
       )
-      return executeStudioDeployWithVersionIncrement({
-        subgraphName,
-        version: nextVersion,
-      })
     }
   }
 }
@@ -82,7 +79,10 @@ const deployStudio = async (subgraphName, version) => {
   await executeCommand(
     `graph auth --studio ${process.env.SUBGRAPH_STUDIO_DEPLOY_KEY}`
   )
-  return executeStudioDeployWithVersionIncrement({ subgraphName, version })
+  if (!version) {
+    version = getVersion()
+  }
+  return executeStudioDeploy({ subgraphName, version })
 }
 
 /**
@@ -102,7 +102,7 @@ const deploy = async (network, studioName, graphLabel) => {
   }
 
   if (!studioName) {
-    ; ({ studioName } = networks[network].subgraph)
+    ;({ studioName } = networks[network].subgraph)
   }
 
   if (!studioName) {
