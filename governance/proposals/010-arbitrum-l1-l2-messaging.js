@@ -1,6 +1,4 @@
-// const { providers, Wallet } = require('ethers')
-// const ethers = require('ethers')
-const { ethers } = require('hardhat')
+const ethers = require('ethers')
 const {
   L1ToL2MessageGasEstimator,
 } = require('@arbitrum/sdk/dist/lib/message/L1ToL2MessageGasEstimator')
@@ -21,7 +19,7 @@ const INBOX_ABI = require('../helpers/abi/inbox-abi.json')
 const walletPrivateKey = process.env.DEVNET_PRIVKEY
 const l1Provider = new ethers.JsonRpcProvider(process.env.L1RPC)
 const l2Provider = new ethers.JsonRpcProvider(process.env.L2RPC)
-// const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
+const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
 const l2Wallet = new ethers.Wallet(walletPrivateKey, l2Provider)
 
 module.exports = async () => {
