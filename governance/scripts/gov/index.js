@@ -10,7 +10,7 @@ const vote = require('./vote')
 const queue = require('./queue')
 const execute = require('./execute')
 
-async function main({ proposal, govAddress }) {
+async function main({ proposal, proposalId, govAddress, txId }) {
   const [signer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
@@ -52,11 +52,15 @@ async function main({ proposal, govAddress }) {
     await mine(10)
   }
 
+  // Submit the proposal if necessary
+  if (!proposalId) {
+    proposalId = await submit({ proposal, govAddress })
+  }
+
   // Run the gov workflow
-  const proposalId = await submit({ proposal, govAddress })
   await vote({ proposalId, govAddress, voterAddress: signer.address })
-  await queue({ proposal, govAddress })
-  await execute({ proposal, govAddress })
+  await queue({ proposalId, govAddress, txId })
+  await execute({ proposalId, txId, proposal, govAddress })
 }
 
 // execute as standalone

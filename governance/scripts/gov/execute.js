@@ -10,16 +10,24 @@ const {
   isAlreadyPast,
 } = require('../../helpers/gov')
 
-async function main({ proposal, govAddress }) {
+async function main({ proposal, proposalId, txId, govAddress }) {
+  console.log({ proposal, proposalId, txId, govAddress })
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337 || process.env.RUN_FORK
 
-  if (!proposal) {
-    throw new Error('GOV EXEC > Missing proposal.')
+  if (!proposal && !proposalId) {
+    throw new Error('GOV EXEC > Missing proposal or proposalId.')
   }
-  console.log(proposal)
-  const proposalId = proposal.proposalId || (await getProposalId(proposal))
+  if (proposalId && !txId) {
+    throw new Error(
+      'GOV EXEC > The tx id of the proposal creation is required to execute the proposal.'
+    )
+  }
+
+  if (!proposalId) {
+    proposalId = proposal.proposalId || (await getProposalId(proposal))
+  }
 
   // contract instance etc
   let state = await getProposalState(proposalId, govAddress)
