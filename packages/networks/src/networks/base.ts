@@ -107,6 +107,12 @@ export const base: NetworkConfig = {
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
+    {
+      address: '0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed',
+      decimals: 18,
+      name: 'Degen',
+      symbol: 'DEGEN',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
