@@ -86,6 +86,9 @@ export function Password({ injectedProvider, checkoutService }: Props) {
                 return true
               },
             })}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              console.log(event.target.value)
+            }}
             error={errors.password?.message}
           />
         </form>
