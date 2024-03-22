@@ -23,7 +23,7 @@
     "dayjs": "1.11.10",
     "dotenv": "16.4.5",
     "embla-carousel-autoplay": "7.1.0",
-    "embla-carousel-react": "7.1.0",
+    "embla-carousel-react": "8.0.0",
     "eslint": "8.54.0",
     "ethers": "5.7.2",
     "next": "14.1.2",
