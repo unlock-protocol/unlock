@@ -3,6 +3,7 @@ import { WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 import { passwordHookAbi } from './abis/passwordHookAbi'
+import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
 import UnlockSwapPurchaser from '@unlock-protocol/contracts/dist/abis/utils/UnlockSwapPurchaser.json'
@@ -1013,6 +1014,29 @@ export default class WalletService extends UnlockService {
       .connect(this.signer)
       .setSigner(lockAddress, signerAddress)
     return tx
+  }
+
+  /**
+   * Set signer for `Password with cap hook contract`
+   */
+  async setPasswordWithCapHookSigner(params: {
+    lockAddress: string
+    signerAddress: string
+    contractAddress: string
+    cap: number
+    network: number
+  }) {
+    const { lockAddress, signerAddress, contractAddress, network, cap } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: passwordCapHookAbi,
+    })
+    const tx = await contract
+      .connect(this.signer)
+      .setSigner(lockAddress, signerAddress, cap)
+    return tx.wait()
   }
 
   /**

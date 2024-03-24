@@ -87,6 +87,7 @@ interface SaveLockProps {
   creditCardCurrency?: string
   promoCodes?: string[]
   crossmintClientId?: string
+  passwords?: string[]
 }
 
 export function useSaveLockSettings() {
