@@ -16,6 +16,7 @@ export type SettingTab =
   | 'emails'
   | 'verifiers'
   | 'checkout'
+  | 'referrals'
 
 const Settings: NextPage = () => {
   const { query } = useRouter()

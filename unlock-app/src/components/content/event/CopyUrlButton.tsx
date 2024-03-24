@@ -5,11 +5,11 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useClipboard from 'react-use-clipboard'
 
 interface CopyUrlButtonProps {
-  eventUrl: string
+  url: string
 }
 
-export const CopyUrlButton = ({ eventUrl }: CopyUrlButtonProps) => {
-  const [_, setCopied] = useClipboard(eventUrl, {
+export const CopyUrlButton = ({ url }: CopyUrlButtonProps) => {
+  const [_, setCopied] = useClipboard(url, {
     successDuration: 1000,
   })
 

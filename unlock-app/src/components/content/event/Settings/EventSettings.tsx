@@ -8,6 +8,7 @@ import { ReactNode, useState } from 'react'
 import { SettingTab } from '~/pages/locks/settings'
 import { PaywallConfigType, Event } from '@unlock-protocol/core'
 import { General } from './General'
+import { Referrals } from './Referrals'
 import Link from 'next/link'
 
 interface EventSettingsProps {
@@ -35,6 +36,12 @@ export const EventSettings = ({
       label: 'General',
       description: `Update your event's public information such as its location, date and more!`,
       children: <General event={event} checkoutConfig={checkoutConfig} />,
+    },
+    {
+      id: 'referrals',
+      label: 'Referrals',
+      description: `Create referral links to share with your community and reward them.`,
+      children: <Referrals event={event} checkoutConfig={checkoutConfig} />,
     },
     // {
     //   id: 'checkout',
