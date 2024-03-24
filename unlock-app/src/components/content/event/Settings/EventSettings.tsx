@@ -40,7 +40,7 @@ export const EventSettings = ({
     {
       id: 'referrals',
       label: 'Referrals',
-      description: `Create referral links to share with your community and inceintivize them.`,
+      description: `Create referral links to share with your community and reward them.`,
       children: <Referrals event={event} checkoutConfig={checkoutConfig} />,
     },
     // {
