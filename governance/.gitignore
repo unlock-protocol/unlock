@@ -8,3 +8,5 @@ zk-artifacts
 zk-cache
 artifacts-zk
 cache-zk
+
+!contracts/l2/UDTOptimism.sol
