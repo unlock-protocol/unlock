@@ -10,8 +10,107 @@ const {
 } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 
-const ERC20_ABI = require('../helpers/abi/erc20-abi.json')
-const INBOX_ABI = require('../helpers/abi/inbox-abi.json')
+const ERC20_ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'account',
+        type: 'address',
+      },
+    ],
+    name: 'balanceOf',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'transfer',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+]
+const INBOX_ABI = [
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: 'to',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'l2CallValue',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'maxSubmissionCost',
+        type: 'uint256',
+      },
+      {
+        internalType: 'address',
+        name: 'excessFeeRefundAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'address',
+        name: 'callValueRefundAddress',
+        type: 'address',
+      },
+      {
+        internalType: 'uint256',
+        name: 'gasLimit',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint256',
+        name: 'maxFeePerGas',
+        type: 'uint256',
+      },
+      {
+        internalType: 'bytes',
+        name: 'data',
+        type: 'bytes',
+      },
+    ],
+    name: 'createRetryableTicket',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'payable',
+    type: 'function',
+  },
+]
 
 /**
  * Set up: instantiate L1 / L2 wallets connected to providers
@@ -19,7 +118,7 @@ const INBOX_ABI = require('../helpers/abi/inbox-abi.json')
 const walletPrivateKey = process.env.DEVNET_PRIVKEY
 const l1Provider = new ethers.JsonRpcProvider(process.env.L1RPC)
 const l2Provider = new ethers.JsonRpcProvider(process.env.L2RPC)
-const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
+// const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
 const l2Wallet = new ethers.Wallet(walletPrivateKey, l2Provider)
 
 module.exports = async () => {
@@ -36,7 +135,7 @@ module.exports = async () => {
 
   const L2TokenContract = new ethers.Contract(
     ARBTokenAddressOnL2,
-    ERC20_ABI.abi,
+    ERC20_ABI,
     l2Wallet
   ).connect(l2Wallet)
 
@@ -46,8 +145,8 @@ module.exports = async () => {
   const tokenAmount = ethers.parseEther('1')
 
   // Create an instance of the Interface from the ABIs
-  const iface_erc20 = new ethers.Interface(ERC20_ABI.abi)
-  const iface_inbox = new ethers.Interface(INBOX_ABI.abi)
+  const iface_erc20 = new ethers.Interface(ERC20_ABI)
+  const iface_inbox = new ethers.Interface(INBOX_ABI)
 
   // Encode the ERC20 Token transfer calldata
   const transfer_calldata = iface_erc20.encodeFunctionData('transfer', [
@@ -140,7 +239,7 @@ module.exports = async () => {
 
   const calls = [
     {
-      contractNameOrAbi: INBOX_ABI.abi,
+      contractNameOrAbi: INBOX_ABI,
       contractAddress: inboxAddress,
       functionName: 'createRetryableTicket',
       functionArgs: [
