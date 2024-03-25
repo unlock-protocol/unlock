@@ -10,6 +10,7 @@ import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
+import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 
 import {
   CurrencyAmount,
@@ -1187,6 +1188,30 @@ export default class Web3Service extends UnlockService {
     const count = await contract.counters(lockAddress, signerAddress)
     return {
       discount: ethers.BigNumber.from(discount).toNumber(),
+      cap: ethers.BigNumber.from(cap).toNumber(),
+      count: ethers.BigNumber.from(count).toNumber(),
+    }
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getPasswordHookWithCapValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: passwordCapHookAbi,
+    })
+    const cap = await contract.signers(lockAddress, signerAddress)
+    const count = await contract.counters(lockAddress, signerAddress)
+    return {
       cap: ethers.BigNumber.from(cap).toNumber(),
       count: ethers.BigNumber.from(count).toNumber(),
     }
