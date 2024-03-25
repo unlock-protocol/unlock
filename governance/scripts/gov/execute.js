@@ -11,7 +11,6 @@ const {
 } = require('../../helpers/gov')
 
 async function main({ proposal, proposalId, txId, govAddress }) {
-  console.log({ proposal, proposalId, txId, govAddress })
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337 || process.env.RUN_FORK
@@ -60,7 +59,7 @@ async function main({ proposal, proposalId, txId, govAddress }) {
     }
 
     // execute the tx
-    const tx = await executeProposal({ proposal, govAddress })
+    const tx = await executeProposal({ proposal, govAddress, txId })
     const receipt = await tx.wait()
     const { event, hash } = await getEvent(receipt, 'ProposalExecuted')
     if (event) {

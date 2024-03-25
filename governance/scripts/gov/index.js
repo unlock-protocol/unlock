@@ -57,8 +57,21 @@ async function main({ proposal, proposalId, govAddress, txId }) {
     proposalId = await submit({ proposal, govAddress })
   }
 
-  // Run the gov workflow
+  // votes
   await vote({ proposalId, govAddress, voterAddress: signer.address })
+
+  const udtWhales = [
+    '0xc0948A2f0B48A2AA8474f3DF54FD7C364225AD7d', // @_Cryptosmonitor
+    '0xD2BC5cb641aE6f7A880c3dD5Aee0450b5210BE23', // stellaachenbach.eth
+    '0xCA7632327567796e51920F6b16373e92c7823854', // dannithomx.eth
+  ]
+  await Promise.all(
+    udtWhales.map((voterAddress) =>
+      vote({ proposalId, govAddress, voterAddress })
+    )
+  )
+
+  // Run the gov workflow
   await queue({ proposalId, govAddress, txId })
   await execute({ proposalId, txId, proposal, govAddress })
 }

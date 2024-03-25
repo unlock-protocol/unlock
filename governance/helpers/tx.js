@@ -18,7 +18,6 @@ const fetchDataFromTx = async ({
     }
   })
   const { args } = parsedLogs.find(({ name }) => name === eventName)
-  console.log(args)
   return args
 }
 

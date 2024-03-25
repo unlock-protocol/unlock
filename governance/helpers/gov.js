@@ -93,7 +93,7 @@ const parseProposalFromFile = async ({
 }
 
 const getProposalArgsFromTx = async ({ gov, txId }) => {
-  const [proposalId, , targets, values, , calldatas, , , description] =
+  const [proposalId, , _targets, _values, , _calldatas, , , description] =
     await fetchDataFromTx({
       txHash: txId,
       eventName: 'ProposalCreated',
@@ -101,14 +101,23 @@ const getProposalArgsFromTx = async ({ gov, txId }) => {
     })
   // make sure values are correct
   const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
+  const targets = _targets.toArray()
+  const values = _values.toArray()
+  const calldatas = _calldatas.toArray()
   const proposalIdFromFetchedValues = await gov.hashProposal(
-    targets.toArray(),
-    values.toArray(),
-    calldatas.toArray(),
+    targets,
+    values,
+    calldatas,
     descriptionHash
   )
   if (proposalIdFromFetchedValues !== proposalId) {
     throw new Error('proposalId mismatch')
+  }
+  return {
+    targets,
+    values,
+    calldatas,
+    descriptionHash,
   }
 }
 
@@ -196,7 +205,6 @@ const queueProposal = async ({ proposal, govAddress, proposalId, txId }) => {
   const { targets, values, calldatas, descriptionHash, gov } =
     await parseProposal({
       ...proposal,
-      proposalId,
       govAddress,
       txId,
     })
@@ -225,7 +233,6 @@ const submitProposal = async ({ proposal, govAddress, proposalId, txId }) => {
     proposalId,
     txId,
   })
-  console.log(targets, values, calldatas, description)
   return await gov.propose(targets, values, calldatas, description)
 }
 
