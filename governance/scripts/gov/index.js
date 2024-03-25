@@ -75,7 +75,10 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   // Run the gov workflow
   await queue({ proposalId, govAddress, txId })
-  await execute({ proposalId, txId, proposal, govAddress })
+  const { logs } = await execute({ proposalId, txId, proposal, govAddress })
+
+  // log all events
+  console.log(logs)
 }
 
 // execute as standalone
