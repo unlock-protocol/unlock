@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { useActor } from '@xstate/react'
 import { Button } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -22,7 +22,6 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
   const { recipients, lock } = state.context
-  const [isSuccess, setIsSuccess] = useState(true)
 
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -32,31 +31,29 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
     isFetching: isFetchingGitcoinPassportData,
     refetch,
     isError,
-    // isSuccess,
+    isSuccess,
   } = useDataForGitcoinPassport({
     lockAddress: lock!.address,
     network: lock!.network,
     recipients: users,
   })
 
-  console.log(data, isError)
-
   const onProceed = async () => {
-    console.log(data)
-    // send({
-    //   type: 'SUBMIT_DATA',
-    //   data: verificationData,
-    // })
+    if (data) {
+      send({
+        type: 'SUBMIT_DATA',
+        data,
+      })
+    }
   }
-
-  console.log(isLoadingGitcoinPassportData, isFetchingGitcoinPassportData)
 
   return (
     <Fragment>
       <Stepper service={checkoutService} />
       <main className="h-full px-6 flex items-center justify-center py-2 overflow-auto">
         <div>
-          {!isFetchingGitcoinPassportData && (
+          {/* Verification Info */}
+          {!isFetchingGitcoinPassportData && !isError && !isSuccess && (
             <>
               <h2 className="text-xl font-semibold text-center">
                 Verify Your Gitcoin Passport
@@ -69,6 +66,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
             </>
           )}
 
+          {/* Verification loading, error, and success states */}
           {isFetchingGitcoinPassportData && (
             <>
               <LoadingIcon />
@@ -76,6 +74,15 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
                 Verifying your Gitcoin passport...
               </p>
             </>
+          )}
+
+          {isSuccess && !isFetchingGitcoinPassportData && (
+            <div className="flex flex-col items-center justify-center">
+              <CheckIcon size={20} className="text-green-500" />
+              <div className="text-slate-700 mt-4 text-center">
+                Verification passed.
+              </div>
+            </div>
           )}
 
           {isError && (
@@ -87,15 +94,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
               </div>
             </div>
           )}
-
-          {isSuccess && !isFetchingGitcoinPassportData && (
-            <div className="flex flex-col items-center justify-center">
-              <CheckIcon size={20} className="text-green-500" />
-              <div className="text-slate-700 mt-4 text-center">
-                Verification passed.
-              </div>
-            </div>
-          )}
+          {/* Verification loading, error, and success states */}
         </div>
       </main>
 
@@ -105,19 +104,19 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
           service={checkoutService}
         >
           {/* Show the "Verify" button only initially, before any attempt at verification has been made */}
-          {!isFetchingGitcoinPassportData && (
+          {!isFetchingGitcoinPassportData && !isError && !isSuccess && (
             <Button
               className="w-full"
               onClick={(event) => {
                 event.preventDefault()
                 refetch()
-                // onProceed()
               }}
             >
               Verify Gitcoin Passport to Continue
             </Button>
           )}
 
+          {/* Verification loading button */}
           {isFetchingGitcoinPassportData && (
             <Button
               className="w-full"
@@ -129,6 +128,32 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
               }
             >
               Verifying...
+            </Button>
+          )}
+
+          {/* Button to proceed to next step upon successful verification */}
+          {isSuccess && !isFetchingGitcoinPassportData && (
+            <Button
+              className="w-full"
+              onClick={(event) => {
+                event.preventDefault()
+                onProceed()
+              }}
+            >
+              Proceed
+            </Button>
+          )}
+
+          {/* Retry verification button */}
+          {isError && (
+            <Button
+              className="w-full"
+              onClick={(event) => {
+                event.preventDefault()
+                refetch()
+              }}
+            >
+              Retry
             </Button>
           )}
         </Connected>
