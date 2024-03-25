@@ -13,15 +13,15 @@ const getDataForGitcoinPassport = async (
       lockAddress,
       recipients
     )
-
     return response.data.result
   } catch (error: any) {
-    if (error.response.data.error) {
-      throw new Error(error.response.data.error)
+    if (error.response) {
+      // Propagate the error as is to be caught by the calling function
+      throw error
     }
-    return recipients.map(() => '')
+    // Fallback for other types of errors
+    throw new Error('An unexpected error occurred')
   }
-  return recipients.map(() => '')
 }
 
 interface UseDataForGitcoinPassportProps {
@@ -36,20 +36,25 @@ export function useDataForGitcoinPassport({
   recipients,
 }: UseDataForGitcoinPassportProps) {
   return useQuery(
-    ['getDataForGitcoinPassport', lockAddress, network],
+    ['getDataForGitcoinPassport', lockAddress, network, recipients],
     async () => {
       try {
-        return getDataForGitcoinPassport(network, lockAddress, recipients)
+        return await getDataForGitcoinPassport(network, lockAddress, recipients)
       } catch (error: any) {
-        ToastHelper.error(error.message)
-        // Return empty values by default
+        if (error.response && error.response.status === 422) {
+          // Display the server's error message for 422 errors
+          ToastHelper.error(error.response.data.error)
+        } else {
+          // Generic error message for other types of errors
+          ToastHelper.error(error.message || 'An unexpected error occurred')
+        }
+        // Return empty values to maintain consistency
         return recipients.map(() => '')
       }
     },
     {
-      // manually trigger hook
-      enabled: false,
-      retry: false,
+      enabled: false, // Manually trigger the query
+      retry: false, // Do not retry after a failure
     }
   )
 }
