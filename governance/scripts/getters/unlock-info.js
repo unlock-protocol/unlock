@@ -30,12 +30,15 @@ async function main({ unlockAddress, quiet = false }) {
   if (proxyAdminOwner !== unlockOwner) {
     errorLog(`Unlock contract and ProxyAdmin have different owners!`)
   }
+  if (proxyAdminOwner !== safeAddress) {
+    errorLog(`ProxyAdmin owner is not the team multisig!`)
+  }
 
   let nbOwners
   try {
     nbOwners = (await getOwners({ safeAddress: unlockOwner })).length
   } catch (error) {
-    errorLog(`Unlock owner is not the team multisig (${safeAddress})!`)
+    errorLog(`Unlock owner is not the team multisig!`)
   }
 
   if (nbOwners && !isMultisig) {
@@ -49,7 +52,8 @@ async function main({ unlockAddress, quiet = false }) {
       `-  unlockVersion: ${await unlock.unlockVersion()} \n`,
       `-  publicLockVersion: ${await unlock.publicLockLatestVersion()} \n`,
       `-  owner: ${unlockOwner} ${nbOwners ? `(${nbOwners} owners)` : ''}\n`,
-      `-  proxyAdminAddress: ${proxyAdminAddress} \n`
+      `-  proxyAdminAddress: ${proxyAdminAddress} \n`,
+      `-  multisig: ${safeAddress} \n`
     )
   }
 }
