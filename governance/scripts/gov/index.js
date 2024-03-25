@@ -61,6 +61,8 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   await vote({ proposalId, govAddress, voterAddress: signer.address })
 
   const udtWhales = [
+    '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9', // unlock treasury
+    '0xF5C28ce24Acf47849988f147d5C75787c0103534', // unlock-protocol.eth
     '0xc0948A2f0B48A2AA8474f3DF54FD7C364225AD7d', // @_Cryptosmonitor
     '0xD2BC5cb641aE6f7A880c3dD5Aee0450b5210BE23', // stellaachenbach.eth
     '0xCA7632327567796e51920F6b16373e92c7823854', // dannithomx.eth
