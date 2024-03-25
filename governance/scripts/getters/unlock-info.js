@@ -28,21 +28,21 @@ async function main({ unlockAddress, quiet = false }) {
   const proxyAdminOwner = await proxyAdmin.owner()
 
   if (proxyAdminOwner !== unlockOwner) {
-    errorLog(`Unlock contract and ProxyAdmin have different owners!`)
+    errorLog(`Unlock contract and ProxyAdmin have different owners`)
   }
   if (proxyAdminOwner !== safeAddress) {
-    errorLog(`ProxyAdmin owner is not the team multisig!`)
+    errorLog(`ProxyAdmin owner is not the team multisig`)
   }
 
   let nbOwners
   try {
     nbOwners = (await getOwners({ safeAddress: unlockOwner })).length
   } catch (error) {
-    errorLog(`Unlock owner is not the team multisig!`)
+    errorLog(`Unlock owner is not the team multisig`)
   }
 
   if (nbOwners && !isMultisig) {
-    errorLog(`Multisig in networks package does not match with Unlock owner!`)
+    errorLog(`Multisig in networks package does not match with Unlock owner`)
   }
 
   if (!quiet) {
