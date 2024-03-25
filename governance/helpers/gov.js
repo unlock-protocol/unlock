@@ -23,7 +23,7 @@ const parseProposal = async ({
   govAddress = ADDRESS_ZERO,
 }) => {
   let proposal
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   if (calls && proposalName) {
     proposal = await parseProposalFromFile({
       calls,
@@ -190,7 +190,7 @@ const getProposalIdFromContract = async ({ proposal, govAddress, txId }) => {
     txId,
   })
 
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   const proposalId = await gov.hashProposal(
     targets,
     values,
@@ -226,7 +226,7 @@ const executeProposal = async ({ proposal, govAddress, proposalId, txId }) => {
  * Submits a proposal
  */
 const submitProposal = async ({ proposal, govAddress, proposalId, txId }) => {
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   const { targets, values, calldatas, description } = await parseProposal({
     ...proposal,
     govAddress,
@@ -236,22 +236,32 @@ const submitProposal = async ({ proposal, govAddress, proposalId, txId }) => {
   return await gov.propose(targets, values, calldatas, description)
 }
 
-const getProposalVotes = async (proposalId, govAddress) => {
+const getGovContract = async (govAddress) => {
   const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  return gov
+}
+
+const getProposalVotes = async (proposalId, govAddress) => {
+  const gov = await getGovContract(govAddress)
   const votes = await gov.proposalVotes(proposalId)
   return votes
 }
 
 const getQuorum = async (govAddress) => {
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
 
   const currentBlock = await ethers.provider.getBlockNumber()
   return await gov.quorum(currentBlock - 1)
 }
 
 const getGovTokenAddress = async (govAddress) => {
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   return await gov.token()
+}
+
+const getTimelockAddress = async (govAddress) => {
+  const gov = await getGovContract(govAddress)
+  return await gov.timelock()
 }
 
 const getProposalState = async (proposalId, govAddress) => {
@@ -266,7 +276,7 @@ const getProposalState = async (proposalId, govAddress) => {
     'Executed',
   ]
 
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   const state = await gov.state(proposalId)
   return states[state]
 }
@@ -288,7 +298,9 @@ module.exports = {
   loadProposal,
   getProposalVotes,
   getQuorum,
+  getGovContract,
   getGovTokenAddress,
+  getTimelockAddress,
   getProposalState,
   getProposalId,
   getProposalIdFromContract,
