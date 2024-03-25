@@ -145,24 +145,30 @@ task('gov:execute', 'Closing vote period and execute a proposal (local only)')
  * Governor Utils
  */
 task('gov:votes', 'Show votes for a specific proposal')
-  .addParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
   .addOptionalVariadicPositionalParam(
     'params',
     'List of params to pass to the proposal function'
   )
   .setAction(
-    async ({ proposal: proposalPath, govAddress, params }, { ethers }) => {
+    async (
+      { proposal: proposalPath, proposalId, govAddress, params },
+      { ethers }
+    ) => {
       const {
         getProposalVotes,
         getProposalId,
         getQuorum,
       } = require('../helpers/gov')
 
-      const { loadProposal } = require('../helpers/gov')
-      const proposal = await loadProposal(resolve(proposalPath), params)
-      const proposalId =
-        proposal.proposalId || (await getProposalId(proposal, govAddress))
+      if (!proposalId) {
+        const { loadProposal } = require('../helpers/gov')
+        const proposal = await loadProposal(resolve(proposalPath), params)
+        proposalId =
+          proposal.proposalId || (await getProposalId(proposal, govAddress))
+      }
       const { againstVotes, forVotes, abstainVotes } = await getProposalVotes(
         proposalId,
         govAddress
