@@ -66,6 +66,7 @@ async function main({ proposal, proposalId, txId, govAddress }) {
       // eslint-disable-next-line no-console
       console.log(`GOV EXEC > Proposal executed successfully (txid: ${hash})`)
     }
+    return receipt
   } else if (state === 'Executed') {
     console.log('GOV EXEC > Proposal has already been executed')
   } else {
