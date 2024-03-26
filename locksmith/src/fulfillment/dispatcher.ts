@@ -216,7 +216,7 @@ export default class Dispatcher {
                 new Promise(
                   (resolve) =>
                     (timeout = setTimeout(() => {
-                      console.log(
+                      logger.error(
                         `Timeout while retrieving balance on network ${network.name} (${network.id})`
                       )
                       resolve(0)
