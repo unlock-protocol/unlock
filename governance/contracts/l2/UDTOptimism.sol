@@ -64,9 +64,21 @@ contract UDTOptimism is IOptimismMintableERC20, ERC20 {
     return REMOTE_TOKEN;
   }
 
+  /// @custom:fix
+  /// @notice Getter for REMOTE_TOKEN required by @eth-optimism/sdk
+  function l1Token() public view returns (address) {
+    return REMOTE_TOKEN;
+  }
+
   /// @custom:legacy
   /// @notice Legacy getter for BRIDGE.
   function bridge() public view returns (address) {
+    return BRIDGE;
+  }
+
+  /// @custom:fix
+  /// @notice Getter for REMOTE_TOKEN required by @eth-optimism/sdk
+  function l2Bridge() public view returns (address) {
     return BRIDGE;
   }
 
