@@ -15,6 +15,9 @@ export const zkevm: NetworkConfig = {
     },
   },
   featured: false,
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 1101,
   isTestNetwork: false,
   maxFreeClaimCost: 1,

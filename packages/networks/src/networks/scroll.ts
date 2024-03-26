@@ -15,6 +15,9 @@ export const scroll: NetworkConfig = {
     },
   },
   featured: false,
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 534352,
   isTestNetwork: false,
   maxFreeClaimCost: 100,

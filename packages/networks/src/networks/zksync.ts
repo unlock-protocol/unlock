@@ -19,7 +19,9 @@ export const zksync: NetworkConfig = {
     },
   },
   featured: false,
-  hooks: {},
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 324,
   isTestNetwork: false,
   maxFreeClaimCost: 1,
