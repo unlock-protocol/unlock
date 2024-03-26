@@ -77,6 +77,8 @@ const config = {
     exportsBucket: 'uploads',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
+  gitcoinApiKey: process.env.GITCOIN_API_KEY,
+  gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
