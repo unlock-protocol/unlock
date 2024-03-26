@@ -4,6 +4,7 @@ const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig2.json')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const SafeApiKit = require('@safe-global/api-kit').default
+const { encodeMultiSendData } = require('@safe-global/protocol-kit')
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
@@ -190,6 +191,26 @@ const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
   return nonce
 }
 
+// pack multiple calls in a single multicall
+const parseSafeMulticall = async (calls) => {
+  console.log(calls)
+  const metaTxs = calls.map(
+    ({ contractAddress, calldata = '0x', value = 0, operation = 0 }) => ({
+      to: contractAddress,
+      value,
+      data: calldata,
+      // TODO? need to fetch if proxy or not ?
+      operation, // operation: 0 for CALL, 1 for DELEGATECALL
+    })
+  )
+
+  const multicall = await encodeMultiSendData(metaTxs)
+
+  // TODO: how to get multicall address (without a provider)
+  const multicallAddress = ''
+  return multicall
+}
+
 module.exports = {
   getProvider,
   getSafeAddress,
@@ -202,4 +223,5 @@ module.exports = {
   getExpectedSigners,
   logError,
   getSafeService,
+  parseSafeMulticall,
 }
