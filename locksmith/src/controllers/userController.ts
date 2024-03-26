@@ -4,6 +4,11 @@ import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
 import { ethers } from 'ethers'
+import { MemoryCache } from 'memory-cache-node'
+
+// Decoy users are cached for 15 minutes
+const cacheDuration = 60 * 15
+const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -53,6 +58,7 @@ export const retrieveEncryptedPrivatekey = async (
   if (ejected) {
     return res.sendStatus(404)
   }
+
   const result = await UserOperations.getUserPrivateKeyByEmailAddress(
     emailAddress
   )
@@ -60,11 +66,28 @@ export const retrieveEncryptedPrivatekey = async (
   if (result) {
     return res.json({ passwordEncryptedPrivateKey: result })
   } else {
-    const result = await ethers.Wallet.createRandom().encrypt(
-      (Math.random() + 1).toString(36)
-    )
+    let passwordEncryptedPrivateKey =
+      decoyUserCache.retrieveItemValue(emailAddress)
+    if (!passwordEncryptedPrivateKey) {
+      passwordEncryptedPrivateKey = await ethers.Wallet.createRandom().encrypt(
+        (Math.random() + 1).toString(36),
+        {
+          scrypt: {
+            // web3 used 1 << 5, ethers default is 1 << 18. We want speedy encryption here since this is not a real account anyway.
+            // eslint-disable-next-line no-bitwise
+            N: 1 << 5,
+          },
+        }
+      )
+      decoyUserCache.storeExpiringItem(
+        emailAddress,
+        passwordEncryptedPrivateKey,
+        cacheDuration
+      )
+    }
+
     return res.json({
-      passwordEncryptedPrivateKey: result,
+      passwordEncryptedPrivateKey,
     })
   }
 }

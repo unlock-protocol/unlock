@@ -163,6 +163,7 @@ export const getCards = async (emailAddress: string): Promise<any[]> => {
   }
   return []
 }
+
 export const getCardDetailsFromStripe = async (
   customer_id: any
 ): Promise<any[]> => {
