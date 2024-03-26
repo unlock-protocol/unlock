@@ -35,6 +35,11 @@ export const avalanche: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xa396CFB1fFe3ADD2308dF140aa2d0A520D5c6c31',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 43114,

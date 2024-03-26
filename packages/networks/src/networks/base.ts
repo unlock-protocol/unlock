@@ -41,6 +41,11 @@ export const base: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x64441384DB40F34855b1617C05800bE43bD34709',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 8453,

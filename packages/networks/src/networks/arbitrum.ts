@@ -48,6 +48,11 @@ export const arbitrum: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 42161,
