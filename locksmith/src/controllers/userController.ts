@@ -63,8 +63,6 @@ export const retrieveEncryptedPrivatekey = async (
     const result = await ethers.Wallet.createRandom().encrypt(
       (Math.random() + 1).toString(36)
     )
-    console.log(result)
-
     return res.json({
       passwordEncryptedPrivateKey: result,
     })

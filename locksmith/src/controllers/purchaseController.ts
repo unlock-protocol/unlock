@@ -219,7 +219,6 @@ export class PurchaseController {
       )
       logger.info(`Subscription updated for id: ${subscription?.id}`)
     } catch (error) {
-      console.log(error)
       if (response.headersSent) {
         return
       }
