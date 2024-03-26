@@ -54,6 +54,11 @@ export const optimism: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x7217b772788374391e890b773e6b8B7101b5Acde',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 10,

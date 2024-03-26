@@ -18,7 +18,6 @@ export function useCustomHook({
 
   const getHookValues = async () => {
     let values = {}
-
     await Promise.all([
       ...Object.entries(HookMapping).map(
         async ([fieldName, { hookName, fromPublicLockVersion = 0 }]) => {

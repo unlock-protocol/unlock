@@ -50,6 +50,11 @@ export const gnosis: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x111C61BD66a8c4f142e452b9087Dae5893C5C3cF',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 100,

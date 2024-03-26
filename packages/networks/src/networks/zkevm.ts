@@ -15,6 +15,9 @@ export const zkevm: NetworkConfig = {
     },
   },
   featured: false,
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 1101,
   isTestNetwork: false,
   maxFreeClaimCost: 1,
@@ -43,7 +46,7 @@ export const zkevm: NetworkConfig = {
       decimals: 18,
       featured: true,
       name: 'Wrapped Ether',
-      symbol: 'WETH9',
+      symbol: 'WETH',
     },
     {
       address: '0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5',
