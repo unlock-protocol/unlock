@@ -17,6 +17,7 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build": "tsup src/index.ts --dts --format esm,cjs",
     "check-tokens": "tsx ./bin/check-tokens",
+    "check-hooks": "tsx ./bin/check-hooks",
     "clean": "rm -rf ./dist",
     "create-localhost": "tsx ./bin/localhost",
     "unlock-address": "tsx ./bin/readSubgraphInfo",
