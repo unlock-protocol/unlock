@@ -1,10 +1,19 @@
+/**
+ * Script to check the status of all bridge calls contained in a specific
+ * tx
+ *
+ * Usage:
+ * 1. update the `txId` with the DAO proposal execution tx has
+ * 2. run the script with :
+ *  `yarn hardhat run scripts/bridge/status.js --network mainnet`
+ */
 const {
   getXCalledEvents,
   fetchOriginXCall,
   fetchDestinationXCall,
   getSupportedChainsByDomainId,
   logStatus,
-} = require('./_lib')
+} = require('../../helpers/bridge')
 
 const fs = require('fs-extra')
 
@@ -15,11 +24,7 @@ async function main({
   // TODO: pass this hash via cli
   txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
 } = {}) {
-  console.log(`hello world ${txId}`)
-
   const xCalls = await getXCalledEvents(txId)
-
-  console.log()
 
   // sort by domain id
   const sorted = xCalls.reduce((prev, curr) => {

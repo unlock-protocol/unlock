@@ -191,3 +191,15 @@ task('gov:delegate', 'Delagate voting power')
       govAddress,
     })
   })
+
+task('gov:show', 'Log explainers for a proposal (local only)')
+  .addParam('proposal', 'The file containing the proposal')
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(async ({ proposal: proposalPath, params }) => {
+    const { loadProposal } = require('../helpers/gov')
+    const { explainers } = await loadProposal(resolve(proposalPath), params)
+    console.log(explainers)
+  })
