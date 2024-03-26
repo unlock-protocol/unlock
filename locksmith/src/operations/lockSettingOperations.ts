@@ -38,7 +38,9 @@ export async function getSettings({
   includeProtected?: boolean
 }): Promise<LockSetting | LockSettingProps> {
   // list of array of keys to exclude
-  const attributesExcludes = includeProtected ? [] : ['replyTo', 'promoCodes']
+  const attributesExcludes = includeProtected
+    ? []
+    : ['replyTo', 'promoCodes', 'passwords']
 
   const settings = await LockSetting.findOne({
     where: {

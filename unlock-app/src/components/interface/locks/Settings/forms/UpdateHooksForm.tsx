@@ -7,6 +7,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { Hook, HookName, HookType } from '@unlock-protocol/types'
 import { CustomContractHook } from './hooksComponents/CustomContractHook'
 import { PasswordContractHook } from './hooksComponents/PasswordContractHook'
+import { PasswordCappedContractHook } from './hooksComponents/PasswordCappedContractHook'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
@@ -76,6 +77,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Password',
         value: HookType.PASSWORD,
         component: (args) => <PasswordContractHook {...args} />,
+      },
+      {
+        label: 'Password with caps',
+        value: HookType.PASSWORD_CAPPED,
+        component: (args) => <PasswordCappedContractHook {...args} />,
       },
       {
         label: 'Captcha required',

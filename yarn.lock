@@ -20031,7 +20031,7 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.3"
-    rate-limiter-flexible: "npm:4.0.1"
+    rate-limiter-flexible: "npm:5.0.0"
     react: "npm:18.2.0"
     remark-html: "npm:15.0.2"
     remark-parse: "npm:10.0.2"
@@ -20065,6 +20065,7 @@ __metadata:
     eslint: "npm:8.54.0"
     eslint-plugin-sort-keys-fix: "npm:1.1.2"
     ethers: "npm:6.10.0"
+    fs-extra: "npm:11.2.0"
     tsup: "npm:8.0.2"
     tsx: "npm:4.7.1"
     typescript: "npm:5.3.3"
@@ -20411,8 +20412,7 @@ __metadata:
     calendar-link: "npm:2.6.0"
     dayjs: "npm:1.11.10"
     dotenv: "npm:16.4.5"
-    embla-carousel-autoplay: "npm:7.1.0"
-    embla-carousel-react: "npm:7.1.0"
+    embla-carousel-react: "npm:8.0.0"
     eslint: "npm:8.54.0"
     eslint-config-next: "npm:14.1.2"
     ethers: "npm:5.7.2"
@@ -28913,30 +28913,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"embla-carousel-autoplay@npm:7.1.0":
-  version: 7.1.0
-  resolution: "embla-carousel-autoplay@npm:7.1.0"
-  peerDependencies:
-    embla-carousel: 7.1.0
-  checksum: 10/d35e5a8c892df1c6307ca5e4522ca0bbded66b8b9b3a26f4474b4b8953cce5e6977b23a922cfefb42f814e3ea16b4de7ed39b37f974c4f4bfd5a70dbca9982c2
-  languageName: node
-  linkType: hard
-
-"embla-carousel-react@npm:7.1.0":
-  version: 7.1.0
-  resolution: "embla-carousel-react@npm:7.1.0"
+"embla-carousel-react@npm:8.0.0":
+  version: 8.0.0
+  resolution: "embla-carousel-react@npm:8.0.0"
   dependencies:
-    embla-carousel: "npm:7.1.0"
+    embla-carousel: "npm:8.0.0"
+    embla-carousel-reactive-utils: "npm:8.0.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.1 || ^18.0.0
-  checksum: 10/5bc37cf372b766c542f05f9a719d925ad6704fbf9d70a86f198a2e745456b54ec0006731b0c28bae5c9538c183f4ee34c461b673af3b9026da3fdfd71a4d34e5
+  checksum: 10/d132e15c47400eba40829d0775bbe83abe0e3b2fb4461587807ddab4f53d656ee8f8c4eb55bc9ad3ec5bde853da5e5dcbecb74528c1fe5228eede4dfccf3588a
   languageName: node
   linkType: hard
 
-"embla-carousel@npm:7.1.0":
-  version: 7.1.0
-  resolution: "embla-carousel@npm:7.1.0"
-  checksum: 10/990745e2a4cbd9fd44607dc3faa7ed60adb0149cc3858cdcc304053a470e2408c76064a9062020aefc6b4cd3eb7e8e1e03daf0a634358619246c46c8fa947315
+"embla-carousel-reactive-utils@npm:8.0.0":
+  version: 8.0.0
+  resolution: "embla-carousel-reactive-utils@npm:8.0.0"
+  peerDependencies:
+    embla-carousel: 8.0.0
+  checksum: 10/a257aad5c19921d528eb6bdc99ede619e939f75fd502836f2144e4252fb82b041c9fde4bd611d96c03348d0190eb0f19f298f733113e558f6561a7b618a07c98
+  languageName: node
+  linkType: hard
+
+"embla-carousel@npm:8.0.0":
+  version: 8.0.0
+  resolution: "embla-carousel@npm:8.0.0"
+  checksum: 10/762b2a642bb9e698190d5bf32d7a2ec634d264a3da94ef8b3515011c4674f8d5fb3a0db4b6946d6ecbaaf46929c5a20ba9865656006c8514bb88b8a29ddc176c
   languageName: node
   linkType: hard
 
@@ -45938,10 +45939,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:4.0.1":
-  version: 4.0.1
-  resolution: "rate-limiter-flexible@npm:4.0.1"
-  checksum: 10/c86b9b188396af3e030eb6f0ab95483057cbdf2480612a95a4fa660401b6daea2960b3155c7cd2f77e3ded3bc97163bb7513ea9ec21bfac7c128dfb5221ff800
+"rate-limiter-flexible@npm:5.0.0":
+  version: 5.0.0
+  resolution: "rate-limiter-flexible@npm:5.0.0"
+  checksum: 10/66d254f47bd68639c65e4ee567a8fe6d6cbee9222e69eb191ed5a2a92e7a65bb152afe238d74c2c5a530afdae4461e520cd819484c95be6627dd051c84866bc6
   languageName: node
   linkType: hard
 
@@ -51300,6 +51301,7 @@ __metadata:
     "@types/node": "npm:12.0.0"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/hardhat-plugin": "workspace:^"
+    "@unlock-protocol/networks": "workspace:^"
     apollo-link-http: "npm:1.5.17"
     chai: "npm:4.2.0"
     eslint: "npm:8.46.0"
