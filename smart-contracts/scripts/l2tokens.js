@@ -50,16 +50,16 @@ async function main({
     )} ${await l1Token.symbol()} to ${await l2Token.symbol()} on L2...`
   )
 
-  const showBalances = async () => {
+  const showBalances = async (text = 'Balance') => {
     console.log(
-      `Balance before
+      `${text}
       - l1: ${(await l1Token.balanceOf(l1Wallet.address)).toString()}
       - l2: ${(await l2Token.balanceOf(l2Wallet.address)).toString()}`
     )
   }
 
   // log balances
-  await showBalances()
+  await showBalances('Balance before')
 
   // sdk init
   const messenger = new optimism.CrossChainMessenger({
@@ -90,7 +90,7 @@ async function main({
 
   // check balances after operations
   console.log(`Deposit done.`)
-  await showBalances()
+  await showBalances('Balance after')
 }
 
 // execute as standalone
