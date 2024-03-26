@@ -29,7 +29,9 @@ async function main({
   ])
 
   console.log(
-    `Bridging tokens from L1 ${l1.name} (${l1.id}) to L2 ${l2.name} (${l2.id})...`
+    `Bridging tokens from L1 ${l1.name} (${l1.id}) to L2 ${l2.name} (${l2.id})...
+    - L1: ${l1TokenAddress} 
+    - L2: ${l2TokenAddress}`
   )
 
   // Create the RPC providers and wallets
