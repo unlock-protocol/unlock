@@ -46,14 +46,19 @@ async function main({ safeAddress, tx, signer }) {
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
   const txs = !Array.isArray(tx) ? [tx] : tx
 
-  const explainer = txs
-    .map(({ functionName, functionArgs, explainer }) =>
-      explainer
-        ? explainer
-        : `'${functionName}(${Object.values(functionArgs).toString()})'`
-    )
-    .join(', ')
-  console.log(`Submitting txs: ${explainer}`)
+  let explainer = ''
+  try {
+    explainer = txs
+      .map(({ functionName, functionArgs, explainer }) =>
+        explainer
+          ? explainer
+          : `'${functionName}(${Object.values(functionArgs).toString()})'`
+      )
+      .join(', ')
+    console.log(`Submitting txs: ${explainer}`)
+  } catch (error) {
+    console.log(`Missing explainers...`)
+  }
 
   // parse transactions
   const transactions = await Promise.all(

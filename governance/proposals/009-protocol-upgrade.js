@@ -5,7 +5,6 @@
 const { ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
-const { encodeMultiSendData } = require('@safe-global/protocol-kit')
 
 const {
   getProxyAdminAddress,
@@ -15,6 +14,8 @@ const {
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
+
+const { parseSafeMulticall } = require('../helpers/multisig')
 
 // TODO: move to hardhat-helpers
 const abiIConnext = [
@@ -165,22 +166,6 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
   return calls
 }
 
-//
-const parseForSafe = async (calls) => {
-  console.log(calls)
-  const metaTxs = calls.map(({ contractAddress, calldata }) => ({
-    to: contractAddress,
-    value: 0,
-    data: calldata,
-    // TODO? need to fetch if proxy or not ?
-    operation: 0, // operation: 0 for CALL, 1 for DELEGATECALL
-  }))
-
-  // pack calls in a single multicall
-  const multicall = await encodeMultiSendData(metaTxs)
-  return multicall
-}
-
 module.exports = async () => {
   const targetChains = Object.keys(networks)
     .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
@@ -229,7 +214,7 @@ module.exports = async () => {
       explainers[destChainId] = destCalls
 
       // parse calls for Safe
-      const moduleData = await parseForSafe(destCalls)
+      const moduleData = await parseSafeMulticall(destCalls)
 
       // add to the list of calls to be passed to the bridge
       bridgeCalls.push({
