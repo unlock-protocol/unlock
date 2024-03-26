@@ -9,11 +9,11 @@ import { HttpLink } from 'apollo-link-http'
 import { genKeyId } from './keys'
 import type { BigNumber } from 'ethers'
 
-const subgraphURI = `http://${
-  process.env.CI ? 'graph-node' : '127.0.0.1'
-}:8000/subgraphs/name/testgraph`
+import { localhost } from '@unlock-protocol/networks'
 
-console.log(subgraphURI)
+const {
+  subgraph: { endpoint: subgraphURI },
+} = localhost
 
 const link = new HttpLink({
   uri: subgraphURI,
