@@ -78,7 +78,7 @@ const parseForkUrl = (networks) => {
 }
 
 const resetNodeState = async () => {
-  const { ethers, network, config } = require('hardhat')
+  const { network, config } = require('hardhat')
   // reset fork
   const { forking } = config.networks.hardhat
   await network.provider.request({
@@ -94,10 +94,7 @@ const resetNodeState = async () => {
   })
 }
 
-const addSomeETH = async (
-  address,
-  amount = ethers.utils.parseEther('1000')
-) => {
+const addSomeETH = async (address, amount = ethers.parseEther('1000')) => {
   const { network } = require('hardhat')
   const balance = `0x${BigInt(amount.toString()).toString(16)}`
   await network.provider.send('hardhat_setBalance', [address, balance])

@@ -2,19 +2,32 @@
 const { task } = require('hardhat/config')
 const { resolve } = require('path')
 
-task('gov', 'Submit (and validate) a proposal to UDT Governor contract')
-  .addParam('proposal', 'The file containing the proposal')
+task('gov', 'Test execution of the entire proposal lifecycle')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of an existing proposal')
+  .addOptionalParam('txId', 'The id of the tx where the proposal was submitted')
   .addParam('govAddress', 'The address of the Governor contract')
   .addOptionalVariadicPositionalParam(
     'params',
     'List of params to pass to the proposal function'
   )
-  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
-    const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath), params)
-    const processProposal = require('../scripts/gov')
-    return await processProposal({ proposal, govAddress })
-  })
+  .setAction(
+    async ({
+      proposal: proposalPath,
+      txId,
+      proposalId,
+      govAddress,
+      params,
+    }) => {
+      let proposal
+      if (!proposalId) {
+        const { loadProposal } = require('../helpers/gov')
+        proposal = await loadProposal(resolve(proposalPath), params)
+      }
+      const processProposal = require('../scripts/gov')
+      return await processProposal({ proposal, govAddress, proposalId, txId })
+    }
+  )
 
 /**
  * Governor Workflow
@@ -69,55 +82,93 @@ task('gov:vote', 'Vote for a proposal on UDT Governor contract')
   )
 
 task('gov:queue', 'Queue proposal in timelock')
-  .addParam('proposal', 'The file containing the proposal')
   .addParam('govAddress', 'The address of the Governor contract')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of an existing proposal')
+  .addOptionalParam('txId', 'The id of the tx where the proposal was submitted')
   .addOptionalVariadicPositionalParam(
     'params',
     'List of params to pass to the proposal function'
   )
-  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
-    const queueProposal = require('../scripts/gov/queue')
-    const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath), params)
-    return await queueProposal({ proposal, govAddress })
-  })
+  .setAction(
+    async ({
+      proposal: proposalPath,
+      govAddress,
+      params,
+      proposalId,
+      txId,
+    }) => {
+      const queueProposal = require('../scripts/gov/queue')
+      let proposal
+      if (!proposalId) {
+        const { loadProposal } = require('../helpers/gov')
+        proposal = await loadProposal(resolve(proposalPath), params)
+      }
+      return await queueProposal({ proposal, govAddress, proposalId, txId })
+    }
+  )
 
 task('gov:execute', 'Closing vote period and execute a proposal (local only)')
-  .addParam('proposal', 'The file containing the proposal')
-  .addParam('govAddress', 'The address of the Governor contract')
-  .addOptionalVariadicPositionalParam(
-    'params',
-    'List of params to pass to the proposal function'
-  )
-  .setAction(async ({ proposal: proposalPath, govAddress, params }) => {
-    const executeProposal = require('../scripts/gov/execute')
-    const { loadProposal } = require('../helpers/gov')
-    const proposal = await loadProposal(resolve(proposalPath), params)
-    return await executeProposal({ proposal, govAddress, params })
-  })
-
-/**
- * Governor Utils
- */
-task('gov:votes', 'Show votes for a specific proposal')
-  .addParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of an existing proposal')
+  .addOptionalParam('txId', 'The id of the tx where the proposal was submitted')
   .addParam('govAddress', 'The address of the Governor contract')
   .addOptionalVariadicPositionalParam(
     'params',
     'List of params to pass to the proposal function'
   )
   .setAction(
-    async ({ proposal: proposalPath, govAddress, params }, { ethers }) => {
+    async ({
+      proposal: proposalPath,
+      govAddress,
+      params,
+      proposalId,
+      txId,
+    }) => {
+      const executeProposal = require('../scripts/gov/execute')
+      let proposal
+      if (!proposalId) {
+        const { loadProposal } = require('../helpers/gov')
+        proposal = await loadProposal(resolve(proposalPath), params)
+      }
+      return await executeProposal({
+        proposal,
+        govAddress,
+        params,
+        txId,
+        proposalId,
+      })
+    }
+  )
+
+/**
+ * Governor Utils
+ */
+task('gov:votes', 'Show votes for a specific proposal')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of the proposal')
+  .addParam('govAddress', 'The address of the Governor contract')
+  .addOptionalVariadicPositionalParam(
+    'params',
+    'List of params to pass to the proposal function'
+  )
+  .setAction(
+    async (
+      { proposal: proposalPath, proposalId, govAddress, params },
+      { ethers }
+    ) => {
       const {
         getProposalVotes,
         getProposalId,
         getQuorum,
       } = require('../helpers/gov')
 
-      const { loadProposal } = require('../helpers/gov')
-      const proposal = await loadProposal(resolve(proposalPath), params)
-      const proposalId =
-        proposal.proposalId || (await getProposalId(proposal, govAddress))
+      if (!proposalId) {
+        const { loadProposal } = require('../helpers/gov')
+        const proposal = await loadProposal(resolve(proposalPath), params)
+        proposalId =
+          proposal.proposalId || (await getProposalId(proposal, govAddress))
+      }
       const { againstVotes, forVotes, abstainVotes } = await getProposalVotes(
         proposalId,
         govAddress
@@ -191,3 +242,29 @@ task('gov:delegate', 'Delagate voting power')
       govAddress,
     })
   })
+
+task('gov:show', 'Show content of proposal')
+  .addParam('govAddress', 'The address of the Governor contract')
+  .addOptionalParam('proposal', 'The file containing the proposal')
+  .addOptionalParam('proposalId', 'The id of an existing proposal')
+  .addOptionalParam('txId', 'The id of the tx where the proposal was submitted')
+  .setAction(
+    async ({
+      proposal: proposalPath,
+      govAddress,
+      params,
+      proposalId,
+      txId,
+    }) => {
+      const { loadProposal, parseProposal } = require('../helpers/gov')
+      let proposal
+      if (!proposalId) {
+        const { loadProposal } = require('../helpers/gov')
+        proposal = await loadProposal(resolve(proposalPath), params)
+      } else {
+        console.log('load from tx')
+        proposal = await parseProposal({ txId, govAddress })
+      }
+      console.log(proposal)
+    }
+  )
