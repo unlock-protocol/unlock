@@ -38,7 +38,7 @@ export const baseSepolia: NetworkConfig = {
   // provider: 'https://rpc.unlock-protocol.com/84532',
   provider: 'https://sepolia.base.org',
 
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://sepolia.base.org',
 
