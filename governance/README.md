@@ -23,7 +23,7 @@ yarn workspace @unlock-protocol/networks build
 
 ## Add block explorer verification
 
-- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
+- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/src/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
 - optionally can add support for env variable
 
 When you are done, rebuild the helpers package with
