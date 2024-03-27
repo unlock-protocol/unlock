@@ -97,8 +97,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     }
   )
 
-  const receiptPrefix = supplier?.prefix ? supplier.prefix + '-' : ''
-
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
     receiptDetails?.payer?.toLowerCase() === account?.toLowerCase()
@@ -114,7 +112,14 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails && receiptDetails.timestamp
       ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
       : ''
-  const receiptNumber = receiptPrefix + (receiptDetails?.receiptNumber || '')
+
+  const receiptNumber = [
+    supplier?.prefix,
+    receiptDetails?.receiptNumber || '',
+    isCancelReceipt ? 'REFUND' : '',
+  ]
+    .filter((z: string) => !!z)
+    .join('-')
 
   const PurchaseDetails = () => {
     return (
@@ -275,9 +280,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       <div className="grid w-full max-w-lg gap-4 mb-5">
         <div className="grid w-full">
           <Disclosure
-            label={`#${
-              isCancelReceipt ? receiptNumber + '-REFUND' : receiptNumber
-            }`}
+            label={`#${receiptNumber}`}
             description={
               transactionUrl?.length && (
                 <div
