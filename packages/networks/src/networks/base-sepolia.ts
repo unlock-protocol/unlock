@@ -1,4 +1,4 @@
-import { HookType, NetworkConfig } from '@unlock-protocol/types'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 export const baseSepolia: NetworkConfig = {
   blockScan: {
