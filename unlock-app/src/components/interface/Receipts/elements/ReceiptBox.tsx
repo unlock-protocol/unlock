@@ -135,9 +135,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       currencyContractAddress: receiptDetails?.tokenAddress,
       hash,
     })
+    const multiplier = isCancelReceipt ? -1 : 1
 
     const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
-    const subtotal = receiptPrice?.total / (1 + vatRatePercentage / 100)
+    const subtotal =
+      (multiplier * receiptPrice?.total) / (1 + vatRatePercentage / 100)
     const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
     return (
@@ -168,7 +170,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
-                  {parseFloat(receiptPrice?.total).toFixed(2)} {symbol}
+                  {(multiplier * parseFloat(receiptPrice?.total)).toFixed(2)}{' '}
+                  {symbol}
                 </Detail>
               </div>
             </div>
@@ -273,7 +276,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
         <div className="grid w-full">
           <Disclosure
             label={`#${
-              isCancelReceipt ? receiptNumber + ' (Refund)' : receiptNumber
+              isCancelReceipt ? receiptNumber + '-REFUND' : receiptNumber
             }`}
             description={
               transactionUrl?.length && (
