@@ -35,7 +35,8 @@ export const baseSepolia: NetworkConfig = {
 
   previousDeploys: [],
 
-  provider: 'https://rpc.unlock-protocol.com/84532',
+  // provider: 'https://rpc.unlock-protocol.com/84532',
+  provider: 'https://sepolia.base.org',
 
   publicLockVersionToDeploy: 13,
 
@@ -66,7 +67,7 @@ export const baseSepolia: NetworkConfig = {
       symbol: 'USDC',
     },
   ],
-  unlockAddress: '',
+  unlockAddress: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
   unlockDaoToken: {
     address: '',
   },
