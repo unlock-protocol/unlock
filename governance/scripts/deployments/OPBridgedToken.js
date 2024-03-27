@@ -6,25 +6,16 @@ const fs = require('fs-extra')
 
 const L1_UDT_SEPOLIA = '0x0B26203E3DE7E680c9749CFa47b7ea37fEE7bd98'
 
-const OP_SEPOLIA_NETWORK = {
-  name: 'Op Sepolia',
-  id: 11155420,
-  provider: 'https://sepolia.optimism.io',
-}
-
 async function main({
   l1TokenAddress = L1_UDT_SEPOLIA,
   tokenSymbol = 'UDT.e',
   tokenName = 'UnlockDiscountToken (bridged)',
-  l2ChainId = OP_SEPOLIA_NETWORK.id, // 10 for OP Mainnet
+  l2ChainId = 84532, // Base Sepolia
 } = {}) {
   const { DEPLOYER_PRIVATE_KEY } = process.env
 
   // get l2 network info
-  const l2 =
-    l2ChainId === OP_SEPOLIA_NETWORK.id
-      ? OP_SEPOLIA_NETWORK
-      : await getNetwork(l2ChainId)
+  const l2 = await getNetwork(l2ChainId)
 
   console.log(
     `Deploying bridged token from L1 ${l1TokenAddress} to L2 ${l2.name} (${l2.id})...
@@ -32,10 +23,7 @@ async function main({
   )
 
   // Create the RPC providers and wallets
-  const l2Provider =
-    l2ChainId === OP_SEPOLIA_NETWORK.id
-      ? new ethers.JsonRpcProvider(l2.provider)
-      : await getProvider(l2ChainId)
+  const l2Provider = await getProvider(l2ChainId)
   const l2Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l2Provider)
 
   // read ABI from node_modules
