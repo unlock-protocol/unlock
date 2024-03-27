@@ -1,8 +1,10 @@
-const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork, getEvent } = require('@unlock-protocol/hardhat-helpers')
+const { getProvider } = require('../../helpers/multisig')
+
 const { ethers } = require('hardhat')
 const fs = require('fs-extra')
 
-const L1_TEST_TOKEN = '0x5589BB8228C07c4e15558875fAf2B859f678d129'
+const L1_UDT_SEPOLIA = '0x0B26203E3DE7E680c9749CFa47b7ea37fEE7bd98'
 
 const OP_SEPOLIA_NETWORK = {
   name: 'Op Sepolia',
@@ -11,7 +13,7 @@ const OP_SEPOLIA_NETWORK = {
 }
 
 async function main({
-  l1TokenAddress = L1_TEST_TOKEN,
+  l1TokenAddress = L1_UDT_SEPOLIA,
   tokenSymbol = 'UDT.e',
   tokenName = 'UnlockDiscountToken (bridged)',
   l2ChainId = OP_SEPOLIA_NETWORK.id, // 10 for OP Mainnet
@@ -19,9 +21,10 @@ async function main({
   const { DEPLOYER_PRIVATE_KEY } = process.env
 
   // get l2 network info
-  const l2 = OP_SEPOLIA_NETWORK.id
-    ? OP_SEPOLIA_NETWORK
-    : await getNetwork(l2ChainId)
+  const l2 =
+    l2ChainId === OP_SEPOLIA_NETWORK.id
+      ? OP_SEPOLIA_NETWORK
+      : await getNetwork(l2ChainId)
 
   console.log(
     `Deploying bridged token from L1 ${l1TokenAddress} to L2 ${l2.name} (${l2.id})...
@@ -29,7 +32,10 @@ async function main({
   )
 
   // Create the RPC providers and wallets
-  const l2Provider = new ethers.providers.StaticJsonRpcProvider(l2.provider)
+  const l2Provider =
+    l2ChainId === OP_SEPOLIA_NETWORK.id
+      ? new ethers.JsonRpcProvider(l2.provider)
+      : await getProvider(l2ChainId)
   const l2Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l2Provider)
 
   // read ABI from node_modules
@@ -58,12 +64,13 @@ async function main({
   )
 
   // fetch info from tx
-  const { events, transactionHash } = await tx.wait()
+  const receipt = await tx.wait()
   const {
     args: { localToken },
-  } = events.find(({ event }) => event === 'OptimismMintableERC20Created')
+    hash,
+  } = await getEvent(receipt, 'OptimismMintableERC20Created')
 
-  console.log(`Bridged token deployed at: ${localToken} (${transactionHash})`)
+  console.log(`Bridged token deployed at: ${localToken} (${hash})`)
 }
 
 // execute as standalone
