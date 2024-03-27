@@ -20426,7 +20426,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-showdown: "npm:2.3.1"
     react-test-renderer: "npm:18.2.0"
-    remark: "npm:14.0.3"
+    remark: "npm:15.0.1"
     remark-html: "npm:16.0.1"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
@@ -39358,16 +39358,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-phrasing@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "mdast-util-phrasing@npm:3.0.1"
-  dependencies:
-    "@types/mdast": "npm:^3.0.0"
-    unist-util-is: "npm:^5.0.0"
-  checksum: 10/c5b616d9b1eb76a6b351d195d94318494722525a12a89d9c8a3b091af7db3dd1fc55d294f9d29266d8159a8267b0df4a7a133bda8a3909d5331c383e1e1ff328
-  languageName: node
-  linkType: hard
-
 "mdast-util-phrasing@npm:^4.0.0":
   version: 4.1.0
   resolution: "mdast-util-phrasing@npm:4.1.0"
@@ -39411,22 +39401,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-to-markdown@npm:^1.0.0":
-  version: 1.5.0
-  resolution: "mdast-util-to-markdown@npm:1.5.0"
-  dependencies:
-    "@types/mdast": "npm:^3.0.0"
-    "@types/unist": "npm:^2.0.0"
-    longest-streak: "npm:^3.0.0"
-    mdast-util-phrasing: "npm:^3.0.0"
-    mdast-util-to-string: "npm:^3.0.0"
-    micromark-util-decode-string: "npm:^1.0.0"
-    unist-util-visit: "npm:^4.0.0"
-    zwitch: "npm:^2.0.0"
-  checksum: 10/713f674588a01969a2ce524a69985bd57e507377eea2c4ba69800fb305414468b30144ae9b837fbdde8c609877673140e4f56f6cabe9e0e2bc1487291e3c5144
-  languageName: node
-  linkType: hard
-
 "mdast-util-to-markdown@npm:^2.0.0":
   version: 2.1.0
   resolution: "mdast-util-to-markdown@npm:2.1.0"
@@ -39450,7 +39424,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-to-string@npm:^3.0.0, mdast-util-to-string@npm:^3.1.0":
+"mdast-util-to-string@npm:^3.1.0":
   version: 3.2.0
   resolution: "mdast-util-to-string@npm:3.2.0"
   dependencies:
@@ -47248,17 +47222,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark-stringify@npm:^10.0.0":
-  version: 10.0.3
-  resolution: "remark-stringify@npm:10.0.3"
-  dependencies:
-    "@types/mdast": "npm:^3.0.0"
-    mdast-util-to-markdown: "npm:^1.0.0"
-    unified: "npm:^10.0.0"
-  checksum: 10/9fc5545b7cfd14f77196742e474db1a3863d5435324b381ae2097730870c74338feda99c12b172edadf9fe478ce96a3b9e6abc29cb42774da279c86664e5d869
-  languageName: node
-  linkType: hard
-
 "remark-stringify@npm:^11.0.0":
   version: 11.0.0
   resolution: "remark-stringify@npm:11.0.0"
@@ -47270,15 +47233,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark@npm:14.0.3":
-  version: 14.0.3
-  resolution: "remark@npm:14.0.3"
+"remark@npm:15.0.1":
+  version: 15.0.1
+  resolution: "remark@npm:15.0.1"
   dependencies:
-    "@types/mdast": "npm:^3.0.0"
-    remark-parse: "npm:^10.0.0"
-    remark-stringify: "npm:^10.0.0"
-    unified: "npm:^10.0.0"
-  checksum: 10/425ed19401aa09d9d5b26f19c173e63a05b57d047393bb698898a09de4ec99a840a2405e28bd1410ccb124368fdd9a825e850a531f524dbc2e52ae005e026a4f
+    "@types/mdast": "npm:^4.0.0"
+    remark-parse: "npm:^11.0.0"
+    remark-stringify: "npm:^11.0.0"
+    unified: "npm:^11.0.0"
+  checksum: 10/671eae3a4482377373cbbae956e2dbc0f8c40df1c3e5e2e1e82efa248b310ef5989340e1a5a8ebe94ff14fcf9c72612f40a29d002ffc0a465e3d6d50de973839
   languageName: node
   linkType: hard
 
