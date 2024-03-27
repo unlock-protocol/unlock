@@ -16,7 +16,7 @@ const etherscan = {
     polygonMumbai: 'W9TVEYKW2CDTQ94T3A2V93IX6U3IHQN5Y3',
     avalanche: 'N4AF8AYN8PXY2MFPUT8PAFSZNVJX5Q814X',
     celo: '6KBKUFYV3NQR4Y1BQN3Q34S2U7NTZBBPQZ',
-    baseGoerli: 'YourApiKeyToken',
+    baseSepolia: 'YourApiKeyToken',
     base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
@@ -33,11 +33,11 @@ const etherscan = {
       },
     },
     {
-      network: 'baseGoerli',
-      chainId: 84531,
+      network: 'baseSepolia',
+      chainId: 84532,
       urls: {
-        apiURL: 'https://api-goerli.basescan.org/api',
-        browserURL: 'https://goerli.basescan.org/',
+        apiURL: 'https://api-sepolia.basescan.org/api',
+        browserURL: 'https://sepolia.basescan.org/',
       },
     },
     {
