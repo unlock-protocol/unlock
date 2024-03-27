@@ -42,7 +42,7 @@ export const baseSepolia: NetworkConfig = {
 
   publicProvider: 'https://sepolia.base.org',
 
-  startBlock: 7889115,
+  startBlock: 7889118,
   subgraph: {
     endpoint:
       'https://api.studio.thegraph.com/query/xxx/unlock-protocol-base-sepolia/version/latest',
@@ -67,7 +67,7 @@ export const baseSepolia: NetworkConfig = {
       symbol: 'USDC',
     },
   ],
-  unlockAddress: '0xf98D7ADA874D53a75BbDfB05D2A96C1525d426A7',
+  unlockAddress: '0x259813B665C8f6074391028ef782e27B65840d89',
   unlockDaoToken: {
     address: '',
   },
