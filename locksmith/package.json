@@ -57,7 +57,7 @@
     "dayjs": "1.11.10",
     "dotenv": "16.1.3",
     "ethers": "5.7.2",
-    "express": "5.0.0-beta.1",
+    "express": "5.0.0-beta.3",
     "express-winston": "4.2.0",
     "fuse.js": "6.6.2",
     "geoip-country": "4.1.59",
