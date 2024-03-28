@@ -9,6 +9,12 @@ const {
   addDefaultLocalNetwork,
 } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
+const {
+  ARBTokenAddressOnL2,
+  grantsContractAddress,
+  timelockL2Alias,
+  L1TimelockContract,
+} = require('./config')
 
 const ERC20_ABI = [
   {
@@ -115,8 +121,8 @@ const INBOX_ABI = [
 /**
  * Set up: instantiate L1 / L2 wallets connected to providers
  */
-const walletPrivateKey = 'Your_Private_key'
-const L1RPC = 'https://mainnet.infura.io/v3/<your_infura_api_key>'
+const walletPrivateKey = process.env.PRIVATE_KEY
+const L1RPC = 'https://rpc.unlock-protocol.com/1'
 const L2RPC = 'https://arbitrum-mainnet.infura.io/v3/<your_infura_api_key>'
 const l1Provider = new ethers.JsonRpcProvider(L1RPC)
 const l2Provider = new ethers.JsonRpcProvider(L2RPC)
@@ -130,10 +136,6 @@ module.exports = async () => {
   const l2Network = await getL2Network(l2Provider)
   const ethBridger = new EthBridger(l2Network)
   const inboxAddress = ethBridger.l2Network.ethBridge.inbox
-  const ARBTokenAddressOnL2 = '0x912CE59144191C1204E64559FE8253a0e49E6548' // ARB TOKEN ADDRESS ON ARBITRUM ONE
-  const grantsContractAddress = '0x00D5E0d31d37cc13C645D86410aB4cB7Cb428ccA'
-  const timelockL2Alias = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c' // Timelock Alias Address on L2
-  const L1TimelockContract = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B' // Timelock Address mainnet
 
   const L2TokenContract = new ethers.Contract(
     ARBTokenAddressOnL2,
