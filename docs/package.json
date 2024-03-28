@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/helper-get-function-arity": "7.16.7",
-    "@cookbookdev/docsbot": "*",
+    "@cookbookdev/docsbot": "4.5.0",
     "@docusaurus/core": "3.2.1",
     "@docusaurus/plugin-client-redirects": "3.2.1",
     "@docusaurus/plugin-content-docs": "3.2.1",
