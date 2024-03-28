@@ -1,14 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as Plot from '@observablehq/plot'
 
-type ISeries = {
-  name: string
-  data: number[]
-}
-type IXaxis = {
-  categories: string[]
-}
-
 interface IViewFilter {
   label: string
   value: string
