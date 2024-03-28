@@ -29,12 +29,22 @@ type IFilter = {
   selectedNetwork?: number | undefined
 }
 
-const filters = [
-  { label: 'ALL', period: 1000 },
+const timeFilters = [
   { label: '1 Month', period: 30 },
   { label: '6 Months', period: 180 },
   { label: '1 Year', period: 365 },
+  { label: 'ALL', period: 1000 },
 ]
+
+const supportedNetworks = Object.keys(networks)
+  .map((id) => networks[id])
+  .filter(({ isTestNetwork, id }) => !isTestNetwork && id)
+  .map(({ name, chain, id, subgraph }) => ({
+    name,
+    chain,
+    id,
+    subgraphURI: subgraph.endpoint,
+  }))
 
 function isWithin(date, days) {
   const toTest = new Date(date)
@@ -48,22 +58,12 @@ function isWithin(date, days) {
 
 function filterData({ dailyStats, filter }) {
   const { period, selectedNetwork } = filter
-  return dailyStats.filter(({ name, date }) =>
+  return dailyStats.filter(({ chain, date }) =>
     isWithin(date, period) && (!selectedNetwork || selectedNetwork === 'ALL')
       ? true
-      : name === selectedNetwork
+      : chain === selectedNetwork
   )
 }
-
-const supportedNetworks = Object.keys(networks)
-  .map((id) => networks[id])
-  .filter(({ isTestNetwork, id }) => !isTestNetwork && id)
-  .map(({ name, chain, id, subgraph }) => ({
-    name,
-    chain,
-    id,
-    subgraphURI: subgraph.endpoint,
-  }))
 
 function DateFilter({
   filter,
@@ -74,7 +74,7 @@ function DateFilter({
 }) {
   return (
     <div className="flex flex-row items-center justify-center gap-4 p-2 bg-white rounded-md">
-      {filters.map(({ label, period }, index) => (
+      {timeFilters.map(({ label, period }, index) => (
         <div
           className="cursor-pointer"
           onClick={() => setFilter({ ...filter, period })}
@@ -134,24 +134,26 @@ export function State() {
   useEffect(() => {
     const run = async () => {
       const allData = await Promise.all(
-        supportedNetworks.map(async ({ name, id, subgraphURI }) => {
+        supportedNetworks.map(async ({ name, id, chain, subgraphURI }) => {
           const data = await getSubgraph4GNP(subgraphURI, currentDay - 1000)
           return {
             name,
             id,
             data,
+            chain,
           }
         })
       )
 
       const dailyStats = allData.reduce(
-        (obj, { data: { unlockDailyDatas }, name, id }) => {
+        (obj, { data: { unlockDailyDatas }, name, id, chain }) => {
           unlockDailyDatas.forEach(({ date, ...datum }, i) => {
             obj = [
               ...obj,
               {
                 date,
                 name,
+                chain,
                 id,
                 // compute locks per day
                 lockDeployed: i

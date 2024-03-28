@@ -64,9 +64,7 @@ export function HistoricalChart({ dailyStats, filter }) {
   const [viewFilter, setViewFilter] = useState<IViewFilter>(views[1])
 
   useEffect(() => {
-    console.log(viewFilter)
     const barChart = Plot.plot({
-      // title: `${viewFilter.label}`,
       width: 1200,
       height: 500,
       marginLeft: 50,
@@ -96,7 +94,7 @@ export function HistoricalChart({ dailyStats, filter }) {
               x: 'date',
               y: viewFilter.value,
               fill: 'name',
-              interval: filter.period <= 180 ? 'day' : 'week',
+              interval: filter.period <= 365 ? 'day' : 'week',
             }
           )
         ),
