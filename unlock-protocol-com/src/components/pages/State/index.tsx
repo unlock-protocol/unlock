@@ -30,10 +30,10 @@ type IFilter = {
 }
 
 const timeFilters = [
-  { label: '1 Month', period: 30 },
-  { label: '6 Months', period: 180 },
-  { label: '1 Year', period: 365 },
   { label: 'ALL', period: 1000 },
+  { label: '1 Year', period: 365 },
+  { label: '6 Months', period: 180 },
+  { label: '1 Month', period: 30 },
 ]
 
 const supportedNetworks = Object.keys(networks)
@@ -200,24 +200,27 @@ export function State() {
         <div className="space-y-4">
           <h1 className="space-y-8 text-center heading"> State of Unlock </h1>
         </div>
-        <div className="space-y-4">
-          <p className="space-y-1 text-2xl font-bold">Overview</p>
+        <div className="space-y-4 mt-16">
           <Overview lockStats={lockStats} />
         </div>
-        <div className="space-y-2">
-          <p className="space-y-1 text-2xl font-bold">Activity over time</p>
+        <div className="space-y-2 mt-16">
+          <p className="space-y-1 text-center text-2xl font-bold">
+            Activity over time
+          </p>
+          {filteredData.length && (
+            <HistoricalChart dailyStats={filteredData} filter={filter} />
+          )}
+        </div>
+        <div className="space-y-2 mb-8">
           <div className="flex flex-wrap space-y-2 justify-between gap-2">
             <NetworkPicker filter={filter} setFilter={setFilter} />
             <DateFilter filter={filter} setFilter={setFilter} />
           </div>
         </div>
-        <div className="space-y-2 m-8">
-          {filteredData.length && (
-            <HistoricalChart dailyStats={filteredData} filter={filter} />
-          )}
-        </div>
-        <div className="space-y-2">
-          <p className="space-y-1 text-2xl font-bold">Gross Network Product</p>
+        <div className="space-y-2 mt-8">
+          <p className="space-y-1 text-2xl font-bold m-8">
+            Gross Network Product
+          </p>
           <GNP />
         </div>
       </div>

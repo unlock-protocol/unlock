@@ -37,7 +37,7 @@ function ViewFilter({
   setViewFilter: (value: IViewFilter) => void
 }) {
   return (
-    <div className="flex flex-row items-center justify-center gap-4 p-2 rounded-md">
+    <div className="flex flex-row items-center justify-center gap-4 m-2 p-2 rounded-md">
       {views.map((view, index) => (
         <div
           className="cursor-pointer"

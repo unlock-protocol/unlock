@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { IconBaseProps } from 'react-icons'
 import { ActiveLock, Lock, Key } from '../../../icons'
 import numeral from 'numeral'
-import { utils } from 'ethers'
 
 type IOverView = {
   Icon: (props: IconBaseProps) => JSX.Element
@@ -36,20 +35,6 @@ export function Overview({ lockStats }) {
           Icon: ActiveLock,
         },
       ]
-      // const gnpDataByNetworks = lockStats.map((networkData) => ({
-      //   name: networkData.name,
-      //   gnpSum: parseFloat(
-      //     utils.formatUnits(
-      //       BigInt(
-      //         networkData.data.unlockDailyDatas.reduce(
-      //           (pv, b) => pv + parseInt(b.grossNetworkProduct),
-      //           0
-      //         )
-      //       ),
-      //       '18'
-      //     )
-      //   ),
-      // }))
       setOverViewData(overview_contents)
     }
   }, [lockStats])
