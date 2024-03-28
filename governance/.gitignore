@@ -2,6 +2,7 @@
 cache
 contracts
 artifacts
+.env
 
 # zksync
 zk-artifacts
