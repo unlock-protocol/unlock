@@ -47,11 +47,30 @@ Lock managers can also alter the behavior of their locks thru the use of [hooks]
 
 Changelogs can be found here for the last two versions.
 
+### Version 14
+
+**Released:**: Jan 2024
+
+The version 14 introduces several changes in user-facing features :
+
+- Introduces `setKeyExpiration` to allow a lock manager to update the timestamp of any existing keys freely
+- Modifies `getHasValidKey` so a hook has a final say while determining the validity of a key
+- Allows a lock manager to always transfer keys, even when transfers are disabled
+- Disables fees for lock managers when transferring or sharing a key
+
+For advanced users and developers, the lower level changes below are noteworthy:
+
+- Replace `UnlockUtils` dependencies by optimized Open Zeppelin implementation
+- Remove dev reward/cut when purchasing a key
+- Add unchecked scopes on math operations (gas optimisation)
+- New Solidity version 0.8.21 (creating issues on some chains that wont support new `PUSH0` evm opcode)
+- Fix potential overflow when merging keys
+
 ### Version 13
 
 **Released**: April 2023
 
-This new version improved gas consumption of most functions (by using Solidity custom errors instead of require statements). It solves issues that were appearing when canceling or burning membership keys. 
+This new version improved gas consumption of most functions (by using Solidity custom errors instead of require statements). It solves issues that were appearing when canceling or burning membership keys.
 
 The helpers functions `addKeyGranter` and `isKeyGranter` have been removed to reduce the size of the contract. The features are still accessible by calling directly `grantRole` and `hasRole` with `keccak256('KEY_GRANTER_ROLE')` as role.
 
