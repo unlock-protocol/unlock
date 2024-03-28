@@ -11,69 +11,48 @@ type IOverView = {
   description: string
 }
 
-function CalcActiveLocksCount(graphData: any[]) {
-  const currentDay = Math.round(new Date().getTime() / 86400000)
-  const unlockDailyDatas = graphData
-    .map((item) => item.data.unlockDailyDatas)
-    .flatMap((data) => data)
-  const activeLockList = unlockDailyDatas
-    .filter(
-      (dailyData) =>
-        dailyData.id > currentDay - 30 && dailyData.id <= currentDay
-    )
-    .map((item) => item.activeLocks)
-    .flatMap((data) => data)
-  return [...new Set(activeLockList)].length
-}
-
-export function Overview({ subgraphData }) {
+export function Overview({ lockStats }) {
   const [overViewData, setOverViewData] = useState<IOverView[]>([])
 
   useEffect(() => {
-    if (subgraphData !== undefined && subgraphData.length > 0) {
+    if (lockStats !== undefined && lockStats.length > 0) {
       const overview_contents: IOverView[] = [
         {
-          value: subgraphData.reduce(
-            (pv, b) => pv + parseInt(b?.data?.lockStats?.totalLocksDeployed),
-            0
-          ),
+          value: lockStats.reduce((pv, b) => pv + b?.totalLocksDeployed, 0),
           title: 'Total of Locks Deployed',
           description: 'All Time, production networks only',
           Icon: Lock,
         },
         {
-          value: subgraphData.reduce(
-            (pv, b) => pv + parseInt(b?.data?.lockStats?.totalKeysSold),
-            0
-          ),
+          value: lockStats.reduce((pv, b) => pv + b?.totalKeysSold, 0),
           title: 'Total of Keys Sold',
           description: 'All Time, production networks only',
           Icon: Key,
         },
         {
-          value: CalcActiveLocksCount(subgraphData),
+          value: lockStats.reduce((pv, b) => pv + b?.activeLocks, 0),
           title: 'Active Locks',
           description: 'Minted at least 1 membership in the last 30 days',
           Icon: ActiveLock,
         },
       ]
-      const gnpDataByNetworks = subgraphData.map((networkData) => ({
-        name: networkData.name,
-        gnpSum: parseFloat(
-          utils.formatUnits(
-            BigInt(
-              networkData.data.unlockDailyDatas.reduce(
-                (pv, b) => pv + parseInt(b.grossNetworkProduct),
-                0
-              )
-            ),
-            '18'
-          )
-        ),
-      }))
+      // const gnpDataByNetworks = lockStats.map((networkData) => ({
+      //   name: networkData.name,
+      //   gnpSum: parseFloat(
+      //     utils.formatUnits(
+      //       BigInt(
+      //         networkData.data.unlockDailyDatas.reduce(
+      //           (pv, b) => pv + parseInt(b.grossNetworkProduct),
+      //           0
+      //         )
+      //       ),
+      //       '18'
+      //     )
+      //   ),
+      // }))
       setOverViewData(overview_contents)
     }
-  }, [subgraphData])
+  }, [lockStats])
 
   return (
     <div className="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-3">

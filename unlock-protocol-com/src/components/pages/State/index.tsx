@@ -1,79 +1,69 @@
-import { Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
-import numeral from 'numeral'
-import { useQuery } from '@tanstack/react-query'
 import { networks } from '@unlock-protocol/networks'
 import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
-import { utils } from 'ethers'
 
 // sections components
 import { Overview } from './sections/overview'
 import { GNP } from './sections/gnp'
 import { HistoricalChart } from './sections/chart'
 
-type INetworkSubgraph = {
-  lockStats: {
-    totalKeysSold: string
-    totalLocksDeployed: string
-  }
-  unlockDailyDatas: {
-    activeLocks: string[]
-    id: number
-    totalKeysSold: string
-    totalLockDeployed: string
-  }[]
-}
-
-type IGNPSum = {
+type IDailyStats = {
   name: string
-  gnpSum: number
+  id: number
+  date: Date
+  activeLocks: string[]
+  totalKeysSold: string
+  totalLockDeployed: string
 }
 
-const filters = ['7D', '1M', '1Y', 'All']
+type ILockStats = {
+  name: string
+  id: number
+  totalKeysSold: string
+  totalLocksDeployed: string
+  activeLocks: number
+}
+
 type IFilter = {
-  period: string
-  selectedNetwork?: string | undefined
+  period: number
+  selectedNetwork?: number | undefined
 }
 
-function filterData({ subgraphData, filter }) {
+const filters = [
+  { label: 'ALL', period: 1000 },
+  { label: '7 Days', period: 7 },
+  { label: '1 Month', period: 30 },
+  { label: '1 Year', period: 365 },
+]
+
+function isWithin(date, days) {
+  const toTest = new Date(date)
+  const now = new Date()
+  const fewDaysAgo = new Date()
+  fewDaysAgo.setDate(now.getDate() - days)
+  return (
+    fewDaysAgo.getTime() <= toTest.getTime() && toTest.getTime() < now.getTime()
+  )
+}
+
+function filterData({ dailyStats, filter }) {
   const { period, selectedNetwork } = filter
-
-  const currentDay = Math.round(new Date().getTime() / 86400000)
-  const days = {
-    '7D': 8,
-    '1M': 31,
-    '1Y': 360,
-    ALL: 0,
-  }[period]
-  const upperLimit = currentDay - days
-
-  const filterTime = ({ name, data }) => {
-    console.log({ name, data })
-    return {
-      name,
-      data: {
-        ...data,
-        unlockDailyDatas: period
-          ? data.unlockDailyDatas.filter(({ id }) => id >= upperLimit)
-          : data.unlockDailyDatas,
-      },
-    }
-  }
-
-  // aggregate data
-  console.log(selectedNetwork)
-  if (!selectedNetwork || selectedNetwork === 'ALL') {
-    return subgraphData.map((row) => {
-      filterTime(row)
-    })
-  } else {
-    return subgraphData
-      .filter(({ name }) =>
-        selectedNetwork ? name === filter.selectedNetwork : true
-      )
-      .map(filterTime)
-  }
+  return dailyStats.filter(({ name, date }) =>
+    isWithin(date, period) && (!selectedNetwork || selectedNetwork === 'ALL')
+      ? true
+      : name === selectedNetwork
+  )
 }
+
+const supportedNetworks = Object.keys(networks)
+  .map((id) => networks[id])
+  .filter(({ isTestNetwork, id }) => !isTestNetwork && id)
+  .map(({ name, chain, id, subgraph }) => ({
+    name,
+    chain,
+    id,
+    subgraphURI: subgraph.endpoint,
+  }))
 
 function DateFilter({
   filter,
@@ -84,20 +74,20 @@ function DateFilter({
 }) {
   return (
     <div className="flex flex-row items-center justify-center gap-4 p-2 bg-white rounded-md">
-      {filters.map((item, index) => (
+      {filters.map(({ label, period }, index) => (
         <div
           className="cursor-pointer"
-          onClick={() => setFilter({ ...filter, period: item })}
+          onClick={() => setFilter({ ...filter, period })}
           key={index}
         >
           <p
             className={`text-gray font-lg px-3 py-1 ${
-              filter.period === item
+              filter.period === period
                 ? 'bg-black text-white rounded-md'
                 : 'bg-white'
             }`}
           >
-            {item}
+            {label}
           </p>
         </div>
       ))}
@@ -125,14 +115,11 @@ function NetworkPicker({
         <option value="ALL" key="ALL">
           All
         </option>
-        {Object.keys(networks)
-          .map((id) => networks[id])
-          .filter(({ isTestNetwork }) => !isTestNetwork)
-          .map(({ name }, index) => (
-            <option value={name} key={index}>
-              {name}
-            </option>
-          ))}
+        {supportedNetworks.map(({ name, chain }, index) => (
+          <option value={chain} key={index}>
+            {name}
+          </option>
+        ))}
       </select>
     </div>
   )
@@ -140,33 +127,72 @@ function NetworkPicker({
 
 export function State() {
   const currentDay = Math.round(new Date().getTime() / 86400000)
-  const [subgraphData, setSubgraphData] = useState<any[]>([])
-  const [filter, setFilter] = useState<IFilter>({ period: '7D' })
-  const [filteredData, setFilteredData] = useState<INetworkSubgraph[]>([])
+  const [dailyStats, setDailyStats] = useState<IDailyStats[]>([])
+  const [lockStats, setLockStats] = useState<ILockStats[]>([])
+  const [filter, setFilter] = useState<IFilter>({ period: 1000 })
+  const [filteredData, setFilteredData] = useState<IDailyStats[]>([])
 
-  // get subgraphData
+  // get data from all subgraphs
   useEffect(() => {
     const run = async () => {
-      const subgraphData = await Promise.all(
-        Object.keys(networks).map(async (key) => {
-          if (!networks[key].isTestNetwork) {
-            const { data } = await getSubgraph4GNP(
-              networks[key].subgraph.endpoint,
-              currentDay - 1030 // why?
-            )
-            return { name: networks[key].name, data }
+      const allData = await Promise.all(
+        supportedNetworks.map(async ({ name, id, subgraphURI }) => {
+          const data = await getSubgraph4GNP(subgraphURI, currentDay - 1000)
+          return {
+            name,
+            id,
+            data,
           }
         })
       )
-      setSubgraphData(subgraphData.filter((item) => item && item.data))
+
+      const dailyStats = allData.reduce(
+        (obj, { data: { unlockDailyDatas }, name, id }) => {
+          unlockDailyDatas.forEach(({ date, ...datum }, i) => {
+            obj = [
+              ...obj,
+              {
+                date,
+                name,
+                id,
+                // compute locks per day
+                lockDeployed: i
+                  ? datum.totalLockDeployed -
+                    unlockDailyDatas[i - 1].totalLockDeployed
+                  : 0,
+                // compute keys per day
+                keySold: i
+                  ? datum.totalKeysSold - unlockDailyDatas[i - 1].totalKeysSold
+                  : 0,
+                ...datum,
+              },
+            ]
+          })
+          return obj
+        },
+        []
+      )
+      setDailyStats(dailyStats)
+
+      const lockStats = allData.map(
+        ({ data: { lockStats, unlockDailyDatas }, name, id }) => ({
+          name,
+          id,
+          ...lockStats,
+          activeLocks: unlockDailyDatas
+            .map(({ activeLocks }) => activeLocks)
+            .reduce((pv, a) => pv + a, 0),
+        })
+      )
+      setLockStats(lockStats)
     }
     run()
   }, [currentDay])
 
   // filter data properly
   useEffect(() => {
-    setFilteredData(filterData({ filter, subgraphData }))
-  }, [filter, subgraphData])
+    setFilteredData(filterData({ filter, dailyStats }))
+  }, [filter, dailyStats])
 
   return (
     <div className="p-6">
@@ -176,7 +202,7 @@ export function State() {
         </div>
         <div className="space-y-4">
           <p className="space-y-1 text-2xl font-bold">Overview</p>
-          <Overview subgraphData={subgraphData} />
+          <Overview lockStats={lockStats} />
         </div>
         <div className="space-y-2">
           <p className="space-y-1 text-2xl font-bold">Activity over time</p>
@@ -185,12 +211,12 @@ export function State() {
         </div>
         <div className="space-y-2">
           {filteredData.length && (
-            <HistoricalChart subgraphData={filteredData} filter={filter} />
+            <HistoricalChart dailyStats={filteredData} filter={filter} />
           )}
         </div>
         <div className="space-y-2">
           <p className="space-y-1 text-2xl font-bold">Gross Network Product</p>
-          {/* <GNP /> */}
+          <GNP />
         </div>
       </div>
     </div>
