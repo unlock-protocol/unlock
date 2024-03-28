@@ -52,7 +52,7 @@ export function HistoricalChart({
   }, [dailyStats, viewFilter])
 
   return (
-    <div>
+    <div style={{ margin: '0 auto' }}>
       <div ref={ref}></div>
     </div>
   )

@@ -204,7 +204,7 @@ export function State() {
   const [lockStats, setLockStats] = useState<ILockStats[]>([])
   const [filter, setFilter] = useState<IFilter>({
     period: 1000,
-    selectedNetworks: [],
+    selectedNetworks: supportedNetworks.map(({ chain }) => chain),
   })
   const [viewFilter, setViewFilter] = useState<IViewFilter>(views[1])
   const [filteredData, setFilteredData] = useState<IDailyStats[]>([])
@@ -299,10 +299,10 @@ export function State() {
             />
           )}
         </div>
-        <div className="space-y-2 mb-8">
+        <div className="space-y-2">
           <NetworkRadioPicker filter={filter} setFilter={setFilter} />
         </div>
-        <div className="space-y-2 mt-8">
+        <div className="space-y-2 mt-16">
           <p className="space-y-1 text-2xl font-bold m-8">
             Gross Network Product
           </p>
