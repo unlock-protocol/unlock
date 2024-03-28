@@ -1,67 +1,13 @@
 import React, { useRef, useEffect, useState } from 'react'
 import * as Plot from '@observablehq/plot'
 
-interface IViewFilter {
-  label: string
-  value: string
-}
-
-const views = [
-  {
-    label: 'Locks deployed',
-    value: 'lockDeployed',
-  },
-  {
-    label: 'Locks active',
-    value: 'activeLocks',
-  },
-  {
-    label: 'Keys',
-    value: 'keySold',
-  },
-  {
-    label: 'Locks deployed (cumulative)',
-    value: 'totalLockDeployed',
-  },
-  {
-    label: 'Keys (cumulative)',
-    value: 'totalKeysSold',
-  },
-]
-
-function ViewFilter({
+export function HistoricalChart({
+  dailyStats,
+  filter,
+  supportedNetworks,
   viewFilter,
-  setViewFilter,
-}: {
-  viewFilter: IViewFilter
-  setViewFilter: (value: IViewFilter) => void
 }) {
-  return (
-    <div className="flex flex-row items-center justify-center gap-4 m-2 p-2 rounded-md">
-      {views.map((view, index) => (
-        <div
-          className="cursor-pointer"
-          onClick={() => setViewFilter(view)}
-          key={index}
-        >
-          <p
-            className={`text-gray font-lg px-3 py-1 ${
-              viewFilter.value === view.value
-                ? 'bg-black text-white rounded-md'
-                : 'bg-white'
-            }`}
-          >
-            {view.label}
-          </p>
-        </div>
-      ))}
-    </div>
-  )
-}
-
-export function HistoricalChart({ dailyStats, filter }) {
   const ref = useRef()
-  const [viewFilter, setViewFilter] = useState<IViewFilter>(views[1])
 
   useEffect(() => {
     const barChart = Plot.plot({
@@ -78,8 +24,8 @@ export function HistoricalChart({ dailyStats, filter }) {
       color: {
         type: 'categorical',
         scheme: 'Tableau10',
-        legend: true,
-        // width: 628,
+        legend: false,
+        domain: supportedNetworks.map(({ name }) => name),
         label: 'Networks',
       },
       marks: [
@@ -107,7 +53,6 @@ export function HistoricalChart({ dailyStats, filter }) {
 
   return (
     <div>
-      <ViewFilter viewFilter={viewFilter} setViewFilter={setViewFilter} />
       <div ref={ref}></div>
     </div>
   )

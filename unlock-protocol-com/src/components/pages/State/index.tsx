@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { networks } from '@unlock-protocol/networks'
 import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
+import * as Plot from '@observablehq/plot'
 
 // sections components
 import { Overview } from './sections/overview'
@@ -26,14 +27,72 @@ type ILockStats = {
 
 type IFilter = {
   period: number
-  selectedNetwork?: number | undefined
+  selectedNetworks: string[]
+}
+
+interface IViewFilter {
+  label: string
+  value: string
+}
+
+const views = [
+  {
+    label: 'Locks deployed',
+    value: 'lockDeployed',
+  },
+  {
+    label: 'Locks active',
+    value: 'activeLocks',
+  },
+  {
+    label: 'Keys',
+    value: 'keySold',
+  },
+  {
+    label: 'Locks deployed (cumulative)',
+    value: 'totalLockDeployed',
+  },
+  {
+    label: 'Keys (cumulative)',
+    value: 'totalKeysSold',
+  },
+]
+
+function ViewFilter({
+  viewFilter,
+  setViewFilter,
+}: {
+  viewFilter: IViewFilter
+  setViewFilter: (value: IViewFilter) => void
+}) {
+  return (
+    <div className="flex flex-row items-center justify-center gap-4 m-2 p-2 rounded-md">
+      {views.map((view, index) => (
+        <div
+          className="cursor-pointer"
+          onClick={() => setViewFilter(view)}
+          key={index}
+        >
+          <p
+            className={`text-gray font-lg px-3 py-1 ${
+              viewFilter.value === view.value
+                ? 'bg-black text-white rounded-md'
+                : 'bg-white'
+            }`}
+          >
+            {view.label}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 const timeFilters = [
-  { label: 'ALL', period: 1000 },
-  { label: '1 Year', period: 365 },
-  { label: '6 Months', period: 180 },
   { label: '1 Month', period: 30 },
+  { label: '6 Months', period: 180 },
+  { label: '1 Year', period: 365 },
+  { label: 'ALL', period: 1000 },
 ]
 
 const supportedNetworks = Object.keys(networks)
@@ -57,11 +116,11 @@ function isWithin(date, days) {
 }
 
 function filterData({ dailyStats, filter }) {
-  const { period, selectedNetwork } = filter
+  const { period, selectedNetworks } = filter
   return dailyStats.filter(({ chain, date }) =>
-    isWithin(date, period) && (!selectedNetwork || selectedNetwork === 'ALL')
+    isWithin(date, period) && !selectedNetworks.length
       ? true
-      : chain === selectedNetwork
+      : selectedNetworks.includes(chain)
   )
 }
 
@@ -73,7 +132,7 @@ function DateFilter({
   setFilter: (value: IFilter) => void
 }) {
   return (
-    <div className="flex flex-row items-center justify-center gap-4 p-2 bg-white rounded-md">
+    <div className="flex flex-row items-center justify-center gap-4 bg-white rounded-md">
       {timeFilters.map(({ label, period }, index) => (
         <div
           className="cursor-pointer"
@@ -81,7 +140,7 @@ function DateFilter({
           key={index}
         >
           <p
-            className={`text-gray font-lg px-3 py-1 ${
+            className={`text-gray px-3 py-1 ${
               filter.period === period
                 ? 'bg-black text-white rounded-md'
                 : 'bg-white'
@@ -95,31 +154,47 @@ function DateFilter({
   )
 }
 
-function NetworkPicker({
+function NetworkRadioPicker({
   filter,
   setFilter,
 }: {
   filter: IFilter
   setFilter: (value: IFilter) => void
 }) {
+  const handleOnChange = (selectedChain) => {
+    const updatedSelectedNetworks = filter.selectedNetworks.includes(
+      selectedChain
+    )
+      ? filter.selectedNetworks.filter((chain) => chain !== selectedChain)
+      : [...filter.selectedNetworks, selectedChain]
+    console.log({ updatedSelectedNetworks })
+    setFilter({ ...filter, selectedNetworks: updatedSelectedNetworks })
+  }
+
+  const color = Plot.scale({
+    color: {
+      scheme: 'Tableau10',
+      domain: supportedNetworks.map((_, i) => i),
+    },
+  })
+
   return (
-    <select
-      id="network"
-      className="px-4 text-black bg-white border-none rounded-md w-96"
-      value={filter.selectedNetwork}
-      onChange={(e) => {
-        setFilter({ ...filter, selectedNetwork: e.target.value })
-      }}
-    >
-      <option value="ALL" key="ALL">
-        All
-      </option>
+    <div className="flex flex-row items-center text-xs justify-center">
       {supportedNetworks.map(({ name, chain }, index) => (
-        <option value={chain} key={index}>
+        <label className="mr-4" key={index}>
+          <input
+            className="mr-2"
+            style={{ backgroundColor: color.apply(index) }}
+            key={index}
+            type="checkbox"
+            value={chain}
+            checked={filter.selectedNetworks.includes(chain)}
+            onChange={() => handleOnChange(chain)}
+          />
           {name}
-        </option>
+        </label>
       ))}
-    </select>
+    </div>
   )
 }
 
@@ -127,7 +202,11 @@ export function State() {
   const currentDay = Math.round(new Date().getTime() / 86400000)
   const [dailyStats, setDailyStats] = useState<IDailyStats[]>([])
   const [lockStats, setLockStats] = useState<ILockStats[]>([])
-  const [filter, setFilter] = useState<IFilter>({ period: 1000 })
+  const [filter, setFilter] = useState<IFilter>({
+    period: 1000,
+    selectedNetworks: [],
+  })
+  const [viewFilter, setViewFilter] = useState<IViewFilter>(views[1])
   const [filteredData, setFilteredData] = useState<IDailyStats[]>([])
 
   // get data from all subgraphs
@@ -207,15 +286,21 @@ export function State() {
           <p className="space-y-1 text-center text-2xl font-bold">
             Activity over time
           </p>
+          <div className="flex flex-wrap space-y-2 justify-between gap-2">
+            <ViewFilter viewFilter={viewFilter} setViewFilter={setViewFilter} />
+            <DateFilter filter={filter} setFilter={setFilter} />
+          </div>
           {filteredData.length && (
-            <HistoricalChart dailyStats={filteredData} filter={filter} />
+            <HistoricalChart
+              dailyStats={filteredData}
+              filter={filter}
+              supportedNetworks={supportedNetworks}
+              viewFilter={viewFilter}
+            />
           )}
         </div>
         <div className="space-y-2 mb-8">
-          <div className="flex flex-wrap space-y-2 justify-between gap-2">
-            <NetworkPicker filter={filter} setFilter={setFilter} />
-            <DateFilter filter={filter} setFilter={setFilter} />
-          </div>
+          <NetworkRadioPicker filter={filter} setFilter={setFilter} />
         </div>
         <div className="space-y-2 mt-8">
           <p className="space-y-1 text-2xl font-bold m-8">
