@@ -68,6 +68,7 @@ export function useStepperItems(
   const isCaptcha = hook === 'captcha' || hookType === 'captcha'
   const isPromo = hook === 'promocode' || hookType === 'promocode'
   const isGuild = hook === 'guild' || hookType === 'guild'
+  const isGitcoin = hook === 'gitcoin' || hookType === 'gitcoin'
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
@@ -106,6 +107,11 @@ export function useStepperItems(
       ? {
           name: 'Guild',
           to: 'GUILD',
+        }
+      : isGitcoin
+      ? {
+          name: 'Gitcoin Passport Verification',
+          to: 'GITCOIN',
         }
       : {
           name: 'Solve captcha',
