@@ -175,7 +175,7 @@ export const ReferralsForLock = ({
               placeholder="Referrer fee (%)"
               error={
                 errors?.referralFeePercentage &&
-                'This field accept percentage value between 1 and 100.'
+                'This field accepts percentage values between 1 and 100.'
               }
             />
           </span>
