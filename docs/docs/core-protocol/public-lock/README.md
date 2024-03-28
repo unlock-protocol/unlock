@@ -49,16 +49,16 @@ Changelogs can be found here for the last two versions.
 
 ### Version 14
 
-### Released March 2024
+**Released:**: Jan 2024
 
-These versions 14 introduces several changes in user-facing features :
+The version 14 introduces several changes in user-facing features :
 
 - Introduces `setKeyExpiration` to allow a lock manager to update the timestamp of any existing keys freely
 - Modifies `getHasValidKey` so a hook has a final say while determining the validity of a key
 - Allows a lock manager to always transfer keys, even when transfers are disabled
 - Disables fees for lock managers when transferring or sharing a key
 
-The changes below are lower level and noteworthy for advanced users and developers.
+For advanced users and developers, the lower level changes below are noteworthy:
 
 - Replace `UnlockUtils` dependencies by optimized Open Zeppelin implementation
 - Remove dev reward/cut when purchasing a key
