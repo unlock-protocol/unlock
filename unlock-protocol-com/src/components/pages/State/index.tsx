@@ -31,8 +31,8 @@ type IFilter = {
 
 const filters = [
   { label: 'ALL', period: 1000 },
-  { label: '7 Days', period: 7 },
   { label: '1 Month', period: 30 },
+  { label: '6 Months', period: 180 },
   { label: '1 Year', period: 365 },
 ]
 
@@ -103,25 +103,23 @@ function NetworkPicker({
   setFilter: (value: IFilter) => void
 }) {
   return (
-    <div className="flex flex-wrap justify-between gap-2">
-      <select
-        id="network"
-        className="px-4 text-black bg-white border-none rounded-md w-96"
-        value={filter.selectedNetwork}
-        onChange={(e) => {
-          setFilter({ ...filter, selectedNetwork: e.target.value })
-        }}
-      >
-        <option value="ALL" key="ALL">
-          All
+    <select
+      id="network"
+      className="px-4 text-black bg-white border-none rounded-md w-96"
+      value={filter.selectedNetwork}
+      onChange={(e) => {
+        setFilter({ ...filter, selectedNetwork: e.target.value })
+      }}
+    >
+      <option value="ALL" key="ALL">
+        All
+      </option>
+      {supportedNetworks.map(({ name, chain }, index) => (
+        <option value={chain} key={index}>
+          {name}
         </option>
-        {supportedNetworks.map(({ name, chain }, index) => (
-          <option value={chain} key={index}>
-            {name}
-          </option>
-        ))}
-      </select>
-    </div>
+      ))}
+    </select>
   )
 }
 
@@ -206,10 +204,12 @@ export function State() {
         </div>
         <div className="space-y-2">
           <p className="space-y-1 text-2xl font-bold">Activity over time</p>
-          <NetworkPicker filter={filter} setFilter={setFilter} />
-          <DateFilter filter={filter} setFilter={setFilter} />
+          <div className="flex flex-wrap space-y-2 justify-between gap-2">
+            <NetworkPicker filter={filter} setFilter={setFilter} />
+            <DateFilter filter={filter} setFilter={setFilter} />
+          </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 m-8">
           {filteredData.length && (
             <HistoricalChart dailyStats={filteredData} filter={filter} />
           )}

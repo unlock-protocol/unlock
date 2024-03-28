@@ -37,7 +37,7 @@ function ViewFilter({
   setViewFilter: (value: IViewFilter) => void
 }) {
   return (
-    <div className="flex flex-row items-center justify-center gap-4 p-2 bg-white rounded-md">
+    <div className="flex flex-row items-center justify-center gap-4 p-2 rounded-md">
       {views.map((view, index) => (
         <div
           className="cursor-pointer"
@@ -66,7 +66,7 @@ export function HistoricalChart({ dailyStats, filter }) {
   useEffect(() => {
     console.log(viewFilter)
     const barChart = Plot.plot({
-      title: `${viewFilter.label}`,
+      // title: `${viewFilter.label}`,
       width: 1200,
       height: 500,
       marginLeft: 50,
@@ -96,7 +96,7 @@ export function HistoricalChart({ dailyStats, filter }) {
               x: 'date',
               y: viewFilter.value,
               fill: 'name',
-              interval: filter.period === 7 ? 'day' : 'week',
+              interval: filter.period <= 180 ? 'day' : 'week',
             }
           )
         ),
