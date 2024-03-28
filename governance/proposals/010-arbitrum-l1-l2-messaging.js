@@ -189,8 +189,31 @@ module.exports = async () => {
   )
 
   const proposalName = `
-  # Test Transaction before 7k ARB Transfer To Fund Unlock Protocol’s Ecosystem via Grants Stack 
-   This proposal requests to use 1 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to run a test transaction to de-risk the transfer of 7k ARB tokens to fund the retroQF round on Grants Stack.`
+  # Test Transaction before 7k ARB Transfer To Fund Unlock Protocol’s Ecosystem via Grants Stack
+  
+  ### Goal of the proposal
+   This proposal requests to use 1 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to run a test transaction to de-risk the transfer of 7k ARB tokens to fund the retroQF round on Grants Stack.
+  
+  #### Current situation of DAO's ARB Tokens
+    - total: ${ethers.formatEther(balanceOf).toString()} ARB.
+    - DAO ALIAS Address (On Arbitrum): [${timelockL2Alias}](https://arbiscan.io/address/${timelockL2Alias})
+
+  For Reference
+  [Snapshot temperature check for 7k ARBs](https://snapshot.org/#/unlock-protocol.eth/proposal/0xaa142e599d981f0b58c3ac1a51af9f9a52fb5307f27d791ecc18c4da69eeacc3)
+  
+  #### About the proposal
+    The proposal contains a single call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will attempt to execute an L2 request to the ARB token contract to transfer ${ethers
+      .formatEther(tokenAmount)
+      .toString()} of tokens to the grants contract - \`transfer(${grantsContractAddress},${ethers
+      .formatEther(tokenAmount)
+      .toString()})\`.
+
+    Once approved and executed, the request will be sent to the Delayed Inbox contract and a ticket is created.
+    
+    Note that, this function forces the sender to provide a reasonable amount of funds (at least enough to submitting, and attempting to executing the ticket), but that doesn't guarantee a successful auto-redemption. [Checkout arbitrum docs for more info.](https://docs.arbitrum.io/arbos/l1-to-l2-messaging).
+    
+    Thank you!
+    `
   // Proposal ARGS i.e Call Governor.propose() directly with these values
   const targets = [inboxAddress]
   const values = [L1ToL2MessageGasParams.deposit.toNumber() * 10] // I Multiply by 10 to add extra in case gas changes
