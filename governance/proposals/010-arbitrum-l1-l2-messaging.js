@@ -2,12 +2,7 @@ const ethers = require('ethers')
 const {
   L1ToL2MessageGasEstimator,
 } = require('@arbitrum/sdk/dist/lib/message/L1ToL2MessageGasEstimator')
-const { arbLog } = require('arb-shared-dependencies')
-const {
-  EthBridger,
-  getL2Network,
-  addDefaultLocalNetwork,
-} = require('@arbitrum/sdk')
+const { EthBridger, getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const {
   ARBTokenAddressOnL2,
@@ -123,15 +118,14 @@ const INBOX_ABI = [
  */
 const walletPrivateKey = process.env.PRIVATE_KEY
 const L1RPC = 'https://rpc.unlock-protocol.com/1'
-const L2RPC = 'https://arbitrum-mainnet.infura.io/v3/<your_infura_api_key>'
+const L2RPC = `https://arbitrum-mainnet.infura.io/v3/${process.env.ETHERSCAN_API_KEY}`
 const l1Provider = new ethers.JsonRpcProvider(L1RPC)
 const l2Provider = new ethers.JsonRpcProvider(L2RPC)
 // const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
 const l2Wallet = new ethers.Wallet(walletPrivateKey, l2Provider)
 
 module.exports = async () => {
-  await arbLog('Cross-chain Proposer')
-  addDefaultLocalNetwork()
+  console.log('Cross-chain Proposer')
 
   const l2Network = await getL2Network(l2Provider)
   const ethBridger = new EthBridger(l2Network)
@@ -183,18 +177,20 @@ module.exports = async () => {
   const inbox_calldata = iface_inbox.encodeFunctionData(
     'createRetryableTicket',
     [
-      ARBTokenAddressOnL2,
-      0,
-      L1ToL2MessageGasParams.maxSubmissionCost,
-      L1TimelockContract,
-      L1TimelockContract,
-      L1ToL2MessageGasParams.gasLimit,
-      gasPriceBid,
-      transfer_calldata,
+      ARBTokenAddressOnL2, // to
+      0, // l2CallValue
+      L1ToL2MessageGasParams.maxSubmissionCost, // maxSubmissionCost
+      L1TimelockContract, // excessFeeRefundAddress
+      L1TimelockContract, // callValueRefundAddress
+      L1ToL2MessageGasParams.gasLimit, // gasLimit
+      gasPriceBid, // maxFeePerGas
+      transfer_calldata, // data
     ]
   )
 
-  const proposalName = `# Test Transaction before 7k ARB Transfer To Fund Unlock Protocol’s Ecosystem via Grants Stack  This proposal requests to use 1 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to run a test transaction to de-risk the transfer of 7k ARB tokens to fund the retroQF round on Grants Stack.`
+  const proposalName = `
+  # Test Transaction before 7k ARB Transfer To Fund Unlock Protocol’s Ecosystem via Grants Stack 
+   This proposal requests to use 1 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to run a test transaction to de-risk the transfer of 7k ARB tokens to fund the retroQF round on Grants Stack.`
   // Proposal ARGS i.e Call Governor.propose() directly with these values
   const targets = [inboxAddress]
   const values = [L1ToL2MessageGasParams.deposit.toNumber() * 10] // I Multiply by 10 to add extra in case gas changes
@@ -207,14 +203,14 @@ module.exports = async () => {
       contractAddress: inboxAddress,
       functionName: 'createRetryableTicket',
       functionArgs: [
-        ARBTokenAddressOnL2,
-        0,
-        L1ToL2MessageGasParams.maxSubmissionCost,
-        l2Wallet.address,
-        l2Wallet.address,
-        L1ToL2MessageGasParams.gasLimit,
-        gasPriceBid,
-        transfer_calldata,
+        ARBTokenAddressOnL2, // to
+        0, // l2CallValue
+        L1ToL2MessageGasParams.maxSubmissionCost, // maxSubmissionCost
+        l2Wallet.address, // excessFeeRefundAddress
+        l2Wallet.address, // callValueRefundAddress
+        L1ToL2MessageGasParams.gasLimit, // gasLimit
+        gasPriceBid, // maxFeePerGas
+        transfer_calldata, // data
       ],
       value: L1ToL2MessageGasParams.deposit.toNumber() * 10, // I Multiply by 10 to add extra in case gas changes due to proposal delay
     },
