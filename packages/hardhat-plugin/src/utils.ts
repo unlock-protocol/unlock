@@ -1,9 +1,10 @@
 import { contracts } from '@unlock-protocol/contracts'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { Signer, Contract, ContractFactory } from 'ethers'
-
-import fs from 'fs-extra'
-import path from 'path'
+import {
+  bytecode as proxyBytecode,
+  abi as proxyAbi,
+} from './abis/ERC1967Proxy.json'
 
 export const contractExists = (contractName: string, versionNumber: number) => {
   // make sure contract exists
@@ -58,9 +59,6 @@ export async function deployUpgreadableContract(
   const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
 
   // deploy proxy
-  const { bytecode: proxyBytecode, abi: proxyAbi } = await fs.readJSON(
-    path.join(__dirname, 'abis', 'ERC1967Proxy.json')
-  )
   const ERC1967Proxy = await hre.ethers.getContractFactory(
     proxyAbi,
     proxyBytecode,

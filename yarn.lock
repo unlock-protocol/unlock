@@ -18203,16 +18203,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/fs-extra@npm:11.0.4":
-  version: 11.0.4
-  resolution: "@types/fs-extra@npm:11.0.4"
-  dependencies:
-    "@types/jsonfile": "npm:*"
-    "@types/node": "npm:*"
-  checksum: 10/acc4c1eb0cde7b1f23f3fe6eb080a14832d8fa9dc1761aa444c5e2f0f6b6fa657ed46ebae32fb580a6700fc921b6165ce8ac3e3ba030c3dd15f10ad4dd4cae98
-  languageName: node
-  linkType: hard
-
 "@types/geoip-country@npm:4.0.2":
   version: 4.0.2
   resolution: "@types/geoip-country@npm:4.0.2"
@@ -19943,7 +19933,6 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@types/chai": "npm:4.3.12"
-    "@types/fs-extra": "npm:11.0.4"
     "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.10.1"
     "@unlock-protocol/contracts": "workspace:^"

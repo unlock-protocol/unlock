@@ -44,6 +44,7 @@ const generateLocalhostNetworkFile = ({
   
 // We use Partial<NetworkConfig> for localhost as we don't have all the information
 export const localhost: Partial<NetworkConfig> = ${JSON.stringify(localhost)}
+
 export default localhost
   `
   return parsed

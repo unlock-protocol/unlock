@@ -8,15 +8,21 @@
     "provision": "hardhat run scripts/provision.ts",
     "start": "hardhat node"
   },
+  "workspaces": [
+    "packages/**"
+  ],
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@unlock-protocol/hardhat-plugin": "latest",
-    "@unlock-protocol/contracts": "latest",
+    "@unlock-protocol/contracts": "workspace:^",
+    "@unlock-protocol/hardhat-plugin": "workspace:^",
+    "@unlock-protocol/networks": "workspace:^",
     "eslint": "8.54.0",
     "ethers": "5.7.2",
+    "fs-extra": "11.2.0",
     "hardhat": "2.20.1",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.3.3"
-  }
+  },
+  "packageManager": "yarn@4.1.1"
 }

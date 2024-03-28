@@ -12,29 +12,21 @@ yarn test
 
 ## Development
 
-For development, you need a fully provisioned ETH node (with the Unlock contracts deployed and set correctly) and a subgraph indexing correctly. You can use scripts from our [`scripts`](../scripts) folder (at the root of the repo) to kickstart a fully configured instance of the protocol, either dockerized or directly from your local repo.
+First start a fully provisioned ETH node (with the Unlock contracts deployed and set correctly) and a subgraph indexing correctly.
 
-NB: the ETH node [provisioning script](../docker/development/eth-node/scripts/provision.ts) will create a few locks and purchase some keys.
+```
+yarn start:infra
+```
 
-#### Boostrap dev env locally
-
-Run deployment and provisioning from your local machine (usually faster)
+then you nneed to export the subgraph URL, rebuild the networks package and run the test
 
 ```shell
-sh ../scripts/run-stack-local.sh
-```
+export SUBGRAPH_URL=http://localhost:8000/subgraphs/name/testgraph
 
-#### Boostrap dev env dockerized
+# add localhost to networks package
+yarn test:prepare
 
-```shell
-sh ../scripts/run-stack-dockerized.sh
-```
-
-#### Run test suite for development
-
-Run the tests against the newly deployed instance of the protocol
-
-```
+# run actual test against local eth/subgraph nodes
 yarn test --network localhost
 ```
 
