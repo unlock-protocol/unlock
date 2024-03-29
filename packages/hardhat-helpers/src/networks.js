@@ -17,6 +17,17 @@ const networks = require('@unlock-protocol/networks')
  * @returns
  */
 const { DEPLOYER_PRIVATE_KEY } = process.env
+
+if (!DEPLOYER_PRIVATE_KEY) {
+  console.error(
+    `⚠️ Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
+  )
+} else {
+  console.error(
+    `⚠️ Using account from DEPLOYER_PRIVATE_KEY environment variable.`
+  )
+}
+
 const getAccounts = () => {
   if (process.env.CI === 'true') {
     return {
@@ -28,9 +39,6 @@ const getAccounts = () => {
     return [DEPLOYER_PRIVATE_KEY]
   }
 
-  console.error(
-    `Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
-  )
   return {
     mnemonic: 'test test test test test test test test test test test junk',
     initialIndex: 0,
