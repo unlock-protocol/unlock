@@ -117,10 +117,10 @@ function isWithin(date, days) {
 
 function filterData({ dailyStats, filter }) {
   const { period, selectedNetworks } = filter
-  return dailyStats.filter(({ chain, date }) =>
-    isWithin(date, period) && !selectedNetworks.length
-      ? true
-      : selectedNetworks.includes(chain)
+  return dailyStats.filter(
+    ({ chain, date }) =>
+      isWithin(date, period) &&
+      (!selectedNetworks.length ? true : selectedNetworks.includes(chain))
   )
 }
 
@@ -167,7 +167,6 @@ function NetworkRadioPicker({
     )
       ? filter.selectedNetworks.filter((chain) => chain !== selectedChain)
       : [...filter.selectedNetworks, selectedChain]
-    console.log({ updatedSelectedNetworks })
     setFilter({ ...filter, selectedNetworks: updatedSelectedNetworks })
   }
 

@@ -8,7 +8,6 @@ export function HistoricalChart({
   viewFilter,
 }) {
   const ref = useRef<HTMLInputElement>()
-
   useEffect(() => {
     const barChart = Plot.plot({
       width: 1200,

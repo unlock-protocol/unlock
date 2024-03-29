@@ -18,7 +18,6 @@ export function GNP() {
   useEffect(() => {
     const run = async () => {
       const values = await getGNPs()
-      console.log(values)
       values.sort((a, b) => {
         if (a.total < b.total) return 1
         if (a.total > b.total) return -1
