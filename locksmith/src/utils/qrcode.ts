@@ -1,6 +1,6 @@
-import { Encoder, ErrorCorrectionLevel } from '@nuintun/qrcode'
 import Dispatcher from '../fulfillment/dispatcher'
 import config from '../config/config'
+import { Encoder, Byte } from '@nuintun/qrcode'
 
 interface GenerateQrCodeProps {
   network: number
@@ -44,10 +44,11 @@ export const generateQrCode = async ({
     tokenId,
     account,
   })
-  const qrcode = new Encoder()
-  qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.L)
-  qrcode.write(url)
-  qrcode.make()
+  const encoder = new Encoder({
+    level: 'L',
+  })
+  const qrcode = encoder.encode(new Byte(url))
+
   // this will return a base64 image
-  return qrcode.toDataURL(5)
+  return qrcode.toDataURL()
 }
