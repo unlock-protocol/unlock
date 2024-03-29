@@ -104,7 +104,7 @@ const getMultiSigInfo = async (chainId, multisig) => {
 const getProvider = async (chainId) => {
   let provider
   if (chainId) {
-    const { publicProvider } = networks[chainId]
+    const { provider: publicProvider } = networks[chainId]
     provider = new ethers.JsonRpcProvider(publicProvider)
   } else {
     ;({ provider } = ethers)

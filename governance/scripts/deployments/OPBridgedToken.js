@@ -10,8 +10,8 @@ const { ethers } = require('hardhat')
 const fs = require('fs-extra')
 
 // edit default values
-const L1_CHAIN_ID = 11155111 // default to Sepolia
-const l2_CHAIN_ID = 84532 // default to Base Sepolia
+const L1_CHAIN_ID = 1 // default to (Sepolia 11155111)
+const l2_CHAIN_ID = 10 // default to (Base Sepolia 84532)
 
 async function main({
   tokenSymbol = 'UDT.e',
@@ -21,7 +21,6 @@ async function main({
   l2ChainId = l2_CHAIN_ID,
 } = {}) {
   const { DEPLOYER_PRIVATE_KEY } = process.env
-
   const {
     name: l1Name,
     unlockDaoToken: { address: l1TokenAddress },
@@ -32,14 +31,13 @@ async function main({
   }
   // get l2 network info
   const l2 = await getNetwork(l2ChainId)
-
   console.log(
     `Deploying bridged token from L1 (${l1Name}) ${l1TokenAddress} to L2 ${l2.name} (${l2.id})...
     - token: ${l1TokenAddress} `
   )
 
   // Create the RPC providers and wallets
-  const l2Provider = await getProvider(l2ChainId)
+  const { provider: l2Provider } = await getProvider(l2ChainId)
   const l2Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l2Provider)
 
   // read ABI from node_modules
