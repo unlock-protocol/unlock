@@ -7,7 +7,8 @@
  *
  */
 
-const { getDelayModule, fetchDataFromTx, logStatus } = require('./_lib')
+const { getDelayModule, logStatus, delayABI } = require('./_lib')
+const { fetchDataFromTx } = require('../../helpers/tx')
 const fs = require('fs-extra')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
@@ -18,7 +19,10 @@ const bigIntToDate = (num) => new Date(parseInt((num * 1000n).toString()))
 
 const getTxStatus = async ({ delayMod, txHash, nextNonce } = {}) => {
   const currentNonce = nextNonce - 1n
-  const { to, value, data, operation } = await fetchDataFromTx({ txHash })
+  const { to, value, data, operation } = await fetchDataFromTx({
+    txHash,
+    abi: delayABI,
+  })
 
   // make sure tx is scheduled correctly
   const txHashExec = await delayMod.getTransactionHash(
