@@ -28,6 +28,7 @@ export const useAvailableNetworks = (all = false) => {
       value: networks[network!].id,
     })
   }
-
-  return networkOptions
+  return networkOptions.sort((a, b) =>
+    a.value === network ? -1 : b.value === network ? 1 : 0
+  )
 }

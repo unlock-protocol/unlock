@@ -58,6 +58,7 @@ export const networkDescription = (network: number) => {
           .
         </>
       )}
+      <p></p>
     </>
   )
 }
@@ -112,7 +113,7 @@ export const CreateLockForm = ({
       web3Service,
       account!,
       null,
-      selectedNetwork || 1
+      selectedNetwork || 10
     )
     return parseFloat(balance)
   }
@@ -188,7 +189,7 @@ export const CreateLockForm = ({
             <Select
               label="Network:"
               tooltip={
-                <>
+                <p className="py-2">
                   Unlock supports{' '}
                   <Link
                     target="_blank"
@@ -201,8 +202,8 @@ export const CreateLockForm = ({
                   <br />
                   If yours is not in the list below, switch your wallet to it{' '}
                   <br />
-                  and you will be able to deploy your contract on it.
-                </>
+                  and it will be added to the list.
+                </p>
               }
               defaultValue={selectedNetwork}
               options={networkOptions}
