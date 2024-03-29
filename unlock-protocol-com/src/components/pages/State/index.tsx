@@ -258,6 +258,7 @@ export function State() {
           id,
           ...lockStats,
           activeLocks: unlockDailyDatas
+            .filter(({ date }) => isWithin(date, 30)) // last 30 days
             .map(({ activeLocks }) => activeLocks)
             .reduce((pv, a) => pv + a, 0),
         })
