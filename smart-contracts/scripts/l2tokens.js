@@ -1,3 +1,12 @@
+/**
+ * Bridge tokens to Optimism networks
+ *
+ * TODO: move to governance foldder
+ * NB: this scripts belong to `governance` folder but lives here as the Optimsim sdk
+ * requires ethers v5 ( in use in this workspace), while the governance workspace
+ * uses v6.
+ */
+
 const {
   getERC20Contract,
   getNetwork,
@@ -5,28 +14,24 @@ const {
 const { ethers } = require('hardhat')
 const optimism = require('@eth-optimism/sdk')
 
-const L1_UDT_SEPOLIA = '0x0B26203E3DE7E680c9749CFa47b7ea37fEE7bd98'
-const L2_UDT_OP_SEPOLIA = '0xfa7AC1c24339f629826C419eC95961Df58563438'
-
-const OP_SEPOLIA_NETWORK = {
-  name: 'Op Sepolia',
-  id: 11155420,
-  provider: 'https://sepolia.optimism.io',
-}
+// edit default values
+const L1_CHAIN_ID = 11155111 // default to Sepolia
+const l2_CHAIN_ID = 84532 // default to Base Sepolia
 
 async function main({
-  l1TokenAddress = L1_UDT_SEPOLIA,
-  l2TokenAddress = L2_UDT_OP_SEPOLIA,
-  l1ChainId = 11155111, // Sepolia
-  l2ChainId = OP_SEPOLIA_NETWORK.id, // 10 for OP Mainnet
+  l1ChainId = L1_CHAIN_ID,
+  l2ChainId = l2_CHAIN_ID,
   amount = 1000000000000000000n, // default to 1
 } = {}) {
   const { DEPLOYER_PRIVATE_KEY } = process.env
 
   const [l1, l2] = await Promise.all([
     await getNetwork(l1ChainId),
-    l2ChainId !== 11155420 ? await getNetwork(l2ChainId) : OP_SEPOLIA_NETWORK,
+    await getNetwork(l2ChainId),
   ])
+
+  const l1TokenAddress = l1.unlockDaoToken.address
+  const l2TokenAddress = l2.unlockDaoToken.address
 
   console.log(
     `Bridging tokens from L1 ${l1.name} (${l1.id}) to L2 ${l2.name} (${l2.id})...
