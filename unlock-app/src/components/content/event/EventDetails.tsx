@@ -37,6 +37,7 @@ import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
+import Hosts from './Hosts'
 
 interface EventDetailsProps {
   event: Event
@@ -74,7 +75,7 @@ export const EventDetails = ({
     event,
   })
 
-  const organizers = useEventOrganizers({
+  const { data: organizers } = useEventOrganizers({
     checkoutConfig,
   })
   console.log({ organizers })
@@ -299,7 +300,7 @@ Powered by Unlock Protocol`}
               {event.name}
             </h1>
             <section className="mt-4">
-              <div>Hosted by: ccarfi.eth, julien51.eth</div>
+              <Hosts organizers={organizers} />
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>

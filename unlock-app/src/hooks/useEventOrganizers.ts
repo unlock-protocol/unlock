@@ -17,7 +17,7 @@ export const useEventOrganizers = ({
 }: useEventOrganizersProps) => {
   return useQuery(
     ['eventOrganizers', checkoutConfig],
-    async (): Promise<boolean> => {
+    async (): Promise<string[]> => {
       const service = new SubgraphService()
       // Group locks by network
       const locksByNetwork: { [key: number]: string[] } = {}
@@ -37,25 +37,23 @@ export const useEventOrganizers = ({
         }
       })
 
-      console.log({ locksByNetwork })
-
       const lockManagers = await Promise.all(
         Object.keys(locksByNetwork).map(async (network: number) => {
           const locks = locksByNetwork[network]
-          const locksWithManagers = await service.lock(
+          const locksWithManagers = await service.locks(
             {
+              first: locks.length,
               where: {
                 address_in: locks,
               },
             },
             {
-              network,
+              networks: [network],
             }
           )
           return locksWithManagers.map((lock) => lock.lockManagers)
         })
       )
-      console.log(lockManagers)
       return lockManagers
     }
   )
