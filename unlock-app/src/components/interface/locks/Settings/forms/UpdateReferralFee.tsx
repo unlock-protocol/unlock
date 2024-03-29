@@ -125,7 +125,7 @@ export const UpdateReferralFee = ({
           })}
           error={
             errors?.referralFeePercentage &&
-            'This field accept percentage value between 1 and 100.'
+            'This field accepts percentage values between 1 and 100.'
           }
           disabled={isDisabledReferrerInput}
         />
