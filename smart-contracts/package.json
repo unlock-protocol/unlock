@@ -8,6 +8,7 @@
     "test": "test"
   },
   "dependencies": {
+    "@arbitrum/sdk": "3.3.3",
     "@connext/interfaces": "2.0.5",
     "@eth-optimism/sdk": "3.2.3",
     "@nomiclabs/hardhat-ethers": "2.2.3",

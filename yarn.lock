@@ -257,6 +257,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@arbitrum/sdk@npm:3.3.3":
+  version: 3.3.3
+  resolution: "@arbitrum/sdk@npm:3.3.3"
+  dependencies:
+    "@ethersproject/address": "npm:^5.0.8"
+    "@ethersproject/bignumber": "npm:^5.1.1"
+    "@ethersproject/bytes": "npm:^5.0.8"
+    async-mutex: "npm:^0.4.0"
+    ethers: "npm:^5.1.0"
+  checksum: 10/cf21a8750191beaa588bbe350853118d6142ac70aebcdb38306ff5144cbbb89a7ac2680b03537f218bdad9eb528cfe85ba97834794bcbe397ce7d817f2a010c8
+  languageName: node
+  linkType: hard
+
 "@ardatan/relay-compiler@npm:12.0.0":
   version: 12.0.0
   resolution: "@ardatan/relay-compiler@npm:12.0.0"
@@ -7698,7 +7711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/address@npm:5.7.0, @ethersproject/address@npm:^5.0.0, @ethersproject/address@npm:^5.0.2, @ethersproject/address@npm:^5.0.4, @ethersproject/address@npm:^5.7.0":
+"@ethersproject/address@npm:5.7.0, @ethersproject/address@npm:^5.0.0, @ethersproject/address@npm:^5.0.2, @ethersproject/address@npm:^5.0.4, @ethersproject/address@npm:^5.0.8, @ethersproject/address@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/address@npm:5.7.0"
   dependencies:
@@ -7730,7 +7743,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bignumber@npm:5.7.0, @ethersproject/bignumber@npm:^5.0.7, @ethersproject/bignumber@npm:^5.7.0":
+"@ethersproject/bignumber@npm:5.7.0, @ethersproject/bignumber@npm:^5.0.7, @ethersproject/bignumber@npm:^5.1.1, @ethersproject/bignumber@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/bignumber@npm:5.7.0"
   dependencies:
@@ -7741,7 +7754,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/bytes@npm:5.7.0, @ethersproject/bytes@npm:^5.0.4, @ethersproject/bytes@npm:^5.7.0":
+"@ethersproject/bytes@npm:5.7.0, @ethersproject/bytes@npm:^5.0.4, @ethersproject/bytes@npm:^5.0.8, @ethersproject/bytes@npm:^5.7.0":
   version: 5.7.0
   resolution: "@ethersproject/bytes@npm:5.7.0"
   dependencies:
@@ -19966,7 +19979,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@eth-optimism/sdk": "npm:3.2.3"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.4"
@@ -19987,7 +19999,6 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     eslint: "npm:8.54.0"
     ethers: "npm:6.10.0"
-    ethers5: "npm:ethers@5"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
     solhint: "npm:4.1.1"
@@ -20199,6 +20210,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
+    "@arbitrum/sdk": "npm:3.3.3"
     "@connext/interfaces": "npm:2.0.5"
     "@eth-optimism/sdk": "npm:3.2.3"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
@@ -23170,6 +23182,15 @@ __metadata:
   dependencies:
     tslib: "npm:^2.0.0"
   checksum: 10/3cf676fc48b4686abf534cc02d4784bab3f35d7836a0a7476c96e57c3f6607dd3d94cc0989b29d33ce5ae5cde8be8e1a96f3e769ba3b0e1ba4a244f873aa5623
+  languageName: node
+  linkType: hard
+
+"async-mutex@npm:^0.4.0":
+  version: 0.4.1
+  resolution: "async-mutex@npm:0.4.1"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 10/7e9f77b112b8545beb6612493fae4a8d9d1d6c3f24fc22f4d6d05ce96d1e8d326ac3e743a804cc6d7bf24e7ef0267afb65bb127f99b2e433609684b38933ff1c
   languageName: node
   linkType: hard
 
@@ -31039,7 +31060,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers5@npm:ethers@5, ethers@npm:5.7.2, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
