@@ -9,14 +9,21 @@ const { getProvider } = require('../../helpers/multisig')
 const { ethers } = require('hardhat')
 const fs = require('fs-extra')
 
+// base factory address from https://docs.base.org/base-contracts/
+const BASE_OptimismMintableERC20Factory =
+  '0xf23d369d7471bD9f6487E198723eEa023389f1d4'
+
+// OP factory address
+// const OP_OptimismMintableERC20Factory = '0x4200000000000000000000000000000000000012'
+
 // edit default values
 const L1_CHAIN_ID = 1 // default to (Sepolia 11155111)
-const l2_CHAIN_ID = 10 // default to (Base Sepolia 84532)
+const l2_CHAIN_ID = 8453 // default to (Base Sepolia 84532)
 
 async function main({
   tokenSymbol = 'UDT.e',
   tokenName = 'UnlockDiscountToken (bridged)',
-  factoryAddress = '0x4200000000000000000000000000000000000012', // bridged token factory address
+  factoryAddress = BASE_OptimismMintableERC20Factory, // bridged erc20 factory address
   l1ChainId = L1_CHAIN_ID,
   l2ChainId = l2_CHAIN_ID,
 } = {}) {
