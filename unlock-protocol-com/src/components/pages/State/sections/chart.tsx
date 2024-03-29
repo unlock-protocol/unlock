@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect } from 'react'
 import * as Plot from '@observablehq/plot'
 
 export function HistoricalChart({
@@ -7,7 +7,7 @@ export function HistoricalChart({
   supportedNetworks,
   viewFilter,
 }) {
-  const ref = useRef()
+  const ref = useRef<HTMLInputElement>()
 
   useEffect(() => {
     const barChart = Plot.plot({
@@ -50,7 +50,7 @@ export function HistoricalChart({
 
     ref.current?.append(barChart)
     return () => barChart.remove()
-  }, [dailyStats, viewFilter])
+  }, [dailyStats, viewFilter, filter.period, supportedNetworks])
 
   return (
     <div style={{ margin: '0 auto' }}>
