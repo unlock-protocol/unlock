@@ -50,5 +50,5 @@ export const generateQrCode = async ({
   const qrcode = encoder.encode(new Byte(url))
 
   // this will return a base64 image
-  return qrcode.toDataURL()
+  return qrcode.toDataURL(5)
 }
