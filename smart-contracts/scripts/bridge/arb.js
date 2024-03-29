@@ -19,7 +19,7 @@ const l2_CHAIN_ID = 42161 // ARB (ARB Sepolia 421614)
 async function main({
   l1ChainId = L1_CHAIN_ID,
   l2ChainId = l2_CHAIN_ID,
-  amount = 1000000000000000000n, // default to 1
+  amount = 100000000000000000n, // default to 0.1
 } = {}) {
   const { DEPLOYER_PRIVATE_KEY } = process.env
 
@@ -48,6 +48,11 @@ async function main({
   // use arb sdk
   const l2Network = await getL2Network(l2Provider)
   const erc20Bridger = new Erc20Bridger(l2Network)
+  const l2TokenAddress = await erc20Bridger.getL2ERC20Address(
+    l1TokenAddress,
+    l1Provider
+  )
+  console.log(`L2 ERC20 bridged token contract at ${l2TokenAddress}`)
 
   // get arb gateway address
   const expectedL1GatewayAddress = await erc20Bridger.getL1GatewayAddress(
@@ -97,12 +102,14 @@ async function main({
       )
 
   // now fetch the token address created on l2
-  console.log('Get address on L2...')
-  const l2TokenAddress = await erc20Bridger.getL2ERC20Address(
-    l1TokenAddress,
-    l1Provider
-  )
-  console.log(`L2 token contract created at ${l2TokenAddress}`)
+  if (!l2TokenAddress) {
+    console.log('Get address on L2...')
+    const l2TokenAddress = await erc20Bridger.getL2ERC20Address(
+      l1TokenAddress,
+      l1Provider
+    )
+    console.log(`L2 token contract created at ${l2TokenAddress}`)
+  }
   const l2Token = erc20Bridger.getL2TokenContract(l2Provider, l2TokenAddress)
 
   console.log(
