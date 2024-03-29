@@ -7,7 +7,7 @@
  * yarn hardhat submit:version
  *
  * # with an existing address, contract gets deployed and specified
- * yarn hardhat submit:version --network goerli --public-lock-address <TEMPLATE_ADDRESS>
+ * yarn hardhat submit:version --network optimism --public-lock-address <TEMPLATE_ADDRESS>
  * ```
  * NB: You can first test on mainnet to make sure the template is deploying correctly * :
  *
@@ -42,7 +42,7 @@ async function main({
 
   const { multisig } = networks[chainId]
   if (!unlockAddress) {
-    ;({ unlockAddress } = networks[chainId])
+    ; ({ unlockAddress } = networks[chainId])
   }
   let publicLock
 
@@ -110,8 +110,7 @@ async function main({
       const unlock = await ethers.getContractAt('Unlock', unlockAddress)
       const lock = await deployLock({ unlock })
       console.log(
-        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${
-          lock.address
+        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${lock.address
         }.`
       )
     }
