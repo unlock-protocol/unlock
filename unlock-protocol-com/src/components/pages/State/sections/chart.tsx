@@ -41,6 +41,7 @@ export function HistoricalChart({
               fill: 'name',
               interval: filter.period <= 365 ? 'day' : 'week',
               tip: 'x',
+              cumulative: viewFilter.cumulative,
             }
           )
         ),

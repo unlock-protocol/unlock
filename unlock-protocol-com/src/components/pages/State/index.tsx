@@ -33,6 +33,7 @@ type IFilter = {
 interface IViewFilter {
   label: string
   value: string
+  cumulative?: boolean
 }
 
 const views = [
@@ -50,11 +51,13 @@ const views = [
   },
   {
     label: 'Locks deployed (cumulative)',
-    value: 'totalLockDeployed',
+    value: 'lockDeployed',
+    cumulative: true,
   },
   {
     label: 'Keys (cumulative)',
-    value: 'totalKeysSold',
+    value: 'keySold',
+    cumulative: true,
   },
 ]
 
