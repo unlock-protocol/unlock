@@ -15,7 +15,8 @@ export const ExportKeysJobPayload = z.object({
   approval: z.string(),
   loggedInUserAddress: z.string(),
 })
-
+// TODO: add progress status
+// For this we would probably need to add a new model in which we would store the progress!
 const exportKeysJob: Task = async (payload) => {
   const parsed = await ExportKeysJobPayload.parse(payload)
 
@@ -28,11 +29,11 @@ const exportKeysJob: Task = async (payload) => {
   while (page < totalPages) {
     const filters = {
       query: parsed.query,
-      page,
       filterKey: parsed.filterKey,
       expiration: parsed.expiration,
       approval: parsed.approval,
       max,
+      after: allKeys[allKeys.length - 1]?.token,
     }
 
     const { keys, total } = await keysOperations.getKeysWithMetadata({
@@ -42,7 +43,7 @@ const exportKeysJob: Task = async (payload) => {
       loggedInUserAddress: parsed.loggedInUserAddress,
     })
 
-    allKeys = [...allKeys, ...keys]
+    allKeys = [...allKeys, ...keys].sort((k, l) => k.token - l.token)
     totalFetched += keys.length
     page++
 
