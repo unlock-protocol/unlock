@@ -13,13 +13,10 @@ const {
 } = require('@arbitrum/sdk')
 const { ethers } = require('hardhat')
 
-const L1_CHAIN_ID = 11155111 // default to Sepolia
-const l2_CHAIN_ID = 421614 // default to ARB Sepolia
-const L1_UDT_SEPOLIA = '0x0B26203E3DE7E680c9749CFa47b7ea37fEE7bd98'
+const L1_CHAIN_ID = 1 // mainnet (Sepolia 11155111)
+const l2_CHAIN_ID = 42161 // ARB (ARB Sepolia 421614)
 
 async function main({
-  // tokenSymbol = 'UDT.e',
-  // tokenName = 'UnlockDiscountToken (bridged)',
   l1ChainId = L1_CHAIN_ID,
   l2ChainId = l2_CHAIN_ID,
   amount = 1000000000000000000n, // default to 1
@@ -32,7 +29,7 @@ async function main({
     await getNetwork(l2ChainId),
   ])
 
-  const l1TokenAddress = L1_UDT_SEPOLIA //l1.unlockDaoToken.address
+  const l1TokenAddress = l1.unlockDaoToken.address
 
   console.log(
     `Bridging tokens from L1 ${l1.name} (${l1.id}) to L2 ${l2.name} (${l2.id})...
@@ -43,9 +40,7 @@ async function main({
   const l1Provider = new ethers.providers.StaticJsonRpcProvider(l1.provider)
   const l1Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l1Provider)
   // const l2Provider = await getProvider(l2ChainId)
-  const l2Provider = new ethers.providers.StaticJsonRpcProvider(
-    'https://sepolia-rollup.arbitrum.io/rpc'
-  )
+  const l2Provider = new ethers.providers.StaticJsonRpcProvider(l2.provider)
 
   // token contract instance
   const l1Token = await ethers.getContractAt('IERC20', l1TokenAddress, l1Wallet)
@@ -60,9 +55,14 @@ async function main({
     l1Provider
   )
   console.log(`Using ARB Gateway at: ${expectedL1GatewayAddress}`)
+  const balance = await l1Token.balanceOf(l1Wallet.address)
   console.log(`Balances:
-  - L1 Wallet: ${await l1Token.balanceOf(l1Wallet.address)}
+  - L1 Wallet: ${balance.toString()}
   - L1 Gateway / L2: ${await l1Token.balanceOf(expectedL1GatewayAddress)}`)
+
+  if (balance.lt(amount)) {
+    throw new Error('Insufficient UDT balance on L1. Can not bridge')
+  }
 
   console.log('Approving the Bridge to spend token...')
   const approveTx = await erc20Bridger.approveToken({
