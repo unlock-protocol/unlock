@@ -9,8 +9,8 @@ const l1BridgeAbi = require('./abi/l1standardbridge.json')
 const { ethers } = require('hardhat')
 
 const L1_CHAIN_ID = 1 // mainnet (Sepolia 11155111)
-const l2_CHAIN_ID = 8453 // BASE (BASE Sepolia 8453x)
-const l1StandardBridge = '0xfd0Bf71F60660E2f608ed56e1659C450eB113120'
+const l2_CHAIN_ID = 8453 // BASE (BASE Sepolia 84534)
+const l1StandardBridge = '0x3154Cf16ccdb4C6d922629664174b904d80F2C35'
 const defaultGasAmount = '100000'
 
 async function main({
@@ -37,9 +37,6 @@ async function main({
   // Create the RPC providers and wallets
   const l1Provider = new ethers.providers.StaticJsonRpcProvider(l1.provider)
   const l1Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l1Provider)
-
-  // const l2Provider = new ethers.providers.StaticJsonRpcProvider(l2.provider)
-  // const l2Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l2Provider)
 
   const bridgeContract = new ethers.Contract(
     l1StandardBridge,
