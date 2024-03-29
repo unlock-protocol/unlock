@@ -42,7 +42,7 @@ async function main({
 
   const { multisig } = networks[chainId]
   if (!unlockAddress) {
-    ; ({ unlockAddress } = networks[chainId])
+    ;({ unlockAddress } = networks[chainId])
   }
   let publicLock
 
@@ -110,7 +110,8 @@ async function main({
       const unlock = await ethers.getContractAt('Unlock', unlockAddress)
       const lock = await deployLock({ unlock })
       console.log(
-        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${lock.address
+        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${
+          lock.address
         }.`
       )
     }
