@@ -70,7 +70,6 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
 
 const nextConfig = {
   output: 'export',
-  // distDir: 'out',
   images: {
     unoptimized: true,
   },
