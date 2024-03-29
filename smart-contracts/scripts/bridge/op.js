@@ -7,21 +7,18 @@
  * uses v6.
  */
 
-const {
-  getERC20Contract,
-  getNetwork,
-} = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { ethers } = require('hardhat')
 const optimism = require('@eth-optimism/sdk')
 
 // edit default values
-const L1_CHAIN_ID = 11155111 // default to Sepolia
-const l2_CHAIN_ID = 84532 // default to Base Sepolia
+const L1_CHAIN_ID = 1 // Sepolia 11155111
+const l2_CHAIN_ID = 10 // Base Sepolia 84532
 
 async function main({
   l1ChainId = L1_CHAIN_ID,
   l2ChainId = l2_CHAIN_ID,
-  amount = 1000000000000000000n, // default to 1
+  amount = 100000000000000000n, // default to 0.1
 } = {}) {
   const { DEPLOYER_PRIVATE_KEY } = process.env
 
@@ -46,8 +43,16 @@ async function main({
   const l2Wallet = new ethers.Wallet(DEPLOYER_PRIVATE_KEY, l2Provider)
 
   // tokens
-  const l1Token = await getERC20Contract(l1TokenAddress, l1Wallet)
-  const l2Token = await getERC20Contract(l2TokenAddress, l2Wallet)
+  const l1Token = await ethers.getContractAt(
+    'IMintableERC20',
+    l1TokenAddress,
+    l1Wallet
+  )
+  const l2Token = await ethers.getContractAt(
+    'IMintableERC20',
+    l2TokenAddress,
+    l2Wallet
+  )
 
   console.log(
     `Amount: ${ethers.utils.formatUnits(

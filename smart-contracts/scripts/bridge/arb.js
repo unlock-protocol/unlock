@@ -63,7 +63,9 @@ async function main({
   const balance = await l1Token.balanceOf(l1Wallet.address)
   console.log(`Balances:
   - L1 Wallet: ${balance.toString()}
-  - L1 Gateway / L2: ${await l1Token.balanceOf(expectedL1GatewayAddress)}`)
+  - L1 Gateway / L2 totalSupply: ${await l1Token.balanceOf(
+    expectedL1GatewayAddress
+  )}`)
 
   if (balance.lt(amount)) {
     throw new Error('Insufficient UDT balance on L1. Can not bridge')
