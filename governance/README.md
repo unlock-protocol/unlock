@@ -23,7 +23,7 @@ yarn workspace @unlock-protocol/networks build
 
 ## Add block explorer verification
 
-- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
+- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/src/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
 - optionally can add support for env variable
 
 When you are done, rebuild the helpers package with
@@ -74,9 +74,25 @@ yarn hardhat set:unlock-config
 
 ### Deploy the subgraph
 
-First you will need to create a new graph on [The Graph](https://thegraph.com) studio.
+1. First you will need to create a new graph on [The Graph studio](https://thegraph.com/studio).
 
-Then the following commands
+2. In the `packages/networks/src/<your-network>.ts` config file, fill the `subgraph` object as follow:
+
+```js
+subgraph: {
+    endpoint: '<>', // this is given to you by the graph after deploying
+    networkName: 'base-sepolia', // the graph name of the network see https://thegraph.com/docs/en/developing/supported-networks/
+    studioName: 'unlock-protocol-<your-network>', // the name of the graph
+  },
+```
+
+3. Rebuild the networks package
+
+```
+yarn workspace @unlock-protocol/networks build
+```
+
+4. Deploy the graph by using the following commands
 
 ```shell
 # got to the subgraph folder
@@ -85,10 +101,10 @@ cd subgraph
 # create the subgraph.yaml and generate the files
 yarn build <your-network>
 
-yarn deploy:studio <your-subgraph-name>
+yarn deploy <your-subgraph-name>
 ```
 
-The graph will now sync. In the `packages/networks/src/<your-network>.ts` config file, fill the `subgraph` object with a name in `studioEndpoint` and the API url in `endpoint`.
+The graph is now deployed. Add the URL that is shown to the network file.
 
 ### Verify contracts
 
