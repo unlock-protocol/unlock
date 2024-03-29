@@ -16,6 +16,7 @@ import { CastItButton } from './CastItButton'
 import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
@@ -72,6 +73,12 @@ export const EventDetails = ({
   const eventUrl = getEventUrl({
     event,
   })
+
+  const organizers = useEventOrganizers({
+    checkoutConfig,
+  })
+  console.log({ organizers })
+
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
   useEffect(() => {
@@ -292,6 +299,7 @@ Powered by Unlock Protocol`}
               {event.name}
             </h1>
             <section className="mt-4">
+              <div>Hosted by: ccarfi.eth, julien51.eth</div>
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
