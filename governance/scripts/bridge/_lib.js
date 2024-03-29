@@ -698,22 +698,6 @@ const getDelayModule = async (delayModuleAddress) => {
   return { delayMod, currentNonce, queueNonce }
 }
 
-const fetchDataFromTx = async ({ txHash }) => {
-  const { interface } = await ethers.getContractAt(delayABI, ADDRESS_ZERO)
-
-  // fetch data from tx
-  const { logs } = await ethers.provider.getTransactionReceipt(txHash)
-  const parsedLogs = logs.map((log) => {
-    try {
-      return interface.parseLog(log)
-    } catch (error) {
-      return {}
-    }
-  })
-  const { args } = parsedLogs.find(({ name }) => name === 'TransactionAdded')
-  return args
-}
-
 const logStatus = (transferId, status) => {
   const { origin, dest } = status
   const { explorer, name, id } = networks[dest.chainId]
@@ -731,11 +715,11 @@ const logStatus = (transferId, status) => {
 }
 
 module.exports = {
+  delayABI,
   getXCalledEvents,
   fetchOriginXCall,
   fetchDestinationXCall,
   getSupportedChainsByDomainId,
   getDelayModule,
-  fetchDataFromTx,
   logStatus,
 }
