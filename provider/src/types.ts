@@ -10,6 +10,7 @@ export interface Env {
   OPTIMISM_PROVIDER: string
   POLYGON_PROVIDER: string
   ZKSYNC_PROVIDER: string
+  BASE_SEPOLIA_PROVIDER: string
   BASE_PROVIDER: string
   SEPOLIA_PROVIDER: string
   LINEA_PROVIDER: string

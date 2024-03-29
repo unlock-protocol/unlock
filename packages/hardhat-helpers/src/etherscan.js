@@ -16,6 +16,7 @@ const etherscan = {
     avalanche: 'N4AF8AYN8PXY2MFPUT8PAFSZNVJX5Q814X',
     celo: '6KBKUFYV3NQR4Y1BQN3Q34S2U7NTZBBPQZ',
     base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
+    baseSepolia: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
@@ -28,6 +29,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.celoscan.io/api',
         browserURL: 'https://celoscan.io/',
+      },
+    },
+    {
+      network: 'baseSepolia',
+      chainId: 84532,
+      urls: {
+        apiURL: 'https://api-sepolia.basescan.org/api',
+        browserURL: 'https://sepolia.basescan.org/',
       },
     },
     {
