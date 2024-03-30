@@ -20,8 +20,8 @@ const LockContractOptions = z.object({
 export class ContractsController {
   async createLockContract(request: Request, response: Response) {
     const network = Number(request.params.network)
-    // Only supported on goerli, polygon, and gnosis.
-    if (![5, 137, 100].includes(network)) {
+    // Only supported on polygon, and gnosis.
+    if (![137, 100].includes(network)) {
       return response.status(404).send({
         message: `Network ${
           networks[network]?.name || network

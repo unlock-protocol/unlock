@@ -4,7 +4,6 @@ import { Env } from './types'
 const supportedNetworks = (env: Env, networkId: string): string | undefined => {
   return {
     '1': env.MAINNET_PROVIDER,
-    '5': env.GOERLI_PROVIDER,
     '10': env.OPTIMISM_PROVIDER,
     '56': env.BSC_PROVIDER,
     '100': env.GNOSIS_PROVIDER,
