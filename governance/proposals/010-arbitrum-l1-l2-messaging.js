@@ -117,7 +117,7 @@ const INBOX_ABI = [
  * Set up: instantiate L1 / L2 wallets connected to providers
  */
 const walletPrivateKey = process.env.PRIVATE_KEY
-const L1RPC = 'https://rpc.unlock-protocol.com/1'
+const L1RPC = 'https://rpc.unlock-protocol.com/1' // mainnet RPC
 const L2RPC = `https://arbitrum-mainnet.infura.io/v3/${process.env.ETHERSCAN_API_KEY}`
 const l1Provider = new ethers.JsonRpcProvider(L1RPC)
 const l2Provider = new ethers.JsonRpcProvider(L2RPC)
@@ -204,7 +204,7 @@ module.exports = async () => {
   #### About the proposal
     The proposal contains a single call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will attempt to execute an L2 request to the ARB token contract to transfer ${ethers
       .formatEther(tokenAmount)
-      .toString()} of tokens to the grants contract - \`transfer(${grantsContractAddress},${ethers
+      .toString()} of token from the Timelock L2 Alias address \`${timelockL2Alias}\` to the [grants contract](https://arbiscan.io/address/0x00d5e0d31d37cc13c645d86410ab4cb7cb428cca) - \`transfer(${grantsContractAddress},${ethers
       .formatEther(tokenAmount)
       .toString()})\`.
 
