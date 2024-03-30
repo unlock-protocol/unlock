@@ -6,7 +6,7 @@ import { describe, it, expect, vi } from 'vitest'
 var web3Service = new Web3Service(networks)
 const lock = {
   address: '0xe6A85e67905d41A479A32FF59892861351c825E8',
-  network: 5,
+  network: 10,
 }
 
 describe('Web3Service', () => {
@@ -28,6 +28,9 @@ describe('Web3Service', () => {
             return result
           },
         }
+        web3Service.getUnlockContract = vi.fn(() => ({
+          locks: vi.fn(() => ({ deployed: true })),
+        }))
         web3Service.lockContractAbiVersion = vi.fn(() => version)
         const r = await web3Service[method](...args)
         expect(r).toBe(result)
@@ -53,13 +56,28 @@ describe('Web3Service', () => {
       async () => {
         expect.assertions(2)
         const service = new Web3Service(networks)
-        const response = await service.getLock(lock.address, 5)
+        service.getUnlockContract = vi.fn(() => ({
+          locks: vi.fn(() => ({ deployed: true })),
+        }))
+        // Fake implementation of getLock
+        const version = {
+          getLock: (_args) => {
+            return {
+              unlockContractAddress: networks[lock.network].unlockAddress,
+            }
+          },
+        }
+        service.lockContractAbiVersion = vi.fn(() => version)
+
+        const response = await service.getLock(lock.address, 10)
         expect(response.address).toBe(lock.address)
         const notFromUnlockFactoryContract = async () => {
-          // Fake generated address
+          service.getUnlockContract = vi.fn(() => ({
+            locks: vi.fn(() => ({ deployed: false })),
+          }))
           const response = await service.getLock(
             '0xAfC5356c67853fC8045586722fE6a253023039eB',
-            5
+            10
           )
           return response
         }

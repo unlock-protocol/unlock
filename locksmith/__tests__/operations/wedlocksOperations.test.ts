@@ -201,7 +201,7 @@ describe('Wedlocks operations', () => {
 
     it('Correctly save and retrieve', async () => {
       expect.assertions(2)
-      const network = 5
+      const network = 10
       const template = 'keyMined'
 
       const { loginResponse } = await loginRandomUser(app)
@@ -225,7 +225,7 @@ describe('Wedlocks operations', () => {
 
     it('Custom content can not be retrieved when is not stored', async () => {
       expect.assertions(3)
-      const network = 5
+      const network = 10
       const template = 'RandomTemplate'
 
       const { loginResponse } = await loginRandomUser(app)

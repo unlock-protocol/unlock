@@ -5,7 +5,6 @@ export interface Env {
   BSC_PROVIDER: string
   CELO_PROVIDER: string
   GNOSIS_PROVIDER: string
-  GOERLI_PROVIDER: string
   MAINNET_PROVIDER: string
   MUMBAI_PROVIDER: string
   OPTIMISM_PROVIDER: string

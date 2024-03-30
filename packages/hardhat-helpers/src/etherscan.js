@@ -6,7 +6,6 @@ const etherscan = {
     // xdai requires only placeholder api key
     xdai: 'api-key',
     polygon: 'W9TVEYKW2CDTQ94T3A2V93IX6U3IHQN5Y3',
-    goerli: 'HPSH1KQDPJTNAPU3335G931SC6Y3ZYK3BF',
     mainnet: 'HPSH1KQDPJTNAPU3335G931SC6Y3ZYK3BF',
     sepolia: 'HPSH1KQDPJTNAPU3335G931SC6Y3ZYK3BF',
     bsc: '6YUDRP3TFPQNRGGZQNYAEI1UI17NK96XGK',
@@ -68,7 +67,7 @@ const etherscan = {
 }
 
 if (process.env.ETHERSCAN_API_KEY) {
-  ;['mainnet', 'goerli', 'sepolia'].forEach(
+  ;['mainnet', 'sepolia'].forEach(
     // eslint-disable-next-line no-return-assign
     (netName) => (etherscan.apiKey[netName] = process.env.ETHERSCAN_API_KEY)
   )

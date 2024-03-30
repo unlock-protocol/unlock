@@ -147,10 +147,12 @@ export default class Web3Service extends UnlockService {
     // Add the lock address
     lock.address = address
 
+    // Add the unlock address
     lock.unlockContractAddress = ethers.utils.getAddress(
       lock.unlockContractAddress
     )
 
+    // Check that the Unlock address matches an "official one"
     const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
       (d: any) => ethers.utils.getAddress(d.unlockAddress)
     )

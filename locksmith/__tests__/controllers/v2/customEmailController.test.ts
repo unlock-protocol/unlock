@@ -6,7 +6,7 @@ import { vi } from 'vitest'
 let lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const template = 'keyMinded'
 
-const network = 5
+const network = 10
 const customEmailContent = `Custom Email Content`
 
 vi.mock('@unlock-protocol/unlock-js', () => {

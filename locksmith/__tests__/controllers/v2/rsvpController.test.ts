@@ -8,7 +8,7 @@ import { vi } from 'vitest'
 
 const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const userAddress = '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
-const network = 5
+const network = 10
 
 // eslint-disable-next-line
 var mockWeb3Service = {
@@ -51,7 +51,7 @@ describe('RSVP', () => {
         '0x81Dd955D02D337DB81BA6c9C5F6213E647672052'
       )
       expect(response.body.approval).toEqual('pending')
-      expect(response.body.network).toEqual(5)
+      expect(response.body.network).toEqual(10)
     })
 
     it('stores the RSVP in the right table even if there is no wallet', async () => {
