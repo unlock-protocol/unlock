@@ -464,6 +464,13 @@ interface IPublicLock {
    */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
 
+  function safeTransferFrom(
+    address from,
+    address to,
+    uint256 tokenId,
+    bytes calldata data
+  ) external;
+
   /**
    * an ERC721-like function to transfer a token from one account to another.
    * @param from the owner of token to transfer
@@ -526,13 +533,6 @@ interface IPublicLock {
     address _owner,
     address _operator
   ) external view returns (bool);
-
-  function safeTransferFrom(
-    address from,
-    address to,
-    uint256 tokenId,
-    bytes calldata data
-  ) external;
 
   /**
    * Returns the total number of keys, including non-valid ones

@@ -174,7 +174,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               label={
                 <div className="flex items-center gap-1">
                   <Icon size={10} icon={KeyIcon} />
-                  <span>Key Sold</span>
+                  <span>Key Minted</span>
                 </div>
               }
               labelSize="tiny"

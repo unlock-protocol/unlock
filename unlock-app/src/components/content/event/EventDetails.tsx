@@ -1,5 +1,4 @@
 import { MdAssignmentLate } from 'react-icons/md'
-
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -174,8 +173,43 @@ Powered by Unlock Protocol`}
             },
           ],
         }}
+        additionalMetaTags={[
+          {
+            property: 'fc:frame',
+            content: 'vNext',
+          },
+          {
+            name: 'fc:frame:image',
+            content: `${config.unlockApp}/og/event/${event.slug}`,
+          },
+          {
+            name: 'fc:frame:post_url',
+            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+              `${config.unlockApp}/frames/event/${event.slug}`
+            )}&s=${encodeURIComponent('{"view":"default"}')}`,
+          },
+          {
+            name: 'fc:frame:button:1',
+            content: 'Register',
+          },
+          {
+            name: 'fc:frame:button:1:target',
+            content: eventUrl,
+          },
+          {
+            name: 'fc:frame:button:1:action',
+            content: 'link',
+          },
+          {
+            name: 'fc:frame:button:2',
+            content: 'See description',
+          },
+          {
+            name: 'fc:frame:button:2:action',
+            content: 'post',
+          },
+        ]}
       />
-
       <div className="flex flex-col gap-4">
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
@@ -245,14 +279,14 @@ Powered by Unlock Protocol`}
                   <CastItButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
-                  <CopyUrlButton eventUrl={eventUrl} />
+                  <CopyUrlButton url={eventUrl} />
                 </li>
               </ul>
             </section>
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3  lg:px-12 lg:mt-16 mt-8">
+        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 lg:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="mt-4 text-3xl font-bold md:text-6xl">
               {event.name}
@@ -308,7 +342,6 @@ Powered by Unlock Protocol`}
           )}
         </section>
       </div>
-
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">

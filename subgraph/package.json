@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "yarn introspect && yarn prepare && node bin/thegraph build",
+    "check": "node bin/check.js",
     "ci": "yarn prepare:abis && yarn copy:manifest && graph codegen && yarn test -l",
     "clean": "rm -rf abis networks.json build generated",
     "copy:manifest": "rm -rf subgraph.yaml && cp ../tests/subgraph.test.yaml subgraph.yaml",
@@ -23,7 +24,7 @@
     "test": "graph test -v 0.5.2"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.68.0",
+    "@graphprotocol/graph-cli": "0.68.5",
     "@graphprotocol/graph-ts": "0.31.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",

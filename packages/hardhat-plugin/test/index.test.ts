@@ -34,13 +34,18 @@ describe('Unlock Hardhat plugin', function () {
       assert.instanceOf(this.hre.unlock, Object)
     })
 
-    it('should store networks info', function () {
+    it('should store and extend existing networks info', function () {
+      assert.isTrue(Object.keys(this.hre.unlock.networks).includes('1'))
+      assert.equal(this.hre.unlock.networks['1'].name, networks['1'].name)
+      assert.equal(this.hre.unlock.networks['1'].id, networks['1'].id)
+      assert.equal(this.hre.unlock.networks['1'].unlockAddress, 'newAddress')
+    })
+    it('should store additional networks info', function () {
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
       assert.equal(
         this.hre.unlock.networks['31337'].name,
         'Custom Localhost Name'
       )
-      assert.equal(this.hre.unlock.networks['31337'].id, networks['31337'].id)
       assert.equal(
         this.hre.unlock.networks['31337'].subgraph?.endpoint,
         'here goes a subgraph URI'
@@ -213,7 +218,7 @@ describe('HardhatConfig unlock extension', function () {
     assert.isTrue(Object.keys(this.hre.config).includes('unlock'))
     assert.deepEqual(
       Object.keys(this.hre.config.unlock).sort(),
-      [...Object.keys(networks), '12345'].sort()
+      [...Object.keys(networks), '12345', '31337'].sort()
     )
   })
 

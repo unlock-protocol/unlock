@@ -96,7 +96,7 @@ export function CreditCardPricingBreakdown({
           <Detail
             loading={loading}
             className="flex justify-between w-full py-2 text-sm"
-            label="Gas Costs"
+            label="Minting (gas) cost"
             labelSize="tiny"
             valueSize="tiny"
             inline
@@ -199,7 +199,7 @@ export function ConfirmCard({
   })
 
   // show gas cost only when custom credit card price is present
-  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
+  const gasCosts = creditCardPrice ? undefined : totalPricing?.gasCost
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,

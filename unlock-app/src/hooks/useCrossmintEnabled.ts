@@ -6,6 +6,13 @@ interface CrossmintEnabledProps {
   recipients: string[]
 }
 
+interface CrossmintEnabledResponse {
+  crossmintEnabled: boolean
+  collectionId: string
+  projectId: string
+  isLoading: boolean
+}
+
 export const useCrossmintEnabled = ({
   recipients,
   lockAddress,
@@ -16,10 +23,21 @@ export const useCrossmintEnabled = ({
     network,
   })
 
-  // Disabled if there are multiple recipients
-  if (recipients?.length !== 1) {
-    return { ...rest, crossmintClientId: null }
+  // Disabled if there are multiple recipients or if no crossmint client id is set
+  if (recipients?.length !== 1 || !settings?.crossmintClientId) {
+    return {
+      ...rest,
+      crossmintEnabled: false,
+      collectionId: '',
+      projectId: '',
+    } as CrossmintEnabledResponse
   }
 
-  return { ...rest, crossmintClientId: settings?.crossmintClientId }
+  const [collectionId, projectId] = settings.crossmintClientId.split('/')
+  return {
+    ...rest,
+    collectionId,
+    projectId,
+    crossmintEnabled: true,
+  } as CrossmintEnabledResponse
 }

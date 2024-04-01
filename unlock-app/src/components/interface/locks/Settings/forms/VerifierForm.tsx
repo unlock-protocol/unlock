@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   AddressInput,
   Button,
+  Input,
   Placeholder,
   isAddressOrEns,
   minifyAddress,
@@ -22,6 +23,7 @@ interface VerifierProps {
   lockAddress: string
   lockManager: string
   network: number
+  name?: string
   id: number
 }
 
@@ -40,6 +42,7 @@ interface VerifierCardProps {
 
 interface VerifierFormDataProps {
   verifier: string
+  name?: string
 }
 
 const VerifierCard = ({
@@ -62,6 +65,11 @@ const VerifierCard = ({
         {isCurrentAccount && (
           <span className="text-sm font-semibold text-brand-ui-primary">
             {`That's you`}
+          </span>
+        )}
+        {verifier?.name && (
+          <span className="text-base text-brand-dark">
+            Name: {verifier.name}
           </span>
         )}
       </div>
@@ -93,7 +101,7 @@ export const VerifierForm = ({
     network,
   })
 
-  const { handleSubmit, control, setValue } = localForm
+  const { handleSubmit, control, setValue, register } = localForm
 
   const { verifier } = useWatch({
     control,
@@ -104,13 +112,24 @@ export const VerifierForm = ({
     return response.data.results || []
   }
 
-  const addVerifier = async (address: string) => {
+  const addVerifier = async ({
+    address,
+    name,
+  }: {
+    address: string
+    name?: string
+  }) => {
     const resolvedAddress = await getAddressForName(address)
+
     const response = await storage.createVerifier(
       network,
       lockAddress,
-      resolvedAddress
+      resolvedAddress,
+      {
+        verifierName: name,
+      }
     )
+
     return response.data
   }
 
@@ -126,6 +145,7 @@ export const VerifierForm = ({
       } else {
         ToastHelper.success(`Verifier added to list`)
         setValue('verifier', '')
+        setValue('name', '')
       }
     },
     onError: (err: any) => {
@@ -170,8 +190,8 @@ export const VerifierForm = ({
     }
   )
 
-  const onAddVerifier = async ({ verifier }: VerifierFormDataProps) => {
-    await addVerifierMutation.mutateAsync(verifier)
+  const onAddVerifier = async ({ verifier, name }: VerifierFormDataProps) => {
+    await addVerifierMutation.mutateAsync({ address: verifier, name })
   }
 
   const onDeleteVerifier = async (address: string) => {
@@ -220,6 +240,18 @@ export const VerifierForm = ({
           className="flex flex-col gap-6 mt-8"
           onSubmit={handleSubmit(onAddVerifier)}
         >
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              placeholder="Verifier name"
+              label="Name"
+              disabled={disabled}
+              autoComplete="off"
+              description="Set an optional name to easily check who verified."
+              {...register('name')}
+            />
+          </div>
+
           <div className="flex flex-col gap-2">
             <Controller
               name="verifier"

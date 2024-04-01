@@ -22,19 +22,19 @@
     "@uniswap/permit2-sdk": "1.2.0",
     "@uniswap/sdk-core": "4.0.9",
     "@uniswap/smart-order-router": "3.19.2",
-    "@uniswap/v3-sdk": "3.10.0",
+    "@uniswap/v3-sdk": "3.10.2",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "ethers": "6.10.0",
-    "hardhat": "2.19.5",
+    "hardhat": "2.20.1",
     "typescript": "5.3.3",
     "zksync-ethers": "6.1.0"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "tsup": "8.0.1"
+    "tsup": "8.0.2"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
 const { ADDRESS_ZERO, reverts } = require('../helpers')

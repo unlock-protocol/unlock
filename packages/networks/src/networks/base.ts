@@ -41,6 +41,11 @@ export const base: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x64441384DB40F34855b1617C05800bE43bD34709',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 8453,
@@ -79,7 +84,7 @@ export const base: NetworkConfig = {
     networkName: 'base',
     studioName: 'unlock-protocol-base',
   },
-  swapPurchaser: '0x70B3c9Dd9788570FAAb24B92c3a57d99f8186Cc7',
+  swapPurchaser: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
   tokens: [
     {
       address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
@@ -106,6 +111,12 @@ export const base: NetworkConfig = {
       decimals: 18,
       name: 'Wrapped Ether',
       symbol: 'WETH',
+    },
+    {
+      address: '0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed',
+      decimals: 18,
+      name: 'Degen',
+      symbol: 'DEGEN',
     },
   ],
   uniswapV3: {

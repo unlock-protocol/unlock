@@ -48,6 +48,11 @@ export const bsc: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xa2abAeaba0ac658A1DF5517B57e45e857E3137Ad',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 56,
@@ -86,11 +91,12 @@ export const bsc: NetworkConfig = {
   startBlock: 13079000,
 
   subgraph: {
-    endpoint: 'https://api.studio.thegraph.com/query/65299/unlock-protocol-bsc/version/latest',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-bsc/version/latest',
     studioName: 'unlock-protocol-bsc',
   },
 
-  swapPurchaser: '0xc9F29DdBD4D828cFb2EB491E9d48013a9c0E3C89',
+  swapPurchaser: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
 
   tokens: [
     {

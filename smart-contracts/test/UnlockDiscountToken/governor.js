@@ -1,15 +1,19 @@
-const { time } = require('@openzeppelin/test-helpers')
-
-const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers')
+const { assert } = require('chai')
+const {
+  ADDRESS_ZERO,
+  getLatestBlock,
+  advanceBlock,
+  advanceBlockTo,
+  reverts,
+} = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
 )
 
-contract('UnlockProtocolGovernor', () => {
+describe('UnlockProtocolGovernor', () => {
   let gov
   let udt
   let updateTx
@@ -32,7 +36,7 @@ contract('UnlockProtocolGovernor', () => {
 
     // wait for a block (default voting delay)
     const currentBlock = await ethers.provider.getBlockNumber()
-    await time.advanceBlockTo(currentBlock + 2)
+    await advanceBlockTo(currentBlock + 2)
 
     // now ready to receive votes
     assert.equal(await gov.state(proposalId), 1) // Active
@@ -43,7 +47,7 @@ contract('UnlockProtocolGovernor', () => {
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await time.advanceBlockTo(deadline.toNumber() + 1)
+    await advanceBlockTo(deadline.toNumber() + 1)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
@@ -165,11 +169,11 @@ contract('UnlockProtocolGovernor', () => {
 
         await launchVotingProcess(voter, proposal)
 
-        const lastBlock = await time.latestBlock()
-        await time.advanceBlock()
+        const lastBlock = await getLatestBlock()
+        await advanceBlock()
 
         // make sure quorum has been changed succesfully
-        const changed = await gov.quorum(await lastBlock.toNumber())
+        const changed = await gov.quorum(lastBlock)
         assert.equal(changed.eq(quorum), true)
 
         // make sure event has been fired
