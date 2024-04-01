@@ -19528,6 +19528,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uniswap/sdk-core@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "@uniswap/sdk-core@npm:4.2.0"
+  dependencies:
+    "@ethersproject/address": "npm:^5.0.2"
+    big.js: "npm:^5.2.2"
+    decimal.js-light: "npm:^2.5.0"
+    jsbi: "npm:^3.1.4"
+    tiny-invariant: "npm:^1.1.0"
+    toformat: "npm:^2.0.0"
+  checksum: 10/8a0d2dc1ddf6f96413be7f3cd707f815eaa6861625b3befa4af9818508c3066933455754a90022498770a4321e6642420d1ab3f9bba1ed9ef2f35e1cc71d3621
+  languageName: node
+  linkType: hard
+
 "@uniswap/smart-order-router@npm:3.17.2":
   version: 3.17.2
   resolution: "@uniswap/smart-order-router@npm:3.17.2"
@@ -19728,7 +19742,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-sdk@npm:3.10.2, @uniswap/v3-sdk@npm:^3.10.0, @uniswap/v3-sdk@npm:^3.10.1":
+"@uniswap/v3-sdk@npm:3.11.0":
+  version: 3.11.0
+  resolution: "@uniswap/v3-sdk@npm:3.11.0"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.0.12"
+    "@ethersproject/solidity": "npm:^5.0.9"
+    "@uniswap/sdk-core": "npm:^4.2.0"
+    "@uniswap/swap-router-contracts": "npm:^1.2.1"
+    "@uniswap/v3-periphery": "npm:^1.1.1"
+    "@uniswap/v3-staker": "npm:1.0.0"
+    tiny-invariant: "npm:^1.1.0"
+    tiny-warning: "npm:^1.0.3"
+  checksum: 10/6bd4738ffa25f8a6d6c77ea4d5928483c69c73789ab87b1b48c33377a4765b6fcd337a6ca09bd7f346c17191e49adc36e64fd604aaf15aed5d275ce232047300
+  languageName: node
+  linkType: hard
+
+"@uniswap/v3-sdk@npm:^3.10.0, @uniswap/v3-sdk@npm:^3.10.1":
   version: 3.10.2
   resolution: "@uniswap/v3-sdk@npm:3.10.2"
   dependencies:
@@ -19916,7 +19946,7 @@ __metadata:
     "@uniswap/permit2-sdk": "npm:1.2.0"
     "@uniswap/sdk-core": "npm:4.0.9"
     "@uniswap/smart-order-router": "npm:3.19.2"
-    "@uniswap/v3-sdk": "npm:3.10.2"
+    "@uniswap/v3-sdk": "npm:3.11.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
