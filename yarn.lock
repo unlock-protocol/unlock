@@ -5461,12 +5461,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.23.7":
-  version: 7.24.0
-  resolution: "@babel/runtime@npm:7.24.0"
+"@babel/runtime@npm:^7.24.0":
+  version: 7.24.1
+  resolution: "@babel/runtime@npm:7.24.1"
   dependencies:
     regenerator-runtime: "npm:^0.14.0"
-  checksum: 10/8d32c7e116606ea322b89f9fde8ffae6be9503b549dc0d0abb38bd9dc26e87469b9fb7a66964cc089ee558fd0a97d304fb0a3cfec140694764fb0d71b6a6f5e4
+  checksum: 10/3a8d61400c636d1ce3a42895a106cd4dfb4e9b88832a8a754a724c68652f821d7a46dce394305d7623f9f0d3597bf0a98aeb5f9c150ef60e14bbbf66caab4654
   languageName: node
   linkType: hard
 
@@ -20372,7 +20372,7 @@ __metadata:
     react-icons: "npm:5.0.1"
     react-use-clipboard: "npm:1.0.9"
     storybook: "npm:7.6.3"
-    tailwind-merge: "npm:2.2.1"
+    tailwind-merge: "npm:2.2.2"
     tailwindcss: "npm:3.4.3"
     tsup: "npm:8.0.2"
     tsx: "npm:4.7.1"
@@ -20474,7 +20474,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
     siwe: "npm:2.1.4"
-    tailwind-merge: "npm:2.2.1"
+    tailwind-merge: "npm:2.2.2"
     tailwindcss: "npm:3.3.5"
     typescript: "npm:5.3.3"
     unified: "npm:11.0.4"
@@ -20585,7 +20585,7 @@ __metadata:
     remark-html: "npm:16.0.1"
     rss: "npm:1.2.2"
     showdown-highlight: "npm:3.1.0"
-    tailwind-merge: "npm:2.2.1"
+    tailwind-merge: "npm:2.2.2"
     tailwindcss: "npm:3.4.3"
     typescript: "npm:5.3.3"
     use-local-storage: "npm:3.0.0"
@@ -51348,12 +51348,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:2.2.1":
-  version: 2.2.1
-  resolution: "tailwind-merge@npm:2.2.1"
+"tailwind-merge@npm:2.2.2":
+  version: 2.2.2
+  resolution: "tailwind-merge@npm:2.2.2"
   dependencies:
-    "@babel/runtime": "npm:^7.23.7"
-  checksum: 10/3d8aecfa03c077472a038f25e95504ca47c1e7549ab843a854a690509098caac4e2e57790a7cadda4054fd07ec31421980a7afac33547013cf22299788625e72
+    "@babel/runtime": "npm:^7.24.0"
+  checksum: 10/f7ec370e58d1d8f12ed6509d93333f2dacfcb43110334c5424db50ae456d14939ad32cff1ef7e31d1d10a6fff9d2e80be11560ef1ebb3fe5c83de6d465a7f7b8
   languageName: node
   linkType: hard
 
