@@ -5,7 +5,7 @@ import { vi, describe, expect } from 'vitest'
 
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
-const network = 5
+const network = 10
 const tokenId = 147
 const wrongTokenId = '666'
 const owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
