@@ -19950,7 +19950,7 @@ __metadata:
     prettier: "npm:3.1.0"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
-    tslint: "npm:5.20.1"
+    tslint: "npm:6.1.3"
     tslint-config-prettier: "npm:1.18.0"
     tslint-plugin-prettier: "npm:2.3.0"
     typescript: "npm:5.3.3"
@@ -40861,7 +40861,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:0.5.x, mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.4, mkdirp@npm:^0.5.5, mkdirp@npm:~0.5.1":
+"mkdirp@npm:0.5.x, mkdirp@npm:^0.5.1, mkdirp@npm:^0.5.3, mkdirp@npm:^0.5.4, mkdirp@npm:^0.5.5, mkdirp@npm:~0.5.1":
   version: 0.5.6
   resolution: "mkdirp@npm:0.5.6"
   dependencies:
@@ -51973,7 +51973,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:1.14.1, tslib@npm:^1.10.0, tslib@npm:^1.11.1, tslib@npm:^1.13.0, tslib@npm:^1.7.1, tslib@npm:^1.8.0, tslib@npm:^1.8.1, tslib@npm:^1.9.0, tslib@npm:^1.9.3":
+"tslib@npm:1.14.1, tslib@npm:^1.10.0, tslib@npm:^1.11.1, tslib@npm:^1.13.0, tslib@npm:^1.7.1, tslib@npm:^1.8.1, tslib@npm:^1.9.0, tslib@npm:^1.9.3":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 10/7dbf34e6f55c6492637adb81b555af5e3b4f9cc6b998fb440dac82d3b42bdc91560a35a5fb75e20e24a076c651438234da6743d139e4feabf0783f3cdfe1dddb
@@ -52045,9 +52045,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslint@npm:5.20.1":
-  version: 5.20.1
-  resolution: "tslint@npm:5.20.1"
+"tslint@npm:6.1.3":
+  version: 6.1.3
+  resolution: "tslint@npm:6.1.3"
   dependencies:
     "@babel/code-frame": "npm:^7.0.0"
     builtin-modules: "npm:^1.1.1"
@@ -52057,16 +52057,16 @@ __metadata:
     glob: "npm:^7.1.1"
     js-yaml: "npm:^3.13.1"
     minimatch: "npm:^3.0.4"
-    mkdirp: "npm:^0.5.1"
+    mkdirp: "npm:^0.5.3"
     resolve: "npm:^1.3.2"
     semver: "npm:^5.3.0"
-    tslib: "npm:^1.8.0"
+    tslib: "npm:^1.13.0"
     tsutils: "npm:^2.29.0"
   peerDependencies:
-    typescript: ">=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev"
+    typescript: ">=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev || >= 4.0.0-dev"
   bin:
-    tslint: ./bin/tslint
-  checksum: 10/9cfcec0330beeb99ab67b5c6ec40fd182973841a1ebbc6a0ea266d7203efda4db9c615e433282ce6fcd0b8d2a5f1836a821d25a39c5f24f835bfc2a37908543f
+    tslint: bin/tslint
+  checksum: 10/26720946260151c6b4e91e637443f3c09466dcd29bb3455ba4ae39a8d8d249a5f63cb6ec09ae916bd9e4385533f1df9954a2b349349336fb44ed826f5c38e6ec
   languageName: node
   linkType: hard
 
