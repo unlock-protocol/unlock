@@ -5,10 +5,10 @@ const {
 const { EthBridger, getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const {
-  ARBTokenAddressOnL2,
-  grantsContractAddress,
-  timelockL2Alias,
-  L1TimelockContract,
+  ARB_TOKEN_ADRESS_ON_L2,
+  GRANTS_CONTRACT_ADDRESS,
+  TIMELOCK_L2_ALIAS,
+  L1_TIMELOCK_CONTRACT,
 } = require('./config')
 
 const ERC20_ABI = [
@@ -118,7 +118,7 @@ const INBOX_ABI = [
  */
 const walletPrivateKey = process.env.PRIVATE_KEY
 const L1RPC = 'https://rpc.unlock-protocol.com/1' // mainnet RPC
-const L2RPC = `https://arbitrum-mainnet.infura.io/v3/${process.env.ETHERSCAN_API_KEY}`
+const L2RPC = 'https://rpc.unlock-protocol.com/42161' // Arbitrum RPC
 const l1Provider = new ethers.JsonRpcProvider(L1RPC)
 const l2Provider = new ethers.JsonRpcProvider(L2RPC)
 // const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
@@ -132,12 +132,12 @@ module.exports = async () => {
   const inboxAddress = ethBridger.l2Network.ethBridge.inbox
 
   const L2TokenContract = new ethers.Contract(
-    ARBTokenAddressOnL2,
+    ARB_TOKEN_ADRESS_ON_L2,
     ERC20_ABI,
     l2Wallet
   ).connect(l2Wallet)
 
-  const balanceOf = await L2TokenContract.balanceOf(timelockL2Alias)
+  const balanceOf = await L2TokenContract.balanceOf(TIMELOCK_L2_ALIAS)
   const tokenAmount = ethers.parseEther('1')
 
   // Create an instance of the Interface from the ABIs
@@ -146,7 +146,7 @@ module.exports = async () => {
 
   // Encode the ERC20 Token transfer calldata
   const transfer_calldata = iface_erc20.encodeFunctionData('transfer', [
-    grantsContractAddress,
+    GRANTS_CONTRACT_ADDRESS,
     tokenAmount,
   ])
   /**
@@ -162,30 +162,32 @@ module.exports = async () => {
    */
   const L1ToL2MessageGasParams = await l1ToL2MessageGasEstimate.estimateAll(
     {
-      from: L1TimelockContract,
-      to: ARBTokenAddressOnL2,
+      from: L1_TIMELOCK_CONTRACT,
+      to: ARB_TOKEN_ADRESS_ON_L2,
       l2CallValue: 0,
-      excessFeeRefundAddress: L1TimelockContract,
-      callValueRefundAddress: L1TimelockContract,
+      excessFeeRefundAddress: L1_TIMELOCK_CONTRACT,
+      callValueRefundAddress: L1_TIMELOCK_CONTRACT,
       data: transfer_calldata,
     },
     await getBaseFee(l1Provider),
     l1Provider
   )
   const gasPriceBid = await l2Provider.getGasPrice()
+  const ETHDeposit = L1ToL2MessageGasParams.deposit.toNumber() * 10 // I Multiply by 10 to add extra in case gas changes due to proposal delay
+  const params = [
+    ARB_TOKEN_ADRESS_ON_L2, // to
+    0, // l2CallValue
+    L1ToL2MessageGasParams.maxSubmissionCost, // maxSubmissionCost
+    L1_TIMELOCK_CONTRACT, // excessFeeRefundAddress
+    L1_TIMELOCK_CONTRACT, // callValueRefundAddress
+    L1ToL2MessageGasParams.gasLimit, // gasLimit
+    gasPriceBid, // maxFeePerGas
+    transfer_calldata, // data
+  ]
 
   const inbox_calldata = iface_inbox.encodeFunctionData(
     'createRetryableTicket',
-    [
-      ARBTokenAddressOnL2, // to
-      0, // l2CallValue
-      L1ToL2MessageGasParams.maxSubmissionCost, // maxSubmissionCost
-      L1TimelockContract, // excessFeeRefundAddress
-      L1TimelockContract, // callValueRefundAddress
-      L1ToL2MessageGasParams.gasLimit, // gasLimit
-      gasPriceBid, // maxFeePerGas
-      transfer_calldata, // data
-    ]
+    params
   )
 
   const proposalName = `
@@ -196,7 +198,7 @@ module.exports = async () => {
   
   #### Current situation of DAO's ARB Tokens
     - total: ${ethers.formatEther(balanceOf).toString()} ARB.
-    - DAO ALIAS Address (On Arbitrum): [${timelockL2Alias}](https://arbiscan.io/address/${timelockL2Alias})
+    - DAO ALIAS Address (On Arbitrum): [${TIMELOCK_L2_ALIAS}](https://arbiscan.io/address/${TIMELOCK_L2_ALIAS})
 
   For Reference
   [Snapshot temperature check for 7k ARBs](https://snapshot.org/#/unlock-protocol.eth/proposal/0xaa142e599d981f0b58c3ac1a51af9f9a52fb5307f27d791ecc18c4da69eeacc3)
@@ -204,7 +206,7 @@ module.exports = async () => {
   #### About the proposal
     The proposal contains a single call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will attempt to execute an L2 request to the ARB token contract to transfer ${ethers
       .formatEther(tokenAmount)
-      .toString()} of token from the Timelock L2 Alias address \`${timelockL2Alias}\` to the [grants contract](https://arbiscan.io/address/0x00d5e0d31d37cc13c645d86410ab4cb7cb428cca) - \`transfer(${grantsContractAddress},${ethers
+      .toString()} of token from the Timelock L2 Alias address \`${TIMELOCK_L2_ALIAS}\` to the [grants contract](https://arbiscan.io/address/0x00d5e0d31d37cc13c645d86410ab4cb7cb428cca) - \`transfer(${GRANTS_CONTRACT_ADDRESS},${ethers
       .formatEther(tokenAmount)
       .toString()})\`.
 
@@ -216,7 +218,7 @@ module.exports = async () => {
     `
   // Proposal ARGS i.e Call Governor.propose() directly with these values
   const targets = [inboxAddress]
-  const values = [L1ToL2MessageGasParams.deposit.toNumber() * 10] // I Multiply by 10 to add extra in case gas changes
+  const values = [ETHDeposit]
   const calldatas = [inbox_calldata]
   const description = proposalName
 
@@ -225,17 +227,8 @@ module.exports = async () => {
       contractNameOrAbi: INBOX_ABI,
       contractAddress: inboxAddress,
       functionName: 'createRetryableTicket',
-      functionArgs: [
-        ARBTokenAddressOnL2, // to
-        0, // l2CallValue
-        L1ToL2MessageGasParams.maxSubmissionCost, // maxSubmissionCost
-        l2Wallet.address, // excessFeeRefundAddress
-        l2Wallet.address, // callValueRefundAddress
-        L1ToL2MessageGasParams.gasLimit, // gasLimit
-        gasPriceBid, // maxFeePerGas
-        transfer_calldata, // data
-      ],
-      value: L1ToL2MessageGasParams.deposit.toNumber() * 10, // I Multiply by 10 to add extra in case gas changes due to proposal delay
+      functionArgs: params,
+      value: ETHDeposit,
     },
   ]
 
