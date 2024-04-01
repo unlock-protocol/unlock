@@ -1,6 +1,6 @@
 import { classed } from '@tw-classed/react'
 
-export const Line = classed.div('bg-gray-100 rounded-xl animate-pulse', {
+export const Line = classed.div('bg-gray-200 rounded-xl animate-pulse', {
   variants: {
     size: {
       sm: 'h-4',
