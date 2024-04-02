@@ -20232,7 +20232,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:0.34.6"
     eslint: "npm:8.54.0"
     tsup: "npm:8.0.2"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
     vitest: "npm:0.34.6"
   peerDependencies:
     zod: 3.22.4
@@ -20258,7 +20258,7 @@ __metadata:
     storybook: "npm:7.0.18"
     tsup: "npm:8.0.2"
     tsx: "npm:4.7.1"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
     vite: "npm:5.2.7"
     vite-plugin-svgr: "npm:4.2.0"
     vite-tsconfig-paths: "npm:4.3.2"
@@ -20296,7 +20296,7 @@ __metadata:
   dependencies:
     "@vitest/coverage-c8": "npm:0.33.0"
     handlebars: "npm:4.7.8"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
     vitest: "npm:0.34.6"
   languageName: unknown
   linkType: soft
@@ -20374,7 +20374,7 @@ __metadata:
     ethers: "npm:6.10.0"
     hardhat: "npm:2.20.1"
     tsup: "npm:8.0.2"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
     zksync-ethers: "npm:6.1.0"
   languageName: unknown
   linkType: soft
@@ -20883,7 +20883,7 @@ __metadata:
     showdown-highlight: "npm:3.1.0"
     tailwind-merge: "npm:2.2.2"
     tailwindcss: "npm:3.4.3"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
     use-local-storage: "npm:3.0.0"
     vitest: "npm:0.34.6"
     yaml-front-matter: "npm:4.1.1"
@@ -46401,7 +46401,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:5.7.2"
     toucan-js: "npm:3.3.1"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
     vitest: "npm:0.34.6"
     wrangler: "npm:3.41.0"
   languageName: unknown
@@ -53334,6 +53334,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.4.3":
+  version: 5.4.3
+  resolution: "typescript@npm:5.4.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/de4c69f49a7ad4b1ea66a6dcc8b055ac34eb56af059a069d8988dd811c5e649be07e042e5bf573e8d0ac3ec2f30e6c999aa651cd09f6e9cbc6113749e8b6be20
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^5.2.2":
   version: 5.2.2
   resolution: "typescript@npm:5.2.2"
@@ -53351,6 +53361,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/c93786fcc9a70718ba1e3819bab56064ead5817004d1b8186f8ca66165f3a2d0100fee91fa64c840dcd45f994ca5d615d8e1f566d39a7470fc1e014dbb4cf15d
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.4.3#optional!builtin<compat/typescript>":
+  version: 5.4.3
+  resolution: "typescript@patch:typescript@npm%3A5.4.3#optional!builtin<compat/typescript>::version=5.4.3&hash=5adc0c"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/5aedd97595582b08aadb8a70e8e3ddebaf5a9c1e5ad4d6503c2fcfc15329b5cf8d01145b09913e9555683ac16c5123a96be32b6d72614098ebd42df520eed9b1
   languageName: node
   linkType: hard
 
@@ -53891,7 +53911,7 @@ __metadata:
     husky: "npm:9.0.11"
     lint-staged: "npm:15.1.0"
     prettier: "npm:3.0.0"
-    typescript: "npm:5.3.3"
+    typescript: "npm:5.4.3"
   languageName: unknown
   linkType: soft
 
