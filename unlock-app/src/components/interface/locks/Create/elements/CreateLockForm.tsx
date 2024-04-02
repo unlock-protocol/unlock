@@ -58,7 +58,6 @@ export const networkDescription = (network: number) => {
           .
         </>
       )}
-      <p></p>
     </>
   )
 }
