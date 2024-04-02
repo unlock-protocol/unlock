@@ -30,27 +30,36 @@ const getUnlockEvents = async (): Promise<CalendarItem[]> => {
     `https://www.googleapis.com/calendar/v3/calendars/${CALENDAR_ID}/events?` +
     new URLSearchParams({
       key: unlockConfig.gApiKey,
-      orderBy: 'startTime',
       singleEvents: 'true',
+      timeMin: dayjs().subtract(90, 'day').format(),
+      timeMax: dayjs().add(30, 'day').format(),
     })
 
   const calendar: Calendar = await fetch(CALENDAR_URL).then((res) => res.json())
 
   const recurringEvents = {}
 
-  return calendar?.items
-    ?.filter((event: CalendarItem) => {
-      const startDate = event?.start?.date || event?.start?.dateTime
-      // For future recurriung events, only show a single instance
-      if (event.recurringEventId && dayjs().isBefore(startDate)) {
-        if (recurringEvents[event.recurringEventId]) {
-          return false
-        }
-        recurringEvents[event.recurringEventId] = true
+  const singleEvents = calendar?.items?.filter((event: CalendarItem) => {
+    const startDate = event?.start?.date || event?.start?.dateTime
+    // For future recurriung events, only show a single instance
+    if (event.recurringEventId && dayjs().isBefore(startDate)) {
+      if (recurringEvents[event.recurringEventId]) {
+        return false
       }
-      return true
-    })
-    .reverse()
+      recurringEvents[event.recurringEventId] = true
+    }
+    return true
+  })
+
+  // Sort events by date
+  return singleEvents.sort(function (eventA, eventB) {
+    const dateA = dayjs(eventA?.start?.date || eventA?.start?.dateTime)
+    const dateB = dayjs(eventB?.start?.date || eventB?.start?.dateTime)
+
+    if (dateA < dateB) return -1
+    if (dateA > dateB) return 1
+    return 0
+  })
 }
 /**
  * Get list of events
