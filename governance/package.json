@@ -25,7 +25,7 @@
     "ethers": "6.10.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.20.1",
-    "solhint": "4.1.1",
+    "solhint": "4.5.2",
     "zksync-ethers": "6.1.0"
   },
   "scripts": {
