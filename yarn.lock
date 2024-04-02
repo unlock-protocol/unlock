@@ -9407,7 +9407,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@logtail/node@npm:0.4.19, @logtail/node@npm:^0.4.12":
+"@logtail/core@npm:^0.4.21":
+  version: 0.4.21
+  resolution: "@logtail/core@npm:0.4.21"
+  dependencies:
+    "@logtail/tools": "npm:^0.4.21"
+    "@logtail/types": "npm:^0.4.20"
+    serialize-error: "npm:^8.1.0"
+  checksum: 10/b38916a58df9dcd66911f5bd6ea12d290283ff2504a57b6b5545628d03567a3cbab47277755d370287aaf47f4b4d501df83d4afb1e06264fe4843ccf719fc672
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:0.4.21":
+  version: 0.4.21
+  resolution: "@logtail/node@npm:0.4.21"
+  dependencies:
+    "@logtail/core": "npm:^0.4.21"
+    "@logtail/types": "npm:^0.4.20"
+    "@msgpack/msgpack": "npm:^2.5.1"
+    "@types/stack-trace": "npm:^0.0.29"
+    cross-fetch: "npm:^3.0.4"
+    minimatch: "npm:^3.0.4"
+    serialize-error: "npm:^8.1.0"
+    stack-trace: "npm:^0.0.10"
+  checksum: 10/c046a0c695c135e5ed7c7759d68fe77756bb6fa9c78d7dca72173d16d47a64af2d0b8657bfbbbb655ff67d9af045ced41e58806cfde06ced4b067dfeea7e9aa8
+  languageName: node
+  linkType: hard
+
+"@logtail/node@npm:^0.4.12":
   version: 0.4.19
   resolution: "@logtail/node@npm:0.4.19"
   dependencies:
@@ -9432,12 +9459,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@logtail/tools@npm:^0.4.21":
+  version: 0.4.21
+  resolution: "@logtail/tools@npm:0.4.21"
+  dependencies:
+    "@logtail/types": "npm:^0.4.20"
+  checksum: 10/74c75fdbb5d11baa1b1d7252c0d007c7b7e07c129808b5928913a94963901ef1e4fa69b42a150b3af9a229449ec56c7ae30e7740efbff1d8e323284cb60d3ffe
+  languageName: node
+  linkType: hard
+
 "@logtail/types@npm:^0.4.11, @logtail/types@npm:^0.4.19":
   version: 0.4.19
   resolution: "@logtail/types@npm:0.4.19"
   dependencies:
     js: "npm:^0.1.0"
   checksum: 10/d692a31b53a1ff77a8ecd84b1de0e890de78eae6832b6cef905a2d3b611731d3782f15053dd44b99cb515fc5c5c11b7e6cd65ec7faf0bdca51984d4109fbf4c4
+  languageName: node
+  linkType: hard
+
+"@logtail/types@npm:^0.4.20":
+  version: 0.4.20
+  resolution: "@logtail/types@npm:0.4.20"
+  checksum: 10/9240cbec66249102aaec67c8ac4457b5b15d9ec64136791f0c21acc519e4f5e6a89736ef7cc17950ca11595a19d719a893a61239df050a0d58e347c01c5ac6a9
   languageName: node
   linkType: hard
 
@@ -20414,7 +20457,7 @@ __metadata:
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
     "@aws-sdk/client-s3": "npm:3.525.0"
-    "@logtail/node": "npm:0.4.19"
+    "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.12"
     "@nuintun/qrcode": "npm:4.1.2"
     "@openzeppelin/defender-relay-client": "npm:1.54.1"
