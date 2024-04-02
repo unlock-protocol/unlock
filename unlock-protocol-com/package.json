@@ -39,13 +39,13 @@
     "react-test-renderer": "18.2.0",
     "rss": "1.2.2",
     "showdown-highlight": "3.1.0",
-    "tailwind-merge": "2.2.1",
+    "tailwind-merge": "2.2.2",
     "typescript": "5.3.3",
     "use-local-storage": "3.0.0",
     "yaml-front-matter": "4.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "10.4.18",
+    "autoprefixer": "10.4.19",
     "eslint-config-next": "14.1.4",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
