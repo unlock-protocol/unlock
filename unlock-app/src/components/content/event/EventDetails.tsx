@@ -298,7 +298,7 @@ Powered by Unlock Protocol`}
             <h1 className="mt-4 text-3xl font-bold md:text-6xl">
               {event.name}
             </h1>
-            <section className="mt-4">
+            <section className="flex flex-col gap-4">
               {organizers && organizers.length > 0 && (
                 <Hosts organizers={organizers} />
               )}
