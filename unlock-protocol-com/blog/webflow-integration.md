@@ -13,7 +13,7 @@ As a designer I love Webflow. It combines powerful design tools with no hassle C
 
 When I looked into integrating Unlock I had a feeling it would be possible but I got super excited when I realized how easy it was. Integrations like these take Webflow from a basic web creation tool towards a much more robust no code and web app platform. It's really awesome to see how you can integrate a decentralized and permissionless membership on top of your website.
 
-One thing you'll need for the configuration is a lock that you can create on the Unlock dashboard -- it's very straightforward. For more info check out this article in [our docs](https://docs.unlock-protocol.com/creators/deploying-lock).
+One thing you'll need for the configuration is a lock that you can create on the Unlock dashboard -- it's very straightforward. For more info check out this article in [our Guides](https://unlock-protocol.com/guides/guide-to-the-unlock-protocol-wordpress-plugin/).
 The integration process is straightforward: You start with embedding Unlock's paywall, configuration, event handler and trigger scripts and then adding a few lines of css to control the visibility. All of this is copy and pasting, and shouldn't take longer than 5 to 10 minutes. The final step is to add specific selectors/classes to your elements. Check out [the demo](https://unlock-integration.webflow.io/) and more detailed instructions below and [on the integration site](https://unlock-integration.webflow.io/instructions). You can also clone the project from the [showcase page](https://webflow.com/website/Integrating-Unlock).
 
 ![Webflow Selector Panel Locked](/images/blog/webflow-integration/webflow-selector-locked.png)
