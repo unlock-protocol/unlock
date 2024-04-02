@@ -48,6 +48,7 @@ import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
 import { isIOS } from 'react-device-detect'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -157,6 +158,8 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
+  const router = useRouter()
+
   const { opensea } = networks[network] ?? {}
 
   const isAvailableOnOpenSea =
@@ -183,7 +186,8 @@ function Key({ ownedKey, account, network }: Props) {
     if (!receiptsPageUrl) {
       return
     }
-    window.open(receiptsPageUrl, '_')
+
+    router.push(receiptsPageUrl)
   }
 
   return (
