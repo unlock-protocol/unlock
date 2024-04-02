@@ -13,6 +13,7 @@ import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
 import { CreateLockFormSummary } from './elements/CreateLockFormSummary'
 import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
@@ -189,9 +190,19 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
           <h4 className="mb-4 text-5xl font-bold">
             Deploy your membership contract
           </h4>
-          <span className="text-lg font-normal">
-            For creative communities and the humans who build them
+          <span className="text-xl font-normal">
+            For creative communities and the humans who build them.
           </span>
+          <p className="text-lg font-normal">
+            <Link
+              className="underline text-brand-ui-primary "
+              target="_blank"
+              href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
+            >
+              Read our guide
+            </Link>{' '}
+            on how to chose a network to deploy your membership contract
+          </p>
           <img
             className="mt-9"
             src="/images/svg/create-lock/members.svg"
