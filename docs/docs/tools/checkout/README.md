@@ -7,19 +7,14 @@ description: >-
 
 # Checkout
 
-Unlock Protocol has an app, most people are familiar with the Dashboard, Members
-and Keychain portions, but that app has an endpoint called checkout which accepts
-a configuration object as params and returns a custom configured checkout experience.
+The Unlock Labs team built an application, on top of the Open Protocol: most people are familiar with the Dashboard, Members and Keychain portions, but that app has an endpoint called **Checkout** which accepts a configuration object as params and yields a custom configured checkout experience.
 
-## The experience
-
-This experience can also be used in a few different ways:
+The checkout can be used in a few different ways:
 
 1. Stand-alone as a link you distribute to your members via email, Discord, etc.
-   for minting your membership/ticket/credential NFT
-1. Embedded in your website directly
-1. In combination with the Paywall our javascript library which is a thin
-   wrapper around the checkout and Unlock APIs
+   for minting your membership/ticket/credential NFT,
+1. Embedded in your website directly,
+1. In combination with the [Paywall javascript library](../paywall.md).
 
 ## Examples
 
@@ -50,10 +45,9 @@ like by choosing "Create Checkout URL" from the menu options instead.
 ![unlock dashboard create checkout menu item](/img/tools/checkout/unlock-dashboard-create-checkout-menu.png)
 
 This will take you to the "Checkout Builder" where you can build your checkout and
-see what your changes look like in realtime. 
-
+see what your changes look like in realtime.
 
 If you'd like to use that configuration
-with your [Paywall](../paywall), download the configuration file by clicking on the "Download JSON" button. 
+with your [Paywall](../paywall), download the configuration file by clicking on the "Download JSON" button.
 
 ![unlock dashboard checkout builder](/img/tools/checkout/dashboard-checkout-builder.png)

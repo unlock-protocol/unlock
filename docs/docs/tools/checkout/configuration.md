@@ -10,18 +10,26 @@ sidebar_position: 1
 
 ## Building your URL
 
-All of the purchase URLs start with the following base
+First, you can always use the [Checkout Buidler](https://app.unlock-protocol.com/locks/checkout-url) which provides a no-code tool to configure a checkout. At the end of it, you can copy the URL and use however you want.
+
+You can also programmatically build your own checkout URLs. All of the purchase URLs start with the following base:
 
 ```
 https://app.unlock-protocol.com/checkout?
 ```
 
-After this, you will need to include the following parameters:
+After this, you will need to include the following **required** parameters:
 
 - `paywallConfig=...` where `...` is replaced with the URL-encoded version of a JSON `paywallConfig` object. The next section will show you how to build this object.
 - `redirectUri=...` where `...` is replaced with the URL-encodded address of a webpage where the user will be redirected when their membership is valid.
 
 These parameters are all separated by the `&` sign and you can use online tools such as [https://www.urlencoder.io/](https://www.urlencoder.io/) to build the encoded version of the parameters.
+Note: if you used the builder to create the Checkout URL, you can replace the `paywallConfig` with its `id`.
+
+Optionally, you can add the following parameters:
+
+- `referrerAddress`: you can pass a wallet address that will be used as `referrer` for each transaction performed from that address. Please check [our docs about referrals](../../core-protocol/public-lock/referrals.md).
+- `promo`: if your membership contract uses the Promo Hook, you can pass the `promo` code so that it is pre-filled in the checkout UI.
 
 ### Example
 
@@ -39,7 +47,7 @@ The `paywallConfig` is a JSON object which includes a set of customizations for 
 - `title`: _optional string_, a title for your checkout. This will show up on the head.
 - `icon`: _optional string_, the URL for a icon to display in the top left corner of the modal.
 - `persistentCheckout`: _optional boolean_: `true` if the modal cannot be closed, defaults to `false` when embedded. When closed, the user will be redirected to the `redirect` query param when using a purchase address (see above).
-- `referrer`: _optional string_. The address which will [receive UDT tokens](../../governance/unlock-dao-tokens) (if the transaction is applicable)
+- `referrer`: _optional string_. The address which will [receive UDT tokens](../../governance/unlock-dao-tokens) (if the transaction is applicable). It can also be passed as a query string `referrerAddress`.
 - `messageToSign`: _optional string_. If supplied, the user is prompted to sign this message using their wallet. If using a checkout URL, a `signature` query param is then appended to the `redirectUri` (see above). If using the embedded paywall, the `unlockProtocol.authenticated` includes the `signature` attribute.
 - `pessimistic`: _optional boolean_ defaults to `false`. By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to `true`, users will need to wait for the transaction to have been mined in order to proceed to the next step.
 - `hideSoldOut`: _optional boolean_ defaults to `false`. When set to true, sold our locks are not shown to users when they load the checkout modal.
