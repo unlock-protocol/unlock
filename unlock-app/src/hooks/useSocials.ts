@@ -98,10 +98,7 @@ const query = `query DomainsAndSocials($wallets: [Address!]) {
 }`
 
 export const useSocials = (addresses: string[]) => {
-  const socials: Socials = addresses.reduce((acc, address) => {
-    acc[address.toLowerCase()] = {}
-    return acc
-  }, {} as Socials)
+  const socials: Socials = {} as Socials
 
   const { data, loading, error } = useQuery(query, {
     wallets: ['0xF41a98D4F2E52aa1ccB48F0b6539e955707b8F7a', ...addresses],
@@ -110,15 +107,15 @@ export const useSocials = (addresses: string[]) => {
   if (data) {
     data.Socials?.Social?.forEach((social: any) => {
       social.userAssociatedAddresses.forEach((address: string) => {
-        if (socials[address.toLowerCase()]) {
-          const existing = socials[address.toLowerCase()] || {}
+        if (addresses.indexOf(address) > -1) {
+          const existing = socials[address] || {}
           let profileUrl = social.profileUrl
           if (social.dappName === 'farcaster') {
             profileUrl = `https://warpcast.com/${social.profileHandle}`
           } else if (social.dappName === 'lens') {
             profileUrl = `https://hey.xyz/u/${social.profileHandle}`
           }
-          socials[address.toLowerCase()] = {
+          socials[address] = {
             id: existing.id || social.id,
             profileName: existing.profileName || social.profileName,
             profileImage: existing.profileImage || social.profileImage,

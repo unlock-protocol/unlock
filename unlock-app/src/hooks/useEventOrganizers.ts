@@ -20,7 +20,7 @@ export const useEventOrganizers = ({
     async (): Promise<string[]> => {
       const service = new SubgraphService()
       // Group locks by network
-      const locksByNetwork: { [key: number]: string[] } = {}
+      const locksByNetwork: { [key: string]: string[] } = {}
       const defaultNetwork = checkoutConfig.config.network
       if (defaultNetwork) {
         locksByNetwork[defaultNetwork] = []
@@ -38,7 +38,7 @@ export const useEventOrganizers = ({
       })
       const eventOrganizers: string[] = []
       await Promise.all(
-        Object.keys(locksByNetwork).map(async (network: number) => {
+        Object.keys(locksByNetwork).map(async (network: string) => {
           const locks = locksByNetwork[network]
           const locksWithManagers = await service.locks(
             {
