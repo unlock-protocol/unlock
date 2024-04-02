@@ -98,9 +98,12 @@ export const LockPriceDetails = ({
 
   if (isLockLoading || !lock) {
     return (
-      <Placeholder.Root inline>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
+      <Placeholder.Root>
+        <Placeholder.Line width="md" />
+        <Placeholder.Root inline>
+          <Placeholder.Line width="sm" />
+          <Placeholder.Line width="sm" />
+        </Placeholder.Root>
       </Placeholder.Root>
     )
   }

@@ -1,6 +1,6 @@
 import { classed } from '@tw-classed/react'
 
-export const Image = classed.div('bg-gray-100 animate-pulse', {
+export const Image = classed.div('bg-gray-200 animate-pulse', {
   variants: {
     size: {
       sm: 'h-24 w-24',
