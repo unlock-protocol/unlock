@@ -264,7 +264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arbitrum/nitro-contracts@npm:v1.0.2":
+"@arbitrum/nitro-contracts@npm:1.0.2":
   version: 1.0.2
   resolution: "@arbitrum/nitro-contracts@npm:1.0.2"
   dependencies:
@@ -279,16 +279,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@arbitrum/sdk@npm:^v3.1.9":
-  version: 3.3.3
-  resolution: "@arbitrum/sdk@npm:3.3.3"
+"@arbitrum/sdk@npm:3.1.9":
+  version: 3.1.9
+  resolution: "@arbitrum/sdk@npm:3.1.9"
   dependencies:
     "@ethersproject/address": "npm:^5.0.8"
     "@ethersproject/bignumber": "npm:^5.1.1"
     "@ethersproject/bytes": "npm:^5.0.8"
-    async-mutex: "npm:^0.4.0"
     ethers: "npm:^5.1.0"
-  checksum: 10/cf21a8750191beaa588bbe350853118d6142ac70aebcdb38306ff5144cbbb89a7ac2680b03537f218bdad9eb528cfe85ba97834794bcbe397ce7d817f2a010c8
+  checksum: 10/8d04ccf6b7559d948ecc2da3c53e3a129b85480bb014aab153ca085c912a609aeabe143c5dacdb17a5cf24d1ffcbfdee37a4ee48ddfbd0b85de1b1df19b59865
   languageName: node
   linkType: hard
 
@@ -19925,8 +19924,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
-    "@arbitrum/nitro-contracts": "npm:v1.0.2"
-    "@arbitrum/sdk": "npm:^v3.1.9"
+    "@arbitrum/nitro-contracts": "npm:1.0.2"
+    "@arbitrum/sdk": "npm:3.1.9"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.4"
@@ -19945,9 +19944,9 @@ __metadata:
     "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/hardhat-plugin": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
-    arb-shared-dependencies: "npm:^1.0.0"
+    arb-shared-dependencies: "npm:1.0.0"
     eslint: "npm:8.54.0"
-    ethers: "npm:6.11.1"
+    ethers: "npm:6.10.0"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
     solhint: "npm:4.1.1"
@@ -22573,7 +22572,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"arb-shared-dependencies@npm:^1.0.0":
+"arb-shared-dependencies@npm:1.0.0":
   version: 1.0.0
   resolution: "arb-shared-dependencies@npm:1.0.0"
   dependencies:
@@ -23149,15 +23148,6 @@ __metadata:
   dependencies:
     tslib: "npm:^2.0.0"
   checksum: 10/3cf676fc48b4686abf534cc02d4784bab3f35d7836a0a7476c96e57c3f6607dd3d94cc0989b29d33ce5ae5cde8be8e1a96f3e769ba3b0e1ba4a244f873aa5623
-  languageName: node
-  linkType: hard
-
-"async-mutex@npm:^0.4.0":
-  version: 0.4.1
-  resolution: "async-mutex@npm:0.4.1"
-  dependencies:
-    tslib: "npm:^2.4.0"
-  checksum: 10/7e9f77b112b8545beb6612493fae4a8d9d1d6c3f24fc22f4d6d05ce96d1e8d326ac3e743a804cc6d7bf24e7ef0267afb65bb127f99b2e433609684b38933ff1c
   languageName: node
   linkType: hard
 
@@ -31134,21 +31124,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:6.11.1, ethers@npm:^6.7.1, ethers@npm:^6.8.1":
-  version: 6.11.1
-  resolution: "ethers@npm:6.11.1"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.5.0"
-  checksum: 10/bfeba2670dbfdac3951a66ab2d5bbc18dd7e1be69da9142ad4fe3859a30891e7bb048ecbb6ab542b67df777ada1860445bb3dd83536219c0d3639fe05e74df8e
-  languageName: node
-  linkType: hard
-
 "ethers@npm:^4.0.40":
   version: 4.0.49
   resolution: "ethers@npm:4.0.49"
@@ -31163,6 +31138,21 @@ __metadata:
     uuid: "npm:2.0.1"
     xmlhttprequest: "npm:1.8.0"
   checksum: 10/a4cec0254f940a0fb118317d23676faa46eb5540fc0a3b9177b8aef71318f509ed19b8264f102b1a2a32d0256274ecc526fd926bd22a4a4ac25cd8e0e6560f12
+  languageName: node
+  linkType: hard
+
+"ethers@npm:^6.7.1, ethers@npm:^6.8.1":
+  version: 6.11.1
+  resolution: "ethers@npm:6.11.1"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.5.0"
+  checksum: 10/bfeba2670dbfdac3951a66ab2d5bbc18dd7e1be69da9142ad4fe3859a30891e7bb048ecbb6ab542b67df777ada1860445bb3dd83536219c0d3639fe05e74df8e
   languageName: node
   linkType: hard
 
