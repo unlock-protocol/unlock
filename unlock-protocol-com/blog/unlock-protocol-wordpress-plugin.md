@@ -105,4 +105,4 @@ The plugin is here for installation or for download: [https://wordpress.org/plug
 
 ## Unlock WordPress plugin documentation
 
-See the [full documentation for the Unlock Protocol WordPress Plugin](https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin).
+See the [full documentation for the Unlock Protocol WordPress Plugin](https://unlock-protocol.com/guides/guide-to-the-unlock-protocol-wordpress-plugin/).
