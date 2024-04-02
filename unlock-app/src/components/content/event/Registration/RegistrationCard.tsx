@@ -1,4 +1,3 @@
-import { Placeholder } from '@unlock-protocol/ui'
 import { LockPriceDetails } from './LockPriceDetails'
 import { Card } from '@unlock-protocol/ui'
 import { PaywallConfigType } from '@unlock-protocol/core'
@@ -6,6 +5,7 @@ import { RegistrationCardSingleLock } from './SingleLock'
 import { useValidKeyBulk } from '~/hooks/useKey'
 import { HasTicket } from './HasTicket'
 import { EmbeddedCheckout } from './EmbeddedCheckout'
+import { LoadingRegistrationCard } from './LoadingRegistrationCard'
 
 export interface RegistrationCardProps {
   checkoutConfig: {
@@ -26,12 +26,16 @@ export const RegistrationCard = ({
   }
 
   const isLoadingValidKeys = queries?.some(
-    (query) => query.isInitialLoading || query.isRefetching
+    (query) => query.isInitialLoading || query.isRefetching || query.isLoading
   )
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
   if (isLoadingValidKeys) {
-    return <Placeholder.Card size="md" />
+    return (
+      <Card className="grid gap-4 mt-10 lg:mt-0">
+        <LoadingRegistrationCard />
+      </Card>
+    )
   }
 
   if (hasValidKey) {
