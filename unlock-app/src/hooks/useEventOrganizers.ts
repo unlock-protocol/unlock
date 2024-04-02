@@ -36,8 +36,8 @@ export const useEventOrganizers = ({
           locksByNetwork[lock.network!].push(lockAddress)
         }
       })
-
-      const lockManagers = await Promise.all(
+      const eventOrganizers: string[] = []
+      await Promise.all(
         Object.keys(locksByNetwork).map(async (network: number) => {
           const locks = locksByNetwork[network]
           const locksWithManagers = await service.locks(
@@ -51,10 +51,16 @@ export const useEventOrganizers = ({
               networks: [network],
             }
           )
-          return locksWithManagers.map((lock) => lock.lockManagers)
+          locksWithManagers.forEach((lock) => {
+            lock.lockManagers.forEach((manager: string) => {
+              if (eventOrganizers.indexOf(manager) == -1) {
+                eventOrganizers.push(manager)
+              }
+            })
+          })
         })
       )
-      return lockManagers
+      return eventOrganizers
     }
   )
 }

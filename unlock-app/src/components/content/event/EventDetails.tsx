@@ -78,7 +78,6 @@ export const EventDetails = ({
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
   })
-  console.log({ organizers })
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
@@ -300,7 +299,9 @@ Powered by Unlock Protocol`}
               {event.name}
             </h1>
             <section className="mt-4">
-              <Hosts organizers={organizers} />
+              {organizers && organizers.length > 0 && (
+                <Hosts organizers={organizers} />
+              )}
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
