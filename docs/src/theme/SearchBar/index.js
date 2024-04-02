@@ -20,3 +20,5 @@ export default function SearchBarWrapper(props) {
     </>
   )
 }
+
+// Ask Cookbook API key obtainable at https://cms.cookbook.dev with an invite from an admin of the project.
