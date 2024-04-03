@@ -5,13 +5,12 @@ export interface Env {
   BSC_PROVIDER: string
   CELO_PROVIDER: string
   GNOSIS_PROVIDER: string
-  GOERLI_PROVIDER: string
   MAINNET_PROVIDER: string
   MUMBAI_PROVIDER: string
   OPTIMISM_PROVIDER: string
   POLYGON_PROVIDER: string
   ZKSYNC_PROVIDER: string
-  BASE_GOERLI_PROVIDER: string
+  BASE_SEPOLIA_PROVIDER: string
   BASE_PROVIDER: string
   SEPOLIA_PROVIDER: string
   LINEA_PROVIDER: string
