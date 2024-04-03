@@ -1,18 +1,19 @@
-const ethers = require('ethers')
+const ethers = require('ethers5')
 const {
   L1ToL2MessageGasEstimator,
 } = require('@arbitrum/sdk/dist/lib/message/L1ToL2MessageGasEstimator')
 const { EthBridger, getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
-const {
-  L1_RPC,
-  L2_RPC,
-  ARB_TOKEN_ADRESS_ON_L2,
-  GRANTS_CONTRACT_ADDRESS,
-  TIMELOCK_L2_ALIAS,
-  L1_TIMELOCK_CONTRACT,
-} = require('./constants')
+const { mainnet, arbitrum } = require('@unlock-protocol/networks')
 
+const GRANTS_CONTRACT_ADDRESS = '0x00D5E0d31d37cc13C645D86410aB4cB7Cb428ccA' // Grants contract on Arbitrum
+const TIMELOCK_L2_ALIAS = '0x28ffDfB0A6e6E06E95B3A1f928Dc4024240bD87c' // Timelock Alias Address on L2
+const L1_TIMELOCK_CONTRACT = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B' // Timelock Address mainnet
+
+// ARB TOKEN ADDRESS ON ARBITRUM ONE
+const { address: ARB_TOKEN_ADRESS_ON_L2 } = arbitrum.tokens.find(
+  ({ symbol }) => symbol === 'ARB'
+)
 const ERC20_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 const INBOX_ABI = [
   {
@@ -75,13 +76,15 @@ const INBOX_ABI = [
  * Set up: instantiate L1 / L2 wallets connected to providers
  */
 
-const walletPrivateKey = process.env.PRIVATE_KEY
-const l1Provider = new ethers.JsonRpcProvider(L1_RPC)
-const l2Provider = new ethers.JsonRpcProvider(L2_RPC)
-// const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
-const l2Wallet = new ethers.Wallet(walletPrivateKey, l2Provider)
+const l1Provider = new ethers.providers.StaticJsonRpcProvider(mainnet.provider)
+const l2Provider = new ethers.providers.StaticJsonRpcProvider(arbitrum.provider)
 
-module.exports = async () => {
+module.exports = async ({
+  tokenAddressL2 = ARB_TOKEN_ADRESS_ON_L2,
+  fromL1 = L1_TIMELOCK_CONTRACT,
+  toL2 = GRANTS_CONTRACT_ADDRESS,
+  fromL2 = TIMELOCK_L2_ALIAS,
+}) => {
   console.log(
     'Proposal For Executing L1 to L2 Messaging Using Arbitrum Delayed Inbox (Retryable Tickets)'
   )
@@ -90,28 +93,41 @@ module.exports = async () => {
   const ethBridger = new EthBridger(l2Network)
   const inboxAddress = ethBridger.l2Network.ethBridge.inbox
 
+  // token on L2
   const L2TokenContract = new ethers.Contract(
-    ARB_TOKEN_ADRESS_ON_L2,
+    tokenAddressL2,
     ERC20_ABI,
-    l2Wallet
-  ).connect(l2Wallet)
+    l2Provider
+  )
+  const decimals = await L2TokenContract.decimals()
 
-  const balanceOf = await L2TokenContract.balanceOf(TIMELOCK_L2_ALIAS)
-  const tokenAmount = ethers.parseEther('1')
+  // check balance of sender on L2
+  const balanceOf = await L2TokenContract.balanceOf(fromL2)
+  const tokenAmount = balanceOf
 
   // Create an instance of the Interface from the ABIs
-  const erc20ContractInterface = new ethers.Interface(ERC20_ABI)
-  const inboxContractInterface = new ethers.Interface(INBOX_ABI)
+  const erc20ContractInterface = new ethers.utils.Interface(ERC20_ABI)
+  const inboxContractInterface = new ethers.utils.Interface(INBOX_ABI)
 
   // Encode the ERC20 Token transfer calldata
   const transferCalldata = erc20ContractInterface.encodeFunctionData(
     'transfer',
-    [GRANTS_CONTRACT_ADDRESS, tokenAmount]
+    [toL2, tokenAmount]
   )
+
   /**
    * Now we can query the required gas params using the estimateAll method in Arbitrum SDK
    */
   const l1ToL2MessageGasEstimate = new L1ToL2MessageGasEstimator(l2Provider)
+
+  const estimateAllParams = {
+    from: fromL1,
+    to: tokenAddressL2,
+    l2CallValue: 0,
+    excessFeeRefundAddress: fromL1,
+    callValueRefundAddress: fromL1,
+    data: transferCalldata,
+  }
 
   /**
    * The estimateAll method gives us the following values for sending an L1->L2 message
@@ -120,28 +136,22 @@ module.exports = async () => {
    * (3) deposit: The total amount to deposit on L1 to cover L2 gas and L2 call value
    */
   const L1ToL2MessageGasParams = await l1ToL2MessageGasEstimate.estimateAll(
-    {
-      from: L1_TIMELOCK_CONTRACT,
-      to: ARB_TOKEN_ADRESS_ON_L2,
-      l2CallValue: 0,
-      excessFeeRefundAddress: L1_TIMELOCK_CONTRACT,
-      callValueRefundAddress: L1_TIMELOCK_CONTRACT,
-      data: transferCalldata,
-    },
+    estimateAllParams,
     await getBaseFee(l1Provider),
     l1Provider
   )
   const gasPriceBid = await l2Provider.getGasPrice()
   const ETHDeposit = L1ToL2MessageGasParams.deposit.toNumber() * 10 // I Multiply by 10 to add extra in case gas changes due to proposal delay
+
   const params = [
-    ARB_TOKEN_ADRESS_ON_L2, // to
-    0, // l2CallValue
-    L1ToL2MessageGasParams.maxSubmissionCost, // maxSubmissionCost
-    L1_TIMELOCK_CONTRACT, // excessFeeRefundAddress
-    L1_TIMELOCK_CONTRACT, // callValueRefundAddress
-    L1ToL2MessageGasParams.gasLimit, // gasLimit
-    gasPriceBid, // maxFeePerGas
-    transferCalldata, // data
+    estimateAllParams.to,
+    estimateAllParams.l2CallValue,
+    L1ToL2MessageGasParams.maxSubmissionCost.toString(), // maxSubmissionCost
+    estimateAllParams.excessFeeRefundAddress,
+    estimateAllParams.callValueRefundAddress,
+    L1ToL2MessageGasParams.gasLimit.toString(), // gasLimit
+    gasPriceBid.toString(), // maxFeePerGas
+    estimateAllParams.data,
   ]
 
   const inboxCalldata = inboxContractInterface.encodeFunctionData(
@@ -156,17 +166,17 @@ module.exports = async () => {
    This proposal requests to use 1 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to run a test transaction to de-risk the transfer of 7k ARB tokens to fund the retroQF round on Grants Stack.
   
   #### Current situation of DAO's ARB Tokens
-    - total: ${ethers.formatEther(balanceOf).toString()} ARB.
-    - DAO ALIAS Address (On Arbitrum): [${TIMELOCK_L2_ALIAS}](https://arbiscan.io/address/${TIMELOCK_L2_ALIAS})
+    - total: ${ethers.utils.formatUnits(balanceOf, decimals).toString()} ARB.
+    - DAO ALIAS Address (On Arbitrum): [${fromL2}](https://arbiscan.io/address/${fromL2})
 
   For Reference
   [Snapshot temperature check for 7k ARBs](https://snapshot.org/#/unlock-protocol.eth/proposal/0xaa142e599d981f0b58c3ac1a51af9f9a52fb5307f27d791ecc18c4da69eeacc3)
   
   #### About the proposal
-    The proposal contains a single call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will attempt to execute an L2 request to the ARB token contract to transfer ${ethers
-      .formatEther(tokenAmount)
-      .toString()} of token from the Timelock L2 Alias address \`${TIMELOCK_L2_ALIAS}\` to the [grants contract](https://arbiscan.io/address/0x00d5e0d31d37cc13c645d86410ab4cb7cb428cca) - \`transfer(${GRANTS_CONTRACT_ADDRESS},${ethers
-      .formatEther(tokenAmount)
+    The proposal contains a single call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will attempt to execute an L2 request to the ARB token contract to transfer ${ethers.utils
+      .formatUnits(tokenAmount, decimals)
+      .toString()} of token from the Timelock L2 Alias address \`${fromL2}\` to the [grants contract](https://arbiscan.io/address/0x00d5e0d31d37cc13c645d86410ab4cb7cb428cca) - \`transfer(${toL2},${ethers.utils
+      .formatUnits(tokenAmount, decimals)
       .toString()})\`.
 
     Once approved and executed, the request will be sent to the Delayed Inbox contract and a ticket is created.
@@ -183,11 +193,9 @@ module.exports = async () => {
 
   const calls = [
     {
-      contractNameOrAbi: INBOX_ABI,
       contractAddress: inboxAddress,
-      functionName: 'createRetryableTicket',
-      functionArgs: params,
-      value: ETHDeposit,
+      calldata: inboxCalldata,
+      value: ETHDeposit.toString(),
     },
   ]
 
