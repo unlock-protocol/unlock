@@ -211,35 +211,33 @@ Powered by Unlock Protocol`}
         ]}
       />
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row-reverse gap-2 ">
-          {isOrganizer && (
-            <>
-              <Button
-                onClick={() => {
-                  router.push(`/event/${eventProp.slug}/settings`)
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <Icon icon={TbSettings} size={20} />
-                  <span>Settings</span>
-                </div>
-              </Button>
-              <Button
-                onClick={() => {
-                  router.push(`/event/${eventProp.slug}/attendees`)
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <Icon icon={FaUsers} size={20} />
-                  <span>Attendees</span>
-                </div>
-              </Button>
-            </>
-          )}
-        </div>
+        {isOrganizer && (
+          <div className="flex flex-row-reverse gap-2 ">
+            <Button
+              onClick={() => {
+                router.push(`/event/${eventProp.slug}/settings`)
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Icon icon={TbSettings} size={20} />
+                <span>Settings</span>
+              </div>
+            </Button>
+            <Button
+              onClick={() => {
+                router.push(`/event/${eventProp.slug}/attendees`)
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Icon icon={FaUsers} size={20} />
+                <span>Attendees</span>
+              </div>
+            </Button>
+          </div>
+        )}
 
         <div className="relative">
-          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl rounded-lg">
+          <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
             {coverImage && (
               <img
                 className="object-cover w-full h-full"
@@ -259,16 +257,16 @@ Powered by Unlock Protocol`}
             }}
           />
 
-          <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
-            <section className="flex justify-between">
-              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 md:rounded-3xl rounded-xl">
+          <div className="sm:absolute flex sm:flex-col w-full gap-6 px-4 sm:px-10 -bottom-12">
+            <section className="flex justify-between flex-col sm:flex-row">
+              <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border">
                 <img
                   alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 md:rounded-2xl rounded-lg"
+                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
                   src={event.image}
                 />
               </div>
-              <ul className="flex items-center gap-0 mt-auto md:gap-2">
+              <ul className="flex items-center justify-center gap-0 mt-auto md:gap-2">
                 <li>
                   <AddToCalendarButton event={event} eventUrl={eventUrl} />
                 </li>
@@ -286,7 +284,7 @@ Powered by Unlock Protocol`}
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 lg:mt-16 mt-8">
+        <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
             <h1 className="mt-4 text-3xl font-bold md:text-6xl">
               {event.name}
@@ -332,7 +330,7 @@ Powered by Unlock Protocol`}
             />
           )}
           {hasPassed && (
-            <Card className="grid gap-4 mt-10 lg:mt-0">
+            <Card className="grid gap-4 mt-10 md:mt-0">
               <p className="text-lg">
                 <MdAssignmentLate />
                 This event is over. It is not possible to register for it
@@ -342,6 +340,7 @@ Powered by Unlock Protocol`}
           )}
         </section>
       </div>
+
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
