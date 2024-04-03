@@ -113,13 +113,13 @@ async function main({ safeAddress, tx, signer }) {
 
   // now send tx via Safe Global web service
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
-  const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
+  const senderSignature = await safeSdk.signHash(safeTxHash)
 
   await safeService.proposeTransaction({
     safeAddress,
     safeTransactionData: safeTransaction.data,
     safeTxHash,
-    senderAddress: signer.address,
+    senderAddress: await signer.getAddress(),
     senderSignature: senderSignature.data,
   })
 
