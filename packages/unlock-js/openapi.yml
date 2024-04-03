@@ -450,6 +450,9 @@ components:
           type: array
           items:
             type: string
+        requiredGitcoinPassportScore:
+          type: number
+          nullable: true
 
     EventDetails:
       type: object
