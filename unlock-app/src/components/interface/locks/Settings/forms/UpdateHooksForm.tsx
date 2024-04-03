@@ -14,6 +14,7 @@ import { CaptchaContractHook } from './hooksComponents/CaptchaContractHook'
 import { GuildContractHook } from './hooksComponents/GuildContractHook'
 import { PromoCodeHook } from './hooksComponents/PromoCodeHook'
 import { useCustomHook } from '~/hooks/useCustomHooks'
+import { GitcoinContractHook } from './hooksComponents/GitcoinContractHook'
 
 interface UpdateHooksFormProps {
   lockAddress: string
@@ -97,6 +98,11 @@ export const HookMapping: Record<FormPropsKey, HookValueProps> = {
         label: 'Discount code',
         value: HookType.PROMO_CODE_CAPPED,
         component: (args) => <PromoCodeHook {...args} />,
+      },
+      {
+        label: 'Gitcoin Passport verification',
+        value: HookType.GITCOIN,
+        component: (args) => <GitcoinContractHook {...args} />,
       },
     ],
   },
