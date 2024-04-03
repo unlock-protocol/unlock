@@ -104,7 +104,7 @@ const getSupportedChainsByDomainId = async () => {
 
 const connextSubgraphIds = {
   1: `FfTxiY98LJG6zoiAjCXdT34pAmCKDEP8vZRVuC8D5Gf`,
-  137: `7mDXK2K6UfkVXiJMhXU8VEFuh7qi2TwdYxeyaRjkmexo`, //plygon
+  137: `7mDXK2K6UfkVXiJMhXU8VEFuh7qi2TwdYxeyaRjkmexo`, //polygon
   10: `3115xfkzXPrYzbqDHTiWGtzRDYNXBxs8dyitva6J18jf`, //optimims
   42161: `F325dMRiLVCJpX8EUFHg3SX8LE3kXBUmrsLRASisPEQ3`, // arb
   100: `6oJrPk9YJEU9rWU4DAizjZdALSccxe5ZahBsTtFaGksU`, //gnosis
