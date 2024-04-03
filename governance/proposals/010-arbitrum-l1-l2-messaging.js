@@ -103,7 +103,7 @@ module.exports = async ({
 
   // check balance of sender on L2
   const balanceOf = await L2TokenContract.balanceOf(fromL2)
-  const tokenAmount = balanceOf
+  const tokenAmount = ethers.utils.parseUnits('8200', decimals)
 
   // Create an instance of the Interface from the ABIs
   const erc20ContractInterface = new ethers.utils.Interface(ERC20_ABI)
@@ -160,17 +160,26 @@ module.exports = async ({
   )
 
   const proposalName = `
-  # Test Transaction before 7k ARB Transfer To Fund Unlock Protocol’s Ecosystem via Grants Stack
+  # Transfer 8200 ARB To Fund Unlock Protocol’s Ecosystem via Grants Stack
   
   ### Goal of the proposal
-   This proposal requests to use 1 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to run a test transaction to de-risk the transfer of 7k ARB tokens to fund the retroQF round on Grants Stack.
+   This proposal requests to use 8200 ARB from the tokens given to Unlock Protocol DAO by ArbitrumDAO to fund the retroQF round on Grants Stack for projects building on Unlock Protocol.
   
   #### Current situation of DAO's ARB Tokens
     - total: ${ethers.utils.formatUnits(balanceOf, decimals).toString()} ARB.
     - DAO ALIAS Address (On Arbitrum): [${fromL2}](https://arbiscan.io/address/${fromL2})
 
   For Reference
-  [Snapshot temperature check for 7k ARBs](https://snapshot.org/#/unlock-protocol.eth/proposal/0xaa142e599d981f0b58c3ac1a51af9f9a52fb5307f27d791ecc18c4da69eeacc3)
+  [Snapshot temperature check for Retro QF Grants Round](https://snapshot.org/#/unlock-protocol.eth/proposal/0xaa142e599d981f0b58c3ac1a51af9f9a52fb5307f27d791ecc18c4da69eeacc3)
+  
+  In addition to the 7k ARB tokens requested for funding Unlock Ecosystem projects, an extra 1200 ARB is requested for compensation for the round management according to the following breakdown:
+  
+  7000 ARB - Matching fund
+  700 ARB (10%) of matching fund to the round manager - lanadingwall.eth
+  500 ARB for research and technical assistance - dannithomx.eth  
+  Total: 8200 ARB
+
+  [Snapshot temperature check for 8200 ARBs](https://snapshot.org/#/unlock-protocol.eth/proposal/0x4fa320e553e6992506cd31d7c0b2013e1548c646baba02d657f3a7b198140c25)
   
   #### About the proposal
     The proposal contains a single call to the Arbitrum Delayed Inbox Contract's \`createRetryableTicket\` function on mainnet to create a \`Retryable Ticket\` that will attempt to execute an L2 request to the ARB token contract to transfer ${ethers.utils
