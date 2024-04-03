@@ -18,6 +18,7 @@ export class LockSetting extends Model<
   declare crossmintClientId?: string | null
   declare hookGuildId?: number | null
   declare unlockFeeChargedToUser?: boolean
+  declare requiredGitcoinPassportScore?: number | null
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
   declare promoCodes?: string[] | null
@@ -87,6 +88,11 @@ LockSetting.init(
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
       defaultValue: [],
+    },
+    requiredGitcoinPassportScore: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: null,
     },
     createdAt: {
       allowNull: false,
