@@ -5,16 +5,22 @@
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const l1BridgeAbi = require('./abi/l1standardbridge.json')
 const ethers = require('ethers5')
+const abiERC20 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
-const L1_CHAIN_ID = 1 // mainnet (Sepolia 11155111)
-const l2_CHAIN_ID = 8453 // BASE (BASE Sepolia 84534)
-const l1StandardBridge = '0x3154Cf16ccdb4C6d922629664174b904d80F2C35'
-const defaultGasAmount = '100000'
+const L1_CHAIN_ID = 11155111 // mainnet (Sepolia 11155111)
+const l2_CHAIN_ID = 84532 // BASE (BASE Sepolia 84532)
+const standardBridges = {
+  11155111: '0x3154Cf16ccdb4C6d922629664174b904d80F2C35',
+  84532: '0xfd0Bf71F60660E2f608ed56e1659C450eB113120',
+}
+
+const defaultGasAmount = '500000'
 
 async function main({
   l1ChainId = L1_CHAIN_ID,
   l2ChainId = l2_CHAIN_ID,
-  amount = 100000000000000000n, // default to 0.1
+  l1StandardBridge = standardBridges[l2_CHAIN_ID],
+  amount = `100000000000000000`, // default to 0.1
 } = {}) {
   const { DEPLOYER_PRIVATE_KEY } = process.env
 
@@ -45,30 +51,40 @@ async function main({
   const sender = await bridgeContract.l2TokenBridge()
   console.log('sender', sender)
 
-  const l1Token = await ethers.getContractAt('IERC20', l1TokenAddress, l1Wallet)
+  const l1Token = new ethers.Contract(l1TokenAddress, abiERC20, l1Wallet)
+
+  // check balance
+  const balance = await l1Token.balanceOf(l1Wallet.address)
+  if (balance.lt(amount)) {
+    throw new Error(`Balance too low`)
+  }
 
   // approval
   const allowance = await l1Token.allowance(l1Wallet.address, l1StandardBridge)
-  if (allowance < amount) {
-    console.log('approve bridge to access token')
-    const approveResult = await l1Token.approve(l1StandardBridge, amount)
-    console.log('approve result', approveResult)
+  if (allowance.lt(amount)) {
+    console.log('approve bridge to access token...')
+    const { hash } = await l1Token.approve(l1StandardBridge, amount)
+    console.log(`approved (tx: ${hash})`)
   } else {
     console.log('token is approved to deposit')
   }
 
+  const bridgeArgs = {
+    l1TokenAddress,
+    l2TokenAddress,
+    amount,
+    defaultGasAmount,
+    emptyData: '0x',
+  }
+
   // deposit to bridge
   try {
-    const bridgeResult = await bridgeContract.depositERC20(
-      l1TokenAddress,
-      l2TokenAddress,
-      amount,
-      defaultGasAmount,
-      '0x' // pass empty data
+    const bridgeResult = await bridgeContract.bridgeERC20(
+      ...Object.values(bridgeArgs)
     )
-    console.log('bridge token result', bridgeResult)
-    const transactionReceipt = await bridgeResult.wait()
-    console.log('token transaction receipt', transactionReceipt)
+    console.log('bridge deposit ok', bridgeResult)
+    const { transactionHash } = await bridgeResult.wait()
+    console.log(`(tx: ${transactionHash})`)
   } catch (e) {
     console.log('bridge token result error', e)
   }
