@@ -46,8 +46,10 @@ export enum HookType {
   PASSWORD = 'PASSWORD',
   PROMOCODE = 'PROMOCODE',
   PROMO_CODE_CAPPED = 'PROMO_CODE_CAPPED',
+  PASSWORD_CAPPED = 'PASSWORD_CAPPED',
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
+  GITCOIN = 'GITCOIN',
 }
 
 export const HooksName = [
@@ -98,9 +100,9 @@ export interface NetworkConfig {
   publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string
-    endpointV2?: string
-    networkName?: string // for thegraph hosted service
-    studioEndpoint?: string
+    // refers to thegraph services list : https://thegraph.com/docs/en/developing/supported-networks/
+    networkName?: string // network slug used by the graph
+    studioName?: string
   }
   uniswapV3?: Partial<{
     subgraph: string

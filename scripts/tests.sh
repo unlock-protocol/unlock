@@ -21,7 +21,7 @@ ENV_VARS_PREFIX="${UPCASE_SERVICE//-/_}_"
 ENV_VARS=$(env | grep "^$ENV_VARS_PREFIX" | awk '{print "-e ",$1}' ORS=' ' | sed -e "s/$ENV_VARS_PREFIX//g")
 
 # First we need to build the base
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $UNLOCK_SERVICE_NAME
+docker compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $UNLOCK_SERVICE_NAME
 
 # Run tests
-docker-compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $UNLOCK_SERVICE_NAME $COMMAND
+docker compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE run -e CI=true $ENV_VARS $UNLOCK_SERVICE_NAME $COMMAND

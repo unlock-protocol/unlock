@@ -23,7 +23,7 @@ yarn workspace @unlock-protocol/networks build
 
 ## Add block explorer verification
 
-- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
+- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/src/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
 - optionally can add support for env variable
 
 When you are done, rebuild the helpers package with
@@ -74,9 +74,25 @@ yarn hardhat set:unlock-config
 
 ### Deploy the subgraph
 
-First you will need to create a new graph on [The Graph](https://thegraph.com) studio.
+1. First you will need to create a new graph on [The Graph studio](https://thegraph.com/studio).
 
-Then the following commands
+2. In the `packages/networks/src/<your-network>.ts` config file, fill the `subgraph` object as follow:
+
+```js
+subgraph: {
+    endpoint: '<>', // this is given to you by the graph after deploying
+    networkName: 'base-sepolia', // the graph name of the network see https://thegraph.com/docs/en/developing/supported-networks/
+    studioName: 'unlock-protocol-<your-network>', // the name of the graph
+  },
+```
+
+3. Rebuild the networks package
+
+```
+yarn workspace @unlock-protocol/networks build
+```
+
+4. Deploy the graph by using the following commands
 
 ```shell
 # got to the subgraph folder
@@ -85,10 +101,10 @@ cd subgraph
 # create the subgraph.yaml and generate the files
 yarn build <your-network>
 
-yarn deploy:studio <your-subgraph-name>
+yarn deploy <your-subgraph-name>
 ```
 
-The graph will now sync. In the `packages/networks/src/<your-network>.ts` config file, fill the `subgraph` object with a name in `studioEndpoint` and the API url in `endpoint`.
+The graph is now deployed. Add the URL that is shown to the network file.
 
 ### Verify contracts
 
@@ -218,3 +234,49 @@ Edit directly the amounts and prices in the script
 ```
 yarn run scripts/uniswap/addLiquidity.js
 ```
+
+## Cross-Chain DAO Proposals
+
+To maintain the integrity of the protocol accross various chains, we use a pattern of DAO proposals that allows execution on multiple chains. Messaging is sent accross the [Connext bridge](https://connext.network) to all supported chains.
+
+### Prepare a cross-chain proposal
+
+#### Write a cross-chain DAO proposal
+
+Read the explanations and follow the template in [`./proposals/006-cross-bridge-proposal.js`](./proposals/006-cross-bridge-proposal.js) to submit a cross-chain proposal to the DAO.
+
+#### Test a cross-chain DAO proposal
+
+To make sure all calls can be executed properly, you can use Tenderly forks to test execution of calls on each destination chains.
+
+### After proposal execution
+
+#### Pay bridge fees
+
+Each transaction contained in the proposal is sent separately to the bridge. For each tx, the bridge fee needs to be paid on origin chain (mainnet) for the txs to proceed. To pay all fees for the bridge, use the following script:
+
+```
+# update the txId accordingly
+yarn hardhat run scripts/bridge/payFee.js --network mainnet
+```
+
+#### Check status of the calls
+
+You can check the status of all calls on various chains manually with the [Connext explorer](https://connextscan.io/) or directly parse calls from the execution tx using the following script:
+
+```
+# update the txId accordingly
+yarn hardhat run scripts/bridge/status.js --network mainnet
+```
+
+NB: This will create a temporary JSON file named `xcalled.json.tmp` with the info and statuses of all tx.
+
+### Execute all tx on destination chains
+
+Once all calls have crossed the bridges they stay in cooldown in multisigs. Once cooldown ends, they can be executed. To execute the calls, use the following command _for each network_:
+
+```
+yarn hardhat run scripts/bridge/execTx.js --network optimism
+```
+
+NB: The tmp file with all txs statuses is required, so you need to first run the "Check status" step above

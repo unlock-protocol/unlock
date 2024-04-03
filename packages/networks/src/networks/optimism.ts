@@ -54,12 +54,17 @@ export const optimism: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x7217b772788374391e890b773e6b8B7101b5Acde',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 10,
   isTestNetwork: false,
   keyManagerAddress: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   name: 'Optimism',
   nativeCurrency: {
@@ -82,11 +87,10 @@ export const optimism: NetworkConfig = {
   startBlock: 302400,
   subgraph: {
     endpoint:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism-v2',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-optimism/version/latest',
+    studioName: 'unlock-protocol-optimism',
   },
-  swapPurchaser: '0x72381052e4F7765A00a403891420BF75876c75bB',
+  swapPurchaser: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
   tokens: [
     {
       address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',

@@ -64,6 +64,7 @@ const LockSettingSchema = z.object({
     })
     .optional(),
   promoCodes: z.array(z.string()).optional().optional(),
+
   requiredGitcoinPassportScore: z
     .preprocess(
       (a) => parseInt(z.string().parse(a), 10),
@@ -72,6 +73,7 @@ const LockSettingSchema = z.object({
       })
     )
     .nullish(),
+  passwords: z.array(z.string()).optional().optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -89,6 +91,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   crossmintClientId: undefined,
   promoCodes: [],
   requiredgitcoinPassportScore: undefined,
+  passwords: [],
 }
 
 export const updateSettings: RequestHandler = async (

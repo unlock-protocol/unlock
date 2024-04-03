@@ -48,12 +48,17 @@ export const arbitrum: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 42161,
   isTestNetwork: false,
   keyManagerAddress: '0x520294E736167303efa038205D4391b58261BC9c',
-  maxFreeClaimCost: 1,
+  maxFreeClaimCost: 100,
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   name: 'Arbitrum',
   nativeCurrency: {
@@ -76,12 +81,11 @@ export const arbitrum: NetworkConfig = {
   startBlock: 17429533,
   subgraph: {
     endpoint:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum-v2',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-arbitrum/version/latest',
     networkName: 'arbitrum-one',
+    studioName: 'unlock-protocol-arbitrum',
   },
-  swapPurchaser: '0x0C33884Ab3eE799E7628FA3fCF20B81997745a72',
+  swapPurchaser: '0xE1a7Ec44fB4c5c88ebB3744A9Ba2A3cCA879A47d',
   tokens: [
     {
       address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',

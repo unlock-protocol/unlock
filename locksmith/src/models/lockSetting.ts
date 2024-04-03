@@ -22,6 +22,7 @@ export class LockSetting extends Model<
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
   declare promoCodes?: string[] | null
+  declare passwords?: string[] | null
 }
 
 LockSetting.init(
@@ -93,6 +94,10 @@ LockSetting.init(
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,
+    passwords: {
+      type: DataTypes.ARRAY(DataTypes.STRING),
+      allowNull: true,
+      defaultValue: [],
     },
     createdAt: {
       allowNull: false,

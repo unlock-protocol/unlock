@@ -25,10 +25,10 @@ COMPOSE_CONFIG="-f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE"
 export UNLOCK_ENV=test
 
 # clean things up 
-docker-compose $COMPOSE_CONFIG down
+docker compose $COMPOSE_CONFIG down
 
 # Take db, IPFS, graph and postgres nodes up
-docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
+docker compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 
 # deploy contracts
 cd $REPO_ROOT/docker/development/eth-node

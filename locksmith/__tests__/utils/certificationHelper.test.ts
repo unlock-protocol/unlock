@@ -2,7 +2,7 @@ import { it, expect } from 'vitest'
 import { getCertificateLinkedinShareUrl } from '../../src/utils/certificationHelpers'
 
 const lockAddress = '0xDd4356111193f7B28A20b5FC2Dc7750c249E55d2'
-const network = 5
+const network = 10
 const tokenId = '2'
 
 const metadata = {

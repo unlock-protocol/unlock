@@ -3,7 +3,7 @@ name: Subgraphs deployment
 on:
   workflow_call:
     secrets:
-      SUBGRAPH_DEPLOY_KEY:
+      SUBGRAPH_STUDIO_DEPLOY_KEY:
         required: true
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
-      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
+      SUBGRAPH_STUDIO_DEPLOY_KEY: ${{ secrets.SUBGRAPH_STUDIO_DEPLOY_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -21,6 +21,8 @@ jobs:
           node-version: 20
       - run: yarn
       - run: yarn build
+      - name: Prepare the network files
+        run: yarn workspace @unlock-protocol/subgraph prepare
       - name: Deploying the subgraphs
-        run: cd subgraph && yarn deploy-all
+        run: yarn workspace @unlock-protocol/subgraph deploy-all
         shell: bash

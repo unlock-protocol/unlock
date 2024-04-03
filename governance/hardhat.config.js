@@ -12,6 +12,13 @@ const {
   parseForkUrl,
 } = require('@unlock-protocol/hardhat-helpers')
 
+// zksync
+if (process.env.ZK_SYNC) {
+  require('@matterlabs/hardhat-zksync-solc')
+  require('@matterlabs/hardhat-zksync-verify')
+  require('@matterlabs/hardhat-zksync-upgradable')
+}
+
 const settings = {
   optimizer: {
     enabled: true,
@@ -41,6 +48,7 @@ if (process.env.TENDERLY_FORK) {
     accounts: networks.mainnet.accounts,
   }
 }
+
 // tasks
 require('./tasks/balance')
 require('./tasks/safe')
@@ -54,7 +62,7 @@ require('./tasks/lock')
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
-module.exports = {
+const config = {
   networks,
   etherscan,
   solidity: {
@@ -64,3 +72,12 @@ module.exports = {
     enabled: true,
   },
 }
+
+if (process.env.ZK_SYNC) {
+  config.zksolc = {
+    version: 'latest',
+    settings: {},
+  }
+}
+
+module.exports = config

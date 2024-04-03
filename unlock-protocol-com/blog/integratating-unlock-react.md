@@ -3,20 +3,20 @@ title: Integrating Unlock with React
 subTitle: Our Javascript API is very easy to integrate with React!
 authorName: Julien Genestoux
 publishDate: July 10, 2019
-description: Integrating Unlock with React is straighforward! Here's a quick tutorial on how to get there!
+description: Integrating Unlock with React is straightforward! Here's a quick tutorial on how to get there!
 image: /images/blog/react-integration/react-logo.png
 latestUpdateDate: April 6, 2020
 ---
 
 React is one of the main JavaScript front end frameworks. Unlock's JavaScript API provides an easy way for any creator to restrict access to content or features.
 
-Here is a tutorial on how to integrate Unlock in your react application. We will create an React application (using [create-react-app](https://github.com/facebook/create-react-app)) which will show the user whether they own a key (unlocked!), or if they need to purchase one (locked). The [code for the application is on Github](https://github.com/unlock-protocol/react-example); you can try it yourself directly on the [corresponding github page](https://unlock-protocol.github.io/react-example/).
+Here is a tutorial on how to integrate Unlock in your react application. We will create a React application (using [create-react-app](https://github.com/facebook/create-react-app)) which will show the user whether they own a key (unlocked!), or if they need to purchase one (locked). The [code for the application is on Github](https://github.com/unlock-protocol/react-example); you can try it yourself directly on the [corresponding github page](https://unlock-protocol.github.io/react-example/).
 
 We will assume you have already created a react application and that application should behave differently based on whether the user is a member or not.
 
 1. Include the Unlock snippet
 
-We do that by changing the `index.html` (main HTML template) of our application. The following snippet is added the the `<head>` section:
+We do that by changing the `index.html` (main HTML template) of our application. The following snippet is added the `<head>` section:
 
 ```
 <script> (function (d, s) {
@@ -120,7 +120,7 @@ checkout() {
 
 Now that we have the state and ways to invoke a key purchase, we can easily render based on it. This is probably where your app's logic will likely diverge the most, but here is what we did for our demo application:
 
-- if the content is locked, we show a 🔒, anc clicking on it will open the checkout model.
+- if the content is locked, we show a 🔒, and clicking on it will open the checkout model.
 - if the content is unlocked, we show a 🗝!
 
 ```

@@ -97,11 +97,14 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     }
   )
 
-  const receiptPrefix = supplier?.prefix ? supplier.prefix + '-' : ''
-
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
     receiptDetails?.payer?.toLowerCase() === account?.toLowerCase()
+
+  const isRecipient =
+    receiptDetails?.recipient?.toLowerCase() === account?.toLowerCase()
+
+  const isCancelReceipt = receiptDetails?.payer == lockAddress
 
   const disabledInput = isLoading || isUpdatingReceipt
 
@@ -109,7 +112,14 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails && receiptDetails.timestamp
       ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
       : ''
-  const receiptNumber = receiptPrefix + (receiptDetails?.receiptNumber || '')
+
+  const receiptNumber = [
+    supplier?.prefix,
+    receiptDetails?.receiptNumber || '',
+    isCancelReceipt ? 'REFUND' : '',
+  ]
+    .filter((z: string) => !!z)
+    .join('-')
 
   const PurchaseDetails = () => {
     return (
@@ -130,9 +140,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       currencyContractAddress: receiptDetails?.tokenAddress,
       hash,
     })
+    const multiplier = isCancelReceipt ? -1 : 1
 
     const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
-    const subtotal = receiptPrice?.total / (1 + vatRatePercentage / 100)
+    const subtotal =
+      (multiplier * receiptPrice?.total) / (1 + vatRatePercentage / 100)
     const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
     return (
@@ -143,7 +155,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
               <h2 className="text-lg font-bold text-brand-ui-primary">
                 Service performed:
               </h2>
-              {supplier?.servicePerformed || 'NFT membership'}
+              {isCancelReceipt
+                ? 'NFT membership canceled'
+                : supplier?.servicePerformed || 'NFT membership'}
             </div>
             <div className="flex flex-col w-full gap-1 mt-5 md:ml-auto md:w-1/2 col-span-full">
               <h2 className="text-lg font-bold md:ml-auto text-brand-ui-primary">
@@ -161,7 +175,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
-                  {receiptPrice?.total} {symbol}
+                  {(multiplier * parseFloat(receiptPrice?.total)).toFixed(2)}{' '}
+                  {symbol}
                 </Detail>
               </div>
             </div>
@@ -175,7 +190,9 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     return (
       <div className="grid gap-2">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold text-brand-ui-primary">Bill to:</h2>
+          <h2 className="text-lg font-bold text-brand-ui-primary">
+            {isCancelReceipt ? 'Refunded to:' : 'Bill to:'}
+          </h2>
           {isPurchaser && (
             <Button
               onClick={() => setPurchaserDrawer(!purchaserDrawer)}
@@ -197,7 +214,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
           )}
           <span className="text-base">
             Wallet:{' '}
-            {receiptDetails?.payer?.length > 0
+            {isCancelReceipt
+              ? receiptDetails?.recipient?.length > 0
+                ? addressMinify(receiptDetails?.recipient)
+                : ''
+              : receiptDetails?.payer?.length > 0
               ? addressMinify(receiptDetails?.payer)
               : ''}
           </span>
@@ -232,7 +253,7 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     )
   }
 
-  if (!isManager && !isPurchaser) {
+  if (!isManager && !isPurchaser && !isRecipient) {
     return <NotAuthorizedBar />
   }
 

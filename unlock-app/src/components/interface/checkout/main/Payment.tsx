@@ -53,6 +53,16 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   )
 }
 
+// All enabled by default.
+const defaultPaymentMethods = {
+  crypto: true,
+  card: true,
+  crossmint: true,
+  swap: true,
+  crosschain: true,
+  claim: true,
+}
+
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
@@ -62,6 +72,16 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+
+  const configPaymentMethods =
+    state.context.paywallConfig.locks[lock.address]?.paymentMethods ||
+    state.context.paywallConfig.paymentMethods ||
+    {}
+
+  const paymentMethods = {
+    ...defaultPaymentMethods,
+    ...configPaymentMethods,
+  }
 
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
     {
@@ -94,12 +114,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     symbol: lockTickerSymbol(lock, baseSymbol),
   })
 
-  const { isLoading: isCrossmintLoading, crossmintClientId } =
+  const { isLoading: isCrossmintLoading, crossmintEnabled } =
     useCrossmintEnabled({
       network: lock.network,
       lockAddress: lock.address,
       recipients,
     })
+
+  const enableCrossmint = !!crossmintEnabled
 
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
@@ -160,22 +182,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isLoadingMoreRoutes =
     isUniswapRoutesLoading || isCrossChaingRoutesLoading
 
-  // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
-  const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
-  const universalCardEnabled =
-    false && // disabled for now
-    window.top === window &&
-    !enableCreditCard &&
-    networkConfig.universalCard?.cardPurchaserAddress &&
-    lock.currencyContractAddress?.toLowerCase()?.trim() ===
-      USDC?.address?.toLowerCase()?.trim()
-
   const allDisabled = [
     enableCreditCard,
     enableClaim,
     enableCrypto,
-    universalCardEnabled,
-    !!crossmintClientId,
+    enableCrossmint,
   ].every((item) => !item)
 
   return (
@@ -197,7 +208,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
         ) : (
           <div className="space-y-6">
             {/* Card Payment via Stripe! */}
-            {enableCreditCard && !enableClaim && (
+            {enableCreditCard && paymentMethods['card'] && !enableClaim && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -231,7 +242,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Crypto Payment */}
-            {enableCrypto && (
+            {enableCrypto && paymentMethods['crypto'] && (
               <button
                 disabled={!canAfford}
                 onClick={(event) => {
@@ -271,7 +282,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
 
             {/* Crossmint Payment */}
-            {crossmintClientId && !enableClaim && (
+            {enableCrossmint && paymentMethods['crossmint'] && !enableClaim && (
               <div>
                 <button
                   onClick={(event) => {
@@ -312,42 +323,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </div>
             )}
 
-            {/* Universal Card Payment */}
-            {universalCardEnabled && !enableClaim && (
-              <button
-                onClick={(event) => {
-                  event.preventDefault()
-                  send({
-                    type: 'SELECT_PAYMENT_METHOD',
-                    payment: {
-                      method: 'universal_card',
-                    },
-                  })
-                }}
-                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via Stripe </h3>
-                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                    <VisaIcon size={18} />
-                    <MasterCardIcon size={18} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between w-full">
-                  <div className="text-sm text-left text-gray-500">
-                    Use cards, Google Pay, or Apple Pay. <br />
-                    <span className="text-xs">Additional fees may apply</span>
-                  </div>
-                  <RightArrowIcon
-                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
-                    size={20}
-                  />
-                </div>
-              </button>
-            )}
-
             {/* Claim */}
-            {enableClaim && (
+            {enableClaim && paymentMethods['claim'] && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
@@ -378,6 +355,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {/* Swap and purchase */}
             {!isUniswapRoutesLoading &&
               !enableClaim &&
+              paymentMethods['swap'] &&
               uniswapRoutes?.map((route, index) => {
                 if (!route) {
                   return null
@@ -423,6 +401,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {/* Crosschain purchase */}
             {!isCrossChaingRoutesLoading &&
               !enableClaim &&
+              paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
                 return (
                   <button
@@ -475,12 +454,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 )
               })}
 
+            {/* Loading details */}
             {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading more payment options...
               </div>
             )}
 
+            {/* All disabled */}
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">

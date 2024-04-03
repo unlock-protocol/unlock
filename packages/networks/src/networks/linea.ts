@@ -46,6 +46,11 @@ export const linea: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xD925Ac2887Ba4372849F0fd64217A6749552bb21',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 59144,
@@ -56,7 +61,7 @@ export const linea: NetworkConfig = {
 
   maxFreeClaimCost: 10,
 
-  // multisig: '', // TODO
+  multisig: '0x0b441f6A255a56670B6fdb37B527e091a394eeB9',
 
   name: 'Linea',
 
@@ -72,11 +77,9 @@ export const linea: NetworkConfig = {
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 560908,
   subgraph: {
-    endpoint: 'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
-    endpointV2:
-      'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
-    // NB: this name should be changed once The Graph supports Linea
-    networkName: 'linea-mainnet',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-linea/version/latest',
+    studioName: 'unlock-protocol-linea',
   },
   tokens: [
     {
