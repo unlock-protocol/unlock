@@ -18,7 +18,7 @@ async function main({ proposal, proposalId, txId, govAddress }) {
   if (!proposal && !proposalId) {
     throw new Error('GOV EXEC > Missing proposal or proposalId.')
   }
-  if (proposalId && !txId) {
+  if (!proposal && proposalId && !txId) {
     throw new Error(
       'GOV EXEC > The tx id of the proposal creation is required to execute the proposal.'
     )
