@@ -99,9 +99,30 @@ const gitcoinHookQuery = z.object({
  *
 
  */
+
+// polling mechanism parameters
+const pollingConfig = {
+  // maximum number of attempts before "giving up"
+  maxAttempts: 5,
+  // initial delay in milliseconds before the first retry is attempted
+  initialDelay: 3500,
+  // factor by which to multiply the delay between retries
+  backoffFactor: 2,
+}
+
 export const gitcoinHook: RequestHandler = async (request, response) => {
   const { network, recipients, lockAddress } =
     await gitcoinHookQuery.parseAsync(request.query)
+
+  // retrieve the required Gitcoin Passport score for the lock
+  const settings = await getSettings({
+    lockAddress,
+    network,
+  })
+
+  if (settings?.requiredGitcoinPassportScore === undefined) {
+    return response.status(401)
+  }
 
   try {
     // submit each recipient for scoring
@@ -121,16 +142,36 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
       })
     }
 
-    // here, we wait for 3 seconds after submission, as the scores are being processed
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+    let attempts = 0
+    let scoresReady = false
+    let delay = pollingConfig.initialDelay
+    let scoresResponse
 
-    // retrieve scores for all submitted recipients
-    const scoresResponse = await checkMultipleScores(recipients)
+    while (attempts < pollingConfig.maxAttempts && !scoresReady) {
+      try {
+        scoresResponse = await checkMultipleScores(recipients)
+        scoresReady = true
+      } catch (error) {
+        attempts++
+        await new Promise((resolve) => setTimeout(resolve, delay))
+        // Apply backoff factor to delay between retries
+        delay *= pollingConfig.backoffFactor
+      }
+    }
+
+    if (!scoresReady) {
+      return response.status(408).json({
+        error: 'Timeout: Unable to verify scores within expected time frame.',
+      })
+    }
 
     // generate signatures for recipients with valid scores
     const generatedSignatures = scoresResponse.map((recipient: any) => {
-      // only sign recipients who have a score greater than or equal to 20
-      if (recipient && recipient.score >= 20) {
+      // only sign recipients who have a score that meets the specified threshold in the lock settings
+      if (
+        recipient &&
+        recipient.score >= settings?.requiredGitcoinPassportScore
+      ) {
         const message = recipient.toLowerCase()
         const messageHash = ethers.utils.solidityKeccak256(
           ['string'],
