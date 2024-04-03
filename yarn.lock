@@ -20421,6 +20421,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
   dependencies:
+    "@arbitrum/sdk": "npm:3.3.3"
+    "@eth-optimism/sdk": "npm:3.2.3"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.4"
@@ -20653,9 +20655,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
-    "@arbitrum/sdk": "npm:3.3.3"
     "@connext/interfaces": "npm:2.0.5"
-    "@eth-optimism/sdk": "npm:3.2.3"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
