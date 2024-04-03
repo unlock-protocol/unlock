@@ -5,6 +5,7 @@
 const { ethers } = require('hardhat')
 const { UnlockV13 } = require('@unlock-protocol/contracts')
 const { networks } = require('@unlock-protocol/networks')
+const { IConnext, targetChains } = require('../helpers/bridge')
 
 const {
   getProxyAdminAddress,
@@ -16,59 +17,6 @@ const {
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
 const { parseSafeMulticall } = require('../helpers/multisig')
-
-// TODO: move to hardhat-helpers
-const abiIConnext = [
-  {
-    inputs: [
-      {
-        internalType: 'uint32',
-        name: '_destination',
-        type: 'uint32',
-      },
-      {
-        internalType: 'address',
-        name: '_to',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_asset',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_delegate',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_slippage',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: '_callData',
-        type: 'bytes',
-      },
-    ],
-    name: 'xcall',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-]
 
 // addresses
 const deployedContracts = {
@@ -167,11 +115,6 @@ const parseCalls = async ({ unlockAddress, name, id }) => {
 }
 
 module.exports = async () => {
-  const targetChains = Object.keys(networks)
-    .filter((id) => Object.keys(deployedContracts).includes(id.toString()))
-    .filter((id) => id != 1)
-    .map((id) => networks[id])
-
   // src info
   const { id: chainId } = await getNetwork()
   const {
@@ -219,7 +162,7 @@ module.exports = async () => {
       // add to the list of calls to be passed to the bridge
       bridgeCalls.push({
         contractAddress: bridgeAddress,
-        contractNameOrAbi: abiIConnext,
+        contractNameOrAbi: IConnext,
         functionName: 'xcall',
         functionArgs: [
           destDomainId,
