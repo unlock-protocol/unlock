@@ -1,54 +1,82 @@
 import { CustomComponentProps } from '../UpdateHooksForm'
-import { Button } from '@unlock-protocol/ui'
-import networks from '@unlock-protocol/networks'
-import { Hook, HookType } from '@unlock-protocol/types'
+import { Button, Input } from '@unlock-protocol/ui'
+import { useEffect } from 'react'
 import { useFormContext } from 'react-hook-form'
-import { ADDRESS_ZERO } from '~/constants'
+import {
+  useGetLockSettings,
+  useSaveLockSettings,
+} from '~/hooks/useLockSettings'
 
 export const GitcoinContractHook = ({
-  disabled,
-  defaultValue,
+  lockAddress,
   network,
   setEventsHooksMutation,
 }: CustomComponentProps) => {
-  const hookAddress =
-    networks?.[network]?.hooks?.onKeyPurchaseHook?.find(
-      (hook: Hook) => hook.id === HookType.GITCOIN
-    )?.address ?? ''
+  const { isLoading: isLoadingSettings, data: settings } = useGetLockSettings({
+    lockAddress,
+    network,
+  })
 
-  const { handleSubmit } = useFormContext()
+  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
 
-  const isActive = defaultValue === hookAddress
+  const { handleSubmit, register, getValues, setValue } = useFormContext()
+
+  // initialize the form field with the fetched setting
+  useEffect(() => {
+    if (settings?.requiredGitcoinPassportScore !== undefined) {
+      setValue(
+        'hook.requiredGitcoinPassportScore',
+        settings.requiredGitcoinPassportScore
+      )
+    }
+  }, [settings, setValue])
 
   const onSubmit = async (values: any) => {
-    if (isActive) {
-      // Disable!
-      setEventsHooksMutation.mutateAsync({
-        ...values,
-        keyPurchase: ADDRESS_ZERO,
-      })
-    } else {
-      setEventsHooksMutation.mutateAsync(values)
-    }
+    const requiredGitcoinPassportScore = getValues(
+      'requiredGitcoinPassportScore'
+    )
+
+    await saveSettingsMutation({
+      lockAddress,
+      network,
+      requiredGitcoinPassportScore: requiredGitcoinPassportScore,
+    })
+
+    await setEventsHooksMutation.mutateAsync(values)
   }
 
-  const disabledInput = disabled || setEventsHooksMutation.isLoading
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
-      <p className="text-sm">
-        {isActive
-          ? 'Gitcoin passport verification is active, and will be required as part of the Unlock checkout process.'
-          : 'Gitcoin passport verification is not currently active.'}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-2 text-sm"
+    >
+      <p>
+        With this hook, you can control membership purchases exclusively for
+        members with a required Gitcoin passport score.
       </p>
+
+      <Input
+        size="small"
+        description="Required Gitcoin Passport Score"
+        type="number"
+        {...register('hook.requiredGitcoinPassportScore', {
+          valueAsNumber: true,
+          min: 0,
+          max: 100,
+          required: {
+            value: true,
+            message: 'This field is required',
+          },
+        })}
+      />
+
       <div className="ml-auto">
         <Button
           loading={setEventsHooksMutation.isLoading}
           size="small"
           type="submit"
-          disabled={disabledInput}
         >
-          {isActive ? 'Disable' : 'Enable'}
+          Save
         </Button>
       </div>
     </form>
