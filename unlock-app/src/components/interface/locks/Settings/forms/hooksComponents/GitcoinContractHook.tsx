@@ -61,7 +61,7 @@ export const GitcoinContractHook = ({
         type="number"
         {...register('hook.requiredGitcoinPassportScore', {
           valueAsNumber: true,
-          min: 0,
+          min: 15,
           max: 100,
           required: {
             value: true,
