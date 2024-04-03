@@ -5,11 +5,13 @@ const {
 const { EthBridger, getL2Network } = require('@arbitrum/sdk')
 const { getBaseFee } = require('@arbitrum/sdk/dist/lib/utils/lib')
 const {
+  L1_RPC,
+  L2_RPC,
   ARB_TOKEN_ADRESS_ON_L2,
   GRANTS_CONTRACT_ADDRESS,
   TIMELOCK_L2_ALIAS,
   L1_TIMELOCK_CONTRACT,
-} = require('./config')
+} = require('./constants')
 
 const ERC20_ABI = [
   {
@@ -116,16 +118,17 @@ const INBOX_ABI = [
 /**
  * Set up: instantiate L1 / L2 wallets connected to providers
  */
+
 const walletPrivateKey = process.env.PRIVATE_KEY
-const L1RPC = 'https://rpc.unlock-protocol.com/1' // mainnet RPC
-const L2RPC = 'https://rpc.unlock-protocol.com/42161' // Arbitrum RPC
-const l1Provider = new ethers.JsonRpcProvider(L1RPC)
-const l2Provider = new ethers.JsonRpcProvider(L2RPC)
+const l1Provider = new ethers.JsonRpcProvider(L1_RPC)
+const l2Provider = new ethers.JsonRpcProvider(L2_RPC)
 // const l1Wallet = new ethers.Wallet(walletPrivateKey, l1Provider)
 const l2Wallet = new ethers.Wallet(walletPrivateKey, l2Provider)
 
 module.exports = async () => {
-  console.log('Cross-chain Proposer')
+  console.log(
+    'Proposal For Executing L1 to L2 Messaging Using Arbitrum Delayed Inbox (Retryable Tickets)'
+  )
 
   const l2Network = await getL2Network(l2Provider)
   const ethBridger = new EthBridger(l2Network)
@@ -141,14 +144,14 @@ module.exports = async () => {
   const tokenAmount = ethers.parseEther('1')
 
   // Create an instance of the Interface from the ABIs
-  const iface_erc20 = new ethers.Interface(ERC20_ABI)
-  const iface_inbox = new ethers.Interface(INBOX_ABI)
+  const erc20ContractInterface = new ethers.Interface(ERC20_ABI)
+  const inboxContractInterface = new ethers.Interface(INBOX_ABI)
 
   // Encode the ERC20 Token transfer calldata
-  const transfer_calldata = iface_erc20.encodeFunctionData('transfer', [
-    GRANTS_CONTRACT_ADDRESS,
-    tokenAmount,
-  ])
+  const transferCalldata = erc20ContractInterface.encodeFunctionData(
+    'transfer',
+    [GRANTS_CONTRACT_ADDRESS, tokenAmount]
+  )
   /**
    * Now we can query the required gas params using the estimateAll method in Arbitrum SDK
    */
@@ -167,7 +170,7 @@ module.exports = async () => {
       l2CallValue: 0,
       excessFeeRefundAddress: L1_TIMELOCK_CONTRACT,
       callValueRefundAddress: L1_TIMELOCK_CONTRACT,
-      data: transfer_calldata,
+      data: transferCalldata,
     },
     await getBaseFee(l1Provider),
     l1Provider
@@ -182,10 +185,10 @@ module.exports = async () => {
     L1_TIMELOCK_CONTRACT, // callValueRefundAddress
     L1ToL2MessageGasParams.gasLimit, // gasLimit
     gasPriceBid, // maxFeePerGas
-    transfer_calldata, // data
+    transferCalldata, // data
   ]
 
-  const inbox_calldata = iface_inbox.encodeFunctionData(
+  const inboxCalldata = inboxContractInterface.encodeFunctionData(
     'createRetryableTicket',
     params
   )
@@ -219,7 +222,7 @@ module.exports = async () => {
   // Proposal ARGS i.e Call Governor.propose() directly with these values
   const targets = [inboxAddress]
   const values = [ETHDeposit]
-  const calldatas = [inbox_calldata]
+  const calldatas = [inboxCalldata]
   const description = proposalName
 
   const calls = [
