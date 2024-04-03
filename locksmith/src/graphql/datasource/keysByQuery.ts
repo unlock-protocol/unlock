@@ -21,6 +21,7 @@ interface KeyByFilterProps {
   tokenId?: number
   owners?: string[]
   transactionHash?: string[]
+  after?: string
 }
 
 const locksByFilter = async ({
@@ -33,6 +34,7 @@ const locksByFilter = async ({
   addresses = [],
   owners = [],
   transactionHash = [],
+  after = '',
 }: KeyByFilterProps): Promise<any> => {
   const subgraph = new SubgraphService()
 
@@ -42,6 +44,10 @@ const locksByFilter = async ({
 
   const keyFilter: KeyFilterProps = {
     tokenId,
+  }
+
+  if (after) {
+    keyFilter.tokenId_gt = after
   }
 
   if (filter === 'expired') {
@@ -87,6 +93,7 @@ interface KeyGetProps {
     page: number
     expiration: KeyFilter
     max: number
+    after: string
   }
   network: number
 }
@@ -100,6 +107,7 @@ export const keysByQuery = async ({
     expiration = 'active',
     page = 0,
     max = 10000,
+    after = '',
   },
 }: KeyGetProps): Promise<SubgraphLock[]> => {
   try {
@@ -134,6 +142,7 @@ export const keysByQuery = async ({
         expireTimestamp,
         filter: expiration,
         transactionHash,
+        after,
       })
     }
 

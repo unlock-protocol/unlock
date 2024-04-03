@@ -1,5 +1,17 @@
 # Changes
 
+# 0.45.0
+
+- adding support for a password hook with caps and multiple passwords per lock
+
+# 0.44.0
+
+- adding the possibility to pass a custom url endpoint to the `SubgraphService` constructor.
+
+# 0.43.2
+
+- using `totalKeys` when possible (lock v11 and further)
+
 # 0.43.1
 
 - adding the ability to add a filter for approval when listing keys.

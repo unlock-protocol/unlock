@@ -446,6 +446,13 @@ components:
           type: array
           items:
             type: string
+        passwords:
+          type: array
+          items:
+            type: string
+        requiredGitcoinPassportScore:
+          type: number
+          nullable: true
 
     EventDetails:
       type: object
@@ -2325,6 +2332,8 @@ paths:
                           type: string
                         payer:
                           type: string
+                        recipient:
+                          type: string
                         lockAddress:
                           type: string
                         tokenAddress:
@@ -2426,6 +2435,8 @@ paths:
                       sender:
                         type: string
                       payer:
+                        type: string
+                      recipient:
                         type: string
                       lockAddress:
                         type: string

@@ -13,6 +13,7 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
   GITCOIN: 'gitcoin',
   PROMOCODE: 'promocode',
   PROMO_CODE_CAPPED: 'promocode',
+  PASSWORD_CAPPED: 'password',
 }
 
 export function useCheckoutHook(service: CheckoutService) {

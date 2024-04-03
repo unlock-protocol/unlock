@@ -2,68 +2,10 @@
  * Example of a bridged proposal that will be sent across Connext to multisigs
  * on the other side of the network.
  */
-const { ADDRESS_ZERO } = require('../test/helpers')
+const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { IConnext, targetChains } = require('../helpers/bridge')
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-
-const abiIConnext = [
-  {
-    inputs: [
-      {
-        internalType: 'uint32',
-        name: '_destination',
-        type: 'uint32',
-      },
-      {
-        internalType: 'address',
-        name: '_to',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_asset',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_delegate',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_slippage',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: '_callData',
-        type: 'bytes',
-      },
-    ],
-    name: 'xcall',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-]
-
-const targetChains = Object.keys(networks)
-  .map((id) => networks[id])
-  .filter(
-    ({ governanceBridge, isTestNetwork, id }) =>
-      !isTestNetwork && !!governanceBridge && id != 1
-  )
 
 module.exports = async () => {
   // parse call data for function call
@@ -138,7 +80,7 @@ module.exports = async () => {
       // proposed changes
       return {
         contractAddress: bridgeAddress,
-        contractNameOrAbi: abiIConnext,
+        contractNameOrAbi: IConnext,
         functionName: 'xcall',
         functionArgs: [
           destDomainId,

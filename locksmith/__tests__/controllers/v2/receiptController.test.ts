@@ -13,7 +13,7 @@ const lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const hash =
   '0x68bd005bd3fba4c467f3289afdb773a797d3f5fe63ca13fd3ec7f16794b3858b'
 const payer = '0xE91efB608747f8f99CBB7d77020B80ECaEc16E26'
-const network = 5
+const network = 10
 
 const purchaser: z.infer<typeof PurchaserBody> = {
   fullname: 'Mario Rossi',

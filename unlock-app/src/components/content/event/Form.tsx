@@ -21,6 +21,7 @@ import { networkDescription } from '~/components/interface/locks/Create/elements
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
+import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
@@ -28,6 +29,7 @@ import { useImageUpload } from '~/hooks/useImageUpload'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
+import Link from 'next/link'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -255,15 +257,28 @@ export const Form = ({ onSubmit }: FormProps) => {
                   label="Network"
                   defaultValue={network}
                   description={
-                    <p>
-                      This is the network on which your ticketing contract will
-                      be deployed.{' '}
-                      {details.network && (
-                        <>{networkDescription(details.network)}</>
-                      )}
-                    </p>
+                    <div className="flex flex-col gap-2">
+                      <p>
+                        {details.network && (
+                          <>{networkDescription(details.network)}</>
+                        )}
+                      </p>
+                      <p>
+                        This is the network on which your ticketing contract
+                        will be deployed.{' '}
+                        <Link
+                          className="underline text-brand-ui-primary "
+                          target="_blank"
+                          href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
+                        >
+                          Read our guide
+                        </Link>{' '}
+                        on how to chose the right network.
+                      </p>
+                    </div>
                   }
                 />
+                <NetworkWarning network={details.network} />
                 <div className="mb-4">
                   {noBalance && (
                     <BalanceWarning
