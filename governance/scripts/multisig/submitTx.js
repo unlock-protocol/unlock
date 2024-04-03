@@ -46,14 +46,19 @@ async function main({ safeAddress, tx, signer }) {
   const safeSdk = await Safe.create({ ethAdapter, safeAddress })
   const txs = !Array.isArray(tx) ? [tx] : tx
 
-  const explainer = txs
-    .map(({ functionName, functionArgs, explainer }) =>
-      explainer
-        ? explainer
-        : `'${functionName}(${Object.values(functionArgs).toString()})'`
-    )
-    .join(', ')
-  console.log(`Submitting txs: ${explainer}`)
+  let explainer = ''
+  try {
+    explainer = txs
+      .map(({ functionName, functionArgs, explainer }) =>
+        explainer
+          ? explainer
+          : `'${functionName}(${Object.values(functionArgs).toString()})'`
+      )
+      .join(', ')
+    console.log(`Submitting txs: ${explainer}`)
+  } catch (error) {
+    console.log(`Missing explainers...`)
+  }
 
   // parse transactions
   const transactions = await Promise.all(
@@ -108,13 +113,13 @@ async function main({ safeAddress, tx, signer }) {
 
   // now send tx via Safe Global web service
   const safeTxHash = await safeSdk.getTransactionHash(safeTransaction)
-  const senderSignature = await safeSdk.signTransactionHash(safeTxHash)
+  const senderSignature = await safeSdk.signHash(safeTxHash)
 
   await safeService.proposeTransaction({
     safeAddress,
     safeTransactionData: safeTransaction.data,
     safeTxHash,
-    senderAddress: signer.address,
+    senderAddress: await signer.getAddress(),
     senderSignature: senderSignature.data,
   })
 

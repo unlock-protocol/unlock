@@ -54,7 +54,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   // Submit the proposal if necessary
   if (!proposalId) {
-    proposalId = await submit({ proposal, govAddress })
+    ;({ proposalId } = await submit({ proposal, govAddress }))
   }
 
   // votes
@@ -74,7 +74,7 @@ async function main({ proposal, proposalId, govAddress, txId }) {
   )
 
   // Run the gov workflow
-  await queue({ proposalId, govAddress, txId })
+  await queue({ proposalId, proposal, govAddress, txId })
   const { logs } = await execute({ proposalId, txId, proposal, govAddress })
 
   // log all events

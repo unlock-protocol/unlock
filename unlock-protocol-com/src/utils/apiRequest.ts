@@ -2,19 +2,25 @@
 import { ethers } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
 
-async function getGdpForNetwork(provider, network) {
+async function getGdpForNetwork({
+  provider,
+  unlockAddress,
+  previousDeploys,
+  name,
+  id,
+}) {
   const abi = ['function grossNetworkProduct() constant view returns (uint256)']
-  const contract = new ethers.Contract(network.unlockAddress, abi, provider)
+  const contract = new ethers.Contract(unlockAddress, abi, provider)
   let gnp = await contract.grossNetworkProduct()
-  if (network.id === 1) {
+  if (id === 1) {
     // temp fix until we fix GNP on mainnet!
     gnp = 0
   }
-  if (network.previousDeploys) {
-    for (let i = 0; i < network.previousDeploys.length; i++) {
+  if (previousDeploys) {
+    for (let i = 0; i < previousDeploys.length; i++) {
       try {
         const previousContract = new ethers.Contract(
-          network.previousDeploys[i].unlockAddress,
+          previousDeploys[i].unlockAddress,
           abi,
           provider
         )
@@ -22,7 +28,7 @@ async function getGdpForNetwork(provider, network) {
         gnp = previousGnp.add(gnp)
       } catch (error) {
         console.error(
-          `Error retrieving GNP for ${network.name} at ${network.previousDeploys[i].name}`,
+          `Error retrieving GNP for ${name} at ${previousDeploys[i].name}`,
           error
         )
       }
@@ -35,16 +41,34 @@ export async function getGNPs() {
   const values = await Promise.all(
     Object.keys(networks).map(async (id) => {
       try {
-        const network = networks[id]
-        if (!network.unlockAddress) {
+        const {
+          unlockAddress,
+          chain,
+          name,
+          provider: providerUrl,
+          previousDeploys,
+          isTestNetwork,
+          nativeCurrency,
+        } = networks[id]
+        if (!unlockAddress) {
           return null
         }
-        const provider = new ethers.providers.JsonRpcBatchProvider(
-          network.provider
-        )
-        const gdp = await getGdpForNetwork(provider, network)
+        const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
+        const gdp = await getGdpForNetwork({
+          provider,
+          unlockAddress,
+          previousDeploys,
+          name,
+          id,
+        })
         const total = parseFloat(ethers.utils.formatUnits(gdp, '18'))
-        return { total, network }
+        return {
+          total,
+          chain,
+          name,
+          isTestNetwork,
+          nativeCurrencySymbol: nativeCurrency.symbol,
+        }
       } catch (error) {
         console.error('Error retrieving data for', id)
         console.error(error)
