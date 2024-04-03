@@ -54,6 +54,11 @@ export const polygon: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xc2D767a87d74d82CD4B290a63E2D703Ff1CDf6b9',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 137,

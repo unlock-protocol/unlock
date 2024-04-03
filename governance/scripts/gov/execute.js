@@ -10,16 +10,23 @@ const {
   isAlreadyPast,
 } = require('../../helpers/gov')
 
-async function main({ proposal, govAddress }) {
+async function main({ proposal, proposalId, txId, govAddress }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337 || process.env.RUN_FORK
 
-  if (!proposal) {
-    throw new Error('GOV EXEC > Missing proposal.')
+  if (!proposal && !proposalId) {
+    throw new Error('GOV EXEC > Missing proposal or proposalId.')
   }
-  console.log(proposal)
-  const proposalId = proposal.proposalId || (await getProposalId(proposal))
+  if (!proposal && proposalId && !txId) {
+    throw new Error(
+      'GOV EXEC > The tx id of the proposal creation is required to execute the proposal.'
+    )
+  }
+
+  if (!proposalId) {
+    proposalId = proposal.proposalId || (await getProposalId(proposal))
+  }
 
   // contract instance etc
   let state = await getProposalState(proposalId, govAddress)
@@ -52,13 +59,14 @@ async function main({ proposal, govAddress }) {
     }
 
     // execute the tx
-    const tx = await executeProposal({ proposal, govAddress })
+    const tx = await executeProposal({ proposal, govAddress, txId })
     const receipt = await tx.wait()
     const { event, hash } = await getEvent(receipt, 'ProposalExecuted')
     if (event) {
       // eslint-disable-next-line no-console
       console.log(`GOV EXEC > Proposal executed successfully (txid: ${hash})`)
     }
+    return receipt
   } else if (state === 'Executed') {
     console.log('GOV EXEC > Proposal has already been executed')
   } else {

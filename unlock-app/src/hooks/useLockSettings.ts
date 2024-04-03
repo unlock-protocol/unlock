@@ -88,6 +88,7 @@ interface SaveLockProps {
   promoCodes?: string[]
   crossmintClientId?: string
   requiredGitcoinPassportScore?: number | null
+  passwords?: string[]
 }
 
 export function useSaveLockSettings() {
