@@ -265,6 +265,7 @@ task('gov:show', 'Show content of proposal')
         console.log('load from tx')
         proposal = await parseProposal({ txId, govAddress })
       }
-      console.log(proposal)
+      const { explainers } = proposal
+      console.log(explainers)
     }
   )

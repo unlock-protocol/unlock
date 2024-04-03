@@ -34,7 +34,7 @@ async function main({ proposal, govAddress }) {
     `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${hash}, block: ${currentBlock})`
   )
 
-  return proposalId, hash
+  return { proposalId, hash }
 }
 
 // execute as standalone
