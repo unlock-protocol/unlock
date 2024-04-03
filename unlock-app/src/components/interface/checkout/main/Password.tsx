@@ -95,7 +95,9 @@ export function Password({ injectedProvider, checkoutService }: Props) {
           contractAddress: hookAddress,
           signerAddress: privateKeyFromAccount.address,
         })
-        setIsPasswordCorrect(passwordDetails.cap > 0)
+        setIsPasswordCorrect(
+          passwordDetails.cap > 0 && passwordDetails.cap > passwordDetails.count
+        )
         setPasswordLoading(false)
       }
     },

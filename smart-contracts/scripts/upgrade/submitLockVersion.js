@@ -7,7 +7,7 @@
  * yarn hardhat submit:version
  *
  * # with an existing address, contract gets deployed and specified
- * yarn hardhat submit:version --network goerli --public-lock-address <TEMPLATE_ADDRESS>
+ * yarn hardhat submit:version --network optimism --public-lock-address <TEMPLATE_ADDRESS>
  * ```
  * NB: You can first test on mainnet to make sure the template is deploying correctly * :
  *
