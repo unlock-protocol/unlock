@@ -20441,6 +20441,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     eslint: "npm:8.54.0"
     ethers: "npm:6.10.0"
+    ethers5: "npm:ethers@5"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
     solhint: "npm:4.5.2"
@@ -31902,7 +31903,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
+"ethers5@npm:ethers@5, ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.1, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:

@@ -1,14 +1,10 @@
 /**
  * Bridge tokens to Optimism networks
  *
- * TODO: move to governance foldder
- * NB: this scripts belong to `governance` folder but lives here as the Optimsim sdk
- * requires ethers v5 ( in use in this workspace), while the governance workspace
- * uses v6.
  */
 
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
-const { ethers } = require('hardhat')
+const ethers = require('ethers5')
 const optimism = require('@eth-optimism/sdk')
 
 // edit default values

@@ -1,8 +1,8 @@
 /**
- * Deploy a bridged ERC20 UDT token contract on Arbitrum network
+ * Bridge UDT token to the Arbitrum network
+ * NB: if the contract for the bridge token is not deployed,
+ * this will deploy it.
  *
- * Please edit the chain ids constant below to use
- * TODO: move to `governance` workspace - Arbitrum SDK requires ethers@5
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
@@ -11,7 +11,8 @@ const {
   Erc20Bridger,
   L1ToL2MessageStatus,
 } = require('@arbitrum/sdk')
-const { ethers } = require('hardhat')
+const ethers = require('ethers5')
+const abiERC20 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 
 const L1_CHAIN_ID = 1 // mainnet (Sepolia 11155111)
 const l2_CHAIN_ID = 42161 // ARB (ARB Sepolia 421614)
@@ -43,7 +44,7 @@ async function main({
   const l2Provider = new ethers.providers.StaticJsonRpcProvider(l2.provider)
 
   // token contract instance
-  const l1Token = await ethers.getContractAt('IERC20', l1TokenAddress, l1Wallet)
+  const l1Token = new ethers.Contract(abiERC20, l1TokenAddress, l1Wallet)
 
   // use arb sdk
   const l2Network = await getL2Network(l2Provider)

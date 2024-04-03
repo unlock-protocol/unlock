@@ -1,12 +1,10 @@
 /**
  * Deploy a bridged ERC20 UDT token contract on Arbitrum network
  *
- * Please edit the chain ids constant below to use
- * TODO: move to `governance` workspace - Arbitrum SDK requires ethers@5
  */
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const l1BridgeAbi = require('./abi/l1standardbridge.json')
-const { ethers } = require('hardhat')
+const ethers = require('ethers5')
 
 const L1_CHAIN_ID = 1 // mainnet (Sepolia 11155111)
 const l2_CHAIN_ID = 8453 // BASE (BASE Sepolia 84534)
