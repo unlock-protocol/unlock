@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { SafeFactory, EthersAdapter } = require('@safe-global/protocol-kit')
-const getOwners = require('./owners')
+const { getExpectedSigners } = require('../../helpers/multisig')
 
 async function main({ owners, threshold = 4 }) {
   if (owners && owners.length % 2 == 0) {
@@ -10,10 +10,9 @@ async function main({ owners, threshold = 4 }) {
     throw new Error('SAFE SETUP > Threshold is greater than number of owners.')
   }
 
-  // get mainnet owners if needed
+  // get signers if needed
   if (!owners) {
-    const mainnetOwners = await getOwners({ chainId: 1 })
-    owners = mainnetOwners
+    owners = await getExpectedSigners()
   }
 
   const [deployer] = await ethers.getSigners()

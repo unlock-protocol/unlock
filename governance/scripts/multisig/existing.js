@@ -1,4 +1,4 @@
-const { getSafeAddress } = require('./_helpers')
+const { getSafeAddress } = require('../../helpers/multisig')
 
 async function main({ chainId }) {
   const safeAddress = await getSafeAddress(chainId)

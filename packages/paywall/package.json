@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.6.7",
+  "version": "0.7.0",
   "main": "./dist/unlock.latest.umd.js",
   "module": "./dist/unlock.latest.es.js",
   "typings": "./dist/index.d.ts",
@@ -34,11 +34,11 @@
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
     "eslint": "8.46.0",
-    "tsup": "8.0.1",
-    "typescript": "5.1.6",
+    "tsup": "8.0.2",
+    "typescript": "5.3.3",
     "vite": "5.0.12",
     "vite-plugin-css-injected-by-js": "3.2.1",
-    "vite-plugin-node-polyfills": "0.9.0",
+    "vite-plugin-node-polyfills": "0.21.0",
     "vitest": "0.33.0",
     "vitest-fetch-mock": "0.2.2"
   },

@@ -38,7 +38,9 @@ export async function getSettings({
   includeProtected?: boolean
 }): Promise<LockSetting | LockSettingProps> {
   // list of array of keys to exclude
-  const attributesExcludes = includeProtected ? [] : ['replyTo']
+  const attributesExcludes = includeProtected
+    ? []
+    : ['replyTo', 'promoCodes', 'passwords']
 
   const settings = await LockSetting.findOne({
     where: {
@@ -51,6 +53,10 @@ export async function getSettings({
   })
 
   const res = settings || DEFAULT_LOCK_SETTINGS
+  attributesExcludes.forEach((attr) => {
+    // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type
+    delete res[attr]
+  })
 
   return res
 }

@@ -1,5 +1,4 @@
 import { MdAssignmentLate } from 'react-icons/md'
-
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
@@ -36,6 +35,7 @@ import { SettingEmail } from '~/components/interface/locks/Settings/elements/Set
 import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
+import { config } from '~/config/app'
 
 interface EventDetailsProps {
   event: Event
@@ -159,18 +159,57 @@ export const EventDetails = ({
   return (
     <div>
       <NextSeo
-        title={event.title}
-        description={`${event.description}. Powered by Unlock Protocol.`}
+        title={event.name}
+        description={`${event.description} 
+Powered by Unlock Protocol`}
         openGraph={{
+          title: event.title,
+          type: 'website',
+          url: eventUrl,
           images: [
             {
               alt: event.title,
-              url: `/api/og/event/${event.slug}`,
+              url: `${config.unlockApp}/og/event/${event.slug}`,
             },
           ],
         }}
+        additionalMetaTags={[
+          {
+            property: 'fc:frame',
+            content: 'vNext',
+          },
+          {
+            name: 'fc:frame:image',
+            content: `${config.unlockApp}/og/event/${event.slug}`,
+          },
+          {
+            name: 'fc:frame:post_url',
+            content: `${config.unlockApp}/frames/event?p=${encodeURIComponent(
+              `${config.unlockApp}/frames/event/${event.slug}`
+            )}&s=${encodeURIComponent('{"view":"default"}')}`,
+          },
+          {
+            name: 'fc:frame:button:1',
+            content: 'Register',
+          },
+          {
+            name: 'fc:frame:button:1:target',
+            content: eventUrl,
+          },
+          {
+            name: 'fc:frame:button:1:action',
+            content: 'link',
+          },
+          {
+            name: 'fc:frame:button:2',
+            content: 'See description',
+          },
+          {
+            name: 'fc:frame:button:2:action',
+            content: 'post',
+          },
+        ]}
       />
-
       <div className="flex flex-col gap-4">
         <div className="flex flex-row-reverse gap-2 ">
           {isOrganizer && (
@@ -200,7 +239,7 @@ export const EventDetails = ({
         </div>
 
         <div className="relative">
-          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl">
+          <div className="w-full h-32 overflow-hidden -z-0 bg-slate-200 md:h-80 md:rounded-3xl rounded-lg">
             {coverImage && (
               <img
                 className="object-cover w-full h-full"
@@ -222,10 +261,10 @@ export const EventDetails = ({
 
           <div className="absolute flex flex-col w-full gap-6 px-4 md:px-10 -bottom-12">
             <section className="flex justify-between">
-              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 rounded-3xl">
+              <div className="flex w-24 h-24 p-1 bg-white md:p-2 md:w-48 md:h-48 md:rounded-3xl rounded-xl">
                 <img
                   alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 rounded-2xl"
+                  className="object-cover w-full m-auto aspect-1 md:rounded-2xl rounded-lg"
                   src={event.image}
                 />
               </div>
@@ -240,16 +279,18 @@ export const EventDetails = ({
                   <CastItButton event={event} eventUrl={eventUrl} />
                 </li>
                 <li>
-                  <CopyUrlButton eventUrl={eventUrl} />
+                  <CopyUrlButton url={eventUrl} />
                 </li>
               </ul>
             </section>
           </div>
         </div>
 
-        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3  lg:px-12 lg:mt-16 mt-8">
+        <section className="grid items-start grid-cols-1 md:gap-4 lg:grid-cols-3 lg:mt-16 mt-8">
           <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="text-3xl font-bold md:text-7xl">{event.name}</h1>
+            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
+              {event.name}
+            </h1>
             <section className="mt-4">
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
@@ -274,7 +315,6 @@ export const EventDetails = ({
                 {hasLocation && <EventLocation event={event} />}
               </div>
               <div className="mt-10">
-                <h2 className="text-xl font-bold">Event Information</h2>
                 {event.description && (
                   <div className="mt-4 markdown">
                     {/* eslint-disable-next-line react/no-children-prop */}
@@ -302,7 +342,6 @@ export const EventDetails = ({
           )}
         </section>
       </div>
-
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">

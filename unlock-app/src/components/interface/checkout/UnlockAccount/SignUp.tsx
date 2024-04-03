@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService, UserDetails } from './unlockAccountMachine'
+import { useSIWE } from '~/hooks/useSIWE'
 
 interface Props {
   unlockAccountService: UnlockAccountService
@@ -14,6 +15,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
   const [state, send] = useActor(unlockAccountService)
   const { email } = state.context
   const [isSigningUp, setIsSigningUp] = useState(false)
+  const { signIn } = useSIWE()
   const {
     register,
     handleSubmit,
@@ -28,6 +30,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
         throw new Error('Password does not match')
       }
       await signUp({ email, password })
+      await signIn()
       setIsSigningUp(false)
       send('CONTINUE')
     } catch (error) {

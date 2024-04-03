@@ -1,49 +1,53 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
+const {
+  deployLock,
+  reverts,
+  ADDRESS_ZERO,
+  compareBigNumbers,
+} = require('../helpers')
 
 let lock
-let tx
 
 // 10 minutes
 const duration = 60 * 60 * 10
 
-contract('Lock / grantKeyExtension', (accounts) => {
-  const lockCreator = accounts[1]
-  const keyOwner = accounts[2]
+describe('Lock / grantKeyExtension', () => {
+  let keyOwner, attacker
+
   let tokenId
-  let evt
+  let args
   let validExpirationTimestamp
 
   before(async () => {
+    ;[, keyOwner, attacker] = await ethers.getSigners()
+
     const blockNumber = await ethers.provider.getBlockNumber()
     const latestBlock = await ethers.provider.getBlock(blockNumber)
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
 
-    lock = await deployLock({ from: lockCreator })
+    lock = await deployLock()
 
     // the lock creator is assigned the KeyGranter role by default
-    tx = await lock.grantKeys(
-      [keyOwner],
+    const tx = await lock.grantKeys(
+      [keyOwner.address],
       [validExpirationTimestamp],
-      [ADDRESS_ZERO],
-      {
-        from: lockCreator,
-      }
+      [ADDRESS_ZERO]
     )
-    evt = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = evt.args.tokenId
+    const { events } = await tx.wait()
+    ;({ args } = events.find(({ event }) => event === 'Transfer'))
+    ;({ tokenId } = args)
   })
 
   describe('extend a valid key without a specific duration', () => {
-    let tx
-    let tsBefore
+    let tsBefore, args
     before(async () => {
       assert.equal(await lock.isValidKey(tokenId), true)
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
-      tx = await lock.grantKeyExtension(tokenId, 0, {
-        from: lockCreator,
-      })
+      const tx = await lock.grantKeyExtension(tokenId, 0)
+      const { events } = await tx.wait()
+      ;({ args } = events.find(({ event }) => event === 'KeyExtended'))
     })
 
     it('key should stay valid', async () => {
@@ -53,30 +57,25 @@ contract('Lock / grantKeyExtension', (accounts) => {
     it('duration has been extended accordingly', async () => {
       const expirationDuration = await lock.expirationDuration()
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      assert.equal(
-        tsBefore.add(expirationDuration).toString(),
-        tsAfter.toString()
-      )
+      compareBigNumbers(tsBefore.add(expirationDuration), tsAfter)
     })
 
     it('should emit a KeyExtended event', async () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      const { args } = tx.logs.find((v) => v.event === 'KeyExtended')
-      assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
-      assert.equal(args.newTimestamp.toNumber(), tsAfter.toNumber())
+      compareBigNumbers(args.tokenId, tokenId)
+      compareBigNumbers(args.newTimestamp, tsAfter)
     })
   })
 
   describe('extend a valid key with a specific duration', () => {
-    let tx
-    let tsBefore
+    let tsBefore, args
     before(async () => {
       assert.equal(await lock.isValidKey(tokenId), true)
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
-      tx = await lock.grantKeyExtension(tokenId, duration, {
-        from: lockCreator,
-      })
+      const tx = await lock.grantKeyExtension(tokenId, duration)
+      const { events } = await tx.wait()
+      ;({ args } = events.find(({ event }) => event === 'KeyExtended'))
     })
 
     it('key should stay valid', async () => {
@@ -85,29 +84,24 @@ contract('Lock / grantKeyExtension', (accounts) => {
 
     it('duration has been extended accordingly', async () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      assert.equal(tsBefore.toNumber() + duration, tsAfter.toNumber())
+      compareBigNumbers(tsBefore.add(duration), tsAfter)
     })
 
     it('should emit a KeyExtended event', async () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      const { args } = tx.logs.find((v) => v.event === 'KeyExtended')
-      assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
-      assert.equal(args.newTimestamp.toNumber(), tsAfter.toNumber())
+      compareBigNumbers(args.tokenId, tokenId)
+      compareBigNumbers(args.newTimestamp, tsAfter)
     })
   })
 
   describe('extend an expired key', () => {
     before(async () => {
       // expire key
-      await lock.expireAndRefundFor(tokenId, 0, {
-        from: lockCreator,
-      })
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.isValidKey(tokenId), false)
 
       // extend
-      tx = await lock.grantKeyExtension(tokenId, 0, {
-        from: lockCreator,
-      })
+      await lock.grantKeyExtension(tokenId, 0)
     })
 
     it('key should stay valid', async () => {
@@ -118,11 +112,8 @@ contract('Lock / grantKeyExtension', (accounts) => {
       const expirationDuration = await lock.expirationDuration()
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
       const blockNumber = await ethers.provider.getBlockNumber()
-      const latestBlock = await ethers.provider.getBlock(blockNumber)
-      assert.equal(
-        latestBlock.timestamp + expirationDuration.toNumber(),
-        tsAfter.toNumber()
-      )
+      const { timestamp } = await ethers.provider.getBlock(blockNumber)
+      compareBigNumbers(expirationDuration.add(timestamp), tsAfter)
     })
   })
 
@@ -130,19 +121,16 @@ contract('Lock / grantKeyExtension', (accounts) => {
     // By default, the lockCreator has both the LockManager & KeyGranter roles
     it('if called by anyone but LockManager or KeyGranter', async () => {
       await reverts(
-        lock.grantKeyExtension(tokenId, duration, { from: keyOwner }),
+        lock.connect(keyOwner).grantKeyExtension(tokenId, duration),
         'ONLY_LOCK_MANAGER_OR_KEY_GRANTER'
       )
       await reverts(
-        lock.grantKeyExtension(tokenId, duration, { from: accounts[9] }),
+        lock.connect(attacker).grantKeyExtension(tokenId, duration),
         'ONLY_LOCK_MANAGER_OR_KEY_GRANTER'
       )
     })
     it('if key is not valid', async () => {
-      await reverts(
-        lock.grantKeyExtension(123, duration, { from: lockCreator }),
-        'NO_SUCH_KEY'
-      )
+      await reverts(lock.grantKeyExtension(123, duration), 'NO_SUCH_KEY')
     })
   })
 })

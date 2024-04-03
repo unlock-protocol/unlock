@@ -74,6 +74,7 @@ const config = {
     bucket: process.env.STORAGE_BUCKET || 'images',
     publicHost:
       process.env.STORAGE_PUBLIC_HOST || defaultConfig.storage.publicHost,
+    exportsBucket: 'uploads',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
   /* To utilize the Gitcoin Passport API, you need the GITCOIN_API_KEY and GITCOIN_SCORER_ID, essential for authentication and scoring customization.

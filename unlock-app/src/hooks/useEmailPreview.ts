@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
 import { storage } from '~/config/storage'
-import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
+import { unified } from 'unified'
 
 export const useCustomContentForEmail = ({
   network,

@@ -30,7 +30,7 @@ export const getNetwork = async (chainId) => {
   if (!chainId) {
     ;({ chainId } = await ethers.provider.getNetwork())
   }
-  return networks[chainId]
+  return networks[chainId] || { name: 'localhost', id: chainId }
 }
 
 export default {

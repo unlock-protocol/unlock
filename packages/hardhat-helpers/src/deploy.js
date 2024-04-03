@@ -1,3 +1,4 @@
+import zkSync from './zkSync'
 import { isLocalhost } from './localhost'
 
 export const deployContract = async (
@@ -18,18 +19,22 @@ export const deployContract = async (
   await contract.waitForDeployment(deployOptions.wait)
   const { hash } = await contract.deploymentTransaction()
   const address = await contract.getAddress()
+  console.log(address)
 
   console.log(` > contract deployed at : ${address} (tx: ${hash})`)
 
   if (!(await isLocalhost())) {
-    await verify({
+    const args = {
       address,
       deployArgs,
-      // pass fully qualified path for verification
-      contract: Factory
-        ? null
-        : contractNameOrFullyQualifiedNameOrEthersFactory,
-    })
+    }
+
+    // pass fully qualified path for verification
+    if (typeof contractNameOrFullyQualifiedNameOrEthersFactory === 'string') {
+      args.contract = contractNameOrFullyQualifiedNameOrEthersFactory
+    }
+
+    await verify(args)
   }
 
   return {
@@ -90,7 +95,9 @@ export const verify = async ({ address, deployArgs, contract }) => {
 }
 
 export default {
-  deployContract,
-  deployUpgradeableContract,
+  deployContract: process.env.ZK_SYNC ? zkSync.deployContract : deployContract,
+  deployUpgradeableContract: process.env.ZK_SYNC
+    ? zkSync.deployUpgradeableContract
+    : deployUpgradeableContract,
   verifyContract: verify,
 }

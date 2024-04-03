@@ -1,4 +1,3 @@
-import { Placeholder } from '@unlock-protocol/ui'
 import { LockPriceDetails } from './LockPriceDetails'
 import { Card } from '@unlock-protocol/ui'
 import { PaywallConfigType } from '@unlock-protocol/core'
@@ -6,6 +5,7 @@ import { RegistrationCardSingleLock } from './SingleLock'
 import { useValidKeyBulk } from '~/hooks/useKey'
 import { HasTicket } from './HasTicket'
 import { EmbeddedCheckout } from './EmbeddedCheckout'
+import { LoadingRegistrationCard } from './LoadingRegistrationCard'
 
 export interface RegistrationCardProps {
   checkoutConfig: {
@@ -26,12 +26,16 @@ export const RegistrationCard = ({
   }
 
   const isLoadingValidKeys = queries?.some(
-    (query) => query.isInitialLoading || query.isRefetching
+    (query) => query.isInitialLoading || query.isRefetching || query.isLoading
   )
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
   if (isLoadingValidKeys) {
-    return <Placeholder.Card size="md" />
+    return (
+      <Card className="grid gap-4 mt-10 lg:mt-0">
+        <LoadingRegistrationCard />
+      </Card>
+    )
   }
 
   if (hasValidKey) {
@@ -55,21 +59,28 @@ export const RegistrationCard = ({
   // Multiple locks!
   return (
     <Card className="grid gap-4 mt-10 lg:mt-0">
-      {Object.keys(checkoutConfig.config.locks)?.map((lockAddress: string) => {
-        return (
-          <LockPriceDetails
-            key={lockAddress}
-            lockAddress={lockAddress}
-            network={
-              (checkoutConfig.config.locks[
-                Object.keys(checkoutConfig.config.locks)[0]
-              ].network || checkoutConfig.config.network)!
-            }
-            lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
-            showContract
-          />
-        )
-      })}
+      {Object.keys(checkoutConfig.config.locks)
+        ?.sort((l, m) => {
+          return (
+            (checkoutConfig.config.locks[l].order || 0) -
+            (checkoutConfig.config.locks[m].order || 0)
+          )
+        })
+        ?.map((lockAddress: string) => {
+          return (
+            <LockPriceDetails
+              key={lockAddress}
+              lockAddress={lockAddress}
+              network={
+                (checkoutConfig.config.locks[
+                  Object.keys(checkoutConfig.config.locks)[0]
+                ].network || checkoutConfig.config.network)!
+              }
+              lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
+              showContract
+            />
+          )
+        })}
       <EmbeddedCheckout checkoutConfig={checkoutConfig} refresh={refresh} />
     </Card>
   )

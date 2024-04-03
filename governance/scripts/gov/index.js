@@ -10,7 +10,7 @@ const vote = require('./vote')
 const queue = require('./queue')
 const execute = require('./execute')
 
-async function main({ proposal, govAddress }) {
+async function main({ proposal, proposalId, govAddress, txId }) {
   const [signer] = await ethers.getSigners()
   const { chainId } = await ethers.provider.getNetwork()
 
@@ -52,11 +52,33 @@ async function main({ proposal, govAddress }) {
     await mine(10)
   }
 
-  // Run the gov workflow
-  const proposalId = await submit({ proposal, govAddress })
+  // Submit the proposal if necessary
+  if (!proposalId) {
+    ;({ proposalId } = await submit({ proposal, govAddress }))
+  }
+
+  // votes
   await vote({ proposalId, govAddress, voterAddress: signer.address })
-  await queue({ proposal, govAddress })
-  await execute({ proposal, govAddress })
+
+  const udtWhales = [
+    '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9', // Unlock Labs
+    '0xF5C28ce24Acf47849988f147d5C75787c0103534', // unlock-protocol.eth
+    '0xc0948A2f0B48A2AA8474f3DF54FD7C364225AD7d', // @_Cryptosmonitor
+    '0xD2BC5cb641aE6f7A880c3dD5Aee0450b5210BE23', // stellaachenbach.eth
+    '0xCA7632327567796e51920F6b16373e92c7823854', // dannithomx.eth
+  ]
+  await Promise.all(
+    udtWhales.map((voterAddress) =>
+      vote({ proposalId, govAddress, voterAddress })
+    )
+  )
+
+  // Run the gov workflow
+  await queue({ proposalId, proposal, govAddress, txId })
+  const { logs } = await execute({ proposalId, txId, proposal, govAddress })
+
+  // log all events
+  console.log(logs)
 }
 
 // execute as standalone

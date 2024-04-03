@@ -12,11 +12,22 @@ const {
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-async function main({ proposal, govAddress }) {
+async function main({ proposalId, txId, proposal, govAddress }) {
+  if (!proposal && !proposalId) {
+    throw new Error('GOV QUEUE > Missing proposal or proposalId.')
+  }
+  if (!proposal && proposalId && !txId) {
+    throw new Error(
+      'GOV QUEUE > The tx id of the proposal creation is required to execute the proposal.'
+    )
+  }
+
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337 || process.env.RUN_FORK
-  const proposalId = proposal.proposalId || (await getProposalId(proposal))
+  if (!proposalId) {
+    proposalId = proposal.proposalId || (await getProposalId(proposal))
+  }
 
   if (!proposalId) {
     throw new Error('GOV QUEUE > Missing proposal ID.')
@@ -46,7 +57,7 @@ async function main({ proposal, govAddress }) {
 
   // queue proposal
   if (state === 'Succeeded') {
-    const tx = await queueProposal({ proposal, govAddress })
+    const tx = await queueProposal({ proposal, govAddress, txId, proposalId })
     const receipt = await tx.wait()
     const { event, hash } = await getEvent(receipt, 'ProposalQueued')
     const { eta } = event.args

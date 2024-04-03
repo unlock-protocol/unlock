@@ -33,7 +33,7 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
     return service.lock(
       {
         where: {
-          id: lockAddress,
+          address: lockAddress,
         },
       },
       {
@@ -52,7 +52,9 @@ export const useReferrerFee = ({ lockAddress, network }: ReferrerFeeProps) => {
     async () => getLock()
   )
 
-  const data = referralFeesData?.referrerFees || []
+  const data = (referralFeesData?.referrerFees || []).filter(
+    (referralFeesData) => referralFeesData.fee > 0
+  )
 
   return {
     isLoading,

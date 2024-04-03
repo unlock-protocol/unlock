@@ -15,8 +15,12 @@ export const scroll: NetworkConfig = {
     },
   },
   featured: false,
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 534352,
   isTestNetwork: false,
+  maxFreeClaimCost: 100,
   multisig: '0x0feE9413A626a05a08AcB0E0e5D6A483e6A0a172',
   name: 'Scroll',
   nativeCurrency: {
@@ -32,8 +36,8 @@ export const scroll: NetworkConfig = {
   startBlock: 2937779,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/21867/unlock-protocol-scroll/version/latest',
-    studioEndpoint: 'unlock-protocol-scroll',
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-scroll/version/latest',
+    studioName: 'unlock-protocol-scroll',
   },
   tokens: [
     {
