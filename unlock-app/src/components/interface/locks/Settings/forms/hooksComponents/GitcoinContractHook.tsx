@@ -12,7 +12,7 @@ export const GitcoinContractHook = ({
   network,
   setEventsHooksMutation,
 }: CustomComponentProps) => {
-  const { isLoading: isLoadingSettings, data: settings } = useGetLockSettings({
+  const { data: settings } = useGetLockSettings({
     lockAddress,
     network,
   })
