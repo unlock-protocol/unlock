@@ -197,7 +197,6 @@ const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
 
 // pack multiple calls in a single multicall
 const parseSafeMulticall = async ({ calls, chainId, options }) => {
-  console.log(calls)
   const transactions = calls.map(
     ({ contractAddress, calldata = '0x', value = 0, operation = null }) => ({
       to: contractAddress,
@@ -217,12 +216,19 @@ const parseSafeMulticall = async ({ calls, chainId, options }) => {
   })
 
   // get multicall data from lib
-  const totalValue = calls.reduce((total, { value }) => value + total, 0n)
+  const totalValue = calls.reduce(
+    (total, { value }) => (value || 0n) + total,
+    0n
+  )
   const { data } = await safe.createTransaction({
     transactions,
     options,
     callsOnly: totalValue === 0,
   })
+
+  // parse calls correcly for our multisig/dao helpers
+  data.calldata = data.data
+  data.contractAddress = data.to
   return data
 }
 
