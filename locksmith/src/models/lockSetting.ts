@@ -94,7 +94,7 @@ LockSetting.init(
       type: DataTypes.INTEGER,
       allowNull: true,
       defaultValue: null,
-      },
+    },
     passwords: {
       type: DataTypes.ARRAY(DataTypes.STRING),
       allowNull: true,
