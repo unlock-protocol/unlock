@@ -5,7 +5,11 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
 
-async function main({ tokenIn = 'POINTS', defaultAmount = '1' } = {}) {
+async function main({
+  tokenIn = 'POINTS',
+  tokenOut,
+  defaultAmount = '1',
+} = {}) {
   const {
     nativeCurrency: { wrapped: wrappedNativeAddress },
     uniswapV3: { oracle: oracleAddress },
@@ -19,24 +23,34 @@ async function main({ tokenIn = 'POINTS', defaultAmount = '1' } = {}) {
   }
 
   // check wrapped
-  const wrapped = await getERC20Contract(wrappedNativeAddress)
-  const wrappedSymbol = await wrapped.symbol()
+  if (!tokenOut) {
+    const wrapped = await getERC20Contract(wrappedNativeAddress)
+    const wrappedSymbol = await wrapped.symbol()
+    tokenOut = { address: wrappedNativeAddress, symbol: wrappedSymbol }
+  } else {
+    tokenOut = tokens.find((token) => token.symbol === tokenOut)
+  }
+
   const token = tokens.find((token) => token.symbol === tokenIn)
 
   // check if token can be retrieved through Uniswap V3 oracle
   const oracle = await ethers.getContractAt(UniswapOracleV3.abi, oracleAddress)
   const amount = ethers.parseUnits(defaultAmount, token.decimals)
   console.log(
-    `Checking oracle for ${token.symbol}/${wrappedSymbol} (${defaultAmount})`
+    `Checking oracle for ${token.symbol}/${tokenOut.symbol} (${defaultAmount})`
   )
-  const rate = await oracle.consult(token.address, amount, wrappedNativeAddress)
+  const rate = await oracle.consult(token.address, amount, tokenOut.address)
   console.log(rate)
 }
 
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    // eslint-disable-next-line no-console
-    console.error(error)
-    process.exit(1)
-  })
+// execute as standalone
+if (require.main === module) {
+  main()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error(error)
+      process.exit(1)
+    })
+}
+
+module.exports = main
