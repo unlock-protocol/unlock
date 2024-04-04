@@ -90,7 +90,7 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   creditCardCurrency: 'usd',
   crossmintClientId: undefined,
   promoCodes: [],
-  requiredgitcoinPassportScore: undefined,
+  requiredGitcoinPassportScore: undefined,
   passwords: [],
 }
 
