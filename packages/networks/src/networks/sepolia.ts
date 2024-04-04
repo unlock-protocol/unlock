@@ -113,7 +113,8 @@ export const sepolia: NetworkConfig = {
     },
   ],
   uniswapV3: {
-    factoryAddress: '0xB7f907f7A9eBC822a80BD25E224be42Ce0A698A0',
+    factoryAddress: '0x0227628f3F023bb0B980b67D528571c95c6DaC1c',
+    oracle: '0x3A691355348DDC549515A7b538f3e85bCCdFe0B5',
     positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
     universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
   },
