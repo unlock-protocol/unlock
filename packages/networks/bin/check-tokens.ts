@@ -39,7 +39,7 @@ const run = async () => {
           const isSetInUnlock = await unlock.uniswapOracles(token.address)
           if (isSetInUnlock === ethers.ZeroAddress) {
             console.error(
-              `❌ Oracle for token ${name} (${symbol}) at ${token.address} on ${networkId} is not set correctly`
+              `❌ Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${networkId}) is not set correctly`
             )
           }
         } catch (error) {
