@@ -238,13 +238,11 @@ Powered by Unlock Protocol`}
 
         <div className="relative">
           <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
-            {coverImage && (
-              <img
-                className="object-cover w-full h-full"
-                src={coverImage}
-                alt="Cover image"
-              />
-            )}
+            <img
+              className="object-cover w-full h-full"
+              src={coverImage || event.image}
+              alt="Cover image"
+            />
           </div>
 
           <CoverImageDrawer
