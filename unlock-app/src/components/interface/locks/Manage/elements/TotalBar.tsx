@@ -9,7 +9,6 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { WithdrawFundModal } from './WithdrawFundModal'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
-import PriceFormatter from '~/utils/priceFormatter'
 
 interface TotalsProps {
   lockAddress: string

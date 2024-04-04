@@ -12,7 +12,9 @@ function PriceFormatter({ price, precision = 4 }: PriceFormatterProps) {
 
   const removeTrailingZeroes = (number: string): string => {
     for (let i = number.length - 1; i >= 0; i--) {
-      if (number.charAt(i) !== '0' && number.charAt(i) !== '.') {
+      if (number.charAt(i) === '.') {
+        return number.substring(0, i)
+      } else if (number.charAt(i) !== '0') {
         return number.substring(0, i + 1)
       }
     }
