@@ -121,9 +121,15 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     network,
   })
 
-  if (settings?.requiredGitcoinPassportScore === undefined) {
-    return response.status(401)
+  // ensure that requiredGitcoinPassportScore is defined
+  if (typeof settings?.requiredGitcoinPassportScore !== 'number') {
+    // if the check fails, respond with an appropriate error message
+    return response.status(401).json({
+      error: 'Required Gitcoin Passport score is not defined or invalid.',
+    })
   }
+
+  const requiredScore = settings.requiredGitcoinPassportScore
 
   try {
     // submit each recipient for scoring
@@ -169,10 +175,7 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     // generate signatures for recipients with valid scores
     const generatedSignatures = scoresResponse.map((recipient: any) => {
       // only sign recipients who have a score that meets the specified threshold in the lock settings
-      if (
-        recipient &&
-        recipient.score >= settings?.requiredGitcoinPassportScore
-      ) {
+      if (recipient && recipient.score >= requiredScore) {
         const message = recipient.toLowerCase()
         const messageHash = ethers.utils.solidityKeccak256(
           ['string'],
