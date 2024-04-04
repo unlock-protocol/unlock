@@ -8,7 +8,7 @@ const run = async () => {
     const provider = new ethers.JsonRpcProvider(network.provider)
     const unlock = new ethers.Contract(
       network.unlockAddress,
-      ['uniswapOracles(address)'],
+      ['function uniswapOracles(address) view returns (address)'],
       provider
     )
 
@@ -39,7 +39,7 @@ const run = async () => {
           const isSetInUnlock = await unlock.uniswapOracles(token.address)
           if (isSetInUnlock === ethers.ZeroAddress) {
             console.error(
-              `❌ Token ${name} (${symbol}) at ${token.address} on ${networkId} is not set correctly as Oracle"`
+              `❌ Oracle for token ${name} (${symbol}) at ${token.address} on ${networkId} is not set correctly`
             )
           }
         } catch (error) {
