@@ -58,6 +58,7 @@ require('./tasks/deploy')
 require('./tasks/set')
 require('./tasks/unlock')
 require('./tasks/lock')
+require('./tasks/uniswap')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
