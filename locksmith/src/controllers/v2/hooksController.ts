@@ -9,6 +9,7 @@ import {
   checkMultipleScores,
   submitAddressForScoring,
 } from '../../operations/gitcoinVerification'
+import logger from '../../logger'
 
 const guildHookQuery = z.object({
   network: z.preprocess((a) => parseInt(z.string().parse(a), 10), z.number()),
@@ -193,7 +194,7 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     })
   } catch (error) {
     // log and send errors if encountered
-    console.error('Error in Gitcoin score verification:', error)
+    logger.error('Error in Gitcoin score verification:', error)
     return response
       .status(500)
       .json({ error: 'Error verifying Gitcoin scores.' })
