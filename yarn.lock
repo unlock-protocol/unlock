@@ -17269,7 +17269,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@workspace:*, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -17567,7 +17567,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/networks@workspace:packages/networks"
   dependencies:
-    "@unlock-protocol/contracts": "workspace:*"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
     eslint: "npm:8.54.0"

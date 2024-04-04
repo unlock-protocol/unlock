@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { Unlock } from '@unlock-protocol/contracts'
 import networks from '../src'
 import ERC20 from '../utils/erc20.abi.json'
 
@@ -9,7 +8,7 @@ const run = async () => {
     const provider = new ethers.JsonRpcProvider(network.provider)
     const unlock = new ethers.Contract(
       network.unlockAddress,
-      Unlock.abi,
+      ['uniswapOracles(address)'],
       provider
     )
 
