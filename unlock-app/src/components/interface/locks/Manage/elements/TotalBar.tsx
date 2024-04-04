@@ -9,6 +9,7 @@ import { useLockManager } from '~/hooks/useLockManager'
 import { WithdrawFundModal } from './WithdrawFundModal'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
+import PriceFormatter from '~/utils/priceFormatter'
 
 interface TotalsProps {
   lockAddress: string
@@ -97,7 +98,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
             >
               <div className="flex items-center gap-2">
                 <CryptoIcon symbol={symbol} size={36} />
-                <span>{formattedBalance}</span>
+                <span className="overflow-hidden">{formattedBalance}</span>
                 {isManager && (
                   <Button
                     variant="outlined-primary"

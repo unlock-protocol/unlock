@@ -16,6 +16,7 @@ import Link from 'next/link'
 import { storage } from '~/config/storage'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockManager } from '~/hooks/useLockManager'
+import PriceFormatter from '~/utils/priceFormatter'
 interface LockDetailCardProps {
   network: number
   lockAddress: string
@@ -157,8 +158,7 @@ export const LockDetailCard = ({
   const loading = isLoading || isLoadingStripe
 
   const symbol = lock?.currencySymbol || nativeCurrency?.symbol
-  const priceLabel =
-    keyPrice == 0 ? 'FREE' : Number(parseFloat(keyPrice)).toLocaleString()
+  const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice?.toString()
 
   const { data: lockMetadata, isInitialLoading: isLockMetadataLoading } =
     useQuery<Record<string, any>>(
@@ -244,7 +244,9 @@ export const LockDetailCard = ({
               <Detail label="Price" loading={loading} inline>
                 <div className="flex items-center gap-2">
                   <CryptoIcon symbol={symbol} />
-                  <span>{priceLabel}</span>
+                  <span>
+                    <PriceFormatter price={priceLabel} precision={4} />
+                  </span>
                 </div>
               </Detail>
             </div>
