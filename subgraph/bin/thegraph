@@ -157,9 +157,9 @@ require('yargs/yargs')(hideBin(process.argv))
       )
 
       // build and deploy each network
-      for (const network of choices) {
+      for (const { network, studioName } of choices) {
         await build(network)
-        await deploy(network, label)
+        await deploy(network, studioName, label)
       }
 
       console.log('Subgraph deployments done.')
