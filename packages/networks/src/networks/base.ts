@@ -125,6 +125,9 @@ export const base: NetworkConfig = {
     universalRouterAddress: '0x198EF79F1F515F02dFE9e3115eD9fC07183f02fC',
   },
   unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
+  unlockDaoToken: {
+    address: '0xE68858e8fe7b491B13d1aefccBBC7367D1f1848e',
+  },
   url: 'https://base.org/',
 }
 
