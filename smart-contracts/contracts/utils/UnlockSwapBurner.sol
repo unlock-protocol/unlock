@@ -137,7 +137,7 @@ contract UnlockSwapBurner {
       tokenAddress == wrappedAddress
         ? defaultPath
         : abi.encodePacked(tokenAddress, poolFee, defaultPath), // path
-      true // funds are coming from PERMIT2
+      true // funds are not coming from PERMIT2
     );
 
     // Executes the swap.
@@ -153,7 +153,7 @@ contract UnlockSwapBurner {
       revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
     }
 
-    // burn the newly recevied UDT
+    // burn the newly received UDT
     bool success = IERC20(udtAddress).transfer(burnAddress, amountUDTOut);
     if (success == false) {
       revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
