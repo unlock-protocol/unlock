@@ -42,6 +42,7 @@ export const zksync: NetworkConfig = {
     endpoint:
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-zksync/version/latest',
     networkName: 'zksync-era',
+    studioName: 'unlock-protocol-zksync',
   },
   tokens: [
     {
