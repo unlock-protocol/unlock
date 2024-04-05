@@ -7,14 +7,11 @@ indexes and allows easier querying from the EVM blockchains using [The Graph](ht
 # create correct ABIs and config files
 yarn prepare
 
-# build Web Assembly binaries
-yarn build <network-name>
-"introspect": "bash -c 'if test \"$CI\" != \"true\" ; then node bin/introspect.js; fi'",
-
 # generate graph code from source
 yarn codegen
 
-
+# build Web Assembly binaries
+yarn build <network-name>
 ```
 
 ### Config
