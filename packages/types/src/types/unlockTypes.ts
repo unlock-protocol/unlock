@@ -110,6 +110,7 @@ export interface NetworkConfig {
     quoterAddress: string
     oracle: string
     universalRouterAddress: string
+    swapRouter02: string
     positionManager: string
   }>
   swapPurchaser?: string

@@ -116,6 +116,7 @@ export const sepolia: NetworkConfig = {
     factoryAddress: '0x0227628f3F023bb0B980b67D528571c95c6DaC1c',
     oracle: '0x3A691355348DDC549515A7b538f3e85bCCdFe0B5',
     positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
+    swapRouter02: '0x3bFA4769FB09eefC5a80d6E87c3B9C650f7Ae48E',
     universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
   },
   unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
