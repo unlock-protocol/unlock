@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "../interfaces/IUniversalRouter.sol";
 import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "../interfaces/IMintableERC20.sol";
 import "../interfaces/IPermit2.sol";
@@ -28,17 +28,24 @@ contract UnlockSwapBurner {
 
   // required by Uniswap Universal Router
   address public permit2;
-  address public uniswapRouter;
+  address public uniswapUniversalRouter;
 
   // dead address to burn
   address public constant burnAddress =
     0x000000000000000000000000000000000000dEaD;
 
+  // specified in https://docs.uniswap.org/contracts/universal-router/technical-reference#v3_swap_exact_in
+  uint256 constant V3_SWAP_EXACT_IN = 0x00;
+
   // events
   event SwapBurn(address tokenAddress, uint amountSpent, uint amountBurnt);
 
   // errors
-  error UDTSwapFailed(address uniswapRouter, address tokenIn, uint amount);
+  error UDTSwapFailed(
+    address uniswapUniversalRouter,
+    address tokenIn,
+    uint amount
+  );
   error UnauthorizedSwap();
 
   /**
@@ -49,11 +56,11 @@ contract UnlockSwapBurner {
   constructor(
     address _unlockAddress,
     address _permit2Address,
-    address _uniswapRouter
+    address _uniswapUniversalRouter
   ) {
     unlockAddress = _unlockAddress;
     permit2 = _permit2Address;
-    uniswapRouter = _uniswapRouter;
+    uniswapUniversalRouter = _uniswapUniversalRouter;
   }
 
   /**
@@ -80,6 +87,7 @@ contract UnlockSwapBurner {
 
     // get total balance of token to swap
     uint tokenAmount = getBalance(tokenAddress);
+    uint udtBefore = getBalance(udtAddress);
 
     if (tokenAddress == udtAddress) {
       revert UnauthorizedSwap();
@@ -95,7 +103,11 @@ contract UnlockSwapBurner {
     // approve ERC20 spending
     if (tokenAddress != address(0)) {
       // Approve the router to spend src ERC20
-      TransferHelper.safeApprove(tokenAddress, uniswapRouter, tokenAmount);
+      TransferHelper.safeApprove(
+        tokenAddress,
+        uniswapUniversalRouter,
+        tokenAmount
+      );
 
       // approve PERMIT2 to manipulate the token
       IERC20(tokenAddress).approve(permit2, tokenAmount);
@@ -104,7 +116,7 @@ contract UnlockSwapBurner {
     // issue PERMIT2 Allowance
     IPermit2(permit2).approve(
       tokenAddress,
-      uniswapRouter,
+      uniswapUniversalRouter,
       tokenAmount.toUint160(),
       uint48(block.timestamp + 60) // expires after 1min
     );
@@ -115,27 +127,36 @@ contract UnlockSwapBurner {
       udtAddress
     );
 
-    // executes the swap token > WETH > UDT
-    ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
-      path: tokenAddress == wrappedAddress
+    // encode parameters for the swap om UniversalRouter
+    bytes memory commands = abi.encodePacked(bytes1(uint8(V3_SWAP_EXACT_IN)));
+    bytes[] memory inputs = new bytes[](1);
+    inputs[0] = abi.encode(
+      address(this), // recipient
+      tokenAmount, // amountIn
+      0, // amountOutMinimum
+      tokenAddress == wrappedAddress
         ? defaultPath
-        : abi.encodePacked(tokenAddress, poolFee, defaultPath),
-      recipient: address(this),
-      deadline: block.timestamp + 60, // expires after 1min
-      amountIn: tokenAmount,
-      amountOutMinimum: 0
-    });
+        : abi.encodePacked(tokenAddress, poolFee, defaultPath), // path
+      true // funds are coming from PERMIT2
+    );
 
     // Executes the swap.
-    uint amountUDTOut = ISwapRouter(uniswapRouter).exactInput(params);
+    IUniversalRouter(uniswapUniversalRouter).execute(
+      commands,
+      inputs,
+      block.timestamp + 60 // expires after 1min
+    );
+
+    // calculate how much UDT has been received
+    uint amountUDTOut = getBalance(udtAddress) - udtBefore;
     if (amountUDTOut == 0) {
-      revert UDTSwapFailed(uniswapRouter, tokenAddress, tokenAmount);
+      revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
     }
 
-    // burn the UDT
+    // burn the newly recevied UDT
     bool success = IERC20(udtAddress).transfer(burnAddress, amountUDTOut);
     if (success == false) {
-      revert UDTSwapFailed(uniswapRouter, tokenAddress, tokenAmount);
+      revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
     } else {
       emit SwapBurn(tokenAddress, tokenAmount, amountUDTOut);
     }
