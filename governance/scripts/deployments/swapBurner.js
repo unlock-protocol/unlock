@@ -11,18 +11,21 @@ async function main() {
   const {
     unlockAddress,
     id: chainId,
-    uniswapV3: { swapRouter02: swapRouter02 },
+    uniswapV3: { universalRouterAddress: routerAddress },
   } = await getNetwork()
 
-  console.log(`Deploying UnlockSwapBurner on ${chainId}
+  console.log(`Deploying UnlockSwapBurner to ${chainId}
   - unlockAddress: ${unlockAddress}
   - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
-  - swapRouter02: ${swapRouter02}`)
+  - routerAddress: ${routerAddress}`)
 
-  if (!swapRouter02) {
+  if (!routerAddress) {
     throw Error('Uniswap undefined for this network')
   }
 
+  console.log(
+    `Deploying UnlockSwapBurner on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routerAddress: ${routerAddress.toString()}) `
+  )
   const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
     { contractName: 'UnlockSwapBurner', subfolder: 'utils' },
   ])
@@ -30,7 +33,7 @@ async function main() {
   console.log(` waiting for tx to be mined for contract verification...`)
   const { address: swapperAddress } = await deployContract(
     qualifiedPath,
-    [unlockAddress, PERMIT2_ADDRESS, swapRouter02],
+    [unlockAddress, PERMIT2_ADDRESS, routerAddress],
     { wait: 5 }
   )
 
