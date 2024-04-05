@@ -77,6 +77,15 @@ const config = {
     exportsBucket: 'uploads',
   },
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
+  /* To utilize the Gitcoin Passport API, you need the GITCOIN_API_KEY and GITCOIN_SCORER_ID, essential for authentication and scoring customization.
+  
+  While setting these up in the Gitcoin passport dashboard, select the "Bot Prevention" use case for creating a scorer.
+  
+  This setup ensures secure, application-specific API access. For comprehensive setup instructions, see the Gitcoin Passport API documentation:
+  https://docs.passport.gitcoin.co/building-with-passport/passport-api/getting-access
+  */
+  gitcoinApiKey: process.env.GITCOIN_API_KEY,
+  gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
