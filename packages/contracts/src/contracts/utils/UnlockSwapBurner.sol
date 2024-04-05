@@ -1,108 +1,92 @@
-// Sources flattened with hardhat v2.18.3 https://hardhat.org
+// Sources flattened with hardhat v2.20.1 https://hardhat.org
 
-// SPDX-License-Identifier: GPL-2.0-or-later AND MIT
+// SPDX-License-Identifier: GPL-2.0-or-later AND GPL-3.0-or-later AND MIT
 
-pragma abicoder v2;
+// File @openzeppelin/contracts/utils/introspection/IERC165.sol@v4.9.5
 
-// File @uniswap/v3-core/contracts/interfaces/callback/IUniswapV3SwapCallback.sol@v1.0.1
+// Original license: SPDX_License_Identifier: MIT
+// OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
-// Original license: SPDX_License_Identifier: GPL-2.0-or-later
-pragma solidity >=0.5.0;
+pragma solidity ^0.8.0;
 
-/// @title Callback for IUniswapV3PoolActions#swap
-/// @notice Any contract that calls IUniswapV3PoolActions#swap must implement this interface
-interface IUniswapV3SwapCallback {
-  /// @notice Called to `msg.sender` after executing a swap via IUniswapV3Pool#swap.
-  /// @dev In the implementation you must pay the pool tokens owed for the swap.
-  /// The caller of this method must be checked to be a UniswapV3Pool deployed by the canonical UniswapV3Factory.
-  /// amount0Delta and amount1Delta can both be 0 if no tokens were swapped.
-  /// @param amount0Delta The amount of token0 that was sent (negative) or must be received (positive) by the pool by
-  /// the end of the swap. If positive, the callback must send that amount of token0 to the pool.
-  /// @param amount1Delta The amount of token1 that was sent (negative) or must be received (positive) by the pool by
-  /// the end of the swap. If positive, the callback must send that amount of token1 to the pool.
-  /// @param data Any data passed through by the caller via the IUniswapV3PoolActions#swap call
-  function uniswapV3SwapCallback(
-    int256 amount0Delta,
-    int256 amount1Delta,
-    bytes calldata data
-  ) external;
+/**
+ * @dev Interface of the ERC165 standard, as defined in the
+ * https://eips.ethereum.org/EIPS/eip-165[EIP].
+ *
+ * Implementers can declare support of contract interfaces, which can then be
+ * queried by others ({ERC165Checker}).
+ *
+ * For an implementation, see {ERC165}.
+ */
+interface IERC165 {
+  /**
+   * @dev Returns true if this contract implements the interface defined by
+   * `interfaceId`. See the corresponding
+   * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]
+   * to learn more about how these ids are created.
+   *
+   * This function call must use less than 30 000 gas.
+   */
+  function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
 
-// File @uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol@v1.4.4
+// File @openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol@v4.9.5
 
-// Original license: SPDX_License_Identifier: GPL-2.0-or-later
-pragma solidity >=0.7.5;
+// Original license: SPDX_License_Identifier: MIT
+// OpenZeppelin Contracts (last updated v4.5.0) (token/ERC1155/IERC1155Receiver.sol)
 
-// Original pragma directive: pragma abicoder v2
+pragma solidity ^0.8.0;
 
-/// @title Router token swapping functionality
-/// @notice Functions for swapping tokens via Uniswap V3
-interface ISwapRouter is IUniswapV3SwapCallback {
-  struct ExactInputSingleParams {
-    address tokenIn;
-    address tokenOut;
-    uint24 fee;
-    address recipient;
-    uint256 deadline;
-    uint256 amountIn;
-    uint256 amountOutMinimum;
-    uint160 sqrtPriceLimitX96;
-  }
+/**
+ * @dev _Available since v3.1._
+ */
+interface IERC1155Receiver is IERC165 {
+  /**
+   * @dev Handles the receipt of a single ERC1155 token type. This function is
+   * called at the end of a `safeTransferFrom` after the balance has been updated.
+   *
+   * NOTE: To accept the transfer, this must return
+   * `bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"))`
+   * (i.e. 0xf23a6e61, or its own function selector).
+   *
+   * @param operator The address which initiated the transfer (i.e. msg.sender)
+   * @param from The address which previously owned the token
+   * @param id The ID of the token being transferred
+   * @param value The amount of tokens being transferred
+   * @param data Additional data with no specified format
+   * @return `bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"))` if transfer is allowed
+   */
+  function onERC1155Received(
+    address operator,
+    address from,
+    uint256 id,
+    uint256 value,
+    bytes calldata data
+  ) external returns (bytes4);
 
-  /// @notice Swaps `amountIn` of one token for as much as possible of another token
-  /// @param params The parameters necessary for the swap, encoded as `ExactInputSingleParams` in calldata
-  /// @return amountOut The amount of the received token
-  function exactInputSingle(
-    ExactInputSingleParams calldata params
-  ) external payable returns (uint256 amountOut);
-
-  struct ExactInputParams {
-    bytes path;
-    address recipient;
-    uint256 deadline;
-    uint256 amountIn;
-    uint256 amountOutMinimum;
-  }
-
-  /// @notice Swaps `amountIn` of one token for as much as possible of another along the specified path
-  /// @param params The parameters necessary for the multi-hop swap, encoded as `ExactInputParams` in calldata
-  /// @return amountOut The amount of the received token
-  function exactInput(
-    ExactInputParams calldata params
-  ) external payable returns (uint256 amountOut);
-
-  struct ExactOutputSingleParams {
-    address tokenIn;
-    address tokenOut;
-    uint24 fee;
-    address recipient;
-    uint256 deadline;
-    uint256 amountOut;
-    uint256 amountInMaximum;
-    uint160 sqrtPriceLimitX96;
-  }
-
-  /// @notice Swaps as little as possible of one token for `amountOut` of another token
-  /// @param params The parameters necessary for the swap, encoded as `ExactOutputSingleParams` in calldata
-  /// @return amountIn The amount of the input token
-  function exactOutputSingle(
-    ExactOutputSingleParams calldata params
-  ) external payable returns (uint256 amountIn);
-
-  struct ExactOutputParams {
-    bytes path;
-    address recipient;
-    uint256 deadline;
-    uint256 amountOut;
-    uint256 amountInMaximum;
-  }
-
-  /// @notice Swaps as little as possible of one token for `amountOut` of another along the specified path (reversed)
-  /// @param params The parameters necessary for the multi-hop swap, encoded as `ExactOutputParams` in calldata
-  /// @return amountIn The amount of the input token
-  function exactOutput(
-    ExactOutputParams calldata params
-  ) external payable returns (uint256 amountIn);
+  /**
+   * @dev Handles the receipt of a multiple ERC1155 token types. This function
+   * is called at the end of a `safeBatchTransferFrom` after the balances have
+   * been updated.
+   *
+   * NOTE: To accept the transfer(s), this must return
+   * `bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"))`
+   * (i.e. 0xbc197c81, or its own function selector).
+   *
+   * @param operator The address which initiated the batch transfer (i.e. msg.sender)
+   * @param from The address which previously owned the token
+   * @param ids An array containing ids of each token being transferred (order and length must match values array)
+   * @param values An array containing amounts of each token being transferred (order and length must match ids array)
+   * @param data Additional data with no specified format
+   * @return `bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"))` if transfer is allowed
+   */
+  function onERC1155BatchReceived(
+    address operator,
+    address from,
+    uint256[] calldata ids,
+    uint256[] calldata values,
+    bytes calldata data
+  ) external returns (bytes4);
 }
 
 // File @openzeppelin/contracts/token/ERC20/IERC20.sol@v4.9.5
@@ -249,6 +233,73 @@ library TransferHelper {
     (bool success, ) = to.call{value: value}(new bytes(0));
     require(success, "STE");
   }
+}
+
+// File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v4.9.5
+
+// Original license: SPDX_License_Identifier: MIT
+// OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
+
+pragma solidity ^0.8.0;
+
+/**
+ * @title ERC721 token receiver interface
+ * @dev Interface for any contract that wants to support safeTransfers
+ * from ERC721 asset contracts.
+ */
+interface IERC721Receiver {
+  /**
+   * @dev Whenever an {IERC721} `tokenId` token is transferred to this contract via {IERC721-safeTransferFrom}
+   * by `operator` from `from`, this function is called.
+   *
+   * It must return its Solidity selector to confirm the token transfer.
+   * If any other value is returned or the interface is not implemented by the recipient, the transfer will be reverted.
+   *
+   * The selector can be obtained in Solidity with `IERC721Receiver.onERC721Received.selector`.
+   */
+  function onERC721Received(
+    address operator,
+    address from,
+    uint256 tokenId,
+    bytes calldata data
+  ) external returns (bytes4);
+}
+
+// File contracts/interfaces/IUniversalRouter.sol
+
+// Original license: SPDX_License_Identifier: GPL-3.0-or-later
+pragma solidity ^0.8.17;
+
+interface IUniversalRouter is IERC721Receiver, IERC1155Receiver {
+  /// @notice Thrown when a required command has failed
+  error ExecutionFailed(uint256 commandIndex, bytes message);
+
+  /// @notice Thrown when attempting to send ETH directly to the contract
+  error ETHNotAccepted();
+
+  /// @notice Thrown when executing commands with an expired deadline
+  error TransactionDeadlinePassed();
+
+  /// @notice Thrown when attempting to execute commands and an incorrect number of inputs are provided
+  error LengthMismatch();
+
+  /// @notice Executes encoded commands along with provided inputs.
+  /// @param commands A set of concatenated commands, each 1 byte in length
+  /// @param inputs An array of byte strings containing abi encoded inputs for each command
+  function execute(
+    bytes calldata commands,
+    bytes[] calldata inputs
+  ) external payable;
+
+  /// @notice Executes encoded commands along with provided inputs. Reverts if deadline has expired.
+  /// @param commands A set of concatenated commands, each 1 byte in length
+  /// @param inputs An array of byte strings containing abi encoded inputs for each command
+  /// @param deadline The deadline by which the transaction must be executed
+  function execute(
+    bytes calldata commands,
+    bytes[] calldata inputs,
+    uint256 deadline
+  ) external payable;
 }
 
 // File contracts/interfaces/IMintableERC20.sol
@@ -673,17 +724,24 @@ contract UnlockSwapBurner {
 
   // required by Uniswap Universal Router
   address public permit2;
-  address public uniswapRouter;
+  address public uniswapUniversalRouter;
 
   // dead address to burn
   address public constant burnAddress =
     0x000000000000000000000000000000000000dEaD;
 
+  // specified in https://docs.uniswap.org/contracts/universal-router/technical-reference#v3_swap_exact_in
+  uint256 constant V3_SWAP_EXACT_IN = 0x00;
+
   // events
   event SwapBurn(address tokenAddress, uint amountSpent, uint amountBurnt);
 
   // errors
-  error UDTSwapFailed(address uniswapRouter, address tokenIn, uint amount);
+  error UDTSwapFailed(
+    address uniswapUniversalRouter,
+    address tokenIn,
+    uint amount
+  );
   error UnauthorizedSwap();
 
   /**
@@ -694,11 +752,11 @@ contract UnlockSwapBurner {
   constructor(
     address _unlockAddress,
     address _permit2Address,
-    address _uniswapRouter
+    address _uniswapUniversalRouter
   ) {
     unlockAddress = _unlockAddress;
     permit2 = _permit2Address;
-    uniswapRouter = _uniswapRouter;
+    uniswapUniversalRouter = _uniswapUniversalRouter;
   }
 
   /**
@@ -725,6 +783,7 @@ contract UnlockSwapBurner {
 
     // get total balance of token to swap
     uint tokenAmount = getBalance(tokenAddress);
+    uint udtBefore = getBalance(udtAddress);
 
     if (tokenAddress == udtAddress) {
       revert UnauthorizedSwap();
@@ -740,7 +799,11 @@ contract UnlockSwapBurner {
     // approve ERC20 spending
     if (tokenAddress != address(0)) {
       // Approve the router to spend src ERC20
-      TransferHelper.safeApprove(tokenAddress, uniswapRouter, tokenAmount);
+      TransferHelper.safeApprove(
+        tokenAddress,
+        uniswapUniversalRouter,
+        tokenAmount
+      );
 
       // approve PERMIT2 to manipulate the token
       IERC20(tokenAddress).approve(permit2, tokenAmount);
@@ -749,7 +812,7 @@ contract UnlockSwapBurner {
     // issue PERMIT2 Allowance
     IPermit2(permit2).approve(
       tokenAddress,
-      uniswapRouter,
+      uniswapUniversalRouter,
       tokenAmount.toUint160(),
       uint48(block.timestamp + 60) // expires after 1min
     );
@@ -760,27 +823,36 @@ contract UnlockSwapBurner {
       udtAddress
     );
 
-    // executes the swap token > WETH > UDT
-    ISwapRouter.ExactInputParams memory params = ISwapRouter.ExactInputParams({
-      path: tokenAddress == wrappedAddress
+    // encode parameters for the swap om UniversalRouter
+    bytes memory commands = abi.encodePacked(bytes1(uint8(V3_SWAP_EXACT_IN)));
+    bytes[] memory inputs = new bytes[](1);
+    inputs[0] = abi.encode(
+      address(this), // recipient
+      tokenAmount, // amountIn
+      0, // amountOutMinimum
+      tokenAddress == wrappedAddress
         ? defaultPath
-        : abi.encodePacked(tokenAddress, poolFee, defaultPath),
-      recipient: address(this),
-      deadline: block.timestamp + 60, // expires after 1min
-      amountIn: tokenAmount,
-      amountOutMinimum: 0
-    });
+        : abi.encodePacked(tokenAddress, poolFee, defaultPath), // path
+      true // funds are coming from PERMIT2
+    );
 
     // Executes the swap.
-    uint amountUDTOut = ISwapRouter(uniswapRouter).exactInput(params);
+    IUniversalRouter(uniswapUniversalRouter).execute(
+      commands,
+      inputs,
+      block.timestamp + 60 // expires after 1min
+    );
+
+    // calculate how much UDT has been received
+    uint amountUDTOut = getBalance(udtAddress) - udtBefore;
     if (amountUDTOut == 0) {
-      revert UDTSwapFailed(uniswapRouter, tokenAddress, tokenAmount);
+      revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
     }
 
-    // burn the UDT
+    // burn the newly recevied UDT
     bool success = IERC20(udtAddress).transfer(burnAddress, amountUDTOut);
     if (success == false) {
-      revert UDTSwapFailed(uniswapRouter, tokenAddress, tokenAmount);
+      revert UDTSwapFailed(uniswapUniversalRouter, tokenAddress, tokenAmount);
     } else {
       emit SwapBurn(tokenAddress, tokenAmount, amountUDTOut);
     }
