@@ -1,7 +1,9 @@
 const { ethers } = require('hardhat')
 const {
   getNetwork,
+  getUnlock,
   getERC20Contract,
+  ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
 const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
 
@@ -17,20 +19,14 @@ async function main({
     tokens,
   } = network
 
-  if (!oracleAddress) {
-    ;({
-      uniswapV3: { oracle: oracleAddress },
-    } = network)
-  }
-  if (!oracleAddress) {
-    throw new Error(
-      'No address for oracle in the networks package, please add one.'
-    )
-  }
-
   // check wrapped
   let tokenTo
   if (!tokenOut) {
+    if (!wrappedNativeAddress) {
+      throw new Error(
+        `Wrapped native is not defined in the networks package, please add.`
+      )
+    }
     const wrapped = await getERC20Contract(wrappedNativeAddress)
     const wrappedSymbol = await wrapped.symbol()
     tokenTo = { address: wrappedNativeAddress, symbol: wrappedSymbol }
@@ -59,6 +55,34 @@ async function main({
   }
 
   const pair = `${tokenFrom.symbol}/${tokenTo.symbol}`
+
+  // check from unlock directly
+  if (!oracleAddress) {
+    const unlock = await getUnlock(network.unlockAddress)
+    oracleAddress = await unlock.uniswapOracles(tokenFrom.address)
+    if (oracleAddress === ADDRESS_ZERO) {
+      const {
+        uniswapV3: { oracle: oracleAddressFromPackage },
+      } = network
+      if (!oracleAddress) {
+        if (!oracleAddressFromPackage) {
+          throw new Error(
+            'No address for oracle in the networks package, please add one.'
+          )
+        }
+        oracleAddress = oracleAddressFromPackage
+      }
+      throw new Error(
+        `
+        No oracle address for this token is set in Unlock.
+        You can try with setOracle(${tokenFrom.address},<oracle address>)
+        The oracle address in the networks package is: ${oracleAddressFromPackage}
+        please check to see if values for the tokens can be fetched.
+        `
+      )
+    }
+  }
+
   // check if token can be retrieved through Uniswap V3 oracle
   const oracle = await ethers.getContractAt(UniswapOracleV3.abi, oracleAddress)
   console.log(`Checking oracle ${oracleAddress} for ${pair} (${amount})`)
@@ -91,7 +115,7 @@ async function main({
       `Current rate (~last hour) : ${ethers.formatUnits(
         rate,
         tokenTo.decimals
-      )} ${tokenTo.symbol} for ${amount} ${tokenIn.symbol}`
+      )} ${tokenTo.symbol} for ${amount} ${tokenFrom.symbol}`
     )
   }
 }
