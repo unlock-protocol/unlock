@@ -17834,6 +17834,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
+    remove-markdown: "npm:0.5.0"
     siwe: "npm:2.1.4"
     tailwind-merge: "npm:2.2.2"
     tailwindcss: "npm:3.3.5"
@@ -44180,6 +44181,13 @@ __metadata:
   version: 1.0.8
   resolution: "remedial@npm:1.0.8"
   checksum: 10/41e23a7d656fd696678e4f648e57ece5c9e13c097094e8ac6e173990a0665a24d8e50cbb39d458af3b0d58cfbd7811fc0840c4646d10ce3285fe5819b1c82375
+  languageName: node
+  linkType: hard
+
+"remove-markdown@npm:0.5.0":
+  version: 0.5.0
+  resolution: "remove-markdown@npm:0.5.0"
+  checksum: 10/c7ad6f32511afcb90ef205680be08eb8cbd9bb380e934516d35001229bd9b062d8fed72c5456c9455955a08914c4fcbbae9d9841c45cecf75a7f057427b9d5a0
   languageName: node
   linkType: hard
 

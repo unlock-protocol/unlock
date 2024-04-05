@@ -12,10 +12,34 @@ export const Description = ({
   previousFrame: any
   state: any
 }) => {
+  const removeMd = require('remove-markdown')
+
+  function truncateString(text: string, maxLength: number): string {
+    if (text.length <= maxLength) {
+      return text
+    }
+
+    const shortenedString = text.substring(0, maxLength)
+    const lastSpaceIndex = shortenedString.lastIndexOf(' ')
+
+    if (lastSpaceIndex !== -1) {
+      return shortenedString.substring(0, lastSpaceIndex) + '...'
+    } else {
+      return shortenedString + '...'
+    }
+  }
+
   return (
     <Container slug={event.slug} previousFrame={previousFrame} state={state}>
       <FrameImage>
-        <p tw="px-4">{event.data.description}</p>
+        <div tw="flex bg-[#F5F5F5] h-full">
+          <p tw="px-8 h-full w-full">
+            {truncateString(
+              removeMd(event.data.description, { useImgAltText: false }),
+              650
+            )}
+          </p>
+        </div>
       </FrameImage>
       <FrameButton
         action="link"
