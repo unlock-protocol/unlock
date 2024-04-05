@@ -5,13 +5,23 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
 
-async function main({ tokenIn = 'POINTS', tokenOut, amount = '1' } = {}) {
+async function main({
+  tokenIn = 'UDT',
+  tokenOut,
+  amount = '1',
+  oracleAddress,
+} = {}) {
+  const network = await getNetwork()
   const {
     nativeCurrency: { wrapped: wrappedNativeAddress },
-    uniswapV3: { oracle: oracleAddress },
     tokens,
-  } = await getNetwork()
+  } = network
 
+  if (!oracleAddress) {
+    ;({
+      uniswapV3: { oracle: oracleAddress },
+    } = network)
+  }
   if (!oracleAddress) {
     throw new Error(
       'No address for oracle in the networks package, please add one.'
@@ -33,23 +43,49 @@ async function main({ tokenIn = 'POINTS', tokenOut, amount = '1' } = {}) {
     }
   }
 
-  const tokenFrom = tokens.find((token) => token.symbol === tokenIn)
+  let tokenFrom
+  // get UDT address from package
+  if (tokenIn === 'UDT') {
+    const {
+      unlockDaoToken: { address: udtAddress },
+    } = network
+    tokenFrom = { address: udtAddress, symbol: 'UDT' }
+  } else {
+    tokenFrom = tokens.find((token) => token.symbol === tokenIn)
+  }
+
   if (!tokenFrom) {
     throw new Error(`Token ${tokenIn} is not defined in the networks package.`)
   }
 
+  const pair = `${tokenFrom.symbol}/${tokenTo.symbol}`
   // check if token can be retrieved through Uniswap V3 oracle
   const oracle = await ethers.getContractAt(UniswapOracleV3.abi, oracleAddress)
-  console.log(
-    `Checking oracle for ${tokenFrom.symbol}/${tokenTo.symbol} (${amount})`
-  )
+  console.log(`Checking oracle ${oracleAddress} for ${pair} (${amount})`)
   const rate = await oracle.consult(
     tokenFrom.address,
     ethers.parseUnits(amount, tokenFrom.decimals),
     tokenTo.address
   )
   if (rate === 0n) {
-    console.log(`Uniswap V3 pool not found`)
+    console.log(
+      `Uniswap values are null using:
+      - tokenA: ${tokenFrom.address} (${tokenFrom.symbol})
+      - tokenB: ${tokenTo.address} (${tokenTo.symbol})
+      - uniswapFactory: ${await oracle.factory()}`
+    )
+
+    const factory = await ethers.getContractAt(
+      ['function getPool(address,address,uint24) view returns (address)'],
+      await oracle.factory()
+    )
+
+    const poolAddress = await factory.getPool(
+      tokenFrom.address,
+      tokenTo.address,
+      500
+    )
+    console.log(`Uniswap pool: ${poolAddress}`)
   } else {
     console.log(
       `Current rate (~last hour) : ${ethers.formatUnits(
