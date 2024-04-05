@@ -10,18 +10,18 @@ async function main() {
   const {
     unlockAddress,
     id: chainId,
-    uniswapV3: { swapRouter },
+    uniswapV3: { universalRouterAddress },
   } = await getNetwork()
 
-  const routers = [swapRouter]
+  const routers = [universalRouterAddress]
 
   console.log(`Deploying SwapPurchaser to ${chainId}
   - unlockAddress: ${unlockAddress}
   - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
   - routers: ${routers}`)
 
-  if (!swapRouter) {
-    console.log('`swapRouter` undefined for this network')
+  if (!universalRouterAddress) {
+    console.log('`universalRouterAddress` undefined for this network')
     return
   }
 
