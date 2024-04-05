@@ -5797,10 +5797,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eth-optimism/contracts-bedrock@npm:0.17.1":
-  version: 0.17.1
-  resolution: "@eth-optimism/contracts-bedrock@npm:0.17.1"
-  checksum: 10/341e19a32ed451209c7111dc0dbf7e8715d8e5b536f0e7e8e879a7f2ccdf0d3fbdc76abebe20484c0bc86f3cc8eda53c362a7b8c8b10b4bbabf8415fd4520234
+"@eth-optimism/contracts-bedrock@npm:0.17.2":
+  version: 0.17.2
+  resolution: "@eth-optimism/contracts-bedrock@npm:0.17.2"
+  checksum: 10/7c577e1fb111b29b93701f6bd152dd6f6ba45b8bd5f08e60d31a12d78dfb1946c3e590811c5e6282978ed23a31a8839bd3903b918f433d3c328501fc1627d9fb
   languageName: node
   linkType: hard
 
@@ -5841,9 +5841,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eth-optimism/core-utils@npm:0.13.1":
-  version: 0.13.1
-  resolution: "@eth-optimism/core-utils@npm:0.13.1"
+"@eth-optimism/core-utils@npm:0.13.2":
+  version: 0.13.2
+  resolution: "@eth-optimism/core-utils@npm:0.13.2"
   dependencies:
     "@ethersproject/abi": "npm:^5.7.0"
     "@ethersproject/abstract-provider": "npm:^5.7.0"
@@ -5856,27 +5856,27 @@ __metadata:
     "@ethersproject/properties": "npm:^5.7.0"
     "@ethersproject/rlp": "npm:^5.7.0"
     "@ethersproject/web": "npm:^5.7.1"
-    chai: "npm:^4.3.9"
+    chai: "npm:^4.3.10"
     ethers: "npm:^5.7.2"
     node-fetch: "npm:^2.6.7"
-  checksum: 10/7d9a3b94d05c3becce24562003032d6d2ddc4396e6420152ee3ad287a614ca513c53d43ecaeba5e238abb8bd85c352a42854a0f949df19cfb0219fc441e2da09
+  checksum: 10/035287fc13fc94090e66a8833e3994fa669d46ac0009102114e3d27634b7303887614dc8a2093378c98bcd8bcd9668a59acd26ecc64d06f0709e0692bc380d35
   languageName: node
   linkType: hard
 
-"@eth-optimism/sdk@npm:3.2.3":
-  version: 3.2.3
-  resolution: "@eth-optimism/sdk@npm:3.2.3"
+"@eth-optimism/sdk@npm:3.3.0":
+  version: 3.3.0
+  resolution: "@eth-optimism/sdk@npm:3.3.0"
   dependencies:
     "@eth-optimism/contracts": "npm:0.6.0"
-    "@eth-optimism/contracts-bedrock": "npm:0.17.1"
-    "@eth-optimism/core-utils": "npm:0.13.1"
+    "@eth-optimism/contracts-bedrock": "npm:0.17.2"
+    "@eth-optimism/core-utils": "npm:0.13.2"
     lodash: "npm:^4.17.21"
     merkletreejs: "npm:^0.3.11"
     rlp: "npm:^2.2.7"
     semver: "npm:^7.6.0"
   peerDependencies:
     ethers: ^5
-  checksum: 10/c2ae9e1a34890b5c3335bf08e5c449f3fa75acdff028bff4b6a56cad33ee27d04396bb5d0d83c8631f5a4a60a79dd8956a32cd32a705d5b6ed97194e21d72348
+  checksum: 10/dce0ed1c2b646237ec4f7ff96dd9c6df02fff8dd2cd9ddb1533bbb0944221a6ddc085f933207030330e3e8b863080cbff740a8989450e7bad30149c7c2158540
   languageName: node
   linkType: hard
 
@@ -17523,7 +17523,7 @@ __metadata:
   dependencies:
     "@arbitrum/nitro-contracts": "npm:1.0.2"
     "@arbitrum/sdk": "npm:3.3.3"
-    "@eth-optimism/sdk": "npm:3.2.3"
+    "@eth-optimism/sdk": "npm:3.3.0"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.1.2"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.2.4"
@@ -22620,7 +22620,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:^4.3.10, chai@npm:^4.3.4, chai@npm:^4.3.6, chai@npm:^4.3.7, chai@npm:^4.3.9":
+"chai@npm:^4.3.10, chai@npm:^4.3.4, chai@npm:^4.3.6, chai@npm:^4.3.7":
   version: 4.4.1
   resolution: "chai@npm:4.4.1"
   dependencies:
