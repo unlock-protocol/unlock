@@ -67,7 +67,10 @@ const config = {
   networks,
   etherscan,
   solidity: {
-    compilers: [{ version: '0.8.21', settings }],
+    compilers: [
+      { version: '0.7.6', settings }, // required to compile oracle
+      { version: '0.8.21' },
+    ],
   },
   sourcify: {
     enabled: true,
