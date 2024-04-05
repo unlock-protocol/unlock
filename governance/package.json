@@ -3,6 +3,7 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
+    "@arbitrum/nitro-contracts": "1.0.2",
     "@arbitrum/sdk": "3.3.3",
     "@eth-optimism/sdk": "3.2.3",
     "@matterlabs/hardhat-zksync-deploy": "1.1.2",
@@ -23,6 +24,7 @@
     "@unlock-protocol/hardhat-helpers": "workspace:^",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
+    "arb-shared-dependencies": "1.0.0",
     "eslint": "8.54.0",
     "ethers": "6.10.0",
     "ethers5": "npm:ethers@5",
