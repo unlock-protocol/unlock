@@ -26,7 +26,7 @@ async function getWhales(chainId = 1) {
   switch (chainId) {
     case 1:
       return {
-        [tokens.DAI]: '0x075e72a5eDf65F0A5f44699c7654C1a76941Ddc8', // PulseX
+        [tokens.DAI]: '0x4DEDf26112B3Ec8eC46e7E31EA5e123490B05B8B', // PulseX
         [tokens.USDC]: '0x8EB8a3b98659Cce290402893d0123abb75E3ab28',
         [tokens.WBTC]: '0x845cbCb8230197F733b59cFE1795F282786f212C',
         [tokens.UDT]: '0xF5C28ce24Acf47849988f147d5C75787c0103534', // unlock-protocol.eth
@@ -219,12 +219,14 @@ const getDelegates = async () => {
   return await Promise.all(delegates.map((delegate) => impersonate(delegate)))
 }
 
-const getERC20Contract = async (tokenAddress) => {
+const getERC20Contract = async (tokenAddress, signer) => {
   const { ethers } = require('hardhat')
   const {
     nativeCurrency: { wrapped },
   } = await getNetwork()
-  const [signer] = await ethers.getSigners()
+  if (!signer) {
+    ;[signer] = await ethers.getSigners()
+  }
   return tokenAddress === wrapped
     ? await ethers.getContractAt(WETH_ABI, wrapped, signer)
     : await ethers.getContractAt(ERC20_ABI, tokenAddress, signer)
