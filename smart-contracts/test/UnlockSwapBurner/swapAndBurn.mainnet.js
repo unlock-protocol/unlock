@@ -17,16 +17,15 @@ const { compareBigNumbers } = require('../helpers')
 
 let scenarios
 
-const routerAddress = '0xE592427A0AEce92De3Edee1F18E0157C05861564'
-// const routerAddress = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' // swaRouter02
-
 describe(`swapAndBurn`, function () {
-  let swapBurner,
+  let chainId,
+    swapBurner,
     unlockAddress,
     tokenAddress,
     udtAddress,
     wrappedAddress,
     unlock,
+    universalRouterAddress,
     burnAddress
 
   before(async function () {
@@ -38,17 +37,17 @@ describe(`swapAndBurn`, function () {
     // mainnet fork: need to fund hardhat default signer
     const [signer] = await ethers.getSigners()
     await addSomeETH(signer.address)
+    // get mainnet values
+    ;({
+      id: chainId,
+      unlockAddress,
+      uniswapV3: { universalRouterAddress },
+    } = await getNetwork())
 
     // get uniswap-formatted tokens
-    const { chainId } = await ethers.provider.getNetwork()
     const { native, usdc, dai, weth } = await getUniswapTokens(chainId)
     scenarios = [native, usdc, dai, weth]
 
-    // get mainnet values
-    ;({
-      // uniswapV3: { universalRouterAddress: routerAddress },
-      unlockAddress,
-    } = await getNetwork())
     unlock = await getUnlock(unlockAddress)
     udtAddress = await unlock.udt()
     wrappedAddress = await unlock.weth()
@@ -60,7 +59,7 @@ describe(`swapAndBurn`, function () {
     swapBurner = await UnlockSwapBurner.deploy(
       unlockAddress,
       PERMIT2_ADDRESS,
-      routerAddress
+      universalRouterAddress
     )
 
     burnAddress = await swapBurner.burnAddress()
@@ -71,7 +70,9 @@ describe(`swapAndBurn`, function () {
       expect(await swapBurner.unlockAddress()).to.equal(unlockAddress)
     })
     it('uniswap routers are set properly', async () => {
-      expect(await swapBurner.uniswapRouter()).to.equal(routerAddress)
+      expect(await swapBurner.uniswapUniversalRouter()).to.equal(
+        universalRouterAddress
+      )
     })
     it('permit2 is set properly', async () => {
       expect(await swapBurner.permit2()).to.equal(PERMIT2_ADDRESS)

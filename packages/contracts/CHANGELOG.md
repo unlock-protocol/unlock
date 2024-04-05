@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## 0.0.22
+## 0.0.25
+
+- update `UnlockSwapBurner` to latest version using Uniswap `UniversalRouter`
+
+## 0.0.22-0.0.24
 
 - add `contracts` alias for all versions
 - add `PublicLock` and `Unlock` alias for all versions
