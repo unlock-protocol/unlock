@@ -28,7 +28,7 @@ export const zksync: NetworkConfig = {
   multisig: '0xFa5592CE9C52FA5214ccEa10cB72Faa88eC80a3c',
   name: 'zkSync Era',
   nativeCurrency: {
-    coingecko: 'zksync-eth',
+    coingecko: 'ethereum',
     decimals: 18,
     name: 'zkSync Ether',
     symbol: 'ETH',

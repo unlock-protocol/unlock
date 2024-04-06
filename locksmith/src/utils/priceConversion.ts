@@ -11,6 +11,7 @@ export default class PriceConversion {
 
   /**
    * Returns the USD cents price of a currency amount
+   * DEPRECATED: WE SHOULD USE DEFILAMA API INSTEAD!
    * @param currency
    * @param lockPriceAmount in cents
    * @returns
