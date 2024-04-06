@@ -36,6 +36,8 @@ import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
+import removeMd from 'remove-markdown'
+import { truncateString } from '~/utils/truncateString'
 
 interface EventDetailsProps {
   event: Event
@@ -160,8 +162,13 @@ export const EventDetails = ({
     <div>
       <NextSeo
         title={event.name}
-        description={`${event.description} 
-Powered by Unlock Protocol`}
+        description={`${truncateString(
+          removeMd(event.description, {
+            useImgAltText: false,
+          }),
+          650
+        )} 
+        Powered by Unlock Protocol`}
         openGraph={{
           title: event.title,
           type: 'website',

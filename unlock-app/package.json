@@ -88,6 +88,7 @@
     "@types/react": "18.2.52",
     "@types/react-google-recaptcha": "2.1.9",
     "@types/react-gtm-module": "2.0.3",
+    "@types/remove-markdown": "0.3.4",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@vitejs/plugin-react": "4.0.4",
     "@vitest/coverage-c8": "0.33.0",

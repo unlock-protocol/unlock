@@ -16788,6 +16788,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/remove-markdown@npm:0.3.4":
+  version: 0.3.4
+  resolution: "@types/remove-markdown@npm:0.3.4"
+  checksum: 10/a748714a63cb02e96828750e27a679866420bde21411008ae266b6f43c819dea562233714dac0072776d5efd7871d54cf73ac54e3615747cbeddd348bde9e840
+  languageName: node
+  linkType: hard
+
 "@types/request-promise-native@npm:1.0.21":
   version: 1.0.21
   resolution: "@types/request-promise-native@npm:1.0.21"
@@ -18177,6 +18184,7 @@ __metadata:
     "@types/react": "npm:18.2.52"
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
+    "@types/remove-markdown": "npm:0.3.4"
     "@uniswap/sdk-core": "npm:4.2.0"
     "@uniswap/smart-order-router": "npm:3.17.4"
     "@unlock-protocol/core": "workspace:./packages/core"
