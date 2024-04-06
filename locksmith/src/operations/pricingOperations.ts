@@ -158,7 +158,6 @@ export async function getDefiLammaPriceNoCache({
   const networkConfig = networks[network]
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
-
   const mainnetTokenAddress = networkConfig.tokens?.find(
     (item) =>
       normalizer.ethereumAddress(item.address) ===
@@ -178,7 +177,6 @@ export async function getDefiLammaPriceNoCache({
   }
 
   const endpoint = `https://coins.llama.fi/prices/current/${items.join(',')}`
-
   const response = await fetch(endpoint)
 
   if (!response.ok) {
