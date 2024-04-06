@@ -1,7 +1,5 @@
-import { ethers } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-import PriceConversion from './priceConversion'
 import { GAS_COST_TO_GRANT } from './constants'
 import { getProviderForNetwork, getPurchaser } from '../fulfillment/dispatcher'
 import GasPrice from './gasPrice'
