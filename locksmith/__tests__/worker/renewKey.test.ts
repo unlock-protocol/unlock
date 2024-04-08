@@ -109,13 +109,9 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-vi.mock('../../src/utils/keyPricer', () => {
+vi.mock('../../src/operations/PricingOperations', () => {
   return {
-    default: vi.fn(() => {
-      return {
-        GAS_COST: 1000,
-      }
-    }),
+    getDefiLammaPrice: () => Promise.resolve({ priceInAmount: 1 }),
   }
 })
 

@@ -1,23 +1,14 @@
 import { BigNumber } from 'ethers'
 import GasPrice from '../../src/utils/gasPrice'
 import { vi } from 'vitest'
-// mock coinbase API
-vi.mock('isomorphic-fetch', () => {
-  return {
-    default: async () => ({
-      json: async () => ({
-        data: { base: 'ETH', currency: 'USD', amount: '420000' },
-      }),
-      ok: true,
-    }),
-  }
-})
 
-vi.mock('@unlock-protocol/networks', () => {
+vi.mock('../../src/operations/PricingOperations', () => {
   return {
-    default: {
-      1: {},
-      31137: {},
+    getDefiLammaPrice: ({ network, erc20Address, amount = 1 }) => {
+      return Promise.resolve({
+        priceInAmount: amount * 420000, // Keeping tests simple
+        decimals: 5,
+      })
     },
   }
 })
