@@ -16522,6 +16522,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/remove-markdown@npm:0.3.4":
+  version: 0.3.4
+  resolution: "@types/remove-markdown@npm:0.3.4"
+  checksum: 10/a748714a63cb02e96828750e27a679866420bde21411008ae266b6f43c819dea562233714dac0072776d5efd7871d54cf73ac54e3615747cbeddd348bde9e840
+  languageName: node
+  linkType: hard
+
 "@types/request-promise-native@npm:1.0.21":
   version: 1.0.21
   resolution: "@types/request-promise-native@npm:1.0.21"
@@ -17911,6 +17918,7 @@ __metadata:
     "@types/react": "npm:18.2.52"
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
+    "@types/remove-markdown": "npm:0.3.4"
     "@uniswap/sdk-core": "npm:4.2.0"
     "@uniswap/smart-order-router": "npm:3.17.4"
     "@unlock-protocol/core": "workspace:./packages/core"
@@ -17970,6 +17978,7 @@ __metadata:
     react-use-clipboard: "npm:1.0.9"
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
+    remove-markdown: "npm:0.5.0"
     siwe: "npm:2.1.4"
     tailwind-merge: "npm:2.2.2"
     tailwindcss: "npm:3.3.5"
@@ -44602,6 +44611,13 @@ __metadata:
   version: 1.0.8
   resolution: "remedial@npm:1.0.8"
   checksum: 10/41e23a7d656fd696678e4f648e57ece5c9e13c097094e8ac6e173990a0665a24d8e50cbb39d458af3b0d58cfbd7811fc0840c4646d10ce3285fe5819b1c82375
+  languageName: node
+  linkType: hard
+
+"remove-markdown@npm:0.5.0":
+  version: 0.5.0
+  resolution: "remove-markdown@npm:0.5.0"
+  checksum: 10/c7ad6f32511afcb90ef205680be08eb8cbd9bb380e934516d35001229bd9b062d8fed72c5456c9455955a08914c4fcbbae9d9841c45cecf75a7f057427b9d5a0
   languageName: node
   linkType: hard
 
