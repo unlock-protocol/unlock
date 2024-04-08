@@ -126,19 +126,6 @@ vi.mock('../../src/utils/gasPrice', () => {
   }
 })
 
-vi.mock('isomorphic-fetch', () => {
-  return {
-    default: vi.fn().mockImplementation(() => {
-      return {
-        json: async () => ({
-          data: { base: 'USDT', currency: 'USD', amount: 1 },
-        }),
-        ok: true,
-      }
-    }),
-  }
-})
-
 describe('isWorthRenewing', () => {
   it('should return true when gas refund is enough', async () => {
     expect.assertions(2)
