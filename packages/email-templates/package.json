@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@vitest/coverage-c8": "0.33.0",
-    "typescript": "5.3.3",
+    "typescript": "5.4.3",
     "vitest": "0.34.6"
   },
   "repository": {

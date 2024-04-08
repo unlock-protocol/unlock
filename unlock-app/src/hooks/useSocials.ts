@@ -41,58 +41,13 @@ const query = `query DomainsAndSocials($wallets: [Address!]) {
     Social {
       dappName
       profileName
-      profileImageContentValue {
-        image {
-          original
-        }
-      }
       profileUrl
       userAssociatedAddresses
-      blockchain
-      chainId
-      dappName
-      coverImageURI
-      dappSlug
-      dappVersion
-      fnames
-      followerCount
-      followerTokenAddress
-      followingCount
-      handleTokenAddress
-      handleTokenId
       id
-      identity
-      isDefault
-      isFarcasterPowerUser
-      location
-      metadataURI
-      profileBio
-      profileCreatedAtBlockNumber
-      profileCreatedAtBlockTimestamp
       profileDisplayName
       profileHandle
       profileImage
-      profileLastUpdatedAtBlockNumber
-      profileLastUpdatedAtBlockTimestamp
-      profileMetadata
-      profileName
-      profileTokenAddress
-      profileTokenId
-      profileTokenIdHex
-      profileTokenUri
-      profileUrl
-      twitterUserName
-      updatedAt
-      userAddress
       userAssociatedAddresses
-      userCreatedAtBlockNumber
-      userCreatedAtBlockTimestamp
-      userHomeURL
-      userId
-      userLastUpdatedAtBlockNumber
-      userLastUpdatedAtBlockTimestamp
-      userRecoveryAddress
-      website
     }
   }
 }`
