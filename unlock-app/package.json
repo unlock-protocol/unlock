@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@airstack/airstack-react": "0.6.2",
     "@crossmint/client-sdk-react-ui": "1.1.5",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "1.1.1",

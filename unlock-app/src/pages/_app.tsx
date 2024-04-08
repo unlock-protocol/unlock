@@ -1,3 +1,4 @@
+import { AirstackProvider } from '@airstack/airstack-react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import React, { useEffect } from 'react'
 import type { AppProps } from 'next/app'
@@ -38,7 +39,9 @@ const UnlockApp = ({ Component, pageProps }: AppProps) => {
           <ConnectModalProvider>
             <GlobalWrapper>
               <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
-                <Component pageProps={pageProps} />
+                <AirstackProvider apiKey={'1ef6142a6b64e48dd9fd4df8e0f4da9e3'}>
+                  <Component pageProps={pageProps} />
+                </AirstackProvider>
               </ErrorBoundary>
               <Toaster />
             </GlobalWrapper>
