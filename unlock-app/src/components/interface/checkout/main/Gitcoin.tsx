@@ -18,6 +18,10 @@ interface Props {
   checkoutService: CheckoutService
 }
 
+interface CustomErrorType {
+  isMisconfigurationError?: boolean
+}
+
 export function Gitcoin({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
@@ -38,6 +42,9 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
     network: lock!.network,
     recipients: users,
   })
+
+  // type assertion
+  const typedError = error as CustomErrorType
 
   const onProceed = async () => {
     if (data) {
@@ -92,7 +99,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
 
               {/* Dynamically display error messages */}
               <div className="text-red-600 mt-4 text-center">
-                {error && error?.isMisconfigurationError
+                {typedError && typedError.isMisconfigurationError
                   ? 'Verification failed due to a misconfiguration in your lock.'
                   : 'Verification failed. Your passport is below the required threshold.'}
               </div>
