@@ -2,7 +2,7 @@ import { BigNumber } from 'ethers'
 import GasPrice from '../../src/utils/gasPrice'
 import { vi } from 'vitest'
 
-vi.mock('../../src/operations/PricingOperations', () => {
+vi.mock('../../src/operations/pricingOperations', () => {
   return {
     getDefiLammaPrice: ({ network, erc20Address, amount = 1 }) => {
       return Promise.resolve({
