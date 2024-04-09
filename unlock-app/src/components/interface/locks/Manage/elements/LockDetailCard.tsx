@@ -16,7 +16,8 @@ import Link from 'next/link'
 import { storage } from '~/config/storage'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockManager } from '~/hooks/useLockManager'
-import PriceFormatter from '~/utils/priceFormatter'
+import { PriceFormatter } from '@unlock-protocol/ui'
+
 interface LockDetailCardProps {
   network: number
   lockAddress: string

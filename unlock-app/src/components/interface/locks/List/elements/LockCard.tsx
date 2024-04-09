@@ -14,7 +14,8 @@ import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
 import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import PriceFormatter from '~/utils/priceFormatter'
+import { PriceFormatter } from '@unlock-protocol/ui'
+
 interface LockCardProps {
   lock: any
   network: number

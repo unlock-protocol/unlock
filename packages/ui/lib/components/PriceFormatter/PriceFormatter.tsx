@@ -1,11 +1,11 @@
 import React from 'react'
 
-interface PriceFormatterProps {
+export interface PriceFormatterProps {
   price: string
   precision?: number
 }
 
-function PriceFormatter({ price, precision = 4 }: PriceFormatterProps) {
+export function PriceFormatter({ price, precision = 4 }: PriceFormatterProps) {
   if (!price) return ''
 
   const decimalIndex = price.indexOf('.')
@@ -55,5 +55,3 @@ function PriceFormatter({ price, precision = 4 }: PriceFormatterProps) {
     )
   }
 }
-
-export default PriceFormatter
