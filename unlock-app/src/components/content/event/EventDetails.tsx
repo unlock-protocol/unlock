@@ -16,6 +16,7 @@ import { CastItButton } from './CastItButton'
 import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
@@ -36,6 +37,9 @@ import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
+import Hosts from './Hosts'
+import removeMd from 'remove-markdown'
+import { truncateString } from '~/utils/truncateString'
 
 interface EventDetailsProps {
   event: Event
@@ -72,6 +76,11 @@ export const EventDetails = ({
   const eventUrl = getEventUrl({
     event,
   })
+
+  const { data: organizers } = useEventOrganizers({
+    checkoutConfig,
+  })
+
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
   useEffect(() => {
@@ -160,8 +169,13 @@ export const EventDetails = ({
     <div>
       <NextSeo
         title={event.name}
-        description={`${event.description} 
-Powered by Unlock Protocol`}
+        description={`${truncateString(
+          removeMd(event.description, {
+            useImgAltText: false,
+          }),
+          650
+        )} 
+        Powered by Unlock Protocol`}
         openGraph={{
           title: event.title,
           type: 'website',
@@ -238,13 +252,11 @@ Powered by Unlock Protocol`}
 
         <div className="relative">
           <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
-            {coverImage && (
-              <img
-                className="object-cover w-full h-full"
-                src={coverImage}
-                alt="Cover image"
-              />
-            )}
+            <img
+              className="object-cover w-full h-full"
+              src={coverImage || event.image}
+              alt="Cover image"
+            />
           </div>
 
           <CoverImageDrawer
@@ -289,7 +301,10 @@ Powered by Unlock Protocol`}
             <h1 className="mt-4 text-3xl font-bold md:text-6xl">
               {event.name}
             </h1>
-            <section className="mt-4">
+            <section className="flex flex-col gap-4">
+              {organizers && organizers.length > 0 && (
+                <Hosts organizers={organizers} />
+              )}
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
