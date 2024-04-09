@@ -1,22 +1,21 @@
+import { join, dirname } from 'path'
 import { mergeConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import svgr from 'vite-plugin-svgr'
+
+function getAbsolutePath(value: string): any {
+  return dirname(require.resolve(join(value, 'package.json')))
+}
 export default {
   stories: ['../lib/**/*.stories.mdx', '../lib/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    {
-      name: '@storybook/addon-postcss',
-      options: {
-        postcssLoaderOptions: {
-          implementation: require('postcss'),
-        },
-      },
-    },
+    getAbsolutePath('@storybook/addon-links'),
+    getAbsolutePath('@storybook/addon-essentials'),
   ],
-  staticDirs: ['../public'],
-  framework: '@storybook/react-vite',
+  framework: {
+    name: getAbsolutePath('@storybook/react-vite'),
+    options: {},
+  },
   async viteFinal(config) {
     // Merge custom configuration into the default config
     return mergeConfig(config, {
@@ -29,4 +28,4 @@ export default {
     })
   },
 }
-export const framework = '@storybook/react'
+export const framework = getAbsolutePath('@storybook/react')

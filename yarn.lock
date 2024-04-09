@@ -16299,7 +16299,6 @@ __metadata:
     "@storybook/addon-docs": "npm:8.0.6"
     "@storybook/addon-essentials": "npm:8.0.6"
     "@storybook/addon-links": "npm:8.0.6"
-    "@storybook/addon-postcss": "npm:3.0.0-alpha.1"
     "@storybook/react": "npm:8.0.6"
     "@storybook/react-vite": "npm:8.0.6"
     "@tailwindcss/aspect-ratio": "npm:0.4.2"
