@@ -30,7 +30,6 @@ interface Price {
   price: number
   timestamp: number
   confidence: number
-  creditCardEnabled: boolean
 }
 
 export interface Options {
