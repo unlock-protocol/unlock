@@ -6,6 +6,7 @@ import svgr from 'vite-plugin-svgr'
 function getAbsolutePath(value: string): any {
   return dirname(require.resolve(join(value, 'package.json')))
 }
+
 export default {
   stories: ['../lib/**/*.stories.mdx', '../lib/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [

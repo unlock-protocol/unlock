@@ -1,2 +1,4 @@
 lib/@generated
 dist
+
+*storybook.log
