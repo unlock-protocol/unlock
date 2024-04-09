@@ -141,7 +141,7 @@ export interface NetworkConfig {
     symbol: string
     address: string
   } | null
-  maxFreeClaimCost?: number
+  maxFreeClaimCost?: number // in cents!
   nativeCurrency: Omit<Token, 'address'>
   startBlock?: number
   previousDeploys?: NetworkDeploy[]

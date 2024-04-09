@@ -109,13 +109,9 @@ vi.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-vi.mock('../../src/utils/keyPricer', () => {
+vi.mock('../../src/operations/pricingOperations', () => {
   return {
-    default: vi.fn(() => {
-      return {
-        GAS_COST: 1000,
-      }
-    }),
+    getDefiLammaPrice: () => Promise.resolve({ priceInAmount: 1 }),
   }
 })
 
@@ -125,19 +121,6 @@ vi.mock('../../src/utils/gasPrice', () => {
       return {
         gasPriceUSD: (network: number) =>
           Promise.resolve(network === 1 ? 10 : 1),
-      }
-    }),
-  }
-})
-
-vi.mock('isomorphic-fetch', () => {
-  return {
-    default: vi.fn().mockImplementation(() => {
-      return {
-        json: async () => ({
-          data: { base: 'USDT', currency: 'USD', amount: 1 },
-        }),
-        ok: true,
       }
     }),
   }

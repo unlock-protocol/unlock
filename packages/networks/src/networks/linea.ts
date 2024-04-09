@@ -66,7 +66,7 @@ export const linea: NetworkConfig = {
   name: 'Linea',
 
   nativeCurrency: {
-    coingecko: 'linea-eth',
+    coingecko: 'ethereum',
     decimals: 18,
     name: 'Linea Ether',
     symbol: 'ETH',
