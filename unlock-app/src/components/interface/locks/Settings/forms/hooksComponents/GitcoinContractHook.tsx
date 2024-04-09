@@ -33,8 +33,8 @@ export const GitcoinContractHook = ({
 
   const onSubmit = async (values: any) => {
     const requiredGitcoinPassportScore = getValues(
-      'requiredGitcoinPassportScore'
-    )
+      'hook.requiredGitcoinPassportScore'
+    ).toString()
 
     await saveSettingsMutation({
       lockAddress,

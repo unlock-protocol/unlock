@@ -13,6 +13,7 @@ const getDataForGitcoinPassport = async (
       lockAddress,
       recipients
     )
+
     return response.data.result
   } catch (error: any) {
     if (error.response) {
@@ -44,6 +45,10 @@ export function useDataForGitcoinPassport({
         if (error.response && error.response.status === 422) {
           // Display the server's error message for 422 errors
           ToastHelper.error(error.response.data.error)
+          // Add custom error property
+          error.isMisconfigurationError = true
+          // propagate error
+          throw error
         } else {
           // Generic error message for other types of errors
           ToastHelper.error(error.message || 'An unexpected error occurred')
