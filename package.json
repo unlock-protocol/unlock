@@ -12,6 +12,7 @@
     "@typescript-eslint/eslint-plugin": "7.5.0",
     "@typescript-eslint/parser": "7.5.0",
     "babel-plugin-polyfill-corejs2": "0.4.10",
+    "radix-ui": "1.0.1",
     "typescript": "5.4.3"
   },
   "devDependencies": {
