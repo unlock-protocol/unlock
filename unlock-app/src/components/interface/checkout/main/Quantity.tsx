@@ -13,7 +13,6 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
-import { ViewContract } from '../ViewContract'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 
@@ -91,10 +90,6 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                   }
                 />
               </div>
-              <ViewContract
-                network={lock!.network}
-                lockAddress={lock!.address}
-              />
             </div>
             <div>
               <input
