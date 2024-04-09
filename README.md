@@ -30,6 +30,7 @@ Please read more about contributing in our [contributor guide](https://github.co
 Unlock uses a monorepo which includes all the services and applications we develop.
 
 ```
+
 # get the code
 git clone https://github.com/unlock-protocol/unlock
 cd unlock
