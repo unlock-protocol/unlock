@@ -145,6 +145,7 @@ export const arbitrum: NetworkConfig = {
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   unlockDaoToken: {
     address: '0xd5d3aA404D7562d09a848F96a8a8d5D65977bF90',
+    mainnetBridge: '0xa3A7B6F88361F48403514059F1F16C8E78d60EeC',
   },
   url: 'https://arbitrum.io/',
 }
