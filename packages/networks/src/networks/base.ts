@@ -126,7 +126,7 @@ export const base: NetworkConfig = {
   },
   unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
   unlockDaoToken: {
-    address: '0xE68858e8fe7b491B13d1aefccBBC7367D1f1848e',
+    address: '0xD7eA82D19f1f59FF1aE95F1945Ee6E6d86A25B96',
   },
   url: 'https://base.org/',
 }
