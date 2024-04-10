@@ -23,10 +23,8 @@ export const NetworkWarning = ({
 }) => {
   const config = useConfig()
   if (!network) return null
-  console.log(network)
   if (!NETWORK_MAPPING_MAPPING[network!]) return
   const { date } = NETWORK_MAPPING_MAPPING[network!]
-  console.log(date)
   const networkName = config.networks[network!].name
 
   return (
