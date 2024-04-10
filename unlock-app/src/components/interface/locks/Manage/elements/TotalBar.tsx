@@ -1,4 +1,4 @@
-import { Button, Detail, Card } from '@unlock-protocol/ui'
+import { Button, Detail, Card, PriceFormatter } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useQueries } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
@@ -65,7 +65,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
 
   const withdrawDisabled = false // parseFloat(`${balance}`) === 0) || loading
 
-  const formattedBalance = parseFloat(`${balance || 0}`)?.toFixed(2)
   const symbol = lock?.currencySymbol || baseCurrencySymbol
 
   const wrapperClass =
@@ -95,9 +94,11 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
               valueSize="large"
               loading={loading}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <CryptoIcon symbol={symbol} size={36} />
-                <span className="overflow-hidden">{formattedBalance}</span>
+                <span className="overflow-hidden">
+                  <PriceFormatter price={balance} precision={2} />
+                </span>
                 {isManager && (
                   <Button
                     variant="outlined-primary"
@@ -113,7 +114,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
               </div>
             </Detail>
             {stripeConnected ? (
-              <p className="text-xs">
+              <p className="text-xs mt-2">
                 Check{' '}
                 <Link
                   target="_blank"
