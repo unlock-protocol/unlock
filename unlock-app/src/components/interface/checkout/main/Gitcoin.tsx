@@ -20,6 +20,8 @@ interface Props {
 
 interface CustomErrorType {
   isMisconfigurationError?: boolean
+  isInvalidScoreError?: boolean
+  isTimeoutError?: boolean
 }
 
 export function Gitcoin({ injectedProvider, checkoutService }: Props) {
@@ -99,9 +101,16 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
 
               {/* Dynamically display error messages */}
               <div className="text-red-600 mt-4 text-center">
-                {typedError && typedError.isMisconfigurationError
-                  ? 'Verification failed due to a misconfiguration in your lock.'
-                  : 'Verification failed. Your passport is below the required threshold.'}
+                {typedError.isMisconfigurationError &&
+                  'Verification failed due to a misconfiguration in your lock.'}
+                {typedError.isInvalidScoreError &&
+                  'The required Gitcoin Passport score is not defined or invalid.'}
+                {typedError.isTimeoutError &&
+                  'Timeout: Unable to verify scores within expected time frame.'}
+                {!typedError.isMisconfigurationError &&
+                  !typedError.isInvalidScoreError &&
+                  !typedError.isTimeoutError &&
+                  'Verification failed. Your passport is below the required threshold or an unexpected error occurred.'}
               </div>
             </div>
           )}
