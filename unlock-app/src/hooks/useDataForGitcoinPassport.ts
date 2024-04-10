@@ -42,12 +42,30 @@ export function useDataForGitcoinPassport({
       try {
         return await getDataForGitcoinPassport(network, lockAddress, recipients)
       } catch (error: any) {
-        if (error.response && error.response.status === 422) {
-          // Display the server's error message for 422 errors
-          ToastHelper.error(error.response.data.error)
-          // Add custom error property
-          error.isMisconfigurationError = true
-          // propagate error
+        if (error.response) {
+          // Handle specific error statuses
+          const status = error.response.status
+          switch (status) {
+            case 400:
+              ToastHelper.error(
+                'The required Gitcoin Passport score is not defined or invalid.'
+              )
+              error.isInvalidScoreError = true
+              break
+            case 504:
+              ToastHelper.error(
+                'Timeout: Unable to verify scores within expected time frame.'
+              )
+              error.isTimeoutError = true
+              break
+            case 422:
+              ToastHelper.error(error.response.data.error)
+              error.isMisconfigurationError = true
+              break
+            default:
+              ToastHelper.error(error.message || 'An unexpected error occurred')
+          }
+          // Propagate error
           throw error
         } else {
           // Generic error message for other types of errors
