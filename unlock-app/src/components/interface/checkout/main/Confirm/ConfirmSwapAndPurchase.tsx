@@ -13,7 +13,6 @@ import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
@@ -218,10 +217,7 @@ export function ConfirmSwapAndPurchase({
 
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
           {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>

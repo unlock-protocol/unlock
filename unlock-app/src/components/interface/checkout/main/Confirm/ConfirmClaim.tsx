@@ -9,7 +9,6 @@ import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { useClaim } from '~/hooks/useClaim'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
@@ -108,10 +107,7 @@ export function ConfirmClaim({
 
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
           {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>

@@ -23,7 +23,6 @@ import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { minifyAddress } from '@unlock-protocol/ui'
-import { ViewContract } from '../ViewContract'
 import { useCheckoutHook } from './useCheckoutHook'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { getLockUsdPrice } from '~/hooks/useUSDPricing'
@@ -91,10 +90,6 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   >
                     {lock.name}
                   </RadioGroup.Label>
-                  <ViewContract
-                    network={lock.network}
-                    lockAddress={lock.address}
-                  />
                 </div>
 
                 <Pricing
