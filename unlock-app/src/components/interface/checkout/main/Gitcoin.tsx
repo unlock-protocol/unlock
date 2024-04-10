@@ -48,7 +48,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
   // type assertion
   const typedError = error as CustomErrorType
 
-  const onProceed = async () => {
+  const onContinue = async () => {
     if (data) {
       send({
         type: 'SUBMIT_DATA',
@@ -151,16 +151,16 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
             </Button>
           )}
 
-          {/* Button to proceed to next step upon successful verification */}
+          {/* Button to continue to next step upon successful verification */}
           {isSuccess && !isFetchingGitcoinPassportData && (
             <Button
               className="w-full"
               onClick={(event) => {
                 event.preventDefault()
-                onProceed()
+                onContinue()
               }}
             >
-              Proceed
+              Continue
             </Button>
           )}
 

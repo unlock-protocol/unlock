@@ -162,6 +162,7 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
         scoresResponse = await checkMultipleScores(recipients)
         scoresReady = true
       } catch (error) {
+        logger.error(error)
         attempts++
         await new Promise((resolve) => setTimeout(resolve, delay))
         // Apply backoff factor to delay between retries
@@ -179,7 +180,7 @@ export const gitcoinHook: RequestHandler = async (request, response) => {
     const generatedSignatures = scoresResponse.map(async (recipient: any) => {
       // only sign recipients who have a score that meets the specified threshold in the lock settings
       if (recipient && recipient.score >= requiredScore) {
-        const message = recipient.toLowerCase()
+        const message = recipient.address.toLowerCase()
         const messageHash = ethers.utils.solidityKeccak256(
           ['string'],
           [message]
