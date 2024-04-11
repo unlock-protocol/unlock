@@ -363,30 +363,6 @@ export const EventDetails = ({
               Tools for you, the event organizer
             </span>
             <div className="grid gap-4">
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Promote your event"
-                    description="Share your event's URL with your community and start selling tickets!"
-                  />
-                  <pre className="">{eventUrl}</pre>
-                </div>
-                <div className="md:col-span-1">
-                  <Button
-                    variant="black"
-                    className="button border w-full"
-                    size="small"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      setCopied()
-                      ToastHelper.success('Copied!')
-                    }}
-                  >
-                    Copy URL
-                  </Button>
-                </div>
-              </Card>
-
               <Disclosure
                 label="Emails"
                 description="Customize the emails your attendees will receive."
