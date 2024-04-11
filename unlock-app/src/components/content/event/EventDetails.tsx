@@ -404,41 +404,6 @@ export const EventDetails = ({
                 </div>
               </Disclosure>
 
-              {/* <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Manage Attendees"
-                    description="See who is attending your event, invite people with airdrops and more!"
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  {Object.keys(checkoutConfig.config.locks).map(
-                    (lockAddress: string) => {
-                      const network =
-                        checkoutConfig.config.locks[lockAddress].network
-                      let label = 'Manage attendees'
-                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
-                        label = `Manage attendees for ${minifyAddress(
-                          lockAddress
-                        )}`
-                      }
-                      return (
-                        <Button
-                          key={lockAddress}
-                          as={Link}
-                          variant="black"
-                          className="button border mb-2"
-                          size="small"
-                          href={`/locks/lock?address=${lockAddress}&network=${network}`}
-                        >
-                          {label}
-                        </Button>
-                      )
-                    }
-                  )}
-                </div>
-              </Card> */}
-
               <Disclosure
                 label="Verifiers"
                 description="Add and manage trusted users at the event to help check-in attendees as they arrive."

@@ -59,7 +59,6 @@ export const GoogleMapsAutoComplete = ({
   return (
     <Input
       defaultValue={defaultValue}
-      // @ts-expect-error Type 'RefObject<null>' is not assignable to type 'Ref<HTMLInputElement> | undefined'.
       ref={ref}
       type="text"
       placeholder="123 1st street, 11217 Springfield, US"
@@ -113,6 +112,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         },
         image: '',
         requiresApproval: false,
+        emailSender: '',
       },
     },
   })
@@ -462,24 +462,30 @@ export const Form = ({ onSubmit }: FormProps) => {
           <Disclosure label="Organizer" defaultOpen>
             <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
               <Input
-                label="Name:"
                 {...register('metadata.emailSender', {
-                  required: true,
+                  required: {
+                    value: true,
+                    message: 'A name is required',
+                  },
                 })}
-                autoComplete="off"
+                type="text"
                 placeholder="Satoshi Nakamoto"
-                error={errors.metadata?.emailSender}
-                description={`Used on confirmation emails sent to attendees.`}
+                label="Name:"
+                description="Used on confirmation emails sent to attendees."
+                error={errors.metadata?.emailSender?.message as string}
               />
               <Input
                 label="Email address:"
                 {...register('metadata.replyTo', {
-                  required: true,
+                  required: {
+                    value: true,
+                    message: 'A name is required',
+                  },
                 })}
                 type="email"
                 autoComplete="off"
                 placeholder="your@email.com"
-                error={errors.metadata?.replyTo}
+                error={errors.metadata?.replyTo?.message as string}
                 description={`Used when users respond to automated emails.`}
               />
             </div>
