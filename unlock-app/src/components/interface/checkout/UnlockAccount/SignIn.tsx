@@ -28,7 +28,7 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
         password,
       })
       setIsSigningIn(false)
-      send('CONTINUE')
+      send({ type: 'CONTINUE' })
     } catch (error) {
       if (error instanceof Error) {
         setError(

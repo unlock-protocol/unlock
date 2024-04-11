@@ -1,4 +1,4 @@
-import { createMachine, assign, ActorRefFrom } from 'xsatev5'
+import { createMachine, assign, ActorRefFrom, Actor } from 'xsatev5'
 
 interface SubmitUserEvent {
   type: 'SUBMIT_USER'
@@ -89,19 +89,19 @@ export const unlockAccountMachine = createMachine(
     },
   },
   {
+    guards: {
+      isExistingUser: ({ context }) => {
+        return context.existingUser && !!context.email
+      },
+      isNotExistingUser: ({ context }) => {
+        return !context.existingUser && !!context.email
+      },
+    },
     actions: {
       submitUser: assign({
         email: ({ event }) => event.email,
         existingUser: ({ event }) => event.existingUser,
       }),
-      guards: {
-        isExistingUser: ({ context }) => {
-          return context.existingUser && !!context.email
-        },
-        isNotExistingUser: ({ context }) => {
-          return !context.existingUser && !!context.email
-        },
-      },
     },
   }
 )
@@ -111,4 +111,6 @@ export interface UserDetails {
   password: string
 }
 
-export type UnlockAccountService = ActorRefFrom<typeof unlockAccountMachine>
+export type UnlockAccountService =
+  | Actor<typeof unlockAccountMachine>
+  | ActorRefFrom<typeof unlockAccountMachine>

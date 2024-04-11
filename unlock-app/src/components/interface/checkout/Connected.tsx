@@ -1,6 +1,6 @@
 import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
-import { useActor } from '@xstate/react'
+import { useActor } from '@xstate/reactv4'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -238,7 +238,7 @@ export function Connected({
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
-    send('DISCONNECT')
+    send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }
 
@@ -273,7 +273,7 @@ export function Connected({
       <SignedOut
         injectedProvider={injectedProvider}
         onUnlockAccount={() => {
-          send('UNLOCK_ACCOUNT')
+          send({ type: 'UNLOCK_ACCOUNT' })
         }}
         authenticateWithProvider={authenticateWithProvider}
         title="Have a crypto wallet?"

@@ -2,11 +2,11 @@ import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
-// Cannot update
-import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
+import { useActor } from '@xstate/reactv4'
+import { createActor } from 'xsatev5'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -19,14 +19,14 @@ export function Connect({
   oauthConfig,
   communication,
 }: Props) {
-  const connectService = useInterpret(connectMachine)
+  const connectService = createActor(connectMachine).start()
   const [state, send] = useActor(connectService)
   const matched = state.value.toString()
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      send('DISCONNECT')
+      send({ type: 'DISCONNECT' })
 
       if (oauthConfig.redirectUri) {
         const redirectURI = new URL(oauthConfig.redirectUri)
@@ -48,13 +48,13 @@ export function Connect({
     const unlockAccount = state.children?.unlockAccount
     const canBackInUnlockAccountService = unlockAccount
       ?.getSnapshot()
-      .can('BACK')
-    const canBack = state.can('BACK')
+      .can({ type: 'BACK' })
+    const canBack = state.can({ type: 'BACK' })
     if (canBackInUnlockAccountService) {
-      return () => unlockAccount.send('BACK')
+      return () => unlockAccount.send({ type: 'BACK' })
     }
     if (canBack) {
-      return () => connectService.send('BACK')
+      return () => connectService.send({ type: 'BACK' })
     }
     return undefined
   }, [state, connectService])
