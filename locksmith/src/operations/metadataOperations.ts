@@ -10,9 +10,7 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-import { CheckoutConfig, EventData } from '../models'
 import { getEventUrl } from '../utils/eventHelpers'
-import { Op } from 'sequelize'
 import { getEventForLock } from './eventOperations'
 
 interface IsKeyOrLockOwnerOptions {

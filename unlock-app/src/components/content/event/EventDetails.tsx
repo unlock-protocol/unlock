@@ -25,8 +25,6 @@ import {
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
@@ -106,10 +104,6 @@ export const EventDetails = ({
     }
     migrateAndRedirect()
   }, [router, event, eventUrl])
-
-  const [_, setCopied] = useClipboard(eventUrl, {
-    successDuration: 1000,
-  })
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
