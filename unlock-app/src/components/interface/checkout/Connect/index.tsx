@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
+// Cannot update
 import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'

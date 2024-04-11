@@ -1,4 +1,5 @@
-import { useActor } from '@xstate/react'
+// Not sure, here we use checkout and account machines
+import { useActor } from '@xstate/reactv4'
 import { StepItem } from '../Stepper'
 import {
   CheckoutHookType,
