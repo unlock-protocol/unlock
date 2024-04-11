@@ -125,9 +125,8 @@ export const formattedKeyPrice = (
     return 'FREE'
   }
   const price = keyPrice ? parseFloat(keyPrice) * numberOfRecipients : null
-  return `${price
-    ?.toLocaleString() // language-sensitive representation of the price
-    ?.toString()} ${lockTickerSymbol(lock, baseCurrencySymbol)}`
+
+  return `${price?.toString()} ${lockTickerSymbol(lock, baseCurrencySymbol)}`
 }
 
 /**

@@ -55,7 +55,7 @@ export const UpdatePriceForm = ({
     mode: 'onChange',
     defaultValues: {
       currencyContractAddress: undefined,
-      keyPrice: keyPrice?.toFixed(3),
+      keyPrice: keyPrice?.toString(),
       symbol: '',
       isFree,
     },

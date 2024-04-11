@@ -36,3 +36,4 @@ export { Images } from '~/components/Images/Images'
 
 export { GuidesHeader, GuidesFooter } from '~/configs/guides'
 export { ShowcaseHeader, ShowcaseFooter } from '~/configs/showcase'
+export { PriceFormatter } from '~/components/PriceFormatter/PriceFormatter'
