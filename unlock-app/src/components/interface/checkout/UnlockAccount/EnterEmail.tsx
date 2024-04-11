@@ -33,7 +33,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
         existingUser,
       })
       setIsContinuing(false)
-      send('CONTINUE')
+      send({ type: 'CONTINUE' })
     } catch (error) {
       if (error instanceof Error) {
         setError('email', {
@@ -70,7 +70,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
           have a wallet,{' '}
           <button
             className="underline text-ui-main-500"
-            onClick={() => send('BACK')}
+            onClick={() => send({ type: 'BACK' })}
           >
             connect it
           </button>

@@ -32,7 +32,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
       await signUp({ email, password })
       await signIn()
       setIsSigningUp(false)
-      send('CONTINUE')
+      send({ type: 'CONTINUE' })
     } catch (error) {
       if (error instanceof Error) {
         setError(
