@@ -9,6 +9,7 @@ import {
 import { storage } from '~/config/storage'
 import { Button, Input } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import SendCustomEmail from './Components/CustomEmail'
 
 interface EmailsProps {
   event: Event
@@ -19,7 +20,6 @@ interface EmailsProps {
 }
 
 export const Emails = ({ event, checkoutConfig }: EmailsProps) => {
-  console.log(event)
   const {
     register,
     handleSubmit,
@@ -56,8 +56,8 @@ export const Emails = ({ event, checkoutConfig }: EmailsProps) => {
   return (
     <form className="grid grid-cols-1 gap-6" onSubmit={handleSubmit(save)}>
       <SettingCard
-        label="Emails"
-        description="Configure and send emails to the attendees of your event."
+        label="Sender information"
+        description="Set a sender as well as as a reply-to email address."
       >
         <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
           <Input
@@ -93,6 +93,20 @@ export const Emails = ({ event, checkoutConfig }: EmailsProps) => {
             Save
           </Button>
         </div>
+      </SettingCard>
+      <SettingCard
+        label="Send invites"
+        description="Enter the email addresses to invite attendees to your event. They will get an email inviting them to RSVP for your event!"
+      >
+        Here, we show an input form where a lock manager can enter email
+        addresses. We should keep track of invites sent!
+      </SettingCard>
+
+      <SettingCard
+        label="Email attendees"
+        description="Send an email to all the confirmed attendees of your event. "
+      >
+        <SendCustomEmail event={event} checkoutConfig={checkoutConfig} />
       </SettingCard>
     </form>
   )
