@@ -463,23 +463,23 @@ export const Form = ({ onSubmit }: FormProps) => {
             <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
               <Input
                 label="Name:"
-                {...register('metadata.organizerName', {
+                {...register('metadata.emailSender', {
                   required: true,
                 })}
                 autoComplete="off"
                 placeholder="Satoshi Nakamoto"
-                error={errors.metadata?.organizerName}
+                error={errors.metadata?.emailSender}
                 description={`Used on confirmation emails sent to attendees.`}
               />
               <Input
                 label="Email address:"
-                {...register('metadata.organizerEmail', {
+                {...register('metadata.replyTo', {
                   required: true,
                 })}
                 type="email"
                 autoComplete="off"
                 placeholder="your@email.com"
-                error={errors.metadata?.organizerName}
+                error={errors.metadata?.replyTo}
                 description={`Used when users respond to automated emails.`}
               />
             </div>
