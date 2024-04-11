@@ -63,14 +63,14 @@ export const MenuButton = tw.button(
 
 export interface Props {
   ownedKey: Key
-  account: string
+  owner: string
   network: number
 }
 
-function Key({ ownedKey, account, network }: Props) {
+function Key({ ownedKey, owner, network }: Props) {
   const { lock, expiration, tokenId, isExpired, isExtendable, isRenewable } =
     ownedKey
-  const { getWalletService, isUnlockAccount, watchAsset } = useAuth()
+  const { getWalletService, isUnlockAccount, watchAsset, account } = useAuth()
   const wedlockService = useContext(WedlockServiceContext)
   const web3Service = useWeb3Service()
   const config = useConfig()
@@ -195,7 +195,7 @@ function Key({ ownedKey, account, network }: Props) {
       <KeyInfoDrawer
         isOpen={showMoreInfo}
         setIsOpen={setShowMoreInfo}
-        account={account}
+        owner={owner}
         lock={lock}
         tokenId={tokenId}
         network={network}
@@ -207,7 +207,7 @@ function Key({ ownedKey, account, network }: Props) {
         setIsOpen={setShowCancelModal}
         lock={lock}
         tokenId={tokenId}
-        account={account}
+        owner={owner}
         currency={symbol}
         network={network}
         onExpireAndRefund={() => setExpireAndRefunded(true)}
@@ -225,7 +225,7 @@ function Key({ ownedKey, account, network }: Props) {
         setIsOpen={setShowExtendMembership}
         lock={lock}
         tokenId={tokenId}
-        account={account}
+        owner={owner}
         currency={symbol}
         network={network}
         ownedKey={ownedKey}
@@ -256,14 +256,16 @@ function Key({ ownedKey, account, network }: Props) {
           )}
         </div>
         <div className="flex items-center gap-2">
-          <button
-            aria-label="QR Code"
-            className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
-            type="button"
-            onClick={handleQRCodeSignature}
-          >
-            <QrCodeIcon size={18} />
-          </button>
+          {owner == account && (
+            <button
+              aria-label="QR Code"
+              className="inline-flex items-center gap-2 p-2 border rounded-full border-brand-dark hover:bg-gray-50"
+              type="button"
+              onClick={handleQRCodeSignature}
+            >
+              <QrCodeIcon size={18} />
+            </button>
+          )}
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button as={Fragment}>
               <Button
@@ -271,7 +273,7 @@ function Key({ ownedKey, account, network }: Props) {
                 variant="outlined-primary"
                 iconLeft={<ToolsIcon key="options" />}
               >
-                Options
+                Actions
               </Button>
             </Menu.Button>
             <Transition
@@ -309,7 +311,7 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {!isUnlockAccount && (
+                  {owner == account && !isUnlockAccount && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
@@ -323,67 +325,69 @@ function Key({ ownedKey, account, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  {tokenId && isEthPassSupported(network) && (
-                    <>
-                      <Menu.Item>
-                        {({ active, disabled }) => (
-                          <AddToDeviceWallet
-                            platform={Platform.GOOGLE}
-                            disabled={disabled}
-                            active={active}
-                            as={MenuButton}
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                            name={metadata.name}
-                            handlePassUrl={(url: string) => {
-                              window.location.assign(url)
-                            }}
-                          >
-                            <Image
-                              width="16"
-                              height="16"
-                              alt="Google Wallet"
-                              src={`/images/illustrations/google-wallet.svg`}
-                            />
-                            Add to my Google Wallet
-                          </AddToDeviceWallet>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active, disabled }) => (
-                          <AddToDeviceWallet
-                            platform={Platform.APPLE}
-                            disabled={disabled}
-                            active={active}
-                            as={MenuButton}
-                            network={network}
-                            lockAddress={lock.address}
-                            tokenId={tokenId}
-                            name={metadata.name}
-                            handlePassUrl={(url: string) => {
-                              if (isIOS) {
-                                // Download
+                  {owner == account &&
+                    tokenId &&
+                    isEthPassSupported(network) && (
+                      <>
+                        <Menu.Item>
+                          {({ active, disabled }) => (
+                            <AddToDeviceWallet
+                              platform={Platform.GOOGLE}
+                              disabled={disabled}
+                              active={active}
+                              as={MenuButton}
+                              network={network}
+                              lockAddress={lock.address}
+                              tokenId={tokenId}
+                              name={metadata.name}
+                              handlePassUrl={(url: string) => {
                                 window.location.assign(url)
-                              } else if (setPassUrl) {
-                                // Show the modal
-                                setPassUrl(url)
-                                setShowApplePassModal(true)
-                              }
-                            }}
-                          >
-                            <Image
-                              width="16"
-                              height="16"
-                              alt="Apple Wallet"
-                              src={`/images/illustrations/apple-wallet.svg`}
-                            />
-                            Add to my Apple Wallet
-                          </AddToDeviceWallet>
-                        )}
-                      </Menu.Item>
-                    </>
-                  )}
+                              }}
+                            >
+                              <Image
+                                width="16"
+                                height="16"
+                                alt="Google Wallet"
+                                src={`/images/illustrations/google-wallet.svg`}
+                              />
+                              Add to my Google Wallet
+                            </AddToDeviceWallet>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active, disabled }) => (
+                            <AddToDeviceWallet
+                              platform={Platform.APPLE}
+                              disabled={disabled}
+                              active={active}
+                              as={MenuButton}
+                              network={network}
+                              lockAddress={lock.address}
+                              tokenId={tokenId}
+                              name={metadata.name}
+                              handlePassUrl={(url: string) => {
+                                if (isIOS) {
+                                  // Download
+                                  window.location.assign(url)
+                                } else if (setPassUrl) {
+                                  // Show the modal
+                                  setPassUrl(url)
+                                  setShowApplePassModal(true)
+                                }
+                              }}
+                            >
+                              <Image
+                                width="16"
+                                height="16"
+                                alt="Apple Wallet"
+                                src={`/images/illustrations/apple-wallet.svg`}
+                              />
+                              Add to my Apple Wallet
+                            </AddToDeviceWallet>
+                          )}
+                        </Menu.Item>
+                      </>
+                    )}
                   <Menu.Item>
                     {({ active, disabled }) => (
                       <MenuButton
@@ -399,7 +403,7 @@ function Key({ ownedKey, account, network }: Props) {
                       </MenuButton>
                     )}
                   </Menu.Item>
-                  {receiptsPageUrl?.length && (
+                  {owner == account && receiptsPageUrl?.length && (
                     <Menu.Item>
                       {({ active, disabled }) => (
                         <MenuButton
@@ -413,41 +417,46 @@ function Key({ ownedKey, account, network }: Props) {
                       )}
                     </Menu.Item>
                   )}
-                  <Menu.Item disabled={!isExtendable}>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setShowExtendMembership(true)
-                        }}
-                      >
-                        <ExtendMembershipIcon />
-                        {isRenewable && !isKeyExpired
-                          ? 'Renew membership'
-                          : 'Extend membership'}
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
+                  {/* This should go in the details modal! */}
+                  {owner == account && (
+                    <Menu.Item disabled={!isExtendable}>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled}
+                          active={active}
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setShowExtendMembership(true)
+                          }}
+                        >
+                          <ExtendMembershipIcon />
+                          {isRenewable && !isKeyExpired
+                            ? 'Renew membership'
+                            : 'Extend membership'}
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  )}
                 </div>
-                <div className="p-1">
-                  <Menu.Item disabled={!isRefundable}>
-                    {({ active, disabled }) => (
-                      <MenuButton
-                        disabled={disabled}
-                        active={active}
-                        onClick={(event) => {
-                          event.preventDefault()
-                          setShowCancelModal(!showCancelModal)
-                        }}
-                      >
-                        <CancelIcon />
-                        Cancel and refund
-                      </MenuButton>
-                    )}
-                  </Menu.Item>
-                </div>
+                {owner == account && !isUnlockAccount && (
+                  <div className="p-1">
+                    <Menu.Item disabled={!isRefundable}>
+                      {({ active, disabled }) => (
+                        <MenuButton
+                          disabled={disabled}
+                          active={active}
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setShowCancelModal(!showCancelModal)
+                          }}
+                        >
+                          <CancelIcon />
+                          Cancel and refund
+                        </MenuButton>
+                      )}
+                    </Menu.Item>
+                  </div>
+                )}
               </Menu.Items>
             </Transition>
           </Menu>

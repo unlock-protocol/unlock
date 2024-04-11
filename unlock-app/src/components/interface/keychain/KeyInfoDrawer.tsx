@@ -88,7 +88,7 @@ interface KeyInfoProps {
   tokenId: string
   network: number
   lock: any
-  account: string
+  owner: string
   expiration: string
   imageURL?: string
 }
@@ -97,7 +97,7 @@ export const KeyInfo = ({
   tokenId,
   lock,
   network,
-  account,
+  owner,
   expiration,
   imageURL,
 }: KeyInfoProps) => {
@@ -164,7 +164,7 @@ export const KeyInfo = ({
       },
       {
         retry: 0,
-        enabled: !!(lock?.address && account),
+        enabled: !!(lock?.address && owner),
         onError(error) {
           console.error(error)
         },
@@ -386,7 +386,7 @@ interface KeyInfoDrawerProps {
   tokenId: string
   network: number
   lock: any
-  account: string
+  owner: string
   expiration: string
   imageURL?: string
 }
@@ -397,14 +397,14 @@ export const KeyInfoDrawer = ({
   lock,
   tokenId,
   network,
-  account,
+  owner,
   expiration,
   imageURL,
 }: KeyInfoDrawerProps) => {
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       <KeyInfo
-        account={account}
+        owner={owner}
         lock={lock}
         tokenId={tokenId}
         network={network}

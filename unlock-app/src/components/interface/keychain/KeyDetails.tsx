@@ -1,20 +1,27 @@
 import React, { useContext } from 'react'
-import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import Key from './Key'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useKeys } from '~/hooks/useKeys'
-import { Placeholder } from '@unlock-protocol/ui'
+import { minifyAddress, Placeholder } from '@unlock-protocol/ui'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
+import networks from '@unlock-protocol/networks'
+import { NetworkConfig } from '@unlock-protocol/types'
 
-export const KeyDetails = () => {
+export const KeyDetails = ({ owner }: { owner: string }) => {
   const { account } = useContext(AuthenticationContext)
   const { keys, isKeysLoading } = useKeys({
-    owner: account,
+    owner,
+    networks: Object.values(networks)
+      .filter((item: NetworkConfig) => !item.isTestNetwork || owner === account)
+      .map((item: NetworkConfig) => item.id),
   })
 
   if (!keys?.length && !isKeysLoading) {
     return (
       <ImageBar
-        description="You don't have any keys yet"
+        description={`The address ${minifyAddress(
+          owner
+        )} does not have any key yet`}
         src="/images/illustrations/img-error.svg"
       />
     )
@@ -36,11 +43,11 @@ export const KeyDetails = () => {
           </Placeholder.Root>
         ))}
       {!isKeysLoading &&
-        keys?.map((item) => (
+        keys?.map((item: any) => (
           <Key
             key={item.id}
             ownedKey={item}
-            account={account!}
+            owner={owner!}
             network={item.network}
           />
         ))}
