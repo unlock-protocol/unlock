@@ -459,6 +459,32 @@ export const Form = ({ onSubmit }: FormProps) => {
             </div>
           </Disclosure>
 
+          <Disclosure label="Organizer" defaultOpen>
+            <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
+              <Input
+                label="Name:"
+                {...register('metadata.organizerName', {
+                  required: true,
+                })}
+                autoComplete="off"
+                placeholder="Satoshi Nakamoto"
+                error={errors.metadata?.organizerName}
+                description={`Used on confirmation emails sent to attendees.`}
+              />
+              <Input
+                label="Email address:"
+                {...register('metadata.organizerEmail', {
+                  required: true,
+                })}
+                type="email"
+                autoComplete="off"
+                placeholder="your@email.com"
+                error={errors.metadata?.organizerName}
+                description={`Used when users respond to automated emails.`}
+              />
+            </div>
+          </Disclosure>
+
           <Disclosure label="Attendee Screening" defaultOpen>
             <div className="flex ">
               <p>
