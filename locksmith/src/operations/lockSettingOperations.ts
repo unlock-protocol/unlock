@@ -52,6 +52,8 @@ export async function getSettings({
     },
   })
 
+  // Also check if this is part of an event and then let the event take precedence!
+
   const res = settings || DEFAULT_LOCK_SETTINGS
   attributesExcludes.forEach((attr) => {
     // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type
