@@ -10,6 +10,7 @@ import { OpenSeaIcon } from '../icons'
 import { Tooltip } from '@unlock-protocol/ui'
 import networks from '@unlock-protocol/networks'
 import { useRouter } from 'next/router'
+import OwnerSocials from '../interface/keychain/OwnerSocials'
 
 export const KeychainContent = () => {
   const { account } = useAuth()
@@ -30,9 +31,8 @@ export const KeychainContent = () => {
     <AppLayout
       authRequired={!owner}
       title={
-        <div className="flex justify-between">
-          <h1 className="text-3xl font-bold">Member Keychain</h1>
-
+        <div className="flex justify-between gap-8">
+          {owner && <OwnerSocials owner={owner} />}
           {networkConfig && owner && (
             <div className="flex gap-3">
               {networkConfig.blockScan && networkConfig.blockScan.url && (
@@ -67,11 +67,11 @@ export const KeychainContent = () => {
           )}
         </div>
       }
-      description="A Key is a membership NFT created on Unlock Protocol"
     >
       <Head>
         <title>{pageTitle('Member Keychain')}</title>
       </Head>
+
       {owner && <KeyDetails owner={owner} />}
     </AppLayout>
   )

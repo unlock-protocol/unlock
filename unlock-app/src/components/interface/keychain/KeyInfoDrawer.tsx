@@ -233,7 +233,7 @@ export const KeyInfo = ({
             {`${keyPrice.amount} ${keyPrice.symbol}`}
           </KeyItem>
         )}
-        {subscription && (
+        {expiration !== MAX_UINT && subscription && (
           <KeyRenewal
             possibleRenewals={subscription.possibleRenewals!}
             approvedRenewals={subscription.approvedRenewals!}

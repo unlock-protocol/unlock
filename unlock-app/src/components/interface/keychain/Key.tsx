@@ -484,7 +484,12 @@ function Key({ ownedKey, owner, network }: Props) {
             {lock?.name?.slice(0, 2)}
           </AvatarFallback>
         </Avatar>
-        <div className="flex items-center justify-between rounded">
+        <div className="flex items-center justify-between text-sm">
+          {networkName && (
+            <div className="flex items-center justify-between gap-2 py-1">
+              <span className="">{networkName}</span>
+            </div>
+          )}
           <div className="inline-flex items-center gap-2">
             {minifyAddress(lock.address)}
             <button
@@ -497,25 +502,9 @@ function Key({ ownedKey, owner, network }: Props) {
             >
               <CopyLineIcon size={18} />
             </button>
-          </div>
-          <a
-            href={config.networks?.[network]?.explorer?.urls.address(
-              lock.address
-            )}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 text-ui-main-500 px-2 py-0.5 rounded-lg bg-ui-main-50 hover:bg-ui-main-100 hover:text-ui-main-600"
-          >
-            View <ExternalIcon size={18} />
-          </a>
+          </div>{' '}
         </div>
         <h3 className="text-xl font-bold rounded">{lock.name}</h3>
-        {networkName && (
-          <div className="flex items-center justify-between gap-2 py-1">
-            <span className="text-gray-500">Network</span>
-            <span className="font-bold">{networkName}</span>
-          </div>
-        )}
       </div>
     </Card>
   )
