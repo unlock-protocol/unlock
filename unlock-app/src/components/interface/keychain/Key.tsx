@@ -37,10 +37,7 @@ import {
   RiNavigationFill as ExploreIcon,
   RiQrCodeLine as QrCodeIcon,
 } from 'react-icons/ri'
-import {
-  RiFileCopyLine as CopyLineIcon,
-  RiExternalLinkFill as ExternalIcon,
-} from 'react-icons/ri'
+import { RiFileCopyLine as CopyLineIcon } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
 import { Key } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'

@@ -2,7 +2,6 @@ import { useSocials } from '~/hooks/useSocials'
 import { Placeholder } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import Image from 'next/image'
-import { FaUser } from 'react-icons/fa'
 
 export const OwnerSocials = ({ owner }: { owner: string }) => {
   const { socials, loading } = useSocials([owner])
