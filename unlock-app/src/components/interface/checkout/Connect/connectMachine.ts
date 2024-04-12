@@ -1,4 +1,4 @@
-import { Actor, ActorRefFrom, createMachine } from 'xsatev5'
+import { Actor, ActorRefFrom, createMachine } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 interface UnlockAccountEvent {

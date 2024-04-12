@@ -6,7 +6,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -21,7 +21,7 @@ import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
-import { ActorRef, AnyTransitionConfig } from 'xsatev5'
+import { ActorRef, AnyTransitionConfig } from 'xstate'
 
 interface MintingScreenProps {
   lockName: string
@@ -184,24 +184,21 @@ export function Minting({
 
           checkoutService.send({
             type: 'CONFIRM_MINT',
-            params: {
-              status: 'FINISHED',
-              network: mint!.network,
-              transactionHash: mint!.transactionHash!,
-            },
+            status: 'FINISHED',
+            network: mint!.network,
+            transactionHash: mint!.transactionHash!,
           })
           setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
+          console.log('Error waiting for confirmation', error)
           ToastHelper.error(error.message)
           checkoutService.send({
             type: 'CONFIRM_MINT',
-            params: {
-              status: 'ERROR',
-              network: mint!.network,
-              transactionHash: mint!.transactionHash,
-            },
+            status: 'ERROR',
+            network: mint!.network,
+            transactionHash: mint!.transactionHash,
           })
         }
       }

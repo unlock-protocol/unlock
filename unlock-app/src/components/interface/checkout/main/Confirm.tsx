@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Fragment } from 'react'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -12,7 +12,7 @@ import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown
@@ -51,11 +51,9 @@ export function Confirm({
     }
     checkoutService.send({
       type: 'CONFIRM_MINT',
-      params: {
-        status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
-        transactionHash: hash!,
-        network,
-      },
+      status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
+      transactionHash: hash!,
+      network,
     })
   }
 
@@ -67,7 +65,7 @@ export function Confirm({
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
-          onError={onError}
+          onError={() => console.log('error', 1)}
         />
       )}
       {payment.method === 'swap_and_purchase' && (

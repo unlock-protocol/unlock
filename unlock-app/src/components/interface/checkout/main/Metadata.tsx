@@ -21,7 +21,7 @@ import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -35,7 +35,7 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 import { s } from 'vitest/dist/types-198fd1d9'
 interface Props {
   injectedProvider: unknown
@@ -375,7 +375,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         (item) => item.keyManager || item.recipient
       )
       await updateUsersMetadata(metadata)
-      send({
+      checkoutService.send({
         type: 'SELECT_RECIPIENTS',
         recipients,
         keyManagers,

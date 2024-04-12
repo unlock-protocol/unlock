@@ -8,7 +8,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useMachine, useSelector } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
@@ -21,7 +21,7 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
-import { createActor } from 'xsatev5'
+import { createActor } from 'xstate'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfigType
@@ -37,13 +37,13 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  const checkoutService = createActor(checkoutMachine, {
+  const [state, send, checkoutService] = useMachine(checkoutMachine, {
     input: {
       paywallConfig,
     },
-  }).start()
-
-  const state = useSelector(checkoutService, (s) => s)
+  })
+  console.log('snapshot', state)
+  //const state = useSelector(checkoutService, (s) => s)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context
@@ -258,7 +258,7 @@ export function Checkout({
         return null
       }
     }
-  }, [injectedProvider, onClose, checkoutService, matched, communication])
+  }, [injectedProvider, onClose, send, matched, communication])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

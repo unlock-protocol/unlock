@@ -7,7 +7,7 @@ import {
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -15,7 +15,7 @@ import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown

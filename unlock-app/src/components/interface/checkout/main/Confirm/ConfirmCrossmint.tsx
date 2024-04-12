@@ -5,7 +5,7 @@ import {
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { Fragment, useCallback, useState } from 'react'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'

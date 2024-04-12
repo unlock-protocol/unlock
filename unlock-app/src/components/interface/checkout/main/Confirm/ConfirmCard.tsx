@@ -5,7 +5,7 @@ import { Button, Detail } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -23,7 +23,7 @@ import { formatFiatPriceFromCents } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
-import { Actor, ActorRef } from 'xsatev5'
+import { Actor, ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown

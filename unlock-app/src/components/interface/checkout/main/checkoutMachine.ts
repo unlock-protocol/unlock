@@ -3,7 +3,7 @@ import {
   PaywallConfigType,
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
-import { createMachine, assign, ActorRefFrom } from 'xsatev5'
+import { createMachine, assign, ActorRefFrom, setup } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 import { Actor } from 'xstate'
 
@@ -618,15 +618,12 @@ export const checkoutMachine = createMachine(
         },
       },
       MINTING: {
+        type: 'final',
         on: {
           CONFIRM_MINT: {
-            target: 'MINTED',
             actions: ['confirmMint'],
           },
         },
-      },
-      MINTED: {
-        type: 'final',
       },
 
       UNLOCK_ACCOUNT: {
@@ -716,11 +713,11 @@ export const checkoutMachine = createMachine(
       // @ts-ignore
       confirmMint: assign({
         // @ts-ignore
-        mint: (_, params: { status; transactionHash; network }) => {
+        mint: ({ event }) => {
           return {
-            status: params.status,
-            transactionHash: params.transactionHash,
-            network: params.network,
+            status: event.status,
+            transactionHash: event.transactionHash,
+            network: event.network,
           } as const
         },
       }),

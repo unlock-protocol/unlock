@@ -2,7 +2,7 @@ import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -29,7 +29,7 @@ import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
-import { Actor, ActorRef } from 'xsatev5'
+import { Actor, ActorRef } from 'xstate'
 interface Props {
   injectedProvider: unknown
   checkoutService: ActorRef<any, any>

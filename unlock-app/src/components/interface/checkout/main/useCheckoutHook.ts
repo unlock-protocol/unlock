@@ -1,10 +1,10 @@
 import { useQueries } from '@tanstack/react-query'
 import { networks } from '@unlock-protocol/networks'
 import { HookType } from '@unlock-protocol/types'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CheckoutHookType, CheckoutService } from './checkoutMachine'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 
 type LockHookProps = Record<string, CheckoutHookType | undefined>
 const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {

@@ -1,4 +1,4 @@
-import { createMachine, assign, ActorRefFrom, Actor } from 'xsatev5'
+import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
 
 interface SubmitUserEvent {
   type: 'SUBMIT_USER'

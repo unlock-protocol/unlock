@@ -1,5 +1,5 @@
 // Not sure, here we use checkout and account machines
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import {
   CheckoutHookType,
@@ -8,7 +8,7 @@ import {
 } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { shouldSkip } from './utils'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 
 export function useStepperItems(
   service: ActorRef<any, any>,

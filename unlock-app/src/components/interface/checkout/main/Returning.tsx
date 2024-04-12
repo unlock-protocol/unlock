@@ -6,7 +6,7 @@ import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -18,7 +18,7 @@ import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown
@@ -35,7 +35,8 @@ export function Returning({
 }: Props) {
   const config = useConfig()
   const state = useSelector(checkoutService, (state) => state)
-  const { paywallConfig, lock, messageToSign: signedMessage } = state
+  console.log('Context of the state', state.context)
+  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign

@@ -5,8 +5,8 @@ import { ConfirmConnect } from './Confirm'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
-import { useActor, useSelector } from '@xstate/reactv4'
-import { createActor } from 'xsatev5'
+import { useActor, useSelector } from '@xstate/react'
+import { createActor } from 'xstate'
 
 interface Props {
   oauthConfig: OAuthConfig

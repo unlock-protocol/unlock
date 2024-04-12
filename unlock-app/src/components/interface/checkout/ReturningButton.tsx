@@ -1,9 +1,9 @@
 import type { ForwardedRef, InputHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { CheckoutService } from './main/checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
-import { Actor, ActorRef } from 'xsatev5'
+import { Actor, ActorRef } from 'xstate'
 
 interface ReturningButtonProps
   extends Omit<InputHTMLAttributes<HTMLButtonElement>, 'type' | 'id' | 'size'> {

@@ -6,11 +6,11 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown

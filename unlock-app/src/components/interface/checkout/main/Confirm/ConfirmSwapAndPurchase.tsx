@@ -5,7 +5,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -143,10 +143,8 @@ export function ConfirmSwapAndPurchase({
         if (error) {
           checkoutService.send({
             type: 'CONFIRM_MINT',
-            params: {
-              status: 'ERROR',
-              transactionHash: hash!,
-            },
+            status: 'ERROR',
+            transactionHash: hash!,
           })
         } else if (hash) {
           onConfirmed(lockAddress, hash)

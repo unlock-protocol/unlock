@@ -6,7 +6,7 @@ import { Connected } from '../Connected'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
@@ -17,7 +17,7 @@ import LoadingIcon from '../../Loading'
 
 import { useDebounce } from 'react-use'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { ActorRef } from 'xsatev5'
+import { ActorRef } from 'xstate'
 interface Props {
   injectedProvider: unknown
   checkoutService: ActorRef<any, any>

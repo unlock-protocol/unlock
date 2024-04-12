@@ -1,5 +1,5 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { useActor } from '@xstate/reactv4'
+import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'

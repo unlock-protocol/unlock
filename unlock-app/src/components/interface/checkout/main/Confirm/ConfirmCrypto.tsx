@@ -7,7 +7,7 @@ import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
-import { useActor, useSelector } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -167,10 +167,8 @@ export function ConfirmCrypto({
         if (error) {
           checkoutService.send({
             type: 'CONFIRM_MINT',
-            params: {
-              status: 'ERROR',
-              transactionHash: hash!,
-            },
+            status: 'ERROR',
+            transactionHash: hash!,
           })
         } else if (hash) {
           onConfirmed(lockAddress, hash)
