@@ -2,43 +2,15 @@ import { BasicPaywallConfigSchema } from '~/unlockTypes'
 import { useForm } from 'react-hook-form'
 import {
   Input,
-  FieldLayout,
+  Checkbox,
   TextBox,
   Button,
   ImageUpload,
   Modal,
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
-import { InputHTMLAttributes, forwardRef, useState } from 'react'
+import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
-
-interface CheckBoxInputProps extends InputHTMLAttributes<HTMLInputElement> {
-  label: string
-  error?: string
-  description?: string
-}
-
-export const CheckBoxInput = forwardRef<HTMLInputElement, CheckBoxInputProps>(
-  ({ label, error, description, ...rest }, ref) => {
-    return (
-      <FieldLayout size="small" description={description} error={error}>
-        <div className="flex items-center gap-3">
-          <input
-            ref={ref}
-            type="checkbox"
-            className="cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent"
-            {...rest}
-          />
-          <label className="text-sm" htmlFor={label}>
-            {label}
-          </label>
-        </div>
-      </FieldLayout>
-    )
-  }
-)
-
-CheckBoxInput.displayName = 'CheckBoxInput'
 
 interface Props {
   onChange: (values: z.infer<typeof BasicPaywallConfigSchema>) => void
@@ -149,7 +121,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         })}
         error={errors.messageToSign?.message}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Persistent Checkout"
         description={
           BasicPaywallConfigSchema.shape.persistentCheckout.description
@@ -157,25 +129,25 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         error={errors.persistentCheckout?.message}
         {...register('persistentCheckout')}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Hide Sold Out Locks"
         description={BasicPaywallConfigSchema.shape.hideSoldOut.description}
         error={errors.hideSoldOut?.message}
         {...register('hideSoldOut')}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Skip Recipient"
         description={BasicPaywallConfigSchema.shape.skipRecipient.description}
         error={errors.skipRecipient?.message}
         {...register('skipRecipient')}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Skip Select"
         description={BasicPaywallConfigSchema.shape.skipSelect.description}
         error={errors.skipSelect?.message}
         {...register('skipSelect')}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Pessimistic"
         description={BasicPaywallConfigSchema.shape.pessimistic.description}
         error={errors.pessimistic?.message}
