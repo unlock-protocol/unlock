@@ -11,6 +11,7 @@ import { useMultipleLockData } from '~/hooks/useLockData'
 import { useState } from 'react'
 import { useCustomEmailSend } from '~/hooks/useCustomEmail'
 import { useForm } from 'react-hook-form'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface EmailsProps {
   event: Event
@@ -29,6 +30,7 @@ interface SendCustomEmailData {
 interface ConfirmModalProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
+  onSuccess: () => void
   formData: SendCustomEmailData
   checkoutConfig: {
     id?: string
@@ -39,6 +41,7 @@ interface ConfirmModalProps {
 export const ConfirmModal = ({
   isOpen,
   setIsOpen,
+  onSuccess,
   formData,
   checkoutConfig,
 }: ConfirmModalProps) => {
@@ -49,20 +52,30 @@ export const ConfirmModal = ({
 
   const onSubmit = async () => {
     const { subject, content, ...locks } = formData
-    await Promise.all(
-      Object.keys(locks).map(async (address) => {
-        if (locks[address]) {
-          await sendCustomEmail({
-            network:
-              checkoutConfig.config.locks[address].network ||
-              checkoutConfig.config.network!,
-            lockAddress: address,
-            content,
-            subject,
-          })
-        }
-      })
+
+    await ToastHelper.promise(
+      Promise.all(
+        Object.keys(locks).map(async (address) => {
+          if (locks[address]) {
+            await sendCustomEmail({
+              network:
+                checkoutConfig.config.locks[address].network ||
+                checkoutConfig.config.network!,
+              lockAddress: address,
+              content,
+              subject,
+            })
+          }
+        })
+      ),
+      {
+        success: 'Emails sent!',
+        error: 'There was an error while sending the emails.',
+        loading: 'Sending the emails... please stand-by!',
+      }
     )
+    onSuccess()
+    setIsOpen(false)
     return false
   }
 
@@ -104,6 +117,7 @@ export const SendCustomEmail = ({ checkoutConfig }: EmailsProps) => {
     setError,
     clearErrors,
     handleSubmit,
+    reset,
     formState: { errors, isValid },
   } = useForm<SendCustomEmailData>({
     defaultValues: {
@@ -128,6 +142,7 @@ export const SendCustomEmail = ({ checkoutConfig }: EmailsProps) => {
     <div>
       {formData && (
         <ConfirmModal
+          onSuccess={() => reset()}
           checkoutConfig={checkoutConfig}
           formData={formData}
           isOpen={confirm}
