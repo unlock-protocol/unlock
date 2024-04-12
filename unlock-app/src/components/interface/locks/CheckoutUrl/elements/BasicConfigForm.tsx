@@ -9,7 +9,7 @@ import {
   Modal,
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
-import { InputHTMLAttributes, forwardRef, useState } from 'react'
+import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
 
 interface Props {
