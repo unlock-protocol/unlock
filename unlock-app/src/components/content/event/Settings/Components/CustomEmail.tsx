@@ -23,28 +23,52 @@ interface EmailsProps {
 interface SendCustomEmailData {
   subject: string
   content: string
+  [lockAddress: string]: boolean | string
 }
 
-export const SendCustomEmail = ({ event, checkoutConfig }: EmailsProps) => {
-  const [confirm, setIsConfirm] = useState(false)
+interface ConfirmModalProps {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+  formData: SendCustomEmailData
+  checkoutConfig: {
+    id?: string
+    config: PaywallConfigType
+  }
+}
+
+export const ConfirmModal = ({
+  isOpen,
+  setIsOpen,
+  formData,
+  checkoutConfig,
+}: ConfirmModalProps) => {
   const { mutateAsync: sendCustomEmail, isLoading: isSendingCustomEmail } =
     useCustomEmailSend()
-  const onSubmit = (data: SendCustomEmailData) => {
-    console.log(data)
-    setIsConfirm(true)
-    // sendCustomEmail()
+
+  const { handleSubmit } = useForm()
+
+  const onSubmit = async () => {
+    const { subject, content, ...locks } = formData
+    await Promise.all(
+      Object.keys(locks).map(async (address) => {
+        if (locks[address]) {
+          await sendCustomEmail({
+            network:
+              checkoutConfig.config.locks[address].network ||
+              checkoutConfig.config.network!,
+            lockAddress: address,
+            content,
+            subject,
+          })
+        }
+      })
+    )
     return false
   }
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SendCustomEmailData>()
 
-  const locks = useMultipleLockData(checkoutConfig.config.locks)
   return (
-    <div>
-      <Modal isOpen={confirm} setIsOpen={setIsConfirm}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4">
           <header className="leading-relaxed">
             <h1 className="text-xl font-bold">Confirm Email</h1>
@@ -57,7 +81,7 @@ export const SendCustomEmail = ({ event, checkoutConfig }: EmailsProps) => {
             <Button
               disabled={isSendingCustomEmail}
               variant="outlined-primary"
-              onClick={() => setIsConfirm(false)}
+              onClick={() => setIsOpen(false)}
             >
               Cancel
             </Button>
@@ -66,23 +90,89 @@ export const SendCustomEmail = ({ event, checkoutConfig }: EmailsProps) => {
             </Button>
           </div>
         </div>
-      </Modal>
+      </form>
+    </Modal>
+  )
+}
+
+export const SendCustomEmail = ({ checkoutConfig }: EmailsProps) => {
+  const [confirm, setIsConfirm] = useState(false)
+  const [formData, setFormData] = useState<SendCustomEmailData | undefined>()
+
+  const {
+    register,
+    setError,
+    clearErrors,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SendCustomEmailData>({
+    defaultValues: {
+      subject: '',
+      content: '',
+      ...Object.keys(checkoutConfig.config.locks).reduce(
+        (acc, address) => ({ ...acc, [address]: true }),
+        {}
+      ),
+    },
+  })
+
+  const loadingLocks = useMultipleLockData(checkoutConfig.config.locks)
+
+  const onSubmit = (data: SendCustomEmailData) => {
+    setFormData(data)
+    setIsConfirm(true)
+    return false
+  }
+
+  return (
+    <div>
+      {formData && (
+        <ConfirmModal
+          checkoutConfig={checkoutConfig}
+          formData={formData}
+          isOpen={confirm}
+          setIsOpen={setIsConfirm}
+        />
+      )}
+
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-2">
-        <p> Cool!</p>
-        <ul className="flex gap-4">
-          {locks.map(({ lock, isLockLoading }, index) => {
-            if (isLockLoading) {
-              return (
-                <Placeholder.Root key={index}>
-                  <Placeholder.Line width="sm" />
-                </Placeholder.Root>
-              )
-            } else {
-              return <Checkbox key={index} label={lock.name} />
-            }
-          })}
-        </ul>
-        <p>Still cool!</p>{' '}
+        {loadingLocks.map(({ lock, isLockLoading }, index) => {
+          if (isLockLoading || !lock) {
+            return (
+              <Placeholder.Root key={index}>
+                <Placeholder.Line width="sm" />
+              </Placeholder.Root>
+            )
+          } else {
+            return (
+              <div
+                key={index}
+                className={loadingLocks.length == 1 ? 'hidden' : ''}
+              >
+                <Checkbox
+                  {...register(lock.address, {
+                    validate: (_, { subject, content, ...locksToSend }) => {
+                      if (!Object.values(locksToSend).some((value) => value)) {
+                        setError('root', {
+                          type: 'custom',
+                          message: 'At least one lock must be selected',
+                        })
+                      } else {
+                        clearErrors('root')
+                      }
+                      return true
+                    },
+                  })}
+                  label={lock.name}
+                />
+              </div>
+            )
+          }
+        })}
+        {errors.root && (
+          <p className="text-red-500 text-sm">{errors.root.message}</p>
+        )}
+
         <Input
           label="Subject"
           placeholder="Update regarding the event"
@@ -114,7 +204,7 @@ export const SendCustomEmail = ({ event, checkoutConfig }: EmailsProps) => {
           })}
         />
         <div className="flex justify-end gap-6">
-          <Button type="submit">Send</Button>
+          <Button disabled={!isValid}>Send</Button>
         </div>
       </form>
     </div>
