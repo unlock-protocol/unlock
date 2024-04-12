@@ -2,7 +2,7 @@ import { BasicPaywallConfigSchema } from '~/unlockTypes'
 import { useForm } from 'react-hook-form'
 import {
   Input,
-  FieldLayout,
+  Checkbox,
   TextBox,
   Button,
   ImageUpload,
