@@ -1,4 +1,10 @@
-import { Button, Disclosure, Placeholder, Detail } from '@unlock-protocol/ui'
+import {
+  Button,
+  Disclosure,
+  Placeholder,
+  Detail,
+  PriceFormatter,
+} from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
@@ -175,7 +181,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
-                  {(multiplier * parseFloat(receiptPrice?.total)).toFixed(2)}{' '}
+                  <PriceFormatter
+                    price={(
+                      multiplier * parseFloat(receiptPrice?.total)
+                    ).toString()}
+                  />{' '}
                   {symbol}
                 </Detail>
               </div>
