@@ -1,5 +1,5 @@
 // Not sure, here we use checkout and account machines
-import { useActor } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { StepItem } from '../Stepper'
 import {
   CheckoutHookType,
@@ -8,9 +8,10 @@ import {
 } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { shouldSkip } from './utils'
+import { ActorRef } from 'xsatev5'
 
 export function useStepperItems(
-  service: CheckoutService | UnlockAccountService,
+  service: ActorRef<any, any>,
   {
     isUnlockAccount,
     hookType,
@@ -23,7 +24,7 @@ export function useStepperItems(
     existingMember?: boolean
   } = {}
 ) {
-  const [state] = useActor(service)
+  const state = useSelector(service, (state) => state)
   if (isUnlockAccount) {
     return [
       {

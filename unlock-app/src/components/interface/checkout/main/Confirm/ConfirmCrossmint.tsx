@@ -5,7 +5,7 @@ import {
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { Fragment, useCallback, useState } from 'react'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -44,7 +44,7 @@ export function ConfirmCrossmint({
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
   const { email, account } = useAuth()
-  const [state] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
 

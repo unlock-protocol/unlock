@@ -7,7 +7,7 @@ import {
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -15,14 +15,15 @@ import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import { ActorRef } from 'xsatev5'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
 }
 
 export function Quantity({ injectedProvider, checkoutService }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
 
   const { paywallConfig, quantity: selectedQuantity } = state.context
@@ -136,7 +137,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
               disabled={isDisabled}
               onClick={async (event) => {
                 event.preventDefault()
-                send({
+                checkoutService.send({
                   type: 'SELECT_QUANTITY',
                   quantity,
                 })

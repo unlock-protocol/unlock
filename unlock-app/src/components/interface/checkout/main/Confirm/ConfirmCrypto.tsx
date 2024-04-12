@@ -7,7 +7,7 @@ import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -35,7 +35,7 @@ export function ConfirmCrypto({
   onConfirmed,
   onError,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { account, getWalletService } = useAuth()
   const config = useConfig()
   const web3Service = useWeb3Service()
@@ -165,10 +165,12 @@ export function ConfirmCrypto({
       const onErrorCallback = (error: Error | null, hash: string | null) => {
         setIsConfirming(false)
         if (error) {
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
-            status: 'ERROR',
-            transactionHash: hash!,
+            params: {
+              status: 'ERROR',
+              transactionHash: hash!,
+            },
           })
         } else if (hash) {
           onConfirmed(lockAddress, hash)

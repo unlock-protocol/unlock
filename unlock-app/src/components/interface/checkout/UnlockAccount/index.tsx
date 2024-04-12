@@ -1,4 +1,4 @@
-import { useActor } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/reactv4'
 import useAccount from '~/hooks/useAccount'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import UnlockProvider from '~/services/unlockProvider'
@@ -18,7 +18,7 @@ export function UnlockAccount({
   injectedProvider,
 }: Props) {
   const config = useConfig()
-  const [state] = useActor(unlockAccountService)
+  const state = useSelector(unlockAccountService, (state) => state)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,

@@ -2,7 +2,7 @@ import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -29,9 +29,10 @@ import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import { Actor, ActorRef } from 'xsatev5'
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
 }
 
 interface LockOptionProps {
@@ -183,7 +184,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 }
 
 export function Select({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { paywallConfig, lock: selectedLock } = state.context
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
@@ -341,7 +342,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       return
     }
 
-    send({
+    checkoutService.send({
       type: 'SELECT_LOCK',
       lock,
       existingMember: !!membership?.member,
@@ -360,7 +361,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     skipQuantity,
     skipRecipient,
     isUnlockAccount,
-    send,
+    checkoutService,
     skipSelect,
     isLoading,
   ])
@@ -449,7 +450,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
-                send({
+                console.log(checkoutService.getSnapshot())
+
+                checkoutService.send({
                   type: 'SELECT_LOCK',
                   lock,
                   existingMember: lock.isMember,
@@ -459,6 +462,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   recipients: account ? [account] : [],
                   hook: hookType,
                 })
+
+                console.log(checkoutService.getSnapshot())
               }}
             >
               Next

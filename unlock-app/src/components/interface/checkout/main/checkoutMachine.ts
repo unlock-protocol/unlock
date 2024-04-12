@@ -3,7 +3,7 @@ import {
   PaywallConfigType,
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
-import { createMachine, assign } from 'xsatev5'
+import { createMachine, assign, ActorRefFrom } from 'xsatev5'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 import { Actor } from 'xstate'
 
@@ -667,21 +667,21 @@ export const checkoutMachine = createMachine(
 
       selectLock: assign({
         //@ts-ignore
-        lock: (context, event) => event.params.lock,
+        lock: ({ context, event }) => event.lock,
         //@ts-ignore
-        renew: (context, event) => event.expiredMember,
+        renew: ({ context, event }) => event.expiredMember,
         //@ts-ignore
-        skipQuantity: (context, event) => event.skipQuantity,
+        skipQuantity: ({ context, event }) => event.skipQuantity,
         //@ts-ignore
-        skipRecipient: (context, event) => event.skipRecipient,
+        skipRecipient: ({ context, event }) => event.skipRecipient,
         //@ts-ignore
-        recipients: (context, event) => event.recipients,
+        recipients: ({ context, event }) => event.recipients,
         //@ts-ignore
-        keyManagers: (context, event) => event.keyManagers,
+        keyManagers: ({ context, event }) => event.keyManagers,
         //@ts-ignore
-        hook: (context, event) => event.hook,
+        hook: ({ context, event }) => event.hook,
         //@ts-ignore
-        existingMember: (context, event) => event.existingMember,
+        existingMember: ({ context, event }) => event.existingMember,
       }),
 
       selectQuantity: assign({
@@ -749,4 +749,4 @@ export const checkoutMachine = createMachine(
   }
 )
 
-export type CheckoutService = Actor<typeof checkoutMachine>
+export type CheckoutService = ActorRefFrom<typeof checkoutMachine>

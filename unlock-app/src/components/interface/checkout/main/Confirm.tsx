@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Fragment } from 'react'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -12,10 +12,11 @@ import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
+import { ActorRef } from 'xsatev5'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
   communication?: CheckoutCommunication
 }
 
@@ -24,7 +25,7 @@ export function Confirm({
   checkoutService,
   communication,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (s) => s)
   const { payment, paywallConfig, messageToSign, metadata } = state.context
   const { account } = useAuth()
 
@@ -48,11 +49,13 @@ export function Confirm({
       })
       communication?.emitMetadata(metadata)
     }
-    send({
+    checkoutService.send({
       type: 'CONFIRM_MINT',
-      status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
-      transactionHash: hash!,
-      network,
+      params: {
+        status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
+        transactionHash: hash!,
+        network,
+      },
     })
   }
 

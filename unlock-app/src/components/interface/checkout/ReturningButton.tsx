@@ -1,15 +1,16 @@
 import type { ForwardedRef, InputHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { CheckoutService } from './main/checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
+import { Actor, ActorRef } from 'xsatev5'
 
 interface ReturningButtonProps
   extends Omit<InputHTMLAttributes<HTMLButtonElement>, 'type' | 'id' | 'size'> {
   loadingLabel?: string
   returnLabel?: string
   loading?: boolean
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
   onClick: () => void
 }
 
@@ -24,7 +25,7 @@ export const ReturningButton = forwardRef(
       onClick,
       ...restProps
     } = props
-    const [state] = useActor(checkoutService)
+    const state = useSelector(checkoutService, (s) => s)
     const { paywallConfig } = state.context
 
     const endingCallToAction = paywallConfig?.endingCallToAction || returnLabel

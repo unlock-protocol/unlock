@@ -5,7 +5,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -30,7 +30,7 @@ export function ConfirmCrossChainPurchase({
   checkoutService,
   onConfirmed,
 }: Props) {
-  const [state] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { getWalletService } = useAuth()
   const config = useConfig()
   const recaptchaRef = useRef<any>()

@@ -1,6 +1,6 @@
 import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
-import { useActor } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -12,6 +12,7 @@ import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../DownloadWallet'
 import { detectInjectedProvider } from '~/utils/wallet'
 import { useSIWE } from '~/hooks/useSIWE'
+import { ActorRef } from 'xsatev5'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -173,7 +174,8 @@ export function SignedOut({
 interface ConnectedCheckoutProps {
   skipAccountDetails?: boolean
   injectedProvider?: unknown
-  service: CheckoutService | ConnectService
+  // TODO: Type
+  service: ActorRef<any, any>
   children?: ReactNode
 }
 
@@ -183,7 +185,7 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const [state, send] = useActor<CheckoutService>(service as CheckoutService)
+  const state = useSelector(service, (state) => state)
   const { account, email, isUnlockAccount, deAuthenticate, connected } =
     useAuth()
   const [signing, setSigning] = useState(false)

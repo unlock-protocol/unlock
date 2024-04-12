@@ -5,7 +5,7 @@ import { ConfirmConnect } from './Confirm'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
-import { useActor } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { createActor } from 'xsatev5'
 
 interface Props {
@@ -20,13 +20,13 @@ export function Connect({
   communication,
 }: Props) {
   const connectService = createActor(connectMachine).start()
-  const [state, send] = useActor(connectService)
+  const state = useSelector(connectService, (state) => state)
   const matched = state.value.toString()
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      send({ type: 'DISCONNECT' })
+      connectService.send({ type: 'DISCONNECT' })
 
       if (oauthConfig.redirectUri) {
         const redirectURI = new URL(oauthConfig.redirectUri)
@@ -41,7 +41,7 @@ export function Connect({
         communication.emitCloseModal()
       }
     },
-    [oauthConfig.redirectUri, communication, send]
+    [oauthConfig.redirectUri, communication, connectService]
   )
 
   const onBack = useMemo(() => {

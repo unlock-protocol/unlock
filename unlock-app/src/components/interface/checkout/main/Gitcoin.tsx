@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { Button } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
@@ -12,10 +12,11 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import LoadingIcon from '../../Loading'
 import { useDataForGitcoinPassport } from '~/hooks/useDataForGitcoinPassport'
+import { ActorRef } from 'xsatev5'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
 }
 
 interface CustomErrorType {
@@ -25,7 +26,7 @@ interface CustomErrorType {
 }
 
 export function Gitcoin({ injectedProvider, checkoutService }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { account } = useAuth()
   const { recipients, lock } = state.context
 
@@ -50,7 +51,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
 
   const onContinue = async () => {
     if (data) {
-      send({
+      checkoutService.send({
         type: 'SUBMIT_DATA',
         data,
       })

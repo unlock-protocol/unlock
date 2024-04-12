@@ -21,7 +21,7 @@ import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -35,9 +35,11 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import { ActorRef } from 'xsatev5'
+import { s } from 'vitest/dist/types-198fd1d9'
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
 }
 
 interface FormData {
@@ -50,7 +52,7 @@ interface RecipientInputProps {
   id: number
   hideFirstRecipient?: boolean
   lock: Lock
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
 }
 
 export const MetadataInputs = ({
@@ -61,7 +63,7 @@ export const MetadataInputs = ({
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
-  const [state] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { paywallConfig } = state.context
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
@@ -266,7 +268,7 @@ export const emailInput: MetadataInput = {
 }
 
 export function Metadata({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { account } = useAuth()
   const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()

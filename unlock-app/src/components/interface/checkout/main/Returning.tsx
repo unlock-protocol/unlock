@@ -6,7 +6,7 @@ import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -18,10 +18,11 @@ import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { ActorRef } from 'xsatev5'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
   onClose(params?: Record<string, string>): void
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
@@ -33,8 +34,8 @@ export function Returning({
   onClose,
 }: Props) {
   const config = useConfig()
-  const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
+  const state = useSelector(checkoutService, (state) => state)
+  const { paywallConfig, lock, messageToSign: signedMessage } = state
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
@@ -51,7 +52,7 @@ export function Returning({
         'personal_sign'
       )
       setIsSigningMessage(false)
-      send({
+      checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
         address: account!,
@@ -195,7 +196,7 @@ export function Returning({
                   <Button
                     className="w-full"
                     onClick={() =>
-                      checkoutService.send('MAKE_ANOTHER_PURCHASE')
+                      checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
                     }
                   >
                     Buy more

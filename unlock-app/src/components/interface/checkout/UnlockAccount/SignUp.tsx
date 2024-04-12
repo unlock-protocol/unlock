@@ -1,5 +1,5 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { useActor } from '@xstate/reactv4'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -12,7 +12,7 @@ interface Props {
 }
 
 export function SignUp({ unlockAccountService, signUp }: Props) {
-  const [state, send] = useActor(unlockAccountService)
+  const state = useSelector(unlockAccountService, (state) => state)
   const { email } = state.context
   const [isSigningUp, setIsSigningUp] = useState(false)
   const { signIn } = useSIWE()
@@ -32,7 +32,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
       await signUp({ email, password })
       await signIn()
       setIsSigningUp(false)
-      send({ type: 'CONTINUE' })
+      unlockAccountService.send({ type: 'CONTINUE' })
     } catch (error) {
       if (error instanceof Error) {
         setError(

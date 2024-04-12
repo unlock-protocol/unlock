@@ -3,7 +3,7 @@ import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -29,7 +29,7 @@ export function ConfirmClaim({
   onConfirmed,
   onError,
 }: Props) {
-  const [state] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
 
   const recaptchaRef = useRef<any>()

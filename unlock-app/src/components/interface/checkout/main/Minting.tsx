@@ -6,7 +6,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -21,6 +21,7 @@ import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { ActorRef, AnyTransitionConfig } from 'xsatev5'
 
 interface MintingScreenProps {
   lockName: string
@@ -111,7 +112,7 @@ export const MintingScreen = ({
 
 interface MintingProps {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
   onClose(params?: Record<string, string>): void
   communication?: CheckoutCommunication
 }
@@ -123,7 +124,7 @@ export function Minting({
   communication,
 }: MintingProps) {
   const { account } = useAuth()
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
   const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
@@ -181,22 +182,26 @@ export function Minting({
 
           communication?.emitMetadata(metadata)
 
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
-            status: 'FINISHED',
-            network: mint!.network,
-            transactionHash: mint!.transactionHash!,
+            params: {
+              status: 'FINISHED',
+              network: mint!.network,
+              transactionHash: mint!.transactionHash!,
+            },
           })
           setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
           ToastHelper.error(error.message)
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
-            status: 'ERROR',
-            network: mint!.network,
-            transactionHash: mint!.transactionHash,
+            params: {
+              status: 'ERROR',
+              network: mint!.network,
+              transactionHash: mint!.transactionHash,
+            },
           })
         }
       }
@@ -206,7 +211,7 @@ export function Minting({
     mint,
     lock,
     config,
-    send,
+    checkoutService,
     communication,
     account,
     messageToSign,

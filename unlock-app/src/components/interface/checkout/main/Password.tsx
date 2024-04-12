@@ -6,7 +6,7 @@ import { Connected } from '../Connected'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
@@ -17,9 +17,10 @@ import LoadingIcon from '../../Loading'
 
 import { useDebounce } from 'react-use'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { ActorRef } from 'xsatev5'
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
 }
 
 interface FormData {
@@ -34,7 +35,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false)
 
   const web3Service = useWeb3Service()
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { recipients, lock } = state.context
   const {
     register,

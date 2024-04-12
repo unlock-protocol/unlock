@@ -4,14 +4,15 @@ import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useActor, useSelector } from '@xstate/reactv4'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { ActorRef } from 'xsatev5'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: CheckoutService
+  checkoutService: ActorRef<any, any>
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
@@ -20,7 +21,7 @@ export function MessageToSign({
   checkoutService,
   injectedProvider,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const state = useSelector(checkoutService, (state) => state)
   const { account, getWalletService } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
   const { paywallConfig } = state.context
@@ -36,7 +37,7 @@ export function MessageToSign({
         'personal_sign'
       )
       setIsSigning(false)
-      send({
+      checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
         address: account!,
