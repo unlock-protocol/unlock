@@ -6,7 +6,7 @@ import { KeyManager } from '@unlock-protocol/unlock-js'
 import { UserMetadata } from './metadataController'
 import { Rsvp } from '../../models'
 import { sendEmail } from '../../operations/wedlocksOperations'
-import { getEventDataForLock } from '../../operations/eventOperations'
+import { getEventMetadataForLock } from '../../operations/eventOperations'
 
 const RsvpBody = z.object({
   data: z.record(z.string(), z.string()),
@@ -76,7 +76,7 @@ export const rsvp = async (request: Request, response: Response) => {
   })
 
   // Then, send email
-  const eventDetail = await getEventDataForLock(lockAddress, network)
+  const eventDetail = await getEventMetadataForLock(lockAddress, network)
   sendEmail({
     network,
     template: 'eventRsvpSubmitted',

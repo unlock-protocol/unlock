@@ -9,6 +9,7 @@ import { SettingTab } from '~/pages/locks/settings'
 import { PaywallConfigType, Event } from '@unlock-protocol/core'
 import { General } from './General'
 import { Referrals } from './Referrals'
+import { Emails } from './Emails'
 import Link from 'next/link'
 
 interface EventSettingsProps {
@@ -42,6 +43,12 @@ export const EventSettings = ({
       label: 'Referrals',
       description: `Create referral links to share with your community and reward them.`,
       children: <Referrals event={event} checkoutConfig={checkoutConfig} />,
+    },
+    {
+      id: 'emails',
+      label: 'Emails',
+      description: `Configure and send emails to the attendees of your event.`,
+      children: <Emails event={event} checkoutConfig={checkoutConfig} />,
     },
     // {
     //   id: 'checkout',

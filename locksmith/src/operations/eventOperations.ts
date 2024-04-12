@@ -2,9 +2,10 @@ import dayjs from '../config/dayjs'
 import { kebabCase } from 'lodash'
 import * as metadataOperations from './metadataOperations'
 import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
-import { EventData } from '../models'
+import { CheckoutConfig, EventData } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
+import { Op } from 'sequelize'
 
 interface AttributeProps {
   value: string
@@ -36,7 +37,31 @@ const getEventDate = (
   return null
 }
 
-export const getEventDataForLock = async (
+export const getEventForLock = async (
+  lockAddress: string,
+  network?: number
+) => {
+  const checkoutConfigs = await CheckoutConfig.findAll({
+    where: {
+      [Op.or]: [
+        { [`config.locks.${lockAddress}.network`]: network },
+        { [`config.locks.${lockAddress.toLowerCase()}.network`]: network },
+      ],
+    },
+    order: [['updatedAt', 'DESC']],
+  })
+
+  // If there are checkout configs, let's see if an even exists with them!
+  // Let's now find any event that uses this checkout config!
+  const event = await EventData.findOne({
+    where: {
+      checkoutConfigId: checkoutConfigs.map((record) => record.id),
+    },
+  })
+  return event
+}
+
+export const getEventMetadataForLock = async (
   lockAddress: string,
   network?: number
 ): Promise<EventProps | undefined> => {

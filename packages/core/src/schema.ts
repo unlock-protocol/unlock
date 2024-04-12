@@ -326,6 +326,8 @@ export const EventObject = z.object({
   image: z.string().url(),
   description: z.string(),
   requiresApproval: z.boolean(),
+  emailSender: z.string(),
+  replyTo: z.string(),
   ticket: z.object({
     event_cover_image: z.string(),
     event_start_date: z.string(),

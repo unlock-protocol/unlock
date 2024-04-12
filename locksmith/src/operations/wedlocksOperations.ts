@@ -11,7 +11,7 @@ import * as emailOperations from './emailOperations'
 import * as lockSettingOperations from './lockSettingOperations'
 import * as userMetadataOperations from './userMetadataOperations'
 import { createEventIcs } from '../utils/calendar'
-import { EventProps, getEventDataForLock } from './eventOperations'
+import { EventProps, getEventMetadataForLock } from './eventOperations'
 import { LockSetting } from '../models/lockSetting'
 import {
   DEFAULT_LOCK_SETTINGS,
@@ -412,7 +412,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network: number) => {
 
     // get event details only when lock is event
     if (isEvent) {
-      eventDetail = await getEventDataForLock(lockAddress, network)
+      eventDetail = await getEventMetadataForLock(lockAddress, network)
     }
 
     if (isCertification && tokenId) {

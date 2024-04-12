@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import {
   getEventBySlug,
-  getEventDataForLock,
+  getEventMetadataForLock,
   saveEvent,
 } from '../../operations/eventOperations'
 import normalizer from '../../utils/normalizer'
@@ -19,7 +19,7 @@ export const getEventDetailsByLock: RequestHandler = async (
 ) => {
   const network = Number(request.params.network)
   const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
-  const eventDetails = await getEventDataForLock(lockAddress, network)
+  const eventDetails = await getEventMetadataForLock(lockAddress, network)
   return response.status(200).send(eventDetails)
 }
 
