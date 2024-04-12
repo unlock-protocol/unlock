@@ -113,6 +113,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         },
         image: '',
         requiresApproval: false,
+        emailSender: '',
       },
     },
   })
@@ -456,6 +457,38 @@ export const Form = ({ onSubmit }: FormProps) => {
                   </div>
                 </div>
               </div>
+            </div>
+          </Disclosure>
+
+          <Disclosure label="Organizer" defaultOpen>
+            <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
+              <Input
+                {...register('metadata.emailSender', {
+                  required: {
+                    value: true,
+                    message: 'A name is required',
+                  },
+                })}
+                type="text"
+                placeholder="Satoshi Nakamoto"
+                label="Name:"
+                description="Used on confirmation emails sent to attendees."
+                error={errors.metadata?.emailSender?.message as string}
+              />
+              <Input
+                label="Email address:"
+                {...register('metadata.replyTo', {
+                  required: {
+                    value: true,
+                    message: 'A name is required',
+                  },
+                })}
+                type="email"
+                autoComplete="off"
+                placeholder="your@email.com"
+                error={errors.metadata?.replyTo?.message as string}
+                description={`Used when users respond to automated emails.`}
+              />
             </div>
           </Disclosure>
 
