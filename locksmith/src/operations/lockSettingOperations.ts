@@ -4,6 +4,7 @@ import {
 } from '../controllers/v2/lockSettingController'
 import { LockSetting } from '../models/lockSetting'
 import * as Normalizer from '../utils/normalizer'
+import { getEventForLock } from './eventOperations'
 
 interface SendEmailProps {
   lockAddress: string
@@ -52,13 +53,24 @@ export async function getSettings({
     },
   })
 
-  const res = settings || DEFAULT_LOCK_SETTINGS
+  const lockSettings = settings || DEFAULT_LOCK_SETTINGS
+
+  const eventDetails = await getEventForLock(lockAddress, network)
+  if (eventDetails?.data) {
+    if (eventDetails?.data.replyTo) {
+      lockSettings.replyTo = eventDetails.data.replyTo
+    }
+    if (eventDetails?.data.emailSender) {
+      lockSettings.emailSender = eventDetails.data.emailSender
+    }
+  }
+
   attributesExcludes.forEach((attr) => {
     // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type
-    delete res[attr]
+    delete lockSettings[attr]
   })
 
-  return res
+  return lockSettings
 }
 
 export async function getLockSettingsBySlug(
