@@ -94,6 +94,7 @@ export const Emails = ({ event, checkoutConfig }: EmailsProps) => {
           </Button>
         </div>
       </SettingCard>
+
       <SettingCard
         label="Send invites"
         description="Enter the email addresses to invite attendees to your event. They will get an email inviting them to RSVP for your event!"
