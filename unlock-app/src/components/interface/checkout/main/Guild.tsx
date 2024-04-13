@@ -20,8 +20,10 @@ interface Props {
 
 export function Guild({ injectedProvider, checkoutService }: Props) {
   const { account } = useAuth()
-  const state = useSelector(checkoutService, (state) => state)
-  const { recipients, lock } = state.context
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
 
   const users = recipients.length > 0 ? recipients : [account!]
 

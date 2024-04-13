@@ -29,13 +29,12 @@ export function ConfirmClaim({
   onConfirmed,
   onError,
 }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { lock, recipients, payment, paywallConfig, metadata, data } =
+    useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
 
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data } =
-    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 

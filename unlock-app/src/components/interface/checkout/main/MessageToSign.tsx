@@ -20,11 +20,12 @@ export function MessageToSign({
   checkoutService,
   injectedProvider,
 }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { messageToSign } = useSelector(
+    checkoutService,
+    (state) => state.context.paywallConfig
+  )
   const { account, getWalletService } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
-  const { paywallConfig } = state.context
-  const { messageToSign } = paywallConfig
 
   const onSign = async () => {
     setIsSigning(true)

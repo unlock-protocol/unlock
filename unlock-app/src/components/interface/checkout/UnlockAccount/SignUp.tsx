@@ -12,8 +12,7 @@ interface Props {
 }
 
 export function SignUp({ unlockAccountService, signUp }: Props) {
-  const state = useSelector(unlockAccountService, (state) => state)
-  const { email } = state.context
+  const { email } = useSelector(unlockAccountService, (state) => state.context)
   const [isSigningUp, setIsSigningUp] = useState(false)
   const { signIn } = useSIWE()
   const {

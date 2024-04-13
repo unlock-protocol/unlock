@@ -23,8 +23,10 @@ export function Confirm({
   checkoutService,
   communication,
 }: Props) {
-  const state = useSelector(checkoutService, (s) => s)
-  const { payment, paywallConfig, messageToSign, metadata } = state.context
+  const { payment, paywallConfig, messageToSign, metadata } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
 
   const onError = (message: string) => {

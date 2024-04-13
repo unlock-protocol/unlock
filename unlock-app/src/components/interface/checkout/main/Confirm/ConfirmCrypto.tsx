@@ -35,12 +35,6 @@ export function ConfirmCrypto({
   onConfirmed,
   onError,
 }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
-  const { account, getWalletService } = useAuth()
-  const config = useConfig()
-  const web3Service = useWeb3Service()
-  const recaptchaRef = useRef<any>()
-  const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
     recipients,
@@ -50,7 +44,12 @@ export function ConfirmCrypto({
     metadata,
     data,
     renew,
-  } = state.context
+  } = useSelector(checkoutService, (state) => state.context)
+  const { account, getWalletService } = useAuth()
+  const config = useConfig()
+  const web3Service = useWeb3Service()
+  const recaptchaRef = useRef<any>()
+  const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 

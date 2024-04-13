@@ -12,12 +12,13 @@ export function UnlockAccountSignIn({
   connectService,
   injectedProvider,
 }: Props) {
-  const state = useSelector(connectService, (state) => state)
-  const unlockAccountService = state.children
-    .unlockAccount as UnlockAccountService
+  const unlockAccount = useSelector(
+    connectService,
+    (state) => state.children.unlockAccount
+  )
   return (
     <UnlockAccount
-      unlockAccountService={unlockAccountService}
+      unlockAccountService={unlockAccount as UnlockAccountService}
       injectedProvider={injectedProvider}
     />
   )

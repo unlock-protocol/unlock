@@ -33,9 +33,11 @@ export function Returning({
   onClose,
 }: Props) {
   const config = useConfig()
-  const state = useSelector(checkoutService, (state) => state)
-  console.log('Context of the state', state.context)
-  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
+  const {
+    paywallConfig,
+    lock,
+    messageToSign: signedMessage,
+  } = useSelector(checkoutService, (state) => state.context)
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign

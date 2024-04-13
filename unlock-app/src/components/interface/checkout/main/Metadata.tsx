@@ -62,8 +62,10 @@ export const MetadataInputs = ({
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
-  const state = useSelector(checkoutService, (state) => state)
-  const { paywallConfig } = state.context
+  const paywallConfig = useSelector(
+    checkoutService,
+    (state) => state.context.paywallConfig
+  )
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -267,9 +269,11 @@ export const emailInput: MetadataInput = {
 }
 
 export function Metadata({ checkoutService, injectedProvider }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { lock, paywallConfig, quantity } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
-  const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =

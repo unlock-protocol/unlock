@@ -24,8 +24,10 @@ export const ReturningButton = forwardRef(
       onClick,
       ...restProps
     } = props
-    const state = useSelector(checkoutService, (s) => s)
-    const { paywallConfig } = state.context
+    const paywallConfig = useSelector(
+      checkoutService,
+      (state) => state.context.paywallConfig
+    )
 
     const endingCallToAction = paywallConfig?.endingCallToAction || returnLabel
 

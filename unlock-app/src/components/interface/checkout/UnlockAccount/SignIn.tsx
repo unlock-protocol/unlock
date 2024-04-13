@@ -11,8 +11,7 @@ interface Props {
 }
 
 export function SignIn({ unlockAccountService, signIn }: Props) {
-  const state = useSelector(unlockAccountService, (state) => state)
-  const { email } = state.context
+  const { email } = useSelector(unlockAccountService, (state) => state.context)
   const {
     register,
     formState: { errors },

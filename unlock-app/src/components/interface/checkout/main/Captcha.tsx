@@ -17,12 +17,14 @@ interface Props {
 }
 
 export function Captcha({ injectedProvider, checkoutService }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const config = useConfig()
   const { account } = useAuth()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients, lock } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
   const users = recipients.length > 0 ? recipients : [account!]
 

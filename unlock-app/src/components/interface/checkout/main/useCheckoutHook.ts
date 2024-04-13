@@ -17,11 +17,10 @@ const HookIdMapping: Partial<Record<HookType, CheckoutHookType>> = {
 }
 
 export function useCheckoutHook(service: CheckoutService) {
-  const state = useSelector(service, (state) => state)
+  const { paywallConfig } = useSelector(service, (state) => state.context)
   const web3Service = useWeb3Service()
 
   let lockHookMapping: LockHookProps = {}
-  const { paywallConfig } = state.context
 
   const queries = useQueries({
     queries: [

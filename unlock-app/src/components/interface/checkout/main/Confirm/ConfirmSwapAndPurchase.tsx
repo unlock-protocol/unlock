@@ -32,11 +32,6 @@ export function ConfirmSwapAndPurchase({
   checkoutService,
   onConfirmed,
 }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
-  const { getWalletService } = useAuth()
-  const config = useConfig()
-  const recaptchaRef = useRef<any>()
-  const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
     recipients,
@@ -46,7 +41,11 @@ export function ConfirmSwapAndPurchase({
     metadata,
     data,
     renew,
-  } = state.context
+  } = useSelector(checkoutService, (state) => state.context)
+  const { getWalletService } = useAuth()
+  const config = useConfig()
+  const recaptchaRef = useRef<any>()
+  const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 

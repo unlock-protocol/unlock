@@ -123,9 +123,11 @@ export function Minting({
   communication,
 }: MintingProps) {
   const { account } = useAuth()
-  const state = useSelector(checkoutService, (state) => state)
+  const { mint, lock, messageToSign, metadata, recipients } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
   const [doneWaiting, setDoneWaiting] = useState(false)
 

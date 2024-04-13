@@ -23,7 +23,15 @@ export function useStepperItems(
     existingMember?: boolean
   } = {}
 ) {
-  const state = useSelector(service, (state) => state)
+  const {
+    paywallConfig,
+    skipQuantity,
+    skipRecipient,
+    hook,
+    existingMember,
+    payment,
+    renew,
+  } = useSelector(service, (state) => state.context) as CheckoutMachineContext
   if (isUnlockAccount) {
     return [
       {
@@ -39,15 +47,6 @@ export function useStepperItems(
     ]
   }
 
-  const {
-    paywallConfig,
-    skipQuantity,
-    skipRecipient,
-    hook,
-    existingMember,
-    payment,
-    renew,
-  } = state.context as CheckoutMachineContext
   if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
     return []
   }

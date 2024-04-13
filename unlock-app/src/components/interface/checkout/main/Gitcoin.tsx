@@ -25,9 +25,11 @@ interface CustomErrorType {
 }
 
 export function Gitcoin({ injectedProvider, checkoutService }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
-  const { recipients, lock } = state.context
 
   const users = recipients.length > 0 ? recipients : [account!]
 

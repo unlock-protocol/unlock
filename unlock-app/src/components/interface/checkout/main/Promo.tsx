@@ -191,9 +191,11 @@ interface PromoProps {
 }
 
 export function Promo({ injectedProvider, checkoutService }: PromoProps) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { recipients, lock, paywallConfig } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { query } = useRouter()
-  const { recipients, lock, paywallConfig } = state.context
 
   let promoCode = ''
   if (query?.promo) {

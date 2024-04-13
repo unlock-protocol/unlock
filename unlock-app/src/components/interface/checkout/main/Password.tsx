@@ -32,8 +32,10 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false)
 
   const web3Service = useWeb3Service()
-  const state = useSelector(checkoutService, (state) => state)
-  const { recipients, lock } = state.context
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const {
     register,
     handleSubmit,

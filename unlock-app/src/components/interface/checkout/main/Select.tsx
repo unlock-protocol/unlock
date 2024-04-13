@@ -183,8 +183,10 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 }
 
 export function Select({ checkoutService, injectedProvider }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
-  const { paywallConfig, lock: selectedLock } = state.context
+  const { paywallConfig, lock: selectedLock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
   const { isLoading: isLocksLoading, data: locks } = useQuery(

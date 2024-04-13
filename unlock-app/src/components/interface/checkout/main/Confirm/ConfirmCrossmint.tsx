@@ -44,13 +44,12 @@ export function ConfirmCrossmint({
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
   const { email, account } = useAuth()
-  const state = useSelector(checkoutService, (state) => state)
+  const { lock, recipients, paywallConfig, data, keyManagers, renew } =
+    useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
 
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
-
-  const { lock, recipients, paywallConfig, data, keyManagers } = state.context
 
   const {
     isLoading: isCrossmintEnabledLoading,
@@ -124,7 +123,7 @@ export function ConfirmCrossmint({
   const { data: tokenId } = useGetTokenIdForOwner(
     { account: account!, lockAddress: lock!.address, network: lock!.network },
     {
-      enabled: state.context?.renew,
+      enabled: renew,
     }
   )
 
@@ -134,7 +133,7 @@ export function ConfirmCrossmint({
       isInitialDataLoading ||
       isPricingDataLoading ||
       crossmintLoading ||
-      (!tokenId && state.context?.renew))
+      (!tokenId && renew))
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig, lock!.address)
@@ -150,10 +149,7 @@ export function ConfirmCrossmint({
     : []
 
   const argumentsReady =
-    referrers &&
-    purchaseData &&
-    pricingData &&
-    (tokenId || !state.context?.renew)
+    referrers && purchaseData && pricingData && (tokenId || !renew)
 
   // crossmint config
   const crossmintConfig = {
@@ -171,7 +167,7 @@ export function ConfirmCrossmint({
     collectionId: '', // To be completed below!
   }
 
-  if (!state.context?.renew) {
+  if (!renew) {
     crossmintConfig.collectionId = collectionId
     crossmintConfig.mintConfig = {
       totalPrice: pricingData?.total.toString(),

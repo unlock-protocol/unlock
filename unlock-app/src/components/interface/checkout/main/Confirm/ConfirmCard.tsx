@@ -116,11 +116,10 @@ export function ConfirmCard({
   onConfirmed,
   onError,
 }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
+    useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
-    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 

@@ -22,13 +22,14 @@ interface Props {
 }
 
 export function Quantity({ injectedProvider, checkoutService }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const {
+    paywallConfig,
+    quantity: selectedQuantity,
+    lock,
+  } = useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
 
-  const { paywallConfig, quantity: selectedQuantity } = state.context
-  const lock = state.context.lock!
-
-  const lockConfig = paywallConfig.locks[lock.address]
+  const lockConfig = paywallConfig.locks[lock!.address]
 
   const maxRecipients =
     lockConfig?.maxRecipients || paywallConfig.maxRecipients || 1
@@ -45,13 +46,13 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isLoadingFormattedData, data: formattedData } =
     useGetLockProps({
       lock: lock,
-      baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
+      baseCurrencySymbol: config.networks[lock!.network].nativeCurrency.symbol,
       numberOfRecipients: quantity,
     })
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
-    lockAddress: lock.address,
-    network: lock.network,
+    lockAddress: lock!.address,
+    network: lock!.network,
   })
 
   const isDisabled = quantity < 1

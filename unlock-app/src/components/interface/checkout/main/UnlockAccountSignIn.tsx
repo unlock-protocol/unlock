@@ -13,16 +13,17 @@ export function UnlockAccountSignIn({
   checkoutService,
   injectedProvider,
 }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
-  const unlockAccountService = state.children
-    .unlockAccount as UnlockAccountService
+  const unlockAccountService = useSelector(
+    checkoutService,
+    (state) => state.children.unlockAccount
+  )
   return (
     <Fragment>
       <div className="mb-2">
         <Stepper service={unlockAccountService} />
       </div>
       <UnlockAccount
-        unlockAccountService={unlockAccountService}
+        unlockAccountService={unlockAccountService as UnlockAccountService}
         injectedProvider={injectedProvider}
       />
     </Fragment>
