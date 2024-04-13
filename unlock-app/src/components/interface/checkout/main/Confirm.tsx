@@ -63,7 +63,7 @@ export function Confirm({
           checkoutService={checkoutService}
           injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
-          onError={() => console.log('error', 1)}
+          onError={onError}
         />
       )}
       {payment.method === 'swap_and_purchase' && (
