@@ -16,7 +16,6 @@ export function UnlockAccountSignIn({
   const state = useSelector(checkoutService, (state) => state)
   const unlockAccountService = state.children
     .unlockAccount as UnlockAccountService
-
   return (
     <Fragment>
       <div className="mb-2">

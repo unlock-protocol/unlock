@@ -22,11 +22,9 @@ export const connectMachine = createMachine(
       typegen: {} as import('./connectMachine.typegen').Typegen0,
       events: {} as ConnectMachineEvents,
     },
-    /*
     on: {
-      DISCONNECT: 'CONNECT',
+      DISCONNECT: '.CONNECT',
     },
-    */
     initial: 'CONNECT',
     states: {
       CONNECT: {

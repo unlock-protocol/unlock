@@ -449,8 +449,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
-                console.log(checkoutService.getSnapshot())
-
                 checkoutService.send({
                   type: 'SELECT_LOCK',
                   lock,
@@ -461,8 +459,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   recipients: account ? [account] : [],
                   hook: hookType,
                 })
-
-                console.log(checkoutService.getSnapshot())
               }}
             >
               Next

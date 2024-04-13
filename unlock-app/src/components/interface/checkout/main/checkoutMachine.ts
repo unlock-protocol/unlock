@@ -228,22 +228,21 @@ export const checkoutMachine = createMachine(
         ...input,
       } as CheckoutMachineContext
     },
-    /*
     on: {
-      UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
-      SELECT: 'SELECT',
-      QUANTITY: 'QUANTITY',
-      PAYMENT: 'PAYMENT',
-      METADATA: 'METADATA',
-      MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
-      CAPTCHA: 'CAPTCHA',
-      PASSWORD: 'PASSWORD',
-      PROMO: 'PROMO',
-      GUILD: 'GUILD',
-      GITCOIN: 'GITCOIN',
-      CARD: 'CARD',
+      UNLOCK_ACCOUNT: '.UNLOCK_ACCOUNT',
+      SELECT: '.SELECT',
+      QUANTITY: '.QUANTITY',
+      PAYMENT: '.PAYMENT',
+      METADATA: '.METADATA',
+      MESSAGE_TO_SIGN: '.MESSAGE_TO_SIGN',
+      CAPTCHA: '.CAPTCHA',
+      PASSWORD: '.PASSWORD',
+      PROMO: '.PROMO',
+      GUILD: '.GUILD',
+      GITCOIN: '.GITCOIN',
+      CARD: '.CARD',
       UPDATE_PAYWALL_CONFIG: {
-        target: 'SELECT',
+        target: '.SELECT',
         actions: ['updatePaywallConfig'],
       },
       SIGN_MESSAGE: {
@@ -253,11 +252,10 @@ export const checkoutMachine = createMachine(
         actions: ['submitData'],
       },
       RESET_CHECKOUT: {
-        target: 'SELECT',
+        target: '.SELECT',
         actions: ['disconnect'],
       },
     },
-    */
     states: {
       SELECT: {
         on: {
@@ -618,9 +616,10 @@ export const checkoutMachine = createMachine(
         },
       },
       MINTING: {
-        type: 'final',
         on: {
           CONFIRM_MINT: {
+            // @ts-ignore
+            type: 'final',
             actions: ['confirmMint'],
           },
         },

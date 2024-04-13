@@ -46,10 +46,9 @@ export const unlockAccountMachine = createMachine(
       email: '',
       existingUser: false,
     },
-    // This breakes everithing out, not sure why, docs provide no info
-    /*on: {
-      EXIT: 'EXIT',
-    },*/
+    on: {
+      EXIT: '.EXIT',
+    },
     states: {
       ENTER_EMAIL: {
         on: {

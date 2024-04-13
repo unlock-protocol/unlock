@@ -42,7 +42,6 @@ export function Checkout({
       paywallConfig,
     },
   })
-  console.log('snapshot', state)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context
