@@ -8,7 +8,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useMachine, useSelector } from '@xstate/react'
+import { useMachine } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
@@ -21,7 +21,6 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
-import { createActor } from 'xstate'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfigType
@@ -37,13 +36,13 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
+  // @ts-ignore
   const [state, send, checkoutService] = useMachine(checkoutMachine, {
     input: {
       paywallConfig,
     },
   })
   console.log('snapshot', state)
-  //const state = useSelector(checkoutService, (s) => s)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context

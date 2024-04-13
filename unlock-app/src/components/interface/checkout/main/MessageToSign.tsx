@@ -4,15 +4,14 @@ import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 

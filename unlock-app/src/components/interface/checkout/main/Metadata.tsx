@@ -21,7 +21,7 @@ import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -35,11 +35,10 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
-import { ActorRef } from 'xstate'
-import { s } from 'vitest/dist/types-198fd1d9'
+
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
 }
 
 interface FormData {
@@ -52,7 +51,7 @@ interface RecipientInputProps {
   id: number
   hideFirstRecipient?: boolean
   lock: Lock
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
 }
 
 export const MetadataInputs = ({

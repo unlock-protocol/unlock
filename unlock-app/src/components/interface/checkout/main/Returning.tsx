@@ -6,7 +6,7 @@ import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -18,11 +18,10 @@ import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
-import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: ReturnType<typeof useCheckoutCommunication>
 }

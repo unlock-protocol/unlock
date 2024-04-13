@@ -1,4 +1,3 @@
-import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
@@ -7,7 +6,7 @@ import {
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -15,11 +14,11 @@ import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
-import { ActorRef } from 'xstate'
+import { CheckoutService } from './checkoutMachine'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
 }
 
 export function Quantity({ injectedProvider, checkoutService }: Props) {

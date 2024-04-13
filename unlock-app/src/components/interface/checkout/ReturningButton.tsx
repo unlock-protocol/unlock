@@ -1,16 +1,15 @@
 import type { ForwardedRef, InputHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutService } from './main/checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
-import { Actor, ActorRef } from 'xstate'
 
 interface ReturningButtonProps
   extends Omit<InputHTMLAttributes<HTMLButtonElement>, 'type' | 'id' | 'size'> {
   loadingLabel?: string
   returnLabel?: string
   loading?: boolean
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
   onClick: () => void
 }
 

@@ -1,10 +1,9 @@
 import { CheckoutService } from './checkoutMachine'
 import { Fragment } from 'react'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
@@ -12,11 +11,10 @@ import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
-import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
   communication?: CheckoutCommunication
 }
 

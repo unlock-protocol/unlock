@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { Button } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
@@ -12,11 +12,10 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import LoadingIcon from '../../Loading'
 import { useDataForGitcoinPassport } from '~/hooks/useDataForGitcoinPassport'
-import { ActorRef } from 'xstate'
 
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
 }
 
 interface CustomErrorType {

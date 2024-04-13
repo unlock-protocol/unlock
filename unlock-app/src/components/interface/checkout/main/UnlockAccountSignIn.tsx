@@ -3,12 +3,10 @@ import { CheckoutService } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { Stepper } from '../Stepper'
 import { Fragment } from 'react'
-import { useActor, useSelector } from '@xstate/react'
-import { s } from 'vitest/dist/types-198fd1d9'
-import { ActorRef } from 'xstate'
+import { useSelector } from '@xstate/react'
 interface Props {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
 }
 
 export function UnlockAccountSignIn({

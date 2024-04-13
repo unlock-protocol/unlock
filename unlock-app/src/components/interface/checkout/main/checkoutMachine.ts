@@ -3,9 +3,8 @@ import {
   PaywallConfigType,
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
-import { createMachine, assign, ActorRefFrom, setup } from 'xstate'
+import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
-import { Actor } from 'xstate'
 
 export type CheckoutPage =
   | 'SELECT'
@@ -206,6 +205,7 @@ const DISCONNECT = {
   actions: ['disconnect'],
 }
 
+// TODO: consider setup({})
 export const checkoutMachine = createMachine(
   {
     id: 'checkout',
@@ -746,4 +746,6 @@ export const checkoutMachine = createMachine(
   }
 )
 
-export type CheckoutService = ActorRefFrom<typeof checkoutMachine>
+export type CheckoutService =
+  | ActorRefFrom<typeof checkoutMachine>
+  | Actor<typeof checkoutMachine>

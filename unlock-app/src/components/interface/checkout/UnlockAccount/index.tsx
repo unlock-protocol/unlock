@@ -1,4 +1,4 @@
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import useAccount from '~/hooks/useAccount'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import UnlockProvider from '~/services/unlockProvider'

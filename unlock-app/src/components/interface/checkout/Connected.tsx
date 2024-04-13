@@ -1,18 +1,17 @@
 import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify } from '~/utils/strings'
 import SvgComponents from '../svg'
-import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../DownloadWallet'
 import { detectInjectedProvider } from '~/utils/wallet'
 import { useSIWE } from '~/hooks/useSIWE'
-import { ActorRef } from 'xstate'
+import { CheckoutService } from './main/checkoutMachine'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -175,7 +174,7 @@ interface ConnectedCheckoutProps {
   skipAccountDetails?: boolean
   injectedProvider?: unknown
   // TODO: Type
-  service: ActorRef<any, any>
+  service: CheckoutService | ConnectService
   children?: ReactNode
 }
 
@@ -240,7 +239,7 @@ export function Connected({
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
-    send({ type: 'DISCONNECT' })
+    service.send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }
 
@@ -253,7 +252,9 @@ export function Connected({
           account={account}
           email={email}
           isUnlockAccount={!!isUnlockAccount}
-          onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
+          onDisconnect={
+            state.can({ type: 'DISCONNECT' }) ? onDisconnect : undefined
+          }
         />
       )}
     </div>
@@ -275,7 +276,7 @@ export function Connected({
       <SignedOut
         injectedProvider={injectedProvider}
         onUnlockAccount={() => {
-          send({ type: 'UNLOCK_ACCOUNT' })
+          service.send({ type: 'UNLOCK_ACCOUNT' })
         }}
         authenticateWithProvider={authenticateWithProvider}
         title="Have a crypto wallet?"

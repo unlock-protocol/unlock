@@ -6,7 +6,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor, useSelector } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -21,7 +21,6 @@ import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
-import { ActorRef, AnyTransitionConfig } from 'xstate'
 
 interface MintingScreenProps {
   lockName: string
@@ -112,7 +111,7 @@ export const MintingScreen = ({
 
 interface MintingProps {
   injectedProvider: unknown
-  checkoutService: ActorRef<any, any>
+  checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: CheckoutCommunication
 }
