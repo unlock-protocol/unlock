@@ -40,6 +40,7 @@ const getPastEventsByManager = async (account: string) => {
                   'We could not get the metadata for this lock',
                   lock.address
                 )
+                console.log(error)
               }
             })
           )
