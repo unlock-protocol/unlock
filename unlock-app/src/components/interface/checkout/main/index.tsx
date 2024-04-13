@@ -256,7 +256,7 @@ export function Checkout({
         return null
       }
     }
-  }, [injectedProvider, onClose, send, matched, communication])
+  }, [injectedProvider, onClose, checkoutService, matched, communication])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
