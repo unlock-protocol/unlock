@@ -1,6 +1,5 @@
 import { Fragment } from 'react'
 import { useSelector } from '@xstate/react'
-import { Button } from '@unlock-protocol/ui'
 import { Button, minifyAddress } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
