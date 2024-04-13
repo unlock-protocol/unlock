@@ -173,7 +173,6 @@ export function SignedOut({
 interface ConnectedCheckoutProps {
   skipAccountDetails?: boolean
   injectedProvider?: unknown
-  // TODO: Type
   service: CheckoutService | ConnectService
   children?: ReactNode
 }
