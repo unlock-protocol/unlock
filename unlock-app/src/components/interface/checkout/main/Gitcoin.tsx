@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import { useSelector } from '@xstate/react'
 import { Button } from '@unlock-protocol/ui'
+import { Button, minifyAddress } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import {
@@ -45,6 +46,11 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
     recipients: users,
   })
 
+  // evaluate if all recipients, or one recipient have valid Gitcoin Passports
+  const allValidPassports = !data || data.every((d) => d !== '')
+  // evaluate if at least one recipient has an invalid Gitcoin Passport
+  const disabled = !allValidPassports
+
   // type assertion
   const typedError = error as CustomErrorType
 
@@ -69,38 +75,148 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
                 Verify Your Gitcoin Passport
               </h2>
               <p className="mt-4 text-center">
-                You&apos;ll need to have a valid Gitcoin Passport before you can
-                proceed. Please verify your Gitcoin Passport to continue with
-                the checkout process.
+                Recipients need to have a valid Gitcoin Passport before you can
+                proceed. Verify their passports to continue with the checkout
+                process.
               </p>
             </>
           )}
 
           {/* Verification loading, error, and success states */}
+          {/* verification in progress state */}
           {isFetchingGitcoinPassportData && (
-            <>
-              <LoadingIcon />
-              <p className="mt-4 text-center">
-                Verifying your Gitcoin passport...
-              </p>
-            </>
-          )}
-
-          {isSuccess && !isFetchingGitcoinPassportData && (
             <div className="flex flex-col items-center justify-center">
-              <CheckIcon size={20} className="text-green-500" />
-              <div className="text-slate-700 mt-4 text-center">
-                Verification passed.
+              <LoadingIcon />
+              <p className="mt-4 text-center">Verifying Gitcoin passports...</p>
+
+              <div className="mt-4">
+                {users.map((user, index) => {
+                  if (isLoadingGitcoinPassportData) {
+                    return (
+                      <li
+                        key={user}
+                        className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
+                      >
+                        <LoadingIcon size={14} />
+                        {minifyAddress(user)}
+                      </li>
+                    )
+                  }
+                  if (data && data[index]) {
+                    return (
+                      <li
+                        key={user}
+                        className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
+                      >
+                        ✅ {minifyAddress(user)}
+                      </li>
+                    )
+                  }
+                  return (
+                    <li
+                      key={user}
+                      className="flex items-center w-full gap-1 pl-1 mb-2 text-center"
+                    >
+                      ❌ {minifyAddress(user)}
+                    </li>
+                  )
+                })}
               </div>
             </div>
           )}
 
-          {isError && (
+          {/* Invalid Gitcoin Passport states */}
+          {/* Render when at least one of multiple recipients has an invalid Gitcoin passport */}
+          {disabled && users.length > 1 && (
             <div className="flex flex-col items-center justify-center">
               <FailIcon size={20} className="text-red-500" />
+              <p className=" text-center mt-4 text-red-500">
+                Some of the selected recipients possess an invalid Gitcoin
+                passport{' '}
+              </p>
+              <div className="mt-4">
+                {users.map((user, index) => {
+                  if (data && data[index]) {
+                    return (
+                      <li
+                        key={user}
+                        className="flex items-center text-green-500 w-full gap-1 pl-1 mb-2 text-center"
+                      >
+                        ✅ {minifyAddress(user)}
+                      </li>
+                    )
+                  }
+                  return (
+                    <>
+                      <li
+                        key={user}
+                        className="flex items-center text-red-500 w-full gap-1 pl-1 mb-2 text-center"
+                      >
+                        ❌ {minifyAddress(user)}
+                      </li>
+                    </>
+                  )
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* render when it's a single recipient, and they possess an invalid Gitcoin passport  */}
+          {disabled && users.length === 1 && (
+            <div className="flex flex-col items-center text-red-500 justify-center">
+              <FailIcon size={20} />
+              <p className=" text-center mt-4">
+                The recipient you have selected possesses an invalid Gitcoin
+                passport
+              </p>
+            </div>
+          )}
+          {/* Invalid Gitcoin Passport states */}
+
+          {/* Verification success states */}
+          {/* when it's one recipient */}
+          {isSuccess && allValidPassports && users.length === 1 && (
+            <div className="flex flex-col items-center justify-center">
+              <CheckIcon size={20} className="text-green-500" />
+              <p className="text-center text-slate-700 mt-4">
+                Gitcoin Passport successfully verified!
+              </p>
+            </div>
+          )}
+
+          {/* for multiple recipients */}
+          {isSuccess && allValidPassports && users.length > 1 && (
+            <div className="flex flex-col items-center justify-center">
+              <CheckIcon size={20} className="text-green-500" />
+              <p className="text-center text-slate-700 mt-4">
+                All Gitcoin Passports successfully verified!
+              </p>
+
+              <div className="mt-4">
+                {users.map((user, index) => {
+                  if (data && data[index]) {
+                    return (
+                      <li
+                        key={user}
+                        className="flex items-center text-green-500 w-full gap-1 pl-1 mb-2 text-center"
+                      >
+                        ✅ {minifyAddress(user)}
+                      </li>
+                    )
+                  }
+                })}
+              </div>
+            </div>
+          )}
+          {/* Verification success states */}
+
+          {/* Verification error states */}
+          {isError && (
+            <div className="flex flex-col text-red-600  items-center justify-center">
+              <FailIcon size={20} />
 
               {/* Dynamically display error messages */}
-              <div className="text-red-600 mt-4 text-center">
+              <div className="mt-4 text-center">
                 {typedError.isMisconfigurationError &&
                   'Verification failed due to a misconfiguration in your lock.'}
                 {typedError.isInvalidScoreError &&
@@ -110,10 +226,11 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
                 {!typedError.isMisconfigurationError &&
                   !typedError.isInvalidScoreError &&
                   !typedError.isTimeoutError &&
-                  'Verification failed. Your passport is below the required threshold or an unexpected error occurred.'}
+                  'Verification failed. An unexpected error occurred.'}
               </div>
             </div>
           )}
+          {/* Verification error states */}
           {/* Verification loading, error, and success states */}
         </div>
       </main>
@@ -132,11 +249,11 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
                 refetch()
               }}
             >
-              Verify Gitcoin Passport to Continue
+              Verify Gitcoin Passport{recipients.length > 1 && 's'}
             </Button>
           )}
 
-          {/* Verification loading button */}
+          {/* Verification in progress button */}
           {isFetchingGitcoinPassportData && (
             <Button
               className="w-full"
@@ -152,12 +269,26 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
           )}
 
           {/* Button to continue to next step upon successful verification */}
-          {isSuccess && !isFetchingGitcoinPassportData && (
+          {isSuccess && !isFetchingGitcoinPassportData && allValidPassports && (
             <Button
               className="w-full"
               onClick={(event) => {
                 event.preventDefault()
                 onContinue()
+              }}
+            >
+              Continue
+            </Button>
+          )}
+
+          {/* Verification failed disabled button */}
+          {disabled && (
+            <Button
+              className="w-full"
+              disabled
+              onClick={(event) => {
+                event.preventDefault()
+                refetch()
               }}
             >
               Continue
