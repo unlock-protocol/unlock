@@ -14,7 +14,7 @@ async function main() {
     uniswapV3: { universalRouterAddress: routerAddress },
   } = await getNetwork()
 
-  console.log(`Deploying SwapAndBurn to ${chainId}
+  console.log(`Deploying UnlockSwapBurner to ${chainId}
   - unlockAddress: ${unlockAddress}
   - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
   - routerAddress: ${routerAddress}`)

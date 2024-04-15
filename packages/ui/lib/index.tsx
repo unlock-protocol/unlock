@@ -2,7 +2,13 @@ import './index.css'
 export { Button } from './components/Button/Button'
 export { Alert } from './components/Alert/Alert'
 export { Drawer } from './components/Drawer/Drawer'
-export { Input, FieldLayout, TextBox, AddressInput } from './components/Form'
+export {
+  Input,
+  FieldLayout,
+  TextBox,
+  AddressInput,
+  Checkbox,
+} from './components/Form'
 export { IconButton } from './components/IconButton/IconButton'
 export { CodeBox } from './components/CodeBox/CodeBox'
 export { TabbedCodeBox } from './components/CodeBox/TabbedCodeBox'
@@ -36,3 +42,4 @@ export { Images } from '~/components/Images/Images'
 
 export { GuidesHeader, GuidesFooter } from '~/configs/guides'
 export { ShowcaseHeader, ShowcaseFooter } from '~/configs/showcase'
+export { PriceFormatter } from '~/components/PriceFormatter/PriceFormatter'

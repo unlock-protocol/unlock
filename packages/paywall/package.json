@@ -36,7 +36,7 @@
     "eslint": "8.46.0",
     "tsup": "8.0.2",
     "typescript": "5.3.3",
-    "vite": "5.0.12",
+    "vite": "5.0.13",
     "vite-plugin-css-injected-by-js": "3.2.1",
     "vite-plugin-node-polyfills": "0.21.0",
     "vitest": "0.33.0",

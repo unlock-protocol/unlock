@@ -148,16 +148,20 @@ export const getSignerFromOnKeyPurchaserHookOnLock = async function ({
   // Ok let's now select a purchaser that is set as signer, or throw an Error!
   // Can we do Promise.all to reduce latency?
   for (let i = 0; i < purchasers.length; i++) {
-    const isSigner = await hook
-      .signers(await purchasers[i].getAddress())
-      .catch((e: any) => {
-        logger.error(e)
-        return false
-      })
+    const purchaserAddress = await purchasers[i].getAddress()
+    const isSigner = await hook.signers(purchaserAddress).catch((e: any) => {
+      logger.error(e)
+      return false
+    })
     if (isSigner) {
       wallet = purchasers[i]
       break
     }
+  }
+  if (!wallet) {
+    logger.error(
+      `None of the locksmiths purchasers are signers on the hook at ${hookAddress} on ${network}`
+    )
   }
   return wallet
 }

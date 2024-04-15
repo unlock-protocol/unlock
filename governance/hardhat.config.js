@@ -58,6 +58,7 @@ require('./tasks/deploy')
 require('./tasks/set')
 require('./tasks/unlock')
 require('./tasks/lock')
+require('./tasks/uniswap')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -66,7 +67,7 @@ const config = {
   networks,
   etherscan,
   solidity: {
-    compilers: [{ version: '0.8.21', settings }],
+    compilers: [{ version: '0.7.6', settings }],
   },
   sourcify: {
     enabled: true,

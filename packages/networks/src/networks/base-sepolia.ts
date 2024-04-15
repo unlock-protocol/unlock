@@ -68,7 +68,7 @@ export const baseSepolia: NetworkConfig = {
   ],
   unlockAddress: '0x259813B665C8f6074391028ef782e27B65840d89',
   unlockDaoToken: {
-    address: '',
+    address: '0x68a8011d72E6D41bf7CE9dC49De0aeaEBAAC9b39',
   },
 }
 

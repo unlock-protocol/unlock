@@ -152,6 +152,10 @@ export const optimism: NetworkConfig = {
     universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
   },
   unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+  unlockDaoToken: {
+    address: '0xc709c9116dBf29Da9c25041b13a07A0e68aC5d2D',
+    mainnetBridge: '0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1',
+  },
   url: 'https://www.optimism.io/',
 }
 

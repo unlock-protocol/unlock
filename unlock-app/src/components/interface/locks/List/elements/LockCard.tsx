@@ -14,6 +14,8 @@ import { ethers } from 'ethers'
 import { AddressLink } from '~/components/interface/AddressLink'
 import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
+import { PriceFormatter } from '@unlock-protocol/ui'
+
 interface LockCardProps {
   lock: any
   network: number
@@ -136,7 +138,9 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             >
               <div className="flex items-center gap-2">
                 <CryptoIcon symbol={symbol} />
-                <span className="overflow-auto text-ellipsis">{keyPrice}</span>
+                <span className="overflow-auto text-ellipsis">
+                  <PriceFormatter price={keyPrice ?? ''} precision={2} />
+                </span>
               </div>
             </Detail>
 
@@ -154,7 +158,9 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             >
               <div className="flex items-center gap-2">
                 <CryptoIcon symbol={symbol} />
-                <span className="overflow-auto text-ellipsis">{balance}</span>
+                <span className="overflow-auto text-ellipsis">
+                  <PriceFormatter price={balance ?? ''} precision={2} />
+                </span>
               </div>
             </Detail>
             <Detail

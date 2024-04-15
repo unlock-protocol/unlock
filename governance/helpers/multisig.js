@@ -1,9 +1,14 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig2.json')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const SafeApiKit = require('@safe-global/api-kit').default
+const {
+  EthersAdapter,
+  encodeMultiSendData,
+} = require('@safe-global/protocol-kit')
+const Safe = require('@safe-global/protocol-kit').default
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
@@ -104,7 +109,7 @@ const getMultiSigInfo = async (chainId, multisig) => {
 const getProvider = async (chainId) => {
   let provider
   if (chainId) {
-    const { publicProvider } = networks[chainId]
+    const { provider: publicProvider } = networks[chainId]
     provider = new ethers.JsonRpcProvider(publicProvider)
   } else {
     ;({ provider } = ethers)
@@ -190,6 +195,43 @@ const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
   return nonce
 }
 
+// pack multiple calls in a single multicall
+const parseSafeMulticall = async ({ calls, chainId, options }) => {
+  const transactions = calls.map(
+    ({ contractAddress, calldata = '0x', value = 0, operation = null }) => ({
+      to: contractAddress,
+      value,
+      data: calldata,
+      operation,
+    })
+  )
+
+  // init safe lib with correct provider
+  const { provider } = await getProvider(chainId)
+  const { multisig } = await getNetwork(chainId)
+  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: provider })
+  const safe = await Safe.create({
+    ethAdapter,
+    safeAddress: multisig,
+  })
+
+  // get multicall data from lib
+  const totalValue = calls.reduce(
+    (total, { value }) => (value || 0n) + total,
+    0n
+  )
+  const { data } = await safe.createTransaction({
+    transactions,
+    options,
+    callsOnly: totalValue === 0,
+  })
+
+  // parse calls correcly for our multisig/dao helpers
+  data.calldata = data.data
+  data.contractAddress = data.to
+  return data
+}
+
 module.exports = {
   getProvider,
   getSafeAddress,
@@ -202,4 +244,5 @@ module.exports = {
   getExpectedSigners,
   logError,
   getSafeService,
+  parseSafeMulticall,
 }

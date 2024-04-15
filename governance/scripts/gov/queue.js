@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
 const { mineUpTo } = require('@nomicfoundation/hardhat-network-helpers')
-const { getProposalArgsFromTx } = require('../../helpers/gov')
 
 const {
   queueProposal,
@@ -17,7 +16,7 @@ async function main({ proposalId, txId, proposal, govAddress }) {
   if (!proposal && !proposalId) {
     throw new Error('GOV QUEUE > Missing proposal or proposalId.')
   }
-  if (proposalId && !txId) {
+  if (!proposal && proposalId && !txId) {
     throw new Error(
       'GOV QUEUE > The tx id of the proposal creation is required to execute the proposal.'
     )

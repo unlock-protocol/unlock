@@ -16,6 +16,7 @@ import { CastItButton } from './CastItButton'
 import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
+import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
@@ -24,8 +25,6 @@ import {
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import useClipboard from 'react-use-clipboard'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
@@ -36,6 +35,9 @@ import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
+import Hosts from './Hosts'
+import removeMd from 'remove-markdown'
+import { truncateString } from '~/utils/truncateString'
 
 interface EventDetailsProps {
   event: Event
@@ -72,6 +74,11 @@ export const EventDetails = ({
   const eventUrl = getEventUrl({
     event,
   })
+
+  const { data: organizers } = useEventOrganizers({
+    checkoutConfig,
+  })
+
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
   useEffect(() => {
@@ -97,10 +104,6 @@ export const EventDetails = ({
     }
     migrateAndRedirect()
   }, [router, event, eventUrl])
-
-  const [_, setCopied] = useClipboard(eventUrl, {
-    successDuration: 1000,
-  })
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
@@ -160,8 +163,13 @@ export const EventDetails = ({
     <div>
       <NextSeo
         title={event.name}
-        description={`${event.description} 
-Powered by Unlock Protocol`}
+        description={`${truncateString(
+          removeMd(event.description, {
+            useImgAltText: false,
+          }),
+          650
+        )} 
+        Powered by Unlock Protocol`}
         openGraph={{
           title: event.title,
           type: 'website',
@@ -287,7 +295,10 @@ Powered by Unlock Protocol`}
             <h1 className="mt-4 text-3xl font-bold md:text-6xl">
               {event.name}
             </h1>
-            <section className="mt-4">
+            <section className="flex flex-col gap-4">
+              {organizers && organizers.length > 0 && (
+                <Hosts organizers={organizers} />
+              )}
               <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
                 {hasDate && (
                   <EventDetail label="Date" icon={CalendarIcon}>
@@ -346,30 +357,6 @@ Powered by Unlock Protocol`}
               Tools for you, the event organizer
             </span>
             <div className="grid gap-4">
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Promote your event"
-                    description="Share your event's URL with your community and start selling tickets!"
-                  />
-                  <pre className="">{eventUrl}</pre>
-                </div>
-                <div className="md:col-span-1">
-                  <Button
-                    variant="black"
-                    className="button border w-full"
-                    size="small"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      setCopied()
-                      ToastHelper.success('Copied!')
-                    }}
-                  >
-                    Copy URL
-                  </Button>
-                </div>
-              </Card>
-
               <Disclosure
                 label="Emails"
                 description="Customize the emails your attendees will receive."
@@ -410,41 +397,6 @@ Powered by Unlock Protocol`}
                   )}
                 </div>
               </Disclosure>
-
-              {/* <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Manage Attendees"
-                    description="See who is attending your event, invite people with airdrops and more!"
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  {Object.keys(checkoutConfig.config.locks).map(
-                    (lockAddress: string) => {
-                      const network =
-                        checkoutConfig.config.locks[lockAddress].network
-                      let label = 'Manage attendees'
-                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
-                        label = `Manage attendees for ${minifyAddress(
-                          lockAddress
-                        )}`
-                      }
-                      return (
-                        <Button
-                          key={lockAddress}
-                          as={Link}
-                          variant="black"
-                          className="button border mb-2"
-                          size="small"
-                          href={`/locks/lock?address=${lockAddress}&network=${network}`}
-                        >
-                          {label}
-                        </Button>
-                      )
-                    }
-                  )}
-                </div>
-              </Card> */}
 
               <Disclosure
                 label="Verifiers"

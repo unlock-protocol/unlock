@@ -6,6 +6,7 @@ export const deployContract = async (
   deployArgs = [],
   deployOptions = { wait: 1 }
 ) => {
+  console.log({ contractNameOrFullyQualifiedNameOrEthersFactory })
   let Factory
   if (typeof contractNameOrFullyQualifiedNameOrEthersFactory === 'string') {
     const { ethers } = require('hardhat')
@@ -19,9 +20,13 @@ export const deployContract = async (
   await contract.waitForDeployment(deployOptions.wait)
   const { hash } = await contract.deploymentTransaction()
   const address = await contract.getAddress()
-  console.log(address)
+  console.log(contract)
 
-  console.log(` > contract deployed at : ${address} (tx: ${hash})`)
+  console.log(
+    ` > contract deployed at : ${address} with arguments ${deployArgs.join(
+      ','
+    )} (tx: ${hash})`
+  )
 
   if (!(await isLocalhost())) {
     const args = {
@@ -88,7 +93,7 @@ export const verify = async ({ address, deployArgs, contract }) => {
       constructorArguments: deployArgs,
     })
   } catch (error) {
-    console.log(`FAIL: Verification failed for contract at ${address} 
+    console.log(`FAIL: Verification failed for contract ${contract} at ${address} 
     with args :${deployArgs.toString()}`)
     console.log(error)
   }
