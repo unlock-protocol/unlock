@@ -56,6 +56,13 @@ export const gnosis: NetworkConfig = {
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 100,
   isTestNetwork: false,
