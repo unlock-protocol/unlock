@@ -12,6 +12,7 @@ interface Options {
   lockAddress?: string
   owner?: string
   networks?: number[]
+  showTestNets?: boolean
 }
 
 export type Key = NonNullable<ReturnType<typeof useKeys>['keys']>[0]
