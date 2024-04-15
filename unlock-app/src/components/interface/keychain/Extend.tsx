@@ -40,7 +40,7 @@ export interface Props {
   isOpen: boolean
   lock: any
   setIsOpen: (open: boolean) => void
-  account: string
+  owner: string
   currency: string
   tokenId: string
   network: number
@@ -51,7 +51,7 @@ export const ExtendMembershipModal = ({
   isOpen,
   lock,
   setIsOpen,
-  account: owner,
+  owner,
   network,
   ownedKey,
 }: Props) => {

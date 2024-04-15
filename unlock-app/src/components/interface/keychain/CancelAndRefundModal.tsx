@@ -9,7 +9,7 @@ export interface CancelAndRefundProps {
   isOpen: boolean
   lock: any
   setIsOpen: (open: boolean) => void
-  account: string
+  owner: string
   currency: string
   tokenId: string
   network: number
@@ -22,7 +22,7 @@ export const CancelAndRefundModal = ({
   isOpen,
   lock,
   setIsOpen,
-  account: owner,
+  owner,
   currency,
   tokenId,
   network,
