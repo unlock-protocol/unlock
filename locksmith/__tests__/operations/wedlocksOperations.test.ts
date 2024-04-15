@@ -13,7 +13,7 @@ import { loginRandomUser } from '../test-helpers/utils'
 import config from '../../src/config/config'
 
 const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
-const network = 80001
+const network = 8453
 
 vi.mock('@unlock-protocol/unlock-js', async () => {
   const actual: any = await vi.importActual('@unlock-protocol/unlock-js')
