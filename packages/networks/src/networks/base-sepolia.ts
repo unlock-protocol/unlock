@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const baseSepolia: NetworkConfig = {
   blockScan: {
@@ -19,7 +19,15 @@ export const baseSepolia: NetworkConfig = {
   },
   featured: false,
   fullySubsidizedGas: true,
-  hooks: {},
+  hooks: {
+    onTokenURIHook: [
+      {
+        address: '0x6878Ae3c863f6Ebd27B47C02F6B32aAC8B0BA07E',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
+  },
   id: 84532,
   isTestNetwork: true,
   keyManagerAddress: '',

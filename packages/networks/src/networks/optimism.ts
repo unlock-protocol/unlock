@@ -60,6 +60,13 @@ export const optimism: NetworkConfig = {
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x5765883E120F707A528F3e476636304De9280b6c',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 10,
   isTestNetwork: false,
