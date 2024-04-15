@@ -13,11 +13,10 @@ async function main() {
 
   console.log('Deploying from', user.address)
 
-  // We get the contract to deploy
   const signers = [
-    '0x22c095c69c38b66afAad4eFd4280D94Ec9D12f4C',
-    '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9',
-    '0xd851fe9ba8EfA66e65d7865690bD2B9522C6E99f',
+    '0x22c095c69c38b66afAad4eFd4280D94Ec9D12f4C', // prod purchaser
+    '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9', // staging purchaser
+    '0xd851fe9ba8EfA66e65d7865690bD2B9522C6E99f', // OpenZeppelin purchaser
   ]
 
   const PurchaseHook = await ethers.getContractFactory('GuildHook')

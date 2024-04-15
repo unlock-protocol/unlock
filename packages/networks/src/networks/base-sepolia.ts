@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const baseSepolia: NetworkConfig = {
   blockScan: {
@@ -19,7 +19,15 @@ export const baseSepolia: NetworkConfig = {
   },
   featured: false,
   fullySubsidizedGas: true,
-  hooks: {},
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        address: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+  },
   id: 84532,
   isTestNetwork: true,
   keyManagerAddress: '',
