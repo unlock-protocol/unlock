@@ -1,7 +1,6 @@
 import { ethers, utils, BigNumber } from 'ethers'
 import networks from '@unlock-protocol/networks'
-
-import PriceConversion from './priceConversion'
+import { getDefiLammaPrice } from '../operations/pricingOperations'
 
 export default class GasPrice {
   // gasCost is expressed in gas, returns cost in base currency (ether on mainnet...)
@@ -24,9 +23,13 @@ export default class GasPrice {
     }
 
     const gasPrice = await this.gasPriceETH(network, gasCost)
-    const symbol = networks[network].nativeCurrency?.symbol || 'ETH' // default to ether
-    const priceConversion = new PriceConversion()
-    const usdPrice = await priceConversion.convertToUSD(symbol, gasPrice)
-    return usdPrice
+    const price = await getDefiLammaPrice({
+      network,
+      amount: gasPrice,
+    })
+    if (!price.priceInAmount) {
+      throw new Error(`Price not available`)
+    }
+    return Math.ceil(price.priceInAmount * 100)
   }
 }

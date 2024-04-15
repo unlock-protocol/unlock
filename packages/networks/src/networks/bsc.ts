@@ -53,6 +53,11 @@ export const bsc: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0x5B6C5a766edBc6c7988108A689C96AfCEa95a2f1',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
   },
   id: 56,

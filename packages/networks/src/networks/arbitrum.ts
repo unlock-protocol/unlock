@@ -53,6 +53,11 @@ export const arbitrum: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0x8e1158A7f9d0905602f90191AC4DFb30DD4Ee04C',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
   },
   id: 42161,
@@ -143,6 +148,10 @@ export const arbitrum: NetworkConfig = {
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  unlockDaoToken: {
+    address: '0xd5d3aA404D7562d09a848F96a8a8d5D65977bF90',
+    mainnetBridge: '0xa3A7B6F88361F48403514059F1F16C8E78d60EeC',
+  },
   url: 'https://arbitrum.io/',
 }
 

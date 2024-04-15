@@ -11,7 +11,6 @@ import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -200,13 +199,7 @@ export function ConfirmCrossmint({
         {!isConfirming && (
           <>
             <div className="grid gap-y-2">
-              <div>
-                <h4 className="text-xl font-bold"> {lock!.name}</h4>
-                <ViewContract
-                  lockAddress={lock!.address}
-                  network={lock!.network}
-                />
-              </div>
+              <h4 className="text-xl font-bold"> {lock!.name}</h4>
 
               {isPricingDataError && (
                 // TODO: use actual error from simulation
