@@ -41,13 +41,6 @@ export const celo: NetworkConfig = {
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
     ],
-    onTokenURIHook: [
-      {
-        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
-        id: HookType.ADVANCED_TOKEN_URI,
-        name: 'Advanced Token URI',
-      },
-    ],
   },
   id: 42220,
   isTestNetwork: false,
