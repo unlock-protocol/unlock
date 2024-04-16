@@ -61,92 +61,102 @@ function wait(milliseconds) {
 async function main() {
   for (let chainId in networks) {
     // TODO: support zkSync (324) and its custom verifier
-    if (chainId === 31337 || chainId == 324) return
-    const {
-      unlockAddress,
-      name,
-      hooks,
-      keyManagerAddress,
-      swapPurchaser,
-      unlockDaoToken,
-      unlockOwner,
-      subgraph,
-    } = networks[chainId]
-
-    // get PublicLock address (need custom provider)
-    const provider = await getProvider(chainId)
-    const unlock = new ethers.Contract(
-      unlockAddress,
-      [
-        `function publicLockAddress() view returns (address)`,
-        `function publicLockLatestVersion() view returns (uint16)`,
-        `function publicLockImpls(uint16) view returns (address)`,
-      ],
-      provider
-    )
-    const PublicLockLatest = await unlock.publicLockAddress()
-    const lockVersion = await unlock.publicLockLatestVersion()
-    const previousLockVersion = lockVersion - 1n
-    const PublicLockPrevious = await unlock.publicLockImpls(previousLockVersion)
-
-    const toVerify = {
-      Unlock: unlockAddress,
-      PublicLockLatest,
-    }
-
-    // get latest lock proxy
-    const lockAddress = await queryLockAddress(subgraph, lockVersion)
-    if (lockAddress) {
-      toVerify.LockProxy = lockAddress
-    }
-
-    // fetch previous version
-    if (PublicLockPrevious !== ethers.ZeroAddress) {
-      toVerify.PublicLockPrevious = PublicLockPrevious
-      const lockAddressPrevious = await queryLockAddress(
+    if (!['31337', '324'].includes(chainId)) {
+      const {
+        unlockAddress,
+        name,
+        hooks,
+        keyManagerAddress,
+        swapPurchaser,
+        unlockDaoToken,
+        unlockOwner,
         subgraph,
+      } = networks[chainId]
+
+      // get PublicLock address (need custom provider)
+      const provider = await getProvider(chainId)
+      const unlock = new ethers.Contract(
+        unlockAddress,
+        [
+          `function publicLockAddress() view returns (address)`,
+          `function publicLockLatestVersion() view returns (uint16)`,
+          `function publicLockImpls(uint16) view returns (address)`,
+        ],
+        provider
+      )
+
+      const lockVersion = await unlock.publicLockLatestVersion()
+      const previousLockVersion = lockVersion - 1n
+      const PublicLockLatest = await unlock.publicLockImpls(lockVersion)
+      const PublicLockPrevious = await unlock.publicLockImpls(
         previousLockVersion
       )
-      if (lockAddressPrevious) {
-        toVerify[`LockProxyV${previousLockVersion}`] = lockAddressPrevious
+
+      const toVerify = {
+        Unlock: unlockAddress,
+        PublicLockLatest,
       }
-    }
 
-    // get lock proxy
-    if (keyManagerAddress) {
-      toVerify.KeyManager = keyManagerAddress
-    }
-    if (swapPurchaser) {
-      toVerify.SwapPurchaser = swapPurchaser
-    }
-    if (unlockDaoToken) {
-      toVerify.UDT = unlockDaoToken.address
-    }
-    if (unlockOwner) {
-      toVerify.UDT = unlockOwner.address
-    }
+      // get latest lock proxy
+      const lockAddress = await queryLockAddress(subgraph, lockVersion)
+      if (lockAddress) {
+        toVerify[`LockProxyV${lockVersion}`] = lockAddress
+      }
 
-    // TODO: get all hooks
-    if (hooks) {
-      if (hooks.onKeyPurchaseHook) {
-        hooks.onKeyPurchaseHook.map(({ address, id }) => {
-          toVerify[`onKeyPurchaseHook_${id}`] = address
+      // fetch previous version
+      if (PublicLockPrevious !== ethers.ZeroAddress) {
+        toVerify.PublicLockPrevious = PublicLockPrevious
+        const lockAddressPrevious = await queryLockAddress(
+          subgraph,
+          previousLockVersion
+        )
+        if (lockAddressPrevious) {
+          toVerify[`LockProxyV${previousLockVersion}`] = lockAddressPrevious
+        }
+      }
+
+      // get lock proxy
+      if (keyManagerAddress) {
+        toVerify.KeyManager = keyManagerAddress
+      }
+      if (swapPurchaser) {
+        toVerify.SwapPurchaser = swapPurchaser
+      }
+      if (unlockDaoToken) {
+        toVerify.UDT = unlockDaoToken.address
+      }
+      if (unlockOwner) {
+        toVerify.UDT = unlockOwner.address
+      }
+
+      // TODO: get all hooks
+      if (hooks) {
+        if (hooks.onKeyPurchaseHook) {
+          hooks.onKeyPurchaseHook.map(({ address, id }) => {
+            toVerify[`onKeyPurchaseHook_${id}`] = address
+          })
+        }
+      }
+
+      // api calls
+      for (let contractName in toVerify) {
+        const contractAddress = toVerify[contractName]
+        await wait(200)
+        const verified = await isVerified({
+          chainId,
+          contractAddress,
         })
-      }
-    }
 
-    // api calls
-    for (let contractName in toVerify) {
-      const contractAddress = toVerify[contractName]
-      await wait(200)
-      const verified = await isVerified({
-        chainId,
-        contractAddress,
-      })
-
-      // log results
-      if (!verified.isVerified) {
-        logError({ name, chainId, contractName, contractAddress, ...verified })
+        // log results
+        if (!verified.isVerified) {
+          logError({
+            name,
+            chainId,
+            contractName,
+            contractAddress,
+            ...verified,
+          })
+        }
       }
     }
   }
