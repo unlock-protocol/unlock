@@ -69,7 +69,7 @@ const MembershipRenewal = ({
 
   if (possible.lte(0)) {
     return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
+      <Detail className="py-2" label="Renewals:" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
       </Detail>
     )
@@ -230,7 +230,7 @@ const ChangeManagerModal = ({
         </div>
       </Modal>
       <Button
-        className="w-full md:w-auto"
+        className="w-full md:w-auto whitespace-nowrap"
         size="small"
         onClick={() => setIsOpen(true)}
       >
@@ -529,9 +529,11 @@ export const MetadataCard = ({
                       side="bottom"
                     >
                       <div className="flex items-center gap-2">
-                        <span>Owner</span>
-                        <InfoIcon />:
-                        <div className="flex gap-2">
+                        <span>Owner:</span>
+                        <Link
+                          href={`/keychain?owner=${owner}`}
+                          className="flex gap-2 text-brand-ui-primary"
+                        >
                           {/* show full address on desktop */}
                           <div className="text-base font-semibold text-black break-words">
                             <span className="hidden md:block">{owner}</span>
@@ -540,20 +542,7 @@ export const MetadataCard = ({
                               {addressMinify(owner)}
                             </span>
                           </div>
-                          <Button
-                            className="p-0 outline-none text-brand-ui-primary ring-0"
-                            variant="transparent"
-                            aria-label="blockscan link"
-                          >
-                            <a
-                              href={`https://blockscan.com/address/${owner}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <ExternalLinkIcon size={20} />
-                            </a>
-                          </Button>
-                        </div>
+                        </Link>
                       </div>
                     </Tooltip>
                   </div>
@@ -575,7 +564,7 @@ export const MetadataCard = ({
                             network={network}
                             manager={manager}
                             tokenId={tokenId}
-                            label="Set key manager"
+                            label="Set manager"
                             onChange={(keyManager) => {
                               setData({
                                 ...data,
@@ -647,33 +636,37 @@ export const MetadataCard = ({
                 />
               </div>
             )}
-            {!isSubscriptionLoading && subscription && (
-              <>
-                <Detail
-                  className="py-2"
-                  label="User Balance:"
-                  inline
-                  justify={false}
-                >
-                  {subscription.balance?.amount} {subscription.balance?.symbol}
-                </Detail>
-                <MembershipRenewal
-                  possibleRenewals={subscription.possibleRenewals!}
-                  approvedRenewals={subscription.approvedRenewals!}
-                  balance={subscription.balance as any}
-                />
-                {expirationDuration && expirationDuration !== MAX_UINT && (
+            {!isSubscriptionLoading &&
+              subscription &&
+              expirationDuration &&
+              expirationDuration !== MAX_UINT && (
+                <>
                   <Detail
                     className="py-2"
-                    label="Renewal duration:"
+                    label="User Balance:"
                     inline
                     justify={false}
                   >
-                    {durationAsText(expirationDuration)}
+                    {subscription.balance?.amount}{' '}
+                    {subscription.balance?.symbol}
                   </Detail>
-                )}
-              </>
-            )}
+                  <MembershipRenewal
+                    possibleRenewals={subscription.possibleRenewals!}
+                    approvedRenewals={subscription.approvedRenewals!}
+                    balance={subscription.balance as any}
+                  />
+                  {
+                    <Detail
+                      className="py-2"
+                      label="Renewal duration:"
+                      inline
+                      justify={false}
+                    >
+                      {durationAsText(expirationDuration)}
+                    </Detail>
+                  }
+                </>
+              )}
           </div>
         </div>
       </div>
