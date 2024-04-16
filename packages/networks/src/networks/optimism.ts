@@ -59,6 +59,11 @@ export const optimism: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0x6a0971717ABFfCfE08f67b53DeAC5D234A6676Ed',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
     onTokenURIHook: [
       {

@@ -20,6 +20,13 @@ export const baseSepolia: NetworkConfig = {
   featured: false,
   fullySubsidizedGas: true,
   hooks: {
+    onKeyPurchaseHook: [
+      {
+        address: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
     onTokenURIHook: [
       {
         address: '0x6878Ae3c863f6Ebd27B47C02F6B32aAC8B0BA07E',

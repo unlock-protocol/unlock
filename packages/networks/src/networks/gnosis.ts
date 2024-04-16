@@ -55,6 +55,11 @@ export const gnosis: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0xd6129cAC45a16187F4D09Dd69C512F68F0f2B371',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
     onTokenURIHook: [
       {

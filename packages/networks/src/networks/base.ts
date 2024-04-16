@@ -46,6 +46,11 @@ export const base: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0xbBBdD46ef548712c203d306F6587336EC15E0d7f',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
     onTokenURIHook: [
       {
