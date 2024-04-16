@@ -146,6 +146,7 @@ export default class Web3Service extends UnlockService {
     )
     // Add the lock address
     lock.address = address
+    lock.network = network
 
     // Add the unlock address
     lock.unlockContractAddress = ethers.utils.getAddress(

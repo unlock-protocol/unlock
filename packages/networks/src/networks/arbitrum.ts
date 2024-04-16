@@ -53,6 +53,11 @@ export const arbitrum: NetworkConfig = {
         id: HookType.PASSWORD_CAPPED,
         name: 'Passwords with caps. Multiple passwords can be used per contract',
       },
+      {
+        address: '0x8e1158A7f9d0905602f90191AC4DFb30DD4Ee04C',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
     ],
     onTokenURIHook: [
       {
