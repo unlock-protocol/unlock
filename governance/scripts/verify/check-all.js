@@ -73,46 +73,53 @@ async function main() {
         subgraph,
       } = networks[chainId]
 
-      // get PublicLock address (need custom provider)
-      const provider = await getProvider(chainId)
-      const unlock = new ethers.Contract(
-        unlockAddress,
-        [
-          `function publicLockAddress() view returns (address)`,
-          `function publicLockLatestVersion() view returns (uint16)`,
-          `function publicLockImpls(uint16) view returns (address)`,
-        ],
-        provider
-      )
-
-      const lockVersion = await unlock.publicLockLatestVersion()
-      const previousLockVersion = lockVersion - 1n
-      const PublicLockLatest = await unlock.publicLockImpls(lockVersion)
-      const PublicLockPrevious = await unlock.publicLockImpls(
-        previousLockVersion
-      )
-
       const toVerify = {
         Unlock: unlockAddress,
-        PublicLockLatest,
       }
 
-      // get latest lock proxy
-      const lockAddress = await queryLockAddress(subgraph, lockVersion)
-      if (lockAddress) {
-        toVerify[`LockProxyV${lockVersion}`] = lockAddress
-      }
+      // get PublicLock address (need custom provider)
+      try {
+        const provider = await getProvider(chainId)
+        const unlock = new ethers.Contract(
+          unlockAddress,
+          [
+            `function publicLockAddress() view returns (address)`,
+            `function publicLockLatestVersion() view returns (uint16)`,
+            `function publicLockImpls(uint16) view returns (address)`,
+          ],
+          provider
+        )
 
-      // fetch previous version
-      if (PublicLockPrevious !== ethers.ZeroAddress) {
-        toVerify.PublicLockPrevious = PublicLockPrevious
-        const lockAddressPrevious = await queryLockAddress(
-          subgraph,
+        const lockVersion = await unlock.publicLockLatestVersion()
+        const previousLockVersion = lockVersion - 1n
+        const PublicLockLatest = await unlock.publicLockImpls(lockVersion)
+        const PublicLockPrevious = await unlock.publicLockImpls(
           previousLockVersion
         )
-        if (lockAddressPrevious) {
-          toVerify[`LockProxyV${previousLockVersion}`] = lockAddressPrevious
+        toVerify.PublicLockLatest = PublicLockLatest
+        // get latest lock proxy
+        const lockAddress = await queryLockAddress(subgraph, lockVersion)
+        if (lockAddress) {
+          toVerify[`LockProxyV${lockVersion}`] = lockAddress
         }
+
+        // fetch previous version
+        if (PublicLockPrevious !== ethers.ZeroAddress) {
+          toVerify.PublicLockPrevious = PublicLockPrevious
+          const lockAddressPrevious = await queryLockAddress(
+            subgraph,
+            previousLockVersion
+          )
+          if (lockAddressPrevious) {
+            toVerify[`LockProxyV${previousLockVersion}`] = lockAddressPrevious
+          }
+        }
+      } catch (error) {
+        logError({
+          name,
+          chainId,
+          status: error.message,
+        })
       }
 
       // get lock proxy
@@ -141,7 +148,7 @@ async function main() {
       // api calls
       for (let contractName in toVerify) {
         const contractAddress = toVerify[contractName]
-        await wait(200)
+        await wait(100)
         const verified = await isVerified({
           chainId,
           contractAddress,
