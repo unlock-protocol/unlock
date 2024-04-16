@@ -21,7 +21,7 @@
     "@nomiclabs/hardhat-waffle": "2.0.6",
     "@uniswap/permit2-sdk": "1.2.0",
     "@uniswap/sdk-core": "4.2.0",
-    "@uniswap/smart-order-router": "3.17.4",
+    "@uniswap/smart-order-router": "3.27.2",
     "@uniswap/v3-sdk": "3.11.0",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",

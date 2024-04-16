@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@uniswap/sdk-core": "4.2.0",
-    "@uniswap/smart-order-router": "3.17.4",
+    "@uniswap/smart-order-router": "3.27.2",
     "graphql": "16.8.1",
     "graphql-request": "6.1.0",
     "react-to-print": "2.14.15",
