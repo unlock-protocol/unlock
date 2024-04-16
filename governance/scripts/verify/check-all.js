@@ -15,7 +15,7 @@ const logError = ({
     `[${name} (${chainId})]: ${contractName} at ${contractAddress}: ${result} (${message})`
   )
 
-const getLockAddress = async (subgraph, lockVersion) => {
+const queryLockAddress = async (subgraph, lockVersion) => {
   if (!subgraph || !subgraph.endpoint) {
     throw new Error(
       'Missing subGraphURI for this network. Can not fetch from The Graph'
@@ -46,7 +46,12 @@ const getLockAddress = async (subgraph, lockVersion) => {
     return []
   }
   const { locks } = data
-  return locks
+  const [lock] = locks
+  let lockAddress
+  if (lock) {
+    ;({ address: lockAddress } = lock)
+  }
+  return lockAddress
 }
 
 function wait(milliseconds) {
@@ -75,30 +80,36 @@ async function main() {
       [
         `function publicLockAddress() view returns (address)`,
         `function publicLockLatestVersion() view returns (uint16)`,
+        `function publicLockImpls(uint16) view returns (address)`,
       ],
       provider
     )
-    const PublicLock = await unlock.publicLockAddress()
+    const PublicLockLatest = await unlock.publicLockAddress()
     const lockVersion = await unlock.publicLockLatestVersion()
+    const previousLockVersion = lockVersion - 1n
+    const PublicLockPrevious = await unlock.publicLockImpls(previousLockVersion)
 
     const toVerify = {
       Unlock: unlockAddress,
-      PublicLock,
+      PublicLockLatest,
     }
 
-    // get lock proxy
-    try {
-      const [{ address: lockAddress }] = await getLockAddress(
-        subgraph,
-        lockVersion
-      )
+    // get latest lock proxy
+    const lockAddress = await queryLockAddress(subgraph, lockVersion)
+    if (lockAddress) {
       toVerify.LockProxy = lockAddress
-    } catch (error) {
-      console.log({
-        name,
-        chainId,
-        status: `No lock found for version ${lockVersion}`,
-      })
+    }
+
+    // fetch previous version
+    if (PublicLockPrevious !== ethers.ZeroAddress) {
+      toVerify.PublicLockPrevious = PublicLockPrevious
+      const lockAddressPrevious = await queryLockAddress(
+        subgraph,
+        previousLockVersion
+      )
+      if (lockAddressPrevious) {
+        toVerify[`LockProxyV${previousLockVersion}`] = lockAddressPrevious
+      }
     }
 
     // get lock proxy
