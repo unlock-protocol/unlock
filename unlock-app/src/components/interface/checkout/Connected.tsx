@@ -183,7 +183,7 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const state = useSelector(service as CheckoutService, (state) => state)
+  const state = useSelector(service, (state) => state)
   const { account, email, isUnlockAccount, deAuthenticate, connected } =
     useAuth()
   const [signing, setSigning] = useState(false)

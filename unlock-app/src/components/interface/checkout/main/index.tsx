@@ -36,7 +36,7 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  // @ts-ignore
+  // @ts-expect-error
   const [state, send, checkoutService] = useMachine(checkoutMachine, {
     input: {
       paywallConfig,

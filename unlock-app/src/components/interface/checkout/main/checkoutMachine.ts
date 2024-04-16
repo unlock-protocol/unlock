@@ -215,12 +215,6 @@ export const checkoutMachine = createMachine(
       context: {} as CheckoutMachineContext,
       events: {} as CheckoutMachineEvents,
       input: {} as Partial<CheckoutMachineContext>,
-      /*
-      actions: {
-        type: "mint",
-        params: {} as Transaction,
-      },
-      */
     },
     context: ({ input }) => {
       return {
@@ -662,22 +656,17 @@ export const checkoutMachine = createMachine(
       }),
 
       selectLock: assign({
-        //@ts-ignore
-        lock: ({ context, event }) => event.lock,
-        //@ts-ignore
-        renew: ({ context, event }) => event.expiredMember,
-        //@ts-ignore
-        skipQuantity: ({ context, event }) => event.skipQuantity,
-        //@ts-ignore
-        skipRecipient: ({ context, event }) => event.skipRecipient,
-        //@ts-ignore
-        recipients: ({ context, event }) => event.recipients,
-        //@ts-ignore
-        keyManagers: ({ context, event }) => event.keyManagers,
-        //@ts-ignore
-        hook: ({ context, event }) => event.hook,
-        //@ts-ignore
-        existingMember: ({ context, event }) => event.existingMember,
+        lock: ({ event }) => event.lock,
+        renew: ({ event }) => event.expiredMember,
+        // @ts-expect-error
+        skipQuantity: ({ event }) => event.skipQuantity,
+        // @ts-expect-error
+        skipRecipient: ({ event }) => event.skipRecipient,
+        // @ts-expect-error
+        recipients: ({ event }) => event.recipients,
+        keyManagers: ({ event }) => event.keyManagers,
+        hook: ({ event }) => event.hook,
+        existingMember: ({ event }) => event.existingMember,
       }),
 
       selectQuantity: assign({
