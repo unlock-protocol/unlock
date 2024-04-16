@@ -4,9 +4,9 @@ import networks from '@unlock-protocol/networks'
 
 import { KeyRenewal } from '../../models'
 import GasPrice from '../../utils/gasPrice'
-import PriceConversion from '../../utils/priceConversion'
 import Dispatcher from '../../fulfillment/dispatcher'
 import logger from '../../logger'
+import { getDefiLammaPrice } from '../../operations/pricingOperations'
 
 // multiply factor to increase precision for gas calculations
 const BASE_POINT_ACCURACY = 1000
@@ -42,10 +42,13 @@ const getGasFee = async (network: number, gasCost: number) => {
 }
 
 // calculate price of any ERC20 to USD cents
-const getERC20AmountInUSD = async (symbol: string, amount: string) => {
-  const conversion = new PriceConversion()
-  const priceUSD = await conversion.convertToUSD(symbol, parseFloat(amount))
-  return priceUSD * BASE_POINT_ACCURACY
+export const getRefundAmountInUSD = async (network: number, amount: string) => {
+  const { priceInAmount: priceUSD } = await getDefiLammaPrice({
+    network,
+    amount: parseFloat(amount) * BASE_POINT_ACCURACY,
+  })
+
+  return priceUSD || 0
 }
 
 export const isWorthRenewing = async (
@@ -91,8 +94,10 @@ export const isWorthRenewing = async (
     const gasRefund = await lock.gasRefundValue()
 
     // get ERC20 info
-    const { currencySymbol, currencyContractAddress } =
-      await web3Service.getLock(lockAddress, network)
+    const { currencyContractAddress } = await web3Service.getLock(
+      lockAddress,
+      network
+    )
     const abi = ['function decimals() public view returns (uint decimals)']
     const tokenContract = new Contract(currencyContractAddress, abi, provider)
     const decimals = await tokenContract.decimals()
@@ -117,8 +122,9 @@ export const isWorthRenewing = async (
 
     // find costs in USD cents
     const costToRenew = await getGasFee(network, gasLimit.toNumber())
-    const costRefunded = await getERC20AmountInUSD(
-      currencySymbol,
+
+    const costRefunded = await getRefundAmountInUSD(
+      network,
       ethers.utils.formatUnits(gasRefund, decimals)
     )
 

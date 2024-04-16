@@ -20,6 +20,7 @@ import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
+import { Gitcoin } from './Gitcoin'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfigType
@@ -233,7 +234,14 @@ export function Checkout({
           />
         )
       }
-
+      case 'GITCOIN': {
+        return (
+          <Gitcoin
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
       case 'RETURNING': {
         return (
           <Returning
@@ -244,7 +252,6 @@ export function Checkout({
           />
         )
       }
-
       default: {
         return null
       }

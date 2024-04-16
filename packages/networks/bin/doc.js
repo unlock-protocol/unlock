@@ -10,11 +10,7 @@ const parseNetwork = ({
   maxFreeClaimCost,
 }) =>
   `
-### ${name} ${
-    maxFreeClaimCost > 1
-      ? "<button class='button icon-button icon-gasless'></button>"
-      : ''
-  }
+### ${name} 
 
 ${description || ''}
 

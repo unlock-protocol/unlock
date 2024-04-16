@@ -50,7 +50,7 @@ export const CoverImageDrawer = ({
   }
 
   return (
-    <div className="relative inset-0 z-[1]">
+    <div className="relative inset-0 z-[1] hidden sm:block sm:overflow-hidden">
       {isOrganizer && (
         <Button
           className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"

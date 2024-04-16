@@ -1,4 +1,4 @@
-import { NetworkConfig } from '@unlock-protocol/types'
+import { HookType, NetworkConfig } from '@unlock-protocol/types'
 
 export const baseSepolia: NetworkConfig = {
   blockScan: {
@@ -19,7 +19,15 @@ export const baseSepolia: NetworkConfig = {
   },
   featured: false,
   fullySubsidizedGas: true,
-  hooks: {},
+  hooks: {
+    onKeyPurchaseHook: [
+      {
+        address: '0x8c5D54B2CAA4C2D08B0DDF82a1e6D2641779B8EC',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+  },
   id: 84532,
   isTestNetwork: true,
   keyManagerAddress: '',
@@ -68,7 +76,7 @@ export const baseSepolia: NetworkConfig = {
   ],
   unlockAddress: '0x259813B665C8f6074391028ef782e27B65840d89',
   unlockDaoToken: {
-    address: '',
+    address: '0x68a8011d72E6D41bf7CE9dC49De0aeaEBAAC9b39',
   },
 }
 

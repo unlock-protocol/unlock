@@ -10,9 +10,8 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-import { CheckoutConfig, EventData } from '../models'
 import { getEventUrl } from '../utils/eventHelpers'
-import { Op } from 'sequelize'
+import { getEventForLock } from './eventOperations'
 
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
@@ -290,27 +289,8 @@ export const getLockMetadata = async ({
     }
   }
 
-  // Now let's see if there is an event data that needs to be attached
-  // find checkout URLs that include this lock
-  // We look for both cases... because I am not sure how to look for
-  // keys in an insensitive way!
-  const checkoutConfigs = await CheckoutConfig.findAll({
-    where: {
-      [Op.or]: [
-        { [`config.locks.${lockAddress}.network`]: network },
-        { [`config.locks.${lockAddress.toLowerCase()}.network`]: network },
-      ],
-    },
-    order: [['updatedAt', 'DESC']],
-  })
-
-  // If there are checkout configs, let's see if an even exists with them!
-  // Let's now find any event that uses this checkout config!
-  const event = await EventData.findOne({
-    where: {
-      checkoutConfigId: checkoutConfigs.map((record) => record.id),
-    },
-  })
+  // Now let's see if there is an event data that needs to be attached to this lock!
+  const event = await getEventForLock(lockAddress, network)
 
   // Add the event data!
   if (event) {
