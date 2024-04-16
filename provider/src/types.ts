@@ -6,7 +6,6 @@ export interface Env {
   CELO_PROVIDER: string
   GNOSIS_PROVIDER: string
   MAINNET_PROVIDER: string
-  MUMBAI_PROVIDER: string
   OPTIMISM_PROVIDER: string
   POLYGON_PROVIDER: string
   ZKSYNC_PROVIDER: string
