@@ -365,28 +365,23 @@ export function ConfirmCard({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCard()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using credit card'
-                : 'Pay using credit card'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirmCard()
+            }}
+          >
+            {isConfirming
+              ? 'Paying using credit card'
+              : 'Pay using credit card'}
+          </Button>
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

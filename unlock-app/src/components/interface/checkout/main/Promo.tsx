@@ -164,21 +164,16 @@ export function PromoContent({
         </form>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          form="promo"
+          className="w-full"
+          disabled={isSubmitting || promoCodeLoading}
+          loading={isSubmitting}
+          onClick={handleSubmit(onSubmit)}
         >
-          <Button
-            type="submit"
-            form="promo"
-            className="w-full"
-            disabled={isSubmitting || promoCodeLoading}
-            loading={isSubmitting}
-            onClick={handleSubmit(onSubmit)}
-          >
-            {hasDiscount ? 'Next' : 'Skip'}
-          </Button>
-        </Connected>
+          {hasDiscount ? 'Next' : 'Skip'}
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>

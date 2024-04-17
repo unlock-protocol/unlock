@@ -21,6 +21,7 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
+import { Connected } from '../Connected'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfigType
@@ -125,6 +126,14 @@ export function Checkout({
 
   const Content = useCallback(() => {
     switch (matched) {
+      case 'CONNECT': {
+        return (
+          <Connected
+            service={checkoutService}
+            injectedProvider={injectedProvider}
+          />
+        )
+      }
       case 'SELECT': {
         return (
           <Select

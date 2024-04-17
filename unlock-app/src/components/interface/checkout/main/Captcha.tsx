@@ -70,26 +70,21 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          className="w-full"
+          disabled={!recaptchaValue || isContinuing}
+          loading={isContinuing}
+          onClick={(event) => {
+            event.preventDefault()
+            onContinue()
+          }}
         >
-          <Button
-            className="w-full"
-            disabled={!recaptchaValue || isContinuing}
-            loading={isContinuing}
-            onClick={(event) => {
-              event.preventDefault()
-              onContinue()
-            }}
-          >
-            {!recaptchaValue
-              ? 'Solve captcha to continue'
-              : isContinuing
-              ? 'Continuing'
-              : 'Continue'}
-          </Button>
-        </Connected>
+          {!recaptchaValue
+            ? 'Solve captcha to continue'
+            : isContinuing
+            ? 'Continuing'
+            : 'Continue'}
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>

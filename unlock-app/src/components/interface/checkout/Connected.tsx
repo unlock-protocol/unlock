@@ -1,7 +1,7 @@
 import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { useSelector } from '@xstate/react'
-import { ReactNode, useEffect, useMemo, useState } from 'react'
+import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify } from '~/utils/strings'
@@ -12,6 +12,8 @@ import { DownloadWallet } from '../DownloadWallet'
 import { detectInjectedProvider } from '~/utils/wallet'
 import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
+import { PoweredByUnlock } from './PoweredByUnlock'
+import { Stepper } from './Stepper'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -173,7 +175,7 @@ export function SignedOut({
 interface ConnectedCheckoutProps {
   skipAccountDetails?: boolean
   injectedProvider?: unknown
-  service: CheckoutService | ConnectService
+  service: CheckoutService
   children?: ReactNode
 }
 
@@ -242,44 +244,67 @@ export function Connected({
     setIsDisconnecting(false)
   }
 
-  return account ? (
-    <div className="space-y-2">
-      {children}
-      {!skipAccountDetails && (
-        <SignedIn
-          isDisconnecting={isDisconnecting}
-          account={account}
-          email={email}
-          isUnlockAccount={!!isUnlockAccount}
-          onDisconnect={
-            state.can({ type: 'DISCONNECT' }) ? onDisconnect : undefined
-          }
-        />
-      )}
-    </div>
-  ) : connected ? (
-    <div className="grid">
-      <Button
-        loading={status === 'loading'}
-        onClick={(event) => {
-          event.preventDefault()
-          signIn()
-        }}
-        iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
-      >
-        Sign message to Continue
-      </Button>
-    </div>
-  ) : (
-    <div>
-      <SignedOut
-        injectedProvider={injectedProvider}
-        onUnlockAccount={() => {
-          service.send({ type: 'UNLOCK_ACCOUNT' })
-        }}
-        authenticateWithProvider={authenticateWithProvider}
-        title="Have a crypto wallet?"
-      />
-    </div>
+  return (
+    <Fragment>
+      <Stepper service={service} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        {account ? (
+          <div className="space-y-2">
+            {children}
+            {!skipAccountDetails && (
+              <SignedIn
+                isDisconnecting={isDisconnecting}
+                account={account}
+                email={email}
+                isUnlockAccount={!!isUnlockAccount}
+                onDisconnect={
+                  state.can({ type: 'DISCONNECT' }) ? onDisconnect : undefined
+                }
+              />
+            )}
+          </div>
+        ) : connected ? (
+          <div className="grid">
+            <Button
+              loading={status === 'loading'}
+              onClick={(event) => {
+                event.preventDefault()
+                signIn()
+              }}
+              iconLeft={
+                <Icon icon={EthereumIcon} size="medium" key="ethereum" />
+              }
+            >
+              Sign message to Continue
+            </Button>
+          </div>
+        ) : (
+          <div>
+            <SignedOut
+              injectedProvider={injectedProvider}
+              onUnlockAccount={() => {
+                service.send({ type: 'UNLOCK_ACCOUNT' })
+              }}
+              authenticateWithProvider={authenticateWithProvider}
+              title="Have a crypto wallet?"
+            />
+          </div>
+        )}
+      </main>
+      <footer className="grid items-center px-6 pt-6 border-t">
+        <Button
+          onClick={async (event) => {
+            event.preventDefault()
+
+            service.send({
+              type: 'SELECT',
+            })
+          }}
+        >
+          Next
+        </Button>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }

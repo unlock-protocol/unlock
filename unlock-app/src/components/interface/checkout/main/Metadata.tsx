@@ -431,19 +431,14 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          loading={isLoading}
+          disabled={isLoading || isMemberLoading}
+          className="w-full"
+          form="metadata"
         >
-          <Button
-            loading={isLoading}
-            disabled={isLoading || isMemberLoading}
-            className="w-full"
-            form="metadata"
-          >
-            {isLoading ? 'Continuing' : 'Next'}
-          </Button>
-        </Connected>
+          {isLoading ? 'Continuing' : 'Next'}
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>
