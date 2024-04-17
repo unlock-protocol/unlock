@@ -240,7 +240,7 @@ export function Connected({
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
-    service.send({ type: 'DISCONNECT' })
+    // service.send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }
 
