@@ -50,6 +50,7 @@ export enum HookType {
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
   GITCOIN = 'GITCOIN',
+  ADVANCED_TOKEN_URI = 'ADVANCED_TOKEN_URI',
 }
 
 export const HooksName = [
