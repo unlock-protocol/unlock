@@ -48,6 +48,7 @@ export const EventContentWithProps = ({
   event,
 }: EventContentWithPropsProps) => {
   const router = useRouter()
+  console.log(checkoutConfig)
 
   const handleCreateEvent = () => {
     router.push(

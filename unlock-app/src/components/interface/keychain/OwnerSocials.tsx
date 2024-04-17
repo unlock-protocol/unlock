@@ -2,6 +2,7 @@ import { useSocials } from '~/hooks/useSocials'
 import { Placeholder } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import Image from 'next/image'
+import { rewriteIpfsUrl } from '~/utils/url'
 
 export const OwnerSocials = ({ owner }: { owner: string }) => {
   const { socials, loading } = useSocials([owner])
@@ -36,7 +37,7 @@ export const OwnerSocials = ({ owner }: { owner: string }) => {
           alt={social.profileName}
           width={size}
           height={size}
-          src={social.profileImage}
+          src={rewriteIpfsUrl(social.profileImage)}
         />
       )}
       <div className="flex flex-col">
