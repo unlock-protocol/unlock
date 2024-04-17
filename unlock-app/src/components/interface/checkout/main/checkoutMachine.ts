@@ -224,6 +224,7 @@ export const checkoutMachine = createMachine(
       } as CheckoutMachineContext
     },
     on: {
+      CONNECT: '.CONNECT',
       UNLOCK_ACCOUNT: '.UNLOCK_ACCOUNT',
       SELECT: '.SELECT',
       QUANTITY: '.QUANTITY',
@@ -255,6 +256,7 @@ export const checkoutMachine = createMachine(
       CONNECT: {
         on: {
           SELECT: 'SELECT',
+          DISCONNECT,
         },
       },
       SELECT: {
@@ -630,7 +632,7 @@ export const checkoutMachine = createMachine(
           id: 'unlockAccount',
           src: unlockAccountMachine,
           onDone: {
-            target: 'SELECT',
+            target: 'CONNECT',
           },
         },
       },
