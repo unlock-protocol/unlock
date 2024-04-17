@@ -21,7 +21,7 @@ import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -35,6 +35,7 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -61,8 +62,10 @@ export const MetadataInputs = ({
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
-  const [state] = useActor(checkoutService)
-  const { paywallConfig } = state.context
+  const paywallConfig = useSelector(
+    checkoutService,
+    (state) => state.context.paywallConfig
+  )
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -266,9 +269,11 @@ export const emailInput: MetadataInput = {
 }
 
 export function Metadata({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const { lock, paywallConfig, quantity } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
-  const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =
@@ -373,7 +378,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         (item) => item.keyManager || item.recipient
       )
       await updateUsersMetadata(metadata)
-      send({
+      checkoutService.send({
         type: 'SELECT_RECIPIENTS',
         recipients,
         keyManagers,

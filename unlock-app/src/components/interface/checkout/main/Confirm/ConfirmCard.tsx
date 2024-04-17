@@ -5,7 +5,7 @@ import { Button, Detail } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -116,11 +116,10 @@ export function ConfirmCard({
   onConfirmed,
   onError,
 }: Props) {
-  const [state] = useActor(checkoutService)
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
+    useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
-    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
