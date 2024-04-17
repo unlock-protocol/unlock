@@ -291,44 +291,39 @@ export function ConfirmCrypto({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={
-                isConfirming || isLoading || !canAfford || isPricingDataError
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={
+              isConfirming || isLoading || !canAfford || isPricingDataError
+            }
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
               }
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCrypto()
-              }}
-            >
-              {buttonLabel}
-            </Button>
-            {!isLoading && !isPricingDataError && isPayable && (
-              <>
-                {!isPayable?.isTokenPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough {symbol} to complete this purchase.
-                  </small>
-                )}
-                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough{' '}
-                    {config.networks[lock!.network].nativeCurrency.symbol} to
-                    pay transaction fees (gas).
-                  </small>
-                )}
-              </>
-            )}
-          </div>
-        </Connected>
+              onConfirmCrypto()
+            }}
+          >
+            {buttonLabel}
+          </Button>
+          {!isLoading && !isPricingDataError && isPayable && (
+            <>
+              {!isPayable?.isTokenPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough {symbol} to complete this purchase.
+                </small>
+              )}
+              {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough{' '}
+                  {config.networks[lock!.network].nativeCurrency.symbol} to pay
+                  transaction fees (gas).
+                </small>
+              )}
+            </>
+          )}
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

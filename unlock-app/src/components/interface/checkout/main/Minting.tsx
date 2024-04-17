@@ -229,17 +229,12 @@ export function Minting({
         ></MintingScreen>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <ReturningButton
-            loading={processing}
-            disabled={!account || processing}
-            onClick={() => onClose()}
-            checkoutService={checkoutService}
-          />
-        </Connected>
+        <ReturningButton
+          loading={processing}
+          disabled={!account || processing}
+          onClick={() => onClose()}
+          checkoutService={checkoutService}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

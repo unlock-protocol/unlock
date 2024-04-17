@@ -234,20 +234,15 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isLoadingGuildData || disabled}
+          loading={isLoading}
+          onClick={onSubmit}
         >
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoadingGuildData || disabled}
-            loading={isLoading}
-            onClick={onSubmit}
-          >
-            Continue
-          </Button>
-        </Connected>
+          Continue
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>

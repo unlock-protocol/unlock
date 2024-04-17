@@ -491,10 +491,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

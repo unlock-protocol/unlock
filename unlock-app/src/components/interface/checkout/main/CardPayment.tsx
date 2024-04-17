@@ -82,38 +82,33 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          {!card ? (
-            <Button
-              loading={isSaving}
-              disabled={isMethodLoading || isSaving || !stripe}
-              type="submit"
-              form="payment"
-              className="w-full"
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              className="w-full"
-              disabled={!card}
-              onClick={() => {
-                checkoutService.send({
-                  type: 'SELECT_PAYMENT_METHOD',
-                  payment: {
-                    method: 'card',
-                    cardId: payment!.id!,
-                  },
-                })
-              }}
-            >
-              Continue
-            </Button>
-          )}
-        </Connected>
+        {!card ? (
+          <Button
+            loading={isSaving}
+            disabled={isMethodLoading || isSaving || !stripe}
+            type="submit"
+            form="payment"
+            className="w-full"
+          >
+            Next
+          </Button>
+        ) : (
+          <Button
+            className="w-full"
+            disabled={!card}
+            onClick={() => {
+              checkoutService.send({
+                type: 'SELECT_PAYMENT_METHOD',
+                payment: {
+                  method: 'card',
+                  cardId: payment!.id!,
+                },
+              })
+            }}
+          >
+            Continue
+          </Button>
+        )}
         <PoweredByUnlock />
       </footer>
     </Fragment>

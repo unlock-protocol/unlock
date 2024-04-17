@@ -128,25 +128,20 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
         </div>
       </main>
       <footer className="items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
-                checkoutService.send({
-                  type: 'SELECT_QUANTITY',
-                  quantity,
-                })
-              }}
-            >
-              {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            disabled={isDisabled}
+            onClick={async (event) => {
+              event.preventDefault()
+              checkoutService.send({
+                type: 'SELECT_QUANTITY',
+                quantity,
+              })
+            }}
+          >
+            {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
+          </Button>
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

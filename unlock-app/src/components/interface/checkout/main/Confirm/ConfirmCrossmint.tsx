@@ -284,10 +284,6 @@ export function ConfirmCrossmint({
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        ></Connected>
         <PoweredByUnlock />
       </footer>
     </Fragment>

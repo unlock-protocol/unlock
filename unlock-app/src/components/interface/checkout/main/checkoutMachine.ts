@@ -22,6 +22,7 @@ export type CheckoutPage =
   | 'PROMO'
   | 'GUILD'
   | 'GITCOIN'
+  | 'CONNECT'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -209,7 +210,7 @@ const DISCONNECT = {
 export const checkoutMachine = createMachine(
   {
     id: 'checkout',
-    initial: 'SELECT',
+    initial: 'CONNECT',
     types: {
       typegen: {} as import('./checkoutMachine.typegen').Typegen0,
       context: {} as CheckoutMachineContext,
@@ -251,6 +252,11 @@ export const checkoutMachine = createMachine(
       },
     },
     states: {
+      CONNECT: {
+        on: {
+          SELECT: 'SELECT',
+        },
+      },
       SELECT: {
         on: {
           SELECT_LOCK: [

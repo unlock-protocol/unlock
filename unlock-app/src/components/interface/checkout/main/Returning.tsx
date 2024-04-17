@@ -167,47 +167,42 @@ export function Returning({
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div>
-            {hasMessageToSign ? (
-              <Button
-                disabled={isSigningMessage}
-                loading={isSigningMessage}
-                onClick={onSign}
-                className="w-full"
-              >
-                Sign message
-              </Button>
-            ) : (
-              <div
-                className={`gap-4 ${
-                  paywallConfig?.endingCallToAction
-                    ? 'grid grid-cols-1'
-                    : 'flex justify-between '
-                }`}
-              >
-                <ReturningButton
-                  onClick={() => onClose()}
-                  returnLabel="Return"
-                  checkoutService={checkoutService}
-                />
-                {!lock?.isSoldOut && (
-                  <Button
-                    className="w-full"
-                    onClick={() =>
-                      checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
-                    }
-                  >
-                    Buy more
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-        </Connected>
+        <div>
+          {hasMessageToSign ? (
+            <Button
+              disabled={isSigningMessage}
+              loading={isSigningMessage}
+              onClick={onSign}
+              className="w-full"
+            >
+              Sign message
+            </Button>
+          ) : (
+            <div
+              className={`gap-4 ${
+                paywallConfig?.endingCallToAction
+                  ? 'grid grid-cols-1'
+                  : 'flex justify-between '
+              }`}
+            >
+              <ReturningButton
+                onClick={() => onClose()}
+                returnLabel="Return"
+                checkoutService={checkoutService}
+              />
+              {!lock?.isSoldOut && (
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
+                  }
+                >
+                  Buy more
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

@@ -155,21 +155,16 @@ export function Password({ injectedProvider, checkoutService }: Props) {
         </form>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          form="password"
+          className="w-full"
+          disabled={!isPasswordCorrect}
+          loading={isSubmitting}
+          onClick={handleSubmit(onSubmit)}
         >
-          <Button
-            type="submit"
-            form="password"
-            className="w-full"
-            disabled={!isPasswordCorrect}
-            loading={isSubmitting}
-            onClick={handleSubmit(onSubmit)}
-          >
-            Next
-          </Button>
-        </Connected>
+          Next
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>

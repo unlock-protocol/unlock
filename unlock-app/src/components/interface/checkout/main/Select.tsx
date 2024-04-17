@@ -431,42 +431,37 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            {isNotExpectedAddress && (
-              <p className="mb-2 text-sm text-center">
-                Switch to wallet address {minifyAddress(expectedAddress)} to
-                continue.
-              </p>
-            )}
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
+        <div className="grid">
+          {isNotExpectedAddress && (
+            <p className="mb-2 text-sm text-center">
+              Switch to wallet address {minifyAddress(expectedAddress)} to
+              continue.
+            </p>
+          )}
+          <Button
+            disabled={isDisabled}
+            onClick={async (event) => {
+              event.preventDefault()
 
-                if (!lock) {
-                  return
-                }
+              if (!lock) {
+                return
+              }
 
-                checkoutService.send({
-                  type: 'SELECT_LOCK',
-                  lock,
-                  existingMember: lock.isMember,
-                  expiredMember: lock.isExpired,
-                  skipQuantity,
-                  skipRecipient,
-                  recipients: account ? [account] : [],
-                  hook: hookType,
-                })
-              }}
-            >
-              Next
-            </Button>
-          </div>
-        </Connected>
+              checkoutService.send({
+                type: 'SELECT_LOCK',
+                lock,
+                existingMember: lock.isMember,
+                expiredMember: lock.isExpired,
+                skipQuantity,
+                skipRecipient,
+                recipients: account ? [account] : [],
+                hook: hookType,
+              })
+            }}
+          >
+            Next
+          </Button>
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

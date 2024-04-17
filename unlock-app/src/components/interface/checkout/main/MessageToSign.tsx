@@ -64,19 +64,14 @@ export function MessageToSign({
         </pre>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          disabled={!account || isSigning}
+          loading={isSigning}
+          onClick={onSign}
+          className="w-full"
         >
-          <Button
-            disabled={!account || isSigning}
-            loading={isSigning}
-            onClick={onSign}
-            className="w-full"
-          >
-            Sign the message
-          </Button>
-        </Connected>
+          Sign the message
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>
