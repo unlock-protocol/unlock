@@ -1,4 +1,4 @@
-import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
+import { createMachine, assign, InterpreterFrom, ActorRefFrom } from 'xstate'
 
 interface SubmitUserEvent {
   type: 'SUBMIT_USER'
@@ -35,9 +35,10 @@ interface UnlockAccountMachineContext {
 
 export const unlockAccountMachine = createMachine(
   {
+    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'unlockAccount',
-    types: {
-      typegen: {} as import('./unlockAccountMachine.typegen').Typegen0,
+    tsTypes: {} as import('./unlockAccountMachine.typegen').Typegen0,
+    schema: {
       events: {} as UnlockAccountMachineEvents,
       context: {} as UnlockAccountMachineContext,
     },
@@ -47,7 +48,7 @@ export const unlockAccountMachine = createMachine(
       existingUser: false,
     },
     on: {
-      EXIT: '.EXIT',
+      EXIT: 'EXIT',
     },
     states: {
       ENTER_EMAIL: {
@@ -58,11 +59,11 @@ export const unlockAccountMachine = createMachine(
           CONTINUE: [
             {
               target: 'SIGN_IN',
-              guard: 'isExistingUser',
+              cond: 'isExistingUser',
             },
             {
               target: 'SIGN_UP',
-              guard: 'isNotExistingUser',
+              cond: 'isNotExistingUser',
             },
           ],
           BACK: 'EXIT',
@@ -88,19 +89,21 @@ export const unlockAccountMachine = createMachine(
     },
   },
   {
-    guards: {
-      isExistingUser: ({ context }) => {
-        return context.existingUser && !!context.email
-      },
-      isNotExistingUser: ({ context }) => {
-        return !context.existingUser && !!context.email
-      },
-    },
     actions: {
-      submitUser: assign({
-        email: ({ event }) => event.email,
-        existingUser: ({ event }) => event.existingUser,
+      submitUser: assign((_, { email, existingUser }) => {
+        return {
+          email,
+          existingUser,
+        } as const
       }),
+    },
+    guards: {
+      isExistingUser: (ctx) => {
+        return ctx.existingUser && !!ctx.email
+      },
+      isNotExistingUser: (ctx) => {
+        return !ctx.existingUser && !!ctx.email
+      },
     },
   }
 )
@@ -111,5 +114,5 @@ export interface UserDetails {
 }
 
 export type UnlockAccountService =
-  | Actor<typeof unlockAccountMachine>
+  | InterpreterFrom<typeof unlockAccountMachine>
   | ActorRefFrom<typeof unlockAccountMachine>

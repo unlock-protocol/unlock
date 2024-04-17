@@ -5,7 +5,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -32,6 +32,11 @@ export function ConfirmSwapAndPurchase({
   checkoutService,
   onConfirmed,
 }: Props) {
+  const [state, send] = useActor(checkoutService)
+  const { getWalletService } = useAuth()
+  const config = useConfig()
+  const recaptchaRef = useRef<any>()
+  const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
     recipients,
@@ -41,11 +46,7 @@ export function ConfirmSwapAndPurchase({
     metadata,
     data,
     renew,
-  } = useSelector(checkoutService, (state) => state.context)
-  const { getWalletService } = useAuth()
-  const config = useConfig()
-  const recaptchaRef = useRef<any>()
-  const [isConfirming, setIsConfirming] = useState(false)
+  } = state.context
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 
@@ -140,7 +141,7 @@ export function ConfirmSwapAndPurchase({
       const onErrorCallback = (error: Error | null, hash: string | null) => {
         setIsConfirming(false)
         if (error) {
-          checkoutService.send({
+          send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
             transactionHash: hash!,

@@ -6,7 +6,7 @@ import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -33,11 +33,8 @@ export function Returning({
   onClose,
 }: Props) {
   const config = useConfig()
-  const {
-    paywallConfig,
-    lock,
-    messageToSign: signedMessage,
-  } = useSelector(checkoutService, (state) => state.context)
+  const [state, send] = useActor(checkoutService)
+  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
@@ -54,7 +51,7 @@ export function Returning({
         'personal_sign'
       )
       setIsSigningMessage(false)
-      checkoutService.send({
+      send({
         type: 'SIGN_MESSAGE',
         signature,
         address: account!,
@@ -198,7 +195,7 @@ export function Returning({
                   <Button
                     className="w-full"
                     onClick={() =>
-                      checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
+                      checkoutService.send('MAKE_ANOTHER_PURCHASE')
                     }
                   >
                     Buy more

@@ -8,7 +8,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useMachine } from '@xstate/react'
+import { useActor, useInterpret } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
@@ -36,12 +36,12 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  // @ts-expect-error
-  const [state, send, checkoutService] = useMachine(checkoutMachine, {
-    input: {
+  const checkoutService = useInterpret(checkoutMachine, {
+    context: {
       paywallConfig,
     },
   })
+  const [state] = useActor(checkoutService)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context
@@ -70,7 +70,7 @@ export function Checkout({
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      checkoutService.send({ type: 'RESET_CHECKOUT' })
+      checkoutService.send('RESET_CHECKOUT')
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
@@ -113,12 +113,12 @@ export function Checkout({
     const canBackInUnlockAccountService = unlockAccount
       ?.getSnapshot()
       .can('BACK')
-    const canBack = state.can({ type: 'BACK' })
+    const canBack = state.can('BACK')
     if (canBackInUnlockAccountService) {
       return () => unlockAccount.send('BACK')
     }
     if (canBack) {
-      return () => checkoutService.send({ type: 'BACK' })
+      return () => checkoutService.send('BACK')
     }
     return undefined
   }, [state, checkoutService])

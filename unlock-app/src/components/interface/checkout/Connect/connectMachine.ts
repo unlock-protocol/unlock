@@ -1,4 +1,4 @@
-import { Actor, ActorRefFrom, createMachine } from 'xstate'
+import { createMachine, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 interface UnlockAccountEvent {
@@ -17,13 +17,14 @@ type ConnectMachineEvents = UnlockAccountEvent | BackEvent | DisconnectEvent
 
 export const connectMachine = createMachine(
   {
+    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'connect',
-    types: {
-      typegen: {} as import('./connectMachine.typegen').Typegen0,
+    tsTypes: {} as import('./connectMachine.typegen').Typegen0,
+    schema: {
       events: {} as ConnectMachineEvents,
     },
     on: {
-      DISCONNECT: '.CONNECT',
+      DISCONNECT: 'CONNECT',
     },
     initial: 'CONNECT',
     states: {
@@ -49,6 +50,4 @@ export const connectMachine = createMachine(
   {}
 )
 
-export type ConnectService =
-  | Actor<typeof connectMachine>
-  | ActorRefFrom<typeof connectMachine>
+export type ConnectService = InterpreterFrom<typeof connectMachine>

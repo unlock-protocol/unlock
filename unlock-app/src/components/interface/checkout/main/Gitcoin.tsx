@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { Button, minifyAddress } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
@@ -25,11 +25,9 @@ interface CustomErrorType {
 }
 
 export function Gitcoin({ injectedProvider, checkoutService }: Props) {
-  const { recipients, lock } = useSelector(
-    checkoutService,
-    (state) => state.context
-  )
+  const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
+  const { recipients, lock } = state.context
 
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -57,7 +55,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
 
   const onContinue = async () => {
     if (data) {
-      checkoutService.send({
+      send({
         type: 'SUBMIT_DATA',
         data,
       })

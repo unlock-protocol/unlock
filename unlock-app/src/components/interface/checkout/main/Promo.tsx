@@ -4,7 +4,7 @@ import { networks } from '@unlock-protocol/networks'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
@@ -21,6 +21,7 @@ interface Props {
   recipients: string[]
   lock: any
   promoCode?: string
+  send: (obj: any) => void
 }
 
 interface FormData {
@@ -47,6 +48,7 @@ export function PromoContent({
   recipients,
   lock,
   promoCode,
+  send,
   injectedProvider,
   checkoutService,
 }: Props) {
@@ -99,7 +101,7 @@ export function PromoContent({
     try {
       const { promo } = formData
       const data = await computePromoData(promo, users)
-      checkoutService.send({
+      send({
         type: 'SUBMIT_DATA',
         data,
       })
@@ -191,11 +193,9 @@ interface PromoProps {
 }
 
 export function Promo({ injectedProvider, checkoutService }: PromoProps) {
-  const { recipients, lock, paywallConfig } = useSelector(
-    checkoutService,
-    (state) => state.context
-  )
+  const [state, send] = useActor(checkoutService)
   const { query } = useRouter()
+  const { recipients, lock, paywallConfig } = state.context
 
   let promoCode = ''
   if (query?.promo) {
@@ -209,6 +209,7 @@ export function Promo({ injectedProvider, checkoutService }: PromoProps) {
       recipients={recipients}
       lock={lock}
       promoCode={promoCode}
+      send={send}
       injectedProvider={injectedProvider}
       checkoutService={checkoutService}
     />

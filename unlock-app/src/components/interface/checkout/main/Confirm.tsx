@@ -1,9 +1,10 @@
 import { CheckoutService } from './checkoutMachine'
 import { Fragment } from 'react'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
@@ -23,10 +24,8 @@ export function Confirm({
   checkoutService,
   communication,
 }: Props) {
-  const { payment, paywallConfig, messageToSign, metadata } = useSelector(
-    checkoutService,
-    (state) => state.context
-  )
+  const [state, send] = useActor(checkoutService)
+  const { payment, paywallConfig, messageToSign, metadata } = state.context
   const { account } = useAuth()
 
   const onError = (message: string) => {
@@ -49,7 +48,7 @@ export function Confirm({
       })
       communication?.emitMetadata(metadata)
     }
-    checkoutService.send({
+    send({
       type: 'CONFIRM_MINT',
       status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
       transactionHash: hash!,

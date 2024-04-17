@@ -1,5 +1,4 @@
-// Not sure, here we use checkout and account machines
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import {
   CheckoutHookType,
@@ -23,15 +22,7 @@ export function useStepperItems(
     existingMember?: boolean
   } = {}
 ) {
-  const {
-    paywallConfig,
-    skipQuantity,
-    skipRecipient,
-    hook,
-    existingMember,
-    payment,
-    renew,
-  } = useSelector(service, (state) => state.context) as CheckoutMachineContext
+  const [state] = useActor(service)
   if (isUnlockAccount) {
     return [
       {
@@ -47,6 +38,15 @@ export function useStepperItems(
     ]
   }
 
+  const {
+    paywallConfig,
+    skipQuantity,
+    skipRecipient,
+    hook,
+    existingMember,
+    payment,
+    renew,
+  } = state.context as CheckoutMachineContext
   if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
     return []
   }

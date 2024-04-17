@@ -5,7 +5,7 @@ import {
 import { CheckoutService } from './../checkoutMachine'
 import { Connected } from '../../Connected'
 import { Fragment, useCallback, useState } from 'react'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -44,12 +44,13 @@ export function ConfirmCrossmint({
   const [error, setError] = useState<string | null>(null)
   const [crossmintLoading, setCrossmintLoading] = useState(true)
   const { email, account } = useAuth()
-  const { lock, recipients, paywallConfig, data, keyManagers, renew } =
-    useSelector(checkoutService, (state) => state.context)
+  const [state] = useActor(checkoutService)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
 
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
+
+  const { lock, recipients, paywallConfig, data, keyManagers } = state.context
 
   const {
     isLoading: isCrossmintEnabledLoading,
@@ -123,7 +124,7 @@ export function ConfirmCrossmint({
   const { data: tokenId } = useGetTokenIdForOwner(
     { account: account!, lockAddress: lock!.address, network: lock!.network },
     {
-      enabled: renew,
+      enabled: state.context?.renew,
     }
   )
 
@@ -133,7 +134,7 @@ export function ConfirmCrossmint({
       isInitialDataLoading ||
       isPricingDataLoading ||
       crossmintLoading ||
-      (!tokenId && renew))
+      (!tokenId && state.context?.renew))
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig, lock!.address)
@@ -149,7 +150,10 @@ export function ConfirmCrossmint({
     : []
 
   const argumentsReady =
-    referrers && purchaseData && pricingData && (tokenId || !renew)
+    referrers &&
+    purchaseData &&
+    pricingData &&
+    (tokenId || !state.context?.renew)
 
   // crossmint config
   const crossmintConfig = {
@@ -167,7 +171,7 @@ export function ConfirmCrossmint({
     collectionId: '', // To be completed below!
   }
 
-  if (!renew) {
+  if (!state.context?.renew) {
     crossmintConfig.collectionId = collectionId
     crossmintConfig.mintConfig = {
       totalPrice: pricingData?.total.toString(),

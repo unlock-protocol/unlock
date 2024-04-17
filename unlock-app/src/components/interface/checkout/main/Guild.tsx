@@ -3,6 +3,7 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
+import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -11,7 +12,6 @@ import Link from 'next/link'
 import { useDataForGuild } from '~/hooks/useDataForGuild'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import LoadingIcon from '../../Loading'
-import { useSelector } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
@@ -20,10 +20,8 @@ interface Props {
 
 export function Guild({ injectedProvider, checkoutService }: Props) {
   const { account } = useAuth()
-  const { recipients, lock } = useSelector(
-    checkoutService,
-    (state) => state.context
-  )
+  const [state, send] = useActor(checkoutService)
+  const { recipients, lock } = state.context
 
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -45,7 +43,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
 
   const onSubmit = async () => {
     if (data) {
-      checkoutService.send({
+      send({
         type: 'SUBMIT_DATA',
         data: data,
       })

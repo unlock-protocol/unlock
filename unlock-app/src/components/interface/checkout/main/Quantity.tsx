@@ -1,3 +1,4 @@
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
@@ -6,7 +7,7 @@ import {
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -14,7 +15,6 @@ import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
-import { CheckoutService } from './checkoutMachine'
 
 interface Props {
   injectedProvider: unknown
@@ -22,14 +22,13 @@ interface Props {
 }
 
 export function Quantity({ injectedProvider, checkoutService }: Props) {
-  const {
-    paywallConfig,
-    quantity: selectedQuantity,
-    lock,
-  } = useSelector(checkoutService, (state) => state.context)
+  const [state, send] = useActor(checkoutService)
   const config = useConfig()
 
-  const lockConfig = paywallConfig.locks[lock!.address]
+  const { paywallConfig, quantity: selectedQuantity } = state.context
+  const lock = state.context.lock!
+
+  const lockConfig = paywallConfig.locks[lock.address]
 
   const maxRecipients =
     lockConfig?.maxRecipients || paywallConfig.maxRecipients || 1
@@ -46,13 +45,13 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isLoadingFormattedData, data: formattedData } =
     useGetLockProps({
       lock: lock,
-      baseCurrencySymbol: config.networks[lock!.network].nativeCurrency.symbol,
+      baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
       numberOfRecipients: quantity,
     })
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
-    lockAddress: lock!.address,
-    network: lock!.network,
+    lockAddress: lock.address,
+    network: lock.network,
   })
 
   const isDisabled = quantity < 1
@@ -137,7 +136,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
               disabled={isDisabled}
               onClick={async (event) => {
                 event.preventDefault()
-                checkoutService.send({
+                send({
                   type: 'SELECT_QUANTITY',
                   quantity,
                 })

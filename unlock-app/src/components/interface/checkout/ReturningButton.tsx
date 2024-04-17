@@ -1,6 +1,6 @@
 import type { ForwardedRef, InputHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { CheckoutService } from './main/checkoutMachine'
 import { Button } from '@unlock-protocol/ui'
 
@@ -24,10 +24,8 @@ export const ReturningButton = forwardRef(
       onClick,
       ...restProps
     } = props
-    const paywallConfig = useSelector(
-      checkoutService,
-      (state) => state.context.paywallConfig
-    )
+    const [state] = useActor(checkoutService)
+    const { paywallConfig } = state.context
 
     const endingCallToAction = paywallConfig?.endingCallToAction || returnLabel
 

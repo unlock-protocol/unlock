@@ -8,7 +8,7 @@ import {
 } from 'react-icons/ri'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
-import { useSelector } from '@xstate/react'
+import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -64,7 +64,7 @@ const defaultPaymentMethods = {
 }
 
 export function Payment({ injectedProvider, checkoutService }: Props) {
-  const state = useSelector(checkoutService, (state) => state)
+  const [state, send] = useActor(checkoutService)
   const config = useConfig()
   const { recipients } = state.context
   const lock = state.context.lock!
@@ -212,7 +212,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               <button
                 onClick={(event) => {
                   event.preventDefault()
-                  checkoutService.send({
+                  send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'card',
@@ -247,7 +247,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 disabled={!canAfford}
                 onClick={(event) => {
                   event.preventDefault()
-                  checkoutService.send({
+                  send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'crypto',
@@ -287,7 +287,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault()
-                    checkoutService.send({
+                    send({
                       type: 'SELECT_PAYMENT_METHOD',
                       payment: {
                         method: 'crossmint',
@@ -328,7 +328,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               <button
                 onClick={(event) => {
                   event.preventDefault()
-                  checkoutService.send({
+                  send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'claim',
@@ -365,7 +365,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     key={index}
                     onClick={(event) => {
                       event.preventDefault()
-                      checkoutService.send({
+                      send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
                           method: 'swap_and_purchase',
@@ -408,7 +408,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     key={index}
                     onClick={(event) => {
                       event.preventDefault()
-                      checkoutService.send({
+                      send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
                           method: 'crosschain_purchase',
