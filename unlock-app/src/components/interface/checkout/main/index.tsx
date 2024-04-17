@@ -36,7 +36,7 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  // @ts-expect-error
+  // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, checkoutService] = useMachine(checkoutMachine, {
     input: {
       paywallConfig,
