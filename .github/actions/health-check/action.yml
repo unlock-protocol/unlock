@@ -42,6 +42,11 @@ runs:
         yarn workspace @unlock-protocol/governance check >> governance.log
         sentry-cli send-event -m "Governance" --logfile governance.log
       shell: bash
+    - name: Check Contract Verification
+      run: |
+        yarn workspace @unlock-protocol/governance check:verify >> verification.log
+        sentry-cli send-event -m "Contract Verification" --logfile verification.log
+      shell: bash
     - name: Check Subgraphs
       run: |
         yarn workspace @unlock-protocol/subgraph check >> subgraph.log
