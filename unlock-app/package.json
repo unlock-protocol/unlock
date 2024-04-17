@@ -30,7 +30,7 @@
     "@walletconnect/client": "1.8.0",
     "@walletconnect/ethereum-provider": "2.11.3",
     "@walletconnect/modal": "2.6.2",
-    "@xstate/react": "3.2.2",
+    "@xstate/react": "4.1.0",
     "axios": "1.6.8",
     "blockies-react-svg": "0.0.13",
     "calendar-link": "2.5.1",
@@ -76,7 +76,7 @@
     "unified": "11.0.4",
     "validator": "13.9.0",
     "walletlink": "2.5.0",
-    "xstate": "4.38.3",
+    "xstate": "5.10.0",
     "zod": "3.22.4",
     "zod-to-json-schema": "3.21.4"
   },

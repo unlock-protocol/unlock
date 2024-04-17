@@ -1,5 +1,4 @@
 import { Button, Input } from '@unlock-protocol/ui'
-import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
@@ -12,7 +11,6 @@ interface Props {
 }
 
 export function EnterEmail({ unlockAccountService }: Props) {
-  const [_, send] = useActor(unlockAccountService)
   const {
     register,
     handleSubmit,
@@ -27,13 +25,13 @@ export function EnterEmail({ unlockAccountService }: Props) {
     try {
       setIsContinuing(true)
       const existingUser = await storageService.userExist(email)
-      send({
+      unlockAccountService.send({
         type: 'SUBMIT_USER',
         email,
         existingUser,
       })
       setIsContinuing(false)
-      send('CONTINUE')
+      unlockAccountService.send({ type: 'CONTINUE' })
     } catch (error) {
       if (error instanceof Error) {
         setError('email', {
@@ -70,7 +68,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
           have a wallet,{' '}
           <button
             className="underline text-ui-main-500"
-            onClick={() => send('BACK')}
+            onClick={() => unlockAccountService.send({ type: 'BACK' })}
           >
             connect it
           </button>

@@ -4,7 +4,7 @@ import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
@@ -20,11 +20,12 @@ export function MessageToSign({
   checkoutService,
   injectedProvider,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
+  const { messageToSign } = useSelector(
+    checkoutService,
+    (state) => state.context.paywallConfig
+  )
   const { account, getWalletService } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
-  const { paywallConfig } = state.context
-  const { messageToSign } = paywallConfig
 
   const onSign = async () => {
     setIsSigning(true)
@@ -36,7 +37,7 @@ export function MessageToSign({
         'personal_sign'
       )
       setIsSigning(false)
-      send({
+      checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
         address: account!,

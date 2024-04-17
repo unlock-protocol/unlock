@@ -6,7 +6,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -123,9 +123,11 @@ export function Minting({
   communication,
 }: MintingProps) {
   const { account } = useAuth()
-  const [state, send] = useActor(checkoutService)
+  const { mint, lock, messageToSign, metadata, recipients } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
   const [doneWaiting, setDoneWaiting] = useState(false)
 
@@ -181,7 +183,7 @@ export function Minting({
 
           communication?.emitMetadata(metadata)
 
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
             network: mint!.network,
@@ -191,8 +193,9 @@ export function Minting({
         }
       } catch (error) {
         if (error instanceof Error) {
+          console.log('Error waiting for confirmation', error)
           ToastHelper.error(error.message)
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
             network: mint!.network,
@@ -206,7 +209,7 @@ export function Minting({
     mint,
     lock,
     config,
-    send,
+    checkoutService,
     communication,
     account,
     messageToSign,

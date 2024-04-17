@@ -2,7 +2,7 @@ import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -183,8 +183,10 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
 }
 
 export function Select({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock: selectedLock } = state.context
+  const { paywallConfig, lock: selectedLock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
   const { isLoading: isLocksLoading, data: locks } = useQuery(
@@ -341,7 +343,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       return
     }
 
-    send({
+    checkoutService.send({
       type: 'SELECT_LOCK',
       lock,
       existingMember: !!membership?.member,
@@ -360,7 +362,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     skipQuantity,
     skipRecipient,
     isUnlockAccount,
-    send,
+    checkoutService,
     skipSelect,
     isLoading,
   ])
@@ -449,7 +451,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   return
                 }
 
-                send({
+                checkoutService.send({
                   type: 'SELECT_LOCK',
                   lock,
                   existingMember: lock.isMember,
