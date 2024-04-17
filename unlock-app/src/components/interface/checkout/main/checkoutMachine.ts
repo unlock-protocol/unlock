@@ -658,12 +658,12 @@ export const checkoutMachine = createMachine(
       selectLock: assign({
         lock: ({ event }) => event.lock,
         renew: ({ event }) => event.expiredMember,
-        // @ts-expect-error
-        skipQuantity: ({ event }) => event.skipQuantity,
-        // @ts-expect-error
-        skipRecipient: ({ event }) => event.skipRecipient,
-        // @ts-expect-error
-        recipients: ({ event }) => event.recipients,
+        // Handle undefined case by providing a default value of a boolean
+        skipQuantity: ({ event }) => !!event.skipQuantity || false,
+        // Explicitly type the assignment to boolean
+        skipRecipient: ({ event }) => event.skipRecipient as boolean,
+        // Handle undefined case by providing a default value of an empty array
+        recipients: ({ event }) => event.recipients || [],
         keyManagers: ({ event }) => event.keyManagers,
         hook: ({ event }) => event.hook,
         existingMember: ({ event }) => event.existingMember,
