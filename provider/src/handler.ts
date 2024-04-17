@@ -49,6 +49,7 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
       }
     )
   }
+
   if (pathname === '/data' && queryURL) {
     const endpoint = new URL(queryURL)
     // Proxy the request
@@ -83,7 +84,6 @@ const handler = async (request: Request, env: Env): Promise<Response> => {
   }
 
   const matched = pathname.match(/\/([0-9]*)/)
-
   // Missing network
   if (!pathname || pathname === '/' || !matched) {
     return Response.json(
