@@ -65,6 +65,13 @@ export const optimism: NetworkConfig = {
         name: 'Gitcoin',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x5765883E120F707A528F3e476636304De9280b6c',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 10,
   isTestNetwork: false,

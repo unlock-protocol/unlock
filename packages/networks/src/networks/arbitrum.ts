@@ -59,6 +59,13 @@ export const arbitrum: NetworkConfig = {
         name: 'Gitcoin',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0xA321fEa1E5c772043a466b2969CBEB1c095Cf3BA',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 42161,
   isTestNetwork: false,

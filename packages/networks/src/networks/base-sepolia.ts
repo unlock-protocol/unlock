@@ -27,6 +27,13 @@ export const baseSepolia: NetworkConfig = {
         name: 'Gitcoin',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x6878Ae3c863f6Ebd27B47C02F6B32aAC8B0BA07E',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 84532,
   isTestNetwork: true,

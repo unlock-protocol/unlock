@@ -59,6 +59,13 @@ export const bsc: NetworkConfig = {
         name: 'Gitcoin',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 56,
   isTestNetwork: false,
