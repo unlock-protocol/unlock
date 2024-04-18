@@ -118,6 +118,7 @@ export interface NetworkConfig {
   unlockDaoToken?: {
     address: string
     mainnetBridge?: string
+    uniswapV3Pool?: string
   }
   explorer?: {
     name: string

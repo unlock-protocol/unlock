@@ -154,7 +154,7 @@ export const polygon: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
+    oracle: '0x35c6b8761c7D9af75Fa193daC09d5b7B5b34981d',
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
@@ -168,6 +168,7 @@ export const polygon: NetworkConfig = {
   unlockDaoToken: {
     address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
     mainnetBridge: '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf',
+    uniswapV3Pool: '0x8B2b66ec1E6C1895eb408F8b8fcd8cD9510F9115',
   },
   url: 'https://polygon.technology/',
 }
