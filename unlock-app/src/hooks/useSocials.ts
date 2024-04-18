@@ -56,7 +56,7 @@ export const useSocials = (addresses: string[]) => {
   const socials: Socials = {} as Socials
 
   const { data, loading, error } = useQuery(query, {
-    wallets: ['0xF41a98D4F2E52aa1ccB48F0b6539e955707b8F7a', ...addresses],
+    wallets: addresses,
   })
 
   if (data) {
@@ -64,21 +64,29 @@ export const useSocials = (addresses: string[]) => {
       social.userAssociatedAddresses.forEach((address: string) => {
         if (addresses.indexOf(address) > -1) {
           const existing = socials[address] || {}
-          let profileUrl = social.profileUrl
+          // prioritize Farcaster (profiles are more complete!)
           if (social.dappName === 'farcaster') {
-            profileUrl = `https://warpcast.com/${social.profileHandle}`
-          } else if (social.dappName === 'lens') {
-            profileUrl = `https://hey.xyz/u/${social.profileHandle}`
-          }
-          socials[address] = {
-            id: existing.id || social.id,
-            profileName: existing.profileName || social.profileName,
-            profileImage: existing.profileImage || social.profileImage,
-            profileDisplayName:
-              existing.profileDisplayName ||
-              social.profileDisplayName ||
-              social.profileName,
-            profileUrl: existing.profileUrl || profileUrl,
+            socials[address] = {
+              id: social.id,
+              profileName: social.profileName,
+              profileImage: social.profileImage,
+              profileDisplayName:
+                social.profileDisplayName || social.profileName,
+              profileUrl:
+                social.profileUrl ||
+                `https://warpcast.com/${social.profileHandle}`,
+            }
+          } else if (social.dappName === 'lens' && !existing.id) {
+            socials[address] = {
+              id: social.id,
+              profileName: social.profileName,
+              profileImage: social.profileImage,
+              profileDisplayName:
+                social.profileDisplayName || social.profileName,
+              profileUrl:
+                social.profileUrl ||
+                `https://hey.xyz/u/${social.profileHandle}`,
+            }
           }
         }
       })

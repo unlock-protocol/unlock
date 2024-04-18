@@ -38,6 +38,7 @@ import { config } from '~/config/app'
 import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
+import { AttendeeCues } from './Registration/AttendeeCues'
 
 interface EventDetailsProps {
   event: Event
@@ -331,22 +332,24 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-
-          {!hasPassed && (
-            <RegistrationCard
-              requiresApproval={event.requiresApproval}
-              checkoutConfig={checkoutConfig}
-            />
-          )}
-          {hasPassed && (
-            <Card className="grid gap-4 mt-10 md:mt-0">
-              <p className="text-lg">
-                <MdAssignmentLate />
-                This event is over. It is not possible to register for it
-                anymore.
-              </p>
-            </Card>
-          )}
+          <div className="flex flex-col gap-4">
+            {!hasPassed && (
+              <RegistrationCard
+                requiresApproval={event.requiresApproval}
+                checkoutConfig={checkoutConfig}
+              />
+            )}
+            {hasPassed && (
+              <Card className="grid gap-4 mt-10 md:mt-0">
+                <p className="text-lg">
+                  <MdAssignmentLate />
+                  This event is over. It is not possible to register for it
+                  anymore.
+                </p>
+              </Card>
+            )}
+            <AttendeeCues checkoutConfig={checkoutConfig} />
+          </div>
         </section>
       </div>
 
