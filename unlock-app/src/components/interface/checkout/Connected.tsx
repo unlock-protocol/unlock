@@ -76,41 +76,30 @@ interface ConfirmOwnershipProps {
   signIn: () => void
   onDisconnect?: () => void
   isDisconnecting?: boolean
-  account: string
 }
 
 export function ConfirmOwnership({
   signIn,
   onDisconnect,
   isDisconnecting,
-  account,
 }: ConfirmOwnershipProps) {
-  const session = false
-
   return (
     <div className="grid divide-y divide-gray-100">
       <div className="flex flex-col items-center justify-center p-6 text-center">
-        {session && !isDisconnecting && (
-          <div className="text-gray-700">
-            You are successfully verified as {addressMinify(account!)}
-          </div>
-        )}
-        {!session && !isDisconnecting && (
-          <div className="flex flex-col gap-4">
-            <h3 className="text-gray-700">
-              Sign message to confirm ownership of your account
-            </h3>
-            <Button
-              loading={false}
-              onClick={(event) => {
-                event.preventDefault()
-                signIn()
-              }}
-            >
-              Confirm Ownership
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-col gap-4">
+          <h3 className="text-gray-700">
+            Sign message to confirm ownership of your account
+          </h3>
+          <Button
+            loading={false}
+            onClick={(event) => {
+              event.preventDefault()
+              signIn()
+            }}
+          >
+            Confirm Ownership
+          </Button>
+        </div>
       </div>
       <div className="grid p-6">
         <ConnectButton
