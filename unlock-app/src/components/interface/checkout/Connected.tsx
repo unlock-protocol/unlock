@@ -1,19 +1,23 @@
-import { Button, Tooltip, Icon } from '@unlock-protocol/ui'
-import { FaEthereum as EthereumIcon } from 'react-icons/fa'
+import { Button } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
-import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react'
+import {
+  Fragment,
+  MouseEventHandler,
+  ReactNode,
+  useEffect,
+  useState,
+} from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify } from '~/utils/strings'
 import SvgComponents from '../svg'
-import { ConnectService } from './Connect/connectMachine'
-import { SiBrave as BraveWalletIcon } from 'react-icons/si'
-import { DownloadWallet } from '../DownloadWallet'
-import { detectInjectedProvider } from '~/utils/wallet'
 import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
 import { PoweredByUnlock } from './PoweredByUnlock'
 import { Stepper } from './Stepper'
+import { ConnectButton } from '../connect/Custom'
+import { AiOutlineDisconnect as DisconnectIcon } from 'react-icons/ai'
+
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -29,38 +33,94 @@ export function SignedIn({
   account,
   isDisconnecting,
 }: SignedInProps) {
-  let userText: string
-  let signOutText: string
+  return (
+    <div className="grid divide-y divide-gray-100">
+      <div className="flex flex-col items-center justify-center gap-6 p-6">
+        <div className="inline-flex items-center gap-2 text-lg font-bold">
+          <button
+            onClick={(event) => {
+              event.preventDefault()
+              //copy()
+            }}
+            className="cursor-pointer"
+          >
+            {addressMinify(account!)}
+          </button>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        {isUnlockAccount ? (
+          <div className="text-gray-700">
+            You are successfully verified as {email}
+          </div>
+        ) : (
+          <div className="text-gray-700">
+            You are successfully connected as {addressMinify(account!)}
+          </div>
+        )}
+      </div>
+      <div className="grid p-6">
+        <ConnectButton
+          onClick={onDisconnect}
+          loading={isDisconnecting}
+          icon={<DisconnectIcon size={24} />}
+        >
+          Disconnect
+        </ConnectButton>
+      </div>
+    </div>
+  )
+}
 
-  if (isUnlockAccount && email) {
-    userText = `User: ${email}`
-    signOutText = 'Sign out'
-  } else {
-    userText = `Wallet: ${addressMinify(account!)}`
-    signOutText = 'Disconnect'
-  }
+interface ConfirmOwnershipProps {
+  signIn: () => void
+  onDisconnect?: () => void
+  isDisconnecting?: boolean
+  account: string
+}
+
+export function ConfirmOwnership({
+  signIn,
+  onDisconnect,
+  isDisconnecting,
+  account,
+}: ConfirmOwnershipProps) {
+  const session = false
 
   return (
-    <div className="flex items-center justify-between text-sm">
-      <p> {userText}</p>
-      <Tooltip
-        side="top"
-        tip={`${
-          isUnlockAccount ? 'Signing out' : 'Disconnecting'
-        } will reset the checkout`}
-      >
-        {onDisconnect && (
-          <Button
-            variant="borderless"
-            size="small"
-            loading={isDisconnecting}
-            onClick={onDisconnect}
-            type="button"
-          >
-            ⤫ {signOutText}
-          </Button>
+    <div className="grid divide-y divide-gray-100">
+      <div className="flex flex-col items-center justify-center p-6 text-center">
+        {session && !isDisconnecting && (
+          <div className="text-gray-700">
+            You are successfully verified as {addressMinify(account!)}
+          </div>
         )}
-      </Tooltip>
+        {!session && !isDisconnecting && (
+          <div className="flex flex-col gap-4">
+            <h3 className="text-gray-700">
+              Sign message to confirm ownership of your account
+            </h3>
+            <Button
+              loading={false}
+              onClick={(event) => {
+                event.preventDefault()
+                signIn()
+              }}
+            >
+              Confirm Ownership
+            </Button>
+          </div>
+        )}
+      </div>
+      <div className="grid p-6">
+        <ConnectButton
+          onClick={onDisconnect}
+          loading={isDisconnecting}
+          icon={<DisconnectIcon size={24} />}
+        >
+          Disconnect
+        </ConnectButton>
+      </div>
     </div>
   )
 }
@@ -75,98 +135,68 @@ interface SignedOutProps {
       | 'DELEGATED_PROVIDER'
   ): Promise<void>
   onUnlockAccount(): void
-  injectedProvider: any
-  title?: string
 }
 
 export function SignedOut({
   onUnlockAccount,
   authenticateWithProvider,
-  injectedProvider,
-  title = 'Have a crypto wallet?',
 }: SignedOutProps) {
-  const iconButtonClass =
-    'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
-  const [isDownloadWallet, setIsDownloadWallet] = useState(false)
+  const [isConnecting, setIsConnecting] = useState('')
 
-  const ButtonIcon = useMemo(() => {
-    const walletIcons = {
-      metamask: <SvgComponents.Metamask width={32} />,
-      brave: <BraveWalletIcon size={20} className="m-1.5" />,
-      frame: <SvgComponents.Frame width={24} />,
-      rainbow: <SvgComponents.Rainbow width={24} />,
-      status: <SvgComponents.Status width={32} />,
+  const createOnConnectHandler = (provider: any) => {
+    const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {
+      event.preventDefault()
+      setIsConnecting(provider)
+      await authenticateWithProvider(provider)
+      setIsConnecting('')
     }
-    const detected = detectInjectedProvider(injectedProvider)
-    return walletIcons[detected]
-  }, [injectedProvider])
-
-  const onInjectedHandler = () => {
-    if (injectedProvider) {
-      return authenticateWithProvider('METAMASK')
-    }
-
-    if (
-      navigator.userAgent.match(/Android/i) ||
-      navigator.userAgent.match(/iPhone/i)
-    ) {
-      return authenticateWithProvider('WALLET_CONNECT')
-    }
-
-    setIsDownloadWallet(true)
+    return handler
   }
 
   return (
-    <div className="grid w-full grid-flow-col grid-cols-11">
-      <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm">{title}</h4>
-        <DownloadWallet
-          isOpen={isDownloadWallet}
-          setIsOpen={setIsDownloadWallet}
-        />
-        <div className="flex items-center justify-around w-full">
-          <button
-            aria-label="injected wallet"
-            onClick={onInjectedHandler}
-            type="button"
-            className={iconButtonClass}
+    <div className="space-y-6 divide-y divide-gray-100">
+      <div className="grid gap-4 px-6">
+        {window.ethereum && (
+          <ConnectButton
+            icon={<SvgComponents.Metamask width={40} height={40} />}
+            loading={isConnecting === 'METAMASK'}
+            onClick={createOnConnectHandler('METAMASK')}
           >
-            {ButtonIcon}
-          </button>
-          <button
-            aria-label="wallet connect"
-            onClick={() => authenticateWithProvider('WALLET_CONNECT')}
-            type="button"
-            className={iconButtonClass}
-          >
-            <SvgComponents.WalletConnect width={32} />
-          </button>
-          <button
-            aria-label="coinbase wallet"
-            onClick={() => authenticateWithProvider('COINBASE')}
-            type="button"
-            className={iconButtonClass}
-          >
-            <SvgComponents.CoinbaseWallet width={32} />
-          </button>
+            Metamask
+          </ConnectButton>
+        )}
+
+        <ConnectButton
+          icon={<SvgComponents.WalletConnect width={40} height={40} />}
+          loading={isConnecting === 'WALLET_CONNECT'}
+          onClick={createOnConnectHandler('WALLET_CONNECT')}
+        >
+          WalletConnect
+        </ConnectButton>
+
+        <ConnectButton
+          icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
+          loading={isConnecting === 'COINBASE'}
+          onClick={createOnConnectHandler('COINBASE')}
+        >
+          Coinbase Wallet
+        </ConnectButton>
+      </div>
+      <div className="grid gap-4 p-6">
+        <div className="px-2 text-sm text-center text-gray-600">
+          If you previously created an unlock account or do not have a wallet,
+          use this option.
         </div>
-      </div>
-      <div className="flex justify-center col-span-1">
-        <div className="h-full border-l"></div>
-      </div>
-      <div className="grid items-center col-span-5 space-y-2 justify-items-center">
-        <h4 className="text-sm">No crypto wallet?</h4>
-        <Button
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
+          loading={isConnecting === 'UNLOCK'}
           onClick={(event) => {
             event.preventDefault()
             onUnlockAccount()
           }}
-          size="small"
-          variant="outlined-primary"
-          className="w-full"
         >
-          Get started
-        </Button>
+          Unlock Account
+        </ConnectButton>
       </div>
     </div>
   )
@@ -259,42 +289,30 @@ export function Connected({
                 account={account}
                 email={email}
                 isUnlockAccount={!!isUnlockAccount}
-                onDisconnect={
-                  state.can({ type: 'DISCONNECT' }) ? onDisconnect : undefined
-                }
+                onDisconnect={onDisconnect}
               />
             )}
           </div>
         ) : connected ? (
-          <div className="grid">
-            <Button
-              loading={status === 'loading'}
-              onClick={(event) => {
-                event.preventDefault()
-                signIn()
-              }}
-              iconLeft={
-                <Icon icon={EthereumIcon} size="medium" key="ethereum" />
-              }
-            >
-              Sign message to Continue
-            </Button>
-          </div>
+          <ConfirmOwnership
+            signIn={signIn}
+            onDisconnect={onDisconnect}
+            isDisconnecting={isDisconnecting}
+          />
         ) : (
-          <div>
+          <div className="h-full">
             <SignedOut
-              injectedProvider={injectedProvider}
               onUnlockAccount={() => {
                 service.send({ type: 'UNLOCK_ACCOUNT' })
               }}
               authenticateWithProvider={authenticateWithProvider}
-              title="Have a crypto wallet?"
             />
           </div>
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
+          disabled={!account}
           onClick={async (event) => {
             event.preventDefault()
 
