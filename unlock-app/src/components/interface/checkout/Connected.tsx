@@ -306,7 +306,7 @@ export function Connected({
             event.preventDefault()
 
             service.send({
-              type: 'SELECT',
+              type: 'SELECT_LOCK',
             })
           }}
         >

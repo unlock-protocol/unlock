@@ -49,6 +49,10 @@ export interface LockState extends Lock, Required<PaywallConfigLock> {
 
 export interface SelectLockEvent {
   type: 'SELECT_LOCK'
+}
+
+export interface ConnectEvent {
+  type: 'CONNECT'
   lock: LockState
   existingMember: boolean
   expiredMember: boolean
@@ -129,6 +133,7 @@ export type CheckoutMachineEvents =
   | ResetEvent
   | DisconnectEvent
   | BackEvent
+  | ConnectEvent
 
 type Payment =
   | {
@@ -210,7 +215,7 @@ const DISCONNECT = {
 export const checkoutMachine = createMachine(
   {
     id: 'checkout',
-    initial: 'CONNECT',
+    initial: 'SELECT',
     types: {
       typegen: {} as import('./checkoutMachine.typegen').Typegen0,
       context: {} as CheckoutMachineContext,
@@ -255,25 +260,16 @@ export const checkoutMachine = createMachine(
     states: {
       CONNECT: {
         on: {
-          SELECT: 'SELECT',
-          DISCONNECT,
-        },
-      },
-      SELECT: {
-        on: {
           SELECT_LOCK: [
             {
-              actions: ['selectLock'],
               target: 'RETURNING',
               guard: ({ event }) => event.existingMember,
             },
             {
-              actions: ['selectLock'],
               target: 'QUANTITY',
               guard: ({ event }) => !event.skipQuantity && !event.expiredMember,
             },
             {
-              actions: ['selectLock'],
               target: 'METADATA',
               guard: ({ event }) => {
                 // For expired memberships we do not offer the ability
@@ -282,50 +278,53 @@ export const checkoutMachine = createMachine(
               },
             },
             {
-              actions: ['selectLock'],
               guard: 'requireMessageToSign',
               target: 'MESSAGE_TO_SIGN',
             },
             {
-              actions: ['selectLock'],
               target: 'PASSWORD',
               guard: ({ event }) => {
                 return !event.expiredMember && event.hook === 'password'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'PROMO',
               guard: ({ event }) => {
                 return !event.expiredMember && event.hook === 'promocode'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'GUILD',
               guard: ({ event }) => {
                 return event.hook === 'guild'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'CAPTCHA',
               guard: ({ event }) => {
                 return event.hook === 'captcha'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'GITCOIN',
               guard: ({ event }) => {
                 return event.hook === 'gitcoin'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'PAYMENT',
             },
           ],
+          DISCONNECT,
+        },
+      },
+      SELECT: {
+        on: {
+          CONNECT: {
+            target: 'CONNECT',
+            actions: ['selectLock'],
+          },
+
           DISCONNECT,
         },
       },

@@ -343,8 +343,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       return
     }
 
+    console.log('Service: ', checkoutService)
+
     checkoutService.send({
-      type: 'SELECT_LOCK',
+      type: 'CONNECT',
       lock,
       existingMember: !!membership?.member,
       skipQuantity,
@@ -447,8 +449,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                 return
               }
 
+              console.log('Service: ', checkoutService)
+
               checkoutService.send({
-                type: 'SELECT_LOCK',
+                type: 'CONNECT',
                 lock,
                 existingMember: lock.isMember,
                 expiredMember: lock.isExpired,
@@ -457,6 +461,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                 recipients: account ? [account] : [],
                 hook: hookType,
               })
+
+              console.log('Service: ', checkoutService)
             }}
           >
             Next
