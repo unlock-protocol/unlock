@@ -67,7 +67,7 @@ const config = {
   networks,
   etherscan,
   solidity: {
-    compilers: [{ version: '0.7.6', settings }],
+    compilers: [{ version: '0.8.21', settings }],
   },
   sourcify: {
     enabled: true,
