@@ -20,7 +20,7 @@ export const scroll: NetworkConfig = {
   },
   id: 534352,
   isTestNetwork: false,
-  maxFreeClaimCost: 100,
+  maxFreeClaimCost: 500,
   multisig: '0x0feE9413A626a05a08AcB0E0e5D6A483e6A0a172',
   name: 'Scroll',
   nativeCurrency: {
