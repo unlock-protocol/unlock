@@ -52,7 +52,7 @@ export const AttendeeCuesInternal = ({
               )
             })}
         </ul>
-        <p className="">
+        <p>
           {Object.values(socials)
             .filter((social) => social.profileDisplayName)
             .slice(0, 5)
