@@ -209,7 +209,9 @@ export function Connected({
   useEffect(() => {
     if (!account) {
       console.debug('Not connected')
-    } else console.debug(`Connected as ${account}`)
+    } else {
+      console.debug(`Connected as ${account}`)
+    }
   }, [account])
 
   const signToSignIn = async () => {

@@ -52,6 +52,10 @@ export function Checkout({
   )
 
   useEffect(() => {
+    console.debug('Unlock paywall config', paywallConfig)
+  }, [paywallConfig])
+
+  useEffect(() => {
     if (paywallConfigChanged) {
       checkoutService.send({
         type: 'UPDATE_PAYWALL_CONFIG',
