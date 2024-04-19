@@ -53,7 +53,7 @@ export async function getSettings({
     },
   })
 
-  const lockSettings = settings || DEFAULT_LOCK_SETTINGS
+  const lockSettings = settings || { ...DEFAULT_LOCK_SETTINGS }
 
   const eventDetails = await getEventForLock(lockAddress, network)
   if (eventDetails?.data) {
