@@ -11,7 +11,7 @@ Object.values(networks).forEach((network) => {
 
 const config = {
   database: {
-    logging: false,
+    logging: true,
     dialect: 'postgres',
   },
   stripeSecret: process.env.STRIPE_SECRET,

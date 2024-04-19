@@ -51,6 +51,8 @@ export const getEventForLock = async (
     order: [['updatedAt', 'DESC']],
   })
 
+  console.log('Found checkout config for ', lockAddress, checkoutConfigs)
+
   // If there are checkout configs, let's see if an even exists with them!
   // Let's now find any event that uses this checkout config!
   const event = await EventData.findOne({
