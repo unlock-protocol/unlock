@@ -47,7 +47,7 @@ export function FieldLayout(props: Props) {
   const successClass = twMerge('text-green-500', TEXT_SIZE[size])
 
   if (hidden) {
-    return <div className="hiddem">{children}</div>
+    return <div className="hidden">{children}</div>
   }
 
   function Message() {

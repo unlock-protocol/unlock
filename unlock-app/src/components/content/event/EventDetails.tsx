@@ -254,7 +254,6 @@ export const EventDetails = ({
             />
           </div>
 
-          {/* HAH! */}
           <CoverImageDrawer
             image={image}
             setImage={setImage}
