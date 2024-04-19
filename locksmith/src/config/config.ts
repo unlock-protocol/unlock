@@ -53,7 +53,7 @@ Object.values(networks).forEach((network) => {
 const config = {
   isProduction,
   database: {
-    logging: true,
+    logging: false,
     dialect: 'postgres',
   } as Options,
   stripeSecret: process.env.STRIPE_SECRET,

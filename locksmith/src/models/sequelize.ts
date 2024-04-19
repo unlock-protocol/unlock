@@ -58,5 +58,4 @@ export const LocksmithDataTypes: LocksmithDataTypesType = {
 
 PgTypes.NETWORK_ID = PgNetworkId
 
-console.log(config.database)
 export const sequelize = new Sequelize(config.database)
