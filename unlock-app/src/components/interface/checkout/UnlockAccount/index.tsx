@@ -7,6 +7,7 @@ import { EnterEmail } from './EnterEmail'
 import { SignIn } from './SignIn'
 import { SignUp } from './SignUp'
 import { UnlockAccountService, UserDetails } from './unlockAccountMachine'
+import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
 
 interface Props {
   unlockAccountService: UnlockAccountService
@@ -42,6 +43,12 @@ export function UnlockAccount({
     })
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
+
+  return (
+    <ConnectUnlockAccount
+      onExit={() => unlockAccountService.send({ type: 'BACK' })}
+    />
+  )
 
   switch (stateValue) {
     case 'ENTER_EMAIL': {

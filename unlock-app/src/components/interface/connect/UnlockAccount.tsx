@@ -16,12 +16,16 @@ interface UnlockAccountSignInProps {
   onSignUp(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
   signedInBefore?: boolean
+  useIcon: boolean
+  onExit(): void
 }
 
 export const UnlockAccountSignIn = ({
   onSignUp,
   signIn,
   signedInBefore = false,
+  useIcon,
+  onExit,
 }: UnlockAccountSignInProps) => {
   const {
     register,
@@ -56,11 +60,13 @@ export const UnlockAccountSignIn = ({
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
         {email ? (
           <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
-            <BlockiesSvg
-              address={account || '0x'}
-              size={6}
-              className="rounded-full"
-            />
+            {useIcon && (
+              <BlockiesSvg
+                address={account || '0x'}
+                size={6}
+                className="rounded-full"
+              />
+            )}
             <div className="text-center">Signed in as {email}</div>
           </div>
         ) : (
@@ -114,6 +120,24 @@ export const UnlockAccountSignIn = ({
           </button>
         </div>
       )}
+      <div className="grid gap-4 p-6">
+        <CustomAnchorButton
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://ethereum.org/en/wallets/find-wallet/"
+        >
+          Get a crypto wallet
+        </CustomAnchorButton>
+        <ConnectButton
+          icon={<WalletIcon size={24} />}
+          onClick={(event) => {
+            event.preventDefault()
+            onExit()
+          }}
+        >
+          <span>Back to using your crypto wallet</span>
+        </ConnectButton>
+      </div>
     </div>
   )
 }
@@ -225,7 +249,7 @@ export const UnlockAccountSignUp = ({
           Create an account
         </ConnectButton>
       </form>
-      <div className="flex items-center justify-end px-6">
+      <div className="flex items-center justify-end p-6">
         <button
           onClick={(event) => {
             event.preventDefault()
@@ -242,9 +266,10 @@ export const UnlockAccountSignUp = ({
 
 export interface Props {
   onExit(): void
+  useIcon?: boolean
 }
 
-export const ConnectUnlockAccount = ({ onExit }: Props) => {
+export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
@@ -282,6 +307,8 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
           onSignUp={() => {
             setIsSignIn(false)
           }}
+          useIcon={useIcon}
+          onExit={onExit}
         />
       )}
       {!isSignIn && (
@@ -292,38 +319,19 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
           }}
         />
       )}
-      <div className="grid gap-4 p-6">
-        {requireSignIn ? (
-          <ConnectButton
-            onClick={(event) => {
-              event.preventDefault()
-              signOut()
-            }}
-            icon={<WalletIcon size={24} />}
-          >
-            Disconnect
-          </ConnectButton>
-        ) : (
-          <div className="grid gap-2">
-            <CustomAnchorButton
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/find-wallet/"
-            >
-              Get a crypto wallet
-            </CustomAnchorButton>
-            <ConnectButton
-              icon={<WalletIcon size={24} />}
-              onClick={(event) => {
-                event.preventDefault()
-                onExit()
-              }}
-            >
-              <span>Back to using your crypto wallet</span>
-            </ConnectButton>
-          </div>
-        )}
-      </div>
+      {requireSignIn ? (
+        <ConnectButton
+          onClick={(event) => {
+            event.preventDefault()
+            signOut()
+          }}
+          icon={<WalletIcon size={24} />}
+        >
+          Disconnect
+        </ConnectButton>
+      ) : (
+        <></>
+      )}
     </div>
   )
 }
