@@ -1,6 +1,6 @@
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
@@ -30,7 +30,6 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
-import { error } from '~/propTypes'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -170,7 +169,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     },
     pattern: {
       value:
-        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
       message: 'Please, use a valid image URL',
     },
   })
@@ -217,7 +216,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     }
                     trigger('metadata.image')
                   }}
-                  error={errors.metadata?.image?.message}
+                  error={errors.metadata?.image?.message as string}
                 />
               </div>
               <div className="grid order-1 gap-4 md:order-2">

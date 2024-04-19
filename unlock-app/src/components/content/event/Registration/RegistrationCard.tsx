@@ -36,7 +36,6 @@ export const RegistrationCard = ({
   // We need to behave differently if there is only one lock
   // If there is one single lock
   if (Object.keys(checkoutConfig.config.locks).length == 1) {
-    console.log('Render single lock reg')
     return (
       <Card className="grid gap-4 mt-10 lg:mt-0">
         <RegistrationCardSingleLock
