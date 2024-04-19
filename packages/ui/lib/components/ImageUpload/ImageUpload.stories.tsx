@@ -26,6 +26,15 @@ export const Loading = {
   },
 }
 
+export const Error = {
+  args: {
+    preview: '/images/image_upload.png',
+    description:
+      'Upload an image or select an external URL. Recommend using a square of at least 300x300 pixels.',
+    error: 'Please select an image!',
+  },
+}
+
 export const CoverImage = {
   args: {
     preview: '/images/image_upload.png',

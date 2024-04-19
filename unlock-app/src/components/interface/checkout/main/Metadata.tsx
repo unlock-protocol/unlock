@@ -103,8 +103,8 @@ export const MetadataInputs = ({
   const labelText = useEmail ? 'Email' : 'Wallet'
   const label = id >= 1 ? `${labelText} #${id + 1}` : labelText
   const description = useEmail
-    ? 'Enter the email address that will receive the membership NFT'
-    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+    ? 'Enter the email address that will receive the pass'
+    : 'Enter the wallet address or an ENS that will receive the pass'
   const error = errors?.metadata?.[id]?.recipient?.message
   const placeholder = useEmail ? 'user@email.com' : '0x...'
   const inputClass = twMerge(
@@ -142,8 +142,8 @@ export const MetadataInputs = ({
               </div>
               <p className="text-xs text-gray-600">
                 {isUnlockAccount
-                  ? 'The email address that will receive the membership NFT'
-                  : 'The wallet address that will receive the membership NFT'}
+                  ? 'The email address that will receive the pass'
+                  : 'The wallet address that will receive the pass'}
               </p>
             </div>
           ) : (
@@ -225,15 +225,14 @@ export const MetadataInputs = ({
           )
         })
         .map((metadataInputItem) => {
-          const {
-            name,
-            label,
-            defaultValue,
-            placeholder,
-            type,
-            required,
-            value,
-          } = metadataInputItem ?? {}
+          const { name, label, placeholder, required, value } =
+            metadataInputItem ?? {}
+          let { defaultValue, type } = metadataInputItem ?? {}
+          if (email && name === 'email') {
+            // We pre-fill it with the user's email!
+            defaultValue = email
+            type = 'hidden'
+          }
           const inputLabel = label || name
           return (
             <Input
