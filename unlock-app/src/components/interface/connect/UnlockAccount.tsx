@@ -40,6 +40,7 @@ export const UnlockAccountSignIn = ({
     }
     try {
       await signIn(data)
+      onExit()
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -171,6 +172,7 @@ export const UnlockAccountSignUp = ({
     try {
       await signUp({ email, password })
     } catch (error) {
+      console.log(error)
       if (error instanceof Error) {
         setError(
           'confirmPassword',
@@ -289,12 +291,14 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
       email,
       password
     )
+    if (passwordEncryptedPrivateKey === '') return 'Error creating account'
     const unlockProvider = new UnlockProvider(config.networks[1])
-    await unlockProvider.connect({
+    const value = await unlockProvider.connect({
       key: passwordEncryptedPrivateKey,
       emailAddress: email,
       password,
     })
+    console.log(value)
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
