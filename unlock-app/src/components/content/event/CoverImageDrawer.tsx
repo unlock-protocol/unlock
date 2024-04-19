@@ -50,10 +50,10 @@ export const CoverImageDrawer = ({
   }
 
   return (
-    <div className="relative inset-0 z-[1] hidden sm:block sm:overflow-hidden">
+    <div className="absolute hidden sm:block sm:overflow-hidden inset-0 z-[1] ">
       {isOrganizer && (
         <Button
-          className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
+          className="absolute md:top-4 md:right-4"
           variant="secondary"
           size="tiny"
           onClick={() => {

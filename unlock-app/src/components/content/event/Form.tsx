@@ -121,6 +121,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const {
     control,
     register,
+    trigger,
     setValue,
     getValues,
     formState: { errors },
@@ -160,6 +161,20 @@ export const Form = ({ onSubmit }: FormProps) => {
   const minEndDate = dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
 
   const router = useRouter()
+
+  const imageUploadField = register('metadata.image', {
+    required: {
+      value: true,
+      message: 'Please select an image to illustrate your event!',
+    },
+    pattern: {
+      value:
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
+      message: 'Please, use a valid image URL',
+    },
+  })
+  console.log(imageUploadField)
+
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
@@ -199,7 +214,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                       setValue('metadata.image', image)
                     }
+                    trigger('metadata.image')
                   }}
+                  error={errors.metadata?.image?.message as string}
                 />
               </div>
               <div className="grid order-1 gap-4 md:order-2">
