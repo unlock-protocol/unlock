@@ -72,12 +72,12 @@ export function useStepperItems(
   const isMember = existingMember || isExistingMember
   const checkoutItems: StepItem[] = [
     {
-      name: 'Connect',
-      to: 'CONNECT',
-    },
-    {
       name: 'Select',
       to: 'SELECT',
+    },
+    {
+      name: 'Connect',
+      to: 'CONNECT',
     },
     {
       name: 'Choose quantity',
