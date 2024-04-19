@@ -2,6 +2,7 @@ import express from 'express'
 import {
   CustomEmailController,
   sendCustomEmail,
+  sendEventInvite,
 } from '../../controllers/v2/customEmailController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
@@ -15,6 +16,13 @@ router.post(
   authenticatedMiddleware,
   lockManagerMiddleware,
   sendCustomEmail
+)
+
+router.post(
+  '/:event/invite',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  sendEventInvite
 )
 
 router.post(

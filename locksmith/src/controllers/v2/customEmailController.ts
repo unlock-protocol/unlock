@@ -105,3 +105,7 @@ export const sendCustomEmail: RequestHandler = async (request, response) => {
     success: true,
   })
 }
+
+export const sendEventInvite: RequestHandler = async (request, response) => {
+  console.log('sendEventInvite')
+}
