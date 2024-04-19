@@ -53,6 +53,7 @@ export const useAccount = (address: string) => {
       const result = await data.json()
       if (!data.ok) {
         ToastHelper.error(result[0]?.message ?? 'Ops, something went wrong')
+        return { address: '', passwordEncryptedPrivateKey: '' }
       } else {
         // Sign the user in (sign siwe message)
         await signIn()
