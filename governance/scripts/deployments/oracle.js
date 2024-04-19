@@ -40,7 +40,7 @@ async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
     uniswapFactoryAddress,
   ])
   console.log(
-    `UNISWAP ORACLE > Oracle deployed at ${oracleAddress} (tx: ${hash})`
+    `UNISWAP ORACLE > Oracle deployed at ${oracleAddress} with ${uniswapFactoryAddress} (tx: ${hash})`
   )
 
   return oracleAddress
