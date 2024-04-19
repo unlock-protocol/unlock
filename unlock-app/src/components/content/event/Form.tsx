@@ -1,6 +1,6 @@
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Lock, Token } from '@unlock-protocol/types'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLogoZoom as ZoomIcon } from 'react-icons/bi'
@@ -30,6 +30,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { error } from '~/propTypes'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -121,6 +122,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const {
     control,
     register,
+    trigger,
     setValue,
     getValues,
     formState: { errors },
@@ -160,6 +162,20 @@ export const Form = ({ onSubmit }: FormProps) => {
   const minEndDate = dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
 
   const router = useRouter()
+
+  const imageUploadField = register('metadata.image', {
+    required: {
+      value: true,
+      message: 'Please select an image to illustrate your event!',
+    },
+    pattern: {
+      value:
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/,
+      message: 'Please, use a valid image URL',
+    },
+  })
+  console.log(imageUploadField)
+
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
@@ -199,7 +215,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                       setValue('metadata.image', image)
                     }
+                    trigger('metadata.image')
                   }}
+                  error={errors.metadata?.image?.message}
                 />
               </div>
               <div className="grid order-1 gap-4 md:order-2">
