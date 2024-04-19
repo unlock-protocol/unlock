@@ -17,6 +17,8 @@ import { PoweredByUnlock } from './PoweredByUnlock'
 import { Stepper } from './Stepper'
 import { ConnectButton } from '../connect/Custom'
 import { AiOutlineDisconnect as DisconnectIcon } from 'react-icons/ai'
+import { ConnectWallet } from '../connect/Wallet'
+import { ConnectedWallet } from '../connect/ConnectedWallet'
 
 interface SignedInProps {
   onDisconnect?: () => void
@@ -209,11 +211,7 @@ export function Connected({
     useAuth()
   const [signing, setSigning] = useState(false)
 
-  const { authenticateWithProvider } = useAuthenticate({
-    injectedProvider,
-  })
-  const { signIn, signOut, isSignedIn } = useSIWE()
-  const [isDisconnecting, setIsDisconnecting] = useState(false)
+  const { signIn, isSignedIn } = useSIWE()
   const useDelegatedProvider =
     state.context?.paywallConfig?.useDelegatedProvider
 
@@ -257,19 +255,23 @@ export function Connected({
     )
   }
 
-  const onDisconnect = async () => {
-    setIsDisconnecting(true)
-    await signOut()
-    await deAuthenticate()
-    // service.send({ type: 'DISCONNECT' })
-    setIsDisconnecting(false)
-  }
-
   return (
     <Fragment>
       <Stepper service={service} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {account ? (
+        {connected ? (
+          <ConnectedWallet showIcon={false} />
+        ) : (
+          <div className="h-full">
+            <ConnectWallet
+              onUnlockAccount={() => {
+                service.send({ type: 'UNLOCK_ACCOUNT' })
+              }}
+              injectedProvider={injectedProvider}
+            />
+          </div>
+        )}
+        {/*account ? (
           <div className="space-y-2">
             {children}
             {!skipAccountDetails && (
@@ -290,14 +292,14 @@ export function Connected({
           />
         ) : (
           <div className="h-full">
-            <SignedOut
+            <ConnectWallet
               onUnlockAccount={() => {
                 service.send({ type: 'UNLOCK_ACCOUNT' })
               }}
-              authenticateWithProvider={authenticateWithProvider}
+              injectedProvider={injectedProvider}
             />
           </div>
-        )}
+        )*/}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
