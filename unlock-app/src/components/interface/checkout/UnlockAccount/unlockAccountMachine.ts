@@ -41,7 +41,7 @@ export const unlockAccountMachine = createMachine(
       events: {} as UnlockAccountMachineEvents,
       context: {} as UnlockAccountMachineContext,
     },
-    initial: 'ENTER_EMAIL',
+    initial: 'ACCOUNT',
     context: {
       email: '',
       existingUser: false,
@@ -50,36 +50,13 @@ export const unlockAccountMachine = createMachine(
       EXIT: '.EXIT',
     },
     states: {
-      ENTER_EMAIL: {
+      ACCOUNT: {
         on: {
           SUBMIT_USER: {
             actions: ['submitUser'],
           },
-          CONTINUE: [
-            {
-              target: 'SIGN_IN',
-              guard: 'isExistingUser',
-            },
-            {
-              target: 'SIGN_UP',
-              guard: 'isNotExistingUser',
-            },
-          ],
+
           BACK: 'EXIT',
-        },
-      },
-      SIGN_UP: {
-        on: {
-          BACK: 'ENTER_EMAIL',
-          ENTER_EMAIL: 'ENTER_EMAIL',
-          CONTINUE: 'EXIT',
-        },
-      },
-      SIGN_IN: {
-        on: {
-          BACK: 'ENTER_EMAIL',
-          ENTER_EMAIL: 'ENTER_EMAIL',
-          CONTINUE: 'EXIT',
         },
       },
       EXIT: {

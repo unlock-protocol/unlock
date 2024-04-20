@@ -21,6 +21,6 @@ export interface Typegen0 {
     isNotExistingUser: 'CONTINUE'
   }
   eventsCausingServices: {}
-  matchesStates: 'ENTER_EMAIL' | 'EXIT' | 'SIGN_IN' | 'SIGN_UP'
+  matchesStates: 'ACCOUNT' | 'EXIT'
   tags: never
 }

@@ -113,6 +113,14 @@ interface UpdatePaywallConfigEvent {
 
 interface BackEvent {
   type: CheckoutPage | 'BACK'
+  lock?: LockState
+  existingMember?: boolean
+  expiredMember?: boolean
+  skipQuantity?: boolean
+  skipRecipient?: boolean
+  recipients?: string[]
+  keyManagers?: string[]
+  hook?: CheckoutHookType
 }
 
 interface ResetEvent {
@@ -120,6 +128,7 @@ interface ResetEvent {
 }
 
 export type CheckoutMachineEvents =
+  | ConnectEvent
   | SelectLockEvent
   | SelectQuantityEvent
   | SelectPaymentMethodEvent
@@ -133,7 +142,6 @@ export type CheckoutMachineEvents =
   | ResetEvent
   | DisconnectEvent
   | BackEvent
-  | ConnectEvent
 
 type Payment =
   | {
@@ -185,6 +193,7 @@ export interface CheckoutMachineContext {
   hook?: CheckoutHookType
   renew: boolean
   existingMember: boolean
+  expiredMember: boolean
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
@@ -204,6 +213,7 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   hook: undefined,
   metadata: undefined,
   existingMember: false,
+  expiredMember: false,
 }
 
 const DISCONNECT = {
@@ -263,18 +273,19 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               target: 'RETURNING',
-              guard: ({ event }) => event.existingMember,
+              guard: ({ context }) => context.existingMember,
             },
             {
               target: 'QUANTITY',
-              guard: ({ event }) => !event.skipQuantity && !event.expiredMember,
+              guard: ({ context }) =>
+                !context.skipQuantity && !context.expiredMember,
             },
             {
               target: 'METADATA',
-              guard: ({ event }) => {
+              guard: ({ context }) => {
                 // For expired memberships we do not offer the ability
                 // to change the metadadata and recipient...
-                return !event.skipRecipient && !event.expiredMember
+                return !context.skipRecipient && !context.expiredMember
               },
             },
             {
@@ -283,32 +294,32 @@ export const checkoutMachine = createMachine(
             },
             {
               target: 'PASSWORD',
-              guard: ({ event }) => {
-                return !event.expiredMember && event.hook === 'password'
+              guard: ({ context }) => {
+                return !context.expiredMember && context.hook === 'password'
               },
             },
             {
               target: 'PROMO',
-              guard: ({ event }) => {
-                return !event.expiredMember && event.hook === 'promocode'
+              guard: ({ context }) => {
+                return !context.expiredMember && context.hook === 'promocode'
               },
             },
             {
               target: 'GUILD',
-              guard: ({ event }) => {
-                return event.hook === 'guild'
+              guard: ({ context }) => {
+                return context.hook === 'guild'
               },
             },
             {
               target: 'CAPTCHA',
-              guard: ({ event }) => {
-                return event.hook === 'captcha'
+              guard: ({ context }) => {
+                return context.hook === 'captcha'
               },
             },
             {
               target: 'GITCOIN',
-              guard: ({ event }) => {
-                return event.hook === 'gitcoin'
+              guard: ({ context }) => {
+                return context.hook === 'gitcoin'
               },
             },
             {
@@ -322,7 +333,7 @@ export const checkoutMachine = createMachine(
         on: {
           CONNECT: {
             target: 'CONNECT',
-            actions: ['selectLock'],
+            actions: ['connect'],
           },
 
           DISCONNECT,
@@ -662,9 +673,9 @@ export const checkoutMachine = createMachine(
         }
       }),
 
-      selectLock: assign({
+      connect: assign({
         lock: ({ event }) => event.lock,
-        renew: ({ event }) => event.expiredMember,
+        renew: ({ event }) => event.expiredMember as boolean,
         // Handle undefined case by providing a default value of a boolean
         skipQuantity: ({ event }) => !!event.skipQuantity || false,
         // Explicitly type the assignment to boolean
@@ -673,7 +684,7 @@ export const checkoutMachine = createMachine(
         recipients: ({ event }) => event.recipients || [],
         keyManagers: ({ event }) => event.keyManagers,
         hook: ({ event }) => event.hook,
-        existingMember: ({ event }) => event.existingMember,
+        existingMember: ({ event }) => event.existingMember as boolean,
       }),
 
       selectQuantity: assign({

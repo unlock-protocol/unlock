@@ -35,14 +35,8 @@ export function useStepperItems(
   if (isUnlockAccount) {
     return [
       {
-        name: 'Enter email',
-        to: 'ENTER_EMAIL',
-      },
-      {
-        name: 'Password',
-      },
-      {
-        name: 'Signed in',
+        name: 'Account',
+        to: 'ACCOUNT',
       },
     ]
   }
