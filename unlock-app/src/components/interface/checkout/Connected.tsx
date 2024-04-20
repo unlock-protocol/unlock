@@ -269,35 +269,6 @@ export function Connected({
             />
           </div>
         )}
-        {/*account ? (
-          <div className="space-y-2">
-            {children}
-            {!skipAccountDetails && (
-              <SignedIn
-                isDisconnecting={isDisconnecting}
-                account={account}
-                email={email}
-                isUnlockAccount={!!isUnlockAccount}
-                onDisconnect={onDisconnect}
-              />
-            )}
-          </div>
-        ) : connected ? (
-          <ConfirmOwnership
-            signIn={signIn}
-            onDisconnect={onDisconnect}
-            isDisconnecting={isDisconnecting}
-          />
-        ) : (
-          <div className="h-full">
-            <ConnectWallet
-              onUnlockAccount={() => {
-                service.send({ type: 'UNLOCK_ACCOUNT' })
-              }}
-              injectedProvider={injectedProvider}
-            />
-          </div>
-        )*/}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
