@@ -23,6 +23,12 @@ describe('eventOperations', () => {
       const anotherSlug = await createEventSlug('Exclusive event')
       expect(anotherSlug).toEqual('exclusive-event-1')
     })
+
+    it('should create the event with the correct slug without emoji ', async () => {
+      expect.assertions(1)
+      const slug = await createEventSlug('Exclusive 🔒 party')
+      expect(slug).toEqual('exclusive-party')
+    })
   })
 
   describe('saveEvent', () => {
