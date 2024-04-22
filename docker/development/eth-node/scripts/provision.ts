@@ -11,12 +11,12 @@ import { ethers, unlock } from 'hardhat'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
-const { AddressZero } = ethers.constants
+const { AddressZero } = ethers
 
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
-const users = []
+const users: string[] = []
 
 if (process.env.LOCKSMITH_PURCHASER_ADDRESS) {
   users.push(process.env.LOCKSMITH_PURCHASER_ADDRESS)
@@ -26,7 +26,7 @@ if (process.env.ETHEREUM_ADDRESS) {
   users.push(process.env.ETHEREUM_ADDRESS)
 }
 
-const log = (message) => {
+const log = (message: string) => {
   console.log(`ETH NODE SETUP > ${message}`)
 }
 
@@ -43,7 +43,7 @@ async function main() {
     users.map((user) =>
       deployer.sendTransaction({
         to: user,
-        value: ethers.utils.parseEther('5.0'),
+        value: ethers.parseEther('5.0'),
       })
     )
   )
@@ -58,10 +58,7 @@ async function main() {
   // We then transfer some ERC20 tokens to some users
   await Promise.all(
     users.map(async (user) => {
-      const mintTx = await erc20.mint(
-        user,
-        ethers.utils.parseUnits('500', decimals)
-      )
+      const mintTx = await erc20.mint(user, ethers.parseUnits('500', decimals))
       log(`TRANSFERED 500 ERC20 (${erc20.address}) to ${user}`)
       return await mintTx.wait()
     })
@@ -102,8 +99,9 @@ async function main() {
    * 3. Create locks
    */
   // Finally, deploy locks and for each of them, if it's an ERC20, approve it for locksmith purchases
+  const erc20Address = await erc20.getAddress()
   await Promise.all(
-    locksArgs(erc20.address).map(async (lockParams) => {
+    locksArgs(erc20Address).map(async (lockParams) => {
       const { lock } = await unlock.createLock(lockParams)
 
       log(`LOCK "${await lockParams.name}" DEPLOYED TO ${lock.address}`)
@@ -115,9 +113,10 @@ async function main() {
         const purchaser = await ethers.getSigner(
           process.env.LOCKSMITH_PURCHASER_ADDRESS
         )
-        const approveTx = await erc20
-          .connect(purchaser)
-          .approve(lock.address, ethers.utils.parseUnits('500', decimals))
+        const approveTx = await erc20.connect(purchaser).getFunction('approve')(
+          lock.address,
+          ethers.utils.parseUnits('500', decimals)
+        )
         await approveTx.wait()
       }
       return lock
