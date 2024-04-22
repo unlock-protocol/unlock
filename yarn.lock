@@ -49828,7 +49828,7 @@ __metadata:
     apollo-link-http: "npm:1.5.17"
     chai: "npm:4.2.0"
     eslint: "npm:8.46.0"
-    ethers: "npm:5.7.2"
+    ethers: "npm:6.10.0"
     graphql: "npm:16.6.0"
     hardhat: "npm:2.20.1"
     hardhat-gas-reporter: "npm:1.0.8"
