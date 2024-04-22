@@ -18519,6 +18519,7 @@ __metadata:
     typechain: "npm:8.3.0"
     typescript: "npm:5.4.5"
   peerDependencies:
+    "@nomicfoundation/hardhat-ethers": 3
     "@unlock-protocol/contracts": "*"
     ethers: 6
   languageName: unknown
