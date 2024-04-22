@@ -52,14 +52,15 @@ async function main() {
 
   // Deploy an ERC20
   const erc20 = await deployErc20()
-  log(`ERC20 CONTRACT DEPLOYED AT ${erc20.address}`)
+  const erc20Address = await erc20.getAddress()
+  log(`ERC20 CONTRACT DEPLOYED AT ${erc20Address}`)
   const decimals = await erc20.decimals()
 
   // We then transfer some ERC20 tokens to some users
   await Promise.all(
     users.map(async (user) => {
       const mintTx = await erc20.mint(user, ethers.parseUnits('500', decimals))
-      log(`TRANSFERED 500 ERC20 (${erc20.address}) to ${user}`)
+      log(`TRANSFERED 500 ERC20 (${erc20Address}) to ${user}`)
       return await mintTx.wait()
     })
   )
@@ -99,7 +100,6 @@ async function main() {
    * 3. Create locks
    */
   // Finally, deploy locks and for each of them, if it's an ERC20, approve it for locksmith purchases
-  const erc20Address = await erc20.getAddress()
   await Promise.all(
     locksArgs(erc20Address).map(async (lockParams) => {
       const { lock } = await unlock.createLock(lockParams)
