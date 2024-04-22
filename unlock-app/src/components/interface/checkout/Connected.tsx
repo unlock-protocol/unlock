@@ -146,7 +146,7 @@ export function SignedOut({
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      <div className="grid gap-4 px-6">
+      <div className="grid gap-4">
         {window.ethereum && (
           <ConnectButton
             icon={<SvgComponents.Metamask width={40} height={40} />}
@@ -173,7 +173,7 @@ export function SignedOut({
           Coinbase Wallet
         </ConnectButton>
       </div>
-      <div className="grid gap-4 p-6">
+      <div className="grid gap-4">
         <div className="px-2 text-sm text-center text-gray-600">
           If you previously created an unlock account or do not have a wallet,
           use this option.
@@ -207,9 +207,13 @@ export function Connected({
   children,
 }: ConnectedCheckoutProps) {
   const state = useSelector(service, (state) => state)
-  const { account, email, isUnlockAccount, deAuthenticate, connected } =
-    useAuth()
+  const { account, isUnlockAccount, connected } = useAuth()
   const [signing, setSigning] = useState(false)
+
+  // If already connected, skip sign in
+  if (account && connected) {
+    service.send({ type: 'SELECT_LOCK' })
+  }
 
   const { signIn, isSignedIn } = useSIWE()
   const useDelegatedProvider =
@@ -219,6 +223,7 @@ export function Connected({
     const autoSignIn = async () => {
       if (!isSignedIn && !signing && connected && isUnlockAccount) {
         await signIn()
+        service.send({ type: 'UNLOCK_ACCOUNT' })
       }
     }
     autoSignIn()
@@ -258,7 +263,7 @@ export function Connected({
   return (
     <Fragment>
       <Stepper service={service} />
-      <main className="h-full px-6 py-2 overflow-auto">
+      <main className="h-full py-2 overflow-auto">
         {connected ? (
           <ConnectedWallet showIcon={false} />
         ) : (

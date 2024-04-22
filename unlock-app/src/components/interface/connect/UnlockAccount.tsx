@@ -322,6 +322,7 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
           signOut={() => {
             signOut()
             deAuthenticate()
+            onExit()
           }}
           signedInBefore={!!requireSignIn}
           onSignUp={() => {

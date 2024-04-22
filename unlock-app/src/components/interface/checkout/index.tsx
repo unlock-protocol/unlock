@@ -6,7 +6,6 @@ import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
 import { useConfig } from '~/utils/withConfig'
 import { Checkout } from './main'
-import { Connect } from './Connect'
 import { Container } from './Container'
 import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
@@ -85,17 +84,6 @@ export function CheckoutPage() {
     )
   }
 
-  if (oauthConfig) {
-    return (
-      <Container>
-        <Connect
-          injectedProvider={injectedProvider}
-          communication={communication}
-          oauthConfig={oauthConfig}
-        />
-      </Container>
-    )
-  }
   if (paywallConfig) {
     return (
       <Container>
