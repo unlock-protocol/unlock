@@ -149,7 +149,7 @@ export const arbitrum: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
+    oracle: '0x9DC6a328C1200f5b247425DDeA538f70335C6a50',
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
@@ -158,6 +158,7 @@ export const arbitrum: NetworkConfig = {
   unlockDaoToken: {
     address: '0xd5d3aA404D7562d09a848F96a8a8d5D65977bF90',
     mainnetBridge: '0xa3A7B6F88361F48403514059F1F16C8E78d60EeC',
+    uniswapV3Pool: '0xF0498d3BDD28fA39d248aE2c65D7F90A794Ed9fE',
   },
   url: 'https://arbitrum.io/',
 }
