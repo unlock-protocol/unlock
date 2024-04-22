@@ -20231,6 +20231,7 @@ __metadata:
     tslint-plugin-prettier: "npm:2.3.0"
     typescript: "npm:5.3.3"
   peerDependencies:
+    "@nomicfoundation/hardhat-ethers": 3
     "@unlock-protocol/contracts": "*"
     ethers: 5.7.2
   checksum: 10/undefined
