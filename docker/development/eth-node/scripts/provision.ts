@@ -11,8 +11,6 @@ import { ethers, unlock } from 'hardhat'
 import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
-const { AddressZero } = ethers
-
 const locksmithHost = process.env.LOCKSMITH_HOST || '127.0.0.1'
 const locksmithPort = process.env.LOCKSMITH_PORT || 3000
 
@@ -88,7 +86,7 @@ async function main() {
   // Configure Unlock
   await unlockContract.configUnlock(
     await udt.getAddress(),
-    AddressZero, // wrappedEth
+    ethers.ZeroAddress, // wrappedEth
     16000,
     'DEVKEY',
     `http://${locksmithHost}:${locksmithPort}/api/key/`,
