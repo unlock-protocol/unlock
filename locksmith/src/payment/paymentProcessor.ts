@@ -203,6 +203,7 @@ export class PaymentProcessor {
         customer: connectedCustomer.id,
         payment_method: method.id,
         capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
+        receipt_email: connectedCustomer.email || '',
         metadata: {
           purchaser: userAddress,
           lock,
