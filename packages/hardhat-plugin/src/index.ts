@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import '@nomiclabs/hardhat-ethers'
+import '@nomicfoundation/hardhat-ethers'
 import { task, extendEnvironment, extendConfig, types } from 'hardhat/config'
 import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
 import { lazyObject } from 'hardhat/plugins'
