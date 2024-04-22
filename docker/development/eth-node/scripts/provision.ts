@@ -68,7 +68,7 @@ async function main() {
    * 2. Deploy UDT
    */
   const udt = await deployErc20()
-  log(`UDT DEPLOYED AT ${udt.address}`)
+  log(`UDT DEPLOYED AT ${await udt.getAddress()}`)
 
   // mint some tokens
   await udt.mint(holder.address, 200)
@@ -80,13 +80,13 @@ async function main() {
   log('UNLOCK PROTOCOL DEPLOYED')
 
   // grant Unlock minting permissions
-  await udt.addMinter(unlockContract.address)
+  await udt.addMinter(await unlockContract.getAddress())
 
   // TODO: deploy Wrapped Eth for unlock!
 
   // Configure Unlock
   await unlockContract.configUnlock(
-    udt.address,
+    await udt.getAddress(),
     AddressZero, // wrappedEth
     16000,
     'DEVKEY',
@@ -104,7 +104,9 @@ async function main() {
     locksArgs(erc20Address).map(async (lockParams) => {
       const { lock } = await unlock.createLock(lockParams)
 
-      log(`LOCK "${await lockParams.name}" DEPLOYED TO ${lock.address}`)
+      log(
+        `LOCK "${await lockParams.name}" DEPLOYED TO ${await lock.getAddress()}`
+      )
 
       if (
         lockParams.currencyContractAddress &&
@@ -114,7 +116,7 @@ async function main() {
           process.env.LOCKSMITH_PURCHASER_ADDRESS
         )
         const approveTx = await erc20.connect(purchaser).getFunction('approve')(
-          lock.address,
+          await lock.getAddress(),
           ethers.utils.parseUnits('500', decimals)
         )
         await approveTx.wait()
@@ -124,7 +126,7 @@ async function main() {
   )
 
   // replace subraph conf
-  await outputSubgraphNetworkConf(unlockContract.address)
+  await outputSubgraphNetworkConf(await unlockContract.getAddress())
 
   // Mark the node as ready by sending 1 WEI to the address 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 which is KECCAK256(UNLOCKREADY)
   // This way, any test or application which requires the node to be completely set can just wait for the balance of 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 to be >0.
