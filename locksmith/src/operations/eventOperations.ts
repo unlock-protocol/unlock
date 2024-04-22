@@ -167,7 +167,10 @@ export const createEventSlug = async (
   name: string,
   index: number | undefined = undefined
 ): Promise<string> => {
-  const slug = index ? kebabCase([name, index].join('-')) : kebabCase(name)
+  const cleanName = name.replace(/[^\x20-\x7E]/g, '')
+  const slug = index
+    ? kebabCase([cleanName, index].join('-'))
+    : kebabCase(cleanName)
   const event = await getEventBySlug(slug)
   if (event) {
     return createEventSlug(name, index ? index + 1 : 1)
