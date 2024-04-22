@@ -15,6 +15,7 @@ import BlockiesSvg from 'blockies-react-svg'
 interface UnlockAccountSignInProps {
   onSignUp(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
+  signOut(): void
   signedInBefore?: boolean
   useIcon: boolean
   onExit(): void
@@ -23,6 +24,7 @@ interface UnlockAccountSignInProps {
 export const UnlockAccountSignIn = ({
   onSignUp,
   signIn,
+  signOut,
   signedInBefore = false,
   useIcon,
   onExit,
@@ -138,6 +140,17 @@ export const UnlockAccountSignIn = ({
         >
           <span>Back to using your crypto wallet</span>
         </ConnectButton>
+        {(signedInBefore || email) && (
+          <ConnectButton
+            onClick={(event) => {
+              event.preventDefault()
+              signOut()
+            }}
+            icon={<WalletIcon size={24} />}
+          >
+            Disconnect
+          </ConnectButton>
+        )}
       </div>
     </div>
   )
@@ -275,7 +288,7 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { account, connected } = useAuth()
+  const { account, connected, deAuthenticate } = useAuth()
   const config = useConfig()
   const { signOut } = useSIWE()
 
@@ -293,12 +306,11 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
     )
     if (passwordEncryptedPrivateKey === '') return 'Error creating account'
     const unlockProvider = new UnlockProvider(config.networks[1])
-    const value = await unlockProvider.connect({
+    await unlockProvider.connect({
       key: passwordEncryptedPrivateKey,
       emailAddress: email,
       password,
     })
-    console.log(value)
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
@@ -307,6 +319,10 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
       {isSignIn && (
         <UnlockAccountSignIn
           signIn={signIn}
+          signOut={() => {
+            signOut()
+            deAuthenticate()
+          }}
           signedInBefore={!!requireSignIn}
           onSignUp={() => {
             setIsSignIn(false)
@@ -322,19 +338,6 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
             setIsSignIn(true)
           }}
         />
-      )}
-      {requireSignIn ? (
-        <ConnectButton
-          onClick={(event) => {
-            event.preventDefault()
-            signOut()
-          }}
-          icon={<WalletIcon size={24} />}
-        >
-          Disconnect
-        </ConnectButton>
-      ) : (
-        <></>
       )}
     </div>
   )

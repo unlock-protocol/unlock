@@ -4,7 +4,6 @@ import {
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
 import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
-import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 export type CheckoutPage =
   | 'SELECT'
@@ -638,13 +637,7 @@ export const checkoutMachine = createMachine(
       },
 
       UNLOCK_ACCOUNT: {
-        invoke: {
-          id: 'unlockAccount',
-          src: unlockAccountMachine,
-          onDone: {
-            target: 'CONNECT',
-          },
-        },
+        target: 'CONNECT',
       },
       RETURNING: {
         on: {

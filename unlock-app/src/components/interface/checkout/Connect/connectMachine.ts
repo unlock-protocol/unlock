@@ -1,5 +1,4 @@
 import { Actor, ActorRefFrom, createMachine } from 'xstate'
-import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
@@ -37,11 +36,6 @@ export const connectMachine = createMachine(
       SIGN_IN: {
         on: {
           BACK: 'CONNECT',
-        },
-        invoke: {
-          id: 'unlockAccount',
-          src: unlockAccountMachine,
-          onDone: 'CONNECT',
         },
       },
     },
