@@ -69,7 +69,7 @@ const config = {
   solidity: {
     compilers: [
       { version: '0.7.6', settings }, // required to compile oracle
-      { version: '0.8.21' },
+      { version: '0.8.21', settings },
     ],
   },
   sourcify: {
