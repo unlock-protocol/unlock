@@ -7,7 +7,6 @@ import {
 } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
 import { genKeyId } from './keys'
-import type { BigNumber } from 'ethers'
 
 import { localhost } from '@unlock-protocol/networks'
 
@@ -82,7 +81,7 @@ const getKeyQuery = gql`
     }
   }
 `
-export const getKey = async (lockAddress: string, tokenId: BigNumber) => {
+export const getKey = async (lockAddress: string, tokenId: bigint) => {
   const keyId = genKeyId(lockAddress, tokenId)
   const {
     data: { key },
