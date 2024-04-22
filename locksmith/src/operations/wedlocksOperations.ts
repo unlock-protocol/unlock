@@ -20,7 +20,7 @@ import {
 import { getLockMetadata, generateKeyMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
-import { svgStringToDataURI } from '../utils/image'
+import { svgStringToPdfDataURI } from '../utils/image'
 import { createCertificate } from '../utils/certification'
 
 type Params = {
@@ -213,8 +213,8 @@ export const getAttachments = async ({
       owner,
     })
     attachments.push({
-      path: svgStringToDataURI(ticket),
-      filename: 'ticket.png',
+      path: await svgStringToPdfDataURI(ticket),
+      filename: 'ticket.pdf',
     })
   }
 
@@ -243,8 +243,8 @@ export const getAttachments = async ({
     })
     if (certificate) {
       attachments.push({
-        path: svgStringToDataURI(certificate),
-        filename: 'certification.png',
+        path: await svgStringToPdfDataURI(certificate),
+        filename: 'certification.pdf',
       })
     }
   }
