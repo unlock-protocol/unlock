@@ -1,5 +1,5 @@
 import { useSelector } from '@xstate/react'
-import { UnlockAccount } from '../UnlockAccount'
+import { UnlockAccount } from '../main/UnlockAccount'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { ConnectService } from './connectMachine'
 

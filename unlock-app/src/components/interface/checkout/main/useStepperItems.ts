@@ -10,7 +10,7 @@ import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { shouldSkip } from './utils'
 
 export function useStepperItems(
-  service: CheckoutService | UnlockAccountService,
+  service: CheckoutService,
   {
     isUnlockAccount,
     hookType,
@@ -36,7 +36,7 @@ export function useStepperItems(
     return [
       {
         name: 'Account',
-        to: 'ACCOUNT',
+        to: 'UNLOCK_ACCOUNT',
       },
     ]
   }

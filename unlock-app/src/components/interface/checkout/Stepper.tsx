@@ -79,7 +79,8 @@ export interface StepItem {
 }
 
 interface StepperProps {
-  service: CheckoutService | UnlockAccountService
+  service: CheckoutService
+  isUnlockAccount?: boolean
   disabled?: boolean
   hookType?: CheckoutHookType
   existingMember?: boolean
@@ -92,9 +93,8 @@ export const Stepper = ({
   hookType,
   existingMember,
   isRenew,
+  isUnlockAccount = false,
 }: StepperProps) => {
-  const isUnlockAccount = service.id === 'unlockAccount'
-
   const items = useStepperItems(service, {
     isUnlockAccount,
     hookType,
