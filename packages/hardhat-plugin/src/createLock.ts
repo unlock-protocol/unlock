@@ -1,7 +1,6 @@
 import type { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { Contract, ethers } from 'ethers'
 import { PUBLIC_LOCK_LATEST_VERSION } from './constants'
-
 import { getUnlockContract } from './getUnlockContract'
 import { getLockContract } from './getLockContract'
 import { getContractAbi } from './utils'
@@ -69,10 +68,11 @@ export async function createLock(
   // create the lock
   const unlock = await getUnlockContract(hre, unlockAddress)
   const tx = await unlock.createUpgradeableLockAtVersion(calldata, version)
-  const { events, transactionHash } = await tx.wait()
-  const { args } = events.find(({ event }: any) => event === 'NewLock')
+  const { logs, hash: transactionHash } = await tx.wait()
+  const { args } = logs.find(
+    ({ fragment }: any) => fragment && fragment.name === 'NewLock'
+  )
   const { newLockAddress } = args
-
   const lock = await getLockContract(hre, newLockAddress)
   return {
     lock,
