@@ -3,7 +3,6 @@ import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { SettingCard } from '~/components/interface/locks/Settings/elements/SettingCard'
 import SendCustomEmail from './Components/CustomEmail'
 import { SenderSettings } from './Components/SenderSettings'
-import SendInvites from './Components/SendInvites'
 
 export interface EmailsProps {
   event: Event
@@ -23,12 +22,13 @@ export const Emails = ({ event, checkoutConfig }: EmailsProps) => {
         <SenderSettings event={event} checkoutConfig={checkoutConfig} />
       </SettingCard>
 
-      <SettingCard
+      {/* <SettingCard
         label="Send invites"
         description="Enter the email addresses to invite attendees to your event. They will get an email inviting them to RSVP for your event!"
       >
-        <SendInvites event={event} checkoutConfig={checkoutConfig} />
-      </SettingCard>
+        Here, we show an input form where a lock manager can enter email
+        addresses. We should keep track of invites sent!
+      </SettingCard> */}
 
       <SettingCard
         label="Email attendees"

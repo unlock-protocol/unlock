@@ -92,7 +92,6 @@ export const ConfirmModal = ({
           </header>
           <div className="flex justify-end gap-6">
             <Button
-              type="button"
               disabled={isSendingCustomEmail}
               variant="outlined-primary"
               onClick={() => setIsOpen(false)}
