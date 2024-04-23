@@ -8,42 +8,12 @@ const { parseSafeMulticall } = require('../helpers/multisig')
 
 const { ethers } = require('hardhat')
 
-// TODO: functions for each network to bridge tokens
-const opBridgeToken = async () => {}
-const polygonBridgeToken = async () => {}
-const arbBridgeToken = async () => {}
-
-// send bridged UDT from DAO
-const parseFundingCall = async (chainId) => {
-  let calls = []
-
-  // total amount to transfer on each chain
-  const udtAmountToTransfer = ethers.parseUnits('0.1', 8)
-
-  if (chainId === 'base' || chainId === 'op') {
-    calls = await opBridgeToken
-  }
-  if (chainId === 'arb') {
-    calls = await arbBridgeToken()
-  }
-  if (chainId === 'polygon') {
-    calls = await polygonBridgeToken()
-  }
-
-  // execute all as a single safe multicall
-  const packedFundingCalls = await parseSafeMulticall({
-    chainId,
-    calls,
-  })
-
-  return packedFundingCalls
-}
-
-const parseSetOracleCall = async (destChainId) => {
+const parseSetOracleCalls = async (destChainId) => {
   const {
     unlockAddress,
     governanceBridge,
     // name: destChainName,
+    tokens,
     unlockDaoToken: { address: udtAddress },
     uniswapV3: { oracle: oracleAddress },
   } = await getNetwork(destChainId)
@@ -58,10 +28,15 @@ const parseSetOracleCall = async (destChainId) => {
   )
 
   // parse unlock call
-  const calldata = unlockInterface.encodeFunctionData('setOracle', [
-    udtAddress,
-    oracleAddress,
-  ])
+  // TODO: set all tokens in networks packages
+  // TODO: check if uniswap oracle pool exists with correct fee
+  const calls = tokens.map((token) =>
+    unlockInterface.encodeFunctionData('setOracle', [
+      token.address,
+      oracleAddress,
+    ])
+  )
+  const calldata = await parseSafeMulticall({ chainId: destChainId, calls })
 
   // encode instructions to be executed by the SAFE
   const moduleData = await ethers.defaultAbiCoder.encode(
@@ -109,17 +84,12 @@ module.exports = async () => {
     ({ unlockDaoToken }) => !!unlockDaoToken
   )
 
-  // 1. send some UDT from DAO to the Unlock contract
-  const fundingCalls = await Promise.all(
-    destChains.map(({ id }) => parseFundingCall(id))
-  )
-
   // 2. set oracle for UDT in Unlock on dest chains
   const setOracleCalls = await Promise.all(
-    destChains.map(({ id }) => parseSetOracleCall(id))
+    destChains.map(({ id }) => parseSetOracleCalls(id))
   )
 
-  const proposalName = `Enabling UDT distribution on ${destChains
+  const proposalName = `Set Uniswap oracles for UDT and most used ERC20 tokens on ${destChains
     .map(({ name }) => name)
     .toString()}
 
@@ -141,6 +111,6 @@ The Unlock Protocol Team
   // send to multisig / DAO
   return {
     proposalName,
-    calls: [...fundingCalls, ...setOracleCalls],
+    calls: setOracleCalls,
   }
 }
