@@ -32,7 +32,7 @@ describe('Unlock', function () {
       await awaitTimeout(2000)
       const [signer] = await ethers.getSigners()
 
-      const lockAddress = lock.address.toLowerCase()
+      const lockAddress = (await lock.getAddress()).toLowerCase()
 
       const lockInGraph = await subgraph.getLock(lockAddress)
 
@@ -57,7 +57,9 @@ describe('Unlock', function () {
       await awaitTimeout(2000)
       const lockInGraphAgain = await subgraph.getLock(lockAddress)
 
-      expect(lockInGraphAgain.lockManagers).to.deep.equals([signer.address])
+      expect(lockInGraphAgain.lockManagers).to.deep.equals([
+        await signer.getAddress(),
+      ])
     })
   })
 })
@@ -67,7 +69,7 @@ describe('Keep track of total keys', function () {
   let lockAddress: string
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = lock.address.toLowerCase()
+    lockAddress = (await lock.getAddress()).toLowerCase()
   })
   describe('totalKeys', () => {
     it('default to zero ', async () => {
@@ -114,12 +116,12 @@ describe('Upgrade a lock', function () {
       ...lockParams,
       version: latestVersion - 1,
     }))
-    expect(await unlock.getLockVersion(lock.address)).to.equals(
+    expect(await unlock.getLockVersion(await lock.getAddress())).to.equals(
       latestVersion - 1
     )
   })
   it('subgraph update lock info correctly after upgrade', async () => {
-    const lockAddress = lock.address.toLowerCase()
+    const lockAddress = (await lock.getAddress()).toLowerCase()
     await awaitTimeout(2000)
     const lockInGraph = await subgraph.getLock(lockAddress)
     expect(parseInt(lockInGraph.version)).to.equals(latestVersion - 1)
@@ -143,7 +145,7 @@ describe('key cancellation', function () {
   before(async () => {
     await unlock.deployAndSetTemplate(11, 1)
     ;({ lock } = await unlock.createLock({ ...lockParams, version: 11 }))
-    lockAddress = lock.address.toLowerCase()
+    lockAddress = (await lock.getAddress()).toLowerCase()
     ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
   })
 
@@ -172,7 +174,7 @@ describe('(v12) Lock config', function () {
   let lockAddress: string
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = lock.address.toLowerCase()
+    lockAddress = (await lock.getAddress()).toLowerCase()
   })
 
   it('stores default values correctly', async () => {
@@ -224,7 +226,7 @@ describe('Keep track of changes in metadata', function () {
 
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = lock.address.toLowerCase()
+    lockAddress = (await lock.getAddress()).toLowerCase()
     unlockContract = await unlock.getUnlockContract()
 
     // purchase a bunch of keys
@@ -245,7 +247,9 @@ describe('Keep track of changes in metadata', function () {
     })
     it('tokenURIs are correct ', async () => {
       // default tokenURI before config
-      const baseTokenURI = `${await unlockContract.globalBaseTokenURI()}${lock.address.toLowerCase()}/`
+      const baseTokenURI = `${await unlockContract.globalBaseTokenURI()}${(
+        await lock.getAddress()
+      ).toLowerCase()}/`
       expect(await lock.tokenURI(0)).to.equals(baseTokenURI)
 
       // lockInGraph
@@ -295,7 +299,7 @@ describe('Receipts', function () {
     const [payer] = await ethers.getSigners()
     const { transactionHash } = await purchaseKey(
       lockAddress,
-      ethers.Wallet.createRandom().address
+      await ethers.Wallet.createRandom().getAddress()
     )
     // wait for subgraph to index
     await awaitTimeout(2000)
