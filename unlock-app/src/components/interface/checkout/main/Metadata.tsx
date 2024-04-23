@@ -35,6 +35,7 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -438,6 +439,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         >
           {isLoading ? 'Continuing' : 'Next'}
         </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

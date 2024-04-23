@@ -15,6 +15,7 @@ import { getEthersWalletFromPassword } from '~/utils/strings'
 import LoadingIcon from '../../Loading'
 import { useDebounce } from 'react-use'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import Disconnect from './Disconnect'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -165,6 +166,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
         >
           Next
         </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

@@ -18,6 +18,7 @@ import { isEthPassSupported, Platform } from '~/services/ethpass'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -203,6 +204,7 @@ export function Returning({
             </div>
           )}
         </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

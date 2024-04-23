@@ -12,6 +12,7 @@ import { useDataForGuild } from '~/hooks/useDataForGuild'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import LoadingIcon from '../../Loading'
 import { useSelector } from '@xstate/react'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -243,6 +244,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
         >
           Continue
         </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
