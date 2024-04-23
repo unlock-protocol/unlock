@@ -3,11 +3,9 @@
  * on all supported networks.
  */
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
-const {
-  IConnext,
-  targetChains,
-  parseSafeMulticall,
-} = require('../helpers/bridge')
+const { IConnext, targetChains } = require('../helpers/bridge')
+const { parseSafeMulticall } = require('../helpers/multisig')
+
 const { ethers } = require('hardhat')
 
 // TODO: functions for each network to bridge tokens
@@ -17,7 +15,7 @@ const arbBridgeToken = async () => {}
 
 // send bridged UDT from DAO
 const parseFundingCall = async (chainId) => {
-  let calls
+  let calls = []
 
   // total amount to transfer on each chain
   const udtAmountToTransfer = ethers.parseUnits('0.1', 8)
@@ -107,21 +105,23 @@ const parseSetOracleCall = async (destChainId) => {
 
 module.exports = async () => {
   // list networks that are supported by Connext and have UDT bridged
-  const destChainIds = targetChains.filter(
-    ({ unlockDaoToken }) => !!unlockDaoToken.address
+  const destChains = targetChains.filter(
+    ({ unlockDaoToken }) => !!unlockDaoToken
   )
 
   // 1. send some UDT from DAO to the Unlock contract
   const fundingCalls = await Promise.all(
-    destChainIds.map((chainId) => parseFundingCall(chainId))
+    destChains.map(({ id }) => parseFundingCall(id))
   )
 
   // 2. set oracle for UDT in Unlock on dest chains
   const setOracleCalls = await Promise.all(
-    destChainIds.map((chainId) => parseSetOracleCall(chainId))
+    destChains.map(({ id }) => parseSetOracleCall(id))
   )
 
-  const proposalName = `Enabling UDT distribution on ${destChainIds.toString()}
+  const proposalName = `Enabling UDT distribution on ${destChains
+    .map(({ name }) => name)
+    .toString()}
 
 This DAO proposal aims at testing the new cross-chain governance process of Unlock Protocol's DAO. This new governance 
 protocol allow proposals to propagate directly from the main DAO contract to protocol contracts on other chains.
