@@ -1,6 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -11,16 +10,11 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function MessageToSign({
-  communication,
-  checkoutService,
-  injectedProvider,
-}: Props) {
+export function MessageToSign({ communication, checkoutService }: Props) {
   const { messageToSign } = useSelector(
     checkoutService,
     (state) => state.context.paywallConfig

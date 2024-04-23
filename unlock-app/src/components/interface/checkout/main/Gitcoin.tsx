@@ -7,7 +7,6 @@ import {
   FaCheckCircle as CheckIcon,
   FaExclamationCircle as FailIcon,
 } from 'react-icons/fa'
-import { Connected } from '../Connected'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import LoadingIcon from '../../Loading'
@@ -15,7 +14,6 @@ import { useDataForGitcoinPassport } from '~/hooks/useDataForGitcoinPassport'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -25,7 +23,7 @@ interface CustomErrorType {
   isTimeoutError?: boolean
 }
 
-export function Gitcoin({ injectedProvider, checkoutService }: Props) {
+export function Gitcoin({ checkoutService }: Props) {
   const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context

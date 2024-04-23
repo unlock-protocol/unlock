@@ -6,7 +6,6 @@ import {
   RiExternalLinkLine as ExternalLinkIcon,
   RiErrorWarningFill as ErrorIcon,
 } from 'react-icons/ri'
-import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -64,7 +63,7 @@ const defaultPaymentMethods = {
   claim: true,
 }
 
-export function Payment({ injectedProvider, checkoutService }: Props) {
+export function Payment({ checkoutService }: Props) {
   const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
   const { recipients } = state.context

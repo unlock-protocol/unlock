@@ -8,7 +8,6 @@ import {
   useState,
 } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { useSIWE } from '~/hooks/useSIWE'
@@ -194,14 +193,12 @@ export function SignedOut({
 }
 
 interface ConnectedCheckoutProps {
-  skipAccountDetails?: boolean
   injectedProvider?: unknown
   service: CheckoutService
   children?: ReactNode
 }
 
 export function Connected({
-  skipAccountDetails = false,
   service,
   injectedProvider,
   children,
@@ -209,21 +206,19 @@ export function Connected({
   const state = useSelector(service, (state) => state)
   const { account, isUnlockAccount, connected } = useAuth()
   const [signing, setSigning] = useState(false)
-
-  // If already connected, skip sign in
-  if (account && connected) {
-    service.send({ type: 'SELECT_LOCK' })
-  }
-
   const { signIn, isSignedIn } = useSIWE()
+
   const useDelegatedProvider =
     state.context?.paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
     const autoSignIn = async () => {
-      if (!isSignedIn && !signing && connected && isUnlockAccount) {
+      // Skip Connect if already signed in
+      if (isSignedIn && !signing && isUnlockAccount) {
         await signIn()
-        // service.send({ type: 'UNLOCK_ACCOUNT' })
+        service.send({ type: 'SELECT_LOCK' })
+      } else if (account && connected) {
+        service.send({ type: 'SELECT_LOCK' })
       }
     }
     autoSignIn()

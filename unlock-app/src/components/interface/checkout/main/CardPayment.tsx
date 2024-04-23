@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useCallback, useEffect, useState } from 'react'
@@ -26,14 +25,12 @@ import {
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function CardPayment({ checkoutService, injectedProvider }: Props) {
+export function CardPayment({ checkoutService }: Props) {
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
   const [isSaving, setIsSaving] = useState(false)

@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { networks } from '@unlock-protocol/networks'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
@@ -17,7 +16,6 @@ import LoadingIcon from '../../Loading'
 import { useRouter } from 'next/router'
 import Disconnect from './Disconnect'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   recipients: string[]
   lock: any
@@ -48,7 +46,6 @@ export function PromoContent({
   recipients,
   lock,
   promoCode,
-  injectedProvider,
   checkoutService,
 }: Props) {
   const { account } = useAuth()
@@ -183,11 +180,10 @@ export function PromoContent({
 }
 
 interface PromoProps {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Promo({ injectedProvider, checkoutService }: PromoProps) {
+export function Promo({ checkoutService }: PromoProps) {
   const { recipients, lock, paywallConfig } = useSelector(
     checkoutService,
     (state) => state.context
@@ -206,7 +202,6 @@ export function Promo({ injectedProvider, checkoutService }: PromoProps) {
       recipients={recipients}
       lock={lock}
       promoCode={promoCode}
-      injectedProvider={injectedProvider}
       checkoutService={checkoutService}
     />
   )

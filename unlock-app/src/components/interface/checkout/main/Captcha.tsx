@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import React, { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -13,11 +12,10 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Captcha({ injectedProvider, checkoutService }: Props) {
+export function Captcha({ checkoutService }: Props) {
   const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context

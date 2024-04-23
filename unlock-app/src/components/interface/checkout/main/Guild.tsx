@@ -1,6 +1,5 @@
 import { TfiReload } from 'react-icons/tfi'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -15,11 +14,10 @@ import { useSelector } from '@xstate/react'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Guild({ injectedProvider, checkoutService }: Props) {
+export function Guild({ checkoutService }: Props) {
   const { account } = useAuth()
   const { recipients, lock } = useSelector(
     checkoutService,

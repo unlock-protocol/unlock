@@ -1,7 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { FaCheck } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6'
-import { Connected } from '../Connected'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -17,7 +16,6 @@ import { useDebounce } from 'react-use'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import Disconnect from './Disconnect'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -25,7 +23,7 @@ interface FormData {
   password: string
 }
 
-export function Password({ injectedProvider, checkoutService }: Props) {
+export function Password({ checkoutService }: Props) {
   const { account } = useAuth()
   const [password, setPassword] = useState<string | undefined>('')
   const [hookAddress, setHookAddress] = useState<string>()

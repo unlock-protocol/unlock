@@ -139,20 +139,10 @@ export function Checkout({
         )
       }
       case 'SELECT': {
-        return (
-          <Select
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Select checkoutService={checkoutService} />
       }
       case 'QUANTITY': {
-        return (
-          <Quantity
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Quantity checkoutService={checkoutService} />
       }
       case 'PAYMENT': {
         return (
@@ -163,12 +153,7 @@ export function Checkout({
         )
       }
       case 'CARD': {
-        return (
-          <CardPayment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <CardPayment checkoutService={checkoutService} />
       }
       case 'METADATA': {
         return (
@@ -181,7 +166,6 @@ export function Checkout({
       case 'CONFIRM': {
         return (
           <Confirm
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
@@ -190,7 +174,6 @@ export function Checkout({
       case 'MESSAGE_TO_SIGN': {
         return (
           <MessageToSign
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
@@ -200,67 +183,35 @@ export function Checkout({
         return (
           <Minting
             onClose={onClose}
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
         )
       }
       case 'UNLOCK_ACCOUNT': {
-        return (
-          <UnlockAccountSignIn
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <UnlockAccountSignIn checkoutService={checkoutService} />
       }
       case 'CAPTCHA': {
-        return (
-          <Captcha
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Captcha checkoutService={checkoutService} />
       }
       case 'GUILD': {
-        return (
-          <Guild
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Guild checkoutService={checkoutService} />
       }
       case 'PASSWORD': {
-        return (
-          <Password
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Password checkoutService={checkoutService} />
       }
 
       case 'PROMO': {
-        return (
-          <Promo
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Promo checkoutService={checkoutService} />
       }
       case 'GITCOIN': {
-        return (
-          <Gitcoin
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Gitcoin checkoutService={checkoutService} />
       }
       case 'RETURNING': {
         return (
           <Returning
             communication={communication}
             onClose={onClose}
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
         )
