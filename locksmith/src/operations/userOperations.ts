@@ -203,6 +203,15 @@ export const findByEmail = async (emailAddress: string) => {
   return user
 }
 
+export const findByWalletAddress = async (walletAddress: string) => {
+  const user = await UserReference.findOne({
+    where: {
+      publicKey: Normalizer.emailAddress(walletAddress),
+    },
+  })
+  return user
+}
+
 const UserOperations = {
   createUser,
   getUserPrivateKeyByEmailAddress,
