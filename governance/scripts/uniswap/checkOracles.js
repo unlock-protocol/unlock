@@ -58,7 +58,11 @@ async function main() {
       } else {
         // if oracle is set in Unlock, make sure it works
         const error = await checkOracleRate({ oracleAddress, token })
-        if (error) oracleErrors.push(error)
+        if (error)
+          oracleErrors.push({
+            ...error,
+            msg: `(already in Unlock) ${error.msg}`,
+          })
       }
 
       // check if uniswap oracle in networks package works
