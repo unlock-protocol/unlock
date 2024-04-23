@@ -15,6 +15,7 @@ import { Pricing } from '../Lock'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import { CheckoutService } from './checkoutMachine'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -142,6 +143,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
             {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
           </Button>
         </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

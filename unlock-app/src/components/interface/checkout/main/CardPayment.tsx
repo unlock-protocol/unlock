@@ -26,6 +26,7 @@ import {
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown

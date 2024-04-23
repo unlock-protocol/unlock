@@ -12,6 +12,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import LoadingIcon from '../../Loading'
 import { useDataForGitcoinPassport } from '~/hooks/useDataForGitcoinPassport'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -304,6 +305,7 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
             Retry
           </Button>
         )}
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

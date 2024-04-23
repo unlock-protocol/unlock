@@ -10,6 +10,7 @@ import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -85,6 +86,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
             ? 'Continuing'
             : 'Continue'}
         </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

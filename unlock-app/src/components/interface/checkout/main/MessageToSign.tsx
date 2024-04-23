@@ -8,6 +8,7 @@ import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -72,6 +73,7 @@ export function MessageToSign({
         >
           Sign the message
         </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

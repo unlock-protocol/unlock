@@ -31,6 +31,7 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
+import Disconnect from './Disconnect'
 
 interface Props {
   injectedProvider: unknown
@@ -491,6 +492,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

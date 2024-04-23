@@ -15,6 +15,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
 import { useRouter } from 'next/router'
+import Disconnect from './Disconnect'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -174,6 +175,7 @@ export function PromoContent({
         >
           {hasDiscount ? 'Next' : 'Skip'}
         </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
