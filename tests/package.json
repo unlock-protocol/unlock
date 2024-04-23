@@ -17,8 +17,6 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-toolbox": "4.0.0",
     "@nomicfoundation/hardhat-verify": "2.0.4",
-    "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@typechain/ethers-v5": "10.1.0",
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "6.1.2",
