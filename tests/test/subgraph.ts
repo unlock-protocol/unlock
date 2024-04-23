@@ -32,7 +32,7 @@ describe('Unlock', function () {
       await awaitTimeout(2000)
       const [signer] = await ethers.getSigners()
 
-      const lockAddress = (await lock.getAddress()).toLowerCase()
+      const lockAddress = await lock.getAddress()
 
       const lockInGraph = await subgraph.getLock(lockAddress)
 
@@ -69,7 +69,7 @@ describe('Keep track of total keys', function () {
   let lockAddress: string
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = (await lock.getAddress()).toLowerCase()
+    lockAddress = await lock.getAddress()
   })
   describe('totalKeys', () => {
     it('default to zero ', async () => {
@@ -121,7 +121,7 @@ describe('Upgrade a lock', function () {
     )
   })
   it('subgraph update lock info correctly after upgrade', async () => {
-    const lockAddress = (await lock.getAddress()).toLowerCase()
+    const lockAddress = await lock.getAddress()
     await awaitTimeout(2000)
     const lockInGraph = await subgraph.getLock(lockAddress)
     expect(parseInt(lockInGraph.version)).to.equals(latestVersion - 1)
@@ -145,7 +145,7 @@ describe('key cancellation', function () {
   before(async () => {
     await unlock.deployAndSetTemplate(11, 1)
     ;({ lock } = await unlock.createLock({ ...lockParams, version: 11 }))
-    lockAddress = (await lock.getAddress()).toLowerCase()
+    lockAddress = await lock.getAddress()
     ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
   })
 
@@ -174,7 +174,7 @@ describe('(v12) Lock config', function () {
   let lockAddress: string
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = (await lock.getAddress()).toLowerCase()
+    lockAddress = await lock.getAddress()
   })
 
   it('stores default values correctly', async () => {
@@ -226,7 +226,7 @@ describe('Keep track of changes in metadata', function () {
 
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
-    lockAddress = (await lock.getAddress()).toLowerCase()
+    lockAddress = await lock.getAddress()
     unlockContract = await unlock.getUnlockContract()
 
     // purchase a bunch of keys
