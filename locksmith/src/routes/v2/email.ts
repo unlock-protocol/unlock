@@ -1,14 +1,15 @@
 import express from 'express'
 import {
-  CustomEmailController,
+  getCustomContent,
+  saveCustomContent,
   sendCustomEmail,
+  sendEventInvite,
 } from '../../controllers/v2/customEmailController'
+import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizerMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
 const router = express.Router({ mergeParams: true })
-
-const customEmailController = new CustomEmailController()
 
 router.post(
   '/:network/locks/:lockAddress/custom/send',
@@ -18,11 +19,18 @@ router.post(
 )
 
 router.post(
+  '/:slug/invite',
+  authenticatedMiddleware,
+  eventOrganizerMiddleware,
+  sendEventInvite
+)
+
+router.post(
   '/:network/locks/:lockAddress/custom/:template',
   authenticatedMiddleware,
   lockManagerMiddleware,
   (req, res) => {
-    customEmailController.saveCustomContent(req, res)
+    saveCustomContent(req, res)
   }
 )
 
@@ -31,7 +39,7 @@ router.get(
   authenticatedMiddleware,
   lockManagerMiddleware,
   (req, res) => {
-    customEmailController.getCustomContent(req, res)
+    getCustomContent(req, res)
   }
 )
 
