@@ -128,6 +128,8 @@ export const sendEventInvite: RequestHandler = async (request, response) => {
         await sendEmail({
           template: 'inviteEvent',
           recipient,
+          emailSender: event!.data.emailSender,
+          replyTo: event!.data.replyTo,
           // @ts-expect-error object incomplete
           params: {
             eventName: event!.name,
