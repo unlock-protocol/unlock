@@ -223,7 +223,7 @@ export function Connected({
     const autoSignIn = async () => {
       if (!isSignedIn && !signing && connected && isUnlockAccount) {
         await signIn()
-        service.send({ type: 'UNLOCK_ACCOUNT' })
+        // service.send({ type: 'UNLOCK_ACCOUNT' })
       }
     }
     autoSignIn()

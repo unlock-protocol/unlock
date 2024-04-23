@@ -14,6 +14,7 @@ export function UnlockAccount({ checkoutService }: Props) {
     case 'UNLOCK_ACCOUNT': {
       return (
         <ConnectUnlockAccount
+          onSignIn={() => checkoutService.send({ type: 'CONNECT' })}
           onExit={() => checkoutService.send({ type: 'CONNECT' })}
           useIcon={false}
         />
