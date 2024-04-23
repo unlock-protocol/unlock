@@ -13,12 +13,15 @@ async function main({
   amount = '1',
   oracleAddress,
   fee = 500,
+  quiet = false,
 } = {}) {
   const network = await getNetwork()
   const {
     nativeCurrency: { wrapped: wrappedNativeAddress },
     tokens,
   } = network
+
+  const log = (toLog) => (quiet ? null : console.log(toLog))
 
   // check wrapped
   let tokenTo
@@ -80,33 +83,16 @@ async function main({
 
   // check if token can be retrieved through Uniswap V3 oracle
   const oracle = await ethers.getContractAt(UniswapOracleV3.abi, oracleAddress)
-  console.log(`Checking oracle ${oracleAddress} for ${pair} (${amount})`)
+  log(`Checking oracle for ${tokenFrom.symbol}/${tokenTo.symbol} (${amount})`)
   const rate = await oracle.consult(
     tokenFrom.address,
     ethers.parseUnits(amount, tokenFrom.decimals),
     tokenTo.address
   )
   if (rate === 0n) {
-    console.log(
-      `Uniswap values are null using:
-      - tokenA: ${tokenFrom.address} (${tokenFrom.symbol})
-      - tokenB: ${tokenTo.address} (${tokenTo.symbol})
-      - uniswapFactory: ${await oracle.factory()}`
-    )
-
-    const factory = await ethers.getContractAt(
-      ['function getPool(address,address,uint24) view returns (address)'],
-      await oracle.factory()
-    )
-
-    const poolAddress = await factory.getPool(
-      tokenFrom.address,
-      tokenTo.address,
-      500
-    )
-    console.log(`Uniswap pool: ${poolAddress}`)
+    log(`Uniswap V3 pool not found`)
   } else {
-    console.log(
+    log(
       `Current rate (~last hour) : ${ethers.formatUnits(
         rate,
         tokenTo.decimals

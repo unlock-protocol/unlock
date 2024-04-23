@@ -1,23 +1,23 @@
 const checkOracle = require('./oracle')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
+const logError = (name, chainId, msg) =>
+  console.log(`[${name} (${chainId})]: ${msg}`)
+
 async function main() {
-  const {
-    uniswapV3: { oracle: oracleAddress },
-    tokens,
-  } = await getNetwork()
-  if (oracleAddress) {
-    console.log(`checking oracle at ${oracleAddress}`)
+  const { name, id, uniswapV3, tokens } = await getNetwork()
+  if (uniswapV3 && uniswapV3.oracle) {
     for (let i in tokens) {
       const token = tokens[i]
+      const info = `${token.symbol} (${token.address}) - oracle: ${uniswapV3.oracle}`
       if (token.symbol !== 'WETH') {
         try {
-          const rate = await checkOracle({ tokenIn: token.symbol })
+          const rate = await checkOracle({ tokenIn: token.symbol, quiet: true })
           if (rate === 0n) {
-            console.log(`Missing: ${token.symbol}`)
+            logError(name, id, `Missing Uniswap Pool: ${info}`)
           }
         } catch (error) {
-          console.log(`Failing: ${token.symbol} (oracle: ${oracleAddress})`)
+          logError(name, id, `Failed to fetch: ${info} - ${error.message}`)
         }
       }
     }
