@@ -204,7 +204,6 @@ export function Returning({
             </div>
           )}
         </div>
-        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

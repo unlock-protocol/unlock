@@ -13,6 +13,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 
 interface UnlockAccountSignInProps {
+  onSignIn?(): void
   onSignUp(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
   signOut(): void
@@ -22,6 +23,7 @@ interface UnlockAccountSignInProps {
 }
 
 export const UnlockAccountSignIn = ({
+  onSignIn,
   onSignUp,
   signIn,
   signOut,
@@ -42,7 +44,8 @@ export const UnlockAccountSignIn = ({
     }
     try {
       await signIn(data)
-      onExit()
+      if (onSignIn) onSignIn()
+      // onExit()
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -280,11 +283,16 @@ export const UnlockAccountSignUp = ({
 }
 
 export interface Props {
+  onSignIn?(): void
   onExit(): void
   useIcon?: boolean
 }
 
-export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
+export const ConnectUnlockAccount = ({
+  onSignIn,
+  onExit,
+  useIcon = true,
+}: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
@@ -318,6 +326,7 @@ export const ConnectUnlockAccount = ({ onExit, useIcon = true }: Props) => {
     <div className="space-y-6 divide-y divide-gray-100">
       {isSignIn && (
         <UnlockAccountSignIn
+          onSignIn={onSignIn}
           signIn={signIn}
           signOut={() => {
             signOut()

@@ -6,7 +6,6 @@ import {
   CheckoutMachineContext,
   CheckoutService,
 } from './checkoutMachine'
-import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { shouldSkip } from './utils'
 
 export function useStepperItems(
@@ -32,14 +31,6 @@ export function useStepperItems(
     payment,
     renew,
   } = useSelector(service, (state) => state.context) as CheckoutMachineContext
-  if (isUnlockAccount) {
-    return [
-      {
-        name: 'Account',
-        to: 'UNLOCK_ACCOUNT',
-      },
-    ]
-  }
 
   if (!paywallConfig.locks || Object.keys(paywallConfig.locks).length === 0) {
     return []
@@ -71,7 +62,7 @@ export function useStepperItems(
     },
     {
       name: 'Connect',
-      to: 'CONNECT',
+      to: isUnlockAccount ? 'UNLOCK_ACCOUNT' : 'CONNECT',
     },
     {
       name: 'Choose quantity',
