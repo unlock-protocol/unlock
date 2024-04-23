@@ -1,11 +1,11 @@
 import { expect } from 'chai'
-import { BigNumber, Contract } from 'ethers'
+import { Contract } from 'ethers'
 import { unlock, ethers } from 'hardhat'
 
 import { lockParams } from './helpers/fixtures'
 import * as subgraph from './helpers/subgraph'
 import { purchaseKeys, purchaseKey } from './helpers/keys'
-import ERC20ABI from './helpers/ERC20.abi'
+import ERC20ABI from './helpers/ERC20.abi.json'
 
 const awaitTimeout = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay))
@@ -78,7 +78,7 @@ describe('Keep track of total keys', function () {
       expect(parseInt(lockInGraph.totalKeys)).to.equals(0)
     })
     describe('increase/decrease', () => {
-      let tokenIds: [BigNumber]
+      let tokenIds: [bigint]
       let keyOwners: [string]
       before(async () => {
         ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
@@ -90,7 +90,7 @@ describe('Keep track of total keys', function () {
       })
       it('decrease when keys are burnt', async () => {
         const keyOwner = await ethers.getSigner(keyOwners[0])
-        await lock.connect(keyOwner).burn(tokenIds[0])
+        await lock.connect(keyOwner).getFunction('burn')(tokenIds[0])
         await awaitTimeout(2000)
         const lockInGraph = await subgraph.getLock(lockAddress)
         expect(parseInt(lockInGraph.totalKeys)).to.equals(2)
@@ -157,7 +157,7 @@ describe('key cancellation', function () {
 
     // cancel the 2nd one
     const keyOwner = await ethers.getSigner(keyOwners[1])
-    await lock.connect(keyOwner).cancelAndRefund(tokenIds[1])
+    await lock.connect(keyOwner).getFunction('cancelAndRefund')(tokenIds[1])
     expect(await lock.isValidKey(tokenIds[1])).to.be.false
 
     await awaitTimeout(2000)
@@ -222,7 +222,7 @@ describe('Keep track of changes in metadata', function () {
   let unlockContract: Contract
   let lockAddress: string
   let lockInGraph: any
-  let tokenIds: [BigNumber]
+  let tokenIds: [bigint]
 
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))

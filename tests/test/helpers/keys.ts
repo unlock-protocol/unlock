@@ -1,5 +1,5 @@
 const { ethers, unlock } = require('hardhat')
-const { AddressZero } = ethers
+const { ZeroAddress } = ethers
 
 export const DEFAULT_KEY_PRICE = ethers.parseEther('0.01')
 
@@ -20,8 +20,8 @@ export const purchaseKey = async (
   const tx = await lock.purchase(
     [purchasePrice],
     [keyOwnerAddress],
-    [AddressZero],
-    [AddressZero],
+    [ZeroAddress],
+    [ZeroAddress],
     [[]],
     {
       value: isErc20 ? 0 : purchasePrice,
@@ -54,11 +54,11 @@ export const purchaseKeys = async (
   const tx = await lock.purchase(
     isErc20 ? keyOwners.map(() => price) : [],
     keyOwners.map((k: any) => k.address),
-    keyOwners.map(() => AddressZero),
-    keyOwners.map(() => AddressZero),
+    keyOwners.map(() => ZeroAddress),
+    keyOwners.map(() => ZeroAddress),
     keyOwners.map(() => []),
     {
-      value: isErc20 ? 0 : price.mul(nbOfKeys),
+      value: isErc20 ? 0 : price * nbOfKeys,
     }
   )
   // get token ids
