@@ -4,6 +4,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { getEventBySlug } from '../../operations/eventOperations'
 import { getCheckoutConfigById } from '../../operations/checkoutConfigOperations'
+import { isEmpty } from 'lodash'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
   request,
@@ -12,19 +13,32 @@ export const eventOrganizerMiddleware: RequestHandler = async (
 ) => {
   const web3Service = new Web3Service(networks)
   const userAddress = request.user!.walletAddress
-  const parsed = await EventBody.parseAsync(request.body)
 
-  let locks = parsed.checkoutConfig.config.locks || {}
+  let slug = request.params.slug
+  let locks = {}
+
+  if (!slug) {
+    const parsed = await EventBody.parseAsync(request.body)
+
+    locks = parsed.checkoutConfig.config.locks
+    slug = parsed.data.slug
+  }
 
   // If this is an existing event!
-  if (parsed.data.slug) {
-    const existingEvent = await getEventBySlug(parsed.data.slug)
+  if (slug) {
+    const existingEvent = await getEventBySlug(slug)
     if (existingEvent?.checkoutConfigId) {
       const checkoutConfig = await getCheckoutConfigById(
         existingEvent.checkoutConfigId
       )
       locks = checkoutConfig?.config.locks || {}
     }
+  }
+
+  if (isEmpty(locks)) {
+    return response.status(404).send({
+      message: `No such event`,
+    })
   }
 
   const lockManagers = await Promise.all(

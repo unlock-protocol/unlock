@@ -33,8 +33,11 @@ const config = {
   },
 }
 
+console.log(process.env.ON_HEROKU, process.env.DATABASE_URL)
+
 if (process.env.ON_HEROKU) {
   // Heroku needs this:
+  console.log('Using SSL for Heroku')
   config.database.ssl = true
   config.database.dialectOptions = {
     ssl: {
