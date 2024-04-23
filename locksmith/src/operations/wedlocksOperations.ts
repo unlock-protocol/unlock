@@ -58,6 +58,8 @@ interface SendEmailProps {
   recipient: string
   params?: Params
   attachments?: Attachment[]
+  replyTo?: string
+  emailSender?: string
 }
 /**
  * Function to send an email with the Wedlocks service
@@ -68,21 +70,33 @@ export const sendEmail = async ({
   template,
   failoverTemplate,
   recipient,
+  emailSender: emailSenderArg,
+  replyTo: replyToArg,
   params = {} as any,
   attachments = [],
 }: SendEmailProps) => {
-  // prevent send email when is not enabled
-  const {
-    sendEmail: canSendEmail,
-    replyTo,
-    emailSender,
-  } = await getLockSettings(params.lockAddress, network)
+  let replyTo = replyToArg
+  let emailSender = emailSenderArg
 
-  if (!canSendEmail) {
-    logger.info('Email sending disabled for', {
-      lockAddress: params.lockAddress,
-    })
-    return `Email sending disabled for ${params.lockAddress}`
+  // prevent send email when is not enabled
+  if (params.lockAddress) {
+    const {
+      sendEmail: canSendEmail,
+      replyTo: lockReplyTo,
+      emailSender: lockEmailSender,
+    } = await getLockSettings(params.lockAddress, network)
+    if (lockReplyTo && !replyTo) {
+      replyTo = lockReplyTo
+    }
+    if (lockEmailSender && !emailSender) {
+      emailSender = lockEmailSender
+    }
+    if (!canSendEmail) {
+      logger.info('Email sending disabled for', {
+        lockAddress: params.lockAddress,
+      })
+      return `Email sending disabled for ${params.lockAddress}`
+    }
   }
 
   const payload = {
