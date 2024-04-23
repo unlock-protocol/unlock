@@ -5,7 +5,6 @@ import { RegistrationCardSingleLock } from './SingleLock'
 import { useValidKeyBulk } from '~/hooks/useKey'
 import { HasTicket } from './HasTicket'
 import { EmbeddedCheckout } from './EmbeddedCheckout'
-import { LoadingRegistrationCard } from './LoadingRegistrationCard'
 
 export interface RegistrationCardProps {
   checkoutConfig: {
@@ -25,18 +24,10 @@ export const RegistrationCard = ({
     queries.map((query) => query.refetch())
   }
 
-  const isLoadingValidKeys = queries?.some(
-    (query) => query.isInitialLoading || query.isRefetching || query.isLoading
-  )
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
-  if (isLoadingValidKeys) {
-    return (
-      <Card className="grid gap-4 mt-10 lg:mt-0">
-        <LoadingRegistrationCard />
-      </Card>
-    )
-  }
+  // We don't show a "loading" state when checing if the user has valid keys
+  // because if the user was logging in from inside the modal, it would result in the modal being closed.
 
   if (hasValidKey) {
     return <HasTicket />

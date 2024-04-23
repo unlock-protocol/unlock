@@ -158,10 +158,6 @@ const HookSelect = ({
   const hooks = networks?.[network]?.hooks ?? {}
   const { setValue, getValues } = useFormContext()
 
-  const getHooks = () => {
-    return hooks
-  }
-
   const getHookIdByAddress = (name: HookName, address: string): string => {
     let id
     const idByAddress: string =
@@ -187,16 +183,33 @@ const HookSelect = ({
     }
   )
   const options = [...GENERAL_OPTIONS, ...hookOptionsByName]
+  if (selectedOption !== '') {
+    options.push({
+      label: 'None',
+      value: '',
+      component: () => <></>,
+    })
+  }
   const Option = options.find((option) => option.value === selectedOption)
 
   let id = ''
 
-  const handleSelectChange = (hookType: string) => {
-    const hooks = getHooks()[hookName]
+  const handleSelectChange = async (hookType: string) => {
+    if (!hookType) {
+      await setEventsHooksMutation.mutateAsync({
+        hookName: DEFAULT_USER_ACCOUNT_ADDRESS,
+      })
+      setValue(name, DEFAULT_USER_ACCOUNT_ADDRESS, {
+        shouldValidate: true,
+      })
+      setSelectedOption(hookType)
+      return
+    }
+    const hooksOfType = hooks[hookName]
 
     // get hook value from hooks of default one
     const hookValue =
-      hooks?.find((hook: Hook) => {
+      hooksOfType?.find((hook: Hook) => {
         return hook.id === hookType
       })?.address || hookAddress
 
@@ -223,7 +236,7 @@ const HookSelect = ({
         label={label}
         defaultValue={defaultValue}
         disabled={disabled}
-        onChange={(value) => handleSelectChange(value.toString())}
+        onChange={(value: string) => handleSelectChange(value.toString())}
       />
       {Option?.component && (
         <div className="w-full p-4 border border-gray-500 rounded-lg">
@@ -275,7 +288,7 @@ export const UpdateHooksForm = ({
     let dirty = false
     Object.keys(fields).forEach((key) => {
       // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'Partial<FormProps>'.
-      if (fields[key] !== values[key]) {
+      if (values[key] && fields[key] !== values[key]) {
         dirty = true
       }
     })
