@@ -19,11 +19,10 @@
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/ test/",
     "test": "ts-mocha --exit --recursive 'test/**/*.ts'",
     "ci": "yarn build && yarn lint && yarn test",
-    "build": "yarn networks && tsc",
+    "build": "tsc",
     "watch": "tsc -w",
     "clean": "rm -rf dist test/fixture-projects/hardhat-project/.openzeppelin test/fixture-projects/hardhat-project/artifacts test/fixture-projects/hardhat-project/cache test/fixture-projects/hardhat-project/contracts",
-    "prepublishOnly": "yarn clean && yarn build",
-    "networks": "node scripts/parseNetworks.js"
+    "prepublishOnly": "yarn clean && yarn build"
   },
   "files": [
     "dist/src/**/*",
@@ -44,7 +43,6 @@
     "@typechain/ethers-v6": "0.5.0",
     "@typechain/hardhat": "9.0.0",
     "@types/chai": "4.3.14",
-    "@types/fs-extra": "11.0.4",
     "@types/mocha": "10.0.6",
     "@types/node": "20.10.1",
     "@unlock-protocol/contracts": "workspace:^",
@@ -67,6 +65,7 @@
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
+    "@unlock-protocol/networks": "*",
     "ethers": "6"
   },
   "dependencies": {
