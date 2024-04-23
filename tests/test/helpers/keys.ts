@@ -58,7 +58,7 @@ export const purchaseKeys = async (
     keyOwners.map(() => ZeroAddress),
     keyOwners.map(() => []),
     {
-      value: isErc20 ? 0 : price * nbOfKeys,
+      value: isErc20 ? 0 : price * BigInt(nbOfKeys),
     }
   )
   // get token ids
