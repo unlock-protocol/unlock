@@ -123,23 +123,22 @@ export const sendEventInvite: RequestHandler = async (request, response) => {
 
   const { recipients } = await EventInviteBody.parseAsync(request.body)
   const results = await Promise.all(
-    recipients.map(async (recipient) => {
-      // send email to recipient!
-      await sendEmail({
-        template: 'inviteEvent',
-        recipient,
-        // @ts-expect-error object incomplete
-        params: {
-          eventName: event!.name,
-          eventDate: event!.data.ticket.event_start_date,
-          eventTime: event!.data.ticket.event_start_time,
-          eventUrl: getEventUrl(event!),
-        },
-        attachments: [],
-      })
-    })
+    recipients.map(
+      async (recipient) =>
+        await sendEmail({
+          template: 'inviteEvent',
+          recipient,
+          // @ts-expect-error object incomplete
+          params: {
+            eventName: event!.name,
+            eventDate: event!.data.ticket.event_start_date,
+            eventTime: event!.data.ticket.event_start_time,
+            eventUrl: getEventUrl(event!),
+          },
+          attachments: [],
+        })
+    )
   )
 
-  // Ok , great! Let's now parse the body!
   return response.send(results).status(200)
 }

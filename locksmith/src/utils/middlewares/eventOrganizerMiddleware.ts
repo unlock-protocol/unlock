@@ -5,6 +5,7 @@ import networks from '@unlock-protocol/networks'
 import { getEventBySlug } from '../../operations/eventOperations'
 import { getCheckoutConfigById } from '../../operations/checkoutConfigOperations'
 import { isEmpty } from 'lodash'
+import { PaywallLocksConfigType } from '@unlock-protocol/core'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
   request,
@@ -15,7 +16,7 @@ export const eventOrganizerMiddleware: RequestHandler = async (
   const userAddress = request.user!.walletAddress
 
   let slug = request.params.slug
-  let locks = {}
+  let locks: PaywallLocksConfigType = {}
 
   if (!slug) {
     const parsed = await EventBody.parseAsync(request.body)
@@ -51,7 +52,6 @@ export const eventOrganizerMiddleware: RequestHandler = async (
       )
     })
   )
-
   const isLockManager = lockManagers.some((isManager) => isManager)
 
   if (!isLockManager) {
