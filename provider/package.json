@@ -13,6 +13,9 @@
     "wrangler": "3.43.0"
   },
   "scripts": {
+    "dev": "yarn wrangler dev",
+    "deploy": "yarn wrangler deploy",
+    "set-provider-urls": "op run --env-file=.op.env --  ./scripts/set-provider-urls.sh",
     "test": "vitest"
   }
 }

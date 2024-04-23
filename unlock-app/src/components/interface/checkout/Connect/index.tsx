@@ -2,10 +2,11 @@ import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
-import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
+import { useSelector } from '@xstate/react'
+import { createActor } from 'xstate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -18,14 +19,14 @@ export function Connect({
   oauthConfig,
   communication,
 }: Props) {
-  const connectService = useInterpret(connectMachine)
-  const [state, send] = useActor(connectService)
+  const connectService = createActor(connectMachine).start()
+  const state = useSelector(connectService, (state) => state)
   const matched = state.value.toString()
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      send('DISCONNECT')
+      connectService.send({ type: 'DISCONNECT' })
 
       if (oauthConfig.redirectUri) {
         const redirectURI = new URL(oauthConfig.redirectUri)
@@ -40,20 +41,20 @@ export function Connect({
         communication.emitCloseModal()
       }
     },
-    [oauthConfig.redirectUri, communication, send]
+    [oauthConfig.redirectUri, communication, connectService]
   )
 
   const onBack = useMemo(() => {
     const unlockAccount = state.children?.unlockAccount
     const canBackInUnlockAccountService = unlockAccount
       ?.getSnapshot()
-      .can('BACK')
-    const canBack = state.can('BACK')
+      .can({ type: 'BACK' })
+    const canBack = state.can({ type: 'BACK' })
     if (canBackInUnlockAccountService) {
-      return () => unlockAccount.send('BACK')
+      return () => unlockAccount.send({ type: 'BACK' })
     }
     if (canBack) {
-      return () => connectService.send('BACK')
+      return () => connectService.send({ type: 'BACK' })
     }
     return undefined
   }, [state, connectService])

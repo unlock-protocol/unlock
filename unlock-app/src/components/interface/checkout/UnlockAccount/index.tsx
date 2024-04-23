@@ -1,4 +1,4 @@
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import useAccount from '~/hooks/useAccount'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import UnlockProvider from '~/services/unlockProvider'
@@ -18,7 +18,7 @@ export function UnlockAccount({
   injectedProvider,
 }: Props) {
   const config = useConfig()
-  const [state] = useActor(unlockAccountService)
+  const stateValue = useSelector(unlockAccountService, (state) => state.value)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
@@ -43,7 +43,7 @@ export function UnlockAccount({
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  switch (state.value) {
+  switch (stateValue) {
     case 'ENTER_EMAIL': {
       return <EnterEmail unlockAccountService={unlockAccountService} />
     }

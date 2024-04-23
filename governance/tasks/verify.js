@@ -23,7 +23,7 @@ task('verify-proxy', 'Deploy and verify the TransparentProxy used by locks')
   .addOptionalParam('deployNew', 'deploy and verify a new lock')
   .setAction(async ({ lockAddress, unlockAddress, creationTx, deployNew }) => {
     // eslint-disable-next-line global-require
-    const verifyProxy = require('../scripts/verify-proxy')
+    const verifyProxy = require('../scripts/verify/proxy')
     await verifyProxy({
       lockAddress,
       unlockAddress,

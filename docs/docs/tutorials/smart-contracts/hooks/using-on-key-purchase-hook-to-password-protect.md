@@ -3,13 +3,11 @@ title: Creating a hook to password-protect purchases
 description: In this tutorial we follow the steps to create a hook that create a password protected flow for purchases on a hook.
 ---
 
-> If you are not a developer but just a creator trying to use an existing hook, please check out guide on [how to password-protect NFT purchases](https://unlock-protocol.com/guides/password-protected-nft-memberships/) on your lock.
+> If you are not a developer but just a creator trying to use an existing hook, please check out guide on [how to password-protect NFT purchases](https://unlock-protocol.com/guides/password-protected-nft-memberships/) on your lock. You can do it directly from the Unlock Dashboard UI as well!
 
 Our goal here is to create a system where purchases on a lock are restricted to people who know a specific password.
 
 There is obviously a front-end element, where purchasers would have to enter the password as they go through the checkout (we implemented this flow in our [Checkout UI](../../../tools/checkout/README.md)). However, if we only implemented this protection on the front-end, people could bypass this protection by calling the `purchase` function of the contract directly: we also need to add a mechanism to the smart contract.
-
-If we only implemented this protection on the front-end, people could bypass it by calling the `purchase` function of the contract directly. Adding the password check to the smart contract ensures it can't be circumvented.
 
 When the lock contract itself does not have a feature that we want, we can use hooks. Since our goal is to limit the "purchases" to people who know the password, then we need to use the `onKeyPurchaseHook`. Additionally the `purchase` function includes an extra `data` argument which is passed to the hook!
 

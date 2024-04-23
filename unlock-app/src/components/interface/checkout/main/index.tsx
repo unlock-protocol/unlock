@@ -8,7 +8,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useInterpret } from '@xstate/react'
+import { useMachine } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
@@ -36,12 +36,12 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  const checkoutService = useInterpret(checkoutMachine, {
-    context: {
+  // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
+  const [state, send, checkoutService] = useMachine(checkoutMachine, {
+    input: {
       paywallConfig,
     },
   })
-  const [state] = useActor(checkoutService)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context
@@ -74,7 +74,7 @@ export function Checkout({
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      checkoutService.send('RESET_CHECKOUT')
+      checkoutService.send({ type: 'RESET_CHECKOUT' })
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
@@ -117,12 +117,12 @@ export function Checkout({
     const canBackInUnlockAccountService = unlockAccount
       ?.getSnapshot()
       .can('BACK')
-    const canBack = state.can('BACK')
+    const canBack = state.can({ type: 'BACK' })
     if (canBackInUnlockAccountService) {
       return () => unlockAccount.send('BACK')
     }
     if (canBack) {
-      return () => checkoutService.send('BACK')
+      return () => checkoutService.send({ type: 'BACK' })
     }
     return undefined
   }, [state, checkoutService])
