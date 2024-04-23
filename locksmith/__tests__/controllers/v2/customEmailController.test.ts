@@ -250,6 +250,8 @@ describe('Email Controller v2', () => {
           eventTime: '08:30',
           eventUrl: 'https://staging-app.unlock-protocol.com/event/an-event',
         },
+        replyTo: 'julien@unlock-protocol.com',
+        emailSender: 'Julien Genestoux',
         recipient: 'julien@unlock-protocol.com',
         template: 'inviteEvent',
       })
