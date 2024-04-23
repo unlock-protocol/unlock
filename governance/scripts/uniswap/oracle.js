@@ -113,6 +113,7 @@ async function main({
       )} ${tokenTo.symbol} for ${amount} ${tokenFrom.symbol}`
     )
   }
+  return rate
 }
 
 // execute as standalone
