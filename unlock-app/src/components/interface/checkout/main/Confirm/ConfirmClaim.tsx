@@ -1,6 +1,5 @@
 import ReCaptcha from 'react-google-recaptcha'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { useSelector } from '@xstate/react'
@@ -15,20 +14,15 @@ import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useConfig } from '~/utils/withConfig'
 import { PricingData } from './PricingData'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
 }
 
-export function ConfirmClaim({
-  injectedProvider,
-  checkoutService,
-  onConfirmed,
-  onError,
-}: Props) {
+export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
   const { lock, recipients, payment, paywallConfig, metadata, data } =
     useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
@@ -163,6 +157,7 @@ export function ConfirmClaim({
             {isConfirming ? 'Claiming' : 'Claim'}
           </Button>
         </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

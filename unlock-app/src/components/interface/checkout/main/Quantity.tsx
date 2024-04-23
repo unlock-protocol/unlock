@@ -1,4 +1,3 @@
-import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
@@ -18,11 +17,10 @@ import { CheckoutService } from './checkoutMachine'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Quantity({ injectedProvider, checkoutService }: Props) {
+export function Quantity({ checkoutService }: Props) {
   const {
     paywallConfig,
     quantity: selectedQuantity,

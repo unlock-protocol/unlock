@@ -18,7 +18,6 @@ import {
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
-import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
@@ -269,7 +268,7 @@ export const emailInput: MetadataInput = {
   placeholder: 'your@email.com',
 }
 
-export function Metadata({ checkoutService, injectedProvider }: Props) {
+export function Metadata({ checkoutService }: Props) {
   const { lock, paywallConfig, quantity } = useSelector(
     checkoutService,
     (state) => state.context

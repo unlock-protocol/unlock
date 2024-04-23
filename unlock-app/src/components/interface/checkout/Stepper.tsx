@@ -4,7 +4,6 @@ import { twMerge } from 'tailwind-merge'
 import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
-import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 import { useStepperItems } from './main/useStepperItems'
 
 interface IconProps {

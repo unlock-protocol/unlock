@@ -635,7 +635,6 @@ export const checkoutMachine = createMachine(
           },
         },
       },
-
       UNLOCK_ACCOUNT: {
         target: 'CONNECT',
       },

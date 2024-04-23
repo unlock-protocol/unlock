@@ -1,6 +1,5 @@
 import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
-import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -18,7 +17,7 @@ import {
   RiRepeatFill as RecurringIcon,
   RiCheckboxCircleFill as CheckMarkIcon,
 } from 'react-icons/ri'
-import { Badge, Button, Icon, Tooltip } from '@unlock-protocol/ui'
+import { Badge, Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
@@ -31,7 +30,6 @@ import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -183,7 +181,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
   )
 }
 
-export function Select({ checkoutService, injectedProvider }: Props) {
+export function Select({ checkoutService }: Props) {
   const { paywallConfig, lock: selectedLock } = useSelector(
     checkoutService,
     (state) => state.context

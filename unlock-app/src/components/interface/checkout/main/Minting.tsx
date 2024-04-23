@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
@@ -111,14 +110,12 @@ export const MintingScreen = ({
 }
 
 interface MintingProps {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: CheckoutCommunication
 }
 
 export function Minting({
-  injectedProvider,
   onClose,
   checkoutService,
   communication,

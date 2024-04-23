@@ -4,7 +4,6 @@ import { CheckoutService } from './checkoutMachine'
 
 interface Props {
   checkoutService: CheckoutService
-  injectedProvider: unknown
 }
 
 export function UnlockAccount({ checkoutService }: Props) {
