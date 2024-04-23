@@ -8,7 +8,7 @@ import './type-extensions'
 import { TASK_CREATE_LOCK } from './constants'
 
 import { deployLockTask } from './tasks'
-import networks from './networks.json'
+import { networks as defaultNetworks } from '@unlock-protocol/networks'
 
 // types
 import { UnlockNetworkConfigs } from './types'
@@ -30,6 +30,15 @@ export interface HardhatUnlockPlugin {
   getUnlockContract: GetUnlockContractFunction
   networks: UnlockNetworkConfigs
 }
+
+// parse networks to remove providers
+const networks = Object.keys(defaultNetworks).reduce((parsed, chainId) => {
+  const { publicProvider, provider, ...network } = defaultNetworks[chainId]
+  return {
+    ...parsed,
+    [chainId]: network,
+  }
+}, {})
 
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
