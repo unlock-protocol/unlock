@@ -38,9 +38,27 @@ Once the user's address is known, the next logical step is to, check if it "owns
 
 The actual method called depends on the type of contract. For ERC20 (currency-like tokens), but also ERC721 (NFT), the function `balanceOf` can be used. Unlock's locks also include a `balanceOf` function that will return `0` if the user does not have a valid membership or if it has expired, and a number larger than `1` otherwise.
 
-Using Unlock your application could also use the `keyExpirationTimestampFor` to get the actual expiration of the user's membership... etc.
+If you are creating a custom appliction using Unlock, your application could also use the `keyExpirationTimestampFor` to get the actual expiration of the user's membership.
 
 These RPC calls are cache-able but your application should expect the values to change if the user can transfer their tokens, for example.
+
+
+### Platforms that support token-gating with Unlock Protocol
+
+Any of the platforms below can support token-gating with Unlock Protocol on any of the [supported networks](https://docs.unlock-protocol.com/core-protocol/unlock/networks/) (including Base, Optimism, Arbitrum, mainnet, and many others) using the `balanceOf` function.
+
+| Platform        | Details           |
+|---------------|-----------------|
+| [Discord](https://discord.com)      | Multiple custom bots          |
+| [Paragraph](https://paragraph.xyz)      | Native in platform      |
+| [Guild.xyz](https://guild.xyz)      | Native in platform |
+| [CharmVerse](https://charmverse.io)         | Native in platform     |
+| [Huddle01](https://huddle01.com)         | Native in platform  |
+| React applications | [Tutorial](https://docs.unlock-protocol.com/tutorials/front-end/react-example) |
+| Scaffold-eth | [Tutorial](https://docs.unlock-protocol.com/tutorials/front-end/scaffold-eth) |
+| Express.js | [Tutorial](https://docs.unlock-protocol.com/tutorials/back-end/backend-locking-with-express.js) |
+| Web pages | [Tutorial](https://docs.unlock-protocol.com/tutorials/front-end/locking-page) |
+| Other applications | Any that support calls to `balanceOf`  |
 
 ### Enabling purchase
 
