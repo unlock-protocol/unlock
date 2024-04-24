@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useSocials } from '~/hooks/useSocials'
 import { FaUser } from 'react-icons/fa'
+import { rewriteIpfsUrl } from '~/utils/url'
 
 interface HostsProps {
   organizers?: string[]
@@ -43,7 +44,7 @@ export const Hosts = ({ organizers }: HostsProps) => {
                         alt={social.profileName}
                         width={20}
                         height={20}
-                        src={social.profileImage}
+                        src={rewriteIpfsUrl(social.profileImage)}
                       />
                     )}
                     {!social.profileImage && <FaUser size={16} />}
@@ -60,7 +61,7 @@ export const Hosts = ({ organizers }: HostsProps) => {
                     alt={social.profileName}
                     width={32}
                     height={32}
-                    src={social.profileImage}
+                    src={rewriteIpfsUrl(social.profileImage)}
                   />
                 )}
                 {social.profileDisplayName}

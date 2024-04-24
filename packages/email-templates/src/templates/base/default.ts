@@ -427,7 +427,7 @@ export const base = `<!DOCTYPE html>
                               href="https://unlock-protocol.com/grants"
                               target="_blank"
                               style="color: #373a3e; text-decoration: none"
-                              >Grant</a
+                              >Grants</a
                             >
                           </td>
                         </tr>

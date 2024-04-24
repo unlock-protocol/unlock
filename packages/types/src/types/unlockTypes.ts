@@ -50,6 +50,7 @@ export enum HookType {
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
   GITCOIN = 'GITCOIN',
+  ADVANCED_TOKEN_URI = 'ADVANCED_TOKEN_URI',
 }
 
 export const HooksName = [
@@ -117,6 +118,7 @@ export interface NetworkConfig {
   unlockDaoToken?: {
     address: string
     mainnetBridge?: string
+    uniswapV3Pool?: string
   }
   explorer?: {
     name: string

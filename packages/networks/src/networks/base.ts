@@ -52,6 +52,13 @@ export const base: NetworkConfig = {
         name: 'Gitcoin',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x16de050b14B22DC070522b8De134490CB1655B11',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 8453,
   isTestNetwork: false,
@@ -126,12 +133,15 @@ export const base: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
+    oracle: '0xE9cb427dCde7090248016e87844658688E34e85F',
     positionManager: '0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1',
     universalRouterAddress: '0x198EF79F1F515F02dFE9e3115eD9fC07183f02fC',
   },
   unlockAddress: '0xd0b14797b9D08493392865647384974470202A78',
   unlockDaoToken: {
     address: '0xD7eA82D19f1f59FF1aE95F1945Ee6E6d86A25B96',
+    mainnetBridge: '0x3154Cf16ccdb4C6d922629664174b904d80F2C35',
+    uniswapV3Pool: '0x0a052dAd89F9695A0074958b81c85479bc8844F8',
   },
   url: 'https://base.org/',
 }

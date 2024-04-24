@@ -1,12 +1,11 @@
 import { CheckoutService } from './checkoutMachine'
 import { FaCheck } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6'
-
 import { Connected } from '../Connected'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
@@ -14,7 +13,6 @@ import { useForm } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { getEthersWalletFromPassword } from '~/utils/strings'
 import LoadingIcon from '../../Loading'
-
 import { useDebounce } from 'react-use'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 interface Props {
@@ -34,8 +32,10 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false)
 
   const web3Service = useWeb3Service()
-  const [state, send] = useActor(checkoutService)
-  const { recipients, lock } = state.context
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const {
     register,
     handleSubmit,
@@ -71,7 +71,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
           return privateKeyAccount.signMessage(messageHashBinary)
         })
       )
-      send({
+      checkoutService.send({
         type: 'SUBMIT_DATA',
         data,
       })

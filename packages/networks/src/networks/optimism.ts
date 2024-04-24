@@ -65,6 +65,13 @@ export const optimism: NetworkConfig = {
         name: 'Gitcoin',
       },
     ],
+    onTokenURIHook: [
+      {
+        address: '0x5765883E120F707A528F3e476636304De9280b6c',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
+    ],
   },
   id: 10,
   isTestNetwork: false,
@@ -151,7 +158,7 @@ export const optimism: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+    oracle: '0x5bb43b6c080A19d26df5769F7CA31405f26eADdE',
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
@@ -160,6 +167,7 @@ export const optimism: NetworkConfig = {
   unlockDaoToken: {
     address: '0xc709c9116dBf29Da9c25041b13a07A0e68aC5d2D',
     mainnetBridge: '0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1',
+    uniswapV3Pool: '0x98b506bf1916f674a7BEC5284A043a21fCC3d206',
   },
   url: 'https://www.optimism.io/',
 }

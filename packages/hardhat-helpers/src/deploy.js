@@ -88,8 +88,9 @@ export const verify = async ({ address, deployArgs, contract }) => {
       constructorArguments: deployArgs,
     })
   } catch (error) {
-    console.log(`FAIL: Verification failed for contract at ${address} 
-    with args :${deployArgs.toString()}`)
+    console.log(
+      `FAIL: Verification failed for contract at ${address} with args : ${deployArgs.toString()}`
+    )
     console.log(error)
   }
 }

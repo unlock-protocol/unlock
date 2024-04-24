@@ -196,33 +196,41 @@ export class PaymentProcessor {
       lockAddress: lock,
       network,
     })
-    const intent = await stripe.paymentIntents.create(
-      {
-        amount: pricing.total,
-        currency: creditCardCurrency,
-        customer: connectedCustomer.id,
-        payment_method: method.id,
-        capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
-        metadata: {
-          purchaser: userAddress,
-          lock,
-          recurring,
-          recipient: recipients.join(','),
-          network,
-          // Not actually saving these in Stripe because of size limitations on their side.
-          // data: (data || []).join(','),
-          // referrers: (referrers || []).join(','),
-          // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
-          // maxPrice,
-        },
-        application_fee_amount: !applicationFeeNotSupportedCountries.includes(
-          account.country?.trim() || ''
-        )
-          ? pricing.unlockServiceFee + pricing.gasCost
-          : undefined,
+
+    const paymentIntentParams: any = {
+      amount: pricing.total,
+      currency: creditCardCurrency,
+      customer: connectedCustomer.id,
+      payment_method: method.id,
+      capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
+      receipt_email: '',
+      metadata: {
+        purchaser: userAddress,
+        lock,
+        recurring,
+        recipient: recipients.join(','),
+        network,
+        // Not actually saving these in Stripe because of size limitations on their side.
+        // data: (data || []).join(','),
+        // referrers: (referrers || []).join(','),
+        // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
+        // maxPrice,
       },
-      { stripeAccount }
-    )
+      application_fee_amount: !applicationFeeNotSupportedCountries.includes(
+        account.country?.trim() || ''
+      )
+        ? pricing.unlockServiceFee + pricing.gasCost
+        : undefined,
+    }
+    if (connectedCustomer.email) {
+      paymentIntentParams['receipt_email'] = connectedCustomer.email
+    } else if (method.billing_details?.email) {
+      paymentIntentParams['receipt_email'] = method.billing_details.email
+    }
+
+    const intent = await stripe.paymentIntents.create(paymentIntentParams, {
+      stripeAccount,
+    })
 
     // Store the paymentIntent
     // Note: to avoid multiple purchases, we should make sure we don't create a new one if one already exists!
