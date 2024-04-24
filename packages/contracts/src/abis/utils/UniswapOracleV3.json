@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "UniswapOracleV3",
-  "sourceName": "contracts/UniswapOracleV3.flatten.sol",
+  "sourceName": "contracts/utils/UniswapOracleV3.sol",
   "abi": [
     {
       "inputs": [
