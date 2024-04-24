@@ -49,28 +49,30 @@ async function main() {
   if (uniswapV3 && uniswapV3.oracle) {
     for (let i in tokens) {
       const token = tokens[i]
+      // avoid WETH/WETH pair
+      if (token.address !== wrapped) {
+        // check if oracle is set in Unlock
+        const unlock = await getUnlock(unlockAddress)
+        const oracleAddress = await unlock.uniswapOracles(token.address)
+        if (oracleAddress === ADDRESS_ZERO) {
+          missingOracles.push({ token })
+        } else {
+          // if oracle is set in Unlock, make sure it works
+          const error = await checkOracleRate({ oracleAddress, token })
+          if (error)
+            oracleErrors.push({
+              ...error,
+              msg: `(already in Unlock) ${error.msg}`,
+            })
+        }
 
-      // check if oracle is set in Unlock
-      const unlock = await getUnlock(unlockAddress)
-      const oracleAddress = await unlock.uniswapOracles(token.address)
-      if (oracleAddress === ADDRESS_ZERO) {
-        missingOracles.push({ token })
-      } else {
-        // if oracle is set in Unlock, make sure it works
-        const error = await checkOracleRate({ oracleAddress, token })
-        if (error)
-          oracleErrors.push({
-            ...error,
-            msg: `(already in Unlock) ${error.msg}`,
-          })
+        // check if uniswap oracle in networks package works
+        const error = await checkOracleRate({
+          oracleAddress: uniswapV3.oracle,
+          token,
+        })
+        if (error) oracleErrors.push(error)
       }
-
-      // check if uniswap oracle in networks package works
-      const error = await checkOracleRate({
-        oracleAddress: uniswapV3.oracle,
-        token,
-      })
-      if (error) oracleErrors.push(error)
     }
     // log all errors
     oracleErrors.forEach(({ msg, token }) => logError(name, id, token, msg))
