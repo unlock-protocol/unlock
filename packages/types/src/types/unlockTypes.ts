@@ -109,10 +109,12 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    // uniswap oracle default to fee 500
-    oracle: string
-    oracle100: string
-    oracle3000: string
+    // uniswap oracles with varioous pool fees
+    oracle: Partial<{
+      500: string
+      100: string
+      3000: string
+    }>
     universalRouterAddress: string
     positionManager: string
   }>

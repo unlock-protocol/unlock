@@ -161,7 +161,9 @@ export const mainnet: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
+    oracle: {
+      500: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     subgraph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
