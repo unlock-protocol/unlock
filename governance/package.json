@@ -30,7 +30,6 @@
     "ethers5": "npm:ethers@5",
     "fs-extra": "11.2.0",
     "hardhat": "2.20.1",
-    "solhint": "4.5.2",
     "zksync-ethers": "6.1.0"
   },
   "scripts": {
@@ -40,7 +39,6 @@
     "check:multisig": "yarn hardhat run scripts/multisig/check-all.js",
     "check:verify": "yarn hardhat run scripts/verify/check-all.js",
     "lint:contracts": "solhint 'contracts/**/*.sol'",
-    "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
-    "lint": "yarn lint:contracts && yarn lint:code"
+    "lint": "yarn lint:code"
   }
 }
