@@ -109,7 +109,10 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
+    // uniswap oracle default to fee 500
     oracle: string
+    oracle100: string
+    oracle3000: string
     universalRouterAddress: string
     positionManager: string
   }>
