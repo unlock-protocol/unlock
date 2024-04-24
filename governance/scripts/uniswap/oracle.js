@@ -12,6 +12,7 @@ async function main({
   tokenOut,
   amount = '1',
   oracleAddress,
+  fee = 500,
 } = {}) {
   const network = await getNetwork()
   const {
@@ -61,25 +62,19 @@ async function main({
     const unlock = await getUnlock(network.unlockAddress)
     oracleAddress = await unlock.uniswapOracles(tokenFrom.address)
     if (oracleAddress === ADDRESS_ZERO) {
+      console.log(`No oracle address for this token is set in Unlock.`)
+
+      // get the correct oracle for appropriate fee
       const {
-        uniswapV3: { oracle: oracleAddressFromPackage },
+        uniswapV3: { oracle },
       } = network
-      if (!oracleAddress) {
-        if (!oracleAddressFromPackage) {
-          throw new Error(
-            'No address for oracle in the networks package, please add one.'
-          )
-        }
-        oracleAddress = oracleAddressFromPackage
+      const oracleAddressFromPackage = oracle[fee]
+      if (!oracleAddressFromPackage) {
+        throw new Error(
+          `No address for oracle with fee ${fee} in the networks package, please add one.`
+        )
       }
-      throw new Error(
-        `
-        No oracle address for this token is set in Unlock.
-        You can try with setOracle(${tokenFrom.address},<oracle address>)
-        The oracle address in the networks package is: ${oracleAddressFromPackage}
-        please check to see if values for the tokens can be fetched.
-        `
-      )
+      oracleAddress = oracleAddressFromPackage
     }
   }
 
