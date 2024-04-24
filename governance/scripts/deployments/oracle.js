@@ -1,10 +1,7 @@
-const { ethers } = require('hardhat')
-const UniswapOracleV2 = require('@unlock-protocol/hardhat-helpers/dist/ABIs/UniswapV2Oracle.json')
-const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
-
 const {
   getNetwork,
   deployContract,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
 
 // TODO: check if oracle has already been deployed and skips if one already exists!
@@ -23,20 +20,11 @@ async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
     )
   }
 
-  let Oracle
-  if (uniswapVersion == 2) {
-    Oracle = await ethers.getContractFactory(
-      UniswapOracleV2.abi,
-      UniswapOracleV2.bytecode
-    )
-  } else if (uniswapVersion == 3) {
-    Oracle = await ethers.getContractFactory(
-      UniswapOracleV3.abi,
-      UniswapOracleV3.bytecode
-    )
-  }
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'UniswapOracleV3', subfolder: 'utils' },
+  ])
 
-  const { hash, address: oracleAddress } = await deployContract(Oracle, [
+  const { hash, address: oracleAddress } = await deployContract(qualifiedPath, [
     uniswapFactoryAddress,
   ])
   console.log(

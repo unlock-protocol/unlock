@@ -8,7 +8,7 @@ export const getUnlock = async (unlockAddress) => {
     unlockAddress = await getUnlockAddress()
   }
   // get unlock instance (TODO: do not use code version but packaged version)
-  const { abi } = contracts['UnlockV12']
+  const { abi } = contracts['UnlockV13']
   const unlock = await ethers.getContractAt(abi, unlockAddress)
   return unlock
 }
