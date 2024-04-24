@@ -20,6 +20,7 @@ interface UnlockAccountSignInProps {
   signedInBefore?: boolean
   useIcon: boolean
   onExit(): void
+  displayDisconnect?: boolean
 }
 
 export const UnlockAccountSignIn = ({
@@ -30,6 +31,7 @@ export const UnlockAccountSignIn = ({
   signedInBefore = false,
   useIcon,
   onExit,
+  displayDisconnect = true,
 }: UnlockAccountSignInProps) => {
   const {
     register,
@@ -64,7 +66,7 @@ export const UnlockAccountSignIn = ({
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        {email ? (
+        {account ? (
           <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
             {useIcon && (
               <BlockiesSvg
@@ -143,9 +145,10 @@ export const UnlockAccountSignIn = ({
         >
           <span>Back to using your crypto wallet</span>
         </ConnectButton>
-        {(signedInBefore || email) && (
+        {/* TODO: Fix disconnect on checkout page */}
+        {(signedInBefore || email) && displayDisconnect && (
           <ConnectButton
-            onClick={(event) => {
+            onClick={async (event) => {
               event.preventDefault()
               signOut()
             }}
@@ -286,12 +289,14 @@ export interface Props {
   onSignIn?(): void
   onExit(): void
   useIcon?: boolean
+  displayDisconnect?: boolean
 }
 
 export const ConnectUnlockAccount = ({
   onSignIn,
   onExit,
   useIcon = true,
+  displayDisconnect = true,
 }: Props) => {
   const [isSignIn, setIsSignIn] = useState(true)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
@@ -339,6 +344,7 @@ export const ConnectUnlockAccount = ({
           }}
           useIcon={useIcon}
           onExit={onExit}
+          displayDisconnect={displayDisconnect}
         />
       )}
       {!isSignIn && (

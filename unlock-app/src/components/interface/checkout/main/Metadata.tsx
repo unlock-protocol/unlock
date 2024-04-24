@@ -37,7 +37,6 @@ import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 

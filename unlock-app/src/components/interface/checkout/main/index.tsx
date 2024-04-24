@@ -145,23 +145,13 @@ export function Checkout({
         return <Quantity checkoutService={checkoutService} />
       }
       case 'PAYMENT': {
-        return (
-          <Payment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Payment checkoutService={checkoutService} />
       }
       case 'CARD': {
         return <CardPayment checkoutService={checkoutService} />
       }
       case 'METADATA': {
-        return (
-          <Metadata
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Metadata checkoutService={checkoutService} />
       }
       case 'CONFIRM': {
         return (

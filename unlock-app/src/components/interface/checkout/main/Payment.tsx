@@ -33,7 +33,6 @@ import Link from 'next/link'
 import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
