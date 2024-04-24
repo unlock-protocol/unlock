@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 0.0.26
+- update `UniswapOracleV3` to allow pool fee to be passed in constructor
+
 ## 0.0.25
 
 - update `UnlockSwapBurner` to latest version using Uniswap `UniversalRouter`

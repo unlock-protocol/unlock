@@ -149,7 +149,9 @@ export const arbitrum: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x9DC6a328C1200f5b247425DDeA538f70335C6a50',
+    oracle: {
+      500: '0x9DC6a328C1200f5b247425DDeA538f70335C6a50',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',

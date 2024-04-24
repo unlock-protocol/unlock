@@ -158,7 +158,9 @@ export const optimism: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x5bb43b6c080A19d26df5769F7CA31405f26eADdE',
+    oracle: {
+      500: '0x5bb43b6c080A19d26df5769F7CA31405f26eADdE',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
