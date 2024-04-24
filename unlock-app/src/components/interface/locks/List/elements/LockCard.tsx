@@ -119,9 +119,8 @@ export const LockCard = ({
 
   const setFavorite = () => {
     if (isFavorite) {
-      const newFavoriteLocks = { ...favoriteLocks }
-      delete newFavoriteLocks[lockAddress]
-      setFavoriteLocks(newFavoriteLocks)
+      // TODO: delete items from local storage, currently delete works unexpectedly
+      setFavoriteLocks({ ...favoriteLocks, [lockAddress]: false })
     } else {
       setFavoriteLocks({ ...favoriteLocks, [lockAddress]: true })
     }
