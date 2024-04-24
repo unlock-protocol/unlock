@@ -7,7 +7,7 @@ const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import { Ticket } from '@unlock-protocol/ui'
 import normalizer from './normalizer'
-import { imageUrlToBase64 } from './image'
+// import { imageUrlToBase64 } from './image'
 import FilBangalore from '../assets/FilBangalore'
 
 interface Options {
