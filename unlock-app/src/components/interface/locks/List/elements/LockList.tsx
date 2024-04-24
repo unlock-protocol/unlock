@@ -26,7 +26,7 @@ export const NoItems = () => {
 }
 
 interface LocksByNetworkProps {
-  network: number
+  network: number | null
   isLoading: boolean
   locks?: any[]
   favoriteLocks: FavoriteLocks
@@ -45,7 +45,11 @@ const LocksByNetwork = ({
   setFavoriteLocks,
 }: LocksByNetworkProps) => {
   const { networks } = useConfig()
-  const { name: networkName } = networks[network]
+
+  const getNetworkName = (network: number) => {
+    const { name: networkName } = networks[network]
+    return networkName
+  }
 
   if (isLoading)
     return (
@@ -64,7 +68,7 @@ const LocksByNetwork = ({
           <div className="flex flex-col gap-2">
             <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
               <h2 className="text-lg font-bold text-brand-ui-primary">
-                {networkName}
+                {network ? getNetworkName(network) : 'Favorite'}
               </h2>
               {open ? (
                 <UpIcon className="fill-brand-ui-primary" size={24} />
@@ -78,7 +82,7 @@ const LocksByNetwork = ({
                   <LockCard
                     key={index}
                     lock={lock}
-                    network={network}
+                    network={network ? network : lock.network}
                     favoriteLocks={favoriteLocks}
                     setFavoriteLocks={setFavoriteLocks}
                   />
@@ -91,65 +95,6 @@ const LocksByNetwork = ({
     </div>
   )
 }
-
-interface FavoriteLocksProps {
-  isLoading: boolean
-  locks?: any[]
-  favoriteLocks: FavoriteLocks
-  setFavoriteLocks: (favoriteLocks: FavoriteLocks) => void
-}
-
-const FavoriteLocks = ({
-  isLoading,
-  locks,
-  favoriteLocks,
-  setFavoriteLocks,
-}: FavoriteLocksProps) => {
-  if (isLoading)
-    return (
-      <Placeholder.Root>
-        <Placeholder.Card />
-        <Placeholder.Card />
-        <Placeholder.Card />
-      </Placeholder.Root>
-    )
-  if (locks?.length === 0) return null
-
-  return (
-    <div className="w-full">
-      <Disclosure defaultOpen>
-        {({ open }) => (
-          <div className="flex flex-col gap-2">
-            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
-              <h2 className="text-lg font-bold text-brand-ui-primary">
-                Favorite
-              </h2>
-              {open ? (
-                <UpIcon className="fill-brand-ui-primary" size={24} />
-              ) : (
-                <DownIcon className="fill-brand-ui-primary" size={24} />
-              )}
-            </Disclosure.Button>
-            <Disclosure.Panel>
-              <div className="flex flex-col gap-6">
-                {locks?.map((lock: Lock, index: number) => (
-                  <LockCard
-                    key={index}
-                    lock={lock}
-                    network={lock.network}
-                    favoriteLocks={favoriteLocks}
-                    setFavoriteLocks={setFavoriteLocks}
-                  />
-                ))}
-              </div>
-            </Disclosure.Panel>
-          </div>
-        )}
-      </Disclosure>
-    </div>
-  )
-}
-
 export interface FavoriteLocks {
   [key: string]: boolean
 }
@@ -178,13 +123,20 @@ export const LockList = ({ owner }: LockListProps) => {
     )
   }, true)
 
-  const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>({
-    '0x5FD5140D035Dc481443fF4A4647232fA9EB4cf3B': true,
-  })
+  const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(
+    localStorage.getItem('favoriteLocks')
+      ? JSON.parse(localStorage.getItem('favoriteLocks') as string)
+      : {}
+  )
+
+  const saveFavoriteLocks = (favoriteLocks: FavoriteLocks) => {
+    setFavoriteLocks(favoriteLocks)
+    localStorage.setItem('favoriteLocks', JSON.stringify(favoriteLocks))
+  }
 
   return (
     <div className="grid gap-20 mb-20">
-      <FavoriteLocks
+      <LocksByNetwork
         isLoading={
           results?.filter((element) => element.isLoading == true).length > 0
         }
@@ -196,22 +148,21 @@ export const LockList = ({ owner }: LockListProps) => {
         )}
         favoriteLocks={favoriteLocks}
         setFavoriteLocks={setFavoriteLocks}
+        network={null}
       />
       {networkItems.map(([network], index) => {
         const locksByNetwork: any = results?.[index]?.data || []
         const isLoading = results?.[index]?.isLoading || false
 
         return (
-          <>
-            <LocksByNetwork
-              isLoading={isLoading}
-              key={network}
-              network={Number(network)}
-              locks={locksByNetwork}
-              favoriteLocks={favoriteLocks}
-              setFavoriteLocks={setFavoriteLocks}
-            />
-          </>
+          <LocksByNetwork
+            isLoading={isLoading}
+            key={network}
+            network={Number(network)}
+            locks={locksByNetwork}
+            favoriteLocks={favoriteLocks}
+            setFavoriteLocks={saveFavoriteLocks}
+          />
         )
       })}
       {isEmpty && <NoItems />}
