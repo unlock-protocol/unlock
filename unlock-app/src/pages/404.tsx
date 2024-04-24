@@ -4,7 +4,7 @@ import { ImageBar } from '~/components/interface/locks/Manage/elements/ImageBar'
 
 const Page404: NextPage = () => {
   return (
-    <AppLayout>
+    <AppLayout authRequired={false}>
       <div className="flex flex-col gap-10">
         <h1 className="text-4xl font-bold text-center">Page Not Found</h1>
         <ImageBar
