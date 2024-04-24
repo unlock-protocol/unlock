@@ -206,7 +206,10 @@ export function Connected({
   useEffect(() => {
     const autoSignIn = async () => {
       // Skip Connect if already signed in
-      if (isSignedIn && !signing && isUnlockAccount) {
+      if (!isSignedIn && !signing && connected && isUnlockAccount) {
+        await signIn()
+        service.send({ type: 'SELECT_LOCK' })
+      } else if (isSignedIn && !signing && isUnlockAccount) {
         await signIn()
         service.send({ type: 'SELECT_LOCK' })
       } else if (account && connected) {
