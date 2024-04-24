@@ -100,12 +100,13 @@ task('deploy:weth', 'Deploy WETH contract').setAction(async () => {
 task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   .addOptionalParam(
     'uniswapFactoryAddress',
-    'the address of an existing Uniswap V2 Factory contract'
+    'the address of an existing Uniswap V3 Factory contract'
   )
-  .setAction(async ({ uniswapFactoryAddress }) => {
+  .addOptionalParam('fee', 'the fee of the Uniswap pools to check')
+  .setAction(async ({ uniswapFactoryAddress, fee }) => {
     // eslint-disable-next-line global-require
     const oracleDeployer = require('../scripts/deployments/oracle')
-    return await oracleDeployer({ uniswapFactoryAddress })
+    return await oracleDeployer({ uniswapFactoryAddress, fee })
   })
 
 task('deploy:template', 'Deploy PublicLock contract')
