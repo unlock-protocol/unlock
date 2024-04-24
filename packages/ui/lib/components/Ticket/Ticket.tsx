@@ -57,20 +57,22 @@ export function Ticket({
             padding: '24px 0',
           }}
         >
-          <img
-            width={64}
-            height={64}
-            style={{
-              borderRadius: '6px',
-            }}
-            src={iconURL}
-            alt={title}
-          />
+          {iconURL && (
+            <img
+              width={64}
+              height={64}
+              style={{
+                borderRadius: '6px',
+              }}
+              src={iconURL}
+              alt={title}
+            />
+          )}
           <div
             style={{
               lineHeight: '34px',
               fontSize: '24px',
-              paddingLeft: '24px',
+              paddingLeft: iconURL ? '24px' : '0px',
               fontWeight: 700,
             }}
           >
