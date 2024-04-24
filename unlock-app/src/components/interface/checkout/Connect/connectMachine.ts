@@ -1,8 +1,14 @@
 import { Actor, ActorRefFrom, createMachine } from 'xstate'
-import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
+}
+interface ConnectEvent {
+  type: 'CONNECT'
+}
+
+interface SignInEvent {
+  type: 'SIGN_IN'
 }
 
 interface DisconnectEvent {
@@ -13,7 +19,12 @@ interface BackEvent {
   type: 'BACK'
 }
 
-type ConnectMachineEvents = UnlockAccountEvent | BackEvent | DisconnectEvent
+type ConnectMachineEvents =
+  | UnlockAccountEvent
+  | BackEvent
+  | DisconnectEvent
+  | ConnectEvent
+  | SignInEvent
 
 export const connectMachine = createMachine(
   {
@@ -36,7 +47,7 @@ export const connectMachine = createMachine(
       },
       SIGN_IN: {
         on: {
-          BACK: 'CONNECT',
+          CONNECT: 'CONNECT',
         },
 
         /*invoke: {

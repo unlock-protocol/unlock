@@ -1,25 +1,21 @@
-import { useSelector } from '@xstate/react'
-import { UnlockAccount } from '../UnlockAccount'
-import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { ConnectService } from './connectMachine'
+import { UnlockAccount } from '../main/UnlockAccount'
+import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
 
 interface Props {
   connectService: ConnectService
-  injectedProvider: unknown
 }
 
-export function UnlockAccountSignIn({
-  connectService,
-  injectedProvider,
-}: Props) {
-  const unlockAccount = useSelector(
-    connectService,
-    (state) => state.children.unlockAccount
-  )
+export function UnlockAccountSignIn({ connectService }: Props) {
   return (
-    <UnlockAccount
-      unlockAccountService={unlockAccount as UnlockAccountService}
-      injectedProvider={injectedProvider}
+    <ConnectUnlockAccount
+      onSignIn={() => {
+        connectService.send({ type: 'CONNECT' })
+      }}
+      onExit={() => {
+        connectService.send({ type: 'CONNECT' })
+      }}
+      useIcon={false}
     />
   )
 }

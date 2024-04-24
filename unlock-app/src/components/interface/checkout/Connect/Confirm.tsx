@@ -10,6 +10,8 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
+import { ConnectedWallet } from '../../connect/ConnectedWallet'
+import { ConnectWallet } from '../../connect/Wallet'
 
 interface Props {
   paywallConfig?: PaywallConfigType
@@ -30,7 +32,7 @@ export function ConfirmConnect({
 }: Props) {
   const [loading, setLoading] = useState(false)
   const { siweSign, signature, message } = useSIWE()
-  const { account, isUnlockAccount } = useAuth()
+  const { account, connected, isUnlockAccount } = useAuth()
 
   const onCancel = async () => {
     onClose({
@@ -78,77 +80,32 @@ export function ConfirmConnect({
 
   return (
     <Fragment>
-      <main className="h-full px-6 pb-2 space-y-2 overflow-auto">
-        <header>
-          <h1 className="text-xl font-medium">
-            <span className="font-bold text-brand-ui-primary">
-              {oauthConfig.clientId}
-            </span>{' '}
-            wants you to sign in.
-          </h1>
-        </header>
-        <ol>
-          <li className="flex items-center gap-6">
-            <div>
-              <UserIcon className="fill-brand-ui-primary" size={36} />
-            </div>
-            {account && isUnlockAccount && (
-              <div className="text-brand-gray">
-                {oauthConfig.clientId} will be able to read all memberships
-                associated with your Unlock account.
-              </div>
-            )}
-            {account && !isUnlockAccount && (
-              <div className="text-brand-gray">
-                Read all transactions associated with your wallet
-                <span className="m-1 font-medium text-brand-ui-primary p-0.5 border rounded border-brand-ui-primary">
-                  {account.slice(0, 4)}...{account!.slice(-4)}
-                </span>
-              </div>
-            )}
-            {!account && (
-              <div className="text-brand-gray">
-                Please use your{' '}
-                <a
-                  className="underline"
-                  target="_blank"
-                  href="https://ethereum.org/en/wallets/"
-                  rel="noreferrer noopener"
-                >
-                  crypto wallet
-                </a>{' '}
-                if you have one, or click the &quot;Get Started&quot; button to
-                use an Unlock account.
-              </div>
-            )}
-          </li>
-        </ol>
+      <main className="h-full px-6 py-2 pb-2 space-y-5 gap-2 overflow-hidden">
+        {connected ? (
+          <ConnectedWallet showIcon={false} />
+        ) : (
+          <div className="h-full">
+            <ConnectWallet
+              onUnlockAccount={() => {
+                connectService.send({ type: 'UNLOCK_ACCOUNT' })
+                console.log(connectService)
+              }}
+              injectedProvider={injectedProvider}
+            />
+          </div>
+        )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          skipAccountDetails
-          injectedProvider={injectedProvider}
-          service={connectService}
+        <Button
+          disabled={!account}
+          onClick={async (event) => {
+            event.preventDefault()
+
+            onSignIn()
+          }}
         >
-          <div className="flex gap-4">
-            <Button
-              onClick={onSignIn}
-              loading={loading}
-              disabled={loading || !account}
-              className="w-1/2"
-            >
-              Accept
-            </Button>
-            <Button
-              variant="outlined-primary"
-              onClick={onCancel}
-              disabled={!account}
-              className="w-1/2"
-            >
-              Refuse
-            </Button>
-          </div>
-        </Connected>
+          Next
+        </Button>
         <PoweredByUnlock />
       </footer>
     </Fragment>

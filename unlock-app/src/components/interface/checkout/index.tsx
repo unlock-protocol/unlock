@@ -13,6 +13,7 @@ import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { Connect } from './Connect'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -84,6 +85,17 @@ export function CheckoutPage() {
     )
   }
 
+  if (oauthConfig) {
+    return (
+      <Container>
+        <Connect
+          injectedProvider={injectedProvider}
+          communication={communication}
+          oauthConfig={oauthConfig}
+        />
+      </Container>
+    )
+  }
   if (paywallConfig) {
     return (
       <Container>
