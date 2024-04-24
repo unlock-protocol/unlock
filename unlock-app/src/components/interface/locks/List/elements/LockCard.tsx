@@ -15,10 +15,17 @@ import { AddressLink } from '~/components/interface/AddressLink'
 import { Card, Detail, Icon } from '@unlock-protocol/ui'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { PriceFormatter } from '@unlock-protocol/ui'
+import {
+  FaRegStar as FavoriteStar,
+  FaStar as UnfavoriteStar,
+} from 'react-icons/fa'
+import { FavoriteLocks } from './LockList'
 
 interface LockCardProps {
   lock: any
   network: number
+  favoriteLocks: FavoriteLocks
+  setFavoriteLocks: (favoriteLocks: FavoriteLocks) => void
 }
 
 interface LockIconProps {
@@ -49,7 +56,12 @@ const LockIcon = ({ lock }: LockIconProps) => {
   )
 }
 
-export const LockCard = ({ lock, network }: LockCardProps) => {
+export const LockCard = ({
+  lock,
+  network,
+  favoriteLocks,
+  setFavoriteLocks,
+}: LockCardProps) => {
   const { networks } = useConfig()
   const web3service = useWeb3Service()
   const tokenAddress = lock?.tokenAddress
@@ -103,6 +115,18 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
 
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
+  const isFavorite = favoriteLocks[lockAddress]
+
+  const setFavorite = () => {
+    if (isFavorite) {
+      const newFavoriteLocks = { ...favoriteLocks }
+      delete newFavoriteLocks[lockAddress]
+      setFavoriteLocks(newFavoriteLocks)
+    } else {
+      setFavoriteLocks({ ...favoriteLocks, [lockAddress]: true })
+    }
+  }
+
   const duration =
     lock?.expirationDuration === MAX_UINT ? (
       'Unlimited'
@@ -116,13 +140,21 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     <>
       <Card variant="simple" shadow="lg" padding="sm">
         <div className="grid items-center justify-between grid-cols-1 gap-7 md:gap-4 md:grid-cols-7">
-          <div className="grid grid-cols-[56px_1fr] md:flex gap-3 md:col-span-3">
+          <div className="md:justify-start md:grid-cols-[56px_1fr] flex justify-around gap-3 md:col-span-3">
             <LockIcon lock={lock} />
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 w-1/3">
               <span className="text-2xl font-bold">{lock.name}</span>
               <AddressLink address={lock.address} network={network} />
             </div>
+            <button className="flex justify-start" onClick={setFavorite}>
+              {isFavorite ? (
+                <UnfavoriteStar size={20} />
+              ) : (
+                <FavoriteStar size={20} />
+              )}
+            </button>
           </div>
+
           <div className="grid items-center grid-cols-2 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">
             <Detail
               label={
