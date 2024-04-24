@@ -49,12 +49,6 @@ export const connectMachine = createMachine(
         on: {
           CONNECT: 'CONNECT',
         },
-
-        /*invoke: {
-          id: 'unlockAccount',
-          src: unlockAccountMachine,
-          onDone: 'CONNECT',
-        },*/
       },
     },
   },

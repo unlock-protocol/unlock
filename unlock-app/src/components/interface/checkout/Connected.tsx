@@ -1,23 +1,15 @@
 import { Button } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
-import {
-  Fragment,
-  MouseEventHandler,
-  ReactNode,
-  useEffect,
-  useState,
-} from 'react'
+import { MouseEventHandler, ReactNode, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import SvgComponents from '../svg'
 import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
-import { PoweredByUnlock } from './PoweredByUnlock'
 import { Stepper } from './Stepper'
 import { ConnectButton } from '../connect/Custom'
 import { AiOutlineDisconnect as DisconnectIcon } from 'react-icons/ai'
-import { ConnectWallet } from '../connect/Wallet'
-import { ConnectedWallet } from '../connect/ConnectedWallet'
+import { ConnectPage } from './main/ConnectPage'
 
 interface SignedInProps {
   onDisconnect?: () => void
@@ -256,37 +248,22 @@ export function Connected({
   }
 
   return (
-    <Fragment>
+    <>
       <Stepper service={service} />
-      <main className="h-full py-2 overflow-auto">
-        {connected ? (
-          <ConnectedWallet showIcon={false} />
-        ) : (
-          <div className="h-full">
-            <ConnectWallet
-              onUnlockAccount={() => {
-                service.send({ type: 'UNLOCK_ACCOUNT' })
-              }}
-              injectedProvider={injectedProvider}
-            />
-          </div>
-        )}
-      </main>
-      <footer className="grid items-center px-6 pt-6 border-t">
-        <Button
-          disabled={!account}
-          onClick={async (event) => {
-            event.preventDefault()
-
-            service.send({
-              type: 'SELECT_LOCK',
-            })
-          }}
-        >
-          Next
-        </Button>
-        <PoweredByUnlock />
-      </footer>
-    </Fragment>
+      <ConnectPage
+        style="h-full py-2 overflow-auto"
+        onUnlockAccount={() => {
+          service.send({ type: 'UNLOCK_ACCOUNT' })
+        }}
+        onNext={() => {
+          service.send({
+            type: 'SELECT_LOCK',
+          })
+        }}
+        account={account}
+        connected={connected}
+        injectedProvider={injectedProvider}
+      />
+    </>
   )
 }

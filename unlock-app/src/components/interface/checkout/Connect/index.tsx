@@ -6,7 +6,6 @@ import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
 import { useMachine } from '@xstate/react'
-import { createActor } from 'xstate'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -21,8 +20,6 @@ export function Connect({
 }: Props) {
   // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, connectService] = useMachine(connectMachine)
-  //const connectService = createActor(connectMachine).start()
-  //const state = useSelector(connectService, (state) => state)
   const matched = state.value.toString()
 
   const onClose = useCallback(

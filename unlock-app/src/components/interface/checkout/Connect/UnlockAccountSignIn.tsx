@@ -1,5 +1,4 @@
 import { ConnectService } from './connectMachine'
-import { UnlockAccount } from '../main/UnlockAccount'
 import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
 
 interface Props {
