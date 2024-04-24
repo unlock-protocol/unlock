@@ -134,6 +134,7 @@ export const base: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x33128a8fC17869897dcE68Ed026d694621f6FDfD',
     oracle: '0xE9cb427dCde7090248016e87844658688E34e85F',
+    oracle3000: '0xfa7AC1c24339f629826C419eC95961Df58563438',
     positionManager: '0x03a520b32C04BF3bEEf7BEb72E919cf822Ed34f1',
     universalRouterAddress: '0x198EF79F1F515F02dFE9e3115eD9fC07183f02fC',
   },
