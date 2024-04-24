@@ -6,7 +6,7 @@ export interface Props {
   id: string
   recipient: string
   title: string
-  iconURL: string
+  iconURL?: string
   location?: string
   time?: string
   date?: string
