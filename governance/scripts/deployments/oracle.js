@@ -24,10 +24,11 @@ async function main({ uniswapFactoryAddress, fee = 500 } = {}) {
     { contractName: 'UniswapOracleV3', subfolder: 'utils' },
   ])
 
-  const { hash, address: oracleAddress } = await deployContract(qualifiedPath, [
-    uniswapFactoryAddress,
-    fee,
-  ])
+  const { hash, address: oracleAddress } = await deployContract(
+    qualifiedPath,
+    [uniswapFactoryAddress, fee],
+    { wait: 3 }
+  )
   console.log(
     `UNISWAP ORACLE > Oracle deployed at ${oracleAddress} with ${uniswapFactoryAddress} (tx: ${hash})`
   )
