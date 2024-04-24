@@ -5,7 +5,11 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 
 // TODO: check if oracle has already been deployed and skips if one already exists!
-async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
+async function main({
+  uniswapFactoryAddress,
+  uniswapVersion = 3,
+  fee = 500,
+} = {}) {
   if (!uniswapFactoryAddress) {
     const {
       uniswapV3: { factoryAddress },
@@ -26,6 +30,7 @@ async function main({ uniswapFactoryAddress, uniswapVersion = 3 } = {}) {
 
   const { hash, address: oracleAddress } = await deployContract(qualifiedPath, [
     uniswapFactoryAddress,
+    fee,
   ])
   console.log(
     `UNISWAP ORACLE > Oracle deployed at ${oracleAddress} with ${uniswapFactoryAddress} (tx: ${hash})`
