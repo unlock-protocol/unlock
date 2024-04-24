@@ -65,9 +65,10 @@ async function main({
       console.log(`No oracle address for this token is set in Unlock.`)
 
       // get the correct oracle for appropriate fee
-      const { uniswapV3 } = network
-      const oracleAddressFromPackage =
-        uniswapV3[fee === 500 ? 'oracle' : `oracle${fee}`]
+      const {
+        uniswapV3: { oracle },
+      } = network
+      const oracleAddressFromPackage = oracle[fee]
       if (!oracleAddressFromPackage) {
         throw new Error(
           `No address for oracle with fee ${fee} in the networks package, please add one.`
