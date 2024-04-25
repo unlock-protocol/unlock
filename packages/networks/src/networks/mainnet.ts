@@ -162,6 +162,8 @@ export const mainnet: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     oracle: {
+      100: '0x92C9b3A4FFD7D2046132732FedC9f9f25E316F0B',
+      3000: '0x584c5af22DB79a13F4Fb45c66E0ff2311D58d9B2',
       500: '0x951A807b523cF6e178e0ab80fBd2C9B035521931',
     },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
