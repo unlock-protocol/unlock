@@ -292,7 +292,9 @@ export interface Props {
 }
 
 export const ConnectUnlockAccount = ({ onExit }: Props) => {
+  const [enteredEmail, setEnteredEmail] = useState('')
   const [isValidEmail, setIsValidEmail] = useState(false)
+
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const { email, account, connected, deAuthenticate } = useAuth()
@@ -319,10 +321,6 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
     })
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
-
-  //----------------------------------------------
-
-  const [enteredEmail, setEnteredEmail] = useState('')
 
   const onSubmitEmail = (email: string, existingUser: boolean) => {
     setEnteredEmail(email)
