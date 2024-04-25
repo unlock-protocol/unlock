@@ -124,7 +124,7 @@ export const LockList = ({ owner }: LockListProps) => {
     )
   }, true)
 
-  const { getStorage, setStorage, clearStorage } = useAppStorage()
+  const { getStorage, setStorage } = useAppStorage()
 
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(
     getStorage('favoriteLocks')
