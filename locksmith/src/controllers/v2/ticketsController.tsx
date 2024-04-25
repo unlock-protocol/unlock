@@ -109,11 +109,7 @@ export class TicketsController {
         }
       )
 
-      const event = await getEventForLock(
-        lockAddress,
-        network,
-        true /** includeProtected, we are checking if there are any notifyCheckInUrl */
-      )
+      const event = await getEventForLock(lockAddress, network)
 
       const web3Service = new Web3Service(networks)
       const tokenOwner = await web3Service.ownerOf(lockAddress, id, network)
@@ -121,7 +117,7 @@ export class TicketsController {
       if (event?.data.notifyCheckInUrls) {
         for (const url of event.data.notifyCheckInUrls) {
           await notify({
-            url,
+            hookCallback: url,
             body: {
               owner: tokenOwner,
               lockAddress,
