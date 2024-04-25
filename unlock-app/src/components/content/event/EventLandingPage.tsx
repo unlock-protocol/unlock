@@ -191,7 +191,7 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
           <object
             className="w-full 4xl:right-0 md:absolute md:top-0"
             type="image/svg+xml"
-            data="/images/illustrations/events/dappcon-screenshot-hero.svg"
+            data="/images/illustrations/events/farcon-hero.svg"
           />
         }
         coverImage="/images/illustrations/events/party.svg"
