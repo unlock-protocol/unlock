@@ -7,14 +7,17 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 
 // helper to check rate
-const checkOracleRate = async ({ oracleAddress, token }) => {
+const checkOracleRate = async ({ oracleAddress, token, fee = 500, issue }) => {
   const returned = {
     oracleAddress,
     token,
+    fee,
+    issue,
   }
   try {
     const rate = await checkOracle({
       tokenIn: token.symbol,
+      amount: '10',
       quiet: true,
       oracleAddress,
     })
@@ -51,8 +54,8 @@ async function main() {
     nativeCurrency: { wrapped },
   } = await getNetwork()
 
-  let checks = []
-
+  let oracleToSet = []
+  let failed = []
   if (uniswapV3 && uniswapV3.oracle) {
     for (let i in tokens) {
       const token = tokens[i]
@@ -60,41 +63,62 @@ async function main() {
       if (token.address !== wrapped) {
         // check if oracle is set in Unlock
         const unlock = await getUnlock(unlockAddress)
-        const oracleAddress = await unlock.uniswapOracles(token.address)
+        const oracleAddressInUnlock = await unlock.uniswapOracles(token.address)
 
-        // if not set, check if uniswap oracle in networks package works
-        if (oracleAddress === ADDRESS_ZERO) {
+        let oracleNeedToBeSet = false
+        // if oracle is set in Unlock, make sure it works
+        if (oracleAddressInUnlock !== ADDRESS_ZERO) {
+          const { success } = await checkOracleRate({
+            oracleAddress: oracleAddressInUnlock,
+            token,
+            issue: 'Oracle in Unlock is failing',
+          })
+          if (!success) {
+            oracleNeedToBeSet = true
+          }
+        } else {
+          oracleNeedToBeSet = true
+        }
+
+        // if oracle not set or not working, fetch a working one
+        if (oracleNeedToBeSet) {
           const rates = await Promise.all(
-            Object.keys(uniswapV3.oracle).map((fee, i) => {
+            Object.keys(uniswapV3.oracle).map((fee) =>
               checkOracleRate({
                 oracleAddress: uniswapV3.oracle[fee],
                 fee,
                 token,
+                issue: 'Oracle was not set in Unlock',
               })
-            })
+            )
           )
-          checks = [...checks, ...rates]
-        } else {
-          // if oracle is set in Unlock, make sure it works
-          const unlockRate = await checkOracleRate({
-            oracleAddress,
-            token,
-          })
-          checks = [...checks, unlockRate]
+          const workingOracle = rates.find(({ success }) => success)
+          if (workingOracle) {
+            oracleToSet.push(workingOracle)
+          } else {
+            const { token } = rates.find(({ fee }) => fee === '500')
+            failed = [
+              ...failed,
+              `No working oracle for ${token.symbol} ${
+                token.address
+              } with pool fees : ${rates.map(({ fee }) => fee).join()}`,
+            ]
+          }
         }
       }
     }
   }
-  // log errors only
-  checks
-    .filter(({ success }) => !success)
-    .forEach(({ msg, token, fee, oracleAddress }) =>
-      console.log(
-        `[${name} (${id})]: ${token.symbol} 
-        - setOracle(${token.address},${oracleAddress}) (${fee})
-        - ${msg}`
-      )
+
+  // log results
+  oracleToSet.forEach(({ token, fee, oracleAddress, issue }) =>
+    console.log(
+      `[${name} (${id})]: oracle for ${token.symbol} (${token.address})
+        - \`setOracle(${token.address},${oracleAddress})\` (${fee})
+        - reason: ${issue}`
     )
+  )
+
+  failed.forEach((msg) => console.log(`[${name} (${id})] FAILED ${msg}`))
 }
 
 // execute as standalone
