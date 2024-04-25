@@ -57,7 +57,7 @@ const checkOracleRate = async ({
   }
 }
 
-async function main({ chainId = 137 } = {}) {
+async function main({ chainId } = {}) {
   if (!chainId) {
     ;({ chainId } = await ethers.provider.getNetwork())
   }
