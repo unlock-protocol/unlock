@@ -92,7 +92,11 @@ export const celo: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
-    oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    oracle: {
+      100: '0xaB82D702A4e0cD165072C005dc504A21c019718F',
+      3000: '0x5c67AD0CAfe61aF3706347aBc695D7ACcb38EFb3',
+      500: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    },
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     universalRouterAddress: '0xC73d61d192FB994157168Fb56730FdEc64C9Cb8F',
   },

@@ -20,7 +20,7 @@ import {
 import { getLockMetadata, generateKeyMetadata } from './metadataOperations'
 import { LockType, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { getCertificateLinkedinShareUrl } from '../utils/certificationHelpers'
-import { svgStringToPdfDataURI } from '../utils/image'
+import { svgStringToDataURI } from '../utils/image'
 import { createCertificate } from '../utils/certification'
 
 type Params = {
@@ -58,6 +58,8 @@ interface SendEmailProps {
   recipient: string
   params?: Params
   attachments?: Attachment[]
+  replyTo?: string
+  emailSender?: string
 }
 /**
  * Function to send an email with the Wedlocks service
@@ -68,21 +70,33 @@ export const sendEmail = async ({
   template,
   failoverTemplate,
   recipient,
+  emailSender: emailSenderArg,
+  replyTo: replyToArg,
   params = {} as any,
   attachments = [],
 }: SendEmailProps) => {
-  // prevent send email when is not enabled
-  const {
-    sendEmail: canSendEmail,
-    replyTo,
-    emailSender,
-  } = await getLockSettings(params.lockAddress, network)
+  let replyTo = replyToArg
+  let emailSender = emailSenderArg
 
-  if (!canSendEmail) {
-    logger.info('Email sending disabled for', {
-      lockAddress: params.lockAddress,
-    })
-    return `Email sending disabled for ${params.lockAddress}`
+  // prevent send email when is not enabled
+  if (params.lockAddress) {
+    const {
+      sendEmail: canSendEmail,
+      replyTo: lockReplyTo,
+      emailSender: lockEmailSender,
+    } = await getLockSettings(params.lockAddress, network)
+    if (lockReplyTo && !replyTo) {
+      replyTo = lockReplyTo
+    }
+    if (lockEmailSender && !emailSender) {
+      emailSender = lockEmailSender
+    }
+    if (!canSendEmail) {
+      logger.info('Email sending disabled for', {
+        lockAddress: params.lockAddress,
+      })
+      return `Email sending disabled for ${params.lockAddress}`
+    }
   }
 
   const payload = {
@@ -213,8 +227,8 @@ export const getAttachments = async ({
       owner,
     })
     attachments.push({
-      path: await svgStringToPdfDataURI(ticket),
-      filename: 'ticket.pdf',
+      path: svgStringToDataURI(ticket),
+      filename: 'ticket.png',
     })
   }
 
@@ -243,8 +257,8 @@ export const getAttachments = async ({
     })
     if (certificate) {
       attachments.push({
-        path: await svgStringToPdfDataURI(certificate),
-        filename: 'certification.pdf',
+        path: svgStringToDataURI(certificate),
+        filename: 'certification.png',
       })
     }
   }

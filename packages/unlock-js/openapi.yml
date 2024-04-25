@@ -3628,6 +3628,42 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/email/{slug}/invite:
+    post:
+      operationId: sendEventInvites
+      security:
+        - User: []
+      description: Send event invites to a list of recipients
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  maxItems: 10
+      responses:
+        200:
+          description: Successfully sent invites!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/events/save:
     post:
       operationId: saveEventData
