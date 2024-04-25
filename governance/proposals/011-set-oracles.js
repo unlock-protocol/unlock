@@ -88,12 +88,16 @@ const parseSafeCall = async ({ destChainId, calls }) => {
 const parseBridgeCall = async ({ destChainId, moduleData }) => {
   const { governanceBridge } = await getNetwork(destChainId)
 
-  // get bridge info
+  // get bridge info on receiving chain
   const {
     domainId: destDomainId,
     modules: { connextMod: destAddress },
-    connext: bridgeAddress,
   } = governanceBridge
+
+  // get bridge address on mainnet
+  const {
+    governanceBridge: { connext: bridgeAddress },
+  } = await getNetwork(1)
 
   if (!destDomainId || !destAddress) {
     throw Error('Missing bridge information')
