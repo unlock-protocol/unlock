@@ -12,7 +12,8 @@ const { ethers } = require('hardhat')
 const parseSetOracleCalls = async (destChainId) => {
   const {
     unlockDaoToken: { address: udtAddress },
-    uniswapV3: { oracle: oracleAddress },
+    uniswapV3: { oracle },
+    name,
   } = await getNetwork(destChainId)
 
   // get Unlock interface
@@ -22,7 +23,7 @@ const parseSetOracleCalls = async (destChainId) => {
   )
 
   // get oracles for all tokens
-  const tokenOracles = await getOracles({ chainId: destChainId })
+  const tokenOracles = await getOracles({ chainId: destChainId, quiet: true })
 
   // make sure UDT oracle works
   const rateUdtOracle = await getOracle({
@@ -34,13 +35,35 @@ const parseSetOracleCalls = async (destChainId) => {
     throw new Error(`UDT pool failing`)
   }
 
+  // add UDT
+  tokenOracles.push({
+    token: { address: udtAddress, symbol: 'UDT' },
+    oracleAddress: oracle[500],
+    fee: 500,
+    success: true,
+    rate: rateUdtOracle,
+    issue: `set oracle for UDT`,
+  })
+
   // parse unlock calls
-  const calls = tokenOracles.map(({ token }) =>
+  const calls = tokenOracles.map(({ token, oracleAddress }) =>
     unlockInterface.encodeFunctionData('setOracle', [
       token.address,
       oracleAddress,
     ])
   )
+
+  const explainers = tokenOracles.map(
+    ({ token, oracleAddress, fee, issue }) =>
+      `[${name} (${destChainId})] Oracle for ${token.symbol} (${token.address})
+          - \`setOracle(${token.address},${oracleAddress})\` (${fee})
+          - reason: ${issue}`
+  )
+
+  return {
+    calls,
+    explainers,
+  }
 }
 
 const parseBridgeCall = async ({ destChainId, calls }) => {
@@ -99,19 +122,46 @@ module.exports = async () => {
   const setOracleCalls = await Promise.all(
     destChains.map(({ id }) => parseSetOracleCalls(id))
   )
+  console.log(setOracleCalls)
 
-  const proposalName = `Set Uniswap oracles for UDT and most used ERC20 tokens on ${destChains
+  const explainers = setOracleCalls
+    .map(({ explainers }) => explainers)
+    .flatten()
+
+  // parse proposal
+  const title = `Set Uniswap oracles for UDT and most used ERC20 tokens`
+
+  const proposalName = `${title}
+
+## Goal of the proposal
+
+This proposal sets Uniswap oracle in Unlock factory contracts across the following chains: ${destChains
     .map(({ name }) => name)
-    .toString()}
+    .toString()}. 
+  
+The goal is twofold: 1) enable the distribution of UDT for referrers when buying keys and 2) better calculation of the Gross Network Product (GNP) by taking into accounts the most commonly used tokens.
 
-This DAO proposal aims at testing the new cross-chain governance process of Unlock Protocol's DAO. This new governance 
-protocol allow proposals to propagate directly from the main DAO contract to protocol contracts on other chains.
+## About this proposal
 
-# How it works
+On each chain, wrappers for Uniswap oracle contracts have been deployed. An oracle is used to guess the current exchange rate of a specific token pair (for instance ETH/USDC).
 
-# This proposal
+The same oracle contract can be used for any pairs, with the limitation that there needs to be an existing / active Uniswap pool for that pair. Three different contracts are used to query the rate for the three tiers of [Uniswap pool fees](https://docs.uniswap.org/concepts/protocol/fees) (100, 500 and 3000 bps).
 
-# The calls
+For each token, the working oracle is selected and added to the Unlock contract 
+using the \`setOracle\` function.
+
+## How it works
+
+The proposal uses a cross-chain proposal pattern that, once passed, will send the calls to multiple chains at once. This pattern has been introduced and tested in a [previous proposal](https://www.tally.xyz/gov/unlock/proposal/1926572528290918174819693611122933562560576845671089759587616947457423587439). 
+
+Here, the calls for each chain have been packed with Gnosis Multicall contract to be executed at once on the destination chain.
+
+## The calls
+
+This DAO proposal contains ${explainers.length} calls:
+
+${explainers.join('\n')}
+
 
 Onwards !
 
