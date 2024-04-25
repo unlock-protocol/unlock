@@ -3,61 +3,45 @@
  * on all supported networks.
  */
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { Unlock } = require('@unlock-protocol/contracts')
 const { IConnext, targetChains } = require('../helpers/bridge')
 const { parseSafeMulticall } = require('../helpers/multisig')
 const getOracles = require('../scripts/uniswap/checkOracles')
-const getOracle = require('../scripts/uniswap/oracle')
 const { ethers } = require('hardhat')
 
 const parseSetOracleCalls = async (destChainId) => {
   const {
     unlockDaoToken: { address: udtAddress },
-    uniswapV3: { oracle },
     name,
+    tokens,
   } = await getNetwork(destChainId)
 
   // get Unlock interface
   const { interface: unlockInterface } = await ethers.getContractAt(
-    'Unlock',
+    Unlock.abi,
     ADDRESS_ZERO
   )
 
-  // get oracles for all tokens
-  const tokenOracles = await getOracles({ chainId: destChainId, quiet: true })
-
-  // make sure UDT oracle works
-  const rateUdtOracle = await getOracle({
+  // get oracles for all tokens in package + UDT
+  const { oracleToSet, failed } = await getOracles({
     chainId: destChainId,
-    tokenIn: udtAddress,
-    fee: 500,
-  })
-  if (rateUdtOracle === 0n) {
-    throw new Error(`UDT pool failing`)
-  }
-
-  // add UDT
-  tokenOracles.push({
-    token: { address: udtAddress, symbol: 'UDT' },
-    oracleAddress: oracle[500],
-    fee: 500,
-    success: true,
-    rate: rateUdtOracle,
-    issue: `set oracle for UDT`,
+    quiet: true,
+    tokens: [...tokens, { symbol: 'UDT', address: udtAddress, decimals: 18 }],
   })
 
+  // TODO: what to do with failed ones?
   // parse unlock calls
-  const calls = tokenOracles.map(({ token, oracleAddress }) =>
+  const calls = oracleToSet.map(({ token, oracleAddress }) =>
     unlockInterface.encodeFunctionData('setOracle', [
       token.address,
       oracleAddress,
     ])
   )
 
-  const explainers = tokenOracles.map(
-    ({ token, oracleAddress, fee, issue }) =>
+  const explainers = oracleToSet.map(
+    ({ token, oracleAddress, fee }) =>
       `[${name} (${destChainId})] Oracle for ${token.symbol} (${token.address})
-          - \`setOracle(${token.address},${oracleAddress})\` (${fee})
-          - reason: ${issue}`
+  - \`setOracle(${token.address},${oracleAddress})\` (fee: ${fee})`
   )
 
   return {
@@ -112,21 +96,37 @@ const parseBridgeCall = async ({ destChainId, calls }) => {
 
 module.exports = async () => {
   // list networks that are supported by Connext and have UDT bridged
-  const destChains = targetChains.filter(
-    ({ unlockDaoToken, uniswapV3 }) => !!unlockDaoToken && !!uniswapV3.oracle
-  )
-
-  console.log(destChains)
+  const destChains = [
+    ...targetChains.filter(
+      ({ unlockDaoToken, uniswapV3 }) =>
+        unlockDaoToken && uniswapV3 && uniswapV3.oracle
+    ),
+    await getNetwork(1), // add mainnet
+  ]
 
   // get oracle for all tokens in Unlock on dest chains
-  const setOracleCalls = await Promise.all(
-    destChains.map(({ id }) => parseSetOracleCalls(id))
-  )
+  const setOracleCalls = []
+  for (let i in [...destChains]) {
+    const { name, id } = destChains[i]
+    console.log(`Parsing for chain ${name} (${id})`)
+    const calls = await parseSetOracleCalls(id)
+    setOracleCalls.push(calls)
+  }
+
   console.log(setOracleCalls)
 
-  const explainers = setOracleCalls
-    .map(({ explainers }) => explainers)
-    .flatten()
+  const explainers = setOracleCalls.map(
+    ({ explainers }, i) =>
+      `### ${destChains[i].name} (${destChains[i].id}) ${
+        explainers.length
+      } calls
+
+  ${explainers.join(`\n`)}
+      `
+  )
+
+  console.log(explainers)
+  // TODO: parse bridge calls
 
   // parse proposal
   const title = `Set Uniswap oracles for UDT and most used ERC20 tokens`
@@ -160,7 +160,7 @@ Here, the calls for each chain have been packed with Gnosis Multicall contract t
 
 This DAO proposal contains ${explainers.length} calls:
 
-${explainers.join('\n')}
+${explainers.join('\n\n')}
 
 
 Onwards !

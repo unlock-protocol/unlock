@@ -57,7 +57,7 @@ const checkOracleRate = async ({
   }
 }
 
-async function main({ chainId, quiet = false } = {}) {
+async function main({ chainId, quiet = false, tokens } = {}) {
   if (!chainId) {
     ;({ chainId } = await ethers.provider.getNetwork())
   }
@@ -66,9 +66,13 @@ async function main({ chainId, quiet = false } = {}) {
     id,
     uniswapV3,
     unlockAddress,
-    tokens,
+    tokens: packageTokens,
     nativeCurrency: { wrapped },
   } = await getNetwork(chainId)
+
+  if (!tokens) {
+    tokens = packageTokens
+  }
 
   const provider = await getProvider(chainId)
   let oracleToSet = []
