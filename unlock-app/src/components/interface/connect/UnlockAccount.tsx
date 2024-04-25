@@ -280,7 +280,7 @@ const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
           }}
           className="hover:text-ui-main-600"
         >
-          Return
+          Back
         </button>
       </div>
     </div>
