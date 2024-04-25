@@ -15,6 +15,9 @@ export const getServerSidePropsForEventPage = async (slug: string) => {
   const { data: eventMetadata } = await storage
     .getEvent(slug)
     .catch((error) => {
+      if (error.response?.status === 404) {
+        return { data: null }
+      }
       console.error(error)
       return { data: null }
     })
