@@ -34,7 +34,8 @@ export const useProvider = (config: any) => {
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
-  const { setStorage, clearStorage, getStorage } = useAppStorage()
+  const { setStorage, clearStorageWithoutFavorite, getStorage } =
+    useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
 
@@ -203,7 +204,7 @@ export const useProvider = (config: any) => {
     setNetwork(undefined)
     setConnected(undefined)
 
-    clearStorage()
+    clearStorageWithoutFavorite()
     try {
       // unlock provider does not support removing listeners or closing.
       if (provider?.isUnlock) {

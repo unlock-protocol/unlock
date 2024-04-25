@@ -40,6 +40,15 @@ export function useAppStorage() {
     return null
   }, [])
 
+  const clearStorageWithoutFavorite = useCallback((): void => {
+    const items = { ...localStorage } ?? []
+    Object.keys(items)
+      .filter((item: string) => item.includes(APP_NAME))
+      .forEach((key: string) => {
+        if (key !== `${APP_NAME}.favoriteLocks`) removeKey(key, false)
+      })
+  }, [])
+
   const clearStorage = useCallback((): void => {
     const items = { ...localStorage } ?? []
     Object.keys(items)
@@ -52,5 +61,6 @@ export function useAppStorage() {
     getStorage,
     clearStorage,
     removeKey,
+    clearStorageWithoutFavorite,
   }
 }
