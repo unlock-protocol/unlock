@@ -12,7 +12,6 @@ const { ethers } = require('hardhat')
 const parseSetOracleCalls = async (destChainId) => {
   const {
     unlockDaoToken: { address: udtAddress },
-    name,
     tokens,
   } = await getNetwork(destChainId)
 
@@ -39,8 +38,8 @@ const parseSetOracleCalls = async (destChainId) => {
 
   const explainers = oracleToSet.map(
     ({ token, oracleAddress, fee }) =>
-      `[${name} (${destChainId})] Oracle for ${token.symbol} (${token.address})
-  - \`setOracle(${token.address},${oracleAddress})\` (fee: ${fee})`
+      `- Oracle for ${token.symbol} (${token.address})
+  \`setOracle(${token.address},${oracleAddress})\` (fee: ${fee})`
   )
 
   return {
@@ -52,17 +51,26 @@ const parseSetOracleCalls = async (destChainId) => {
 
 const parseSafeCall = async ({ destChainId, calls }) => {
   const { unlockAddress } = await getNetwork(destChainId)
-  const calldata = await parseSafeMulticall({ chainId: destChainId, calls })
 
-  // encode instructions to be executed by the SAFE
-  const moduleData = await ethers.defaultAbiCoder.encode(
+  // parse multicall
+  const { to, data, value, operation } = await parseSafeMulticall({
+    chainId: destChainId,
+    calls: calls.map((calldata) => ({
+      calldata,
+      contractAddress: unlockAddress,
+      value: 0,
+    })),
+  })
+
+  // encode multicall instructions to be executed by the SAFE
+  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+  const moduleData = abiCoder.encode(
     ['address', 'uint256', 'bytes', 'bool'],
     [
-      unlockAddress, // to
-      0, // value
-      calldata, // data
-      1, // operation: 0 for CALL, 1 for DELEGATECALL
-      // 0,
+      to, // to
+      value, // value
+      data, // data
+      operation, // operation: 0 for CALL, 1 for DELEGATECALL
     ]
   )
   return moduleData
@@ -110,7 +118,7 @@ module.exports = async () => {
 
   // get oracle calls for mainnet
   console.log(`Parsing for Ethereum Mainnet (1)`)
-  const { calls: mainnetSetOracleCalls, explainers: mainnetExplainers } =
+  const { calls: mainnetCalls, explainers: mainnetExplainers } =
     await parseSetOracleCalls(1)
   explainers.push({
     name: 'Ethereum Mainnet',
@@ -123,17 +131,19 @@ module.exports = async () => {
   for (let i in [...destChains]) {
     const { name, id } = destChains[i]
     console.log(`Parsing for chain ${name} (${id})`)
-    const { calls, explainers } = await parseSetOracleCalls(id)
-    // const moduleData = await parseSafeCall({ destChainId: id, calls })
-    // const bridgedCall = await parseBridgeCall({ destChainId: id, moduleData })
-    // bridgedCalls.push(bridgedCall)
+    const { calls, explainers: destExplainers } = await parseSetOracleCalls(id)
+    const moduleData = await parseSafeCall({ destChainId: id, calls })
+    const bridgedCall = await parseBridgeCall({ destChainId: id, moduleData })
+    bridgedCalls.push(bridgedCall)
     explainers.push({
       name,
       id,
-      explainers,
+      explainers: destExplainers,
     })
   }
 
+  const calls = [...mainnetCalls, ...bridgedCalls]
+  console.log(explainers)
   // parse proposal
   const title = `Set Uniswap oracles for UDT and most used ERC20 tokens`
 
@@ -164,7 +174,7 @@ Here, the calls for each chain have been packed with Gnosis Multicall contract t
 
 ## The calls
 
-This DAO proposal contains ${explainers.flatten().length} calls:
+This DAO proposal contains ${calls.length} calls:
 
 ${explainers
   .map(
@@ -185,6 +195,6 @@ The Unlock Protocol Team
   // send to multisig / DAO
   return {
     proposalName,
-    calls: [...mainnetSetOracleCalls, ...bridgedCalls],
+    calls,
   }
 }
