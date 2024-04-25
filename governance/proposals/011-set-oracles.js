@@ -29,7 +29,6 @@ const parseSetOracleCalls = async (destChainId) => {
     tokens: [...tokens, { symbol: 'UDT', address: udtAddress, decimals: 18 }],
   })
 
-  // TODO: what to do with failed ones?
   // parse unlock calls
   const calls = oracleToSet.map(({ token, oracleAddress }) =>
     unlockInterface.encodeFunctionData('setOracle', [
@@ -46,12 +45,13 @@ const parseSetOracleCalls = async (destChainId) => {
 
   return {
     calls,
+    failed, // TODO: waht to do with failed
     explainers,
   }
 }
 
-const parseBridgeCall = async ({ destChainId, calls }) => {
-  const { governanceBridge, unlockAddress } = await getNetwork(destChainId)
+const parseSafeCall = async ({ destChainId, calls }) => {
+  const { unlockAddress } = await getNetwork(destChainId)
   const calldata = await parseSafeMulticall({ chainId: destChainId, calls })
 
   // encode instructions to be executed by the SAFE
@@ -65,6 +65,11 @@ const parseBridgeCall = async ({ destChainId, calls }) => {
       // 0,
     ]
   )
+  return moduleData
+}
+
+const parseBridgeCall = async ({ destChainId, moduleData }) => {
+  const { governanceBridge } = await getNetwork(destChainId)
 
   // get bridge info
   const {
@@ -96,37 +101,38 @@ const parseBridgeCall = async ({ destChainId, calls }) => {
 
 module.exports = async () => {
   // list networks that are supported by Connext and have UDT bridged
-  const destChains = [
-    ...targetChains.filter(
-      ({ unlockDaoToken, uniswapV3 }) =>
-        unlockDaoToken && uniswapV3 && uniswapV3.oracle
-    ),
-    await getNetwork(1), // add mainnet
-  ]
+  const destChains = targetChains.filter(
+    ({ unlockDaoToken, uniswapV3 }) =>
+      unlockDaoToken && uniswapV3 && uniswapV3.oracle
+  )
+
+  const explainers = []
+
+  // get oracle calls for mainnet
+  console.log(`Parsing for Ethereum Mainnet (1)`)
+  const { calls: mainnetSetOracleCalls, explainers: mainnetExplainers } =
+    await parseSetOracleCalls(1)
+  explainers.push({
+    name: 'Ethereum Mainnet',
+    id: 1,
+    explainers: mainnetExplainers,
+  })
 
   // get oracle for all tokens in Unlock on dest chains
-  const setOracleCalls = []
+  const bridgedCalls = []
   for (let i in [...destChains]) {
     const { name, id } = destChains[i]
     console.log(`Parsing for chain ${name} (${id})`)
-    const calls = await parseSetOracleCalls(id)
-    setOracleCalls.push(calls)
+    const { calls, explainers } = await parseSetOracleCalls(id)
+    // const moduleData = await parseSafeCall({ destChainId: id, calls })
+    // const bridgedCall = await parseBridgeCall({ destChainId: id, moduleData })
+    // bridgedCalls.push(bridgedCall)
+    explainers.push({
+      name,
+      id,
+      explainers,
+    })
   }
-
-  console.log(setOracleCalls)
-
-  const explainers = setOracleCalls.map(
-    ({ explainers }, i) =>
-      `### ${destChains[i].name} (${destChains[i].id}) ${
-        explainers.length
-      } calls
-
-  ${explainers.join(`\n`)}
-      `
-  )
-
-  console.log(explainers)
-  // TODO: parse bridge calls
 
   // parse proposal
   const title = `Set Uniswap oracles for UDT and most used ERC20 tokens`
@@ -158,9 +164,16 @@ Here, the calls for each chain have been packed with Gnosis Multicall contract t
 
 ## The calls
 
-This DAO proposal contains ${explainers.length} calls:
+This DAO proposal contains ${explainers.flatten().length} calls:
 
-${explainers.join('\n\n')}
+${explainers
+  .map(
+    ({ name, id, explainers: exp }) => `### ${name} (${id}) ${exp.length} calls
+
+${exp.join(`\n`)}
+  `
+  )
+  .join('\n\n')}
 
 
 Onwards !
@@ -172,6 +185,6 @@ The Unlock Protocol Team
   // send to multisig / DAO
   return {
     proposalName,
-    calls: setOracleCalls,
+    calls: [...mainnetSetOracleCalls, ...bridgedCalls],
   }
 }
