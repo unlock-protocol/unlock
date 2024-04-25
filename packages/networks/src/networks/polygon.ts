@@ -154,7 +154,11 @@ export const polygon: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x35c6b8761c7D9af75Fa193daC09d5b7B5b34981d',
+    oracle: {
+      100: '0x8c0AC149FabEeC9b759a43fC7d301B1a1D8DE0d0',
+      3000: '0x86399725a83bB14C47bB5ce8311Ed25378BAa162',
+      500: '0x35c6b8761c7D9af75Fa193daC09d5b7B5b34981d',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
