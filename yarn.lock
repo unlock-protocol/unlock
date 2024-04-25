@@ -17428,7 +17428,6 @@ __metadata:
     ethers5: "npm:ethers@5"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
-    solhint: "npm:4.5.2"
     zksync-ethers: "npm:6.1.0"
   languageName: unknown
   linkType: soft
@@ -19818,7 +19817,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antlr4@npm:^4.11.0, antlr4@npm:^4.13.1-patch-1":
+"antlr4@npm:^4.11.0":
   version: 4.13.1
   resolution: "antlr4@npm:4.13.1"
   checksum: 10/b17ee045cf30c7cec563f3ce81dc8bffd2c17b546646cd76e7b5f4cc4b676a1960c1a8a9aea53769947b0c6de70ed2aea73431e76c3840ab3b69cf3de5f1fc89
@@ -46518,38 +46517,6 @@ __metadata:
   bin:
     solhint: solhint.js
   checksum: 10/41e01c292ea16d9b1303d689c6381426aa845697911edd915ccf4019b58fae499af4ee7c47aa2c83601535f3824a1d27220735aa8e35816e03768518ccb18fb6
-  languageName: node
-  linkType: hard
-
-"solhint@npm:4.5.2":
-  version: 4.5.2
-  resolution: "solhint@npm:4.5.2"
-  dependencies:
-    "@solidity-parser/parser": "npm:^0.18.0"
-    ajv: "npm:^6.12.6"
-    antlr4: "npm:^4.13.1-patch-1"
-    ast-parents: "npm:^0.0.1"
-    chalk: "npm:^4.1.2"
-    commander: "npm:^10.0.0"
-    cosmiconfig: "npm:^8.0.0"
-    fast-diff: "npm:^1.2.0"
-    glob: "npm:^8.0.3"
-    ignore: "npm:^5.2.4"
-    js-yaml: "npm:^4.1.0"
-    latest-version: "npm:^7.0.0"
-    lodash: "npm:^4.17.21"
-    pluralize: "npm:^8.0.0"
-    prettier: "npm:^2.8.3"
-    semver: "npm:^7.5.2"
-    strip-ansi: "npm:^6.0.1"
-    table: "npm:^6.8.1"
-    text-table: "npm:^0.2.0"
-  dependenciesMeta:
-    prettier:
-      optional: true
-  bin:
-    solhint: solhint.js
-  checksum: 10/45662bbad21da1883f6bbfb229415db6716e99c9a579d29290dd64cae223dbc837b1d4323f68c9d502cd8c56227b7b3547de0934f92a600e1622c3c577893d23
   languageName: node
   linkType: hard
 
