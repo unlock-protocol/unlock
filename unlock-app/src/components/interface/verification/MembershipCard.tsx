@@ -56,6 +56,7 @@ export function MembershipCard({
     true
   )
   const config = useConfig()
+  console.log('I WAS HERE')
 
   return (
     <div className="w-full max-w-sm bg-white rounded-xl">
