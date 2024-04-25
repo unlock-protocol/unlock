@@ -6,28 +6,36 @@ const {
   ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const logError = (name, chainId, token, msg) =>
-  console.log(
-    `[${name} (${chainId})]: ${msg} ${token.symbol} (${token.address})`
-  )
-
 // helper to check rate
 const checkOracleRate = async ({ oracleAddress, token }) => {
+  const returned = {
+    oracleAddress,
+    token,
+  }
   try {
     const rate = await checkOracle({
       tokenIn: token.symbol,
       quiet: true,
       oracleAddress,
     })
+
     if (rate === 0n) {
       return {
-        token,
+        ...returned,
+        success: false,
         msg: `Missing Uniswap Pool - oracle: ${oracleAddress}`,
+      }
+    } else {
+      return {
+        ...returned,
+        success: true,
+        rate,
       }
     }
   } catch (error) {
     return {
-      token,
+      ...returned,
+      success: false,
       msg: `Failed to fetch rate:  ${error.message} - oracle: ${oracleAddress}`,
     }
   }
@@ -43,8 +51,7 @@ async function main() {
     nativeCurrency: { wrapped },
   } = await getNetwork()
 
-  const oracleErrors = []
-  const missingOracles = []
+  let checks = []
 
   if (uniswapV3 && uniswapV3.oracle) {
     for (let i in tokens) {
@@ -54,34 +61,40 @@ async function main() {
         // check if oracle is set in Unlock
         const unlock = await getUnlock(unlockAddress)
         const oracleAddress = await unlock.uniswapOracles(token.address)
+
+        // if not set, check if uniswap oracle in networks package works
         if (oracleAddress === ADDRESS_ZERO) {
-          missingOracles.push({ token })
+          const rates = await Promise.all(
+            Object.keys(uniswapV3.oracle).map((fee, i) => {
+              checkOracleRate({
+                oracleAddress: uniswapV3.oracle[fee],
+                fee,
+                token,
+              })
+            })
+          )
+          checks = [...checks, ...rates]
         } else {
           // if oracle is set in Unlock, make sure it works
-          const error = await checkOracleRate({ oracleAddress, token })
-          if (error)
-            oracleErrors.push({
-              ...error,
-              msg: `(already in Unlock) ${error.msg}`,
-            })
+          const unlockRate = await checkOracleRate({
+            oracleAddress,
+            token,
+          })
+          checks = [...checks, unlockRate]
         }
-
-        // check if uniswap oracle in networks package works
-        const error = await checkOracleRate({
-          oracleAddress: uniswapV3.oracle,
-          token,
-        })
-        if (error) oracleErrors.push(error)
       }
     }
-    // log all errors
-    oracleErrors.forEach(({ msg, token }) => logError(name, id, token, msg))
-    missingOracles.forEach(({ token }) =>
-      logError(name, id, token, `Oracle not set in Unlock for:`)
-    )
   }
-
-  //
+  // log errors only
+  checks
+    .filter(({ success }) => !success)
+    .forEach(({ msg, token, fee, oracleAddress }) =>
+      console.log(
+        `[${name} (${id})]: ${token.symbol} 
+        - setOracle(${token.address},${oracleAddress}) (${fee})
+        - ${msg}`
+      )
+    )
 }
 
 // execute as standalone
