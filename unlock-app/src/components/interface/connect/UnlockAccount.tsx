@@ -298,6 +298,8 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const { email, account, connected, deAuthenticate } = useAuth()
+  // TODO: Consider adding a way to set the email address to Auth context
+  const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
 
@@ -329,13 +331,14 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {email ? (
+      {authEmail ? (
         <SignIn
-          email={email}
+          email={authEmail}
           signIn={signIn}
           onReturn={() => {
             signOut()
             deAuthenticate()
+            setAuthEmail('')
           }}
         />
       ) : (
