@@ -13,6 +13,7 @@ const parseSetOracleCalls = async (destChainId) => {
   const {
     unlockDaoToken: { address: udtAddress },
     tokens,
+    unlockAddress,
   } = await getNetwork(destChainId)
 
   // get Unlock interface
@@ -29,12 +30,15 @@ const parseSetOracleCalls = async (destChainId) => {
   })
 
   // parse unlock calls
-  const calls = oracleToSet.map(({ token, oracleAddress }) =>
-    unlockInterface.encodeFunctionData('setOracle', [
+  const calls = oracleToSet.map(({ token, oracleAddress }) => ({
+    contractAddress: unlockAddress,
+    calldata: unlockInterface.encodeFunctionData('setOracle', [
       token.address,
       oracleAddress,
-    ])
-  )
+    ]),
+    value: 0,
+    operation: 1, // Unlock is a proxy so use DELEGATECALL
+  }))
 
   const explainers = oracleToSet.map(
     ({ token, oracleAddress, fee }) =>
@@ -50,16 +54,10 @@ const parseSetOracleCalls = async (destChainId) => {
 }
 
 const parseSafeCall = async ({ destChainId, calls }) => {
-  const { unlockAddress } = await getNetwork(destChainId)
-
   // parse multicall
   const { to, data, value, operation } = await parseSafeMulticall({
     chainId: destChainId,
-    calls: calls.map((calldata) => ({
-      calldata,
-      contractAddress: unlockAddress,
-      value: 0,
-    })),
+    calls,
   })
 
   // encode multicall instructions to be executed by the SAFE
@@ -120,6 +118,7 @@ module.exports = async () => {
   console.log(`Parsing for Ethereum Mainnet (1)`)
   const { calls: mainnetCalls, explainers: mainnetExplainers } =
     await parseSetOracleCalls(1)
+
   explainers.push({
     name: 'Ethereum Mainnet',
     id: 1,
@@ -178,7 +177,9 @@ This DAO proposal contains ${calls.length} calls:
 
 ${explainers
   .map(
-    ({ name, id, explainers: exp }) => `### ${name} (${id}) ${exp.length} calls
+    ({ name, id, explainers: exp }) => `### ${name} (${id}) ${
+      exp.length
+    } calls ${id !== 1 ? `(packed in a single multicall)` : ''}
 
 ${exp.join(`\n`)}
   `
@@ -191,6 +192,7 @@ Onwards !
 The Unlock Protocol Team
 `
   console.log(proposalName)
+  console.log(calls)
 
   // send to multisig / DAO
   return {
