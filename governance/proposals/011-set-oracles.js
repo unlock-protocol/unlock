@@ -12,7 +12,7 @@ const { ethers } = require('hardhat')
 const parseSetOracleCalls = async (destChainId) => {
   const {
     unlockDaoToken: { address: udtAddress },
-    tokens,
+    tokens: packageTokens,
     unlockAddress,
   } = await getNetwork(destChainId)
 
@@ -23,10 +23,21 @@ const parseSetOracleCalls = async (destChainId) => {
   )
 
   // get oracles for all tokens in package + UDT
+  const tokens = [
+    ...packageTokens,
+    {
+      symbol: 'UDT',
+      name: 'Unlock Discount Token',
+      address: udtAddress,
+      decimals: 18,
+    },
+  ]
+
+  // fetch oracles for all tokens
   const { oracleToSet, failed } = await getOracles({
     chainId: destChainId,
-    quiet: true,
-    tokens: [...tokens, { symbol: 'UDT', address: udtAddress, decimals: 18 }],
+    quiet: false,
+    tokens,
   })
 
   // parse unlock calls
