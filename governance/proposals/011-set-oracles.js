@@ -5,21 +5,15 @@
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { IConnext, targetChains } = require('../helpers/bridge')
 const { parseSafeMulticall } = require('../helpers/multisig')
-
+const getOracles = require('../scripts/uniswap/checkOracles')
+const getOracle = require('../scripts/uniswap/oracle')
 const { ethers } = require('hardhat')
 
 const parseSetOracleCalls = async (destChainId) => {
   const {
-    unlockAddress,
-    governanceBridge,
-    // name: destChainName,
-    tokens,
     unlockDaoToken: { address: udtAddress },
     uniswapV3: { oracle: oracleAddress },
   } = await getNetwork(destChainId)
-
-  // make sure we have bridge infor in networks package
-  if (!governanceBridge) return {}
 
   // get Unlock interface
   const { interface: unlockInterface } = await ethers.getContractAt(
@@ -27,15 +21,30 @@ const parseSetOracleCalls = async (destChainId) => {
     ADDRESS_ZERO
   )
 
-  // parse unlock call
-  // TODO: set all tokens in networks packages
-  // TODO: check if uniswap oracle pool exists with correct fee
-  const calls = tokens.map((token) =>
+  // get oracles for all tokens
+  const tokenOracles = await getOracles({ chainId: destChainId })
+
+  // make sure UDT oracle works
+  const rateUdtOracle = await getOracle({
+    chainId: destChainId,
+    tokenIn: udtAddress,
+    fee: 500,
+  })
+  if (rateUdtOracle === 0n) {
+    throw new Error(`UDT pool failing`)
+  }
+
+  // parse unlock calls
+  const calls = tokenOracles.map(({ token }) =>
     unlockInterface.encodeFunctionData('setOracle', [
       token.address,
       oracleAddress,
     ])
   )
+}
+
+const parseBridgeCall = async ({ destChainId, calls }) => {
+  const { governanceBridge, unlockAddress } = await getNetwork(destChainId)
   const calldata = await parseSafeMulticall({ chainId: destChainId, calls })
 
   // encode instructions to be executed by the SAFE
@@ -81,10 +90,12 @@ const parseSetOracleCalls = async (destChainId) => {
 module.exports = async () => {
   // list networks that are supported by Connext and have UDT bridged
   const destChains = targetChains.filter(
-    ({ unlockDaoToken }) => !!unlockDaoToken
+    ({ unlockDaoToken, uniswapV3 }) => !!unlockDaoToken && !!uniswapV3.oracle
   )
 
-  // 2. set oracle for UDT in Unlock on dest chains
+  console.log(destChains)
+
+  // get oracle for all tokens in Unlock on dest chains
   const setOracleCalls = await Promise.all(
     destChains.map(({ id }) => parseSetOracleCalls(id))
   )
