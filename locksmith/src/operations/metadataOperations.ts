@@ -290,11 +290,7 @@ export const getLockMetadata = async ({
   }
 
   // Now let's see if there is an event data that needs to be attached to this lock!
-  const event = await getEventForLock(
-    lockAddress,
-    network,
-    false /** includeProtected, metadata is always public */
-  )
+  const event = await getEventForLock(lockAddress, network)
 
   // Add the event data!
   if (event) {

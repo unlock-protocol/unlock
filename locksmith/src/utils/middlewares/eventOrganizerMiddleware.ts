@@ -27,10 +27,7 @@ export const eventOrganizerMiddleware: RequestHandler = async (
 
   // If this is an existing event!
   if (slug) {
-    const existingEvent = await getEventBySlug(
-      slug,
-      false /** includeProtected */
-    )
+    const existingEvent = await getEventBySlug(slug)
     if (existingEvent?.checkoutConfigId) {
       const checkoutConfig = await getCheckoutConfigById(
         existingEvent.checkoutConfigId

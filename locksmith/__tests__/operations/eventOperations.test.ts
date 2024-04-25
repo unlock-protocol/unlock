@@ -71,7 +71,7 @@ describe('eventOperations', () => {
         checkoutConfig: { config: { locks: {} } },
       }
       const [{ slug }] = await saveEvent(eventParams, '0x123')
-      const savedEvent = await getEventBySlug(slug, false)
+      const savedEvent = await getEventBySlug(slug)
       expect(savedEvent.slug).toEqual('my-rsvp-party')
       expect(savedEvent?.data.requiresApproval).toEqual(true)
     })
@@ -136,7 +136,7 @@ describe('eventOperations', () => {
         },
       }
       const [{ slug }] = await saveEvent(eventParams, '0x123')
-      const savedEvent = await getEventBySlug(slug, true)
+      const savedEvent = await getEventBySlug(slug)
       expect(savedEvent.slug).toEqual('an-event-with-all-the-data')
       expect(savedEvent?.data).toEqual({
         name: 'An Event with all the data',
@@ -166,9 +166,6 @@ describe('eventOperations', () => {
         emailSender: 'Julien Genestoux',
         requiresApproval: false,
       })
-
-      const savedEventWithoutProtectedData = await getEventBySlug(slug, false)
-      expect(savedEventWithoutProtectedData?.data.replyTo).toEqual(undefined)
     })
   })
 })

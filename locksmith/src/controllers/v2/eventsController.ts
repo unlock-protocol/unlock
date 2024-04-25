@@ -11,7 +11,6 @@ import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
 import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
 import listManagers from '../../utils/lockManagers'
-import { removeProtectedAttributesFromObject } from '../../utils/protectedAttributes'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -66,9 +65,6 @@ export const getAllEvents: RequestHandler = async (request, response) => {
     offset: (page - 1) * 10,
     include: [{ model: CheckoutConfig, as: 'checkoutConfig' }],
   })
-  events.forEach((event) => {
-    event.data = removeProtectedAttributesFromObject(event.data)
-  })
   return response.status(200).send({
     data: events,
     page,
@@ -80,8 +76,7 @@ export const getAllEvents: RequestHandler = async (request, response) => {
 // whose slug matches and get the event data from that lock.
 export const getEvent: RequestHandler = async (request, response) => {
   const slug = request.params.slug.toLowerCase().trim()
-  const includeProtected = false // Should be true if request is coming from an organizer!
-  const event = await getEventBySlug(slug, includeProtected)
+  const event = await getEventBySlug(slug)
 
   if (event) {
     const eventResponse = event.toJSON() as any // TODO: type!

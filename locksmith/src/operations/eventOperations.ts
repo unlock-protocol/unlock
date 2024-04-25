@@ -6,7 +6,6 @@ import { CheckoutConfig, EventData } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
-import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
 
 interface AttributeProps {
   value: string
@@ -40,8 +39,7 @@ const getEventDate = (
 
 export const getEventForLock = async (
   lockAddress: string,
-  network?: number,
-  includeProtected = false
+  network?: number
 ) => {
   const checkoutConfigs = await CheckoutConfig.findAll({
     where: {
@@ -60,9 +58,6 @@ export const getEventForLock = async (
       checkoutConfigId: checkoutConfigs.map((record) => record.id),
     },
   })
-  if (event && !includeProtected) {
-    event.data = removeProtectedAttributesFromObject(event.data)
-  }
   return event
 }
 
@@ -160,19 +155,12 @@ export const getEventMetadataForLock = async (
   return eventDetail
 }
 
-export const getEventBySlug = async (
-  slug: string,
-  includeProtected: boolean
-) => {
-  const event = await EventData.findOne({
+export const getEventBySlug = async (slug: string) => {
+  return await EventData.findOne({
     where: {
       slug,
     },
   })
-  if (event && !includeProtected) {
-    event.data = removeProtectedAttributesFromObject(event.data)
-  }
-  return event
 }
 
 export const createEventSlug = async (
@@ -183,7 +171,7 @@ export const createEventSlug = async (
   const slug = index
     ? kebabCase([cleanName, index].join('-'))
     : kebabCase(cleanName)
-  const event = await getEventBySlug(slug, false /** includeProtected */)
+  const event = await getEventBySlug(slug)
   if (event) {
     return createEventSlug(name, index ? index + 1 : 1)
   }

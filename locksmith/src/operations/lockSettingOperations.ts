@@ -4,7 +4,6 @@ import {
 } from '../controllers/v2/lockSettingController'
 import { LockSetting } from '../models/lockSetting'
 import * as Normalizer from '../utils/normalizer'
-import { protectedAttributes } from '../utils/protectedAttributes'
 import { getEventForLock } from './eventOperations'
 
 interface SendEmailProps {
@@ -40,7 +39,9 @@ export async function getSettings({
   includeProtected?: boolean
 }): Promise<LockSetting | LockSettingProps> {
   // list of array of keys to exclude
-  const attributesExcludes = includeProtected ? [] : protectedAttributes
+  const attributesExcludes = includeProtected
+    ? []
+    : ['replyTo', 'promoCodes', 'passwords']
 
   const settings = await LockSetting.findOne({
     where: {
@@ -54,11 +55,7 @@ export async function getSettings({
 
   const lockSettings = settings || { ...DEFAULT_LOCK_SETTINGS }
 
-  const eventDetails = await getEventForLock(
-    lockAddress,
-    network,
-    includeProtected
-  )
+  const eventDetails = await getEventForLock(lockAddress, network)
   if (eventDetails?.data) {
     if (eventDetails?.data.replyTo) {
       lockSettings.replyTo = eventDetails.data.replyTo
