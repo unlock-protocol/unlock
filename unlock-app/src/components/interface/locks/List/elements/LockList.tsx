@@ -124,12 +124,11 @@ export const LockList = ({ owner }: LockListProps) => {
   }, true)
 
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(
-    localStorage.getItem('favoriteLocks')
-      ? JSON.parse(localStorage.getItem('favoriteLocks') as string)
-      : {}
+    JSON.parse(localStorage.getItem('favoriteLocks') as string)
   )
 
   const saveFavoriteLocks = (favoriteLocks: FavoriteLocks) => {
+    console.log('saveFavoriteLocks', favoriteLocks)
     setFavoriteLocks(favoriteLocks)
     localStorage.setItem('favoriteLocks', JSON.stringify(favoriteLocks))
   }
@@ -147,7 +146,7 @@ export const LockList = ({ owner }: LockListProps) => {
             ) || []
         )}
         favoriteLocks={favoriteLocks}
-        setFavoriteLocks={setFavoriteLocks}
+        setFavoriteLocks={saveFavoriteLocks}
         network={null}
       />
       {networkItems.map(([network], index) => {
