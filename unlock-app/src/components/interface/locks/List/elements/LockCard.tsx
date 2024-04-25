@@ -143,16 +143,18 @@ export const LockCard = ({
           <div className="md:justify-start md:grid-cols-[56px_1fr] flex justify-around gap-3 md:col-span-3">
             <LockIcon lock={lock} />
             <div className="flex flex-col gap-2 w-1/3">
-              <span className="text-2xl font-bold">{lock.name}</span>
+              <div className="flex gap-2">
+                <span className="text-2xl font-bold">{lock.name}</span>
+                <button onClick={setFavorite}>
+                  {isFavorite ? (
+                    <UnfavoriteStar size={20} />
+                  ) : (
+                    <FavoriteStar size={20} />
+                  )}
+                </button>
+              </div>
               <AddressLink address={lock.address} network={network} />
             </div>
-            <button className="flex justify-start" onClick={setFavorite}>
-              {isFavorite ? (
-                <UnfavoriteStar size={20} />
-              ) : (
-                <FavoriteStar size={20} />
-              )}
-            </button>
           </div>
 
           <div className="grid items-center grid-cols-2 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">

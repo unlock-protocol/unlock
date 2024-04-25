@@ -11,6 +11,7 @@ import useLocksByManagerOnNetworks from '~/hooks/useLocksByManager'
 import { config } from '~/config/app'
 import { ImageBar } from '../../Manage/elements/ImageBar'
 import { useState } from 'react'
+import { useAppStorage } from '~/hooks/useAppStorage'
 
 export const NoItems = () => {
   return (
@@ -123,14 +124,17 @@ export const LockList = ({ owner }: LockListProps) => {
     )
   }, true)
 
+  const { getStorage, setStorage, clearStorage } = useAppStorage()
+
   const [favoriteLocks, setFavoriteLocks] = useState<FavoriteLocks>(
-    JSON.parse(localStorage.getItem('favoriteLocks') as string)
+    getStorage('favoriteLocks')
+      ? JSON.parse(getStorage('favoriteLocks') as string)
+      : {}
   )
 
   const saveFavoriteLocks = (favoriteLocks: FavoriteLocks) => {
-    console.log('saveFavoriteLocks', favoriteLocks)
     setFavoriteLocks(favoriteLocks)
-    localStorage.setItem('favoriteLocks', JSON.stringify(favoriteLocks))
+    setStorage('favoriteLocks', favoriteLocks)
   }
 
   return (
