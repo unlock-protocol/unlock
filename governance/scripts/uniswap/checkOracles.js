@@ -1,13 +1,25 @@
+/**
+ * This script is used to check if oracles are set correctly in Unlock
+ * and if fetch which one to set from the networks package
+ *
+ * Usage
+ *  yarn hardhat run scripts/uniswap/checkOracles.js --network arbitrum
+ *
+ */
 const { ethers } = require('hardhat')
 const checkOracle = require('./oracle')
-const {
-  getNetwork,
-  getUnlock,
-  ADDRESS_ZERO,
-} = require('@unlock-protocol/hardhat-helpers')
+const { Contract } = require('ethers')
+const { getProvider } = require('../../helpers/multisig')
+const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 
 // helper to check rate
-const checkOracleRate = async ({ oracleAddress, token, fee = 500, issue }) => {
+const checkOracleRate = async ({
+  chainId,
+  oracleAddress,
+  token,
+  fee = 500,
+  issue,
+}) => {
   const returned = {
     oracleAddress,
     token,
@@ -20,6 +32,7 @@ const checkOracleRate = async ({ oracleAddress, token, fee = 500, issue }) => {
       amount: '10',
       quiet: true,
       oracleAddress,
+      chainId,
     })
 
     if (rate === 0n) {
@@ -44,7 +57,10 @@ const checkOracleRate = async ({ oracleAddress, token, fee = 500, issue }) => {
   }
 }
 
-async function main() {
+async function main({ chainId = 137 } = {}) {
+  if (!chainId) {
+    ;({ chainId } = await ethers.provider.getNetwork())
+  }
   const {
     name,
     id,
@@ -52,8 +68,9 @@ async function main() {
     unlockAddress,
     tokens,
     nativeCurrency: { wrapped },
-  } = await getNetwork()
+  } = await getNetwork(chainId)
 
+  const provider = await getProvider(chainId)
   let oracleToSet = []
   let failed = []
   if (uniswapV3 && uniswapV3.oracle) {
@@ -62,13 +79,18 @@ async function main() {
       // avoid WETH/WETH pair
       if (token.address !== wrapped) {
         // check if oracle is set in Unlock
-        const unlock = await getUnlock(unlockAddress)
+        const unlock = new Contract(
+          unlockAddress,
+          ['function uniswapOracles(address) external view returns(address)'],
+          provider
+        )
         const oracleAddressInUnlock = await unlock.uniswapOracles(token.address)
 
         let oracleNeedToBeSet = false
         // if oracle is set in Unlock, make sure it works
         if (oracleAddressInUnlock !== ADDRESS_ZERO) {
           const { success } = await checkOracleRate({
+            chainId,
             oracleAddress: oracleAddressInUnlock,
             token,
             issue: 'Oracle in Unlock is failing',
@@ -88,6 +110,7 @@ async function main() {
                 oracleAddress: uniswapV3.oracle[fee],
                 fee,
                 token,
+                chainId,
                 issue: 'Oracle was not set in Unlock',
               })
             )
@@ -113,12 +136,17 @@ async function main() {
   oracleToSet.forEach(({ token, fee, oracleAddress, issue }) =>
     console.log(
       `[${name} (${id})]: oracle for ${token.symbol} (${token.address})
-        - \`setOracle(${token.address},${oracleAddress})\` (${fee})
-        - reason: ${issue}`
+          - \`setOracle(${token.address},${oracleAddress})\` (${fee})
+          - reason: ${issue}`
     )
   )
 
   failed.forEach((msg) => console.log(`[${name} (${id})] FAILED ${msg}`))
+
+  return {
+    oracleToSet,
+    failed,
+  }
 }
 
 // execute as standalone
