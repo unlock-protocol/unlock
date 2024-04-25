@@ -122,6 +122,7 @@ export const sepolia: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0x0227628f3F023bb0B980b67D528571c95c6DaC1c',
     oracle: {
+      100: '0x5D7109aF116eF9D95f107B25c401bCF3965b4027',
       3000: '0x59E399647F12bDec93875B32376dfBcA2E69d955',
       500: '0x3A691355348DDC549515A7b538f3e85bCCdFe0B5',
     },
