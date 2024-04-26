@@ -119,6 +119,12 @@ export const sepolia: NetworkConfig = {
       name: 'USDC',
       symbol: 'USDC',
     },
+    {
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+      decimals: 18,
+      name: 'Uniswap',
+      symbol: 'UNI',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x0227628f3F023bb0B980b67D528571c95c6DaC1c',
