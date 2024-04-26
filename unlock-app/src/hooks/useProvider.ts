@@ -203,7 +203,10 @@ export const useProvider = (config: any) => {
     setNetwork(undefined)
     setConnected(undefined)
 
-    clearStorage()
+    clearStorage(
+      ['provider', 'network', 'account', `$session_${account}`],
+      true
+    )
     try {
       // unlock provider does not support removing listeners or closing.
       if (provider?.isUnlock) {

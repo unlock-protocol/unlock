@@ -40,12 +40,14 @@ export function useAppStorage() {
     return null
   }, [])
 
-  const clearStorage = useCallback((): void => {
-    const items = { ...localStorage } ?? []
-    Object.keys(items)
-      .filter((item: string) => item.includes(APP_NAME))
-      .forEach((key: string) => removeKey(key, false))
-  }, [])
+  const clearStorage = useCallback(
+    (clearItems: string[], addAppName: boolean): void => {
+      for (const item of clearItems) {
+        removeKey(item, addAppName)
+      }
+    },
+    []
+  )
 
   return {
     setStorage,
