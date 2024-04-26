@@ -40,8 +40,8 @@ const getEventDate = (
 
 export const getEventForLock = async (
   lockAddress: string,
-  network?: number,
-  includeProtected = false
+  network: number,
+  includeProtected: boolean
 ) => {
   const checkoutConfigs = await CheckoutConfig.findAll({
     where: {

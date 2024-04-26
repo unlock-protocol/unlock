@@ -1,4 +1,9 @@
-export const protectedAttributes = ['replyTo', 'promoCodes', 'passwords']
+export const protectedAttributes = [
+  'replyTo',
+  'promoCodes',
+  'passwords',
+  'notifyCheckInUrls',
+]
 
 export const removeProtectedAttributesFromObject = (obj: any) => {
   const newObject = {
