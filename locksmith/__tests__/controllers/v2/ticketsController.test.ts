@@ -234,7 +234,7 @@ describe('tickets endpoint', () => {
 
       expect(fetch).toHaveBeenCalledWith(notifyCheckInUrl, {
         body: JSON.stringify({
-          owner,
+          ownerAddress: owner,
           lockAddress,
           network,
           tokenId: keyId,

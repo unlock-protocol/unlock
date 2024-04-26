@@ -123,7 +123,7 @@ export class TicketsController {
           const response = await notify({
             hookCallback: url,
             body: {
-              owner: tokenOwner,
+              ownerAddress: tokenOwner,
               lockAddress,
               network,
               tokenId: id,
