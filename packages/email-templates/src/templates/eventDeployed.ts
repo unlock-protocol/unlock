@@ -13,25 +13,28 @@ export default {
   eventUrl
 }}
 
+<p>
 What's next?
+</p>
 
-💬 Share a Link
-The public link to your event is {{eventUrl}}.
+<ul>
+<li>💬 Share a Link<br>
+The public link to your event is {{eventUrl}}.</li>
 
-🎨 Customize Your Event
-Update the description, add questions for your guests, update security settings, and more. Visit the Manage Event page.
+<li>🎨 Update settings!<br>
+Update the description, time, location, set images... </li>
 
-🎟 Sell Tickets
-You can hook up your bank account and start selling tickets to your event in under 5 minutes. Set up tickets.
+<li>💁 Attendees<br>
+Approve and view attendees in the dashboard.</li>
 
-📱 Download the Check In App
-Scan your guests' QR codes quickly and easily.
+<li>📱 Learn how to check people in<br>
+Each attendee will receive a QR code to check in at the event. 
+</li>
+</ul>
 
-Download on the App Store
-Get it on Play Store
+<p>
 Have questions? Reply to this email 😎.
-
-Happy hosting!
+</p>
 
 `,
 }
