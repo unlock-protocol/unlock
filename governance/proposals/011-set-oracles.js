@@ -175,7 +175,7 @@ The goal is twofold: 1) enable the distribution of UDT for referrers when buying
 
 On each chain, wrappers for Uniswap oracle contracts have been deployed. An oracle is used to guess the current exchange rate of a specific token pair (for instance ETH/USDC).
 
-The same oracle contract can be used for any pairs, with the limitation that there needs to be an existing / active Uniswap pool for that pair. Three different contracts are used to query the rate for the three tiers of [Uniswap pool fees](https://docs.uniswap.org/concepts/protocol/fees) (100, 500 and 3000 bps).
+The same oracle contract can be used for any pairs, with the limitation that there needs to be an existing / active Uniswap pool for that pair. Three different contracts are used to query the rate for the three tiers of [Uniswap pool fees](https://docs.uniswap.org/concepts/protocol/fees). Fee amounts are hundredths of the basis point so 100 fee unit is 0.01%, 500 is 0.05%, and 3000 is 0.3%.
 
 For each token, the working oracle is selected and added to the Unlock contract 
 using the \`setOracle\` function.
