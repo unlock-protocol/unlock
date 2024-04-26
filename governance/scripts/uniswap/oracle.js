@@ -1,27 +1,50 @@
 const { ethers } = require('hardhat')
+const { Contract } = require('ethers')
+const { getProvider } = require('../../helpers/multisig')
+
 const {
   getNetwork,
+  getUnlock,
   getERC20Contract,
+  ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
 const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
 
-async function main({ tokenIn = 'POINTS', tokenOut, amount = '1' } = {}) {
+async function main({
+  tokenIn = 'UDT',
+  tokenOut,
+  amount = '1',
+  oracleAddress,
+  fee = 500,
+  quiet = false,
+  chainId,
+} = {}) {
+  if (!chainId) {
+    ;({ chainId } = await ethers.provider.getNetwork())
+  }
+  const network = await getNetwork(chainId)
+  const provider = await getProvider(chainId)
+
   const {
     nativeCurrency: { wrapped: wrappedNativeAddress },
-    uniswapV3: { oracle: oracleAddress },
     tokens,
-  } = await getNetwork()
+  } = network
 
-  if (!oracleAddress) {
-    throw new Error(
-      'No address for oracle in the networks package, please add one.'
-    )
-  }
+  const log = (toLog) => (quiet ? null : console.log(toLog))
 
   // check wrapped
   let tokenTo
   if (!tokenOut) {
-    const wrapped = await getERC20Contract(wrappedNativeAddress)
+    if (!wrappedNativeAddress) {
+      throw new Error(
+        `Wrapped native is not defined in the networks package, please add.`
+      )
+    }
+    const wrapped = new Contract(
+      wrappedNativeAddress,
+      ['function symbol() external view returns (string memory)'],
+      provider
+    )
     const wrappedSymbol = await wrapped.symbol()
     tokenTo = { address: wrappedNativeAddress, symbol: wrappedSymbol }
   } else {
@@ -33,31 +56,61 @@ async function main({ tokenIn = 'POINTS', tokenOut, amount = '1' } = {}) {
     }
   }
 
-  const tokenFrom = tokens.find((token) => token.symbol === tokenIn)
+  let tokenFrom
+  // get UDT address from package
+  if (tokenIn === 'UDT') {
+    const {
+      unlockDaoToken: { address: udtAddress },
+    } = network
+    tokenFrom = { address: udtAddress, symbol: 'UDT' }
+  } else {
+    tokenFrom = tokens.find((token) => token.symbol === tokenIn)
+  }
+
   if (!tokenFrom) {
     throw new Error(`Token ${tokenIn} is not defined in the networks package.`)
   }
 
+  // check from unlock directly
+  if (!oracleAddress) {
+    const unlock = await getUnlock(network.unlockAddress)
+    oracleAddress = await unlock.uniswapOracles(tokenFrom.address)
+    if (oracleAddress === ADDRESS_ZERO) {
+      console.log(`No oracle address for this token is set in Unlock.`)
+
+      // get the correct oracle for appropriate fee
+      const {
+        uniswapV3: { oracle },
+      } = network
+      const oracleAddressFromPackage = oracle[fee]
+      if (!oracleAddressFromPackage) {
+        throw new Error(
+          `No address for oracle with fee ${fee} in the networks package, please add one.`
+        )
+      }
+      oracleAddress = oracleAddressFromPackage
+    }
+  }
+
   // check if token can be retrieved through Uniswap V3 oracle
-  const oracle = await ethers.getContractAt(UniswapOracleV3.abi, oracleAddress)
-  console.log(
-    `Checking oracle for ${tokenFrom.symbol}/${tokenTo.symbol} (${amount})`
-  )
+  const oracle = new Contract(oracleAddress, UniswapOracleV3.abi, provider)
+  log(`Checking oracle for ${tokenFrom.symbol}/${tokenTo.symbol} (${amount})`)
   const rate = await oracle.consult(
     tokenFrom.address,
     ethers.parseUnits(amount, tokenFrom.decimals),
     tokenTo.address
   )
   if (rate === 0n) {
-    console.log(`Uniswap V3 pool not found`)
+    log(`Uniswap V3 pool not found`)
   } else {
-    console.log(
+    log(
       `Current rate (~last hour) : ${ethers.formatUnits(
         rate,
         tokenTo.decimals
-      )} ${tokenTo.symbol} for ${amount} ${tokenIn.symbol}`
+      )} ${tokenTo.symbol} for ${amount} ${tokenFrom.symbol}`
     )
   }
+  return rate
 }
 
 // execute as standalone
