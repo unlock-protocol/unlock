@@ -40,18 +40,14 @@ export function useAppStorage() {
     return null
   }, [])
 
-  /*
-   * @param exclude: string[] - Array of keys to exclude from deletion, only for keys with APP_NAME
-   */
-  const clearStorage = useCallback((exclude?: string[]): void => {
-    const items = { ...localStorage } ?? []
-    Object.keys(items)
-      .filter((item: string) => item.includes(APP_NAME))
-      .forEach((key: string) => {
-        if (exclude && !exclude.includes(key.split('.')[1]))
-          removeKey(key, false)
-      })
-  }, [])
+  const clearStorage = useCallback(
+    (clearItems: string[], addAppName: boolean): void => {
+      for (const item of clearItems) {
+        removeKey(item, addAppName)
+      }
+    },
+    []
+  )
 
   return {
     setStorage,
