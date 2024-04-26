@@ -2,7 +2,10 @@ import request from 'supertest'
 import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
 import * as metadataOperations from '../../../src/operations/metadataOperations'
 import app from '../../app'
-import { vi } from 'vitest'
+import { beforeAll, vi } from 'vitest'
+import { saveEvent } from '../../../src/operations/eventOperations'
+import testEvents from '../fixtures/events'
+import { CheckoutConfig, EventData } from '../../../src/models'
 
 function* keyIdGen() {
   const start = Date.now()
@@ -21,6 +24,7 @@ const keyGen = keyIdGen()
 const tokenId = keyGen.next().value!
 const wrongTokenId = '666'
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
+const notifyCheckInUrl = 'http://example.com/notifyCheckInUrl'
 
 vi.mock('@unlock-protocol/unlock-js', () => {
   return {
@@ -58,6 +62,25 @@ vi.mock('../../../src/operations/wedlocksOperations', () => {
 })
 
 describe('tickets endpoint', () => {
+  beforeAll(async () => {
+    await EventData.truncate()
+    await CheckoutConfig.truncate()
+    fetchMock.enableMocks()
+    // create an event
+    const eventParams = { ...testEvents[0] }
+    eventParams.checkoutConfig = {
+      config: {
+        locks: {
+          [lockAddress]: {
+            network,
+          },
+        },
+      },
+    }
+    eventParams.data.notifyCheckInUrls = [notifyCheckInUrl]
+    await saveEvent(eventParams, owner)
+  })
+
   it('returns an error when authentication is missing', async () => {
     expect.assertions(1)
 
@@ -102,95 +125,128 @@ describe('tickets endpoint', () => {
     expect(response.status).toBe(200)
   })
 
-  it('does not mark the ticket as checked-in when authentication is missing and returns an error', async () => {
-    expect.assertions(1)
-    const keyId = keyGen.next().value
-    const response = await request(app).put(
-      `/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
-    )
-
-    expect(response.status).toBe(401)
-  })
-
-  it('marks ticket as checked-in fails when user is not a verifier', async () => {
-    expect.assertions(2)
-    const { loginResponse } = await loginRandomUser(app)
-    expect(loginResponse.status).toBe(200)
-    const keyId = keyGen.next().value
-
-    const response = await request(app)
-      .put(
-        `/v2/api/ticket/${network}/lock/${wrongLockAddress}/key/${keyId}/check`
+  describe('markTicketAsCheckIn', () => {
+    it('does not mark the ticket as checked-in when authentication is missing and returns an error', async () => {
+      expect.assertions(1)
+      const keyId = keyGen.next().value
+      const response = await request(app).put(
+        `/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
       )
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(403)
-  })
+      expect(response.status).toBe(401)
+    })
 
-  it('marks ticket as checked-in succeed when user is a verifier', async () => {
-    expect.assertions(2)
-    const { loginResponse } = await loginRandomUser(app)
-    expect(loginResponse.status).toBe(200)
-    const keyId = keyGen.next().value
+    it('marks ticket as checked-in fails when user is not a verifier', async () => {
+      expect.assertions(2)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      const keyId = keyGen.next().value
 
-    const response = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      const response = await request(app)
+        .put(
+          `/v2/api/ticket/${network}/lock/${wrongLockAddress}/key/${keyId}/check`
+        )
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(202)
-  })
+      expect(response.status).toBe(403)
+    })
 
-  it('correctly marks ticket as checked-in and set key data', async () => {
-    expect.assertions(3)
-    const { loginResponse } = await loginRandomUser(app)
-    expect(loginResponse.status).toBe(200)
-    const keyId = keyGen.next().value
+    it('marks ticket as checked-in succeed when user is a verifier', async () => {
+      expect.assertions(2)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      const keyId = keyGen.next().value
 
-    const response = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      const response = await request(app)
+        .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(202)
+      expect(response.status).toBe(202)
+    })
 
-    const keyData = await metadataOperations.getKeyCentricData(
-      lockAddress,
-      keyId!
-    )
-    expect(keyData.metadata.checkedInAt).not.toBeUndefined()
-  })
+    it('correctly marks ticket as checked-in and set key data', async () => {
+      expect.assertions(3)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      const keyId = keyGen.next().value
 
-  it('does not override metadata', async () => {
-    expect.assertions(4)
-    const { loginResponse } = await loginRandomUser(app)
-    expect(loginResponse.status).toBe(200)
-    const id = keyGen.next().value
+      const response = await request(app)
+        .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    const metadata = {
-      id,
-      chain: network,
-      address: lockAddress,
-      data: {
-        metadata: {
-          value: '12',
+      expect(response.status).toBe(202)
+
+      const keyData = await metadataOperations.getKeyCentricData(
+        lockAddress,
+        keyId!
+      )
+      expect(keyData.metadata.checkedInAt).not.toBeUndefined()
+    })
+
+    it('does not override metadata', async () => {
+      expect.assertions(4)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      const id = keyGen.next().value
+
+      const metadata = {
+        id,
+        chain: network,
+        address: lockAddress,
+        data: {
+          metadata: {
+            value: '12',
+          },
+          KeyMetadata: {
+            custom_field: 'Random',
+          },
         },
-        KeyMetadata: {
-          custom_field: 'Random',
-        },
-      },
-    }
+      }
 
-    await metadataOperations.updateKeyMetadata(metadata)
+      await metadataOperations.updateKeyMetadata(metadata)
 
-    const response = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${id}/check`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      const response = await request(app)
+        .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${id}/check`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(response.status).toBe(202)
+      expect(response.status).toBe(202)
 
-    const keyData = await metadataOperations.getKeyCentricData(lockAddress, id!)
+      const keyData = await metadataOperations.getKeyCentricData(
+        lockAddress,
+        id!
+      )
 
-    expect(keyData.metadata.value).toBe('12')
-    expect(keyData.KeyMetadata.custom_field).toBe('Random')
+      expect(keyData.metadata.value).toBe('12')
+      expect(keyData.KeyMetadata.custom_field).toBe('Random')
+    })
+
+    it('should notify the check-in URL', async () => {
+      expect.assertions(3)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      const keyId = keyGen.next().value
+
+      const response = await request(app)
+        .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(202)
+
+      expect(fetch).toHaveBeenCalledWith(notifyCheckInUrl, {
+        body: JSON.stringify({
+          owner,
+          lockAddress,
+          network,
+          tokenId: keyId,
+          verifier: {
+            address: loginResponse.body.walletAddress,
+          },
+        }),
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        signal: expect.any(AbortSignal),
+      })
+    })
   })
 
   it('does not send email when auhentication is not present', async () => {
