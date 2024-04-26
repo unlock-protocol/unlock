@@ -77,7 +77,7 @@ export function Connected({
     <>
       <Stepper service={service} />
       <ConnectPage
-        style="h-full py-2 overflow-auto"
+        style="h-full mt-4 space-y-4"
         onUnlockAccount={() => {
           service.send({ type: 'UNLOCK_ACCOUNT' })
         }}
