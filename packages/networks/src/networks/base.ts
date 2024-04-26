@@ -19,6 +19,14 @@ export const base: NetworkConfig = {
   },
   featured: true,
   fullySubsidizedGas: false,
+  governanceBridge: {
+    connext: '0xB8448C6f7f7887D36DcA487370778e419e9ebE3F',
+    domainId: 1650553709,
+    modules: {
+      connextMod: '0xfe9fD6af67E48D9f05Aa88679Ac294E3f28532eE',
+      delayMod: '0x805C2EbaE1510f59E1D717A1A51aFad335FFAec5',
+    },
+  },
   hooks: {
     onKeyPurchaseHook: [
       {
