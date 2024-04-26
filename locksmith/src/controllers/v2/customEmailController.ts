@@ -119,7 +119,7 @@ export const EventInviteBody = z.object({
 
 export const sendEventInvite: RequestHandler = async (request, response) => {
   const slug = request.params.slug.toLowerCase().trim()
-  const event = await getEventBySlug(slug)
+  const event = await getEventBySlug(slug, true)
 
   const { recipients } = await EventInviteBody.parseAsync(request.body)
   const results = await Promise.all(

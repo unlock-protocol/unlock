@@ -109,7 +109,11 @@ export class TicketsController {
         }
       )
 
-      const event = await getEventForLock(lockAddress, network)
+      const event = await getEventForLock(
+        lockAddress,
+        network,
+        true /** includeProtected */
+      )
 
       const web3Service = new Web3Service(networks)
       const tokenOwner = await web3Service.ownerOf(lockAddress, id, network)
