@@ -116,7 +116,7 @@ export class TicketsController {
 
       if (event?.data.notifyCheckInUrls) {
         for (const url of event.data.notifyCheckInUrls) {
-          await notify({
+          const response = await notify({
             hookCallback: url,
             body: {
               owner: tokenOwner,
@@ -129,6 +129,13 @@ export class TicketsController {
               },
             },
           })
+          if (response.status !== 200) {
+            logger.info(
+              `Received unxpected response when notifying ${url}: ${
+                response.status
+              } ${await response.text()}`
+            )
+          }
         }
       }
 

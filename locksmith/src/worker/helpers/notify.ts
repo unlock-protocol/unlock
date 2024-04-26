@@ -41,6 +41,15 @@ export async function notify({
     method: 'POST',
     body: content,
     signal: ac.signal,
+  }).catch((error) => {
+    logger.error('Error in notify function: ', error)
+    return {
+      ok: false,
+      statusText: 'client error',
+      status: '400',
+      text: () => error.message,
+      json: () => Promise.resolve({ message: error.message }),
+    }
   })
 
   clearTimeout(abortTimeout)
