@@ -6,12 +6,45 @@
  *
  * Usage: scripts/deploy_multisig_mods
  *
+ * ## How to deploy Zodiac modules
+ *
+ * 1. get the modules code
+ * git clone git@github.com:gnosisguild/zodiac-modifier-delay.git
+ * git clone git@github.com:gnosisguild/zodiac-module-connext.git
+ *
+ * 2. prepare repo
+ * yarn
+ * yarn build
+ *
+ * 3. add required network in `hardhat.config.ts` with the following pattern
+ * `
+ * base: {
+ *     url: "https://rpc.unlock-protocol.com/8453",
+ *     accounts: [process.env.DEPLOYER_PRIVATE_KEY],
+ *   },
+ * `
+ * and block explorer api key
+ *
+ * `
+ * etherscan: {
+ *    apiKey: {
+ *      base: '<your-api-key>',
+ *    }
+ * },
+ * `
+ *
+ * 4. export DEPLOYER_PRIVATE_KEY to env
+ * 5. run this script to get the commands
+ *
+ * NB: the first run will give you instructions for delay module. The second
+ * one for Connext module.
+ *
  */
 
 const allNetworks = require('@unlock-protocol/networks')
 
 const owner = '0x246A13358Fb27523642D86367a51C2aEB137Ac6C'
-const daoTimelockAddress = '0x17eedfb0a6e6e06e95b3a1f928dc4024240bc76b'
+const daoTimelockAddress = '0x17EEDFb0a6E6e06E95B3A1F928dc4024240BC76B'
 const daoChainId = 1
 const daoDomainId = allNetworks.networks[daoChainId].governanceBridge.domainId
 
@@ -19,7 +52,7 @@ const daoDomainId = allNetworks.networks[daoChainId].governanceBridge.domainId
 const ONE_DAY = 24 * 3600
 
 // if any network is present this array, only these will be executed
-const only = ['polygon', 'gnosis', 'bsc', 'arbitrum', 'optimism']
+const only = ['polygon', 'gnosis', 'bsc', 'arbitrum', 'optimism', 'base']
 
 // these networks will be excluded from run
 const toExclude = ['localhost', 'default', 'networks']
@@ -50,9 +83,8 @@ for (let i = 0; i < networks.length; i++) {
       ONE_DAY * 90, // 90 days expiration
     ]
 
-    console.log(`yarn hardhat setup ${args.join(' ')}`)
-
-    console.log(`yarn hardhat verifyEtherscan ${args.join(' ')} --modifier`)
+    console.log(`# Zodiac Delay Mod`)
+    console.log(`yarn hardhat deploy ${args.join(' ')}`)
   } else {
     if (governanceBridge.modules) {
       console.log(`Delay mod at ${governanceBridge.modules.delayMod}`)
@@ -75,6 +107,7 @@ for (let i = 0; i < networks.length; i++) {
           governanceBridge.modules.delayMod,
         ]
 
+        console.log(`# Zodiac Connext Module`)
         console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
 
         console.log(
