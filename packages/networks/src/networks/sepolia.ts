@@ -77,6 +77,7 @@ export const sepolia: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0x5f207d42F869fd1c71d7f0f81a2A67Fc20FF7323',
   },
 
   opensea: {
@@ -117,6 +118,12 @@ export const sepolia: NetworkConfig = {
       featured: true,
       name: 'USDC',
       symbol: 'USDC',
+    },
+    {
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+      decimals: 18,
+      name: 'Uniswap',
+      symbol: 'UNI',
     },
   ],
   uniswapV3: {
