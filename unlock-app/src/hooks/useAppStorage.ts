@@ -40,20 +40,17 @@ export function useAppStorage() {
     return null
   }, [])
 
-  const clearStorageWithoutFavorite = useCallback((): void => {
+  /*
+   * @param exclude: string[] - Array of keys to exclude from deletion, only for keys with APP_NAME
+   */
+  const clearStorage = useCallback((exclude?: string[]): void => {
     const items = { ...localStorage } ?? []
     Object.keys(items)
       .filter((item: string) => item.includes(APP_NAME))
       .forEach((key: string) => {
-        if (key !== `${APP_NAME}.favoriteLocks`) removeKey(key, false)
+        if (exclude && !exclude.includes(key.split('.')[1]))
+          removeKey(key, false)
       })
-  }, [])
-
-  const clearStorage = useCallback((): void => {
-    const items = { ...localStorage } ?? []
-    Object.keys(items)
-      .filter((item: string) => item.includes(APP_NAME))
-      .forEach((key: string) => removeKey(key, false))
   }, [])
 
   return {
@@ -61,6 +58,5 @@ export function useAppStorage() {
     getStorage,
     clearStorage,
     removeKey,
-    clearStorageWithoutFavorite,
   }
 }
