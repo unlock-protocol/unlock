@@ -77,6 +77,7 @@ export const sepolia: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   },
 
   opensea: {
