@@ -15,6 +15,7 @@ export function UnlockAccountSignIn({ connectService }: Props) {
         connectService.send({ type: 'CONNECT' })
       }}
       useIcon={false}
+      displayFooterOnSignUp={false}
     />
   )
 }

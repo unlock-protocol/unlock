@@ -16,7 +16,7 @@ export function UnlockAccount({ checkoutService }: Props) {
           onSignIn={() => checkoutService.send({ type: 'CONNECT' })}
           onExit={() => checkoutService.send({ type: 'CONNECT' })}
           useIcon={false}
-          displayDisconnect={false}
+          displayFooterOnSignUp={false}
         />
       )
     }
