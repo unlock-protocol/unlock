@@ -18,16 +18,16 @@ What's next?
 </p>
 
 <ul>
-<li>💬 Share a Link<br>
+<li><strong>💬 Share a Link</strong><br>
 The public link to your event is {{eventUrl}}.</li>
 
-<li>🎨 Update settings!<br>
+<li><strong>🎨 Update settings!</strong><br>
 Update the description, time, location, set images... </li>
 
-<li>💁 Attendees<br>
+<li><strong>💁 Attendees</strong><br>
 Approve and view attendees in the dashboard.</li>
 
-<li>📱 Learn how to check people in<br>
+<li><strong>📱 Learn how to check people in</strong><br>
 Each attendee will receive a QR code to check in at the event. 
 </li>
 </ul>
