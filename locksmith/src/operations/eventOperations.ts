@@ -7,6 +7,8 @@ import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+import { sendEmail } from './wedlocksOperations'
+import { getEventUrl } from '../utils/eventHelpers'
 
 interface AttributeProps {
   value: string
@@ -195,7 +197,7 @@ export const saveEvent = async (
   walletAddress: string
 ): Promise<[EventData, boolean]> => {
   const slug = parsed.data.slug || (await createEventSlug(parsed.data.name))
-  const [savedEvent, created] = await EventData.upsert(
+  const [savedEvent, _] = await EventData.upsert(
     {
       name: parsed.data.name,
       slug,
@@ -209,6 +211,7 @@ export const saveEvent = async (
       conflictFields: ['slug'],
     }
   )
+
   if (!savedEvent.checkoutConfigId) {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(
       parsed.checkoutConfig.config
@@ -222,5 +225,21 @@ export const saveEvent = async (
     savedEvent.checkoutConfigId = createdConfig.id
     await savedEvent.save()
   }
-  return [savedEvent, !!created]
+
+  // This was a creation!
+  if (!parsed.data.slug) {
+    await sendEmail({
+      template: 'eventDeployed',
+      recipient: savedEvent.data.replyTo,
+      // @ts-expect-error object incomplete
+      params: {
+        eventName: savedEvent!.name,
+        eventDate: savedEvent!.data.ticket.event_start_date,
+        eventTime: savedEvent!.data.ticket.event_start_time,
+        eventUrl: getEventUrl(savedEvent!),
+      },
+      attachments: [],
+    })
+  }
+  return [savedEvent, !!parsed.data.slug]
 }
