@@ -57,6 +57,12 @@ export const useProvider = (config: any) => {
 
   const displayAccount = email || connected
 
+  const clearProviderEmail = () => {
+    // @ts-expect-error - prevState explicitly typed as any
+    setProvider((prevState) => ({ ...prevState, emailAddress: undefined }))
+    setStorage('email', undefined)
+  }
+
   const switchWeb3ProviderNetwork = async (id: number) => {
     try {
       await provider.send(
@@ -260,6 +266,7 @@ export const useProvider = (config: any) => {
     disconnectProvider,
     watchAsset,
     providerSend,
+    clearProviderEmail,
     connected,
     provider,
     displayAccount,

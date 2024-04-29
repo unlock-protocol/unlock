@@ -88,6 +88,7 @@ export const Authenticate = ({
     encryptedPrivateKey,
     walletService,
     connectProvider,
+    clearProviderEmail,
     disconnectProvider,
     isUnlockAccount,
     watchAsset,
@@ -110,6 +111,10 @@ export const Authenticate = ({
     return disconnectProvider()
   }
 
+  const clearEmail = () => {
+    return clearProviderEmail()
+  }
+
   return (
     <AuthenticationContext.Provider
       value={{
@@ -124,6 +129,7 @@ export const Authenticate = ({
         deAuthenticate,
         watchAsset,
         getWalletService,
+        clearEmail,
         connected,
         displayAccount,
       }}
@@ -165,7 +171,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => { },
+  onAuthenticated: () => {},
   providerAdapter: null,
 }
 

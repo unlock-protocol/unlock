@@ -14,6 +14,7 @@ interface AuthenticationContextType {
   isUnlockAccount?: boolean
   getWalletService(network?: number): Promise<WalletService>
   providerSend(method: string, params: string[]): void
+  clearEmail: () => void
   displayAccount?: string
 }
 
