@@ -23,6 +23,7 @@ export const defaultValues = {
   deAuthenticate: () => {},
   watchAsset: () => {},
   providerSend: (_method: string, _params: string[]) => {},
+  clearEmail: () => {},
   getWalletService: async (_network?: number) => new WalletService(networks),
 }
 
