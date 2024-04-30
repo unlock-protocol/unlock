@@ -6,7 +6,7 @@ import {
   getTemplates,
   getAttachments,
 } from '../../src/operations/wedlocksOperations'
-import { vi, expect } from 'vitest'
+import { vi, expect, afterAll } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
@@ -72,9 +72,11 @@ vi.mock('../../src/operations/userMetadataOperations', async () => {
 })
 
 describe('Wedlocks operations', () => {
-  afterEach(() => {
-    vi.clearAllMocks()
+  beforeEach(() => {
+    fetchMock.resetMocks()
+    fetchMock.enableMocks()
   })
+
   describe('notifyNewKeyToWedlocks', () => {
     it('should notify wedlocks if there is an email metadata', async () => {
       expect.assertions(1)
