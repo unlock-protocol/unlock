@@ -3738,6 +3738,41 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+  /v2/events/create-room:
+    post:
+      operationId: createEventTokenGatedRoom
+      security:
+        - User: []
+      description: Create token gated room for an event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                chain:
+                  type: string
+                contractAddress:
+                  type: string
+
+      responses:
+        201:
+          description: Successfully created token-gated room for the event
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  eventRoomUrl:
+                    type: string
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
 
   /v2/rsvp/{network}/{lockAddress}:
     post:
