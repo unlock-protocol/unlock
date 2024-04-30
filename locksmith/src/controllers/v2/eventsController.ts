@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express'
 import {
+  createTokenGatedRoom,
   getEventBySlug,
   getEventMetadataForLock,
   saveEvent,
@@ -175,4 +176,43 @@ export const getEvent: RequestHandler = async (request, response) => {
   return response.status(404).send({
     message: `No event found for slug ${slug}`,
   })
+}
+
+export const EventRoomBody = z.object({
+  title: z.string().min(1, { message: 'Title must not be empty' }),
+  chain: z.string().min(1, { message: 'Chain must not be empty' }),
+  contractAddress: z
+    .string()
+    .min(1, { message: 'Lock address must not be empty' }),
+})
+
+export const createEventTokenGatedRoom: RequestHandler = async (
+  request,
+  response
+) => {
+  const parsedBody = await EventRoomBody.parseAsync(request.body)
+  console.log(parsedBody)
+
+  const { title, chain, contractAddress } = parsedBody
+  try {
+    const roomDetails = await createTokenGatedRoom(
+      title,
+      chain,
+      contractAddress
+    )
+
+    console.log(roomDetails)
+    if (roomDetails) {
+      response.status(201).json({
+        // attach room ID to huddle url
+        eventRoomUrl: `https://app.huddle01.com/${roomDetails?.data.roomId}`,
+      })
+    } else {
+      response
+        .status(500)
+        .json({ message: 'Failed to create room: No room ID returned' })
+    }
+  } catch (error) {
+    response.status(500).json({ message: error.message })
+  }
 }
