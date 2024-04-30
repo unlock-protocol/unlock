@@ -209,13 +209,12 @@ export const useProvider = (config: any) => {
     )
     try {
       // unlock provider does not support removing listeners or closing.
-      if (provider?.isUnlock) {
-        return
-      }
-      provider.provider.removeAllListeners()
-      // metamask does not support disconnect
-      if (provider?.connection?.url !== 'metamask') {
-        await provider.provider.close()
+      if (!provider?.isUnlock) {
+        provider.provider.removeAllListeners()
+        // metamask does not support disconnect
+        if (provider?.connection?.url !== 'metamask') {
+          await provider.provider.close()
+        }
       }
     } catch (error) {
       console.error(
