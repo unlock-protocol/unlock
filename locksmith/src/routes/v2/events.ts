@@ -4,6 +4,7 @@ import {
   saveEventDetails,
   getEvent,
   getAllEvents,
+  createEventTokenGatedRoom,
 } from '../../controllers/v2/eventsController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizerMiddleware'
@@ -18,5 +19,6 @@ router.post(
   eventOrganizerMiddleware,
   saveEventDetails
 )
+router.post('/create-room', createEventTokenGatedRoom)
 
 export default router
