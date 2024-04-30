@@ -204,7 +204,8 @@ describe('Checkout Lock Utils', () => {
       ).toEqual('FREE')
     })
 
-    it('correctly convert keyPrice', async () => {
+    // TODO: fix this test which is currently making a network request (network calls should be mocked)
+    it.skip('correctly convert keyPrice', async () => {
       expect.assertions(2)
       const numbersOfRecipients = 6
 
