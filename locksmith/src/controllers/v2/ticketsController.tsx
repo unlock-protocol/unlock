@@ -109,17 +109,21 @@ export class TicketsController {
         }
       )
 
-      const event = await getEventForLock(lockAddress, network)
+      const event = await getEventForLock(
+        lockAddress,
+        network,
+        true /** includeProtected */
+      )
 
       const web3Service = new Web3Service(networks)
       const tokenOwner = await web3Service.ownerOf(lockAddress, id, network)
 
       if (event?.data.notifyCheckInUrls) {
         for (const url of event.data.notifyCheckInUrls) {
-          await notify({
+          const response = await notify({
             hookCallback: url,
             body: {
-              owner: tokenOwner,
+              ownerAddress: tokenOwner,
               lockAddress,
               network,
               tokenId: id,
@@ -129,6 +133,13 @@ export class TicketsController {
               },
             },
           })
+          if (response.status !== 200) {
+            logger.info(
+              `Received unxpected response when notifying ${url}: ${
+                response.status
+              } ${await response.text()}`
+            )
+          }
         }
       }
 

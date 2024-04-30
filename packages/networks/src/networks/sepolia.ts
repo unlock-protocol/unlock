@@ -77,6 +77,7 @@ export const sepolia: NetworkConfig = {
     decimals: 18,
     name: 'ETH',
     symbol: 'ETH',
+    wrapped: '0x5f207d42F869fd1c71d7f0f81a2A67Fc20FF7323',
   },
 
   opensea: {
@@ -118,13 +119,19 @@ export const sepolia: NetworkConfig = {
       name: 'USDC',
       symbol: 'USDC',
     },
+    {
+      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
+      decimals: 18,
+      name: 'Uniswap',
+      symbol: 'UNI',
+    },
   ],
   uniswapV3: {
     factoryAddress: '0x0227628f3F023bb0B980b67D528571c95c6DaC1c',
     oracle: {
       100: '0x5D7109aF116eF9D95f107B25c401bCF3965b4027',
       3000: '0x59E399647F12bDec93875B32376dfBcA2E69d955',
-      500: '0x3A691355348DDC549515A7b538f3e85bCCdFe0B5',
+      500: '0x5Ff3C00d851daA690d5fE2a2328A81e4a8219e1a',
     },
     positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
     universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
