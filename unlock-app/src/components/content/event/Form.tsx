@@ -14,6 +14,7 @@ import {
   Select,
   ToggleSwitch,
   ImageUpload,
+  Checkbox,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -30,6 +31,7 @@ import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import useEventGatedRoom from '~/hooks/useEventGatedRoom'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -69,9 +71,10 @@ export const GoogleMapsAutoComplete = ({
 
 interface FormProps {
   onSubmit: (data: NewEventForm) => void
+  eventGatedRoomHook: ReturnType<typeof useEventGatedRoom>
 }
 
-export const Form = ({ onSubmit }: FormProps) => {
+export const Form = ({ onSubmit, eventGatedRoomHook }: FormProps) => {
   const [oldMaxNumberOfKeys, setOldMaxNumberOfKeys] = useState<number>(0)
   const { networks } = useConfig()
   const { account } = useAuth()
@@ -173,6 +176,17 @@ export const Form = ({ onSubmit }: FormProps) => {
       message: 'Please, use a valid image URL',
     },
   })
+
+  // event gated room hook
+  const {
+    isHuddleMeeting,
+    toggleHuddleMeeting,
+    selectedHuddleNetwork,
+    changeHuddleNetwork,
+    huddleSupportedNetworks,
+    formatNetworks,
+  } = eventGatedRoomHook
+
   console.log(imageUploadField)
 
   return (
@@ -270,6 +284,8 @@ export const Form = ({ onSubmit }: FormProps) => {
                       'currencySymbol',
                       networks[newValue].nativeCurrency.symbol
                     )
+                    // update huddle options
+                    changeHuddleNetwork(networks[newValue].name)
                   }}
                   options={networkOptions}
                   label="Network"
@@ -450,17 +466,46 @@ export const Form = ({ onSubmit }: FormProps) => {
                         onChange={() => {
                           // reset the value
                           setValue('metadata.ticket.event_address', undefined)
+                          // uncheck huddle checkbox if currently selected
+                          {
+                            isHuddleMeeting && toggleHuddleMeeting()
+                          }
                         }}
                       />
                     </div>
 
                     {!isInPerson && (
-                      <Input
-                        {...register('metadata.ticket.event_address')}
-                        type="text"
-                        placeholder={'Zoom or Google Meet Link'}
-                      />
+                      <div className="space-y-2">
+                        <Input
+                          {...register('metadata.ticket.event_address')}
+                          type="text"
+                          disabled={isHuddleMeeting}
+                          placeholder={'Zoom or Google Meet Link'}
+                        />
+                        <Checkbox
+                          onChange={() => toggleHuddleMeeting()}
+                          label="Use Huddle01 as default"
+                          disabled={
+                            !huddleSupportedNetworks.includes(
+                              selectedHuddleNetwork.toUpperCase()
+                            )
+                          }
+                        />
+                        {!huddleSupportedNetworks.includes(
+                          selectedHuddleNetwork.toUpperCase()
+                        ) && (
+                          <>
+                            <div className="p-2 text-base text-red-700 bg-red-100 border border-red-700 rounded-xl">
+                              Huddle is only available on the{' '}
+                              {formatNetworks(huddleSupportedNetworks)}{' '}
+                              networks.
+                            </div>
+                          </>
+                        )}
+                      </div>
                     )}
+
+                    {!isInPerson && <></>}
 
                     {isInPerson && (
                       <Controller
