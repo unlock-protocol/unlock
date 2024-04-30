@@ -231,13 +231,6 @@ export const saveEvent = async (
 // Retrieve Huddle API key from project's configuration
 const huddleApiKey = config.huddleApiKey
 
-interface TokenGatedResponseSuccess {
-  message: string
-  data: {
-    roomId: string
-  }
-}
-
 /**
  * Creates a token-gated room for an event on the Huddle01 platform.
  * This function constructs a POST request to create a room that's accessible to only event attendees.
