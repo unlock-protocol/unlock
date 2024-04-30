@@ -7,6 +7,9 @@ import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
+// Configuration module for accessing project settings
+import config from '../config/config'
+import logger from '../logger'
 
 interface AttributeProps {
   value: string
@@ -223,4 +226,78 @@ export const saveEvent = async (
     await savedEvent.save()
   }
   return [savedEvent, !!created]
+}
+
+// Retrieve Huddle API key from project's configuration
+const huddleApiKey = config.huddleApiKey
+
+interface TokenGatedResponseSuccess {
+  message: string
+  data: {
+    roomId: string
+  }
+}
+
+/**
+ * Creates a token-gated room for an event on the Huddle01 platform.
+ * This function constructs a POST request to create a room that's accessible to only event attendees.
+ *
+ * @param {string} title - The title of the room.
+ * @param {string} chain - The blockchain chain on which the token exists (must be in uppercase).
+ * @param {string} contractAddress - The lock address.
+ * @throws {Error} Throws an error if the operation fails, either from network issues or API constraints.
+ * @returns {Promise<any>} A promise that resolves to the data of the newly created room if successful.
+ */
+export async function createTokenGatedRoom(
+  title: string,
+  chain: string,
+  contractAddress: string
+): Promise<any> {
+  // Ensure the API key is present before attempting the request
+  if (!huddleApiKey) {
+    throw new Error('Huddle API key is not defined.')
+  }
+
+  // Prepare headers for the HTTP request including the API key for authentication
+  const headers = {
+    'Content-type': 'application/json',
+    'x-api-key': huddleApiKey,
+  }
+
+  // Format the request body with necessary details for creating a token-gated room
+  const body = JSON.stringify({
+    title,
+    // Hardcoded to ERC721 – Unlock's lock token standard
+    tokenType: 'ERC721',
+    chain,
+    // Ensure the lock address is sent as an array
+    contractAddress: [contractAddress],
+  })
+
+  try {
+    const response = await fetch(
+      'https://api.huddle01.com/api/v1/create-room',
+      {
+        method: 'POST',
+        body,
+        headers,
+      }
+    )
+
+    const responseData = await response.json()
+
+    // Check if the API response was successful, throw an error if not
+    if (!response.ok) {
+      logger.error('API Error Response:', responseData)
+      const errorDetails = responseData.message || 'Unknown error occurred'
+      throw new Error(`Failed to create token gated room: ${errorDetails}`)
+    }
+
+    // Return the response data if the request was successful
+    return responseData
+  } catch (error) {
+    // Handle any errors that occur during fetch or JSON parsing
+    logger.error('Fetch or JSON parsing error:', error.message)
+    throw new Error(`Network or parsing error: ${error.message}`)
+  }
 }
