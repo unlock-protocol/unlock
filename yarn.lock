@@ -17332,7 +17332,7 @@ __metadata:
     react-dom: "npm:18.2.0"
     storybook: "npm:7.0.18"
     tsup: "npm:8.0.2"
-    tsx: "npm:4.7.1"
+    tsx: "npm:4.8.2"
     typescript: "npm:5.4.3"
     vite: "npm:5.2.7"
     vite-plugin-svgr: "npm:4.2.0"
@@ -27209,7 +27209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.20.1":
+"esbuild@npm:^0.20.1, esbuild@npm:~0.20.2":
   version: 0.20.2
   resolution: "esbuild@npm:0.20.2"
   dependencies:
@@ -30423,7 +30423,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.5.0, get-tsconfig@npm:^4.7.2":
+"get-tsconfig@npm:^4.5.0, get-tsconfig@npm:^4.7.2, get-tsconfig@npm:^4.7.3":
   version: 4.7.3
   resolution: "get-tsconfig@npm:4.7.3"
   dependencies:
@@ -49259,6 +49259,22 @@ __metadata:
   bin:
     tsx: dist/cli.mjs
   checksum: 10/3a462b595f31ae58b31f9c6e8c450577dc87660b1225012bd972b6b58d7d2f6c4034728763ebc53bb731acff68de8b0fa50586e4c1ec4c086226f1788ccf9b7d
+  languageName: node
+  linkType: hard
+
+"tsx@npm:4.8.2":
+  version: 4.8.2
+  resolution: "tsx@npm:4.8.2"
+  dependencies:
+    esbuild: "npm:~0.20.2"
+    fsevents: "npm:~2.3.3"
+    get-tsconfig: "npm:^4.7.3"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10/77f10c8c7a05dd3cdf159bd58f5c4a20074f62e45b5b0fac8becf79f47909693db26ceab12fd4249caae208c9109a75c75c2aff7ba61413a2080c7e0434f97d1
   languageName: node
   linkType: hard
 
