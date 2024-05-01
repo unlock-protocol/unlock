@@ -17807,7 +17807,7 @@ __metadata:
     "@walletconnect/client": "npm:1.8.0"
     "@walletconnect/ethereum-provider": "npm:2.11.3"
     "@walletconnect/modal": "npm:2.6.2"
-    "@xstate/react": "npm:4.1.0"
+    "@xstate/react": "npm:4.1.1"
     autoprefixer: "npm:10.4.19"
     axios: "npm:1.6.8"
     blockies-react-svg: "npm:0.0.13"
@@ -19160,19 +19160,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xstate/react@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@xstate/react@npm:4.1.0"
+"@xstate/react@npm:4.1.1":
+  version: 4.1.1
+  resolution: "@xstate/react@npm:4.1.1"
   dependencies:
     use-isomorphic-layout-effect: "npm:^1.1.2"
-    use-sync-external-store: "npm:^1.0.0"
+    use-sync-external-store: "npm:^1.2.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    xstate: ^5.6.2
+    xstate: ^5.11.0
   peerDependenciesMeta:
     xstate:
       optional: true
-  checksum: 10/f0db22bcd1514449ada2bc173b8cbb57c6758f8c16981d2f2d65f0061d9ad22a98135bd2473de8f8d24cfad0a48b6146172d4e84409095e6bc12c80aa76b9c90
+  checksum: 10/89591416ee615ece703adc9011b457609822eeb1dde8efc1deaa9d006bb2111147e4bf383999212d16d4b366edb3bfcf0b5f2247ca2e7e943f7150ae6a1f9855
   languageName: node
   linkType: hard
 
@@ -50420,7 +50420,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.0.0, use-sync-external-store@npm:^1.2.0":
+"use-sync-external-store@npm:1.2.0, use-sync-external-store@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-sync-external-store@npm:1.2.0"
   peerDependencies:
