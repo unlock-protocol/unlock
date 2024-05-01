@@ -308,14 +308,12 @@ export interface Props {
   onExit(): void
   onSignIn?(): void
   useIcon?: boolean
-  displayFooterOnSignUp?: boolean
 }
 
 export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
   useIcon = true,
-  displayFooterOnSignUp = true,
 }: Props) => {
   const [enteredEmail, setEnteredEmail] = useState('')
   const [isValidEmail, setIsValidEmail] = useState(false)
