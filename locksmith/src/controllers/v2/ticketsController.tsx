@@ -1,4 +1,5 @@
 import { Request, RequestHandler, Response } from 'express'
+import networks from '@unlock-protocol/networks'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
@@ -11,6 +12,8 @@ import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
 import { getVerifiersList } from '../../operations/verifierOperations'
 import { Verifier } from '../../models/verifier'
+import { getEventForLock } from '../../operations/eventOperations'
+import { notify } from '../../worker/helpers'
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -105,6 +108,41 @@ export class TicketsController {
           conflictFields: ['id', 'address'],
         }
       )
+
+      const event = await getEventForLock(
+        lockAddress,
+        network,
+        true /** includeProtected */
+      )
+
+      const web3Service = new Web3Service(networks)
+      const tokenOwner = await web3Service.ownerOf(lockAddress, id, network)
+
+      if (event?.data.notifyCheckInUrls) {
+        for (const url of event.data.notifyCheckInUrls) {
+          const response = await notify({
+            hookCallback: url,
+            body: {
+              ownerAddress: tokenOwner,
+              lockAddress,
+              network,
+              tokenId: id,
+              verifier: {
+                address: request.user!.walletAddress!,
+                name: verifier?.name,
+              },
+            },
+          })
+          if (response.status !== 200) {
+            logger.info(
+              `Received unxpected response when notifying ${url}: ${
+                response.status
+              } ${await response.text()}`
+            )
+          }
+        }
+      }
+
       return response.status(202).send({
         message: 'Ticket checked in',
       })
