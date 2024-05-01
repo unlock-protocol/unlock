@@ -40,7 +40,7 @@ export const Hosts = ({ organizers }: HostsProps) => {
                   >
                     {social.profileImage && (
                       <Image
-                        className="rounded-full border"
+                        className="rounded-full border object-cover aspect-1"
                         alt={social.profileName}
                         width={20}
                         height={20}
