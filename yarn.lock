@@ -17528,7 +17528,7 @@ __metadata:
     connect-timeout: "npm:1.9.0"
     cookie-parser: "npm:1.4.6"
     cors: "npm:2.8.5"
-    dayjs: "npm:1.11.10"
+    dayjs: "npm:1.11.11"
     dotenv: "npm:16.1.3"
     eslint: "npm:8.41.0"
     eslint-config-standard: "npm:17.1.0"
@@ -17813,7 +17813,7 @@ __metadata:
     blockies-react-svg: "npm:0.0.13"
     calendar-link: "npm:2.5.1"
     csv: "npm:6.3.8"
-    dayjs: "npm:1.11.10"
+    dayjs: "npm:1.11.11"
     deep-object-diff: "npm:1.1.9"
     dotenv: "npm:16.3.1"
     eslint: "npm:8.46.0"
@@ -17937,7 +17937,7 @@ __metadata:
     babel-plugin-require-context-hook: "npm:1.0.0"
     babel-preset-react-app: "npm:10.0.1"
     calendar-link: "npm:2.6.0"
-    dayjs: "npm:1.11.10"
+    dayjs: "npm:1.11.11"
     dotenv: "npm:16.4.5"
     embla-carousel-react: "npm:8.0.0"
     eslint: "npm:8.54.0"
@@ -25109,7 +25109,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:1.11.10, dayjs@npm:^1.9.3":
+"dayjs@npm:1.11.11":
+  version: 1.11.11
+  resolution: "dayjs@npm:1.11.11"
+  checksum: 10/f03948b172fbeed229837965988d1d5bac99c72a31c28731a457303259439f2f36289186489ae140adbeb10f591a926908c8de5d81eb449a2edbf5cbd6e9e30c
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.9.3":
   version: 1.11.10
   resolution: "dayjs@npm:1.11.10"
   checksum: 10/27e8f5bc01c0a76f36c656e62ab7f08c2e7b040b09e613cd4844abf03fb258e0350f0a83b02c887b84d771c1f11e092deda0beef8c6df2a1afbc3f6c1fade279
