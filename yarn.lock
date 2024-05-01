@@ -17362,7 +17362,7 @@ __metadata:
     prism-react-renderer: "npm:2.0.6"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
-    react-icons: "npm:5.0.1"
+    react-icons: "npm:5.2.0"
   languageName: unknown
   linkType: soft
 
@@ -43422,6 +43422,15 @@ __metadata:
   peerDependencies:
     react: "*"
   checksum: 10/c4458c643ae32a793ddebc5fa1235c7ec051be1b131205510e8199d15a4c89221a501f95a71fa21c2da93e8dd225290e2e24bb80abd3fb85801e43009e692098
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:5.2.0":
+  version: 5.2.0
+  resolution: "react-icons@npm:5.2.0"
+  peerDependencies:
+    react: "*"
+  checksum: 10/708c827dba6b10a27340792b4a1b51a6c9cd2aca2cf201207922fd64182bc93ccbf4cfebeb1e5e490da27a1d365772dcc4d51b1beab53db5a5385ce5ed1a278f
   languageName: node
   linkType: hard
 
