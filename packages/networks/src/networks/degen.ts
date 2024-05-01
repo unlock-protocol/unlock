@@ -10,9 +10,9 @@ export const degenChain: NetworkConfig = {
   hooks: {
     onKeyPurchaseHook: [
       {
-        address: '0xC4E6FDfe46CD1DF46801e080000a4897c42Fd75F',
-        id: HookType.PASSWORD_CAPPED,
-        name: 'Passwords with caps. Multiple passwords can be used per contract',
+        address: '0x246b87d54f3ad4d615cfb41d149222101bc87daD',
+        id: HookType.PASSWORD,
+        name: 'Password Hook',
       },
     ],
   },
@@ -34,7 +34,7 @@ export const degenChain: NetworkConfig = {
     studioName: '',
   },
 
-  unlockAddress: '',
+  unlockAddress: '0x74771a16f1571A0D68D01058E0a1A9C38b295D7d',
 }
 
 export default degenChain
