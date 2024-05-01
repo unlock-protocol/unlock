@@ -7,8 +7,8 @@ if [ $# -eq 0 ]; then
 fi
 
 # Check if the argument is 'worker' or 'server'
-if [ "$1" != "worker" ] && [ "$1" != "server" ]; then
-    echo "Invalid argument. Available options are 'worker' or 'server'."
+if [ "$1" != "worker" ] && [ "$1" != "server" ] && [ "$1" != "runner" ]; then
+    echo "Invalid argument. Available options are 'worker', 'server' or 'runner'."
     exit 1
 fi
 
@@ -31,6 +31,8 @@ fi
 # Prepare the command based on the argument
 if [ "$1" == "worker" ]; then
     command="op run --env-file=\"$env_file\" -- yarn tsx ./src/worker/server.ts"
+elif [ "$1" == "runner" ]; then
+    command="op run --env-file=\"$env_file\" -- yarn tsx $2"
 else
     command="op run --env-file=\"$env_file\" -- yarn tsx ./src/server.ts"
 fi

@@ -7,6 +7,7 @@
     "release": "./scripts/release.sh",
     "prod": "tsx -r ./config/envLoader.js ./src/server.ts",
     "start": "./scripts/start.sh server",
+    "runner": "./scripts/start.sh runner",
     "dev": "NODE_ENV=development yarn db:migrate && tsx watch -r ./config/envLoader.js src/server.ts",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
