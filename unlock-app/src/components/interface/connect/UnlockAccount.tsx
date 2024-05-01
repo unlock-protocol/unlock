@@ -365,7 +365,6 @@ export const ConnectUnlockAccount = ({
           onReturn={() => {
             signOut()
             deAuthenticate()
-            console.log('signing out')
             setAuthEmail('')
           }}
         />
