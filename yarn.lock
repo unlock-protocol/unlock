@@ -33,15 +33,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@airstack/airstack-react@npm:0.6.2":
-  version: 0.6.2
-  resolution: "@airstack/airstack-react@npm:0.6.2"
+"@airstack/airstack-react@npm:0.6.3":
+  version: 0.6.3
+  resolution: "@airstack/airstack-react@npm:0.6.3"
   dependencies:
     graphql: "npm:16.6.0"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/2d87b48237157b2b4bd4defde1ad34665f2247b1af9210b142a7df042a18b0e87476996e1e2e5b6b56023d3afee87504856a3ce4ac16402c1865776c9d88fbaf
+  checksum: 10/0bd0f02a6ebc0c6ce28258515e55e322adcd2f4a5d513cd37e54bff4dcfdeb6f9ee0b4c9db9e75a96706d0c550bee14d82a532738662ad80ec0c8fb27e11fded
   languageName: node
   linkType: hard
 
@@ -17768,7 +17768,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
-    "@airstack/airstack-react": "npm:0.6.2"
+    "@airstack/airstack-react": "npm:0.6.3"
     "@crossmint/client-sdk-react-ui": "npm:1.1.5"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:1.1.1"
