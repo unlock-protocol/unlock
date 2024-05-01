@@ -157,7 +157,7 @@ export const polygon: NetworkConfig = {
     oracle: {
       100: '0x8c0AC149FabEeC9b759a43fC7d301B1a1D8DE0d0',
       3000: '0x86399725a83bB14C47bB5ce8311Ed25378BAa162',
-      500: '0x35c6b8761c7D9af75Fa193daC09d5b7B5b34981d',
+      500: '0xfA3F427d2691ce680f96E6916a9Dac6c9042CBd2',
     },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',

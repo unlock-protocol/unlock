@@ -131,7 +131,7 @@ export const sepolia: NetworkConfig = {
     oracle: {
       100: '0x5D7109aF116eF9D95f107B25c401bCF3965b4027',
       3000: '0x59E399647F12bDec93875B32376dfBcA2E69d955',
-      500: '0x3A691355348DDC549515A7b538f3e85bCCdFe0B5',
+      500: '0x5Ff3C00d851daA690d5fE2a2328A81e4a8219e1a',
     },
     positionManager: '0x1238536071E1c677A632429e3655c799b22cDA52',
     universalRouterAddress: '0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD',
