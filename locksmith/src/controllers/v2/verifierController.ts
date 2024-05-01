@@ -11,6 +11,8 @@ const AddVerifierBody = z
   })
   .optional()
 
+// Deprecated methods to add verifier to lock only.
+
 export default class VerifierController {
   // for a lock manager to list all verifiers for a specicifc lock address
   async list(request: Request, response: Response) {
@@ -18,7 +20,7 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
 
-      const list = await VerifierOperations.getVerifiersList(
+      const list = await VerifierOperations.getVerifiersListForLock(
         lockAddress,
         network
       )
@@ -54,18 +56,19 @@ export default class VerifierController {
         request.user!.walletAddress!
       )
 
-      const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
-        lockAddress,
-        address,
-        network
-      )
+      const alreadyExists =
+        await VerifierOperations.isVerifierAlreadyExitsOnLock(
+          lockAddress,
+          address,
+          network
+        )
 
       if (alreadyExists) {
         return response.status(409).send({
           message: 'Verifier already exists',
         })
       } else {
-        const createdVerifier = await VerifierOperations.createVerifier(
+        const createdVerifier = await VerifierOperations.createVerifierForLock(
           lockAddress,
           address,
           loggedUserAddress,
@@ -89,19 +92,24 @@ export default class VerifierController {
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
 
-      const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
-        lockAddress,
-        address,
-        network
-      )
+      const alreadyExists =
+        await VerifierOperations.isVerifierAlreadyExitsOnLock(
+          lockAddress,
+          address,
+          network
+        )
 
       if (!alreadyExists) {
         return response.status(404).send({
           message: 'Verifier does not exists',
         })
       } else {
-        await VerifierOperations.deleteVerifier(lockAddress, address, network)
-        const list = await VerifierOperations.getVerifiersList(
+        await VerifierOperations.deleteVerifierForLock(
+          lockAddress,
+          address,
+          network
+        )
+        const list = await VerifierOperations.getVerifiersListForLock(
           lockAddress,
           network
         )
@@ -129,4 +137,30 @@ export default class VerifierController {
       enabled: true,
     })
   }
+}
+
+export const getEventVerifiers = async (
+  request: Request,
+  response: Response
+) => {
+  // Get verifiers on the event and on the lock... just in case there are any there!
+}
+
+export const addEventVerifier = async (
+  request: Request,
+  response: Response
+) => {
+  // Add verifier to the event
+  const addVerifierBody = await AddVerifierBody.parseAsync(request.body)
+
+  const name = addVerifierBody?.verifierName
+    ? addVerifierBody?.verifierName
+    : null
+}
+
+export const deleteEventVerifier = async (
+  request: Request,
+  response: Response
+) => {
+  // Remove verifier from the event
 }

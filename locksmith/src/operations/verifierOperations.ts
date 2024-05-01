@@ -7,7 +7,7 @@ import { Verifier } from '../models/verifier'
  * @param network
  * @returns boolean
  */
-export const isVerifierAlreadyExits = async (
+export const isVerifierAlreadyExitsOnLock = async (
   lockAddress: string,
   address: string,
   network: number
@@ -27,7 +27,7 @@ export const isVerifierAlreadyExits = async (
  * @param network
  * @returns
  */
-export const getVerifiersList = async (
+export const getVerifiersListForLock = async (
   lockAddress: string,
   network: number
 ): Promise<any[]> => {
@@ -54,7 +54,7 @@ export const getVerifiersList = async (
  * @param network
  * @returns
  */
-export const createVerifier = async (
+export const createVerifierForLock = async (
   lockAddress: string,
   address: string,
   lockManager: string,
@@ -78,7 +78,7 @@ export const createVerifier = async (
  * @param network
  * @returns
  */
-export const deleteVerifier = async (
+export const deleteVerifierForLock = async (
   lockAddress: string,
   address: string,
   network: number
@@ -92,7 +92,7 @@ export const deleteVerifier = async (
   })
 }
 
-export const isVerifier = async (
+export const isVerifierForLock = async (
   lockAddress: string,
   address: string,
   network: number
@@ -107,11 +107,11 @@ export const isVerifier = async (
 }
 
 const VerifierOperations = {
-  isVerifierAlreadyExits,
-  getVerifiersList,
-  createVerifier,
-  deleteVerifier,
-  isVerifier,
+  isVerifierAlreadyExitsOnLock,
+  getVerifiersListForLock,
+  createVerifierForLock,
+  deleteVerifierForLock,
+  isVerifierForLock,
 }
 
 export default VerifierOperations
