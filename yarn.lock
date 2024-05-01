@@ -17562,7 +17562,7 @@ __metadata:
     parse-data-uri: "npm:0.2.0"
     path-to-regexp: "npm:6.2.1"
     pg: "npm:8.11.4"
-    rate-limiter-flexible: "npm:5.0.0"
+    rate-limiter-flexible: "npm:5.0.3"
     react: "npm:18.2.0"
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
@@ -43071,10 +43071,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limiter-flexible@npm:5.0.0":
-  version: 5.0.0
-  resolution: "rate-limiter-flexible@npm:5.0.0"
-  checksum: 10/66d254f47bd68639c65e4ee567a8fe6d6cbee9222e69eb191ed5a2a92e7a65bb152afe238d74c2c5a530afdae4461e520cd819484c95be6627dd051c84866bc6
+"rate-limiter-flexible@npm:5.0.3":
+  version: 5.0.3
+  resolution: "rate-limiter-flexible@npm:5.0.3"
+  checksum: 10/70af67093dcc38c425ace64e46dd5cffaddbef6c5a7606be15be353a6217286d4b3dcb2fa2b71ff23ec99ca718e91e217863c69a95f7a0dfa7dbcf8e2e2ae99b
   languageName: node
   linkType: hard
 
