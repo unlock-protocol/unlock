@@ -31,7 +31,6 @@ import { FaRegEdit as EditIcon } from 'react-icons/fa'
 import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { IconType } from 'react-icons'
-import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
@@ -216,7 +215,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
-  const verificationLink = `/verification`
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -267,7 +265,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                     </a>
                     <Link href={checkoutLink} className="text-left">
                       <PopoverItem
-                        label="Create Checkout URL"
+                        label="Checkout URLs"
                         description="Customize your member's purchase journey"
                         icon={RightArrowIcon}
                       />
@@ -289,13 +287,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         </Link>
                       </>
                     )}
-                    <Link href={verificationLink} className="text-left">
-                      <PopoverItem
-                        label="Verification"
-                        description="Scan and verify the authentication of tickets for your events"
-                        icon={ScanIcon}
-                      />
-                    </Link>
                   </div>
                 </div>
               </Popover.Panel>

@@ -10,6 +10,7 @@ import { PaywallConfigType, Event } from '@unlock-protocol/core'
 import { General } from './General'
 import { Referrals } from './Referrals'
 import { Emails } from './Emails'
+import { Verifiers } from './Verifiers'
 import Link from 'next/link'
 
 interface EventSettingsProps {
@@ -49,6 +50,12 @@ export const EventSettings = ({
       label: 'Emails',
       description: `Configure and send emails to the attendees of your event.`,
       children: <Emails event={event} checkoutConfig={checkoutConfig} />,
+    },
+    {
+      id: 'verifiers',
+      label: 'Verifiers',
+      description: `Add verifiers!`,
+      children: <Verifiers event={event} checkoutConfig={checkoutConfig} />,
     },
     // {
     //   id: 'checkout',

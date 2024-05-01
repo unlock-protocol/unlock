@@ -862,10 +862,11 @@ paths:
 
   /v2/api/verifier/list/{network}/{lockAddress}:
     get:
+      deprecated: true
       operationId: verifiers
       security:
         - User: ['lockManager']
-      description: List of verifiers for the lock address.
+      description: List of verifiers for the lock address. (deprecated in favor of /v2/events/{slug}/verifiers)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -893,10 +894,11 @@ paths:
 
   /v2/api/verifier/{network}/{lockAddress}/{verifierAddress}:
     put:
+      deprecated: true
       operationId: createVerifier
       security:
         - User: ['lockManager']
-      description: Create verifier.
+      description: Create verifier. (deprecated in favor of /v2/events/{slug}/verifiers/{verifierAddress})
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -929,10 +931,11 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
     delete:
+      deprecated: true
       operationId: deleteVerifier
       security:
         - User: []
-      description: Remove verifier.
+      description: Remove verifier. (deprecated in favor of /v2/events/{slug}/verifiers/{verifierAddress})
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -960,10 +963,11 @@ paths:
 
   /v2/api/verifier/{network}/lock/{lockAddress}/address/{verifierAddress}:
     get:
+      deprecated: true
       operationId: verifier
       security:
         - User: ['lockManager']
-      description: Check if an address is a verifier of the lock.
+      description: Check if an address is a verifier of the lock. (deprecated in favor of /v2/events/{slug}/verifiers/{verifierAddress})
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -979,6 +983,102 @@ paths:
                   enabled:
                     type: boolean
                     default: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}/verifiers:
+    get:
+      deprecated: true
+      operationId: verifiers
+      security:
+        - User: ['lockManager']
+      description: List of verifiers for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        200:
+          description: 'List of verifier addresses'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Verifier'
+
+        204:
+          $ref: '#/components/responses/204.Empty'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}/verifiers/{verifierAddress}:
+    put:
+      operationId: addEventVerifier
+      security:
+        - User: ['lockManager']
+      description: Adds a verifier for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/VerifierAddress'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
+      responses:
+        201:
+          description: Added verifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verifier'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+    delete:
+      operationId: deleteEventVerifier
+      security:
+        - User: []
+      description: Removes a verifier for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/VerifierAddress'
+      responses:
+        200:
+          description: List of remaining verifiers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Verifier'
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 
@@ -2947,9 +3047,9 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  # TODO: Deprecate me!
   /v2/events/{network}/{lockAddress}:
     get:
+      deprecated: true
       operationId: getEventDetails
       description: Get the event details from lock
       parameters:
