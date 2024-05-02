@@ -114,21 +114,22 @@ export const getReceipt = async (txHash: string) => {
   } = await subgraph.query({
     query: getReceiptQuery,
     variables: {
-      id: txHash,
+      id: txHash.toLowerCase(),
     },
   })
   return receipt
 }
 
-const getLocksQuery = gql`
-  query Locks($first: Int = 1) {
-    locks(first: $first) {
+export const getLocks = async (first = 100, isErc20 = false) => {
+  const getLocksQuery = gql`query Locks($first: Int = 1) {
+    locks(first: $first, where: {${
+      isErc20 ? `tokenAddress_not_contains` : `tokenAddress_contains`
+    }: "0000000000000000000000000000000000000000" }) {
       tokenAddress
       address
     }
   }
 `
-export const getLocks = async (first = 100) => {
   const { data } = await subgraph.query({
     query: getLocksQuery,
     variables: {

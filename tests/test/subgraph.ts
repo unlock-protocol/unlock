@@ -29,7 +29,7 @@ describe('Unlock', function () {
     })
     it('subgraph store info correctly', async () => {
       // wait 2 sec for subgraph to index
-      await awaitTimeout(2000)
+      await awaitTimeout(3000)
       const [signer] = await ethers.getSigners()
 
       const lockAddress = await lock.getAddress()
@@ -54,7 +54,7 @@ describe('Unlock', function () {
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
 
       // wait for a bit so events from the new lock are processed
-      await awaitTimeout(2000)
+      await awaitTimeout(3000)
       const lockInGraphAgain = await subgraph.getLock(lockAddress)
 
       expect(lockInGraphAgain.lockManagers).to.deep.equals([
@@ -73,7 +73,7 @@ describe('Keep track of total keys', function () {
   })
   describe('totalKeys', () => {
     it('default to zero ', async () => {
-      await awaitTimeout(2000)
+      await awaitTimeout(3000)
       const lockInGraph = await subgraph.getLock(lockAddress)
       expect(parseInt(lockInGraph.totalKeys)).to.equals(0)
     })
@@ -82,7 +82,7 @@ describe('Keep track of total keys', function () {
       let keyOwners: [string]
       before(async () => {
         ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
-        await awaitTimeout(2000)
+        await awaitTimeout(3000)
       })
       it('increase by the number of keys purchased', async () => {
         const lockInGraph = await subgraph.getLock(lockAddress)
@@ -91,7 +91,7 @@ describe('Keep track of total keys', function () {
       it('decrease when keys are burnt', async () => {
         const keyOwner = await ethers.getSigner(keyOwners[0])
         await lock.connect(keyOwner).getFunction('burn')(tokenIds[0])
-        await awaitTimeout(2000)
+        await awaitTimeout(3000)
         const lockInGraph = await subgraph.getLock(lockAddress)
         expect(parseInt(lockInGraph.totalKeys)).to.equals(2)
       })
@@ -124,7 +124,7 @@ describe('Upgrade a lock', function () {
   })
   it('subgraph update lock info correctly after upgrade', async () => {
     const lockAddress = await lock.getAddress()
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const lockInGraph = await subgraph.getLock(lockAddress)
     expect(parseInt(lockInGraph.version)).to.equals(prevVersion)
 
@@ -152,7 +152,7 @@ describe('key cancellation', function () {
   })
 
   it('deletes item correctly from subgraph', async () => {
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[1])
     expect(keyInGraph).to.not.be.null
     expect(keyInGraph.cancelled).to.be.false
@@ -162,7 +162,7 @@ describe('key cancellation', function () {
     await lock.connect(keyOwner).getFunction('cancelAndRefund')(tokenIds[1])
     expect(await lock.isValidKey(tokenIds[1])).to.be.false
 
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const keyInGraphAfterCancellation = await subgraph.getKey(
       lockAddress,
       tokenIds[1]
@@ -186,7 +186,7 @@ describe('(v12) Lock config', function () {
     expect(await lock.maxNumberOfKeys()).to.equals(lockParams.maxNumberOfKeys)
     expect(await lock.maxKeysPerAddress()).to.equals(1)
 
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const lockInGraph = await subgraph.getLock(lockAddress)
     expect(parseInt(lockInGraph.expirationDuration)).to.equals(
       lockParams.expirationDuration
@@ -205,7 +205,7 @@ describe('(v12) Lock config', function () {
     }
 
     await lock.updateLockConfig(...Object.values(config))
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const lockInGraph = await subgraph.getLock(lockAddress)
     expect(parseInt(lockInGraph.expirationDuration)).to.equals(
       config.expirationDuration
@@ -233,10 +233,10 @@ describe('Keep track of changes in metadata', function () {
 
     // purchase a bunch of keys
     ;({ tokenIds } = await purchaseKeys(lockAddress, 3))
+    await awaitTimeout(3000)
   })
   describe('defaults', () => {
     before(async () => {
-      await awaitTimeout(2000)
       lockInGraph = await subgraph.getLock(lockAddress)
     })
     it('name is correct ', async () => {
@@ -272,7 +272,7 @@ describe('Keep track of changes in metadata', function () {
 
     before(async () => {
       await lock.setLockMetadata(...Object.values(metadata))
-      await awaitTimeout(2000)
+      await awaitTimeout(3000)
       lockInGraph = await subgraph.getLock(lockAddress)
     })
     it('set correctly', async () => {
@@ -290,11 +290,7 @@ describe('Keep track of changes in metadata', function () {
 
 describe('Receipts', function () {
   it('created the receipt successfully for a native currency lock', async () => {
-    const locks = await subgraph.getLocks()
-    const lockAddress = locks.find(
-      (lock: any) =>
-        lock.tokenAddress === '0x0000000000000000000000000000000000000000'
-    ).address
+    const [{ address: lockAddress }, ,] = await subgraph.getLocks(1)
     const lock = await unlock.getLockContract(lockAddress)
 
     // purchase a key
@@ -304,12 +300,12 @@ describe('Receipts', function () {
       await ethers.Wallet.createRandom().getAddress()
     )
     // wait for subgraph to index
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const receiptInGraph = await subgraph.getReceipt(transactionHash)
 
     expect(receiptInGraph.tokenAddress).to.equals(await lock.tokenAddress())
     expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
-      await lock.address.toLocaleLowerCase()
+      (await lock.getAddress()).toLocaleLowerCase()
     )
     expect(receiptInGraph.sender).to.equal(payer.address.toLocaleLowerCase())
     expect(receiptInGraph.payer).to.equal(payer.address.toLocaleLowerCase())
@@ -318,11 +314,7 @@ describe('Receipts', function () {
   })
 
   it('created the receipt successfully for an ERC20 currency lock', async () => {
-    const locks = await subgraph.getLocks()
-    const lockAddress = locks.find(
-      (lock: any) =>
-        lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
-    ).address
+    const [{ address: lockAddress }, ,] = await subgraph.getLocks(1, true)
     const lock = await unlock.getLockContract(lockAddress)
 
     // purchase a key
@@ -341,14 +333,14 @@ describe('Receipts', function () {
       ethers.Wallet.createRandom().address // buying for someone else!
     )
     // wait for subgraph to index
-    await awaitTimeout(2000)
+    await awaitTimeout(3000)
     const receiptInGraph = await subgraph.getReceipt(transactionHash)
 
     expect(receiptInGraph.tokenAddress.toLocaleLowerCase()).to.equals(
       (await lock.tokenAddress()).toLocaleLowerCase()
     )
     expect(receiptInGraph.lockAddress.toLocaleLowerCase()).to.equals(
-      await lock.address.toLocaleLowerCase()
+      (await lock.getAddress()).toLocaleLowerCase()
     )
     expect(receiptInGraph.sender).to.equal(payer.address.toLocaleLowerCase())
     expect(receiptInGraph.payer).to.equal(payer.address.toLocaleLowerCase())

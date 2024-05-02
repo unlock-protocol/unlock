@@ -28,14 +28,14 @@ export const purchaseKey = async (
     }
   )
   // get token ids
-  const { logs, blockNumber, transactionHash } = await tx.wait()
+  const { logs, blockNumber, hash } = await tx.wait()
   const { args } = logs.find(
     ({ fragment }: any) => fragment && fragment.name === 'Transfer'
   )
 
   const { tokenId, from, to } = args
 
-  return { tokenId, blockNumber, from, to, transactionHash }
+  return { tokenId, blockNumber, from, to, transactionHash: hash }
 }
 
 export const purchaseKeys = async (
