@@ -106,12 +106,26 @@ export const isVerifierForLock = async (
   })
 }
 
+export const getEventVerifiers = async (slug: string) => {
+  // Get the unique verifiers for the event based on the slug
+}
+
+export const addEventVerifier = async (
+  slug: string,
+  address: string,
+  loggedUserAddress: string,
+  name: string
+) => {
+  // Add a verifiers
+}
+
 const VerifierOperations = {
   isVerifierAlreadyExitsOnLock,
   getVerifiersListForLock,
   createVerifierForLock,
   deleteVerifierForLock,
   isVerifierForLock,
+  getEventVerifiers,
 }
 
 export default VerifierOperations

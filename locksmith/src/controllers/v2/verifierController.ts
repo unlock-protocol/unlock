@@ -139,23 +139,49 @@ export default class VerifierController {
   }
 }
 
+// Returns a list of verifiers for an event
 export const getEventVerifiers = async (
   request: Request,
   response: Response
 ) => {
-  // Get verifiers on the event and on the lock... just in case there are any there!
+  const slug = request.params.slug
+
+  const list = await VerifierOperations.getEventVerifiers(slug)
+
+  if (list) {
+    return response.status(200).send({
+      results: list,
+    })
+  } else {
+    return response.sendStatus(204)
+  }
 }
 
+// Adds a verifier to an event
 export const addEventVerifier = async (
   request: Request,
   response: Response
 ) => {
-  // Add verifier to the event
+  const slug = request.params.slug
+  const address = request.params.address
+
+  const loggedUserAddress = Normalizer.ethereumAddress(
+    request.user!.walletAddress!
+  )
   const addVerifierBody = await AddVerifierBody.parseAsync(request.body)
 
   const name = addVerifierBody?.verifierName
     ? addVerifierBody?.verifierName
     : null
+
+  const createdVerifier = await VerifierOperations.addEventVerifier(
+    slug,
+    address,
+    loggedUserAddress,
+    name
+  )
+
+  return response.status(201).send(createdVerifier)
 }
 
 export const deleteEventVerifier = async (

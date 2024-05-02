@@ -25,6 +25,14 @@ router.post(
 )
 
 router.get('/:slug/verifiers', getEventVerifiers)
-router.put('/:slug/verifiers/:address', addEventVerifier)
-router.delete('/:slug/verifiers/:address', deleteEventVerifier)
+router.put(
+  '/:slug/verifiers/:address',
+  eventOrganizerMiddleware,
+  addEventVerifier
+)
+router.delete(
+  '/:slug/verifiers/:address',
+  eventOrganizerMiddleware,
+  deleteEventVerifier
+)
 export default router
