@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Contract } from 'ethers'
+import { Contract, getAddress } from 'ethers'
 import { unlock, ethers } from 'hardhat'
 
 import { lockParams } from './helpers/fixtures'
@@ -36,8 +36,8 @@ describe('Unlock', function () {
 
       const lockInGraph = await subgraph.getLock(lockAddress)
 
-      expect(lockInGraph.id).to.equals(lockAddress)
-      expect(lockInGraph.address).to.equals(lockAddress)
+      expect(lockInGraph.id).to.equals(lockAddress.toLowerCase())
+      expect(getAddress(lockInGraph.address)).to.equals(getAddress(lockAddress))
       expect(lockInGraph.price).to.equals(lockParams.keyPrice.toString())
       expect(lockInGraph.tokenAddress).to.equals(
         lockParams.currencyContractAddress
@@ -103,28 +103,30 @@ describe('Upgrade a lock', function () {
   let lock: Contract
   let unlockContract: Contract
   let latestVersion: number
+  let prevVersion: number
 
   before(async () => {
     unlockContract = await unlock.getUnlockContract()
     latestVersion = await unlockContract.publicLockLatestVersion()
+    prevVersion = parseInt(latestVersion.toString()) - 1
 
     // deploy a previous version
-    await unlock.deployAndSetTemplate(latestVersion - 1, 1)
+    await unlock.deployAndSetTemplate(prevVersion, 1)
 
     // create a lock with an older version
     ;({ lock } = await unlock.createLock({
       ...lockParams,
-      version: latestVersion - 1,
+      version: prevVersion,
     }))
     expect(await unlock.getLockVersion(await lock.getAddress())).to.equals(
-      latestVersion - 1
+      prevVersion
     )
   })
   it('subgraph update lock info correctly after upgrade', async () => {
     const lockAddress = await lock.getAddress()
     await awaitTimeout(2000)
     const lockInGraph = await subgraph.getLock(lockAddress)
-    expect(parseInt(lockInGraph.version)).to.equals(latestVersion - 1)
+    expect(parseInt(lockInGraph.version)).to.equals(prevVersion)
 
     // upgrade the lock
     await unlockContract.upgradeLock(lockAddress, latestVersion)
@@ -333,7 +335,7 @@ describe('Receipts', function () {
       payer
     )
     // Approve ERC20
-    await erc20.approve(lockAddress, ethers.constants.MaxUint256)
+    await erc20.approve(lockAddress, ethers.MaxUint256)
     const { transactionHash } = await purchaseKey(
       lockAddress,
       ethers.Wallet.createRandom().address // buying for someone else!
