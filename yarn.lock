@@ -6130,7 +6130,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eth-optimism/sdk@npm:3.3.0":
+"@eth-optimism/sdk@npm:3.3.0, @eth-optimism/sdk@npm:^3.2.2":
   version: 3.3.0
   resolution: "@eth-optimism/sdk@npm:3.3.0"
   dependencies:
@@ -16310,6 +16310,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/brotli@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "@types/brotli@npm:1.3.4"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/4ff49c2cefb40d6e745e5b4e110c12587fc8f25a6c71220b10f60406ff9905dbf21d796180d1bfbdb266d98b73d8947a734597560c56b9d70432963d7301ffa5
+  languageName: node
+  linkType: hard
+
 "@types/cacheable-request@npm:^6.0.1, @types/cacheable-request@npm:^6.0.2":
   version: 6.0.3
   resolution: "@types/cacheable-request@npm:6.0.3"
@@ -17989,6 +17998,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uniswap/default-token-list@npm:^11.13.0":
+  version: 11.19.0
+  resolution: "@uniswap/default-token-list@npm:11.19.0"
+  checksum: 10/74ebc1d3850f265342bc629a26007919f5e92e62bed28efedb6218f58418906cbb80bb3add4986eea1ddee1099e848ec918da7c0a0ce8277b183d4e5513907e0
+  languageName: node
+  linkType: hard
+
 "@uniswap/default-token-list@npm:^11.2.0":
   version: 11.17.0
   resolution: "@uniswap/default-token-list@npm:11.17.0"
@@ -18103,7 +18119,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/swap-router-contracts@npm:^1.1.0, @uniswap/swap-router-contracts@npm:^1.2.1, @uniswap/swap-router-contracts@npm:^1.3.0":
+"@uniswap/smart-order-router@npm:3.28.8":
+  version: 3.28.8
+  resolution: "@uniswap/smart-order-router@npm:3.28.8"
+  dependencies:
+    "@eth-optimism/sdk": "npm:^3.2.2"
+    "@types/brotli": "npm:^1.3.4"
+    "@uniswap/default-token-list": "npm:^11.13.0"
+    "@uniswap/permit2-sdk": "npm:^1.2.0"
+    "@uniswap/router-sdk": "npm:^1.9.0"
+    "@uniswap/sdk-core": "npm:^4.2.0"
+    "@uniswap/swap-router-contracts": "npm:^1.3.1"
+    "@uniswap/token-lists": "npm:^1.0.0-beta.31"
+    "@uniswap/universal-router": "npm:^1.6.0"
+    "@uniswap/universal-router-sdk": "npm:^1.8.2"
+    "@uniswap/v2-sdk": "npm:^4.3.0"
+    "@uniswap/v3-sdk": "npm:^3.11.0"
+    async-retry: "npm:^1.3.1"
+    await-timeout: "npm:^1.1.1"
+    axios: "npm:^0.21.1"
+    brotli: "npm:^1.3.3"
+    bunyan: "npm:^1.8.15"
+    bunyan-blackhole: "npm:^1.1.1"
+    ethers: "npm:^5.7.2"
+    graphql: "npm:^15.5.0"
+    graphql-request: "npm:^3.4.0"
+    lodash: "npm:^4.17.21"
+    mnemonist: "npm:^0.38.3"
+    node-cache: "npm:^5.1.2"
+    stats-lite: "npm:^2.2.0"
+  peerDependencies:
+    jsbi: ^3.2.0
+  checksum: 10/8ed6267fbec769a6006b3b0a9c2348712093b92c980234dfd052b29ce03c261c8e75f01be59a798e806b08ca52b98d62a7aef7ec5d9a07bb87b98c846e33d51a
+  languageName: node
+  linkType: hard
+
+"@uniswap/swap-router-contracts@npm:^1.1.0, @uniswap/swap-router-contracts@npm:^1.2.1, @uniswap/swap-router-contracts@npm:^1.3.0, @uniswap/swap-router-contracts@npm:^1.3.1":
   version: 1.3.1
   resolution: "@uniswap/swap-router-contracts@npm:1.3.1"
   dependencies:
@@ -18124,7 +18175,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/universal-router-sdk@npm:^1.5.8":
+"@uniswap/universal-router-sdk@npm:^1.5.8, @uniswap/universal-router-sdk@npm:^1.8.2":
   version: 1.9.0
   resolution: "@uniswap/universal-router-sdk@npm:1.9.0"
   dependencies:
@@ -18140,7 +18191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/universal-router@npm:1.6.0, @uniswap/universal-router@npm:^1.0.1":
+"@uniswap/universal-router@npm:1.6.0, @uniswap/universal-router@npm:^1.0.1, @uniswap/universal-router@npm:^1.6.0":
   version: 1.6.0
   resolution: "@uniswap/universal-router@npm:1.6.0"
   dependencies:
@@ -18435,7 +18486,7 @@ __metadata:
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
     "@uniswap/permit2-sdk": "npm:1.2.1"
     "@uniswap/sdk-core": "npm:4.2.1"
-    "@uniswap/smart-order-router": "npm:3.17.4"
+    "@uniswap/smart-order-router": "npm:3.28.8"
     "@uniswap/v3-sdk": "npm:3.11.1"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -22214,7 +22265,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"base64-js@npm:^1.0.2, base64-js@npm:^1.3.1":
+"base64-js@npm:^1.0.2, base64-js@npm:^1.1.2, base64-js@npm:^1.3.1":
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 10/669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
@@ -22710,6 +22761,15 @@ __metadata:
   version: 1.1.0
   resolution: "brorand@npm:1.1.0"
   checksum: 10/8a05c9f3c4b46572dec6ef71012b1946db6cae8c7bb60ccd4b7dd5a84655db49fe043ecc6272e7ef1f69dc53d6730b9e2a3a03a8310509a3d797a618cbee52be
+  languageName: node
+  linkType: hard
+
+"brotli@npm:^1.3.3":
+  version: 1.3.3
+  resolution: "brotli@npm:1.3.3"
+  dependencies:
+    base64-js: "npm:^1.1.2"
+  checksum: 10/78b412f54be3c96b86e2d9805ddc26aa5a52bba45588ff7f8468b80aa84c90052c60eeb2e26ad032c39bab6baa58e0b0625cf4f738279961a31c34cbe4b4b490
   languageName: node
   linkType: hard
 
