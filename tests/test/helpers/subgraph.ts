@@ -7,6 +7,7 @@ import {
 } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
 import { genKeyId } from './keys'
+import type { BigNumber } from 'ethers'
 
 import { localhost } from '@unlock-protocol/networks'
 
@@ -61,7 +62,7 @@ export const getLock = async (lockAddress: string) => {
   } = await subgraph.query({
     query: getLockQuery,
     variables: {
-      id: lockAddress.toLowerCase(),
+      id: lockAddress,
     },
   })
   return lock
@@ -81,8 +82,8 @@ const getKeyQuery = gql`
     }
   }
 `
-export const getKey = async (lockAddress: string, tokenId: bigint) => {
-  const keyId = genKeyId(lockAddress.toLowerCase(), tokenId)
+export const getKey = async (lockAddress: string, tokenId: BigNumber) => {
+  const keyId = genKeyId(lockAddress, tokenId)
   const {
     data: { key },
   } = await subgraph.query({
@@ -114,22 +115,21 @@ export const getReceipt = async (txHash: string) => {
   } = await subgraph.query({
     query: getReceiptQuery,
     variables: {
-      id: txHash.toLowerCase(),
+      id: txHash,
     },
   })
   return receipt
 }
 
-export const getLocks = async (first = 100, isErc20 = false) => {
-  const getLocksQuery = gql`query Locks($first: Int = 1) {
-    locks(first: $first, where: {${
-      isErc20 ? `tokenAddress_not_contains` : `tokenAddress_contains`
-    }: "0000000000000000000000000000000000000000" }) {
+const getLocksQuery = gql`
+  query Locks($first: Int = 1) {
+    locks(first: $first) {
       tokenAddress
       address
     }
   }
 `
+export const getLocks = async (first = 100) => {
   const { data } = await subgraph.query({
     query: getLocksQuery,
     variables: {
