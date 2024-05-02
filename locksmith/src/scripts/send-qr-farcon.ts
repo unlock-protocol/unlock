@@ -14,8 +14,8 @@ const run = async () => {
     filters: {},
     loggedInUserAddress: '0xF5C28ce24Acf47849988f147d5C75787c0103534',
   })
-  console.log(keys.length, total)
-  for (let i = 251; i < keys.length; i++) {
+
+  for (let i = 0; i < keys.length; i++) {
     const key = keys[i]
     const sent = await notifyNewKeyToWedlocks(
       {
@@ -29,7 +29,6 @@ const run = async () => {
       },
       network
     )
-    console.log(i, sent)
   }
   logger.info('Runner done!')
 }
