@@ -2,7 +2,7 @@
   "name": "provider",
   "devDependencies": {
     "@cloudflare/workers-types": "4.20230922.0",
-    "@types/node": "20.10.1",
+    "@types/node": "20.12.8",
     "@unlock-protocol/networks": "workspace:^",
     "ethers": "5.7.2",
     "typescript": "5.4.3",
