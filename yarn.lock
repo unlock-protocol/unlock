@@ -18416,7 +18416,7 @@ __metadata:
     arb-shared-dependencies: "npm:1.0.0"
     eslint: "npm:8.57.0"
     ethers: "npm:6.10.0"
-    ethers5: "npm:ethers@5.7.2"
+    ethers5: "npm:ethers@6.12.1"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
     zksync-ethers: "npm:6.1.0"
@@ -29402,7 +29402,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers5@npm:ethers@5.7.2, ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.6.9, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
+"ethers5@npm:ethers@6.12.1, ethers@npm:6.12.1":
+  version: 6.12.1
+  resolution: "ethers@npm:6.12.1"
+  dependencies:
+    "@adraffy/ens-normalize": "npm:1.10.1"
+    "@noble/curves": "npm:1.2.0"
+    "@noble/hashes": "npm:1.3.2"
+    "@types/node": "npm:18.15.13"
+    aes-js: "npm:4.0.0-beta.5"
+    tslib: "npm:2.4.0"
+    ws: "npm:8.5.0"
+  checksum: 10/2995766164292b531499764d319d753b1f4e1cd7ddb4f26c6557a26e42947d5642a4b3bbeace0b8bb398b909dc22fafa4f52d5190a9bb8180bebf2dd3d4d48a9
+  languageName: node
+  linkType: hard
+
+"ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.6.9, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -29452,21 +29467,6 @@ __metadata:
     tslib: "npm:2.4.0"
     ws: "npm:8.5.0"
   checksum: 10/04fdd3f76ea93a8b45b2fe4d9c8e2bd0d688823faba672897dd19cc3303c202a166902fe6058004562f13aaecf9f77a9f70ff113f995e94107efef2457b016dd
-  languageName: node
-  linkType: hard
-
-"ethers@npm:6.12.1":
-  version: 6.12.1
-  resolution: "ethers@npm:6.12.1"
-  dependencies:
-    "@adraffy/ens-normalize": "npm:1.10.1"
-    "@noble/curves": "npm:1.2.0"
-    "@noble/hashes": "npm:1.3.2"
-    "@types/node": "npm:18.15.13"
-    aes-js: "npm:4.0.0-beta.5"
-    tslib: "npm:2.4.0"
-    ws: "npm:8.5.0"
-  checksum: 10/2995766164292b531499764d319d753b1f4e1cd7ddb4f26c6557a26e42947d5642a4b3bbeace0b8bb398b909dc22fafa4f52d5190a9bb8180bebf2dd3d4d48a9
   languageName: node
   linkType: hard
 
