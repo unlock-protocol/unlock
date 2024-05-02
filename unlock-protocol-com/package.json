@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.21.5",
-    "@headlessui/react": "1.7.18",
+    "@headlessui/react": "1.7.19",
     "@observablehq/plot": "0.6.14",
     "@radix-ui/react-avatar": "1.0.4",
     "@tanstack/react-query": "4.36.1",
@@ -20,7 +20,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
     "calendar-link": "2.6.0",
-    "dayjs": "1.11.10",
+    "dayjs": "1.11.11",
     "dotenv": "16.4.5",
     "embla-carousel-react": "8.0.0",
     "eslint": "8.54.0",
