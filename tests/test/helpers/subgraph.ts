@@ -82,7 +82,7 @@ const getKeyQuery = gql`
   }
 `
 export const getKey = async (lockAddress: string, tokenId: bigint) => {
-  const keyId = genKeyId(lockAddress, tokenId)
+  const keyId = genKeyId(lockAddress.toLowerCase(), tokenId)
   const {
     data: { key },
   } = await subgraph.query({
