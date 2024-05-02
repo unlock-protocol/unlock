@@ -5846,7 +5846,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:^8.46.0":
+"@eslint/js@npm:8.57.0, @eslint/js@npm:^8.46.0":
   version: 8.57.0
   resolution: "@eslint/js@npm:8.57.0"
   checksum: 10/3c501ce8a997cf6cbbaf4ed358af5492875e3550c19b9621413b82caa9ae5382c584b0efa79835639e6e0ddaa568caf3499318e5bdab68643ef4199dce5eb0a0
@@ -6569,9 +6569,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.68.5":
-  version: 0.68.5
-  resolution: "@graphprotocol/graph-cli@npm:0.68.5"
+"@graphprotocol/graph-cli@npm:0.71.0":
+  version: 0.71.0
+  resolution: "@graphprotocol/graph-cli@npm:0.71.0"
   dependencies:
     "@float-capital/float-subgraph-uncrashable": "npm:^0.0.0-alpha.4"
     "@oclif/core": "npm:2.8.6"
@@ -6602,16 +6602,16 @@ __metadata:
     yaml: "npm:1.10.2"
   bin:
     graph: bin/run
-  checksum: 10/231f18a26986ffc4102920ec252dea1a09db5fa0389a16e35b23c7b36f1fca86b5c1e3e37984c3ab31fc32f62ca86cbd7fb866aa001969d4dab4e8362d4958a7
+  checksum: 10/88c59c4874b0a951d3e9d6682de3a0dbcef775b2601f9bf9ea166ab9903d1e594d3587823d119684001a159655c55f2f5cc707e64cc4d73d9f363c32cfb32891
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:0.31.0":
-  version: 0.31.0
-  resolution: "@graphprotocol/graph-ts@npm:0.31.0"
+"@graphprotocol/graph-ts@npm:0.35.1":
+  version: 0.35.1
+  resolution: "@graphprotocol/graph-ts@npm:0.35.1"
   dependencies:
     assemblyscript: "npm:0.19.10"
-  checksum: 10/624f672e2f0e4d35a6752df1fa6d8208216205ffc412d2506e6bfdb59802a044646007fb6fcd21abda4cc219abad0b180635118070a74b44261c71d6dd859f2a
+  checksum: 10/a1c83c689c96748c0565693eceb388a0a10872b71fe1daa4c0cf41504374fe8fdb227f92183353f3429361541771b6cabc0c213d7ebcbd94112c89a483435476
   languageName: node
   linkType: hard
 
@@ -7333,7 +7333,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@humanwhocodes/config-array@npm:^0.11.10, @humanwhocodes/config-array@npm:^0.11.13, @humanwhocodes/config-array@npm:^0.11.8":
+"@humanwhocodes/config-array@npm:^0.11.10, @humanwhocodes/config-array@npm:^0.11.13, @humanwhocodes/config-array@npm:^0.11.14, @humanwhocodes/config-array@npm:^0.11.8":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
   dependencies:
@@ -17777,11 +17777,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": "npm:0.68.5"
-    "@graphprotocol/graph-ts": "npm:0.31.0"
+    "@graphprotocol/graph-cli": "npm:0.71.0"
+    "@graphprotocol/graph-ts": "npm:0.35.1"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
-    eslint: "npm:8.54.0"
+    eslint: "npm:8.57.0"
     fs-extra: "npm:11.2.0"
     graphql: "npm:16.8.1"
     handlebars: "npm:4.7.8"
@@ -28047,6 +28047,54 @@ __metadata:
   bin:
     eslint: bin/eslint.js
   checksum: 10/ef6193c6e4cef20774b985a5cc2fd4bf6d3c4decd423117cbc4a0196617861745db291217ad3c537bc3a160650cca965bc818f55e1f3e446af1fcb293f9940a5
+  languageName: node
+  linkType: hard
+
+"eslint@npm:8.57.0":
+  version: 8.57.0
+  resolution: "eslint@npm:8.57.0"
+  dependencies:
+    "@eslint-community/eslint-utils": "npm:^4.2.0"
+    "@eslint-community/regexpp": "npm:^4.6.1"
+    "@eslint/eslintrc": "npm:^2.1.4"
+    "@eslint/js": "npm:8.57.0"
+    "@humanwhocodes/config-array": "npm:^0.11.14"
+    "@humanwhocodes/module-importer": "npm:^1.0.1"
+    "@nodelib/fs.walk": "npm:^1.2.8"
+    "@ungap/structured-clone": "npm:^1.2.0"
+    ajv: "npm:^6.12.4"
+    chalk: "npm:^4.0.0"
+    cross-spawn: "npm:^7.0.2"
+    debug: "npm:^4.3.2"
+    doctrine: "npm:^3.0.0"
+    escape-string-regexp: "npm:^4.0.0"
+    eslint-scope: "npm:^7.2.2"
+    eslint-visitor-keys: "npm:^3.4.3"
+    espree: "npm:^9.6.1"
+    esquery: "npm:^1.4.2"
+    esutils: "npm:^2.0.2"
+    fast-deep-equal: "npm:^3.1.3"
+    file-entry-cache: "npm:^6.0.1"
+    find-up: "npm:^5.0.0"
+    glob-parent: "npm:^6.0.2"
+    globals: "npm:^13.19.0"
+    graphemer: "npm:^1.4.0"
+    ignore: "npm:^5.2.0"
+    imurmurhash: "npm:^0.1.4"
+    is-glob: "npm:^4.0.0"
+    is-path-inside: "npm:^3.0.3"
+    js-yaml: "npm:^4.1.0"
+    json-stable-stringify-without-jsonify: "npm:^1.0.1"
+    levn: "npm:^0.4.1"
+    lodash.merge: "npm:^4.6.2"
+    minimatch: "npm:^3.1.2"
+    natural-compare: "npm:^1.4.0"
+    optionator: "npm:^0.9.3"
+    strip-ansi: "npm:^6.0.1"
+    text-table: "npm:^0.2.0"
+  bin:
+    eslint: bin/eslint.js
+  checksum: 10/00496e218b23747a7a9817bf58b522276d0dc1f2e546dceb4eea49f9871574088f72f1f069a6b560ef537efa3a75261b8ef70e51ef19033da1cc4c86a755ef15
   languageName: node
   linkType: hard
 
