@@ -7,6 +7,7 @@ interface Props {
 
 export function UnlockAccountSignIn({ connectService }: Props) {
   return (
+    // onSignIn and onExit represents different actions, in this case logic should be the same
     <ConnectUnlockAccount
       onSignIn={() => {
         connectService.send({ type: 'CONNECT' })

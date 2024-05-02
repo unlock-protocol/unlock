@@ -27,12 +27,14 @@ export function Connected({
     state.context?.paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
+    // Skip Connect if already signed in
     const autoSignIn = async () => {
-      // Skip Connect if already signed in
-      if (!isSignedIn && !signing && connected && isUnlockAccount) {
-        await signIn()
-        service.send({ type: 'SELECT_LOCK' })
-      } else if (isSignedIn && !signing && isUnlockAccount) {
+      const isConnectedAsUnlockAccount =
+        !isSignedIn && !signing && connected && isUnlockAccount
+
+      const isConnectedWithWallet = isSignedIn && !signing && isUnlockAccount
+
+      if (isConnectedAsUnlockAccount || isConnectedWithWallet) {
         await signIn()
         service.send({ type: 'SELECT_LOCK' })
       } else if (account && connected) {
