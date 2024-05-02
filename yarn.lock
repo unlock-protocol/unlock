@@ -18103,21 +18103,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:4.2.0, @uniswap/sdk-core@npm:^4.0.7, @uniswap/sdk-core@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "@uniswap/sdk-core@npm:4.2.0"
-  dependencies:
-    "@ethersproject/address": "npm:^5.0.2"
-    big.js: "npm:^5.2.2"
-    decimal.js-light: "npm:^2.5.0"
-    jsbi: "npm:^3.1.4"
-    tiny-invariant: "npm:^1.1.0"
-    toformat: "npm:^2.0.0"
-  checksum: 10/8a0d2dc1ddf6f96413be7f3cd707f815eaa6861625b3befa4af9818508c3066933455754a90022498770a4321e6642420d1ab3f9bba1ed9ef2f35e1cc71d3621
-  languageName: node
-  linkType: hard
-
-"@uniswap/sdk-core@npm:^4.2.1":
+"@uniswap/sdk-core@npm:4.2.1, @uniswap/sdk-core@npm:^4.2.1":
   version: 4.2.1
   resolution: "@uniswap/sdk-core@npm:4.2.1"
   dependencies:
@@ -18128,6 +18114,20 @@ __metadata:
     tiny-invariant: "npm:^1.1.0"
     toformat: "npm:^2.0.0"
   checksum: 10/f637dc811414598b0e33eebf52b05bf1ba35f12549d84df88281ba75a3939d1bfa7870496d074faca691cae9fe104f713f129123d67d2782d14c84ba36983ed8
+  languageName: node
+  linkType: hard
+
+"@uniswap/sdk-core@npm:^4.0.7, @uniswap/sdk-core@npm:^4.2.0":
+  version: 4.2.0
+  resolution: "@uniswap/sdk-core@npm:4.2.0"
+  dependencies:
+    "@ethersproject/address": "npm:^5.0.2"
+    big.js: "npm:^5.2.2"
+    decimal.js-light: "npm:^2.5.0"
+    jsbi: "npm:^3.1.4"
+    tiny-invariant: "npm:^1.1.0"
+    toformat: "npm:^2.0.0"
+  checksum: 10/8a0d2dc1ddf6f96413be7f3cd707f815eaa6861625b3befa4af9818508c3066933455754a90022498770a4321e6642420d1ab3f9bba1ed9ef2f35e1cc71d3621
   languageName: node
   linkType: hard
 
@@ -18494,7 +18494,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@nomiclabs/hardhat-waffle": "npm:2.0.6"
     "@uniswap/permit2-sdk": "npm:1.2.1"
-    "@uniswap/sdk-core": "npm:4.2.0"
+    "@uniswap/sdk-core": "npm:4.2.1"
     "@uniswap/smart-order-router": "npm:3.17.4"
     "@uniswap/v3-sdk": "npm:3.11.1"
     "@unlock-protocol/contracts": "workspace:^"
@@ -18842,7 +18842,7 @@ __metadata:
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@types/remove-markdown": "npm:0.3.4"
-    "@uniswap/sdk-core": "npm:4.2.0"
+    "@uniswap/sdk-core": "npm:4.2.1"
     "@uniswap/smart-order-router": "npm:3.17.4"
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
@@ -18944,7 +18944,7 @@ __metadata:
     "@graphql-codegen/typescript-operations": "npm:4.0.1"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openapitools/openapi-generator-cli": "npm:2.7.0"
-    "@uniswap/sdk-core": "npm:4.2.0"
+    "@uniswap/sdk-core": "npm:4.2.1"
     "@uniswap/smart-order-router": "npm:3.17.4"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
