@@ -249,6 +249,8 @@ Read the explanations and follow the template in [`./proposals/006-cross-bridge-
 
 To make sure all calls can be executed properly, you can use Tenderly forks to test execution of calls on each destination chains.
 
+There is test DAO with the entire cross-chain pipeline configured deployed on Gnosis at [0x530ff2daed410ca7d70c25f18dc770f106201151](https://www.tally.xyz/gov/unlock-cross-chain-test-dao-on-gnosis/proposals). To test the proposal, can use it for testing purposes.
+
 ### After proposal execution
 
 #### Pay bridge fees
