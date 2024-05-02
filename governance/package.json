@@ -12,7 +12,7 @@
     "@matterlabs/hardhat-zksync-verify": "1.3.0",
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
-    "@nomicfoundation/hardhat-verify": "2.0.5",
+    "@nomicfoundation/hardhat-verify": "2.0.6",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openzeppelin/hardhat-upgrades": "3.0.2",
     "@openzeppelin/upgrades-core": "1.32.5",
@@ -27,7 +27,7 @@
     "arb-shared-dependencies": "1.0.0",
     "eslint": "8.54.0",
     "ethers": "6.10.0",
-    "ethers5": "npm:ethers@5",
+    "ethers5": "npm:ethers@5.7.2",
     "fs-extra": "11.2.0",
     "hardhat": "2.20.1",
     "zksync-ethers": "6.1.0"
