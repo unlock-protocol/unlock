@@ -4729,7 +4729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@docusaurus/preset-classic@npm:^3.0.0":
+"@docusaurus/preset-classic@npm:^3.2.0":
   version: 3.2.1
   resolution: "@docusaurus/preset-classic@npm:3.2.1"
   dependencies:
@@ -17454,7 +17454,7 @@ __metadata:
     clsx: "npm:2.1.0"
     docusaurus-gtm-plugin: "npm:0.0.2"
     docusaurus-node-polyfills: "npm:1.0.0"
-    docusaurus-preset-openapi: "npm:0.7.3"
+    docusaurus-preset-openapi: "npm:0.7.5"
     prism-react-renderer: "npm:2.0.6"
     react: "npm:18.2.0"
     react-dom: "npm:18.2.0"
@@ -26043,16 +26043,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-openapi@npm:^0.7.3":
-  version: 0.7.4
-  resolution: "docusaurus-plugin-openapi@npm:0.7.4"
+"docusaurus-plugin-openapi@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "docusaurus-plugin-openapi@npm:0.7.5"
   dependencies:
     "@docusaurus/mdx-loader": "npm:^3.2.0"
     "@docusaurus/plugin-content-docs": "npm:^3.2.0"
     "@docusaurus/utils": "npm:^3.2.0"
     "@docusaurus/utils-common": "npm:^3.2.0"
     "@docusaurus/utils-validation": "npm:^3.2.0"
-    axios: "npm:^0.26.1"
     chalk: "npm:^4.1.2"
     clsx: "npm:^1.2.1"
     js-yaml: "npm:^4.1.0"
@@ -26065,35 +26064,35 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10/33c9937c6e28d1d206370b9b4d5cadd6e02ef4a6fc024d7938115b44a76a1129f3e75b17fad5625cdc1619a7efacbaebd85a483e7806652471192c213c3c6967
+  checksum: 10/10cccd493feaf92dab1bfe23330b1d01fbac5ed6723d8273b27eaa5f92888402fdeec1c0ba208fe833d86d8fd073b437dab116d7f9170d2cd101b5ef5313f4f6
   languageName: node
   linkType: hard
 
-"docusaurus-plugin-proxy@npm:^0.7.3":
-  version: 0.7.4
-  resolution: "docusaurus-plugin-proxy@npm:0.7.4"
-  checksum: 10/ab188cee5c3541e5c6da0e68fe3f65876d8ecfbd20896310235f45a78674cde08b12edb111c0eb4fdb2305ad97e97f9f135719a9f4b8f6de1801fd9e2d742ed7
+"docusaurus-plugin-proxy@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "docusaurus-plugin-proxy@npm:0.7.5"
+  checksum: 10/80f01985f17ed36ed56ead222f69b05d6dee40791fd105f67205db0d7bf7ffc2a4096fd43dd8547f3760af87a7b68eeab52b11cf1c0132167434fef34364911b
   languageName: node
   linkType: hard
 
-"docusaurus-preset-openapi@npm:0.7.3":
-  version: 0.7.3
-  resolution: "docusaurus-preset-openapi@npm:0.7.3"
+"docusaurus-preset-openapi@npm:0.7.5":
+  version: 0.7.5
+  resolution: "docusaurus-preset-openapi@npm:0.7.5"
   dependencies:
-    "@docusaurus/preset-classic": "npm:^3.0.0"
-    docusaurus-plugin-openapi: "npm:^0.7.3"
-    docusaurus-plugin-proxy: "npm:^0.7.3"
-    docusaurus-theme-openapi: "npm:^0.7.3"
+    "@docusaurus/preset-classic": "npm:^3.2.0"
+    docusaurus-plugin-openapi: "npm:^0.7.5"
+    docusaurus-plugin-proxy: "npm:^0.7.5"
+    docusaurus-theme-openapi: "npm:^0.7.5"
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10/2e777ac7a94bd392d053e157b1b7f20039f938e92c5c5e66e3249cdddf454362cb7ad13d044dba3ea396c9c2ad146f9c4ce744a5ce21d4a8a9596d7ca8203c2b
+  checksum: 10/1025acdd75ee5d4248732ae0d406b5352d7284c6641e7d9698659bc2ffbf92c9127ced0f9e753490271d83a52cd7a9b99e147014113cfca04be36a7f5c7e5a86
   languageName: node
   linkType: hard
 
-"docusaurus-theme-openapi@npm:^0.7.3":
-  version: 0.7.4
-  resolution: "docusaurus-theme-openapi@npm:0.7.4"
+"docusaurus-theme-openapi@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "docusaurus-theme-openapi@npm:0.7.5"
   dependencies:
     "@docusaurus/theme-common": "npm:^3.2.0"
     "@mdx-js/react": "npm:^3.0.0"
@@ -26102,7 +26101,7 @@ __metadata:
     buffer: "npm:^6.0.3"
     clsx: "npm:^1.2.1"
     crypto-js: "npm:^4.1.1"
-    docusaurus-plugin-openapi: "npm:^0.7.3"
+    docusaurus-plugin-openapi: "npm:^0.7.5"
     immer: "npm:^9.0.7"
     lodash: "npm:^4.17.20"
     marked: "npm:^11.0.0"
@@ -26120,7 +26119,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0
     react-dom: ^18.0.0
-  checksum: 10/ca332998f666c4afcedb4b74e2650c41932a3840a6132f9ed01ea504b4ca617fa3701e8953797e4ceba883131f8e31b95e55862748ba137ac9c66ae04d2f4deb
+  checksum: 10/02cdff88a8d0496519b58c4c2ba2291ac226e3f42546a38bbef2d224e86c9e129146d05a86fcb7641f7a5db20db69e34ba37b9ad33f88bb5f41fe0b340d3fae9
   languageName: node
   linkType: hard
 
