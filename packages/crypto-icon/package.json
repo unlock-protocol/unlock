@@ -45,7 +45,7 @@
     "tsup": "8.0.2",
     "tsx": "4.8.2",
     "typescript": "5.4.3",
-    "vite": "5.2.10",
+    "vite": "5.2.11",
     "vite-plugin-svgr": "4.2.0",
     "vite-tsconfig-paths": "4.3.2"
   }
