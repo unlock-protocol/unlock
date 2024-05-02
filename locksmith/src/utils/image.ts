@@ -1,6 +1,8 @@
 import logger from '../logger'
 import lockIcon from './lockIcon'
 import resvg from '@resvg/resvg-js'
+import SVGtoPDF from 'svg-to-pdfkit'
+import PDFDocument from 'pdfkit'
 
 export const imageUrlToBase64 = async (url: string, lockAddress: string) => {
   // Fallback to the lock icon if the image is not available
@@ -34,10 +36,47 @@ export const imageURLToDataURI = async (url: string, fallbackURL?: string) => {
   }
 }
 
+// Remove if not needed on next changes
 export const svgStringToDataURI = (svgString: string) => {
   const svg = new resvg.Resvg(svgString)
   const pngData = svg.render()
   const pngBuffer = pngData.asPng()
   const dataURI = `data:image/png;base64,${pngBuffer.toString('base64')}`
   return dataURI
+}
+
+export const svgStringToPdfDataURI = (svgString: string): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument({ compress: false })
+    const chunks: Uint8Array[] = []
+
+    // Handle errors during PDF generation
+    doc.on('error', (err: Error) => {
+      reject(err)
+    })
+
+    // Convert SVG to PDF
+    SVGtoPDF(doc, svgString, 0, 0, {
+      preserveAspectRatio: 'xMidYMid meet',
+      width: 1000,
+      height: 1000,
+    })
+
+    // Collect PDF chunks
+    doc.on('data', (chunk: Uint8Array) => {
+      chunks.push(chunk)
+    })
+
+    // Resolve the promise with the PDF data URI when done
+    doc.on('end', () => {
+      const pdfData = Buffer.concat(chunks)
+      const dataURI = `data:application/pdf;base64,${pdfData.toString(
+        'base64'
+      )}`
+      resolve(dataURI)
+    })
+
+    // End the PDF generation
+    doc.end()
+  })
 }

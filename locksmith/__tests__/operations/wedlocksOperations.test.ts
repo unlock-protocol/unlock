@@ -419,7 +419,7 @@ describe('Wedlocks operations', () => {
       })
 
       expect(
-        attachments.find((attachment) => attachment.filename === 'ticket.png')
+        attachments.find((attachment) => attachment.filename === 'ticket.pdf')
       ).toBeDefined()
       expect(
         attachments.find((attachment) => attachment.filename === 'calendar.ics')
@@ -442,7 +442,7 @@ describe('Wedlocks operations', () => {
 
       expect(
         attachments.find(
-          (attachment) => attachment.filename === 'certification.png'
+          (attachment) => attachment.filename === 'certification.pdf'
         )
       ).toBeDefined()
     })
