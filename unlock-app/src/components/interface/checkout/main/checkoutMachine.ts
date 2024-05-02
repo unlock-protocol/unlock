@@ -323,10 +323,20 @@ export const checkoutMachine = createMachine(
       },
       QUANTITY: {
         on: {
-          SELECT_QUANTITY: {
-            actions: ['selectQuantity'],
-            target: 'METADATA',
-          },
+          SELECT_QUANTITY: [
+            {
+              actions: ['selectQuantity'],
+              target: 'METADATA',
+              guard: ({ context }) => {
+                return !context.skipRecipient && !context.existingMember
+              },
+            },
+            {
+              actions: ['selectQuantity'],
+              target: 'PAYMENT',
+            },
+          ],
+
           BACK: 'SELECT',
           DISCONNECT,
         },
@@ -612,8 +622,6 @@ export const checkoutMachine = createMachine(
       MINTING: {
         on: {
           CONFIRM_MINT: {
-            // @ts-ignore
-            type: 'final',
             actions: ['confirmMint'],
           },
         },
@@ -634,9 +642,15 @@ export const checkoutMachine = createMachine(
             {
               target: 'METADATA',
               guard: ({ context }) => {
-                return context.skipQuantity
+                return !context.skipRecipient && !context.existingMember
               },
             },
+            /*{
+              target: 'PAYMENT',
+              guard: ({ context }) => {
+                return context.recipients.length > 0 || context.existingMember
+              },
+            },*/
             {
               target: 'QUANTITY',
             },
