@@ -34,6 +34,10 @@ describe('Unlock Hardhat plugin', function () {
       assert.instanceOf(this.hre.unlock, Object)
     })
 
+    it('unlockAddress should init as undefined ', function () {
+      assert.equal(this.hre.unlock.unlockAddress, undefined)
+    })
+
     it('should store and extend existing networks info', function () {
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('1'))
       assert.equal(this.hre.unlock.networks['1'].name, networks['1'].name)
@@ -41,6 +45,8 @@ describe('Unlock Hardhat plugin', function () {
       assert.equal(this.hre.unlock.networks['1'].unlockAddress, 'newAddress')
     })
     it('should store additional networks info', function () {
+      console.log(this.hre.unlock.networks['12345'])
+      assert.isTrue(Object.keys(this.hre.unlock.networks).includes('12345'))
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
       assert.equal(
         this.hre.unlock.networks['31337'].name,
@@ -103,10 +109,7 @@ describe('Unlock Hardhat plugin', function () {
         })
         it('Should store deployed Unlock address in hre', async function () {
           const { unlock } = protocol
-          assert.equal(
-            this.hre.unlock.networks['31337'].unlockAddress,
-            await unlock.getAddress()
-          )
+          assert.equal(this.hre.unlock.unlockAddress, await unlock.getAddress())
         })
       })
 
@@ -124,7 +127,7 @@ describe('Unlock Hardhat plugin', function () {
             await unlock.getAddress()
           )
           assert.equal(typeof unlock, typeof unlockGet)
-          assert.equal(await unlock.getAddress(), await unlockGet.getAddress())
+          assert.equal(this.hre.unlock.unlockAddress, await unlock.getAddress())
           assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
         })
         /*

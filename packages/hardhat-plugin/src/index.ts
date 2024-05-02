@@ -29,6 +29,7 @@ export interface HardhatUnlockPlugin {
   deployAndSetTemplate: DeployAndSetTemplate
   getUnlockContract: GetUnlockContractFunction
   networks: UnlockNetworkConfigs
+  unlockAddress: string | undefined
 }
 
 // parse networks to remove providers
@@ -49,6 +50,7 @@ extendEnvironment((hre) => {
     const { getLockContract } = require('./getLockContract')
     return {
       networks,
+      unlockAddress: undefined, // nothing defined initially
       createLock: (args) => createLock(hre, args),
       deployProtocol: (unlockVersion, lockVersion, confirmations) =>
         deployProtocol(hre, unlockVersion, lockVersion, confirmations),

@@ -45,8 +45,9 @@ export async function deployUnlock(
     confirmations
   )
 
-  console.log(`UNLOCK > deployed to : ${unlock.address}`)
-
+  const unlockAddress = await unlock.getAddress()
+  console.log(`UNLOCK > deployed to : ${unlockAddress}`)
+  hre.unlock.unlockAddress = unlockAddress
   return unlock
 }
 
@@ -105,17 +106,6 @@ export async function deployProtocol(
 ) {
   // 1. deploy Unlock
   const unlock = await deployUnlock(hre, unlockVersion, confirmations)
-
-  // 2. store deployed Unlock address in hre
-  const { chainId } = await hre.ethers.provider.getNetwork()
-
-  if (!hre.unlock.networks[chainId.toString()]) {
-    hre.unlock.networks[chainId.toString()] = {
-      id: parseInt(chainId.toString()),
-    }
-  }
-  hre.unlock.networks[chainId.toString()].unlockAddress =
-    await unlock.getAddress()
 
   // 3. deploy and set template
   const publicLock = await deployAndSetTemplate(hre, lockVersion, confirmations)
