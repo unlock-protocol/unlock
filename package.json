@@ -15,7 +15,7 @@
     "typescript": "5.4.3"
   },
   "devDependencies": {
-    "eslint": "8.54.0",
+    "eslint": "8.57.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
     "eslint-plugin-mocha": "10.4.3",
     "eslint-plugin-prettier": "5.1.3",
