@@ -81,15 +81,7 @@ export const CheckoutUrlPage = () => {
     id: null as null | string,
     name: 'config',
     config: {
-      locks:
-        network && lockAddress
-          ? {
-              [lockAddress as string]: {
-                network: parseInt(`${network!}`),
-                skipRecipient: true,
-              },
-            }
-          : {},
+      locks: {},
       icon: '',
       pessimistic: true,
       skipRecipient: true,
@@ -195,17 +187,6 @@ export const CheckoutUrlPage = () => {
     DEFAULT_CONFIG,
     setDeleteConfirmation,
   ])
-
-  useEffect(() => {
-    const checkout = checkoutConfigList?.[0]
-    if (!checkout) return
-
-    setCheckoutConfig({
-      id: checkout.id!,
-      name: checkout.name,
-      config: checkout.config as PaywallConfigType,
-    })
-  }, [checkoutConfigList])
 
   const onAddLocks = async (locks: any) => {
     setCheckoutConfig((state) => {
