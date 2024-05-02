@@ -61,7 +61,7 @@ export const getLock = async (lockAddress: string) => {
   } = await subgraph.query({
     query: getLockQuery,
     variables: {
-      id: lockAddress,
+      id: lockAddress.toLowerCase(),
     },
   })
   return lock
