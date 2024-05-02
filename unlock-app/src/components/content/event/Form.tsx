@@ -162,7 +162,7 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const router = useRouter()
 
-  const imageUploadField = register('metadata.image', {
+  register('metadata.image', {
     required: {
       value: true,
       message: 'Please select an image to illustrate your event!',
@@ -173,7 +173,6 @@ export const Form = ({ onSubmit }: FormProps) => {
       message: 'Please, use a valid image URL',
     },
   })
-  console.log(imageUploadField)
 
   return (
     <FormProvider {...methods}>

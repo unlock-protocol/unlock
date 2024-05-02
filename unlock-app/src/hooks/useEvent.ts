@@ -9,7 +9,7 @@ interface useEventProps {
  * Check if currently authenticated user is manager for one of the event's locks.
  *
  */
-export const useEvent = ({ slug }: useEventProps, useQueryProps: any) => {
+export const useEvent = ({ slug }: useEventProps, useQueryProps = {}) => {
   return useQuery(
     ['useEvent', slug],
     async (): Promise<any> => {
