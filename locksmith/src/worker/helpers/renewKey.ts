@@ -64,7 +64,14 @@ export const isWorthRenewing = async (
   // locks for which renewals are disabled
   // TODO: move to database
   if (
-    ['0xa99fBa0E795b7Ac1a38BD5Ec02176aC28BaC9EC8'].indexOf(lockAddress) > -1
+    [
+      '0xa99fBa0E795b7Ac1a38BD5Ec02176aC28BaC9EC8',
+      '0x16772aEeB638A45810bCe514F00a666eBe5e25A0',
+      '0x5d6df242127B01f5FBDD9Bb23Dcf76139873f8ac',
+      '0xc3a9193F80eb5042ED6B77b120D6e48881321c90',
+      '0xd59723c30D56fA84DefaBebe85594cee6AEF25CA',
+      '0xfc0116392B4464cDb6Ab28acdcdC1e81601F4580',
+    ].indexOf(lockAddress) > -1
   ) {
     logger.info(`Renewals disabled for ${lockAddress} on network ${network}.`)
 
