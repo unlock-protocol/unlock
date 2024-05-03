@@ -342,8 +342,6 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    console.log('Service: ', checkoutService)
-
     checkoutService.send({
       type: 'CONNECT',
       lock,
@@ -448,8 +446,6 @@ export function Select({ checkoutService }: Props) {
                 return
               }
 
-              console.log('Service: ', checkoutService)
-
               checkoutService.send({
                 type: 'CONNECT',
                 lock,
@@ -460,8 +456,6 @@ export function Select({ checkoutService }: Props) {
                 recipients: account ? [account] : [],
                 hook: hookType,
               })
-
-              console.log('Service: ', checkoutService)
             }}
           >
             Next

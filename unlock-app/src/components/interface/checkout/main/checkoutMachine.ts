@@ -293,14 +293,14 @@ export const checkoutMachine = createMachine(
             },
             {
               target: 'PASSWORD',
-              guard: ({ event }) => {
-                return event.hook === 'password'
+              guard: ({ context }) => {
+                return context.hook === 'password'
               },
             },
             {
               target: 'PROMO',
-              guard: ({ event }) => {
-                return event.hook === 'promocode'
+              guard: ({ context }) => {
+                return context.hook === 'promocode'
               },
             },
             {
@@ -708,6 +708,7 @@ export const checkoutMachine = createMachine(
         keyManagers: ({ event }) => event.keyManagers,
         hook: ({ event }) => event.hook,
         existingMember: ({ event }) => event.existingMember as boolean,
+        expiredMember: ({ event }) => event.expiredMember as boolean,
       }),
 
       selectQuantity: assign({
