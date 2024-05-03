@@ -185,8 +185,6 @@ export function Minting({
 
           communication?.emitMetadata(metadata)
 
-          console.log(mint)
-
           checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',

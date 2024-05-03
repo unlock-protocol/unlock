@@ -729,9 +729,8 @@ export const checkoutMachine = createMachine(
           } as const
         },
       }),
-      // @ts-ignore
+
       confirmMint: assign({
-        // @ts-ignore
         mint: ({ event }) => {
           return {
             status: event.status,
