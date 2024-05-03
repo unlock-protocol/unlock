@@ -127,7 +127,7 @@ export function Minting({
     checkoutService,
     (state) => state.context
   )
-  console.log(mint)
+
   const config = useConfig()
   const processing = mint?.status === 'PROCESSING'
   const [doneWaiting, setDoneWaiting] = useState(false)
