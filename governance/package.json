@@ -3,7 +3,7 @@
   "description": "Scripts for the management of the Unlock Protocol",
   "private": true,
   "dependencies": {
-    "@arbitrum/nitro-contracts": "1.0.2",
+    "@arbitrum/nitro-contracts": "1.2.1",
     "@arbitrum/sdk": "3.4.0",
     "@eth-optimism/sdk": "3.3.0",
     "@matterlabs/hardhat-zksync-deploy": "1.3.0",
