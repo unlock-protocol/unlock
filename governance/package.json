@@ -27,6 +27,7 @@
     "arb-shared-dependencies": "1.0.0",
     "eslint": "8.54.0",
     "ethers": "6.10.0",
+    "ethers-multisend": "3.0.0",
     "ethers5": "npm:ethers@5",
     "fs-extra": "11.2.0",
     "hardhat": "2.20.1",
