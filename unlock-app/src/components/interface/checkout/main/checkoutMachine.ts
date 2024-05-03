@@ -332,7 +332,30 @@ export const checkoutMachine = createMachine(
               },
             },
             {
-              actions: ['selectQuantity'],
+              target: 'MESSAGE_TO_SIGN',
+              guard: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              guard: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              guard: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              guard: 'requireCaptcha',
+            },
+            {
+              target: 'GUILD',
+              guard: 'requireGuild',
+            },
+            {
+              target: 'GITCOIN',
+              guard: 'requireGitcoin',
+            },
+            {
               target: 'PAYMENT',
             },
           ],
@@ -645,12 +668,6 @@ export const checkoutMachine = createMachine(
                 return !context.skipRecipient && !context.existingMember
               },
             },
-            /*{
-              target: 'PAYMENT',
-              guard: ({ context }) => {
-                return context.recipients.length > 0 || context.existingMember
-              },
-            },*/
             {
               target: 'QUANTITY',
             },
