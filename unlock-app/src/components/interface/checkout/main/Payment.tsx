@@ -67,7 +67,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
   const { recipients } = state.context
-  console.log('recipients', recipients)
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
   const networkConfig = config.networks[lock.network]

@@ -665,7 +665,7 @@ export const checkoutMachine = createMachine(
             {
               target: 'METADATA',
               guard: ({ context }) => {
-                return !context.skipRecipient && !context.existingMember
+                return !context.skipRecipient
               },
             },
             {
