@@ -16347,7 +16347,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:*, @types/chai@npm:4.3.14, @types/chai@npm:^4.3.5":
+"@types/chai@npm:*, @types/chai@npm:^4.3.5":
   version: 4.3.14
   resolution: "@types/chai@npm:4.3.14"
   checksum: 10/300be72bb22657c1e449b27a5f0ab24405edf3be5c42ea0095f8e1c6daabc29c3028eee2421cc443c01a098da47ba32baecc363be7324433132281b9d9a8216f
@@ -16358,6 +16358,13 @@ __metadata:
   version: 4.2.0
   resolution: "@types/chai@npm:4.2.0"
   checksum: 10/1c1c67a911ecaef6ea6820c53e1c09c594799c846f98396de432a784394855c01848b79fd168dc2cbd68d2c04d1cef0b703b5eff097c4d7f4b35ea23c0f6802a
+  languageName: node
+  linkType: hard
+
+"@types/chai@npm:4.3.15":
+  version: 4.3.15
+  resolution: "@types/chai@npm:4.3.15"
+  checksum: 10/9466d6620bf958a380c3250a40f955d3d0f986c5f601e65d0bf340e5d848653c209e22259d1250fbbdbc9c030e0b3a5f485ab878caffd0fe6a4d2f5a37892f5e
   languageName: node
   linkType: hard
 
@@ -18455,7 +18462,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@types/chai": "npm:4.3.14"
+    "@types/chai": "npm:4.3.15"
     "@types/fs-extra": "npm:11.0.4"
     "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.10.1"
