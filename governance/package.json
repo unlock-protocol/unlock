@@ -39,6 +39,7 @@
     "check:oracles": "node ./all_networks run scripts/uniswap/checkOracles.js",
     "check:multisig": "yarn hardhat run scripts/multisig/check-all.js",
     "check:verify": "yarn hardhat run scripts/verify/check-all.js",
+    "check:cross-chain": "yarn hardhat run scripts/bridge/check.js",
     "lint:code": "eslint --resolve-plugins-relative-to ../packages/eslint-config .",
     "lint": "yarn lint:code"
   }
