@@ -293,14 +293,14 @@ export const checkoutMachine = createMachine(
             },
             {
               target: 'PASSWORD',
-              guard: ({ context }) => {
-                return !context.expiredMember && context.hook === 'password'
+              guard: ({ event }) => {
+                return event.hook === 'password'
               },
             },
             {
               target: 'PROMO',
-              guard: ({ context }) => {
-                return !context.expiredMember && context.hook === 'promocode'
+              guard: ({ event }) => {
+                return event.hook === 'promocode'
               },
             },
             {
@@ -340,10 +340,43 @@ export const checkoutMachine = createMachine(
       },
       QUANTITY: {
         on: {
-          SELECT_QUANTITY: {
-            actions: ['selectQuantity'],
-            target: 'METADATA',
-          },
+          SELECT_QUANTITY: [
+            {
+              actions: ['selectQuantity'],
+              target: 'METADATA',
+              guard: ({ context }) => {
+                return !context.skipRecipient && !context.existingMember
+              },
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              guard: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              guard: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              guard: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              guard: 'requireCaptcha',
+            },
+            {
+              target: 'GUILD',
+              guard: 'requireGuild',
+            },
+            {
+              target: 'GITCOIN',
+              guard: 'requireGitcoin',
+            },
+            {
+              target: 'PAYMENT',
+            },
+          ],
+
           BACK: 'SELECT',
           DISCONNECT,
         },
@@ -629,8 +662,6 @@ export const checkoutMachine = createMachine(
       MINTING: {
         on: {
           CONFIRM_MINT: {
-            // @ts-ignore
-            type: 'final',
             actions: ['confirmMint'],
           },
         },
@@ -644,7 +675,7 @@ export const checkoutMachine = createMachine(
             {
               target: 'METADATA',
               guard: ({ context }) => {
-                return context.skipQuantity
+                return !context.skipRecipient
               },
             },
             {
@@ -708,9 +739,8 @@ export const checkoutMachine = createMachine(
           } as const
         },
       }),
-      // @ts-ignore
+
       confirmMint: assign({
-        // @ts-ignore
         mint: ({ event }) => {
           return {
             status: event.status,

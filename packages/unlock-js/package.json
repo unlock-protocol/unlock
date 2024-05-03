@@ -54,7 +54,7 @@
     "vitest": "0.34.6"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "4.2.0",
+    "@uniswap/sdk-core": "4.2.1",
     "@uniswap/smart-order-router": "3.17.4",
     "graphql": "16.8.1",
     "graphql-request": "6.1.0",
