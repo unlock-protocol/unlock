@@ -1,5 +1,7 @@
 import { HardhatUserConfig } from 'hardhat/types'
 
+import '@nomicfoundation/hardhat-toolbox'
+
 // We load the plugin here.
 import '../../../src/index'
 

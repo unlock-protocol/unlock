@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import '@nomiclabs/hardhat-ethers'
+import '@nomicfoundation/hardhat-ethers'
 import { task, extendEnvironment, extendConfig, types } from 'hardhat/config'
 import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
 import { lazyObject } from 'hardhat/plugins'
@@ -8,7 +8,7 @@ import './type-extensions'
 import { TASK_CREATE_LOCK } from './constants'
 
 import { deployLockTask } from './tasks'
-import networks from './networks.json'
+import { networks as defaultNetworks } from '@unlock-protocol/networks'
 
 // types
 import { UnlockNetworkConfigs } from './types'
@@ -29,7 +29,17 @@ export interface HardhatUnlockPlugin {
   deployAndSetTemplate: DeployAndSetTemplate
   getUnlockContract: GetUnlockContractFunction
   networks: UnlockNetworkConfigs
+  unlockAddress: string | undefined
 }
+
+// parse networks to remove providers
+const networks = Object.keys(defaultNetworks).reduce((parsed, chainId) => {
+  const { publicProvider, provider, ...network } = defaultNetworks[chainId]
+  return {
+    ...parsed,
+    [chainId]: network,
+  }
+}, {})
 
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
@@ -40,6 +50,7 @@ extendEnvironment((hre) => {
     const { getLockContract } = require('./getLockContract')
     return {
       networks,
+      unlockAddress: undefined, // nothing defined initially
       createLock: (args) => createLock(hre, args),
       deployProtocol: (unlockVersion, lockVersion, confirmations) =>
         deployProtocol(hre, unlockVersion, lockVersion, confirmations),

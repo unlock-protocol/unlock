@@ -33,7 +33,10 @@ export async function getUnlockContract(
 ): Promise<Contract> {
   if (!unlockAddress) {
     const { chainId } = await hre.ethers.provider.getNetwork()
-    ;({ unlockAddress } = hre.unlock.networks[chainId])
+    ;({ unlockAddress } = hre.unlock.networks[chainId.toString()])
+    if (!unlockAddress) {
+      unlockAddress = hre.unlock.unlockAddress
+    }
     if (!unlockAddress) {
       throw new Error(`No Unlock contract for this network: ${chainId}`)
     }
