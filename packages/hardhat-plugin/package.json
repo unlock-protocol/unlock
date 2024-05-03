@@ -42,7 +42,7 @@
     "@nomicfoundation/ignition-core": "0.15.1",
     "@typechain/ethers-v6": "0.5.0",
     "@typechain/hardhat": "9.0.0",
-    "@types/chai": "4.3.14",
+    "@types/chai": "4.3.15",
     "@types/mocha": "10.0.6",
     "@types/node": "20.10.1",
     "@unlock-protocol/contracts": "workspace:^",
