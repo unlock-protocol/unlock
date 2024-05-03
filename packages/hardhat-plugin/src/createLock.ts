@@ -1,13 +1,15 @@
 import type { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { Contract, ethers } from 'ethers'
+import type { BigNumber } from 'ethers'
+import { Contract, constants } from 'ethers'
 import { PUBLIC_LOCK_LATEST_VERSION } from './constants'
+
 import { getUnlockContract } from './getUnlockContract'
 import { getLockContract } from './getLockContract'
 import { getContractAbi } from './utils'
 
 export interface CreateLockArgs {
   name: string
-  keyPrice: string | number | bigint
+  keyPrice: string | number | BigNumber
   expirationDuration: number
   currencyContractAddress: string | null
   maxNumberOfKeys?: number
@@ -49,17 +51,16 @@ export async function createLock(
 
   // create call data
   const { abi } = getContractAbi('PublicLock', version)
-  const iface = new hre.ethers.Interface(abi)
+  const iface = new hre.ethers.utils.Interface(abi)
 
   // encode initializer data
   const fragment = iface.getFunction(
     'initialize(address,uint256,address,uint256,uint256,string)'
   )
-
-  const calldata = iface.encodeFunctionData(fragment!, [
+  const calldata = iface.encodeFunctionData(fragment, [
     beneficiary,
     expirationDuration,
-    currencyContractAddress || ethers.ZeroAddress,
+    currencyContractAddress || constants.AddressZero,
     keyPrice,
     maxNumberOfKeys,
     name,
@@ -68,11 +69,10 @@ export async function createLock(
   // create the lock
   const unlock = await getUnlockContract(hre, unlockAddress)
   const tx = await unlock.createUpgradeableLockAtVersion(calldata, version)
-  const { logs, hash: transactionHash } = await tx.wait()
-  const { args } = logs.find(
-    ({ fragment }: any) => fragment && fragment.name === 'NewLock'
-  )
+  const { events, transactionHash } = await tx.wait()
+  const { args } = events.find(({ event }: any) => event === 'NewLock')
   const { newLockAddress } = args
+
   const lock = await getLockContract(hre, newLockAddress)
   return {
     lock,

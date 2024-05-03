@@ -1,5 +1,5 @@
 import { HardhatUserConfig } from 'hardhat/config'
-import '@nomicfoundation/hardhat-ethers'
+import '@nomiclabs/hardhat-ethers'
 import '@unlock-protocol/hardhat-plugin'
 
 const config: HardhatUserConfig = {
