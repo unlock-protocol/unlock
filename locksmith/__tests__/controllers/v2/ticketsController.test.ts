@@ -4,7 +4,7 @@ import * as metadataOperations from '../../../src/operations/metadataOperations'
 import app from '../../app'
 import { beforeAll, vi } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
-import testEvents from '../fixtures/events'
+import testEvents from '../../fixtures/events'
 import { CheckoutConfig, EventData } from '../../../src/models'
 
 function* keyIdGen() {
