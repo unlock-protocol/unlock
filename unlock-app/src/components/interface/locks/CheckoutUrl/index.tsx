@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -13,8 +13,7 @@ import {
   useCheckoutConfigsByUser,
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon } from 'react-icons/fa'
-import { useLockSettings } from '~/hooks/useLockSettings'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
@@ -44,7 +43,6 @@ export const CheckoutUrlPage = () => {
   const query = router.query
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
-  const { getIsRecurringPossible } = useLockSettings()
   const [configuration, setConfiguration] = useState<Configuration>('new')
   const methods = useForm<ConfigurationFormProps>({
     mode: 'onChange',
@@ -55,13 +53,15 @@ export const CheckoutUrlPage = () => {
 
   const { control, trigger, watch, setValue } = methods
 
-  const DEFAULT_CONFIG: PaywallConfigType = {
-    locks: {},
-    icon: '',
-  } as PaywallConfigType
+  const DEFAULT_CONFIG: CheckoutConfig = {
+    id: null,
+    config: {
+      locks: {},
+      icon: '',
+    },
+  } as CheckoutConfig
 
-  const [checkoutConfig, setCheckoutConfig] =
-    useState<CheckoutConfig>(DEFAULT_CONFIG)
+  const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
 
   const {
     isLoading: isLoadingConfigList,
@@ -162,6 +162,7 @@ export const CheckoutUrlPage = () => {
     if (checkoutConfigList?.length && !!query.id) {
       const config = checkoutConfigList.find((c) => c.id === query.id)
       if (config) {
+        // @ts-expect-error somethinf
         handleSetConfiguration(config)
       } else {
         // TODO: handle the case where the user is a lock manager but the config was not created by them
@@ -182,7 +183,7 @@ export const CheckoutUrlPage = () => {
       await handleSetConfiguration({
         id: null,
         name: configName,
-        config: DEFAULT_CONFIG,
+        config: DEFAULT_CONFIG.config,
       })
     }
 
