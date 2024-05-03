@@ -27,7 +27,7 @@ export const deployLockTask: ActionType<CreateLockTaskArgs> = async (
   console.log(
     `LOCK CREATED > deployed to : ${lock.address} (tx: ${transactionHash})`
   )
-  return await lock.getAddress()
+  return lock.address
 }
 
 // export const deployUnlockProtocol = async (

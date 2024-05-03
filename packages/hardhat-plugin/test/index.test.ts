@@ -34,10 +34,6 @@ describe('Unlock Hardhat plugin', function () {
       assert.instanceOf(this.hre.unlock, Object)
     })
 
-    it('unlockAddress should init as undefined ', function () {
-      assert.equal(this.hre.unlock.unlockAddress, undefined)
-    })
-
     it('should store and extend existing networks info', function () {
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('1'))
       assert.equal(this.hre.unlock.networks['1'].name, networks['1'].name)
@@ -45,8 +41,6 @@ describe('Unlock Hardhat plugin', function () {
       assert.equal(this.hre.unlock.networks['1'].unlockAddress, 'newAddress')
     })
     it('should store additional networks info', function () {
-      console.log(this.hre.unlock.networks['12345'])
-      assert.isTrue(Object.keys(this.hre.unlock.networks).includes('12345'))
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
       assert.equal(
         this.hre.unlock.networks['31337'].name,
@@ -70,15 +64,13 @@ describe('Unlock Hardhat plugin', function () {
       describe('deployProtocol()', function () {
         it('Should deploy the PublicLock contract', async function () {
           const { publicLock } = protocol
-          const publicLockAddress = await publicLock.getAddress()
-          assert.isTrue(publicLockAddress.includes('0x'))
-          assert.equal(typeof publicLockAddress, 'string')
+          assert.isTrue(publicLock.address.includes('0x'))
+          assert.equal(typeof publicLock.address, 'string')
         })
         it('Should deploy the Unlock contract', async function () {
           const { unlock } = protocol
-          const unlockAddress = await unlock.getAddress()
-          assert.isTrue(unlockAddress.includes('0x'))
-          assert.equal(typeof unlockAddress, 'string')
+          assert.isTrue(unlock.address.includes('0x'))
+          assert.equal(typeof unlock.address, 'string')
         })
         it('Should set the Unlock owner correctly', async function () {
           const { unlock } = protocol
@@ -89,17 +81,14 @@ describe('Unlock Hardhat plugin', function () {
         })
         it('Should set the template correctly', async function () {
           const { unlock, publicLock } = protocol
-          assert.equal(
-            await unlock.publicLockAddress(),
-            await publicLock.getAddress()
-          )
+          assert.equal(await unlock.publicLockAddress(), publicLock.address)
           assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
           assert.equal(
             await unlock.publicLockImpls(PUBLIC_LOCK_LATEST_VERSION),
-            await publicLock.getAddress()
+            publicLock.address
           )
           assert.equal(
-            await unlock.publicLockVersions(await publicLock.getAddress()),
+            await unlock.publicLockVersions(publicLock.address),
             PUBLIC_LOCK_LATEST_VERSION
           )
           assert.equal(
@@ -109,7 +98,10 @@ describe('Unlock Hardhat plugin', function () {
         })
         it('Should store deployed Unlock address in hre', async function () {
           const { unlock } = protocol
-          assert.equal(this.hre.unlock.unlockAddress, await unlock.getAddress())
+          assert.equal(
+            this.hre.unlock.networks['31337'].unlockAddress,
+            unlock.address
+          )
         })
       })
 
@@ -124,10 +116,10 @@ describe('Unlock Hardhat plugin', function () {
         it('Should retrieve the Unlock contract instance', async function () {
           const { unlock } = protocol
           const unlockGet = await this.hre.unlock.getUnlockContract(
-            await unlock.getAddress()
+            unlock.address
           )
           assert.equal(typeof unlock, typeof unlockGet)
-          assert.equal(this.hre.unlock.unlockAddress, await unlock.getAddress())
+          assert.equal(unlock.address, unlockGet.address)
           assert.equal(await unlock.unlockVersion(), UNLOCK_LATEST_VERSION)
         })
         /*
@@ -147,7 +139,7 @@ describe('Unlock Hardhat plugin', function () {
           const { lock, transactionHash, lockAddress } =
             await this.hre.unlock.createLock(FIRST)
 
-          assert.equal(lockAddress, await lock.getAddress())
+          assert.equal(lockAddress, lock.address)
           assert.equal(typeof transactionHash, 'string')
           isIdenticalLock(lock, FIRST)
         })
@@ -166,7 +158,7 @@ describe('Unlock Hardhat plugin', function () {
           assert.equal(await unlock.publicLockLatestVersion(), previousVersion)
           assert.equal(
             await unlock.publicLockAddress(),
-            await publicLockBefore.getAddress()
+            publicLockBefore.address
           )
 
           // deploy and set the new template
@@ -174,20 +166,14 @@ describe('Unlock Hardhat plugin', function () {
             PUBLIC_LOCK_LATEST_VERSION,
             1
           )
-          assert.equal(
-            await unlock.publicLockAddress(),
-            await publicLock.getAddress()
-          )
-          assert.notEqual(
-            await publicLockBefore.getAddress(),
-            await publicLock.getAddress()
-          )
+          assert.equal(await unlock.publicLockAddress(), publicLock.address)
+          assert.notEqual(publicLockBefore.address, publicLock.address)
           assert.equal(
             await unlock.publicLockImpls(PUBLIC_LOCK_LATEST_VERSION),
-            await publicLock.getAddress()
+            publicLock.address
           )
           assert.equal(
-            await unlock.publicLockVersions(await publicLock.getAddress()),
+            await unlock.publicLockVersions(publicLock.address),
             PUBLIC_LOCK_LATEST_VERSION
           )
           assert.equal(
@@ -213,9 +199,7 @@ describe('Unlock Hardhat plugin', function () {
         })
 
         it('Should retrieve a lock w correct params', async function () {
-          const lockGet = await this.hre.unlock.getLockContract(
-            await lock.getAddress()
-          )
+          const lockGet = await this.hre.unlock.getLockContract(lock.address)
           assert.equal(
             await lockGet.publicLockVersion(),
             PUBLIC_LOCK_LATEST_VERSION
@@ -257,14 +241,9 @@ describe('Tasks', function () {
     })
     it('Should create a lock from command line args', async function () {
       const { FIRST } = locks
-      // convert bigint to int
-      const cliArgs = {
-        ...FIRST,
-        keyPrice: parseInt(FIRST.keyPrice.toString()),
-      }
-      const lockAddress: string = await this.hre.run(TASK_CREATE_LOCK, cliArgs)
+      const lockAddress: string = await this.hre.run(TASK_CREATE_LOCK, FIRST)
       const lock = await this.hre.unlock.getLockContract(lockAddress)
-      assert.equal(lockAddress, await lock.getAddress())
+      assert.equal(lockAddress, lock.address)
       isIdenticalLock(lock, FIRST)
     })
   })
