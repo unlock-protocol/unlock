@@ -8020,28 +8020,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@matterlabs/hardhat-zksync-solc@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@matterlabs/hardhat-zksync-solc@npm:1.1.0"
-  dependencies:
-    "@nomiclabs/hardhat-docker": "npm:^2.0.0"
-    chai: "npm:^4.3.6"
-    chalk: "npm:4.1.2"
-    debug: "npm:^4.3.4"
-    dockerode: "npm:^4.0.0"
-    fs-extra: "npm:^11.1.1"
-    proper-lockfile: "npm:^4.1.2"
-    semver: "npm:^7.5.1"
-    sinon: "npm:^16.0.0"
-    sinon-chai: "npm:^3.7.0"
-    undici: "npm:^5.14.0"
-  peerDependencies:
-    hardhat: ^2.19.4
-  checksum: 10/481b2eb6b0b0fef844ebb085d56253eeae9cf6aa355438b6877bd5f33962315ab264349f235e9d33c56311bd31258db077a8e2d622bcf3a1888688b230301cbf
-  languageName: node
-  linkType: hard
-
-"@matterlabs/hardhat-zksync-solc@npm:^1.0.4, @matterlabs/hardhat-zksync-solc@npm:^1.1.4":
+"@matterlabs/hardhat-zksync-solc@npm:1.1.4, @matterlabs/hardhat-zksync-solc@npm:^1.0.4, @matterlabs/hardhat-zksync-solc@npm:^1.1.4":
   version: 1.1.4
   resolution: "@matterlabs/hardhat-zksync-solc@npm:1.1.4"
   dependencies:
@@ -13209,15 +13188,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sinonjs/fake-timers@npm:^10.3.0":
-  version: 10.3.0
-  resolution: "@sinonjs/fake-timers@npm:10.3.0"
-  dependencies:
-    "@sinonjs/commons": "npm:^3.0.0"
-  checksum: 10/78155c7bd866a85df85e22028e046b8d46cf3e840f72260954f5e3ed5bd97d66c595524305a6841ffb3f681a08f6e5cef572a2cce5442a8a232dc29fb409b83e
-  languageName: node
-  linkType: hard
-
 "@sinonjs/fake-timers@npm:^11.2.2":
   version: 11.2.2
   resolution: "@sinonjs/fake-timers@npm:11.2.2"
@@ -18380,7 +18350,7 @@ __metadata:
     "@arbitrum/sdk": "npm:3.4.0"
     "@eth-optimism/sdk": "npm:3.3.0"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.3.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.1.4"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.4.0"
     "@matterlabs/hardhat-zksync-verify": "npm:1.4.2"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
@@ -18412,7 +18382,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
   dependencies:
     "@matterlabs/hardhat-zksync-deploy": "npm:1.3.0"
-    "@matterlabs/hardhat-zksync-solc": "npm:1.1.0"
+    "@matterlabs/hardhat-zksync-solc": "npm:1.1.4"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.4.0"
     "@matterlabs/hardhat-zksync-verify": "npm:1.4.2"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
@@ -26852,7 +26822,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dockerode@npm:^4.0.0, dockerode@npm:^4.0.2":
+"dockerode@npm:^4.0.2":
   version: 4.0.2
   resolution: "dockerode@npm:4.0.2"
   dependencies:
@@ -40317,7 +40287,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nise@npm:^5.1.4, nise@npm:^5.1.5":
+"nise@npm:^5.1.5":
   version: 5.1.9
   resolution: "nise@npm:5.1.9"
   dependencies:
@@ -47409,20 +47379,6 @@ __metadata:
     chai: ^4.0.0
     sinon: ">=4.0.0"
   checksum: 10/028853eb8a545ca613c6863014a40f07d1e6b81467e20939fefcd13f170206d24165b91099fb297aeb4d137745e321da25daa8e2d665cc0a78f90d5b877e8bbe
-  languageName: node
-  linkType: hard
-
-"sinon@npm:^16.0.0":
-  version: 16.1.3
-  resolution: "sinon@npm:16.1.3"
-  dependencies:
-    "@sinonjs/commons": "npm:^3.0.0"
-    "@sinonjs/fake-timers": "npm:^10.3.0"
-    "@sinonjs/samsam": "npm:^8.0.0"
-    diff: "npm:^5.1.0"
-    nise: "npm:^5.1.4"
-    supports-color: "npm:^7.2.0"
-  checksum: 10/43d40437c3434b1e06c6c7f9f482b4096aaa869dbc486bf511a6319cc6900e1306f6d0bd0395e2278c208f75ed526e340cf1071b41efc6a9e8d9018b152f2326
   languageName: node
   linkType: hard
 
