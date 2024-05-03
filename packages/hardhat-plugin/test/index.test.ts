@@ -45,7 +45,6 @@ describe('Unlock Hardhat plugin', function () {
       assert.equal(this.hre.unlock.networks['1'].unlockAddress, 'newAddress')
     })
     it('should store additional networks info', function () {
-      console.log(this.hre.unlock.networks['12345'])
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('12345'))
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
       assert.equal(
