@@ -8,6 +8,13 @@ import {
   getEventBySlug,
   saveEvent,
 } from '../../src/operations/eventOperations'
+import { sendEmail } from '../../src/operations/wedlocksOperations'
+
+vi.mock('../../src/operations/wedlocksOperations', () => {
+  return {
+    sendEmail: vi.fn().mockResolvedValue(true),
+  }
+})
 
 describe('eventOperations', () => {
   beforeEach(async () => {
