@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.2.0
+
+- Upgrade to support ethers v6
+
 ### 0.1.5
 
 - Use version number directly fromn contracts packages

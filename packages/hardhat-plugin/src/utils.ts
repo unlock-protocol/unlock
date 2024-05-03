@@ -2,8 +2,10 @@ import { contracts } from '@unlock-protocol/contracts'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import type { Signer, Contract, ContractFactory } from 'ethers'
 
-import fs from 'fs-extra'
-import path from 'path'
+import {
+  bytecode as proxyBytecode,
+  abi as proxyAbi,
+} from './abis/ERC1967Proxy.json'
 
 export const contractExists = (contractName: string, versionNumber: number) => {
   // make sure contract exists
@@ -20,7 +22,6 @@ export const getContractAbi = (contractName: string, versionNumber: number) => {
   const contractVersion = `${contractName}V${versionNumber}`
   // get bytecode
   const { bytecode, abi } = contracts[contractVersion as keyof typeof contracts]
-
   return { bytecode, abi }
 }
 
@@ -51,25 +52,25 @@ export async function deployUpgreadableContract(
   const { bytecode, abi } = getContractAbi(contractName, versionNumber)
   const Factory = await hre.ethers.getContractFactory(abi, bytecode, signer)
   const impl = await Factory.deploy()
-  await impl.deployTransaction.wait(confirmations)
+  await impl.waitForDeployment()
 
   // encode initializer data
   const fragment = impl.interface.getFunction(initializer)
-  const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
+  const data = impl.interface.encodeFunctionData(
+    fragment!,
+    initializerArguments
+  )
 
   // deploy proxy
-  const { bytecode: proxyBytecode, abi: proxyAbi } = await fs.readJSON(
-    path.join(__dirname, 'abis', 'ERC1967Proxy.json')
-  )
   const ERC1967Proxy = await hre.ethers.getContractFactory(
     proxyAbi,
     proxyBytecode,
     signer
   )
-  const proxy = await ERC1967Proxy.deploy(impl.address, data)
+  const proxy = await ERC1967Proxy.deploy(await impl.getAddress(), data)
 
   // wait for proxy deployment
-  await proxy.deployTransaction.wait(confirmations)
+  await impl.deploymentTransaction()?.wait(confirmations)
 
-  return await hre.ethers.getContractAt(abi, proxy.address)
+  return await hre.ethers.getContractAt(abi, await proxy.getAddress())
 }
