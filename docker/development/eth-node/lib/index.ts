@@ -14,12 +14,14 @@ export const deployErc20 = async (): Promise<Contract> => {
   )
   const factory = await ethers.getContractFactory(abi, bytecode)
   const erc20Contract = await factory.deploy({ gasLimit: 6000000 })
+  await erc20Contract.deployed()
+
   return erc20Contract
 }
 
 export const outputSubgraphNetworkConf = async (
   unlockAddress: string
-): Promise<object> => {
+): Promise<{}> => {
   const networkConf = {
     localhost: {
       Unlock: {

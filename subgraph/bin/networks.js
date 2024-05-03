@@ -3,6 +3,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const networksConfig = require('@unlock-protocol/networks')
+const ethers = require('ethers')
 
 const networkFilePath = path.join(__dirname, '..', 'networks.json')
 const configFolderPath = path.join(__dirname, '..', 'config')

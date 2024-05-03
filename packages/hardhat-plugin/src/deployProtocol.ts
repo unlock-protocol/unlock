@@ -24,7 +24,7 @@ export interface UnlockConfigArgs {
   udtAddress?: string | null
   wethAddress?: string | null
   locksmithURI?: string
-  chainId?: bigint
+  chainId?: number
   estimatedGasForPurchase?: number
   symbol?: string
 }
@@ -45,9 +45,8 @@ export async function deployUnlock(
     confirmations
   )
 
-  const unlockAddress = await unlock.getAddress()
-  console.log(`UNLOCK > deployed to : ${unlockAddress}`)
-  hre.unlock.unlockAddress = unlockAddress
+  console.log(`UNLOCK > deployed to : ${unlock.address}`)
+
   return unlock
 }
 
@@ -61,15 +60,11 @@ export async function deployAndSetTemplate(
 
   // deploy PublicLock template
   const publicLock = await deployPublicLock(hre, lockVersion, confirmations)
-  const version = await publicLock.getFunction('publicLockVersion')()
-  const publicLockAddress = await publicLock.getAddress()
+  const version = await publicLock.publicLockVersion()
 
   // set lock template
-  await unlock.connect(signer).getFunction('addLockTemplate')(
-    publicLockAddress,
-    version
-  )
-  await unlock.connect(signer).getFunction('setLockTemplate')(publicLockAddress)
+  await unlock.connect(signer).addLockTemplate(publicLock.address, version)
+  await unlock.connect(signer).setLockTemplate(publicLock.address)
 
   return publicLock
 }
@@ -86,14 +81,13 @@ export async function deployPublicLock(
     version,
     signer
   )
-  const publicLock = await PublicLock.deploy()
-  await publicLock.deploymentTransaction()?.wait(confirmations)
-  const publicLockAddress = await publicLock.getAddress()
+  const publicLock: Contract = await PublicLock.deploy()
+  await publicLock.deployTransaction.wait(confirmations)
 
   console.log(
-    `PUBLICLOCK > deployed to : ${publicLockAddress} (${await publicLock.getFunction(
-      'publicLockVersion'
-    )()})`
+    `PUBLICLOCK > deployed to : ${
+      publicLock.address
+    } (${await publicLock.publicLockVersion()})`
   )
   return publicLock
 }
@@ -103,9 +97,21 @@ export async function deployProtocol(
   unlockVersion = UNLOCK_LATEST_VERSION,
   lockVersion = PUBLIC_LOCK_LATEST_VERSION,
   confirmations = 1 // default to 1, as this is mostly for use on local dev
-) {
+): Promise<{
+  unlock: Contract
+  publicLock: Contract
+}> {
   // 1. deploy Unlock
   const unlock = await deployUnlock(hre, unlockVersion, confirmations)
+
+  // 2. store deployed Unlock address in hre
+  const { chainId } = await hre.ethers.provider.getNetwork()
+  if (!hre.unlock.networks[chainId]) {
+    hre.unlock.networks[chainId] = {
+      id: chainId,
+    }
+  }
+  hre.unlock.networks[chainId].unlockAddress = unlock.address
 
   // 3. deploy and set template
   const publicLock = await deployAndSetTemplate(hre, lockVersion, confirmations)
