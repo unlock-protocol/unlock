@@ -17,17 +17,17 @@
   "dependencies": {
     "@types/next": "9.0.0",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
-    "next": "14.1.4",
+    "next": "14.2.3",
     "vite-plugin-node-polyfills": "0.21.0"
   },
   "license": "MIT",
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "eslint": "8.54.0",
-    "prettier": "3.1.0",
-    "typescript": "5.3.3",
-    "vite": "5.0.13"
+    "eslint": "8.57.0",
+    "prettier": "3.2.5",
+    "typescript": "5.4.5",
+    "vite": "5.2.11"
   },
   "browserslist": [
     "defaults",
