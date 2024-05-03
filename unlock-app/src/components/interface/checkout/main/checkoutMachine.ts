@@ -282,14 +282,14 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PASSWORD',
               guard: ({ event }) => {
-                return !event.expiredMember && event.hook === 'password'
+                return event.hook === 'password'
               },
             },
             {
               actions: ['selectLock'],
               target: 'PROMO',
               guard: ({ event }) => {
-                return !event.expiredMember && event.hook === 'promocode'
+                return event.hook === 'promocode'
               },
             },
             {
