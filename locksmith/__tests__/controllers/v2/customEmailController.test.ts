@@ -1,7 +1,7 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import app from '../../app'
-import { vi, beforeAll } from 'vitest'
+import { vi } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
 import { ethers } from 'ethers'
 import { sendEmail } from '../../../src/operations/wedlocksOperations'
@@ -13,7 +13,6 @@ const template = 'keyMinded'
 
 const network = 10
 const customEmailContent = `Custom Email Content`
-
 vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
     sendEmail: vi.fn().mockResolvedValue(true),
@@ -34,7 +33,6 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 
 describe('Email Controller v2', () => {
   beforeEach(async () => {
-    vi.clearAllMocks()
     await EventData.truncate()
   })
   it('Save custom email throws an error when is not authenticated', async () => {
@@ -237,13 +235,14 @@ describe('Email Controller v2', () => {
         eventParams,
         loginResponse.body.walletAddress
       )
+
       const response = await request(app)
         .post(`/v2/email/${slug}/invite`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
         .send({
           recipients: ['julien@unlock-protocol.com', 'hi@unlock-protocol.com'],
         })
-      expect(sendEmail).toHaveBeenCalledWith({
+      expect(sendEmail).toHaveBeenNthCalledWith(1, {
         attachments: [],
         params: {
           eventDate: '2024-05-22',
@@ -256,6 +255,7 @@ describe('Email Controller v2', () => {
         recipient: 'julien@unlock-protocol.com',
         template: 'inviteEvent',
       })
+      expect(sendEmail).toHaveBeenCalledTimes(2)
       expect(response.body).toEqual([true, true])
     })
   })

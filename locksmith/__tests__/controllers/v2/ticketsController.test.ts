@@ -4,7 +4,7 @@ import * as metadataOperations from '../../../src/operations/metadataOperations'
 import app from '../../app'
 import { beforeAll, vi } from 'vitest'
 import { saveEvent } from '../../../src/operations/eventOperations'
-import { getEventFixture } from '../../fixtures/events'
+import testEvents from '../fixtures/events'
 import { CheckoutConfig, EventData } from '../../../src/models'
 
 function* keyIdGen() {
@@ -56,7 +56,6 @@ vi.mock('@unlock-protocol/unlock-js', () => {
 
 vi.mock('../../../src/operations/wedlocksOperations', () => {
   return {
-    sendEmail: vi.fn().mockResolvedValue(true),
     notifyNewKeyToWedlocks: (key: string, networkId?: number) =>
       tokenId.toString() === key && network === networkId,
   }
@@ -68,17 +67,16 @@ describe('tickets endpoint', () => {
     await CheckoutConfig.truncate()
     fetchMock.enableMocks()
     // create an event
-    const eventParams = getEventFixture({
-      checkoutConfig: {
-        config: {
-          locks: {
-            [lockAddress]: {
-              network,
-            },
+    const eventParams = { ...testEvents[0] }
+    eventParams.checkoutConfig = {
+      config: {
+        locks: {
+          [lockAddress]: {
+            network,
           },
         },
       },
-    })
+    }
     eventParams.data.notifyCheckInUrls = [notifyCheckInUrl]
     await saveEvent(eventParams, owner)
   })

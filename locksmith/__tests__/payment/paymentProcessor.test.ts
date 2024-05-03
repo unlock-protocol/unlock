@@ -67,12 +67,7 @@ describe('PaymentProcessor', () => {
   let paymentProcessor: PaymentProcessor
 
   beforeAll(async () => {
-    nockBack.fixtures = path.join(
-      __dirname,
-      '..',
-      'fixtures',
-      'paymentProcessor'
-    )
+    nockBack.fixtures = path.join(__dirname, 'fixtures', 'paymentProcessor')
     nockBack.setMode('lockdown')
 
     const { nockDone } = await nockBack('setup.json')
