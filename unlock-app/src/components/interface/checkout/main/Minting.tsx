@@ -127,6 +127,7 @@ export function Minting({
     checkoutService,
     (state) => state.context
   )
+
   const config = useConfig()
   const processing = mint?.status === 'PROCESSING'
   const [doneWaiting, setDoneWaiting] = useState(false)
@@ -152,6 +153,7 @@ export function Minting({
 
     const waitForConfirmation = async () => {
       try {
+        if (mint.status !== 'PROCESSING') return
         const network = config.networks[mint.network || lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcBatchProvider(
@@ -189,12 +191,14 @@ export function Minting({
             network: mint!.network,
             transactionHash: mint!.transactionHash!,
           })
+
           setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
           console.log('Error waiting for confirmation', error)
           ToastHelper.error(error.message)
+
           checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',

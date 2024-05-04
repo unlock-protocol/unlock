@@ -349,9 +349,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       data.metadata = await Promise.all(
         data.metadata.map(async (item) => {
           const address = await getAddressForName(item.recipient)
+          // If the address is empty, we use the account address
           return {
             ...item,
-            recipient: address,
+            recipient: address !== '' ? address : (account as string),
           }
         })
       )
@@ -376,6 +377,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       const keyManagers = data.metadata.map(
         (item) => item.keyManager || item.recipient
       )
+
       await updateUsersMetadata(metadata)
       checkoutService.send({
         type: 'SELECT_RECIPIENTS',
