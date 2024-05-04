@@ -165,7 +165,7 @@ export const Form = ({ onSubmit, eventGatedRoomHook }: FormProps) => {
 
   const router = useRouter()
 
-  const imageUploadField = register('metadata.image', {
+  register('metadata.image', {
     required: {
       value: true,
       message: 'Please select an image to illustrate your event!',
