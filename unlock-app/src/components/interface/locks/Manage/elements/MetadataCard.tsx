@@ -38,6 +38,7 @@ interface MetadataCardProps {
   network: number
   expirationDuration?: string
   lockSettings?: Record<string, any>
+  isExpired?: boolean
 }
 
 const keysToIgnore = [
@@ -245,6 +246,7 @@ export const MetadataCard = ({
   network,
   expirationDuration,
   lockSettings,
+  isExpired,
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
   const [data, setData] = useState(metadata)
@@ -549,13 +551,32 @@ export const MetadataCard = ({
                   <div className="md:ml-auto">
                     <div className="flex flex-col gap-2 md:flex-row md:items-center">
                       {isLockManager && (
-                        <Button
-                          size="small"
-                          onClick={() => setShowTransferKey(true)}
-                          className="w-full md:w-auto"
-                        >
-                          Transfer
-                        </Button>
+                        <>
+                          {isExpired ? (
+                            // conditionally render Tooltip if membership is expired
+                            <Tooltip
+                              tip="Expired memberships can't be transferred"
+                              label="Expired memberships can't be transferred."
+                            >
+                              <Button
+                                size="small"
+                                className="w-full md:w-auto"
+                                disabled={isExpired}
+                              >
+                                Transfer
+                              </Button>
+                            </Tooltip>
+                          ) : (
+                            <Button
+                              size="small"
+                              onClick={() => setShowTransferKey(true)}
+                              className="w-full md:w-auto"
+                              disabled={isExpired}
+                            >
+                              Transfer
+                            </Button>
+                          )}
+                        </>
                       )}
                       {ownerIsManager && (
                         <div className="md:ml-auto">

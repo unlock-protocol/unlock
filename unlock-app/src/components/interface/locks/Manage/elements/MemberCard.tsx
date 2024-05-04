@@ -77,6 +77,9 @@ export const MemberCard = ({
 
   const { token: tokenId, lockName } = metadata ?? {}
 
+  // boolean to check if the membership/key is expired
+  const isExpired = expirationAsDate(expiration) === 'Expired'
+
   const MemberInfoDefault = () => {
     return (
       <>
@@ -179,6 +182,7 @@ export const MemberCard = ({
           owner={owner}
           network={network}
           lockSettings={lockSettings}
+          isExpired={isExpired}
         />
       )}
     </Collapse>
