@@ -4,8 +4,9 @@ export const degenChain: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  chain: 'DEGEN',
-  description: 'DEGEN CHAIN L3',
+  chain: 'degen',
+  description:
+    'Degen Chain is a Layer 3 blockchain built on Base, an Ethereum Layer 2 solution, for developing crypto projects for its community.',
   featured: false,
   hooks: {
     onKeyPurchaseHook: [
