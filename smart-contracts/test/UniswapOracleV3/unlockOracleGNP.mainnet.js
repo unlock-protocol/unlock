@@ -1,8 +1,9 @@
-const { unlock, config, ethers } = require('hardhat')
+const { unlock, ethers } = require('hardhat')
 const { expect } = require('chai')
 const {
   abi: USDCabi,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
+const { mainnet } = require('@unlock-protocol/networks')
 const {
   UNISWAP_FACTORY_ADDRESS,
   USDC,
@@ -12,10 +13,7 @@ const {
 } = require('../helpers')
 
 // get unlock address on mainnet
-const {
-  1: { unlockAddress },
-} = config.unlock
-
+const { unlockAddress } = mainnet
 const keyPriceUSDC = ethers.parseUnits('50', 6)
 
 describe('Unlock GNP conversion', () => {

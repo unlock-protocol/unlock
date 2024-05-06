@@ -21,11 +21,11 @@ const {
 
 const { unlockAddress } = mainnet
 const keyPrice = ethers.parseUnits('0.01', 'ether')
-const totalPrice = keyPrice * 5
+const totalPrice = keyPrice * 5n
 
 // USDC (only 6 decimals)
 const keyPriceUSDC = ethers.parseUnits('50', 6)
-const totalPriceUSDC = keyPriceUSDC * 5
+const totalPriceUSDC = keyPriceUSDC * 5n
 
 describe('Unlock / uniswapValue', () => {
   let lock
