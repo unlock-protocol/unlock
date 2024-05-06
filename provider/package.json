@@ -1,11 +1,11 @@
 {
   "name": "provider",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20230922.0",
+    "@cloudflare/workers-types": "4.20240423.0",
     "@types/node": "20.12.8",
     "@unlock-protocol/networks": "workspace:^",
     "ethers": "5.7.2",
-    "typescript": "5.4.3",
+    "typescript": "5.4.5",
     "vitest": "0.34.6"
   },
   "dependencies": {

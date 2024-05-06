@@ -13,16 +13,11 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   communication?: CheckoutCommunication
 }
 
-export function Confirm({
-  injectedProvider,
-  checkoutService,
-  communication,
-}: Props) {
+export function Confirm({ checkoutService, communication }: Props) {
   const { payment, paywallConfig, messageToSign, metadata } = useSelector(
     checkoutService,
     (state) => state.context
@@ -63,7 +58,6 @@ export function Confirm({
       {payment.method === 'card' && (
         <ConfirmCard
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -71,7 +65,6 @@ export function Confirm({
       {payment.method === 'swap_and_purchase' && (
         <ConfirmSwapAndPurchase
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -79,7 +72,6 @@ export function Confirm({
       {payment.method === 'crosschain_purchase' && (
         <ConfirmCrossChainPurchase
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -87,7 +79,6 @@ export function Confirm({
       {payment.method === 'crossmint' && (
         <ConfirmCrossmint
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -95,7 +86,6 @@ export function Confirm({
       {payment.method === 'crypto' && (
         <ConfirmCrypto
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -103,7 +93,6 @@ export function Confirm({
       {payment.method === 'claim' && (
         <ConfirmClaim
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
