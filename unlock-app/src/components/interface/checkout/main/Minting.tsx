@@ -20,7 +20,6 @@ import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
-import Disconnect from './Disconnect'
 
 interface MintingScreenProps {
   lockName: string
