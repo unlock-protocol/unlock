@@ -207,6 +207,7 @@ export const useProvider = (config: any) => {
       ['provider', 'network', 'account', `$session_${account}`, 'email'],
       true
     )
+
     try {
       // unlock provider does not support removing listeners or closing.
       if (!provider?.isUnlock) {
