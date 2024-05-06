@@ -18387,7 +18387,7 @@ __metadata:
     ethers: "npm:6.10.0"
     ethers5: "npm:ethers@5.7.2"
     fs-extra: "npm:11.2.0"
-    hardhat: "npm:2.20.1"
+    hardhat: "npm:2.22.3"
     zksync-ethers: "npm:6.1.0"
   languageName: unknown
   linkType: soft
@@ -18412,7 +18412,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     copyfiles: "npm:2.4.1"
     ethers: "npm:6.10.0"
-    hardhat: "npm:2.20.1"
+    hardhat: "npm:2.22.3"
     tsup: "npm:8.0.2"
     typescript: "npm:5.4.5"
     zksync-ethers: "npm:6.1.0"
