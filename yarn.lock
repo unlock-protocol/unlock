@@ -10931,7 +10931,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-base-client@npm:1.54.1, @openzeppelin/defender-base-client@npm:^1.46.0, @openzeppelin/defender-base-client@npm:^1.52.0":
+"@openzeppelin/defender-base-client@npm:1.54.1, @openzeppelin/defender-base-client@npm:^1.52.0":
   version: 1.54.1
   resolution: "@openzeppelin/defender-base-client@npm:1.54.1"
   dependencies:
@@ -10997,30 +10997,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.28.0":
-  version: 1.28.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.28.0"
-  dependencies:
-    "@openzeppelin/defender-base-client": "npm:^1.46.0"
-    "@openzeppelin/platform-deploy-client": "npm:^0.8.0"
-    "@openzeppelin/upgrades-core": "npm:^1.27.0"
-    chalk: "npm:^4.1.0"
-    debug: "npm:^4.1.1"
-    proper-lockfile: "npm:^4.1.1"
-  peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    "@nomiclabs/hardhat-etherscan": ^3.1.0
-    ethers: ^5.0.5
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomiclabs/harhdat-etherscan":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 10/4179635243bbc7786c46d65ac0848ac217669d8496383fca89806544778a5f23b38ebeceea341dda8b4547d4e8b4ba67f0138aff9e8fac51e2619d11b517db27
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/hardhat-upgrades@npm:3.0.2":
   version: 3.0.2
   resolution: "@openzeppelin/hardhat-upgrades@npm:3.0.2"
@@ -11078,38 +11054,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/platform-deploy-client@npm:^0.8.0":
-  version: 0.8.0
-  resolution: "@openzeppelin/platform-deploy-client@npm:0.8.0"
-  dependencies:
-    "@ethersproject/abi": "npm:^5.6.3"
-    "@openzeppelin/defender-base-client": "npm:^1.46.0"
-    axios: "npm:^0.21.2"
-    lodash: "npm:^4.17.19"
-    node-fetch: "npm:^2.6.0"
-  checksum: 10/a5eb346929b9d0d3b4b245a6a910105906a396f092a1df193bb7bb4feb7910a08e3c990c02079a477d28f4b32e8e659468159382cc632034da58d87d5eccb624
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:1.27.3":
-  version: 1.27.3
-  resolution: "@openzeppelin/upgrades-core@npm:1.27.3"
-  dependencies:
-    cbor: "npm:^8.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.15"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/91158bdfdab53eda1c1bfc4f65515c984d28d028218c5b734cf57787272a374d34e24035dc8be36121b38a515b64683575c44237cb07d3a9d6143f3b3b743aa3
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:1.32.5, @openzeppelin/upgrades-core@npm:^1.27.0, @openzeppelin/upgrades-core@npm:^1.31.3, @openzeppelin/upgrades-core@npm:^1.32.0, @openzeppelin/upgrades-core@npm:^1.32.2":
+"@openzeppelin/upgrades-core@npm:1.32.5, @openzeppelin/upgrades-core@npm:^1.31.3, @openzeppelin/upgrades-core@npm:^1.32.0, @openzeppelin/upgrades-core@npm:^1.32.2":
   version: 1.32.5
   resolution: "@openzeppelin/upgrades-core@npm:1.32.5"
   dependencies:
@@ -18524,13 +18469,13 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@connext/interfaces": "npm:2.0.5"
-    "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@nomiclabs/hardhat-etherscan": "npm:3.1.8"
-    "@nomiclabs/hardhat-waffle": "npm:2.0.6"
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
+    "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
+    "@nomicfoundation/hardhat-verify": "npm:2.0.6"
     "@openzeppelin/contracts": "npm:4.9.5"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.5"
-    "@openzeppelin/hardhat-upgrades": "npm:1.28.0"
-    "@openzeppelin/upgrades-core": "npm:1.27.3"
+    "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
+    "@openzeppelin/upgrades-core": "npm:1.32.5"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
     "@safe-global/safe-service-client": "npm:2.0.3"
@@ -18548,9 +18493,9 @@ __metadata:
     chai: "npm:4.3.10"
     eslint: "npm:8.46.0"
     eth-gas-reporter: "npm:0.2.27"
-    ethers: "npm:5.7.2"
+    ethers: "npm:6.10.0"
     fs-extra: "npm:11.1.1"
-    hardhat: "npm:2.20.1"
+    hardhat: "npm:2.22.3"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:1.0.10"
@@ -21607,7 +21552,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.1, axios@npm:^0.21.2, axios@npm:^0.21.4":
+"axios@npm:^0.21.1, axios@npm:^0.21.4":
   version: 0.21.4
   resolution: "axios@npm:0.21.4"
   dependencies:
@@ -23315,7 +23260,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cbor@npm:^8.0.0, cbor@npm:^8.1.0":
+"cbor@npm:^8.1.0":
   version: 8.1.0
   resolution: "cbor@npm:8.1.0"
   dependencies:
@@ -47445,7 +47390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solidity-ast@npm:^0.4.15, solidity-ast@npm:^0.4.51":
+"solidity-ast@npm:^0.4.51":
   version: 0.4.56
   resolution: "solidity-ast@npm:0.4.56"
   dependencies:
