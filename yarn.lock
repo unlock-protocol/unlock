@@ -18438,7 +18438,7 @@ __metadata:
     node-mocks-http: "npm:1.12.2"
     p-retry: "npm:6.0.0"
     parse-data-uri: "npm:0.2.0"
-    path-to-regexp: "npm:6.2.1"
+    path-to-regexp: "npm:6.2.2"
     pg: "npm:8.11.5"
     rate-limiter-flexible: "npm:5.0.3"
     react: "npm:18.2.0"
@@ -41962,10 +41962,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-to-regexp@npm:6.2.1":
-  version: 6.2.1
-  resolution: "path-to-regexp@npm:6.2.1"
-  checksum: 10/1e266be712d1a08086ee77beab12a1804842ec635dfed44f9ee1ba960a0e01cec8063fb8c92561115cdc0ce73158cdc7766e353ffa039340b4a85b370084c4d4
+"path-to-regexp@npm:6.2.2, path-to-regexp@npm:^6.2.0, path-to-regexp@npm:^6.2.1":
+  version: 6.2.2
+  resolution: "path-to-regexp@npm:6.2.2"
+  checksum: 10/f7d11c1a9e02576ce0294f4efdc523c11b73894947afdf7b23a0d0f7c6465d7a7772166e770ddf1495a8017cc0ee99e3e8a15ed7302b6b948b89a6dd4eea895e
   languageName: node
   linkType: hard
 
@@ -41975,13 +41975,6 @@ __metadata:
   dependencies:
     isarray: "npm:0.0.1"
   checksum: 10/45a01690f72919163cf89714e31a285937b14ad54c53734c826363fcf7beba9d9d0f2de802b4986b1264374562d6a3398a2e5289753a764e3a256494f1e52add
-  languageName: node
-  linkType: hard
-
-"path-to-regexp@npm:^6.2.0, path-to-regexp@npm:^6.2.1":
-  version: 6.2.2
-  resolution: "path-to-regexp@npm:6.2.2"
-  checksum: 10/f7d11c1a9e02576ce0294f4efdc523c11b73894947afdf7b23a0d0f7c6465d7a7772166e770ddf1495a8017cc0ee99e3e8a15ed7302b6b948b89a6dd4eea895e
   languageName: node
   linkType: hard
 
