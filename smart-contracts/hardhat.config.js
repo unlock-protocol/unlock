@@ -31,9 +31,6 @@ require('@nomicfoundation/hardhat-verify')
 // check contract size
 require('hardhat-contract-sizer')
 
-// our own hardhat plugin (for mainnet tests)
-// require('@unlock-protocol/hardhat-plugin')
-
 const settings = {
   optimizer: {
     enabled: true,

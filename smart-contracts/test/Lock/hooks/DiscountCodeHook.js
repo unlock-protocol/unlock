@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { expect } = require('chai')
-const { ethers, unlock } = require('hardhat')
+const { ethers } = require('hardhat')
+const { deployLock } = require('../../helpers')
 
 /**
  * Helper function
@@ -51,16 +52,9 @@ describe('DiscountHook', function () {
   it('should work as a hook and apply a discount', async function () {
     const [user] = await ethers.getSigners()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = ethers.parseEther('0.1')
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
+    const keyPrice = ethers.utils.parseEther('0.1')
+    const lock = await deployLock({
       keyPrice,
-      name: 'ticket',
     })
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
@@ -120,16 +114,9 @@ describe('DiscountHook', function () {
   it('should work as a hook even when a bad signature is provided', async function () {
     const [user] = await ethers.getSigners()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = ethers.parseEther('0.1')
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
+    const keyPrice = ethers.utils.parseEther('0.1')
+    const lock = await deployLock({
       keyPrice,
-      name: 'ticket',
     })
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
@@ -178,16 +165,9 @@ describe('DiscountHook', function () {
   it('should enforce the cap', async function () {
     const [user, other] = await ethers.getSigners()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = ethers.parseEther('0.1')
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
+    const keyPrice = ethers.utils.parseEther('0.1')
+    const lock = await deployLock({
       keyPrice,
-      name: 'ticket',
     })
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
