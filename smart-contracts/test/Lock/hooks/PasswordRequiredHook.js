@@ -10,16 +10,16 @@ const { reverts } = require('../../helpers')
  */
 const getSignatureForPassword = async (password, message) => {
   // Build the signer
-  const encoded = ethers.utils.defaultAbiCoder.encode(
+  const encoded = ethers.defaultAbiCoder.encode(
     ['bytes32'],
-    [ethers.utils.id(password)]
+    [ethers.id(password)]
   )
-  const privateKey = ethers.utils.keccak256(encoded)
+  const privateKey = ethers.keccak256(encoded)
   const privateKeyAccount = new ethers.Wallet(privateKey)
 
   // Sign
-  const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
-  const messageHashBinary = ethers.utils.arrayify(messageHash)
+  const messageHash = ethers.solidityKeccak256(['string'], [message])
+  const messageHashBinary = ethers.arrayify(messageHash)
   const signature = await privateKeyAccount.signMessage(messageHashBinary)
 
   return [signature, privateKeyAccount.address]
@@ -76,12 +76,12 @@ describe('PasswordRequiredHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
 
@@ -153,12 +153,12 @@ describe('PasswordRequiredHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
 

@@ -13,7 +13,7 @@ describe('Unlock / gas', () => {
     const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       ADDRESS_ZERO,
-      ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+      ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',
     ]

@@ -8,7 +8,7 @@ const {
   createLockCalldata,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 
 describe('Lock / mimick owner()', () => {
   let lock

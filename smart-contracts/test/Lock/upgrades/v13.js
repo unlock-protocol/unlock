@@ -11,13 +11,13 @@ const {
 // pass proper root folder to helpers
 const dirname = path.join(__dirname, '..')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 const previousVersionNumber = 12
 const nextVersionNumber = 13
 
 const duration = 60 * 60 * 24 * 30 // 30 days
 const currency = ADDRESS_ZERO
-const price = ethers.utils.parseEther('0.01')
+const price = ethers.parseEther('0.01')
 const maxKeys = 20
 const name = 'A neat upgradeable lock!'
 

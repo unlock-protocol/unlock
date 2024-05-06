@@ -11,7 +11,7 @@ const {
 const { ADDRESS_ZERO, getBalance } = require('@unlock-protocol/hardhat-helpers')
 
 const BASIS_POINT_DENOMINATOR = 10000
-const someDai = ethers.utils.parseUnits('10', 'ether')
+const someDai = ethers.parseUnits('10', 'ether')
 
 const scenarios = [false, true]
 

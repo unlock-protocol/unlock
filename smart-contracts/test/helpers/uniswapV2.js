@@ -52,7 +52,7 @@ const createUniswapV2Exchange = async ({
   protocolOwner,
   minter,
   udtAddress,
-  amount = ethers.utils.parseEther('1000000'),
+  amount = ethers.parseEther('1000000'),
 }) => {
   const udt = await ethers.getContractAt(
     'UnlockDiscountTokenV3',
@@ -71,7 +71,7 @@ const createUniswapV2Exchange = async ({
   await uniswapRouter
     .connect(minter)
     .addLiquidityETH(udt.address, amount, '1', '1', minter.address, MAX_UINT, {
-      value: ethers.utils.parseEther('40', 'ether'),
+      value: ethers.parseEther('40', 'ether'),
     })
 
   const uniswapOracle = await deployUniswapV2Oracle(
@@ -90,7 +90,7 @@ const createUniswapV2Exchange = async ({
       [weth.address, udt.address],
       minter.address,
       MAX_UINT,
-      { value: ethers.utils.parseEther('1') }
+      { value: ethers.parseEther('1') }
     )
 
   return {

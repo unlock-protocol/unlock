@@ -92,7 +92,7 @@ async function deployUpgreadableContract(
 
   // wait for proxy deployment
   const contract = await ethers.getContractAt(
-    Factory.interface.format(ethers.utils.FormatTypes.full),
+    Factory.interface.format(ethers.FormatTypes.full),
     proxy.address
   )
   return {
@@ -120,7 +120,7 @@ async function upgradeUpgreadableContract(
   await proxyAdmin.upgrade(proxyAddress, impl.address)
 
   const upgraded = await ethers.getContractAt(
-    Factory.interface.format(ethers.utils.FormatTypes.full),
+    Factory.interface.format(ethers.FormatTypes.full),
     proxyAddress
   )
   return upgraded

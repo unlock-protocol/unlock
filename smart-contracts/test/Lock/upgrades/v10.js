@@ -9,7 +9,7 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 
 const versionNumber = 9
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 
 // pass proper root folder to helpers
 const dirname = path.join(__dirname, '..')
@@ -164,7 +164,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
       beforeEach(async () => {
         // migrate the keys
-        const calldata = ethers.utils.defaultAbiCoder.encode(
+        const calldata = ethers.defaultAbiCoder.encode(
           ['uint', 'uint'],
           [0, 100]
         )

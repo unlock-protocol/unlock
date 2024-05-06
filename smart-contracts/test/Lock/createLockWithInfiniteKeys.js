@@ -20,7 +20,7 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO, // token address
-        ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
         MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
@@ -41,7 +41,7 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',
         // '0x000000000000000000000001',

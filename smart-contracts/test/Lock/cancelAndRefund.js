@@ -18,7 +18,7 @@ describe('Lock / cancelAndRefund', () => {
   let lock
   let lockFree
   let lockCreator, keyOwner, anotherKeyOwner, receiver, attacker
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+  const keyPrice = ethers.parseUnits('0.01', 'ether')
 
   before(async () => {
     ;[lockCreator, keyOwner, anotherKeyOwner, receiver, attacker] =

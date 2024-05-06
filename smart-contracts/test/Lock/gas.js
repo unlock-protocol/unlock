@@ -15,7 +15,7 @@ describe('Lock / gas', () => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
+        value: ethers.parseUnits('0.01', 'ether'),
       }
     )
     const { gasUsed } = await tx.wait()

@@ -153,7 +153,7 @@ describe(`Unlock migration`, function () {
     let calldata
     before(async () => {
       // set new Unlock address in lock
-      calldata = ethers.utils.defaultAbiCoder.encode(
+      calldata = ethers.defaultAbiCoder.encode(
         ['address'],
         [unlockModified.address]
       )

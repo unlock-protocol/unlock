@@ -4,7 +4,7 @@ const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 const { assert } = require('chai')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 
 describe('Lock / expirationDuration', () => {
   let lock

@@ -2,7 +2,7 @@ const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployContracts, reverts, getBalance } = require('../helpers')
 
-const oneEth = ethers.utils.parseEther('1')
+const oneEth = ethers.parseEther('1')
 
 describe('Unlock / receive', async () => {
   let unlock, signer

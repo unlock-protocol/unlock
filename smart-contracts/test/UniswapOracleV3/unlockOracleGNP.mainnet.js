@@ -16,7 +16,7 @@ const {
   1: { unlockAddress },
 } = config.unlock
 
-const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
+const keyPriceUSDC = ethers.parseUnits('50', 6)
 
 describe('Unlock GNP conversion', () => {
   let unlockContract
@@ -95,11 +95,7 @@ describe('Unlock GNP conversion', () => {
       await usdc.approve(lock.address, totalPrice)
 
       // consult our oracle independently for 1 USDC
-      const rate = await oracle.consult(
-        USDC,
-        ethers.utils.parseUnits('1', 6),
-        WETH
-      )
+      const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
 
       // purchase some keys
       await purchaseKeys(lock.address, NUMBER_OF_KEYS, keyPriceUSDC, true)
@@ -113,7 +109,7 @@ describe('Unlock GNP conversion', () => {
       )
 
       // show value in ETH to approx
-      console.log(`250 USDC =~ ${ethers.utils.formatUnits(GNP)} ETH`)
+      console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)
     })
   })
 })

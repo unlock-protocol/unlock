@@ -54,7 +54,7 @@ describe('Unlock / UnlockProxy', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
         100, // maxNumberOfKeys
         'New Lock',
       ]
@@ -80,8 +80,8 @@ describe('Unlock / UnlockProxy', () => {
 
     it('should trigger the NewLock event', () => {
       assert.equal(
-        ethers.utils.getAddress(newLockArgs.lockOwner),
-        ethers.utils.getAddress(unlockOwner.address)
+        ethers.getAddress(newLockArgs.lockOwner),
+        ethers.getAddress(unlockOwner.address)
       )
       assert(newLockArgs.newLockAddress)
     })
@@ -93,8 +93,8 @@ describe('Unlock / UnlockProxy', () => {
       )
       let unlockProtocol = await publicLock.unlockProtocol()
       assert.equal(
-        ethers.utils.getAddress(unlockProtocol),
-        ethers.utils.getAddress(unlock.address)
+        ethers.getAddress(unlockProtocol),
+        ethers.getAddress(unlock.address)
       )
     })
   })

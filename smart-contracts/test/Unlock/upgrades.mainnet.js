@@ -107,7 +107,7 @@ describe('Unlock (on mainnet)', async () => {
     })
 
     // give some ETH to deployer
-    const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+    const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
     await network.provider.send('hardhat_setBalance', [
       deployerAddress,
       balance,

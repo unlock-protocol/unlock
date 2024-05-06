@@ -9,10 +9,10 @@ const {
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const newPrice = ethers.utils.parseUnits('0.011', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const newPrice = ethers.parseUnits('0.011', 'ether')
 const totalPrice = keyPrice.mul(10).toString()
-const someDai = ethers.utils.parseUnits('100', 'ether')
+const someDai = ethers.parseUnits('100', 'ether')
 
 let dai
 let lock

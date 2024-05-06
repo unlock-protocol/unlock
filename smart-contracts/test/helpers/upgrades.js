@@ -8,7 +8,7 @@ const ADMIN_SLOT =
 // get proxy admin address from storage
 async function getProxyAdminAddress(contractAddress) {
   const hex = await ethers.provider.getStorageAt(contractAddress, ADMIN_SLOT)
-  return ethers.utils.hexStripZeros(hex)
+  return ethers.hexStripZeros(hex)
 }
 
 module.exports = {

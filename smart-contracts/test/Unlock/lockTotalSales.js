@@ -9,7 +9,7 @@ const {
 
 let lock
 let unlock
-const price = ethers.utils.parseUnits('0.01', 'ether')
+const price = ethers.parseUnits('0.01', 'ether')
 
 describe('Unlock / lockTotalSales', () => {
   before(async () => {

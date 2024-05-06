@@ -8,7 +8,7 @@ const {
   ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 const previousVersionNumber = 11
 const nextVersionNumber = 12
 

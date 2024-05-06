@@ -21,7 +21,7 @@ describe('Lock / purchaseForFrom', () => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
     })
@@ -36,7 +36,7 @@ describe('Lock / purchaseForFrom', () => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await lock.purchase(
@@ -46,7 +46,7 @@ describe('Lock / purchaseForFrom', () => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
     })

@@ -32,7 +32,7 @@ const upgradeContract = async () => {
     params: [signers[0]],
   })
   // give some ETH
-  const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+  const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
   await network.provider.send('hardhat_setBalance', [signers[0], balance])
 
   const issuer = await ethers.getSigner(signers[0])
@@ -64,9 +64,7 @@ const upgradeContract = async () => {
         method: 'hardhat_impersonateAccount',
         params: [signerAddress],
       })
-      const balance = ethers.utils.hexStripZeros(
-        ethers.utils.parseEther('1000')
-      )
+      const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
       await network.provider.send('hardhat_setBalance', [
         signerAddress,
         balance,
@@ -112,7 +110,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
     })
 
     // give some ETH to deployer
-    const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+    const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
     await network.provider.send('hardhat_setBalance', [
       deployerAddress,
       balance,
@@ -144,7 +142,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(totalSupply.eq(0), false)
       // more than initial pre-mined 1M
-      assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
+      assert(totalSupply.gt(ethers.parseEther('1000000')))
     })
 
     it('name is set', async () => {
@@ -294,7 +292,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const signature = await permitter._signTypedData(domain, types, message)
 
       // Let's now have the holder submit the
-      const { v, r, s } = ethers.utils.splitSignature(signature)
+      const { v, r, s } = ethers.splitSignature(signature)
 
       const tx = await udt.permit(
         permitter.address,
@@ -318,9 +316,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const polygonBridgeAddress = '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf'
 
       udt = await upgradeContract()
-      const balance = ethers.utils.hexStripZeros(
-        ethers.utils.parseEther('1000')
-      )
+      const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
       await network.provider.send('hardhat_setBalance', [
         polygonBridgeAddress,
         balance,
@@ -338,7 +334,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         params: [polygonBridgeAddress],
       })
       const bridge = await ethers.getSigner(polygonBridgeAddress)
-      let amount = ethers.utils.parseUnits('1', 18)
+      let amount = ethers.parseUnits('1', 18)
       udt = udt.connect(bridge)
       await udt.transfer(attacker1Address, amount) // We transfer 1 UDT
 
@@ -356,9 +352,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const polygonBridgeAddress = '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf'
 
       udt = await upgradeContract()
-      const balance = ethers.utils.hexStripZeros(
-        ethers.utils.parseEther('1000')
-      )
+      const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
       await network.provider.send('hardhat_setBalance', [
         polygonBridgeAddress,
         balance,
@@ -376,7 +370,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         params: [polygonBridgeAddress],
       })
       const bridge = await ethers.getSigner(polygonBridgeAddress)
-      let amount = ethers.utils.parseUnits('1', 18)
+      let amount = ethers.parseUnits('1', 18)
       udt = udt.connect(bridge)
       await udt.transfer(attackerAddress, amount) // We transfer 1 UDT
 
@@ -394,9 +388,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const polygonBridgeAddress = '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf'
 
       udt = await upgradeContract()
-      const balance = ethers.utils.hexStripZeros(
-        ethers.utils.parseEther('1000')
-      )
+      const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
       await network.provider.send('hardhat_setBalance', [
         polygonBridgeAddress,
         balance,
@@ -410,7 +402,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         params: [polygonBridgeAddress],
       })
       const bridge = await ethers.getSigner(polygonBridgeAddress)
-      let amount = ethers.utils.parseUnits('1', 18)
+      let amount = ethers.parseUnits('1', 18)
       udt = udt.connect(bridge)
       await udt.transfer(polygonUser, amount) // We transfer 1 UDT
 
@@ -423,16 +415,14 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const xDaiBridge = '0x88ad09518695c6c3712AC10a214bE5109a655671'
 
       udt = await upgradeContract()
-      const balance = ethers.utils.hexStripZeros(
-        ethers.utils.parseEther('1000')
-      )
+      const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
       await network.provider.send('hardhat_setBalance', [xDaiBridge, balance])
       const balanceBridgeBefore = await udt.balanceOf(xDaiBridge)
 
       assert.isTrue(balanceBridgeBefore > 0)
 
       const signer = await ethers.getSigner(0)
-      let amount = ethers.utils.parseUnits('1', 18)
+      let amount = ethers.parseUnits('1', 18)
       udt = udt.connect(signer)
 
       await reverts(
@@ -447,9 +437,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const xDaiBridgeAddress = '0x88ad09518695c6c3712AC10a214bE5109a655671'
 
       udt = await upgradeContract()
-      const balance = ethers.utils.hexStripZeros(
-        ethers.utils.parseEther('1000')
-      )
+      const balance = ethers.hexStripZeros(ethers.parseEther('1000'))
       await network.provider.send('hardhat_setBalance', [
         xDaiBridgeAddress,
         balance,
@@ -464,7 +452,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         params: [xDaiBridgeAddress],
       })
       const bridge = await ethers.getSigner(xDaiBridgeAddress)
-      let amount = ethers.utils.parseUnits('1', 18)
+      let amount = ethers.parseUnits('1', 18)
       udt = udt.connect(bridge)
       await udt.transfer(attackerAddress, amount) // We transfer 1 UDT
 
@@ -598,7 +586,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         const signature = await delegator._signTypedData(domain, types, message)
 
         // Let's now have the holder submit the
-        const { v, r, s } = ethers.utils.splitSignature(signature)
+        const { v, r, s } = ethers.splitSignature(signature)
         const tx = await udt.delegateBySig(delegatee, nonce, expiry, v, r, s)
         const { events } = await tx.wait()
 

@@ -10,7 +10,7 @@ const {
 let lock
 let keyOwner, keyManager, keyRecipient, keyGrantee
 let tokenId
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 const oneDay = 60 * 60 * 24
 
 describe('Permissions / KeyManager', () => {

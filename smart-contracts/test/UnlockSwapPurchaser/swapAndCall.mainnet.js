@@ -67,7 +67,7 @@ describe(`swapAndCall`, function () {
         before(async () => {
           ;[, keyOwner] = await ethers.getSigners()
           // parse token decimals properly (100 USDC or 1 ETH)
-          keyPrice = ethers.utils.parseUnits(
+          keyPrice = ethers.parseUnits(
             lockToken.symbol === 'USDC' ? '100' : '1',
             lockToken.decimals
           )

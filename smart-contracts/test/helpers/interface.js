@@ -1,9 +1,9 @@
 const { ethers } = require('hardhat')
 
 const parseInterface = ({ functions }) => {
-  const iface = new ethers.utils.Interface(Object.values(functions))
+  const iface = new ethers.Interface(Object.values(functions))
   return iface
-    .format(ethers.utils.FormatTypes.minimal)
+    .format(ethers.FormatTypes.minimal)
     .map((d) => d.split('@')[0].trim())
 }
 

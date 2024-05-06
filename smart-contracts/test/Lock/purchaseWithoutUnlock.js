@@ -9,7 +9,7 @@ const {
   getProxyAdminAddress,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 let pastImpl
 let brokenImpl
 let proxyAdmin

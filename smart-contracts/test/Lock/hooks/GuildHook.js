@@ -27,34 +27,32 @@ describe('GuildHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
 
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityKeccak256(
       ['string'],
       [user.address.toLowerCase()]
     )
-    const signedMessage = await signer.signMessage(
-      ethers.utils.arrayify(messageHash)
-    )
+    const signedMessage = await signer.signMessage(ethers.arrayify(messageHash))
 
-    const anotherMessageHash = ethers.utils.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityKeccak256(
       ['string'],
       [another.address.toLowerCase()]
     )
     const anotherSignedMessage = await signer.signMessage(
-      ethers.utils.arrayify(anotherMessageHash)
+      ethers.arrayify(anotherMessageHash)
     )
 
     // Health check!
     expect(
-      ethers.utils.verifyMessage(user.address.toLowerCase(), signedMessage),
+      ethers.verifyMessage(user.address.toLowerCase(), signedMessage),
       signer.address
     )
 

@@ -11,7 +11,7 @@ const {
 const USDC_ABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 
-const keyPrice = ethers.utils.parseUnits('5', 6)
+const keyPrice = ethers.parseUnits('5', 6)
 
 /**
  * Function that prepares a purchase
@@ -58,12 +58,12 @@ const signUSDCTransfer = async ({
   }
 
   const message = {
-    from: from ? from : ethers.utils.getAddress(signer.address),
-    to: ethers.utils.getAddress(recipient), // Receiver wallet
+    from: from ? from : ethers.getAddress(signer.address),
+    to: ethers.getAddress(recipient), // Receiver wallet
     value: amount,
     validAfter: 0,
     validBefore: Math.floor(Date.now() / 1000) + 3600, // Valid for an hour
-    nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // 32 byte hex string
+    nonce: ethers.hexlify(ethers.randomBytes(32)), // 32 byte hex string
   }
 
   const signature = await signer._signTypedData(domain, types, message)
@@ -151,7 +151,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
   })
 
   it('should fail if called for a non existing lock', async () => {
-    const notALock = ethers.utils.id('NOT A LOCK').slice(0, 42)
+    const notALock = ethers.id('NOT A LOCK').slice(0, 42)
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
@@ -321,7 +321,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
       chainId,
       signer,
       recipient: cardPurchaser.address,
-      amount: ethers.utils.parseUnits('3', 6),
+      amount: ethers.parseUnits('3', 6),
     })
     const purchase = await signLockPurchase({
       chainId,
@@ -343,12 +343,12 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
   })
 
   it('should succeed with a purchase', async () => {
-    await addSomeUSDC(USDC, signer.address, ethers.utils.parseUnits('6', 6))
+    await addSomeUSDC(USDC, signer.address, ethers.parseUnits('6', 6))
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
       recipient: cardPurchaser.address,
-      amount: ethers.utils.parseUnits('6', 6),
+      amount: ethers.parseUnits('6', 6),
     })
     const purchase = await signLockPurchase({
       chainId,
@@ -374,7 +374,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
 
     expect(
       (await usdcContract.balanceOf(cardPurchaser.address)).toNumber()
-    ).to.equal(balanceBefore.add(ethers.utils.parseUnits('1', 6)).toNumber())
+    ).to.equal(balanceBefore.add(ethers.parseUnits('1', 6)).toNumber())
   })
 
   it('should reset the approval to 0', async () => {

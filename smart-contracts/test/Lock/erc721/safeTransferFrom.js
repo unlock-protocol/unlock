@@ -39,7 +39,7 @@ describe('Lock / erc721 / safeTransferFrom', () => {
         random.address,
         random2.address,
         tokenId,
-        ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Julien'))
+        ethers.hexlify(ethers.toUtf8Bytes('Julien'))
       )
     let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, random2.address)

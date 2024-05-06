@@ -10,8 +10,8 @@ const {
   increaseTimeTo,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const someTokens = ethers.parseUnits('10', 'ether')
 
 describe('Lock / onKeyExtendHook', () => {
   let lock

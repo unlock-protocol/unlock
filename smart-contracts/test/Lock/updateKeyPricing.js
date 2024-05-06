@@ -16,7 +16,7 @@ let token
 let tokenAddressBefore
 let deployer, lockCreator, lockManager, random, invalidTokenAddress
 
-const newPrice = ethers.utils.parseUnits('0.3', 'ether')
+const newPrice = ethers.parseUnits('0.3', 'ether')
 
 describe('Lock / updateKeyPricing', () => {
   before(async () => {
@@ -38,7 +38,7 @@ describe('Lock / updateKeyPricing', () => {
     keyPriceBefore = await lock.keyPrice()
     tokenAddressBefore = await lock.tokenAddress()
 
-    compareBigNumbers(keyPriceBefore, ethers.utils.parseUnits('0.01', 'ether'))
+    compareBigNumbers(keyPriceBefore, ethers.parseUnits('0.01', 'ether'))
     compareBigNumbers(tokenAddressBefore, ADDRESS_ZERO)
 
     const tx = await lock
@@ -102,14 +102,11 @@ describe('Lock / updateKeyPricing', () => {
 
       await lock
         .connect(lockManager)
-        .updateKeyPricing(
-          ethers.utils.parseUnits('0.42', 'ether'),
-          token.address
-        )
+        .updateKeyPricing(ethers.parseUnits('0.42', 'ether'), token.address)
       assert.equal(await lock.tokenAddress(), token.address)
       compareBigNumbers(
         await lock.keyPrice(),
-        ethers.utils.parseUnits('0.42', 'ether')
+        ethers.parseUnits('0.42', 'ether')
       )
     })
 

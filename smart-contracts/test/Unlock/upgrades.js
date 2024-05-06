@@ -22,7 +22,7 @@ const unlockVersions = getUnlockVersionNumbers()
 describe('Unlock / upgrades', async () => {
   const [unlockOwner, lockOwner, keyOwner, anotherAccount] =
     await ethers.getSigners()
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+  const keyPrice = ethers.parseUnits('0.01', 'ether')
 
   after(async () => await cleanupContractVersions(__dirname))
 
@@ -133,7 +133,7 @@ describe('Unlock / upgrades', async () => {
               keyPrice,
               5, // maxNumberOfKeys
               `UpgradeTestingLock ${versionNumber}`,
-              ethers.utils.hexlify(ethers.utils.randomBytes(12))
+              ethers.hexlify(ethers.randomBytes(12))
             )
           } else if (versionNumber >= 3) {
             // Version 3 added a lock name
@@ -235,10 +235,7 @@ describe('Unlock / upgrades', async () => {
               await publicLockLatestTemplate.deployed()
 
               // set template
-              if (
-                (await unlock.proxyAdminAddress()) ===
-                ethers.constants.AddressZero
-              ) {
+              if ((await unlock.proxyAdminAddress()) === ethers.AddressZero) {
                 await unlock.initializeProxyAdmin()
               }
               const version = await publicLockLatestTemplate.publicLockVersion()
@@ -470,7 +467,7 @@ describe('Unlock / upgrades', async () => {
           .connect(keyOwner)
           .purchaseFor(
             keyOwner.address,
-            ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Julien')),
+            ethers.hexlify(ethers.toUtf8Bytes('Julien')),
             {
               value: keyPrice,
             }

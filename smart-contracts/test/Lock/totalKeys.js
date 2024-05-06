@@ -22,7 +22,7 @@ describe('Lock / totalKeys', () => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: ethers.utils.parseUnits('0.03', 'ether'),
+        value: ethers.parseUnits('0.03', 'ether'),
       }
     )
     const { events } = await tx.wait()
@@ -47,7 +47,7 @@ describe('Lock / totalKeys', () => {
   it('should count both expired and renewed keys', async () => {
     // extend once to fix block time in the past in test
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
+      value: ethers.parseUnits('0.03', 'ether'),
       from: keyOwner.address,
     })
 
@@ -60,7 +60,7 @@ describe('Lock / totalKeys', () => {
 
     // renew one
     await lock.connect(keyOwner).extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
+      value: ethers.parseUnits('0.03', 'ether'),
     })
 
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 1)

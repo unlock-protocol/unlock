@@ -11,7 +11,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const someTokens = ethers.parseUnits('10', 'ether')
 const scenarios = [true, false]
 
 describe('Lock / withdraw', () => {

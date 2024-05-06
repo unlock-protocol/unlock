@@ -7,7 +7,7 @@ const {
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 
 let unlock
 let lock

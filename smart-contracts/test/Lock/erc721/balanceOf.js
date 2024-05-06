@@ -30,7 +30,7 @@ describe('Lock / erc721 / balanceOf', () => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: ethers.utils.parseUnits('0.03', 'ether'),
+        value: ethers.parseUnits('0.03', 'ether'),
       }
     )
     compareBigNumbers(await lock.balanceOf(someAccount.address), 3)
@@ -44,7 +44,7 @@ describe('Lock / erc721 / balanceOf', () => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: ethers.utils.parseUnits('0.03', 'ether'),
+        value: ethers.parseUnits('0.03', 'ether'),
       }
     )
     const { events } = await tx.wait()
@@ -62,7 +62,7 @@ describe('Lock / erc721 / balanceOf', () => {
 
     // renew one
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
+      value: ethers.parseUnits('0.03', 'ether'),
     })
 
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 1)
@@ -76,7 +76,7 @@ describe('Lock / erc721 / balanceOf', () => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: ethers.utils.parseUnits('0.03', 'ether'),
+        value: ethers.parseUnits('0.03', 'ether'),
       }
     )
     const { events } = await tx.wait()

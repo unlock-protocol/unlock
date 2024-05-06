@@ -11,8 +11,8 @@ const {
 const { ethers } = require('hardhat')
 const scenarios = [false, true]
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const tip = ethers.utils.parseUnits('1', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const tip = ethers.parseUnits('1', 'ether')
 
 describe('Lock / purchaseTip', () => {
   scenarios.forEach((isErc20) => {
@@ -133,7 +133,7 @@ describe('Lock / purchaseTip', () => {
         it('should fail if value is less than keyPrice', async () => {
           await reverts(
             lock.purchase(
-              [ethers.utils.parseUnits('0.001', 'ether')],
+              [ethers.parseUnits('0.001', 'ether')],
               [spender.address],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],

@@ -27,7 +27,7 @@ const scenarios = [
   137, // polygon
 ]
 
-const mintAmount = ethers.utils.parseUnits('1000000', 'ether')
+const mintAmount = ethers.parseUnits('1000000', 'ether')
 
 const round = (bn) => {
   const [integral, decimals] = bn.split('.')
@@ -80,7 +80,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
 
     rate = await oracle.consult(
       udt.address,
-      ethers.utils.parseUnits('1', 'ether'),
+      ethers.parseUnits('1', 'ether'),
       weth.address
     )
 
@@ -89,9 +89,9 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
   })
 
   it('exchange rate is > 0', async () => {
-    assert.notEqual(ethers.utils.formatUnits(rate), 0)
+    assert.notEqual(ethers.formatUnits(rate), 0)
     // 1 UDT is worth ~0.000042 ETH
-    assert.equal(Math.floor(ethers.utils.formatUnits(rate, 12)), 42)
+    assert.equal(Math.floor(ethers.formatUnits(rate, 12)), 42)
   })
 
   it('referrer has 0 UDT to start', async () => {
@@ -127,7 +127,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
 
         before(async () => {
           // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
-          await unlock.resetTrackedValue(ethers.utils.parseUnits('1', 'wei'), 0)
+          await unlock.resetTrackedValue(ethers.parseUnits('1', 'wei'), 0)
 
           const balanceReferrerBefore = await udt.balanceOf(referrer.address)
           const { blockNumber } = await lock
@@ -162,7 +162,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
           compareBigNumbers(
             gasSpent,
-            round(ethers.utils.formatEther(balanceReferrer.mul(rate)))
+            round(ethers.formatEther(balanceReferrer.mul(rate)))
           )
         })
       })
@@ -177,10 +177,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           // Total value exchanged = 1M USD
           // Key purchase 0.01 ETH = 20 USD
           // user earns 10UDT or
-          await unlock.resetTrackedValue(
-            ethers.utils.parseUnits('500', 'ether'),
-            0
-          )
+          await unlock.resetTrackedValue(ethers.parseUnits('500', 'ether'), 0)
 
           const baseFeePerGas = 1000000000 // in gwei
           await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
@@ -214,10 +211,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
         })
 
         it('amount granted for referrer ~= 10 UDT', async () => {
-          assert.equal(
-            Math.round(ethers.utils.formatEther(balanceReferrer)),
-            '10'
-          )
+          assert.equal(Math.round(ethers.formatEther(balanceReferrer)), '10')
         })
       })
     })

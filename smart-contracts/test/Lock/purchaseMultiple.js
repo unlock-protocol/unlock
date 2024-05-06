@@ -12,7 +12,7 @@ const { ethers } = require('hardhat')
 const scenarios = [false, true]
 
 let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 const allowance = '100000000000000000000'
 
 describe('Lock / purchase multiple keys at once', () => {
@@ -72,7 +72,7 @@ describe('Lock / purchase multiple keys at once', () => {
           await reverts(
             lock.connect(keyOwners[1]).purchase(
               isErc20
-                ? keyOwners.map(() => ethers.utils.parseUnits('0.005', 'ether'))
+                ? keyOwners.map(() => ethers.parseUnits('0.005', 'ether'))
                 : [],
               keyOwners.map(({ address }) => address),
 

@@ -35,7 +35,7 @@ describe('LockSerializer', () => {
     })
 
     it('fetch a sample of the tokenURI properly', async () => {
-      const keyPrice = ethers.utils.parseEther('0.01')
+      const keyPrice = ethers.parseEther('0.01')
       const baseTokenURI = 'https://hahaha.com/'
 
       // purchase a key
@@ -73,7 +73,7 @@ describe('LockSerializer', () => {
 
     describe('key ownership', () => {
       let purchasers
-      const keyPrice = ethers.utils.parseEther('0.01')
+      const keyPrice = ethers.parseEther('0.01')
 
       // eslint-disable-next-line func-names
       beforeEach(async function () {

@@ -7,7 +7,7 @@ const {
   canNotSetNonContractAddress,
 } = require('./behaviors/hooks.js')
 
-const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
+const dataField = ethers.hexlify(ethers.toUtf8Bytes('TestData'))
 
 describe('Lock / onKeyPurchaseHook', () => {
   let lock

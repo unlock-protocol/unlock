@@ -7,7 +7,7 @@ const {
   ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 const previousVersionNumber = 10
 
 // pass proper root folder to helpers

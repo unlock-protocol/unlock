@@ -20,11 +20,11 @@ const {
 } = require('../helpers')
 
 const { unlockAddress } = mainnet
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(5)
 
 // USDC (only 6 decimals)
-const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
+const keyPriceUSDC = ethers.parseUnits('50', 6)
 const totalPriceUSDC = keyPriceUSDC.mul(5)
 
 describe('Unlock / uniswapValue', () => {
@@ -109,7 +109,7 @@ describe('Unlock / uniswapValue', () => {
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
         // consult our oracle independently for 1 USDC
-        rate = await oracle.consult(USDC, ethers.utils.parseUnits('1', 6), WETH)
+        rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
       })
 
       it('GDP went up by the expected ETH value', async () => {
@@ -123,7 +123,7 @@ describe('Unlock / uniswapValue', () => {
         )
 
         // show approx value in ETH for reference
-        console.log(`250 USDC =~ ${ethers.utils.formatUnits(GNP)} ETH`)
+        console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)
       })
 
       it('a GDP tracking event has been emitted', async () => {
@@ -213,11 +213,7 @@ describe('Unlock / uniswapValue', () => {
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
         // consult our oracle independently for 1 SHIBA_INU
-        rate = await oracle.consult(
-          SHIBA_INU,
-          ethers.utils.parseUnits('1', 6),
-          WETH
-        )
+        rate = await oracle.consult(SHIBA_INU, ethers.parseUnits('1', 6), WETH)
       })
 
       it('GDP went up by the expected ETH value', async () => {
@@ -230,7 +226,7 @@ describe('Unlock / uniswapValue', () => {
         expect(diff.toNumber()).to.be.lte(1000) // price variation
 
         // show approx value in ETH for reference
-        console.log(`250 SHIBA_INU =~ ${ethers.utils.formatUnits(GNP)} ETH`)
+        console.log(`250 SHIBA_INU =~ ${ethers.formatUnits(GNP)} ETH`)
       })
 
       it('a GDP tracking event has been emitted', async () => {

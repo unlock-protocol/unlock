@@ -10,16 +10,16 @@ const { ethers, unlock } = require('hardhat')
  */
 const getSignatureForPassword = async (password, message) => {
   // Build the signer
-  const encoded = ethers.utils.defaultAbiCoder.encode(
+  const encoded = ethers.defaultAbiCoder.encode(
     ['bytes32'],
-    [ethers.utils.id(password)]
+    [ethers.id(password)]
   )
-  const privateKey = ethers.utils.keccak256(encoded)
+  const privateKey = ethers.keccak256(encoded)
   const privateKeyAccount = new ethers.Wallet(privateKey)
 
   // Sign
-  const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
-  const messageHashBinary = ethers.utils.arrayify(messageHash)
+  const messageHash = ethers.solidityKeccak256(['string'], [message])
+  const messageHashBinary = ethers.arrayify(messageHash)
   const signature = await privateKeyAccount.signMessage(messageHashBinary)
 
   return [signature, privateKeyAccount.address]
@@ -54,7 +54,7 @@ describe('DiscountHook', function () {
     await unlock.deployProtocol()
     const expirationDuration = 60 * 60 * 24 * 7
     const maxNumberOfKeys = 100
-    const keyPrice = ethers.utils.parseEther('0.1')
+    const keyPrice = ethers.parseEther('0.1')
 
     const { lock } = await unlock.createLock({
       expirationDuration,
@@ -69,12 +69,12 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
     // Let's get the price without a promo code
@@ -83,10 +83,7 @@ describe('DiscountHook', function () {
       user.address,
       []
     )
-    assert.equal(
-      ethers.utils.formatEther(priceWithout),
-      ethers.utils.formatEther(keyPrice)
-    )
+    assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
     const code = 'PROMOCODE'
     const discount = 3000
@@ -101,7 +98,7 @@ describe('DiscountHook', function () {
 
     // Let's get the price without a promo code
     const price = await lock.purchasePriceFor(user.address, user.address, data)
-    assert.equal(ethers.utils.formatEther(price), '0.07')
+    assert.equal(ethers.formatEther(price), '0.07')
 
     // Let's make a purchase!
     await (
@@ -126,7 +123,7 @@ describe('DiscountHook', function () {
     await unlock.deployProtocol()
     const expirationDuration = 60 * 60 * 24 * 7
     const maxNumberOfKeys = 100
-    const keyPrice = ethers.utils.parseEther('0.1')
+    const keyPrice = ethers.parseEther('0.1')
 
     const { lock } = await unlock.createLock({
       expirationDuration,
@@ -141,12 +138,12 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
     // Let's get the price without a promo code
@@ -155,14 +152,11 @@ describe('DiscountHook', function () {
       user.address,
       []
     )
-    assert.equal(
-      ethers.utils.formatEther(priceWithout),
-      ethers.utils.formatEther(keyPrice)
-    )
+    assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
     // Let's get the price without a promo code
     const price = await lock.purchasePriceFor(user.address, user.address, [])
-    assert.equal(ethers.utils.formatEther(price), '0.1')
+    assert.equal(ethers.formatEther(price), '0.1')
 
     // Let's make a purchase!
     await (
@@ -187,7 +181,7 @@ describe('DiscountHook', function () {
     await unlock.deployProtocol()
     const expirationDuration = 60 * 60 * 24 * 7
     const maxNumberOfKeys = 100
-    const keyPrice = ethers.utils.parseEther('0.1')
+    const keyPrice = ethers.parseEther('0.1')
 
     const { lock } = await unlock.createLock({
       expirationDuration,
@@ -202,12 +196,12 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
     // Let's get the price without a promo code
@@ -216,10 +210,7 @@ describe('DiscountHook', function () {
       user.address,
       []
     )
-    assert.equal(
-      ethers.utils.formatEther(priceWithout),
-      ethers.utils.formatEther(keyPrice)
-    )
+    assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
     const code = 'PROMOCODE'
     const discount = 3000
@@ -234,7 +225,7 @@ describe('DiscountHook', function () {
 
     // Let's get the price without a promo code
     const price = await lock.purchasePriceFor(user.address, user.address, data)
-    assert.equal(ethers.utils.formatEther(price), '0.07')
+    assert.equal(ethers.formatEther(price), '0.07')
 
     // Let's make a purchase!
     await (
@@ -262,6 +253,6 @@ describe('DiscountHook', function () {
       other.address,
       dataOther
     )
-    assert.equal(ethers.utils.formatEther(priceOther), '0.1')
+    assert.equal(ethers.formatEther(priceOther), '0.1')
   })
 })

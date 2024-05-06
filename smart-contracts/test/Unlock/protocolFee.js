@@ -13,7 +13,7 @@ const {
 } = require('../helpers')
 
 const scenarios = [false, true]
-const someDai = ethers.utils.parseEther('10')
+const someDai = ethers.parseEther('10')
 const BASIS_POINT_DENOMINATOR = 10000
 
 describe('Unlock / protocolFee', async () => {

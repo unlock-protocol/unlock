@@ -62,7 +62,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('mint', () => {
-    const amount = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+    const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
 
     it('minters can not be added anymore', async () => {
       const [, minter] = await ethers.getSigners()
@@ -119,7 +119,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         'starting supply must be different from 0'
       )
       // more than 1M
-      assert(totalSupply.gt(ethers.utils.parseEther('1000000')))
+      assert(totalSupply.gt(ethers.parseEther('1000000')))
     })
 
     // totalSupply at block height for ERC20Votes function
@@ -132,9 +132,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         assert.isTrue(pastTotalSupply.eq(totalSupply))
       })
       it('increases when tokens are minted', async () => {
-        const amount = ethers.utils.hexStripZeros(
-          ethers.utils.parseEther('1000')
-        )
+        const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
         const blockNumber = await ethers.provider.getBlockNumber()
         await advanceBlock()
         const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
@@ -245,7 +243,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
       const signature = await permitter._signTypedData(domain, types, message)
 
       // Let's now have the holder submit the
-      const { v, r, s } = ethers.utils.splitSignature(signature)
+      const { v, r, s } = ethers.splitSignature(signature)
 
       const tx = await udt.permit(
         permitter.address,
@@ -361,7 +359,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const signature = await delegator._signTypedData(domain, types, message)
 
         // Let's now have the holder submit the
-        const { v, r, s } = ethers.utils.splitSignature(signature)
+        const { v, r, s } = ethers.splitSignature(signature)
         const tx = await udt.delegateBySig(delegatee, nonce, expiry, v, r, s)
         const { events } = await tx.wait()
 
@@ -406,7 +404,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
       const domainSeparator = await udt.DOMAIN_SEPARATOR()
       assert.equal(
         domainSeparator,
-        ethers.utils._TypedDataEncoder.hashDomain(expectedDomain)
+        ethers._TypedDataEncoder.hashDomain(expectedDomain)
       )
     })
   })

@@ -228,21 +228,18 @@ describe('UnlockDiscountToken upgrade', async () => {
 
       rate = await oracle.consult(
         udt.address,
-        ethers.utils.parseUnits('1', 'ether'),
+        ethers.parseUnits('1', 'ether'),
         weth.address
       )
 
       // Give unlock contract some tokens
-      await udt.mint(
-        unlock.address,
-        ethers.utils.parseUnits('1000000', 'ether')
-      )
+      await udt.mint(unlock.address, ethers.parseUnits('1000000', 'ether'))
     })
 
     it('exchange rate is > 0', async () => {
-      assert.notEqual(ethers.utils.formatUnits(rate), 0)
+      assert.notEqual(ethers.formatUnits(rate), 0)
       // 1 UDT is worth ~0.000042 ETH
-      assert.equal(Math.floor(ethers.utils.formatUnits(rate, 12)), 42)
+      assert.equal(Math.floor(ethers.formatUnits(rate, 12)), 42)
     })
 
     it('referrer has 0 UDT to start', async () => {

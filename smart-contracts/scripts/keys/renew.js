@@ -8,7 +8,7 @@ async function main({ lockAddress, tokenId, referrer }) {
     throw new Error('Renewal only available for v10+')
   }
   // default to address zero
-  referrer = referrer || ethers.constants.AddressZero
+  referrer = referrer || ethers.AddressZero
 
   const tx = await lock.renewMembershipFor(tokenId, referrer)
   const receipt = await tx.wait()

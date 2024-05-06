@@ -9,7 +9,7 @@ const {
   reverts,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 
 describe('Lock / maxNumberOfKeys', () => {
   let unlock

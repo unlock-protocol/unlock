@@ -13,9 +13,9 @@ let lock
 
 let dai
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
-const someDai = ethers.utils.parseUnits('10', 'ether')
+const someDai = ethers.parseUnits('10', 'ether')
 
 describe('Lock / isRenewable (ERC20 only)', () => {
   let tokenId
@@ -45,7 +45,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
     })
     it('if price has decreased', async () => {
       await lock.updateKeyPricing(
-        ethers.utils.parseUnits('0.009', 'ether'),
+        ethers.parseUnits('0.009', 'ether'),
         dai.address
       )
       assert.equal(await lock.isRenewable(tokenId, ADDRESS_ZERO), true)
@@ -126,7 +126,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
   describe('change in lock settings', () => {
     it('reverts if price has increased', async () => {
       await lock.updateKeyPricing(
-        ethers.utils.parseUnits('0.3', 'ether'),
+        ethers.parseUnits('0.3', 'ether'),
         dai.address
       )
       await reverts(lock.isRenewable(tokenId, ADDRESS_ZERO), 'LOCK_HAS_CHANGED')

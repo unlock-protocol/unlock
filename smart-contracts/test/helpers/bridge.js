@@ -30,7 +30,7 @@ async function deployBridge(srcDomainId = SRC_DOMAIN_ID) {
 
   // fund the bridge
   await addSomeETH(bridge.address)
-  await erc20Dest.mint(bridge.address, ethers.utils.parseEther('100'))
+  await erc20Dest.mint(bridge.address, ethers.parseEther('100'))
 
   return {
     bridge: bridge,

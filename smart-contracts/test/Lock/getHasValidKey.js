@@ -53,7 +53,7 @@ describe('Lock / getHasValidKey', () => {
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [[], [], []],
         {
-          value: ethers.utils.parseUnits('0.03', 'ether'),
+          value: ethers.parseUnits('0.03', 'ether'),
         }
       )
       const { events } = await tx.wait()

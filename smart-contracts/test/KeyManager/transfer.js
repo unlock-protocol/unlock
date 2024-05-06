@@ -104,7 +104,7 @@ describe('KeyManager', () => {
       transfer
     )
     assert.equal(
-      ethers.utils.verifyTypedData(domain, types, transfer, signature),
+      ethers.verifyTypedData(domain, types, transfer, signature),
       locksmith.address
     )
     const realUserSigner = await ethers.getSigner(realUser.address)

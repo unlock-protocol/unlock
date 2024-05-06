@@ -22,7 +22,7 @@ describe('Lock / uniqueTokenIds', () => {
 
       // extend a key
       await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
+        value: ethers.parseUnits('0.01', 'ether'),
       })
 
       // make sure no new keys have been created

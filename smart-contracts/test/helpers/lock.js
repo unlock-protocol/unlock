@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
-const { AddressZero } = ethers.constants
+const { AddressZero } = ethers
 
-const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
+const DEFAULT_KEY_PRICE = ethers.parseEther('0.01')
 
 const purchaseKey = async (
   lock,

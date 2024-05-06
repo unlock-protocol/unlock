@@ -14,7 +14,7 @@ let hook
 let token
 
 let deployer, tokenOwner, keyOwner, attacker
-const minAmount = ethers.utils.parseEther('0.05')
+const minAmount = ethers.parseEther('0.05')
 
 describe('ERC20BalanceOfHook', () => {
   beforeEach(async () => {
@@ -99,7 +99,7 @@ describe('ERC20BalanceOfHook', () => {
   describe('mapping is set, account holds less than necessary', () => {
     beforeEach(async () => {
       // mint one token
-      await token.mint(tokenOwner.address, ethers.utils.parseEther('0.01'))
+      await token.mint(tokenOwner.address, ethers.parseEther('0.01'))
       // create mapping
       await hook.createMapping(lock.address, token.address, minAmount)
     })
@@ -126,7 +126,7 @@ describe('ERC20BalanceOfHook', () => {
   describe('mapping is set, account holds more than necessary', () => {
     beforeEach(async () => {
       // mint one token
-      await token.mint(tokenOwner.address, ethers.utils.parseEther('0.5'))
+      await token.mint(tokenOwner.address, ethers.parseEther('0.5'))
       // create mapping
       await hook.createMapping(lock.address, token.address, minAmount)
     })

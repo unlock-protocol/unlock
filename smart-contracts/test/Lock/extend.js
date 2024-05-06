@@ -12,8 +12,8 @@ const {
 
 const scenarios = [false, true]
 let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const someTokens = ethers.parseUnits('10', 'ether')
 
 describe('Lock / extend keys', () => {
   scenarios.forEach((isErc20) => {
@@ -63,7 +63,7 @@ describe('Lock / extend keys', () => {
         })
 
         it('reverts with insufficient value', async () => {
-          const belowPrice = ethers.utils.parseUnits('0.005', 'ether')
+          const belowPrice = ethers.parseUnits('0.005', 'ether')
           await reverts(
             lock
               .connect(anotherAccount)

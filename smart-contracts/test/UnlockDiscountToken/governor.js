@@ -9,9 +9,7 @@ const {
 } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
-const PROPOSER_ROLE = ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
-)
+const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
 describe('UnlockProtocolGovernor', () => {
   let gov
@@ -21,7 +19,7 @@ describe('UnlockProtocolGovernor', () => {
   // default values
   const votingDelay = 1
   const votingPeriod = 45818
-  const defaultQuorum = ethers.utils.parseEther('15000')
+  const defaultQuorum = ethers.parseEther('15000')
 
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
@@ -52,8 +50,8 @@ describe('UnlockProtocolGovernor', () => {
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
     // get params
-    const descriptionHash = ethers.utils.keccak256(
-      ethers.utils.toUtf8Bytes(proposal.slice(-1).find(Boolean))
+    const descriptionHash = ethers.keccak256(
+      ethers.toUtf8Bytes(proposal.slice(-1).find(Boolean))
     )
     const [targets, values, calldatas] = proposal
 
@@ -126,7 +124,7 @@ describe('UnlockProtocolGovernor', () => {
     })
 
     beforeEach(async () => {
-      const quorum = ethers.utils.parseUnits('15000.0', 18)
+      const quorum = ethers.parseUnits('15000.0', 18)
       const [owner, minter, voter] = await ethers.getSigners()
 
       // bring default voting period to 10 blocks for testing purposes
@@ -141,7 +139,7 @@ describe('UnlockProtocolGovernor', () => {
       await udt.mint(owner.address, quorum)
 
       // give voter a few more tokens of its own to make sure we are above quorum
-      await udt.mint(minter.address, ethers.utils.parseUnits('10.0', 18))
+      await udt.mint(minter.address, ethers.parseUnits('10.0', 18))
       await udt.delegate(voter.address)
 
       // delegate votes
@@ -154,7 +152,7 @@ describe('UnlockProtocolGovernor', () => {
 
     describe('Quorum', () => {
       it('should be properly updated through voting', async () => {
-        const quorum = ethers.utils.parseUnits('35.0', 18)
+        const quorum = ethers.parseUnits('35.0', 18)
 
         const [, , voter] = await ethers.getSigners()
         const encoded = gov.interface.encodeFunctionData('setQuorum', [quorum])
@@ -162,7 +160,7 @@ describe('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [ethers.utils.parseUnits('0')],
+          [ethers.parseUnits('0')],
           [encoded],
           '<proposal description: update the quorum>',
         ]
@@ -196,7 +194,7 @@ describe('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [ethers.utils.parseUnits('0')],
+          [ethers.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]
@@ -228,7 +226,7 @@ describe('UnlockProtocolGovernor', () => {
 
         const proposal = [
           [gov.address],
-          [ethers.utils.parseUnits('0')],
+          [ethers.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]

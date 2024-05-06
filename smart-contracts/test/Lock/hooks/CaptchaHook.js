@@ -29,17 +29,14 @@ describe('CaptchaHook', function () {
 
     // Correct signer, correct message
     const message = 'hello'
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityKeccak256(
       ['string'],
       [message.toLowerCase()]
     )
     const signedMessage = await secretSigner.signMessage(
-      ethers.utils.arrayify(messageHash)
+      ethers.arrayify(messageHash)
     )
-    expect(
-      ethers.utils.verifyMessage(message, signedMessage),
-      secretSigner.address
-    )
+    expect(ethers.verifyMessage(message, signedMessage), secretSigner.address)
     expect(await hook.checkIsSigner(message, signedMessage)).to.equal(true)
   })
 
@@ -68,34 +65,34 @@ describe('CaptchaHook', function () {
     await (
       await lock.setEventHooks(
         hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero,
+        ethers.AddressZero
       )
     ).wait()
 
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityKeccak256(
       ['string'],
       [user.address.toLowerCase()]
     )
     const signedMessage = await secretSigner.signMessage(
-      ethers.utils.arrayify(messageHash)
+      ethers.arrayify(messageHash)
     )
 
-    const anotherMessageHash = ethers.utils.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityKeccak256(
       ['string'],
       [another.address.toLowerCase()]
     )
     const anotherSignedMessage = await secretSigner.signMessage(
-      ethers.utils.arrayify(anotherMessageHash)
+      ethers.arrayify(anotherMessageHash)
     )
 
     // Health check!
     expect(
-      ethers.utils.verifyMessage(user.address.toLowerCase(), signedMessage),
+      ethers.verifyMessage(user.address.toLowerCase(), signedMessage),
       secretSigner.address
     )
     expect(

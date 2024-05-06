@@ -16,7 +16,7 @@ const {
 const dirname = path.join(__dirname, '..')
 
 const previousVersionNumber = 9 // to next version
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 
 // helpers
 const purchaseFails = async (lock) => {
@@ -118,7 +118,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const args = [
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
-      ethers.utils.parseEther('0.01').toString(),
+      ethers.parseEther('0.01').toString(),
       1000, // available keys
       'A neat upgradeable lock!',
     ]
@@ -130,7 +130,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
     // get lock
     lock = await ethers.getContractAt(
-      PublicLockPast.interface.format(ethers.utils.FormatTypes.full),
+      PublicLockPast.interface.format(ethers.FormatTypes.full),
       newLockAddress
     )
     // add latest tempalte
@@ -180,7 +180,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
       // update abi before upgrade, so we can track event
       lock = await ethers.getContractAt(
-        PublicLockLatest.interface.format(ethers.utils.FormatTypes.full),
+        PublicLockLatest.interface.format(ethers.FormatTypes.full),
         lock.address
       )
 
@@ -264,7 +264,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
         const [, lockOwner] = await ethers.getSigners()
 
         // migrate a batch of 100
-        const calldata = ethers.utils.defaultAbiCoder.encode(
+        const calldata = ethers.defaultAbiCoder.encode(
           ['uint', 'uint'],
           [100, 100]
         )
@@ -305,7 +305,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
         const [, lockOwner] = await ethers.getSigners()
 
         // 200 already migrated, now add a first batch of 100
-        const calldata1 = ethers.utils.defaultAbiCoder.encode(
+        const calldata1 = ethers.defaultAbiCoder.encode(
           ['uint', 'uint'],
           [200, 100]
         )
@@ -315,7 +315,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
         assert.equal(args.updatedRecordsCount.toNumber(), 100)
 
         // migrate another batch of 200
-        const calldata2 = ethers.utils.defaultAbiCoder.encode(
+        const calldata2 = ethers.defaultAbiCoder.encode(
           ['uint', 'uint'],
           [300, 200]
         )

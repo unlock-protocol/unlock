@@ -11,8 +11,8 @@ const {
 } = require('../helpers')
 
 const { ethers } = require('hardhat')
-const keyPrice = ethers.utils.parseEther('0.01')
-const gasRefundAmount = ethers.utils.parseEther('0.001')
+const keyPrice = ethers.parseEther('0.01')
+const gasRefundAmount = ethers.parseEther('0.001')
 
 // test for ERC20 and ETH
 // const scenarios = [true, false]
@@ -79,7 +79,7 @@ describe('Lock / GasRefund', () => {
         // Mint some tokens for testing
         await testToken
           .connect(deployer)
-          .mint(keyOwner.address, ethers.utils.parseEther('100'))
+          .mint(keyOwner.address, ethers.parseEther('100'))
 
         // deploy lock w ERC20
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO

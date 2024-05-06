@@ -37,7 +37,7 @@ describe('Lock / maxKeysPerAddress', () => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: ethers.utils.parseUnits('0.01', 'ether'),
+            value: ethers.parseUnits('0.01', 'ether'),
           }
         ),
         'MAX_KEYS'
@@ -53,7 +53,7 @@ describe('Lock / maxKeysPerAddress', () => {
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[], []],
           {
-            value: ethers.utils.parseUnits('0.02', 'ether'),
+            value: ethers.parseUnits('0.02', 'ether'),
           }
         ),
         'MAX_KEYS'
@@ -68,7 +68,7 @@ describe('Lock / maxKeysPerAddress', () => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(
@@ -85,7 +85,7 @@ describe('Lock / maxKeysPerAddress', () => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(

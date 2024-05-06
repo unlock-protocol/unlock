@@ -12,9 +12,9 @@ const { ethers } = require('hardhat')
 let lock
 let dai
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
-const someDai = ethers.utils.parseUnits('10', 'ether')
+const someDai = ethers.parseUnits('10', 'ether')
 
 describe('Lock / Recurring memberships', () => {
   let lockOwner
@@ -120,7 +120,7 @@ describe('Lock / Recurring memberships', () => {
     describe('fails when lock settings have changed', () => {
       it('should revert if price has changed', async () => {
         await lock.updateKeyPricing(
-          ethers.utils.parseUnits('0.3', 'ether'),
+          ethers.parseUnits('0.3', 'ether'),
           dai.address
         )
         await reverts(

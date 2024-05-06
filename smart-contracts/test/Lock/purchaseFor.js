@@ -9,7 +9,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01', 'ether')
+const keyPrice = ethers.parseEther('0.01', 'ether')
 describe('Lock / purchaseFor', () => {
   let lock
   let anotherLock
@@ -36,7 +36,7 @@ describe('Lock / purchaseFor', () => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: ethers.utils.parseEther('0.0001', 'ether'),
+            value: ethers.parseEther('0.0001', 'ether'),
           }
         ),
         'INSUFFICIENT_VALUE'

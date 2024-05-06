@@ -7,8 +7,8 @@ describe('Lock / expireAndRefundFor', () => {
   let tokenIds
   let lockCreator
   let keyOwners
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-  const refundAmount = ethers.utils.parseUnits('0.01', 'ether')
+  const keyPrice = ethers.parseUnits('0.01', 'ether')
+  const refundAmount = ethers.parseUnits('0.01', 'ether')
 
   before(async () => {
     let signers

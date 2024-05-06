@@ -97,7 +97,7 @@ describe('Unlock / swapAndBurn', async () => {
     let token, amount, deployer, signer
     beforeEach(async () => {
       token = await deployERC20(deployer, true)
-      amount = ethers.utils.parseEther('50')
+      amount = ethers.parseEther('50')
 
       // replace by mock version of SwapBurner
       await unlock.setSwapBurner(mockSwapBurner.address)
