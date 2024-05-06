@@ -20,17 +20,18 @@ export const RegistrationCard = ({
 }: RegistrationCardProps) => {
   // Check if the user has a key!
   const queries = useValidKeyBulk(checkoutConfig.config.locks)
-  const refresh = () => {
-    queries.map((query) => query.refetch())
+
+  // Refresh function once the user has a key.
+  const refresh = async () => {
+    await queries.map((query) => query.refetch())
   }
 
   const hasValidKey = queries?.map((query) => query.data).some((value) => value)
 
-  // We don't show a "loading" state when checing if the user has valid keys
+  // We don't show a "loading" state when checking if the user has valid keys
   // because if the user was logging in from inside the modal, it would result in the modal being closed.
-
   if (hasValidKey) {
-    return <HasTicket />
+    return <HasTicket checkoutConfig={checkoutConfig} />
   }
 
   // We need to behave differently if there is only one lock
