@@ -35,6 +35,6 @@ You can play with configurations and see visually what your checkout will look l
 
 This will take you to the "Checkout Builder" where you can build your checkout and see what your changes look like in real time.
 
-If you'd like to use that configuration with your [Paywall](../paywall), download the configuration file by clicking on the "Download JSON" button.
+If you'd like to use that configuration with your [Paywall](./paywall), download the configuration file by clicking on the "Download JSON" button.
 
 ![unlock dashboard checkout builder](/img/tools/checkout/dashboard-checkout-builder.png)
