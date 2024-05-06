@@ -214,7 +214,8 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+  const checkoutLink = `/locks/checkout-url`
+  const verificationLink = `/verification`
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -481,7 +482,7 @@ export const ManageLockPage = () => {
                   setPage={setPage}
                   page={page}
                   NoMemberNoFilter={() => {
-                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    const checkoutLink = `/locks/checkout-url`
                     return (
                       <ImageBar
                         src="/images/illustrations/no-member.svg"
