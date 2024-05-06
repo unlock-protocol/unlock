@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { networks } from '@unlock-protocol/networks'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
@@ -15,8 +14,8 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
 import { useRouter } from 'next/router'
+import Disconnect from './Disconnect'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   recipients: string[]
   lock: any
@@ -47,7 +46,6 @@ export function PromoContent({
   recipients,
   lock,
   promoCode,
-  injectedProvider,
   checkoutService,
 }: Props) {
   const { account } = useAuth()
@@ -164,21 +162,17 @@ export function PromoContent({
         </form>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          form="promo"
+          className="w-full"
+          disabled={isSubmitting || promoCodeLoading}
+          loading={isSubmitting}
+          onClick={handleSubmit(onSubmit)}
         >
-          <Button
-            type="submit"
-            form="promo"
-            className="w-full"
-            disabled={isSubmitting || promoCodeLoading}
-            loading={isSubmitting}
-            onClick={handleSubmit(onSubmit)}
-          >
-            {hasDiscount ? 'Next' : 'Skip'}
-          </Button>
-        </Connected>
+          {hasDiscount ? 'Next' : 'Skip'}
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
@@ -186,11 +180,10 @@ export function PromoContent({
 }
 
 interface PromoProps {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Promo({ injectedProvider, checkoutService }: PromoProps) {
+export function Promo({ checkoutService }: PromoProps) {
   const { recipients, lock, paywallConfig } = useSelector(
     checkoutService,
     (state) => state.context
@@ -209,7 +202,6 @@ export function Promo({ injectedProvider, checkoutService }: PromoProps) {
       recipients={recipients}
       lock={lock}
       promoCode={promoCode}
-      injectedProvider={injectedProvider}
       checkoutService={checkoutService}
     />
   )

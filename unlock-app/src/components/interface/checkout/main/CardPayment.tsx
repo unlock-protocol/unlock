@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useCallback, useEffect, useState } from 'react'
@@ -28,11 +27,10 @@ import {
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function CardPayment({ checkoutService, injectedProvider }: Props) {
+export function CardPayment({ checkoutService }: Props) {
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
   const [isSaving, setIsSaving] = useState(false)
@@ -82,38 +80,33 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          {!card ? (
-            <Button
-              loading={isSaving}
-              disabled={isMethodLoading || isSaving || !stripe}
-              type="submit"
-              form="payment"
-              className="w-full"
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              className="w-full"
-              disabled={!card}
-              onClick={() => {
-                checkoutService.send({
-                  type: 'SELECT_PAYMENT_METHOD',
-                  payment: {
-                    method: 'card',
-                    cardId: payment!.id!,
-                  },
-                })
-              }}
-            >
-              Continue
-            </Button>
-          )}
-        </Connected>
+        {!card ? (
+          <Button
+            loading={isSaving}
+            disabled={isMethodLoading || isSaving || !stripe}
+            type="submit"
+            form="payment"
+            className="w-full"
+          >
+            Next
+          </Button>
+        ) : (
+          <Button
+            className="w-full"
+            disabled={!card}
+            onClick={() => {
+              checkoutService.send({
+                type: 'SELECT_PAYMENT_METHOD',
+                payment: {
+                  method: 'card',
+                  cardId: payment!.id!,
+                },
+              })
+            }}
+          >
+            Continue
+          </Button>
+        )}
         <PoweredByUnlock />
       </footer>
     </Fragment>

@@ -1,6 +1,5 @@
 import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
-import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -29,8 +28,8 @@ import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import Disconnect from './Disconnect'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -182,7 +181,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
   )
 }
 
-export function Select({ checkoutService, injectedProvider }: Props) {
+export function Select({ checkoutService }: Props) {
   const { paywallConfig, lock: selectedLock } = useSelector(
     checkoutService,
     (state) => state.context
@@ -344,7 +343,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
 
     checkoutService.send({
-      type: 'SELECT_LOCK',
+      type: 'CONNECT',
       lock,
       existingMember: !!membership?.member,
       skipQuantity,
@@ -431,42 +430,38 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            {isNotExpectedAddress && (
-              <p className="mb-2 text-sm text-center">
-                Switch to wallet address {minifyAddress(expectedAddress)} to
-                continue.
-              </p>
-            )}
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
+        <div className="grid">
+          {isNotExpectedAddress && (
+            <p className="mb-2 text-sm text-center">
+              Switch to wallet address {minifyAddress(expectedAddress)} to
+              continue.
+            </p>
+          )}
+          <Button
+            disabled={isDisabled}
+            onClick={async (event) => {
+              event.preventDefault()
 
-                if (!lock) {
-                  return
-                }
+              if (!lock) {
+                return
+              }
 
-                checkoutService.send({
-                  type: 'SELECT_LOCK',
-                  lock,
-                  existingMember: lock.isMember,
-                  expiredMember: lock.isExpired,
-                  skipQuantity,
-                  skipRecipient,
-                  recipients: account ? [account] : [],
-                  hook: hookType,
-                })
-              }}
-            >
-              Next
-            </Button>
-          </div>
-        </Connected>
+              checkoutService.send({
+                type: 'CONNECT',
+                lock,
+                existingMember: lock.isMember,
+                expiredMember: lock.isExpired,
+                skipQuantity,
+                skipRecipient,
+                recipients: account ? [account] : [],
+                hook: hookType,
+              })
+            }}
+          >
+            Next
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

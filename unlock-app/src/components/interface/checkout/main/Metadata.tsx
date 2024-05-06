@@ -18,7 +18,6 @@ import {
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
-import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
@@ -35,9 +34,9 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -267,7 +266,7 @@ export const emailInput: MetadataInput = {
   placeholder: 'your@email.com',
 }
 
-export function Metadata({ checkoutService, injectedProvider }: Props) {
+export function Metadata({ checkoutService }: Props) {
   const { lock, paywallConfig, quantity } = useSelector(
     checkoutService,
     (state) => state.context
@@ -432,19 +431,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          loading={isLoading}
+          disabled={isLoading || isMemberLoading}
+          className="w-full"
+          form="metadata"
         >
-          <Button
-            loading={isLoading}
-            disabled={isLoading || isMemberLoading}
-            className="w-full"
-            form="metadata"
-          >
-            {isLoading ? 'Continuing' : 'Next'}
-          </Button>
-        </Connected>
+          {isLoading ? 'Continuing' : 'Next'}
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

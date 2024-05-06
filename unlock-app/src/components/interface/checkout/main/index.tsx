@@ -21,6 +21,7 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
+import { Connected } from '../Connected'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfigType
@@ -129,50 +130,32 @@ export function Checkout({
 
   const Content = useCallback(() => {
     switch (matched) {
-      case 'SELECT': {
+      case 'CONNECT': {
         return (
-          <Select
+          <Connected
+            service={checkoutService}
             injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
           />
         )
+      }
+      case 'SELECT': {
+        return <Select checkoutService={checkoutService} />
       }
       case 'QUANTITY': {
-        return (
-          <Quantity
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Quantity checkoutService={checkoutService} />
       }
       case 'PAYMENT': {
-        return (
-          <Payment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Payment checkoutService={checkoutService} />
       }
       case 'CARD': {
-        return (
-          <CardPayment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <CardPayment checkoutService={checkoutService} />
       }
       case 'METADATA': {
-        return (
-          <Metadata
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Metadata checkoutService={checkoutService} />
       }
       case 'CONFIRM': {
         return (
           <Confirm
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
@@ -181,7 +164,6 @@ export function Checkout({
       case 'MESSAGE_TO_SIGN': {
         return (
           <MessageToSign
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
@@ -191,67 +173,35 @@ export function Checkout({
         return (
           <Minting
             onClose={onClose}
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
         )
       }
       case 'UNLOCK_ACCOUNT': {
-        return (
-          <UnlockAccountSignIn
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <UnlockAccountSignIn checkoutService={checkoutService} />
       }
       case 'CAPTCHA': {
-        return (
-          <Captcha
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Captcha checkoutService={checkoutService} />
       }
       case 'GUILD': {
-        return (
-          <Guild
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Guild checkoutService={checkoutService} />
       }
       case 'PASSWORD': {
-        return (
-          <Password
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Password checkoutService={checkoutService} />
       }
 
       case 'PROMO': {
-        return (
-          <Promo
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Promo checkoutService={checkoutService} />
       }
       case 'GITCOIN': {
-        return (
-          <Gitcoin
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Gitcoin checkoutService={checkoutService} />
       }
       case 'RETURNING': {
         return (
           <Returning
             communication={communication}
             onClose={onClose}
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
         )

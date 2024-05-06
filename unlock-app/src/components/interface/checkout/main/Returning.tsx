@@ -2,7 +2,6 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
@@ -20,18 +19,12 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Returning({
-  checkoutService,
-  injectedProvider,
-  communication,
-  onClose,
-}: Props) {
+export function Returning({ checkoutService, communication, onClose }: Props) {
   const config = useConfig()
   const {
     paywallConfig,
@@ -167,47 +160,42 @@ export function Returning({
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div>
-            {hasMessageToSign ? (
-              <Button
-                disabled={isSigningMessage}
-                loading={isSigningMessage}
-                onClick={onSign}
-                className="w-full"
-              >
-                Sign message
-              </Button>
-            ) : (
-              <div
-                className={`gap-4 ${
-                  paywallConfig?.endingCallToAction
-                    ? 'grid grid-cols-1'
-                    : 'flex justify-between '
-                }`}
-              >
-                <ReturningButton
-                  onClick={() => onClose()}
-                  returnLabel="Return"
-                  checkoutService={checkoutService}
-                />
-                {!lock?.isSoldOut && (
-                  <Button
-                    className="w-full"
-                    onClick={() =>
-                      checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
-                    }
-                  >
-                    Buy more
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-        </Connected>
+        <div>
+          {hasMessageToSign ? (
+            <Button
+              disabled={isSigningMessage}
+              loading={isSigningMessage}
+              onClick={onSign}
+              className="w-full"
+            >
+              Sign message
+            </Button>
+          ) : (
+            <div
+              className={`gap-4 ${
+                paywallConfig?.endingCallToAction
+                  ? 'grid grid-cols-1'
+                  : 'flex justify-between '
+              }`}
+            >
+              <ReturningButton
+                onClick={() => onClose()}
+                returnLabel="Return"
+                checkoutService={checkoutService}
+              />
+              {!lock?.isSoldOut && (
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
+                  }
+                >
+                  Buy more
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

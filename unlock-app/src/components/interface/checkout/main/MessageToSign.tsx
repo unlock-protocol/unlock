@@ -1,6 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -8,18 +7,14 @@ import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function MessageToSign({
-  communication,
-  checkoutService,
-  injectedProvider,
-}: Props) {
+export function MessageToSign({ communication, checkoutService }: Props) {
   const { messageToSign } = useSelector(
     checkoutService,
     (state) => state.context.paywallConfig
@@ -64,19 +59,15 @@ export function MessageToSign({
         </pre>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          disabled={!account || isSigning}
+          loading={isSigning}
+          onClick={onSign}
+          className="w-full"
         >
-          <Button
-            disabled={!account || isSigning}
-            loading={isSigning}
-            onClick={onSign}
-            className="w-full"
-          >
-            Sign the message
-          </Button>
-        </Connected>
+          Sign the message
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

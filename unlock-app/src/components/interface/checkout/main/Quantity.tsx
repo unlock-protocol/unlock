@@ -1,4 +1,3 @@
-import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
@@ -15,13 +14,13 @@ import { Pricing } from '../Lock'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import { CheckoutService } from './checkoutMachine'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Quantity({ injectedProvider, checkoutService }: Props) {
+export function Quantity({ checkoutService }: Props) {
   const {
     paywallConfig,
     quantity: selectedQuantity,
@@ -128,25 +127,21 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
         </div>
       </main>
       <footer className="items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
-                checkoutService.send({
-                  type: 'SELECT_QUANTITY',
-                  quantity,
-                })
-              }}
-            >
-              {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            disabled={isDisabled}
+            onClick={async (event) => {
+              event.preventDefault()
+              checkoutService.send({
+                type: 'SELECT_QUANTITY',
+                quantity,
+              })
+            }}
+          >
+            {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
