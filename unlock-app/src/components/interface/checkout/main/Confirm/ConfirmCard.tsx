@@ -1,5 +1,4 @@
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button, Detail } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
@@ -23,9 +22,9 @@ import { formatFiatPriceFromCents } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
@@ -110,12 +109,7 @@ export function CreditCardPricingBreakdown({
   )
 }
 
-export function ConfirmCard({
-  injectedProvider,
-  checkoutService,
-  onConfirmed,
-  onError,
-}: Props) {
+export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
   const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
     useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
@@ -365,28 +359,24 @@ export function ConfirmCard({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCard()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using credit card'
-                : 'Pay using credit card'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirmCard()
+            }}
+          >
+            {isConfirming
+              ? 'Paying using credit card'
+              : 'Pay using credit card'}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

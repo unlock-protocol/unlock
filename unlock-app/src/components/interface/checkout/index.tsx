@@ -6,7 +6,6 @@ import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
 import { useConfig } from '~/utils/withConfig'
 import { Checkout } from './main'
-import { Connect } from './Connect'
 import { Container } from './Container'
 import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
@@ -14,6 +13,7 @@ import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { Connect } from './Connect'
 
 export function CheckoutPage() {
   const { query } = useRouter()

@@ -88,9 +88,17 @@ export interface SignInProps {
   email: string
   onReturn(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
+  onSignIn?(): void
+  useIcon?: boolean
 }
 
-const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
+const SignIn = ({
+  email,
+  onReturn,
+  signIn,
+  onSignIn,
+  useIcon = true,
+}: SignInProps) => {
   const {
     register,
     handleSubmit,
@@ -106,6 +114,9 @@ const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
     }
     try {
       await signIn(data)
+      if (onSignIn) {
+        onSignIn()
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -125,11 +136,13 @@ const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
-          <BlockiesSvg
-            address={account || '0x'}
-            size={6}
-            className="rounded-full"
-          />
+          {useIcon && (
+            <BlockiesSvg
+              address={account || '0x'}
+              size={6}
+              className="rounded-full"
+            />
+          )}
           <div className="text-center">{email}</div>
         </div>
         <Input
@@ -178,9 +191,10 @@ export interface SignUpProps {
   email: string
   onReturn(): void
   signUp: (details: UserDetails) => Promise<unknown> | unknown
+  onSignIn?(): void
 }
 
-const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
+const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
   const {
     register,
     getValues,
@@ -192,6 +206,9 @@ const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
   const onSubmit = async ({ email, password }: SignUpForm) => {
     try {
       await signUp({ email, password })
+      if (onSignIn) {
+        onSignIn()
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -289,11 +306,18 @@ const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
 
 export interface Props {
   onExit(): void
+  onSignIn?(): void
+  useIcon?: boolean
 }
 
-export const ConnectUnlockAccount = ({ onExit }: Props) => {
+export const ConnectUnlockAccount = ({
+  onExit,
+  onSignIn,
+  useIcon = true,
+}: Props) => {
   const [enteredEmail, setEnteredEmail] = useState('')
   const [isValidEmail, setIsValidEmail] = useState(false)
+  const [isSigningUp, setIsSigningUp] = useState(false)
 
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
@@ -327,6 +351,7 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
   const onSubmitEmail = (email: string, existingUser: boolean) => {
     setEnteredEmail(email)
     setIsValidEmail(existingUser)
+    setIsSigningUp(!existingUser)
   }
 
   return (
@@ -335,6 +360,8 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
         <SignIn
           email={authEmail}
           signIn={signIn}
+          onSignIn={onSignIn}
+          useIcon={useIcon}
           onReturn={() => {
             signOut()
             deAuthenticate()
@@ -348,6 +375,8 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
             <SignIn
               email={enteredEmail}
               signIn={signIn}
+              onSignIn={onSignIn}
+              useIcon={useIcon}
               onReturn={() => {
                 setEnteredEmail('')
                 setIsValidEmail(false)
@@ -358,7 +387,9 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
             <SignUp
               email={enteredEmail}
               signUp={signUp}
+              onSignIn={onSignIn}
               onReturn={() => {
+                setIsSigningUp(false)
                 setEnteredEmail('')
                 setIsValidEmail(false)
               }}
@@ -367,7 +398,7 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
         </>
       )}
       <div className="grid gap-4 p-6">
-        {!requireSignIn && (
+        {!requireSignIn && !isSigningUp && (
           <div className="grid gap-2">
             <CustomAnchorButton
               target="_blank"

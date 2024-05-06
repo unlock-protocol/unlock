@@ -13,7 +13,7 @@ const CustomButton = classed(
           'bg-gray-50 text-gray-800 fill-gray-800 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-100 disabled:hover:bg-gray-50 disabled:active:bg-gray-50 disabled:focus:bg-gray-50',
       },
       highlight: {
-        true: 'ring-2 ring-ui-main-400',
+        true: 'ring-1 ring-ui-main-400',
         false: '',
       },
     },

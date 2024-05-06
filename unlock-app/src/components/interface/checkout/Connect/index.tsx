@@ -5,8 +5,7 @@ import { ConfirmConnect } from './Confirm'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { TopNavigation } from '../Shell'
-import { useSelector } from '@xstate/react'
-import { createActor } from 'xstate'
+import { useMachine } from '@xstate/react'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -19,8 +18,8 @@ export function Connect({
   oauthConfig,
   communication,
 }: Props) {
-  const connectService = createActor(connectMachine).start()
-  const state = useSelector(connectService, (state) => state)
+  // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
+  const [state, send, connectService] = useMachine(connectMachine)
   const matched = state.value.toString()
 
   const onClose = useCallback(
@@ -73,12 +72,7 @@ export function Connect({
         )
       }
       case 'SIGN_IN': {
-        return (
-          <UnlockAccountSignIn
-            connectService={connectService}
-            injectedProvider={injectedProvider}
-          />
-        )
+        return <UnlockAccountSignIn connectService={connectService} />
       }
       default: {
         return null
@@ -87,8 +81,16 @@ export function Connect({
   }, [matched, onClose, connectService, injectedProvider, oauthConfig])
 
   return (
-    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] min-h-[24rem] max-h-[32rem]">
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full gap-2 h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
       <TopNavigation onClose={onClose} onBack={onBack} />
+      <header>
+        <h1 className="text-xl text-center font-medium">
+          <span className="font-bold text-brand-ui-primary">
+            {oauthConfig.clientId}
+          </span>{' '}
+          wants you to sign in
+        </h1>
+      </header>
       <Content />
     </div>
   )

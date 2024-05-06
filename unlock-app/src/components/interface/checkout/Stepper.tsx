@@ -4,7 +4,6 @@ import { twMerge } from 'tailwind-merge'
 import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
-import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 import { useStepperItems } from './main/useStepperItems'
 
 interface IconProps {
@@ -79,7 +78,8 @@ export interface StepItem {
 }
 
 interface StepperProps {
-  service: CheckoutService | UnlockAccountService
+  service: CheckoutService
+  isUnlockAccount?: boolean
   disabled?: boolean
   hookType?: CheckoutHookType
   existingMember?: boolean
@@ -92,9 +92,8 @@ export const Stepper = ({
   hookType,
   existingMember,
   isRenew,
+  isUnlockAccount = false,
 }: StepperProps) => {
-  const isUnlockAccount = service.id === 'unlockAccount'
-
   const items = useStepperItems(service, {
     isUnlockAccount,
     hookType,

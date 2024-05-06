@@ -8,10 +8,15 @@ import { useLocalStorage } from '@rehooks/local-storage'
 import { MouseEventHandler, useState } from 'react'
 interface ConnectWalletProps {
   onUnlockAccount: () => void
+  // Optional, but required for Checkout
+  injectedProvider?: unknown
 }
 
-export const ConnectWallet = ({ onUnlockAccount }: ConnectWalletProps) => {
-  const { authenticateWithProvider } = useAuthenticate()
+export const ConnectWallet = ({
+  onUnlockAccount,
+  injectedProvider,
+}: ConnectWalletProps) => {
+  const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
 
