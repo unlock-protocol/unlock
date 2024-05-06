@@ -5,6 +5,7 @@ import { RegistrationCardSingleLock } from './SingleLock'
 import { useValidKeyBulk } from '~/hooks/useKey'
 import { HasTicket } from './HasTicket'
 import { EmbeddedCheckout } from './EmbeddedCheckout'
+import { useState } from 'react'
 
 export interface RegistrationCardProps {
   checkoutConfig: {
@@ -18,20 +19,24 @@ export const RegistrationCard = ({
   requiresApproval,
   checkoutConfig,
 }: RegistrationCardProps) => {
+  const [hasRefreshed, setHasRefreshed] = useState(false)
   // Check if the user has a key!
   const queries = useValidKeyBulk(checkoutConfig.config.locks)
 
   // Refresh function once the user has a key.
   const refresh = async () => {
+    setHasRefreshed(true)
     await queries.map((query) => query.refetch())
   }
 
-  const hasValidKey = queries?.map((query) => query.data).some((value) => value)
+  const hasValidKey = queries?.some((query) => query.isSuccess && !!query.data)
 
   // We don't show a "loading" state when checking if the user has valid keys
   // because if the user was logging in from inside the modal, it would result in the modal being closed.
   if (hasValidKey) {
-    return <HasTicket checkoutConfig={checkoutConfig} />
+    return (
+      <HasTicket hasRefreshed={hasRefreshed} checkoutConfig={checkoutConfig} />
+    )
   }
 
   // We need to behave differently if there is only one lock

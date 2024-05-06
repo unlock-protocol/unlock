@@ -5,20 +5,21 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 export interface HasTicketProps {
+  hasRefreshed: boolean
   checkoutConfig: {
     id?: string
     config: PaywallConfigType
   }
 }
 
-export const HasTicket = ({ checkoutConfig }: HasTicketProps) => {
+export const HasTicket = ({ hasRefreshed, checkoutConfig }: HasTicketProps) => {
   const router = useRouter()
 
   useEffect(() => {
-    if (checkoutConfig.config.redirectUri) {
+    if (checkoutConfig.config.redirectUri && hasRefreshed) {
       router.push(checkoutConfig.config.redirectUri)
     }
-  }, [checkoutConfig, router])
+  }, [checkoutConfig, hasRefreshed, router])
 
   return (
     <Card className="grid gap-4 mt-10 lg:mt-0">
