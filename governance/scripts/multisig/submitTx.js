@@ -14,7 +14,7 @@ const Safe = require('@safe-global/protocol-kit').default
 async function main({ safeAddress, tx, signer }) {
   const { id: chainId } = await getNetwork()
   if (!safeAddress) {
-    safeAddress = getSafeAddress(chainId)
+    safeAddress = await getSafeAddress(chainId)
   }
   if (!signer) {
     ;[signer] = await ethers.getSigners()
@@ -22,15 +22,6 @@ async function main({ safeAddress, tx, signer }) {
 
   if (process.env.RUN_FORK) {
     throw Error(`Can not send multisig tx on a forked network`)
-  }
-
-  // check safe version
-  const version = await getSafeVersion(safeAddress)
-
-  // mainnet still use older versions of the safe
-  if (version === 'old') {
-    const nonce = await submitTxOldMultisig({ safeAddress, tx, signer })
-    return nonce
   }
 
   // Use Safe v1+ with SDK
