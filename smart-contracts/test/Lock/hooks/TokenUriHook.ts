@@ -1,23 +1,13 @@
 const { expect } = require('chai')
-const { ethers, unlock } = require('hardhat')
-const { reverts } = require('../../helpers')
-
-const expirationDuration = 60 * 60 * 24 * 7
-const maxNumberOfKeys = 100
-const keyPrice = 0
+const { ethers } = require('hardhat')
+const { reverts, deployLock } = require('../../helpers')
 
 let lock, hook
 describe('TokenUriHook', function () {
   this.beforeAll(async function () {
-    await unlock.deployProtocol()
-    lock = (
-      await unlock.createLock({
-        expirationDuration,
-        maxNumberOfKeys,
-        keyPrice,
-        name: 'lock',
-      })
-    ).lock
+    lock = await deployLock({
+      name: 'FREE',
+    })
 
     const TokenUriHook = await ethers.getContractFactory('TokenUriHook')
     hook = await TokenUriHook.deploy()

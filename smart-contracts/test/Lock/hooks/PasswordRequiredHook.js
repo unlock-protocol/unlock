@@ -1,6 +1,6 @@
 const { expect } = require('chai')
-const { ethers, unlock } = require('hardhat')
-const { reverts } = require('../../helpers')
+const { ethers } = require('hardhat')
+const { reverts, deployLock } = require('../../helpers')
 
 /**
  * Helper function
@@ -56,16 +56,8 @@ describe('PasswordRequiredHook', function () {
   it('should work as a hook', async function () {
     const [user] = await ethers.getSigners()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = 0
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      name: 'ticket',
+    const lock = await deployLock({
+      name: 'FREE',
     })
     const PasswordRequiredHook = await ethers.getContractFactory(
       'PasswordRequiredHook'
@@ -133,16 +125,8 @@ describe('PasswordRequiredHook', function () {
   it('should fail if the code has been used enough', async function () {
     const [user, another] = await ethers.getSigners()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = 0
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      name: 'ticket',
+    const lock = await deployLock({
+      name: 'FREE',
     })
     const PasswordRequiredHook = await ethers.getContractFactory(
       'PasswordRequiredHook'

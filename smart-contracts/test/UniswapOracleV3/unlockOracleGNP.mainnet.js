@@ -1,74 +1,78 @@
-const { unlock, config, ethers } = require('hardhat')
+const { ethers } = require('hardhat')
 const { expect } = require('chai')
+const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
+const { mainnet } = require('@unlock-protocol/networks')
+const { purchaseKeys, deployLock } = require('../helpers')
+
 const {
-  abi: USDCabi,
-} = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
-const {
-  UNISWAP_FACTORY_ADDRESS,
-  USDC,
-  WETH,
+  addSomeETH,
   impersonate,
-  purchaseKeys,
-} = require('../helpers')
+  getUniswapTokens,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // get unlock address on mainnet
 const {
-  1: { unlockAddress },
-} = config.unlock
-
+  unlockAddress,
+  uniswapV3: { factoryAddress },
+} = mainnet
 const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
-
+const FEE = 500
 describe('Unlock GNP conversion', () => {
-  let unlockContract
+  let unlock
   let oracle
+  let WETH, USDC
 
   before(async function () {
     if (!process.env.RUN_FORK) {
       // all suite will be skipped
       this.skip()
     }
-    unlockContract = await unlock.getUnlockContract(unlockAddress)
+
+    // get token addresses
+    ;({
+      usdc: { address: USDC },
+      weth: { address: WETH },
+    } = await getUniswapTokens(1))
+
+    const [deployer] = await ethers.getSigners()
+    await addSomeETH(deployer.address)
+    unlock = await ethers.getContractAt('Unlock', unlockAddress)
     const UnlockUniswapOracle = await ethers.getContractFactory(
       'UniswapOracleV3'
     )
-    oracle = await UnlockUniswapOracle.deploy(UNISWAP_FACTORY_ADDRESS)
+    oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
 
     //impersonate unlock multisig
-    const unlockOwner = await unlockContract.owner()
+    const unlockOwner = await unlock.owner()
     await impersonate(unlockOwner)
     const unlockSigner = await ethers.getSigner(unlockOwner)
-    unlockContract = unlockContract.connect(unlockSigner)
+    unlock = unlock.connect(unlockSigner)
 
     // add oracle support for USDC
-    await unlockContract.connect(unlockSigner).setOracle(USDC, oracle.address)
+    await unlock.connect(unlockSigner).setOracle(USDC, oracle.address)
   })
 
   it('weth is set correctly already', async () => {
-    expect(await unlockContract.weth()).to.equals(WETH)
+    expect(await unlock.weth()).to.equals(WETH)
   })
 
   it('sets oracle address correctly', async () => {
-    expect(await unlockContract.uniswapOracles[USDC]).to.equals(oracle.adress)
+    expect(await unlock.uniswapOracles[USDC]).to.equals(oracle.adress)
   })
 
   describe('USDC conversion in GNP', () => {
     let lock
     before(async () => {
       // reset GNP to zero
-      await unlockContract.resetTrackedValue(0, 0)
-      expect((await unlockContract.grossNetworkProduct()).toNumber()).to.equals(
-        0
-      )
+      await unlock.resetTrackedValue(0, 0)
+      expect((await unlock.grossNetworkProduct()).toNumber()).to.equals(0)
 
       // create a USDC lock
-      ;({ lock } = await unlock.createLock({
-        unlockAddress,
-        name: 'USDC lock',
-        expirationDuration: 600,
+      lock = await deployLock({
+        unlock,
         keyPrice: keyPriceUSDC,
-        maxNumberOfKeys: 10,
-        currencyContractAddress: USDC,
-      }))
+        tokenAddress: USDC,
+      })
     })
     it('pricing is set correctly', async () => {
       // make sure price is correct
@@ -105,7 +109,7 @@ describe('Unlock GNP conversion', () => {
       await purchaseKeys(lock.address, NUMBER_OF_KEYS, keyPriceUSDC, true)
 
       // check GNP
-      const GNP = await unlockContract.grossNetworkProduct()
+      const GNP = await unlock.grossNetworkProduct()
       expect(GNP.toString()).to.not.equals('0')
       // 5 keys at 50 USDC at oracle rate
       expect(GNP.div(1000).toString()).to.equals(
