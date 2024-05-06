@@ -18444,7 +18444,7 @@ __metadata:
     ethers5: "npm:ethers@5.7.2"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.20.1"
-    zksync-ethers: "npm:6.1.0"
+    zksync-ethers: "npm:6.7.0"
   languageName: unknown
   linkType: soft
 
@@ -18471,7 +18471,7 @@ __metadata:
     hardhat: "npm:2.20.1"
     tsup: "npm:8.0.2"
     typescript: "npm:5.4.5"
-    zksync-ethers: "npm:6.1.0"
+    zksync-ethers: "npm:6.7.0"
   languageName: unknown
   linkType: soft
 
@@ -54277,16 +54277,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zksync-ethers@npm:6.1.0":
-  version: 6.1.0
-  resolution: "zksync-ethers@npm:6.1.0"
-  peerDependencies:
-    ethers: ^6.7.1
-  checksum: 10/bf22ebaae03c01a1bff36b3c50944b7d9806d6f99182f40ac1451c674add8768554c590a081258e0b178246d19932900c454c8efbd83674d5e5fc6a03a32e353
-  languageName: node
-  linkType: hard
-
-"zksync-ethers@npm:^6.0.0":
+"zksync-ethers@npm:6.7.0, zksync-ethers@npm:^6.0.0":
   version: 6.7.0
   resolution: "zksync-ethers@npm:6.7.0"
   peerDependencies:
