@@ -204,7 +204,7 @@ export const useProvider = (config: any) => {
     setConnected(undefined)
 
     clearStorage(
-      ['provider', 'network', 'account', `$session_${account}`],
+      ['provider', 'network', 'account', `$session_${account}`, 'email'],
       true
     )
     try {
