@@ -86,7 +86,7 @@ describe('Lock / non expiring', () => {
 
         assert(
           finalOwnerBalance.toString(),
-          initialKeyOwnerBalance + refund.sub(txFee).toString()
+          initialKeyOwnerBalance + refund - txFee.toString()
         )
 
         // also check lock balance
@@ -94,7 +94,7 @@ describe('Lock / non expiring', () => {
 
         assert(
           finalLockBalance.toString(),
-          initialLockBalance.sub(refund).toString()
+          initialLockBalance - refund.toString()
         )
       })
     })

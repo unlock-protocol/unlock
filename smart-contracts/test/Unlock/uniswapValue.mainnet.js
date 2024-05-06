@@ -219,7 +219,7 @@ describe('Unlock / uniswapValue', () => {
 
         // 5 keys at 50 SHIBA_INU at oracle rate
         const priceConverted = rate * 250
-        const diff = GNP.sub(gnpBefore + priceConverted)
+        const diff = GNP - (gnpBefore + priceConverted)
         expect(diff.toNumber()).to.be.lte(1000) // price variation
 
         // show approx value in ETH for reference

@@ -77,7 +77,7 @@ describe('Lock / owners', () => {
     })
 
     it('should have the right number of owners', async () => {
-      compareBigNumbers(await lock.numberOfOwners(), numberOfOwners.sub(1))
+      compareBigNumbers(await lock.numberOfOwners(), numberOfOwners - 1)
     })
   })
 
@@ -101,7 +101,7 @@ describe('Lock / owners', () => {
       compareBigNumbers(totalSupplyBefore, await lock.totalSupply())
 
       // number of owners changed
-      compareBigNumbers(numberOfOwners.sub(1), await lock.numberOfOwners())
+      compareBigNumbers(numberOfOwners - 1, await lock.numberOfOwners())
 
       // someone buys a key again for the previous owner
       await lock.purchase(

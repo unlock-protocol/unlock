@@ -1,13 +1,8 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
-
 const { reverts } = require('../helpers/errors')
-const {
-  ADDRESS_ZERO,
-  purchaseKey,
-  deployLock,
-  compareBigNumbers,
-} = require('../helpers')
+const { getEvent, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { purchaseKey, deployLock, compareBigNumbers } = require('../helpers')
 
 describe('Lock / burn', () => {
   let keyOwner
@@ -33,8 +28,8 @@ describe('Lock / burn', () => {
 
   it('emit a transfer event', async () => {
     const tx = await lock.connect(keyOwner).burn(tokenId)
-    const { events } = await tx.wait()
-    const { args } = events.find((v) => v.event === 'Transfer')
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'Transfer')
     compareBigNumbers(args.tokenId, tokenId)
     assert.equal(args.to, ADDRESS_ZERO)
     assert.equal(args.from, keyOwner.address)
@@ -54,7 +49,7 @@ describe('Lock / burn', () => {
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 1)
     compareBigNumbers(
       await lock.tokenOfOwnerByIndex(keyOwner.address, 0),
-      tokenId.toNumber()
+      tokenId
     )
     await lock.connect(keyOwner).burn(tokenId)
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
@@ -64,7 +59,7 @@ describe('Lock / burn', () => {
   it('totalSupply is decreased', async () => {
     const totalSupply = await lock.totalSupply()
     await lock.connect(keyOwner).burn(tokenId)
-    compareBigNumbers(await lock.totalSupply(), totalSupply.sub(1))
+    compareBigNumbers(await lock.totalSupply(), totalSupply - 1n)
   })
 
   it('should work only on existing keys', async () => {

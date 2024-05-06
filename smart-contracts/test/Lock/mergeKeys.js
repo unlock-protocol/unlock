@@ -34,7 +34,7 @@ describe('Lock / mergeKeys', () => {
 
       await lock.connect(keyOwner).mergeKeys(tokenId, tokenId2, timeAmount)
       compareBigNumbers(
-        expTs[0].sub(timeAmount),
+        expTs[0] - timeAmount,
         await lock.keyExpirationTimestampFor(tokenId)
       )
 
@@ -60,7 +60,7 @@ describe('Lock / mergeKeys', () => {
       await lock.connect(keyManager).mergeKeys(tokenId, tokenId2, timeAmount)
 
       compareBigNumbers(
-        expTs[0].sub(timeAmount),
+        expTs[0] - timeAmount,
         await lock.keyExpirationTimestampFor(tokenId)
       )
 
@@ -87,7 +87,7 @@ describe('Lock / mergeKeys', () => {
       await lock.connect(keyOwner).mergeKeys(tokenId, tokenId2, remaining)
 
       compareBigNumbers(
-        expTs[0].sub(remaining),
+        expTs[0] - remaining,
         await lock.keyExpirationTimestampFor(tokenId)
       )
 
@@ -129,10 +129,7 @@ describe('Lock / mergeKeys', () => {
         .connect(keyOwner)
         .shareKey(rando.address, tokenId, remaining.toNumber() - now - 100)
 
-      assert.equal(
-        (await lock.keyExpirationTimestampFor(tokenId)).sub(now),
-        100
-      )
+      assert.equal((await lock.keyExpirationTimestampFor(tokenId)) - now, 100)
       assert.equal(await lock.isValidKey(tokenId), true)
       await reverts(
         lock.connect(keyOwner).mergeKeys(tokenId, tokenId2, timeAmount),

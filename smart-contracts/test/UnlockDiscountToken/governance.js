@@ -181,10 +181,10 @@ describe('UDT ERC20VotesComp extension', () => {
       expectEvent(events, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
-        newBalance: supply.sub(1),
+        newBalance: supply - 1,
       })
 
-      holderVotes = supply.sub(1)
+      holderVotes = supply - 1
       recipientVotes = '0'
     })
 
@@ -222,7 +222,7 @@ describe('UDT ERC20VotesComp extension', () => {
       expectEvent(events, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
-        newBalance: supply.sub(1),
+        newBalance: supply - 1,
       })
       expectEvent(events, 'DelegateVotesChanged', {
         delegate: recipient,
@@ -230,7 +230,7 @@ describe('UDT ERC20VotesComp extension', () => {
         newBalance: '1',
       })
 
-      holderVotes = supply.sub(1)
+      holderVotes = supply - 1
       recipientVotes = '1'
     })
 

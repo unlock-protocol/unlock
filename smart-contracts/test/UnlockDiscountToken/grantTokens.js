@@ -149,9 +149,8 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           // not regress as other features are implemented
           gasSpent = baseFeePerGas * estimateGas
 
-          balanceReferrer = (await udt.balanceOf(referrer.address)).sub(
-            balanceReferrerBefore
-          )
+          balanceReferrer =
+            (await udt.balanceOf(referrer.address)) - balanceReferrerBefore
         })
 
         it('referrer has received some UDT now', async () => {
@@ -199,9 +198,8 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
               }
             )
 
-          balanceReferrer = (await udt.balanceOf(referrer.address)).sub(
-            balanceReferrerBefore
-          )
+          balanceReferrer =
+            (await udt.balanceOf(referrer.address)) - balanceReferrerBefore
         })
 
         it('referrer has some UDT now', async () => {

@@ -22,7 +22,7 @@ const gasRefund = async (tx) => {
   const { gasPrice } = tx
   const { gasUsed } = await tx.wait()
   const gas = gasPrice * gasUsed
-  const refund = keyPrice.sub(gasRefundAmount)
+  const refund = keyPrice - gasRefundAmount
   return { gas, refund }
 }
 
@@ -53,11 +53,11 @@ const gasRefundedProperly = async ({
 
   const expected = isErc20
     ? // buy a key, get a refund
-      userBalanceBefore.sub(refund)
-    : userBalanceBefore
-        // buy a key, get a refund
-        .sub(refund)
-        .sub(gas) // pay for the gas
+      userBalanceBefore - refund
+    : userBalanceBefore -
+      // buy a key, get a refund
+      refund -
+      gas // pay for the gas
 
   compareBigNumbers(userBalanceAfter, expected)
 }
@@ -271,10 +271,10 @@ describe('Lock / GasRefund', () => {
           const { gas } = await gasRefund(tx)
 
           const expected = isErc20
-            ? userBalanceBefore.sub(keyPrice) // buy a key
-            : userBalanceBefore
-                .sub(keyPrice) // buy a key
-                .sub(gas.toString()) // pay for the gas
+            ? userBalanceBefore - keyPrice // buy a key
+            : userBalanceBefore -
+              keyPrice - // buy a key
+              gas.toString() // pay for the gas
 
           compareBigNumbers(userBalanceAfter, expected)
         })

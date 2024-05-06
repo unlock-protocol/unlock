@@ -1,39 +1,39 @@
 const { ethers } = require('hardhat')
-const { AddressZero } = ethers
-
+const {
+  getEvent,
+  getEvents,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 const DEFAULT_KEY_PRICE = ethers.parseEther('0.01')
 
 const purchaseKey = async (
   lock,
-  keyOwner,
+  keyOwnerAddress,
   isErc20 = false,
   keyPrice = DEFAULT_KEY_PRICE
 ) => {
   // make sure we got ethers lock
   lock = await ethers.getContractAt(
     'contracts/PublicLock.sol:PublicLock',
-    lock.address
+    await lock.getAddress()
   )
 
   // get ethers signer
-  keyOwner = await ethers.getSigner(keyOwner)
-
-  const tx = await lock
-    .connect(keyOwner)
-    .purchase(
-      isErc20 ? [keyPrice] : [],
-      [keyOwner.address],
-      [AddressZero],
-      [AddressZero],
-      [[]],
-      {
-        value: isErc20 ? 0 : keyPrice,
-      }
-    )
+  const keyOwner = await ethers.getSigner(keyOwnerAddress)
+  const purchaseArgs = [
+    isErc20 ? [keyPrice] : [],
+    [keyOwnerAddress],
+    [ADDRESS_ZERO],
+    [ADDRESS_ZERO],
+    ['0x'],
+  ]
+  const tx = await lock.connect(keyOwner).purchase(...purchaseArgs, {
+    value: isErc20 ? 0 : keyPrice,
+  })
 
   // get token ids
-  const { events, blockNumber } = await tx.wait()
-  const { args } = events.find((v) => v.event === 'Transfer')
+  const receipt = await tx.wait()
+  const { args, blockNumber } = await getEvent(receipt, 'Transfer')
   const { tokenId, from, to } = args
 
   return { tokenId, blockNumber, from, to, tx }
@@ -43,7 +43,7 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
   // make sure we got ethers lock
   lock = await ethers.getContractAt(
     'contracts/PublicLock.sol:PublicLock',
-    lock.address
+    await lock.getAddress()
   )
 
   // signer 0 is the lockOwner so keyOwners starts at index 1
@@ -53,22 +53,20 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
   if (signer) {
     lock = lock.connect(signer)
   }
-
-  const tx = await lock.purchase(
+  const purchaseArgs = [
     isErc20 ? keyOwners.map(() => DEFAULT_KEY_PRICE) : [],
-    keyOwners.map(({ address }) => address),
-    keyOwners.map(() => AddressZero),
-    keyOwners.map(() => AddressZero),
-    keyOwners.map(() => []),
-    {
-      value: isErc20 ? 0 : DEFAULT_KEY_PRICE * nbOfKeys,
-    }
-  )
+    await Promise.all(keyOwners.map((keyOwner) => keyOwner.getAddress())),
+    keyOwners.map(() => ADDRESS_ZERO),
+    keyOwners.map(() => ADDRESS_ZERO),
+    keyOwners.map(() => '0x'),
+  ]
+  const tx = await lock.purchase(...purchaseArgs, {
+    value: isErc20 ? 0 : DEFAULT_KEY_PRICE * nbOfKeys,
+  })
   // get token ids
-  const { events, blockNumber } = await tx.wait()
-  const tokenIds = events
-    .filter((v) => v.event === 'Transfer')
-    .map(({ args }) => args.tokenId)
+  const receipt = await tx.wait()
+  const { events, blockNumber } = await getEvents(receipt, 'Transfer')
+  const tokenIds = events.map(({ args }) => args.tokenId)
 
   return {
     tokenIds,

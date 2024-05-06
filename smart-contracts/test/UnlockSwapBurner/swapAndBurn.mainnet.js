@@ -156,7 +156,7 @@ describe(`swapAndBurn`, function () {
 
         it('UDT balance remains unchanged', async () => {
           const udtSwapBurn = await getBalance(swapBurner.address, udtAddress)
-          compareBigNumbers(udtSwapBurn.sub(udtSwapBurnBalanceBefore), '0')
+          compareBigNumbers(udtSwapBurn - udtSwapBurnBalanceBefore, '0')
         })
 
         it('burns the entire UDT that have been swapped', async () => {
@@ -169,7 +169,7 @@ describe(`swapAndBurn`, function () {
           )
 
           compareBigNumbers(
-            udtBurnAddressBalance.sub(udtBurnAddressBalanceBefore),
+            udtBurnAddressBalance - udtBurnAddressBalanceBefore,
             amountBurnt
           )
         })
@@ -187,7 +187,7 @@ describe(`swapAndBurn`, function () {
           )
           compareBigNumbers(
             args.amountBurnt,
-            udtBurnAddressBalance.sub(udtBurnAddressBalanceBefore)
+            udtBurnAddressBalance - udtBurnAddressBalanceBefore
           )
         })
       })

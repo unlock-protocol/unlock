@@ -38,9 +38,8 @@ describe('Lock / freeTrial', () => {
       })
 
       it('should provide a full refund', async () => {
-        const refundAmount = initialLockBalance.sub(
-          await getBalance(lock.address)
-        )
+        const refundAmount =
+          initialLockBalance - (await getBalance(lock.address))
         compareBigNumbers(refundAmount, keyPrice)
       })
     })
@@ -52,9 +51,8 @@ describe('Lock / freeTrial', () => {
       })
 
       it('should provide less than a full refund', async () => {
-        const refundAmount = initialLockBalance.sub(
-          await getBalance(lock.address)
-        )
+        const refundAmount =
+          initialLockBalance - (await getBalance(lock.address))
         assert.notEqual(refundAmount.toString(), keyPrice.toString())
         assert(refundAmount.lt(keyPrice.toString()))
       })

@@ -56,18 +56,17 @@ describe('Lock / expireAndRefundFor', () => {
       const finalOwnerBalance = await getBalance(keyOwners[0].address)
       assert(
         finalOwnerBalance.toString(),
-        initialKeyOwnerBalance + keyPrice.sub(txFee).toString()
+        initialKeyOwnerBalance + keyPrice - txFee.toString()
       )
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
-      const finalLockBalance = (await getBalance(lock.address)).sub(
-        initialLockBalance
-      )
+      const finalLockBalance =
+        (await getBalance(lock.address)) - initialLockBalance
 
       assert(
         finalLockBalance.toString(),
-        initialLockBalance.sub(keyPrice).toString()
+        initialLockBalance - keyPrice.toString()
       )
     })
   })

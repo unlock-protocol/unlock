@@ -26,7 +26,7 @@ describe('Lock / setKeyExpiration', () => {
 
     it('in the past', async () => {
       const expirationTsBefore = await lock.keyExpirationTimestampFor(tokenId)
-      const pastDate = now.sub(ONE_DAY)
+      const pastDate = now - ONE_DAY
       await lock.setKeyExpiration(tokenId, pastDate)
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       assert.notEqual(expirationTsBefore.toString(), expirationTs.toString())

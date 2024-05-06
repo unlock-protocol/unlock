@@ -42,7 +42,7 @@ describe('Lock / timeMachine', () => {
       await timeMachine.timeMachine(tokenId, 1000, false) // decrease the time with "false"
 
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(timestampBefore.sub(1000)))
+      assert(timestampAfter.eq(timestampBefore - 1000))
     })
 
     it('should increase the time by the amount specified if the key is not expired', async () => {

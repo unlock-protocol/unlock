@@ -375,9 +375,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         )
         assert.equal(evtDelegateVotesChanged.args.delegate, holder.address)
         assert.isTrue(
-          evtDelegateVotesChanged.args.previousBalance.eq(
-            votesHolderBefore.sub(1)
-          )
+          evtDelegateVotesChanged.args.previousBalance.eq(votesHolderBefore - 1)
         )
         assert.isTrue(
           evtDelegateVotesChanged.args.newBalance.eq(votesHolderBefore)

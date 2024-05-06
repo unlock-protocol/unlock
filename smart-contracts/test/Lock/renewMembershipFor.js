@@ -160,7 +160,7 @@ describe('Lock / Recurring memberships', () => {
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
         const balanceAfter = await dai.balanceOf(keyOwner.address)
         assert.equal(
-          balanceBefore.sub(keyPrice.toString()).toString(),
+          balanceBefore - keyPrice.toString().toString(),
           balanceAfter.toString()
         )
       })

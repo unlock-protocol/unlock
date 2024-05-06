@@ -57,7 +57,7 @@ describe('Lock / erc20', () => {
 
       it('charges correct amount on purchaseKey', async () => {
         const balance = await token.balanceOf(keyOwner.address)
-        compareBigNumbers(balance, defaultBalance.sub(keyPrice))
+        compareBigNumbers(balance, defaultBalance - keyPrice)
       })
 
       it('transferred the tokens to the contract', async () => {
@@ -77,7 +77,7 @@ describe('Lock / erc20', () => {
         const balanceOwnerAfter = await token.balanceOf(keyOwner3.address)
         const balanceLockAfter = await token.balanceOf(lock.address)
 
-        compareBigNumbers(balanceLockBefore.sub(keyPrice), balanceLockAfter)
+        compareBigNumbers(balanceLockBefore - keyPrice, balanceLockAfter)
 
         compareBigNumbers(balanceOwnerBefore + keyPrice, balanceOwnerAfter)
       })
@@ -128,7 +128,7 @@ describe('Lock / erc20', () => {
           )
 
         const balance = await token.balanceOf(keyOwner2.address)
-        compareBigNumbers(balance, balanceBefore.sub(keyPrice))
+        compareBigNumbers(balance, balanceBefore - keyPrice)
       })
 
       it('can transfer the key to another user', async () => {
@@ -140,7 +140,7 @@ describe('Lock / erc20', () => {
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
       await token.connect(random).approve(lock.address, MAX_UINT)
-      await token.connect(deployer).mint(random.address, keyPrice.sub(1))
+      await token.connect(deployer).mint(random.address, keyPrice - 1)
       await reverts(
         lock
           .connect(random)

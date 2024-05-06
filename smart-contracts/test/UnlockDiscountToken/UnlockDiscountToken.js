@@ -76,7 +76,7 @@ describe('udt', () => {
         const balanceAfter0 = await udt.balanceOf(accounts[0].address)
         const balanceAfter1 = await udt.balanceOf(accounts[1].address)
         assert(
-          balanceBefore0.sub(transferAmount).eq(balanceAfter0),
+          balanceBefore0 - transferAmount.eq(balanceAfter0),
           'Sender balance must have gone down by amount sent'
         )
         assert(

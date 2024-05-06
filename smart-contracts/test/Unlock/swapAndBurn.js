@@ -119,12 +119,12 @@ describe('Unlock / swapAndBurn', async () => {
       const balanceAfter = await getBalance(swapBurner.address)
 
       // swap burner got the tokens
-      compareBigNumbers(balanceAfter.sub(balanceBefore), amount)
+      compareBigNumbers(balanceAfter - balanceBefore, amount)
 
       // unlock has no tokens anymore
       compareBigNumbers(
         await getBalance(unlock.address),
-        unlockBalanceBefore.sub(amount.toString())
+        unlockBalanceBefore - amount.toString()
       )
     })
     it('should transfer native ERC20 tokens properly', async () => {
@@ -148,11 +148,11 @@ describe('Unlock / swapAndBurn', async () => {
       // check balances
       const balanceAfter = await getBalance(swapBurner.address, token.address)
 
-      compareBigNumbers(balanceAfter.sub(balanceBefore), amount)
+      compareBigNumbers(balanceAfter - balanceBefore, amount)
 
       compareBigNumbers(
         await getBalance(unlock.address, token.address),
-        unlockBalanceBefore.sub(amount)
+        unlockBalanceBefore - amount
       )
     })
     it('can be called by anyone', async () => {
@@ -161,7 +161,7 @@ describe('Unlock / swapAndBurn', async () => {
       const balanceBefore = await getBalance(swapBurner.address, token.address)
       await unlock.connect(randomSigner).swapAndBurn(token.address, amount, fee)
       const balanceAfter = await getBalance(swapBurner.address, token.address)
-      compareBigNumbers(balanceAfter.sub(balanceBefore), amount)
+      compareBigNumbers(balanceAfter - balanceBefore, amount)
     })
   })
 })

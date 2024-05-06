@@ -235,7 +235,7 @@ describe('Lock / shareKey', () => {
         )
         assert.equal(
           expirationAfter.toString(),
-          expirationBefore.sub(toSubstract).toString()
+          expirationBefore - toSubstract.toString()
         )
       })
 
