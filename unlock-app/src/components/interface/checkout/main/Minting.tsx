@@ -237,7 +237,6 @@ export function Minting({
           onClick={() => onClose()}
           checkoutService={checkoutService}
         />
-        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
