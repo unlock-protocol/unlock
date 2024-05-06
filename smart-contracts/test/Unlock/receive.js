@@ -20,7 +20,7 @@ describe('Unlock / receive', async () => {
         value: oneEth,
       })
       assert.equal(
-        balanceBefore.add(oneEth).toString(),
+        balanceBefore + oneEth.toString(),
         (await getBalance(unlock.address)).toString()
       )
     })

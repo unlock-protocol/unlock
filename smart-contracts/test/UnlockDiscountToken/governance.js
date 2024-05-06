@@ -12,7 +12,7 @@ const {
   getLatestBlock,
 } = require('../helpers')
 
-const supply = ethers.BigNumber.from('10000000000000000000000000')
+const supply = BigInt('10000000000000000000000000')
 
 describe('UDT ERC20VotesComp extension', () => {
   let udt
@@ -46,7 +46,7 @@ describe('UDT ERC20VotesComp extension', () => {
       })
     })
     it('minting restriction', async () => {
-      const amount = ethers.BigNumber.from('2').pow('96')
+      const amount = BigInt('2').pow('96')
       await reverts(
         udt.mint(minter, amount),
         'ERC20Votes: total supply risks overflowing votes'

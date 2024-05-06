@@ -385,12 +385,7 @@ describe('Unlock / upgrades', async () => {
 
               it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
                 const grossNetworkProduct = await unlock.grossNetworkProduct()
-                assert.equal(
-                  grossNetworkProduct.eq(
-                    ethers.BigNumber.from(keyPrice).mul(2)
-                  ),
-                  true
-                )
+                assert.equal(grossNetworkProduct.eq(BigInt(keyPrice) * 2), true)
               })
 
               it('Latest Key is owned', async () => {

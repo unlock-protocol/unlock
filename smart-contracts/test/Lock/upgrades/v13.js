@@ -87,7 +87,7 @@ describe('PublicLock upgrade v12 > v13', () => {
         buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => []),
         {
-          value: keyPrice.mul(buyers.length),
+          value: keyPrice * buyers.length,
         }
       )
       const { events } = await tx.wait()

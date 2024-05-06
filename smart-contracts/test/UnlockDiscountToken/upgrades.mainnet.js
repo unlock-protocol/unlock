@@ -343,7 +343,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
       assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
       const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
-      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore.add(amount)))
+      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore + amount))
     })
 
     it('should hijack transfers to the attackers address 0xcc06dd348169d95b1693b9185CA561b28F5b2165', async () => {
@@ -380,7 +380,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
       const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
       // Funds should have been transfered to Multisig
-      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore.add(amount)))
+      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore + amount))
     })
 
     it('should allows transfers fron the polygon bridge', async () => {
@@ -462,7 +462,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore.sub(amount)))
       // Funds should have been transfered to Multisig
       const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
-      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore.add(amount)))
+      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore + amount))
     })
   })
 

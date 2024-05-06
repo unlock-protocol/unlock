@@ -36,7 +36,7 @@ describe('Lock / expireAndRefundFor', () => {
         args: { refund },
       } = events.find(({ event }) => event === 'CancelKey'))
       // estimate tx gas cost
-      txFee = tx.gasPrice.mul(gasUsed)
+      txFee = tx.gasPrice * gasUsed
     })
 
     it('should emit a CancelKey event', async () => {
@@ -56,7 +56,7 @@ describe('Lock / expireAndRefundFor', () => {
       const finalOwnerBalance = await getBalance(keyOwners[0].address)
       assert(
         finalOwnerBalance.toString(),
-        initialKeyOwnerBalance.add(keyPrice).sub(txFee).toString()
+        initialKeyOwnerBalance + keyPrice.sub(txFee).toString()
       )
     })
 

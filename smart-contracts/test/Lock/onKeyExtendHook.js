@@ -75,7 +75,7 @@ describe('Lock / onKeyExtendHook', () => {
       assert.equal(args.tokenId.toString(), tokenId.toString())
       assert.equal(args.from, keyOwner.address)
       assert.equal(
-        tsBefore.add(expirationDuration).toString(),
+        tsBefore + expirationDuration.toString(),
         args.newTimestamp.toString()
       )
       assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
@@ -94,7 +94,7 @@ describe('Lock / onKeyExtendHook', () => {
       assert.equal(args.tokenId.toString(), tokenId.toString())
       assert.equal(args.from, lockOwner.address)
       assert.equal(
-        tsBefore.add(expirationDuration).toString(),
+        tsBefore + expirationDuration.toString(),
         args.newTimestamp.toString()
       )
       assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
@@ -116,7 +116,7 @@ describe('Lock / onKeyExtendHook', () => {
       assert.equal(args.msgSender, lock.address)
       assert.equal(args.tokenId.toString(), tokenId.toString())
       assert.equal(args.from, lockOwner.address)
-      assert(almostEqual(tsBefore.add(expirationDuration), args.newTimestamp))
+      assert(almostEqual(tsBefore + expirationDuration, args.newTimestamp))
       assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
     })
   })

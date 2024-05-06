@@ -34,7 +34,7 @@ describe('udt', () => {
         const balanceAfter = await udt.balanceOf(recipient.address)
         assert.equal(
           balanceAfter.toNumber(),
-          balanceBefore.add(mintAmount).toNumber(),
+          balanceBefore + mintAmount.toNumber(),
           'Balance must increase by amount minted'
         )
       })
@@ -43,7 +43,7 @@ describe('udt', () => {
         const totalSupplyAfter = await udt.totalSupply()
         assert.equal(
           totalSupplyAfter.toNumber(),
-          totalSupplyBefore.add(mintAmount).toNumber(),
+          totalSupplyBefore + mintAmount.toNumber(),
           'Total supply must increase by amount minted'
         )
       })
@@ -80,7 +80,7 @@ describe('udt', () => {
           'Sender balance must have gone down by amount sent'
         )
         assert(
-          balanceBefore1.add(transferAmount).eq(balanceAfter1),
+          balanceBefore1 + transferAmount.eq(balanceAfter1),
           'Recipient balance must have gone up by amount sent'
         )
       })

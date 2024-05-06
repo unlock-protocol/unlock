@@ -79,7 +79,7 @@ describe('Unlock GNP conversion', () => {
     })
     it('updates GNP correctly a value correctly ', async () => {
       const NUMBER_OF_KEYS = 5
-      const totalPrice = keyPriceUSDC.mul(NUMBER_OF_KEYS)
+      const totalPrice = keyPriceUSDC * NUMBER_OF_KEYS
 
       const usdc = await ethers.getContractAt(USDCabi, USDC)
 
@@ -105,7 +105,7 @@ describe('Unlock GNP conversion', () => {
       expect(GNP.toString()).to.not.equals('0')
       // 5 keys at 50 USDC at oracle rate
       expect(GNP.div(1000).toString()).to.equals(
-        rate.mul(250).div(1000).toString()
+        rate * (250).div(1000).toString()
       )
 
       // show value in ETH to approx

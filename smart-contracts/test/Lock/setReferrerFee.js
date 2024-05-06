@@ -74,7 +74,7 @@ describe('Lock / setReferrerFee', () => {
     const balanceAfter = await getBalance(referrerAddress, tokenAddress)
     compareBigNumbers(
       balanceAfter,
-      balanceBefore.add(keyPrice.mul(referrerFee).div(BASIS_POINT_DENOMINATOR))
+      balanceBefore + keyPrice * referrerFee.div(BASIS_POINT_DENOMINATOR)
     )
   }
 
@@ -214,9 +214,7 @@ describe('Lock / setReferrerFee', () => {
 
           compareBigNumbers(
             await getBalance(referrer.address, tokenAddress),
-            balanceBefore.add(
-              keyPrice.mul(generalFee).div(BASIS_POINT_DENOMINATOR)
-            )
+            balanceBefore + keyPrice * generalFee.div(BASIS_POINT_DENOMINATOR)
           )
         })
       })
@@ -280,7 +278,7 @@ describe('Lock / setReferrerFee', () => {
           const balanceAfter = await getBalance(referrer.address, tokenAddress)
           compareBigNumbers(
             balanceAfter,
-            balanceBefore.add(keyPrice.mul(2000).div(BASIS_POINT_DENOMINATOR))
+            balanceBefore + keyPrice * (2000).div(BASIS_POINT_DENOMINATOR)
           )
         })
       })
@@ -357,7 +355,7 @@ describe('Lock / setReferrerFee', () => {
             )
             compareBigNumbers(
               balanceAfter,
-              balanceBefore.add(keyPrice.mul(2000).div(BASIS_POINT_DENOMINATOR))
+              balanceBefore + keyPrice * (2000).div(BASIS_POINT_DENOMINATOR)
             )
           })
         })

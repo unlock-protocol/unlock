@@ -8,7 +8,7 @@ const {
   compareBigNumbers,
 } = require('../helpers')
 
-const timeAmount = ethers.BigNumber.from('1000')
+const timeAmount = BigInt('1000')
 
 describe('Lock / mergeKeys', () => {
   let tokenId, tokenId2
@@ -39,7 +39,7 @@ describe('Lock / mergeKeys', () => {
       )
 
       compareBigNumbers(
-        expTs[1].add(timeAmount),
+        expTs[1] + timeAmount,
         await lock.keyExpirationTimestampFor(tokenId2)
       )
 
@@ -65,7 +65,7 @@ describe('Lock / mergeKeys', () => {
       )
 
       compareBigNumbers(
-        expTs[1].add(timeAmount),
+        expTs[1] + timeAmount,
         await lock.keyExpirationTimestampFor(tokenId2)
       )
 
@@ -92,7 +92,7 @@ describe('Lock / mergeKeys', () => {
       )
 
       compareBigNumbers(
-        expTs[1].add(remaining),
+        expTs[1] + remaining,
         await lock.keyExpirationTimestampFor(tokenId2)
       )
 

@@ -40,7 +40,7 @@ describe('Unlock / lockTotalSales', () => {
 
     it('total sales incluse all purchases', async () => {
       const { totalSales } = await unlock.locks(lock.address)
-      assert.equal(totalSales.toString(), price.mul(5).toString())
+      assert.equal(totalSales.toString(), price * (5).toString())
     })
   })
 })

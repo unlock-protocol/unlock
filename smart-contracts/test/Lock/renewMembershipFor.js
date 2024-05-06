@@ -13,7 +13,7 @@ let lock
 let dai
 
 const keyPrice = ethers.parseUnits('0.01', 'ether')
-const totalPrice = keyPrice.mul(10)
+const totalPrice = keyPrice * 10n
 const someDai = ethers.parseUnits('10', 'ether')
 
 describe('Lock / Recurring memberships', () => {
@@ -168,7 +168,7 @@ describe('Lock / Recurring memberships', () => {
       it('transferred the tokens to the contract', async () => {
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
         const balance = await dai.balanceOf(lock.address)
-        assert.equal(balance.toString(), keyPrice.mul(2).toString())
+        assert.equal(balance.toString(), keyPrice * (2).toString())
       })
     })
 
@@ -266,7 +266,7 @@ describe('Lock / Recurring memberships', () => {
         // refund ok
         assert.equal(
           (await dai.balanceOf(keyOwner.address)).toString(),
-          balanceBefore.add(keyPrice.toString()).toString()
+          balanceBefore + keyPrice.toString().toString()
         )
 
         // key expired

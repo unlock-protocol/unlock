@@ -21,7 +21,7 @@ const scenarios = [true]
 const gasRefund = async (tx) => {
   const { gasPrice } = tx
   const { gasUsed } = await tx.wait()
-  const gas = gasPrice.mul(gasUsed)
+  const gas = gasPrice * gasUsed
   const refund = keyPrice.sub(gasRefundAmount)
   return { gas, refund }
 }
@@ -88,7 +88,7 @@ describe('Lock / GasRefund', () => {
         // Approve spending
         await testToken
           .connect(keyOwner)
-          .approve(lock.address, keyPrice.add(gasRefundAmount))
+          .approve(lock.address, keyPrice + gasRefundAmount)
       })
 
       describe('gas refund value', () => {
@@ -167,7 +167,7 @@ describe('Lock / GasRefund', () => {
             // Approve some more spending
             await testToken
               .connect(keyOwner)
-              .approve(lock.address, keyPrice.add(gasRefundAmount))
+              .approve(lock.address, keyPrice + gasRefundAmount)
 
             // balance before extending
             userBalanceBefore = await getBalance(
@@ -210,7 +210,7 @@ describe('Lock / GasRefund', () => {
               // Approve some more spending
               await testToken
                 .connect(keyOwner)
-                .approve(lock.address, keyPrice.add(gasRefundAmount))
+                .approve(lock.address, keyPrice + gasRefundAmount)
 
               // balance before extending
               userBalanceBefore = await getBalance(

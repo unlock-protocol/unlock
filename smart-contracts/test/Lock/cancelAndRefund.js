@@ -12,7 +12,7 @@ const {
 let token
 let tokenId, anotherTokenId
 
-const BASIS_POINTS = ethers.BigNumber.from(`10000`)
+const BASIS_POINTS = BigInt(`10000`)
 
 describe('Lock / cancelAndRefund', () => {
   let lock
@@ -99,7 +99,7 @@ describe('Lock / cancelAndRefund', () => {
       withdrawalAmount = lockBalance.sub(initialLockBalance)
 
       // estimate tx gas cost
-      txFee = tx.gasPrice.mul(gasUsed)
+      txFee = tx.gasPrice * gasUsed
     })
 
     it('should emit a CancelKey event', async () => {
@@ -131,7 +131,7 @@ describe('Lock / cancelAndRefund', () => {
       const finalOwnerBalance = await getBalance(keyOwner.address)
       assert(
         finalOwnerBalance.toString(),
-        initialKeyOwnerBalance.add(withdrawalAmount).sub(txFee).toString()
+        initialKeyOwnerBalance + withdrawalAmount.sub(txFee).toString()
       )
     })
   })

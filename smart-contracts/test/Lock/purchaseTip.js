@@ -64,13 +64,13 @@ describe('Lock / purchaseTip', () => {
       describe('purchase with tip', () => {
         beforeEach(async () => {
           await lock.purchase(
-            [keyPrice.add(tip)],
+            [keyPrice + tip],
             [spender.address],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]],
             {
-              value: isErc20 ? 0 : keyPrice.add(tip),
+              value: isErc20 ? 0 : keyPrice + tip,
             }
           )
         })
@@ -78,7 +78,7 @@ describe('Lock / purchaseTip', () => {
         it('user sent the tip to the contract', async () => {
           compareBigNumbers(
             await getBalance(lock.address, tokenAddress),
-            isErc20 ? keyPrice : keyPrice.add(tip)
+            isErc20 ? keyPrice : keyPrice + tip
           )
         })
       })
@@ -92,7 +92,7 @@ describe('Lock / purchaseTip', () => {
             [ADDRESS_ZERO],
             [[]],
             {
-              value: isErc20 ? 0 : keyPrice.add(tip),
+              value: isErc20 ? 0 : keyPrice + tip,
             }
           )
         })
@@ -100,7 +100,7 @@ describe('Lock / purchaseTip', () => {
         it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
           const balance = await getBalance(lock.address, tokenAddress)
           if (!isErc20) {
-            compareBigNumbers(balance, keyPrice.add(tip))
+            compareBigNumbers(balance, keyPrice + tip)
           } else {
             compareBigNumbers(balance, keyPrice)
           }
@@ -117,14 +117,14 @@ describe('Lock / purchaseTip', () => {
               [ADDRESS_ZERO],
               [[]],
               {
-                value: keyPrice.add(tip),
+                value: keyPrice + tip,
               }
             )
           })
 
           it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
             const balance = await getBalance(lock.address, tokenAddress)
-            compareBigNumbers(balance, keyPrice.add(tip))
+            compareBigNumbers(balance, keyPrice + tip)
           })
         })
       }

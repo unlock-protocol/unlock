@@ -3,8 +3,8 @@ const { ethers } = require('hardhat')
 const { ADDRESS_ZERO, reverts, MAX_UINT } = require('../helpers')
 
 const ONE_DAY = 60 * 60 * 24
-const expirationDuration = ethers.BigNumber.from(`${ONE_DAY * 30}`)
-const tooMuchTime = ethers.BigNumber.from(`${ONE_DAY * 42}`) // 42 days
+const expirationDuration = BigInt(`${ONE_DAY * 30}`)
+const tooMuchTime = BigInt(`${ONE_DAY * 42}`) // 42 days
 
 describe('Lock / timeMachine', () => {
   let timeMachine
@@ -21,7 +21,7 @@ describe('Lock / timeMachine', () => {
     timeMachine = await TimeMachineMock.deploy()
 
     const { timestamp: now } = await ethers.provider.getBlock('latest')
-    timestampBefore = await ethers.BigNumber.from(now).add(expirationDuration)
+    timestampBefore = (await BigInt(now)) + expirationDuration
 
     const tx = await timeMachine.createNewKey(
       keyOwner.address,
@@ -49,7 +49,7 @@ describe('Lock / timeMachine', () => {
       timestampBefore = await timeMachine.keyExpirationTimestampFor(tokenId)
       await timeMachine.timeMachine(tokenId, 42, true) // increase the time with "true"
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(timestampBefore.add(42)))
+      assert(timestampAfter.eq(timestampBefore + 42))
     })
 
     it('should set a new expiration ts from current date/blocktime', async () => {
@@ -65,9 +65,7 @@ describe('Lock / timeMachine', () => {
 
       const { timestamp: now } = await ethers.provider.getBlock(blockNumber)
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(
-        timestampAfter.eq(ethers.BigNumber.from(now).add(expirationDuration))
-      )
+      assert(timestampAfter.eq(BigInt(now) + expirationDuration))
     })
 
     it('should emit the ExpirationChanged event', async () => {

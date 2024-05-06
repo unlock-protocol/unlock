@@ -61,7 +61,7 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
     keyOwners.map(() => AddressZero),
     keyOwners.map(() => []),
     {
-      value: isErc20 ? 0 : DEFAULT_KEY_PRICE.mul(nbOfKeys),
+      value: isErc20 ? 0 : DEFAULT_KEY_PRICE * nbOfKeys,
     }
   )
   // get token ids

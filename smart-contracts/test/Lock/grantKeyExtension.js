@@ -57,7 +57,7 @@ describe('Lock / grantKeyExtension', () => {
     it('duration has been extended accordingly', async () => {
       const expirationDuration = await lock.expirationDuration()
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      compareBigNumbers(tsBefore.add(expirationDuration), tsAfter)
+      compareBigNumbers(tsBefore + expirationDuration, tsAfter)
     })
 
     it('should emit a KeyExtended event', async () => {
@@ -84,7 +84,7 @@ describe('Lock / grantKeyExtension', () => {
 
     it('duration has been extended accordingly', async () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      compareBigNumbers(tsBefore.add(duration), tsAfter)
+      compareBigNumbers(tsBefore + duration, tsAfter)
     })
 
     it('should emit a KeyExtended event', async () => {
@@ -113,7 +113,7 @@ describe('Lock / grantKeyExtension', () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
       const blockNumber = await ethers.provider.getBlockNumber()
       const { timestamp } = await ethers.provider.getBlock(blockNumber)
-      compareBigNumbers(expirationDuration.add(timestamp), tsAfter)
+      compareBigNumbers(expirationDuration + timestamp, tsAfter)
     })
   })
 

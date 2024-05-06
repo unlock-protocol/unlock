@@ -56,7 +56,7 @@ describe('Lock / withdraw', () => {
           const tx = await lock.withdraw(tokenAddress, owner.address, 0)
           const { gasPrice } = tx
           const { gasUsed } = await tx.wait()
-          gas = gasPrice.mul(gasUsed)
+          gas = gasPrice * gasUsed
         })
 
         it("should set the lock's balance to 0", async () => {
@@ -66,7 +66,7 @@ describe('Lock / withdraw', () => {
         it("should increase the owner's balance with the funds from the lock", async () => {
           compareBigNumbers(
             await getBalance(owner.address, tokenAddress),
-            ownerBalance.add(contractBalance).sub(isErc20 ? 0 : gas)
+            ownerBalance + contractBalance.sub(isErc20 ? 0 : gas)
           )
         })
 
@@ -94,7 +94,7 @@ describe('Lock / withdraw', () => {
           // calculate gas
           const { gasPrice } = tx
           const { gasUsed } = await tx.wait()
-          gas = gasPrice.mul(gasUsed)
+          gas = gasPrice * gasUsed
         })
 
         it(`should reduce the lock's balance by ${amount}`, async () => {
@@ -107,7 +107,7 @@ describe('Lock / withdraw', () => {
         it(`should increase the owner's balance by ${amount}`, async () => {
           compareBigNumbers(
             await getBalance(owner.address, tokenAddress),
-            ownerBalance.add(amount).sub(isErc20 ? 0 : gas)
+            ownerBalance + amount.sub(isErc20 ? 0 : gas)
           )
         })
 

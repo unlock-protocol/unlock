@@ -61,9 +61,8 @@ describe('Unlock / protocolFee', async () => {
 
         // set fee to 12%
         await unlock.setProtocolFee(120)
-        fee = keyPrice
-          .mul(await unlock.protocolFee())
-          .div(BASIS_POINT_DENOMINATOR)
+        fee =
+          keyPrice * (await unlock.protocolFee()).div(BASIS_POINT_DENOMINATOR)
       })
 
       it('fee is set correctly in Unlock ', async () => {
@@ -81,9 +80,8 @@ describe('Unlock / protocolFee', async () => {
             await dai.connect(keyOwner).approve(lock.address, keyPrice)
           }
           await purchaseKey(lock, keyOwner.address, isErc20, keyPrice)
-          const fee = keyPrice
-            .mul(await unlock.protocolFee())
-            .div(BASIS_POINT_DENOMINATOR)
+          const fee =
+            keyPrice * (await unlock.protocolFee()).div(BASIS_POINT_DENOMINATOR)
 
           const unlockBalanceAfter = await getBalance(
             unlock.address,
@@ -91,7 +89,7 @@ describe('Unlock / protocolFee', async () => {
           )
           assert.equal(
             unlockBalanceAfter.toString(),
-            unlockBalanceBefore.add(fee).toString()
+            unlockBalanceBefore + fee.toString()
           )
         })
 
@@ -101,7 +99,7 @@ describe('Unlock / protocolFee', async () => {
             tokenAddress
           )
           if (isErc20) {
-            await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(3))
+            await dai.connect(keyOwner).approve(lock.address, keyPrice * 3)
           }
           await purchaseKeys(lock, 3, isErc20, keyOwner)
           const unlockBalanceAfter = await getBalance(
@@ -110,7 +108,7 @@ describe('Unlock / protocolFee', async () => {
           )
           assert.equal(
             unlockBalanceAfter.toString(),
-            unlockBalanceBefore.add(fee.mul(3)).toString()
+            unlockBalanceBefore + (fee * 3).toString()
           )
         })
 
@@ -120,7 +118,7 @@ describe('Unlock / protocolFee', async () => {
             tokenAddress
           )
           if (isErc20) {
-            await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
+            await dai.connect(keyOwner).approve(lock.address, keyPrice * 2)
           }
           const { tokenId } = await purchaseKey(
             lock,
@@ -139,7 +137,7 @@ describe('Unlock / protocolFee', async () => {
           )
           assert.equal(
             unlockBalanceAfter.toString(),
-            unlockBalanceBefore.add(fee.mul(2)).toString()
+            unlockBalanceBefore + (fee * 2).toString()
           )
         })
 
@@ -150,7 +148,7 @@ describe('Unlock / protocolFee', async () => {
               tokenAddress
             )
 
-            await dai.connect(keyOwner).approve(lock.address, keyPrice.mul(2))
+            await dai.connect(keyOwner).approve(lock.address, keyPrice * 2)
             const { tokenId } = await purchaseKey(lock, keyOwner.address, true)
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
             await increaseTimeTo(expirationTs)
@@ -162,7 +160,7 @@ describe('Unlock / protocolFee', async () => {
             )
             assert.equal(
               unlockBalanceAfter.toString(),
-              unlockBalanceBefore.add(fee.mul(2)).toString()
+              unlockBalanceBefore + (fee * 2).toString()
             )
           })
         }

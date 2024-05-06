@@ -193,25 +193,22 @@ describe('Lock / purchaseFor', () => {
 
         const expirationDuration = await lock.expirationDuration()
 
-        assert(expirationTimestamp.gte(expirationDuration.add(now)))
+        assert(expirationTimestamp.gte(expirationDuration + now))
       })
 
       it('should have added the funds to the contract', async () => {
         compareBigNumbers(
           await getBalance(lock.address),
-          balanceBefore.add(keyPrice)
+          balanceBefore + keyPrice
         )
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        compareBigNumbers(await lock.totalSupply(), totalSupplyBefore.add(1))
+        compareBigNumbers(await lock.totalSupply(), totalSupplyBefore + 1)
       })
 
       it('should have increased the number of owners', async () => {
-        compareBigNumbers(
-          await lock.numberOfOwners(),
-          numberOfOwnersBefore.add(1)
-        )
+        compareBigNumbers(await lock.numberOfOwners(), numberOfOwnersBefore + 1)
       })
     })
 

@@ -148,7 +148,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const pastTotalSupplyAfter = await udt.getPastTotalSupply(
           receipt.blockNumber
         )
-        assert.isTrue(pastTotalSupplyAfter.eq(pastTotalSupply.add(amount)))
+        assert.isTrue(pastTotalSupplyAfter.eq(pastTotalSupply + amount))
       })
     })
   })

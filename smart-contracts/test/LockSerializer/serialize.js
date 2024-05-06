@@ -88,7 +88,7 @@ describe('LockSerializer', () => {
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => []),
-          { value: keyPrice.mul(purchasers.length) }
+          { value: keyPrice * purchasers.length }
         )
       })
 

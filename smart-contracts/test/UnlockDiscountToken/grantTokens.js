@@ -32,7 +32,7 @@ const mintAmount = ethers.parseUnits('1000000', 'ether')
 const round = (bn) => {
   const [integral, decimals] = bn.split('.')
   const remainer = Math.round(`0.${decimals.slice(0, 4)}`).toString()
-  return ethers.BigNumber.from(integral).add(remainer)
+  return BigInt(integral) + remainer
 }
 
 describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
@@ -147,7 +147,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
 
           // using estimatedGas instead of the actual gas used so this test does
           // not regress as other features are implemented
-          gasSpent = baseFeePerGas.mul(estimateGas)
+          gasSpent = baseFeePerGas * estimateGas
 
           balanceReferrer = (await udt.balanceOf(referrer.address)).sub(
             balanceReferrerBefore
@@ -162,7 +162,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
           compareBigNumbers(
             gasSpent,
-            round(ethers.formatEther(balanceReferrer.mul(rate)))
+            round(ethers.formatEther(balanceReferrer * rate))
           )
         })
       })
@@ -181,7 +181,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
 
           const baseFeePerGas = 1000000000 // in gwei
           await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-            ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+            BigInt(baseFeePerGas).toHexString(16),
           ])
 
           const balanceReferrerBefore = await udt.balanceOf(referrer.address)
@@ -195,9 +195,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
               [[]],
               {
                 value: await lock.keyPrice(),
-                gasPrice: ethers.BigNumber.from(baseFeePerGas)
-                  .mul(2)
-                  .toHexString(16),
+                gasPrice: BigInt(baseFeePerGas) * (2).toHexString(16),
               }
             )
 

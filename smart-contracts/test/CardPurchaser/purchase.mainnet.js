@@ -374,7 +374,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
 
     expect(
       (await usdcContract.balanceOf(cardPurchaser.address)).toNumber()
-    ).to.equal(balanceBefore.add(ethers.parseUnits('1', 6)).toNumber())
+    ).to.equal(balanceBefore + ethers.parseUnits('1', 6).toNumber())
   })
 
   it('should reset the approval to 0', async () => {

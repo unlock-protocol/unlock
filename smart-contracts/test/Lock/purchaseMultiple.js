@@ -46,7 +46,7 @@ describe('Lock / purchase multiple keys at once', () => {
             keyOwners.map(() => ADDRESS_ZERO),
             keyOwners.map(() => []),
             {
-              value: isErc20 ? 0 : keyPrice.mul(keyOwners.length),
+              value: isErc20 ? 0 : keyPrice * keyOwners.length,
             }
           )
         })
@@ -56,7 +56,7 @@ describe('Lock / purchase multiple keys at once', () => {
             lock.address,
             isErc20 ? testToken.address : null
           )
-          compareBigNumbers(balance, keyPrice.mul(keyOwners.length))
+          compareBigNumbers(balance, keyPrice * keyOwners.length)
         })
 
         it('users should have valid keys', async () => {
@@ -80,7 +80,7 @@ describe('Lock / purchase multiple keys at once', () => {
               keyOwners.map(() => ADDRESS_ZERO),
               keyOwners.map(() => []),
               {
-                value: isErc20 ? 0 : keyPrice.mul(keyOwners.length - 2),
+                value: isErc20 ? 0 : keyPrice * (keyOwners.length - 2),
               }
             ),
             isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'

@@ -28,7 +28,7 @@ describe('Lock / erc20', () => {
     let keyPrice
     let refundAmount
 
-    const defaultBalance = ethers.BigNumber.from('100000000000000000')
+    const defaultBalance = BigInt('100000000000000000')
 
     beforeEach(async () => {
       // Pre-req
@@ -79,7 +79,7 @@ describe('Lock / erc20', () => {
 
         compareBigNumbers(balanceLockBefore.sub(keyPrice), balanceLockAfter)
 
-        compareBigNumbers(balanceOwnerBefore.add(keyPrice), balanceOwnerAfter)
+        compareBigNumbers(balanceOwnerBefore + keyPrice, balanceOwnerAfter)
       })
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
@@ -99,7 +99,7 @@ describe('Lock / erc20', () => {
         compareBigNumbers(await token.balanceOf(lock.address), 0)
         compareBigNumbers(
           await token.balanceOf(deployer.address),
-          ownerBalance.add(lockBalance)
+          ownerBalance + lockBalance
         )
       })
 

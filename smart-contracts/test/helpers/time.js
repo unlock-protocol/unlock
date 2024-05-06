@@ -4,7 +4,7 @@ const { network, ethers } = require('hardhat')
 async function increaseTime(durationInHours) {
   const { timestamp } = await ethers.provider.getBlock('latest')
   await network.provider.send('evm_increaseTime', [
-    ethers.BigNumber.from(durationInHours).mul(3600).add(timestamp).toNumber(),
+    BigInt(durationInHours) * 3600 + timestamp.toNumber(),
   ])
 }
 
@@ -21,7 +21,7 @@ async function getLatestBlock() {
 }
 
 async function increaseTimeTo(newTimestamp) {
-  await helpers.time.increaseTo(ethers.BigNumber.from(newTimestamp.toString()))
+  await helpers.time.increaseTo(BigInt(newTimestamp.toString()))
 }
 
 module.exports = {

@@ -14,7 +14,7 @@ let lock
 let dai
 
 const keyPrice = ethers.parseUnits('0.01', 'ether')
-const totalPrice = keyPrice.mul(10)
+const totalPrice = keyPrice * 10n
 const someDai = ethers.parseUnits('10', 'ether')
 
 describe('Lock / isRenewable (ERC20 only)', () => {

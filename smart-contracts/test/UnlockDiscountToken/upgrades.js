@@ -213,7 +213,7 @@ describe('UnlockDiscountToken upgrade', async () => {
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[], []],
           {
-            value: (await lock.keyPrice()).mul(2),
+            value: (await lock.keyPrice()) * 2,
           }
         )
 
@@ -293,12 +293,12 @@ describe('UnlockDiscountToken upgrade', async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
         // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
-        const initialGdp = (await lock.keyPrice()).mul(40000)
+        const initialGdp = (await lock.keyPrice()) * 40000
         await unlock.resetTrackedValue(initialGdp.toString(), 0)
 
         const baseFeePerGas = 1000000000 // in gwei
         await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-          ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+          BigInt(baseFeePerGas).toHexString(16),
         ])
 
         lock.connect(keyBuyer)
@@ -309,10 +309,8 @@ describe('UnlockDiscountToken upgrade', async () => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: (await lock.keyPrice()).mul(2),
-            gasPrice: ethers.BigNumber.from(baseFeePerGas)
-              .mul(2)
-              .toHexString(16),
+            value: (await lock.keyPrice()) * 2,
+            gasPrice: BigInt(baseFeePerGas) * (2).toHexString(16),
           }
         )
       })

@@ -98,7 +98,7 @@ describe('Lock / extend keys', () => {
             const expirationDuration = await lock.expirationDuration()
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
             assert.equal(
-              tsBefore.add(expirationDuration).toString(),
+              tsBefore + expirationDuration.toString(),
               tsAfter.toString()
             )
           })
@@ -134,7 +134,7 @@ describe('Lock / extend keys', () => {
             const blockNumber = await ethers.provider.getBlockNumber()
             const latestBlock = await ethers.provider.getBlock(blockNumber)
             assert.equal(
-              expirationDuration.add(latestBlock.timestamp).toString(),
+              expirationDuration + latestBlock.timestamp.toString(),
               tsAfter.toString()
             )
           })

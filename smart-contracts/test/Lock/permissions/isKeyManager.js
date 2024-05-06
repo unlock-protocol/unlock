@@ -4,7 +4,7 @@ const { ethers } = require('hardhat')
 let keyManagerMock
 let keyOwner, keyManager, random, notKeyManager
 let tokenId
-const expirationDuration = ethers.BigNumber.from(60 * 60 * 24 * 30)
+const expirationDuration = BigInt(60 * 60 * 24 * 30)
 
 describe('Permissions / isKeyManager', () => {
   before(async () => {
@@ -14,8 +14,7 @@ describe('Permissions / isKeyManager', () => {
 
     keyManagerMock = await KeyManagerMock.deploy()
     const { timestamp } = await ethers.provider.getBlock('latest')
-    const timestampBefore =
-      ethers.BigNumber.from(timestamp).add(expirationDuration)
+    const timestampBefore = BigInt(timestamp) + expirationDuration
 
     const tx = await keyManagerMock.createNewKey(
       keyOwner.address,

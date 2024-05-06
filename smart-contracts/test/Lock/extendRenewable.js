@@ -11,7 +11,7 @@ const { ethers } = require('hardhat')
 
 const keyPrice = ethers.parseUnits('0.01', 'ether')
 const newPrice = ethers.parseUnits('0.011', 'ether')
-const totalPrice = keyPrice.mul(10).toString()
+const totalPrice = keyPrice * 10n
 const someDai = ethers.parseUnits('100', 'ether')
 
 let dai
@@ -71,7 +71,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
 
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+        const tsExpected = newExpirationTs + (await lock.expirationDuration())
 
         assert.equal(
           // assert results for +/- 2 sec
@@ -106,7 +106,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         await increaseTimeTo(newExpirationTs.toNumber() - 1)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+        const tsExpected = newExpirationTs + (await lock.expirationDuration())
 
         assert.equal(
           // assert results for +/- 2 sec
@@ -142,7 +142,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         // renewal should work
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
 
-        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+        const tsExpected = newExpirationTs + (await lock.expirationDuration())
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
 
         assert.equal(

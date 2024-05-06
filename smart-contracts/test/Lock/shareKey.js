@@ -8,7 +8,7 @@ const {
   purchaseKeys,
 } = require('../helpers')
 
-const ONE_DAY = ethers.BigNumber.from(60 * 60 * 24)
+const ONE_DAY = BigInt(60 * 60 * 24)
 const TOO_MUCH_TIME = 60 * 60 * 24 * 30 * 2 // 60 days
 
 describe('Lock / shareKey', () => {
@@ -229,7 +229,7 @@ describe('Lock / shareKey', () => {
 
     describe('original key', () => {
       it('should subtract the time shared + fee from the original key', async () => {
-        const toSubstract = ONE_DAY.add(fee.toString())
+        const toSubstract = ONE_DAY + fee.toString()
         const expirationAfter = await lock.keyExpirationTimestampFor(
           tokenIds[2]
         )
@@ -253,7 +253,7 @@ describe('Lock / shareKey', () => {
         assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
         assert.equal(
           sharedKeyExpiration.toString(),
-          ONE_DAY.add(timestampAfter).toString()
+          ONE_DAY + timestampAfter.toString()
         )
       })
       it('should create new ownership record', async () => {

@@ -79,14 +79,14 @@ describe('Lock / non expiring', () => {
         assert(refund.eq(keyPrice))
 
         // get gas used
-        const txFee = tx.gasPrice.mul(gasUsed)
+        const txFee = tx.gasPrice * gasUsed
 
         // check key owner balance
         const finalOwnerBalance = await getBalance(keyOwner.address)
 
         assert(
           finalOwnerBalance.toString(),
-          initialKeyOwnerBalance.add(refund).sub(txFee).toString()
+          initialKeyOwnerBalance + refund.sub(txFee).toString()
         )
 
         // also check lock balance
