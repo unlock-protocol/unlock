@@ -45,7 +45,7 @@ export const EventCheckoutUrl = ({
     network,
   })
 
-  const checkoutUrl = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+  const checkoutUrl = `/locks/checkout-url`
 
   const hasCustomUrl = !!settings?.slug
   const hasConfigList = !!checkoutConfigList?.length

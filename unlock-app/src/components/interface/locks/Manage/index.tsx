@@ -215,7 +215,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+  const checkoutLink = `/locks/checkout-url`
   const verificationLink = `/verification`
 
   const { isManager } = useLockManager({
@@ -267,7 +267,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                     </a>
                     <Link href={checkoutLink} className="text-left">
                       <PopoverItem
-                        label="Create Checkout URL"
+                        label="Checkout URL"
                         description="Customize your member's purchase journey"
                         icon={RightArrowIcon}
                       />
@@ -490,7 +490,7 @@ export const ManageLockPage = () => {
                   setPage={setPage}
                   page={page}
                   NoMemberNoFilter={() => {
-                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    const checkoutLink = `/locks/checkout-url`
                     return (
                       <ImageBar
                         src="/images/illustrations/no-member.svg"

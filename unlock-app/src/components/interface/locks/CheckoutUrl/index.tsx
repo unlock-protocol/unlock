@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -13,8 +13,7 @@ import {
   useCheckoutConfigsByUser,
 } from '~/hooks/useCheckoutConfig'
 import { FaTrash as TrashIcon } from 'react-icons/fa'
-import { useLockSettings } from '~/hooks/useLockSettings'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
@@ -43,9 +42,7 @@ export const CheckoutUrlPage = () => {
   const router = useRouter()
   const query = router.query
   const [checkoutUrl, setCheckoutUrl] = useState('')
-  const { lock: lockAddress, network } = query ?? {}
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
-  const { getIsRecurringPossible } = useLockSettings()
   const [configuration, setConfiguration] = useState<Configuration>('new')
   const methods = useForm<ConfigurationFormProps>({
     mode: 'onChange',
@@ -56,66 +53,15 @@ export const CheckoutUrlPage = () => {
 
   const { control, trigger, watch, setValue } = methods
 
-  const {
-    isPlaceholderData: isRecurringSettingPlaceholder,
-    data: recurringSetting,
-  } = useQuery(
-    ['isRecurringPossible', network, lockAddress],
-    async () => {
-      return getIsRecurringPossible({
-        lockAddress: lockAddress!.toString(),
-        network: Number(network!),
-      })
-    },
-    {
-      placeholderData: {
-        isRecurringPossible: false,
-        oneYearRecurring: 0,
-        gasRefund: 0,
-      },
-      enabled: Boolean(network && lockAddress),
-    }
-  )
-
-  const [checkoutConfig, setCheckoutConfig] = useState<CheckoutConfig>({
-    id: null as null | string,
-    name: 'config',
+  const DEFAULT_CONFIG: CheckoutConfig = {
+    id: null,
     config: {
-      locks:
-        network && lockAddress
-          ? {
-              [lockAddress as string]: {
-                network: parseInt(`${network!}`),
-                skipRecipient: true,
-              },
-            }
-          : {},
+      locks: {},
       icon: '',
-      pessimistic: true,
-      skipRecipient: true,
     },
-  })
+  } as CheckoutConfig
 
-  const DEFAULT_CONFIG = useMemo(() => {
-    const recurringPayments = recurringSetting?.isRecurringPossible
-      ? recurringSetting.oneYearRecurring
-      : undefined
-    return {
-      locks:
-        network && lockAddress
-          ? {
-              [lockAddress as string]: {
-                network: parseInt(`${network!}`),
-                skipRecipient: true,
-                recurringPayments,
-              },
-            }
-          : {},
-      icon: '',
-      pessimistic: true,
-      skipRecipient: true,
-    } as PaywallConfigType
-  }, [recurringSetting, lockAddress, network])
+  const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
 
   const {
     isLoading: isLoadingConfigList,
@@ -128,45 +74,6 @@ export const CheckoutUrlPage = () => {
 
   const { mutateAsync: removeConfig, isLoading: isConfigRemoving } =
     useCheckoutConfigRemove()
-
-  // retrieve recurringPayments when lock is present in url
-  useEffect(() => {
-    if (
-      (!lockAddress && !network) ||
-      isRecurringSettingPlaceholder ||
-      isLoadingConfigList ||
-      (checkoutConfigList || [])?.length > 0
-    )
-      return
-    const getDefaultConfig = async (): Promise<void> => {
-      const recurringPayments = recurringSetting?.isRecurringPossible
-        ? recurringSetting.oneYearRecurring
-        : undefined
-
-      setCheckoutConfig((state) => {
-        if (state.config.locks[lockAddress as string]) {
-          // set recurring value
-          state.config.locks[lockAddress as string].recurringPayments =
-            recurringPayments
-        }
-
-        return {
-          ...state,
-          config: {
-            ...state.config,
-          },
-        }
-      })
-    }
-    getDefaultConfig()
-  }, [
-    lockAddress,
-    network,
-    isRecurringSettingPlaceholder,
-    recurringSetting,
-    isLoadingConfigList,
-    checkoutConfigList,
-  ])
 
   useEffect(() => {
     if ((checkoutConfigList?.length ?? 0) > 0) {
@@ -188,24 +95,7 @@ export const CheckoutUrlPage = () => {
       config: (result?.config as PaywallConfigType) || DEFAULT_CONFIG,
     })
     setDeleteConfirmation(false)
-  }, [
-    checkoutConfig,
-    removeConfig,
-    refetchConfigList,
-    DEFAULT_CONFIG,
-    setDeleteConfirmation,
-  ])
-
-  useEffect(() => {
-    const checkout = checkoutConfigList?.[0]
-    if (!checkout) return
-
-    setCheckoutConfig({
-      id: checkout.id!,
-      name: checkout.name,
-      config: checkout.config as PaywallConfigType,
-    })
-  }, [checkoutConfigList])
+  }, [checkoutConfig, removeConfig, refetchConfigList, setDeleteConfirmation])
 
   const onAddLocks = async (locks: any) => {
     setCheckoutConfig((state) => {
@@ -220,22 +110,7 @@ export const CheckoutUrlPage = () => {
   }
 
   const onBasicConfigChange = async (fields: Partial<PaywallConfigType>) => {
-    const hasDefaultLock =
-      Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
-
     const { locks, ...rest } = fields
-
-    if (hasDefaultLock) {
-      fields = {
-        ...rest,
-        locks: {
-          ...locks,
-          [lockAddress as string]: {
-            network: parseInt(`${network!}`),
-          },
-        },
-      }
-    }
 
     setCheckoutConfig((state) => {
       return {
@@ -287,7 +162,7 @@ export const CheckoutUrlPage = () => {
     if (checkoutConfigList?.length && !!query.id) {
       const config = checkoutConfigList.find((c) => c.id === query.id)
       if (config) {
-        // @ts-expect-error Type 'undefined' is not assignable to type 'string | null'. (but id is not undefined)
+        // @ts-expect-error somethinf
         handleSetConfiguration(config)
       } else {
         // TODO: handle the case where the user is a lock manager but the config was not created by them
@@ -308,7 +183,7 @@ export const CheckoutUrlPage = () => {
       await handleSetConfiguration({
         id: null,
         name: configName,
-        config: DEFAULT_CONFIG,
+        config: DEFAULT_CONFIG.config,
       })
     }
 
@@ -320,9 +195,6 @@ export const CheckoutUrlPage = () => {
 
   const submitConfigurationMutation = useMutation(onSubmitConfiguration)
   const deleteConfigurationMutation = useMutation(onConfigRemove)
-
-  const hasRecurringPlaceholder =
-    !!lockAddress && !!network && isRecurringSettingPlaceholder
 
   const hasSelectedConfig =
     configuration === 'existing' && checkoutConfig?.id !== undefined
@@ -457,9 +329,7 @@ export const CheckoutUrlPage = () => {
                       locks={checkoutConfig.config?.locks}
                     />
                   ),
-                  button: {
-                    disabled: hasRecurringPlaceholder,
-                  },
+                  button: {},
                 },
                 {
                   title:
