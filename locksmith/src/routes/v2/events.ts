@@ -14,16 +14,6 @@ import {
 } from '../../controllers/v2/verifierController'
 const router = express.Router({ mergeParams: true })
 
-router.get('/:network/:lockAddress', getEventDetailsByLock)
-router.get('/:slug', getEvent)
-router.get('/', getAllEvents)
-router.post(
-  '/save',
-  authenticatedMiddleware,
-  eventOrganizerMiddleware,
-  saveEventDetails
-)
-
 router.get('/:slug/verifiers', getEventVerifiers)
 router.put(
   '/:slug/verifiers/:address',
@@ -35,4 +25,15 @@ router.delete(
   eventOrganizerMiddleware,
   deleteEventVerifier
 )
+
+router.get('/:network/:lockAddress', getEventDetailsByLock)
+router.get('/:slug', getEvent)
+router.get('/', getAllEvents)
+router.post(
+  '/save',
+  authenticatedMiddleware,
+  eventOrganizerMiddleware,
+  saveEventDetails
+)
+
 export default router

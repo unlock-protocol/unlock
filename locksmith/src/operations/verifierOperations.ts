@@ -40,7 +40,9 @@ export const getVerifiersListForLock = async (
 
   const verifiers =
     response?.map((verifier: Verifier) => ({
-      ...verifier.toJSON(),
+      address: verifier.address,
+      lockManager: verifier.lockManager,
+      name: verifier.name,
     })) || []
 
   return verifiers
@@ -108,15 +110,36 @@ export const isVerifierForLock = async (
 
 export const getEventVerifiers = async (slug: string) => {
   // Get the unique verifiers for the event based on the slug
+  const verifiers = await Verifier.findAll({
+    where: {
+      slug,
+    },
+  })
+  return verifiers.map((verifier) => verifier.toJSON())
 }
 
 export const addEventVerifier = async (
   slug: string,
   address: string,
-  loggedUserAddress: string,
-  name: string
+  lockManager: string,
+  name?: string
 ) => {
   // Add a verifiers
+  await Verifier.upsert(
+    {
+      slug,
+      address,
+      name,
+      lockManager,
+    },
+    {
+      conflictFields: ['slug', 'address'],
+    }
+  )
+}
+
+export const deleteVerifierForEvent = async (address: string, slug: string) => {
+  // Removes the verifier
 }
 
 const VerifierOperations = {
@@ -126,6 +149,8 @@ const VerifierOperations = {
   deleteVerifierForLock,
   isVerifierForLock,
   getEventVerifiers,
+  addEventVerifier,
+  deleteVerifierForEvent,
 }
 
 export default VerifierOperations

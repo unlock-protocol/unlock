@@ -148,13 +148,9 @@ export const getEventVerifiers = async (
 
   const list = await VerifierOperations.getEventVerifiers(slug)
 
-  if (list) {
-    return response.status(200).send({
-      results: list,
-    })
-  } else {
-    return response.sendStatus(204)
-  }
+  return response.status(200).send({
+    results: list,
+  })
 }
 
 // Adds a verifier to an event
@@ -174,19 +170,28 @@ export const addEventVerifier = async (
     ? addVerifierBody?.verifierName
     : null
 
-  const createdVerifier = await VerifierOperations.addEventVerifier(
+  await VerifierOperations.addEventVerifier(
     slug,
     address,
     loggedUserAddress,
     name
   )
+  const list = await VerifierOperations.getEventVerifiers(slug)
+  console.log(list)
 
-  return response.status(201).send(createdVerifier)
+  return response.status(201).send({
+    results: list,
+  })
 }
 
 export const deleteEventVerifier = async (
   request: Request,
   response: Response
 ) => {
-  // Remove verifier from the event
+  const slug = request.params.slug
+  await VerifierOperations.deleteVerifierForEvent(address, slug)
+  const list = await VerifierOperations.getEventVerifiers(slug)
+  return response.status(200).send({
+    results: list,
+  })
 }
