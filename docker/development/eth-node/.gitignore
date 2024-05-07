@@ -1,5 +1,6 @@
 # local deps
 packages
+networks.json
 
 # contracts
 cache
