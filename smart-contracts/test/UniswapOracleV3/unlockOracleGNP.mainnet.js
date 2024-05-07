@@ -17,7 +17,7 @@ const {
   unlockAddress,
   uniswapV3: { factoryAddress },
 } = mainnet
-const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
+const keyPriceUSDC = ethers.parseUnits('50', 6)
 const FEE = 500
 describe('Unlock GNP conversion', () => {
   let unlock
