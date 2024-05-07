@@ -3,7 +3,6 @@ import {
   useCrossmintEvents,
 } from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { Fragment, useCallback, useState } from 'react'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
@@ -19,9 +18,9 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
 import { config } from '~/config/app'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
@@ -36,7 +35,6 @@ interface CrossmintQuote {
 }
 
 export function ConfirmCrossmint({
-  injectedProvider,
   onConfirmed,
   // onError,
   checkoutService,
@@ -284,10 +282,7 @@ export function ConfirmCrossmint({
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        ></Connected>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
