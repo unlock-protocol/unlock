@@ -144,13 +144,12 @@ export function Minting({
       if (tokenIds.filter((tokenId?: string) => !!tokenId).length) {
         return tokenIds
       }
-      await sleeper(1000)
+      await sleeper(5000)
       return waitForTokenIds()
     }
 
     const waitForConfirmation = async () => {
       try {
-        if (mint.status !== 'PROCESSING') return
         const network = config.networks[mint.network || lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcBatchProvider(
