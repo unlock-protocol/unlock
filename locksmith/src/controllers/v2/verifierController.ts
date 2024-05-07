@@ -177,7 +177,6 @@ export const addEventVerifier = async (
     name
   )
   const list = await VerifierOperations.getEventVerifiers(slug)
-  console.log(list)
 
   return response.status(201).send({
     results: list,
@@ -189,6 +188,8 @@ export const deleteEventVerifier = async (
   response: Response
 ) => {
   const slug = request.params.slug
+  const address = request.params.address
+
   await VerifierOperations.deleteVerifierForEvent(address, slug)
   const list = await VerifierOperations.getEventVerifiers(slug)
   return response.status(200).send({

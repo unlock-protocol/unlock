@@ -17,11 +17,13 @@ const router = express.Router({ mergeParams: true })
 router.get('/:slug/verifiers', getEventVerifiers)
 router.put(
   '/:slug/verifiers/:address',
+  authenticatedMiddleware,
   eventOrganizerMiddleware,
   addEventVerifier
 )
 router.delete(
   '/:slug/verifiers/:address',
+  authenticatedMiddleware,
   eventOrganizerMiddleware,
   deleteEventVerifier
 )

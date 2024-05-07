@@ -115,16 +115,21 @@ export const getEventVerifiers = async (slug: string) => {
       slug,
     },
   })
-  return verifiers.map((verifier) => verifier.toJSON())
+  return (
+    verifiers?.map((verifier: Verifier) => ({
+      address: verifier.address,
+      lockManager: verifier.lockManager,
+      name: verifier.name,
+    })) || []
+  )
 }
 
 export const addEventVerifier = async (
   slug: string,
   address: string,
   lockManager: string,
-  name?: string
+  name?: string | null
 ) => {
-  // Add a verifiers
   await Verifier.upsert(
     {
       slug,
@@ -139,7 +144,13 @@ export const addEventVerifier = async (
 }
 
 export const deleteVerifierForEvent = async (address: string, slug: string) => {
-  // Removes the verifier
+  await Verifier.destroy({
+    where: {
+      slug,
+      address,
+    },
+    limit: 1,
+  })
 }
 
 const VerifierOperations = {
