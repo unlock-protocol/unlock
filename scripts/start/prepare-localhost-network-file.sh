@@ -4,13 +4,9 @@ set -e
 # parse networks file when running on CI
 INFO_FILE_PATH="$REPO_ROOT/docker/development/eth-node/networks.json"
 
-# use docker mounted file on CI
-if [ ! -z "${CI}" ]; then 
-  INFO_FILE_PATH='/home/unlock/networks.json'
-fi
-
+# default subgraph URL
 if [ -z "${SUBGRAPH_URL}" ]; then 
-  SUBGRAPH_URL=http://graph-node:8000/subgraphs/name/testgraph
+  SUBGRAPH_URL=http://localhost:8000/subgraphs/name/testgraph
 fi
 
 # make sure file exists
