@@ -21,7 +21,7 @@ source ./scripts/start/envs.sh
 ./scripts/start/copy-eth-node-packages.sh
 
 # Take DB, IPFS, graph and postgres nodes up
-docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
+docker-compose $COMPOSE_CONFIG up -d --build postgres ipfs graph-node eth-node
 
 # deploy contracts and subgraph
 ./scripts/start/provision.sh
