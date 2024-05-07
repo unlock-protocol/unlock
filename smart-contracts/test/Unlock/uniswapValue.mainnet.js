@@ -118,8 +118,8 @@ describe('Unlock / uniswapValue', () => {
 
         // 5 keys at 50 USDC at oracle rate
         const priceConverted = rate * 250
-        expect(GNP.div(1000).toString()).to.equals(
-          gnpBefore + priceConverted.div(1000).toString()
+        expect(GNP / (1000).toString()).to.equals(
+          gnpBefore + priceConverted / (1000).toString()
         )
 
         // show approx value in ETH for reference
@@ -149,12 +149,12 @@ describe('Unlock / uniswapValue', () => {
             assert.equal(value.toString(), keyPriceUSDC.toString())
             // rate * 50 USDC per key
             assert.equal(
-              _valueInETH.div(1000).toString(),
-              rate * (50).div(1000).toString()
+              _valueInETH / (1000).toString(),
+              (rate * 50) / (1000).toString()
             )
             assert.equal(
-              gnpBefore + (rate * 50 * (i + 1)).div(1000).toString(),
-              grossNetworkProduct.div(1000).toString()
+              gnpBefore + (rate * 50 * (i + 1)) / (1000).toString(),
+              grossNetworkProduct / (1000).toString()
             )
           }
         )
@@ -251,11 +251,11 @@ describe('Unlock / uniswapValue', () => {
             console.log(_valueInETH)
             assert.equal(
               _valueInETH.toString(),
-              rate * (0.01).div(1000).toString()
+              (rate * 0.01) / (1000).toString()
             )
             assert.equal(
-              gnpBefore + (rate * 0.01 * (i + 1)).div(1000).toString(),
-              grossNetworkProduct.div(1000).toString()
+              gnpBefore + (rate * 0.01 * (i + 1)) / (1000).toString(),
+              grossNetworkProduct / (1000).toString()
             )
           }
         )

@@ -142,7 +142,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(totalSupply.eq(0), false)
       // more than initial pre-mined 1M
-      assert(totalSupply.gt(ethers.parseEther('1000000')))
+      assert(totalSupply > ethers.parseEther('1000000'))
     })
 
     it('name is set', async () => {
@@ -544,10 +544,10 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         assert.equal(delegateBefore, 0)
 
         const votesHolderBefore = await udt.getCurrentVotes(holder.address)
-        assert.isTrue(votesHolderBefore.gt(0))
+        assert.isTrue(votesHolderBefore > 0)
 
         const balanceHolderBefore = await udt.balanceOf(holder.address)
-        assert.isTrue(balanceHolderBefore.gt(0))
+        assert.isTrue(balanceHolderBefore > 0)
 
         // Transfer 1 token
         udt = udt.connect(holder)

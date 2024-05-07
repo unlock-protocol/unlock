@@ -147,7 +147,7 @@ describe('UnlockProtocolGovernor', () => {
       const tx = await udt.delegate(voter.address)
       await tx.wait()
 
-      assert.equal((await udt.getVotes(voter.address)).gt(quorum), true)
+      assert.equal((await udt.getVotes(voter.address)) > quorum, true)
     })
 
     describe('Quorum', () => {

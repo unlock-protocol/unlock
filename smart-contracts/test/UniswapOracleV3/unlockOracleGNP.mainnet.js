@@ -110,8 +110,8 @@ describe('Unlock GNP conversion', () => {
       const GNP = await unlock.grossNetworkProduct()
       expect(GNP.toString()).to.not.equals('0')
       // 5 keys at 50 USDC at oracle rate
-      expect(GNP.div(1000).toString()).to.equals(
-        rate * (250).div(1000).toString()
+      expect(GNP / (1000).toString()).to.equals(
+        (rate * 250) / (1000).toString()
       )
 
       // show value in ETH to approx

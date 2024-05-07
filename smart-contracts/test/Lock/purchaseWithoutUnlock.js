@@ -128,7 +128,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
         ADDRESS_ZERO
       )
       // 50% discount
-      await testEventHooks.configure(true, keyPrice.div(2))
+      await testEventHooks.configure(true, keyPrice / 2)
       const tx = await lock
         .connect(buyer)
         .purchase(

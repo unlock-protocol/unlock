@@ -60,7 +60,7 @@ describe(`oracle`, () => {
             round(
               await oracle.consult(token0, ethers.parseEther('0.1'), token1)
             )
-          ).to.be.equals(round(converted.div(10)))
+          ).to.be.equals(round(converted / 10))
 
           expect(
             round(await oracle.consult(token0, ethers.parseEther('10'), token1))

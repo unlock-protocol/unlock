@@ -12,7 +12,7 @@ const {
 let token
 let tokenId, anotherTokenId
 
-const BASIS_POINTS = BigInt(`10000`)
+const BASIS_POINTS = 10000n
 
 describe('Lock / cancelAndRefund', () => {
   let lock
@@ -36,12 +36,12 @@ describe('Lock / cancelAndRefund', () => {
   describe('refunds', () => {
     it('should return the correct penalty', async () => {
       const numerator = await lock.refundPenaltyBasisPoints()
-      assert.equal(BASIS_POINTS.div(numerator).toString(), '10') // default of 10%
+      assert.equal(BASIS_POINTS / numerator, 10) // default of 10%
     })
 
     it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
       const estimatedRefund = await lock.getCancelAndRefundValue(tokenId)
-      assert(estimatedRefund.lt(keyPrice.toString()))
+      assert(estimatedRefund < keyPrice)
     })
 
     it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
@@ -53,7 +53,7 @@ describe('Lock / cancelAndRefund', () => {
       const { events } = await tx.wait()
       const { args } = events.find((v) => v.event === 'Transfer')
       const estimatedRefund = await lock.getCancelAndRefundValue(args.tokenId)
-      assert(estimatedRefund.lt(keyPrice.toString()))
+      assert(estimatedRefund < keyPrice)
     })
 
     it('should refund in the new token after token address is changed', async () => {
@@ -107,11 +107,11 @@ describe('Lock / cancelAndRefund', () => {
     })
 
     it('the amount of refund should be greater than 0', async () => {
-      assert(refund.gt(0))
+      assert(refund > 0)
     })
 
     it('the amount of refund should be less than or equal to the original key price', async () => {
-      assert(refund.lt(keyPrice.toString()))
+      assert(refund < keyPrice)
     })
 
     it('the amount of refund should be less than or equal to the estimated refund', async () => {
@@ -221,7 +221,7 @@ describe('Lock / cancelAndRefund', () => {
       const tx = await lock.connect(keyOwner).cancelAndRefund(tokenId)
       const { events } = await tx.wait()
       const { args } = events.find((v) => v.event === 'CancelKey')
-      assert(args.refund.gt(0))
+      assert(args.refund > 0)
     })
   })
 

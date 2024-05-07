@@ -54,7 +54,7 @@ describe('Lock / freeTrial', () => {
         const refundAmount =
           initialLockBalance - (await getBalance(lock.address))
         assert.notEqual(refundAmount.toString(), keyPrice.toString())
-        assert(refundAmount.lt(keyPrice.toString()))
+        assert(refundAmount < keyPrice)
       })
     })
   })

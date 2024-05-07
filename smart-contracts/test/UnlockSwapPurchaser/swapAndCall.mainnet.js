@@ -361,7 +361,7 @@ describe(`swapAndCall`, function () {
                 await getUniswapRoute({
                   tokenIn: srcToken,
                   tokenOut: lockToken,
-                  amoutOut: keyPrice.div(2),
+                  amoutOut: keyPrice / 2,
                   recipient: swapPurchaser.address,
                 }))
 

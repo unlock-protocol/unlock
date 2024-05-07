@@ -412,9 +412,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
               })
             await tx.wait()
             assert.equal(
-              (await lock.keyExpirationTimestampFor(tokenIds[0])).gt(
-                expirationTimestamps[0]
-              ),
+              (await lock.keyExpirationTimestampFor(tokenIds[0])) >
+                expirationTimestamps[0],
               true
             )
           })

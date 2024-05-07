@@ -24,7 +24,7 @@ describe('Lock / transferFee', () => {
 
   it('has a default fee of 0%', async () => {
     const feeNumerator = await lock.transferFeeBasisPoints()
-    compareBigNumbers(feeNumerator.div(denominator), '0')
+    compareBigNumbers(feeNumerator / denominator, '0')
   })
 
   it('reverts if a non-manager attempts to change the fee', async () => {
@@ -55,10 +55,10 @@ describe('Lock / transferFee', () => {
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
 
       // Fee is <= the expected fee before the call
-      assert(fee.lte(expiration - nowBefore * (5).div(100)))
+      assert(fee.lte(expiration - (nowBefore * 5) / 100))
 
       // and >= the expected fee after the call
-      assert(fee.gte(expiration - nowAfter * (5).div(100)))
+      assert(fee.gte(expiration - (nowAfter * 5) / 100))
     })
 
     it('calculates the fee based on the time value passed in', async () => {

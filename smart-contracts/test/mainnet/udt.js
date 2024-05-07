@@ -114,12 +114,12 @@ describe('UnlockDiscountToken on mainnet', async () => {
     it('is more than 1M', async () => {
       const totalSupply = await udt.totalSupply()
       assert.equal(
-        totalSupply.gt(0),
+        totalSupply > 0,
         true,
         'starting supply must be different from 0'
       )
       // more than 1M
-      assert(totalSupply.gt(ethers.parseEther('1000000')))
+      assert(totalSupply > ethers.parseEther('1000000'))
     })
 
     // totalSupply at block height for ERC20Votes function
@@ -317,10 +317,10 @@ describe('UnlockDiscountToken on mainnet', async () => {
         assert.equal(delegateBefore, 0)
 
         const votesHolderBefore = await udt.getCurrentVotes(holder.address)
-        assert.isTrue(votesHolderBefore.gt(0))
+        assert.isTrue(votesHolderBefore > 0)
 
         const balanceHolderBefore = await udt.balanceOf(holder.address)
-        assert.isTrue(balanceHolderBefore.gt(0))
+        assert.isTrue(balanceHolderBefore > 0)
 
         // Transfer 1 token
         udt = udt.connect(holder)

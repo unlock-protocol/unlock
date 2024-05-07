@@ -62,7 +62,7 @@ describe('Unlock / protocolFee', async () => {
         // set fee to 12%
         await unlock.setProtocolFee(120)
         fee =
-          keyPrice * (await unlock.protocolFee()).div(BASIS_POINT_DENOMINATOR)
+          (keyPrice * (await unlock.protocolFee())) / BASIS_POINT_DENOMINATOR
       })
 
       it('fee is set correctly in Unlock ', async () => {
@@ -81,7 +81,7 @@ describe('Unlock / protocolFee', async () => {
           }
           await purchaseKey(lock, keyOwner.address, isErc20, keyPrice)
           const fee =
-            keyPrice * (await unlock.protocolFee()).div(BASIS_POINT_DENOMINATOR)
+            (keyPrice * (await unlock.protocolFee())) / BASIS_POINT_DENOMINATOR
 
           const unlockBalanceAfter = await getBalance(
             unlock.address,

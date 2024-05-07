@@ -186,9 +186,8 @@ describe('PublicLock upgrade v10 > v11', () => {
           })
         await tx.wait()
         assert.equal(
-          (await lock.keyExpirationTimestampFor(tokenIds[0])).gt(
-            expirationTimestamps[0]
-          ),
+          (await lock.keyExpirationTimestampFor(tokenIds[0])) >
+            expirationTimestamps[0],
           true
         )
       })

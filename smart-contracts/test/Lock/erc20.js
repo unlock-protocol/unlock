@@ -85,7 +85,7 @@ describe('Lock / erc20', () => {
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
         const balance = await token.balanceOf(keyOwner.address)
         await lock.connect(keyOwner).cancelAndRefund(tokenId)
-        assert(balance.lt(await token.balanceOf(keyOwner.address)))
+        assert(balance < (await token.balanceOf(keyOwner.address)))
       })
 
       it('the owner can withdraw tokens', async () => {

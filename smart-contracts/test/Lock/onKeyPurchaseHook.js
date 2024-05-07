@@ -106,7 +106,7 @@ describe('Lock / onKeyPurchaseHook', () => {
             [ADDRESS_ZERO],
             [dataField],
             {
-              value: keyPrice.div(2),
+              value: keyPrice / 2,
             }
           ),
         'INSUFFICIENT_VALUE'
@@ -120,7 +120,7 @@ describe('Lock / onKeyPurchaseHook', () => {
 
   describe('with a 50% off discount', () => {
     beforeEach(async () => {
-      await testEventHooks.configure(true, keyPrice.div(2))
+      await testEventHooks.configure(true, keyPrice / 2)
     })
 
     it('can estimate the price', async () => {
@@ -129,7 +129,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         ADDRESS_ZERO,
         dataField
       )
-      await compareBigNumbers(price, keyPrice.div(2))
+      await compareBigNumbers(price, keyPrice / 2)
     })
 
     it('can buy at half price', async () => {
@@ -142,7 +142,7 @@ describe('Lock / onKeyPurchaseHook', () => {
           [ADDRESS_ZERO],
           [dataField],
           {
-            value: keyPrice.div(2),
+            value: keyPrice / 2,
           }
         )
     })

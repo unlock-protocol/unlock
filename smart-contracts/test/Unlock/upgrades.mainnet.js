@@ -193,7 +193,7 @@ describe('Unlock (on mainnet)', async () => {
         recipient
       )
 
-      assert(expirationAfter.gt(0))
+      assert(expirationAfter > 0)
     })
   })
 })
