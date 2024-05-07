@@ -13,6 +13,7 @@ import eventKeyAirdropped from './templates/eventKeyAirdropped'
 import certificationKeyMined from './templates/certificationKeyMined'
 import certificationKeyAirdropped from './templates/certificationKeyAirdropped'
 import inviteEvent from './templates/inviteEvent'
+import eventDeployed from './templates/eventDeployed'
 import LockTemplates from './templates/locks'
 import bases from './templates/base/index'
 import custom from './templates/custom'
@@ -33,6 +34,7 @@ type Template =
   | 'keyExpiring'
   | 'keyExpired'
   | 'inviteEvent'
+  | 'eventDeployed'
   | 'eventKeyMined'
   | 'eventRsvpSubmitted'
   | 'eventKeyAirdropped'
@@ -57,6 +59,7 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   certificationKeyAirdropped,
   custom,
   inviteEvent,
+  eventDeployed,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}

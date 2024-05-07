@@ -102,7 +102,7 @@ for (let i = 0; i < networks.length; i++) {
         console.log(`yarn hardhat setup ${argsConnext.join(' ')}`)
 
         console.log(
-          `yarn hardhat verifyModule ${argsConnext.join(' ')} --module`
+          `yarn hardhat verify ${owner} ${multisig} ${governanceBridge.modules.delayMod} ${daoTimelockAddress} ${daoDomainId} ${governanceBridge.connext} --network ${networks[i]} <module-address>`
         )
       } else {
         console.log(`Connext mod at ${governanceBridge.modules.connextMod}`)
