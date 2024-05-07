@@ -7,6 +7,7 @@ const {
   getBalance,
   ADDRESS_ZERO,
   PERMIT2_ADDRESS,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 const { compareBigNumbers } = require('../helpers')
 
@@ -71,10 +72,10 @@ describe('Unlock / swapAndBurn', async () => {
       )
 
       const tx = await unlock.setSwapBurner(newSwapBurner.address)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
 
       // check if box instance works
-      const evt = events.find((v) => v.event === 'SwapBurnerChanged')
+      const evt = await getEvent(receipt, 'SwapBurnerChanged')
       const { newAddress, oldAddress } = evt.args
 
       assert.equal(newAddress, newSwapBurner.address)

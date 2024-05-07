@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-
+const { getEvent, getEvents } = require('@unlock-protocol/hardhat-helpers')
 const {
   deployLock,
   ADDRESS_ZERO,
@@ -47,10 +47,9 @@ describe('Lock / erc721 / balanceOf', () => {
         value: ethers.parseUnits('0.03', 'ether'),
       }
     )
-    const { events } = await tx.wait()
-    const tokenIds = events
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    const receipt = await tx.wait()
+    const { events } = await getEvents(receipt, 'Transfer')
+    const tokenIds = events.map(({ args }) => args.tokenId)
 
     compareBigNumbers(await lock.balanceOf(keyOwner.address), 3)
 
@@ -79,11 +78,11 @@ describe('Lock / erc721 / balanceOf', () => {
         value: ethers.parseUnits('0.03', 'ether'),
       }
     )
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
 
-    const [tokenId] = events
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    const {
+      args: { tokenId },
+    } = await getEvent(receipt, 'Transfer')
 
     compareBigNumbers(await lock.balanceOf(keyReceiver.address), 3)
     compareBigNumbers(

@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   getBalance,
   deployLock,
@@ -82,14 +82,15 @@ describe('Lock / purchaseFor', () => {
           value: keyPrice,
         }
       )
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
 
       assert.equal(args.from, 0)
       assert.equal(args.to, anotherKeyOwner.address)
+
       // Verify that RenewKeyPurchase does not emit on a first key purchase
-      const includes = events.filter((l) => l.event === 'RenewKeyPurchase')
-      assert.equal(includes.length, 0)
+      const event = await getEvent(receipt, 'RenewKeyPurchase')
+      assert.equal(event.length, 0)
     })
 
     describe('when the user already owns an expired key', () => {
@@ -108,8 +109,8 @@ describe('Lock / purchaseFor', () => {
         assert.equal(await anotherLock.getHasValidKey(keyOwner.address), true)
 
         // let's now expire the key
-        const { events } = await tx.wait()
-        const { args } = events.find((v) => v.event === 'Transfer')
+        const receipt = await tx.wait()
+        const { args } = await getEvent(receipt, 'Transfer')
         await anotherLock.expireAndRefundFor(args.tokenId, 0)
         assert.equal(await anotherLock.getHasValidKey(keyOwner.address), false)
         assert.equal(await anotherLock.balanceOf(keyOwner.address), 0)
@@ -180,8 +181,8 @@ describe('Lock / purchaseFor', () => {
             value: keyPrice,
           }
         )
-        const { events, blockNumber } = await tx.wait()
-        const { args } = events.find((v) => v.event === 'Transfer')
+        const receipt = await tx.wait()
+        const { args, blockNumber } = await getEvent(receipt, 'Transfer')
         tokenId = args.tokenId
         ;({ timestamp: now } = await ethers.provider.getBlock(blockNumber))
       })
@@ -220,8 +221,8 @@ describe('Lock / purchaseFor', () => {
         [ADDRESS_ZERO],
         [[]]
       )
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(args.from, 0)
       assert.equal(args.to, anotherKeyOwner.address)
     })

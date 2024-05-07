@@ -11,7 +11,7 @@ describe('Lock / onValidKeyHook', () => {
   let lock
   let tokenId
   let testEventHooks
-  let events
+  let receipt
   let keyOwner
 
   before(async () => {
@@ -30,7 +30,7 @@ describe('Lock / onValidKeyHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('hasValidKey should returns a custom value', async () => {
@@ -49,7 +49,7 @@ describe('Lock / onValidKeyHook', () => {
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onValidKeyHook',
       hookAddress: testEventHooks.address,
     })

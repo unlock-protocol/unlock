@@ -6,7 +6,10 @@ const {
   deployContracts,
   compareBigNumbers,
 } = require('../helpers')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 
 let unlock
 
@@ -26,10 +29,10 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       ]
       const calldata = await createLockCalldata({ args })
       const tx = await unlock.createUpgradeableLock(calldata)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { newLockAddress },
-      } = events.find(({ event }) => event === 'NewLock')
+      } = await getEvent(receipt, 'NewLock')
       let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
       const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
       assert.equal(maxNumberOfKeys.toString(), MAX_UINT)
@@ -49,10 +52,10 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const calldata = await createLockCalldata({ args })
       const tx = await unlock.createUpgradeableLock(calldata)
 
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { newLockAddress },
-      } = events.find(({ event }) => event === 'NewLock')
+      } = await getEvent(receipt, 'NewLock')
       let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
       compareBigNumbers(await publicLock.maxNumberOfKeys(), 0)
     })

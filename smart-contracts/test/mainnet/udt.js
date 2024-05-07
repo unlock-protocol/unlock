@@ -6,6 +6,7 @@ const {
   getProxyAddress,
   advanceBlock,
 } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   resetNodeState,
@@ -91,8 +92,8 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const unlock = await ethers.getSigner(unlockAddress)
         const tx = await udt.connect(unlock).mint(recipient.address, amount)
 
-        const { events } = await tx.wait()
-        const { args } = events.find((v) => v.event === 'Transfer')
+        const receipt = await tx.wait()
+        const { args } = await getEvent(receipt, 'Transfer')
 
         assert.equal(args.from, ADDRESS_ZERO)
         assert.equal(args.to, recipient.address)
@@ -254,8 +255,8 @@ describe('UnlockDiscountToken on mainnet', async () => {
         r,
         s
       )
-      const { events } = await tx.wait()
-      const evtApproval = events.find((v) => v.event === 'Approval')
+      const receipt = await tx.wait()
+      const evtApproval = await getEvent(receipt, 'Approval')
       assert.equal(evtApproval.args.owner, permitter.address)
       assert.equal(evtApproval.args.spender, spender.address)
       assert.isTrue(evtApproval.args.value.eq(value))
@@ -278,15 +279,16 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const supply = await udt.balanceOf(holder.address)
         const [recipient] = await ethers.getSigners()
         const tx = await udt.delegate(recipient.address)
-        const { events, blockNumber } = await tx.wait()
+        const receipt = await tx.wait()
 
-        const evtChanged = events.find((v) => v.event === 'DelegateChanged')
-        const [delegator, fromDelegate, toDelegate] = evtChanged.args
+        const { args, blockNumber } = await getEvent(receipt, 'DelegateChanged')
+        const { delegator, fromDelegate, toDelegate } = args
 
-        const evtVotesChanges = events.find(
-          (v) => v.event === 'DelegateVotesChanged'
+        const { args: evtVotesChanges } = await getEvent(
+          receipt,
+          'DelegateVotesChanged'
         )
-        const [delegate, previousBalance, newBalance] = evtVotesChanges.args
+        const { delegate, previousBalance, newBalance } = evtVotesChanges
 
         assert.equal(delegator, holder.address)
         assert.equal(fromDelegate, holder.address)
@@ -361,17 +363,16 @@ describe('UnlockDiscountToken on mainnet', async () => {
         // Let's now have the holder submit the
         const { v, r, s } = ethers.splitSignature(signature)
         const tx = await udt.delegateBySig(delegatee, nonce, expiry, v, r, s)
-        const { events } = await tx.wait()
+        const receipt = await tx.wait()
 
-        const evtDelegateChanged = events.find(
-          (v) => v.event === 'DelegateChanged'
-        )
+        const evtDelegateChanged = await getEvent(receipt, 'DelegateChanged')
         assert.equal(evtDelegateChanged.args.delegator, delegator.address)
         assert.equal(evtDelegateChanged.args.fromDelegate, ADDRESS_ZERO)
         assert.equal(evtDelegateChanged.args.toDelegate, holder.address)
 
-        const evtDelegateVotesChanged = events.find(
-          (v) => v.event === 'DelegateVotesChanged'
+        const evtDelegateVotesChanged = await getEvent(
+          receipt,
+          'DelegateVotesChanged'
         )
         assert.equal(evtDelegateVotesChanged.args.delegate, holder.address)
         assert.isTrue(

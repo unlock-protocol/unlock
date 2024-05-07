@@ -1,6 +1,7 @@
 const { reverts } = require('../helpers')
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   deployERC20,
@@ -86,8 +87,8 @@ describe('Lock / extend keys', () => {
               .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
                 value: isErc20 ? 0 : keyPrice,
               })
-            const { events } = await tx.wait()
-            ;({ args } = events.find((v) => v.event === 'KeyExtended'))
+            const receipt = await tx.wait()
+            ;({ args } = await getEvent(receipt, 'KeyExtended'))
           })
 
           it('key should stay valid', async () => {

@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-
+const { getEvents } = require('@unlock-protocol/hardhat-helpers')
 const {
   ADDRESS_ZERO,
   increaseTimeTo,
@@ -25,10 +25,9 @@ describe('Lock / totalKeys', () => {
         value: ethers.parseUnits('0.03', 'ether'),
       }
     )
-    const { events } = await tx.wait()
-    tokenIds = events
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    const receipt = await tx.wait()
+    const { events } = await getEvents(receipt, 'Transfer')
+    tokenIds = events.map(({ args }) => args.tokenId)
   })
 
   it('should count all valid keys', async () => {

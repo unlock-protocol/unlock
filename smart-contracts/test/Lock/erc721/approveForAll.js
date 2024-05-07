@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployLock, purchaseKey, reverts } = require('../../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let tokenId
@@ -41,8 +42,8 @@ describe('Lock / erc721 / approveForAll', () => {
         const tx = await lock
           .connect(keyOwner)
           .setApprovalForAll(approvedAccount.address, true)
-        const { events } = await tx.wait()
-        event = events.find((v) => v.event === 'ApprovalForAll')
+        const receipt = await tx.wait()
+        event = await getEvent(receipt, 'ApprovalForAll')
       })
 
       it('isApprovedForAll is true', async () => {
@@ -134,8 +135,8 @@ describe('Lock / erc721 / approveForAll', () => {
         const tx = await lock
           .connect(keyOwner)
           .setApprovalForAll(approvedAccount.address, false)
-        const { events } = await tx.wait()
-        event = events.find((v) => v.event === 'ApprovalForAll')
+        const receipt = await tx.wait()
+        event = await getEvent(receipt, 'ApprovalForAll')
       })
 
       it('isApprovedForAll is false again', async () => {

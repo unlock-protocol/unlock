@@ -6,6 +6,7 @@ const {
   ADDRESS_ZERO,
   purchaseKey,
 } = require('../../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let keyOwner, keyManager, keyRecipient, keyGrantee
@@ -47,8 +48,8 @@ describe('Permissions / KeyManager', () => {
           value: keyPrice,
         }
       )
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(await lock.keyManagerOf(args.tokenId), keyManager.address)
     })
   })
@@ -87,8 +88,8 @@ describe('Permissions / KeyManager', () => {
       const tx = await lock
         .connect(keyOwner)
         .transferFrom(keyOwner.address, keyRecipient.address, tokenId)
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(await lock.keyManagerOf(args.tokenId), ADDRESS_ZERO)
     })
   })
@@ -102,10 +103,10 @@ describe('Permissions / KeyManager', () => {
       const tx = await lock
         .connect(keyOwner)
         .shareKey(keyRecipient.address, tokenId, oneDay)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       ;({
         args: { tokenId: newTokenId },
-      } = events.find((v) => v.event === 'Transfer' && v.from !== ADDRESS_ZERO))
+      } = await getEvent(receipt, 'Transfer'))
     })
 
     it('should leave the KM == 0x00(default) for new recipients', async () => {
@@ -155,8 +156,8 @@ describe('Permissions / KeyManager', () => {
         [validExpirationTimestamp],
         [keyManager.address]
       )
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(await lock.keyManagerOf(args.tokenId), keyManager.address)
     })
   })

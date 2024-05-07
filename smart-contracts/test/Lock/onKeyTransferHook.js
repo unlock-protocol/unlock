@@ -1,5 +1,5 @@
 const { deployLock, purchaseKey, compareBigNumbers } = require('../helpers')
-const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
@@ -11,7 +11,7 @@ const {
 describe('Lock / onKeyTransfer hook', () => {
   let lock
   let testEventHooks
-  let events
+  let receipt
   let keyOwner, to, random, random2
   let keyPrice
   let tokenId
@@ -31,12 +31,12 @@ describe('Lock / onKeyTransfer hook', () => {
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onKeyTransferHook',
       hookAddress: testEventHooks.address,
     })
@@ -52,8 +52,8 @@ describe('Lock / onKeyTransfer hook', () => {
       .purchase([], [random.address], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
         value: keyPrice,
       })
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'OnKeyTransfer')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'OnKeyTransfer')
     assert.equal(evt, null)
   })
 

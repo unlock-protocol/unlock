@@ -2,7 +2,10 @@ const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
 
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   ADDRESS_ZERO,
   deployContracts,
@@ -65,10 +68,10 @@ describe('Lock / purchaseWithoutUnlock', () => {
 
       const calldata = await createLockCalldata({ args, from: from.address })
       const tx = await unlock.createUpgradeableLock(calldata)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { newLockAddress },
-      } = events.find(({ event }) => event === 'NewLock')
+      } = await getEvent(receipt, 'NewLock')
 
       const PublicLock = await ethers.getContractFactory('PublicLock')
       lock = PublicLock.attach(newLockAddress)
@@ -99,14 +102,14 @@ describe('Lock / purchaseWithoutUnlock', () => {
             value: keyPrice.toString(),
           }
         )
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
 
       // make sure transfer happened
-      const transfer = events.find(({ event }) => event === 'Transfer')
+      const transfer = await getEvent(receipt, 'Transfer')
       assert.equal(transfer.args.to, buyer.address)
       assert.equal(transfer.args.tokenId.eq(1), true)
 
-      const missing = events.find(({ event }) => event === 'UnlockCallFailed')
+      const missing = await getEvent(receipt, 'UnlockCallFailed')
       assert.equal(missing.args.unlockAddress, unlock.address)
       assert.equal(missing.args.lockAddress, lock.address)
     })
@@ -143,13 +146,13 @@ describe('Lock / purchaseWithoutUnlock', () => {
         )
 
       // make sure transfer happened
-      const { events } = await tx.wait()
-      const transfer = events.find(({ event }) => event === 'Transfer')
+      const receipt = await tx.wait()
+      const transfer = await getEvent(receipt, 'Transfer')
       assert.equal(transfer.args.to, buyer.address)
       assert.equal(transfer.args.tokenId.eq(1), true)
 
       // event has been fired
-      const missing = events.find(({ event }) => event === 'UnlockCallFailed')
+      const missing = await getEvent(receipt, 'UnlockCallFailed')
       assert.equal(missing.args.unlockAddress, unlock.address)
       assert.equal(missing.args.lockAddress, lock.address)
     })

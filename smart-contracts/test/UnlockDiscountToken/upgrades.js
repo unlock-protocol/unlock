@@ -10,6 +10,7 @@ const deployContracts = require('../fixtures/deploy')
 const {
   createLockCalldata,
   lockFixtures: Locks,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 
 // skip on coverage until solidity-coverage supports EIP-1559
@@ -174,8 +175,8 @@ describe('UnlockDiscountToken upgrade', async () => {
       })
       const tx = await unlock.createUpgradeableLock(calldata)
 
-      const { events } = await tx.wait()
-      const evt = events.find((v) => v.event === 'NewLock')
+      const receipt = await tx.wait()
+      const evt = await getEvent(receipt, 'NewLock')
       const PublicLock = await ethers.getContractFactory(
         'contracts/PublicLock.sol:PublicLock'
       )

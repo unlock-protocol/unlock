@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let keyManagerMock
 let keyOwner, keyManager, random, notKeyManager
@@ -21,10 +22,10 @@ describe('Permissions / isKeyManager', () => {
       keyManager.address,
       timestampBefore
     )
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
     ;({
       args: { tokenId },
-    } = events.find((v) => v.event === 'Transfer'))
+    } = await getEvent(receipt, 'Transfer'))
   })
 
   describe('confirming the key manager', () => {

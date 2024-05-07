@@ -8,6 +8,7 @@ const {
   reverts,
 } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
@@ -25,8 +26,8 @@ describe('UnlockProtocolGovernor', () => {
   const launchVotingProcess = async (voter, proposal) => {
     const proposalTx = await gov.propose(...proposal)
 
-    const { events } = await proposalTx.wait()
-    const evt = events.find((v) => v.event === 'ProposalCreated')
+    const receipt = await proposalTx.wait()
+    const evt = await getEvent(receipt, 'ProposalCreated')
     const { proposalId } = evt.args
 
     // proposale exists but does not accep votes yet
@@ -175,8 +176,8 @@ describe('UnlockProtocolGovernor', () => {
         assert.equal(changed.eq(quorum), true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find((v) => v.event === 'QuorumUpdated')
-        const { oldQuorum, newQuorum } = evt.args
+        const { args } = await getEvent(updateTx, 'QuorumUpdated')
+        const { oldQuorum, newQuorum } = args
         assert.equal(newQuorum.eq(quorum), true)
         assert.equal(oldQuorum.toString(), defaultQuorum.toString())
       })

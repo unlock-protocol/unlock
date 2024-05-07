@@ -6,6 +6,7 @@ const {
   ADDRESS_ZERO,
   compareBigNumbers,
 } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 
@@ -34,8 +35,8 @@ describe('Lock / grantKeyExtension', () => {
       [validExpirationTimestamp],
       [ADDRESS_ZERO]
     )
-    const { events } = await tx.wait()
-    ;({ args } = events.find(({ event }) => event === 'Transfer'))
+    const receipt = await tx.wait()
+    ;({ args } = await getEvent(receipt, 'Transfer'))
     ;({ tokenId } = args)
   })
 
@@ -46,8 +47,8 @@ describe('Lock / grantKeyExtension', () => {
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
       const tx = await lock.grantKeyExtension(tokenId, 0)
-      const { events } = await tx.wait()
-      ;({ args } = events.find(({ event }) => event === 'KeyExtended'))
+      const receipt = await tx.wait()
+      ;({ args } = await getEvent(receipt, 'KeyExtended'))
     })
 
     it('key should stay valid', async () => {
@@ -74,8 +75,8 @@ describe('Lock / grantKeyExtension', () => {
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
       const tx = await lock.grantKeyExtension(tokenId, duration)
-      const { events } = await tx.wait()
-      ;({ args } = events.find(({ event }) => event === 'KeyExtended'))
+      const receipt = await tx.wait()
+      ;({ args } = await getEvent(receipt, 'KeyExtended'))
     })
 
     it('key should stay valid', async () => {

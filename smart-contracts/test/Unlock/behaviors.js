@@ -3,6 +3,7 @@ const { ethers } = require('hardhat')
 
 const {
   ADDRESS_ZERO,
+  getEvent,
   createLockCalldata,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -63,8 +64,8 @@ describe('Unlock / UnlockProxy', () => {
         from: unlockOwner.address,
       })
       const tx = await unlock.createUpgradeableLock(calldata)
-      const { events } = await tx.wait()
-      ;({ args: newLockArgs } = events.find((v) => v.event === 'NewLock'))
+      const receipt = await tx.wait()
+      ;({ args: newLockArgs } = await getEvent(receipt, 'NewLock'))
     })
 
     it('should have kept track of the Lock inside Unlock with the right balances', async () => {

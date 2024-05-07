@@ -10,6 +10,7 @@ const {
   getNetwork,
   getUnlock,
   ADDRESS_ZERO,
+  getEvent,
   // reverts,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -86,7 +87,7 @@ describe(`swapAndBurn`, function () {
           balanceSwapBurnBefore,
           udtSwapBurnBalanceBefore,
           udtBurnAddressBalanceBefore,
-          events
+          receipt
 
         before(async () => {
           amount = ethers.parseUnits(
@@ -143,7 +144,7 @@ describe(`swapAndBurn`, function () {
 
           // lets go
           const tx = await swapBurner.swapAndBurn(tokenAddress, 3000)
-          ;({ events } = await tx.wait())
+          receipt = await tx.wait()
         })
 
         it('wiped the entire token balance', async () => {
@@ -162,7 +163,7 @@ describe(`swapAndBurn`, function () {
         it('burns the entire UDT that have been swapped', async () => {
           const {
             args: { amountBurnt },
-          } = events.find(({ event }) => event === 'SwapBurn')
+          } = await getEvent(receipt, 'SwapBurn')
           const udtBurnAddressBalance = await getBalance(
             burnAddress,
             udtAddress
@@ -175,7 +176,7 @@ describe(`swapAndBurn`, function () {
         })
 
         it('emits a SwapBurn event', async () => {
-          const { args } = events.find(({ event }) => event === 'SwapBurn')
+          const { args } = await getEvent(receipt, 'SwapBurn')
           expect(args.tokenAddress).to.equal(
             token.isNative ? wrappedAddress : tokenAddress
           )

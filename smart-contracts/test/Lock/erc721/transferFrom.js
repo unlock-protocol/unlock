@@ -6,6 +6,7 @@ const {
   ADDRESS_ZERO,
   purchaseKey,
 } = require('../../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let lockSingleKey
@@ -294,10 +295,8 @@ describe('Lock / erc721 / transferFrom', () => {
       [ADDRESS_ZERO],
       [[]]
     )
-    const { events } = await tx.wait()
-    const { args } = events.find(
-      (v) => v.event === 'Transfer' && v.args.from === ADDRESS_ZERO
-    )
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'Transfer')
     const { tokenId: newTokenId } = args
 
     await lockFree

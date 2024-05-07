@@ -21,11 +21,11 @@ const {
 
 const { unlockAddress } = mainnet
 const keyPrice = ethers.parseUnits('0.01', 'ether')
-const totalPrice = keyPrice * 5n
+const totalPrice = keyPrice.mul(5)
 
 // USDC (only 6 decimals)
 const keyPriceUSDC = ethers.parseUnits('50', 6)
-const totalPriceUSDC = keyPriceUSDC * 5n
+const totalPriceUSDC = keyPriceUSDC.mul(5)
 
 describe('Unlock / uniswapValue', () => {
   let lock
@@ -117,9 +117,9 @@ describe('Unlock / uniswapValue', () => {
         expect(GNP.toString()).to.not.equals(gnpBefore.toString())
 
         // 5 keys at 50 USDC at oracle rate
-        const priceConverted = rate * 250
-        expect(GNP / (1000).toString()).to.equals(
-          gnpBefore + priceConverted / (1000).toString()
+        const priceConverted = rate.mul(250)
+        expect(GNP.div(1000).toString()).to.equals(
+          gnpBefore.add(priceConverted).div(1000).toString()
         )
 
         // show approx value in ETH for reference
@@ -149,12 +149,15 @@ describe('Unlock / uniswapValue', () => {
             assert.equal(value.toString(), keyPriceUSDC.toString())
             // rate * 50 USDC per key
             assert.equal(
-              _valueInETH / (1000).toString(),
-              (rate * 50) / (1000).toString()
+              _valueInETH.div(1000).toString(),
+              rate.mul(50).div(1000).toString()
             )
             assert.equal(
-              gnpBefore + (rate * 50 * (i + 1)) / (1000).toString(),
-              grossNetworkProduct / (1000).toString()
+              gnpBefore
+                .add(rate.mul(50).mul(i + 1))
+                .div(1000)
+                .toString(),
+              grossNetworkProduct.div(1000).toString()
             )
           }
         )
@@ -218,8 +221,8 @@ describe('Unlock / uniswapValue', () => {
         expect(GNP.toString()).to.not.equals(gnpBefore.toString())
 
         // 5 keys at 50 SHIBA_INU at oracle rate
-        const priceConverted = rate * 250
-        const diff = GNP - (gnpBefore + priceConverted)
+        const priceConverted = rate.mul(250)
+        const diff = GNP.sub(gnpBefore.add(priceConverted))
         expect(diff.toNumber()).to.be.lte(1000) // price variation
 
         // show approx value in ETH for reference
@@ -251,11 +254,14 @@ describe('Unlock / uniswapValue', () => {
             console.log(_valueInETH)
             assert.equal(
               _valueInETH.toString(),
-              (rate * 0.01) / (1000).toString()
+              rate.mul(0.01).div(1000).toString()
             )
             assert.equal(
-              gnpBefore + (rate * 0.01 * (i + 1)) / (1000).toString(),
-              grossNetworkProduct / (1000).toString()
+              gnpBefore
+                .add(rate.mul(0.01).mul(i + 1))
+                .div(1000)
+                .toString(),
+              grossNetworkProduct.div(1000).toString()
             )
           }
         )
@@ -330,7 +336,7 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = await unlock.grossNetworkProduct()
-        assert.equal(gdp.toString(), gdpBefore + keyPrice.toString())
+        assert.equal(gdp.toString(), gdpBefore.add(keyPrice).toString())
       })
 
       it('a GDP tracking event has been emitted', async () => {

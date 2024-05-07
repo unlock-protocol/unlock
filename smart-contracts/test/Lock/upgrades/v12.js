@@ -6,6 +6,7 @@ const {
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
   ADDRESS_ZERO,
+  getEvents,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const keyPrice = ethers.parseEther('0.01')
@@ -84,10 +85,9 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
           value: keyPrice * buyers.length,
         }
       )
-      const { events } = await tx.wait()
-      tokenIds = events
-        .filter((v) => v.event === 'Transfer')
-        .map(({ args }) => args.tokenId)
+      const receipt = await tx.wait()
+      const { events } = await getEvents(receipt, 'Transfer')
+      tokenIds = events.map(({ args }) => args.tokenId)
 
       expirationTimestamps = await Promise.all(
         tokenIds.map((tokenId) => lock.keyExpirationTimestampFor(tokenId))
@@ -163,11 +163,9 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
             value: (keyPrice * buyers.length).toFixed(),
           }
         )
-        const { events } = await tx.wait()
-
-        const tokenIds = events
-          .filter((v) => v.event === 'Transfer')
-          .map(({ args }) => args.tokenId)
+        const receipt = await tx.wait()
+        const { events } = await getEvents(receipt, 'Transfer')
+        tokenIds = events.map(({ args }) => args.tokenId)
 
         assert.equal(tokenIds.length, buyers.length)
       })
@@ -178,10 +176,9 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
           buyers.map(() => Date.now()),
           buyers.map(() => ADDRESS_ZERO)
         )
-        const { events } = await tx.wait()
-        const tokenIds = events
-          .filter((v) => v.event === 'Transfer')
-          .map(({ args }) => args.tokenId)
+        const receipt = await tx.wait()
+        const { events } = await getEvents(receipt, 'Transfer')
+        tokenIds = events.map(({ args }) => args.tokenId)
 
         assert.equal(tokenIds.length, buyers.length)
       })

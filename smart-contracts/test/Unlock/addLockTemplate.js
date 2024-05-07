@@ -1,6 +1,7 @@
 const { expect } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const { reverts, ADDRESS_ZERO } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 describe('PublicLock template versions', () => {
   let unlock
@@ -82,8 +83,8 @@ describe('PublicLock template versions', () => {
 
   it('should fire an event when template is added', async () => {
     const tx = await unlock.addLockTemplate(publicLock.address, 3)
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'UnlockTemplateAdded')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'UnlockTemplateAdded')
     const { impl } = evt.args
     expect(impl).to.equals(publicLock.address)
     expect(await unlock.publicLockImpls(3)).to.equals(publicLock.address)

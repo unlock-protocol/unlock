@@ -12,7 +12,7 @@ describe('Lock / onKeyCancelHook', () => {
   let testEventHooks
   let to
   let tokenId
-  let events
+  let receipt
 
   before(async () => {
     ;[, to] = await ethers.getSigners()
@@ -29,13 +29,13 @@ describe('Lock / onKeyCancelHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
     ;({ tokenId } = await purchaseKey(lock, to.address))
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onKeyCancelHook',
       hookAddress: testEventHooks.address,
     })

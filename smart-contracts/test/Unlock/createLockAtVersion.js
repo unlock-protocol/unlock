@@ -1,6 +1,9 @@
 const { expect, assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO, reverts } = require('../helpers')
 // lock args
 const args = [
@@ -54,11 +57,11 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
 
   it('creates versioned locks successfully', async () => {
     const tx = await unlock.createUpgradeableLockAtVersion(calldata, 1)
-    const { events: lock1Events } = await tx.wait()
+    const lock1receipt = await tx.wait()
 
     const {
       args: { newLockAddress: lock1Address },
-    } = lock1Events.find(({ event }) => event === 'NewLock')
+    } = await getEvent(lock1receipt, 'NewLock')
 
     const lock1 = await ethers.getContractAt(
       'contracts/PublicLock.sol:PublicLock',
@@ -74,11 +77,11 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
 
     // lock2
     const tx2 = await unlock.createUpgradeableLockAtVersion(calldata, 2)
-    const { events: lock2Events } = await tx2.wait()
+    const lock2receipt = await tx2.wait()
 
     const {
       args: { newLockAddress: lock2Address },
-    } = lock2Events.find(({ event }) => event === 'NewLock')
+    } = await getEvent(lock2receipt, 'NewLock')
 
     const lock2 = await ethers.getContractAt(
       'ITestPublicLockUpgraded',

@@ -4,6 +4,7 @@ const { ethers } = require('hardhat')
 const {
   createLockCalldata,
   cleanupContractVersions,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const {
@@ -160,8 +161,8 @@ describe('Unlock / upgrades', async () => {
             )
           }
 
-          const { events } = await lockTx.wait()
-          const evt = events.find(({ event }) => event === 'NewLock')
+          const receipt = await lockTx.wait()
+          const evt = await getEvent(receipt, 'NewLock')
           lock = await publicLock.attach(evt.args.newLockAddress)
           lockName = await lock.name()
           lockKeyPrice = await lock.keyPrice()
@@ -296,8 +297,8 @@ describe('Unlock / upgrades', async () => {
               const tx = await lock
                 .connect(keyOwner)
                 .transferFrom(keyOwner.address, anotherAccount.address, id)
-              const { events } = await tx.wait()
-              const evt = events.find(({ event }) => event === 'Transfer')
+              const receipt = await tx.wait()
+              const evt = await getEvent(receipt, 'Transfer')
               assert.equal(evt.event, 'Transfer')
             })
 
@@ -365,8 +366,8 @@ describe('Unlock / upgrades', async () => {
                   calldata
                 )
 
-                const { events } = await lockLatestTx.wait()
-                const evt = events.find(({ event }) => event === 'NewLock')
+                const receipt = await lockLatestTx.wait()
+                const evt = await getEvent(receipt, 'NewLock')
 
                 lockLatest = await PublicLockLatest.attach(
                   evt.args.newLockAddress

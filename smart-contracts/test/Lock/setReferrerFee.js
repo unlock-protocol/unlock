@@ -8,7 +8,11 @@ const {
   increaseTimeTo,
 } = require('../helpers')
 
-const { ADDRESS_ZERO, getBalance } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  getBalance,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const BASIS_POINT_DENOMINATOR = 10000
 const someDai = ethers.parseUnits('10', 'ether')
@@ -30,10 +34,8 @@ describe('Lock / setReferrerFee', () => {
     keyOwner,
   }) => {
     const tx = await lock.setReferrerFee(referrerAddress, referrerFee)
-    const { events } = await tx.wait()
-    const { args: eventArgs } = events.find(
-      ({ event }) => event === 'ReferrerFee'
-    )
+    const receipt = await tx.wait()
+    const { args: eventArgs } = await getEvent(receipt, 'ReferrerFee')
 
     const balanceBefore = await getBalance(referrerAddress, tokenAddress)
 
@@ -182,10 +184,8 @@ describe('Lock / setReferrerFee', () => {
           // reset fee for referrer
           await lock.setReferrerFee(referrer.address, 0)
           const tx = await lock.setReferrerFee(ADDRESS_ZERO, generalFee)
-          const { events } = await tx.wait()
-          ;({ args: eventArgs } = events.find(
-            ({ event }) => event === 'ReferrerFee'
-          ))
+          const receipt = await tx.wait()
+          ;({ args: eventArgs } = getEvent(receipt, 'ReferrerFee'))
         })
 
         it('store fee correctly', async () => {
@@ -227,16 +227,16 @@ describe('Lock / setReferrerFee', () => {
           compareBigNumbers(await lock.referrerFees(referrer.address), 500)
           const tx = await lock.setReferrerFee(referrer.address, 0)
           compareBigNumbers(await lock.referrerFees(referrer.address), 0)
-          const { events } = await tx.wait()
-          const { args } = events.find(({ event }) => event === 'ReferrerFee')
+          const receipt = await tx.wait()
+          const { args } = await getEvent(receipt, 'ReferrerFee')
           assert.equal(args.fee, 0)
           assert.equal(args.referrer, referrer.address)
         })
         it('fee can updated correctly', async () => {
           const tx = await lock.setReferrerFee(referrer.address, 7000)
           // event fired ok
-          const { events } = await tx.wait()
-          const { args } = events.find(({ event }) => event === 'ReferrerFee')
+          const receipt = await tx.wait()
+          const { args } = await getEvent(receipt, 'ReferrerFee')
           assert.equal(args.fee, 7000)
           assert.equal(args.referrer, referrer.address)
           // prived updated ok
@@ -261,8 +261,8 @@ describe('Lock / setReferrerFee', () => {
                 value: isErc20 ? 0 : keyPrice,
               }
             )
-          const { events } = await tx.wait()
-          const { args } = events.find(({ event }) => event === 'Transfer')
+          const receipt = await tx.wait()
+          const { args } = await getEvent(receipt, 'Transfer')
           const { tokenId } = args
 
           balanceBefore = await getBalance(referrer.address, tokenAddress)
@@ -331,8 +331,8 @@ describe('Lock / setReferrerFee', () => {
                 }
               )
 
-            const { events } = await tx.wait()
-            const { args } = events.find(({ event }) => event === 'Transfer')
+            const receipt = await tx.wait()
+            const { args } = await getEvent(receipt, 'Transfer')
             const { tokenId } = args
 
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)

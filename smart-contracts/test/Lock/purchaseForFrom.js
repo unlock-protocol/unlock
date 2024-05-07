@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 describe('Lock / purchaseForFrom', () => {
   let lock
@@ -67,8 +68,8 @@ describe('Lock / purchaseForFrom', () => {
         [[]]
       )
 
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(args.from, 0)
       assert.equal(args.to, keyOwner.address)
     })

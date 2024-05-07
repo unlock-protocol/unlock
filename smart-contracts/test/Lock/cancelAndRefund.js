@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
-  ADDRESS_ZERO,
   deployLock,
   deployERC20,
   getBalance,
@@ -50,8 +50,8 @@ describe('Lock / cancelAndRefund', () => {
         [999999999999],
         [ADDRESS_ZERO]
       )
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       const estimatedRefund = await lock.getCancelAndRefundValue(args.tokenId)
       assert(estimatedRefund < keyPrice)
     })
@@ -90,16 +90,16 @@ describe('Lock / cancelAndRefund', () => {
       const tx = await lock.connect(keyOwner).cancelAndRefund(tokenId)
 
       // get event
-      const { events, gasUsed } = await tx.wait()
+      const receipt = await tx.wait()
       ;({
         event,
         args: { refund },
-      } = events.find(({ event }) => event === 'CancelKey'))
+      } = await getEvent(receipt, 'CancelKey'))
       const lockBalance = await getBalance(lock.address)
       withdrawalAmount = lockBalance - initialLockBalance
 
       // estimate tx gas cost
-      txFee = tx.gasPrice * gasUsed
+      txFee = tx.gasPrice * receipt.gasUsed
     })
 
     it('should emit a CancelKey event', async () => {
@@ -146,12 +146,12 @@ describe('Lock / cancelAndRefund', () => {
         [999999999999],
         [ADDRESS_ZERO]
       )
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       const estimatedRefund = await lockFree.getCancelAndRefundValue(
         args.tokenId
       )
-      assert(estimatedRefund, 0)
+      assert.equal(estimatedRefund, 0)
     })
 
     it('can cancel a free key', async () => {
@@ -160,16 +160,16 @@ describe('Lock / cancelAndRefund', () => {
         [999999999999],
         [ADDRESS_ZERO]
       )
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { tokenId },
-      } = events.find((v) => v.event === 'Transfer')
+      } = await getEvent(receipt, 'Transfer')
 
       const txCancel = await lockFree.cancelAndRefund(tokenId)
-      const { events: cancelEvents } = await txCancel.wait()
+      const cancelReceipt = await txCancel.wait()
       const {
         args: { tokenId: cancelledTokenId },
-      } = cancelEvents.find((v) => v.event === 'CancelKey')
+      } = await getEvent(cancelReceipt, 'CancelKey')
       assert.equal(cancelledTokenId.toString(), tokenId.toString())
     })
 
@@ -180,17 +180,14 @@ describe('Lock / cancelAndRefund', () => {
         [ADDRESS_ZERO]
       )
 
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { tokenId },
-      } = events.find((v) => v.event === 'Transfer')
+      } = await getEvent(receipt, 'Transfer')
       await lockFree.connect(receiver).approve(anotherKeyOwner.address, tokenId)
-      console.log('haha')
       const txCancel = await lockFree.connect(receiver).cancelAndRefund(tokenId)
-      const { events: cancelEvents } = await txCancel.wait()
-      const { args: cancelArgs } = cancelEvents.find(
-        (ev) => ev.event === 'CancelKey'
-      )
+      const cancelReceipt = await txCancel.wait()
+      const { args: cancelArgs } = await getEvent(cancelReceipt, 'CancelKey')
       assert.equal(tokenId.toString(), cancelArgs.tokenId.toString())
     })
   })
@@ -205,10 +202,8 @@ describe('Lock / cancelAndRefund', () => {
     })
 
     it('should trigger an event', async () => {
-      const { events } = await tx.wait()
-      const event = events.find((ev) => {
-        return ev.event === 'RefundPenaltyChanged'
-      })
+      const receipt = await tx.wait()
+      const event = await getEvent(receipt, 'RefundPenaltyChanged')
       assert.equal(event.args.refundPenaltyBasisPoints.toString(), '2000')
     })
 
@@ -219,8 +214,8 @@ describe('Lock / cancelAndRefund', () => {
 
     it('should still allow refund', async () => {
       const tx = await lock.connect(keyOwner).cancelAndRefund(tokenId)
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'CancelKey')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'CancelKey')
       assert(args.refund > 0)
     })
   })

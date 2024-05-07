@@ -1,7 +1,7 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO, reverts, MAX_UINT } = require('../helpers')
-
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const ONE_DAY = 60 * 60 * 24
 const expirationDuration = BigInt(`${ONE_DAY * 30}`)
 const tooMuchTime = BigInt(`${ONE_DAY * 42}`) // 42 days
@@ -29,11 +29,11 @@ describe('Lock / timeMachine', () => {
       timestampBefore
     )
 
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
 
     ;({
       args: { tokenId },
-    } = events.find((v) => v.event === 'Transfer'))
+    } = await getEvent(receipt, 'Transfer'))
   })
 
   describe('modifying the time remaining for a key', () => {
@@ -72,8 +72,8 @@ describe('Lock / timeMachine', () => {
       timestampBefore = await timeMachine.keyExpirationTimestampFor(tokenId)
       const tx = await timeMachine.timeMachine(tokenId, 42, true)
 
-      const { events } = await tx.wait()
-      const evt = events.find(({ event }) => event === 'ExpirationChanged')
+      const receipt = await tx.wait()
+      const evt = await getEvent(receipt, 'ExpirationChanged')
 
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
 
@@ -94,10 +94,10 @@ describe('Lock / timeMachine', () => {
         MAX_UINT
       )
 
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { tokenId: tokenIdNonExp },
-      } = events.find((v) => v.event === 'Transfer')
+      } = await getEvent(receipt, 'Transfer')
 
       await reverts(
         timeMachine.timeMachine(tokenIdNonExp, 42, true),

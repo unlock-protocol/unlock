@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   deployLock,
@@ -59,8 +60,8 @@ describe('Lock / erc721 / approve', () => {
         const tx = await lock
           .connect(keyOwner)
           .approve(approvedAccount.address, tokenId)
-        const { events } = await tx.wait()
-        event = events.find((v) => v.event === 'Approval')
+        const receipt = await tx.wait()
+        event = await getEvent(receipt, 'Approval')
       })
 
       it('should assign the approvedForTransfer value', async () => {
@@ -80,8 +81,8 @@ describe('Lock / erc721 / approve', () => {
           let tx = await lock
             .connect(keyOwner)
             .approve(approvedAccount.address, tokenId)
-          const { events } = await tx.wait()
-          event = events.find((v) => v.event === 'Approval')
+          const receipt = await tx.wait()
+          event = await getEvent(receipt, 'Approval')
         })
 
         it('Approval emits when the approved address is reaffirmed', async () => {
@@ -95,8 +96,8 @@ describe('Lock / erc721 / approve', () => {
       describe('when clearing the approved address', () => {
         before(async () => {
           let tx = await lock.connect(keyOwner).approve(ADDRESS_ZERO, tokenId)
-          const { events } = await tx.wait()
-          event = events.find((v) => v.event === 'Approval')
+          const receipt = await tx.wait()
+          event = await getEvent(receipt, 'Approval')
         })
 
         it('The zero address indicates there is no approved address', async () => {

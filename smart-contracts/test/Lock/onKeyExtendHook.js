@@ -1,9 +1,9 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   deployERC20,
   deployLock,
-  ADDRESS_ZERO,
   purchaseKey,
   reverts,
   almostEqual,
@@ -52,8 +52,8 @@ describe('Lock / onKeyExtendHook', () => {
   })
 
   it('emit the correct event', async () => {
-    const { events } = await tx.wait()
-    const { args } = events.find(({ event }) => event === 'EventHooksUpdated')
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'EventHooksUpdated')
     assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
     assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
     assert.equal(args.onValidKeyHook, ADDRESS_ZERO)

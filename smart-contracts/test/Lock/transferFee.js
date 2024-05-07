@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   deployLock,
   reverts,
@@ -119,12 +120,12 @@ describe('Lock / transferFee', () => {
     })
 
     describe('the lock owner can change the fee', () => {
-      let events
+      let receipt
 
       before(async () => {
         // Change the fee to 0.25%
         const tx = await lock.updateTransferFee(25)
-        ;({ events } = await tx.wait())
+        receipt = await tx.wait()
       })
 
       it('has an updated fee', async () => {
@@ -133,9 +134,7 @@ describe('Lock / transferFee', () => {
       })
 
       it('emits TransferFeeChanged event', async () => {
-        const { args } = events.find(
-          ({ event }) => event === 'TransferFeeChanged'
-        )
+        const { args } = await getEvent(receipt, 'TransferFeeChanged')
         assert.equal(args.transferFeeBasisPoints.toString(), '25')
       })
     })

@@ -2,7 +2,10 @@ const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
 const { ADDRESS_ZERO, reverts } = require('../helpers')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
@@ -48,8 +51,8 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     ]
     const calldata = await createLockCalldata({ args, from: creator.address })
     const tx = await unlock.createUpgradeableLock(calldata)
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'NewLock')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'NewLock')
     const { newLockAddress } = evt.args
     lock = await ethers.getContractAt(
       'contracts/interfaces/IPublicLock.sol:IPublicLock',
@@ -118,10 +121,10 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const tx = await unlock
       .connect(creator)
       .upgradeLock(lock.address, currentVersion + 1)
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
 
     // check if box instance works
-    const evt = events.find((v) => v.event === 'LockUpgraded')
+    const evt = await getEvent(receipt, 'LockUpgraded')
     const { lockAddress, version } = evt.args
 
     assert.equal(lockAddress, lock.address)
@@ -193,8 +196,8 @@ describe('upgrades', async () => {
       calldata,
       firstUpgradableVersion
     )
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'NewLock')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'NewLock')
     const { newLockAddress } = evt.args
     lock = oldestPublicLock.attach(newLockAddress)
 

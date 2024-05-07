@@ -6,6 +6,7 @@ const deployContracts = require('../fixtures/deploy')
 const {
   ADDRESS_ZERO,
   createLockCalldata,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const keyPrice = ethers.parseEther('0.01')
@@ -25,10 +26,10 @@ describe('Lock / mimick owner()', () => {
 
     const calldata = await createLockCalldata({ args, from: deployer.address })
     const tx = await unlock.createUpgradeableLock(calldata)
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
     const {
       args: { newLockAddress },
-    } = events.find(({ event }) => event === 'NewLock')
+    } = await getEvent(receipt, 'NewLock')
 
     const PublicLock = await ethers.getContractFactory('PublicLock')
     lock = PublicLock.attach(newLockAddress)
@@ -93,10 +94,10 @@ describe('Lock / mimick owner()', () => {
     it('should be emitted when new owner is set', async () => {
       const wallet = await ethers.Wallet.createRandom()
       const tx = await lock.connect(deployer).setOwner(wallet.address)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { previousOwner, newOwner },
-      } = events.find(({ event }) => event === 'OwnershipTransferred')
+      } = await getEvent(receipt, 'OwnershipTransferred')
       assert.equal(previousOwner, deployer.address)
       assert.equal(newOwner, wallet.address)
       assert.equal(await lock.owner(), wallet.address)

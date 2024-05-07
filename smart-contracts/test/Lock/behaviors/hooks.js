@@ -1,10 +1,10 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { reverts } = require('../../helpers')
 
-const emitHookUpdatedEvent = ({ events, hookName, hookAddress }) => {
-  const { args } = events.find(({ event }) => event === 'EventHooksUpdated')
+const emitHookUpdatedEvent = async ({ receipt, hookName, hookAddress }) => {
+  const { args } = await getEvent(receipt, 'EventHooksUpdated')
   Object.keys(args)
     .filter((h) => isNaN(parseInt(h))) // remove array indexes from keys
     .map((h) => {

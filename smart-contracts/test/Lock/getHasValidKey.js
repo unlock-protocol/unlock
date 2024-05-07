@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvents } = require('@unlock-protocol/hardhat-helpers')
 
 describe('Lock / getHasValidKey', () => {
   let lock
@@ -56,10 +57,9 @@ describe('Lock / getHasValidKey', () => {
           value: ethers.parseUnits('0.03', 'ether'),
         }
       )
-      const { events } = await tx.wait()
-      tokenIds = await events
-        .filter((v) => v.event === 'Transfer')
-        .map(({ args }) => args.tokenId)
+      const receipt = await tx.wait()
+      const { events } = await getEvents(receipt, 'Transfer')
+      tokenIds = events.map(({ args }) => args.tokenId)
     })
 
     it('should be true', async () => {

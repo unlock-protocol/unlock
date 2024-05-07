@@ -59,15 +59,16 @@ describe('UDT ERC20VotesComp extension', () => {
       await udt.mint(holder, supply)
       assert.equal(await udt.delegates(minter), ADDRESS_ZERO)
       const tx = await udt.connect(holderSigner).delegate(holder)
-      const { events, blockNumber } = await tx.wait()
+      const receipt = await tx.wait()
+      const { blockNumber } = receipt
 
       // console.log(events)
-      expectEvent(events, 'DelegateChanged', {
+      expectEvent(receipt, 'DelegateChanged', {
         delegator: holder,
         fromDelegate: ADDRESS_ZERO,
         toDelegate: holder,
       })
-      expectEvent(events, 'DelegateVotesChanged', {
+      expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: '0',
         newBalance: supply,
@@ -82,14 +83,14 @@ describe('UDT ERC20VotesComp extension', () => {
       assert.equal(await udt.delegates(holder), ADDRESS_ZERO)
 
       const tx = await udt.connect(holderSigner).delegate(holder)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
 
-      expectEvent(events, 'DelegateChanged', {
+      expectEvent(receipt, 'DelegateChanged', {
         delegator: holder,
         fromDelegate: ADDRESS_ZERO,
         toDelegate: holder,
       })
-      notExpectEvent(events, 'DelegateVotesChanged')
+      notExpectEvent(receipt, 'DelegateVotesChanged')
 
       assert.equal(await udt.delegates(holder), holder)
     })
@@ -104,19 +105,20 @@ describe('UDT ERC20VotesComp extension', () => {
         assert.equal(await udt.delegates(holder), holder)
 
         const tx = await udt.connect(holderSigner).delegate(holderDelegatee)
-        const { events, blockNumber } = await tx.wait()
+        const receipt = await tx.wait()
+        const { blockNumber } = receipt
 
-        expectEvent(events, 'DelegateChanged', {
+        expectEvent(receipt, 'DelegateChanged', {
           delegator: holder,
           fromDelegate: holder,
           toDelegate: holderDelegatee,
         })
-        expectEvent(events, 'DelegateVotesChanged', {
+        expectEvent(receipt, 'DelegateVotesChanged', {
           delegate: holder,
           previousBalance: supply,
           newBalance: '0',
         })
-        expectEvent(events, 'DelegateVotesChanged', {
+        expectEvent(receipt, 'DelegateVotesChanged', {
           delegate: holderDelegatee,
           previousBalance: '0',
           newBalance: supply,
@@ -156,13 +158,13 @@ describe('UDT ERC20VotesComp extension', () => {
     })
     it('no delegation', async () => {
       const tx = await udt.connect(holderSigner).transfer(recipient, 1)
-      const { events } = await tx.wait()
-      expectEvent(events, 'Transfer', {
+      const receipt = await tx.wait()
+      expectEvent(receipt, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      notExpectEvent(events, 'DelegateVotesChanged')
+      notExpectEvent(receipt, 'DelegateVotesChanged')
 
       holderVotes = '0'
       recipientVotes = '0'
@@ -172,13 +174,13 @@ describe('UDT ERC20VotesComp extension', () => {
       await udt.connect(holderSigner).delegate(holder)
 
       const tx = await udt.connect(holderSigner).transfer(recipient, 1)
-      const { events } = await tx.wait()
-      expectEvent(events, 'Transfer', {
+      const receipt = await tx.wait()
+      expectEvent(receipt, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent(events, 'DelegateVotesChanged', {
+      expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
         newBalance: supply - 1,
@@ -192,13 +194,13 @@ describe('UDT ERC20VotesComp extension', () => {
       await udt.connect(recipientSigner).delegate(recipient)
 
       const tx = await udt.connect(holderSigner).transfer(recipient, 1)
-      const { events } = await tx.wait()
-      expectEvent(events, 'Transfer', {
+      const receipt = await tx.wait()
+      expectEvent(receipt, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent(events, 'DelegateVotesChanged', {
+      expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: recipient,
         previousBalance: '0',
         newBalance: '1',
@@ -213,18 +215,18 @@ describe('UDT ERC20VotesComp extension', () => {
       await udt.connect(recipientSigner).delegate(recipient)
 
       const tx = await udt.connect(holderSigner).transfer(recipient, 1)
-      const { events } = await tx.wait()
-      expectEvent(events, 'Transfer', {
+      const receipt = await tx.wait()
+      expectEvent(receipt, 'Transfer', {
         from: holder,
         to: recipient,
         value: '1',
       })
-      expectEvent(events, 'DelegateVotesChanged', {
+      expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
         newBalance: supply - 1,
       })
-      expectEvent(events, 'DelegateVotesChanged', {
+      expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: recipient,
         previousBalance: '0',
         newBalance: '1',

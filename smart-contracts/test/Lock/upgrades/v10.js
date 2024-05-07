@@ -6,6 +6,8 @@ const {
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
   ADDRESS_ZERO,
+  getEvent,
+  getEvents,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const versionNumber = 9
@@ -170,8 +172,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const [, lockOwner] = await ethers.getSigners()
         const tx = await lock.connect(lockOwner).migrate(calldata)
-        const { events } = await tx.wait()
-        const { args } = events.find((v) => v.event === 'KeysMigrated')
+        const receipt = await tx.wait()
+        const { args } = await getEvent(receipt, 'KeysMigrated')
         updatedRecordsCount = args.updatedRecordsCount
       })
 
@@ -209,11 +211,9 @@ describe('PublicLock upgrade  v9 > v10', () => {
             value: (keyPrice * buyers.length).toFixed(),
           }
         )
-        const { events } = await tx.wait()
-
-        const tokenIds = events
-          .filter((v) => v.event === 'Transfer')
-          .map(({ args }) => args.tokenId)
+        const receipt = await tx.wait()
+        const { events } = await getEvents(receipt, 'Transfer')
+        tokenIds = events.map(({ args }) => args.tokenId)
 
         assert.equal(tokenIds.length, buyers.length)
       })
@@ -224,10 +224,9 @@ describe('PublicLock upgrade  v9 > v10', () => {
           buyers.map(() => Date.now()),
           buyers.map(() => ADDRESS_ZERO)
         )
-        const { events } = await tx.wait()
-        const tokenIds = events
-          .filter((v) => v.event === 'Transfer')
-          .map(({ args }) => args.tokenId)
+        const receipt = await tx.wait()
+        const { events } = await getEvents(receipt, 'Transfer')
+        tokenIds = events.map(({ args }) => args.tokenId)
 
         assert.equal(tokenIds.length, buyers.length)
       })

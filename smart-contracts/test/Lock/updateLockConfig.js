@@ -7,7 +7,7 @@ const {
   reverts,
   compareBigNumbers,
 } = require('../helpers')
-const { lockFixtures } = require('@unlock-protocol/hardhat-helpers')
+const { lockFixtures, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { maxNumberOfKeys, expirationDuration } = lockFixtures['NO_MAX_KEYS']
 const maxKeysPerAddress = 1
 
@@ -109,8 +109,8 @@ describe('Lock / updateLockConfig', () => {
     it('update the expiration duration of an existing lock', async () => {
       const tx = await lock.updateLockConfig(10, 20, 30)
 
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'LockConfig')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'LockConfig')
 
       assert.equal(args.expirationDuration, 10)
       assert.equal(args.maxNumberOfKeys, 20)

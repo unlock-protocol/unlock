@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 describe('Lock / expireAndRefundFor', () => {
   let lock
@@ -30,13 +31,13 @@ describe('Lock / expireAndRefundFor', () => {
       initialKeyOwnerBalance = await getBalance(keyOwners[0].address)
 
       const tx = await lock.expireAndRefundFor(tokenIds[0], refundAmount)
-      const { events, gasUsed } = await tx.wait()
+      const receipt = await tx.wait()
       ;({
         event,
         args: { refund },
-      } = events.find(({ event }) => event === 'CancelKey'))
+      } = await getEvent(receipt, 'CancelKey'))
       // estimate tx gas cost
-      txFee = tx.gasPrice * gasUsed
+      txFee = tx.gasPrice * receipt.gasUsed
     })
 
     it('should emit a CancelKey event', async () => {

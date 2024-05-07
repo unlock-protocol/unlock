@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { increaseTimeTo } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
 
@@ -70,16 +71,16 @@ describe('Lock / non expiring', () => {
         assert.equal(await lock.isValidKey(tokenId), false)
         assert.equal(await lock.balanceOf(keyOwner.address), 0)
 
-        const { events, gasUsed } = await tx.wait()
+        const receipt = await tx.wait()
 
         // mkae sure event has been fired properly
         const {
           args: { refund },
-        } = events.find(({ event }) => event === 'CancelKey')
+        } = await getEvent(receipt, 'CancelKey')
         assert(refund.eq(keyPrice))
 
         // get gas used
-        const txFee = tx.gasPrice * gasUsed
+        const txFee = tx.gasPrice * receipt.gasUsed
 
         // check key owner balance
         const finalOwnerBalance = await getBalance(keyOwner.address)

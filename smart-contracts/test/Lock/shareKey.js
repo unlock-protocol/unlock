@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent, getEvents } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   reverts,
@@ -81,7 +82,7 @@ describe('Lock / shareKey', () => {
 
     describe('fallback behaviors', () => {
       let remaining
-      let events
+      let receipt
       let newOwner
 
       beforeEach(async () => {
@@ -95,11 +96,11 @@ describe('Lock / shareKey', () => {
           .connect(keyOwners[1])
           .shareKey(newOwner, tokenIds[1], TOO_MUCH_TIME)
 
-        ;({ events } = await tx.wait())
+        receipt = await tx.wait()
       })
 
       it('transfers all remaining time if amount to share >= remaining time', async () => {
-        const { args } = events.find((v) => v.event === 'Transfer')
+        const { args } = await getEvent(receipt, 'Transfer')
         assert.equal(await lock.isValidKey(args.tokenId), true)
 
         // new owner now has a fresh key
@@ -113,7 +114,7 @@ describe('Lock / shareKey', () => {
       })
 
       it('should emit the expireKey Event', async () => {
-        const evt = events.find(({ event }) => event === 'ExpireKey')
+        const evt = await getEvent(receipt, 'ExpireKey')
         assert.equal(evt.args.tokenId.toString(), tokenIds[1].toString())
       })
 
@@ -145,15 +146,15 @@ describe('Lock / shareKey', () => {
         .connect(await ethers.getSigner(approvedAddress))
         .shareKey(accountWithNoKey3, tokenIds[2], ONE_DAY)
       // make sure recipient has a key
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(await lock.ownerOf(args.tokenId), accountWithNoKey3)
     })
   })
 
   describe('successful key sharing', () => {
     let fee
-    let events
+    let receipt
     let timestampAfter
     let expirationBefore
     let newTokenId
@@ -172,10 +173,10 @@ describe('Lock / shareKey', () => {
         .connect(keyOwners[2])
         .shareKey(accountWithNoKey2, tokenIds[2], ONE_DAY)
 
-      ;({ events } = await tx.wait())
+      const receipt = await tx.wait()
 
       // fetch new token Id
-      const { args } = events.find((v) => v.event === 'Transfer')
+      const { args } = await getEvent(receipt, 'Transfer')
       ;({ tokenId: newTokenId } = args)
       ;({ timestamp: timestampAfter } = await ethers.provider.getBlock(
         'latest'
@@ -187,9 +188,7 @@ describe('Lock / shareKey', () => {
         const expirationAfter = await lock.keyExpirationTimestampFor(
           tokenIds[2]
         )
-        const { args } = events.find(
-          ({ event }) => event === 'ExpirationChanged'
-        )
+        const { args } = await getEvent(receipt, 'ExpirationChanged')
         assert.equal(args.tokenId.toString(), tokenIds[2].toString())
         assert.equal(
           args.prevExpiration.toString(),
@@ -199,7 +198,7 @@ describe('Lock / shareKey', () => {
       })
 
       it('should emit Transfer events', async () => {
-        const transfers = events.filter(({ event }) => event === 'Transfer')
+        const { events: transfers } = await getEvents(receipt, 'Transfer')
         assert.equal(transfers.length, 2)
 
         // issuer mint a new token

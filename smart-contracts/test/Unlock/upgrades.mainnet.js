@@ -2,6 +2,7 @@ const { config, ethers, assert, network, upgrades } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const proxyABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/proxy.json')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO } = require('../helpers')
 
 // NB : this needs to be run against a mainnet fork using
@@ -53,8 +54,8 @@ const upgradeContract = async () => {
   )
 
   // get tx id
-  const { events } = await tx.wait()
-  const evt = events.find((v) => v.event === 'Confirmation')
+  const receipt = await tx.wait()
+  const evt = await getEvent(receipt, 'Confirmation')
   const transactionId = evt.args[1]
 
   // reach concensus
@@ -169,8 +170,8 @@ describe('Unlock (on mainnet)', async () => {
         'Upgrade Test Lock',
         '0x000000000000000000000000'
       )
-      const { events } = await tx.wait()
-      const evt = events.find(({ event }) => event === 'NewLock')
+      const receipt = await tx.wait()
+      const evt = await getEvent(receipt, 'NewLock')
 
       const PublicLock = await ethers.getContractFactory('PublicLock', deployer)
       let publicLock = await PublicLock.attach(evt.args.newLockAddress)

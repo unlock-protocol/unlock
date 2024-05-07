@@ -1,5 +1,8 @@
 const { ethers } = require('hardhat')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 const { assert } = require('chai')
@@ -19,10 +22,10 @@ describe('Lock / expirationDuration', () => {
 
     const calldata = await createLockCalldata({ args, from: from.address })
     const tx = await unlock.createUpgradeableLock(calldata)
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
     const {
       args: { newLockAddress },
-    } = events.find(({ event }) => event === 'NewLock')
+    } = await getEvent(receipt, 'NewLock')
 
     const PublicLock = await ethers.getContractFactory('PublicLock')
     lock = PublicLock.attach(newLockAddress)

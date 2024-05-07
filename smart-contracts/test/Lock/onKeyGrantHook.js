@@ -1,5 +1,6 @@
-const { deployLock, ADDRESS_ZERO } = require('../helpers')
+const { deployLock } = require('../helpers')
 const { assert } = require('chai')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { ethers } = require('hardhat')
 const {
@@ -14,7 +15,7 @@ describe('Lock / onKeyGrantHook', () => {
   let lockManager
   let to
   let keyManager
-  let events
+  let receipt
 
   before(async () => {
     ;[{ address: lockManager }, { address: to }, { address: keyManager }] =
@@ -31,12 +32,12 @@ describe('Lock / onKeyGrantHook', () => {
       ADDRESS_ZERO,
       testEventHooks.address
     )
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onKeyGrantHook',
       hookAddress: testEventHooks.address,
     })
@@ -45,11 +46,9 @@ describe('Lock / onKeyGrantHook', () => {
   describe('grantKey', () => {
     it('can easily check if key is granted or purchase', async () => {
       const tx = await lock.grantKeys([to], [6200], [keyManager])
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
 
-      const { args: argsGrantKeys } = events.find(
-        ({ event }) => event === 'Transfer'
-      )
+      const { args: argsGrantKeys } = await getEvent(receipt, 'Transfer')
       const { tokenId } = argsGrantKeys
 
       // get event from hook contract

@@ -9,6 +9,7 @@ const {
   purchaseKey,
   increaseTimeTo,
 } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { ethers } = require('hardhat')
 const keyPrice = ethers.parseEther('0.01')
@@ -27,10 +28,10 @@ const gasRefund = async (tx) => {
 }
 
 const eventFiredProperly = async ({ tx, keyOwner, tokenAddress }) => {
-  const { events } = await tx.wait()
+  const receipt = await tx.wait()
   const {
     args: { receiver, refundedAmount, tokenAddress: refundedTokenAddress },
-  } = events.find(({ event }) => event === 'GasRefunded')
+  } = await getEvent(receipt, 'GasRefunded')
 
   assert.equal(receiver, keyOwner.address)
   compareBigNumbers(gasRefundAmount, refundedAmount)
@@ -103,10 +104,8 @@ describe('Lock / GasRefund', () => {
 
         it('emits an event', async () => {
           const tx = await lock.setGasRefundValue(gasRefundAmount)
-          const { events } = await tx.wait()
-          const { args } = events.find(
-            ({ event }) => event === 'GasRefundValueChanged'
-          )
+          const receipt = await tx.wait()
+          const { args } = await getEvent(receipt, 'GasRefundValueChanged')
           compareBigNumbers(await lock.gasRefundValue(), gasRefundAmount)
           compareBigNumbers(args.refundValue, gasRefundAmount)
         })
@@ -256,8 +255,8 @@ describe('Lock / GasRefund', () => {
         })
 
         it('does not fire refunded event', async () => {
-          const { events } = await tx.wait()
-          const evt = events.find(({ event }) => event === 'GasRefunded')
+          const receipt = await tx.wait()
+          const evt = await getEvent(receipt, 'GasRefunded')
           assert.equal(evt, undefined)
         })
 

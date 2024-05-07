@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
@@ -50,8 +51,8 @@ describe('Unlock / createLock (Legacy)', () => {
             'Test Lock',
           ]
           const tx = await unlock.createLock(...args, salt)
-          const { events } = await tx.wait()
-          const evt = events.find(({ event }) => event === 'NewLock')
+          const receipt = await tx.wait()
+          const evt = await getEvent(receipt, 'NewLock')
           lock = await ethers.getContractAt(
             'contracts/PublicLock.sol:PublicLock',
             evt.args.newLockAddress
@@ -72,8 +73,8 @@ describe('Unlock / createLock (Legacy)', () => {
             lock.address,
             (await lock.publicLockVersion()) + 1
           )
-          const { events } = await tx.wait()
-          const { args } = events.find(({ event }) => event === 'LockUpgraded')
+          const receipt = await tx.wait()
+          const { args } = await getEvent(receipt, 'LockUpgraded')
           assert.equal(args.lockAddress, lock.address)
           assert.equal(args.version, currentVersion + 1)
         })

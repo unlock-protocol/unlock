@@ -11,7 +11,7 @@ let testEventHooks
 
 describe('Lock / onTokenURIHook', () => {
   let tokenId
-  let events
+  let receipt
   let keyOwner, lockOwner
 
   before(async () => {
@@ -29,7 +29,7 @@ describe('Lock / onTokenURIHook', () => {
       ADDRESS_ZERO
     )
     ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('is set correctly', async () => {
@@ -38,7 +38,7 @@ describe('Lock / onTokenURIHook', () => {
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onTokenURIHook',
       hookAddress: testEventHooks.address,
     })

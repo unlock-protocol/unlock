@@ -8,6 +8,7 @@ const {
   increaseTimeTo,
 } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let dai
@@ -174,8 +175,8 @@ describe('Lock / Recurring memberships', () => {
 
     it('should emit a KeyRenewed event', async () => {
       const tx = await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-      const { events } = await tx.wait()
-      const { args } = events.find((v) => v.event === 'KeyExtended')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'KeyExtended')
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
       assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
       assert.equal(args.newTimestamp.toNumber(), tsAfter.toNumber())
@@ -256,11 +257,11 @@ describe('Lock / Recurring memberships', () => {
           lock.address
         )
         const tx = await lock.expireAndRefundFor(tokenId, keyPrice)
-        const { events } = await tx.wait()
+        const receipt = await tx.wait()
 
         const {
           args: { refund },
-        } = events.find(({ event }) => event === 'CancelKey')
+        } = await getEvent(receipt, 'CancelKey')
         assert.equal(refund.toString(), keyPrice.toString())
 
         // refund ok

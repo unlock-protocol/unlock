@@ -1,7 +1,11 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployLock, reverts, compareBigNumbers } = require('../helpers')
-const { ADDRESS_ZERO, MAX_UINT } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  getEvent,
+  MAX_UINT,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   emitHookUpdatedEvent,
   canNotSetNonContractAddress,
@@ -12,7 +16,7 @@ const dataField = ethers.hexlify(ethers.toUtf8Bytes('TestData'))
 describe('Lock / onKeyPurchaseHook', () => {
   let lock
   let testEventHooks
-  let events
+  let receipt
   let from, to
   let keyPrice
   let tokenId
@@ -34,12 +38,12 @@ describe('Lock / onKeyPurchaseHook', () => {
     )
     console.log({ testEventHooks: testEventHooks.address })
     keyPrice = await lock.keyPrice()
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onKeyPurchaseHook',
       hookAddress: testEventHooks.address,
     })
@@ -78,8 +82,10 @@ describe('Lock / onKeyPurchaseHook', () => {
             value: keyPrice,
           }
         )
-      const { events } = await tx.wait()
-      ;({ tokenId } = await events[0].args)
+      const receipt = await tx.wait()
+      ;({
+        args: { tokenId },
+      } = await getEvent(receipt, 'NewLock'))
     })
 
     it('key sales should log the hook event', async () => {

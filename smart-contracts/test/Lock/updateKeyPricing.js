@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   reverts,
   deployLock,
@@ -45,8 +45,8 @@ describe('Lock / updateKeyPricing', () => {
       .connect(lockCreator)
       .updateKeyPricing(newPrice, token.address)
 
-    const { events } = await tx.wait()
-    ;({ args } = events.find(({ event }) => event === 'PricingChanged'))
+    const receipt = await tx.wait()
+    ;({ args } = await getEvent(receipt, 'PricingChanged'))
   })
 
   it('should assign the owner to the LockManagerRole by default', async () => {

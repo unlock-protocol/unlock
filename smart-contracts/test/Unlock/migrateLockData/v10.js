@@ -10,6 +10,8 @@ const {
   cleanupContractVersions,
   createLockCalldata,
   ADDRESS_ZERO,
+  getEvent,
+  getEvents,
 } = require('@unlock-protocol/hardhat-helpers')
 
 // pass proper root folder to helpers
@@ -124,8 +126,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
     ]
     const calldata = await createLockCalldata({ args, from: creator.address })
     const tx = await unlock.createUpgradeableLock(calldata)
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'NewLock')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'NewLock')
     const { newLockAddress } = evt.args
 
     // get lock
@@ -195,10 +197,10 @@ describe('upgradeLock / data migration v9 > v10', () => {
       const tx = await unlock
         .connect(creator)
         .upgradeLock(lock.address, pastVersion + 1)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
 
       // check if box instance works
-      const evt = events.find((v) => v.event === 'LockUpgraded')
+      const evt = await getEvent(receipt, 'LockUpgraded')
       const { lockAddress, version } = evt.args
 
       // make sure upgrade event is correct
@@ -269,8 +271,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
           [100, 100]
         )
         const tx = await lock.connect(lockOwner).migrate(calldata)
-        const { events } = await tx.wait()
-        const { args } = events.find((event) => event.event === 'KeysMigrated')
+        const receipt = await tx.wait()
+        const { args } = await getEvent(receipt, 'KeysMigrated')
         updatedRecordsCount = args.updatedRecordsCount
       })
 
@@ -310,8 +312,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
           [200, 100]
         )
         const tx = await lock.connect(lockOwner).migrate(calldata1)
-        const { events } = await tx.wait()
-        const { args } = events.find((v) => v.event === 'KeysMigrated')
+        const receipt = await tx.wait()
+        const { args } = await getEvent(receipt, 'KeysMigrated')
         assert.equal(args.updatedRecordsCount.toNumber(), 100)
 
         // migrate another batch of 200
@@ -381,11 +383,9 @@ describe('upgradeLock / data migration v9 > v10', () => {
                 value: (keyPrice * someBuyers.length).toFixed(),
               }
             )
-            const { events } = await tx.wait()
-
-            const tokenIds = events
-              .filter((v) => v.event === 'Transfer')
-              .map(({ args }) => args.tokenId)
+            const receipt = await tx.wait()
+            const { events } = await getEvents(receipt, 'Transfer')
+            tokenIds = events.map(({ args }) => args.tokenId)
 
             assert.equal(tokenIds.length, someBuyers.length)
           })
@@ -396,10 +396,9 @@ describe('upgradeLock / data migration v9 > v10', () => {
               someBuyers.map(() => Date.now()),
               someBuyers.map(() => ADDRESS_ZERO)
             )
-            const { events } = await tx.wait()
-            const tokenIds = events
-              .filter((v) => v.event === 'Transfer')
-              .map(({ args }) => args.tokenId)
+            const receipt = await tx.wait()
+            const { events } = await getEvents(receipt, 'Transfer')
+            tokenIds = events.map(({ args }) => args.tokenId)
 
             assert.equal(tokenIds.length, someBuyers.length)
           })

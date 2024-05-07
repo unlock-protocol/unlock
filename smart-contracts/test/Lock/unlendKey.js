@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO, deployLock, reverts } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let lockSingleKey
@@ -29,10 +30,8 @@ describe('Lock / unlendKey', () => {
       }
     )
 
-    const { events } = await tx.wait()
-    ;[tokenId] = events
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    const receipt = await tx.wait()
+    tokenId = getEvent(receipt, 'Transfer')
 
     // lend a key to someone
     await lock

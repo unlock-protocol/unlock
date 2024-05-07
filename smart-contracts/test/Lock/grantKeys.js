@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { reverts, deployLock, ADDRESS_ZERO } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let tx
@@ -27,8 +28,8 @@ describe('Lock / grantKeys', () => {
           [validExpirationTimestamp],
           [ADDRESS_ZERO]
         )
-        const { events } = await tx.wait()
-        ;({ args } = events.find(({ event }) => event === 'Transfer'))
+        const receipt = await tx.wait()
+        ;({ args } = await getEvent(receipt, 'Transfer'))
       })
 
       it('should log Transfer event', async () => {
