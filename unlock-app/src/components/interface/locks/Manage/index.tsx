@@ -133,9 +133,17 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       setIsKeysJobLoading(false)
 
       const members = response.data
-      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      const cols: { [key: string]: boolean } = { token: true, data: false }
+      if (members.keys) {
+        for (let i = 0; i < members.keys.length; i++) {
+          Object.keys(members.keys[i]).forEach((key) => {
+            cols[key] = true
+          })
+        }
+      }
+      delete cols.data
       downloadAsCSV({
-        cols,
+        cols: Object.keys(cols),
         metadata: members.keys as any[],
       })
     }
