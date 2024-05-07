@@ -39,10 +39,12 @@ describe('Lock / purchaseWithoutUnlock', () => {
     const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
     const broken = await BrokenUnlock.deploy()
     await broken.deployTransaction.wait()
-    brokenImpl = broken.address
+    brokenImpl = await broken.getAddress()
 
     // get proxyAdmin address
-    const proxyAdminAddress = await getProxyAdminAddress(unlock.address)
+    const proxyAdminAddress = await getProxyAdminAddress(
+      await unlock.getAddress()
+    )
 
     // upgrade proxy to broken contract
     const [unlockOwner] = await ethers.getSigners()
@@ -66,7 +68,10 @@ describe('Lock / purchaseWithoutUnlock', () => {
         'Test lock',
       ]
 
-      const calldata = await createLockCalldata({ args, from: from.address })
+      const calldata = await createLockCalldata({
+        args,
+        from: await from.getAddress(),
+      })
       const tx = await unlock.createUpgradeableLock(calldata)
       const receipt = await tx.wait()
       const {
@@ -77,15 +82,17 @@ describe('Lock / purchaseWithoutUnlock', () => {
       lock = PublicLock.attach(newLockAddress)
 
       // store past impl address
-      pastImpl = await proxyAdmin.getProxyImplementation(unlock.address)
+      pastImpl = await proxyAdmin.getProxyImplementation(
+        await unlock.getAddress()
+      )
 
       // break Unlock
-      await breakUnlock(unlock.address)
+      await breakUnlock(await unlock.getAddress())
     })
 
     afterEach(async () => {
       // restore previous state after each test
-      await fixUnlock(unlock.address)
+      await fixUnlock(await unlock.getAddress())
     })
 
     it('should fire an event to notify Unlock has failed', async () => {
@@ -94,7 +101,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
         .connect(buyer)
         .purchase(
           [keyPrice.toString()],
-          [buyer.address],
+          [await buyer.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -106,12 +113,12 @@ describe('Lock / purchaseWithoutUnlock', () => {
 
       // make sure transfer happened
       const transfer = await getEvent(receipt, 'Transfer')
-      assert.equal(transfer.args.to, buyer.address)
+      assert.equal(transfer.args.to, await buyer.getAddress())
       assert.equal(transfer.args.tokenId.eq(1), true)
 
       const missing = await getEvent(receipt, 'UnlockCallFailed')
-      assert.equal(missing.args.unlockAddress, unlock.address)
-      assert.equal(missing.args.lockAddress, lock.address)
+      assert.equal(missing.args.unlockAddress, await unlock.getAddress())
+      assert.equal(missing.args.lockAddress, await lock.getAddress())
     })
 
     it('should fail when discount hook is set', async () => {
@@ -122,7 +129,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
 
       // set on purchase hook
       await lock.setEventHooks(
-        testEventHooks.address,
+        await testEventHooks.getAddress(),
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
@@ -136,7 +143,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
         .connect(buyer)
         .purchase(
           [keyPrice],
-          [buyer.address],
+          [await buyer.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -148,13 +155,13 @@ describe('Lock / purchaseWithoutUnlock', () => {
       // make sure transfer happened
       const receipt = await tx.wait()
       const transfer = await getEvent(receipt, 'Transfer')
-      assert.equal(transfer.args.to, buyer.address)
+      assert.equal(transfer.args.to, await buyer.getAddress())
       assert.equal(transfer.args.tokenId.eq(1), true)
 
       // event has been fired
       const missing = await getEvent(receipt, 'UnlockCallFailed')
-      assert.equal(missing.args.unlockAddress, unlock.address)
-      assert.equal(missing.args.lockAddress, lock.address)
+      assert.equal(missing.args.unlockAddress, await unlock.getAddress())
+      assert.equal(missing.args.lockAddress, await lock.getAddress())
     })
   })
 })

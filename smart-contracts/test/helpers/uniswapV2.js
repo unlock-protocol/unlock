@@ -18,7 +18,7 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
     UniswapV2Factory.bytecode,
     signer
   )
-  const factory = await Factory.deploy(signer.address)
+  const factory = await Factory.deploy(await signer.getAddress())
   await factory.deployed()
 
   // Deploy Router passing Factory Address and WETH Address
@@ -27,7 +27,7 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
     UniswapV2Router02.bytecode,
     signer
   )
-  const router = await Router.deploy(factory.address, wethAddress)
+  const router = await Router.deploy(await factory.getAddress(), wethAddress)
   await router.deployed()
 
   return router
@@ -62,17 +62,28 @@ const createUniswapV2Exchange = async ({
 
   // Deploy the exchange
   const weth = await deployWETH(protocolOwner)
-  const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
+  const uniswapRouter = await deployUniswapV2(
+    await weth.getAddress(),
+    protocolOwner
+  )
 
   // Create UDT <-> WETH pool
-  await udt.mint(minter.address, amount)
-  await udt.approve(uniswapRouter.address, MAX_UINT)
+  await udt.mint(await minter.getAddress(), amount)
+  await udt.approve(await uniswapRouter.getAddress(), MAX_UINT)
 
   await uniswapRouter
     .connect(minter)
-    .addLiquidityETH(udt.address, amount, '1', '1', minter.address, MAX_UINT, {
-      value: ethers.parseEther('40', 'ether'),
-    })
+    .addLiquidityETH(
+      await udt.getAddress(),
+      amount,
+      '1',
+      '1',
+      await minter.getAddress(),
+      MAX_UINT,
+      {
+        value: ethers.parseEther('40', 'ether'),
+      }
+    )
 
   const uniswapOracle = await deployUniswapV2Oracle(
     await uniswapRouter.factory(),
@@ -87,8 +98,8 @@ const createUniswapV2Exchange = async ({
     .connect(minter)
     .swapExactETHForTokens(
       1,
-      [weth.address, udt.address],
-      minter.address,
+      [await weth.getAddress(), await udt.getAddress()],
+      await minter.getAddress(),
       MAX_UINT,
       { value: ethers.parseEther('1') }
     )

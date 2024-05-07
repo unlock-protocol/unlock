@@ -18,14 +18,18 @@ describe('Lock / erc721 / balanceOf', () => {
   })
 
   it('should return 0 if the user has no key', async () => {
-    const balance = await lock.balanceOf(accountWithoutKey.address)
+    const balance = await lock.balanceOf(await accountWithoutKey.getAddress())
     compareBigNumbers(balance, 0)
   })
 
   it('should return correct number of keys', async () => {
     await lock.purchase(
       [],
-      [someAccount.address, someAccount.address, someAccount.address],
+      [
+        await someAccount.getAddress(),
+        await someAccount.getAddress(),
+        await someAccount.getAddress(),
+      ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
@@ -33,13 +37,17 @@ describe('Lock / erc721 / balanceOf', () => {
         value: ethers.parseUnits('0.03', 'ether'),
       }
     )
-    compareBigNumbers(await lock.balanceOf(someAccount.address), 3)
+    compareBigNumbers(await lock.balanceOf(await someAccount.getAddress()), 3)
   })
 
   it('should count only valid keys', async () => {
     const tx = await lock.purchase(
       [],
-      [keyOwner.address, keyOwner.address, keyOwner.address],
+      [
+        await keyOwner.getAddress(),
+        await keyOwner.getAddress(),
+        await keyOwner.getAddress(),
+      ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
@@ -51,26 +59,30 @@ describe('Lock / erc721 / balanceOf', () => {
     const { events } = await getEvents(receipt, 'Transfer')
     const tokenIds = events.map(({ args }) => args.tokenId)
 
-    compareBigNumbers(await lock.balanceOf(keyOwner.address), 3)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 3)
 
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
     await increaseTimeTo(expirationTs + 10)
 
-    compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
 
     // renew one
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
       value: ethers.parseUnits('0.03', 'ether'),
     })
 
-    compareBigNumbers(await lock.balanceOf(keyOwner.address), 1)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 1)
   })
 
   it('should return correct number after key transfers', async () => {
     const tx = await lock.purchase(
       [],
-      [keyReceiver.address, keyReceiver.address, keyReceiver.address],
+      [
+        await keyReceiver.getAddress(),
+        await keyReceiver.getAddress(),
+        await keyReceiver.getAddress(),
+      ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
@@ -84,17 +96,21 @@ describe('Lock / erc721 / balanceOf', () => {
       args: { tokenId },
     } = await getEvent(receipt, 'Transfer')
 
-    compareBigNumbers(await lock.balanceOf(keyReceiver.address), 3)
+    compareBigNumbers(await lock.balanceOf(await keyReceiver.getAddress()), 3)
     compareBigNumbers(
       tokenId,
-      await lock.tokenOfOwnerByIndex(keyReceiver.address, 0)
+      await lock.tokenOfOwnerByIndex(await keyReceiver.getAddress(), 0)
     )
-    assert.equal(keyReceiver.address, await lock.ownerOf(tokenId))
+    assert.equal(await keyReceiver.getAddress(), await lock.ownerOf(tokenId))
 
     await lock
       .connect(keyReceiver)
-      .transferFrom(keyReceiver.address, accountWithoutKey.address, tokenId)
-    assert.equal(await lock.balanceOf(keyReceiver.address), 2)
-    assert.equal(await lock.balanceOf(accountWithoutKey.address), 1)
+      .transferFrom(
+        await keyReceiver.getAddress(),
+        await accountWithoutKey.getAddress(),
+        tokenId
+      )
+    assert.equal(await lock.balanceOf(await keyReceiver.getAddress()), 2)
+    assert.equal(await lock.balanceOf(await accountWithoutKey.getAddress()), 1)
   })
 })

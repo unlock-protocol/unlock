@@ -31,7 +31,7 @@ describe('Lock / grantKeyExtension', () => {
 
     // the lock creator is assigned the KeyGranter role by default
     const tx = await lock.grantKeys(
-      [keyOwner.address],
+      [await keyOwner.getAddress()],
       [validExpirationTimestamp],
       [ADDRESS_ZERO]
     )

@@ -46,14 +46,16 @@ describe(`swapAndCall`, function () {
       'UnlockSwapPurchaser'
     )
     swapPurchaser = await UnlockSwapPurchaser.deploy(
-      unlock.address,
+      await unlock.getAddress(),
       PERMIT2_ADDRESS,
       routers
     )
   })
 
   it('unlock is set properly', async () => {
-    expect(await swapPurchaser.unlockAddress()).to.equal(unlock.address)
+    expect(await swapPurchaser.unlockAddress()).to.equal(
+      await unlock.getAddress()
+    )
   })
   it('permit2 is set properly', async () => {
     expect(await swapPurchaser.permit2()).to.equal(PERMIT2_ADDRESS)
@@ -73,7 +75,7 @@ describe(`swapAndCall`, function () {
           )
           lock = await deployLock({
             unlock,
-            tokenAddress: lockToken.address,
+            tokenAddress: await lockToken.getAddress(),
             // make sure we can add multiple keys
             maxKeysPerAddress: 100,
             keyPrice,
@@ -86,15 +88,18 @@ describe(`swapAndCall`, function () {
 
         it('lock is set properly', async () => {
           expect(await lock.tokenAddress()).to.equal(
-            lockToken.address || ADDRESS_ZERO
+            (await lockToken.getAddress()) || ADDRESS_ZERO
           )
-          expect((await lock.balanceOf(keyOwner.address)).toNumber()).to.equal(
-            0
-          )
+          expect(
+            (await lock.balanceOf(await keyOwner.getAddress())).toNumber()
+          ).to.equal(0)
         })
 
         it(`signer has enough ${srcToken.symbol} to buy/renew a bunch of keys`, async () => {
-          const balance = await getBalance(keyOwner.address, srcToken.address)
+          const balance = await getBalance(
+            await keyOwner.getAddress(),
+            await srcToken.getAddress()
+          )
           expect(balance.gte(0)).to.equal(true)
         })
 
@@ -102,14 +107,16 @@ describe(`swapAndCall`, function () {
           let lockBalanceBefore, keyOwnerBalanceBefore
           before(async () => {
             lockBalanceBefore = await getBalance(
-              lock.address,
-              lockToken.address
+              await lock.getAddress(),
+              await lockToken.getAddress()
             )
-            keyOwnerBalanceBefore = await lock.balanceOf(keyOwner.address)
+            keyOwnerBalanceBefore = await lock.balanceOf(
+              await keyOwner.getAddress()
+            )
 
             const args = [
               lockToken.isToken ? [keyPrice] : [], // keyPrices
-              [keyOwner.address], // recipients
+              [await keyOwner.getAddress()], // recipients
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
               [[]], // _data
@@ -127,25 +134,25 @@ describe(`swapAndCall`, function () {
                 tokenIn: srcToken,
                 tokenOut: lockToken,
                 amoutOut: keyPrice,
-                recipient: swapPurchaser.address,
+                recipient: await swapPurchaser.getAddress(),
               }))
 
             // approve
             if (srcToken.isToken) {
               const token = await addERC20(
-                srcToken.address,
-                keyOwner.address,
+                await srcToken.getAddress(),
+                await keyOwner.getAddress(),
                 amountInMax
               )
               await token
                 .connect(keyOwner)
-                .approve(swapPurchaser.address, amountInMax)
+                .approve(await swapPurchaser.getAddress(), amountInMax)
             }
 
             // do the swap and call!
             await swapPurchaser.connect(keyOwner).swapAndCall(
-              lock.address,
-              srcToken.address || ADDRESS_ZERO,
+              await lock.getAddress(),
+              (await srcToken.getAddress()) || ADDRESS_ZERO,
               amountInMax, // value in src token
               swapRouter,
               swapCalldata,
@@ -156,13 +163,18 @@ describe(`swapAndCall`, function () {
 
           it('purchase a key for the sender', async () => {
             expect(
-              (await lock.balanceOf(keyOwner.address)).toNumber()
+              (await lock.balanceOf(await keyOwner.getAddress())).toNumber()
             ).to.equal(keyOwnerBalanceBefore.toNumber() + 1)
           })
 
           it('lock has received the tokens', async () => {
             expect(
-              (await getBalance(lock.address, lockToken.address)).toString()
+              (
+                await getBalance(
+                  await lock.getAddress(),
+                  await lockToken.getAddress()
+                )
+              ).toString()
             ).to.equal(lockBalanceBefore.plus(keyPrice.toString()).toString())
           })
         })
@@ -173,19 +185,25 @@ describe(`swapAndCall`, function () {
             // give our buyer some ERC20 tokens to first buy a key
             if (lockToken.isToken) {
               const token = await addERC20(
-                lockToken.address,
-                keyOwner.address,
+                await lockToken.getAddress(),
+                await keyOwner.getAddress(),
                 keyPrice
               )
-              assert((await token.balanceOf(keyOwner.address)).gte(keyPrice))
-              await token.connect(keyOwner).approve(lock.address, keyPrice)
+              assert(
+                (await token.balanceOf(await keyOwner.getAddress())).gte(
+                  keyPrice
+                )
+              )
+              await token
+                .connect(keyOwner)
+                .approve(await lock.getAddress(), keyPrice)
             }
 
             // purchase the key
             const isErc20 = lockToken.isToken
             ;({ tokenId } = await purchaseKey(
               lock,
-              keyOwner.address,
+              await keyOwner.getAddress(),
               isErc20,
               keyPrice
             ))
@@ -202,8 +220,8 @@ describe(`swapAndCall`, function () {
               extendArgs
             )
             lockBalanceBefore = await getBalance(
-              lock.address,
-              lockToken.address
+              await lock.getAddress(),
+              await lockToken.getAddress()
             )
 
             // get uniswap route
@@ -212,25 +230,25 @@ describe(`swapAndCall`, function () {
                 tokenIn: srcToken,
                 tokenOut: lockToken,
                 amoutOut: keyPrice,
-                recipient: swapPurchaser.address,
+                recipient: await swapPurchaser.getAddress(),
               }))
 
             // approve our src token that will be swapped
             if (srcToken.isToken) {
               const token = await addERC20(
-                srcToken.address,
-                keyOwner.address,
+                await srcToken.getAddress(),
+                await keyOwner.getAddress(),
                 amountInMax
               )
               await token
                 .connect(keyOwner)
-                .approve(swapPurchaser.address, amountInMax)
+                .approve(await swapPurchaser.getAddress(), amountInMax)
             }
 
             // do the swap and call
             await swapPurchaser.connect(keyOwner).swapAndCall(
-              lock.address,
-              srcToken.address || ADDRESS_ZERO,
+              await lock.getAddress(),
+              (await srcToken.getAddress()) || ADDRESS_ZERO,
               amountInMax, // (in src token)
               swapRouter,
               swapCalldata,
@@ -244,7 +262,10 @@ describe(`swapAndCall`, function () {
           })
 
           it('lock has received the tokens', async () => {
-            const balance = await getBalance(lock.address, lockToken.address)
+            const balance = await getBalance(
+              await lock.getAddress(),
+              await lockToken.getAddress()
+            )
             expect(balance.toString()).to.equal(
               lockBalanceBefore.plus(keyPrice.toString()).toString()
             )
@@ -256,7 +277,7 @@ describe(`swapAndCall`, function () {
           before(async () => {
             const args = [
               lockToken.isToken ? [keyPrice] : [], // keyPrices
-              [keyOwner.address], // recipients
+              [await keyOwner.getAddress()], // recipients
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
               [[]], // _data
@@ -271,19 +292,19 @@ describe(`swapAndCall`, function () {
                 tokenIn: srcToken,
                 tokenOut: lockToken,
                 amoutOut: keyPrice,
-                recipient: swapPurchaser.address,
+                recipient: await swapPurchaser.getAddress(),
               }))
 
             // approve
             if (srcToken.isToken) {
               const token = await addERC20(
-                srcToken.address,
-                keyOwner.address,
+                await srcToken.getAddress(),
+                await keyOwner.getAddress(),
                 amountInMax
               )
               await token
                 .connect(keyOwner)
-                .approve(swapPurchaser.address, amountInMax)
+                .approve(await swapPurchaser.getAddress(), amountInMax)
             }
           })
 
@@ -294,8 +315,8 @@ describe(`swapAndCall`, function () {
                 .replace('1', '2')
               await reverts(
                 swapPurchaser.connect(keyOwner).swapAndCall(
-                  lock.address,
-                  srcToken.address || ADDRESS_ZERO,
+                  await lock.getAddress(),
+                  (await srcToken.getAddress()) || ADDRESS_ZERO,
                   amountInMax, // (in src token)
                   swapRouter,
                   corruptCallData,
@@ -311,20 +332,22 @@ describe(`swapAndCall`, function () {
                 // skip test if native token
                 // give some tokens
                 const token = await addERC20(
-                  srcToken.address,
-                  keyOwner.address,
+                  await srcToken.getAddress(),
+                  await keyOwner.getAddress(),
                   amountInMax
                 )
 
                 // reset approval
-                await token.connect(keyOwner).approve(swapPurchaser.address, 0)
+                await token
+                  .connect(keyOwner)
+                  .approve(await swapPurchaser.getAddress(), 0)
 
                 await reverts(
                   swapPurchaser
                     .connect(keyOwner)
                     .swapAndCall(
-                      lock.address,
-                      srcToken.address || ADDRESS_ZERO,
+                      await lock.getAddress(),
+                      (await srcToken.getAddress()) || ADDRESS_ZERO,
                       amountInMax,
                       swapRouter,
                       swapCalldata,
@@ -344,8 +367,8 @@ describe(`swapAndCall`, function () {
                 .replace('1', '2')
               await reverts(
                 swapPurchaser.connect(keyOwner).swapAndCall(
-                  lock.address,
-                  srcToken.address || ADDRESS_ZERO,
+                  await lock.getAddress(),
+                  (await srcToken.getAddress()) || ADDRESS_ZERO,
                   amountInMax, // (in src token)
                   swapRouter,
                   swapCalldata,
@@ -362,25 +385,25 @@ describe(`swapAndCall`, function () {
                   tokenIn: srcToken,
                   tokenOut: lockToken,
                   amoutOut: keyPrice / 2,
-                  recipient: swapPurchaser.address,
+                  recipient: await swapPurchaser.getAddress(),
                 }))
 
               // approve
               if (srcToken.isToken) {
                 const token = await addERC20(
-                  srcToken.address,
-                  keyOwner.address,
+                  await srcToken.getAddress(),
+                  await keyOwner.getAddress(),
                   amountInMax
                 )
                 await token
                   .connect(keyOwner)
-                  .approve(swapPurchaser.address, amountInMax)
+                  .approve(await swapPurchaser.getAddress(), amountInMax)
               }
 
               await reverts(
                 swapPurchaser.connect(keyOwner).swapAndCall(
-                  lock.address,
-                  srcToken.address || ADDRESS_ZERO,
+                  await lock.getAddress(),
+                  (await srcToken.getAddress()) || ADDRESS_ZERO,
                   amountInMax, // (in src token)
                   swapRouter,
                   swapCalldata,

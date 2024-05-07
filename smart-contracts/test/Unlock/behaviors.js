@@ -27,16 +27,16 @@ describe('Unlock / UnlockProxy', () => {
     await template.deployed()
 
     await unlock.addLockTemplate(
-      template.address,
+      await template.getAddress(),
       (await unlock.publicLockLatestVersion()) + 1
     )
-    await unlock.setLockTemplate(template.address)
+    await unlock.setLockTemplate(await template.getAddress())
   })
 
   describe('initialization', () => {
     it('should have an owner', async () => {
       const owner = await unlock.owner()
-      assert.equal(owner, unlockOwner.address)
+      assert.equal(owner, await unlockOwner.getAddress())
     })
 
     it('should have initialized grossNetworkProduct', async () => {
@@ -61,7 +61,7 @@ describe('Unlock / UnlockProxy', () => {
       ]
       const calldata = await createLockCalldata({
         args,
-        from: unlockOwner.address,
+        from: await unlockOwner.getAddress(),
       })
       const tx = await unlock.createUpgradeableLock(calldata)
       const receipt = await tx.wait()
@@ -74,15 +74,15 @@ describe('Unlock / UnlockProxy', () => {
         newLockArgs.newLockAddress
       )
       // This is a bit of a dumb test because when the lock is missing, the value are 0 anyway...
-      let results = await unlock.locks(publicLock.address)
+      let results = await unlock.locks(await publicLock.getAddress())
       assert.equal(results.totalSales, 0)
       assert.equal(results.yieldedDiscountTokens, 0)
     })
 
-    it('should trigger the NewLock event', () => {
+    it('should trigger the NewLock event', async () => {
       assert.equal(
         ethers.getAddress(newLockArgs.lockOwner),
-        ethers.getAddress(unlockOwner.address)
+        ethers.getAddress(await unlockOwner.getAddress())
       )
       assert(newLockArgs.newLockAddress)
     })
@@ -95,7 +95,7 @@ describe('Unlock / UnlockProxy', () => {
       let unlockProtocol = await publicLock.unlockProtocol()
       assert.equal(
         ethers.getAddress(unlockProtocol),
-        ethers.getAddress(unlock.address)
+        ethers.getAddress(await unlock.getAddress())
       )
     })
   })

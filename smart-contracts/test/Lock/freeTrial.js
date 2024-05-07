@@ -17,7 +17,7 @@ describe('Lock / freeTrial', () => {
   beforeEach(async () => {
     lock = await deployLock()
     ;[keyOwner] = await ethers.getSigners()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('No free trial by default', async () => {
@@ -29,7 +29,7 @@ describe('Lock / freeTrial', () => {
 
     beforeEach(async () => {
       await lock.updateRefundPenalty(5, 2000)
-      initialLockBalance = await getBalance(lock.address)
+      initialLockBalance = await getBalance(await lock.getAddress())
     })
 
     describe('should cancel and provide a full refund when enough time remains', () => {
@@ -39,7 +39,7 @@ describe('Lock / freeTrial', () => {
 
       it('should provide a full refund', async () => {
         const refundAmount =
-          initialLockBalance - (await getBalance(lock.address))
+          initialLockBalance - (await getBalance(await lock.getAddress()))
         compareBigNumbers(refundAmount, keyPrice)
       })
     })
@@ -52,7 +52,7 @@ describe('Lock / freeTrial', () => {
 
       it('should provide less than a full refund', async () => {
         const refundAmount =
-          initialLockBalance - (await getBalance(lock.address))
+          initialLockBalance - (await getBalance(await lock.getAddress()))
         assert.notEqual(refundAmount.toString(), keyPrice.toString())
         assert(refundAmount < keyPrice)
       })

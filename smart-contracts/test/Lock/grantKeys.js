@@ -24,7 +24,7 @@ describe('Lock / grantKeys', () => {
       before(async () => {
         // the lock creator is assigned the KeyGranter role by default
         tx = await lock.grantKeys(
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [validExpirationTimestamp],
           [ADDRESS_ZERO]
         )
@@ -34,15 +34,21 @@ describe('Lock / grantKeys', () => {
 
       it('should log Transfer event', async () => {
         assert.equal(args.from, 0)
-        assert.equal(args.to, keyOwner.address)
+        assert.equal(args.to, await keyOwner.getAddress())
       })
 
       it('should acknowledge that user owns key', async () => {
-        assert.equal(await lock.ownerOf(args.tokenId), keyOwner.address)
+        assert.equal(
+          await lock.ownerOf(args.tokenId),
+          await keyOwner.getAddress()
+        )
       })
 
       it('getHasValidKey is true', async () => {
-        assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
       })
     })
 
@@ -109,7 +115,7 @@ describe('Lock / grantKeys', () => {
         lock
           .connect(attacker)
           .grantKeys(
-            [keyOwner.address],
+            [await keyOwner.getAddress()],
             [validExpirationTimestamp],
             [ADDRESS_ZERO]
           ),

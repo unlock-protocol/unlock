@@ -27,8 +27,8 @@ describe('Lock / expireAndRefundFor', () => {
     let txFee
 
     before(async () => {
-      initialLockBalance = await getBalance(lock.address)
-      initialKeyOwnerBalance = await getBalance(keyOwners[0].address)
+      initialLockBalance = await getBalance(await lock.getAddress())
+      initialKeyOwnerBalance = await getBalance(await keyOwners[0].getAddress())
 
       const tx = await lock.expireAndRefundFor(tokenIds[0], refundAmount)
       const receipt = await tx.wait()
@@ -49,12 +49,14 @@ describe('Lock / expireAndRefundFor', () => {
     })
 
     it('should make the key no longer valid (i.e. expired)', async () => {
-      const isValid = await lock.getHasValidKey(keyOwners[0].address)
+      const isValid = await lock.getHasValidKey(await keyOwners[0].getAddress())
       assert.equal(isValid, false)
     })
 
     it("should increase the owner's balance with the amount of funds refunded from the lock", async () => {
-      const finalOwnerBalance = await getBalance(keyOwners[0].address)
+      const finalOwnerBalance = await getBalance(
+        await keyOwners[0].getAddress()
+      )
       assert(
         finalOwnerBalance.toString(),
         initialKeyOwnerBalance + keyPrice - txFee.toString()
@@ -63,7 +65,7 @@ describe('Lock / expireAndRefundFor', () => {
 
     it("should increase the lock's balance by the keyPrice", async () => {
       const finalLockBalance =
-        (await getBalance(lock.address)) - initialLockBalance
+        (await getBalance(await lock.getAddress())) - initialLockBalance
 
       assert(
         finalLockBalance.toString(),
@@ -92,7 +94,11 @@ describe('Lock / expireAndRefundFor', () => {
     })
 
     it('the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress(), lockCreator.address, 0)
+      await lock.withdraw(
+        await lock.tokenAddress(),
+        await lockCreator.getAddress(),
+        0
+      )
       await reverts(lock.expireAndRefundFor(tokenIds[3], refundAmount), '')
     })
 

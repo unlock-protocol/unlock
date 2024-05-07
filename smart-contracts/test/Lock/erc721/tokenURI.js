@@ -100,7 +100,7 @@ describe('Lock / erc721 / tokenURI', () => {
     })
 
     it('should allow the lock creator to set a custom base tokenURI', async () => {
-      await purchaseKey(lock, lockManager.address)
+      await purchaseKey(lock, await lockManager.getAddress())
       const uri = await lock.tokenURI(1)
       assert.equal(uri, `${metadata.baseTokenURI}1`)
     })
@@ -123,7 +123,7 @@ describe('Lock / erc721 / tokenURI', () => {
       )
 
       const baseTokenURI = await lock.tokenURI(0)
-      const lockAddressStr = lock.address.toString()
+      const lockAddressStr = await lock.getAddress().toString()
       const lowerCaseAddress = stringShifter(lockAddressStr)
 
       // should now return the globalBaseTokenURI + the lock address

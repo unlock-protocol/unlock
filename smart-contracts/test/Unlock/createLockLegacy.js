@@ -23,7 +23,10 @@ describe('Unlock / createLock (Legacy)', () => {
     currentVersion = await unlock.publicLockLatestVersion()
 
     // add template for upgrade test
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1
+    )
   })
 
   describe('Deploy correctly using legacy createLock method', () => {
@@ -70,12 +73,12 @@ describe('Unlock / createLock (Legacy)', () => {
 
         it('lock is upgradeable', async () => {
           const tx = await unlock.upgradeLock(
-            lock.address,
+            await lock.getAddress(),
             (await lock.publicLockVersion()) + 1
           )
           const receipt = await tx.wait()
           const { args } = await getEvent(receipt, 'LockUpgraded')
-          assert.equal(args.lockAddress, lock.address)
+          assert.equal(args.lockAddress, await lock.getAddress())
           assert.equal(args.version, currentVersion + 1)
         })
       })

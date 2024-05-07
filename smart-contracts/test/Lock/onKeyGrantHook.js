@@ -30,7 +30,7 @@ describe('Lock / onKeyGrantHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address
+      await testEventHooks.getAddress()
     )
     receipt = await tx.wait()
   })
@@ -39,7 +39,7 @@ describe('Lock / onKeyGrantHook', () => {
     await emitHookUpdatedEvent({
       receipt,
       hookName: 'onKeyGrantHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 

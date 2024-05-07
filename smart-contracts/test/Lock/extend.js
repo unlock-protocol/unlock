@@ -29,11 +29,11 @@ describe('Lock / extend keys', () => {
       beforeEach(async () => {
         ;[lockOwner, keyOwner, nonExpiringKeyOwner, anotherAccount] =
           await ethers.getSigners()
-        testToken = await deployERC20(lockOwner.address, true)
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        testToken = await deployERC20(await lockOwner.getAddress(), true)
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
 
         // Mint some tokens for testing
-        await testToken.mint(keyOwner.address, someTokens)
+        await testToken.mint(await keyOwner.getAddress(), someTokens)
 
         lock = await deployLock({ tokenAddress, isEthers: true })
         nonExpiringLock = await deployLock({
@@ -46,10 +46,16 @@ describe('Lock / extend keys', () => {
       describe('common lock', () => {
         beforeEach(async () => {
           // Approve spending
-          await testToken.connect(keyOwner).approve(lock.address, someTokens)
+          await testToken
+            .connect(keyOwner)
+            .approve(await lock.getAddress(), someTokens)
 
           // purchase a key
-          ;({ tokenId } = await purchaseKey(lock, keyOwner.address, isErc20))
+          ;({ tokenId } = await purchaseKey(
+            lock,
+            await keyOwner.getAddress(),
+            isErc20
+          ))
         })
 
         it('prevent extend a non-existing key', async () => {
@@ -145,17 +151,20 @@ describe('Lock / extend keys', () => {
       describe('non-expiring lock', () => {
         beforeEach(async () => {
           // mint some tokens
-          await testToken.mint(nonExpiringKeyOwner.address, someTokens)
+          await testToken.mint(
+            await nonExpiringKeyOwner.getAddress(),
+            someTokens
+          )
 
           // approve ERC20 spending
           await testToken
             .connect(nonExpiringKeyOwner)
-            .approve(nonExpiringLock.address, someTokens)
+            .approve(await nonExpiringLock.getAddress(), someTokens)
 
           // purchase a key for non-expiring
           ;({ tokenId } = await purchaseKey(
             nonExpiringLock,
-            nonExpiringKeyOwner.address,
+            await nonExpiringKeyOwner.getAddress(),
             isErc20
           ))
         })

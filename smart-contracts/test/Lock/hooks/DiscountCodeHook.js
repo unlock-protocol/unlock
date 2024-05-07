@@ -23,7 +23,7 @@ const getSignatureForPassword = async (password, message) => {
   const messageHashBinary = ethers.arrayify(messageHash)
   const signature = await privateKeyAccount.signMessage(messageHashBinary)
 
-  return [signature, privateKeyAccount.address]
+  return [signature, await privateKeyAccount.getAddress()]
 }
 
 describe('DiscountHook', function () {
@@ -62,7 +62,7 @@ describe('DiscountHook', function () {
 
     await (
       await lock.setEventHooks(
-        hook.address,
+        await hook.getAddress(),
         ethers.AddressZero,
         ethers.AddressZero,
         ethers.AddressZero,
@@ -73,8 +73,8 @@ describe('DiscountHook', function () {
     ).wait()
     // Let's get the price without a promo code
     const priceWithout = await lock.purchasePriceFor(
-      user.address,
-      user.address,
+      await user.getAddress(),
+      await user.getAddress(),
       []
     )
     assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
@@ -84,23 +84,29 @@ describe('DiscountHook', function () {
     const cap = 10
     const [data, signer] = await getSignatureForPassword(
       code,
-      user.address.toLowerCase()
+      await user.getAddress().toLowerCase()
     )
 
     // Set the code on the hook for the lock
-    await (await hook.setSigner(lock.address, signer, discount, cap)).wait()
+    await (
+      await hook.setSigner(await lock.getAddress(), signer, discount, cap)
+    ).wait()
 
     // Let's get the price without a promo code
-    const price = await lock.purchasePriceFor(user.address, user.address, data)
+    const price = await lock.purchasePriceFor(
+      await user.getAddress(),
+      await user.getAddress(),
+      data
+    )
     assert.equal(ethers.formatEther(price), '0.07')
 
     // Let's make a purchase!
     await (
       await lock.purchase(
         [price],
-        [user.address],
-        [user.address],
-        [user.address],
+        [await user.getAddress()],
+        [await user.getAddress()],
+        [await user.getAddress()],
         [data],
         {
           value: price,
@@ -108,7 +114,9 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect((await lock.balanceOf(user.address)).toNumber()).to.equal(1)
+    expect((await lock.balanceOf(await user.getAddress())).toNumber()).to.equal(
+      1
+    )
   })
 
   it('should work as a hook even when a bad signature is provided', async function () {
@@ -124,7 +132,7 @@ describe('DiscountHook', function () {
 
     await (
       await lock.setEventHooks(
-        hook.address,
+        await hook.getAddress(),
         ethers.AddressZero,
         ethers.AddressZero,
         ethers.AddressZero,
@@ -135,23 +143,27 @@ describe('DiscountHook', function () {
     ).wait()
     // Let's get the price without a promo code
     const priceWithout = await lock.purchasePriceFor(
-      user.address,
-      user.address,
+      await user.getAddress(),
+      await user.getAddress(),
       []
     )
     assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
     // Let's get the price without a promo code
-    const price = await lock.purchasePriceFor(user.address, user.address, [])
+    const price = await lock.purchasePriceFor(
+      await user.getAddress(),
+      await user.getAddress(),
+      []
+    )
     assert.equal(ethers.formatEther(price), '0.1')
 
     // Let's make a purchase!
     await (
       await lock.purchase(
         [price],
-        [user.address],
-        [user.address],
-        [user.address],
+        [await user.getAddress()],
+        [await user.getAddress()],
+        [await user.getAddress()],
         [[]],
         {
           value: price,
@@ -159,7 +171,9 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect((await lock.balanceOf(user.address)).toNumber()).to.equal(1)
+    expect((await lock.balanceOf(await user.getAddress())).toNumber()).to.equal(
+      1
+    )
   })
 
   it('should enforce the cap', async function () {
@@ -175,7 +189,7 @@ describe('DiscountHook', function () {
 
     await (
       await lock.setEventHooks(
-        hook.address,
+        await hook.getAddress(),
         ethers.AddressZero,
         ethers.AddressZero,
         ethers.AddressZero,
@@ -186,8 +200,8 @@ describe('DiscountHook', function () {
     ).wait()
     // Let's get the price without a promo code
     const priceWithout = await lock.purchasePriceFor(
-      user.address,
-      user.address,
+      await user.getAddress(),
+      await user.getAddress(),
       []
     )
     assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
@@ -197,23 +211,29 @@ describe('DiscountHook', function () {
     const cap = 1
     const [data, signer] = await getSignatureForPassword(
       code,
-      user.address.toLowerCase()
+      await user.getAddress().toLowerCase()
     )
 
     // Set the code on the hook for the lock
-    await (await hook.setSigner(lock.address, signer, discount, cap)).wait()
+    await (
+      await hook.setSigner(await lock.getAddress(), signer, discount, cap)
+    ).wait()
 
     // Let's get the price without a promo code
-    const price = await lock.purchasePriceFor(user.address, user.address, data)
+    const price = await lock.purchasePriceFor(
+      await user.getAddress(),
+      await user.getAddress(),
+      data
+    )
     assert.equal(ethers.formatEther(price), '0.07')
 
     // Let's make a purchase!
     await (
       await lock.purchase(
         [price],
-        [user.address],
-        [user.address],
-        [user.address],
+        [await user.getAddress()],
+        [await user.getAddress()],
+        [await user.getAddress()],
         [data],
         {
           value: price,
@@ -221,16 +241,18 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect((await lock.balanceOf(user.address)).toNumber()).to.equal(1)
+    expect((await lock.balanceOf(await user.getAddress())).toNumber()).to.equal(
+      1
+    )
 
     // Let's now get the price again for another user with the same code
     const [dataOther] = await getSignatureForPassword(
       code,
-      other.address.toLowerCase()
+      await other.getAddress().toLowerCase()
     )
     const priceOther = await lock.purchasePriceFor(
-      other.address,
-      other.address,
+      await other.getAddress(),
+      await other.getAddress(),
       dataOther
     )
     assert.equal(ethers.formatEther(priceOther), '0.1')

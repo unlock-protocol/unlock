@@ -51,9 +51,9 @@ describe('Unlock / protocolFee', async () => {
         if (isErc20) {
           dai = await deployERC20(unlockOwner, true)
           // Mint some dais for testing
-          await dai.mint(keyOwner.address, someDai)
+          await dai.mint(await keyOwner.getAddress(), someDai)
         }
-        tokenAddress = isErc20 ? dai.address : ADDRESS_ZERO
+        tokenAddress = isErc20 ? await dai.getAddress() : ADDRESS_ZERO
 
         // deploy a lock
         lock = await deployLock({ unlock, tokenAddress, isEthers: true })
@@ -73,18 +73,25 @@ describe('Unlock / protocolFee', async () => {
       describe('pays fees to Unlock correctly when', () => {
         it('purchasing a single key', async () => {
           const unlockBalanceBefore = await getBalance(
-            unlock.address,
+            await unlock.getAddress(),
             tokenAddress
           )
           if (isErc20) {
-            await dai.connect(keyOwner).approve(lock.address, keyPrice)
+            await dai
+              .connect(keyOwner)
+              .approve(await lock.getAddress(), keyPrice)
           }
-          await purchaseKey(lock, keyOwner.address, isErc20, keyPrice)
+          await purchaseKey(
+            lock,
+            await keyOwner.getAddress(),
+            isErc20,
+            keyPrice
+          )
           const fee =
             (keyPrice * (await unlock.protocolFee())) / BASIS_POINT_DENOMINATOR
 
           const unlockBalanceAfter = await getBalance(
-            unlock.address,
+            await unlock.getAddress(),
             tokenAddress
           )
           assert.equal(
@@ -95,15 +102,17 @@ describe('Unlock / protocolFee', async () => {
 
         it('purchasing multiple keys', async () => {
           const unlockBalanceBefore = await getBalance(
-            unlock.address,
+            await unlock.getAddress(),
             tokenAddress
           )
           if (isErc20) {
-            await dai.connect(keyOwner).approve(lock.address, keyPrice * 3)
+            await dai
+              .connect(keyOwner)
+              .approve(await lock.getAddress(), keyPrice * 3)
           }
           await purchaseKeys(lock, 3, isErc20, keyOwner)
           const unlockBalanceAfter = await getBalance(
-            unlock.address,
+            await unlock.getAddress(),
             tokenAddress
           )
           assert.equal(
@@ -114,15 +123,17 @@ describe('Unlock / protocolFee', async () => {
 
         it('extending a key', async () => {
           const unlockBalanceBefore = await getBalance(
-            unlock.address,
+            await unlock.getAddress(),
             tokenAddress
           )
           if (isErc20) {
-            await dai.connect(keyOwner).approve(lock.address, keyPrice * 2)
+            await dai
+              .connect(keyOwner)
+              .approve(await lock.getAddress(), keyPrice * 2)
           }
           const { tokenId } = await purchaseKey(
             lock,
-            keyOwner.address,
+            await keyOwner.getAddress(),
             isErc20,
             keyPrice
           )
@@ -132,7 +143,7 @@ describe('Unlock / protocolFee', async () => {
               value: isErc20 ? 0 : keyPrice,
             })
           const unlockBalanceAfter = await getBalance(
-            unlock.address,
+            await unlock.getAddress(),
             tokenAddress
           )
           assert.equal(
@@ -144,18 +155,24 @@ describe('Unlock / protocolFee', async () => {
         if (isErc20) {
           it('renewing a key', async () => {
             const unlockBalanceBefore = await getBalance(
-              unlock.address,
+              await unlock.getAddress(),
               tokenAddress
             )
 
-            await dai.connect(keyOwner).approve(lock.address, keyPrice * 2)
-            const { tokenId } = await purchaseKey(lock, keyOwner.address, true)
+            await dai
+              .connect(keyOwner)
+              .approve(await lock.getAddress(), keyPrice * 2)
+            const { tokenId } = await purchaseKey(
+              lock,
+              await keyOwner.getAddress(),
+              true
+            )
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
             await increaseTimeTo(expirationTs)
 
             await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
             const unlockBalanceAfter = await getBalance(
-              unlock.address,
+              await unlock.getAddress(),
               tokenAddress
             )
             assert.equal(

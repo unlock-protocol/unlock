@@ -47,29 +47,29 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
     ;({ oracle, weth } = await createUniswapV2Exchange({
       protocolOwner,
       minter,
-      udtAddress: udt.address,
+      udtAddress: await udt.getAddress(),
     }))
 
     // default config Unlock oracle
     await unlock.configUnlock(
-      udt.address,
-      weth.address,
+      await udt.getAddress(),
+      await weth.getAddress(),
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
       1
     )
 
-    await unlock.setOracle(udt.address, oracle.address)
+    await unlock.setOracle(await udt.getAddress(), await oracle.getAddress())
 
     // Advance time so 1 full period has past and then update again so we have data point to read
     await increaseTime(30)
-    await oracle.update(weth.address, udt.address)
+    await oracle.update(await weth.getAddress(), await udt.getAddress())
 
     // Purchase a valid key for the referrer
     await lock.purchase(
       [],
-      [referrer.address],
+      [await referrer.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
       [[]],
@@ -79,13 +79,13 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
     )
 
     rate = await oracle.consult(
-      udt.address,
+      await udt.getAddress(),
       ethers.parseUnits('1', 'ether'),
-      weth.address
+      await weth.getAddress()
     )
 
     // Mint another 1000000
-    await udt.connect(minter).mint(unlock.address, mintAmount)
+    await udt.connect(minter).mint(await unlock.getAddress(), mintAmount)
   })
 
   it('exchange rate is > 0', async () => {
@@ -95,7 +95,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
   })
 
   it('referrer has 0 UDT to start', async () => {
-    const actual = await udt.balanceOf(referrer.address)
+    const actual = await udt.balanceOf(await referrer.getAddress())
     compareBigNumbers(actual, '0')
   })
 
@@ -104,7 +104,10 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
   })
 
   it('unlock has some 0 UDT', async () => {
-    compareBigNumbers(await udt.balanceOf(await unlock.address), mintAmount)
+    compareBigNumbers(
+      await udt.balanceOf(await await unlock.getAddress()),
+      mintAmount
+    )
   })
 
   scenarios.forEach((chainId) => {
@@ -113,8 +116,8 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
     describe(`behaviour on chain with ${chainId}`, () => {
       before(async () => {
         await unlock.configUnlock(
-          udt.address,
-          weth.address,
+          await udt.getAddress(),
+          await weth.getAddress(),
           estimateGas,
           await unlock.globalTokenSymbol(),
           await unlock.globalBaseTokenURI(),
@@ -129,13 +132,15 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
           await unlock.resetTrackedValue(ethers.parseUnits('1', 'wei'), 0)
 
-          const balanceReferrerBefore = await udt.balanceOf(referrer.address)
+          const balanceReferrerBefore = await udt.balanceOf(
+            await referrer.getAddress()
+          )
           const { blockNumber } = await lock
             .connect(keyBuyer)
             .purchase(
               [],
-              [keyBuyer.address],
-              [referrer.address],
+              [await keyBuyer.getAddress()],
+              [await referrer.getAddress()],
               [ADDRESS_ZERO],
               [[]],
               {
@@ -150,7 +155,8 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           gasSpent = baseFeePerGas * estimateGas
 
           balanceReferrer =
-            (await udt.balanceOf(referrer.address)) - balanceReferrerBefore
+            (await udt.balanceOf(await referrer.getAddress())) -
+            balanceReferrerBefore
         })
 
         it('referrer has received some UDT now', async () => {
@@ -183,13 +189,15 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
             BigInt(baseFeePerGas).toHexString(16),
           ])
 
-          const balanceReferrerBefore = await udt.balanceOf(referrer.address)
+          const balanceReferrerBefore = await udt.balanceOf(
+            await referrer.getAddress()
+          )
           await lock
             .connect(keyBuyer)
             .purchase(
               [],
-              [keyBuyer.address],
-              [referrer.address],
+              [await keyBuyer.getAddress()],
+              [await referrer.getAddress()],
               [ADDRESS_ZERO],
               [[]],
               {
@@ -199,7 +207,8 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
             )
 
           balanceReferrer =
-            (await udt.balanceOf(referrer.address)) - balanceReferrerBefore
+            (await udt.balanceOf(await referrer.getAddress())) -
+            balanceReferrerBefore
         })
 
         it('referrer has some UDT now', async () => {

@@ -31,7 +31,7 @@ describe('Lock / purchaseFor', () => {
       await reverts(
         lock.purchase(
           [],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -42,13 +42,16 @@ describe('Lock / purchaseFor', () => {
         'INSUFFICIENT_VALUE'
       )
       // Making sure we do not have a key set!
-      assert.equal(await lock.keyExpirationTimestampFor(keyOwner.address), 0)
+      assert.equal(
+        await lock.keyExpirationTimestampFor(await keyOwner.getAddress()),
+        0
+      )
     })
 
     it('should fail if we reached the max number of keys', async () => {
       await lockSingleKey.purchase(
         [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -59,7 +62,7 @@ describe('Lock / purchaseFor', () => {
       await reverts(
         lockSingleKey.purchase(
           [],
-          [anotherKeyOwner.address],
+          [await anotherKeyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -74,7 +77,7 @@ describe('Lock / purchaseFor', () => {
     it('should trigger an event when successful', async () => {
       const tx = await lock.purchase(
         [],
-        [anotherKeyOwner.address],
+        [await anotherKeyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -86,7 +89,7 @@ describe('Lock / purchaseFor', () => {
       const { args } = await getEvent(receipt, 'Transfer')
 
       assert.equal(args.from, 0)
-      assert.equal(args.to, anotherKeyOwner.address)
+      assert.equal(args.to, await anotherKeyOwner.getAddress())
 
       // Verify that RenewKeyPurchase does not emit on a first key purchase
       const event = await getEvent(receipt, 'RenewKeyPurchase')
@@ -97,7 +100,7 @@ describe('Lock / purchaseFor', () => {
       it('should create a new key', async () => {
         const tx = await anotherLock.purchase(
           [],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -105,21 +108,36 @@ describe('Lock / purchaseFor', () => {
             value: keyPrice,
           }
         )
-        assert.equal(await anotherLock.balanceOf(keyOwner.address), 1)
-        assert.equal(await anotherLock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await anotherLock.balanceOf(await keyOwner.getAddress()),
+          1
+        )
+        assert.equal(
+          await anotherLock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
 
         // let's now expire the key
         const receipt = await tx.wait()
         const { args } = await getEvent(receipt, 'Transfer')
         await anotherLock.expireAndRefundFor(args.tokenId, 0)
-        assert.equal(await anotherLock.getHasValidKey(keyOwner.address), false)
-        assert.equal(await anotherLock.balanceOf(keyOwner.address), 0)
-        assert.equal(await anotherLock.totalKeys(keyOwner.address), 1)
+        assert.equal(
+          await anotherLock.getHasValidKey(await keyOwner.getAddress()),
+          false
+        )
+        assert.equal(
+          await anotherLock.balanceOf(await keyOwner.getAddress()),
+          0
+        )
+        assert.equal(
+          await anotherLock.totalKeys(await keyOwner.getAddress()),
+          1
+        )
 
         // Purchase a new one
         await anotherLock.purchase(
           [],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -127,9 +145,18 @@ describe('Lock / purchaseFor', () => {
             value: keyPrice,
           }
         )
-        assert.equal(await anotherLock.balanceOf(keyOwner.address), 1)
-        assert.equal(await anotherLock.getHasValidKey(keyOwner.address), true)
-        assert.equal(await anotherLock.totalKeys(keyOwner.address), 2)
+        assert.equal(
+          await anotherLock.balanceOf(await keyOwner.getAddress()),
+          1
+        )
+        assert.equal(
+          await anotherLock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
+        assert.equal(
+          await anotherLock.totalKeys(await keyOwner.getAddress()),
+          2
+        )
       })
     })
 
@@ -137,7 +164,7 @@ describe('Lock / purchaseFor', () => {
       it('should create a new key', async () => {
         await lock.purchase(
           [],
-          [anotherKeyOwner.address],
+          [await anotherKeyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -145,10 +172,13 @@ describe('Lock / purchaseFor', () => {
             value: keyPrice,
           }
         )
-        assert.equal(await lock.balanceOf(anotherKeyOwner.address), 1)
+        assert.equal(
+          await lock.balanceOf(await anotherKeyOwner.getAddress()),
+          1
+        )
         await lock.purchase(
           [],
-          [anotherKeyOwner.address],
+          [await anotherKeyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -156,7 +186,10 @@ describe('Lock / purchaseFor', () => {
             value: keyPrice,
           }
         )
-        assert.equal(await lock.balanceOf(anotherKeyOwner.address), 2)
+        assert.equal(
+          await lock.balanceOf(await anotherKeyOwner.getAddress()),
+          2
+        )
       })
     })
 
@@ -168,12 +201,12 @@ describe('Lock / purchaseFor', () => {
       let tokenId
 
       beforeEach(async () => {
-        balanceBefore = await getBalance(lock.address)
+        balanceBefore = await getBalance(await lock.getAddress())
         totalSupplyBefore = await lock.totalSupply()
         numberOfOwnersBefore = await lock.numberOfOwners()
         const tx = await lock.purchase(
           [],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -199,7 +232,7 @@ describe('Lock / purchaseFor', () => {
 
       it('should have added the funds to the contract', async () => {
         compareBigNumbers(
-          await getBalance(lock.address),
+          await getBalance(await lock.getAddress()),
           balanceBefore + keyPrice
         )
       })
@@ -216,7 +249,7 @@ describe('Lock / purchaseFor', () => {
     it('can purchase a free key', async () => {
       const tx = await lockFree.purchase(
         [],
-        [anotherKeyOwner.address],
+        [await anotherKeyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]]
@@ -224,7 +257,7 @@ describe('Lock / purchaseFor', () => {
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(args.from, 0)
-      assert.equal(args.to, anotherKeyOwner.address)
+      assert.equal(args.to, await anotherKeyOwner.getAddress())
     })
   })
 })

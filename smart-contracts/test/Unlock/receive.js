@@ -14,19 +14,19 @@ describe('Unlock / receive', async () => {
 
   describe('Unlock contract receiving native tokens', () => {
     it('works correctly', async () => {
-      const balanceBefore = await getBalance(unlock.address)
+      const balanceBefore = await getBalance(await unlock.getAddress())
       await signer.sendTransaction({
-        to: unlock.address,
+        to: await unlock.getAddress(),
         value: oneEth,
       })
       assert.equal(
         balanceBefore + oneEth.toString(),
-        (await getBalance(unlock.address)).toString()
+        (await getBalance(await unlock.getAddress())).toString()
       )
     })
     it('reverts with null value', async () => {
       await reverts(
-        signer.sendTransaction({ to: unlock.address, value: 0 }),
+        signer.sendTransaction({ to: await unlock.getAddress(), value: 0 }),
         'Unlock__INVALID_AMOUNT'
       )
     })

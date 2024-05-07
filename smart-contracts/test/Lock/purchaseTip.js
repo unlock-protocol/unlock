@@ -26,16 +26,21 @@ describe('Lock / purchaseTip', () => {
         ;[deployer, spender] = await ethers.getSigners()
         testToken = await deployERC20(deployer)
         // Mint some tokens for testing
-        await testToken.mint(spender.address, '100000000000000000000')
+        await testToken.mint(
+          await spender.getAddress(),
+          '100000000000000000000'
+        )
 
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
         lock = await deployLock({ tokenAddress })
         // default to spender
         lock = lock.connect(spender)
 
         // Approve spending
         if (isErc20) {
-          await testToken.connect(spender).approve(lock.address, MAX_UINT)
+          await testToken
+            .connect(spender)
+            .approve(await lock.getAddress(), MAX_UINT)
         }
       })
 
@@ -43,7 +48,7 @@ describe('Lock / purchaseTip', () => {
         beforeEach(async () => {
           await lock.purchase(
             [keyPrice],
-            [spender.address],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]],
@@ -55,7 +60,7 @@ describe('Lock / purchaseTip', () => {
 
         it('user sent keyPrice to the contract', async () => {
           compareBigNumbers(
-            await getBalance(lock.address, tokenAddress),
+            await getBalance(await lock.getAddress(), tokenAddress),
             keyPrice
           )
         })
@@ -65,7 +70,7 @@ describe('Lock / purchaseTip', () => {
         beforeEach(async () => {
           await lock.purchase(
             [keyPrice + tip],
-            [spender.address],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]],
@@ -77,7 +82,7 @@ describe('Lock / purchaseTip', () => {
 
         it('user sent the tip to the contract', async () => {
           compareBigNumbers(
-            await getBalance(lock.address, tokenAddress),
+            await getBalance(await lock.getAddress(), tokenAddress),
             isErc20 ? keyPrice : keyPrice + tip
           )
         })
@@ -87,7 +92,7 @@ describe('Lock / purchaseTip', () => {
         beforeEach(async () => {
           await lock.purchase(
             [keyPrice],
-            [spender.address],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]],
@@ -98,7 +103,10 @@ describe('Lock / purchaseTip', () => {
         })
 
         it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-          const balance = await getBalance(lock.address, tokenAddress)
+          const balance = await getBalance(
+            await lock.getAddress(),
+            tokenAddress
+          )
           if (!isErc20) {
             compareBigNumbers(balance, keyPrice + tip)
           } else {
@@ -112,7 +120,7 @@ describe('Lock / purchaseTip', () => {
           beforeEach(async () => {
             await lock.purchase(
               [],
-              [spender.address],
+              [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
               [[]],
@@ -123,7 +131,10 @@ describe('Lock / purchaseTip', () => {
           })
 
           it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-            const balance = await getBalance(lock.address, tokenAddress)
+            const balance = await getBalance(
+              await lock.getAddress(),
+              tokenAddress
+            )
             compareBigNumbers(balance, keyPrice + tip)
           })
         })
@@ -134,7 +145,7 @@ describe('Lock / purchaseTip', () => {
           await reverts(
             lock.purchase(
               [ethers.parseUnits('0.001', 'ether')],
-              [spender.address],
+              [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
               [[]],

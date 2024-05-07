@@ -20,8 +20,11 @@ describe('Lock / erc20', () => {
       await ethers.getSigners()
     token = await deployERC20(deployer, true)
     // Mint some tokens so that the totalSupply is greater than 0
-    await token.connect(deployer).mint(deployer.address, 1)
-    lock = await deployLock({ tokenAddress: token.address, isEthers: true })
+    await token.connect(deployer).mint(await deployer.getAddress(), 1)
+    lock = await deployLock({
+      tokenAddress: await token.getAddress(),
+      isEthers: true,
+    })
   })
 
   describe('creating ERC20 priced locks', () => {
@@ -32,18 +35,24 @@ describe('Lock / erc20', () => {
 
     beforeEach(async () => {
       // Pre-req
-      assert.equal(await token.balanceOf(keyOwner.address), 0)
-      assert.equal(await token.balanceOf(lock.address), 0)
+      assert.equal(await token.balanceOf(await keyOwner.getAddress()), 0)
+      assert.equal(await token.balanceOf(await lock.getAddress()), 0)
 
       // Mint some tokens for testing
-      await token.connect(deployer).mint(keyOwner.address, defaultBalance)
-      await token.connect(deployer).mint(keyOwner2.address, defaultBalance)
-      await token.connect(deployer).mint(keyOwner3.address, defaultBalance)
+      await token
+        .connect(deployer)
+        .mint(await keyOwner.getAddress(), defaultBalance)
+      await token
+        .connect(deployer)
+        .mint(await keyOwner2.getAddress(), defaultBalance)
+      await token
+        .connect(deployer)
+        .mint(await keyOwner3.getAddress(), defaultBalance)
 
       // Approve the lock to make transfers
-      await token.connect(keyOwner).approve(lock.address, MAX_UINT)
-      await token.connect(keyOwner2).approve(lock.address, MAX_UINT)
-      await token.connect(keyOwner3).approve(lock.address, MAX_UINT)
+      await token.connect(keyOwner).approve(await lock.getAddress(), MAX_UINT)
+      await token.connect(keyOwner2).approve(await lock.getAddress(), MAX_UINT)
+      await token.connect(keyOwner3).approve(await lock.getAddress(), MAX_UINT)
 
       keyPrice = await lock.keyPrice()
       refundAmount = keyPrice
@@ -52,30 +61,42 @@ describe('Lock / erc20', () => {
     describe('users can purchase keys', () => {
       let tokenId
       beforeEach(async () => {
-        ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+        ;({ tokenId } = await purchaseKey(
+          lock,
+          await keyOwner.getAddress(),
+          true
+        ))
       })
 
       it('charges correct amount on purchaseKey', async () => {
-        const balance = await token.balanceOf(keyOwner.address)
+        const balance = await token.balanceOf(await keyOwner.getAddress())
         compareBigNumbers(balance, defaultBalance - keyPrice)
       })
 
       it('transferred the tokens to the contract', async () => {
-        const balance = await token.balanceOf(lock.address)
+        const balance = await token.balanceOf(await lock.getAddress())
         compareBigNumbers(balance, keyPrice)
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        const { tokenId } = await purchaseKey(lock, keyOwner3.address, true)
+        const { tokenId } = await purchaseKey(
+          lock,
+          await keyOwner3.getAddress(),
+          true
+        )
 
-        const balanceOwnerBefore = await token.balanceOf(keyOwner3.address)
-        const balanceLockBefore = await token.balanceOf(lock.address)
+        const balanceOwnerBefore = await token.balanceOf(
+          await keyOwner3.getAddress()
+        )
+        const balanceLockBefore = await token.balanceOf(await lock.getAddress())
 
         await lock
           .connect(lockManager)
           .expireAndRefundFor(tokenId, refundAmount)
-        const balanceOwnerAfter = await token.balanceOf(keyOwner3.address)
-        const balanceLockAfter = await token.balanceOf(lock.address)
+        const balanceOwnerAfter = await token.balanceOf(
+          await keyOwner3.getAddress()
+        )
+        const balanceLockAfter = await token.balanceOf(await lock.getAddress())
 
         compareBigNumbers(balanceLockBefore - keyPrice, balanceLockAfter)
 
@@ -83,22 +104,22 @@ describe('Lock / erc20', () => {
       })
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
-        const balance = await token.balanceOf(keyOwner.address)
+        const balance = await token.balanceOf(await keyOwner.getAddress())
         await lock.connect(keyOwner).cancelAndRefund(tokenId)
-        assert(balance < (await token.balanceOf(keyOwner.address)))
+        assert(balance < (await token.balanceOf(await keyOwner.getAddress())))
       })
 
       it('the owner can withdraw tokens', async () => {
-        const lockBalance = await token.balanceOf(lock.address)
-        const ownerBalance = await token.balanceOf(deployer.address)
+        const lockBalance = await token.balanceOf(await lock.getAddress())
+        const ownerBalance = await token.balanceOf(await deployer.getAddress())
 
         await lock
           .connect(lockManager)
-          .withdraw(await lock.tokenAddress(), deployer.address, 0)
+          .withdraw(await lock.tokenAddress(), await deployer.getAddress(), 0)
 
-        compareBigNumbers(await token.balanceOf(lock.address), 0)
+        compareBigNumbers(await token.balanceOf(await lock.getAddress()), 0)
         compareBigNumbers(
-          await token.balanceOf(deployer.address),
+          await token.balanceOf(await deployer.getAddress()),
           ownerBalance + lockBalance
         )
       })
@@ -110,43 +131,51 @@ describe('Lock / erc20', () => {
           .connect(keyOwner)
           .purchase(
             [referrer],
-            [keyOwner.address],
+            [await keyOwner.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]]
           )
-        const balanceBefore = await token.balanceOf(keyOwner2.address)
+        const balanceBefore = await token.balanceOf(
+          await keyOwner2.getAddress()
+        )
 
         await lock
           .connect(keyOwner2)
           .purchase(
             [keyPrice],
-            [keyOwner2.address],
+            [await keyOwner2.getAddress()],
             [referrer],
             [ADDRESS_ZERO],
             [[]]
           )
 
-        const balance = await token.balanceOf(keyOwner2.address)
+        const balance = await token.balanceOf(await keyOwner2.getAddress())
         compareBigNumbers(balance, balanceBefore - keyPrice)
       })
 
       it('can transfer the key to another user', async () => {
         await lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, random.address, tokenId)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await random.getAddress(),
+            tokenId
+          )
       })
     })
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
-      await token.connect(random).approve(lock.address, MAX_UINT)
-      await token.connect(deployer).mint(random.address, keyPrice - 1)
+      await token.connect(random).approve(await lock.getAddress(), MAX_UINT)
+      await token
+        .connect(deployer)
+        .mint(await random.getAddress(), keyPrice - 1)
       await reverts(
         lock
           .connect(random)
           .purchase(
             [keyPrice],
-            [random.address],
+            [await random.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]]
@@ -155,13 +184,13 @@ describe('Lock / erc20', () => {
     })
 
     it('purchaseKey fails when the user did not give the contract an allowance', async () => {
-      await token.connect(deployer).mint(random.address, keyPrice)
+      await token.connect(deployer).mint(await random.getAddress(), keyPrice)
       await reverts(
         lock
           .connect(random)
           .purchase(
             [keyPrice],
-            [random.address],
+            [await random.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [[]]
@@ -172,10 +201,11 @@ describe('Lock / erc20', () => {
 
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
-      const nonToken = await ethers.getContractFactory('TestNoop')
+      const NonToken = await ethers.getContractFactory('TestNoop')
+      const nonToken = await NonToken.deploy()
       await reverts(
         deployLock({
-          tokenAddress: (await nonToken.deploy()).address,
+          tokenAddress: await nonToken.getAddress(),
         })
       )
     })

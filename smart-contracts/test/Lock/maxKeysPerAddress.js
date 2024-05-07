@@ -21,7 +21,7 @@ describe('Lock / maxKeysPerAddress', () => {
   describe('enforcing the number of keys per address', () => {
     let tokenId
     before(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('default to 1', async () => {
@@ -32,7 +32,7 @@ describe('Lock / maxKeysPerAddress', () => {
       await reverts(
         lock.purchase(
           [],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -91,7 +91,7 @@ describe('Lock / maxKeysPerAddress', () => {
       await reverts(
         lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, anotherAccount, tokenId),
+          .transferFrom(await keyOwner.getAddress(), anotherAccount, tokenId),
         'MAX_KEYS'
       )
     })

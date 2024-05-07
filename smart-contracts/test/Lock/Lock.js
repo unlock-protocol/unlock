@@ -34,7 +34,10 @@ describe('Lock / Lock', () => {
 
   it('Should fail on unknown calls', async () => {
     const [, recipient] = await ethers.getSigners()
-    const mock777 = await ethers.getContractAt(erc777abi, lock.address)
-    await reverts(mock777.send(recipient.address, 1, '0x'))
+    const mock777 = await ethers.getContractAt(
+      erc777abi,
+      await lock.getAddress()
+    )
+    await reverts(mock777.send(await recipient.getAddress(), 1, '0x'))
   })
 })

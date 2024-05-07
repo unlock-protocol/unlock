@@ -49,7 +49,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
     const [, lockOwner] = await ethers.getSigners()
     // deploy a simple lock
     const args = [
-      lockOwner.address,
+      await lockOwner.getAddress(),
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
       keyPrice,
@@ -74,36 +74,55 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
       // purchase many keys
       await Promise.all(
-        buyers.map((keyOwner) =>
-          lock
+        buyers.map(async (keyOwner) => {
+          await lock
             .connect(keyOwner)
-            .purchase(0, keyOwner.address, ADDRESS_ZERO, ADDRESS_ZERO, [], {
-              value: keyPrice,
-            })
-        )
+            .purchase(
+              0,
+              await keyOwner.getAddress(),
+              ADDRESS_ZERO,
+              ADDRESS_ZERO,
+              [],
+              {
+                value: keyPrice,
+              }
+            )
+        })
       )
 
       tokenIds = await Promise.all(
-        buyers.map((b) => lock.getTokenIdFor(b.address))
+        buyers.map(async (b) => lock.getTokenIdFor(await b.getAddress()))
       )
       expirationTimestamps = await Promise.all(
-        buyers.map((b) => lock.keyExpirationTimestampFor(b.address))
+        buyers.map(async (b) =>
+          lock.keyExpirationTimestampFor(await b.getAddress())
+        )
       )
 
       // make sure record is proper before upgrade
       assert.equal(await lock.publicLockVersion(), 9)
-      assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
-      assert.equal(await lock.balanceOf(buyers[0].address), 1)
+      assert.equal(
+        await lock.ownerOf(tokenIds[0]),
+        await buyers[0].getAddress()
+      )
+      assert.equal(await lock.balanceOf(await buyers[0].getAddress()), 1)
 
       totalSupplyBefore = await lock.totalSupply()
 
       // deploy new implementation
-      lock = await upgrades.upgradeProxy(lock.address, PublicLockLatest, {
-        unsafeSkipStorageCheck: true, // UNSECURE - but we need the flag as we are resizing the `__gap`
-      })
+      lock = await upgrades.upgradeProxy(
+        await lock.getAddress(),
+        PublicLockLatest,
+        {
+          unsafeSkipStorageCheck: true, // UNSECURE - but we need the flag as we are resizing the `__gap`
+        }
+      )
 
       // make sure ownership is preserved
-      assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
+      assert.equal(
+        await lock.ownerOf(tokenIds[0]),
+        await buyers[0].getAddress()
+      )
 
       // set many keys
       const [, lockOwner] = await ethers.getSigners()
@@ -119,7 +138,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
         await reverts(
           lock.connect(buyers[0]).purchase(
             [],
-            buyers.map((k) => k.address),
+            await Promise.all(buyers.map((k) => k.getAddress())),
             buyers.map(() => ADDRESS_ZERO),
             buyers.map(() => ADDRESS_ZERO),
             buyers.map(() => []),
@@ -133,7 +152,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
       it('grantKeys should fail ', async () => {
         await reverts(
           lock.connect(buyers[0]).grantKeys(
-            buyers.map((k) => k.address),
+            await Promise.all(buyers.map((k) => k.getAddress())),
             buyers.map(() => Date.now()),
             buyers.map(() => ADDRESS_ZERO)
           ),
@@ -190,9 +209,15 @@ describe('PublicLock upgrade  v9 > v10', () => {
         for (let i = 0; i < totalSupply; i++) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
-          assert.equal(await lock.ownerOf(tokenId), buyers[i].address)
-          assert.equal(await lock.balanceOf(buyers[i].address), 1)
-          assert.equal(await lock.getHasValidKey(buyers[i].address), true)
+          assert.equal(
+            await lock.ownerOf(tokenId),
+            await buyers[i].getAddress()
+          )
+          assert.equal(await lock.balanceOf(await buyers[i].getAddress()), 1)
+          assert.equal(
+            await lock.getHasValidKey(await buyers[i].getAddress()),
+            true
+          )
           assert.equal(
             (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
             expirationTimestamps[i].toNumber()
@@ -203,7 +228,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
       it('purchase should now work ', async () => {
         const tx = await lock.connect(buyers[0]).purchase(
           [],
-          buyers.map((k) => k.address),
+          await Promise.all(buyers.map((k) => k.getAddress())),
           buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => []),
@@ -220,7 +245,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
       it('grantKeys should now work ', async () => {
         const tx = await lock.connect(buyers[0]).grantKeys(
-          buyers.map((k) => k.address),
+          await Promise.all(buyers.map((k) => k.getAddress())),
           buyers.map(() => Date.now()),
           buyers.map(() => ADDRESS_ZERO)
         )

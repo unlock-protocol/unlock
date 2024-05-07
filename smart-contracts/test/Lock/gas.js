@@ -10,7 +10,7 @@ describe('Lock / gas', () => {
     const [signer] = await ethers.getSigners()
     let tx = await lock.purchase(
       [],
-      [signer.address],
+      [await signer.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
       [[]],

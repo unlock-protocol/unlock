@@ -24,7 +24,7 @@ describe('Lock / timeMachine', () => {
     timestampBefore = (await BigInt(now)) + expirationDuration
 
     const tx = await timeMachine.createNewKey(
-      keyOwner.address,
+      await keyOwner.getAddress(),
       ADDRESS_ZERO, // beneficiary
       timestampBefore
     )
@@ -89,7 +89,7 @@ describe('Lock / timeMachine', () => {
     })
     it('should prevent overflow work for a non-existant key', async () => {
       const tx = await timeMachine.createNewKey(
-        keyOwner.address,
+        await keyOwner.getAddress(),
         ADDRESS_ZERO, // beneficiary
         MAX_UINT
       )

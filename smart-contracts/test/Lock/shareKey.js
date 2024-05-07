@@ -32,7 +32,9 @@ describe('Lock / shareKey', () => {
     describe('not meeting pre-requisites', () => {
       it('sender is not approved', async () => {
         await reverts(
-          lock.connect(signers[4]).shareKey(signers[7].address, 11, 1000),
+          lock
+            .connect(signers[4])
+            .shareKey(await signers[7].getAddress(), 11, 1000),
           'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
@@ -41,7 +43,7 @@ describe('Lock / shareKey', () => {
         await reverts(
           lock
             .connect(signers[6])
-            .shareKey(signers[3].address, tokenIds[0], 1000),
+            .shareKey(await signers[3].getAddress(), tokenIds[0], 1000),
           'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
@@ -58,7 +60,7 @@ describe('Lock / shareKey', () => {
         await reverts(
           lock
             .connect(keyOwners[0])
-            .shareKey(keyOwners[0].address, tokenIds[0], 1000),
+            .shareKey(await keyOwners[0].getAddress(), tokenIds[0], 1000),
           'LOCK_SOLD_OUT'
         )
       })
@@ -72,7 +74,10 @@ describe('Lock / shareKey', () => {
       const { address } = await NonCompliantContract.deploy()
 
       assert.equal(await lock.isValidKey(tokenIds[2]), true)
-      assert.equal(await lock.ownerOf(tokenIds[2]), keyOwners[2].address)
+      assert.equal(
+        await lock.ownerOf(tokenIds[2]),
+        await keyOwners[2].getAddress()
+      )
       await reverts(
         lock.connect(keyOwners[2]).shareKey(address, tokenIds[2], 1000)
       )
@@ -120,11 +125,17 @@ describe('Lock / shareKey', () => {
 
       it('The origin key is expired', async () => {
         assert.equal(await lock.isValidKey(tokenIds[1]), false)
-        assert.equal(await lock.getHasValidKey(keyOwners[1].address), false)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwners[1].getAddress()),
+          false
+        )
       })
 
       it('The original owner still owns their key', async () => {
-        assert.equal(await lock.ownerOf(tokenIds[1]), keyOwners[1].address)
+        assert.equal(
+          await lock.ownerOf(tokenIds[1]),
+          await keyOwners[1].getAddress()
+        )
       })
     })
   })
@@ -217,7 +228,7 @@ describe('Lock / shareKey', () => {
         const { args: transferKeyEventArgs } = transfers.find(
           ({ args: { from } }) => from !== ADDRESS_ZERO
         )
-        assert.equal(transferKeyEventArgs.from, keyOwners[2].address)
+        assert.equal(transferKeyEventArgs.from, await keyOwners[2].getAddress())
         assert.equal(transferKeyEventArgs.to, accountWithNoKey2)
         assert.equal(
           transferKeyEventArgs.tokenId.toString(),
@@ -239,7 +250,10 @@ describe('Lock / shareKey', () => {
       })
 
       it('should preserve ownership record', async () => {
-        assert.equal(await lock.ownerOf(tokenIds[2]), keyOwners[2].address)
+        assert.equal(
+          await lock.ownerOf(tokenIds[2]),
+          await keyOwners[2].getAddress()
+        )
       })
     })
 

@@ -24,7 +24,7 @@ describe('Lock / onValidKeyHook', () => {
     const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -43,7 +43,7 @@ describe('Lock / onValidKeyHook', () => {
     assert.equal(await lock.balanceOf(keyOwner), 0)
 
     // set custom value in hook
-    await testEventHooks.setSpecialMember(lock.address, keyOwner)
+    await testEventHooks.setSpecialMember(await lock.getAddress(), keyOwner)
     assert.equal(await lock.getHasValidKey(keyOwner), true)
   })
 
@@ -51,7 +51,7 @@ describe('Lock / onValidKeyHook', () => {
     await emitHookUpdatedEvent({
       receipt,
       hookName: 'onValidKeyHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 

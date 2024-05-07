@@ -27,7 +27,7 @@ const purchaseFails = async (lock) => {
   await reverts(
     lock.connect(someBuyers[0]).purchase(
       [],
-      someBuyers.map((k) => k.address),
+      await Promise.all(someBuyers.map((k) => k.getAddress())),
       someBuyers.map(() => ADDRESS_ZERO),
       someBuyers.map(() => ADDRESS_ZERO),
       someBuyers.map(() => []),
@@ -44,7 +44,7 @@ const grantKeysFails = async (lock) => {
   const someBuyers = signers.slice(1, 5)
   await reverts(
     lock.connect(someBuyers[0]).grantKeys(
-      someBuyers.map((k) => k.address),
+      await Promise.all(someBuyers.map((k) => k.getAddress())),
       someBuyers.map(() => Date.now()),
       someBuyers.map(() => ADDRESS_ZERO)
     ),
@@ -105,16 +105,20 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const Unlock = await ethers.getContractFactory(
       'contracts/Unlock.sol:Unlock'
     )
-    unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-    })
+    unlock = await upgrades.deployProxy(
+      Unlock,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    )
     await unlock.deployed()
 
     // add past impl to Unlock
-    await unlock.addLockTemplate(publicLockPast.address, pastVersion)
+    await unlock.addLockTemplate(await publicLockPast.getAddress(), pastVersion)
 
     // set v1 as main template
-    await unlock.setLockTemplate(publicLockPast.address)
+    await unlock.setLockTemplate(await publicLockPast.getAddress())
 
     // deploy a simple lock
     const args = [
@@ -124,7 +128,10 @@ describe('upgradeLock / data migration v9 > v10', () => {
       1000, // available keys
       'A neat upgradeable lock!',
     ]
-    const calldata = await createLockCalldata({ args, from: creator.address })
+    const calldata = await createLockCalldata({
+      args,
+      from: await creator.getAddress(),
+    })
     const tx = await unlock.createUpgradeableLock(calldata)
     const receipt = await tx.wait()
     const evt = await getEvent(receipt, 'NewLock')
@@ -136,7 +143,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       newLockAddress
     )
     // add latest tempalte
-    await unlock.addLockTemplate(publicLockLatest.address, 10)
+    await unlock.addLockTemplate(await publicLockLatest.getAddress(), 10)
   })
 
   it('lock should have correct version', async () => {
@@ -161,12 +168,20 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
       // lets buy some key for each (with v9)
       await Promise.all(
-        keyOwners.map((_, i) =>
-          lock
-            .connect(generousBuyer)
-            .purchase(0, keyOwners[i].address, ADDRESS_ZERO, ADDRESS_ZERO, [], {
-              value: keyPrice,
-            })
+        keyOwners.map(
+          async (_, i) =>
+            await lock
+              .connect(generousBuyer)
+              .purchase(
+                0,
+                await keyOwners[i].getAddress(),
+                ADDRESS_ZERO,
+                ADDRESS_ZERO,
+                [],
+                {
+                  value: keyPrice,
+                }
+              )
         )
       )
 
@@ -174,16 +189,21 @@ describe('upgradeLock / data migration v9 > v10', () => {
       assert.equal((await lock.totalSupply()).toNumber(), totalSupply)
 
       tokenIds = await Promise.all(
-        keyOwners.map((b) => lock.getTokenIdFor(b.address))
+        keyOwners.map(
+          async (b) => await lock.getTokenIdFor(await b.getAddress())
+        )
       )
       expirationTimestamps = await Promise.all(
-        keyOwners.map((b) => lock.keyExpirationTimestampFor(b.address))
+        keyOwners.map(
+          async (b) =>
+            await lock.keyExpirationTimestampFor(await b.getAddress())
+        )
       )
 
       // update abi before upgrade, so we can track event
       lock = await ethers.getContractAt(
         PublicLockLatest.interface.format(ethers.FormatTypes.full),
-        lock.address
+        await lock.getAddress()
       )
 
       // we listen to event in the lock itself
@@ -196,7 +216,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       const [, creator] = await ethers.getSigners()
       const tx = await unlock
         .connect(creator)
-        .upgradeLock(lock.address, pastVersion + 1)
+        .upgradeLock(await lock.getAddress(), pastVersion + 1)
       const receipt = await tx.wait()
 
       // check if box instance works
@@ -204,7 +224,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       const { lockAddress, version } = evt.args
 
       // make sure upgrade event is correct
-      assert.equal(lockAddress, lock.address)
+      assert.equal(lockAddress, await lock.getAddress())
       assert.equal(version, pastVersion + 1)
 
       // set multiple keys
@@ -233,9 +253,15 @@ describe('upgradeLock / data migration v9 > v10', () => {
       for (let i = 0; i < 100; i++) {
         const tokenId = i + 1
         assert.equal(await lock.isValidKey(tokenId), true)
-        assert.equal(await lock.ownerOf(tokenId), keyOwners[i].address)
-        assert.equal(await lock.balanceOf(keyOwners[i].address), 1)
-        assert.equal(await lock.getHasValidKey(keyOwners[i].address), true)
+        assert.equal(
+          await lock.ownerOf(tokenId),
+          await keyOwners[i].getAddress()
+        )
+        assert.equal(await lock.balanceOf(await keyOwners[i].getAddress()), 1)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwners[i].getAddress()),
+          true
+        )
         assert.equal(
           (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
           expirationTimestamps[i].toNumber()
@@ -248,9 +274,15 @@ describe('upgradeLock / data migration v9 > v10', () => {
       for (let i = 100; i < totalSupply; i++) {
         const tokenId = i + 1
         assert.equal(await lock.isValidKey(tokenId), false)
-        assert.equal(await lock.ownerOf(tokenId), keyOwners[i].address) // ownerOf should work regardless
-        assert.equal(await lock.balanceOf(keyOwners[i].address), 0)
-        assert.equal(await lock.getHasValidKey(keyOwners[i].address), false)
+        assert.equal(
+          await lock.ownerOf(tokenId),
+          await keyOwners[i].getAddress()
+        ) // ownerOf should work regardless
+        assert.equal(await lock.balanceOf(await keyOwners[i].getAddress()), 0)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwners[i].getAddress()),
+          false
+        )
         assert.equal(
           (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
           0
@@ -290,9 +322,15 @@ describe('upgradeLock / data migration v9 > v10', () => {
         for (let i = 100; i < 200; i++) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
-          assert.equal(await lock.ownerOf(tokenId), keyOwners[i].address)
-          assert.equal(await lock.balanceOf(keyOwners[i].address), 1)
-          assert.equal(await lock.getHasValidKey(keyOwners[i].address), true)
+          assert.equal(
+            await lock.ownerOf(tokenId),
+            await keyOwners[i].getAddress()
+          )
+          assert.equal(await lock.balanceOf(await keyOwners[i].getAddress()), 1)
+          assert.equal(
+            await lock.getHasValidKey(await keyOwners[i].getAddress()),
+            true
+          )
           assert.equal(
             (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
             expirationTimestamps[i].toNumber()
@@ -332,9 +370,15 @@ describe('upgradeLock / data migration v9 > v10', () => {
         for (let i = 100; i < totalSupply; i++) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
-          assert.equal(await lock.ownerOf(tokenId), keyOwners[i].address)
-          assert.equal(await lock.balanceOf(keyOwners[i].address), 1)
-          assert.equal(await lock.getHasValidKey(keyOwners[i].address), true)
+          assert.equal(
+            await lock.ownerOf(tokenId),
+            await keyOwners[i].getAddress()
+          )
+          assert.equal(await lock.balanceOf(await keyOwners[i].getAddress()), 1)
+          assert.equal(
+            await lock.getHasValidKey(await keyOwners[i].getAddress()),
+            true
+          )
           assert.equal(
             (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
             expirationTimestamps[i].toNumber()
@@ -375,7 +419,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
           it('purchase should now work ', async () => {
             const tx = await lock.connect(someBuyers[0]).purchase(
               [],
-              someBuyers.map((k) => k.address),
+              await Promise.all(someBuyers.map((k) => k.getAddress())),
               someBuyers.map(() => ADDRESS_ZERO),
               someBuyers.map(() => ADDRESS_ZERO),
               someBuyers.map(() => []),
@@ -392,7 +436,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
           it('grantKeys should now work ', async () => {
             const tx = await lock.connect(someBuyers[0]).grantKeys(
-              someBuyers.map((k) => k.address),
+              await Promise.all(someBuyers.map((k) => k.getAddress())),
               someBuyers.map(() => Date.now()),
               someBuyers.map(() => ADDRESS_ZERO)
             )

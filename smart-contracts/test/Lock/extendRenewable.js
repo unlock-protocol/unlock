@@ -27,20 +27,24 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
     dai = await deployERC20(lockOwner)
 
     // Mint some dais for testing
-    await dai.mint(keyOwner.address, someDai)
+    await dai.mint(await keyOwner.getAddress(), someDai)
 
-    lock = await deployLock({ tokenAddress: dai.address })
+    lock = await deployLock({ tokenAddress: await dai.getAddress() })
 
     // set ERC20 approval for entire scope
-    await dai.connect(keyOwner).approve(lock.address, someDai)
+    await dai.connect(keyOwner).approve(await lock.getAddress(), someDai)
   })
 
   describe('Use extend() to restart recurring payments', () => {
     let tokenId
     beforeEach(async () => {
       // reset pricing
-      await lock.updateKeyPricing(keyPrice, dai.address)
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      await lock.updateKeyPricing(keyPrice, await dai.getAddress())
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await increaseTimeTo(expirationTs)
@@ -52,7 +56,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
     describe('price changed', () => {
       it('should renew once key has been extended', async () => {
         // change price
-        await lock.updateKeyPricing(newPrice, dai.address)
+        await lock.updateKeyPricing(newPrice, await dai.getAddress())
 
         // fails because price has changed
         await reverts(
@@ -119,12 +123,14 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
     describe('token changed', () => {
       it('should renew once key has been extended', async () => {
         // deploy a new erc20 token
-        const xdai = await deployERC20(lockOwner.address)
-        await xdai.mint(keyOwner.address, someDai)
-        await xdai.connect(keyOwner).approve(lock.address, totalPrice)
+        const xdai = await deployERC20(await lockOwner.getAddress())
+        await xdai.mint(await keyOwner.getAddress(), someDai)
+        await xdai
+          .connect(keyOwner)
+          .approve(await lock.getAddress(), totalPrice)
 
         // change pricing to use new erc20
-        await lock.updateKeyPricing(keyPrice, xdai.address)
+        await lock.updateKeyPricing(keyPrice, await xdai.getAddress())
 
         // fails because token has changed
         await reverts(

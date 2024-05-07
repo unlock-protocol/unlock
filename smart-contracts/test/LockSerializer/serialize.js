@@ -30,7 +30,7 @@ describe('LockSerializer', () => {
 
   describe('serialize', () => {
     it('deserialize values properly', async () => {
-      const serialized = await serializer.serialize(lock.address)
+      const serialized = await serializer.serialize(await lock.getAddress())
       await compareValues(serialized, lock)
     })
 
@@ -43,7 +43,7 @@ describe('LockSerializer', () => {
         .connect(keyOwner)
         .purchase(
           [keyPrice.toString()],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -54,17 +54,19 @@ describe('LockSerializer', () => {
       const totalSupply = await lock.totalSupply()
 
       // default URI
-      const serialized = await serializer.serialize(lock.address)
+      const serialized = await serializer.serialize(await lock.getAddress())
       await assert.equal(
         serialized.tokenURISample,
-        `${lock.address.toLowerCase()}/${totalSupply}`
+        `${await lock.getAddress().toLowerCase()}/${totalSupply}`
       )
 
       // custom URI
       await lock
         .connect(lockOwner)
         .setLockMetadata(await lock.name(), await lock.symbol(), baseTokenURI)
-      const serializedCustomBaseURI = await serializer.serialize(lock.address)
+      const serializedCustomBaseURI = await serializer.serialize(
+        await lock.getAddress()
+      )
       await assert.equal(
         serializedCustomBaseURI.tokenURISample,
         `${baseTokenURI}${totalSupply}`
@@ -84,7 +86,7 @@ describe('LockSerializer', () => {
         // purchase keys
         await lock.connect(purchasers[0]).purchase(
           [],
-          purchasers.map((p) => p.address),
+          await Promise.all(purchasers.map((p) => p.getAddress())),
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => []),
@@ -93,15 +95,15 @@ describe('LockSerializer', () => {
       })
 
       it('contains all key owners', async () => {
-        const serialized = await serializer.serialize(lock.address)
+        const serialized = await serializer.serialize(await lock.getAddress())
         assert.deepEqual(
           serialized.keyOwners,
-          purchasers.map((p) => p.address)
+          await Promise.all(purchasers.map((p) => p.getAddress()))
         )
       })
 
       it('containes key expirations', async () => {
-        const serialized = await serializer.serialize(lock.address)
+        const serialized = await serializer.serialize(await lock.getAddress())
         assert.equal(serialized.expirationTimestamps.length, purchasers.length)
       })
     })

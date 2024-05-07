@@ -37,30 +37,40 @@ describe('UnlockSwapPurchaser / withdraw', () => {
         } = await getNetwork(1)
         const routers = [universalRouterAddress]
         swapper = await UnlockSwapPurchaser.deploy(
-          unlock.address,
+          await unlock.getAddress(),
           PERMIT2_ADDRESS,
           routers
         )
 
-        swapperBalanceBefore = await getBalance(swapper.address, tokenAddress)
-        unlockBalanceBefore = await getBalance(unlock.address, tokenAddress)
+        swapperBalanceBefore = await getBalance(
+          await swapper.getAddress(),
+          tokenAddress
+        )
+        unlockBalanceBefore = await getBalance(
+          await unlock.getAddress(),
+          tokenAddress
+        )
 
         if (isErc20) {
           testToken = await deployERC20(owner, isEthersJs)
-          tokenAddress = testToken.address
+          tokenAddress = await testToken.getAddress()
           // Send some tokens to purchaser
-          await testToken.connect(owner).mint(swapper.address, someTokens)
+          await testToken
+            .connect(owner)
+            .mint(await swapper.getAddress(), someTokens)
         } else {
           tokenAddress = ADDRESS_ZERO
           await owner.sendTransaction({
-            to: swapper.address,
+            to: await swapper.getAddress(),
             value: someTokens,
           })
         }
 
         assert.equal(
           swapperBalanceBefore + someTokens.toString(),
-          (await getBalance(swapper.address, tokenAddress)).toString()
+          (
+            await getBalance(await swapper.getAddress(), tokenAddress)
+          ).toString()
         )
 
         // actually withdraw the funds
@@ -70,11 +80,13 @@ describe('UnlockSwapPurchaser / withdraw', () => {
       it('should have transferred the funds to unlock', async () => {
         assert.equal(
           unlockBalanceBefore + someTokens.toString(),
-          (await getBalance(unlock.address, tokenAddress)).toString()
+          (await getBalance(await unlock.getAddress(), tokenAddress)).toString()
         )
         assert.equal(
           swapperBalanceBefore.toString(),
-          (await getBalance(swapper.address, tokenAddress)).toString()
+          (
+            await getBalance(await swapper.getAddress(), tokenAddress)
+          ).toString()
         )
       })
     })

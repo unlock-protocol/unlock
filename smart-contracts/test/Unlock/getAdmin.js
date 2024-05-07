@@ -9,17 +9,17 @@ describe('Unlock / getAdmin', () => {
 
     // get instance from OZ plugin
     const proxyAdmin = await upgrades.admin.getInstance()
-    assert.equal(proxyAdmin.address, admin)
+    assert.equal(await proxyAdmin.getAddress(), admin)
 
     // make sure it matches with address from storage
     assert.equal(
-      (await getProxyAdminAddress(unlock.address)).toLowerCase(),
+      (await getProxyAdminAddress(await unlock.getAddress())).toLowerCase(),
       admin.toLowerCase()
     )
 
     // change unlock proxyAdmin
     const newProxyAdmin = await upgrades.deployProxyAdmin()
-    await proxyAdmin.changeProxyAdmin(unlock.address, newProxyAdmin)
+    await proxyAdmin.changeProxyAdmin(await unlock.getAddress(), newProxyAdmin)
     assert.equal(await unlock.getAdmin(), newProxyAdmin)
   })
 })

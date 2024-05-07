@@ -26,7 +26,7 @@ describe('Lock / onKeyTransfer hook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
@@ -38,20 +38,27 @@ describe('Lock / onKeyTransfer hook', () => {
     await emitHookUpdatedEvent({
       receipt,
       hookName: 'onKeyTransferHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 
   beforeEach(async () => {
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('is not fired when a key is created', async () => {
     const tx = await lock
       .connect(keyOwner)
-      .purchase([], [random.address], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-        value: keyPrice,
-      })
+      .purchase(
+        [],
+        [await random.getAddress()],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: keyPrice,
+        }
+      )
     const receipt = await tx.wait()
     const evt = await getEvent(receipt, 'OnKeyTransfer')
     assert.equal(evt, null)
@@ -60,33 +67,39 @@ describe('Lock / onKeyTransfer hook', () => {
   it('is fired when using transferFrom', async () => {
     await lock
       .connect(keyOwner)
-      .transferFrom(keyOwner.address, to.address, tokenId)
+      .transferFrom(await keyOwner.getAddress(), await to.getAddress(), tokenId)
     const { args } = (await testEventHooks.queryFilter('OnKeyTransfer')).filter(
       ({ event }) => event === 'OnKeyTransfer'
     )[0]
-    assert.equal(args.lock, lock.address)
+    assert.equal(args.lock, await lock.getAddress())
     compareBigNumbers(args.tokenId, tokenId)
-    assert.equal(args.operator, keyOwner.address)
-    assert.equal(args.from, keyOwner.address)
-    assert.equal(args.to, to.address)
+    assert.equal(args.operator, await keyOwner.getAddress())
+    assert.equal(args.from, await keyOwner.getAddress())
+    assert.equal(args.to, await to.getAddress())
     const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
     compareBigNumbers(args.time, expirationTs)
   })
 
   it('is fired when a key manager is set', async () => {
-    await lock.connect(keyOwner).setKeyManagerOf(tokenId, random2.address)
+    await lock
+      .connect(keyOwner)
+      .setKeyManagerOf(tokenId, await random2.getAddress())
     await lock
       .connect(random2)
-      .transferFrom(keyOwner.address, random.address, tokenId)
+      .transferFrom(
+        await keyOwner.getAddress(),
+        await random.getAddress(),
+        tokenId
+      )
     const { args } = (await testEventHooks.queryFilter('OnKeyTransfer')).filter(
       ({ event }) => event === 'OnKeyTransfer'
     )[1]
 
-    assert.equal(args.lock, lock.address)
+    assert.equal(args.lock, await lock.getAddress())
     compareBigNumbers(args.tokenId, tokenId)
-    assert.equal(args.operator, random2.address)
-    assert.equal(args.from, keyOwner.address)
-    assert.equal(args.to, random.address)
+    assert.equal(args.operator, await random2.getAddress())
+    assert.equal(args.from, await keyOwner.getAddress())
+    assert.equal(args.to, await random.getAddress())
   })
 
   it('cannot set the hook to a non-contract address', async () => {
@@ -97,7 +110,7 @@ describe('Lock / onKeyTransfer hook', () => {
   it('is fired when using transfer', async () => {
     await lock.transfer(tokenId, to, 100, { from: keyOwner })
     const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0].returnValues
-    assert.equal(args.lock, lock.address)
+    assert.equal(args.lock, await lock.getAddress())
     assert.equal(args.operator, keyOwner)
     assert.equal(args.tokenId, tokenId)
     assert.equal(args.from, keyOwner)
@@ -114,7 +127,7 @@ describe('Lock / onKeyTransfer hook', () => {
 
     await lock.shareKey(to, tokenId, 2500, { from: keyOwner })
     const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0].returnValues
-    assert.equal(args.lock, lock.address)
+    assert.equal(args.lock, await lock.getAddress())
     assert.equal(args.operator, keyOwner)
     assert.equal(args.from, keyOwner)
     assert.equal(args.to, to)

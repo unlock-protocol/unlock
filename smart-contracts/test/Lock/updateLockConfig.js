@@ -101,7 +101,10 @@ describe('Lock / updateLockConfig', () => {
       compareBigNumbers(await lock.maxNumberOfKeys(), totalSupply)
 
       // try to buy another key exceding totalSupply
-      await reverts(purchaseKey(lock, buyers[11].address), 'LOCK_SOLD_OUT')
+      await reverts(
+        purchaseKey(lock, await buyers[11].getAddress()),
+        'LOCK_SOLD_OUT'
+      )
     })
   })
 

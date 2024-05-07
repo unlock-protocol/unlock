@@ -20,7 +20,7 @@ describe('Lock / transferFee', () => {
     lock = await deployLock({ isEthers: true })
     ;[, keyOwner, newOwner, randomSigner, lockManager] =
       await ethers.getSigners()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('has a default fee of 0%', async () => {
@@ -50,7 +50,7 @@ describe('Lock / transferFee', () => {
       const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = await lock.getTransferFee(tokenId, 0)
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await purchaseKey(lock, randomSigner.address)
+      await purchaseKey(lock, await randomSigner.getAddress())
 
       const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
@@ -86,7 +86,11 @@ describe('Lock / transferFee', () => {
         fee = await lock.getTransferFee(tokenId, 0)
         await lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, newOwner.address, tokenId)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await newOwner.getAddress(),
+            tokenId
+          )
         expirationAfter = await lock.keyExpirationTimestampFor(tokenId)
       })
 
@@ -102,7 +106,11 @@ describe('Lock / transferFee', () => {
         // Reset owners
         await lock
           .connect(newOwner)
-          .transferFrom(newOwner.address, keyOwner.address, tokenId)
+          .transferFrom(
+            await newOwner.getAddress(),
+            await keyOwner.getAddress(),
+            tokenId
+          )
       })
     })
 
@@ -150,25 +158,32 @@ describe('Lock / transferFee', () => {
     before(async () => {
       // Change the fee to 0.25%
       await lock.updateTransferFee(25)
-      await lock.addLockManager(lockManager.address)
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      await lock.addLockManager(await lockManager.getAddress())
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('is correctly set', async () => {
-      assert.equal(await lock.isLockManager(lockManager.address), true)
+      assert.equal(
+        await lock.isLockManager(await lockManager.getAddress()),
+        true
+      )
       assert.equal(await lock.transferFeeBasisPoints(), 25)
     })
 
     it('does not pay the fee when transferring', async () => {
-      assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+      assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
       const expirationBefore = await lock.keyExpirationTimestampFor(tokenId)
 
       await lock
         .connect(lockManager)
-        .transferFrom(keyOwner.address, newOwner.address, tokenId)
+        .transferFrom(
+          await keyOwner.getAddress(),
+          await newOwner.getAddress(),
+          tokenId
+        )
 
       // make sure the transfer happened correctly
-      assert.equal(await lock.ownerOf(tokenId), newOwner.address)
+      assert.equal(await lock.ownerOf(tokenId), await newOwner.getAddress())
 
       // balance stay unchanged
       compareBigNumbers(

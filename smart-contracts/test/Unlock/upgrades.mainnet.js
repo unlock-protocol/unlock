@@ -9,7 +9,7 @@ const { ADDRESS_ZERO } = require('../helpers')
 // import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
 const [UDTProxyInfo] =
   OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/Unlock']
-const ProxyContractAddress = UDTProxyInfo.address // '0x90DE74265a416e1393A450752175AED98fe11517'
+const ProxyContractAddress = UDTProxyInfo.getAddress() // '0x90DE74265a416e1393A450752175AED98fe11517'
 const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
@@ -124,7 +124,7 @@ describe('Unlock (on mainnet)', async () => {
   describe('The mainnet fork', () => {
     it('impersonates unlock deployer correctly', async () => {
       const { signer } = unlock
-      assert.equal(signer.address, deployerAddress)
+      assert.equal(await signer.getAddress(), deployerAddress)
     })
   })
 

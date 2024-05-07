@@ -18,8 +18,8 @@ describe('Permissions / isKeyManager', () => {
     const timestampBefore = BigInt(timestamp) + expirationDuration
 
     const tx = await keyManagerMock.createNewKey(
-      keyOwner.address,
-      keyManager.address,
+      await keyOwner.getAddress(),
+      await keyManager.getAddress(),
       timestampBefore
     )
     const receipt = await tx.wait()
@@ -33,20 +33,23 @@ describe('Permissions / isKeyManager', () => {
       assert.equal(
         await keyManagerMock
           .connect(keyManager)
-          .isKeyManager(tokenId, keyManager.address),
+          .isKeyManager(tokenId, await keyManager.getAddress()),
         true
       )
       // it shouldn't matter who is calling
       assert.equal(
         await keyManagerMock
           .connect(random)
-          .isKeyManager(tokenId, keyManager.address),
+          .isKeyManager(tokenId, await keyManager.getAddress()),
         true
       )
     })
     it('should return false if address is not the KM', async () => {
       assert.equal(
-        await keyManagerMock.isKeyManager(tokenId, notKeyManager.address),
+        await keyManagerMock.isKeyManager(
+          tokenId,
+          await notKeyManager.getAddress()
+        ),
         false
       )
     })

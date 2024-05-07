@@ -34,7 +34,10 @@ describe('Lock / maxNumberOfKeys', () => {
         'Test lock',
       ]
 
-      const calldata = await createLockCalldata({ args, from: from.address })
+      const calldata = await createLockCalldata({
+        args,
+        from: await from.getAddress(),
+      })
       const tx = await unlock.createUpgradeableLock(calldata)
       const receipt = await tx.wait()
       const {
@@ -52,7 +55,10 @@ describe('Lock / maxNumberOfKeys', () => {
       await purchaseKeys(lock, 10)
 
       // try to buy another key exceding totalSupply
-      await reverts(purchaseKey(lock, buyers[11].address), 'LOCK_SOLD_OUT')
+      await reverts(
+        purchaseKey(lock, await buyers[11].getAddress()),
+        'LOCK_SOLD_OUT'
+      )
 
       // increase supply
       await lock.updateLockConfig(
@@ -62,9 +68,9 @@ describe('Lock / maxNumberOfKeys', () => {
       )
 
       // actually buy the key
-      const { to } = await purchaseKey(lock, buyers[11].address)
+      const { to } = await purchaseKey(lock, await buyers[11].getAddress())
 
-      assert.equal(to, buyers[11].address)
+      assert.equal(to, await buyers[11].getAddress())
       assert.equal(await lock.maxNumberOfKeys(), 12)
     })
   })

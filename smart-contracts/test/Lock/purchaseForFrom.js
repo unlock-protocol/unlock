@@ -17,8 +17,8 @@ describe('Lock / purchaseForFrom', () => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [keyOwner.address],
-        [referrer.address],
+        [await keyOwner.getAddress()],
+        [await referrer.getAddress()],
         [ADDRESS_ZERO],
         [[]],
         {
@@ -32,7 +32,7 @@ describe('Lock / purchaseForFrom', () => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -42,8 +42,8 @@ describe('Lock / purchaseForFrom', () => {
       )
       await lock.purchase(
         [],
-        [referrer.address],
-        [keyOwner.address],
+        [await referrer.getAddress()],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [[]],
         {
@@ -55,15 +55,15 @@ describe('Lock / purchaseForFrom', () => {
     it('can purchaseForFrom a free key', async () => {
       await lockFree.purchase(
         [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]]
       )
       const tx = await lockFree.purchase(
         [],
-        [keyOwner.address],
-        [referrer.address],
+        [await keyOwner.getAddress()],
+        [await referrer.getAddress()],
         [ADDRESS_ZERO],
         [[]]
       )
@@ -71,7 +71,7 @@ describe('Lock / purchaseForFrom', () => {
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(args.from, 0)
-      assert.equal(args.to, keyOwner.address)
+      assert.equal(args.to, await keyOwner.getAddress())
     })
   })
 })

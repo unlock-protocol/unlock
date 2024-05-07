@@ -18,11 +18,11 @@ describe('Unlock / swapAndBurn', async () => {
 
   before(async () => {
     ;({ unlock, udt } = await deployContracts())
-    udtAddress = udt.address
+    udtAddress = await udt.getAddress()
 
     // set UDT in unlock
     await unlock.configUnlock(
-      udt.address,
+      await udt.getAddress(),
       ADDRESS_ZERO,
       10000,
       'KEY',
@@ -39,7 +39,7 @@ describe('Unlock / swapAndBurn', async () => {
 
     const MockSwapBurner = await ethers.getContractFactory('MockSwapBurner')
     mockSwapBurner = await MockSwapBurner.deploy(
-      udt.address,
+      await udt.getAddress(),
       PERMIT2_ADDRESS,
       ADDRESS_ZERO
     )
@@ -51,18 +51,24 @@ describe('Unlock / swapAndBurn', async () => {
     })
     it('can be changed', async () => {
       assert.equal((await unlock.swapBurnerAddress()).toString(), ADDRESS_ZERO)
-      await unlock.setSwapBurner(swapBurner.address)
-      assert.equal(await unlock.swapBurnerAddress(), swapBurner.address)
+      await unlock.setSwapBurner(await swapBurner.getAddress())
+      assert.equal(
+        await unlock.swapBurnerAddress(),
+        await swapBurner.getAddress()
+      )
     })
     it('can be changed only by owner', async () => {
       const [, someSigner] = await ethers.getSigners()
       await reverts(
-        unlock.connect(someSigner).setSwapBurner(swapBurner.address),
+        unlock.connect(someSigner).setSwapBurner(await swapBurner.getAddress()),
         'ONLY_OWNER'
       )
     })
     it('should fire an event', async () => {
-      assert.equal(await unlock.swapBurnerAddress(), swapBurner.address)
+      assert.equal(
+        await unlock.swapBurnerAddress(),
+        await swapBurner.getAddress()
+      )
 
       const SwapBurner = await ethers.getContractFactory('UnlockSwapBurner')
       const newSwapBurner = await SwapBurner.deploy(
@@ -71,24 +77,27 @@ describe('Unlock / swapAndBurn', async () => {
         ADDRESS_ZERO
       )
 
-      const tx = await unlock.setSwapBurner(newSwapBurner.address)
+      const tx = await unlock.setSwapBurner(await newSwapBurner.getAddress())
       const receipt = await tx.wait()
 
       // check if box instance works
       const evt = await getEvent(receipt, 'SwapBurnerChanged')
       const { newAddress, oldAddress } = evt.args
 
-      assert.equal(newAddress, newSwapBurner.address)
-      assert.equal(oldAddress, swapBurner.address)
+      assert.equal(newAddress, await newSwapBurner.getAddress())
+      assert.equal(oldAddress, await swapBurner.getAddress())
     })
   })
 
   describe('swapAndBurn', () => {
     it('should prevent burning UDT from Unlock', async () => {
-      await unlock.setSwapBurner(swapBurner.address)
-      assert.equal(await unlock.swapBurnerAddress(), swapBurner.address)
+      await unlock.setSwapBurner(await swapBurner.getAddress())
+      assert.equal(
+        await unlock.swapBurnerAddress(),
+        await swapBurner.getAddress()
+      )
       await reverts(
-        unlock.swapAndBurn(udt.address, '10000', fee),
+        unlock.swapAndBurn(await udt.getAddress(), '10000', fee),
         'Unlock__INVALID_TOKEN'
       )
     })
@@ -101,7 +110,7 @@ describe('Unlock / swapAndBurn', async () => {
       amount = ethers.parseEther('50')
 
       // replace by mock version of SwapBurner
-      await unlock.setSwapBurner(mockSwapBurner.address)
+      await unlock.setSwapBurner(await mockSwapBurner.getAddress())
       swapBurner = mockSwapBurner
       ;[deployer, signer] = await ethers.getSigners()
     })
@@ -110,58 +119,75 @@ describe('Unlock / swapAndBurn', async () => {
       // console.log(await unlock.swapBurnerAddress())
 
       // transfer some tokens to Unlock
-      await addSomeETH(unlock.address, amount)
-      const unlockBalanceBefore = await getBalance(unlock.address)
+      await addSomeETH(await unlock.getAddress(), amount)
+      const unlockBalanceBefore = await getBalance(await unlock.getAddress())
       compareBigNumbers(unlockBalanceBefore, amount)
 
       // send tokens to Swap Burner
-      const balanceBefore = await getBalance(swapBurner.address)
+      const balanceBefore = await getBalance(await swapBurner.getAddress())
       await unlock.swapAndBurn(ADDRESS_ZERO, amount, fee)
-      const balanceAfter = await getBalance(swapBurner.address)
+      const balanceAfter = await getBalance(await swapBurner.getAddress())
 
       // swap burner got the tokens
       compareBigNumbers(balanceAfter - balanceBefore, amount)
 
       // unlock has no tokens anymore
       compareBigNumbers(
-        await getBalance(unlock.address),
+        await getBalance(await unlock.getAddress()),
         unlockBalanceBefore - amount.toString()
       )
     })
     it('should transfer native ERC20 tokens properly', async () => {
-      const balanceBefore = await getBalance(swapBurner.address, token.address)
-      await token.mint(signer.address, amount)
+      const balanceBefore = await getBalance(
+        await swapBurner.getAddress(),
+        await token.getAddress()
+      )
+      await token.mint(await signer.getAddress(), amount)
 
-      compareBigNumbers(await getBalance(signer.address, token.address), amount)
+      compareBigNumbers(
+        await getBalance(await signer.getAddress(), await token.getAddress()),
+        amount
+      )
 
       // transfer some tokens to Unlock
-      await token.connect(signer).transfer(unlock.address, amount)
+      await token.connect(signer).transfer(await unlock.getAddress(), amount)
       const unlockBalanceBefore = await getBalance(
-        unlock.address,
-        token.address
+        await unlock.getAddress(),
+        await token.getAddress()
       )
 
       compareBigNumbers(unlockBalanceBefore, amount)
 
       // send tokens to Swap Burner
-      await unlock.swapAndBurn(token.address, amount, fee)
+      await unlock.swapAndBurn(await token.getAddress(), amount, fee)
 
       // check balances
-      const balanceAfter = await getBalance(swapBurner.address, token.address)
+      const balanceAfter = await getBalance(
+        await swapBurner.getAddress(),
+        await token.getAddress()
+      )
 
       compareBigNumbers(balanceAfter - balanceBefore, amount)
 
       compareBigNumbers(
-        await getBalance(unlock.address, token.address),
+        await getBalance(await unlock.getAddress(), await token.getAddress()),
         unlockBalanceBefore - amount
       )
     })
     it('can be called by anyone', async () => {
       const [, , randomSigner] = await ethers.getSigners()
-      await token.mint(unlock.address, amount)
-      const balanceBefore = await getBalance(swapBurner.address, token.address)
-      await unlock.connect(randomSigner).swapAndBurn(token.address, amount, fee)
-      const balanceAfter = await getBalance(swapBurner.address, token.address)
+      await token.mint(await unlock.getAddress(), amount)
+      const balanceBefore = await getBalance(
+        await swapBurner.getAddress(),
+        await token.getAddress()
+      )
+      await unlock
+        .connect(randomSigner)
+        .swapAndBurn(await token.getAddress(), amount, fee)
+      const balanceAfter = await getBalance(
+        await swapBurner.getAddress(),
+        await token.getAddress()
+      )
       compareBigNumbers(balanceAfter - balanceBefore, amount)
     })
   })

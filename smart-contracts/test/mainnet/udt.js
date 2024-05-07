@@ -68,7 +68,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
     it('minters can not be added anymore', async () => {
       const [, minter] = await ethers.getSigners()
       await reverts(
-        udt.addMinter(minter.address),
+        udt.addMinter(await minter.getAddress()),
         'MinterRole: caller does not have the Minter role'
       )
     })
@@ -77,7 +77,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
       const recipient = await ethers.Wallet.createRandom()
 
       await reverts(
-        udt.connect(lambda).mint(recipient.address, amount),
+        udt.connect(lambda).mint(await recipient.getAddress(), amount),
         'MinterRole: caller does not have the Minter role'
       )
     })
@@ -90,13 +90,15 @@ describe('UnlockDiscountToken on mainnet', async () => {
 
         await impersonate(unlockAddress)
         const unlock = await ethers.getSigner(unlockAddress)
-        const tx = await udt.connect(unlock).mint(recipient.address, amount)
+        const tx = await udt
+          .connect(unlock)
+          .mint(await recipient.getAddress(), amount)
 
         const receipt = await tx.wait()
         const { args } = await getEvent(receipt, 'Transfer')
 
         assert.equal(args.from, ADDRESS_ZERO)
-        assert.equal(args.to, recipient.address)
+        assert.equal(args.to, await recipient.getAddress())
         assert.equal(args.value.eq(amount), true)
       })
     })
@@ -142,7 +144,9 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const recipient = await ethers.Wallet.createRandom()
         await impersonate(unlockAddress)
         const unlock = await ethers.getSigner(unlockAddress)
-        const tx = await udt.connect(unlock).mint(recipient.address, amount)
+        const tx = await udt
+          .connect(unlock)
+          .mint(await recipient.getAddress(), amount)
         const receipt = await tx.wait()
         await advanceBlock()
 
@@ -163,9 +167,9 @@ describe('UnlockDiscountToken on mainnet', async () => {
     it('should support simple transfer of tokens', async () => {
       const amount = 1
       const recipient = await ethers.Wallet.createRandom()
-      await udt.connect(holder).transfer(recipient.address, amount)
+      await udt.connect(holder).transfer(await recipient.getAddress(), amount)
 
-      const balanceAfter = await udt.balanceOf(recipient.address)
+      const balanceAfter = await udt.balanceOf(await recipient.getAddress())
       assert.equal(balanceAfter, amount)
     })
     it('should support allowance/transferFrom', async () => {
@@ -174,27 +178,34 @@ describe('UnlockDiscountToken on mainnet', async () => {
       const recipient = await ethers.Wallet.createRandom()
 
       const allowanceBefore = await udt.allowance(
-        holder.address,
-        spender.address
+        await holder.getAddress(),
+        await spender.getAddress()
       )
       assert.equal(allowanceBefore.toNumber(), 0)
 
       // allow
-      await udt.connect(holder).approve(spender.address, amount)
-      const allowance = await udt.allowance(holder.address, spender.address)
+      await udt.connect(holder).approve(await spender.getAddress(), amount)
+      const allowance = await udt.allowance(
+        await holder.getAddress(),
+        await spender.getAddress()
+      )
       assert.equal(allowance.toNumber(), amount)
 
       // transfer
       await udt
         .connect(spender)
-        .transferFrom(holder.address, recipient.address, amount)
+        .transferFrom(
+          await holder.getAddress(),
+          await recipient.getAddress(),
+          amount
+        )
 
-      const balanceAfter = await udt.balanceOf(recipient.address)
+      const balanceAfter = await udt.balanceOf(await recipient.getAddress())
       assert.equal(balanceAfter, amount)
 
       const allowanceAfter = await udt.allowance(
-        holder.address,
-        recipient.address
+        await holder.getAddress(),
+        await recipient.getAddress()
       )
       assert.equal(allowanceAfter.toNumber(), 0)
     })
@@ -208,19 +219,19 @@ describe('UnlockDiscountToken on mainnet', async () => {
       // Check approval
       const approvedAmountBefore = await udt
         .connect(spender)
-        .allowance(spender.address, permitter.address)
+        .allowance(await spender.getAddress(), await permitter.getAddress())
       assert.equal(approvedAmountBefore, 0)
 
       const value = 1
       const deadline = Math.floor(new Date().getTime()) + 60 * 60 * 24
       const { chainId } = await ethers.provider.getNetwork()
-      const nonce = await udt.nonces(permitter.address)
+      const nonce = await udt.nonces(await permitter.getAddress())
 
       const domain = {
         name: await udt.name(),
         version: '1',
         chainId,
-        verifyingContract: udt.address,
+        verifyingContract: await udt.getAddress(),
       }
 
       const types = {
@@ -234,8 +245,8 @@ describe('UnlockDiscountToken on mainnet', async () => {
       }
 
       const message = {
-        owner: permitter.address,
-        spender: spender.address,
+        owner: await permitter.getAddress(),
+        spender: await spender.getAddress(),
         value,
         nonce,
         deadline,
@@ -247,8 +258,8 @@ describe('UnlockDiscountToken on mainnet', async () => {
       const { v, r, s } = ethers.splitSignature(signature)
 
       const tx = await udt.permit(
-        permitter.address,
-        spender.address,
+        await permitter.getAddress(),
+        await spender.getAddress(),
         value,
         deadline,
         v,
@@ -257,8 +268,8 @@ describe('UnlockDiscountToken on mainnet', async () => {
       )
       const receipt = await tx.wait()
       const evtApproval = await getEvent(receipt, 'Approval')
-      assert.equal(evtApproval.args.owner, permitter.address)
-      assert.equal(evtApproval.args.spender, spender.address)
+      assert.equal(evtApproval.args.owner, await permitter.getAddress())
+      assert.equal(evtApproval.args.spender, await spender.getAddress())
       assert.isTrue(evtApproval.args.value.eq(value))
     })
   })
@@ -276,9 +287,9 @@ describe('UnlockDiscountToken on mainnet', async () => {
         udt = udt.connect(holder)
 
         // delegate some votes
-        const supply = await udt.balanceOf(holder.address)
+        const supply = await udt.balanceOf(await holder.getAddress())
         const [recipient] = await ethers.getSigners()
-        const tx = await udt.delegate(recipient.address)
+        const tx = await udt.delegate(await recipient.getAddress())
         const receipt = await tx.wait()
 
         const { args, blockNumber } = await getEvent(receipt, 'DelegateChanged')
@@ -290,21 +301,30 @@ describe('UnlockDiscountToken on mainnet', async () => {
         )
         const { delegate, previousBalance, newBalance } = evtVotesChanges
 
-        assert.equal(delegator, holder.address)
-        assert.equal(fromDelegate, holder.address)
-        assert.equal(toDelegate, recipient.address)
+        assert.equal(delegator, await holder.getAddress())
+        assert.equal(fromDelegate, await holder.getAddress())
+        assert.equal(toDelegate, await recipient.getAddress())
 
-        assert.equal(delegate, holder.address)
+        assert.equal(delegate, await holder.getAddress())
         assert.equal(newBalance.toString(), '0')
         assert(previousBalance.eq(supply))
 
-        assert(supply.eq(await udt.getCurrentVotes(recipient.address)))
         assert(
-          (await udt.getPriorVotes(recipient.address, blockNumber - 1)).eq(0)
+          supply.eq(await udt.getCurrentVotes(await recipient.getAddress()))
+        )
+        assert(
+          (
+            await udt.getPriorVotes(
+              await recipient.getAddress(),
+              blockNumber - 1
+            )
+          ).eq(0)
         )
         await advanceBlock()
         assert(
-          supply.eq(await udt.getPriorVotes(recipient.address, blockNumber))
+          supply.eq(
+            await udt.getPriorVotes(await recipient.getAddress(), blockNumber)
+          )
         )
       })
 
@@ -312,23 +332,27 @@ describe('UnlockDiscountToken on mainnet', async () => {
         // Create a user
         const delegator = ethers.Wallet.createRandom()
 
-        const balanceBefore = await udt.balanceOf(delegator.address)
+        const balanceBefore = await udt.balanceOf(await delegator.getAddress())
         assert.equal(balanceBefore, 0)
 
-        const delegateBefore = await udt.delegates(delegator.address)
+        const delegateBefore = await udt.delegates(await delegator.getAddress())
         assert.equal(delegateBefore, 0)
 
-        const votesHolderBefore = await udt.getCurrentVotes(holder.address)
+        const votesHolderBefore = await udt.getCurrentVotes(
+          await holder.getAddress()
+        )
         assert.isTrue(votesHolderBefore > 0)
 
-        const balanceHolderBefore = await udt.balanceOf(holder.address)
+        const balanceHolderBefore = await udt.balanceOf(
+          await holder.getAddress()
+        )
         assert.isTrue(balanceHolderBefore > 0)
 
         // Transfer 1 token
         udt = udt.connect(holder)
-        await udt.transfer(delegator.address, 1)
+        await udt.transfer(await delegator.getAddress(), 1)
 
-        const balanceAfter = await udt.balanceOf(delegator.address)
+        const balanceAfter = await udt.balanceOf(await delegator.getAddress())
         assert.equal(balanceAfter, 1)
 
         const { chainId } = await ethers.provider.getNetwork()
@@ -337,7 +361,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
           name: await udt.name(),
           version: '1',
           chainId,
-          verifyingContract: udt.address,
+          verifyingContract: await udt.getAddress(),
         }
 
         const types = {
@@ -348,7 +372,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
           ],
         }
 
-        const delegatee = holder.address
+        const delegatee = await holder.getAddress()
         const nonce = 0
         const expiry = Math.floor(new Date().getTime()) + 60 * 60 * 24 // 1 day
 
@@ -366,15 +390,24 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const receipt = await tx.wait()
 
         const evtDelegateChanged = await getEvent(receipt, 'DelegateChanged')
-        assert.equal(evtDelegateChanged.args.delegator, delegator.address)
+        assert.equal(
+          evtDelegateChanged.args.delegator,
+          await delegator.getAddress()
+        )
         assert.equal(evtDelegateChanged.args.fromDelegate, ADDRESS_ZERO)
-        assert.equal(evtDelegateChanged.args.toDelegate, holder.address)
+        assert.equal(
+          evtDelegateChanged.args.toDelegate,
+          await holder.getAddress()
+        )
 
         const evtDelegateVotesChanged = await getEvent(
           receipt,
           'DelegateVotesChanged'
         )
-        assert.equal(evtDelegateVotesChanged.args.delegate, holder.address)
+        assert.equal(
+          evtDelegateVotesChanged.args.delegate,
+          await holder.getAddress()
+        )
         assert.isTrue(
           evtDelegateVotesChanged.args.previousBalance.eq(votesHolderBefore - 1)
         )
@@ -382,10 +415,12 @@ describe('UnlockDiscountToken on mainnet', async () => {
           evtDelegateVotesChanged.args.newBalance.eq(votesHolderBefore)
         )
 
-        const delegateAfter = await udt.delegates(delegator.address)
+        const delegateAfter = await udt.delegates(await delegator.getAddress())
         assert.equal(delegateAfter, delegatee)
 
-        const votesHolderAfter = await udt.getCurrentVotes(holder.address)
+        const votesHolderAfter = await udt.getCurrentVotes(
+          await holder.getAddress()
+        )
         assert.isTrue(votesHolderAfter.eq(votesHolderBefore))
       })
     })
@@ -397,7 +432,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         name: await udt.name(),
         version: '1',
         chainId: await udt.provider.getNetwork().then(({ chainId }) => chainId),
-        verifyingContract: udt.address,
+        verifyingContract: await udt.getAddress(),
       }
 
       const domainSeparator = await udt.DOMAIN_SEPARATOR()

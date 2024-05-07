@@ -17,7 +17,10 @@ describe('Unlock / gas', () => {
       100, // maxNumberOfKeys
       'Gas Test Lock',
     ]
-    const calldata = await createLockCalldata({ args, from: signer.address })
+    const calldata = await createLockCalldata({
+      args,
+      from: await signer.getAddress(),
+    })
     const tx = await unlock.createUpgradeableLock(calldata)
     const { gasUsed } = await tx.wait()
     if (!process.env.TEST_COVERAGE) {

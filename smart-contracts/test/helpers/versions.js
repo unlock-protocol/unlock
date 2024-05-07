@@ -84,8 +84,8 @@ async function deployUpgreadableContract(
     proxyBytecode
   )
   const proxy = await TransparentUpgradeableProxy.deploy(
-    impl.address,
-    proxyAdmin.address,
+    await impl.getAddress(),
+    await proxyAdmin.getAddress(),
     data
   )
   await proxy.deployTransaction.wait()
@@ -93,7 +93,7 @@ async function deployUpgreadableContract(
   // wait for proxy deployment
   const contract = await ethers.getContractAt(
     Factory.interface.format(ethers.FormatTypes.full),
-    proxy.address
+    await proxy.getAddress()
   )
   return {
     proxyAdmin,
@@ -117,7 +117,7 @@ async function upgradeUpgreadableContract(
   )
 
   // do the upgrade
-  await proxyAdmin.upgrade(proxyAddress, impl.address)
+  await proxyAdmin.upgrade(proxyAddress, await impl.getAddress())
 
   const upgraded = await ethers.getContractAt(
     Factory.interface.format(ethers.FormatTypes.full),

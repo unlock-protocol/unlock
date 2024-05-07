@@ -90,16 +90,16 @@ describe('UnlockProtocolGovernor', () => {
     )
 
     gov = await upgrades.deployProxy(UnlockProtocolGovernor, [
-      udt.address,
+      await udt.getAddress(),
       votingDelay,
       votingPeriod,
       defaultQuorum,
-      timelock.address,
+      await timelock.getAddress(),
     ])
     await gov.deployed()
 
     // grant role
-    await timelock.grantRole(PROPOSER_ROLE, gov.address)
+    await timelock.grantRole(PROPOSER_ROLE, await gov.getAddress())
   })
 
   describe('Default values', () => {
@@ -130,25 +130,28 @@ describe('UnlockProtocolGovernor', () => {
 
       // bring default voting period to 10 blocks for testing purposes
       await network.provider.send('hardhat_setStorageAt', [
-        gov.address,
+        await gov.getAddress(),
         '0x1c7', // '455' storage slot
         '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
       ])
 
       // get tokens
       udt = await udt.connect(minter)
-      await udt.mint(owner.address, quorum)
+      await udt.mint(await owner.getAddress(), quorum)
 
       // give voter a few more tokens of its own to make sure we are above quorum
-      await udt.mint(minter.address, ethers.parseUnits('10.0', 18))
-      await udt.delegate(voter.address)
+      await udt.mint(await minter.getAddress(), ethers.parseUnits('10.0', 18))
+      await udt.delegate(await voter.getAddress())
 
       // delegate votes
       udt = await udt.connect(owner)
-      const tx = await udt.delegate(voter.address)
+      const tx = await udt.delegate(await voter.getAddress())
       await tx.wait()
 
-      assert.equal((await udt.getVotes(voter.address)) > quorum, true)
+      assert.equal(
+        (await udt.getVotes(await voter.getAddress())) > quorum,
+        true
+      )
     })
 
     describe('Quorum', () => {
@@ -160,7 +163,7 @@ describe('UnlockProtocolGovernor', () => {
 
         // propose
         const proposal = [
-          [gov.address],
+          [await gov.getAddress()],
           [ethers.parseUnits('0')],
           [encoded],
           '<proposal description: update the quorum>',
@@ -194,7 +197,7 @@ describe('UnlockProtocolGovernor', () => {
 
         // propose
         const proposal = [
-          [gov.address],
+          [await gov.getAddress()],
           [ethers.parseUnits('0')],
           [encoded],
           '<proposal description>',
@@ -226,7 +229,7 @@ describe('UnlockProtocolGovernor', () => {
         ])
 
         const proposal = [
-          [gov.address],
+          [await gov.getAddress()],
           [ethers.parseUnits('0')],
           [encoded],
           '<proposal description>',

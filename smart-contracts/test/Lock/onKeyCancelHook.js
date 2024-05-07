@@ -22,7 +22,7 @@ describe('Lock / onKeyCancelHook', () => {
     testEventHooks = await TestEventHooks.deploy()
     const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -30,14 +30,14 @@ describe('Lock / onKeyCancelHook', () => {
       ADDRESS_ZERO
     )
     receipt = await tx.wait()
-    ;({ tokenId } = await purchaseKey(lock, to.address))
+    ;({ tokenId } = await purchaseKey(lock, await to.getAddress()))
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
       receipt,
       hookName: 'onKeyCancelHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 
@@ -46,9 +46,9 @@ describe('Lock / onKeyCancelHook', () => {
     const { args } = (await testEventHooks.queryFilter('OnKeyCancel')).filter(
       ({ event }) => event === 'OnKeyCancel'
     )[0]
-    assert.equal(args.lock, lock.address)
-    assert.equal(args.operator, to.address)
-    assert.equal(args.to, to.address)
+    assert.equal(args.lock, await lock.getAddress())
+    assert.equal(args.operator, await to.getAddress())
+    assert.equal(args.to, await to.getAddress())
     assert.notEqual(args.refund, 0)
   })
 

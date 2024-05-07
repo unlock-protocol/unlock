@@ -28,7 +28,7 @@ describe('Lock / onKeyPurchaseHook', () => {
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
     testEventHooks = await TestEventHooks.deploy()
     const tx = await lock.setEventHooks(
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -36,7 +36,7 @@ describe('Lock / onKeyPurchaseHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    console.log({ testEventHooks: testEventHooks.address })
+    console.log({ testEventHooks: await testEventHooks.getAddress() })
     keyPrice = await lock.keyPrice()
     receipt = await tx.wait()
   })
@@ -45,7 +45,7 @@ describe('Lock / onKeyPurchaseHook', () => {
     await emitHookUpdatedEvent({
       receipt,
       hookName: 'onKeyPurchaseHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 
@@ -55,7 +55,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -74,7 +74,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -92,10 +92,10 @@ describe('Lock / onKeyPurchaseHook', () => {
       const { args } = (
         await testEventHooks.queryFilter('OnKeyPurchase')
       ).filter(({ event }) => event === 'OnKeyPurchase')[0]
-      assert.equal(args.lock, lock.address)
+      assert.equal(args.lock, await lock.getAddress())
       await compareBigNumbers(args.tokenId, tokenId)
-      assert.equal(args.from, from.address)
-      assert.equal(args.recipient, to.address)
+      assert.equal(args.from, await from.getAddress())
+      assert.equal(args.recipient, await to.getAddress())
       assert.equal(args.referrer, ADDRESS_ZERO)
       await compareBigNumbers(args.minKeyPrice, keyPrice)
       await compareBigNumbers(args.pricePaid, keyPrice)
@@ -107,7 +107,7 @@ describe('Lock / onKeyPurchaseHook', () => {
           .connect(from)
           .purchase(
             [],
-            [to.address],
+            [await to.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [dataField],
@@ -131,7 +131,7 @@ describe('Lock / onKeyPurchaseHook', () => {
 
     it('can estimate the price', async () => {
       const price = await lock.purchasePriceFor(
-        to.address,
+        await to.getAddress(),
         ADDRESS_ZERO,
         dataField
       )
@@ -143,7 +143,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -164,7 +164,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -180,7 +180,7 @@ describe('Lock / onKeyPurchaseHook', () => {
           .connect(from)
           .purchase(
             [],
-            [to.address],
+            [await to.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [dataField],
@@ -195,9 +195,9 @@ describe('Lock / onKeyPurchaseHook', () => {
           await testEventHooks.queryFilter('OnKeyPurchase')
         ).filter(({ event }) => event === 'OnKeyPurchase')[0]
 
-        assert.equal(args.lock, lock.address)
-        assert.equal(args.from, from.address)
-        assert.equal(args.recipient, to.address)
+        assert.equal(args.lock, await lock.getAddress())
+        assert.equal(args.from, await from.getAddress())
+        assert.equal(args.recipient, await to.getAddress())
         assert.equal(args.referrer, ADDRESS_ZERO)
         await compareBigNumbers(args.minKeyPrice, '0')
         await compareBigNumbers(args.pricePaid, '42')

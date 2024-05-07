@@ -24,30 +24,38 @@ describe('Lock / Recurring memberships', () => {
 
   beforeEach(async () => {
     ;[lockOwner, keyOwner, randomSigner] = await ethers.getSigners()
-    dai = await deployERC20(lockOwner.address, true)
+    dai = await deployERC20(await lockOwner.getAddress(), true)
 
     // Mint some dais for testing
-    await dai.mint(keyOwner.address, someDai)
+    await dai.mint(await keyOwner.getAddress(), someDai)
 
-    lock = await deployLock({ tokenAddress: dai.address, isEthers: true })
+    lock = await deployLock({
+      tokenAddress: await dai.getAddress(),
+      isEthers: true,
+    })
 
     // set ERC20 approval for entire scope
-    await dai.connect(keyOwner).approve(lock.address, totalPrice)
+    await dai.connect(keyOwner).approve(await lock.getAddress(), totalPrice)
   })
 
   describe('erc20 status', () => {
     it('address is set correctly in lock', async () => {
-      assert.equal(await lock.tokenAddress(), dai.address)
+      assert.equal(await lock.tokenAddress(), await dai.getAddress())
     })
     it('approval should be set correctly', async () => {
       assert.equal(
-        (await dai.allowance(keyOwner.address, lock.address)).toString(),
+        (
+          await dai.allowance(
+            await keyOwner.getAddress(),
+            await lock.getAddress()
+          )
+        ).toString(),
         totalPrice.toString()
       )
     })
     it('balance should be enough', async () => {
       assert.equal(
-        (await dai.balanceOf(keyOwner.address)).toString(),
+        (await dai.balanceOf(await keyOwner.getAddress())).toString(),
         someDai.toString()
       )
     })
@@ -57,14 +65,16 @@ describe('Lock / Recurring memberships', () => {
     describe('fails with wrong lock settings', async () => {
       it('can not renew non-expiring keys', async () => {
         const lockNonExpiring = await deployLock({
-          tokenAddress: dai.address,
+          tokenAddress: await dai.getAddress(),
           name: 'NON_EXPIRING',
           isEthers: true,
         })
-        await dai.connect(keyOwner).approve(lockNonExpiring.address, totalPrice)
+        await dai
+          .connect(keyOwner)
+          .approve(await lockNonExpiring.getAddress(), totalPrice)
         const { tokenId: newTokenId } = await purchaseKey(
           lockNonExpiring,
-          keyOwner.address,
+          await keyOwner.getAddress(),
           true
         )
         await reverts(
@@ -76,12 +86,12 @@ describe('Lock / Recurring memberships', () => {
       it('can not renew lock with no ERC20 tokens set', async () => {
         // remove dai token
         await lock.updateKeyPricing(keyPrice, ADDRESS_ZERO)
-        assert.equal(await lock.totalKeys(keyOwner.address), 1)
+        assert.equal(await lock.totalKeys(await keyOwner.getAddress()), 1)
         const { tokenId: newTokenId } = await purchaseKey(
           lock,
-          keyOwner.address
+          await keyOwner.getAddress()
         )
-        assert.equal(await lock.totalKeys(keyOwner.address), 2)
+        assert.equal(await lock.totalKeys(await keyOwner.getAddress()), 2)
         await reverts(
           lock.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
@@ -95,12 +105,14 @@ describe('Lock / Recurring memberships', () => {
       })
 
       it('reverts if key is valid', async () => {
-        await dai.mint(randomSigner.address, someDai)
-        await dai.connect(randomSigner).approve(lock.address, totalPrice)
+        await dai.mint(await randomSigner.getAddress(), someDai)
+        await dai
+          .connect(randomSigner)
+          .approve(await lock.getAddress(), totalPrice)
 
         const { tokenId: newTokenId } = await purchaseKey(
           lock,
-          randomSigner.address,
+          await randomSigner.getAddress(),
           true
         )
         assert.equal(await lock.isValidKey(newTokenId), true)
@@ -113,7 +125,11 @@ describe('Lock / Recurring memberships', () => {
 
     let tokenId
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await increaseTimeTo(expirationTs)
     })
@@ -122,7 +138,7 @@ describe('Lock / Recurring memberships', () => {
       it('should revert if price has changed', async () => {
         await lock.updateKeyPricing(
           ethers.parseUnits('0.3', 'ether'),
-          dai.address
+          await dai.getAddress()
         )
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
@@ -133,9 +149,11 @@ describe('Lock / Recurring memberships', () => {
       it('should revert if erc20 token has changed', async () => {
         // deploy another token
         const dai2 = await deployERC20(randomSigner, true)
-        await dai2.connect(randomSigner).mint(keyOwner.address, someDai)
+        await dai2
+          .connect(randomSigner)
+          .mint(await keyOwner.getAddress(), someDai)
         // update lock token without changing price
-        await lock.updateKeyPricing(keyPrice, dai2.address)
+        await lock.updateKeyPricing(keyPrice, await dai2.getAddress())
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
           'LOCK_HAS_CHANGED'
@@ -157,9 +175,9 @@ describe('Lock / Recurring memberships', () => {
 
     describe('correctly transfer tokens', () => {
       it('should take from user balance', async () => {
-        const balanceBefore = await dai.balanceOf(keyOwner.address)
+        const balanceBefore = await dai.balanceOf(await keyOwner.getAddress())
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-        const balanceAfter = await dai.balanceOf(keyOwner.address)
+        const balanceAfter = await dai.balanceOf(await keyOwner.getAddress())
         assert.equal(
           balanceBefore - keyPrice.toString().toString(),
           balanceAfter.toString()
@@ -168,7 +186,7 @@ describe('Lock / Recurring memberships', () => {
 
       it('transferred the tokens to the contract', async () => {
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-        const balance = await dai.balanceOf(lock.address)
+        const balance = await dai.balanceOf(await lock.getAddress())
         assert.equal(balance.toString(), keyPrice * (2).toString())
       })
     })
@@ -185,10 +203,15 @@ describe('Lock / Recurring memberships', () => {
     describe('erc20 balance / approval issues', () => {
       it('should revert if approval is too low', async () => {
         // reduce approval
-        await dai.connect(keyOwner).approve(lock.address, keyPrice)
+        await dai.connect(keyOwner).approve(await lock.getAddress(), keyPrice)
 
         assert.equal(
-          (await dai.allowance(keyOwner.address, lock.address)).toString(),
+          (
+            await dai.allowance(
+              await keyOwner.getAddress(),
+              await lock.getAddress()
+            )
+          ).toString(),
           keyPrice.toString()
         )
 
@@ -197,7 +220,12 @@ describe('Lock / Recurring memberships', () => {
 
         // no allowance left
         assert.equal(
-          (await dai.allowance(keyOwner.address, lock.address)).toString(),
+          (
+            await dai.allowance(
+              await keyOwner.getAddress(),
+              await lock.getAddress()
+            )
+          ).toString(),
           '0'
         )
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
@@ -214,12 +242,21 @@ describe('Lock / Recurring memberships', () => {
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
 
         // empty the account
-        const balanceBefore = await dai.balanceOf(keyOwner.address)
-        await dai.connect(keyOwner).approve(keyOwner.address, balanceBefore)
+        const balanceBefore = await dai.balanceOf(await keyOwner.getAddress())
         await dai
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, randomSigner.address, balanceBefore)
-        assert.equal((await dai.balanceOf(keyOwner.address)).toString(), '0')
+          .approve(await keyOwner.getAddress(), balanceBefore)
+        await dai
+          .connect(keyOwner)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await randomSigner.getAddress(),
+            balanceBefore
+          )
+        assert.equal(
+          (await dai.balanceOf(await keyOwner.getAddress())).toString(),
+          '0'
+        )
 
         //
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
@@ -240,7 +277,11 @@ describe('Lock / Recurring memberships', () => {
         // transfer
         await lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, randomSigner.address, tokenId)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await randomSigner.getAddress(),
+            tokenId
+          )
         // should fail
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
@@ -251,10 +292,10 @@ describe('Lock / Recurring memberships', () => {
       it('reverts after a expireAndRefund', async () => {
         // renew once
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
-        const balanceBefore = await dai.balanceOf(keyOwner.address)
+        const balanceBefore = await dai.balanceOf(await keyOwner.getAddress())
         const allowanceBefore = await dai.allowance(
-          keyOwner.address,
-          lock.address
+          await keyOwner.getAddress(),
+          await lock.getAddress()
         )
         const tx = await lock.expireAndRefundFor(tokenId, keyPrice)
         const receipt = await tx.wait()
@@ -266,18 +307,26 @@ describe('Lock / Recurring memberships', () => {
 
         // refund ok
         assert.equal(
-          (await dai.balanceOf(keyOwner.address)).toString(),
+          (await dai.balanceOf(await keyOwner.getAddress())).toString(),
           balanceBefore + keyPrice.toString().toString()
         )
 
         // key expired
-        assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          false
+        )
         assert.equal(await lock.isValidKey(tokenId), false)
 
         // ERC20 allowance has not been cancelled
         assert.equal(
           allowanceBefore.toString(),
-          (await dai.allowance(keyOwner.address, lock.address)).toString()
+          (
+            await dai.allowance(
+              await keyOwner.getAddress(),
+              await lock.getAddress()
+            )
+          ).toString()
         )
 
         await reverts(
@@ -307,7 +356,7 @@ describe('Lock / Recurring memberships', () => {
       const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
       const testEventHooks = await TestEventHooks.deploy()
       await lock.setEventHooks(
-        testEventHooks.address,
+        await testEventHooks.getAddress(),
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,

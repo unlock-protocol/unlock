@@ -23,7 +23,7 @@ describe('Lock / erc721 / approve', () => {
   describe('when the token does not exist', () => {
     it('should fail', async () => {
       await reverts(
-        lock.connect(keyOwner).approve(approvedAccount.address, 42),
+        lock.connect(keyOwner).approve(await approvedAccount.getAddress(), 42),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
@@ -31,7 +31,7 @@ describe('Lock / erc721 / approve', () => {
 
   describe('when the key exists', () => {
     before(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     describe('when the sender is not the token owner', () => {
@@ -39,7 +39,7 @@ describe('Lock / erc721 / approve', () => {
         await reverts(
           lock
             .connect(approvedAccount)
-            .approve(approvedAccount.address, tokenId),
+            .approve(await approvedAccount.getAddress(), tokenId),
           'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
@@ -48,7 +48,7 @@ describe('Lock / erc721 / approve', () => {
     describe('when the sender is self approving', () => {
       it('should fail', async () => {
         await reverts(
-          lock.connect(keyOwner).approve(keyOwner.address, tokenId),
+          lock.connect(keyOwner).approve(await keyOwner.getAddress(), tokenId),
           'APPROVE_SELF'
         )
       })
@@ -59,20 +59,20 @@ describe('Lock / erc721 / approve', () => {
       before(async () => {
         const tx = await lock
           .connect(keyOwner)
-          .approve(approvedAccount.address, tokenId)
+          .approve(await approvedAccount.getAddress(), tokenId)
         const receipt = await tx.wait()
         event = await getEvent(receipt, 'Approval')
       })
 
       it('should assign the approvedForTransfer value', async () => {
         const approved = await lock.getApproved(tokenId)
-        assert.equal(approved, approvedAccount.address)
+        assert.equal(approved, await approvedAccount.getAddress())
       })
 
-      it('should trigger the Approval event', () => {
+      it('should trigger the Approval event', async () => {
         assert.equal(event.event, 'Approval')
-        assert.equal(event.args.owner, keyOwner.address)
-        assert.equal(event.args.approved, approvedAccount.address)
+        assert.equal(event.args.owner, await keyOwner.getAddress())
+        assert.equal(event.args.approved, await approvedAccount.getAddress())
         compareBigNumbers(event.args.tokenId, tokenId)
       })
 
@@ -80,15 +80,15 @@ describe('Lock / erc721 / approve', () => {
         before(async () => {
           let tx = await lock
             .connect(keyOwner)
-            .approve(approvedAccount.address, tokenId)
+            .approve(await approvedAccount.getAddress(), tokenId)
           const receipt = await tx.wait()
           event = await getEvent(receipt, 'Approval')
         })
 
         it('Approval emits when the approved address is reaffirmed', async () => {
           assert.equal(event.event, 'Approval')
-          assert.equal(event.args.owner, keyOwner.address)
-          assert.equal(event.args.approved, approvedAccount.address)
+          assert.equal(event.args.owner, await keyOwner.getAddress())
+          assert.equal(event.args.approved, await approvedAccount.getAddress())
           compareBigNumbers(event.args.tokenId, tokenId)
         })
       })

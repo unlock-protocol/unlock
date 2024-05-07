@@ -18,7 +18,7 @@ describe('TokenUriHook', function () {
         ethers.AddressZero,
         ethers.AddressZero,
         ethers.AddressZero,
-        hook.address,
+        await hook.getAddress(),
         ethers.AddressZero,
         ethers.AddressZero,
         ethers.AddressZero
@@ -30,18 +30,22 @@ describe('TokenUriHook', function () {
     it('should not let a random user set it', async () => {
       const [, another] = await ethers.getSigners()
       await reverts(
-        hook.connect(another).setBaseURI(lock.address, 'http://example.com'),
+        hook
+          .connect(another)
+          .setBaseURI(await lock.getAddress(), 'http://example.com'),
         'Only lock manager can set base URI'
       )
-      expect(await hook.baseURIs(lock.address)).to.equal('')
+      expect(await hook.baseURIs(await lock.getAddress())).to.equal('')
     })
     it('should let a lock manager set it', async () => {
       const [manager] = await ethers.getSigners()
       await hook
         .connect(manager)
-        .setBaseURI(lock.address, 'http://example.com'),
+        .setBaseURI(await lock.getAddress(), 'http://example.com'),
         'Only lock manager can set base URI'
-      expect(await hook.baseURIs(lock.address)).to.equal('http://example.com')
+      expect(await hook.baseURIs(await lock.getAddress())).to.equal(
+        'http://example.com'
+      )
     })
   })
 
@@ -54,15 +58,15 @@ describe('TokenUriHook', function () {
 
       await lock.purchase(
         [0],
-        [user.address],
-        [user.address],
-        [user.address],
+        [await user.getAddress()],
+        [await user.getAddress()],
+        [await user.getAddress()],
         [[]]
       )
       const expiration = await lock.keyExpirationTimestampFor(1)
 
       expect((await lock.tokenURI(1)).toLowerCase()).to.equal(
-        `http://example.com/${user.address}?tokenId=1&expiration=${expiration}`.toLowerCase()
+        `http://example.com/${await user.getAddress()}?tokenId=1&expiration=${expiration}`.toLowerCase()
       )
     })
   })

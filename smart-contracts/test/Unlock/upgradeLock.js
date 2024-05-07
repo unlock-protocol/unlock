@@ -18,9 +18,13 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-    })
+    unlock = await upgrades.deployProxy(
+      Unlock,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    )
     await unlock.deployed()
 
     const PublicLock = await ethers.getContractFactory(
@@ -33,13 +37,13 @@ describe('upgradeLock (deploy template with Proxy)', () => {
 
     // add impl as v1
     const txImpl = await unlock.addLockTemplate(
-      publicLock.address,
+      await publicLock.getAddress(),
       currentVersion
     )
     await txImpl.wait()
 
     // set v1 as main template
-    await unlock.setLockTemplate(publicLock.address)
+    await unlock.setLockTemplate(await publicLock.getAddress())
 
     // deploy a simple lock
     const args = [
@@ -49,7 +53,10 @@ describe('upgradeLock (deploy template with Proxy)', () => {
       10,
       'A neat upgradeable lock!',
     ]
-    const calldata = await createLockCalldata({ args, from: creator.address })
+    const calldata = await createLockCalldata({
+      args,
+      from: await creator.getAddress(),
+    })
     const tx = await unlock.createUpgradeableLock(calldata)
     const receipt = await tx.wait()
     const evt = await getEvent(receipt, 'NewLock')
@@ -70,17 +77,22 @@ describe('upgradeLock (deploy template with Proxy)', () => {
   it('Should forbid bump more than 1 version', async () => {
     const [, creator] = await ethers.getSigners()
 
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 2)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 2
+    )
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, currentVersion + 2),
+      unlock
+        .connect(creator)
+        .upgradeLock(await lock.getAddress(), currentVersion + 2),
       'VERSION_TOO_HIGH'
     )
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, 1), // smaller one
+      unlock.connect(creator).upgradeLock(await lock.getAddress(), 1), // smaller one
       'VERSION_TOO_HIGH'
     )
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, 135),
+      unlock.connect(creator).upgradeLock(await lock.getAddress(), 135),
       'VERSION_TOO_HIGH'
     )
   })
@@ -88,7 +100,9 @@ describe('upgradeLock (deploy template with Proxy)', () => {
   it('Should forbid upgrade if version is not set', async () => {
     const [, creator] = await ethers.getSigners()
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1),
+      unlock
+        .connect(creator)
+        .upgradeLock(await lock.getAddress(), currentVersion + 1),
       'MISSING_TEMPLATE'
     )
   })
@@ -97,37 +111,53 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [, creator] = await ethers.getSigners()
     assert.equal(await unlock.publicLockLatestVersion(), currentVersion)
 
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
-    await unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1
+    )
+    await unlock
+      .connect(creator)
+      .upgradeLock(await lock.getAddress(), currentVersion + 1)
 
     // make sure upgrade was successful
-    lock = await ethers.getContractAt('ITestPublicLockUpgraded', lock.address)
+    lock = await ethers.getContractAt(
+      'ITestPublicLockUpgraded',
+      await lock.getAddress()
+    )
     assert.equal(await lock.sayHello(), 'hello world')
   })
 
   it('Should forbid non-managers to upgrade', async () => {
     const [, , unknown] = await ethers.getSigners()
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1
+    )
     await reverts(
-      unlock.connect(unknown).upgradeLock(lock.address, currentVersion + 1),
+      unlock
+        .connect(unknown)
+        .upgradeLock(await lock.getAddress(), currentVersion + 1),
       'MANAGER_ONLY'
     )
   })
 
   it('Should emit an upgrade event', async () => {
     const [, creator] = await ethers.getSigners()
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1
+    )
 
     const tx = await unlock
       .connect(creator)
-      .upgradeLock(lock.address, currentVersion + 1)
+      .upgradeLock(await lock.getAddress(), currentVersion + 1)
     const receipt = await tx.wait()
 
     // check if box instance works
     const evt = await getEvent(receipt, 'LockUpgraded')
     const { lockAddress, version } = evt.args
 
-    assert.equal(lockAddress, lock.address)
+    assert.equal(lockAddress, await lock.getAddress())
     assert.equal(version, currentVersion + 1)
 
     // make sure upgrade was successful
@@ -153,9 +183,13 @@ describe('upgrades', async () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-    })
+    unlock = await upgrades.deployProxy(
+      Unlock,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    )
     await unlock.deployed()
 
     // Helper function
@@ -173,7 +207,7 @@ describe('upgrades', async () => {
       const publicLock = await PublicLock.deploy()
       await publicLock.deployed()
       const txImpl = await unlock.addLockTemplate(
-        publicLock.address,
+        await publicLock.getAddress(),
         await publicLock.publicLockVersion()
       )
       await txImpl.wait()
@@ -189,7 +223,7 @@ describe('upgrades', async () => {
     // deploy a simple lock
     const calldata = await createLockCalldata({
       args: [duration, currency, price, maxKeys, name],
-      from: creator.address,
+      from: await creator.getAddress(),
     })
 
     const tx = await unlock.createUpgradeableLockAtVersion(
@@ -222,10 +256,10 @@ describe('upgrades', async () => {
       assert.equal(await versions[version].publicLockVersion(), version)
       assert.equal(
         await unlock.publicLockImpls(version),
-        versions[version].address
+        await versions[version].getAddress()
       )
       assert.equal(
-        await unlock.publicLockVersions(versions[version].address),
+        await unlock.publicLockVersions(await versions[version].getAddress()),
         version
       )
     }
@@ -250,7 +284,9 @@ describe('upgrades', async () => {
       console.log(
         `going to upgrade from ${await lock.publicLockVersion()} to ${currentVersion}`
       )
-      await unlock.connect(creator).upgradeLock(lock.address, currentVersion)
+      await unlock
+        .connect(creator)
+        .upgradeLock(await lock.getAddress(), currentVersion)
       assert.equal(await lock.publicLockVersion(), currentVersion)
       assert.equal(await lock.name(), name)
       assert.equal(await lock.expirationDuration(), duration)

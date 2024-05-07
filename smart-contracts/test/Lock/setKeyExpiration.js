@@ -21,7 +21,7 @@ describe('Lock / setKeyExpiration', () => {
       const { timestamp } = await ethers.provider.getBlock('latest')
       now = BigInt(timestamp.toString())
       ;[, keyOwner] = await ethers.getSigners()
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('in the past', async () => {

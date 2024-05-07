@@ -20,7 +20,10 @@ describe('Lock / expirationDuration', () => {
     const tokenAddress = ADDRESS_ZERO
     const args = [60 * 30, tokenAddress, keyPrice.toString(), 10, 'Test lock']
 
-    const calldata = await createLockCalldata({ args, from: from.address })
+    const calldata = await createLockCalldata({
+      args,
+      from: await from.getAddress(),
+    })
     const tx = await unlock.createUpgradeableLock(calldata)
     const receipt = await tx.wait()
     const {
@@ -33,7 +36,10 @@ describe('Lock / expirationDuration', () => {
 
   it('affects newly purchased keys', async () => {
     const [, , buyer, buyer2] = await ethers.getSigners()
-    const { tokenId, blockNumber } = await purchaseKey(lock, buyer.address)
+    const { tokenId, blockNumber } = await purchaseKey(
+      lock,
+      await buyer.getAddress()
+    )
     const transfer1Block = await ethers.provider.getBlock(blockNumber)
     assert.equal(
       (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
@@ -49,7 +55,7 @@ describe('Lock / expirationDuration', () => {
 
     const { tokenId: tokenId2, blockNumber: blockNumber2 } = await purchaseKey(
       lock,
-      buyer2.address
+      await buyer2.getAddress()
     )
     const transfer2Block = await ethers.provider.getBlock(blockNumber2)
 
@@ -62,15 +68,19 @@ describe('Lock / expirationDuration', () => {
 
   it('does not affect the timestamps of existing keys', async () => {
     const [, , buyer] = await ethers.getSigners()
-    await purchaseKey(lock, buyer.address)
+    await purchaseKey(lock, await buyer.getAddress())
 
-    const tsBefore = await lock.keyExpirationTimestampFor(buyer.address)
+    const tsBefore = await lock.keyExpirationTimestampFor(
+      await buyer.getAddress()
+    )
     await lock.updateLockConfig(
       1000,
       await lock.maxNumberOfKeys(),
       await lock.maxKeysPerAddress()
     )
-    const tsAfter = await lock.keyExpirationTimestampFor(buyer.address)
+    const tsAfter = await lock.keyExpirationTimestampFor(
+      await buyer.getAddress()
+    )
 
     assert.equal(tsBefore.toString(), tsAfter.toString())
   })

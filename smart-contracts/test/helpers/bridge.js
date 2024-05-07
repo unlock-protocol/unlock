@@ -20,17 +20,17 @@ async function deployBridge(srcDomainId = SRC_DOMAIN_ID) {
   // connext
   const MockConnext = await ethers.getContractFactory('TestBridge')
   const bridge = await MockConnext.deploy(
-    wethSrc.address,
-    wethDest.address,
+    await wethSrc.getAddress(),
+    await wethDest.getAddress(),
     srcDomainId,
     // both token mentioned for the swap
-    erc20Src.address,
-    erc20Dest.address
+    await erc20Src.getAddress(),
+    await erc20Dest.getAddress()
   )
 
   // fund the bridge
-  await addSomeETH(bridge.address)
-  await erc20Dest.mint(bridge.address, ethers.parseEther('100'))
+  await addSomeETH(await bridge.getAddress())
+  await erc20Dest.mint(await bridge.getAddress(), ethers.parseEther('100'))
 
   return {
     bridge: bridge,

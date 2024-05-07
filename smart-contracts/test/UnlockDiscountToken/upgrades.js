@@ -77,7 +77,7 @@ describe('UnlockDiscountToken upgrade', async () => {
     const [deployer] = await ethers.getSigners()
     const udtSigned = await UnlockDiscountToken.connect(deployer)
 
-    udt = await upgrades.deployProxy(udtSigned, [deployer.address], {
+    udt = await upgrades.deployProxy(udtSigned, [await deployer.getAddress()], {
       kind: 'transparent',
       initializer: 'initialize(address)',
     })
@@ -94,7 +94,7 @@ describe('UnlockDiscountToken upgrade', async () => {
     it('name is preserved', async () => {
       const name = await udt.name()
       assert.equal(name, 'Unlock Discount Token')
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract(await udt.getAddress())
       const updatedName = await updated.name()
       assert.equal(updatedName, 'Unlock Discount Token')
     })
@@ -102,7 +102,7 @@ describe('UnlockDiscountToken upgrade', async () => {
     it('symbol is preserved', async () => {
       const symbol = await udt.symbol()
       assert.equal(symbol, 'UDT')
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract(await udt.getAddress())
       const updatedSymbol = await updated.symbol()
       assert.equal(updatedSymbol, 'UDT')
     })
@@ -110,7 +110,7 @@ describe('UnlockDiscountToken upgrade', async () => {
     it('decimals are preserved', async () => {
       const decimals = await udt.decimals()
       assert.equal(decimals, 18)
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract(await udt.getAddress())
       const updatedDecimals = await updated.decimals()
       assert.equal(updatedDecimals, 18)
     })
@@ -126,12 +126,12 @@ describe('UnlockDiscountToken upgrade', async () => {
       const [, , recipient] = await ethers.getSigners()
 
       // mint some tokens
-      await udt.mint(recipient.address, mintAmount)
+      await udt.mint(await recipient.getAddress(), mintAmount)
       const totalSupply = await udt.totalSupply()
       assert.equal(totalSupply.toNumber(), mintAmount)
 
       // upgrade
-      const updated = await upgradeContract(udt.address)
+      const updated = await upgradeContract(await udt.getAddress())
 
       const totalSupplyAfterUpdate = await updated.totalSupply()
       assert.equal(totalSupplyAfterUpdate.toNumber(), mintAmount)
@@ -156,10 +156,10 @@ describe('UnlockDiscountToken upgrade', async () => {
       unlock = unlockDeployed
 
       // Grant Unlock minting permissions
-      await udt.addMinter(unlock.address)
+      await udt.addMinter(await unlock.getAddress())
 
       // upgrade contract
-      await upgradeContract(udt.address)
+      await upgradeContract(await udt.getAddress())
 
       // create lock
       const args = [
@@ -171,7 +171,7 @@ describe('UnlockDiscountToken upgrade', async () => {
       ]
       const calldata = await createLockCalldata({
         args,
-        from: lockOwner.address,
+        from: await lockOwner.getAddress(),
       })
       const tx = await unlock.createUpgradeableLock(calldata)
 
@@ -186,30 +186,30 @@ describe('UnlockDiscountToken upgrade', async () => {
       const { oracle, weth } = await createUniswapV2Exchange({
         protocolOwner: deployer,
         minter: deployer,
-        udtAddress: udt.address,
+        udtAddress: await udt.getAddress(),
       })
 
       // Config in Unlock
       await unlock.configUnlock(
-        udt.address,
-        weth.address,
+        await udt.getAddress(),
+        await weth.getAddress(),
         estimateGas,
         await unlock.globalTokenSymbol(),
         await unlock.globalBaseTokenURI(),
         1 // mainnet
       )
-      await unlock.setOracle(udt.address, oracle.address)
+      await unlock.setOracle(await udt.getAddress(), await oracle.getAddress())
 
       // Advance time so 1 full period has past and then update again so we have data point to read
       await increaseTime(30)
-      await oracle.update(weth.address, udt.address)
+      await oracle.update(await weth.getAddress(), await udt.getAddress())
 
       // Purchase a valid key for the referrers
       await lock
         .connect(keyBuyer)
         .purchase(
           [],
-          [referrer.address, referrer2.address],
+          [await referrer.getAddress(), await referrer2.getAddress()],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[], []],
@@ -228,13 +228,16 @@ describe('UnlockDiscountToken upgrade', async () => {
         )
 
       rate = await oracle.consult(
-        udt.address,
+        await udt.getAddress(),
         ethers.parseUnits('1', 'ether'),
-        weth.address
+        await weth.getAddress()
       )
 
       // Give unlock contract some tokens
-      await udt.mint(unlock.address, ethers.parseUnits('1000000', 'ether'))
+      await udt.mint(
+        await unlock.getAddress(),
+        ethers.parseUnits('1000000', 'ether')
+      )
     })
 
     it('exchange rate is > 0', async () => {
@@ -244,7 +247,7 @@ describe('UnlockDiscountToken upgrade', async () => {
     })
 
     it('referrer has 0 UDT to start', async () => {
-      const actual = await udt.balanceOf(referrer.address)
+      const actual = await udt.balanceOf(await referrer.getAddress())
       assert.equal(actual.toString(), 0)
     })
 
@@ -255,8 +258,8 @@ describe('UnlockDiscountToken upgrade', async () => {
         lock.connect(keyBuyer)
         const { blockNumber } = await lock.purchase(
           [],
-          [keyBuyer.address],
-          [referrer.address],
+          [await keyBuyer.getAddress()],
+          [await referrer.getAddress()],
           [ADDRESS_ZERO],
           [[]],
           {
@@ -264,7 +267,10 @@ describe('UnlockDiscountToken upgrade', async () => {
           }
         )
 
-        assert.equal((await lock.balanceOf(keyBuyer.address)).toString(), '1')
+        assert.equal(
+          (await lock.balanceOf(await keyBuyer.getAddress())).toString(),
+          '1'
+        )
 
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
@@ -272,14 +278,16 @@ describe('UnlockDiscountToken upgrade', async () => {
       })
 
       it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
+        const actual = await udt.balanceOf(await referrer.getAddress())
         assert.notEqual(actual.toString(), '0')
       })
 
       it('amount minted for referrer ~= gas spent', async () => {
         // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
         assert.equal(
-          new BigNumber((await udt.balanceOf(referrer.address)).toString())
+          new BigNumber(
+            (await udt.balanceOf(await referrer.getAddress())).toString()
+          )
             .shiftedBy(-18) // shift UDT balance
             .times(rate.toString())
             .shiftedBy(-18) // shift the rate
@@ -305,8 +313,8 @@ describe('UnlockDiscountToken upgrade', async () => {
         lock.connect(keyBuyer)
         await lock.purchase(
           [],
-          [keyBuyer.address],
-          [referrer2.address],
+          [await keyBuyer.getAddress()],
+          [await referrer2.getAddress()],
           [ADDRESS_ZERO],
           [[]],
           {
@@ -317,12 +325,12 @@ describe('UnlockDiscountToken upgrade', async () => {
       })
 
       it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer2.address)
+        const actual = await udt.balanceOf(await referrer2.getAddress())
         assert.notEqual(actual.toString(), 0)
       })
 
       it('amount minted for referrer ~= 12 UDT', async () => {
-        const balance = await udt.balanceOf(referrer2.address)
+        const balance = await udt.balanceOf(await referrer2.getAddress())
         const bn = new BigNumber(balance.toString())
         assert.equal(bn.shiftedBy(-18).toFixed(0), '12')
       })

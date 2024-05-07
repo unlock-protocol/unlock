@@ -20,36 +20,40 @@ describe('Lock / erc721 / safeTransferFrom', () => {
     lock = await deployLock({ isEthers: true })
     await lock.updateTransferFee(0) // disable the transfer fee for this test
     // first, let's purchase a brand new key that we can transfer
-    ;({ tokenId } = await purchaseKey(lock, from.address))
+    ;({ tokenId } = await purchaseKey(lock, await from.getAddress()))
   })
 
   it('should work if no data is passed in', async () => {
     await lock
       .connect(from)
-      [safeTransferFromSig](from.address, to.address, tokenId)
+      [safeTransferFromSig](
+        await from.getAddress(),
+        await to.getAddress(),
+        tokenId
+      )
     let ownerOf = await lock.ownerOf(tokenId)
-    assert.equal(ownerOf, to.address)
+    assert.equal(ownerOf, await to.getAddress())
   })
 
   it('should work if some data is passed in', async () => {
-    ;({ tokenId } = await purchaseKey(lock, random.address))
+    ;({ tokenId } = await purchaseKey(lock, await random.getAddress()))
     await lock
       .connect(random)
       [safeTransferFromWithDataSig](
-        random.address,
-        random2.address,
+        await random.getAddress(),
+        await random2.getAddress(),
         tokenId,
         ethers.hexlify(ethers.toUtf8Bytes('Julien'))
       )
     let ownerOf = await lock.ownerOf(tokenId)
-    assert.equal(ownerOf, random2.address)
+    assert.equal(ownerOf, await random2.getAddress())
     // while we may pass data to the safeTransferFrom function, it is not currently
     // utilized in any way other than being passed to the `onERC721Received` function
     // in MixinTransfer.sol
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    const { tokenId } = await purchaseKey(lock, random.address)
+    const { tokenId } = await purchaseKey(lock, await random.getAddress())
 
     // A contract which does NOT implement onERC721Received:
     const NonCompliantContract = await ethers.getContractFactory(
@@ -60,15 +64,15 @@ describe('Lock / erc721 / safeTransferFrom', () => {
     await reverts(
       lock
         .connect(random)
-        [safeTransferFromSig](random.address, address, tokenId)
+        [safeTransferFromSig](await random.getAddress(), address, tokenId)
     )
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf(tokenId)
-    assert.equal(ownerOf, random.address)
+    assert.equal(ownerOf, await random.getAddress())
   })
 
   it('should success to transfer when a contract implements onERC721Received', async () => {
-    ;({ tokenId } = await purchaseKey(lock, random3.address))
+    ;({ tokenId } = await purchaseKey(lock, await random3.getAddress()))
     // A contract which does implement onERC721Received:
     const TestERC721Recevier = await ethers.getContractFactory(
       'TestERC721Recevier'
@@ -77,10 +81,14 @@ describe('Lock / erc721 / safeTransferFrom', () => {
 
     await lock
       .connect(random3)
-      [safeTransferFromSig](random3.address, compliantContract.address, tokenId)
+      [safeTransferFromSig](
+        await random3.getAddress(),
+        await compliantContract.getAddress(),
+        tokenId
+      )
 
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf(tokenId)
-    assert.equal(ownerOf, compliantContract.address)
+    assert.equal(ownerOf, await compliantContract.getAddress())
   })
 })

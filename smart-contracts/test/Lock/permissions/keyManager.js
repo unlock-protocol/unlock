@@ -31,7 +31,7 @@ describe('Permissions / KeyManager', () => {
   })
 
   it('should leave the KM == 0x00(default) for new purchases', async () => {
-    const { tokenId } = await purchaseKey(lock, keyOwner.address)
+    const { tokenId } = await purchaseKey(lock, await keyOwner.getAddress())
     const keyManager = await lock.keyManagerOf(tokenId)
     assert.equal(keyManager, ADDRESS_ZERO)
   })
@@ -40,9 +40,9 @@ describe('Permissions / KeyManager', () => {
     it('should allow to set KM when buying new keys', async () => {
       const tx = await lock.purchase(
         [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
-        [keyManager.address],
+        [await keyManager.getAddress()],
         [[]],
         {
           value: keyPrice,
@@ -50,44 +50,59 @@ describe('Permissions / KeyManager', () => {
       )
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'Transfer')
-      assert.equal(await lock.keyManagerOf(args.tokenId), keyManager.address)
+      assert.equal(
+        await lock.keyManagerOf(args.tokenId),
+        await keyManager.getAddress()
+      )
     })
   })
 
   describe('Key Renewal / extend', () => {
     let tokenId
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('should left key manager untouched when referrer is specified', async () => {
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
       assert.equal(await lock.isValidKey(tokenId), true)
-      await lock.extend(0, tokenId, keyManager.address, [], {
+      await lock.extend(0, tokenId, await keyManager.getAddress(), [], {
         value: keyPrice,
       })
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
     })
 
     it('should left untouched when not specified', async () => {
-      await lock.connect(keyOwner).setKeyManagerOf(tokenId, keyManager.address)
-      assert.equal(await lock.keyManagerOf(tokenId), keyManager.address)
+      await lock
+        .connect(keyOwner)
+        .setKeyManagerOf(tokenId, await keyManager.getAddress())
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyManager.getAddress()
+      )
       await lock.extend(0, tokenId, ADDRESS_ZERO, [], {
         value: keyPrice,
       })
-      assert.equal(await lock.keyManagerOf(tokenId), keyManager.address)
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyManager.getAddress()
+      )
     })
   })
 
   describe('Key Transfers', () => {
     let tokenId
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
     it('should leave the KM == 0x00(default) when transferring', async () => {
       const tx = await lock
         .connect(keyOwner)
-        .transferFrom(keyOwner.address, keyRecipient.address, tokenId)
+        .transferFrom(
+          await keyOwner.getAddress(),
+          await keyRecipient.getAddress(),
+          tokenId
+        )
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(await lock.keyManagerOf(args.tokenId), ADDRESS_ZERO)
@@ -97,12 +112,12 @@ describe('Permissions / KeyManager', () => {
   describe('Key Sharing', () => {
     let newTokenId
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
 
       // share key creates a new key
       const tx = await lock
         .connect(keyOwner)
-        .shareKey(keyRecipient.address, tokenId, oneDay)
+        .shareKey(await keyRecipient.getAddress(), tokenId, oneDay)
       const receipt = await tx.wait()
       ;({
         args: { tokenId: newTokenId },
@@ -132,9 +147,9 @@ describe('Permissions / KeyManager', () => {
       assert.equal(keyManager, ADDRESS_ZERO)
       const owner = await lock.ownerOf(tokenId)
       assert.equal(owner, keyOwner)
-      await lock.setKeyManagerOf(tokenId, keyManager.address, { from: keyOwner })
+      await lock.setKeyManagerOf(tokenId, await keyManager.getAddress(), { from: keyOwner })
       keyManager = await lock.keyManagerOf(tokenId)
-      assert.equal(keyManager, keyManager.address)
+      assert.equal(keyManager, await keyManager.getAddress())
       await lock.expireAndRefundFor(keyOwner, 0, { from: lockCreator })
       assert.equal(await lock.getHasValidKey(keyOwner), false)
       tokenId = await lock.getTokenIdFor(keyOwner2)
@@ -152,13 +167,16 @@ describe('Permissions / KeyManager', () => {
   describe('Key Granting', () => {
     it('should let KeyGranter set an arbitrary KM for new keys', async () => {
       const tx = await lock.grantKeys(
-        [keyGrantee.address],
+        [await keyGrantee.getAddress()],
         [validExpirationTimestamp],
-        [keyManager.address]
+        [await keyManager.getAddress()]
       )
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'Transfer')
-      assert.equal(await lock.keyManagerOf(args.tokenId), keyManager.address)
+      assert.equal(
+        await lock.keyManagerOf(args.tokenId),
+        await keyManager.getAddress()
+      )
     })
   })
 
@@ -167,23 +185,33 @@ describe('Permissions / KeyManager', () => {
       lock = await deployLock()
     })
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
     it('should allow the current keyManager to set a new KM', async () => {
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
-      await lock.connect(keyOwner).setKeyManagerOf(tokenId, keyManager.address)
-      assert.equal(await lock.keyManagerOf(tokenId), keyManager.address)
+      await lock
+        .connect(keyOwner)
+        .setKeyManagerOf(tokenId, await keyManager.getAddress())
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyManager.getAddress()
+      )
     })
 
     it('should allow a LockManager to set a new KM', async () => {
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
-      await lock.setKeyManagerOf(tokenId, keyManager.address)
-      assert.equal(await lock.keyManagerOf(tokenId), keyManager.address)
+      await lock.setKeyManagerOf(tokenId, await keyManager.getAddress())
+      assert.equal(
+        await lock.keyManagerOf(tokenId),
+        await keyManager.getAddress()
+      )
     })
 
     it('should fail to allow anyone else to set a new KM', async () => {
       await reverts(
-        lock.connect(keyGrantee).setKeyManagerOf(tokenId, keyManager.address),
+        lock
+          .connect(keyGrantee)
+          .setKeyManagerOf(tokenId, await keyManager.getAddress()),
         'UNAUTHORIZED_KEY_MANAGER_UPDATE'
       )
     })

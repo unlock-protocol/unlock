@@ -37,7 +37,7 @@ describe('Unlock GNP conversion', () => {
     } = await getUniswapTokens(1))
 
     const [deployer] = await ethers.getSigners()
-    await addSomeETH(deployer.address)
+    await addSomeETH(await deployer.getAddress())
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
     const UnlockUniswapOracle = await ethers.getContractFactory(
       'UniswapOracleV3'
@@ -51,7 +51,9 @@ describe('Unlock GNP conversion', () => {
     unlock = unlock.connect(unlockSigner)
 
     // add oracle support for USDC
-    await unlock.connect(unlockSigner).setOracle(USDC, oracle.address)
+    await unlock
+      .connect(unlockSigner)
+      .setOracle(USDC, await oracle.getAddress())
   })
 
   it('weth is set correctly already', async () => {
@@ -94,11 +96,13 @@ describe('Unlock GNP conversion', () => {
       await impersonate(masterMinter)
       const minter = await ethers.getSigner(masterMinter)
       const [signer] = await ethers.getSigners()
-      await usdc.connect(minter).configureMinter(signer.address, totalPrice)
-      await usdc.mint(signer.address, totalPrice)
+      await usdc
+        .connect(minter)
+        .configureMinter(await signer.getAddress(), totalPrice)
+      await usdc.mint(await signer.getAddress(), totalPrice)
 
       // approve purchase
-      await usdc.approve(lock.address, totalPrice)
+      await usdc.approve(await lock.getAddress(), totalPrice)
 
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)

@@ -18,8 +18,11 @@ describe('Lock / mergeKeys', () => {
   beforeEach(async () => {
     ;[, keyOwner, keyOwner2, keyManager, rando] = await ethers.getSigners()
     lock = await deployLock()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
-    ;({ tokenId: tokenId2 } = await purchaseKey(lock, keyOwner2.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
+    ;({ tokenId: tokenId2 } = await purchaseKey(
+      lock,
+      await keyOwner2.getAddress()
+    ))
   })
 
   describe('merge some amount of time', () => {
@@ -43,8 +46,11 @@ describe('Lock / mergeKeys', () => {
         await lock.keyExpirationTimestampFor(tokenId2)
       )
 
-      assert.equal(await lock.getHasValidKey(keyOwner2.address), true)
-      assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+      assert.equal(
+        await lock.getHasValidKey(await keyOwner2.getAddress()),
+        true
+      )
+      assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
     })
 
     it('should allow key manager to call', async () => {
@@ -54,7 +60,9 @@ describe('Lock / mergeKeys', () => {
       ]
 
       // set key manager
-      await lock.connect(keyOwner).setKeyManagerOf(tokenId, keyManager.address)
+      await lock
+        .connect(keyOwner)
+        .setKeyManagerOf(tokenId, await keyManager.getAddress())
 
       // call from key manager
       await lock.connect(keyManager).mergeKeys(tokenId, tokenId2, timeAmount)
@@ -69,8 +77,11 @@ describe('Lock / mergeKeys', () => {
         await lock.keyExpirationTimestampFor(tokenId2)
       )
 
-      assert.equal(await lock.getHasValidKey(keyOwner2.address), true)
-      assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+      assert.equal(
+        await lock.getHasValidKey(await keyOwner2.getAddress()),
+        true
+      )
+      assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
     })
   })
 
@@ -98,8 +109,14 @@ describe('Lock / mergeKeys', () => {
 
       assert.equal(await lock.isValidKey(tokenId), false)
       assert.equal(await lock.isValidKey(tokenId2), true)
-      assert.equal(await lock.getHasValidKey(keyOwner2.address), true)
-      assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+      assert.equal(
+        await lock.getHasValidKey(await keyOwner2.getAddress()),
+        true
+      )
+      assert.equal(
+        await lock.getHasValidKey(await keyOwner.getAddress()),
+        false
+      )
     })
   })
   describe('failures', () => {
@@ -127,7 +144,11 @@ describe('Lock / mergeKeys', () => {
       // remove some time
       await lock
         .connect(keyOwner)
-        .shareKey(rando.address, tokenId, remaining.toNumber() - now - 100)
+        .shareKey(
+          await rando.getAddress(),
+          tokenId,
+          remaining.toNumber() - now - 100
+        )
 
       assert.equal((await lock.keyExpirationTimestampFor(tokenId)) - now, 100)
       assert.equal(await lock.isValidKey(tokenId), true)

@@ -43,7 +43,7 @@ describe('Lock / setReferrerFee', () => {
       .connect(keyOwner)
       .purchase(
         isErc20 ? [keyPrice] : [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [referrerAddress],
         [ADDRESS_ZERO],
         [[]],
@@ -87,19 +87,19 @@ describe('Lock / setReferrerFee', () => {
 
         // ERC20 for testing
         dai = await deployERC20(deployer)
-        tokenAddress = isErc20 ? dai.address : ADDRESS_ZERO
-        await dai.mint(keyOwner.address, someDai)
+        tokenAddress = isErc20 ? await dai.getAddress() : ADDRESS_ZERO
+        await dai.mint(await keyOwner.getAddress(), someDai)
 
         // deploy a lock
         lock = await deployLock({ tokenAddress })
         keyPrice = await lock.keyPrice()
 
         // Approve the lock to make transfers
-        await dai.connect(keyOwner).approve(lock.address, someDai)
+        await dai.connect(keyOwner).approve(await lock.getAddress(), someDai)
       })
 
       it('has a default fee of 0%', async () => {
-        const fee = await lock.referrerFees(referrer.address)
+        const fee = await lock.referrerFees(await referrer.getAddress())
         compareBigNumbers(fee / BASIS_POINT_DENOMINATOR, 0)
       })
 
@@ -119,25 +119,33 @@ describe('Lock / setReferrerFee', () => {
           ;({ balanceBefore, eventArgs } = await setReferrerFeeAndPurchase({
             isErc20,
             lock,
-            referrerAddress: referrer.address,
+            referrerAddress: await referrer.getAddress(),
             referrerFee,
             keyOwner,
           }))
         })
 
         it('store fee correctly', async () => {
-          await storeFeeCorrectly(lock, referrer.address, referrerFee)
+          await storeFeeCorrectly(
+            lock,
+            await referrer.getAddress(),
+            referrerFee
+          )
         })
 
         it('emits an event', async () => {
-          await emitsCorrectEvent(eventArgs, referrer.address, referrerFee)
+          await emitsCorrectEvent(
+            eventArgs,
+            await referrer.getAddress(),
+            referrerFee
+          )
         })
 
         it('transfer correctly 5% of the price', async () => {
           await transferCorrectly(
             balanceBefore,
             referrerFee,
-            referrer.address,
+            await referrer.getAddress(),
             tokenAddress
           )
         })
@@ -152,25 +160,33 @@ describe('Lock / setReferrerFee', () => {
           ;({ balanceBefore, eventArgs } = await setReferrerFeeAndPurchase({
             isErc20,
             lock,
-            referrerAddress: referrer.address,
+            referrerAddress: await referrer.getAddress(),
             referrerFee,
             keyOwner,
           }))
         })
 
         it('store fee correctly', async () => {
-          await storeFeeCorrectly(lock, referrer.address, referrerFee)
+          await storeFeeCorrectly(
+            lock,
+            await referrer.getAddress(),
+            referrerFee
+          )
         })
 
         it('emits an event', async () => {
-          await emitsCorrectEvent(eventArgs, referrer.address, referrerFee)
+          await emitsCorrectEvent(
+            eventArgs,
+            await referrer.getAddress(),
+            referrerFee
+          )
         })
 
         it('transfer correctly 5% of the price', async () => {
           await transferCorrectly(
             balanceBefore,
             referrerFee,
-            referrer.address,
+            await referrer.getAddress(),
             tokenAddress
           )
         })
@@ -182,7 +198,7 @@ describe('Lock / setReferrerFee', () => {
 
         before(async () => {
           // reset fee for referrer
-          await lock.setReferrerFee(referrer.address, 0)
+          await lock.setReferrerFee(await referrer.getAddress(), 0)
           const tx = await lock.setReferrerFee(ADDRESS_ZERO, generalFee)
           const receipt = await tx.wait()
           ;({ args: eventArgs } = getEvent(receipt, 'ReferrerFee'))
@@ -197,14 +213,17 @@ describe('Lock / setReferrerFee', () => {
         })
 
         it('transfer correctly 20% of the price', async () => {
-          balanceBefore = await getBalance(referrer.address, tokenAddress)
+          balanceBefore = await getBalance(
+            await referrer.getAddress(),
+            tokenAddress
+          )
 
           await lock
             .connect(keyOwner)
             .purchase(
               isErc20 ? [keyPrice] : [],
-              [keyOwner.address],
-              [referrer.address],
+              [await keyOwner.getAddress()],
+              [await referrer.getAddress()],
               [ADDRESS_ZERO],
               [[]],
               {
@@ -213,7 +232,7 @@ describe('Lock / setReferrerFee', () => {
             )
 
           compareBigNumbers(
-            await getBalance(referrer.address, tokenAddress),
+            await getBalance(await referrer.getAddress(), tokenAddress),
             balanceBefore + (keyPrice * generalFee) / BASIS_POINT_DENOMINATOR
           )
         })
@@ -221,26 +240,35 @@ describe('Lock / setReferrerFee', () => {
 
       describe('updating/cancelling a 5% fee', () => {
         before(async () => {
-          await lock.setReferrerFee(referrer.address, 500)
+          await lock.setReferrerFee(await referrer.getAddress(), 500)
         })
         it('fee can cancelled', async () => {
-          compareBigNumbers(await lock.referrerFees(referrer.address), 500)
-          const tx = await lock.setReferrerFee(referrer.address, 0)
-          compareBigNumbers(await lock.referrerFees(referrer.address), 0)
+          compareBigNumbers(
+            await lock.referrerFees(await referrer.getAddress()),
+            500
+          )
+          const tx = await lock.setReferrerFee(await referrer.getAddress(), 0)
+          compareBigNumbers(
+            await lock.referrerFees(await referrer.getAddress()),
+            0
+          )
           const receipt = await tx.wait()
           const { args } = await getEvent(receipt, 'ReferrerFee')
           assert.equal(args.fee, 0)
-          assert.equal(args.referrer, referrer.address)
+          assert.equal(args.referrer, await referrer.getAddress())
         })
         it('fee can updated correctly', async () => {
-          const tx = await lock.setReferrerFee(referrer.address, 7000)
+          const tx = await lock.setReferrerFee(
+            await referrer.getAddress(),
+            7000
+          )
           // event fired ok
           const receipt = await tx.wait()
           const { args } = await getEvent(receipt, 'ReferrerFee')
           assert.equal(args.fee, 7000)
-          assert.equal(args.referrer, referrer.address)
+          assert.equal(args.referrer, await referrer.getAddress())
           // prived updated ok
-          const fee = await lock.referrerFees(referrer.address)
+          const fee = await lock.referrerFees(await referrer.getAddress())
           assert.equal(fee, 7000)
         })
       })
@@ -248,13 +276,13 @@ describe('Lock / setReferrerFee', () => {
       describe('extend() also pays the referrer', () => {
         let balanceBefore
         before(async () => {
-          await lock.setReferrerFee(referrer.address, 2000)
+          await lock.setReferrerFee(await referrer.getAddress(), 2000)
           const tx = await lock
             .connect(keyOwner)
             .purchase(
               isErc20 ? [keyPrice] : [],
-              [keyOwner.address],
-              [referrer.address],
+              [await keyOwner.getAddress()],
+              [await referrer.getAddress()],
               [ADDRESS_ZERO],
               [[]],
               {
@@ -265,17 +293,29 @@ describe('Lock / setReferrerFee', () => {
           const { args } = await getEvent(receipt, 'Transfer')
           const { tokenId } = args
 
-          balanceBefore = await getBalance(referrer.address, tokenAddress)
+          balanceBefore = await getBalance(
+            await referrer.getAddress(),
+            tokenAddress
+          )
 
           await lock
             .connect(keyOwner)
-            .extend(isErc20 ? keyPrice : 0, tokenId, referrer.address, [], {
-              value: isErc20 ? 0 : keyPrice,
-            })
+            .extend(
+              isErc20 ? keyPrice : 0,
+              tokenId,
+              await referrer.getAddress(),
+              [],
+              {
+                value: isErc20 ? 0 : keyPrice,
+              }
+            )
         })
 
         it('transfer 5% of the key price on extend', async () => {
-          const balanceAfter = await getBalance(referrer.address, tokenAddress)
+          const balanceAfter = await getBalance(
+            await referrer.getAddress(),
+            tokenAddress
+          )
           compareBigNumbers(
             balanceAfter,
             balanceBefore + (keyPrice * 2000) / BASIS_POINT_DENOMINATOR
@@ -287,12 +327,15 @@ describe('Lock / setReferrerFee', () => {
         let balanceBefore
         before(async () => {
           await lock.setReferrerFee(ADDRESS_ZERO, 2000)
-          balanceBefore = await getBalance(referrer.address, tokenAddress)
+          balanceBefore = await getBalance(
+            await referrer.getAddress(),
+            tokenAddress
+          )
           await lock
             .connect(keyOwner)
             .purchase(
               isErc20 ? [keyPrice] : [],
-              [keyOwner.address],
+              [await keyOwner.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
               [[]],
@@ -307,7 +350,7 @@ describe('Lock / setReferrerFee', () => {
         it('referrer balance didnt change', async () => {
           compareBigNumbers(
             balanceBefore,
-            await getBalance(referrer.address, tokenAddress)
+            await getBalance(await referrer.getAddress(), tokenAddress)
           )
         })
       })
@@ -316,14 +359,14 @@ describe('Lock / setReferrerFee', () => {
         describe('renewMembershipFor() also pays the referrer', () => {
           let balanceBefore
           before(async () => {
-            await lock.setReferrerFee(referrer.address, 2000)
+            await lock.setReferrerFee(await referrer.getAddress(), 2000)
 
             const tx = await lock
               .connect(keyOwner)
               .purchase(
                 isErc20 ? [keyPrice] : [],
-                [keyOwner.address],
-                [referrer.address],
+                [await keyOwner.getAddress()],
+                [await referrer.getAddress()],
                 [ADDRESS_ZERO],
                 [[]],
                 {
@@ -339,18 +382,21 @@ describe('Lock / setReferrerFee', () => {
             await increaseTimeTo(expirationTs)
 
             // Mint some dais for testing
-            await dai.mint(renewer.address, someDai)
-            await dai.connect(renewer).approve(lock.address, someDai)
+            await dai.mint(await renewer.getAddress(), someDai)
+            await dai.connect(renewer).approve(await lock.getAddress(), someDai)
 
-            balanceBefore = await getBalance(referrer.address, tokenAddress)
+            balanceBefore = await getBalance(
+              await referrer.getAddress(),
+              tokenAddress
+            )
             await lock
               .connect(renewer)
-              .renewMembershipFor(tokenId, referrer.address)
+              .renewMembershipFor(tokenId, await referrer.getAddress())
           })
 
           it('transfer 5% of the key price on extend', async () => {
             const balanceAfter = await getBalance(
-              referrer.address,
+              await referrer.getAddress(),
               tokenAddress
             )
             compareBigNumbers(

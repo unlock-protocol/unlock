@@ -46,7 +46,7 @@ describe('Unlock / uniswapValue', () => {
 
     // deploy oracle
     oracle = await deployUniswapV3Oracle()
-    oracleAddress = oracle.address
+    oracleAddress = await oracle.getAddress()
 
     //impersonate unlock multisig
     const unlockOwner = await unlock.owner()
@@ -71,11 +71,13 @@ describe('Unlock / uniswapValue', () => {
       const masterMinter = await usdc.masterMinter()
       await impersonate(masterMinter)
       const minter = await ethers.getSigner(masterMinter)
-      await usdc.connect(minter).configureMinter(signer.address, totalPriceUSDC)
-      await usdc.mint(signer.address, totalPriceUSDC)
+      await usdc
+        .connect(minter)
+        .configureMinter(await signer.getAddress(), totalPriceUSDC)
+      await usdc.mint(await signer.getAddress(), totalPriceUSDC)
 
       // add oracle support for USDC
-      await unlock.setOracle(USDC, oracle.address)
+      await unlock.setOracle(USDC, await oracle.getAddress())
 
       // create a USDC lock
       lock = await deployLock({
@@ -105,7 +107,9 @@ describe('Unlock / uniswapValue', () => {
       before(async () => {
         gnpBefore = await unlock.grossNetworkProduct()
         // approve purchase
-        await usdc.connect(signer).approve(lock.address, totalPriceUSDC)
+        await usdc
+          .connect(signer)
+          .approve(await lock.getAddress(), totalPriceUSDC)
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
         // consult our oracle independently for 1 USDC
@@ -178,10 +182,12 @@ describe('Unlock / uniswapValue', () => {
       // transfer from the contract itself
       await impersonate(SHIBA_INU)
       const shibaInuOwner = await ethers.getSigner(SHIBA_INU)
-      await shibaInu.connect(shibaInuOwner).transfer(signer.address, totalPrice)
+      await shibaInu
+        .connect(shibaInuOwner)
+        .transfer(await signer.getAddress(), totalPrice)
 
       // add oracle support for SHIBA_INU
-      await unlock.setOracle(SHIBA_INU, oracle.address)
+      await unlock.setOracle(SHIBA_INU, await oracle.getAddress())
 
       // create a SHIBA_INU lock
       lock = await deployLock({
@@ -209,7 +215,9 @@ describe('Unlock / uniswapValue', () => {
       before(async () => {
         gnpBefore = await unlock.grossNetworkProduct()
         // approve purchase
-        await shibaInu.connect(signer).approve(lock.address, totalPrice)
+        await shibaInu
+          .connect(signer)
+          .approve(await lock.getAddress(), totalPrice)
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
         // consult our oracle independently for 1 SHIBA_INU
@@ -277,8 +285,12 @@ describe('Unlock / uniswapValue', () => {
     beforeEach(async () => {
       token = await deployERC20(signer, true)
       // Mint some tokens for purchase
-      await token.mint(signer.address, keyPrice)
-      lock = await deployLock({ unlock, tokenAddress: token.address, keyPrice })
+      await token.mint(await signer.getAddress(), keyPrice)
+      lock = await deployLock({
+        unlock,
+        tokenAddress: await token.getAddress(),
+        keyPrice,
+      })
     })
 
     describe('Purchase key', () => {
@@ -287,8 +299,12 @@ describe('Unlock / uniswapValue', () => {
 
       beforeEach(async () => {
         gdpBefore = await unlock.grossNetworkProduct()
-        await token.connect(signer).approve(lock.address, keyPrice)
-        ;({ blockNumber } = await purchaseKey(lock, signer.address, true))
+        await token.connect(signer).approve(await lock.getAddress(), keyPrice)
+        ;({ blockNumber } = await purchaseKey(
+          lock,
+          await signer.getAddress(),
+          true
+        ))
       })
 
       it('GDP did not change', async () => {
@@ -313,9 +329,9 @@ describe('Unlock / uniswapValue', () => {
 
         assert.equal(gdp.toString(), grossNetworkProduct.toString())
         assert.equal(0, _valueInETH.toNumber())
-        assert.equal(token.address, tokenAddress)
+        assert.equal(await token.getAddress(), tokenAddress)
         assert.equal(keyPrice.toString(), value.toString())
-        assert.equal(lockAddress, lock.address)
+        assert.equal(lockAddress, await lock.getAddress())
       })
     })
   })
@@ -331,7 +347,10 @@ describe('Unlock / uniswapValue', () => {
 
       beforeEach(async () => {
         gdpBefore = await unlock.grossNetworkProduct()
-        ;({ blockNumber } = await purchaseKey(lock, keyOwner.address))
+        ;({ blockNumber } = await purchaseKey(
+          lock,
+          await keyOwner.getAddress()
+        ))
       })
 
       it('GDP went up by the keyPrice', async () => {
@@ -354,7 +373,7 @@ describe('Unlock / uniswapValue', () => {
 
         const gdp = await unlock.grossNetworkProduct()
 
-        assert.equal(lockAddress, lock.address)
+        assert.equal(lockAddress, await lock.getAddress())
         assert.equal(ADDRESS_ZERO, tokenAddress)
         assert.equal(gdp.toString(), grossNetworkProduct.toString())
         assert.equal(keyPrice.toString(), _valueInETH.toString())

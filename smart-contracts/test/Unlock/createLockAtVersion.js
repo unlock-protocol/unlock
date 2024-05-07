@@ -25,9 +25,13 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
   beforeEach(async () => {
     ;[unlockOwner, lockOwner] = await ethers.getSigners()
     const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-    })
+    unlock = await upgrades.deployProxy(
+      Unlock,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    )
     await unlock.deployed()
 
     // set version 1
@@ -36,8 +40,8 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
     )
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
-    await unlock.addLockTemplate(publicLock.address, 1)
-    await unlock.setLockTemplate(publicLock.address)
+    await unlock.addLockTemplate(await publicLock.getAddress(), 1)
+    await unlock.setLockTemplate(await publicLock.getAddress())
     expect(await unlock.publicLockLatestVersion()).to.equals(1)
 
     // deploy new implementation
@@ -46,13 +50,16 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
     await publicLockUpgraded.deployed()
-    await unlock.addLockTemplate(publicLockUpgraded.address, 2)
+    await unlock.addLockTemplate(await publicLockUpgraded.getAddress(), 2)
     expect(
-      await unlock.publicLockVersions(publicLockUpgraded.address)
+      await unlock.publicLockVersions(await publicLockUpgraded.getAddress())
     ).to.equals(2)
 
     // create lock calldata
-    calldata = await createLockCalldata({ args, from: lockOwner.address })
+    calldata = await createLockCalldata({
+      args,
+      from: await lockOwner.getAddress(),
+    })
   })
 
   it('creates versioned locks successfully', async () => {

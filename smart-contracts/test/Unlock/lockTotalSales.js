@@ -18,7 +18,7 @@ describe('Unlock / lockTotalSales', () => {
   })
 
   it('total sales defaults to 0', async () => {
-    const { totalSales } = await unlock.locks(lock.address)
+    const { totalSales } = await unlock.locks(await lock.getAddress())
     assert.equal(totalSales, 0)
   })
 
@@ -28,7 +28,7 @@ describe('Unlock / lockTotalSales', () => {
     })
 
     it('total sales includes the purchase', async () => {
-      const { totalSales } = await unlock.locks(lock.address)
+      const { totalSales } = await unlock.locks(await lock.getAddress())
       assert.equal(totalSales.toString(), price.toString())
     })
   })
@@ -39,7 +39,7 @@ describe('Unlock / lockTotalSales', () => {
     })
 
     it('total sales incluse all purchases', async () => {
-      const { totalSales } = await unlock.locks(lock.address)
+      const { totalSales } = await unlock.locks(await lock.getAddress())
       assert.equal(totalSales.toString(), price * (5).toString())
     })
   })

@@ -26,7 +26,14 @@ describe('Lock / initializers', () => {
     it('may not be called again after deploying a lock', async () => {
       const lock = await deployLock()
       await reverts(
-        lock.initialize(unlockOwner.address, 0, ADDRESS_ZERO, 0, 0, ''),
+        lock.initialize(
+          await unlockOwner.getAddress(),
+          0,
+          ADDRESS_ZERO,
+          0,
+          0,
+          ''
+        ),
         'Initializable: contract is already initialized'
       )
     })
@@ -34,7 +41,7 @@ describe('Lock / initializers', () => {
 
   describe('initializing when deploying', () => {
     it('admin role has to be revoked manually', async () => {
-      const callerAddress = caller.address
+      const callerAddress = await caller.getAddress()
       const PublicLock = await ethers.getContractFactory('PublicLock')
       const template = await PublicLock.deploy()
       await template.initialize(callerAddress, 0, ADDRESS_ZERO, 0, 0, '')
@@ -53,13 +60,23 @@ describe('Lock / initializers', () => {
 
       // add as template
       await unlock.addLockTemplate(
-        template.address,
+        await template.getAddress(),
         await template.publicLockVersion()
       )
 
-      await assert.equal(await template.isLockManager(unlock.address), false)
+      await assert.equal(
+        await template.isLockManager(await unlock.getAddress()),
+        false
+      )
       await reverts(
-        template.initialize(unlockOwner.address, 0, ADDRESS_ZERO, 0, 0, ''),
+        template.initialize(
+          await unlockOwner.getAddress(),
+          0,
+          ADDRESS_ZERO,
+          0,
+          0,
+          ''
+        ),
         'Initializable: contract is already initialized'
       )
     })
@@ -68,24 +85,47 @@ describe('Lock / initializers', () => {
       // initialize a template manually
       const PublicLock = await ethers.getContractFactory('PublicLock')
       const template = await PublicLock.deploy()
-      await template.initialize(caller.address, 0, ADDRESS_ZERO, 0, 0, '')
+      await template.initialize(
+        await caller.getAddress(),
+        0,
+        ADDRESS_ZERO,
+        0,
+        0,
+        ''
+      )
       await template.connect(caller).renounceLockManager()
-      await assert.equal(await template.isLockManager(caller.address), false)
+      await assert.equal(
+        await template.isLockManager(await caller.getAddress()),
+        false
+      )
 
       // add and set template in Unlock
       const { unlock } = await deployContracts()
       await unlock.addLockTemplate(
-        template.address,
+        await template.getAddress(),
         await template.publicLockVersion()
       )
-      await unlock.setLockTemplate(template.address)
+      await unlock.setLockTemplate(await template.getAddress())
 
-      await assert.equal(await template.isLockManager(unlock.address), false)
-      await assert.equal(await unlock.publicLockAddress(), template.address)
+      await assert.equal(
+        await template.isLockManager(await unlock.getAddress()),
+        false
+      )
+      await assert.equal(
+        await unlock.publicLockAddress(),
+        await template.getAddress()
+      )
 
       // cant be re-initialized
       await reverts(
-        template.initialize(unlockOwner.address, 0, ADDRESS_ZERO, 0, 0, ''),
+        template.initialize(
+          await unlockOwner.getAddress(),
+          0,
+          ADDRESS_ZERO,
+          0,
+          0,
+          ''
+        ),
         'Initializable: contract is already initialized'
       )
     })

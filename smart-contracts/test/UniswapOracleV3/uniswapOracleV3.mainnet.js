@@ -21,7 +21,7 @@ describe(`oracle`, () => {
     }
 
     const [signer] = await ethers.getSigners()
-    await addSomeETH(signer.address)
+    await addSomeETH(await signer.getAddress())
     ;({ DAI, WETH, USDC } = await getTokens())
     pairs = [
       [USDC, WETH],

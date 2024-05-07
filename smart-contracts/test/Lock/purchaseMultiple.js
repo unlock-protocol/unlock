@@ -28,13 +28,17 @@ describe('Lock / purchase multiple keys at once', () => {
         testToken = await deployERC20(deployer)
 
         // Mint some tokens for testing
-        await testToken.connect(deployer).mint(holder.address, allowance)
+        await testToken
+          .connect(deployer)
+          .mint(await holder.getAddress(), allowance)
 
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
         lock = await deployLock({ tokenAddress })
 
         // Approve spending
-        await testToken.connect(holder).approve(lock.address, allowance)
+        await testToken
+          .connect(holder)
+          .approve(await lock.getAddress(), allowance)
       })
 
       describe('purchase with exact value specified', () => {
@@ -53,8 +57,8 @@ describe('Lock / purchase multiple keys at once', () => {
 
         it('user sent correct token amounts to the contract', async () => {
           const balance = await getBalance(
-            lock.address,
-            isErc20 ? testToken.address : null
+            await lock.getAddress(),
+            isErc20 ? await testToken.getAddress() : null
           )
           compareBigNumbers(balance, keyPrice * keyOwners.length)
         })

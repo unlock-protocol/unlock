@@ -44,7 +44,7 @@ const signUSDCTransfer = async ({
     name: await usdcContract.name(),
     version: await usdcContract.version(),
     chainId,
-    verifyingContract: usdcContract.address,
+    verifyingContract: await usdcContract.getAddress(),
   }
   const types = {
     TransferWithAuthorization: [
@@ -58,7 +58,7 @@ const signUSDCTransfer = async ({
   }
 
   const message = {
-    from: from ? from : ethers.getAddress(signer.address),
+    from: from ? from : ethers.getAddress(await signer.getAddress()),
     to: ethers.getAddress(recipient), // Receiver wallet
     value: amount,
     validAfter: 0,
@@ -83,7 +83,7 @@ const signLockPurchase = async ({
     name: await cardPurchaser.name(),
     version: await cardPurchaser.version(),
     chainId,
-    verifyingContract: cardPurchaser.address,
+    verifyingContract: await cardPurchaser.getAddress(),
   }
 
   const types = {
@@ -97,7 +97,7 @@ const signLockPurchase = async ({
   const now = Math.floor(new Date().getTime() / 1000)
 
   const message = {
-    sender: sender ? sender : signer.address,
+    sender: sender ? sender : await signer.getAddress(),
     lock: lockAddress,
     expiration: expiration ? expiration : now + 60 * 60 * 24, // 1 hour!
   }
@@ -115,7 +115,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     }
     ;[signer] = await ethers.getSigners()
 
-    await addSomeETH(signer.address)
+    await addSomeETH(await signer.getAddress())
 
     // get Unlock contract
     unlockAddress = await getUnlockAddress()
@@ -124,7 +124,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     // deploy CardPurchaser
     const UnlockSwapPurchaser = await ethers.getContractFactory('CardPurchaser')
     cardPurchaser = await UnlockSwapPurchaser.deploy(
-      signer.address,
+      await signer.getAddress(),
       unlockAddress,
       USDC
     )
@@ -140,7 +140,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
   })
 
   it('should be owned by the right address when deployed', async () => {
-    expect(await cardPurchaser.owner()).to.equal(signer.address)
+    expect(await cardPurchaser.owner()).to.equal(await signer.getAddress())
   })
 
   it('should have the right values', async () => {
@@ -155,7 +155,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
@@ -171,7 +171,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'MISSING_LOCK()'
     )
@@ -181,14 +181,14 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
       chainId,
       signer,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
       expiration: Math.floor(new Date().getTime() / 1000) - 60 * 15, // 15 minutes ago
     })
 
@@ -198,7 +198,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'TOO_LATE()'
     )
@@ -209,14 +209,14 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
       chainId,
       signer: notSender,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
     await reverts(
       cardPurchaser.purchase(
@@ -224,7 +224,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'PURCHASER_DOES_NOT_MATCH_PAYER()'
     )
@@ -235,15 +235,15 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
       chainId,
       signer: notSigner,
-      sender: signer.address,
+      sender: await signer.getAddress(),
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
     await reverts(
       cardPurchaser.purchase(
@@ -251,7 +251,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'SIGNER_DOES_NOT_MATCH()'
     )
@@ -261,14 +261,14 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
       chainId,
       signer,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
 
     await reverts(
@@ -277,27 +277,27 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'ERC20: transfer amount exceeds balance'
     )
   })
 
   it('should fail if the transfer of tokens fails because the recipient is not correct!', async () => {
-    await addSomeUSDC(USDC, signer.address, keyPrice)
+    await addSomeUSDC(USDC, await signer.getAddress(), keyPrice)
     const notCardPurchaser = new ethers.Wallet.createRandom()
 
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: notCardPurchaser.address,
+      recipient: await notCardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
       chainId,
       signer,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
 
     await reverts(
@@ -306,28 +306,28 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'FiatTokenV2: invalid signature'
     )
   })
 
   it('should fail if the amount of approved tokens is not enough to cover the purchase', async () => {
-    await addSomeUSDC(USDC, signer.address, keyPrice)
-    await addSomeUSDC(USDC, cardPurchaser.address, keyPrice) // In theory the Card Purchaser contract has enough funds!
+    await addSomeUSDC(USDC, await signer.getAddress(), keyPrice)
+    await addSomeUSDC(USDC, await cardPurchaser.getAddress(), keyPrice) // In theory the Card Purchaser contract has enough funds!
 
     // Signer approves the CardPurchaser to spend 3 USDC
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: ethers.parseUnits('3', 6),
     })
     const purchase = await signLockPurchase({
       chainId,
       signer,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
 
     await reverts(
@@ -336,60 +336,72 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       ),
       'ERC20: transfer amount exceeds allowance'
     )
   })
 
   it('should succeed with a purchase', async () => {
-    await addSomeUSDC(USDC, signer.address, ethers.parseUnits('6', 6))
+    await addSomeUSDC(
+      USDC,
+      await signer.getAddress(),
+      ethers.parseUnits('6', 6)
+    )
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: ethers.parseUnits('6', 6),
     })
     const purchase = await signLockPurchase({
       chainId,
       signer,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
 
     // Balance of USDC has increased (fees collected by Unlock!)
     const usdcContract = new ethers.Contract(USDC, USDC_ABI, signer)
-    const balanceBefore = await usdcContract.balanceOf(cardPurchaser.address)
-    expect((await lock.balanceOf(signer.address)).toNumber()).to.equal(0)
+    const balanceBefore = await usdcContract.balanceOf(
+      await cardPurchaser.getAddress()
+    )
+    expect(
+      (await lock.balanceOf(await signer.getAddress())).toNumber()
+    ).to.equal(0)
     await (
       await cardPurchaser.purchase(
         transfer.message,
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       )
     ).wait()
-    expect((await lock.balanceOf(signer.address)).toNumber()).to.equal(1)
+    expect(
+      (await lock.balanceOf(await signer.getAddress())).toNumber()
+    ).to.equal(1)
 
     expect(
-      (await usdcContract.balanceOf(cardPurchaser.address)).toNumber()
+      (
+        await usdcContract.balanceOf(await cardPurchaser.getAddress())
+      ).toNumber()
     ).to.equal(balanceBefore + ethers.parseUnits('1', 6).toNumber())
   })
 
   it('should reset the approval to 0', async () => {
-    await addSomeUSDC(USDC, signer.address, keyPrice)
+    await addSomeUSDC(USDC, await signer.getAddress(), keyPrice)
     const transfer = await signUSDCTransfer({
       chainId,
       signer,
-      recipient: cardPurchaser.address,
+      recipient: await cardPurchaser.getAddress(),
       amount: keyPrice,
     })
     const purchase = await signLockPurchase({
       chainId,
       signer,
       cardPurchaser,
-      lockAddress: lock.address,
+      lockAddress: await lock.getAddress(),
     })
     const usdcContract = new ethers.Contract(USDC, USDC_ABI, signer)
     await (
@@ -398,12 +410,15 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         transfer.signature,
         purchase.message,
         purchase.signature,
-        await purchaseCallData(lock, signer.address)
+        await purchaseCallData(lock, await signer.getAddress())
       )
     ).wait()
     expect(
       (
-        await usdcContract.allowance(cardPurchaser.address, lock.address)
+        await usdcContract.allowance(
+          await cardPurchaser.getAddress(),
+          await lock.getAddress()
+        )
       ).toNumber()
     ).to.equal(0)
   })

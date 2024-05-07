@@ -25,13 +25,13 @@ describe('udt', () => {
       let totalSupplyBefore
 
       before(async () => {
-        balanceBefore = await udt.balanceOf(recipient.address)
+        balanceBefore = await udt.balanceOf(await recipient.getAddress())
         totalSupplyBefore = await udt.totalSupply()
-        await udt.connect(minter).mint(recipient.address, mintAmount)
+        await udt.connect(minter).mint(await recipient.getAddress(), mintAmount)
       })
 
       it('Balance went up', async () => {
-        const balanceAfter = await udt.balanceOf(recipient.address)
+        const balanceAfter = await udt.balanceOf(await recipient.getAddress())
         assert.equal(
           balanceAfter.toNumber(),
           balanceBefore + mintAmount.toNumber(),
@@ -55,7 +55,9 @@ describe('udt', () => {
 
     before(async () => {
       for (let i = 0; i < 3; i++) {
-        await udt.connect(minter).mint(accounts[i].address, mintAmount)
+        await udt
+          .connect(minter)
+          .mint(await accounts[i].getAddress(), mintAmount)
       }
     })
 
@@ -65,16 +67,20 @@ describe('udt', () => {
       let balanceBefore1
 
       before(async () => {
-        balanceBefore0 = await udt.balanceOf(accounts[0].address)
-        balanceBefore1 = await udt.balanceOf(accounts[1].address)
+        balanceBefore0 = await udt.balanceOf(await accounts[0].getAddress())
+        balanceBefore1 = await udt.balanceOf(await accounts[1].getAddress())
       })
 
       it('normal transfer', async () => {
         await udt
           .connect(accounts[0])
-          .transfer(accounts[1].address, transferAmount)
-        const balanceAfter0 = await udt.balanceOf(accounts[0].address)
-        const balanceAfter1 = await udt.balanceOf(accounts[1].address)
+          .transfer(await accounts[1].getAddress(), transferAmount)
+        const balanceAfter0 = await udt.balanceOf(
+          await accounts[0].getAddress()
+        )
+        const balanceAfter1 = await udt.balanceOf(
+          await accounts[1].getAddress()
+        )
         assert(
           balanceBefore0 - transferAmount.eq(balanceAfter0),
           'Sender balance must have gone down by amount sent'
@@ -92,18 +98,18 @@ describe('udt', () => {
 
     before(async () => {
       newMinter = accounts[5]
-      await udt.connect(minter).addMinter(newMinter.address)
+      await udt.connect(minter).addMinter(await newMinter.getAddress())
     })
 
     it('newMinter can mint', async () => {
-      await udt.connect(newMinter).mint(accounts[0].address, 1)
+      await udt.connect(newMinter).mint(await accounts[0].getAddress(), 1)
     })
 
     describe('Renounce minter', () => {
       it('newMinter cannot mint anymore', async () => {
         await udt.connect(newMinter).renounceMinter()
         await reverts(
-          udt.connect(newMinter).mint(accounts[0].address, 1),
+          udt.connect(newMinter).mint(await accounts[0].getAddress(), 1),
           'MinterRole: caller does not have the Minter role'
         )
       })

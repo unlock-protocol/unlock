@@ -20,30 +20,36 @@ describe('Lock / setLockTemplate', () => {
 
   it('should set the latest version correctly', async () => {
     // 1
-    await unlock.addLockTemplate(lockTemplate.address, 1)
-    await unlock.setLockTemplate(lockTemplate.address)
-    assert.equal(await unlock.publicLockAddress(), lockTemplate.address)
+    await unlock.addLockTemplate(await lockTemplate.getAddress(), 1)
+    await unlock.setLockTemplate(await lockTemplate.getAddress())
+    assert.equal(
+      await unlock.publicLockAddress(),
+      await lockTemplate.getAddress()
+    )
     assert.equal(await unlock.publicLockLatestVersion(), 1)
 
     // 2
     lockTemplate = await PublicLock.deploy()
     await lockTemplate.deployed()
-    await unlock.addLockTemplate(lockTemplate.address, 2)
-    await unlock.setLockTemplate(lockTemplate.address)
-    assert.equal(await unlock.publicLockAddress(), lockTemplate.address)
+    await unlock.addLockTemplate(await lockTemplate.getAddress(), 2)
+    await unlock.setLockTemplate(await lockTemplate.getAddress())
+    assert.equal(
+      await unlock.publicLockAddress(),
+      await lockTemplate.getAddress()
+    )
     assert.equal(await unlock.publicLockLatestVersion(), 2)
   })
 
   it('should revert if the template is missing', async () => {
     await reverts(
-      unlock.setLockTemplate(lockTemplate.address),
+      unlock.setLockTemplate(await lockTemplate.getAddress()),
       'Unlock__MISSING_LOCK_TEMPLATE'
     )
   })
 
   it('should revert if called by other than the owner', async () => {
     await reverts(
-      unlock.connect(signer).setLockTemplate(lockTemplate.address),
+      unlock.connect(signer).setLockTemplate(await lockTemplate.getAddress()),
       'ONLY_OWNER'
     )
   })

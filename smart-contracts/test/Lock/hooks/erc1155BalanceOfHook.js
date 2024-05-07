@@ -38,7 +38,7 @@ describe('ERC1155BalanceOfHook', () => {
     await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      hook.address,
+      await hook.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -48,32 +48,39 @@ describe('ERC1155BalanceOfHook', () => {
 
   describe('setting mapping', () => {
     beforeEach(async () => {
-      await hook.createMapping(lock.address, nft.address, GOLD)
+      await hook.createMapping(
+        await lock.getAddress(),
+        await nft.getAddress(),
+        GOLD
+      )
     })
 
     it('should record the corresponding NFT address', async () => {
-      assert.equal(await hook.nftAddresses(lock.address), nft.address)
+      assert.equal(
+        await hook.nftAddresses(await lock.getAddress()),
+        await nft.getAddress()
+      )
     })
 
     it('should record the corresponding token type', async () => {
-      assert.equal(await hook.nftTokenIds(lock.address), GOLD)
+      assert.equal(await hook.nftTokenIds(await lock.getAddress()), GOLD)
     })
 
     it('should only allow lock managers to set mapping', async () => {
       await reverts(
         hook
           .connect(randomSigner)
-          .createMapping(lock.address, nft.address, GOLD),
+          .createMapping(await lock.getAddress(), await nft.getAddress(), GOLD),
         'Caller does not have the LockManager role'
       )
     })
     it('throws on zero addresses', async () => {
       await reverts(
-        hook.createMapping(ADDRESS_ZERO, nft.address, GOLD),
+        hook.createMapping(ADDRESS_ZERO, await nft.getAddress(), GOLD),
         'Lock address can not be zero'
       )
       await reverts(
-        hook.createMapping(lock.address, ADDRESS_ZERO, GOLD),
+        hook.createMapping(await lock.getAddress(), ADDRESS_ZERO, GOLD),
         'ERC1155 address can not be zero'
       )
     })
@@ -114,7 +121,11 @@ describe('ERC1155BalanceOfHook', () => {
       // mint one token
       await nft.mint(nftOwner, GOLD)
       // create mapping
-      await hook.createMapping(lock.address, nft.address, GOLD)
+      await hook.createMapping(
+        await lock.getAddress(),
+        await nft.getAddress(),
+        GOLD
+      )
     })
 
     it('with no valid key', async () => {
