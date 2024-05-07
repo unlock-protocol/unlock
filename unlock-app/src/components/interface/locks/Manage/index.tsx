@@ -31,6 +31,7 @@ import { FaRegEdit as EditIcon } from 'react-icons/fa'
 import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { IconType } from 'react-icons'
+import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
@@ -132,9 +133,17 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       setIsKeysJobLoading(false)
 
       const members = response.data
-      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      const cols: { [key: string]: boolean } = { token: true, data: false }
+      if (members.keys) {
+        for (let i = 0; i < members.keys.length; i++) {
+          Object.keys(members.keys[i]).forEach((key) => {
+            cols[key] = true
+          })
+        }
+      }
+      delete cols.data
       downloadAsCSV({
-        cols,
+        cols: Object.keys(cols),
         metadata: members.keys as any[],
       })
     }
@@ -266,7 +275,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                     </a>
                     <Link href={checkoutLink} className="text-left">
                       <PopoverItem
-                        label="Checkout URLs"
+                        label="Checkout URL"
                         description="Customize your member's purchase journey"
                         icon={RightArrowIcon}
                       />
@@ -288,6 +297,13 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         </Link>
                       </>
                     )}
+                    <Link href={verificationLink} className="text-left">
+                      <PopoverItem
+                        label="Verification"
+                        description="Scan and verify the authentication of tickets for your events"
+                        icon={ScanIcon}
+                      />
+                    </Link>
                   </div>
                 </div>
               </Popover.Panel>

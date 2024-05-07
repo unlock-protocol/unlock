@@ -1,5 +1,3 @@
-import { Event, PaywallConfigType } from '@unlock-protocol/core'
-
 import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   AddressInput,
@@ -16,22 +14,23 @@ import useEns, { getAddressForName } from '~/hooks/useEns'
 import { useState } from 'react'
 import { storage } from '~/config/storage'
 import { onResolveName } from '~/utils/resolvers'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface VerifierProps {
   address: string
   createdAt: string
   updatedAt: string
+  lockAddress: string
+  lockManager: string
   network: number
   name?: string
   id: number
 }
 
-export interface VerifierFormProps {
-  event: Event
-  checkoutConfig: {
-    id?: string
-    config: PaywallConfigType
-  }
+interface VerifierFormProps {
+  lockAddress: string
+  network: number
+  disabled: boolean
 }
 
 interface VerifierCardProps {
@@ -50,6 +49,7 @@ const VerifierCard = ({
   verifier,
   onDeleteVerifier,
   isLoading,
+  disabled,
 }: VerifierCardProps) => {
   const { account } = useAuth()
 
@@ -78,7 +78,7 @@ const VerifierCard = ({
           size="small"
           variant="outlined-primary"
           onClick={() => onDeleteVerifier(address)}
-          disabled={isLoading}
+          disabled={isLoading || disabled}
         >
           Remove
         </Button>
@@ -87,16 +87,30 @@ const VerifierCard = ({
   )
 }
 
-export const VerifierForm = ({ event }: VerifierFormProps) => {
+export const VerifierForm = ({
+  lockAddress,
+  network,
+  disabled,
+}: VerifierFormProps) => {
   const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
 
   const localForm = useForm<VerifierFormDataProps>()
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
 
   const { handleSubmit, control, setValue, register } = localForm
 
   const { verifier } = useWatch({
     control,
   })
+
+  const getVerifiers = async () => {
+    const response = await storage.verifiers(network, lockAddress)
+    return response.data.results || []
+  }
 
   const addVerifier = async ({
     address,
@@ -107,8 +121,9 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
   }) => {
     const resolvedAddress = await getAddressForName(address)
 
-    const response = await storage.addEventVerifier(
-      event.slug,
+    const response = await storage.createVerifier(
+      network,
+      lockAddress,
       resolvedAddress,
       {
         verifierName: name,
@@ -118,7 +133,12 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     return response.data
   }
 
-  const addEventVerifierMutation = useMutation(addVerifier, {
+  const deleteVerifier = async (address: string) => {
+    const response = await storage.deleteVerifier(network, lockAddress, address)
+    return response.data.results
+  }
+
+  const addVerifierMutation = useMutation(addVerifier, {
     onSuccess: (res: any) => {
       if (res?.message) {
         ToastHelper.error(res?.message)
@@ -136,33 +156,27 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     },
   })
 
-  const deleteVerifierMutation = useMutation(
-    async (address: string) => {
-      storage.deleteEventVerifier(event.slug, address)
+  const deleteVerifierMutation = useMutation(deleteVerifier, {
+    onSuccess: (res: any, verifier: string) => {
+      if (res?.message) {
+        ToastHelper.error(res?.message)
+      } else {
+        ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
+      }
     },
-    {
-      onSuccess: (res: any, verifier: string) => {
-        if (res?.message) {
-          ToastHelper.error(res?.message)
-        } else {
-          ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
-        }
-      },
-    }
-  )
+  })
 
   const { isLoading: isLoadingItems } = useQuery(
     [
-      'getEventVerifiers',
-      event.slug,
-      addEventVerifierMutation.isSuccess,
+      'getVerifiers',
+      lockAddress,
+      network,
+      addVerifierMutation.isSuccess,
       deleteVerifierMutation.isSuccess,
     ],
-    async () => {
-      const response = await storage.eventVerifiers(event.slug)
-      return response.data.results || []
-    },
+    async () => await getVerifiers(),
     {
+      enabled: isManager,
       refetchInterval: false,
       onSuccess: (verifiers: VerifierProps[]) => {
         setVerifiers(verifiers)
@@ -177,7 +191,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
   )
 
   const onAddVerifier = async ({ verifier, name }: VerifierFormDataProps) => {
-    await addEventVerifierMutation.mutateAsync({ address: verifier, name })
+    await addVerifierMutation.mutateAsync({ address: verifier, name })
   }
 
   const onDeleteVerifier = async (address: string) => {
@@ -186,7 +200,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
 
   const isLoading =
     isLoadingItems ||
-    addEventVerifierMutation.isLoading ||
+    addVerifierMutation.isLoading ||
     deleteVerifierMutation.isLoading
 
   const noVerifiers = verifiers?.length === 0
@@ -195,7 +209,11 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     <div className="relative">
       <div className="flex flex-col gap-4">
         {noVerifiers && !isLoading && (
-          <span>This lock currently does not have any verifier.</span>
+          <span>
+            {isManager
+              ? 'This lock currently does not have any verifier.'
+              : 'Only lock manager can access verifiers list.'}
+          </span>
         )}
         {!noVerifiers && !isLoading && (
           <div className="grid gap-1">
@@ -207,65 +225,70 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
                   key={verifier.id}
                   onDeleteVerifier={onDeleteVerifier}
                   isLoading={deleteVerifierMutation.isLoading}
+                  disabled={disabled}
                 />
               ))}
             </div>
           </div>
         )}
 
-        {(isLoadingItems || addEventVerifierMutation.isLoading) &&
+        {(isLoadingItems || addVerifierMutation.isLoading) &&
           !deleteVerifierMutation.isLoading && <Placeholder.Line size="xl" />}
       </div>
-      <form
-        className="flex flex-col gap-6 mt-8"
-        onSubmit={handleSubmit(onAddVerifier)}
-      >
-        <div className="flex flex-col gap-2">
-          <Input
-            type="text"
-            placeholder="Verifier name"
-            label="Name"
-            autoComplete="off"
-            description="Set an optional name to easily check who verified."
-            {...register('name')}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <Controller
-            name="verifier"
-            control={control}
-            rules={{
-              required: true,
-              validate: isAddressOrEns,
-            }}
-            render={() => {
-              return (
-                <>
-                  <AddressInput
-                    withIcon
-                    value={verifier}
-                    label="To add a verifier, please enter their wallet address or ENS name"
-                    autoComplete="off"
-                    onChange={(value: any) => {
-                      setValue('verifier', value)
-                    }}
-                    onResolveName={onResolveName}
-                  />
-                </>
-              )
-            }}
-          />
-        </div>
-        <Button
-          type="submit"
-          className="w-full md:w-1/2"
-          disabled={isLoading}
-          loading={addEventVerifierMutation.isLoading}
+      {isManager && (
+        <form
+          className="flex flex-col gap-6 mt-8"
+          onSubmit={handleSubmit(onAddVerifier)}
         >
-          Add
-        </Button>
-      </form>
+          <div className="flex flex-col gap-2">
+            <Input
+              type="text"
+              placeholder="Verifier name"
+              label="Name"
+              disabled={disabled}
+              autoComplete="off"
+              description="Set an optional name to easily check who verified."
+              {...register('name')}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Controller
+              name="verifier"
+              control={control}
+              rules={{
+                required: true,
+                validate: isAddressOrEns,
+              }}
+              render={() => {
+                return (
+                  <>
+                    <AddressInput
+                      withIcon
+                      value={verifier}
+                      disabled={disabled}
+                      label="To add a verifier, please enter their wallet address or ENS name"
+                      autoComplete="off"
+                      onChange={(value: any) => {
+                        setValue('verifier', value)
+                      }}
+                      onResolveName={onResolveName}
+                    />
+                  </>
+                )
+              }}
+            />
+          </div>
+          <Button
+            type="submit"
+            className="w-full md:w-1/2"
+            disabled={isLoading || disabled}
+            loading={addVerifierMutation.isLoading}
+          >
+            Add
+          </Button>
+        </form>
+      )}
     </div>
   )
 }
