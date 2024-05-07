@@ -103,7 +103,7 @@ export function ChooseConfiguration({
   useEffect(() => {
     if (!value?.id) return
     setDefaultValue(value?.id)
-  }, [value?.id, value.name])
+  }, [value?.id, value?.name])
 
   const configOptions = items?.map((config) => {
     return {
