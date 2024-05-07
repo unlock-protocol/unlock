@@ -7,8 +7,6 @@ import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
 import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
-import { sendEmail } from './wedlocksOperations'
-import { getEventUrl } from '../utils/eventHelpers'
 
 interface AttributeProps {
   value: string
@@ -226,20 +224,5 @@ export const saveEvent = async (
     await savedEvent.save()
   }
 
-  // This was a creation!
-  if (!parsed.data.slug) {
-    await sendEmail({
-      template: 'eventDeployed',
-      recipient: savedEvent.data.replyTo,
-      // @ts-expect-error object incomplete
-      params: {
-        eventName: savedEvent!.name,
-        eventDate: savedEvent!.data.ticket.event_start_date,
-        eventTime: savedEvent!.data.ticket.event_start_time,
-        eventUrl: getEventUrl(savedEvent!),
-      },
-      attachments: [],
-    })
-  }
   return [savedEvent, !!parsed.data.slug]
 }

@@ -162,28 +162,5 @@ describe('eventOperations', () => {
       const savedEventWithoutProtectedData = await getEventBySlug(slug, false)
       expect(savedEventWithoutProtectedData?.data.replyTo).toEqual(undefined)
     })
-
-    it('should send an email to the organizer when the event is created', async () => {
-      await EventData.truncate()
-      await CheckoutConfig.truncate()
-      const eventParams = getEventFixture({
-        data: {
-          name: 'The party of the year now!',
-        },
-      })
-      await saveEvent(eventParams, '0x123')
-      expect(sendEmail).toHaveBeenCalledWith({
-        attachments: [],
-        params: {
-          eventDate: '2024-05-22',
-          eventName: 'The party of the year now!',
-          eventTime: '08:30',
-          eventUrl:
-            'https://staging-app.unlock-protocol.com/event/the-party-of-the-year-now',
-        },
-        recipient: 'julien@unlock-protocol.com',
-        template: 'eventDeployed',
-      })
-    })
   })
 })
