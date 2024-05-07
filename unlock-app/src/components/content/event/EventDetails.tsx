@@ -1,3 +1,4 @@
+import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { MdAssignmentLate } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -17,7 +18,6 @@ import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
-import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import {
@@ -39,6 +39,7 @@ import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
 import { AttendeeCues } from './Registration/AttendeeCues'
+import Link from 'next/link'
 
 interface EventDetailsProps {
   event: Event
@@ -400,47 +401,6 @@ export const EventDetails = ({
                   )}
                 </div>
               </Disclosure>
-
-              <Disclosure
-                label="Verifiers"
-                description="Add and manage trusted users at the event to help check-in attendees as they arrive."
-              >
-                <div className="grid gap-2">
-                  {Object.keys(checkoutConfig.config.locks).map(
-                    (lockAddress: string) => {
-                      const network =
-                        checkoutConfig.config.locks[lockAddress].network ||
-                        checkoutConfig.config.network
-                      if (Object.keys(checkoutConfig.config.locks).length > 1) {
-                        return (
-                          <Disclosure
-                            label={`Verifiers for ${minifyAddress(
-                              lockAddress
-                            )}`}
-                            key={lockAddress}
-                          >
-                            <VerifierForm
-                              lockAddress={lockAddress}
-                              network={network!}
-                              disabled={!isOrganizer}
-                            />
-                          </Disclosure>
-                        )
-                      } else {
-                        return (
-                          <VerifierForm
-                            key={lockAddress}
-                            lockAddress={lockAddress}
-                            network={network!}
-                            disabled={!isOrganizer}
-                          />
-                        )
-                      }
-                    }
-                  )}
-                </div>
-              </Disclosure>
-
               {/* Put that only if the event requires the checkout? */}
               <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
                 <div className="md:col-span-2">
@@ -459,6 +419,30 @@ export const EventDetails = ({
                     }}
                   >
                     Configure
+                  </Button>
+                </div>
+              </Card>
+
+              {/*  */}
+              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
+                <div className="md:col-span-2">
+                  <Card.Label
+                    title="Verification"
+                    description="Scan and verify the authentication of tickets for your events"
+                  />
+                </div>
+
+                <div className="md:col-span-1">
+                  <Button
+                    target="_blank"
+                    iconLeft={<ScanIcon />}
+                    as={Link}
+                    variant="black"
+                    className="button border w-full"
+                    size="small"
+                    href={`/verification`}
+                  >
+                    Verification app
                   </Button>
                 </div>
               </Card>
