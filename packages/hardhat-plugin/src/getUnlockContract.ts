@@ -35,7 +35,7 @@ export async function getUnlockContract(
     const { chainId } = await hre.ethers.provider.getNetwork()
     const network = hre.unlock.networks[chainId.toString()]
     if (network) {
-      ;({ unlockAddress } = hre.unlock.networks[chainId.toString()])
+      ;({ unlockAddress } = network)
     }
     if (!unlockAddress) {
       unlockAddress = hre.unlock.unlockAddress

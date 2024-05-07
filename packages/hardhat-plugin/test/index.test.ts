@@ -45,11 +45,14 @@ describe('Unlock Hardhat plugin', function () {
       assert.equal(this.hre.unlock.networks['1'].unlockAddress, 'newAddress')
     })
     it('should store additional networks info', function () {
-      assert.isTrue(Object.keys(this.hre.unlock.networks).includes('100'))
       assert.isTrue(Object.keys(this.hre.unlock.networks).includes('12345'))
-      assert.equal(this.hre.unlock.networks['100'].name, 'Custom Polygon Name')
+      assert.isTrue(Object.keys(this.hre.unlock.networks).includes('31337'))
       assert.equal(
-        this.hre.unlock.networks['100'].subgraph?.endpoint,
+        this.hre.unlock.networks['31337'].name,
+        'Custom Localhost Name'
+      )
+      assert.equal(
+        this.hre.unlock.networks['31337'].subgraph?.endpoint,
         'here goes a subgraph URI'
       )
     })
@@ -230,12 +233,12 @@ describe('HardhatConfig unlock extension', function () {
     assert.isTrue(Object.keys(this.hre.config).includes('unlock'))
     assert.deepEqual(
       Object.keys(this.hre.config.unlock).sort(),
-      [...Object.keys(networks), '12345'].sort()
+      [...Object.keys(networks), '12345', '31337'].sort()
     )
   })
 
   it('Should allow user to configure exsiting network', function () {
-    assert.equal(this.hre.config.unlock['100'].name, 'Custom Polygon Name')
+    assert.equal(this.hre.config.unlock['31337'].name, 'Custom Localhost Name')
   })
 
   it('Should allow user to pass a new network', function () {
