@@ -28,6 +28,7 @@ if [ "$FROM_NPM" -eq "1" ]; then
 else
   yarn workspace @unlock-protocol/contracts clean
   yarn workspace @unlock-protocol/contracts build
+  yarn workspace @unlock-protocol/contracts build:docs
   yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
 fi
 
