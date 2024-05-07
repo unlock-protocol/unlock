@@ -7,7 +7,7 @@ import { Verifier } from '../models/verifier'
  * @param network
  * @returns boolean
  */
-export const isVerifierAlreadyExits = async (
+export const isVerifierAlreadyExitsOnLock = async (
   lockAddress: string,
   address: string,
   network: number
@@ -27,7 +27,7 @@ export const isVerifierAlreadyExits = async (
  * @param network
  * @returns
  */
-export const getVerifiersList = async (
+export const getVerifiersListForLock = async (
   lockAddress: string,
   network: number
 ): Promise<any[]> => {
@@ -40,7 +40,9 @@ export const getVerifiersList = async (
 
   const verifiers =
     response?.map((verifier: Verifier) => ({
-      ...verifier.toJSON(),
+      address: verifier.address,
+      lockManager: verifier.lockManager,
+      name: verifier.name,
     })) || []
 
   return verifiers
@@ -54,7 +56,7 @@ export const getVerifiersList = async (
  * @param network
  * @returns
  */
-export const createVerifier = async (
+export const createVerifierForLock = async (
   lockAddress: string,
   address: string,
   lockManager: string,
@@ -78,7 +80,7 @@ export const createVerifier = async (
  * @param network
  * @returns
  */
-export const deleteVerifier = async (
+export const deleteVerifierForLock = async (
   lockAddress: string,
   address: string,
   network: number
@@ -92,7 +94,7 @@ export const deleteVerifier = async (
   })
 }
 
-export const isVerifier = async (
+export const isVerifierForLock = async (
   lockAddress: string,
   address: string,
   network: number
@@ -106,12 +108,60 @@ export const isVerifier = async (
   })
 }
 
+export const getEventVerifiers = async (slug: string) => {
+  // Get the unique verifiers for the event based on the slug
+  const verifiers = await Verifier.findAll({
+    where: {
+      slug,
+    },
+  })
+  return (
+    verifiers?.map((verifier: Verifier) => ({
+      address: verifier.address,
+      lockManager: verifier.lockManager,
+      name: verifier.name,
+    })) || []
+  )
+}
+
+export const addEventVerifier = async (
+  slug: string,
+  address: string,
+  lockManager: string,
+  name?: string | null
+) => {
+  await Verifier.upsert(
+    {
+      slug,
+      address,
+      name,
+      lockManager,
+    },
+    {
+      conflictFields: ['slug', 'address'],
+    }
+  )
+}
+
+export const deleteVerifierForEvent = async (address: string, slug: string) => {
+  await Verifier.destroy({
+    where: {
+      slug,
+      address,
+    },
+    limit: 1,
+  })
+}
+
 const VerifierOperations = {
-  isVerifierAlreadyExits,
-  getVerifiersList,
-  createVerifier,
-  deleteVerifier,
-  isVerifier,
+  isVerifierAlreadyExitsOnLock,
+  getVerifiersListForLock,
+  createVerifierForLock,
+  deleteVerifierForLock,
+  isVerifierForLock,
+  getEventVerifiers,
+  addEventVerifier,
+  deleteVerifierForEvent,
 }
 
 export default VerifierOperations

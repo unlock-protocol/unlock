@@ -10,7 +10,7 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
-import { getVerifiersList } from '../../operations/verifierOperations'
+import { getVerifiersListForLock } from '../../operations/verifierOperations'
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
@@ -327,7 +327,7 @@ export const getTicket: RequestHandler = async (request, response) => {
         network,
       }
     ),
-    getVerifiersList(lockAddress, network),
+    getVerifiersListForLock(lockAddress, network),
   ])
 
   if (!key) {
