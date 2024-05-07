@@ -16,7 +16,7 @@ export const Verifiers = ({ event, checkoutConfig }: VerifiersProps) => {
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Verifiers"
-        description="Set a sender as well as as a reply-to email address."
+        description="Add verifiers who can scan QR codes and verify tickets at the door!"
       >
         <VerifierForm event={event} checkoutConfig={checkoutConfig} />
       </SettingCard>

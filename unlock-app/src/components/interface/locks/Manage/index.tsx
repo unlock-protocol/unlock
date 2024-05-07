@@ -223,7 +223,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
   const checkoutLink = `/locks/checkout-url`
-  const verificationLink = `/verification`
 
   const { isManager } = useLockManager({
     lockAddress,

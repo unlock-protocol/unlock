@@ -13,18 +13,9 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns, { getAddressForName } from '~/hooks/useEns'
-import { useState } from 'react'
 import { storage } from '~/config/storage'
 import { onResolveName } from '~/utils/resolvers'
-
-interface VerifierProps {
-  address: string
-  createdAt: string
-  updatedAt: string
-  network: number
-  name?: string
-  id: number
-}
+import { Verifier } from '@unlock-protocol/unlock-js'
 
 export interface VerifierFormProps {
   event: Event
@@ -35,10 +26,9 @@ export interface VerifierFormProps {
 }
 
 interface VerifierCardProps {
-  verifier: VerifierProps
+  verifier: Verifier
   onDeleteVerifier: (address: string) => Promise<any>
   isLoading?: boolean
-  disabled: boolean
 }
 
 interface VerifierFormDataProps {
@@ -73,25 +63,20 @@ const VerifierCard = ({
           </span>
         )}
       </div>
-      {isCurrentAccount && (
-        <Button
-          size="small"
-          variant="outlined-primary"
-          onClick={() => onDeleteVerifier(address)}
-          disabled={isLoading}
-        >
-          Remove
-        </Button>
-      )}
+      <Button
+        size="tiny"
+        variant="outlined-primary"
+        onClick={() => onDeleteVerifier(verifier.address)}
+        disabled={isLoading}
+      >
+        Remove
+      </Button>
     </div>
   )
 }
 
 export const VerifierForm = ({ event }: VerifierFormProps) => {
-  const [verifiers, setVerifiers] = useState<VerifierProps[]>([])
-
   const localForm = useForm<VerifierFormDataProps>()
-
   const { handleSubmit, control, setValue, register } = localForm
 
   const { verifier } = useWatch({
@@ -127,6 +112,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
         setValue('verifier', '')
         setValue('name', '')
       }
+      refetchList()
     },
     onError: (err: any) => {
       ToastHelper.error(
@@ -147,26 +133,22 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
         } else {
           ToastHelper.success(`${minifyAddress(verifier)} deleted from list`)
         }
+        refetchList()
       },
     }
   )
 
-  const { isLoading: isLoadingItems } = useQuery(
-    [
-      'getEventVerifiers',
-      event.slug,
-      addEventVerifierMutation.isSuccess,
-      deleteVerifierMutation.isSuccess,
-    ],
+  const {
+    isLoading: isLoadingItems,
+    refetch: refetchList,
+    data: verifiers,
+  } = useQuery(
+    ['getEventVerifiers', event.slug],
     async () => {
       const response = await storage.eventVerifiers(event.slug)
       return response.data.results || []
     },
     {
-      refetchInterval: false,
-      onSuccess: (verifiers: VerifierProps[]) => {
-        setVerifiers(verifiers)
-      },
       onError: (err: any) => {
         ToastHelper.error(
           err?.error ??
@@ -195,16 +177,19 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     <div className="relative">
       <div className="flex flex-col gap-4">
         {noVerifiers && !isLoading && (
-          <span>This lock currently does not have any verifier.</span>
+          <span>
+            This event currently does not have any verifier. You can add some
+            using the form below.
+          </span>
         )}
         {!noVerifiers && !isLoading && (
           <div className="grid gap-1">
             <span className="font-semibold">Verifiers</span>
             <div className="grid gap-2">
-              {(verifiers ?? [])?.map((verifier: VerifierProps) => (
+              {verifiers?.map((verifier: Verifier) => (
                 <VerifierCard
                   verifier={verifier}
-                  key={verifier.id}
+                  key={verifier.address}
                   onDeleteVerifier={onDeleteVerifier}
                   isLoading={deleteVerifierMutation.isLoading}
                 />
@@ -245,7 +230,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
                   <AddressInput
                     withIcon
                     value={verifier}
-                    label="To add a verifier, please enter their wallet address or ENS name"
+                    label="Wallet address or ENS name"
                     autoComplete="off"
                     onChange={(value: any) => {
                       setValue('verifier', value)
