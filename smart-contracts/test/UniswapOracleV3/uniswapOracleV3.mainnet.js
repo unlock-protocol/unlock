@@ -9,7 +9,7 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 
 // very unprecise way to round up things...
-const round = (bn) => Math.floor(parseInt(bn.toString().slice(0, 3)))
+const round = (bn) => Math.floor(parseInt(bn.slice(0, 3)))
 
 const FEE = 500
 describe(`oracle`, () => {

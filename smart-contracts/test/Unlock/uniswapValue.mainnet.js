@@ -21,11 +21,11 @@ const {
 
 const { unlockAddress } = mainnet
 const keyPrice = ethers.parseUnits('0.01', 'ether')
-const totalPrice = keyPrice.mul(5)
+const totalPrice = keyPrice * 5n
 
 // USDC (only 6 decimals)
 const keyPriceUSDC = ethers.parseUnits('50', 6)
-const totalPriceUSDC = keyPriceUSDC.mul(5)
+const totalPriceUSDC = keyPriceUSDC * 5n
 
 describe('Unlock / uniswapValue', () => {
   let lock
@@ -94,9 +94,7 @@ describe('Unlock / uniswapValue', () => {
     it('pricing is set correctly', async () => {
       // make sure price is correct
       expect(await lock.tokenAddress()).to.equals(USDC)
-      expect((await lock.keyPrice()).toString()).to.equals(
-        keyPriceUSDC.toString()
-      )
+      expect(await lock.keyPrice()).to.equals(keyPriceUSDC)
     })
 
     describe('Purchase keys', () => {
@@ -118,13 +116,11 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP went up by the expected ETH value', async () => {
         const GNP = await unlock.grossNetworkProduct()
-        expect(GNP.toString()).to.not.equals(gnpBefore.toString())
+        expect(GNP).to.not.equals(gnpBefore)
 
         // 5 keys at 50 USDC at oracle rate
-        const priceConverted = rate.mul(250)
-        expect(GNP.div(1000).toString()).to.equals(
-          gnpBefore.add(priceConverted).div(1000).toString()
-        )
+        const priceConverted = rate * 250
+        expect(GNP.div(1000)).to.equals(gnpBefore.add(priceConverted).div(1000))
 
         // show approx value in ETH for reference
         console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)
@@ -150,25 +146,17 @@ describe('Unlock / uniswapValue', () => {
           ) => {
             assert.equal(tokenAddress, USDC)
             assert.equal(lockAddress, lock.address)
-            assert.equal(value.toString(), keyPriceUSDC.toString())
+            assert.equal(value, keyPriceUSDC)
             // rate * 50 USDC per key
+            assert.equal(_valueInETH.div(1000), rate * (50).div(1000))
             assert.equal(
-              _valueInETH.div(1000).toString(),
-              rate.mul(50).div(1000).toString()
-            )
-            assert.equal(
-              gnpBefore
-                .add(rate.mul(50).mul(i + 1))
-                .div(1000)
-                .toString(),
-              grossNetworkProduct.div(1000).toString()
+              gnpBefore.add(rate * 50 * (i + 1)).div(1000),
+              grossNetworkProduct.div(1000)
             )
           }
         )
         const gnp = await unlock.grossNetworkProduct()
-        expect(gnp.toString()).to.equals(
-          events[4].args.grossNetworkProduct.toString()
-        )
+        expect(gnp).to.equals(events[4].args.grossNetworkProduct)
       })
     })
   })
@@ -204,7 +192,7 @@ describe('Unlock / uniswapValue', () => {
     it('pricing is set correctly', async () => {
       // make sure price is correct
       expect(await lock.tokenAddress()).to.equals(SHIBA_INU)
-      expect((await lock.keyPrice()).toString()).to.equals(keyPrice.toString())
+      expect(await lock.keyPrice()).to.equals(keyPrice)
     })
 
     describe('Purchase keys', () => {
@@ -226,12 +214,12 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP went up by the expected ETH value', async () => {
         const GNP = await unlock.grossNetworkProduct()
-        expect(GNP.toString()).to.not.equals(gnpBefore.toString())
+        expect(GNP).to.not.equals(gnpBefore)
 
         // 5 keys at 50 SHIBA_INU at oracle rate
-        const priceConverted = rate.mul(250)
+        const priceConverted = rate * 250
         const diff = GNP.sub(gnpBefore.add(priceConverted))
-        expect(diff.toNumber()).to.be.lte(1000) // price variation
+        expect(diff).to.be <= 1000 // price variation
 
         // show approx value in ETH for reference
         console.log(`250 SHIBA_INU =~ ${ethers.formatUnits(GNP)} ETH`)
@@ -257,26 +245,18 @@ describe('Unlock / uniswapValue', () => {
           ) => {
             assert.equal(tokenAddress, SHIBA_INU)
             assert.equal(lockAddress, lock.address)
-            assert.equal(value.toString(), keyPrice.toString())
+            assert.equal(value, keyPrice)
             // rate * 0.01 SHIBA_INU per key
             console.log(_valueInETH)
+            assert.equal(_valueInETH, rate * (0.01).div(1000))
             assert.equal(
-              _valueInETH.toString(),
-              rate.mul(0.01).div(1000).toString()
-            )
-            assert.equal(
-              gnpBefore
-                .add(rate.mul(0.01).mul(i + 1))
-                .div(1000)
-                .toString(),
-              grossNetworkProduct.div(1000).toString()
+              gnpBefore.add(rate * 0.01 * (i + 1)).div(1000),
+              grossNetworkProduct.div(1000)
             )
           }
         )
         const gnp = await unlock.grossNetworkProduct()
-        expect(gnp.toString()).to.equals(
-          events[4].args.grossNetworkProduct.toString()
-        )
+        expect(gnp).to.equals(events[4].args.grossNetworkProduct)
       })
     })
   })
@@ -309,7 +289,7 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP did not change', async () => {
         const gdp = await unlock.grossNetworkProduct()
-        assert.equal(gdp.toString(), gdpBefore.toString())
+        assert.equal(gdp, gdpBefore)
       })
 
       it('a GDP tracking event has been emitted', async () => {
@@ -327,10 +307,10 @@ describe('Unlock / uniswapValue', () => {
 
         const gdp = await unlock.grossNetworkProduct()
 
-        assert.equal(gdp.toString(), grossNetworkProduct.toString())
-        assert.equal(0, _valueInETH.toNumber())
+        assert.equal(gdp, grossNetworkProduct)
+        assert.equal(0, _valueInETH)
         assert.equal(await token.getAddress(), tokenAddress)
-        assert.equal(keyPrice.toString(), value.toString())
+        assert.equal(keyPrice, value)
         assert.equal(lockAddress, await lock.getAddress())
       })
     })
@@ -355,7 +335,7 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = await unlock.grossNetworkProduct()
-        assert.equal(gdp.toString(), gdpBefore.add(keyPrice).toString())
+        assert.equal(gdp, gdpBefore.add(keyPrice))
       })
 
       it('a GDP tracking event has been emitted', async () => {
@@ -375,9 +355,9 @@ describe('Unlock / uniswapValue', () => {
 
         assert.equal(lockAddress, await lock.getAddress())
         assert.equal(ADDRESS_ZERO, tokenAddress)
-        assert.equal(gdp.toString(), grossNetworkProduct.toString())
-        assert.equal(keyPrice.toString(), _valueInETH.toString())
-        assert.equal(keyPrice.toString(), value.toString())
+        assert.equal(gdp, grossNetworkProduct)
+        assert.equal(keyPrice, _valueInETH)
+        assert.equal(keyPrice, value)
       })
     })
   })

@@ -25,10 +25,7 @@ describe('Lock / getHasValidKey', () => {
     })
 
     it('should be true', async () => {
-      assert.equal(
-        (await lock.balanceOf(await keyOwner.getAddress())).toNumber(),
-        1
-      )
+      assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 1)
       const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
       assert.equal(isValid, true)
     })
@@ -126,14 +123,8 @@ describe('Lock / getHasValidKey', () => {
       })
 
       it('should be false', async () => {
-        assert.equal(
-          (await lock.balanceOf(await keyOwner.getAddress())).toNumber(),
-          0
-        )
-        assert.equal(
-          (await lock.balanceOf(await receiver.getAddress())).toNumber(),
-          3
-        )
+        assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
+        assert.equal(await lock.balanceOf(await receiver.getAddress()), 3)
         const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
         assert.equal(isValid, false)
       })

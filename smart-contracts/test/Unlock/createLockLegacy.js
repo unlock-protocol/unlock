@@ -66,7 +66,7 @@ describe('Unlock / createLock (Legacy)', () => {
           const result = await lock.expirationDuration()
           assert.equal(result, args[0])
           assert.equal(await lock.tokenAddress(), args[1])
-          assert.equal((await lock.keyPrice()).toString(), args[2].toString())
+          assert.equal(await lock.keyPrice(), args[2])
           assert.equal(await lock.maxNumberOfKeys(), args[3])
           assert.equal(await lock.name(), args[4])
         })

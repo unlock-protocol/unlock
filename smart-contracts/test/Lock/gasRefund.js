@@ -181,7 +181,7 @@ describe('Lock / GasRefund', () => {
             tx = await lock
               .connect(keyOwner)
               .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
-                value: isErc20 ? 0 : keyPrice.toString(),
+                value: isErc20 ? 0 : keyPrice,
               })
           })
           it('gas refunded event is fired', async () => {
@@ -281,7 +281,7 @@ describe('Lock / GasRefund', () => {
             ? userBalanceBefore - keyPrice // buy a key
             : userBalanceBefore -
               keyPrice - // buy a key
-              gas.toString() // pay for the gas
+              gas // pay for the gas
 
           compareBigNumbers(userBalanceAfter, expected)
         })

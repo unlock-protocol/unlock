@@ -56,7 +56,7 @@ describe('Lock / transferFee', () => {
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
 
       // Fee is <= the expected fee before the call
-      assert(fee.lte(expiration - (nowBefore * 5) / 100))
+      assert(fee <= expiration - (nowBefore * 5) / 100)
 
       // and >= the expected fee after the call
       assert(fee.gte(expiration - (nowAfter * 5) / 100))
@@ -99,7 +99,7 @@ describe('Lock / transferFee', () => {
         // fee may be over-estimated (but not under-estimated)
         assert(expirationAfter.gte(expirationBefore - fee))
         // if less than 5 seconds have passed than the delta should be <= 1
-        assert(expirationAfter.lte(expirationBefore - fee + 1))
+        assert(expirationAfter <= expirationBefore - fee + 1)
       })
 
       after(async () => {
@@ -143,7 +143,7 @@ describe('Lock / transferFee', () => {
 
       it('emits TransferFeeChanged event', async () => {
         const { args } = await getEvent(receipt, 'TransferFeeChanged')
-        assert.equal(args.transferFeeBasisPoints.toString(), '25')
+        assert.equal(args.transferFeeBasisPoints, '25')
       })
     })
 

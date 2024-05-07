@@ -18,7 +18,7 @@ describe('Lock / expirationDuration', () => {
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO
-    const args = [60 * 30, tokenAddress, keyPrice.toString(), 10, 'Test lock']
+    const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
     const calldata = await createLockCalldata({
       args,
@@ -42,7 +42,7 @@ describe('Lock / expirationDuration', () => {
     )
     const transfer1Block = await ethers.provider.getBlock(blockNumber)
     assert.equal(
-      (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
+      await lock.keyExpirationTimestampFor(tokenId),
       transfer1Block.timestamp + 1800
     )
 
@@ -60,10 +60,10 @@ describe('Lock / expirationDuration', () => {
     const transfer2Block = await ethers.provider.getBlock(blockNumber2)
 
     assert.equal(
-      (await lock.keyExpirationTimestampFor(tokenId2)).toNumber(),
+      await lock.keyExpirationTimestampFor(tokenId2),
       transfer2Block.timestamp + 5000
     )
-    assert.equal((await lock.expirationDuration()).toString(), '5000')
+    assert.equal(await lock.expirationDuration(), '5000')
   })
 
   it('does not affect the timestamps of existing keys', async () => {
@@ -82,6 +82,6 @@ describe('Lock / expirationDuration', () => {
       await buyer.getAddress()
     )
 
-    assert.equal(tsBefore.toString(), tsAfter.toString())
+    assert.equal(tsBefore, tsAfter)
   })
 })

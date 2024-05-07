@@ -195,7 +195,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const updated = await upgradeContract()
 
       const totalSupplyAfterUpdate = await updated.totalSupply()
-      assert.equal(totalSupplyAfterUpdate.toString(), totalSupply.toString())
+      assert.equal(totalSupplyAfterUpdate, totalSupply)
     })
 
     it('New tokens can not be issued anymore', async () => {
@@ -237,9 +237,9 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       await upgradeContract()
       const multisig = await ethers.getContractAt(multisigABI, multisigAddress)
 
-      const transactionId = (await multisig.transactionCount()).toNumber() - 1
+      const transactionId = (await multisig.transactionCount()) - 1
       const count = await multisig.getConfirmationCount(transactionId)
-      assert.equal(4, await count.toNumber())
+      assert.equal(4, await count)
       assert(await multisig.isConfirmed(transactionId))
       const [, , , executed] = await multisig.transactions(transactionId)
       assert(executed)
@@ -507,7 +507,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         assert.equal(toDelegate, await recipient.getAddress())
 
         assert.equal(delegate, await holder.getAddress())
-        assert.equal(newBalance.toString(), '0')
+        assert.equal(newBalance, '0')
         assert(previousBalance.eq(supply))
 
         assert(

@@ -366,9 +366,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const balanceBefore = await usdcContract.balanceOf(
       await cardPurchaser.getAddress()
     )
-    expect(
-      (await lock.balanceOf(await signer.getAddress())).toNumber()
-    ).to.equal(0)
+    expect(await lock.balanceOf(await signer.getAddress())).to.equal(0)
     await (
       await cardPurchaser.purchase(
         transfer.message,
@@ -378,15 +376,11 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         await purchaseCallData(lock, await signer.getAddress())
       )
     ).wait()
-    expect(
-      (await lock.balanceOf(await signer.getAddress())).toNumber()
-    ).to.equal(1)
+    expect(await lock.balanceOf(await signer.getAddress())).to.equal(1)
 
     expect(
-      (
-        await usdcContract.balanceOf(await cardPurchaser.getAddress())
-      ).toNumber()
-    ).to.equal(balanceBefore + ethers.parseUnits('1', 6).toNumber())
+      await usdcContract.balanceOf(await cardPurchaser.getAddress())
+    ).to.equal(balanceBefore + ethers.parseUnits('1', 6))
   })
 
   it('should reset the approval to 0', async () => {
@@ -414,12 +408,10 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
       )
     ).wait()
     expect(
-      (
-        await usdcContract.allowance(
-          await cardPurchaser.getAddress(),
-          await lock.getAddress()
-        )
-      ).toNumber()
+      await usdcContract.allowance(
+        await cardPurchaser.getAddress(),
+        await lock.getAddress()
+      )
     ).to.equal(0)
   })
 })

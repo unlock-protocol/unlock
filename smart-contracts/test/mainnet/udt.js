@@ -181,7 +181,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         await holder.getAddress(),
         await spender.getAddress()
       )
-      assert.equal(allowanceBefore.toNumber(), 0)
+      assert.equal(allowanceBefore, 0)
 
       // allow
       await udt.connect(holder).approve(await spender.getAddress(), amount)
@@ -189,7 +189,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         await holder.getAddress(),
         await spender.getAddress()
       )
-      assert.equal(allowance.toNumber(), amount)
+      assert.equal(allowance, amount)
 
       // transfer
       await udt
@@ -207,7 +207,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         await holder.getAddress(),
         await recipient.getAddress()
       )
-      assert.equal(allowanceAfter.toNumber(), 0)
+      assert.equal(allowanceAfter, 0)
     })
 
     it('should support transfer by permit', async () => {
@@ -306,7 +306,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         assert.equal(toDelegate, await recipient.getAddress())
 
         assert.equal(delegate, await holder.getAddress())
-        assert.equal(newBalance.toString(), '0')
+        assert.equal(newBalance, '0')
         assert(previousBalance.eq(supply))
 
         assert(

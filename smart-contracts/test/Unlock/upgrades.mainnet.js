@@ -1,16 +1,14 @@
 const { config, ethers, assert, network, upgrades } = require('hardhat')
-const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const proxyABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/proxy.json')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
-const { ADDRESS_ZERO } = require('../helpers')
+const { mainnet } = require('@unlock-protocol/networks')
+const { ADDRESS_ZERO, getProxyAdminAddress } = require('../helpers')
 
 // NB : this needs to be run against a mainnet fork using
 // import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
-const [UDTProxyInfo] =
-  OZ_SDK_EXPORT.networks.mainnet.proxies['unlock-protocol/Unlock']
-const ProxyContractAddress = UDTProxyInfo.getAddress() // '0x90DE74265a416e1393A450752175AED98fe11517'
-const proxyAdminAddress = UDTProxyInfo.admin // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
+const { unlockAddress: ProxyContractAddress } = mainnet // '0x90DE74265a416e1393A450752175AED98fe11517'
+const proxyAdminAddress = getProxyAdminAddress // '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
 const deployerAddress = '0x33ab07dF7f09e793dDD1E9A25b079989a557119A'
 const multisigAddress = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'

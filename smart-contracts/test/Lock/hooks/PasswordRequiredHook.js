@@ -90,7 +90,7 @@ describe('PasswordRequiredHook', function () {
     await (await hook.setSigner(await lock.getAddress(), signer, usages)).wait()
 
     const s = await hook.signers(await lock.getAddress(), signer)
-    expect(s.toString()).to.equal(usages.toString())
+    expect(s).to.equal(usages)
 
     // And now make a purchase that should fail because we did not submit a data
     await reverts(
@@ -131,7 +131,7 @@ describe('PasswordRequiredHook', function () {
 
     // Check the usages!
     const usageAfter = await hook.counters(await lock.getAddress(), signer)
-    expect(usageAfter.toString()).to.equal((1).toString())
+    expect(usageAfter).to.equal(1)
   })
 
   it('should fail if the code has been used enough', async function () {

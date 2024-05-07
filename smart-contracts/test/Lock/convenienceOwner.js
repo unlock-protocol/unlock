@@ -22,7 +22,7 @@ describe('Lock / mimick owner()', () => {
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO
-    const args = [60 * 30, tokenAddress, keyPrice.toString(), 10, 'Test lock']
+    const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
     const calldata = await createLockCalldata({
       args,
@@ -34,7 +34,9 @@ describe('Lock / mimick owner()', () => {
       args: { newLockAddress },
     } = await getEvent(receipt, 'NewLock')
 
-    const PublicLock = await ethers.getContractFactory('PublicLock')
+    const PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     lock = PublicLock.attach(newLockAddress)
   })
 

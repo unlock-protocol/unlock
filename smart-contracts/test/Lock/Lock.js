@@ -26,7 +26,7 @@ describe('Lock / Lock', () => {
       lock.numberOfOwners(),
     ])
     compareBigNumbers(expirationDuration, 60 * 60 * 24 * 30)
-    assert.strictEqual(ethers.formatUnits(keyPrice.toString()), '0.01')
+    assert.strictEqual(ethers.formatUnits(keyPrice), '0.01')
     compareBigNumbers(maxNumberOfKeys, 10)
     compareBigNumbers(totalSupply, 0)
     compareBigNumbers(numberOfOwners, 0)

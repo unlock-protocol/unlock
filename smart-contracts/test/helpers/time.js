@@ -4,7 +4,7 @@ const { network, ethers } = require('hardhat')
 async function increaseTime(durationInHours) {
   const { timestamp } = await ethers.provider.getBlock('latest')
   await network.provider.send('evm_increaseTime', [
-    BigInt(durationInHours) * 3600 + timestamp.toNumber(),
+    BigInt(durationInHours) * 3600 + timestamp,
   ])
 }
 

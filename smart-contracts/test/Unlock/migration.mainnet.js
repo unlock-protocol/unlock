@@ -1,17 +1,17 @@
 /**
  * To run this you will need to
  *
- * 1. start a mainnet fork node
+ * 1 start a mainnet fork node
  * RUN_FORK=1 yarn hardhat node
  *
- * 2. deploy the new unlock
+ * 2 deploy the new unlock
  * RUN_FORK=1 yarn hardhat deploy:unlock --network localhost
  *
- * 3. copy/paste the newly deployed Unlock address in 2 places:
+ * 3 copy/paste the newly deployed Unlock address in 2 places:
  * - below in  NEW_UNLOCK_ADDRESS
- * - in `contracts/mixins/MixinKeys.sol` in the `migrate()` (l. ~174)
+ * - in `contracts/mixins/MixinKeys.sol` in the `migrate()` (l ~174)
  *
- * 4. run this file against the node
+ * 4 run this file against the node
  * RUN_FORK=1 yarn hardhat test test/Unlock/migration.mainnet.js --network localhost
  */
 const { ethers } = require('hardhat')
@@ -146,10 +146,8 @@ describe(`Unlock migration`, function () {
     it('new unlock has lock info', async () => {
       const lockBalance = await unlockModified.locks(await lock.getAddress())
       expect(lockBalance.deployed).to.equals(true)
-      expect(lockBalance.totalSales.toString()).to.equals(
-        (await lock.keyPrice()).toString()
-      )
-      expect(lockBalance.yieldedDiscountTokens.toNumber()).to.equals(0)
+      expect(lockBalance.totalSales).to.equals(await lock.keyPrice())
+      expect(lockBalance.yieldedDiscountTokens).to.equals(0)
     })
   })
 

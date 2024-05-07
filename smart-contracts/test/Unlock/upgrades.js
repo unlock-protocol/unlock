@@ -121,7 +121,7 @@ describe('Unlock / upgrades', async () => {
             const args = [
               60 * 60 * 24, // expirationDuration 1 day
               ADDRESS_ZERO, // token address
-              keyPrice.toString(),
+              keyPrice,
               5, // maxNumberOfKeys
               `UpgradeTestingLock ${versionNumber}`,
             ]
@@ -179,7 +179,7 @@ describe('Unlock / upgrades', async () => {
             const templateVersion = await lock.publicLockVersion()
             const version =
               typeof templateVersion !== 'number'
-                ? templateVersion.toNumber()
+                ? templateVersion.toString()
                 : templateVersion
 
             assert.equal(
@@ -211,7 +211,7 @@ describe('Unlock / upgrades', async () => {
               } else {
                 id = await lock.getTokenIdFor(await keyOwner.getAddress())
               }
-              assert.equal(id.toNumber(), 1)
+              assert.equal(id, 1)
             }
           })
 
@@ -219,7 +219,7 @@ describe('Unlock / upgrades', async () => {
             if (versionNumber >= 9) {
               // isKeyOwner was remove in unlock v10
               const isOwned = await lock.balanceOf(await keyOwner.getAddress())
-              assert.equal(isOwned.toNumber() > 0, true)
+              assert.equal(isOwned > 0, true)
             } else if (versionNumber >= 1) {
               // isKeyOwner was introduced in v1
               const id = await lock.getTokenIdFor(await keyOwner.getAddress())
@@ -287,7 +287,7 @@ describe('Unlock / upgrades', async () => {
                 const isOwned = await lock.balanceOf(
                   await keyOwner.getAddress()
                 )
-                assert.equal(isOwned.toNumber() > 0, true)
+                assert.equal(isOwned > 0, true)
               } else if (versionNumber >= 1) {
                 const id = await lock.getTokenIdFor(await keyOwner.getAddress())
                 // isKeyOwner was introduced in v1
@@ -330,7 +330,7 @@ describe('Unlock / upgrades', async () => {
 
             it('grossNetworkProduct remains', async () => {
               const grossNetworkProduct = await unlock.grossNetworkProduct()
-              assert.equal(grossNetworkProduct.toString(), keyPrice.toString())
+              assert.equal(grossNetworkProduct, keyPrice)
             })
 
             it('should persist the lock name between upgrades', async () => {
@@ -340,31 +340,25 @@ describe('Unlock / upgrades', async () => {
 
             it('should persist the keyPrice between upgrades', async () => {
               const price = await lock.keyPrice()
-              assert.equal(price.toString(), lockKeyPrice.toString())
+              assert.equal(price, lockKeyPrice)
             })
 
             it('should persist the expirationDuration between upgrades', async () => {
               const expirationDuration = await lock.expirationDuration()
-              assert.equal(
-                expirationDuration.toString(),
-                lockExpirationDuration.toString()
-              )
+              assert.equal(expirationDuration, lockExpirationDuration)
             })
 
             it('should persist the maxNumberOfKeys between upgrades', async () => {
               const maxNumberOfKeys = await lock.maxNumberOfKeys()
-              assert.equal(
-                maxNumberOfKeys.toString(),
-                lockMaxNumberOfKeys.toString()
-              )
+              assert.equal(maxNumberOfKeys, lockMaxNumberOfKeys)
             })
 
             it('lock data should persist state between upgrades', async () => {
               const resultsAfter = await unlock.locks(await lock.getAddress())
               assert.equal(resultsAfter.deployed, originalLockData.deployed)
               assert.equal(
-                resultsAfter.yieldedDiscountTokens.toString(),
-                originalLockData.yieldedDiscountTokens.toString()
+                resultsAfter.yieldedDiscountTokens,
+                originalLockData.yieldedDiscountTokens
               )
             })
 
@@ -383,7 +377,7 @@ describe('Unlock / upgrades', async () => {
                 const args = [
                   60 * 60 * 24, // expirationDuration 1 day
                   ADDRESS_ZERO, // token address
-                  keyPrice.toString(),
+                  keyPrice,
                   5, // maxNumberOfKeys
                   'After-Upgrade Lock',
                 ]
@@ -427,9 +421,8 @@ describe('Unlock / upgrades', async () => {
               })
 
               it('Latest publicLock version is correct', async () => {
-                const publicLockVersion = await (
-                  await lockLatest.publicLockVersion()
-                ).toString()
+                const publicLockVersion =
+                  await await lockLatest.publicLockVersion()
                 assert.equal(publicLockVersion, LATEST_PUBLIC_LOCK_VERSION)
               })
             })

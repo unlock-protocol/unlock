@@ -45,10 +45,10 @@ describe('Lock / expireAndRefundFor', () => {
     })
 
     it('the amount of refund should be the key price', async () => {
-      assert.equal(refund.toString(), keyPrice.toString())
+      assert.equal(refund, keyPrice)
     })
 
-    it('should make the key no longer valid (i.e. expired)', async () => {
+    it('should make the key no longer valid (i.e expired)', async () => {
       const isValid = await lock.getHasValidKey(await keyOwners[0].getAddress())
       assert.equal(isValid, false)
     })
@@ -57,20 +57,14 @@ describe('Lock / expireAndRefundFor', () => {
       const finalOwnerBalance = await getBalance(
         await keyOwners[0].getAddress()
       )
-      assert(
-        finalOwnerBalance.toString(),
-        initialKeyOwnerBalance + keyPrice - txFee.toString()
-      )
+      assert(finalOwnerBalance, initialKeyOwnerBalance + keyPrice - txFee)
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
       const finalLockBalance =
         (await getBalance(await lock.getAddress())) - initialLockBalance
 
-      assert(
-        finalLockBalance.toString(),
-        initialLockBalance - keyPrice.toString()
-      )
+      assert(finalLockBalance, initialLockBalance - keyPrice)
     })
   })
 

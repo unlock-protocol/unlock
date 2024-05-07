@@ -20,8 +20,8 @@ describe('Unlock / receive', async () => {
         value: oneEth,
       })
       assert.equal(
-        balanceBefore + oneEth.toString(),
-        (await getBalance(await unlock.getAddress())).toString()
+        balanceBefore + oneEth,
+        await getBalance(await unlock.getAddress())
       )
     })
     it('reverts with null value', async () => {

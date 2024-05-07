@@ -11,7 +11,7 @@ const safeTransferFromWithDataSig =
 
 describe('Lock / erc721 / safeTransferFrom', () => {
   // function safeTransferFrom() still uses transferFrom() under the hood
-  // but adds an additional check afterwards. transferFrom is already well-tested,
+  // but adds an additional check afterwards transferFrom is already well-tested,
   // so here we add a few checks to test only the new functionality.
   let tokenId
 

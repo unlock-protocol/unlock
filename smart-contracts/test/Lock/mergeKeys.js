@@ -144,11 +144,7 @@ describe('Lock / mergeKeys', () => {
       // remove some time
       await lock
         .connect(keyOwner)
-        .shareKey(
-          await rando.getAddress(),
-          tokenId,
-          remaining.toNumber() - now - 100
-        )
+        .shareKey(await rando.getAddress(), tokenId, remaining - now - 100)
 
       assert.equal((await lock.keyExpirationTimestampFor(tokenId)) - now, 100)
       assert.equal(await lock.isValidKey(tokenId), true)

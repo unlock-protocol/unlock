@@ -31,7 +31,7 @@ const mintAmount = ethers.parseUnits('1000000', 'ether')
 
 const round = (bn) => {
   const [integral, decimals] = bn.split('.')
-  const remainer = Math.round(`0.${decimals.slice(0, 4)}`).toString()
+  const remainer = Math.round(`0.${decimals.slice(0, 4)}`)
   return BigInt(integral) + remainer
 }
 
@@ -160,7 +160,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
         })
 
         it('referrer has received some UDT now', async () => {
-          assert.notEqual(balanceReferrer.toString(), '0')
+          assert.notEqual(balanceReferrer, '0')
         })
 
         it('amount granted for referrer ~= gas spent', async () => {
@@ -212,7 +212,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
         })
 
         it('referrer has some UDT now', async () => {
-          assert.notEqual(balanceReferrer.toString(), 0)
+          assert.notEqual(balanceReferrer, 0)
         })
 
         it('amount granted for referrer ~= 10 UDT', async () => {

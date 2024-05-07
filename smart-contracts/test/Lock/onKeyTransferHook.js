@@ -133,7 +133,7 @@ describe('Lock / onKeyTransfer hook', () => {
     assert.equal(args.to, to)
     
     const expirationAfter = await lock.keyExpirationTimestampFor(tokenId)
-    assert.equal(args.time, expirationAfter.toString())
+    assert.equal(args.time, expirationAfter)
     assert.equal(args.time, expirationBefore + Math.floor(duration / 4))
   })
   */

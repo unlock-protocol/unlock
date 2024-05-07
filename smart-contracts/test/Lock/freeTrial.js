@@ -53,7 +53,7 @@ describe('Lock / freeTrial', () => {
       it('should provide less than a full refund', async () => {
         const refundAmount =
           initialLockBalance - (await getBalance(await lock.getAddress()))
-        assert.notEqual(refundAmount.toString(), keyPrice.toString())
+        assert.notEqual(refundAmount, keyPrice)
         assert(refundAmount < keyPrice)
       })
     })

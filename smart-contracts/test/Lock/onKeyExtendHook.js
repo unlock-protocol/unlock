@@ -80,13 +80,10 @@ describe('Lock / onKeyExtendHook', () => {
         ({ event }) => event === 'OnKeyExtend'
       )[0]
       assert.equal(args.msgSender, await lock.getAddress())
-      assert.equal(args.tokenId.toString(), tokenId.toString())
+      assert.equal(args.tokenId, tokenId)
       assert.equal(args.from, await keyOwner.getAddress())
-      assert.equal(
-        tsBefore + expirationDuration.toString(),
-        args.newTimestamp.toString()
-      )
-      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+      assert.equal(tsBefore + expirationDuration, args.newTimestamp)
+      assert.equal(tsBefore, args.prevTimestamp)
     })
   })
 
@@ -103,13 +100,10 @@ describe('Lock / onKeyExtendHook', () => {
         ({ event }) => event === 'OnKeyExtend'
       )[1]
       assert.equal(args.msgSender, await lock.getAddress())
-      assert.equal(args.tokenId.toString(), tokenId.toString())
+      assert.equal(args.tokenId, tokenId)
       assert.equal(args.from, await lockOwner.getAddress())
-      assert.equal(
-        tsBefore + expirationDuration.toString(),
-        args.newTimestamp.toString()
-      )
-      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+      assert.equal(tsBefore + expirationDuration, args.newTimestamp)
+      assert.equal(tsBefore, args.prevTimestamp)
     })
   })
 
@@ -122,7 +116,7 @@ describe('Lock / onKeyExtendHook', () => {
       ))
       // expire key
       const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      await increaseTimeTo(newExpirationTs.toNumber() - 1)
+      await increaseTimeTo(newExpirationTs - 1)
       // renew
       const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
@@ -130,10 +124,10 @@ describe('Lock / onKeyExtendHook', () => {
         ({ event }) => event === 'OnKeyExtend'
       )[2]
       assert.equal(args.msgSender, await lock.getAddress())
-      assert.equal(args.tokenId.toString(), tokenId.toString())
+      assert.equal(args.tokenId, tokenId)
       assert.equal(args.from, await lockOwner.getAddress())
       assert(almostEqual(tsBefore + expirationDuration, args.newTimestamp))
-      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+      assert.equal(tsBefore, args.prevTimestamp)
     })
   })
 

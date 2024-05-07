@@ -13,7 +13,7 @@ module.exports = async () => {
   // setup accounts
   const [unlockOwner, minter] = await ethers.getSigners()
 
-  // 1. deploying Unlock with a proxy
+  // 1 deploying Unlock with a proxy
   const Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
 
   const unlock = await upgrades.deployProxy(
@@ -24,19 +24,19 @@ module.exports = async () => {
     }
   )
 
-  // 2. deploying PublicLock
+  // 2 deploying PublicLock
   const PublicLock = await ethers.getContractFactory(
     'contracts/PublicLock.sol:PublicLock'
   )
   const publicLock = await PublicLock.deploy()
   const publicLockAddress = await publicLock.getAddress()
 
-  // 3. setting lock template
+  // 3 setting lock template
   const version = await publicLock.publicLockVersion()
   await unlock.connect(unlockOwner).addLockTemplate(publicLockAddress, version)
   await unlock.connect(unlockOwner).setLockTemplate(publicLockAddress)
 
-  // 5. deploy UDT (v3)
+  // 5 deploy UDT (v3)
   const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
   const udt = await upgrades.deployProxy(UDTv3, [await minter.getAddress()], {
     initializer: 'initialize(address)',

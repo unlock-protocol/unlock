@@ -25,12 +25,12 @@ describe('Unlock / protocolFee', async () => {
 
   describe('setProtocolFee', () => {
     it('default to zero', async () => {
-      assert.equal((await unlock.protocolFee()).toString(), '0')
+      assert.equal(await unlock.protocolFee(), '0')
     })
     it('can be changed', async () => {
-      assert.equal((await unlock.protocolFee()).toString(), '0')
+      assert.equal(await unlock.protocolFee(), '0')
       await unlock.setProtocolFee(120)
-      assert.equal((await unlock.protocolFee()).toString(), '120')
+      assert.equal(await unlock.protocolFee(), '120')
     })
     it('can be changed only by owner', async () => {
       const [, someSigner] = await ethers.getSigners()
@@ -66,8 +66,8 @@ describe('Unlock / protocolFee', async () => {
       })
 
       it('fee is set correctly in Unlock ', async () => {
-        assert.equal((await unlock.protocolFee()).toNumber(), 120)
-        assert.notEqual(fee.toString(), '0')
+        assert.equal(await unlock.protocolFee(), 120)
+        assert.notEqual(fee, '0')
       })
 
       describe('pays fees to Unlock correctly when', () => {
@@ -94,10 +94,7 @@ describe('Unlock / protocolFee', async () => {
             await unlock.getAddress(),
             tokenAddress
           )
-          assert.equal(
-            unlockBalanceAfter.toString(),
-            unlockBalanceBefore + fee.toString()
-          )
+          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee)
         })
 
         it('purchasing multiple keys', async () => {
@@ -115,10 +112,7 @@ describe('Unlock / protocolFee', async () => {
             await unlock.getAddress(),
             tokenAddress
           )
-          assert.equal(
-            unlockBalanceAfter.toString(),
-            unlockBalanceBefore + (fee * 3).toString()
-          )
+          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 3)
         })
 
         it('extending a key', async () => {
@@ -146,10 +140,7 @@ describe('Unlock / protocolFee', async () => {
             await unlock.getAddress(),
             tokenAddress
           )
-          assert.equal(
-            unlockBalanceAfter.toString(),
-            unlockBalanceBefore + (fee * 2).toString()
-          )
+          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 2)
         })
 
         if (isErc20) {
@@ -175,10 +166,7 @@ describe('Unlock / protocolFee', async () => {
               await unlock.getAddress(),
               tokenAddress
             )
-            assert.equal(
-              unlockBalanceAfter.toString(),
-              unlockBalanceBefore + (fee * 2).toString()
-            )
+            assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 2)
           })
         }
       })

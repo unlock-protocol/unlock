@@ -71,7 +71,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
 
         // renewal should work
-        await increaseTimeTo(newExpirationTs.toNumber() - 1)
+        await increaseTimeTo(newExpirationTs - 1)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
 
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
@@ -79,7 +79,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
 
         assert.equal(
           // assert results for +/- 2 sec
-          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          tsAfter - tsExpected <= 2,
           true
         )
       })
@@ -107,14 +107,14 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
 
         // renewal should work
-        await increaseTimeTo(newExpirationTs.toNumber() - 1)
+        await increaseTimeTo(newExpirationTs - 1)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
         const tsExpected = newExpirationTs + (await lock.expirationDuration())
 
         assert.equal(
           // assert results for +/- 2 sec
-          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          tsAfter - tsExpected <= 2,
           true
         )
       })
@@ -143,7 +143,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
-        await increaseTimeTo(newExpirationTs.toNumber())
+        await increaseTimeTo(newExpirationTs)
 
         // renewal should work
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
@@ -153,7 +153,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
 
         assert.equal(
           // assert results for +/- 2 sec
-          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          tsAfter - tsExpected <= 2,
           true
         )
       })

@@ -115,12 +115,12 @@ describe('Lock / shareKey', () => {
         let newExpirationTimestamp = await lock.keyExpirationTimestampFor(
           args.tokenId
         )
-        assert.equal(newExpirationTimestamp.toString(), remaining.toString())
+        assert.equal(newExpirationTimestamp, remaining)
       })
 
       it('should emit the expireKey Event', async () => {
         const evt = await getEvent(receipt, 'ExpireKey')
-        assert.equal(evt.args.tokenId.toString(), tokenIds[1].toString())
+        assert.equal(evt.args.tokenId, tokenIds[1])
       })
 
       it('The origin key is expired', async () => {
@@ -200,12 +200,9 @@ describe('Lock / shareKey', () => {
           tokenIds[2]
         )
         const { args } = await getEvent(receipt, 'ExpirationChanged')
-        assert.equal(args.tokenId.toString(), tokenIds[2].toString())
-        assert.equal(
-          args.prevExpiration.toString(),
-          expirationBefore.toString()
-        )
-        assert.equal(args.newExpiration.toString(), expirationAfter.toString())
+        assert.equal(args.tokenId, tokenIds[2])
+        assert.equal(args.prevExpiration, expirationBefore)
+        assert.equal(args.newExpiration, expirationAfter)
       })
 
       it('should emit Transfer events', async () => {
@@ -219,10 +216,7 @@ describe('Lock / shareKey', () => {
         console.log(createKeyEventArgs)
         assert.equal(createKeyEventArgs.from, ADDRESS_ZERO)
         assert.equal(createKeyEventArgs.to, accountWithNoKey2)
-        assert.equal(
-          createKeyEventArgs.tokenId.toString(),
-          newTokenId.toString()
-        )
+        assert.equal(createKeyEventArgs.tokenId, newTokenId)
 
         // issuer send the token to destination account
         const { args: transferKeyEventArgs } = transfers.find(
@@ -230,23 +224,17 @@ describe('Lock / shareKey', () => {
         )
         assert.equal(transferKeyEventArgs.from, await keyOwners[2].getAddress())
         assert.equal(transferKeyEventArgs.to, accountWithNoKey2)
-        assert.equal(
-          transferKeyEventArgs.tokenId.toString(),
-          newTokenId.toString()
-        )
+        assert.equal(transferKeyEventArgs.tokenId, newTokenId)
       })
     })
 
     describe('original key', () => {
       it('should subtract the time shared + fee from the original key', async () => {
-        const toSubstract = ONE_DAY + fee.toString()
+        const toSubstract = ONE_DAY + fee
         const expirationAfter = await lock.keyExpirationTimestampFor(
           tokenIds[2]
         )
-        assert.equal(
-          expirationAfter.toString(),
-          expirationBefore - toSubstract.toString()
-        )
+        assert.equal(expirationAfter, expirationBefore - toSubstract)
       })
 
       it('should preserve ownership record', async () => {
@@ -264,10 +252,7 @@ describe('Lock / shareKey', () => {
         )
         assert.equal(await lock.isValidKey(newTokenId), true)
         assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
-        assert.equal(
-          sharedKeyExpiration.toString(),
-          ONE_DAY + timestampAfter.toString()
-        )
+        assert.equal(sharedKeyExpiration, ONE_DAY + timestampAfter)
       })
       it('should create new ownership record', async () => {
         assert.equal(await lock.ownerOf(newTokenId), accountWithNoKey2)

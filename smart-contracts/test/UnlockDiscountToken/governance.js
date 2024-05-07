@@ -241,7 +241,7 @@ describe('UDT ERC20VotesComp extension', () => {
       compareBigNumbers(recipientVotes, await udt.getCurrentVotes(recipient))
 
       // need to advance 2 blocks to see the effect of a transfer on "getPriorVotes"
-      const blockNumber = (await getLatestBlock()).toString()
+      const blockNumber = await getLatestBlock()
       await advanceBlock()
       compareBigNumbers(
         holderVotes,
@@ -261,10 +261,7 @@ describe('UDT ERC20VotesComp extension', () => {
 
     describe('balanceOf', () => {
       it('grants to initial account', async () => {
-        assert.equal(
-          (await udt.balanceOf(holder)).toString(),
-          '10000000000000000000000000'
-        )
+        assert.equal(await udt.balanceOf(holder), '10000000000000000000000000')
       })
     })
 
@@ -286,19 +283,19 @@ describe('UDT ERC20VotesComp extension', () => {
         compareBigNumbers('4', await udt.numCheckpoints(other1))
 
         compareBigNumberArrays(await udt.checkpoints(other1, 0), [
-          t1.blockNumber.toString(),
+          t1.blockNumber,
           '100',
         ])
         compareBigNumberArrays(await udt.checkpoints(other1, 1), [
-          t2.blockNumber.toString(),
+          t2.blockNumber,
           '90',
         ])
         compareBigNumberArrays(await udt.checkpoints(other1, 2), [
-          t3.blockNumber.toString(),
+          t3.blockNumber,
           '80',
         ])
         compareBigNumberArrays(await udt.checkpoints(other1, 3), [
-          t4.blockNumber.toString(),
+          t4.blockNumber,
           '100',
         ])
 

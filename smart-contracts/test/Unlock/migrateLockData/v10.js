@@ -124,7 +124,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const args = [
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
-      ethers.parseEther('0.01').toString(),
+      ethers.parseEther('0.01'),
       1000, // available keys
       'A neat upgradeable lock!',
     ]
@@ -186,7 +186,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       )
 
       // make sure buys went thru
-      assert.equal((await lock.totalSupply()).toNumber(), totalSupply)
+      assert.equal(await lock.totalSupply(), totalSupply)
 
       tokenIds = await Promise.all(
         keyOwners.map(
@@ -209,7 +209,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       // we listen to event in the lock itself
       lock.once('KeysMigrated', (data) => {
         // make sure the event is firing the correct value
-        assert.equal(data.toNumber(), 100)
+        assert.equal(data, 100)
       })
 
       // upgrade to latest version of the template
@@ -238,7 +238,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     })
 
     it('should have correct totalSupply', async () => {
-      assert.equal((await lock.totalSupply()).toNumber(), totalSupply)
+      assert.equal(await lock.totalSupply(), totalSupply)
     })
 
     it('Should have upgraded the lock with the new template', async () => {
@@ -246,7 +246,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     })
 
     it('schemaVersion still undefined', async () => {
-      assert.equal((await lock.schemaVersion()).toNumber(), 0)
+      assert.equal(await lock.schemaVersion(), 0)
     })
 
     it('relevant records have been updated', async () => {
@@ -263,14 +263,14 @@ describe('upgradeLock / data migration v9 > v10', () => {
           true
         )
         assert.equal(
-          (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
-          expirationTimestamps[i].toNumber()
+          await lock.keyExpirationTimestampFor(tokenId),
+          expirationTimestamps[i]
         )
       }
     })
 
     it('rest of the records have NOT been updated', async () => {
-      const totalSupply = (await lock.totalSupply()).toNumber()
+      const totalSupply = await lock.totalSupply()
       for (let i = 100; i < totalSupply; i++) {
         const tokenId = i + 1
         assert.equal(await lock.isValidKey(tokenId), false)
@@ -283,10 +283,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
           await lock.getHasValidKey(await keyOwners[i].getAddress()),
           false
         )
-        assert.equal(
-          (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
-          0
-        )
+        assert.equal(await lock.keyExpirationTimestampFor(tokenId), 0)
       }
     })
 
@@ -315,7 +312,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
       })
 
       it('returns the correct number of updated records', async () => {
-        assert.equal(updatedRecordsCount.toNumber(), 100)
+        assert.equal(updatedRecordsCount, 100)
       })
 
       it('batch of 100 next records have been updated', async () => {
@@ -332,8 +329,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
             true
           )
           assert.equal(
-            (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
-            expirationTimestamps[i].toNumber()
+            await lock.keyExpirationTimestampFor(tokenId),
+            expirationTimestamps[i]
           )
         }
       })
@@ -352,7 +349,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
         const tx = await lock.connect(lockOwner).migrate(calldata1)
         const receipt = await tx.wait()
         const { args } = await getEvent(receipt, 'KeysMigrated')
-        assert.equal(args.updatedRecordsCount.toNumber(), 100)
+        assert.equal(args.updatedRecordsCount, 100)
 
         // migrate another batch of 200
         const calldata2 = ethers.defaultAbiCoder.encode(
@@ -362,11 +359,11 @@ describe('upgradeLock / data migration v9 > v10', () => {
         const tx2 = await lock.connect(lockOwner).migrate(calldata2)
         const { events: events2 } = await tx2.wait()
         const { args: args2 } = events2.find((v) => v.event === 'KeysMigrated')
-        assert.equal(args2.updatedRecordsCount.toNumber(), 200)
+        assert.equal(args2.updatedRecordsCount, 200)
       })
 
       it('rest of the records have been updated', async () => {
-        const totalSupply = (await lock.totalSupply()).toNumber()
+        const totalSupply = await lock.totalSupply()
         for (let i = 100; i < totalSupply; i++) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
@@ -380,14 +377,14 @@ describe('upgradeLock / data migration v9 > v10', () => {
             true
           )
           assert.equal(
-            (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
-            expirationTimestamps[i].toNumber()
+            await lock.keyExpirationTimestampFor(tokenId),
+            expirationTimestamps[i]
           )
         }
       })
 
       it('schemaVersion still undefined', async () => {
-        assert.equal((await lock.schemaVersion()).toNumber(), 0)
+        assert.equal(await lock.schemaVersion(), 0)
       })
 
       describe('features for key are deactivated', () => {
@@ -405,7 +402,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
         it('schemaVersion has been updated', async () => {
           assert.equal(
-            (await lock.schemaVersion()).toNumber(),
+            await lock.schemaVersion(),
             await lock.publicLockVersion()
           )
         })

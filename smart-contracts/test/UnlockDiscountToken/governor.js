@@ -46,7 +46,7 @@ describe('UnlockProtocolGovernor', () => {
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await advanceBlockTo(deadline.toNumber() + 1)
+    await advanceBlockTo(deadline + 1)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
@@ -112,7 +112,7 @@ describe('UnlockProtocolGovernor', () => {
     })
 
     it('quorum is 15k UDT', async () => {
-      assert.equal((await gov.quorum(1)).toString(), defaultQuorum.toString())
+      assert.equal(await gov.quorum(1), defaultQuorum)
     })
   })
 
@@ -182,7 +182,7 @@ describe('UnlockProtocolGovernor', () => {
         const { args } = await getEvent(updateTx, 'QuorumUpdated')
         const { oldQuorum, newQuorum } = args
         assert.equal(newQuorum.eq(quorum), true)
-        assert.equal(oldQuorum.toString(), defaultQuorum.toString())
+        assert.equal(oldQuorum, defaultQuorum)
       })
     })
 
@@ -215,7 +215,7 @@ describe('UnlockProtocolGovernor', () => {
         const { oldVotingPeriod, newVotingPeriod } = evt.args
         assert.equal(newVotingPeriod.eq(votingPeriod), true)
         // nb: old value is the one we enforced through eth_storageAt
-        assert.equal(oldVotingPeriod.toNumber(), 50)
+        assert.equal(oldVotingPeriod, 50)
       })
     })
 

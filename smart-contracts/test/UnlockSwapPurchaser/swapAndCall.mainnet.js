@@ -81,18 +81,14 @@ describe(`swapAndCall`, function () {
             keyPrice,
             isEthers: true,
           })
-          expect(keyPrice.toString()).to.equal(
-            (await lock.keyPrice()).toString()
-          )
+          expect(keyPrice).to.equal(await lock.keyPrice())
         })
 
         it('lock is set properly', async () => {
           expect(await lock.tokenAddress()).to.equal(
             (await lockToken.getAddress()) || ADDRESS_ZERO
           )
-          expect(
-            (await lock.balanceOf(await keyOwner.getAddress())).toNumber()
-          ).to.equal(0)
+          expect(await lock.balanceOf(await keyOwner.getAddress())).to.equal(0)
         })
 
         it(`signer has enough ${srcToken.symbol} to buy/renew a bunch of keys`, async () => {
@@ -162,20 +158,18 @@ describe(`swapAndCall`, function () {
           })
 
           it('purchase a key for the sender', async () => {
-            expect(
-              (await lock.balanceOf(await keyOwner.getAddress())).toNumber()
-            ).to.equal(keyOwnerBalanceBefore.toNumber() + 1)
+            expect(await lock.balanceOf(await keyOwner.getAddress())).to.equal(
+              keyOwnerBalanceBefore + 1
+            )
           })
 
           it('lock has received the tokens', async () => {
             expect(
-              (
-                await getBalance(
-                  await lock.getAddress(),
-                  await lockToken.getAddress()
-                )
-              ).toString()
-            ).to.equal(lockBalanceBefore.plus(keyPrice.toString()).toString())
+              await getBalance(
+                await lock.getAddress(),
+                await lockToken.getAddress()
+              )
+            ).to.equal(lockBalanceBefore.plus(keyPrice))
           })
         })
 
@@ -266,9 +260,7 @@ describe(`swapAndCall`, function () {
               await lock.getAddress(),
               await lockToken.getAddress()
             )
-            expect(balance.toString()).to.equal(
-              lockBalanceBefore.plus(keyPrice.toString()).toString()
-            )
+            expect(balance).to.equal(lockBalanceBefore.plus(keyPrice))
           })
         })
 

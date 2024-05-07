@@ -44,20 +44,15 @@ describe('Lock / Recurring memberships', () => {
     })
     it('approval should be set correctly', async () => {
       assert.equal(
-        (
-          await dai.allowance(
-            await keyOwner.getAddress(),
-            await lock.getAddress()
-          )
-        ).toString(),
-        totalPrice.toString()
+        await dai.allowance(
+          await keyOwner.getAddress(),
+          await lock.getAddress()
+        ),
+        totalPrice
       )
     })
     it('balance should be enough', async () => {
-      assert.equal(
-        (await dai.balanceOf(await keyOwner.getAddress())).toString(),
-        someDai.toString()
-      )
+      assert.equal(await dai.balanceOf(await keyOwner.getAddress()), someDai)
     })
   })
 
@@ -178,16 +173,13 @@ describe('Lock / Recurring memberships', () => {
         const balanceBefore = await dai.balanceOf(await keyOwner.getAddress())
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
         const balanceAfter = await dai.balanceOf(await keyOwner.getAddress())
-        assert.equal(
-          balanceBefore - keyPrice.toString().toString(),
-          balanceAfter.toString()
-        )
+        assert.equal(balanceBefore - keyPrice, balanceAfter)
       })
 
       it('transferred the tokens to the contract', async () => {
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
         const balance = await dai.balanceOf(await lock.getAddress())
-        assert.equal(balance.toString(), keyPrice * (2).toString())
+        assert.equal(balance, keyPrice * 2n)
       })
     })
 
@@ -196,8 +188,8 @@ describe('Lock / Recurring memberships', () => {
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'KeyExtended')
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
-      assert.equal(args.newTimestamp.toNumber(), tsAfter.toNumber())
+      assert.equal(args.tokenId, tokenId)
+      assert.equal(args.newTimestamp, tsAfter)
     })
 
     describe('erc20 balance / approval issues', () => {
@@ -206,13 +198,11 @@ describe('Lock / Recurring memberships', () => {
         await dai.connect(keyOwner).approve(await lock.getAddress(), keyPrice)
 
         assert.equal(
-          (
-            await dai.allowance(
-              await keyOwner.getAddress(),
-              await lock.getAddress()
-            )
-          ).toString(),
-          keyPrice.toString()
+          await dai.allowance(
+            await keyOwner.getAddress(),
+            await lock.getAddress()
+          ),
+          keyPrice
         )
 
         // renew membership once
@@ -220,12 +210,10 @@ describe('Lock / Recurring memberships', () => {
 
         // no allowance left
         assert.equal(
-          (
-            await dai.allowance(
-              await keyOwner.getAddress(),
-              await lock.getAddress()
-            )
-          ).toString(),
+          await dai.allowance(
+            await keyOwner.getAddress(),
+            await lock.getAddress()
+          ),
           '0'
         )
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
@@ -253,10 +241,7 @@ describe('Lock / Recurring memberships', () => {
             await randomSigner.getAddress(),
             balanceBefore
           )
-        assert.equal(
-          (await dai.balanceOf(await keyOwner.getAddress())).toString(),
-          '0'
-        )
+        assert.equal(await dai.balanceOf(await keyOwner.getAddress()), '0')
 
         //
         const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
@@ -303,12 +288,12 @@ describe('Lock / Recurring memberships', () => {
         const {
           args: { refund },
         } = await getEvent(receipt, 'CancelKey')
-        assert.equal(refund.toString(), keyPrice.toString())
+        assert.equal(refund, keyPrice)
 
         // refund ok
         assert.equal(
-          (await dai.balanceOf(await keyOwner.getAddress())).toString(),
-          balanceBefore + keyPrice.toString().toString()
+          await dai.balanceOf(await keyOwner.getAddress()),
+          balanceBefore + keyPrice
         )
 
         // key expired
@@ -320,13 +305,11 @@ describe('Lock / Recurring memberships', () => {
 
         // ERC20 allowance has not been cancelled
         assert.equal(
-          allowanceBefore.toString(),
-          (
-            await dai.allowance(
-              await keyOwner.getAddress(),
-              await lock.getAddress()
-            )
-          ).toString()
+          allowanceBefore,
+          await dai.allowance(
+            await keyOwner.getAddress(),
+            await lock.getAddress()
+          )
         )
 
         await reverts(
@@ -340,13 +323,13 @@ describe('Lock / Recurring memberships', () => {
     describe('should grant UDT to referrer', async () => {
       it('referrer has no UDT to start', async () => {
         const actual = new BigNumber(await udt.balanceOf(referrer))
-        assert.equal(actual.toString(), 0)
+        assert.equal(actual, 0)
       })
 
       it('referrer has some UDT now', async () => {
         await lock.renewMembershipFor(tokenId, referrer)
         const actual = new BigNumber(await udt.balanceOf(referrer))
-        assert.equal(actual.toString(), 10)
+        assert.equal(actual, 10)
       })
     })
     */

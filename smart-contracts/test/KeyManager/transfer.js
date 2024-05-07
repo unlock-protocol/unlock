@@ -23,7 +23,7 @@ describe('KeyManager', () => {
   beforeEach(async () => {
     ;[keyManager, lock] = await setup()
     ;[, locksmith, grantee, attacker, realUser] = await ethers.getSigners()
-    // Let's now aidrop a key to an address and set the keyManager as... keyManager!
+    // Let's now aidrop a key to an address and set the keyManager as.. keyManager!
     await keyManager.addLocksmith(await locksmith.getAddress())
     await lock.grantKeys(
       [await grantee.getAddress()],

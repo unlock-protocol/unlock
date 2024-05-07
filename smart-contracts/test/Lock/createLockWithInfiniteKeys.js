@@ -23,7 +23,7 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO, // token address
-        ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
@@ -35,7 +35,7 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       } = await getEvent(receipt, 'NewLock')
       let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
       const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
-      assert.equal(maxNumberOfKeys.toString(), MAX_UINT)
+      assert.equal(maxNumberOfKeys, MAX_UINT)
     })
   })
 
@@ -44,7 +44,7 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',
         // '0x000000000000000000000001',

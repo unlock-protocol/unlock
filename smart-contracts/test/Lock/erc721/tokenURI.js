@@ -123,7 +123,7 @@ describe('Lock / erc721 / tokenURI', () => {
       )
 
       const baseTokenURI = await lock.tokenURI(0)
-      const lockAddressStr = await lock.getAddress().toString()
+      const lockAddressStr = await lock.getAddress()
       const lowerCaseAddress = stringShifter(lockAddressStr)
 
       // should now return the globalBaseTokenURI + the lock address

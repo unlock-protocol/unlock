@@ -114,9 +114,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect((await lock.balanceOf(await user.getAddress())).toNumber()).to.equal(
-      1
-    )
+    expect(await lock.balanceOf(await user.getAddress())).to.equal(1)
   })
 
   it('should work as a hook even when a bad signature is provided', async function () {
@@ -171,9 +169,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect((await lock.balanceOf(await user.getAddress())).toNumber()).to.equal(
-      1
-    )
+    expect(await lock.balanceOf(await user.getAddress())).to.equal(1)
   })
 
   it('should enforce the cap', async function () {
@@ -241,9 +237,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect((await lock.balanceOf(await user.getAddress())).toNumber()).to.equal(
-      1
-    )
+    expect(await lock.balanceOf(await user.getAddress())).to.equal(1)
 
     // Let's now get the price again for another user with the same code
     const [dataOther] = await getSignatureForPassword(

@@ -130,26 +130,17 @@ describe('PublicLock upgrade v12 > v13', () => {
       assert.equal(await lock.publicLockVersion(), nextVersionNumber)
       assert.equal(await lock.name(), name)
       assert.equal(await lock.expirationDuration(), duration)
-      assert.equal((await lock.keyPrice()).toString(), price.toString())
-      assert.equal(
-        (await lock.maxNumberOfKeys()).toString(),
-        maxKeys.toString()
-      )
+      assert.equal(await lock.keyPrice(), price)
+      assert.equal(await lock.maxNumberOfKeys(), maxKeys)
       assert.equal(await lock.tokenAddress(), currency)
     })
 
     it('totalSupply is preserved', async () => {
-      assert.equal(
-        totalSupplyBefore.toNumber(),
-        (await lock.totalSupply()).toNumber()
-      )
+      assert.equal(totalSupplyBefore, await lock.totalSupply())
     })
 
     it('schemaVersion is not set correctly before migration', async () => {
-      assert.equal(
-        (await lock.schemaVersion()).toNumber(),
-        previousVersionNumber
-      )
+      assert.equal(await lock.schemaVersion(), previousVersionNumber)
     })
 
     describe('data migration', () => {
@@ -162,7 +153,7 @@ describe('PublicLock upgrade v12 > v13', () => {
       })
 
       it('preserves all keys data', async () => {
-        const totalSupply = (await lock.totalSupply()).toNumber()
+        const totalSupply = await lock.totalSupply()
         for (let i = 0; i < totalSupply; i++) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
@@ -176,8 +167,8 @@ describe('PublicLock upgrade v12 > v13', () => {
             true
           )
           assert.equal(
-            (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
-            expirationTimestamps[i].toNumber()
+            await lock.keyExpirationTimestampFor(tokenId),
+            expirationTimestamps[i]
           )
         }
       })

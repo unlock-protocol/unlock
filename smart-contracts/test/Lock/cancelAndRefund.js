@@ -106,7 +106,7 @@ describe('Lock / cancelAndRefund', () => {
     })
 
     it('should emit a CancelKey event', async () => {
-      assert.equal(event, 'CancelKey')
+      assert.equal(event.fragment.name, 'CancelKey')
     })
 
     it('the amount of refund should be greater than 0', async () => {
@@ -118,10 +118,10 @@ describe('Lock / cancelAndRefund', () => {
     })
 
     it('the amount of refund should be less than or equal to the estimated refund', async () => {
-      assert(refund.lte(estimatedRefund))
+      assert(refund <= estimatedRefund)
     })
 
-    it('should make the key no longer valid (i.e. expired)', async () => {
+    it('should make the key no longer valid (i.e expired)', async () => {
       const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
       assert.equal(isValid, false)
     })
@@ -133,8 +133,8 @@ describe('Lock / cancelAndRefund', () => {
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
       const finalOwnerBalance = await getBalance(await keyOwner.getAddress())
       assert(
-        finalOwnerBalance.toString(),
-        initialKeyOwnerBalance + withdrawalAmount - txFee.toString()
+        finalOwnerBalance,
+        initialKeyOwnerBalance + withdrawalAmount - txFee
       )
     })
   })
@@ -173,7 +173,7 @@ describe('Lock / cancelAndRefund', () => {
       const {
         args: { tokenId: cancelledTokenId },
       } = await getEvent(cancelReceipt, 'CancelKey')
-      assert.equal(cancelledTokenId.toString(), tokenId.toString())
+      assert.equal(cancelledTokenId, tokenId)
     })
 
     it('approved user can cancel a free key', async () => {
@@ -193,7 +193,7 @@ describe('Lock / cancelAndRefund', () => {
       const txCancel = await lockFree.connect(receiver).cancelAndRefund(tokenId)
       const cancelReceipt = await txCancel.wait()
       const { args: cancelArgs } = await getEvent(cancelReceipt, 'CancelKey')
-      assert.equal(tokenId.toString(), cancelArgs.tokenId.toString())
+      assert.equal(tokenId, cancelArgs.tokenId)
     })
   })
 
@@ -209,7 +209,7 @@ describe('Lock / cancelAndRefund', () => {
     it('should trigger an event', async () => {
       const receipt = await tx.wait()
       const event = await getEvent(receipt, 'RefundPenaltyChanged')
-      assert.equal(event.args.refundPenaltyBasisPoints.toString(), '2000')
+      assert.equal(event.args.refundPenaltyBasisPoints, '2000')
     })
 
     it('should return the correct penalty', async () => {

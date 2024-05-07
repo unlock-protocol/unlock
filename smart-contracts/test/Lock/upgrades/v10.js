@@ -170,14 +170,11 @@ describe('PublicLock upgrade  v9 > v10', () => {
     })
 
     it('totalSupply is preserved', async () => {
-      assert.equal(
-        totalSupplyBefore.toNumber(),
-        (await lock.totalSupply()).toNumber()
-      )
+      assert.equal(totalSupplyBefore, await lock.totalSupply())
     })
 
     it('schemaVersion is undefined before migration', async () => {
-      assert.equal((await lock.schemaVersion()).toNumber(), 0)
+      assert.equal(await lock.schemaVersion(), 0)
     })
 
     describe('complete data migration', () => {
@@ -197,7 +194,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
       })
 
       it('fire the correct event w updatedRecordsCount', async () => {
-        assert.equal(updatedRecordsCount.toNumber(), totalSupplyBefore)
+        assert.equal(updatedRecordsCount, totalSupplyBefore)
       })
 
       it('schemaVersion has been updated', async () => {
@@ -205,7 +202,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
       })
 
       it('preserves all keys data', async () => {
-        const totalSupply = (await lock.totalSupply()).toNumber()
+        const totalSupply = await lock.totalSupply()
         for (let i = 0; i < totalSupply; i++) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
@@ -219,8 +216,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
             true
           )
           assert.equal(
-            (await lock.keyExpirationTimestampFor(tokenId)).toNumber(),
-            expirationTimestamps[i].toNumber()
+            await lock.keyExpirationTimestampFor(tokenId),
+            expirationTimestamps[i]
           )
         }
       })

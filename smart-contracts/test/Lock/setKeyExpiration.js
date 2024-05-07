@@ -19,7 +19,7 @@ describe('Lock / setKeyExpiration', () => {
 
     beforeEach(async () => {
       const { timestamp } = await ethers.provider.getBlock('latest')
-      now = BigInt(timestamp.toString())
+      now = BigInt(timestamp)
       ;[, keyOwner] = await ethers.getSigners()
       ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
@@ -29,16 +29,16 @@ describe('Lock / setKeyExpiration', () => {
       const pastDate = now - ONE_DAY
       await lock.setKeyExpiration(tokenId, pastDate)
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      assert.notEqual(expirationTsBefore.toString(), expirationTs.toString())
-      assert.equal(expirationTs.toString(), pastDate.toString())
+      assert.notEqual(expirationTsBefore, expirationTs)
+      assert.equal(expirationTs, pastDate)
     })
     it('in the future', async () => {
       const expirationTsBefore = await lock.keyExpirationTimestampFor(tokenId)
       const futureDate = now + ONE_DAY
       await lock.setKeyExpiration(tokenId, futureDate)
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      assert.notEqual(expirationTsBefore.toString(), expirationTs.toString())
-      assert.equal(expirationTs.toString(), futureDate.toString())
+      assert.notEqual(expirationTsBefore, expirationTs)
+      assert.equal(expirationTs, futureDate)
     })
     it('only lock manager', async () => {
       const [, , attacker] = await ethers.getSigners()

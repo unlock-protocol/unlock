@@ -105,13 +105,11 @@ describe(`swapAndBurn`, function () {
             await addERC20(tokenAddress, unlockAddress, amount)
           }
           const balance = await getBalance(unlockAddress, tokenAddress)
-          expect(balance.toString()).to.equal(amount.toString())
+          expect(balance).to.equal(amount)
 
           // burner has no UDT
           expect(
-            (
-              await getBalance(await swapBurner.getAddress(), udtAddress)
-            ).toString()
+            await getBalance(await swapBurner.getAddress(), udtAddress)
           ).to.equal('0')
 
           // transfer these token to burner
@@ -144,7 +142,7 @@ describe(`swapAndBurn`, function () {
             udtAddress
           )
 
-          expect(balanceSwapBurnBefore.toString()).to.equal(amount.toString())
+          expect(balanceSwapBurnBefore).to.equal(amount)
 
           // lets go
           const tx = await swapBurner.swapAndBurn(tokenAddress, 3000)

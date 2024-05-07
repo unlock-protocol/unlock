@@ -29,7 +29,7 @@ describe('Unlock / lockTotalSales', () => {
 
     it('total sales includes the purchase', async () => {
       const { totalSales } = await unlock.locks(await lock.getAddress())
-      assert.equal(totalSales.toString(), price.toString())
+      assert.equal(totalSales, price)
     })
   })
 
@@ -40,7 +40,7 @@ describe('Unlock / lockTotalSales', () => {
 
     it('total sales incluse all purchases', async () => {
       const { totalSales } = await unlock.locks(await lock.getAddress())
-      assert.equal(totalSales.toString(), price * (5).toString())
+      assert.equal(totalSales, price * 5)
     })
   })
 })

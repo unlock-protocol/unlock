@@ -33,8 +33,8 @@ describe('udt', () => {
       it('Balance went up', async () => {
         const balanceAfter = await udt.balanceOf(await recipient.getAddress())
         assert.equal(
-          balanceAfter.toNumber(),
-          balanceBefore + mintAmount.toNumber(),
+          balanceAfter,
+          balanceBefore + mintAmount,
           'Balance must increase by amount minted'
         )
       })
@@ -42,8 +42,8 @@ describe('udt', () => {
       it('Total supply went up', async () => {
         const totalSupplyAfter = await udt.totalSupply()
         assert.equal(
-          totalSupplyAfter.toNumber(),
-          totalSupplyBefore + mintAmount.toNumber(),
+          totalSupplyAfter,
+          totalSupplyBefore + mintAmount,
           'Total supply must increase by amount minted'
         )
       })

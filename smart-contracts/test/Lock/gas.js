@@ -20,7 +20,7 @@ describe('Lock / gas', () => {
     )
     const { gasUsed } = await tx.wait()
     if (!process.env.TEST_COVERAGE) {
-      assert(gasUsed.lte(WalletService.gasAmountConstants().purchaseKey))
+      assert(gasUsed <= WalletService.gasAmountConstants().purchaseKey)
     }
   })
 })

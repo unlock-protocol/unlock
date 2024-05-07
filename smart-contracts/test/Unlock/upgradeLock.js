@@ -49,7 +49,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const args = [
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
-      ethers.parseEther('0.01').toString(),
+      ethers.parseEther('0.01'),
       10,
       'A neat upgradeable lock!',
     ]
@@ -175,7 +175,7 @@ describe('upgrades', async () => {
   const versions = {}
   const duration = 60 * 60 * 24 * 30 // 30 days
   const currency = ADDRESS_ZERO
-  const price = ethers.parseEther('0.01').toString()
+  const price = ethers.parseEther('0.01')
   const maxKeys = 10
   const name = 'A neat upgradeable lock!'
 
@@ -269,8 +269,8 @@ describe('upgrades', async () => {
     assert.equal(await lock.publicLockVersion(), firstUpgradableVersion)
     assert.equal(await lock.name(), name)
     assert.equal(await lock.expirationDuration(), duration)
-    assert.equal((await lock.keyPrice()).toString(), price.toString())
-    assert.equal((await lock.maxNumberOfKeys()).toString(), maxKeys.toString())
+    assert.equal(await lock.keyPrice(), price)
+    assert.equal(await lock.maxNumberOfKeys(), maxKeys)
     assert.equal(await lock.tokenAddress(), currency)
   })
 
@@ -290,11 +290,8 @@ describe('upgrades', async () => {
       assert.equal(await lock.publicLockVersion(), currentVersion)
       assert.equal(await lock.name(), name)
       assert.equal(await lock.expirationDuration(), duration)
-      assert.equal((await lock.keyPrice()).toString(), price.toString())
-      assert.equal(
-        (await lock.maxNumberOfKeys()).toString(),
-        maxKeys.toString()
-      )
+      assert.equal(await lock.keyPrice(), price)
+      assert.equal(await lock.maxNumberOfKeys(), maxKeys)
       assert.equal(await lock.tokenAddress(), currency)
     }
   })

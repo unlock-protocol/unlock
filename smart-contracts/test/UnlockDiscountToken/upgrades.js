@@ -119,7 +119,7 @@ describe('UnlockDiscountToken upgrade', async () => {
   describe('Supply', () => {
     it('starting supply is 0', async () => {
       const totalSupply = await udt.totalSupply()
-      assert.equal(totalSupply.toNumber(), 0, 'starting supply must be 0')
+      assert.equal(totalSupply, 0, 'starting supply must be 0')
     })
 
     it('Supply is preserved after upgrade', async () => {
@@ -128,13 +128,13 @@ describe('UnlockDiscountToken upgrade', async () => {
       // mint some tokens
       await udt.mint(await recipient.getAddress(), mintAmount)
       const totalSupply = await udt.totalSupply()
-      assert.equal(totalSupply.toNumber(), mintAmount)
+      assert.equal(totalSupply, mintAmount)
 
       // upgrade
       const updated = await upgradeContract(await udt.getAddress())
 
       const totalSupplyAfterUpdate = await updated.totalSupply()
-      assert.equal(totalSupplyAfterUpdate.toNumber(), mintAmount)
+      assert.equal(totalSupplyAfterUpdate, mintAmount)
     })
   })
 
@@ -165,7 +165,7 @@ describe('UnlockDiscountToken upgrade', async () => {
       const args = [
         Locks.FIRST.expirationDuration,
         ADDRESS_ZERO,
-        Locks.FIRST.keyPrice.toString(),
+        Locks.FIRST.keyPrice,
         Locks.FIRST.maxNumberOfKeys,
         Locks.FIRST.lockName,
       ]
@@ -248,7 +248,7 @@ describe('UnlockDiscountToken upgrade', async () => {
 
     it('referrer has 0 UDT to start', async () => {
       const actual = await udt.balanceOf(await referrer.getAddress())
-      assert.equal(actual.toString(), 0)
+      assert.equal(actual, 0)
     })
 
     describe('mint by gas price', () => {
@@ -267,29 +267,24 @@ describe('UnlockDiscountToken upgrade', async () => {
           }
         )
 
-        assert.equal(
-          (await lock.balanceOf(await keyBuyer.getAddress())).toString(),
-          '1'
-        )
+        assert.equal(await lock.balanceOf(await keyBuyer.getAddress()), '1')
 
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
-        gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
+        gasSpent = new BigNumber(baseFeePerGas).times(estimateGas)
       })
 
       it('referrer has some UDT now', async () => {
         const actual = await udt.balanceOf(await referrer.getAddress())
-        assert.notEqual(actual.toString(), '0')
+        assert.notEqual(actual, '0')
       })
 
       it('amount minted for referrer ~= gas spent', async () => {
         // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
         assert.equal(
-          new BigNumber(
-            (await udt.balanceOf(await referrer.getAddress())).toString()
-          )
+          new BigNumber(await udt.balanceOf(await referrer.getAddress()))
             .shiftedBy(-18) // shift UDT balance
-            .times(rate.toString())
+            .times(rate)
             .shiftedBy(-18) // shift the rate
             .toFixed(3),
           gasSpent.shiftedBy(-18).toFixed(3)
@@ -303,7 +298,7 @@ describe('UnlockDiscountToken upgrade', async () => {
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
         // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
         const initialGdp = (await lock.keyPrice()) * 40000
-        await unlock.resetTrackedValue(initialGdp.toString(), 0)
+        await unlock.resetTrackedValue(initialGdp, 0)
 
         const baseFeePerGas = 1000000000 // in gwei
         await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
@@ -326,12 +321,12 @@ describe('UnlockDiscountToken upgrade', async () => {
 
       it('referrer has some UDT now', async () => {
         const actual = await udt.balanceOf(await referrer2.getAddress())
-        assert.notEqual(actual.toString(), 0)
+        assert.notEqual(actual, 0)
       })
 
       it('amount minted for referrer ~= 12 UDT', async () => {
         const balance = await udt.balanceOf(await referrer2.getAddress())
-        const bn = new BigNumber(balance.toString())
+        const bn = new BigNumber(balance)
         assert.equal(bn.shiftedBy(-18).toFixed(0), '12')
       })
     })

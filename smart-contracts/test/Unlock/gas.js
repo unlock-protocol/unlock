@@ -13,7 +13,7 @@ describe('Unlock / gas', () => {
     const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       ADDRESS_ZERO,
-      ethers.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+      ethers.parseUnits('1', 'ether'), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',
     ]
@@ -24,7 +24,7 @@ describe('Unlock / gas', () => {
     const tx = await unlock.createUpgradeableLock(calldata)
     const { gasUsed } = await tx.wait()
     if (!process.env.TEST_COVERAGE) {
-      assert(gasUsed.lte(WalletService.gasAmountConstants().createLock))
+      assert(gasUsed <= WalletService.gasAmountConstants().createLock)
     }
   })
 })

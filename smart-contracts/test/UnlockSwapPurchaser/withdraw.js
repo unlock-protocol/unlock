@@ -67,10 +67,8 @@ describe('UnlockSwapPurchaser / withdraw', () => {
         }
 
         assert.equal(
-          swapperBalanceBefore + someTokens.toString(),
-          (
-            await getBalance(await swapper.getAddress(), tokenAddress)
-          ).toString()
+          swapperBalanceBefore + someTokens,
+          await getBalance(await swapper.getAddress(), tokenAddress)
         )
 
         // actually withdraw the funds
@@ -79,14 +77,12 @@ describe('UnlockSwapPurchaser / withdraw', () => {
 
       it('should have transferred the funds to unlock', async () => {
         assert.equal(
-          unlockBalanceBefore + someTokens.toString(),
-          (await getBalance(await unlock.getAddress(), tokenAddress)).toString()
+          unlockBalanceBefore + someTokens,
+          await getBalance(await unlock.getAddress(), tokenAddress)
         )
         assert.equal(
-          swapperBalanceBefore.toString(),
-          (
-            await getBalance(await swapper.getAddress(), tokenAddress)
-          ).toString()
+          swapperBalanceBefore,
+          await getBalance(await swapper.getAddress(), tokenAddress)
         )
       })
     })

@@ -104,16 +104,13 @@ describe('Lock / extend keys', () => {
           it('duration has been extended accordingly', async () => {
             const expirationDuration = await lock.expirationDuration()
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-            assert.equal(
-              tsBefore + expirationDuration.toString(),
-              tsAfter.toString()
-            )
+            assert.equal(tsBefore + expirationDuration, tsAfter)
           })
 
           it('should emit a KeyExtended event', async () => {
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-            assert.equal(args.tokenId.toString(), tokenId.toString())
-            assert.equal(args.newTimestamp.toString(), tsAfter.toString())
+            assert.equal(args.tokenId, tokenId)
+            assert.equal(args.newTimestamp, tsAfter)
           })
         })
 
@@ -140,10 +137,7 @@ describe('Lock / extend keys', () => {
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
             const blockNumber = await ethers.provider.getBlockNumber()
             const latestBlock = await ethers.provider.getBlock(blockNumber)
-            assert.equal(
-              expirationDuration + latestBlock.timestamp.toString(),
-              tsAfter.toString()
-            )
+            assert.equal(expirationDuration + latestBlock.timestamp, tsAfter)
           })
         })
       })

@@ -22,7 +22,7 @@ describe('Lock / non expiring', () => {
 
   describe('Create lock', () => {
     it('should set the expiration date to MAX_UINT', async () => {
-      assert.equal((await lock.expirationDuration()).toString(), MAX_UINT)
+      assert.equal(await lock.expirationDuration(), MAX_UINT)
     })
   })
 
@@ -30,10 +30,7 @@ describe('Lock / non expiring', () => {
     it('should have an expiration timestamp of as max uint', async () => {
       assert.equal(await lock.isValidKey(tokenId), true)
       assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 1)
-      assert.equal(
-        (await lock.keyExpirationTimestampFor(tokenId)).toString(),
-        MAX_UINT
-      )
+      assert.equal(await lock.keyExpirationTimestampFor(tokenId), MAX_UINT)
     })
 
     it('should be valid far in the future', async () => {
@@ -47,15 +44,9 @@ describe('Lock / non expiring', () => {
     describe('getCancelAndRefundValue', () => {
       it('should refund entire price, regardless of time passed since purchase', async () => {
         // check the refund value
-        assert.equal(
-          (await lock.getCancelAndRefundValue(tokenId)).toString(),
-          keyPrice.toString()
-        )
+        assert.equal(await lock.getCancelAndRefundValue(tokenId), keyPrice)
         await increaseTimeTo(Date.now() + FIVE_HUNDRED_YEARS)
-        assert.equal(
-          (await lock.getCancelAndRefundValue(tokenId)).toString(),
-          keyPrice.toString()
-        )
+        assert.equal(await lock.getCancelAndRefundValue(tokenId), keyPrice)
       })
     })
     describe('cancelAndRefund', () => {
@@ -87,18 +78,12 @@ describe('Lock / non expiring', () => {
         // check key owner balance
         const finalOwnerBalance = await getBalance(await keyOwner.getAddress())
 
-        assert(
-          finalOwnerBalance.toString(),
-          initialKeyOwnerBalance + refund - txFee.toString()
-        )
+        assert(finalOwnerBalance, initialKeyOwnerBalance + refund - txFee)
 
         // also check lock balance
         const finalLockBalance = await getBalance(await lock.getAddress())
 
-        assert(
-          finalLockBalance.toString(),
-          initialLockBalance - refund.toString()
-        )
+        assert(finalLockBalance, initialLockBalance - refund)
       })
     })
   })
@@ -123,10 +108,7 @@ describe('Lock / non expiring', () => {
         true
       )
 
-      assert.equal(
-        (await lock.keyExpirationTimestampFor(tokenId)).toString(),
-        MAX_UINT
-      )
+      assert.equal(await lock.keyExpirationTimestampFor(tokenId), MAX_UINT)
     })
   })
 })

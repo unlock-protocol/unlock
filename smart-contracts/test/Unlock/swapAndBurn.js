@@ -47,10 +47,10 @@ describe('Unlock / swapAndBurn', async () => {
 
   describe('setSwapBurner', () => {
     it('default to address zero', async () => {
-      assert.equal((await unlock.swapBurnerAddress()).toString(), ADDRESS_ZERO)
+      assert.equal(await unlock.swapBurnerAddress(), ADDRESS_ZERO)
     })
     it('can be changed', async () => {
-      assert.equal((await unlock.swapBurnerAddress()).toString(), ADDRESS_ZERO)
+      assert.equal(await unlock.swapBurnerAddress(), ADDRESS_ZERO)
       await unlock.setSwapBurner(await swapBurner.getAddress())
       assert.equal(
         await unlock.swapBurnerAddress(),
@@ -134,7 +134,7 @@ describe('Unlock / swapAndBurn', async () => {
       // unlock has no tokens anymore
       compareBigNumbers(
         await getBalance(await unlock.getAddress()),
-        unlockBalanceBefore - amount.toString()
+        unlockBalanceBefore - amount
       )
     })
     it('should transfer native ERC20 tokens properly', async () => {

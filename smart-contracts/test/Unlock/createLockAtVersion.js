@@ -9,7 +9,7 @@ const { ADDRESS_ZERO, reverts } = require('../helpers')
 const args = [
   60 * 60 * 24 * 30, // expirationDuration: 30 days
   ADDRESS_ZERO,
-  ethers.parseEther('1').toString(), // keyPrice: in wei
+  ethers.parseEther('1'), // keyPrice: in wei
   100, // maxNumberOfKeys
   'New Lock',
 ]
@@ -78,7 +78,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
     // lock creation params
     assert.equal(await lock1.expirationDuration(), args[0])
     assert.equal(await lock1.tokenAddress(), args[1])
-    assert.equal((await lock1.keyPrice()).toString(), args[2].toString())
+    assert.equal(await lock1.keyPrice(), args[2])
     assert.equal(await lock1.maxNumberOfKeys(), args[3])
     assert.equal(await lock1.name(), args[4])
 
@@ -97,7 +97,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
     // lock creation params
     assert.equal(await lock2.expirationDuration(), args[0])
     assert.equal(await lock2.tokenAddress(), args[1])
-    assert.equal((await lock2.keyPrice()).toString(), args[2].toString())
+    assert.equal(await lock2.keyPrice(), args[2])
     assert.equal(await lock2.maxNumberOfKeys(), args[3])
     assert.equal(await lock2.name(), args[4])
 

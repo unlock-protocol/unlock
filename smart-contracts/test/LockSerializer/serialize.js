@@ -42,7 +42,7 @@ describe('LockSerializer', () => {
       const tx = await lock
         .connect(keyOwner)
         .purchase(
-          [keyPrice.toString()],
+          [keyPrice],
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
@@ -81,7 +81,7 @@ describe('LockSerializer', () => {
       beforeEach(async function () {
         const [, ..._purchasers] = await ethers.getSigners()
         const maxNumberOfKeys = await lock.maxNumberOfKeys()
-        purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
+        purchasers = _purchasers.slice(0, maxNumberOfKeys) // prevent soldout revert
 
         // purchase keys
         await lock.connect(purchasers[0]).purchase(
