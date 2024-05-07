@@ -2,12 +2,7 @@ const { ethers } = require('hardhat')
 const { Contract } = require('ethers')
 const { getProvider } = require('../../helpers/multisig')
 
-const {
-  getNetwork,
-  getUnlock,
-  getERC20Contract,
-  ADDRESS_ZERO,
-} = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 const { UniswapOracleV3 } = require('@unlock-protocol/contracts')
 
 async function main({
@@ -73,7 +68,11 @@ async function main({
 
   // check from unlock directly
   if (!oracleAddress) {
-    const unlock = await getUnlock(network.unlockAddress)
+    const unlock = new Contract(
+      network.unlockAddress,
+      ['function uniswapOracles(address) external view returns(address)'],
+      provider
+    )
     oracleAddress = await unlock.uniswapOracles(tokenFrom.address)
     if (oracleAddress === ADDRESS_ZERO) {
       console.log(`No oracle address for this token is set in Unlock.`)
@@ -94,7 +93,9 @@ async function main({
 
   // check if token can be retrieved through Uniswap V3 oracle
   const oracle = new Contract(oracleAddress, UniswapOracleV3.abi, provider)
-  log(`Checking oracle for ${tokenFrom.symbol}/${tokenTo.symbol} (${amount})`)
+  log(
+    `Checking oracle for ${tokenFrom.symbol}/${tokenTo.symbol} (${amount} ${tokenFrom.symbol})`
+  )
   const rate = await oracle.consult(
     tokenFrom.address,
     ethers.parseUnits(amount, tokenFrom.decimals),

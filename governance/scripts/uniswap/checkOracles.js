@@ -57,7 +57,7 @@ const checkOracleRate = async ({
   }
 }
 
-async function main({ chainId } = {}) {
+async function main({ chainId, quiet = false, tokens } = {}) {
   if (!chainId) {
     ;({ chainId } = await ethers.provider.getNetwork())
   }
@@ -66,9 +66,13 @@ async function main({ chainId } = {}) {
     id,
     uniswapV3,
     unlockAddress,
-    tokens,
+    tokens: packageTokens,
     nativeCurrency: { wrapped },
   } = await getNetwork(chainId)
+
+  if (!tokens) {
+    tokens = packageTokens
+  }
 
   const provider = await getProvider(chainId)
   let oracleToSet = []
@@ -133,15 +137,16 @@ async function main({ chainId } = {}) {
   }
 
   // log results
-  oracleToSet.forEach(({ token, fee, oracleAddress, issue }) =>
-    console.log(
-      `[${name} (${id})]: oracle for ${token.symbol} (${token.address})
+  if (!quiet) {
+    oracleToSet.forEach(({ token, fee, oracleAddress, issue }) =>
+      console.log(
+        `[${name} (${id})]: oracle for ${token.symbol} (${token.address})
           - \`setOracle(${token.address},${oracleAddress})\` (${fee})
           - reason: ${issue}`
+      )
     )
-  )
-
-  failed.forEach((msg) => console.log(`[${name} (${id})] FAILED ${msg}`))
+    failed.forEach((msg) => console.log(`[${name} (${id})] FAILED ${msg}`))
+  }
 
   return {
     oracleToSet,
