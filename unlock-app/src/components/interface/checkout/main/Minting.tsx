@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
@@ -110,14 +109,12 @@ export const MintingScreen = ({
 }
 
 interface MintingProps {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: CheckoutCommunication
 }
 
 export function Minting({
-  injectedProvider,
   onClose,
   checkoutService,
   communication,
@@ -127,6 +124,7 @@ export function Minting({
     checkoutService,
     (state) => state.context
   )
+
   const config = useConfig()
   const processing = mint?.status === 'PROCESSING'
   const [doneWaiting, setDoneWaiting] = useState(false)
@@ -152,6 +150,7 @@ export function Minting({
 
     const waitForConfirmation = async () => {
       try {
+        if (mint.status !== 'PROCESSING') return
         const network = config.networks[mint.network || lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcBatchProvider(
@@ -189,12 +188,14 @@ export function Minting({
             network: mint!.network,
             transactionHash: mint!.transactionHash!,
           })
+
           setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
           console.log('Error waiting for confirmation', error)
           ToastHelper.error(error.message)
+
           checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
@@ -229,17 +230,12 @@ export function Minting({
         ></MintingScreen>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <ReturningButton
-            loading={processing}
-            disabled={!account || processing}
-            onClick={() => onClose()}
-            checkoutService={checkoutService}
-          />
-        </Connected>
+        <ReturningButton
+          loading={processing}
+          disabled={!account || processing}
+          onClick={() => onClose()}
+          checkoutService={checkoutService}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

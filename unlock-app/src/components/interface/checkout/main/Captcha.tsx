@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import React, { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -10,13 +9,13 @@ import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Captcha({ injectedProvider, checkoutService }: Props) {
+export function Captcha({ checkoutService }: Props) {
   const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context
@@ -70,26 +69,22 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          className="w-full"
+          disabled={!recaptchaValue || isContinuing}
+          loading={isContinuing}
+          onClick={(event) => {
+            event.preventDefault()
+            onContinue()
+          }}
         >
-          <Button
-            className="w-full"
-            disabled={!recaptchaValue || isContinuing}
-            loading={isContinuing}
-            onClick={(event) => {
-              event.preventDefault()
-              onContinue()
-            }}
-          >
-            {!recaptchaValue
-              ? 'Solve captcha to continue'
-              : isContinuing
-              ? 'Continuing'
-              : 'Continue'}
-          </Button>
-        </Connected>
+          {!recaptchaValue
+            ? 'Solve captcha to continue'
+            : isContinuing
+            ? 'Continuing'
+            : 'Continue'}
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

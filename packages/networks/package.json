@@ -34,17 +34,17 @@
   "devDependencies": {
     "@unlock-protocol/tsconfig": "workspace:^",
     "@unlock-protocol/types": "workspace:^",
-    "eslint": "8.54.0",
+    "eslint": "8.57.0",
     "fs-extra": "11.2.0",
     "tsup": "8.0.2",
-    "typescript": "5.3.3"
+    "typescript": "5.4.5"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "eslint-plugin-sort-keys-fix": "1.1.2",
-    "ethers": "6.10.0",
-    "tsx": "4.7.1"
+    "ethers": "6.12.1",
+    "tsx": "4.8.2"
   }
 }

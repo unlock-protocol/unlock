@@ -1,6 +1,6 @@
 const { expect } = require('chai')
-const { ethers, unlock } = require('hardhat')
-const { reverts } = require('../../helpers')
+const { ethers } = require('hardhat')
+const { reverts, deployLock } = require('../../helpers')
 
 describe('CaptchaHook', function () {
   it('Should work', async function () {
@@ -47,16 +47,8 @@ describe('CaptchaHook', function () {
     const [user, another, aThird] = await ethers.getSigners()
     const secretSigner = ethers.Wallet.createRandom()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = 0
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      name: 'ticket',
+    const lock = await deployLock({
+      name: 'FREE',
     })
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
     const hook = await CaptchaHook.deploy()
