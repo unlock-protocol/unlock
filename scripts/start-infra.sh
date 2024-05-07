@@ -17,6 +17,9 @@ source ./scripts/start/envs.sh
 # remove previous running instances
 ./scripts/stop.sh
 
+# copy required packages into eth-node worksapce
+./scripts/start/copy-eth-node-packages.sh
+
 # Take DB, IPFS, graph and postgres nodes up
 docker-compose $COMPOSE_CONFIG up -d postgres ipfs graph-node eth-node
 
