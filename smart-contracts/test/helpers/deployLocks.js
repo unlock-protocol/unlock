@@ -37,10 +37,10 @@ async function deployLock({
     name === 'NON_EXPIRING' ? MAX_UINT : expirationDurationArg.toString()
 
   const args = [
-    expirationDuration,
+    expirationDuration || 60,
     tokenAddress,
     (keyPrice || price).toString(),
-    maxNumberOfKeys.toString(),
+    (maxNumberOfKeys || 10).toString(),
     lockName,
   ]
 

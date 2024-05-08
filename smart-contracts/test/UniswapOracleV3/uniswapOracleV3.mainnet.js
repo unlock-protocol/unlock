@@ -2,11 +2,16 @@ const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers')
 
-const { getTokens, getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getTokens,
+  getNetwork,
+  addSomeETH,
+} = require('@unlock-protocol/hardhat-helpers')
 
 // very unprecise way to round up things...
 const round = (bn) => Math.floor(parseInt(bn.toString().slice(0, 3)))
 
+const FEE = 500
 describe(`oracle`, () => {
   let oracle, pairs, DAI, WETH, USDC
   before(async function () {
@@ -15,6 +20,8 @@ describe(`oracle`, () => {
       this.skip()
     }
 
+    const [signer] = await ethers.getSigners()
+    await addSomeETH(signer.address)
     ;({ DAI, WETH, USDC } = await getTokens())
     pairs = [
       [USDC, WETH],
@@ -35,7 +42,7 @@ describe(`oracle`, () => {
     const UnlockUniswapOracle = await ethers.getContractFactory(
       'UniswapOracleV3'
     )
-    oracle = await UnlockUniswapOracle.deploy(factoryAddress)
+    oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
   })
 
   describe('consult', () => {

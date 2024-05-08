@@ -312,7 +312,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
         expect(loginResponse.status).toBe(200)
 
         // Add the new user as a verifier
-        await verifierOperations.createVerifier(
+        await verifierOperations.createVerifierForLock(
           lockAddress,
           address,
           lockManager,
