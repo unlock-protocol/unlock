@@ -5,7 +5,7 @@ import UnlockProvider from '~/services/unlockProvider'
 import { FieldValues, useForm } from 'react-hook-form'
 import SvgComponents from '../svg'
 import { ConnectButton, CustomAnchorButton } from './Custom'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -24,40 +24,22 @@ export type SignUpForm = Record<
 >
 
 interface EnterEmailProps {
-  onSubmitEmail(email: string, existingUser: boolean): void
+  onSubmitEmail(email: string): void
 }
 
 const EnterEmail = ({ onSubmitEmail }: EnterEmailProps) => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<UserDetails>()
 
-  const [isContinuing, setIsContinuing] = useState(false)
-  const storageService = useStorageService()
-
-  async function onSubmit({ email }: FieldValues) {
-    try {
-      setIsContinuing(true)
-      const existingUser = await storageService.userExist(email)
-      setIsContinuing(false)
-      onSubmitEmail(email, existingUser)
-    } catch (error) {
-      if (error instanceof Error) {
-        setError('email', {
-          type: 'value',
-          message: error.message,
-        })
-      }
-      setIsContinuing(false)
-    }
-  }
-
   return (
     <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="grid gap-4 px-6"
+        onSubmit={handleSubmit((data) => onSubmitEmail(data.email))}
+      >
         <Input
           label="Email"
           placeholder="your@email.com"
@@ -68,7 +50,6 @@ const EnterEmail = ({ onSubmitEmail }: EnterEmailProps) => {
         />
         <ConnectButton
           primary
-          loading={isContinuing}
           icon={
             <SvgComponents.Unlock
               width={40}
@@ -305,6 +286,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
+  defaultEmail?: string
   onExit(): void
   onSignIn?(): void
   useIcon?: boolean
@@ -314,8 +296,10 @@ export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
   useIcon = true,
+  defaultEmail = '',
 }: Props) => {
-  const [enteredEmail, setEnteredEmail] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [enteredEmail, setEnteredEmail] = useState(defaultEmail)
   const [isValidEmail, setIsValidEmail] = useState(false)
   const [isSigningUp, setIsSigningUp] = useState(false)
 
@@ -326,7 +310,7 @@ export const ConnectUnlockAccount = ({
   const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
-
+  const storageService = useStorageService()
   const requireSignIn = account && !connected
 
   const signIn = async ({ email, password }: UserDetails) => {
@@ -348,11 +332,32 @@ export const ConnectUnlockAccount = ({
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onSubmitEmail = (email: string, existingUser: boolean) => {
-    setEnteredEmail(email)
-    setIsValidEmail(existingUser)
-    setIsSigningUp(!existingUser)
-  }
+  const onEmail = useCallback(
+    async ({ email }: { email: string }) => {
+      setLoading(true)
+      try {
+        const existingUser = await storageService.userExist(email)
+        setEnteredEmail(email)
+        setIsValidEmail(existingUser)
+        setIsSigningUp(!existingUser)
+      } catch (error) {
+        if (error instanceof Error) {
+          // setError('email', {
+          //   type: 'value',
+          //   message: error.message,
+          // })
+        }
+      }
+      setLoading(false)
+    },
+    [storageService]
+  )
+
+  useEffect(() => {
+    if (defaultEmail) {
+      onEmail({ email: defaultEmail })
+    }
+  }, [defaultEmail, onEmail])
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
@@ -370,7 +375,7 @@ export const ConnectUnlockAccount = ({
         />
       ) : (
         <>
-          {!enteredEmail && <EnterEmail onSubmitEmail={onSubmitEmail} />}
+          {!enteredEmail && <EnterEmail onSubmitEmail={onEmail} />}
           {enteredEmail && isValidEmail && (
             <SignIn
               email={enteredEmail}

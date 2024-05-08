@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { ConnectWallet } from './Wallet'
 import { ConnectUnlockAccount } from './UnlockAccount'
@@ -8,6 +8,7 @@ import { ConnectedWallet } from './ConnectedWallet'
 import { useConnectModal } from '~/hooks/useConnectModal'
 
 export const ConnectModal = () => {
+  const [email, setEmail] = useState('')
   const { status, openConnectModal, closeConnectModal, open } =
     useConnectModal()
   const { connected } = useAuth()
@@ -71,13 +72,15 @@ export const ConnectModal = () => {
               </header>
               {!useUnlockAccount && !connected && (
                 <ConnectWallet
-                  onUnlockAccount={() => {
+                  onUnlockAccount={(email) => {
+                    setEmail(email)
                     openConnectModal('unlock_account')
                   }}
                 />
               )}
               {useUnlockAccount && !connected && (
                 <ConnectUnlockAccount
+                  defaultEmail={email}
                   onExit={() => {
                     openConnectModal('crypto')
                   }}

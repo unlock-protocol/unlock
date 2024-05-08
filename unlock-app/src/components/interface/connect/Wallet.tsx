@@ -6,10 +6,23 @@ import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
 import { MouseEventHandler, useState } from 'react'
+
 interface ConnectWalletProps {
-  onUnlockAccount: () => void
+  onUnlockAccount: (email?: string) => void
   // Optional, but required for Checkout
   injectedProvider?: unknown
+}
+
+interface ConnectViaEmailProps {
+  onUnlockAccount: (email?: string) => void
+}
+
+export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
+  return (
+    <button onClick={() => onUnlockAccount('julien@unlock-protocol.com')}>
+      Email
+    </button>
+  )
 }
 
 export const ConnectWallet = ({
@@ -67,7 +80,9 @@ export const ConnectWallet = ({
           If you previously created an unlock account or do not have a wallet,
           use this option.
         </div>
-        <ConnectButton
+        <ConnectViaEmail onUnlockAccount={onUnlockAccount} />
+
+        {/* <ConnectButton
           icon={<SvgComponents.Unlock width={40} height={40} />}
           highlight={recentlyUsedProvider === 'UNLOCK'}
           loading={isConnecting === 'UNLOCK'}
@@ -77,7 +92,7 @@ export const ConnectWallet = ({
           }}
         >
           Unlock Account
-        </ConnectButton>
+        </ConnectButton> */}
       </div>
     </div>
   )
