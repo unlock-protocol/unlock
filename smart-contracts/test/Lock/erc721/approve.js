@@ -70,7 +70,7 @@ describe('Lock / erc721 / approve', () => {
       })
 
       it('should trigger the Approval event', async () => {
-        assert.equal(event.event, 'Approval')
+        assert.equal(event.event.fragment.name, 'Approval')
         assert.equal(event.args.owner, await keyOwner.getAddress())
         assert.equal(event.args.approved, await approvedAccount.getAddress())
         compareBigNumbers(event.args.tokenId, tokenId)
@@ -86,7 +86,7 @@ describe('Lock / erc721 / approve', () => {
         })
 
         it('Approval emits when the approved address is reaffirmed', async () => {
-          assert.equal(event.event, 'Approval')
+          assert.equal(event.event.fragment.name, 'Approval')
           assert.equal(event.args.owner, await keyOwner.getAddress())
           assert.equal(event.args.approved, await approvedAccount.getAddress())
           compareBigNumbers(event.args.tokenId, tokenId)

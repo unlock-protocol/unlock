@@ -39,7 +39,7 @@ const purchaseKey = async (
   return { tokenId, blockNumber, from, to, tx }
 }
 
-const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
+const purchaseKeys = async (lock, nbOfKeys = 1n, isErc20 = false, signer) => {
   // make sure we got ethers lock
   lock = await ethers.getContractAt(
     'contracts/PublicLock.sol:PublicLock',
@@ -48,7 +48,11 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
 
   // signer 0 is the lockOwner so keyOwners starts at index 1
   const signers = await ethers.getSigners()
-  const keyOwners = signers.slice(1, nbOfKeys + 1)
+  const end =
+    typeof nbOfKeys === 'number'
+      ? nbOfKeys + 1
+      : parseInt((nbOfKeys + 1n).toString())
+  const keyOwners = signers.slice(1, end)
 
   if (signer) {
     lock = lock.connect(signer)
@@ -61,7 +65,7 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false, signer) => {
     keyOwners.map(() => '0x'),
   ]
   const tx = await lock.purchase(...purchaseArgs, {
-    value: isErc20 ? 0 : DEFAULT_KEY_PRICE * nbOfKeys,
+    value: isErc20 ? 0 : DEFAULT_KEY_PRICE * BigInt(nbOfKeys),
   })
   // get token ids
   const receipt = await tx.wait()

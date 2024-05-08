@@ -62,7 +62,7 @@ describe('Lock / erc721 / approveForAll', () => {
       })
 
       it('should trigger the ApprovalForAll event', async () => {
-        assert.equal(event.event, 'ApprovalForAll')
+        assert.equal(event.event.fragment.name, 'ApprovalForAll')
         assert.equal(event.args.owner, await keyOwner.getAddress())
         assert.equal(event.args.operator, await approvedAccount.getAddress())
         assert.equal(event.args.approved, true)
@@ -163,7 +163,7 @@ describe('Lock / erc721 / approveForAll', () => {
       })
 
       it('This emits when an operator is (enabled or) disabled for an owner.', async () => {
-        assert.equal(event.event, 'ApprovalForAll')
+        assert.equal(event.event.fragment.name, 'ApprovalForAll')
         assert.equal(event.args.owner, await keyOwner.getAddress())
         assert.equal(event.args.operator, await approvedAccount.getAddress())
         assert.equal(event.args.approved, false)
