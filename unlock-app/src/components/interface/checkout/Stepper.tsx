@@ -4,8 +4,9 @@ import { twMerge } from 'tailwind-merge'
 import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
 import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
-import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 import { useStepperItems } from './main/useStepperItems'
+import { useSIWE } from '~/hooks/useSIWE'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface IconProps {
   active?: boolean
@@ -79,7 +80,8 @@ export interface StepItem {
 }
 
 interface StepperProps {
-  service: CheckoutService | UnlockAccountService
+  service: CheckoutService
+  isUnlockAccount?: boolean
   disabled?: boolean
   hookType?: CheckoutHookType
   existingMember?: boolean
@@ -92,9 +94,8 @@ export const Stepper = ({
   hookType,
   existingMember,
   isRenew,
+  isUnlockAccount = false,
 }: StepperProps) => {
-  const isUnlockAccount = service.id === 'unlockAccount'
-
   const items = useStepperItems(service, {
     isUnlockAccount,
     hookType,
@@ -109,6 +110,9 @@ export const Stepper = ({
   const base = items.slice(0, index).filter((item) => !item?.skip)
   const rest = items.slice(index + 1).filter((item) => !item?.skip)
 
+  const { signOut } = useSIWE()
+  const { deAuthenticate } = useAuth()
+
   return (
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
       <div className="flex items-center gap-1.5">
@@ -117,6 +121,10 @@ export const Stepper = ({
             <StepButton
               key={idx}
               onClick={() => {
+                if (item.to === 'CONNECT') {
+                  signOut()
+                  deAuthenticate()
+                }
                 service.send({ type: item.to as any })
               }}
               label={item.name}

@@ -8,7 +8,11 @@ import { useCallback, useEffect, useState } from 'react'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import BlockiesSvg from 'blockies-react-svg'
 
-export const ConnectedWallet = () => {
+interface ConnectedWalletProps {
+  showIcon?: boolean
+}
+
+export const ConnectedWallet = ({ showIcon = true }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
   const { closeConnectModal } = useConnectModal()
   const { session, signIn, signOut } = useSIWE()
@@ -38,12 +42,18 @@ export const ConnectedWallet = () => {
     if (connected && !session && isUnlockAccount) {
       onSignIn()
     }
-  }, [onSignIn, connected, session, isUnlockAccount])
+  }, [connected, session, isUnlockAccount])
 
   return (
     <div className="grid divide-y divide-gray-100">
       <div className="flex flex-col items-center justify-center gap-6 p-6">
-        <BlockiesSvg address={connected!} size={14} className="rounded-full" />
+        {showIcon && (
+          <BlockiesSvg
+            address={connected!}
+            size={14}
+            className="rounded-full"
+          />
+        )}
         <div className="inline-flex items-center gap-2 text-lg font-bold">
           <button
             onClick={(event) => {
@@ -67,7 +77,7 @@ export const ConnectedWallet = () => {
             You are successfully verified as {minifyAddress(displayAccount!)}
           </div>
         )}
-        {!session && !isDisconnecting && (
+        {!session && !isDisconnecting && !isUnlockAccount && (
           <div className="flex flex-col gap-4">
             <h3 className="text-gray-700">
               Sign message to confirm ownership of your account

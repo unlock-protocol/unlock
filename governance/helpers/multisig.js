@@ -9,6 +9,7 @@ const {
   encodeMultiSendData,
 } = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
+const { decodeMulti, encodeMulti } = require('ethers-multisend')
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
@@ -220,16 +221,38 @@ const parseSafeMulticall = async ({ calls, chainId, options }) => {
     (total, { value }) => (value || 0n) + total,
     0n
   )
-  const { data } = await safe.createTransaction({
+  const onlyCalls = totalValue === 0n
+  const {
+    data: { data, to, operation, value },
+  } = await safe.createTransaction({
     transactions,
     options,
-    callsOnly: totalValue === 0,
+    onlyCalls,
   })
 
+  let calldata
+  if (onlyCalls) {
+    const calls = await decodeMulti(data)
+    // remove delegatecall are they are not supported by `MultiSendCallOnly`
+    ;({ data: calldata } = await encodeMulti(
+      calls.map((call) => ({ ...call, operation: 0 })),
+      to
+    ))
+  } else {
+    calldata = data
+  }
+
   // parse calls correcly for our multisig/dao helpers
-  data.calldata = data.data
-  data.contractAddress = data.to
-  return data
+  data.calldata = calldata
+  data.contractAddress = to
+  return {
+    data: calldata,
+    contractAddress: to,
+    calldata,
+    to,
+    operation,
+    value,
+  }
 }
 
 module.exports = {
