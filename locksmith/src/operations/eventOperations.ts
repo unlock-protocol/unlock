@@ -195,7 +195,7 @@ export const saveEvent = async (
   walletAddress: string
 ): Promise<[EventData, boolean]> => {
   const slug = parsed.data.slug || (await createEventSlug(parsed.data.name))
-  const [savedEvent, created] = await EventData.upsert(
+  const [savedEvent, _] = await EventData.upsert(
     {
       name: parsed.data.name,
       slug,
@@ -209,6 +209,7 @@ export const saveEvent = async (
       conflictFields: ['slug'],
     }
   )
+
   if (!savedEvent.checkoutConfigId) {
     const checkoutConfig = await PaywallConfig.strip().parseAsync(
       parsed.checkoutConfig.config
@@ -222,5 +223,6 @@ export const saveEvent = async (
     savedEvent.checkoutConfigId = createdConfig.id
     await savedEvent.save()
   }
-  return [savedEvent, !!created]
+
+  return [savedEvent, !!parsed.data.slug]
 }
