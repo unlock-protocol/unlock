@@ -87,15 +87,11 @@ export const ConnectedWallet = ({ showIcon = true }: ConnectedWalletProps) => {
             </Button>
           </div>
         )}
-      </div>
-      <div className="grid p-6">
-        <ConnectButton
-          onClick={onSignOut}
-          loading={isDisconnecting}
-          icon={<DisconnectIcon size={24} />}
-        >
-          Disconnect
-        </ConnectButton>
+        <div className="w-full flex items-center justify-end px-6 py-4">
+          <button onClick={onSignOut} className="hover:text-ui-main-600">
+            Sign Out
+          </button>
+        </div>
       </div>
     </div>
   )

@@ -47,7 +47,7 @@ export const ConnectPage = ({
             }}
           />
         )}
-        {connected && <ConnectedWallet />}
+        {connected && <ConnectedWallet showIcon={false} />}
       </main>
       <footer className="grid items-center px-6 pt-2 border-t">
         <PoweredByUnlock />

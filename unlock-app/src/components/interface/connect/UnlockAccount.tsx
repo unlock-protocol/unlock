@@ -111,7 +111,7 @@ const SignIn = ({
           Sign In
         </ConnectButton>
       </form>
-      <div className="flex items-center justify-end px-6">
+      <div className="flex items-center justify-end px-6 py-4">
         <button
           onClick={(event) => {
             event.preventDefault()
