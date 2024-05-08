@@ -60,7 +60,7 @@ describe('TokenUriHook', function () {
         [await user.getAddress()],
         [await user.getAddress()],
         [await user.getAddress()],
-        [[]]
+        ['0x']
       )
       const expiration = await lock.keyExpirationTimestampFor(1)
 

@@ -252,7 +252,7 @@ describe('Lock / purchaseFor', () => {
         [await anotherKeyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
       const receipt = await tx.wait()
       const { args } = await getEvent(receipt, 'Transfer')

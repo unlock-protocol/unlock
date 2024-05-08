@@ -58,14 +58,14 @@ describe('Lock / purchaseForFrom', () => {
         [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
       const tx = await lockFree.purchase(
         [],
         [await keyOwner.getAddress()],
         [await referrer.getAddress()],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
 
       const receipt = await tx.wait()

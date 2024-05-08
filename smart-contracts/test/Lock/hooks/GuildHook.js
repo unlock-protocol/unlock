@@ -80,7 +80,7 @@ describe('GuildHook', function () {
         [await aThird.getAddress()],
         [await aThird.getAddress()],
         [await aThird.getAddress()],
-        [[]]
+        ['0x']
       ),
       'ECDSA: invalid signature length'
     )

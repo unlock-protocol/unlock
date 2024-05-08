@@ -134,7 +134,7 @@ describe('Lock / erc20', () => {
             [await keyOwner.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]]
+            ['0x']
           )
         const balanceBefore = await token.balanceOf(
           await keyOwner2.getAddress()
@@ -147,7 +147,7 @@ describe('Lock / erc20', () => {
             [await keyOwner2.getAddress()],
             [referrer],
             [ADDRESS_ZERO],
-            [[]]
+            ['0x']
           )
 
         const balance = await token.balanceOf(await keyOwner2.getAddress())
@@ -169,7 +169,7 @@ describe('Lock / erc20', () => {
       await token.connect(random).approve(await lock.getAddress(), MAX_UINT)
       await token
         .connect(deployer)
-        .mint(await random.getAddress(), keyPrice - 1)
+        .mint(await random.getAddress(), keyPrice - 1n)
       await reverts(
         lock
           .connect(random)
@@ -178,7 +178,7 @@ describe('Lock / erc20', () => {
             [await random.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]]
+            ['0x']
           )
       )
     })
@@ -193,7 +193,7 @@ describe('Lock / erc20', () => {
             [await random.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]]
+            ['0x']
           )
       )
     })

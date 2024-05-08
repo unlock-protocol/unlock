@@ -378,7 +378,7 @@ describe('Lock / erc721 / transferFrom', () => {
       [await keyOwner.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]]
+      ['0x']
     )
     const receipt = await tx.wait()
     const { args } = await getEvent(receipt, 'Transfer')
