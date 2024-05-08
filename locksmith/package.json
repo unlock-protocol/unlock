@@ -115,7 +115,7 @@
     "node-mocks-http": "1.12.2",
     "parse-data-uri": "0.2.0",
     "run-script-os": "1.1.6",
-    "supertest": "6.3.4",
+    "supertest": "7.0.0",
     "tsx": "4.7.1",
     "typescript": "5.3.3",
     "vitest": "0.31.4"
