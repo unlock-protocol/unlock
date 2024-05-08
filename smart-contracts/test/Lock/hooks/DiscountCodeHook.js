@@ -11,16 +11,14 @@ const { deployLock } = require('../../helpers')
  */
 const getSignatureForPassword = async (password, message) => {
   // Build the signer
-  const encoded = ethers.defaultAbiCoder.encode(
-    ['bytes32'],
-    [ethers.id(password)]
-  )
+  const encoder = ethers.AbiCoder.defaultAbiCoder()
+  const encoded = encoder.encode(['bytes32'], [ethers.id(password)])
   const privateKey = ethers.keccak256(encoded)
   const privateKeyAccount = new ethers.Wallet(privateKey)
 
   // Sign
-  const messageHash = ethers.solidityKeccak256(['string'], [message])
-  const messageHashBinary = ethers.arrayify(messageHash)
+  const messageHash = ethers.solidityPackedKeccak256(['string'], [message])
+  const messageHashBinary = ethers.getBytes(messageHash)
   const signature = await privateKeyAccount.signMessage(messageHashBinary)
 
   return [signature, await privateKeyAccount.getAddress()]
@@ -61,12 +59,12 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
     // Let's get the price without a promo code
@@ -82,7 +80,7 @@ describe('DiscountHook', function () {
     const cap = 10
     const [data, signer] = await getSignatureForPassword(
       code,
-      await user.getAddress().toLowerCase()
+      (await user.getAddress()).toLowerCase()
     )
 
     // Set the code on the hook for the lock
@@ -128,12 +126,12 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
     // Let's get the price without a promo code
@@ -182,12 +180,12 @@ describe('DiscountHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
     // Let's get the price without a promo code
@@ -203,7 +201,7 @@ describe('DiscountHook', function () {
     const cap = 1
     const [data, signer] = await getSignatureForPassword(
       code,
-      await user.getAddress().toLowerCase()
+      (await user.getAddress()).toLowerCase()
     )
 
     // Set the code on the hook for the lock
@@ -238,7 +236,7 @@ describe('DiscountHook', function () {
     // Let's now get the price again for another user with the same code
     const [dataOther] = await getSignatureForPassword(
       code,
-      await other.getAddress().toLowerCase()
+      (await other.getAddress()).toLowerCase()
     )
     const priceOther = await lock.purchasePriceFor(
       await other.getAddress(),

@@ -19,33 +19,33 @@ describe('GitcoinHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
-    const messageHash = ethers.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [await user.getAddress().toLowerCase()]
+      [(await user.getAddress()).toLowerCase()]
     )
-    const signedMessage = await signer.signMessage(ethers.arrayify(messageHash))
+    const signedMessage = await signer.signMessage(ethers.getBytes(messageHash))
 
-    const anotherMessageHash = ethers.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [await another.getAddress().toLowerCase()]
+      [(await another.getAddress()).toLowerCase()]
     )
     const anotherSignedMessage = await signer.signMessage(
-      ethers.arrayify(anotherMessageHash)
+      ethers.getBytes(anotherMessageHash)
     )
 
     // Health check!
     expect(
       ethers.verifyMessage(
-        await user.getAddress().toLowerCase(),
+        (await user.getAddress()).toLowerCase(),
         signedMessage
       ),
       await signer.getAddress()

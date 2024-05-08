@@ -40,7 +40,7 @@ async function main({
     const name = 'FIRST'
     const args = [
       Locks[name].expirationDuration,
-      ethers.AddressZero,
+      ethers.ZeroAddress,
       Locks[name].keyPrice,
       Locks[name].maxNumberOfKeys,
       Locks[name].lockName,

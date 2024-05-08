@@ -28,12 +28,12 @@ describe('CaptchaHook', function () {
 
     // Correct signer, correct message
     const message = 'hello'
-    const messageHash = ethers.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
       [message.toLowerCase()]
     )
     const signedMessage = await secretSigner.signMessage(
-      ethers.arrayify(messageHash)
+      ethers.getBytes(messageHash)
     )
     expect(
       ethers.verifyMessage(message, signedMessage),
@@ -58,42 +58,42 @@ describe('CaptchaHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
-    const messageHash = ethers.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [await user.getAddress().toLowerCase()]
+      [(await user.getAddress()).toLowerCase()]
     )
     const signedMessage = await secretSigner.signMessage(
-      ethers.arrayify(messageHash)
+      ethers.getBytes(messageHash)
     )
 
-    const anotherMessageHash = ethers.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [await another.getAddress().toLowerCase()]
+      [(await another.getAddress()).toLowerCase()]
     )
     const anotherSignedMessage = await secretSigner.signMessage(
-      ethers.arrayify(anotherMessageHash)
+      ethers.getBytes(anotherMessageHash)
     )
 
     // Health check!
     expect(
       ethers.verifyMessage(
-        await user.getAddress().toLowerCase(),
+        (await user.getAddress()).toLowerCase(),
         signedMessage
       ),
       await secretSigner.getAddress()
     )
     expect(
       await hook.checkIsSigner(
-        await user.getAddress().toLowerCase(),
+        (await user.getAddress()).toLowerCase(),
         signedMessage
       )
     ).to.equal(true)

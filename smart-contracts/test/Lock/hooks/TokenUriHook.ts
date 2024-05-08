@@ -14,13 +14,13 @@ describe('TokenUriHook', function () {
 
     await (
       await lock.setEventHooks(
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
   })

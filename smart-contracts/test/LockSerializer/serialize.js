@@ -56,7 +56,7 @@ describe('LockSerializer', () => {
       const serialized = await serializer.serialize(await lock.getAddress())
       await assert.equal(
         serialized.tokenURISample,
-        `${await lock.getAddress().toLowerCase()}/${totalSupply}`
+        `${(await lock.getAddress()).toLowerCase()}/${totalSupply}`
       )
 
       // custom URI

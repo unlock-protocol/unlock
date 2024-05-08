@@ -48,9 +48,9 @@ describe('Lock / onTokenURIHook', () => {
     const baseTokenURI = await testEventHooks.baseURI()
     const expirationTimestamp = await lock.keyExpirationTimestampFor(tokenId)
     const params = [
-      await lock.getAddress().toLowerCase(), // lockAddress
-      await keyOwner.getAddress().toLowerCase(), // owner
-      await lockOwner.getAddress().toLowerCase(), // operator
+      (await lock.getAddress()).toLowerCase(), // lockAddress
+      (await keyOwner.getAddress()).toLowerCase(), // owner
+      (await lockOwner.getAddress()).toLowerCase(), // operator
       expirationTimestamp, // expirationTimestamp
       tokenId, // tokenId
     ]

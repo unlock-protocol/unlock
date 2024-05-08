@@ -19,6 +19,7 @@ const dirname = path.join(__dirname, '..')
 
 const previousVersionNumber = 9 // to next version
 const keyPrice = ethers.parseEther('0.01')
+const encoder = ethers.AbiCoder.defaultAbiCoder()
 
 // helpers
 const purchaseFails = async (lock) => {
@@ -292,10 +293,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
         const [, lockOwner] = await ethers.getSigners()
 
         // migrate a batch of 100
-        const calldata = ethers.defaultAbiCoder.encode(
-          ['uint', 'uint'],
-          [100, 100]
-        )
+        const calldata = encoder.encode(['uint', 'uint'], [100, 100])
         const tx = await lock.connect(lockOwner).migrate(calldata)
         const receipt = await tx.wait()
         const { args } = await getEvent(receipt, 'KeysMigrated')
@@ -339,20 +337,14 @@ describe('upgradeLock / data migration v9 > v10', () => {
         const [, lockOwner] = await ethers.getSigners()
 
         // 200 already migrated, now add a first batch of 100
-        const calldata1 = ethers.defaultAbiCoder.encode(
-          ['uint', 'uint'],
-          [200, 100]
-        )
+        const calldata1 = encoder.encode(['uint', 'uint'], [200, 100])
         const tx = await lock.connect(lockOwner).migrate(calldata1)
         const receipt = await tx.wait()
         const { args } = await getEvent(receipt, 'KeysMigrated')
         assert.equal(args.updatedRecordsCount, 100)
 
         // migrate another batch of 200
-        const calldata2 = ethers.defaultAbiCoder.encode(
-          ['uint', 'uint'],
-          [300, 200]
-        )
+        const calldata2 = encoder.encode(['uint', 'uint'], [300, 200])
         const tx2 = await lock.connect(lockOwner).migrate(calldata2)
         const { events: events2 } = await tx2.wait()
         const { args: args2 } = events2.find((v) => v.event === 'KeysMigrated')

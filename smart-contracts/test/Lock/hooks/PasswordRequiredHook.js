@@ -10,16 +10,14 @@ const { reverts, deployLock } = require('../../helpers')
  */
 const getSignatureForPassword = async (password, message) => {
   // Build the signer
-  const encoded = ethers.defaultAbiCoder.encode(
-    ['bytes32'],
-    [ethers.id(password)]
-  )
+  const encoder = ethers.AbiCoder.defaultAbiCoder()
+  const encoded = encoder.encode(['bytes32'], [ethers.id(password)])
   const privateKey = ethers.keccak256(encoded)
   const privateKeyAccount = new ethers.Wallet(privateKey)
 
   // Sign
-  const messageHash = ethers.solidityKeccak256(['string'], [message])
-  const messageHashBinary = ethers.arrayify(messageHash)
+  const messageHash = ethers.solidityPackedKeccak256(['string'], [message])
+  const messageHashBinary = ethers.getBytes(messageHash)
   const signature = await privateKeyAccount.signMessage(messageHashBinary)
 
   return [signature, await privateKeyAccount.getAddress()]
@@ -66,12 +64,12 @@ describe('PasswordRequiredHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
@@ -79,10 +77,10 @@ describe('PasswordRequiredHook', function () {
     const password = 'unguessable!'
     const [data, signer] = await getSignatureForPassword(
       password,
-      await user.getAddress().toLowerCase()
+      (await user.getAddress()).toLowerCase()
     )
 
-    const usages = 10
+    const usages = 10n
 
     // Set the password on the hook for the lock
     await (await hook.setSigner(await lock.getAddress(), signer, usages)).wait()
@@ -104,7 +102,7 @@ describe('PasswordRequiredHook', function () {
     // And a purchase that fails because we use the wrong password
     const [badData] = await getSignatureForPassword(
       'wrong password',
-      await user.getAddress().toLowerCase()
+      (await user.getAddress()).toLowerCase()
     )
     await reverts(
       lock.purchase(
@@ -129,7 +127,7 @@ describe('PasswordRequiredHook', function () {
 
     // Check the usages!
     const usageAfter = await hook.counters(await lock.getAddress(), signer)
-    expect(usageAfter).to.equal(1)
+    expect(usageAfter).to.equal(1n)
   })
 
   it('should fail if the code has been used enough', async function () {
@@ -146,12 +144,12 @@ describe('PasswordRequiredHook', function () {
     await (
       await lock.setEventHooks(
         await hook.getAddress(),
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero,
-        ethers.AddressZero
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
@@ -159,7 +157,7 @@ describe('PasswordRequiredHook', function () {
     const password = 'unguessable!'
     const [data, signer] = await getSignatureForPassword(
       password,
-      await user.getAddress().toLowerCase()
+      (await user.getAddress()).toLowerCase()
     )
 
     const usages = 1
@@ -180,7 +178,7 @@ describe('PasswordRequiredHook', function () {
 
     const [newData] = await getSignatureForPassword(
       password,
-      await another.getAddress().toLowerCase()
+      (await another.getAddress()).toLowerCase()
     )
 
     // And a purchase that succeeds when we use the correct password!
