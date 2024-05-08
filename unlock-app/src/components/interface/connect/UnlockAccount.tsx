@@ -74,16 +74,15 @@ const SignIn = ({
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
-          {useIcon && (
+        {useIcon && (
+          <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
             <BlockiesSvg
               address={account || '0x'}
               size={6}
               className="rounded-full"
             />
-          )}
-          <div className="text-center">{email}</div>
-        </div>
+          </div>
+        )}
         <Input
           label={'Password'}
           type="password"
@@ -142,7 +141,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>()
 
-  const onSubmit = async ({ email, password }: SignUpForm) => {
+  const onSubmit = async ({ password }: SignUpForm) => {
     try {
       await signUp({ email, password })
       if (onSignIn) {
@@ -166,17 +165,6 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          // Disabled input field will not work here
-          readOnly={true}
-          style={{ backgroundColor: '#f3f4f6', opacity: 0.7 }}
-          type="email"
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email')}
-          value={email}
-          error={errors.email?.message}
-        />
         <Input
           label="Password"
           type="password"
