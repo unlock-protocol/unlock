@@ -143,6 +143,7 @@ components:
     Verifier:
       type: object
       nullable: false
+      required: ['address']
       properties:
         address:
           type: string
@@ -866,7 +867,7 @@ paths:
       operationId: verifiers
       security:
         - User: ['lockManager']
-      description: List of verifiers for the lock address. (deprecated in favor of /v2/events/{slug}/verifiers)
+      description: List of verifiers for the lock address. (deprecated in favor of eventVerifiers)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -898,7 +899,7 @@ paths:
       operationId: createVerifier
       security:
         - User: ['lockManager']
-      description: Create verifier. (deprecated in favor of /v2/events/{slug}/verifiers/{verifierAddress})
+      description: Create verifier. (deprecated in favor of addEventVerifier)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -935,7 +936,7 @@ paths:
       operationId: deleteVerifier
       security:
         - User: []
-      description: Remove verifier. (deprecated in favor of /v2/events/{slug}/verifiers/{verifierAddress})
+      description: Remove verifier. (deprecated in favor of deleteEventVerifier)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -967,7 +968,7 @@ paths:
       operationId: verifier
       security:
         - User: ['lockManager']
-      description: Check if an address is a verifier of the lock. (deprecated in favor of /v2/events/{slug}/verifiers/{verifierAddress})
+      description: Check if an address is a verifier of the lock. (deprecated in favor of eventVerifier)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1024,6 +1025,33 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/events/{slug}/verifiers/{verifierAddress}:
+    get:
+      operationId: eventVerifier
+      description: Returns a verifier for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/VerifierAddress'
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
+      responses:
+        201:
+          description: Verifier details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verifier'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
     put:
       operationId: addEventVerifier
       security:

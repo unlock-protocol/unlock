@@ -150,7 +150,6 @@ export function Minting({
 
     const waitForConfirmation = async () => {
       try {
-        if (mint.status !== 'PROCESSING') return
         const network = config.networks[mint.network || lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcBatchProvider(
