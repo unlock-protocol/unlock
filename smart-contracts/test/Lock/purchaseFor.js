@@ -93,7 +93,7 @@ describe('Lock / purchaseFor', () => {
 
       // Verify that RenewKeyPurchase does not emit on a first key purchase
       const event = await getEvent(receipt, 'RenewKeyPurchase')
-      assert.notEqual(event, null)
+      assert.equal(event, null)
     })
 
     describe('when the user already owns an expired key', () => {
@@ -227,7 +227,7 @@ describe('Lock / purchaseFor', () => {
 
         const expirationDuration = await lock.expirationDuration()
 
-        assert(expirationTimestamp >= expirationDuration + now)
+        assert(expirationTimestamp >= expirationDuration + BigInt(now))
       })
 
       it('should have added the funds to the contract', async () => {
@@ -238,11 +238,14 @@ describe('Lock / purchaseFor', () => {
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        compareBigNumbers(await lock.totalSupply(), totalSupplyBefore + 1)
+        compareBigNumbers(await lock.totalSupply(), totalSupplyBefore + 1n)
       })
 
       it('should have increased the number of owners', async () => {
-        compareBigNumbers(await lock.numberOfOwners(), numberOfOwnersBefore + 1)
+        compareBigNumbers(
+          await lock.numberOfOwners(),
+          numberOfOwnersBefore + 1n
+        )
       })
     })
 
