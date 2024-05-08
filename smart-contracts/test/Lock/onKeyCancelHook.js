@@ -44,7 +44,7 @@ describe('Lock / onKeyCancelHook', () => {
   it('key cancels should log the hook event', async () => {
     await lock.connect(to).cancelAndRefund(tokenId)
     const { args } = (await testEventHooks.queryFilter('OnKeyCancel')).filter(
-      ({ event }) => event === 'OnKeyCancel'
+      ({ fragment }) => fragment.name === 'OnKeyCancel'
     )[0]
     assert.equal(args.lock, await lock.getAddress())
     assert.equal(args.operator, await to.getAddress())

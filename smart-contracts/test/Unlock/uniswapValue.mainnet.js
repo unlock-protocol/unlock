@@ -296,7 +296,9 @@ describe('Unlock / uniswapValue', () => {
         const events = await unlock.queryFilter('*', blockNumber)
         assert.equal(events.length, 1)
 
-        const { args } = events.find(({ event }) => event === 'GNPChanged')
+        const { args } = events.find(
+          ({ fragment }) => fragment.name === 'GNPChanged'
+        )
         const {
           grossNetworkProduct,
           _valueInETH,
@@ -342,7 +344,9 @@ describe('Unlock / uniswapValue', () => {
         const events = await unlock.queryFilter('*', blockNumber)
         assert.equal(events.length, 1)
 
-        const { args } = events.find(({ event }) => event === 'GNPChanged')
+        const { args } = events.find(
+          ({ fragment }) => fragment.name === 'GNPChanged'
+        )
         const {
           grossNetworkProduct,
           _valueInETH,

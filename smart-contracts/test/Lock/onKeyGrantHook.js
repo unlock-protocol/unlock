@@ -54,7 +54,7 @@ describe('Lock / onKeyGrantHook', () => {
       // get event from hook contract
       const { args } = (
         await testEventHooks.queryFilter('OnKeyGranted')
-      ).filter(({ event }) => event === 'OnKeyGranted')[0]
+      ).filter(({ fragment }) => fragment.name === 'OnKeyGranted')[0]
       assert.equal(args.tokenId, tokenId)
       assert.equal(args.to, to)
       assert.equal(args.from, lockManager)

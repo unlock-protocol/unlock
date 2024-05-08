@@ -69,7 +69,7 @@ describe('Lock / onKeyTransfer hook', () => {
       .connect(keyOwner)
       .transferFrom(await keyOwner.getAddress(), await to.getAddress(), tokenId)
     const { args } = (await testEventHooks.queryFilter('OnKeyTransfer')).filter(
-      ({ event }) => event === 'OnKeyTransfer'
+      ({ fragment }) => fragment.name === 'OnKeyTransfer'
     )[0]
     assert.equal(args.lock, await lock.getAddress())
     compareBigNumbers(args.tokenId, tokenId)
@@ -92,7 +92,7 @@ describe('Lock / onKeyTransfer hook', () => {
         tokenId
       )
     const { args } = (await testEventHooks.queryFilter('OnKeyTransfer')).filter(
-      ({ event }) => event === 'OnKeyTransfer'
+      ({ fragment }) => fragment.name === 'OnKeyTransfer'
     )[1]
 
     assert.equal(args.lock, await lock.getAddress())

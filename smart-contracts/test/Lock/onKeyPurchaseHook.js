@@ -36,7 +36,6 @@ describe('Lock / onKeyPurchaseHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    console.log({ testEventHooks: await testEventHooks.getAddress() })
     keyPrice = await lock.keyPrice()
     receipt = await tx.wait()
   })
@@ -85,13 +84,13 @@ describe('Lock / onKeyPurchaseHook', () => {
       const receipt = await tx.wait()
       ;({
         args: { tokenId },
-      } = await getEvent(receipt, 'NewLock'))
+      } = await getEvent(receipt, 'Transfer'))
     })
 
     it('key sales should log the hook event', async () => {
       const { args } = (
         await testEventHooks.queryFilter('OnKeyPurchase')
-      ).filter(({ event }) => event === 'OnKeyPurchase')[0]
+      ).filter(({ fragment }) => fragment.name === 'OnKeyPurchase')[0]
       assert.equal(args.lock, await lock.getAddress())
       await compareBigNumbers(args.tokenId, tokenId)
       assert.equal(args.from, await from.getAddress())
@@ -112,7 +111,7 @@ describe('Lock / onKeyPurchaseHook', () => {
             [ADDRESS_ZERO],
             [dataField],
             {
-              value: keyPrice / 2,
+              value: keyPrice / 2n,
             }
           ),
         'INSUFFICIENT_VALUE'
@@ -126,7 +125,7 @@ describe('Lock / onKeyPurchaseHook', () => {
 
   describe('with a 50% off discount', () => {
     beforeEach(async () => {
-      await testEventHooks.configure(true, keyPrice / 2)
+      await testEventHooks.configure(true, keyPrice / 2n)
     })
 
     it('can estimate the price', async () => {
@@ -135,7 +134,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         ADDRESS_ZERO,
         dataField
       )
-      await compareBigNumbers(price, keyPrice / 2)
+      await compareBigNumbers(price, keyPrice / 2n)
     })
 
     it('can buy at half price', async () => {
@@ -148,7 +147,7 @@ describe('Lock / onKeyPurchaseHook', () => {
           [ADDRESS_ZERO],
           [dataField],
           {
-            value: keyPrice / 2,
+            value: keyPrice / 2n,
           }
         )
     })
@@ -193,7 +192,7 @@ describe('Lock / onKeyPurchaseHook', () => {
       it('key sales should log the hook event', async () => {
         const { args } = (
           await testEventHooks.queryFilter('OnKeyPurchase')
-        ).filter(({ event }) => event === 'OnKeyPurchase')[0]
+        ).filter(({ fragment }) => fragment.name === 'OnKeyPurchase')[0]
 
         assert.equal(args.lock, await lock.getAddress())
         assert.equal(args.from, await from.getAddress())
