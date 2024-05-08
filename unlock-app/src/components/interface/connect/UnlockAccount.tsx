@@ -2,12 +2,11 @@ import { Input } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import SvgComponents from '../svg'
-import { ConnectButton, CustomAnchorButton } from './Custom'
+import { ConnectButton } from './Custom'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
@@ -22,48 +21,6 @@ export type SignUpForm = Record<
   'email' | 'password' | 'confirmPassword',
   string
 >
-
-interface EnterEmailProps {
-  onSubmitEmail(email: string): void
-}
-
-const EnterEmail = ({ onSubmitEmail }: EnterEmailProps) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<UserDetails>()
-
-  return (
-    <div className="grid gap-2">
-      <form
-        className="grid gap-4 px-6"
-        onSubmit={handleSubmit((data) => onSubmitEmail(data.email))}
-      >
-        <Input
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: 'Email is required',
-          })}
-          error={errors.email?.message}
-        />
-        <ConnectButton
-          primary
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Continue
-        </ConnectButton>
-      </form>
-    </div>
-  )
-}
 
 export interface SignInProps {
   email: string
@@ -153,7 +110,7 @@ const SignIn = ({
           Sign In
         </ConnectButton>
       </form>
-      <div className="flex items-center justify-end px-6">
+      <div className="flex items-center justify-end px-6 py-4">
         <button
           onClick={(event) => {
             event.preventDefault()
@@ -209,15 +166,13 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
         <Input
+          // Disabled input field will not work here
+          readOnly={true}
+          style={{ backgroundColor: '#f3f4f6', opacity: 0.7 }}
           type="email"
           label="Email"
           placeholder="your@email.com"
-          {...register('email', {
-            required: {
-              value: true,
-              message: 'Email is required',
-            },
-          })}
+          {...register('email')}
           value={email}
           error={errors.email?.message}
         />
@@ -298,20 +253,16 @@ export const ConnectUnlockAccount = ({
   useIcon = true,
   defaultEmail = '',
 }: Props) => {
-  const [loading, setLoading] = useState(false)
-  const [enteredEmail, setEnteredEmail] = useState(defaultEmail)
   const [isValidEmail, setIsValidEmail] = useState(false)
-  const [isSigningUp, setIsSigningUp] = useState(false)
 
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, account, connected, deAuthenticate } = useAuth()
+  const { email, deAuthenticate } = useAuth()
   // TODO: Consider adding a way to set the email address to Auth context
   const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
   const storageService = useStorageService()
-  const requireSignIn = account && !connected
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -334,29 +285,25 @@ export const ConnectUnlockAccount = ({
 
   const onEmail = useCallback(
     async ({ email }: { email: string }) => {
-      setLoading(true)
       try {
+        console.log('Checking if user exists')
         const existingUser = await storageService.userExist(email)
-        setEnteredEmail(email)
         setIsValidEmail(existingUser)
-        setIsSigningUp(!existingUser)
       } catch (error) {
         if (error instanceof Error) {
+          console.log('Error email')
           // setError('email', {
           //   type: 'value',
           //   message: error.message,
           // })
         }
       }
-      setLoading(false)
     },
     [storageService]
   )
 
   useEffect(() => {
-    if (defaultEmail) {
-      onEmail({ email: defaultEmail })
-    }
+    onEmail({ email: defaultEmail })
   }, [defaultEmail, onEmail])
 
   return (
@@ -375,55 +322,31 @@ export const ConnectUnlockAccount = ({
         />
       ) : (
         <>
-          {!enteredEmail && <EnterEmail onSubmitEmail={onEmail} />}
-          {enteredEmail && isValidEmail && (
+          {isValidEmail && (
             <SignIn
-              email={enteredEmail}
+              email={defaultEmail}
               signIn={signIn}
               onSignIn={onSignIn}
               useIcon={useIcon}
               onReturn={() => {
-                setEnteredEmail('')
+                onExit()
                 setIsValidEmail(false)
               }}
             />
           )}
-          {enteredEmail && !isValidEmail && (
+          {!isValidEmail && (
             <SignUp
-              email={enteredEmail}
+              email={defaultEmail}
               signUp={signUp}
               onSignIn={onSignIn}
               onReturn={() => {
-                setIsSigningUp(false)
-                setEnteredEmail('')
+                onExit()
                 setIsValidEmail(false)
               }}
             />
           )}
         </>
       )}
-      <div className="grid gap-4 p-6">
-        {!requireSignIn && !isSigningUp && (
-          <div className="grid gap-2">
-            <CustomAnchorButton
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/find-wallet/"
-            >
-              Get a crypto wallet
-            </CustomAnchorButton>
-            <ConnectButton
-              icon={<WalletIcon size={24} />}
-              onClick={(event) => {
-                event.preventDefault()
-                onExit()
-              }}
-            >
-              <span>Back to using your crypto wallet</span>
-            </ConnectButton>
-          </div>
-        )}
-      </div>
     </div>
   )
 }
