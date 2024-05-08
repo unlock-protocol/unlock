@@ -4,38 +4,58 @@ import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
 import SvgComponents from '../svg'
-import { ConnectButton, CustomAnchorButton } from './Custom'
-import { useState } from 'react'
+import { ConnectButton } from './Custom'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
+import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
-interface UnlockAccountSignInProps {
-  onSignUp(): void
-  signIn: (details: UserDetails) => Promise<unknown> | unknown
-  signedInBefore?: boolean
+interface UserDetails {
+  email: string
+  password: string
 }
 
-export const UnlockAccountSignIn = ({
-  onSignUp,
+export type SignUpForm = Record<
+  'email' | 'password' | 'confirmPassword',
+  string
+>
+
+export interface SignInProps {
+  email: string
+  onReturn(): void
+  signIn: (details: UserDetails) => Promise<unknown> | unknown
+  onSignIn?(): void
+  useIcon?: boolean
+}
+
+const SignIn = ({
+  email,
+  onReturn,
   signIn,
-  signedInBefore = false,
-}: UnlockAccountSignInProps) => {
+  onSignIn,
+  useIcon = true,
+}: SignInProps) => {
   const {
     register,
     handleSubmit,
     setError,
     formState: { isSubmitting, errors },
   } = useForm<UserDetails>()
-  const { email, account } = useAuth()
+
+  const { account } = useAuth()
+
   const onSubmit = async (data: UserDetails) => {
     if (!data.email && email) {
       data.email = email
     }
     try {
       await signIn(data)
+      if (onSignIn) {
+        onSignIn()
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -54,28 +74,17 @@ export const UnlockAccountSignIn = ({
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        {email ? (
+        {useIcon && (
           <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
             <BlockiesSvg
               address={account || '0x'}
               size={6}
               className="rounded-full"
             />
-            <div className="text-center">Signed in as {email}</div>
           </div>
-        ) : (
-          <Input
-            label="Email"
-            placeholder="your@email.com"
-            {...register('email', {
-              required: 'Email is required',
-              value: email ? email : undefined,
-            })}
-            error={errors.email?.message}
-          />
         )}
         <Input
-          label={signedInBefore ? 'Confirm your password' : 'Password'}
+          label={'Password'}
           type="password"
           placeholder="Password"
           {...register('password', {
@@ -98,43 +107,32 @@ export const UnlockAccountSignIn = ({
             />
           }
         >
-          {signedInBefore ? 'Confirm' : 'Sign In'}
+          Sign In
         </ConnectButton>
       </form>
-      {!signedInBefore && (
-        <div className="flex items-center justify-end px-6">
-          <button
-            onClick={(event) => {
-              event.preventDefault()
-              onSignUp()
-            }}
-            className="hover:text-ui-main-600"
-          >
-            No account?
-          </button>
-        </div>
-      )}
+      <div className="flex items-center justify-end px-6 py-4">
+        <button
+          onClick={(event) => {
+            event.preventDefault()
+            onReturn()
+          }}
+          className="hover:text-ui-main-600"
+        >
+          Sign Out
+        </button>
+      </div>
     </div>
   )
 }
-interface UnlockAccountSignUpProps {
-  onSignIn(): void
-  signUp: (details: UserDetails) => Promise<unknown> | unknown
-}
 
-interface UserDetails {
+export interface SignUpProps {
   email: string
-  password: string
+  onReturn(): void
+  signUp: (details: UserDetails) => Promise<unknown> | unknown
+  onSignIn?(): void
 }
 
-export type SignUpForm = Record<
-  'email' | 'password' | 'confirmPassword',
-  string
->
-export const UnlockAccountSignUp = ({
-  onSignIn,
-  signUp,
-}: UnlockAccountSignUpProps) => {
+const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
   const {
     register,
     getValues,
@@ -143,9 +141,12 @@ export const UnlockAccountSignUp = ({
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>()
 
-  const onSubmit = async ({ email, password }: SignUpForm) => {
+  const onSubmit = async ({ password }: SignUpForm) => {
     try {
       await signUp({ email, password })
+      if (onSignIn) {
+        onSignIn()
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -164,18 +165,6 @@ export const UnlockAccountSignUp = ({
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          type="email"
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: {
-              value: true,
-              message: 'Email is required',
-            },
-          })}
-          error={errors.email?.message}
-        />
         <Input
           label="Password"
           type="password"
@@ -229,11 +218,11 @@ export const UnlockAccountSignUp = ({
         <button
           onClick={(event) => {
             event.preventDefault()
-            onSignIn()
+            onReturn()
           }}
           className="hover:text-ui-main-600"
         >
-          Have an account?
+          Back
         </button>
       </div>
     </div>
@@ -241,18 +230,28 @@ export const UnlockAccountSignUp = ({
 }
 
 export interface Props {
+  defaultEmail?: string
   onExit(): void
+  onSignIn?(): void
+  useIcon?: boolean
 }
 
-export const ConnectUnlockAccount = ({ onExit }: Props) => {
-  const [isSignIn, setIsSignIn] = useState(true)
+export const ConnectUnlockAccount = ({
+  onExit,
+  onSignIn,
+  useIcon = true,
+  defaultEmail = '',
+}: Props) => {
+  const [isValidEmail, setIsValidEmail] = useState(false)
+
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { account, connected } = useAuth()
+  const { email, deAuthenticate } = useAuth()
+  // TODO: Consider adding a way to set the email address to Auth context
+  const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
-
-  const requireSignIn = account && !connected
+  const storageService = useStorageService()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -273,57 +272,65 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
+  const onEmail = useCallback(
+    async ({ email }: { email: string }) => {
+      try {
+        const existingUser = await storageService.userExist(email)
+        setIsValidEmail(existingUser)
+      } catch (error) {
+        if (error instanceof Error) {
+          ToastHelper.error(`Email Error: ${error.message}`)
+        }
+      }
+    },
+    [storageService]
+  )
+
+  useEffect(() => {
+    onEmail({ email: defaultEmail })
+  }, [defaultEmail, onEmail])
+
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {isSignIn && (
-        <UnlockAccountSignIn
+      {authEmail ? (
+        <SignIn
+          email={authEmail}
           signIn={signIn}
-          signedInBefore={!!requireSignIn}
-          onSignUp={() => {
-            setIsSignIn(false)
+          onSignIn={onSignIn}
+          useIcon={useIcon}
+          onReturn={() => {
+            signOut()
+            deAuthenticate()
+            setAuthEmail('')
           }}
         />
-      )}
-      {!isSignIn && (
-        <UnlockAccountSignUp
-          signUp={signUp}
-          onSignIn={() => {
-            setIsSignIn(true)
-          }}
-        />
-      )}
-      <div className="grid gap-4 p-6">
-        {requireSignIn ? (
-          <ConnectButton
-            onClick={(event) => {
-              event.preventDefault()
-              signOut()
-            }}
-            icon={<WalletIcon size={24} />}
-          >
-            Disconnect
-          </ConnectButton>
-        ) : (
-          <div className="grid gap-2">
-            <CustomAnchorButton
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/find-wallet/"
-            >
-              Get a crypto wallet
-            </CustomAnchorButton>
-            <ConnectButton
-              icon={<WalletIcon size={24} />}
-              onClick={(event) => {
-                event.preventDefault()
+      ) : (
+        <>
+          {isValidEmail && (
+            <SignIn
+              email={defaultEmail}
+              signIn={signIn}
+              onSignIn={onSignIn}
+              useIcon={useIcon}
+              onReturn={() => {
                 onExit()
+                setIsValidEmail(false)
               }}
-            >
-              <span>Back to using your crypto wallet</span>
-            </ConnectButton>
-          </div>
-        )}
-      </div>
+            />
+          )}
+          {!isValidEmail && (
+            <SignUp
+              email={defaultEmail}
+              signUp={signUp}
+              onSignIn={onSignIn}
+              onReturn={() => {
+                onExit()
+                setIsValidEmail(false)
+              }}
+            />
+          )}
+        </>
+      )}
     </div>
   )
 }

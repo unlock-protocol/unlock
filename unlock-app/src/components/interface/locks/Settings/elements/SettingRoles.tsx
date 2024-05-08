@@ -1,5 +1,4 @@
 import { LockManagerForm } from '../forms/LockManagerForm'
-import { VerifierForm } from '../forms/VerifierForm'
 import { SettingCard } from './SettingCard'
 
 interface SettingRolesProps {
@@ -26,18 +25,6 @@ export const SettingRoles = ({
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
-          disabled={!isManager}
-        />
-      </SettingCard>
-
-      <SettingCard
-        label="Verifier"
-        description="Best use for in person event. Verifiers are trusted users at an event who can use a smart phone camera to scan a ticket QR code at the check-in to a venue and mark a ticket as checked-in."
-        isLoading={isLoading}
-      >
-        <VerifierForm
-          lockAddress={lockAddress}
-          network={network}
           disabled={!isManager}
         />
       </SettingCard>

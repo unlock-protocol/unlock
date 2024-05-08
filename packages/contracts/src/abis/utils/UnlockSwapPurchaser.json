@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
   "contractName": "UnlockSwapPurchaser",
-  "sourceName": "contracts/UnlockSwapPurchaser.flatten.sol",
+  "sourceName": "contracts/utils/UnlockSwapPurchaser.sol",
   "abi": [
     {
       "inputs": [

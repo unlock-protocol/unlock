@@ -58,7 +58,7 @@ export const AttendeeCuesInternal = ({
             .slice(0, 5)
             .map((social) => social.profileDisplayName)
             .join(', ')}{' '}
-          and {totalTickets} other are going.
+          and {totalTickets} others are going.
         </p>
       </div>
     )
