@@ -47,7 +47,7 @@ Please see this section on [how to build the configuration](../../tools/checkout
 
 ```javascript
 <script>
-  var unlockProtocolConfig ={" "}
+  var unlockProtocolConfig ={' '}
   {
     // paywallConfig object
   }
@@ -59,19 +59,19 @@ Important: `​unlockProtocolConfig​` is a global object (it should be defined
 ## Handle Events
 
 Once loaded the unlock script will trigger events on the page’s ​`window`​ object.
-These events let your web application adjust its behaving or the content it displayed based on the status. For a full list see [Paywall documentation](/../../tools/paywall).
+These events let your web application adjust its behaving or the content it displayed based on the status. For a full list see [Paywall documentation](/../../tools/checkout/paywall).
 
 Here is an example:
 
 ```javascript
-window.addEventListener("unlockProtocol.status", function(e) {
-  var state = e.detail;
+window.addEventListener('unlockProtocol.status', function (e) {
+  var state = e.detail
   // the state is a string whose value can either be 'unlocked' or 'locked'...
   // If state is 'unlocked': implement code here which will be triggered when
   // the current visitor has a valid lock key
   // If state is 'locked': implement code here which will be
   // triggered when the current visitor does not have a valid lock key
-});
+})
 ```
 
 _Note_: the callback can be invoked several times. For example, a visitor might purchase a key while they are on the page, going from the `locked` to the `unlocked` state. Similarly, the key that the visitor owns may expire during a visit which would result in the state going from `unlocked` to `locked`.
@@ -88,7 +88,7 @@ In order to purchase keys, Unlock provides a modal that lets the user pick the l
 
 ```javascript
 window.unlockProtocol &&
-  window.unlockProtocol.loadCheckoutModal(/* optional configuration*/);
+  window.unlockProtocol.loadCheckoutModal(/* optional configuration*/)
 ```
 
 In some cases, you may want to customize what locks are available for purchase, or even the messaging. For this, the `loadCheckoutModal` call accepts an optional configuration object. This configuration object has the same shape as the global `unlockProtocolConfig`
@@ -115,15 +115,15 @@ Once you have [deployed a lock](https://unlock-protocol.com/guides/how-to-create
 Finally, add an event handler to capture the change of state between `locked` and `unlocked`; rendering ad components when relevant.
 
 ```javascript
-window.addEventListener("unlockProtocol", function(e) {
-  var state = e.detail;
+window.addEventListener('unlockProtocol', function (e) {
+  var state = e.detail
 
-  if (state === "locked") {
+  if (state === 'locked') {
     // load ad rendering component here
   } else {
     // current visitor is a member, do not load ads!
   }
-});
+})
 ```
 
 While some tailoring may be required for your specific use case, this should provide a starting point towards utilizing the Unlock Protocol to provide your members with an Ad Free experience.

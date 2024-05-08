@@ -65,7 +65,7 @@ $ git clone https://github.com/YOUR-USERNAME/Spoon-Knife
 
 ### Unlock Paywall
 
-Currently the app utilizes the latest version of the [Unlock Paywall](https://docs.unlock-protocol.com/tools/paywall/) but you only need to change the link in the index.html to specify a specific version if that is what you need. We are dedicated to pushing breaking changes to a new url for the [Unlock Paywall](https://docs.unlock-protocol.com/tools/paywall/) so you shouldn't fear leaving it on latest.
+Currently the app utilizes the latest version of the [Unlock Paywall](https://docs.unlock-protocol.com/tools/checkout/paywall/) but you only need to change the link in the index.html to specify a specific version if that is what you need. We are dedicated to pushing breaking changes to a new url for the [Unlock Paywall](https://docs.unlock-protocol.com/tools/checkout/paywall/) so you shouldn't fear leaving it on latest.
 
 In the public/index.html you will find an Unlock configuration object.
 
@@ -87,7 +87,7 @@ In the public/index.html you will find an Unlock configuration object.
 </script>
 ```
 
-There are many different configuration options for the [Unlock Paywall](https://docs.unlock-protocol.com/tools/paywall/) and the complete documentation for those options can be found [here](https://docs.unlock-protocol.com/tools/paywall/configuring-checkout/).
+There are many different configuration options for the [Unlock Paywall](https://docs.unlock-protocol.com/tools/checkout/paywall/) and the complete documentation for those options can be found [here](https://docs.unlock-protocol.com/tools/checkout/paywall/configuring-checkout/).
 
 ### Unlock Event Listeners
 
