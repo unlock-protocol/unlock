@@ -62,7 +62,7 @@ describe('Lock / totalKeys', () => {
     compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
 
     // renew one
-    await lock.connect(keyOwner).extend(0, tokenIds[0], ADDRESS_ZERO, [], {
+    await lock.connect(keyOwner).extend(0, tokenIds[0], ADDRESS_ZERO, '0x', {
       value: ethers.parseUnits('0.03', 'ether'),
     })
 

@@ -65,13 +65,15 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         )
 
         // user extend key
-        await lock.connect(keyOwner).extend(newPrice, tokenId, ADDRESS_ZERO, [])
+        await lock
+          .connect(keyOwner)
+          .extend(newPrice, tokenId, ADDRESS_ZERO, '0x')
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
 
         // renewal should work
-        await increaseTimeTo(newExpirationTs - 1)
+        await increaseTimeTo(newExpirationTs - 1n)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
 
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
@@ -101,13 +103,15 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         )
 
         // user extend key
-        await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+        await lock
+          .connect(keyOwner)
+          .extend(keyPrice, tokenId, ADDRESS_ZERO, '0x')
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
 
         // renewal should work
-        await increaseTimeTo(newExpirationTs - 1)
+        await increaseTimeTo(newExpirationTs - 1n)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
         const tsExpected = newExpirationTs + (await lock.expirationDuration())
@@ -139,7 +143,9 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         )
 
         // user extend key
-        await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+        await lock
+          .connect(keyOwner)
+          .extend(keyPrice, tokenId, ADDRESS_ZERO, '0x')
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)

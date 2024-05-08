@@ -193,7 +193,7 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
       it('extend should now work ', async () => {
         const tx = await lock
           .connect(buyers[0])
-          .extend(0, tokenIds[0], ADDRESS_ZERO, [], {
+          .extend(0, tokenIds[0], ADDRESS_ZERO, '0x', {
             value: keyPrice,
           })
         await tx.wait()

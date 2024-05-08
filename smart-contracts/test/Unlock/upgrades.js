@@ -476,7 +476,7 @@ describe('Unlock / upgrades', async () => {
           // Version 5 renamed to purchase, added keyPrice, referrer, and data
           return await lock
             .connect(lockOwner)
-            .purchase(0, await keyOwner.getAddress(), ADDRESS_ZERO, [], {
+            .purchase(0, await keyOwner.getAddress(), ADDRESS_ZERO, '0x', {
               value: keyPrice,
             })
         }

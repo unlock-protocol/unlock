@@ -41,7 +41,7 @@ describe('Lock / expireAndRefundFor', () => {
     })
 
     it('should emit a CancelKey event', async () => {
-      assert.equal(event, 'CancelKey')
+      assert.equal(event.fragment.name, 'CancelKey')
     })
 
     it('the amount of refund should be the key price', async () => {

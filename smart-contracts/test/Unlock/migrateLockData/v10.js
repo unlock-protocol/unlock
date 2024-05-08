@@ -55,7 +55,7 @@ const grantKeysFails = async (lock) => {
 const extendFails = async (lock) => {
   const [, generousBuyer] = await ethers.getSigners()
   await reverts(
-    lock.connect(generousBuyer).extend(0, 1, ADDRESS_ZERO, [], {
+    lock.connect(generousBuyer).extend(0, 1, ADDRESS_ZERO, '0x', {
       value: keyPrice,
     }),
     'MIGRATION_REQUIRED'
@@ -444,7 +444,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
           it('extend should now work ', async () => {
             const tx = await lock
               .connect(someBuyers[0])
-              .extend(0, tokenIds[0], ADDRESS_ZERO, [], {
+              .extend(0, tokenIds[0], ADDRESS_ZERO, '0x', {
                 value: keyPrice,
               })
             await tx.wait()

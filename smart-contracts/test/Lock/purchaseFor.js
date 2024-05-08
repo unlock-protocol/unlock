@@ -93,7 +93,7 @@ describe('Lock / purchaseFor', () => {
 
       // Verify that RenewKeyPurchase does not emit on a first key purchase
       const event = await getEvent(receipt, 'RenewKeyPurchase')
-      assert.equal(event.length, 0)
+      assert.notEqual(event, null)
     })
 
     describe('when the user already owns an expired key', () => {

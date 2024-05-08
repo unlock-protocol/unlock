@@ -133,7 +133,7 @@ describe('Unlock / protocolFee', async () => {
           )
           await lock
             .connect(keyOwner)
-            .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+            .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
               value: isErc20 ? 0 : keyPrice,
             })
           const unlockBalanceAfter = await getBalance(

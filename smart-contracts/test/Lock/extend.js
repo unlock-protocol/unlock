@@ -62,7 +62,7 @@ describe('Lock / extend keys', () => {
           await reverts(
             lock
               .connect(anotherAccount)
-              .extend(isErc20 ? keyPrice : 0, 1245, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, 1245, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               }),
             'NO_SUCH_KEY'
@@ -74,7 +74,7 @@ describe('Lock / extend keys', () => {
           await reverts(
             lock
               .connect(anotherAccount)
-              .extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : belowPrice,
               }),
             isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'
@@ -90,7 +90,7 @@ describe('Lock / extend keys', () => {
             // extend
             const tx = await lock
               .connect(keyOwner)
-              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               })
             const receipt = await tx.wait()
@@ -123,7 +123,7 @@ describe('Lock / extend keys', () => {
             // extend
             await lock
               .connect(keyOwner)
-              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               })
           })
@@ -137,7 +137,10 @@ describe('Lock / extend keys', () => {
             const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
             const blockNumber = await ethers.provider.getBlockNumber()
             const latestBlock = await ethers.provider.getBlock(blockNumber)
-            assert.equal(expirationDuration + latestBlock.timestamp, tsAfter)
+            assert.equal(
+              expirationDuration + BigInt(latestBlock.timestamp),
+              tsAfter
+            )
           })
         })
       })
@@ -167,7 +170,7 @@ describe('Lock / extend keys', () => {
           await reverts(
             nonExpiringLock
               .connect(nonExpiringKeyOwner)
-              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
                 value: isErc20 ? 0 : keyPrice,
               }),
             'CANT_EXTEND_NON_EXPIRING_KEY'
@@ -182,7 +185,7 @@ describe('Lock / extend keys', () => {
           // extend
           await nonExpiringLock
             .connect(nonExpiringKeyOwner)
-            .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, [], {
+            .extend(isErc20 ? keyPrice : 0, tokenId, ADDRESS_ZERO, '0x', {
               value: isErc20 ? 0 : keyPrice,
             })
 
