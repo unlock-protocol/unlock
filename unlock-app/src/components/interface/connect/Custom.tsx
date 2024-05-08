@@ -4,7 +4,7 @@ import { CgSpinnerAlt as SpinnerIcon } from 'react-icons/cg'
 
 const CustomButton = classed(
   'button',
-  'inline-flex items-center justify-between px-6 h-12 font-semibold rounded-2xl disabled:opacity-75 disabled:cursor-not-allowed',
+  'inline-flex items-center justify-between px-2 h-12 font-semibold rounded-xl disabled:opacity-75 disabled:cursor-not-allowed',
   {
     variants: {
       primary: {
@@ -14,7 +14,7 @@ const CustomButton = classed(
       },
       highlight: {
         true: 'ring-1 ring-ui-main-100',
-        false: '',
+        false: 'ring-1 ring-gray-200',
       },
     },
     defaultVariants: {
@@ -42,7 +42,7 @@ export const ConnectButton = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         highlight={!!highlight}
       >
-        <div className="flex justify-center gap-5">
+        <div className="flex justify-center gap-4">
           {loading ? (
             <SpinnerIcon
               size={24}
