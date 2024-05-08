@@ -34,7 +34,7 @@ describe('Lock / purchaseFor', () => {
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: ethers.parseEther('0.0001', 'ether'),
           }
@@ -54,7 +54,7 @@ describe('Lock / purchaseFor', () => {
         [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: keyPrice,
         }
@@ -65,7 +65,7 @@ describe('Lock / purchaseFor', () => {
           [await anotherKeyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }
@@ -80,7 +80,7 @@ describe('Lock / purchaseFor', () => {
         [await anotherKeyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: keyPrice,
         }
@@ -103,7 +103,7 @@ describe('Lock / purchaseFor', () => {
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }
@@ -140,7 +140,7 @@ describe('Lock / purchaseFor', () => {
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }
@@ -167,7 +167,7 @@ describe('Lock / purchaseFor', () => {
           [await anotherKeyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }
@@ -181,7 +181,7 @@ describe('Lock / purchaseFor', () => {
           [await anotherKeyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }
@@ -209,7 +209,7 @@ describe('Lock / purchaseFor', () => {
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }

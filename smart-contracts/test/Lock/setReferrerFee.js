@@ -46,7 +46,7 @@ describe('Lock / setReferrerFee', () => {
         [await keyOwner.getAddress()],
         [referrerAddress],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: isErc20 ? 0 : keyPrice,
         }
@@ -225,7 +225,7 @@ describe('Lock / setReferrerFee', () => {
               [await keyOwner.getAddress()],
               [await referrer.getAddress()],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: isErc20 ? 0 : keyPrice,
               }
@@ -284,7 +284,7 @@ describe('Lock / setReferrerFee', () => {
               [await keyOwner.getAddress()],
               [await referrer.getAddress()],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: isErc20 ? 0 : keyPrice,
               }
@@ -338,7 +338,7 @@ describe('Lock / setReferrerFee', () => {
               [await keyOwner.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: isErc20 ? 0 : keyPrice,
               }
@@ -368,7 +368,7 @@ describe('Lock / setReferrerFee', () => {
                 [await keyOwner.getAddress()],
                 [await referrer.getAddress()],
                 [ADDRESS_ZERO],
-                [[]],
+                ['0x'],
                 {
                   value: isErc20 ? 0 : keyPrice,
                 }

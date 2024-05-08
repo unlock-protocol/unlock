@@ -139,7 +139,7 @@ describe('Lock / owners', () => {
         [await keyOwners[3].getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: await lock.keyPrice(),
         }

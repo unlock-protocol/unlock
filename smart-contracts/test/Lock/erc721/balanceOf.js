@@ -32,7 +32,7 @@ describe('Lock / erc721 / balanceOf', () => {
       ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
-      [[], [], []],
+      ['0x', '0x', '0x'],
       {
         value: ethers.parseUnits('0.03', 'ether'),
       }
@@ -50,7 +50,7 @@ describe('Lock / erc721 / balanceOf', () => {
       ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
-      [[], [], []],
+      ['0x', '0x', '0x'],
       {
         value: ethers.parseUnits('0.03', 'ether'),
       }
@@ -85,7 +85,7 @@ describe('Lock / erc721 / balanceOf', () => {
       ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
-      [[], [], []],
+      ['0x', '0x', '0x'],
       {
         value: ethers.parseUnits('0.03', 'ether'),
       }

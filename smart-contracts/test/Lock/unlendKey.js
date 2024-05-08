@@ -24,7 +24,7 @@ describe('Lock / unlendKey', () => {
       [await keyOwner.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]],
+      ['0x'],
       {
         value: await lock.keyPrice(),
       }

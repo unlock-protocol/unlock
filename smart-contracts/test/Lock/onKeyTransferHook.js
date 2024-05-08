@@ -54,7 +54,7 @@ describe('Lock / onKeyTransfer hook', () => {
         [await random.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: keyPrice,
         }

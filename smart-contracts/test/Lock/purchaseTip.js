@@ -51,7 +51,7 @@ describe('Lock / purchaseTip', () => {
             [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
               value: isErc20 ? 0 : keyPrice,
             }
@@ -73,7 +73,7 @@ describe('Lock / purchaseTip', () => {
             [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
               value: isErc20 ? 0 : keyPrice + tip,
             }
@@ -95,7 +95,7 @@ describe('Lock / purchaseTip', () => {
             [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
               value: isErc20 ? 0 : keyPrice + tip,
             }
@@ -123,7 +123,7 @@ describe('Lock / purchaseTip', () => {
               [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: keyPrice + tip,
               }
@@ -148,7 +148,7 @@ describe('Lock / purchaseTip', () => {
               [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: 0,
               }

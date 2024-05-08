@@ -43,7 +43,7 @@ describe('Permissions / KeyManager', () => {
         [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [await keyManager.getAddress()],
-        [[]],
+        ['0x'],
         {
           value: keyPrice,
         }

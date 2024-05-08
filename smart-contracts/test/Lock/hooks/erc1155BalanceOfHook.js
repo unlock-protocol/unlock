@@ -98,7 +98,7 @@ describe('ERC1155BalanceOfHook', () => {
         [keyOwner],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: keyPrice,
         }

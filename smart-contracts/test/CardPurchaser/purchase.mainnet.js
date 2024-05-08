@@ -25,7 +25,7 @@ const purchaseCallData = async (lock, recipient) => {
     [recipient], // recipients
     [recipient], // key manager
     [recipient], // referrers
-    [[]], // _data
+    ['0x'], // _data
   ]
   return lock.interface.encodeFunctionData('purchase', args)
 }

@@ -24,7 +24,7 @@ describe('Lock / totalKeys', () => {
       ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
-      [[], [], []],
+      ['0x', '0x', '0x'],
       {
         value: ethers.parseUnits('0.03', 'ether'),
       }

@@ -162,7 +162,7 @@ describe('DiscountHook', function () {
         [await user.getAddress()],
         [await user.getAddress()],
         [await user.getAddress()],
-        [[]],
+        ['0x'],
         {
           value: price,
         }

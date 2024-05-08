@@ -20,7 +20,7 @@ describe('Lock / purchaseForFrom', () => {
         [await keyOwner.getAddress()],
         [await referrer.getAddress()],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: ethers.parseUnits('0.01', 'ether'),
         }
@@ -35,7 +35,7 @@ describe('Lock / purchaseForFrom', () => {
         [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: ethers.parseUnits('0.01', 'ether'),
         }
@@ -45,7 +45,7 @@ describe('Lock / purchaseForFrom', () => {
         [await referrer.getAddress()],
         [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: ethers.parseUnits('0.01', 'ether'),
         }

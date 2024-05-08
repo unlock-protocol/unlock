@@ -115,7 +115,7 @@ describe(`swapAndCall`, function () {
               [await keyOwner.getAddress()], // recipients
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]], // _data
+              ['0x'], // _data
             ]
 
             // parse call data
@@ -272,7 +272,7 @@ describe(`swapAndCall`, function () {
               [await keyOwner.getAddress()], // recipients
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]], // _data
+              ['0x'], // _data
             ]
 
             // parse call data

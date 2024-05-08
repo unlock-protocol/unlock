@@ -98,7 +98,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
           [await buyer.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }
@@ -140,7 +140,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
           [await buyer.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: keyPrice,
           }

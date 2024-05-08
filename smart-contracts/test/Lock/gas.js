@@ -13,7 +13,7 @@ describe('Lock / gas', () => {
       [await signer.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]],
+      ['0x'],
       {
         value: ethers.parseUnits('0.01', 'ether'),
       }

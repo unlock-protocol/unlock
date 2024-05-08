@@ -46,7 +46,7 @@ describe('LockSerializer', () => {
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           { value: keyPrice }
         )
       await tx.wait()

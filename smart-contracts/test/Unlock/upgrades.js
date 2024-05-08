@@ -399,7 +399,7 @@ describe('Unlock / upgrades', async () => {
                   [await keyOwner.getAddress()],
                   [ADDRESS_ZERO],
                   [ADDRESS_ZERO],
-                  [[]],
+                  ['0x'],
                   { value: keyPrice }
                 )
               })
@@ -452,7 +452,7 @@ describe('Unlock / upgrades', async () => {
               [await keyOwner.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: keyPrice,
               }

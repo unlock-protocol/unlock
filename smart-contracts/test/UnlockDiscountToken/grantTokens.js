@@ -72,7 +72,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
       [await referrer.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]],
+      ['0x'],
       {
         value: await lock.keyPrice(),
       }
@@ -142,7 +142,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
               [await keyBuyer.getAddress()],
               [await referrer.getAddress()],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: await lock.keyPrice(),
               }
@@ -199,7 +199,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
               [await keyBuyer.getAddress()],
               [await referrer.getAddress()],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: await lock.keyPrice(),
                 gasPrice: BigInt(baseFeePerGas) * (2).toHexString(16),

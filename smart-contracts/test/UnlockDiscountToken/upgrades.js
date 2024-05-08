@@ -212,7 +212,7 @@ describe('UnlockDiscountToken upgrade', async () => {
           [await referrer.getAddress(), await referrer2.getAddress()],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
-          [[], []],
+          ['0x', '0x'],
           {
             value: (await lock.keyPrice()) * 2,
           }
@@ -261,7 +261,7 @@ describe('UnlockDiscountToken upgrade', async () => {
           [await keyBuyer.getAddress()],
           [await referrer.getAddress()],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: await lock.keyPrice(),
           }
@@ -311,7 +311,7 @@ describe('UnlockDiscountToken upgrade', async () => {
           [await keyBuyer.getAddress()],
           [await referrer2.getAddress()],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: (await lock.keyPrice()) * 2,
             gasPrice: BigInt(baseFeePerGas) * (2).toHexString(16),

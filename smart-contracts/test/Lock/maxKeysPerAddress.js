@@ -35,7 +35,7 @@ describe('Lock / maxKeysPerAddress', () => {
           [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
             value: ethers.parseUnits('0.01', 'ether'),
           }
@@ -51,7 +51,7 @@ describe('Lock / maxKeysPerAddress', () => {
           [someAccount, someAccount],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
-          [[], []],
+          ['0x', '0x'],
           {
             value: ethers.parseUnits('0.02', 'ether'),
           }
@@ -66,7 +66,7 @@ describe('Lock / maxKeysPerAddress', () => {
         [someAccount],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: ethers.parseUnits('0.01', 'ether'),
         }
@@ -83,7 +83,7 @@ describe('Lock / maxKeysPerAddress', () => {
         [anotherAccount],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: ethers.parseUnits('0.01', 'ether'),
         }
