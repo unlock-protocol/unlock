@@ -96,7 +96,7 @@ describe(`swapAndCall`, function () {
             await keyOwner.getAddress(),
             await srcToken.getAddress()
           )
-          expect(balance.gte(0)).to.equal(true)
+          expect(balance >= 0).to.equal(true)
         })
 
         describe('purchase', () => {
@@ -184,9 +184,7 @@ describe(`swapAndCall`, function () {
                 keyPrice
               )
               assert(
-                (await token.balanceOf(await keyOwner.getAddress())).gte(
-                  keyPrice
-                )
+                (await token.balanceOf(await keyOwner.getAddress())) >= keyPrice
               )
               await token
                 .connect(keyOwner)

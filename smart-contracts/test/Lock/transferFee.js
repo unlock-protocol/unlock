@@ -1,5 +1,5 @@
 const { assert } = require('chai')
-const { ethers } = require('hardhat')
+const { ethers, network } = require('hardhat')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   deployLock,
@@ -12,7 +12,7 @@ const {
 describe('Lock / transferFee', () => {
   let lock
   let keyOwner, newOwner, randomSigner, lockManager
-  const denominator = 10000
+  const denominator = 10000n
   let tokenId
 
   // TODO test using an ERC20 priced lock as well
@@ -51,15 +51,19 @@ describe('Lock / transferFee', () => {
       fee = await lock.getTransferFee(tokenId, 0)
       // Mine a transaction in order to ensure the block.timestamp has updated
       await purchaseKey(lock, await randomSigner.getAddress())
+      await network.provider.send('hardhat_mine', ['0x10', '0x3c'])
 
       const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
 
       // Fee is <= the expected fee before the call
-      assert(fee <= expiration - (nowBefore * 5) / 100)
-
       // and >= the expected fee after the call
-      assert(fee.gte(expiration - (nowAfter * 5) / 100))
+      const expected = [
+        ((expiration - BigInt(nowBefore)) * 5n) / 100n,
+        ((expiration - BigInt(nowAfter)) * 5n) / 100n,
+      ]
+      assert(fee <= BigInt(parseInt(expected[0])))
+      assert(fee >= BigInt(parseInt(expected[1])))
     })
 
     it('calculates the fee based on the time value passed in', async () => {
@@ -97,9 +101,9 @@ describe('Lock / transferFee', () => {
       it('the fee is deducted from the time transferred', async () => {
         // make sure that a fee was taken
         // fee may be over-estimated (but not under-estimated)
-        assert(expirationAfter.gte(expirationBefore - fee))
+        assert(expirationAfter >= expirationBefore - fee)
         // if less than 5 seconds have passed than the delta should be <= 1
-        assert(expirationAfter <= expirationBefore - fee + 1)
+        assert(expirationAfter <= expirationBefore - fee + 1n)
       })
 
       after(async () => {

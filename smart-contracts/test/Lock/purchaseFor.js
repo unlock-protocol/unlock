@@ -227,7 +227,7 @@ describe('Lock / purchaseFor', () => {
 
         const expirationDuration = await lock.expirationDuration()
 
-        assert(expirationTimestamp.gte(expirationDuration + now))
+        assert(expirationTimestamp >= expirationDuration + now)
       })
 
       it('should have added the funds to the contract', async () => {
