@@ -33,7 +33,7 @@ describe('PublicLock upgrade v10 > v11', () => {
       ])
 
     PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
-    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)()
+    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)
 
     // deploy latest version
 
