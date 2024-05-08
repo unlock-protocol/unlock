@@ -8,16 +8,11 @@ import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
 
 interface ConnectedCheckoutProps {
-  injectedProvider?: unknown
   service: CheckoutService
   children?: ReactNode
 }
 
-export function Connected({
-  service,
-  injectedProvider,
-  children,
-}: ConnectedCheckoutProps) {
+export function Connected({ service, children }: ConnectedCheckoutProps) {
   const state = useSelector(service, (state) => state)
   const { account, isUnlockAccount, connected } = useAuth()
   const [signing, setSigning] = useState(false)
@@ -78,20 +73,7 @@ export function Connected({
   return (
     <>
       <Stepper service={service} />
-      <ConnectPage
-        style="h-full mt-4 space-y-4"
-        onUnlockAccount={() => {
-          service.send({ type: 'UNLOCK_ACCOUNT' })
-        }}
-        onNext={() => {
-          service.send({
-            type: 'SELECT_LOCK',
-          })
-        }}
-        account={account}
-        connected={connected}
-        injectedProvider={injectedProvider}
-      />
+      <ConnectPage style="h-full mt-4 space-y-4" connected={connected} />
     </>
   )
 }

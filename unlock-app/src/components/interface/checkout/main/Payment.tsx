@@ -72,6 +72,12 @@ export function Payment({ checkoutService }: Props) {
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
 
+  if (recipients.length === 0) {
+    recipients.push(account as string)
+  } else if (recipients.length > 1 && recipients[0] === '') {
+    recipients[0] = account as string
+  }
+
   const configPaymentMethods =
     state.context.paywallConfig.locks[lock.address]?.paymentMethods ||
     state.context.paywallConfig.paymentMethods ||

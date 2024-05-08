@@ -131,12 +131,7 @@ export function Checkout({
   const Content = useCallback(() => {
     switch (matched) {
       case 'CONNECT': {
-        return (
-          <Connected
-            service={checkoutService}
-            injectedProvider={injectedProvider}
-          />
-        )
+        return <Connected service={checkoutService} />
       }
       case 'SELECT': {
         return <Select checkoutService={checkoutService} />

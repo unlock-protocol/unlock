@@ -65,9 +65,7 @@ export function Connect({
           <ConfirmConnect
             communication={communication}
             onClose={onClose}
-            connectService={connectService}
             oauthConfig={oauthConfig}
-            injectedProvider={injectedProvider}
           />
         )
       }
