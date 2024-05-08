@@ -10,7 +10,7 @@ const {
 } = require('../helpers')
 
 const ONE_DAY = BigInt(60 * 60 * 24)
-const TOO_MUCH_TIME = 60 * 60 * 24 * 30 * 2 // 60 days
+const TOO_MUCH_TIME = BigInt(60 * 60 * 24 * 30 * 2) // 60 days
 
 describe('Lock / shareKey', () => {
   let lock
@@ -184,7 +184,7 @@ describe('Lock / shareKey', () => {
         .connect(keyOwners[2])
         .shareKey(accountWithNoKey2, tokenIds[2], ONE_DAY)
 
-      const receipt = await tx.wait()
+      receipt = await tx.wait()
 
       // fetch new token Id
       const { args } = await getEvent(receipt, 'Transfer')
@@ -213,7 +213,6 @@ describe('Lock / shareKey', () => {
         const { args: createKeyEventArgs } = transfers.find(
           ({ args: { from } }) => from === ADDRESS_ZERO
         )
-        console.log(createKeyEventArgs)
         assert.equal(createKeyEventArgs.from, ADDRESS_ZERO)
         assert.equal(createKeyEventArgs.to, accountWithNoKey2)
         assert.equal(createKeyEventArgs.tokenId, newTokenId)
@@ -252,7 +251,7 @@ describe('Lock / shareKey', () => {
         )
         assert.equal(await lock.isValidKey(newTokenId), true)
         assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
-        assert.equal(sharedKeyExpiration, ONE_DAY + timestampAfter)
+        assert.equal(sharedKeyExpiration, ONE_DAY + BigInt(timestampAfter))
       })
       it('should create new ownership record', async () => {
         assert.equal(await lock.ownerOf(newTokenId), accountWithNoKey2)

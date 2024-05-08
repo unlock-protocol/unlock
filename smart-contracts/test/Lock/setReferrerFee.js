@@ -14,7 +14,7 @@ const {
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const BASIS_POINT_DENOMINATOR = 10000
+const BASIS_POINT_DENOMINATOR = 10000n
 const someDai = ethers.parseUnits('10', 'ether')
 
 const scenarios = [false, true]
@@ -36,7 +36,6 @@ describe('Lock / setReferrerFee', () => {
     const tx = await lock.setReferrerFee(referrerAddress, referrerFee)
     const receipt = await tx.wait()
     const { args: eventArgs } = await getEvent(receipt, 'ReferrerFee')
-
     const balanceBefore = await getBalance(referrerAddress, tokenAddress)
 
     await lock
@@ -111,7 +110,7 @@ describe('Lock / setReferrerFee', () => {
       })
 
       describe('setting 5% fee for a specific address', () => {
-        const referrerFee = 500
+        const referrerFee = 500n
         let balanceBefore
         let eventArgs
 
@@ -152,7 +151,7 @@ describe('Lock / setReferrerFee', () => {
       })
 
       describe('setting 20% fee for a specific address', () => {
-        const referrerFee = 2000
+        const referrerFee = 2000n
         let balanceBefore
         let eventArgs
 
@@ -194,14 +193,14 @@ describe('Lock / setReferrerFee', () => {
 
       describe('setting 20% general fee for all addresses', () => {
         let balanceBefore, eventArgs
-        const generalFee = 1000
+        const generalFee = 1000n
 
         before(async () => {
           // reset fee for referrer
           await lock.setReferrerFee(await referrer.getAddress(), 0)
           const tx = await lock.setReferrerFee(ADDRESS_ZERO, generalFee)
           const receipt = await tx.wait()
-          ;({ args: eventArgs } = getEvent(receipt, 'ReferrerFee'))
+          ;({ args: eventArgs } = await getEvent(receipt, 'ReferrerFee'))
         })
 
         it('store fee correctly', async () => {
@@ -304,7 +303,7 @@ describe('Lock / setReferrerFee', () => {
               isErc20 ? keyPrice : 0,
               tokenId,
               await referrer.getAddress(),
-              [],
+              '0x',
               {
                 value: isErc20 ? 0 : keyPrice,
               }
@@ -318,7 +317,7 @@ describe('Lock / setReferrerFee', () => {
           )
           compareBigNumbers(
             balanceAfter,
-            balanceBefore + (keyPrice * 2000) / BASIS_POINT_DENOMINATOR
+            balanceBefore + (keyPrice * 2000n) / BASIS_POINT_DENOMINATOR
           )
         })
       })
@@ -345,7 +344,7 @@ describe('Lock / setReferrerFee', () => {
             )
         })
         it('store fee correctly', async () => {
-          compareBigNumbers(await lock.referrerFees(ADDRESS_ZERO), 2000)
+          compareBigNumbers(await lock.referrerFees(ADDRESS_ZERO), 2000n)
         })
         it('referrer balance didnt change', async () => {
           compareBigNumbers(
@@ -401,7 +400,7 @@ describe('Lock / setReferrerFee', () => {
             )
             compareBigNumbers(
               balanceAfter,
-              balanceBefore + (keyPrice * 2000) / BASIS_POINT_DENOMINATOR
+              balanceBefore + (keyPrice * 2000n) / BASIS_POINT_DENOMINATOR
             )
           })
         })
