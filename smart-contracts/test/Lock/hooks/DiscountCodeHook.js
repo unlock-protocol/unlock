@@ -49,7 +49,7 @@ describe('DiscountHook', function () {
   it('should work as a hook and apply a discount', async function () {
     const [user] = await ethers.getSigners()
 
-    const keyPrice = ethers.utils.parseEther('0.1')
+    const keyPrice = ethers.parseEther('0.1')
     const lock = await deployLock({
       keyPrice,
     })
@@ -71,7 +71,7 @@ describe('DiscountHook', function () {
     const priceWithout = await lock.purchasePriceFor(
       await user.getAddress(),
       await user.getAddress(),
-      []
+      '0x'
     )
     assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
@@ -110,13 +110,13 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect(await lock.balanceOf(await user.getAddress())).to.equal(1)
+    expect(await lock.balanceOf(await user.getAddress())).to.equal(1n)
   })
 
   it('should work as a hook even when a bad signature is provided', async function () {
     const [user] = await ethers.getSigners()
 
-    const keyPrice = ethers.utils.parseEther('0.1')
+    const keyPrice = ethers.parseEther('0.1')
     const lock = await deployLock({
       keyPrice,
     })
@@ -138,7 +138,7 @@ describe('DiscountHook', function () {
     const priceWithout = await lock.purchasePriceFor(
       await user.getAddress(),
       await user.getAddress(),
-      []
+      '0x'
     )
     assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
@@ -146,7 +146,7 @@ describe('DiscountHook', function () {
     const price = await lock.purchasePriceFor(
       await user.getAddress(),
       await user.getAddress(),
-      []
+      '0x'
     )
     assert.equal(ethers.formatEther(price), '0.1')
 
@@ -164,13 +164,13 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect(await lock.balanceOf(await user.getAddress())).to.equal(1)
+    expect(await lock.balanceOf(await user.getAddress())).to.equal(1n)
   })
 
   it('should enforce the cap', async function () {
     const [user, other] = await ethers.getSigners()
 
-    const keyPrice = ethers.utils.parseEther('0.1')
+    const keyPrice = ethers.parseEther('0.1')
     const lock = await deployLock({
       keyPrice,
     })
@@ -192,7 +192,7 @@ describe('DiscountHook', function () {
     const priceWithout = await lock.purchasePriceFor(
       await user.getAddress(),
       await user.getAddress(),
-      []
+      '0x'
     )
     assert.equal(ethers.formatEther(priceWithout), ethers.formatEther(keyPrice))
 
@@ -231,7 +231,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect(await lock.balanceOf(await user.getAddress())).to.equal(1)
+    expect(await lock.balanceOf(await user.getAddress())).to.equal(1n)
 
     // Let's now get the price again for another user with the same code
     const [dataOther] = await getSignatureForPassword(

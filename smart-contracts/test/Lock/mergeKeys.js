@@ -27,13 +27,10 @@ describe('Lock / mergeKeys', () => {
 
   describe('merge some amount of time', () => {
     it('should transfer amount of time from key', async () => {
-      console.log(tokenId, tokenId2)
       const expTs = [
         await lock.keyExpirationTimestampFor(tokenId),
         await lock.keyExpirationTimestampFor(tokenId2),
       ]
-
-      console.log(expTs)
 
       await lock.connect(keyOwner).mergeKeys(tokenId, tokenId2, timeAmount)
       compareBigNumbers(
@@ -93,7 +90,7 @@ describe('Lock / mergeKeys', () => {
       ]
 
       const { timestamp: now } = await ethers.provider.getBlock('latest')
-      const remaining = expTs[0] - now - 1
+      const remaining = expTs[0] - BigInt(now) - 1n
 
       await lock.connect(keyOwner).mergeKeys(tokenId, tokenId2, remaining)
 
@@ -144,9 +141,16 @@ describe('Lock / mergeKeys', () => {
       // remove some time
       await lock
         .connect(keyOwner)
-        .shareKey(await rando.getAddress(), tokenId, remaining - now - 100)
+        .shareKey(
+          await rando.getAddress(),
+          tokenId,
+          remaining - BigInt(now) - 100n
+        )
 
-      assert.equal((await lock.keyExpirationTimestampFor(tokenId)) - now, 100)
+      assert.equal(
+        (await lock.keyExpirationTimestampFor(tokenId)) - BigInt(now),
+        100n
+      )
       assert.equal(await lock.isValidKey(tokenId), true)
       await reverts(
         lock.connect(keyOwner).mergeKeys(tokenId, tokenId2, timeAmount),

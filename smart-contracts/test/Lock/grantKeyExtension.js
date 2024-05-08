@@ -11,7 +11,7 @@ const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 let lock
 
 // 10 minutes
-const duration = 60 * 60 * 10
+const duration = BigInt(60 * 60 * 10)
 
 describe('Lock / grantKeyExtension', () => {
   let keyOwner, attacker
@@ -114,7 +114,7 @@ describe('Lock / grantKeyExtension', () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
       const blockNumber = await ethers.provider.getBlockNumber()
       const { timestamp } = await ethers.provider.getBlock(blockNumber)
-      compareBigNumbers(expirationDuration + timestamp, tsAfter)
+      compareBigNumbers(expirationDuration + BigInt(timestamp), tsAfter)
     })
   })
 

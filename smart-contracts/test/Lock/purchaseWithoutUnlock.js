@@ -6,11 +6,7 @@ const {
   createLockCalldata,
   getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
-const {
-  ADDRESS_ZERO,
-  deployContracts,
-  getProxyAdminAddress,
-} = require('../helpers')
+const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 const keyPrice = ethers.parseEther('0.01')
 let pastImpl
@@ -38,13 +34,10 @@ describe('Lock / purchaseWithoutUnlock', () => {
     // deploy a random contract to break Unlock implementation
     const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
     const broken = await BrokenUnlock.deploy()
-    await broken.deployTransaction.wait()
     brokenImpl = await broken.getAddress()
 
     // get proxyAdmin address
-    const proxyAdminAddress = await getProxyAdminAddress(
-      await unlock.getAddress()
-    )
+    const proxyAdminAddress = await unlock.getAdmin()
 
     // upgrade proxy to broken contract
     const [unlockOwner] = await ethers.getSigners()
@@ -110,7 +103,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
       // make sure transfer happened
       const transfer = await getEvent(receipt, 'Transfer')
       assert.equal(transfer.args.to, await buyer.getAddress())
-      assert.equal(transfer.args.tokenId.eq(1), true)
+      assert.equal(transfer.args.tokenId == 1, true)
 
       const missing = await getEvent(receipt, 'UnlockCallFailed')
       assert.equal(missing.args.unlockAddress, await unlock.getAddress())
@@ -152,7 +145,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
       const receipt = await tx.wait()
       const transfer = await getEvent(receipt, 'Transfer')
       assert.equal(transfer.args.to, await buyer.getAddress())
-      assert.equal(transfer.args.tokenId.eq(1), true)
+      assert.equal(transfer.args.tokenId == 1, true)
 
       // event has been fired
       const missing = await getEvent(receipt, 'UnlockCallFailed')

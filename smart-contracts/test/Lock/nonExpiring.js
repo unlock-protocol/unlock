@@ -70,7 +70,7 @@ describe('Lock / non expiring', () => {
         const {
           args: { refund },
         } = await getEvent(receipt, 'CancelKey')
-        assert(refund.eq(keyPrice))
+        assert(refund == keyPrice)
 
         // get gas used
         const txFee = tx.gasPrice * receipt.gasUsed
@@ -83,7 +83,7 @@ describe('Lock / non expiring', () => {
         // also check lock balance
         const finalLockBalance = await getBalance(await lock.getAddress())
 
-        assert(finalLockBalance, initialLockBalance - refund)
+        assert.equal(finalLockBalance, initialLockBalance - refund)
       })
     })
   })

@@ -51,7 +51,7 @@ describe('Lock / isRenewable (ERC20 only)', () => {
       assert.equal(await lock.isRenewable(tokenId, ADDRESS_ZERO), true)
     })
     it('if time has increased', async () => {
-      const increasedDuration = (await lock.expirationDuration()) + 1000
+      const increasedDuration = (await lock.expirationDuration()) + 1000n
       await lock.updateLockConfig(
         increasedDuration,
         await lock.maxNumberOfKeys(),
@@ -107,7 +107,9 @@ describe('Lock / isRenewable (ERC20 only)', () => {
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       const lockDuration = await lock.expirationDuration()
-      const notCloseEnough = expirationTs - lockDuration + lockDuration * 0.89
+
+      const notCloseEnough =
+        expirationTs - lockDuration + (lockDuration * 89n) / 100n
       await increaseTimeTo(notCloseEnough)
       await reverts(
         lock.isRenewable(tokenId, ADDRESS_ZERO),
@@ -124,7 +126,8 @@ describe('Lock / isRenewable (ERC20 only)', () => {
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       const lockDuration = await lock.expirationDuration()
 
-      const ninetyPercent = expirationTs - lockDuration + lockDuration * 0.9
+      const ninetyPercent =
+        expirationTs - lockDuration + (lockDuration * 90n) / 100n
       await increaseTimeTo(ninetyPercent)
 
       assert.equal(await lock.isRenewable(tokenId, ADDRESS_ZERO), true)
