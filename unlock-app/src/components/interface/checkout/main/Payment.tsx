@@ -119,17 +119,6 @@ export function Payment({ checkoutService }: Props) {
     symbol: lockTickerSymbol(lock, baseSymbol),
   })
 
-  console.log(
-    lock!.address,
-    lock!.network,
-    recipients,
-    lock.currencyContractAddress,
-    purchaseData!,
-    state.context.paywallConfig,
-    !!purchaseData,
-    lockTickerSymbol(lock, baseSymbol)
-  )
-
   const { isLoading: isCrossmintLoading, crossmintEnabled } =
     useCrossmintEnabled({
       network: lock.network,

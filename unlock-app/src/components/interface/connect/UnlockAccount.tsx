@@ -11,6 +11,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -286,16 +287,11 @@ export const ConnectUnlockAccount = ({
   const onEmail = useCallback(
     async ({ email }: { email: string }) => {
       try {
-        console.log('Checking if user exists')
         const existingUser = await storageService.userExist(email)
         setIsValidEmail(existingUser)
       } catch (error) {
         if (error instanceof Error) {
-          console.log('Error email')
-          // setError('email', {
-          //   type: 'value',
-          //   message: error.message,
-          // })
+          ToastHelper.error(`Email Error: ${error.message}`)
         }
       }
     },
