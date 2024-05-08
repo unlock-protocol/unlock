@@ -42,7 +42,7 @@ export const ConnectButton = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         highlight={!!highlight}
       >
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-2">
           {loading ? (
             <SpinnerIcon
               size={24}
