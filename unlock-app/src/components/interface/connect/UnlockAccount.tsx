@@ -167,15 +167,13 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
         <Input
+          // Disabled input field will not work here
+          readOnly={true}
+          style={{ backgroundColor: '#f3f4f6', opacity: 0.7 }}
           type="email"
           label="Email"
           placeholder="your@email.com"
-          {...register('email', {
-            required: {
-              value: true,
-              message: 'Email is required',
-            },
-          })}
+          {...register('email')}
           value={email}
           error={errors.email?.message}
         />
