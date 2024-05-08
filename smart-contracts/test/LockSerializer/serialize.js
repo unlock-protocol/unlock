@@ -16,7 +16,6 @@ describe('LockSerializer', () => {
     // deploy serializer
     const LockSerializer = await ethers.getContractFactory('LockSerializer')
     serializer = await LockSerializer.deploy()
-    await serializer.deployed()
 
     // get locks (truffle version)
     const { address } = await deployLock()

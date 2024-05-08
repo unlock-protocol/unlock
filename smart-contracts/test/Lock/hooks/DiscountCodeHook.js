@@ -33,7 +33,6 @@ describe('DiscountHook', function () {
     const code = 'PROMO CODE'
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
-    await hook.deployed()
 
     const [data, signerAddress] = await getSignatureForPassword(code, recipient)
 
@@ -58,7 +57,6 @@ describe('DiscountHook', function () {
     })
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
-    await hook.deployed()
 
     await (
       await lock.setEventHooks(
@@ -126,7 +124,6 @@ describe('DiscountHook', function () {
     })
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
-    await hook.deployed()
 
     await (
       await lock.setEventHooks(
@@ -181,7 +178,6 @@ describe('DiscountHook', function () {
     })
     const DiscountHook = await ethers.getContractFactory('DiscountHook')
     const hook = await DiscountHook.deploy()
-    await hook.deployed()
 
     await (
       await lock.setEventHooks(

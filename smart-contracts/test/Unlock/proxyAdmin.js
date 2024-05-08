@@ -15,7 +15,6 @@ describe('proxyAdmin', () => {
         initializer: 'initialize(address)',
       }
     )
-    await unlock.deployed()
   })
 
   it('is set by default', async () => {

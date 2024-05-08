@@ -12,7 +12,7 @@ describe('GitcoinHook', function () {
     })
     const GitcoinHook = await ethers.getContractFactory('GitcoinHook')
     const hook = await GitcoinHook.deploy()
-    await hook.deployed()
+
     await hook.addSigner(await signer.getAddress())
 
     // Set the hook on avatar
@@ -91,7 +91,6 @@ describe('GitcoinHook', function () {
     const signer = ethers.Wallet.createRandom()
     const GitcoinHook = await ethers.getContractFactory('GitcoinHook')
     const hook = await GitcoinHook.deploy()
-    await hook.deployed()
 
     // Add a signer
     await hook.addSigner(await signer.getAddress())

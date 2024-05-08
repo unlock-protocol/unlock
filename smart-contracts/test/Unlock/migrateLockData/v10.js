@@ -94,11 +94,9 @@ describe('upgradeLock / data migration v9 > v10', () => {
 
     // deploy latest version
     const publicLockLatest = await PublicLockLatest.deploy()
-    await publicLockLatest.deployed()
 
     // deploy old version
     const publicLockPast = await PublicLockPast.deploy()
-    await publicLockPast.deployed()
     pastVersion = await publicLockPast.publicLockVersion()
 
     // deploy Unlock
@@ -112,7 +110,6 @@ describe('upgradeLock / data migration v9 > v10', () => {
         initializer: 'initialize(address)',
       }
     )
-    await unlock.deployed()
 
     // add past impl to Unlock
     await unlock.addLockTemplate(await publicLockPast.getAddress(), pastVersion)

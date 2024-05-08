@@ -38,11 +38,9 @@ describe('PublicLock upgrade  v9 > v10', () => {
       ])
 
     PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
-    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)
+    PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)()
 
     // deploy latest version
-    const publicLockLatest = await PublicLockLatest.deploy()
-    await publicLockLatest.deployed()
   })
 
   beforeEach(async () => {
@@ -58,7 +56,6 @@ describe('PublicLock upgrade  v9 > v10', () => {
     ]
 
     lock = await upgrades.deployProxy(PublicLockPast, args)
-    await lock.deployed()
   })
 
   describe('perform upgrade', async () => {

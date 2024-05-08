@@ -72,7 +72,7 @@ describe(`Unlock migration`, function () {
     // deploy new template
     const PublicLockV13 = await ethers.getContractFactory('PublicLock')
     publicLock = await PublicLockV13.deploy()
-    await publicLock.deployed()
+
     console.log(`PublicLockV13 > deployed at ${await publicLock.getAddress()}`)
 
     // submit the new tempalte in old unlock (using multisig)

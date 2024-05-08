@@ -19,7 +19,7 @@ describe('Unlock / createLock (Legacy)', () => {
       'TestPublicLockUpgraded'
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
-    await publicLockUpgraded.deployed()
+
     currentVersion = await unlock.publicLockLatestVersion()
 
     // add template for upgrade test

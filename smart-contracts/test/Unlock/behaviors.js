@@ -24,7 +24,6 @@ describe('Unlock / UnlockProxy', () => {
       'contracts/PublicLock.sol:PublicLock'
     )
     const template = await PublicLock.deploy()
-    await template.deployed()
 
     await unlock.addLockTemplate(
       await template.getAddress(),

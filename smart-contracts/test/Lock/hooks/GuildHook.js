@@ -12,7 +12,7 @@ describe('GuildHook', function () {
     })
     const GuildHook = await ethers.getContractFactory('GuildHook')
     const hook = await GuildHook.deploy()
-    await hook.deployed()
+
     await hook.addSigner(await signer.getAddress())
 
     // Set the hook on avatar
@@ -91,7 +91,6 @@ describe('GuildHook', function () {
     const signer = ethers.Wallet.createRandom()
     const GuildHook = await ethers.getContractFactory('GuildHook')
     const hook = await GuildHook.deploy()
-    await hook.deployed()
 
     // Add a signer
     await hook.addSigner(await signer.getAddress())

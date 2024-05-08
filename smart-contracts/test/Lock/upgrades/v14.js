@@ -41,11 +41,9 @@ describe('PublicLock upgrade v13 > v14', () => {
     PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
     PublicLockLatest = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
-    )
+    )()
 
     // deploy latest version
-    const publicLockLatest = await PublicLockLatest.deploy()
-    await publicLockLatest.deployed()
 
     // deploy a simple lock
     const [, lockOwner] = await ethers.getSigners()
@@ -59,7 +57,6 @@ describe('PublicLock upgrade v13 > v14', () => {
     ]
 
     lock = await upgrades.deployProxy(PublicLockPast, args)
-    await lock.deployed()
 
     // set many keys
     await lock.connect(lockOwner).updateLockConfig(duration, 20, 3)

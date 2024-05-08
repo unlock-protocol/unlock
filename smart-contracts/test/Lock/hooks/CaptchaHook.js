@@ -10,7 +10,6 @@ describe('CaptchaHook', function () {
 
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
     const hook = await CaptchaHook.deploy()
-    await hook.deployed()
 
     await (await hook.addSigner(await secretSigner.getAddress())).wait()
 
@@ -52,7 +51,6 @@ describe('CaptchaHook', function () {
     })
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
     const hook = await CaptchaHook.deploy()
-    await hook.deployed()
 
     await (await hook.addSigner(await secretSigner.getAddress())).wait()
 

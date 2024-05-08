@@ -32,14 +32,13 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
         initializer: 'initialize(address)',
       }
     )
-    await unlock.deployed()
 
     // set version 1
     const PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
     )
     publicLock = await PublicLock.deploy()
-    await publicLock.deployed()
+
     await unlock.addLockTemplate(await publicLock.getAddress(), 1)
     await unlock.setLockTemplate(await publicLock.getAddress())
     expect(await unlock.publicLockLatestVersion()).to.equals(1)
@@ -49,7 +48,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
       'TestPublicLockUpgraded'
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
-    await publicLockUpgraded.deployed()
+
     await unlock.addLockTemplate(await publicLockUpgraded.getAddress(), 2)
     expect(
       await unlock.publicLockVersions(await publicLockUpgraded.getAddress())

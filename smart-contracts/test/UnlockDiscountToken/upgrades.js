@@ -81,8 +81,6 @@ describe('UnlockDiscountToken upgrade', async () => {
       kind: 'transparent',
       initializer: 'initialize(address)',
     })
-
-    await udt.deployed()
   })
 
   after(async () => {

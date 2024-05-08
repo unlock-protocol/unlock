@@ -34,7 +34,6 @@ describe('PasswordRequiredHook', function () {
       'PasswordRequiredHook'
     )
     const hook = await PasswordRequiredHook.deploy()
-    await hook.deployed()
 
     const [data, signerAddress] = await getSignatureForPassword(
       password,
@@ -63,7 +62,6 @@ describe('PasswordRequiredHook', function () {
       'PasswordRequiredHook'
     )
     const hook = await PasswordRequiredHook.deploy()
-    await hook.deployed()
 
     await (
       await lock.setEventHooks(
@@ -144,7 +142,6 @@ describe('PasswordRequiredHook', function () {
       'PasswordRequiredHook'
     )
     const hook = await PasswordRequiredHook.deploy()
-    await hook.deployed()
 
     await (
       await lock.setEventHooks(

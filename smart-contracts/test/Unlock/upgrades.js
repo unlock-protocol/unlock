@@ -242,7 +242,6 @@ describe('Unlock / upgrades', async () => {
 
               // lock template
               const publicLockLatestTemplate = await PublicLockLatest.deploy()
-              await publicLockLatestTemplate.deployed()
 
               // set template
               if ((await unlock.proxyAdminAddress()) === ethers.AddressZero) {

@@ -82,7 +82,6 @@ describe('UnlockProtocolGovernor', () => {
       [], // proposers list is empty at deployment
       [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
     ])
-    await timelock.deployed()
 
     // deploy governor
     const UnlockProtocolGovernor = await ethers.getContractFactory(
@@ -96,7 +95,6 @@ describe('UnlockProtocolGovernor', () => {
       defaultQuorum,
       await timelock.getAddress(),
     ])
-    await gov.deployed()
 
     // grant role
     await timelock.grantRole(PROPOSER_ROLE, await gov.getAddress())

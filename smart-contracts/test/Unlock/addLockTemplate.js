@@ -18,20 +18,17 @@ describe('PublicLock template versions', () => {
         initializer: 'initialize(address)',
       }
     )
-    await unlock.deployed()
 
     const PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
     )
     publicLock = await PublicLock.deploy()
-    await publicLock.deployed()
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(
       'TestPublicLockUpgraded'
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
-    await publicLockUpgraded.deployed()
   })
 
   it('Should forbid non-owner to add impl', async () => {

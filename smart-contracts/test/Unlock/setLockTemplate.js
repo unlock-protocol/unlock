@@ -14,7 +14,6 @@ describe('Lock / setLockTemplate', () => {
       'contracts/PublicLock.sol:PublicLock'
     )
     lockTemplate = await PublicLock.deploy()
-    await lockTemplate.deployed()
     ;[, signer] = await ethers.getSigners()
   })
 
@@ -30,7 +29,7 @@ describe('Lock / setLockTemplate', () => {
 
     // 2
     lockTemplate = await PublicLock.deploy()
-    await lockTemplate.deployed()
+
     await unlock.addLockTemplate(await lockTemplate.getAddress(), 2)
     await unlock.setLockTemplate(await lockTemplate.getAddress())
     assert.equal(

@@ -25,13 +25,11 @@ describe('upgradeLock (deploy template with Proxy)', () => {
         initializer: 'initialize(address)',
       }
     )
-    await unlock.deployed()
 
     const PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
     )
     publicLock = await PublicLock.deploy()
-    await publicLock.deployed()
 
     currentVersion = await publicLock.publicLockVersion()
 
@@ -71,7 +69,6 @@ describe('upgradeLock (deploy template with Proxy)', () => {
       'TestPublicLockUpgraded'
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
-    await publicLockUpgraded.deployed()
   })
 
   it('Should forbid bump more than 1 version', async () => {
@@ -190,7 +187,6 @@ describe('upgrades', async () => {
         initializer: 'initialize(address)',
       }
     )
-    await unlock.deployed()
 
     // Helper function
     const getPublicLockFactoryAtVersion = async (publicLockVersion) => {
@@ -205,7 +201,7 @@ describe('upgrades', async () => {
         : await getPublicLockFactoryAtVersion(publicLockVersion)
 
       const publicLock = await PublicLock.deploy()
-      await publicLock.deployed()
+
       const txImpl = await unlock.addLockTemplate(
         await publicLock.getAddress(),
         await publicLock.publicLockVersion()

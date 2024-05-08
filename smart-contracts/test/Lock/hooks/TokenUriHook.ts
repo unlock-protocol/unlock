@@ -11,7 +11,6 @@ describe('TokenUriHook', function () {
 
     const TokenUriHook = await ethers.getContractFactory('TokenUriHook')
     hook = await TokenUriHook.deploy()
-    await hook.deployed()
 
     await (
       await lock.setEventHooks(

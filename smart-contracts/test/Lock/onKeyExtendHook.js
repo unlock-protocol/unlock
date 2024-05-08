@@ -40,7 +40,6 @@ describe('Lock / onKeyExtendHook', () => {
     // deploy mock events contract
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
     testEventHooks = await TestEventHooks.deploy()
-    await testEventHooks.deployed()
 
     // set events in lock
     tx = await lock.setEventHooks(
