@@ -148,12 +148,12 @@ describe('Unlock (on mainnet)', async () => {
         await updated.estimatedGasForPurchase()
       assert.equal(globalTokenSymbolBefore, globalTokenSymbolAfter)
       assert.equal(globalBaseTokenURIBefore, globalBaseTokenURIAfter)
-      assert.equal(grossNetworkProductBefore.eq(grossNetworkProductAfter), true)
+      assert.equal(grossNetworkProductBefore == grossNetworkProductAfter, true)
       assert.equal(udtBefore, udtAfter)
       assert.equal(wethBefore, wethAfter)
       assert.equal(publicLockAddressBefore, publicLockAddressAfter)
       assert.equal(
-        estimatedGasForPurchaseBefore.eq(estimatedGasForPurchaseAfter),
+        estimatedGasForPurchaseBefore == estimatedGasForPurchaseAfter,
         true
       )
     })
@@ -180,7 +180,7 @@ describe('Unlock (on mainnet)', async () => {
       const expirationBefore = await publicLock.keyExpirationTimestampFor(
         recipient
       )
-      assert(expirationBefore.eq(0))
+      assert(expirationBefore == 0)
 
       let purchaseTx = await publicLock.purchase(
         [],

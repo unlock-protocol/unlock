@@ -18,7 +18,7 @@ let protocolOwner, minter, referrer, keyBuyer
 // skip on coverage until solidity-coverage supports EIP-1559
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
-const estimateGas = 252166 * 2
+const estimateGas = BigInt(252166 * 2)
 
 // test with various chainIds
 const scenarios = [
@@ -30,9 +30,9 @@ const scenarios = [
 const mintAmount = ethers.parseUnits('1000000', 'ether')
 
 const round = (bn) => {
-  const [integral, decimals] = bn.split('.')
+  const [integral, decimals] = bn.toString().split('.')
   const remainer = Math.round(`0.${decimals.slice(0, 4)}`)
-  return BigInt(integral) + remainer
+  return BigInt(integral) + BigInt(remainer)
 }
 
 describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
@@ -184,9 +184,9 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
           // user earns 10UDT or
           await unlock.resetTrackedValue(ethers.parseUnits('500', 'ether'), 0)
 
-          const baseFeePerGas = 1000000000 // in gwei
+          const baseFeePerGas = 1000000000n // in gwei
           await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-            BigInt(baseFeePerGas).toHexString(16),
+            `0x${baseFeePerGas.toString(16)}`,
           ])
 
           const balanceReferrerBefore = await udt.balanceOf(
@@ -202,7 +202,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
               ['0x'],
               {
                 value: await lock.keyPrice(),
-                gasPrice: BigInt(baseFeePerGas) * (2).toHexString(16),
+                gasPrice: `0x${(baseFeePerGas * 2n).toString(16)}`,
               }
             )
 

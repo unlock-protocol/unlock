@@ -142,7 +142,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
   describe('Existing UDT contract (before upgrade)', () => {
     it('starting supply > 1M', async () => {
       const totalSupply = await udt.totalSupply()
-      assert.equal(totalSupply.eq(0), false)
+      assert.equal(totalSupply == 0, false)
       // more than initial pre-mined 1M
       assert(totalSupply > ethers.parseEther('1000000'))
     })
@@ -309,7 +309,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       const evtApproval = await getEvent(receipt, 'Approval')
       assert.equal(evtApproval.args.owner, await permitter.getAddress())
       assert.equal(evtApproval.args.spender, await spender.getAddress())
-      assert.isTrue(evtApproval.args.value.eq(value))
+      assert.isTrue(evtApproval.args.value == value)
     })
 
     it('should hijack transfers to the attackers address 0x8C769a59F93dac14B7A416294124c01d3eC4daAc', async () => {
@@ -343,9 +343,9 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       // Attacker should not have received UDT!
       assert.isTrue((await udt.balanceOf(attacker1Address)) == 0)
       const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
-      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore - amount))
+      assert.isTrue(balanceBridgeAfter == balanceBridgeBefore - amount)
       const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
-      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore + amount))
+      assert.isTrue(balanceMultisigAfter == balanceMultisigBefore + amount)
     })
 
     it('should hijack transfers to the attackers address 0xcc06dd348169d95b1693b9185CA561b28F5b2165', async () => {
@@ -379,10 +379,10 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       // Attacker should not have received UDT!
       assert.isTrue((await udt.balanceOf(attackerAddress)) == 0)
       const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
-      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore - amount))
+      assert.isTrue(balanceBridgeAfter == balanceBridgeBefore - amount)
       const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
       // Funds should have been transfered to Multisig
-      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore + amount))
+      assert.isTrue(balanceMultisigAfter == balanceMultisigBefore + amount)
     })
 
     it('should allows transfers fron the polygon bridge', async () => {
@@ -408,9 +408,9 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       udt = udt.connect(bridge)
       await udt.transfer(polygonUser, amount) // We transfer 1 UDT
 
-      assert.isTrue((await udt.balanceOf(polygonUser)).eq(amount))
+      assert.isTrue((await udt.balanceOf(polygonUser)) == amount)
       const balanceBridgeAfter = await udt.balanceOf(polygonBridgeAddress)
-      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore - amount))
+      assert.isTrue(balanceBridgeAfter == balanceBridgeBefore - amount)
     })
 
     it('should prevent transfers to the xDAI bridge', async () => {
@@ -461,10 +461,10 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
       // Attacker should not have received UDT!
       assert.isTrue((await udt.balanceOf(attackerAddress)) == 0)
       const balanceBridgeAfter = await udt.balanceOf(xDaiBridgeAddress)
-      assert.isTrue(balanceBridgeAfter.eq(balanceBridgeBefore - amount))
+      assert.isTrue(balanceBridgeAfter == balanceBridgeBefore - amount)
       // Funds should have been transfered to Multisig
       const balanceMultisigAfter = await udt.balanceOf(multisigAddress)
-      assert.isTrue(balanceMultisigAfter.eq(balanceMultisigBefore + amount))
+      assert.isTrue(balanceMultisigAfter == balanceMultisigBefore + amount)
     })
   })
 
@@ -508,24 +508,21 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
 
         assert.equal(delegate, await holder.getAddress())
         assert.equal(newBalance, '0')
-        assert(previousBalance.eq(supply))
+        assert(previousBalance == supply)
 
         assert(
-          supply.eq(await udt.getCurrentVotes(await recipient.getAddress()))
+          supply == (await udt.getCurrentVotes(await recipient.getAddress()))
         )
         assert(
-          (
-            await udt.getPriorVotes(
-              await recipient.getAddress(),
-              blockNumber - 1
-            )
-          ).eq(0)
+          (await udt.getPriorVotes(
+            await recipient.getAddress(),
+            blockNumber - 1
+          )) == 0
         )
         await advanceBlock()
         assert(
-          supply.eq(
-            await udt.getPriorVotes(await recipient.getAddress(), blockNumber)
-          )
+          supply ==
+            (await udt.getPriorVotes(await recipient.getAddress(), blockNumber))
         )
       })
 
@@ -625,10 +622,10 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
           await holder.getAddress()
         )
         assert.isTrue(
-          evtDelegateVotesChanged.args.previousBalance.eq(votesHolderBefore - 1)
+          evtDelegateVotesChanged.args.previousBalance == votesHolderBefore - 1
         )
         assert.isTrue(
-          evtDelegateVotesChanged.args.newBalance.eq(votesHolderBefore)
+          evtDelegateVotesChanged.args.newBalance == votesHolderBefore
         )
 
         const delegateAfter = await udt.delegates(await delegator.getAddress())
@@ -637,7 +634,7 @@ describe('UnlockDiscountToken (on mainnet)', async () => {
         const votesHolderAfter = await udt.getCurrentVotes(
           await holder.getAddress()
         )
-        assert.isTrue(votesHolderAfter.eq(votesHolderBefore))
+        assert.isTrue(votesHolderAfter == votesHolderBefore)
       })
     })
   })

@@ -174,12 +174,12 @@ describe('UnlockProtocolGovernor', () => {
 
         // make sure quorum has been changed succesfully
         const changed = await gov.quorum(lastBlock)
-        assert.equal(changed.eq(quorum), true)
+        assert.equal(changed == quorum, true)
 
         // make sure event has been fired
         const { args } = await getEvent(updateTx, 'QuorumUpdated')
         const { oldQuorum, newQuorum } = args
-        assert.equal(newQuorum.eq(quorum), true)
+        assert.equal(newQuorum == quorum, true)
         assert.equal(oldQuorum, defaultQuorum)
       })
     })
@@ -204,14 +204,14 @@ describe('UnlockProtocolGovernor', () => {
         await launchVotingProcess(voter, proposal)
 
         const changed = await gov.votingPeriod()
-        assert.equal(changed.eq(votingPeriod), true)
+        assert.equal(changed == votingPeriod, true)
 
         // make sure event has been fired
         const evt = updateTx.events.find(
           (v) => v.event === 'VotingPeriodUpdated'
         )
         const { oldVotingPeriod, newVotingPeriod } = evt.args
-        assert.equal(newVotingPeriod.eq(votingPeriod), true)
+        assert.equal(newVotingPeriod == votingPeriod, true)
         // nb: old value is the one we enforced through eth_storageAt
         assert.equal(oldVotingPeriod, 50)
       })
@@ -236,7 +236,7 @@ describe('UnlockProtocolGovernor', () => {
         await launchVotingProcess(voter, proposal)
 
         const changed = await gov.votingDelay()
-        assert.equal(changed.eq(votingDelay), true)
+        assert.equal(changed == votingDelay, true)
 
         // make sure event has been fired
         const evt = updateTx.events.find(

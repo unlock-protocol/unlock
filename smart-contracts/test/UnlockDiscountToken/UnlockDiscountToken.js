@@ -16,11 +16,11 @@ describe('udt', () => {
   describe('Supply', () => {
     it('Starting supply is 0', async () => {
       const totalSupply = await udt.totalSupply()
-      assert(totalSupply.eq(0), 'starting supply must be 0')
+      assert(totalSupply == 0, 'starting supply must be 0')
     })
 
     describe('Minting tokens', () => {
-      const mintAmount = 1000
+      const mintAmount = 1000n
       let balanceBefore
       let totalSupplyBefore
 
@@ -51,7 +51,7 @@ describe('udt', () => {
   })
 
   describe('Transfer', () => {
-    const mintAmount = 1000000
+    const mintAmount = 1000000n
 
     before(async () => {
       for (let i = 0; i < 3; i++) {
@@ -62,7 +62,7 @@ describe('udt', () => {
     })
 
     describe('transfer', async () => {
-      const transferAmount = 123
+      const transferAmount = 123n
       let balanceBefore0
       let balanceBefore1
 
@@ -82,11 +82,11 @@ describe('udt', () => {
           await accounts[1].getAddress()
         )
         assert(
-          balanceBefore0 - transferAmount.eq(balanceAfter0),
+          balanceBefore0 - transferAmount == balanceAfter0,
           'Sender balance must have gone down by amount sent'
         )
         assert(
-          balanceBefore1 + transferAmount.eq(balanceAfter1),
+          balanceBefore1 + transferAmount == balanceAfter1,
           'Recipient balance must have gone up by amount sent'
         )
       })

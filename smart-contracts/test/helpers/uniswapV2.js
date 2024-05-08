@@ -19,7 +19,6 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
     signer
   )
   const factory = await Factory.deploy(await signer.getAddress())
-  await factory.deployed()
 
   // Deploy Router passing Factory Address and WETH Address
   const Router = await ethers.getContractFactory(
@@ -28,8 +27,6 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
     signer
   )
   const router = await Router.deploy(await factory.getAddress(), wethAddress)
-  await router.deployed()
-
   return router
 }
 
@@ -43,8 +40,6 @@ const deployUniswapV2Oracle = async (uniswapFactoryAddress, deployer) => {
     signer
   )
   const oracle = await Oracle.deploy(uniswapFactoryAddress)
-  await oracle.deployed()
-
   return oracle
 }
 

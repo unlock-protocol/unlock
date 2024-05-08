@@ -31,7 +31,9 @@ describe('Lock / unlendKey', () => {
     )
 
     const receipt = await tx.wait()
-    tokenId = getEvent(receipt, 'Transfer')
+    ;({
+      args: { tokenId },
+    } = await getEvent(receipt, 'Transfer'))
 
     // lend a key to someone
     await lock

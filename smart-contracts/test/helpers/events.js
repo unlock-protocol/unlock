@@ -1,8 +1,9 @@
 const { assert } = require('chai')
 const { isBigNumber } = require('./bigNumber')
 const { getEvent, getEvents } = require('@unlock-protocol/hardhat-helpers')
-function notExpectEvent(receipt, eventName) {
-  const { arg } = getEvent(receipt, eventName)
+
+async function notExpectEvent(receipt, eventName) {
+  const { arg } = await getEvent(receipt, eventName)
   assert(arg, null)
 }
 

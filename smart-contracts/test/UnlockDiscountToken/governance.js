@@ -42,11 +42,11 @@ describe('UDT ERC20VotesComp extension', () => {
     describe('balanceOf', () => {
       it('grants initial supply to minter account', async () => {
         await udt.mint(holder, supply)
-        assert(supply.eq(await udt.balanceOf(holder)))
+        assert(supply == (await udt.balanceOf(holder)))
       })
     })
     it('minting restriction', async () => {
-      const amount = BigInt('2').pow('96')
+      const amount = BigInt('2') ** BigInt('96')
       await reverts(
         udt.mint(minter, amount),
         'ERC20Votes: total supply risks overflowing votes'
@@ -183,10 +183,10 @@ describe('UDT ERC20VotesComp extension', () => {
       expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
-        newBalance: supply - 1,
+        newBalance: supply - 1n,
       })
 
-      holderVotes = supply - 1
+      holderVotes = supply - 1n
       recipientVotes = '0'
     })
 
@@ -224,7 +224,7 @@ describe('UDT ERC20VotesComp extension', () => {
       expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: holder,
         previousBalance: supply,
-        newBalance: supply - 1,
+        newBalance: supply - 1n,
       })
       expectEvent(receipt, 'DelegateVotesChanged', {
         delegate: recipient,
@@ -232,7 +232,7 @@ describe('UDT ERC20VotesComp extension', () => {
         newBalance: '1',
       })
 
-      holderVotes = supply - 1
+      holderVotes = supply - 1n
       recipientVotes = '1'
     })
 

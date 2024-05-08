@@ -42,14 +42,14 @@ describe('Lock / timeMachine', () => {
       await timeMachine.timeMachine(tokenId, 1000, false) // decrease the time with "false"
 
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(timestampBefore - 1000))
+      assert(timestampAfter == timestampBefore - 1000n)
     })
 
     it('should increase the time by the amount specified if the key is not expired', async () => {
       timestampBefore = await timeMachine.keyExpirationTimestampFor(tokenId)
       await timeMachine.timeMachine(tokenId, 42, true) // increase the time with "true"
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(timestampBefore + 42))
+      assert(timestampAfter == timestampBefore + 42n)
     })
 
     it('should set a new expiration ts from current date/blocktime', async () => {
@@ -65,7 +65,7 @@ describe('Lock / timeMachine', () => {
 
       const { timestamp: now } = await ethers.provider.getBlock(blockNumber)
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(BigInt(now) + expirationDuration))
+      assert(timestampAfter == BigInt(now) + expirationDuration)
     })
 
     it('should emit the ExpirationChanged event', async () => {
@@ -77,9 +77,9 @@ describe('Lock / timeMachine', () => {
 
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
 
-      assert(timestampAfter.eq(evt.args.newExpiration))
-      assert(timestampBefore.eq(evt.args.prevExpiration))
-      assert.equal(evt.args.tokenId.eq(tokenId), true)
+      assert(timestampAfter == evt.args.newExpiration)
+      assert(timestampBefore == evt.args.prevExpiration)
+      assert.equal(evt.args.tokenId == tokenId, true)
     })
   })
 

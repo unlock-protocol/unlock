@@ -99,7 +99,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
 
         assert.equal(args.from, ADDRESS_ZERO)
         assert.equal(args.to, await recipient.getAddress())
-        assert.equal(args.value.eq(amount), true)
+        assert.equal(args.value == amount, true)
       })
     })
   })
@@ -132,7 +132,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         await advanceBlock()
         const pastTotalSupply = await udt.getPastTotalSupply(blockNumber)
         const totalSupply = await udt.totalSupply()
-        assert.isTrue(pastTotalSupply.eq(totalSupply))
+        assert.isTrue(pastTotalSupply == totalSupply)
       })
       it('increases when tokens are minted', async () => {
         const amount = ethers.hexStripZeros(ethers.parseEther('1000'))
@@ -153,7 +153,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const pastTotalSupplyAfter = await udt.getPastTotalSupply(
           receipt.blockNumber
         )
-        assert.isTrue(pastTotalSupplyAfter.eq(pastTotalSupply + amount))
+        assert.isTrue(pastTotalSupplyAfter == pastTotalSupply + amount)
       })
     })
   })
@@ -270,7 +270,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
       const evtApproval = await getEvent(receipt, 'Approval')
       assert.equal(evtApproval.args.owner, await permitter.getAddress())
       assert.equal(evtApproval.args.spender, await spender.getAddress())
-      assert.isTrue(evtApproval.args.value.eq(value))
+      assert.isTrue(evtApproval.args.value == value)
     })
   })
 
@@ -307,24 +307,21 @@ describe('UnlockDiscountToken on mainnet', async () => {
 
         assert.equal(delegate, await holder.getAddress())
         assert.equal(newBalance, '0')
-        assert(previousBalance.eq(supply))
+        assert(previousBalance == supply)
 
         assert(
-          supply.eq(await udt.getCurrentVotes(await recipient.getAddress()))
+          supply == (await udt.getCurrentVotes(await recipient.getAddress()))
         )
         assert(
-          (
-            await udt.getPriorVotes(
-              await recipient.getAddress(),
-              blockNumber - 1
-            )
-          ).eq(0)
+          (await udt.getPriorVotes(
+            await recipient.getAddress(),
+            blockNumber - 1
+          )) == 0
         )
         await advanceBlock()
         assert(
-          supply.eq(
-            await udt.getPriorVotes(await recipient.getAddress(), blockNumber)
-          )
+          supply ==
+            (await udt.getPriorVotes(await recipient.getAddress(), blockNumber))
         )
       })
 
@@ -409,10 +406,10 @@ describe('UnlockDiscountToken on mainnet', async () => {
           await holder.getAddress()
         )
         assert.isTrue(
-          evtDelegateVotesChanged.args.previousBalance.eq(votesHolderBefore - 1)
+          evtDelegateVotesChanged.args.previousBalance == votesHolderBefore - 1
         )
         assert.isTrue(
-          evtDelegateVotesChanged.args.newBalance.eq(votesHolderBefore)
+          evtDelegateVotesChanged.args.newBalance == votesHolderBefore
         )
 
         const delegateAfter = await udt.delegates(await delegator.getAddress())
@@ -421,7 +418,7 @@ describe('UnlockDiscountToken on mainnet', async () => {
         const votesHolderAfter = await udt.getCurrentVotes(
           await holder.getAddress()
         )
-        assert.isTrue(votesHolderAfter.eq(votesHolderBefore))
+        assert.isTrue(votesHolderAfter == votesHolderBefore)
       })
     })
   })
