@@ -1,10 +1,11 @@
 const { ethers } = require('hardhat')
 
-const parseInterface = ({ functions }) => {
-  const iface = new ethers.Interface(Object.values(functions))
-  return iface
-    .format(ethers.FormatTypes.minimal)
-    .map((d) => d.split('@')[0].trim())
+const parseInterface = ({ fragments }) => {
+  // TODO: add errors and event to interface?
+  const iface = new ethers.Interface(
+    Object.values(fragments.filter(({ type }) => type === 'function'))
+  )
+  return iface.format(true)
 }
 
 // find any missing entries

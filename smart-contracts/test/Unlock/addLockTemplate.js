@@ -44,7 +44,7 @@ describe('PublicLock template versions', () => {
     await tx1.wait()
     expect(
       await unlock.publicLockVersions(await publicLock.getAddress())
-    ).to.equals(1)
+    ).to.equals(1n)
 
     const tx2 = await unlock.addLockTemplate(
       await publicLockUpgraded.getAddress(),
@@ -53,7 +53,7 @@ describe('PublicLock template versions', () => {
     await tx2.wait()
     expect(
       await unlock.publicLockVersions(await publicLockUpgraded.getAddress())
-    ).to.equals(2)
+    ).to.equals(2n)
   })
 
   it('should revert if the template was already initialized', async () => {
@@ -85,7 +85,7 @@ describe('PublicLock template versions', () => {
     )
     expect(
       await unlock.publicLockVersions(await publicLock.getAddress())
-    ).to.equals(1)
+    ).to.equals(1n)
 
     // make sure everything is stored properly
     const tx2 = await unlock.addLockTemplate(
@@ -98,7 +98,7 @@ describe('PublicLock template versions', () => {
     )
     expect(
       await unlock.publicLockVersions(await publicLockUpgraded.getAddress())
-    ).to.equals(2)
+    ).to.equals(2n)
   })
 
   it('should fire an event when template is added', async () => {
@@ -112,6 +112,6 @@ describe('PublicLock template versions', () => {
     )
     expect(
       await unlock.publicLockVersions(await publicLock.getAddress())
-    ).to.equals(3)
+    ).to.equals(3n)
   })
 })

@@ -81,7 +81,7 @@ describe('Lock / withdraw', () => {
         it("should increase the owner's balance with the funds from the lock", async () => {
           compareBigNumbers(
             await getBalance(await owner.getAddress(), tokenAddress),
-            ownerBalance + contractBalance - (isErc20 ? 0 : gas)
+            ownerBalance + contractBalance - (isErc20 ? 0n : gas)
           )
         })
 
@@ -97,7 +97,7 @@ describe('Lock / withdraw', () => {
         let gas
         let ownerBalance
         let contractBalance
-        const amount = 42
+        const amount = 42n
 
         before(async () => {
           await purchaseKeys(lock, 2, isErc20)
@@ -132,7 +132,7 @@ describe('Lock / withdraw', () => {
         it(`should increase the owner's balance by ${amount}`, async () => {
           compareBigNumbers(
             await getBalance(await owner.getAddress(), tokenAddress),
-            ownerBalance + amount - (isErc20 ? 0 : gas)
+            ownerBalance + amount - (isErc20 ? 0n : gas)
           )
         })
 
