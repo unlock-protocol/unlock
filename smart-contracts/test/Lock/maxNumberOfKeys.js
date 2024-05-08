@@ -38,7 +38,9 @@ describe('Lock / maxNumberOfKeys', () => {
         args: { newLockAddress },
       } = await getEvent(receipt, 'NewLock')
 
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       lock = PublicLock.attach(newLockAddress)
     })
 

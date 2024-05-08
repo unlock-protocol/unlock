@@ -171,7 +171,10 @@ describe('Unlock (on mainnet)', async () => {
       const receipt = await tx.wait()
       const evt = await getEvent(receipt, 'NewLock')
 
-      const PublicLock = await ethers.getContractFactory('PublicLock', deployer)
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock',
+        deployer
+      )
       let publicLock = await PublicLock.attach(evt.args.newLockAddress)
 
       const expirationBefore = await publicLock.keyExpirationTimestampFor(

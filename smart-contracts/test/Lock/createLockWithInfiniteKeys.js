@@ -33,7 +33,10 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const {
         args: { newLockAddress },
       } = await getEvent(receipt, 'NewLock')
-      let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
+      let publicLock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
+      )
       const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
       assert.equal(maxNumberOfKeys, MAX_UINT)
     })
@@ -56,7 +59,10 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const {
         args: { newLockAddress },
       } = await getEvent(receipt, 'NewLock')
-      let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
+      let publicLock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
+      )
       compareBigNumbers(await publicLock.maxNumberOfKeys(), 0)
     })
   })

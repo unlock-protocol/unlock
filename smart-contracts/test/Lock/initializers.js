@@ -17,7 +17,9 @@ describe('Lock / initializers', () => {
 
   describe('initialize()', () => {
     it('There are exactly 1 public initializer in PublicLock', async () => {
-      const { interface } = await ethers.getContractFactory('PublicLock')
+      const { interface } = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       const abi = parseInterface(interface)
       const count = abi.filter((func) => func.includes('initialize'))
       assert.equal(count.length, 1)
@@ -42,7 +44,9 @@ describe('Lock / initializers', () => {
   describe('initializing when deploying', () => {
     it('admin role has to be revoked manually', async () => {
       const callerAddress = await caller.getAddress()
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       const template = await PublicLock.deploy()
       await template.initialize(callerAddress, 0, ADDRESS_ZERO, 0, 0, '')
       await assert.equal(await template.isLockManager(callerAddress), true)
@@ -54,7 +58,9 @@ describe('Lock / initializers', () => {
   describe('initializing when setting as Unlock template', () => {
     it('admin role is revoked when adding a template', async () => {
       // deploy contracts
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       const template = await PublicLock.deploy()
       const { unlock } = await deployContracts()
 
@@ -83,7 +89,9 @@ describe('Lock / initializers', () => {
 
     it('template can be re-added even if already initialized', async () => {
       // initialize a template manually
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       const template = await PublicLock.deploy()
       await template.initialize(
         await caller.getAddress(),

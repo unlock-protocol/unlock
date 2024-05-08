@@ -68,7 +68,7 @@ describe('Lock / erc721 / balanceOf', () => {
     compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
 
     // renew one
-    await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
+    await lock.extend(0, tokenIds[0], ADDRESS_ZERO, '0x', {
       value: ethers.parseUnits('0.03', 'ether'),
     })
 

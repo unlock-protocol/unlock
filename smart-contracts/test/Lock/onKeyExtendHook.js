@@ -32,7 +32,10 @@ describe('Lock / onKeyExtendHook', () => {
     const { address } = await deployLock({
       tokenAddress: await testToken.getAddress(),
     })
-    lock = await ethers.getContractAt('PublicLock', address)
+    lock = await ethers.getContractAt(
+      'contracts/PublicLock.sol:PublicLock',
+      address
+    )
     await testToken
       .connect(keyOwner)
       .approve(await lock.getAddress(), someTokens)

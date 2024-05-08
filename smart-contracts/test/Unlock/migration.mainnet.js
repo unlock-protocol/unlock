@@ -70,7 +70,9 @@ describe(`Unlock migration`, function () {
     )
 
     // deploy new template
-    const PublicLockV13 = await ethers.getContractFactory('PublicLock')
+    const PublicLockV13 = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     publicLock = await PublicLockV13.deploy()
 
     console.log(`PublicLockV13 > deployed at ${await publicLock.getAddress()}`)

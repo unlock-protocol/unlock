@@ -21,7 +21,7 @@ describe('Lock / uniqueTokenIds', () => {
       compareBigNumbers(tokenIds[tokenIds.length - 1], await lock.totalSupply())
 
       // extend a key
-      await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
+      await lock.extend(0, tokenIds[1], ADDRESS_ZERO, '0x', {
         value: ethers.parseUnits('0.01', 'ether'),
       })
 

@@ -66,7 +66,7 @@ describe('Permissions / KeyManager', () => {
     it('should left key manager untouched when referrer is specified', async () => {
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
       assert.equal(await lock.isValidKey(tokenId), true)
-      await lock.extend(0, tokenId, await keyManager.getAddress(), [], {
+      await lock.extend(0, tokenId, await keyManager.getAddress(), '0x', {
         value: keyPrice,
       })
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
@@ -80,7 +80,7 @@ describe('Permissions / KeyManager', () => {
         await lock.keyManagerOf(tokenId),
         await keyManager.getAddress()
       )
-      await lock.extend(0, tokenId, ADDRESS_ZERO, [], {
+      await lock.extend(0, tokenId, ADDRESS_ZERO, '0x', {
         value: keyPrice,
       })
       assert.equal(
