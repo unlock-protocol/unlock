@@ -3,6 +3,7 @@ export const getEvent = async (tx, eventName) => {
   const event = logs.find(
     ({ fragment }) => fragment && fragment.name === eventName
   )
+  if (!event) return null
   const { args } = event
   return { logs, args, hash, event, blockNumber }
 }
