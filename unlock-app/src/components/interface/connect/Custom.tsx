@@ -13,7 +13,7 @@ const CustomButton = classed(
           'bg-gray-50 text-gray-800 fill-gray-800 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-100 disabled:hover:bg-gray-50 disabled:active:bg-gray-50 disabled:focus:bg-gray-50',
       },
       highlight: {
-        true: 'ring-1 ring-ui-main-400',
+        true: 'ring-1 ring-ui-main-100',
         false: '',
       },
     },
@@ -42,20 +42,22 @@ export const ConnectButton = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         highlight={!!highlight}
       >
-        <div className="flex flex-col items-start w-full">
-          {children}
-          {highlight && (
-            <div className="text-xs text-ui-main-400">Recently used</div>
+        <div className="flex justify-center gap-5">
+          {loading ? (
+            <SpinnerIcon
+              size={24}
+              className="animate-spin text-brand-ui-primary"
+            />
+          ) : (
+            icon
           )}
+          <div className="flex flex-col justify-center items-center w-full">
+            {children}
+            {highlight && (
+              <div className="text-xs text-ui-main-400">Recently used</div>
+            )}
+          </div>
         </div>
-        {loading ? (
-          <SpinnerIcon
-            size={24}
-            className="animate-spin text-brand-ui-primary"
-          />
-        ) : (
-          icon
-        )}
       </CustomButton>
     )
   }
