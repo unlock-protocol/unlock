@@ -4472,23 +4472,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-base@npm:1.1.8":
-  version: 1.1.8
-  resolution: "@crossmint/client-sdk-base@npm:1.1.8"
+"@crossmint/client-sdk-base@npm:1.1.12":
+  version: 1.1.12
+  resolution: "@crossmint/client-sdk-base@npm:1.1.12"
   dependencies:
-    "@crossmint/common-sdk-base": "npm:0.0.6"
+    "@crossmint/common-sdk-base": "npm:0.0.11"
     exponential-backoff: "npm:3.1.1"
     uuid: "npm:9.0.1"
-  checksum: 10/f1f221398cfb776e005a51ac490776f702bff2c1db202a021b535f175c7956fcdb59e0376c26039d26023413d8979809368fd85829040a082ea285766da6b2a4
+  checksum: 10/ff8ec67c9f903c47734a69250ac36ac5a080ebf7843ba7636fc30744f6d986242498cb048175cb580f2e4bcc83c7cf38aec13cad81aa97085d6565285d6c5bc3
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-react-ui@npm:1.1.5":
-  version: 1.1.5
-  resolution: "@crossmint/client-sdk-react-ui@npm:1.1.5"
+"@crossmint/client-sdk-react-ui@npm:1.1.9":
+  version: 1.1.9
+  resolution: "@crossmint/client-sdk-react-ui@npm:1.1.9"
   dependencies:
-    "@crossmint/client-sdk-base": "npm:1.1.8"
-    "@crossmint/common-sdk-base": "npm:0.0.6"
+    "@crossmint/client-sdk-base": "npm:1.1.12"
+    "@crossmint/common-sdk-base": "npm:0.0.11"
     "@ethersproject/transactions": "npm:5.7.0"
     "@solana/web3.js": "npm:1.78.5"
     bs58: "npm:5.0.0"
@@ -4497,17 +4497,17 @@ __metadata:
   peerDependencies:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
-  checksum: 10/b1d43d73aa186d1adcdc0939bba6a9867d0fb12b1f7caa2ceb791df8152cea0de6795b4db5fcf15bc9ab217a77470d828f3059846f69c287713798faf99378a5
+  checksum: 10/754847771973b44fda9dc4ccdd05915f413fe3c3576d47240755b2bdab053856b4e20c6d508b1a5e1b6f1769fd984c959c431ff4c2e62bd4eed515db00dcb24e
   languageName: node
   linkType: hard
 
-"@crossmint/common-sdk-base@npm:0.0.6":
-  version: 0.0.6
-  resolution: "@crossmint/common-sdk-base@npm:0.0.6"
+"@crossmint/common-sdk-base@npm:0.0.11":
+  version: 0.0.11
+  resolution: "@crossmint/common-sdk-base@npm:0.0.11"
   dependencies:
     bs58: "npm:5.0.0"
     tweetnacl: "npm:1.0.3"
-  checksum: 10/d4ed45ef4cfb1fe83e8ee63427e6e4664be0b194ee95f6320f7e4c725ef313de9f95f6c49f811a00d913152023175b582f1d9ae1ca17eb49d6d822470a11ab56
+  checksum: 10/7c6ac7452111499841abb69642799944f59758612879cd249770238df340a11d5943dbc2bb3d31d23bde586713847612437564ea301d362159713fa45e268025
   languageName: node
   linkType: hard
 
@@ -18761,7 +18761,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
     "@airstack/airstack-react": "npm:0.6.3"
-    "@crossmint/client-sdk-react-ui": "npm:1.1.5"
+    "@crossmint/client-sdk-react-ui": "npm:1.1.9"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:1.1.1"
     "@headlessui/react": "npm:1.7.19"
