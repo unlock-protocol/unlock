@@ -4,10 +4,9 @@ import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
 import SvgComponents from '../svg'
-import { ConnectButton, CustomAnchorButton } from './Custom'
+import { ConnectButton } from './Custom'
 import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
@@ -254,19 +253,16 @@ export const ConnectUnlockAccount = ({
   useIcon = true,
   defaultEmail = '',
 }: Props) => {
-  const [loading, setLoading] = useState(false)
   const [isValidEmail, setIsValidEmail] = useState(false)
-  const [isSigningUp, setIsSigningUp] = useState(false)
 
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, account, connected, deAuthenticate } = useAuth()
+  const { email, deAuthenticate } = useAuth()
   // TODO: Consider adding a way to set the email address to Auth context
   const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
   const storageService = useStorageService()
-  const requireSignIn = account && !connected
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -289,7 +285,6 @@ export const ConnectUnlockAccount = ({
 
   const onEmail = useCallback(
     async ({ email }: { email: string }) => {
-      setLoading(true)
       try {
         console.log('Checking if user exists')
         const existingUser = await storageService.userExist(email)
@@ -303,7 +298,6 @@ export const ConnectUnlockAccount = ({
           // })
         }
       }
-      setLoading(false)
     },
     [storageService]
   )
