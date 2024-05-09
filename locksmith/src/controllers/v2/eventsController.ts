@@ -31,6 +31,7 @@ export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
   checkoutConfig: z.object({
+    // @ts-expect-error object incomplete
     config: PaywallConfig,
     id: z.string().optional(),
   }),
