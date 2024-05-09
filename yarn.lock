@@ -18829,7 +18829,7 @@ __metadata:
     react-jwt: "npm:1.2.1"
     react-markdown: "npm:9.0.1"
     react-test-renderer: "npm:18.2.0"
-    react-use: "npm:17.4.1"
+    react-use: "npm:17.5.0"
     react-use-clipboard: "npm:1.0.9"
     remark-html: "npm:16.0.1"
     remark-parse: "npm:11.0.0"
@@ -44412,9 +44412,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-use@npm:17.4.1":
-  version: 17.4.1
-  resolution: "react-use@npm:17.4.1"
+"react-use@npm:17.5.0":
+  version: 17.5.0
+  resolution: "react-use@npm:17.5.0"
   dependencies:
     "@types/js-cookie": "npm:^2.2.6"
     "@xobotyi/scrollbar-width": "npm:^1.9.5"
@@ -44431,9 +44431,9 @@ __metadata:
     ts-easing: "npm:^0.2.0"
     tslib: "npm:^2.1.0"
   peerDependencies:
-    react: ^16.8.0  || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
-  checksum: 10/777481ad3a462eb224fac40a41073b2de4bac3dfce0677ba270158eec6867b248a4bd7fad80e90966acde70826a0b10b9129875aa7b022e98b44b4b375042636
+    react: "*"
+    react-dom: "*"
+  checksum: 10/5d81fe0902303d3ed7810cdd56c6cae12b08124a3d4fcbfa3924327105b81447b039ea9d6aff20aac3c13999f949000870a7a2fa29fe20ed844ac26606462fa0
   languageName: node
   linkType: hard
 
