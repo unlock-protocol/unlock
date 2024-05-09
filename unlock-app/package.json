@@ -2,6 +2,10 @@
   "name": "@unlock-protocol/unlock-app",
   "version": "0.1.0",
   "private": true,
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
   "dependencies": {
     "@airstack/airstack-react": "0.6.3",
     "@crossmint/client-sdk-react-ui": "1.1.5",
@@ -53,9 +57,7 @@
     "prop-types": "15.8.1",
     "qr-scanner": "1.4.2",
     "qrcode.react": "3.1.0",
-    "react": "18.3.1",
     "react-device-detect": "2.2.3",
-    "react-dom": "18.3.1",
     "react-dropzone": "14.2.3",
     "react-google-autocomplete": "2.7.3",
     "react-google-recaptcha": "3.1.0",
