@@ -18841,8 +18841,8 @@ __metadata:
     zod: "npm:3.23.5"
     zod-to-json-schema: "npm:3.23.0"
   peerDependencies:
-    react: ^18
-    react-dom: ^18
+    react: 18.3.1
+    react-dom: 18.3.1
   languageName: unknown
   linkType: soft
 
