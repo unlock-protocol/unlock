@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
-import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
-import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useAvailableNetworks } from '~/utils/networks'
+import { SelectToken } from './SelectToken'
 
 export interface LockFormProps {
   name: string
@@ -70,10 +68,7 @@ export const CreateLockForm = ({
   const web3Service = useWeb3Service()
   const { account } = useAuth()
   const networkOptions = useAvailableNetworks()
-  const network = networkOptions[0]?.value
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     defaultValues?.unlimitedDuration ?? false
   )
@@ -84,7 +79,6 @@ export const CreateLockForm = ({
   const {
     register,
     handleSubmit,
-    reset,
     control,
     setValue,
     formState: { isValid, errors },
@@ -92,7 +86,7 @@ export const CreateLockForm = ({
     mode: 'onChange',
     defaultValues: {
       name: '',
-      network,
+      network: networkOptions[0]?.value,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
@@ -101,30 +95,23 @@ export const CreateLockForm = ({
       isFree,
     },
   })
-  const { network: selectedNetwork } = useWatch({
+
+  const { network: selectedNetwork, currencyContractAddress } = useWatch({
     control,
   })
 
-  const baseCurrencySymbol = networks[selectedNetwork!].nativeCurrency.symbol
-
-  const getBalance = async () => {
-    const balance = await getAccountTokenBalance(
-      web3Service,
-      account!,
-      null,
-      selectedNetwork || 10
-    )
-    return parseFloat(balance)
-  }
-
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', selectedNetwork, account],
-    () => getBalance()
+    async () => {
+      const balance = await getAccountTokenBalance(
+        web3Service,
+        account!,
+        null,
+        selectedNetwork || 10
+      )
+      return parseFloat(balance)
+    }
   )
-
-  useEffect(() => {
-    reset(defaultValues)
-  }, [defaultValues, reset])
 
   const onHandleSubmit = (values: LockFormProps) => {
     if (isValid) {
@@ -136,44 +123,19 @@ export const CreateLockForm = ({
     }
   }
 
-  const onSelectToken = (token: Token) => {
-    setSelectedToken(token)
-    setValue('currencyContractAddress', token.address)
-    setValue('symbol', token.symbol)
-  }
-
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
-  const selectedCurrency = (
-    selectedToken?.symbol ||
-    defaultValues?.symbol ||
-    baseCurrencySymbol
-  )?.toLowerCase()
-
-  const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
-      setSelectedToken(null)
+      setValue('currencyContractAddress', undefined)
       setValue('network', parseInt(`${network}`))
     },
-    [setValue, setSelectedToken]
+    [setValue]
   )
-
-  useEffect(() => {
-    if (network) {
-      onChangeNetwork(network)
-    }
-  }, [onChangeNetwork, network])
 
   return (
     <>
-      <SelectCurrencyModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        network={selectedNetwork!}
-        onSelect={onSelectToken}
-      />
       <div className="mb-4">
         {noBalance && (
           <BalanceWarning network={selectedNetwork!} balance={balance!} />
@@ -323,16 +285,16 @@ export const CreateLockForm = ({
               </div>
               <div className="relative">
                 <div className="grid grid-cols-2 gap-2 justify-items-stretch">
-                  <div className="flex flex-col gap-1.5">
-                    <div
-                      onClick={() => setIsOpen(true)}
-                      className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
-                    >
-                      <CryptoIcon symbol={symbol} />
-                      <span>{symbol}</span>
-                    </div>
-                    <div className="pl-1"></div>
-                  </div>
+                  <SelectToken
+                    onChange={(token: Token) => {
+                      setValue('currencyContractAddress', token.address)
+                      setValue('symbol', token.symbol)
+                    }}
+                    defaultToken={{
+                      address: currencyContractAddress,
+                    }}
+                    network={selectedNetwork!}
+                  />
 
                   <Input
                     type="number"

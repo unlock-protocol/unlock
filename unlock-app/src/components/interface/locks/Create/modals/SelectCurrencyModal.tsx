@@ -3,37 +3,36 @@ import { Token } from '@unlock-protocol/types'
 import { Button, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
-import { ethers, utils } from 'ethers'
+import { utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { addressMinify } from '~/utils/strings'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useForm } from 'react-hook-form'
+
 interface SelectCurrencyModalProps {
   isOpen: boolean
   setIsOpen: (status: boolean) => void
   network: number
   onSelect: (token: Token) => void
+  defaultCurrencyAddress?: string
 }
-
-export const ZERO = ethers.constants.AddressZero
 
 export const SelectCurrencyModal = ({
   isOpen,
   setIsOpen,
   network,
   onSelect,
+  defaultCurrencyAddress,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
   const [query, setQuery] = useState('')
-  const defaultCurrency = networks[network]?.nativeCurrency ?? {}
 
   const [_isReady] = useDebounce(
     () => {
-      setQuery(query)
       try {
         if (utils.isAddress(query)) {
           const address = utils.getAddress(query)
@@ -49,7 +48,6 @@ export const SelectCurrencyModal = ({
     500,
     [query]
   )
-  const { tokens: tokenItems = [] } = networks[network!] || {}
   const [tokens, setTokens] = useState<Token[]>([])
 
   const { register, resetField } = useForm({
@@ -60,15 +58,31 @@ export const SelectCurrencyModal = ({
   })
 
   useEffect(() => {
-    setTokens([
-      {
-        name: defaultCurrency?.name,
-        symbol: defaultCurrency?.symbol,
-        address: ZERO,
-      },
-      ...tokenItems.filter((token: Token) => !!token.featured),
-    ])
-  }, [defaultCurrency?.name, defaultCurrency?.symbol, network, tokenItems])
+    const initializeTokens = async () => {
+      const { tokens: tokenItems = [] } = networks[network!] || {}
+      const nativeCurrency = networks[network]?.nativeCurrency ?? {}
+      const featuredTokens = [
+        nativeCurrency,
+        ...tokenItems.filter((token: Token) => !!token.featured),
+      ]
+
+      if (defaultCurrencyAddress) {
+        const defaultCurrencySymbol = await web3Service.getTokenSymbol(
+          defaultCurrencyAddress,
+          network
+        )
+        featuredTokens.unshift({
+          name: defaultCurrencySymbol,
+          symbol: defaultCurrencySymbol,
+          address: defaultCurrencyAddress,
+        })
+      }
+
+      setTokens(featuredTokens)
+      onSelect(featuredTokens[0])
+    }
+    initializeTokens()
+  }, [network, networks, defaultCurrencyAddress])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
@@ -77,19 +91,9 @@ export const SelectCurrencyModal = ({
     }
   }
 
-  const tokensFiltered = tokens?.filter(
-    (token: Token) =>
-      token?.name?.toLowerCase().includes(query?.toLowerCase()) ||
-      token?.symbol?.toLowerCase().includes(query?.toLowerCase())
-  )
-
-  const getContractTokenSymbol = async () => {
-    return await web3Service.getTokenSymbol(contractAddress, network)
-  }
-
   const { isLoading: isLoadingContractToken, data: contractTokenSymbol } =
     useQuery(['getContractTokenSymbol', contractAddress, query], async () =>
-      getContractTokenSymbol()
+      web3Service.getTokenSymbol(contractAddress, network)
     )
 
   const addToken = ({
@@ -99,6 +103,7 @@ export const SelectCurrencyModal = ({
     decimals = 18,
   }: Partial<Token>) => {
     const currentList = tokens || []
+    if (currentList.find((token) => token.address === address)) return
     setTokens([
       {
         name: name!,
@@ -121,9 +126,10 @@ export const SelectCurrencyModal = ({
     setContractAddress('')
   }
 
-  const isValidAddress = ethers.utils.isAddress(contractAddress)
+  const isValidAddress = utils.isAddress(contractAddress)
+
   const noItems =
-    tokensFiltered?.length === 0 &&
+    tokens?.length === 0 &&
     query?.length > 0 &&
     !isValidAddress &&
     !isLoadingContractToken
@@ -185,13 +191,13 @@ export const SelectCurrencyModal = ({
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 gap-6 mt-6 overflow-scroll max-h-48">
+                  <div className="grid grid-cols-1 gap-6 mt-6 overflow-scroll">
                     {noItems && (
                       <span className="text-base">
                         No token matches your filter.
                       </span>
                     )}
-                    {tokensFiltered?.map((token: Token, index: number) => {
+                    {tokens?.map((token: Token, index: number) => {
                       const key = `${token.symbol}-${index}`
                       return (
                         <div key={key}>
