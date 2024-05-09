@@ -359,8 +359,6 @@ export const CertificationDetails = ({
             tokenId={key?.tokenId}
             network={network}
             name={certificationData.name}
-            // ...
-
             description={
               <>
                 {/* eslint-disable-next-line react/no-children-prop */}
