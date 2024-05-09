@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function Captcha({ checkoutService }: Props) {
-  const { recipients, lock } = useSelector(
+  const { recipients, lock, paywallConfig } = useSelector(
     checkoutService,
     (state) => state.context
   )
@@ -59,7 +59,10 @@ export function Captcha({ checkoutService }: Props) {
 
   return (
     <Fragment>
-      <Stepper service={checkoutService} />
+      <Stepper
+        service={checkoutService}
+        isDelegatedProvider={paywallConfig.useDelegatedProvider}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex justify-center">
           <ReCAPTCHA
@@ -84,7 +87,10 @@ export function Captcha({ checkoutService }: Props) {
             ? 'Continuing'
             : 'Continue'}
         </Button>
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

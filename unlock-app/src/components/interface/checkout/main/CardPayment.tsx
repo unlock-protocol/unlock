@@ -25,12 +25,17 @@ import {
   useRemovePaymentMethods,
 } from '~/hooks/usePaymentMethods'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useSelector } from '@xstate/react'
 
 interface Props {
   checkoutService: CheckoutService
 }
 
 export function CardPayment({ checkoutService }: Props) {
+  const { paywallConfig } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
   const [isSaving, setIsSaving] = useState(false)

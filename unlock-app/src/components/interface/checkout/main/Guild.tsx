@@ -19,7 +19,7 @@ interface Props {
 
 export function Guild({ checkoutService }: Props) {
   const { account } = useAuth()
-  const { recipients, lock } = useSelector(
+  const { recipients, lock, paywallConfig } = useSelector(
     checkoutService,
     (state) => state.context
   )
@@ -242,7 +242,10 @@ export function Guild({ checkoutService }: Props) {
         >
           Continue
         </Button>
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

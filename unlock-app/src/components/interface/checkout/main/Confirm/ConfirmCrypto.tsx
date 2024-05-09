@@ -322,7 +322,10 @@ export function ConfirmCrypto({
             </>
           )}
         </div>
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

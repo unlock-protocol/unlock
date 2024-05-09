@@ -376,7 +376,10 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
               : 'Pay using credit card'}
           </Button>
         </div>
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

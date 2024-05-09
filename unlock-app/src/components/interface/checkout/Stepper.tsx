@@ -7,6 +7,7 @@ import { CheckoutHookType, CheckoutService } from './main/checkoutMachine'
 import { useStepperItems } from './main/useStepperItems'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useSelector } from '@xstate/react'
 
 interface IconProps {
   active?: boolean
@@ -96,6 +97,10 @@ export const Stepper = ({
   isRenew,
   isUnlockAccount = false,
 }: StepperProps) => {
+  const { useDelegatedProvider } = useSelector(
+    service,
+    (state) => state.context.paywallConfig
+  )
   const items = useStepperItems(service, {
     isUnlockAccount,
     hookType,
@@ -122,6 +127,7 @@ export const Stepper = ({
               key={idx}
               onClick={() => {
                 if (item.to === 'CONNECT') {
+                  if (useDelegatedProvider) return
                   signOut()
                   deAuthenticate()
                 }

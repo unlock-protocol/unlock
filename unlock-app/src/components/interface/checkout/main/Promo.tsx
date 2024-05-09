@@ -48,6 +48,10 @@ export function PromoContent({
   promoCode,
   checkoutService,
 }: Props) {
+  const { paywallConfig } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
   const [hookAddress, setHookAddress] = useState<string>()
   const [code, setCode] = useState<string | undefined>(promoCode)
@@ -172,7 +176,10 @@ export function PromoContent({
         >
           {hasDiscount ? 'Next' : 'Skip'}
         </Button>
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

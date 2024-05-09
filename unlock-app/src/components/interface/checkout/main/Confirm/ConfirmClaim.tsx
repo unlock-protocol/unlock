@@ -157,7 +157,10 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
             {isConfirming ? 'Claiming' : 'Claim'}
           </Button>
         </div>
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

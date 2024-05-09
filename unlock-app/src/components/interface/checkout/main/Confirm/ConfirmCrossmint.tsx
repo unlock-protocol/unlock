@@ -282,7 +282,10 @@ export function ConfirmCrossmint({
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Disconnect service={checkoutService} />
+        <Disconnect
+          service={checkoutService}
+          isDelegatedProvider={paywallConfig.useDelegatedProvider}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

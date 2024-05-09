@@ -1,4 +1,3 @@
-import { Button } from '@unlock-protocol/ui'
 import { useSelector } from '@xstate/react'
 import { ReactNode, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -15,7 +14,7 @@ interface ConnectedCheckoutProps {
 export function Connected({ service, children }: ConnectedCheckoutProps) {
   const state = useSelector(service, (state) => state)
   const { account, isUnlockAccount, connected } = useAuth()
-  const [signing, setSigning] = useState(false)
+  const [signing, _] = useState(false)
   const { signIn, isSignedIn } = useSIWE()
 
   const useDelegatedProvider =
@@ -47,28 +46,6 @@ export function Connected({ service, children }: ConnectedCheckoutProps) {
       console.debug(`Connected as ${account}`)
     }
   }, [account])
-
-  const signToSignIn = async () => {
-    setSigning(true)
-    await signIn()
-    setSigning(false)
-  }
-
-  if (useDelegatedProvider) {
-    if (isSignedIn) {
-      return <div className="space-y-2">{children}</div>
-    }
-    return (
-      <Button
-        disabled={!connected || signing}
-        loading={signing}
-        onClick={signToSignIn}
-        className="w-full"
-      >
-        Continue
-      </Button>
-    )
-  }
 
   return (
     <>
