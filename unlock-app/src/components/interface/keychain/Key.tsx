@@ -39,7 +39,7 @@ import {
 } from 'react-icons/ri'
 import { RiFileCopyLine as CopyLineIcon } from 'react-icons/ri'
 import { ExtendMembershipModal } from './Extend'
-import { Key } from '~/hooks/useKeys'
+import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import { AddToDeviceWallet, ApplePassModal } from './AddToPhoneWallet'
@@ -59,7 +59,7 @@ export const MenuButton = tw.button(
 )
 
 export interface Props {
-  ownedKey: Key
+  ownedKey: HookKey
   owner: string
   network: number
 }

@@ -10,7 +10,7 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
       enabled: true,
       branches: 26,
       functions: 34,
