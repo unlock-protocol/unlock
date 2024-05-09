@@ -1,5 +1,5 @@
 import { useSelector } from '@xstate/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
@@ -8,10 +8,9 @@ import { ConnectPage } from './main/ConnectPage'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
-  children?: ReactNode
 }
 
-export function Connected({ service, children }: ConnectedCheckoutProps) {
+export function Connected({ service }: ConnectedCheckoutProps) {
   const state = useSelector(service, (state) => state)
   const { account, isUnlockAccount, connected } = useAuth()
   const [signing, _] = useState(false)
