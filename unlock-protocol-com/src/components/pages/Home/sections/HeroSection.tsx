@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@unlock-protocol/ui'
-import Link from 'next/link'
+import { Link } from 'src/components/helpers/Link'
 
 interface HeroSectionProps {
   subhead: string

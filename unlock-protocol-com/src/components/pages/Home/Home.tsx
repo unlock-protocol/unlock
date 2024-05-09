@@ -6,7 +6,7 @@ import TheSolution from './sections/TheSolution'
 import UnlockStats from './sections/UnlockStats'
 import Testimonial from './sections/Testimonial'
 import { Button } from '@unlock-protocol/ui'
-import Link from 'next/link'
+import { Link } from 'src/components/helpers/Link'
 
 export function Home() {
   return (
