@@ -116,7 +116,7 @@ const SignIn = ({
             event.preventDefault()
             onReturn()
           }}
-          className="hover:text-ui-main-600"
+          className="hover:text-ui-main-600 underline"
         >
           Sign Out
         </button>
@@ -220,7 +220,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
             event.preventDefault()
             onReturn()
           }}
-          className="hover:text-ui-main-600"
+          className="hover:text-ui-main-600 underline"
         >
           Back
         </button>
