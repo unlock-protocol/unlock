@@ -351,7 +351,6 @@ export function Select({ checkoutService }: Props) {
     }
 
     if (!connected && useDelegatedProvider) {
-      console.log('Not connected')
       signToSignIn()
     }
 
