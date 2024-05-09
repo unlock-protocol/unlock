@@ -2,16 +2,16 @@ import { Input } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import SvgComponents from '../svg'
-import { ConnectButton, CustomAnchorButton } from './Custom'
-import { useState } from 'react'
+import { ConnectButton } from './Custom'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -23,74 +23,21 @@ export type SignUpForm = Record<
   string
 >
 
-interface EnterEmailProps {
-  onSubmitEmail(email: string, existingUser: boolean): void
-}
-
-const EnterEmail = ({ onSubmitEmail }: EnterEmailProps) => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<UserDetails>()
-
-  const [isContinuing, setIsContinuing] = useState(false)
-  const storageService = useStorageService()
-
-  async function onSubmit({ email }: FieldValues) {
-    try {
-      setIsContinuing(true)
-      const existingUser = await storageService.userExist(email)
-      setIsContinuing(false)
-      onSubmitEmail(email, existingUser)
-    } catch (error) {
-      if (error instanceof Error) {
-        setError('email', {
-          type: 'value',
-          message: error.message,
-        })
-      }
-      setIsContinuing(false)
-    }
-  }
-
-  return (
-    <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: 'Email is required',
-          })}
-          error={errors.email?.message}
-        />
-        <ConnectButton
-          primary
-          loading={isContinuing}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Continue
-        </ConnectButton>
-      </form>
-    </div>
-  )
-}
-
 export interface SignInProps {
   email: string
   onReturn(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
+  onSignIn?(): void
+  useIcon?: boolean
 }
 
-const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
+const SignIn = ({
+  email,
+  onReturn,
+  signIn,
+  onSignIn,
+  useIcon = true,
+}: SignInProps) => {
   const {
     register,
     handleSubmit,
@@ -106,6 +53,9 @@ const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
     }
     try {
       await signIn(data)
+      if (onSignIn) {
+        onSignIn()
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -124,14 +74,15 @@ const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
-          <BlockiesSvg
-            address={account || '0x'}
-            size={6}
-            className="rounded-full"
-          />
-          <div className="text-center">{email}</div>
-        </div>
+        {useIcon && (
+          <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
+            <BlockiesSvg
+              address={account || '0x'}
+              size={6}
+              className="rounded-full"
+            />
+          </div>
+        )}
         <Input
           label={'Password'}
           type="password"
@@ -159,7 +110,7 @@ const SignIn = ({ email, onReturn, signIn }: SignInProps) => {
           Sign In
         </ConnectButton>
       </form>
-      <div className="flex items-center justify-end px-6">
+      <div className="flex items-center justify-end px-6 py-4">
         <button
           onClick={(event) => {
             event.preventDefault()
@@ -178,9 +129,10 @@ export interface SignUpProps {
   email: string
   onReturn(): void
   signUp: (details: UserDetails) => Promise<unknown> | unknown
+  onSignIn?(): void
 }
 
-const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
+const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
   const {
     register,
     getValues,
@@ -189,9 +141,12 @@ const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>()
 
-  const onSubmit = async ({ email, password }: SignUpForm) => {
+  const onSubmit = async ({ password }: SignUpForm) => {
     try {
       await signUp({ email, password })
+      if (onSignIn) {
+        onSignIn()
+      }
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -210,19 +165,6 @@ const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          type="email"
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: {
-              value: true,
-              message: 'Email is required',
-            },
-          })}
-          value={email}
-          error={errors.email?.message}
-        />
         <Input
           label="Password"
           type="password"
@@ -288,22 +230,28 @@ const SignUp = ({ email, onReturn, signUp }: SignUpProps) => {
 }
 
 export interface Props {
+  defaultEmail?: string
   onExit(): void
+  onSignIn?(): void
+  useIcon?: boolean
 }
 
-export const ConnectUnlockAccount = ({ onExit }: Props) => {
-  const [enteredEmail, setEnteredEmail] = useState('')
+export const ConnectUnlockAccount = ({
+  onExit,
+  onSignIn,
+  useIcon = true,
+  defaultEmail = '',
+}: Props) => {
   const [isValidEmail, setIsValidEmail] = useState(false)
 
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, account, connected, deAuthenticate } = useAuth()
+  const { email, deAuthenticate } = useAuth()
   // TODO: Consider adding a way to set the email address to Auth context
   const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
-
-  const requireSignIn = account && !connected
+  const storageService = useStorageService()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -324,10 +272,23 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onSubmitEmail = (email: string, existingUser: boolean) => {
-    setEnteredEmail(email)
-    setIsValidEmail(existingUser)
-  }
+  const onEmail = useCallback(
+    async ({ email }: { email: string }) => {
+      try {
+        const existingUser = await storageService.userExist(email)
+        setIsValidEmail(existingUser)
+      } catch (error) {
+        if (error instanceof Error) {
+          ToastHelper.error(`Email Error: ${error.message}`)
+        }
+      }
+    },
+    [storageService]
+  )
+
+  useEffect(() => {
+    onEmail({ email: defaultEmail })
+  }, [defaultEmail, onEmail])
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
@@ -335,6 +296,8 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
         <SignIn
           email={authEmail}
           signIn={signIn}
+          onSignIn={onSignIn}
+          useIcon={useIcon}
           onReturn={() => {
             signOut()
             deAuthenticate()
@@ -343,51 +306,31 @@ export const ConnectUnlockAccount = ({ onExit }: Props) => {
         />
       ) : (
         <>
-          {!enteredEmail && <EnterEmail onSubmitEmail={onSubmitEmail} />}
-          {enteredEmail && isValidEmail && (
+          {isValidEmail && (
             <SignIn
-              email={enteredEmail}
+              email={defaultEmail}
               signIn={signIn}
+              onSignIn={onSignIn}
+              useIcon={useIcon}
               onReturn={() => {
-                setEnteredEmail('')
+                onExit()
                 setIsValidEmail(false)
               }}
             />
           )}
-          {enteredEmail && !isValidEmail && (
+          {!isValidEmail && (
             <SignUp
-              email={enteredEmail}
+              email={defaultEmail}
               signUp={signUp}
+              onSignIn={onSignIn}
               onReturn={() => {
-                setEnteredEmail('')
+                onExit()
                 setIsValidEmail(false)
               }}
             />
           )}
         </>
       )}
-      <div className="grid gap-4 p-6">
-        {!requireSignIn && (
-          <div className="grid gap-2">
-            <CustomAnchorButton
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/find-wallet/"
-            >
-              Get a crypto wallet
-            </CustomAnchorButton>
-            <ConnectButton
-              icon={<WalletIcon size={24} />}
-              onClick={(event) => {
-                event.preventDefault()
-                onExit()
-              }}
-            >
-              <span>Back to using your crypto wallet</span>
-            </ConnectButton>
-          </div>
-        )}
-      </div>
     </div>
   )
 }

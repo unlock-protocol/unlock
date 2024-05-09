@@ -6,11 +6,17 @@ description: >-
 
 # Paywall
 
-The Paywall is a simple JavaScript library which can track state and emits
-events based on ownership of keys to specified locks. It can be used to trigger
-a the Checkout for purchasing keys.
+The Paywall is a simple JavaScript library which can track state and emits events based on ownership of keys to specified locks. It can be used to display a Checkout for purchasing keys.
 
-You can easily add it to any webpage with the following:
+The Paywall is [available on npm](https://www.npmjs.com/package/@unlock-protocol/paywall) as `@unlock-protocol/paywall`. Its README contains usage examples.
+
+## Configuration
+
+The Paywall shares a configuration object with the Checkout and you can find everything you need to know in [Checkout / Configuration](/tools/checkout/configuration#the-paywallconfig-object) about how to build out the JSON object you're going use.
+
+## Loading from a CDN
+
+You can also easily add it to any webpage with the following:
 
 ```javascript
 <script>
@@ -22,11 +28,7 @@ You can easily add it to any webpage with the following:
 </script>
 ```
 
-## Configuration
-
-The Paywall shares a configuration object with the Checkout and you can find
-everything you need to know in [Checkout / Configuration](/tools/checkout/configuration#the-paywallconfig-object) about how to build
-out the JSON object you're going use. Then assign it to a global variable `unlockProtocolConfig`.
+Then assign a configiration to a global variable `unlockProtocolConfig` to configure it:
 
 ```javascript
 <script>
@@ -37,17 +39,17 @@ out the JSON object you're going use. Then assign it to a global variable `unloc
 </script>
 ```
 
-## Events
+### Events
 
-Once loaded the script will trigger events on the page’s ​window​ object.
+When loaded asOnce loaded the script will trigger events on the page’s ​window​ object.
 
 Registering event listeners.
 
 ```javascript
-window.addEventListener("unlockProtocol.eventName", handler);
+window.addEventListener('unlockProtocol.eventName', handler)
 ```
 
-### Status
+#### Status
 
 **event** `unlockProtocol.status`
 
@@ -61,7 +63,7 @@ Handler event object properties.
 | ----- | ----------------------------------------------------------------- | --------------------------- |
 | state | Representing whether or not the connected wallet has a valid key. | locked or unlocked _string_ |
 
-### User info
+#### User info
 
 **event** `unlockProtocol.authenticated`
 
@@ -74,7 +76,7 @@ Triggered when a user authenticates.
 
 Note: if the event is triggered without any payload, please consider that the user has "logged out".
 
-### Transaction status
+#### Transaction status
 
 **event** `unlockProtocol.transactionSent`
 
@@ -83,13 +85,13 @@ Note: if the event is triggered without any payload, please consider that the us
 | hash | the Ethereum transaction         | _string_ |
 | lock | the Ethereum address of the lock | _string_ |
 
-### User metadata
+#### User metadata
 
 **event** `unlockProtocol.metadata`
 
 Sent collected metadata about all the recipients. This is triggered on confirmation of the transaction.
 
-## Pessimistic Unlocking
+### Pessimistic Unlocking
 
 One of the features of the paywall application is that it [optimistically unlocks the page](https://unlock-protocol.com/blog/hello-optimistic-unlocking/). This feature improves the customer experience by immediately emitting the `unlocked` event when a transaction is sent, as long as the transaction is likely enough to eventually succeed.
 
