@@ -96,7 +96,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
             />
             <FilterBar
               hideExpirationFilter={true}
-              hideApprovalFilter={false}
+              hideApprovalFilter={!event.requiresApproval}
               locks={checkoutConfig.config.locks}
               lockAddress={lockAddress}
               filters={filters}
