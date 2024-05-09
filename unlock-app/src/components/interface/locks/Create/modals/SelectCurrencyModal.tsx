@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useForm } from 'react-hook-form'
 interface SelectCurrencyModalProps {
+  defaultCurrencyAddress?: string
   isOpen: boolean
   setIsOpen: (status: boolean) => void
   network: number
@@ -20,6 +21,7 @@ interface SelectCurrencyModalProps {
 export const ZERO = ethers.constants.AddressZero
 
 export const SelectCurrencyModal = ({
+  defaultCurrencyAddress,
   isOpen,
   setIsOpen,
   network,
@@ -49,7 +51,6 @@ export const SelectCurrencyModal = ({
     500,
     [query]
   )
-  const { tokens: tokenItems = [] } = networks[network!] || {}
   const [tokens, setTokens] = useState<Token[]>([])
 
   const { register, resetField } = useForm({
@@ -60,6 +61,7 @@ export const SelectCurrencyModal = ({
   })
 
   useEffect(() => {
+    const { tokens: tokenItems = [] } = networks[network!] || {}
     setTokens([
       {
         name: defaultCurrency?.name,
@@ -68,7 +70,27 @@ export const SelectCurrencyModal = ({
       },
       ...tokenItems.filter((token: Token) => !!token.featured),
     ])
-  }, [defaultCurrency?.name, defaultCurrency?.symbol, network, tokenItems])
+  }, [defaultCurrency?.name, defaultCurrency?.symbol, network, networks])
+
+  useEffect(() => {
+    const init = async () => {
+      if (defaultCurrencyAddress) {
+        const symbol = await web3Service.getTokenSymbol(
+          defaultCurrencyAddress,
+          network
+        )
+        const token = {
+          name: symbol,
+          symbol: symbol,
+          address: defaultCurrencyAddress,
+        }
+
+        addToken(token)
+        onSelectToken(token)
+      }
+    }
+    init()
+  }, [defaultCurrencyAddress])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
