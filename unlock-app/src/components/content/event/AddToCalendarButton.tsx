@@ -9,7 +9,7 @@ import { getEventDate, getEventEndDate } from './utils'
 
 import {
   SiGooglecalendar,
-  SiMicrosoftoffice,
+  SiMicrosoft as SiMicrosoftoffice,
   SiMicrosoftoutlook,
 } from 'react-icons/si'
 
