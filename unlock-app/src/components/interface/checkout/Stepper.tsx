@@ -106,6 +106,7 @@ export const Stepper = ({
     hookType,
     existingMember,
     isRenew,
+    useDelegatedProvider,
   })
 
   const index = items.findIndex(
