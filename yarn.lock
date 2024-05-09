@@ -18965,8 +18965,6 @@ __metadata:
     postcss: "npm:8.4.38"
     prettier: "npm:3.0.0"
     raw-loader: "npm:4.0.2"
-    react: "npm:18.3.1"
-    react-dom: "npm:18.3.1"
     react-ga: "npm:3.3.1"
     react-gtm-module: "npm:2.0.11"
     react-showdown: "npm:2.3.1"
@@ -18981,6 +18979,9 @@ __metadata:
     use-local-storage: "npm:3.0.0"
     vitest: "npm:0.34.6"
     yaml-front-matter: "npm:4.1.1"
+  peerDependencies:
+    react: ^18
+    react-dom: ^18
   languageName: unknown
   linkType: soft
 
