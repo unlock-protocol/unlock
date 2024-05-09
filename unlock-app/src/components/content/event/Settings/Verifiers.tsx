@@ -1,4 +1,5 @@
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
+import Link from 'next/link'
 
 import { SettingCard } from '~/components/interface/locks/Settings/elements/SettingCard'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
@@ -23,9 +24,19 @@ export const Verifiers = ({ event, checkoutConfig }: VerifiersProps) => {
 
       <SettingCard
         label="TokenProof"
-        description="You can optionnaly choose to use TokenProof to verify tickets!"
+        description="You can optionaly choose to use TokenProof to verify tickets!"
       >
-        <p>Show video/guide here!</p>
+        <p>
+          Please follow the steps{' '}
+          <Link
+            target="_blank"
+            className="text-brand-ui-primary hover:underline"
+            href="https://unlock-protocol.com/guides/tokenproof/"
+          >
+            in this guide
+          </Link>
+          .
+        </p>
       </SettingCard>
     </div>
   )

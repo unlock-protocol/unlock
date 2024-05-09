@@ -73,11 +73,10 @@ const sidebars = {
           items: [
             "tools/checkout/configuration",
             "tools/checkout/collecting-metadata",
+            "tools/checkout/paywall",
           ],
         },
         "tools/unlock.js",
-        "tools/paywall",
-
         {
           type: "category",
           label: "Locksmith",

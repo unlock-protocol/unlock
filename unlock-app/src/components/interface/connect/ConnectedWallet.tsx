@@ -1,7 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ConnectButton } from './Custom'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
-import { AiOutlineDisconnect as DisconnectIcon } from 'react-icons/ai'
 import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
@@ -10,9 +8,13 @@ import BlockiesSvg from 'blockies-react-svg'
 
 interface ConnectedWalletProps {
   showIcon?: boolean
+  onNext?: () => void
 }
 
-export const ConnectedWallet = ({ showIcon = true }: ConnectedWalletProps) => {
+export const ConnectedWallet = ({
+  showIcon = true,
+  onNext,
+}: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
   const { closeConnectModal } = useConnectModal()
   const { session, signIn, signOut } = useSIWE()
@@ -73,8 +75,11 @@ export const ConnectedWallet = ({ showIcon = true }: ConnectedWalletProps) => {
           </Placeholder.Root>
         )}
         {session && !isDisconnecting && (
-          <div className="text-gray-700">
-            You are successfully verified as {minifyAddress(displayAccount!)}
+          <div className="flex flex-col gap-4">
+            <div className="text-gray-700">
+              You are successfully verified as {minifyAddress(displayAccount!)}
+            </div>
+            {onNext && <Button onClick={onNext}>Continue</Button>}
           </div>
         )}
         {!session && !isDisconnecting && !isUnlockAccount && (
@@ -87,15 +92,11 @@ export const ConnectedWallet = ({ showIcon = true }: ConnectedWalletProps) => {
             </Button>
           </div>
         )}
-      </div>
-      <div className="grid p-6">
-        <ConnectButton
-          onClick={onSignOut}
-          loading={isDisconnecting}
-          icon={<DisconnectIcon size={24} />}
-        >
-          Disconnect
-        </ConnectButton>
+        <div className="w-full flex items-center justify-end px-6 py-4">
+          <button onClick={onSignOut} className="hover:text-ui-main-600">
+            Sign Out
+          </button>
+        </div>
       </div>
     </div>
   )

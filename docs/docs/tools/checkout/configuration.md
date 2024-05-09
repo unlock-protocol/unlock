@@ -1,5 +1,5 @@
 ---
-title: Configuration
+title: Programatic Configuration
 description: >-
   When building a checkout URL or configuring the paywall, you can customize
   things. Here are docs on how to achieve this.
@@ -18,13 +18,12 @@ You can also programmatically build your own checkout URLs. All of the purchase 
 https://app.unlock-protocol.com/checkout?
 ```
 
-After this, you will need to include the following **required** parameters:
+After this, you will need to include either an `id` parameter, with the `id` of the configuration you saved thru the checkout builder, or the following **required** parameters:
 
 - `paywallConfig=...` where `...` is replaced with the URL-encoded version of a JSON `paywallConfig` object. The next section will show you how to build this object.
 - `redirectUri=...` where `...` is replaced with the URL-encodded address of a webpage where the user will be redirected when their membership is valid.
 
 These parameters are all separated by the `&` sign and you can use online tools such as [https://www.urlencoder.io/](https://www.urlencoder.io/) to build the encoded version of the parameters.
-Note: if you used the builder to create the Checkout URL, you can replace the `paywallConfig` with its `id`.
 
 Optionally, you can add the following parameters:
 
@@ -34,10 +33,10 @@ Optionally, you can add the following parameters:
 ### Example
 
 ```text
-https://app.unlock-protocol.com/checkout?redirectUri=https://ouvre-boite.com&paywallConfig=%7B%22locks%22%3A%7B%220x15F67811Beb43aCE162693fe1415916F87B8C5C2%22%3A%7B%22network%22%3A137%7D%7D%2C%22persistentCheckout%22%3Atrue%2C%22icon%22%3A%22https%3A%2F%2Frinkeby.locksmith.unlock-protocol.com%2Flock%2F0x15F67811Beb43aCE162693fe1415916F87B8C5C2%2Ficon%22%7D
+https://app.unlock-protocol.com/checkout?redirectUri=https://unlock-protocol.com/blog&paywallConfig=%7B%22locks%22%3A%7B%220x15F67811Beb43aCE162693fe1415916F87B8C5C2%22%3A%7B%22network%22%3A137%7D%7D%2C%22persistentCheckout%22%3Atrue%7D
 ```
 
-This URL will redirect members to this page [`https://ouvre-boite.com/`](https://ouvre-boite.com/).
+This URL will redirect members to this page [`https://unlock-protocol.com/blog`](https://unlock-protocol.com/blog).
 
 ## The paywallConfig object
 
@@ -52,7 +51,6 @@ The `paywallConfig` is a JSON object which includes a set of customizations for 
 - `pessimistic`: _optional boolean_ defaults to `false`. By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to `true`, users will need to wait for the transaction to have been mined in order to proceed to the next step.
 - `hideSoldOut`: _optional boolean_ defaults to `false`. When set to true, sold our locks are not shown to users when they load the checkout modal.
 - `expectedAddress`: _optional string_. If set, the user will be asked to switch their wallet address before proceeding. This is useful if you want to ensure that the user is using the same address as the one they used to purchase a membership.
-
 - `skipSelect`: _optional boolean_. Skip selection screen if only single lock is available.
 - `promo`: _optional string_. If set, it is used to pre-fill the promo code field on the checkout. a `promo` query string can also be passed as a query param when using the checkout URL. (note: requires the use of the discount code hook!)
 
@@ -74,8 +72,7 @@ The locks object is a list of objects indexed by the lock address, where each ob
 
 ### Network values
 
-Make sure you use a number and not a string! For the complete list check our
-[networks](../../core-protocol/unlock/networks) page.
+Make sure you use a number and not a string! For the complete list check our [networks](../../core-protocol/unlock/networks) page.
 
 ### Full example
 
