@@ -31,7 +31,7 @@ export function Password({ checkoutService }: Props) {
   const [isPasswordCorrect, setIsPasswordCorrect] = useState<boolean>(false)
 
   const web3Service = useWeb3Service()
-  const { recipients, lock, paywallConfig } = useSelector(
+  const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context
   )
@@ -164,10 +164,7 @@ export function Password({ checkoutService }: Props) {
         >
           Next
         </Button>
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={paywallConfig.useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

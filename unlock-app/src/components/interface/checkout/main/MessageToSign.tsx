@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function MessageToSign({ communication, checkoutService }: Props) {
-  const { messageToSign, useDelegatedProvider } = useSelector(
+  const { messageToSign } = useSelector(
     checkoutService,
     (state) => state.context.paywallConfig
   )
@@ -67,10 +67,7 @@ export function MessageToSign({ communication, checkoutService }: Props) {
         >
           Sign the message
         </Button>
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

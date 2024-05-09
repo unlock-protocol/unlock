@@ -8,10 +8,9 @@ import { useSelector } from '@xstate/react'
 
 interface DisconnectProps {
   service: CheckoutService
-  isDelegatedProvider: boolean | undefined
 }
 
-const Disconnect = ({ service, isDelegatedProvider }: DisconnectProps) => {
+const Disconnect = ({ service }: DisconnectProps) => {
   const state = useSelector(service, (state) => state)
   const { account, isUnlockAccount, deAuthenticate, email } = useAuth()
   const { signOut } = useSIWE()
@@ -37,7 +36,7 @@ const Disconnect = ({ service, isDelegatedProvider }: DisconnectProps) => {
     setIsDisconnecting(false)
   }
 
-  if (!account || isDelegatedProvider) {
+  if (!account || state.context.paywallConfig.useDelegatedProvider) {
     return null
   }
 

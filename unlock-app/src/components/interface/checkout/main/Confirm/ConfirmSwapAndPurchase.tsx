@@ -274,10 +274,7 @@ export function ConfirmSwapAndPurchase({
             {buttonLabel}
           </Button>
         </div>
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={paywallConfig.useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

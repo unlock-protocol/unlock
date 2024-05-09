@@ -65,7 +65,7 @@ const defaultPaymentMethods = {
 export function Payment({ checkoutService }: Props) {
   const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
-  const { recipients, paywallConfig } = state.context
+  const { recipients } = state.context
   const lock = state.context.lock!
   const { account, isUnlockAccount } = useAuth()
   const networkConfig = config.networks[lock.network]
@@ -496,10 +496,7 @@ export function Payment({ checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={paywallConfig.useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

@@ -141,10 +141,7 @@ export function Quantity({ checkoutService }: Props) {
             {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
           </Button>
         </div>
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={paywallConfig.useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

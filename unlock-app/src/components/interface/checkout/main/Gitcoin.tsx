@@ -24,7 +24,7 @@ interface CustomErrorType {
 }
 
 export function Gitcoin({ checkoutService }: Props) {
-  const { recipients, lock, paywallConfig } = useSelector(
+  const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context
   )
@@ -303,10 +303,7 @@ export function Gitcoin({ checkoutService }: Props) {
             Retry
           </Button>
         )}
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={paywallConfig.useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

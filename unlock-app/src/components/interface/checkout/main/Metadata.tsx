@@ -439,10 +439,7 @@ export function Metadata({ checkoutService }: Props) {
         >
           {isLoading ? 'Continuing' : 'Next'}
         </Button>
-        <Disconnect
-          service={checkoutService}
-          isDelegatedProvider={paywallConfig.useDelegatedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
