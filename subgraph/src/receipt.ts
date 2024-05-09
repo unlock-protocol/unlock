@@ -78,7 +78,8 @@ export function createReceipt(event: ethereum.Event): void {
   } else {
     log.debug('Creating receipt for base currency lock {}', [lockAddress])
     receipt.payer = event.transaction.from.toHexString()
-    receipt.amountTransferred = event.transaction.value
+    receipt.amountTransferred = event.transaction.value // Ok this is not what we need to look at!
+    // We need to get the value of the "sub transaction"?
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
