@@ -60,7 +60,7 @@ export function ConfirmConnect({
 
   return (
     <ConnectPage
-      style="h-full px-6 py-2 pb-2 space-y-5 gap-2 overflow-hidden"
+      style="h-full mt-4 space-y-4 overflow-hidden"
       connected={connected}
       onNext={onSignIn}
     />
