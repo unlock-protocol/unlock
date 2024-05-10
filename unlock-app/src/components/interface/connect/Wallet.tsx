@@ -67,15 +67,8 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
             },
           })}
         />
-        <Button type="submit" loading={isSubmitting} className="p-0.5">
-          <div className="flex justify-center items-center gap-2">
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className=" fill-white"
-            />
-            Continue with Email
-          </div>
+        <Button type="submit" loading={isSubmitting} className="p-2.5">
+          Continue with Email
         </Button>
       </form>
     </div>

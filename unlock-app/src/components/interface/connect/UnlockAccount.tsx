@@ -1,4 +1,4 @@
-import { Input } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
@@ -96,19 +96,9 @@ const SignIn = ({
           })}
           error={errors.password?.message}
         />
-        <ConnectButton
-          primary
-          loading={isSubmitting}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Sign In
-        </ConnectButton>
+        <Button type="submit" loading={isSubmitting} className="p-2.5">
+          <div className="flex justify-center items-center gap-2">Sign In</div>
+        </Button>
       </form>
       <div className="flex items-center justify-end px-6 py-4">
         <button
@@ -199,20 +189,11 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
           })}
           error={errors.confirmPassword?.message}
         />
-        <ConnectButton
-          type="submit"
-          primary
-          loading={isSubmitting}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Create an account
-        </ConnectButton>
+        <Button type="submit" loading={isSubmitting} className="p-2.5">
+          <div className="flex justify-center items-center gap-2">
+            Create an account
+          </div>
+        </Button>
       </form>
       <div className="flex items-center justify-end px-6">
         <button
