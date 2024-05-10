@@ -26,7 +26,7 @@ export const core: NetworkConfig = {
     symbol: 'CORE',
     wrapped: '0x40375C92d9FAf44d2f9db9Bd9ba41a3317a2404f',
   },
-  provider: 'https://rpc.unlock-protocol.com/1116',
+  provider: 'https://rpc.coredao.org/',
   publicLockVersionToDeploy: 14,
   publicProvider: 'https://rpc.coredao.org/',
   startBlock: undefined,
