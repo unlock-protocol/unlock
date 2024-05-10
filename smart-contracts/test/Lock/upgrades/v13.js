@@ -40,10 +40,9 @@ describe('PublicLock upgrade v12 > v13', () => {
         { contractName: 'PublicLock', version: nextVersionNumber },
       ])
 
+    // deploy past and latest version
     PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
     PublicLockLatest = await ethers.getContractFactory(pathPublicLockLatest)
-
-    // deploy latest version
 
     // deploy a simple lock
     const [, lockOwner] = await ethers.getSigners()
@@ -83,9 +82,9 @@ describe('PublicLock upgrade v12 > v13', () => {
         await Promise.all(buyers.map((k) => k.getAddress())),
         buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => ADDRESS_ZERO),
-        buyers.map(() => []),
+        buyers.map(() => '0x'),
         {
-          value: keyPrice * buyers.length,
+          value: keyPrice * BigInt(buyers.length),
         }
       )
       const receipt = await tx.wait()
@@ -176,9 +175,9 @@ describe('PublicLock upgrade v12 > v13', () => {
           await Promise.all(buyers.map((k) => k.getAddress())),
           buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => []),
+          buyers.map(() => '0x'),
           {
-            value: (keyPrice * buyers.length).toFixed(),
+            value: keyPrice * BigInt(buyers.length),
           }
         )
         const receipt = await tx.wait()

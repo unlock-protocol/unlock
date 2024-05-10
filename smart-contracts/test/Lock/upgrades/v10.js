@@ -79,7 +79,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
               await keyOwner.getAddress(),
               ADDRESS_ZERO,
               ADDRESS_ZERO,
-              [],
+              '0x',
               {
                 value: keyPrice,
               }
@@ -138,9 +138,9 @@ describe('PublicLock upgrade  v9 > v10', () => {
             await Promise.all(buyers.map((k) => k.getAddress())),
             buyers.map(() => ADDRESS_ZERO),
             buyers.map(() => ADDRESS_ZERO),
-            buyers.map(() => []),
+            buyers.map(() => '0x'),
             {
-              value: (keyPrice * buyers.length).toFixed(),
+              value: keyPrice * BigInt(buyers.length),
             }
           ),
           'MIGRATION_REQUIRED'
@@ -223,9 +223,9 @@ describe('PublicLock upgrade  v9 > v10', () => {
           await Promise.all(buyers.map((k) => k.getAddress())),
           buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => []),
+          buyers.map(() => '0x'),
           {
-            value: (keyPrice * buyers.length).toFixed(),
+            value: keyPrice * BigInt(buyers.length),
           }
         )
         const receipt = await tx.wait()

@@ -77,9 +77,9 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
         await Promise.all(buyers.map((k) => k.getAddress())),
         buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => ADDRESS_ZERO),
-        buyers.map(() => []),
+        buyers.map(() => '0x'),
         {
-          value: keyPrice * buyers.length,
+          value: keyPrice * BigInt(buyers.length),
         }
       )
       const receipt = await tx.wait()
@@ -131,7 +131,7 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
     describe('data migration', () => {
       before(async () => {
         const [, lockOwner] = await ethers.getSigners()
-        await lock.connect(lockOwner).migrate([])
+        await lock.connect(lockOwner).migrate('0x')
       })
 
       it('schemaVersion has been updated', async () => {
@@ -165,9 +165,9 @@ describe(`PublicLock upgrade v${previousVersionNumber} > v${nextVersionNumber}`,
           await Promise.all(buyers.map((k) => k.getAddress())),
           buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => []),
+          buyers.map(() => '0x'),
           {
-            value: (keyPrice * buyers.length).toFixed(),
+            value: keyPrice * BigInt(buyers.length),
           }
         )
         const receipt = await tx.wait()

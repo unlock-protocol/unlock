@@ -31,7 +31,7 @@ const purchaseFails = async (lock) => {
       await Promise.all(someBuyers.map((k) => k.getAddress())),
       someBuyers.map(() => ADDRESS_ZERO),
       someBuyers.map(() => ADDRESS_ZERO),
-      someBuyers.map(() => []),
+      someBuyers.map(() => '0x'),
       {
         value: (keyPrice * someBuyers.length).toFixed(),
       }
@@ -408,7 +408,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
               await Promise.all(someBuyers.map((k) => k.getAddress())),
               someBuyers.map(() => ADDRESS_ZERO),
               someBuyers.map(() => ADDRESS_ZERO),
-              someBuyers.map(() => []),
+              someBuyers.map(() => '0x'),
               {
                 value: (keyPrice * someBuyers.length).toFixed(),
               }

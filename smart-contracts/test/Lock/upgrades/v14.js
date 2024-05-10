@@ -41,7 +41,7 @@ describe('PublicLock upgrade v13 > v14', () => {
     PublicLockPast = await ethers.getContractFactory(pathPublicLockPast)
     PublicLockLatest = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
-    )()
+    )
 
     // deploy latest version
 
@@ -83,9 +83,9 @@ describe('PublicLock upgrade v13 > v14', () => {
         await Promise.all(buyers.map((k) => k.getAddress())),
         buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => ADDRESS_ZERO),
-        buyers.map(() => []),
+        buyers.map(() => '0x'),
         {
-          value: keyPrice * buyers.length,
+          value: keyPrice * BigInt(buyers.length),
         }
       )
       const receipt = await tx.wait()
@@ -176,9 +176,9 @@ describe('PublicLock upgrade v13 > v14', () => {
           await Promise.all(buyers.map((k) => k.getAddress())),
           buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => []),
+          buyers.map(() => '0x'),
           {
-            value: (keyPrice * buyers.length).toFixed(),
+            value: keyPrice * BigInt(buyers.length),
           }
         )
         const receipt = await tx.wait()

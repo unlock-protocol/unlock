@@ -405,7 +405,7 @@ describe('Unlock / upgrades', async () => {
 
               it('grossNetworkProduct sums previous version purchases with new version purchases', async () => {
                 const grossNetworkProduct = await unlock.grossNetworkProduct()
-                assert.equal(grossNetworkProduct == BigInt(keyPrice) * 2, true)
+                assert.equal(grossNetworkProduct == keyPrice * 2n, true)
               })
 
               it('Latest Key is owned', async () => {
@@ -466,7 +466,7 @@ describe('Unlock / upgrades', async () => {
               await keyOwner.getAddress(),
               ADDRESS_ZERO,
               ADDRESS_ZERO,
-              [],
+              '0x',
               {
                 value: keyPrice,
               }

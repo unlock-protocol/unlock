@@ -46,7 +46,7 @@ describe('UnlockProtocolGovernor', () => {
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await advanceBlockTo(deadline + 1)
+    await advanceBlockTo(deadline + 1n)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
@@ -207,10 +207,8 @@ describe('UnlockProtocolGovernor', () => {
         assert.equal(changed == votingPeriod, true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find(
-          (v) => v.event === 'VotingPeriodUpdated'
-        )
-        const { oldVotingPeriod, newVotingPeriod } = evt.args
+        const { args } = await getEvent(updateTx, 'VotingPeriodUpdated')
+        const { oldVotingPeriod, newVotingPeriod } = args
         assert.equal(newVotingPeriod == votingPeriod, true)
         // nb: old value is the one we enforced through eth_storageAt
         assert.equal(oldVotingPeriod, 50)
@@ -239,10 +237,8 @@ describe('UnlockProtocolGovernor', () => {
         assert.equal(changed == votingDelay, true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find(
-          (v) => v.event === 'VotingDelayUpdated'
-        )
-        const { oldVotingDelay, newVotingDelay } = evt.args
+        const { args } = await getEvent(updateTx, 'VotingDelayUpdated')
+        const { oldVotingDelay, newVotingDelay } = args
         assert.equal(newVotingDelay, votingDelay)
         assert.equal(oldVotingDelay, 1)
       })

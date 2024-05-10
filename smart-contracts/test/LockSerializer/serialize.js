@@ -88,7 +88,7 @@ describe('LockSerializer', () => {
           await Promise.all(purchasers.map((p) => p.getAddress())),
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => ADDRESS_ZERO),
-          purchasers.map(() => []),
+          purchasers.map(() => '0x'),
           { value: keyPrice * purchasers.length }
         )
       })
