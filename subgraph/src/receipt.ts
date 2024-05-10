@@ -1,5 +1,5 @@
 import { BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
-import { ERC20_TRANSFER_TOPIC0, nullAddress } from '../tests/constants'
+import { GNP_CHANGED_TOPIC0, nullAddress } from '../tests/constants'
 
 import { Lock, Receipt } from '../generated/schema'
 
@@ -32,13 +32,14 @@ export function createReceipt(event: ethereum.Event): void {
     ? lock.tokenAddress
     : Bytes.fromHexString(nullAddress)
 
+  const txReceipt = event.receipt!
+  const logs: ethereum.Log[] = txReceipt.logs
+
   if (tokenAddress != Bytes.fromHexString(nullAddress)) {
     log.debug('Creating receipt for ERC20 lock {} {}', [
       lockAddress,
       tokenAddress.toHexString(),
     ])
-    const txReceipt = event.receipt!
-    const logs: ethereum.Log[] = txReceipt.logs
 
     if (logs) {
       // If it is an ERC20 lock, there should be multiple events
@@ -78,8 +79,23 @@ export function createReceipt(event: ethereum.Event): void {
   } else {
     log.debug('Creating receipt for base currency lock {}', [lockAddress])
     receipt.payer = event.transaction.from.toHexString()
-    receipt.amountTransferred = event.transaction.value // Ok this is not what we need to look at!
-    // We need to get the value of the "sub transaction"?
+    receipt.amountTransferred = event.transaction.value
+    // We cannot trust `event.transaction.value` because the purchase function could in fact
+    // be happening inside of a larger transaction whose value is not the amount transfered,
+    // In that case, we need to look up the GNPChanged event
+    if (logs) {
+      for (let i = 0; i < logs.length; i++) {
+        const txLog = logs[i]
+
+        if (
+          // txLog.address == UNLOCK_ADDRESS &&
+          txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
+        ) {
+          const value = ethereum.decode('uint256', txLog.topics[3])!.toBigInt()
+          receipt.amountTransferred = value
+        }
+      }
+    }
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
@@ -149,7 +165,7 @@ export function tryCreateCancelReceipt(event: ethereum.Event): boolean {
 
       if (
         txLog.address == tokenAddress &&
-        txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0 &&
+        txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0 &&
         txLog.topics.length >= 3
       ) {
         log.debug('Creating receipt for ERC20 lock {} {}', [
