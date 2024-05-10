@@ -13,6 +13,8 @@ import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
 import listManagers from '../../utils/lockManagers'
 import { removeProtectedAttributesFromObject } from '../../utils/protectedAttributes'
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
+import { sendEmail } from '../../operations/wedlocksOperations'
+import { getEventUrl } from '../../utils/eventHelpers'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -29,6 +31,7 @@ export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
   checkoutConfig: z.object({
+    // @ts-expect-error object incomplete
     config: PaywallConfig,
     id: z.string().optional(),
   }),
@@ -56,6 +59,23 @@ export const saveEventDetails: RequestHandler = async (request, response) => {
     parsedBody,
     request.user!.walletAddress
   )
+
+  // This was a creation!
+  if (created) {
+    await sendEmail({
+      template: 'eventDeployed',
+      recipient: event.data.replyTo,
+      // @ts-expect-error object incomplete
+      params: {
+        eventName: event!.name,
+        eventDate: event!.data.ticket.event_start_date,
+        eventTime: event!.data.ticket.event_start_time,
+        eventUrl: getEventUrl(event!),
+      },
+      attachments: [],
+    })
+  }
+
   const statusCode = created ? 201 : 200
   return response.status(statusCode).send(event.toJSON())
 }
@@ -164,6 +184,7 @@ export const getEvent: RequestHandler = async (request, response) => {
           })
         )[0]
       )
+
       return response.status(200).send({
         data: { ...lockData },
         checkoutConfig,
