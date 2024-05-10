@@ -1,5 +1,9 @@
 import { BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
-import { GNP_CHANGED_TOPIC0, nullAddress } from '../tests/constants'
+import {
+  GNP_CHANGED_TOPIC0,
+  ERC20_TRANSFER_TOPIC0,
+  nullAddress,
+} from '../tests/constants'
 
 import { Lock, Receipt } from '../generated/schema'
 
@@ -165,7 +169,7 @@ export function tryCreateCancelReceipt(event: ethereum.Event): boolean {
 
       if (
         txLog.address == tokenAddress &&
-        txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0 &&
+        txLog.topics[0].toHexString() == ERC20_TRANSFER_TOPIC0 &&
         txLog.topics.length >= 3
       ) {
         log.debug('Creating receipt for ERC20 lock {} {}', [
