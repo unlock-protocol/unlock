@@ -93,7 +93,10 @@ export const ConnectedWallet = ({
           </div>
         )}
         <div className="w-full flex items-center justify-end px-6 py-4">
-          <button onClick={onSignOut} className="hover:text-ui-main-600">
+          <button
+            onClick={onSignOut}
+            className="hover:text-ui-main-600 underline"
+          >
             Sign Out
           </button>
         </div>
