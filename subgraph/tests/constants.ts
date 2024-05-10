@@ -32,7 +32,8 @@ export const symbol = 'METAKEY'
 export const baseTokenURI = 'https:/custom-lock.com/api/key/'
 
 // default address used in newMockEvent() function
-export const defaultMockAddress = '0xA16081F360e3847006dB660bae1c6d1b2e17eC2A'
+export const defaultMockAddress =
+  '0xA16081F360e3847006dB660bae1c6d1b2e17eC2A'.toLowerCase()
 export const nullAddress = '0x0000000000000000000000000000000000000000'
 
 // TODO: compile from contract ABI

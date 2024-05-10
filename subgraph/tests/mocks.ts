@@ -65,6 +65,14 @@ createMockedFunction(
 
 createMockedFunction(
   Address.fromString(lockAddress),
+  'unlockProtocol',
+  'unlockProtocol():(address)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromAddress(Address.fromString(nullAddress))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
   'publicLockVersion',
   'publicLockVersion():(uint256)'
 )
