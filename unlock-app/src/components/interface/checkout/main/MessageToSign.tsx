@@ -63,7 +63,7 @@ export function MessageToSign({ communication, checkoutService }: Props) {
           disabled={!account || isSigning}
           loading={isSigning}
           onClick={onSign}
-          className="w-full"
+          className="w-full rounded-xl"
         >
           Sign the message
         </Button>

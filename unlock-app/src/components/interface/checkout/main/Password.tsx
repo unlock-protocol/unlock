@@ -157,7 +157,7 @@ export function Password({ checkoutService }: Props) {
         <Button
           type="submit"
           form="password"
-          className="w-full"
+          className="w-full rounded-xl"
           disabled={!isPasswordCorrect}
           loading={isSubmitting}
           onClick={handleSubmit(onSubmit)}

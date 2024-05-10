@@ -294,7 +294,7 @@ export function Gitcoin({ checkoutService }: Props) {
         {/* Retry verification button */}
         {isError && (
           <Button
-            className="w-full"
+            className="w-full rounded-xl"
             onClick={(event) => {
               event.preventDefault()
               refetch()

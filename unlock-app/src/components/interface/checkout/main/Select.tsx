@@ -480,7 +480,11 @@ export function Select({ checkoutService }: Props) {
               continue.
             </p>
           )}
-          <Button disabled={isDisabled} onClick={selectLock}>
+          <Button
+            disabled={isDisabled}
+            onClick={selectLock}
+            className="rounded-xl"
+          >
             Next
           </Button>
         </div>

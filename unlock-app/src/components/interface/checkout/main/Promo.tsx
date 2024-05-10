@@ -165,7 +165,7 @@ export function PromoContent({
         <Button
           type="submit"
           form="promo"
-          className="w-full"
+          className="w-full rounded-xl"
           disabled={isSubmitting || promoCodeLoading}
           loading={isSubmitting}
           onClick={handleSubmit(onSubmit)}

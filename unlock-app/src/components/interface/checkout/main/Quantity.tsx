@@ -129,6 +129,7 @@ export function Quantity({ checkoutService }: Props) {
       <footer className="items-center px-6 pt-6 border-t">
         <div className="grid">
           <Button
+            className="rounded-xl"
             disabled={isDisabled}
             onClick={async (event) => {
               event.preventDefault()

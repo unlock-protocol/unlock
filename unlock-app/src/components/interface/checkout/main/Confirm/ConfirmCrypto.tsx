@@ -291,6 +291,7 @@ export function ConfirmCrypto({
       <footer className="grid items-center px-6 pt-6 border-t">
         <div className="grid">
           <Button
+            className="rounded-xl"
             loading={isConfirming}
             disabled={
               isConfirming || isLoading || !canAfford || isPricingDataError

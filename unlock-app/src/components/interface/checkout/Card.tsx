@@ -31,7 +31,7 @@ export function Card({
         </time>
       </div>
       <div className="flex items-center justify-end p-2">
-        <Button onClick={onChange} size="small">
+        <Button onClick={onChange} size="small" className="rounded-xl">
           Change
         </Button>
       </div>

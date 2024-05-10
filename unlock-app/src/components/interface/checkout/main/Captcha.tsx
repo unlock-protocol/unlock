@@ -70,7 +70,7 @@ export function Captcha({ checkoutService }: Props) {
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
-          className="w-full"
+          className="w-full rounded-xl"
           disabled={!recaptchaValue || isContinuing}
           loading={isContinuing}
           onClick={(event) => {

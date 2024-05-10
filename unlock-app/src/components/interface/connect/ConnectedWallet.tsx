@@ -79,7 +79,11 @@ export const ConnectedWallet = ({
             <div className="text-gray-700">
               You are successfully verified as {minifyAddress(displayAccount!)}
             </div>
-            {onNext && <Button onClick={onNext}>Continue</Button>}
+            {onNext && (
+              <Button onClick={onNext} className="rounded-xl">
+                Continue
+              </Button>
+            )}
           </div>
         )}
         {!session && !isDisconnecting && !isUnlockAccount && (
@@ -87,7 +91,11 @@ export const ConnectedWallet = ({
             <h3 className="text-gray-700">
               Sign message to confirm ownership of your account
             </h3>
-            <Button loading={isSigningIn} onClick={onSignIn}>
+            <Button
+              loading={isSigningIn}
+              onClick={onSignIn}
+              className="rounded-xl"
+            >
               Confirm Ownership
             </Button>
           </div>

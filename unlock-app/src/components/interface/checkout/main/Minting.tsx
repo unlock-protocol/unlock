@@ -1,5 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
-import { Icon } from '@unlock-protocol/ui'
+import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'

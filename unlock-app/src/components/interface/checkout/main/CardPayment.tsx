@@ -86,13 +86,13 @@ export function CardPayment({ checkoutService }: Props) {
             disabled={isMethodLoading || isSaving || !stripe}
             type="submit"
             form="payment"
-            className="w-full"
+            className="rounded-xl w-full"
           >
             Next
           </Button>
         ) : (
           <Button
-            className="w-full"
+            className="rounded-xl w-full"
             disabled={!card}
             onClick={() => {
               checkoutService.send({

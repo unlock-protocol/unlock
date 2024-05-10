@@ -31,7 +31,7 @@ export const AddToWallet = ({
   }
 
   return (
-    <div className="w-full h-1/5 bg-gray-200 flex items-center justify-between rounded-md px-4 py-1 bg-opacity-60">
+    <div className="w-full h-1/5 bg-gray-200 flex items-center justify-between rounded-xl px-4 py-1 bg-opacity-60">
       <p className="font-bold">Add to Wallet</p>
       <div className="flex items-center justify-around w-1/2 h-full">
         <Tooltip.Provider delayDuration={100}>

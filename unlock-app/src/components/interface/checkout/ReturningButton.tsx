@@ -38,7 +38,7 @@ export const ReturningButton = forwardRef(
         disabled={disabled}
         loading={loading}
         onClick={onClick}
-        className="w-full"
+        className="w-full rounded-xl"
         ref={ref}
       >
         {loading ? loadingLabel : endingCallToAction}

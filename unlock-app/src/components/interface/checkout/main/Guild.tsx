@@ -235,7 +235,7 @@ export function Guild({ checkoutService }: Props) {
       <footer className="grid items-center px-6 pt-6 border-t">
         <Button
           type="submit"
-          className="w-full"
+          className="w-full rounded-xl"
           disabled={isLoadingGuildData || disabled}
           loading={isLoading}
           onClick={onSubmit}

@@ -14,9 +14,9 @@ import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
 import Image from 'next/image'
 import { isAndroid, isIOS } from 'react-device-detect'
 import { isEthPassSupported, Platform } from '~/services/ethpass'
-import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { ReturningButton } from '../ReturningButton'
 
 interface Props {
   checkoutService: CheckoutService
@@ -166,7 +166,7 @@ export function Returning({ checkoutService, communication, onClose }: Props) {
               disabled={isSigningMessage}
               loading={isSigningMessage}
               onClick={onSign}
-              className="w-full"
+              className="w-full rounded-xl"
             >
               Sign message
             </Button>
@@ -185,7 +185,7 @@ export function Returning({ checkoutService, communication, onClose }: Props) {
               />
               {!lock?.isSoldOut && (
                 <Button
-                  className="w-full"
+                  className="w-full rounded-xl"
                   onClick={() =>
                     checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
                   }

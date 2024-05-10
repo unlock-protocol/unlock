@@ -434,7 +434,7 @@ export function Metadata({ checkoutService }: Props) {
         <Button
           loading={isLoading}
           disabled={isLoading || isMemberLoading}
-          className="w-full"
+          className="w-full rounded-xl"
           form="metadata"
         >
           {isLoading ? 'Continuing' : 'Next'}
