@@ -3,7 +3,7 @@ import { FaRegCalendarPlus } from 'react-icons/fa'
 
 import {
   SiGooglecalendar,
-  SiMicrosoft as SiMicrosoftoffice,
+  SiMicrosoftoffice,
   SiMicrosoftoutlook,
 } from 'react-icons/si'
 import { BsCalendarDate } from 'react-icons/bs'

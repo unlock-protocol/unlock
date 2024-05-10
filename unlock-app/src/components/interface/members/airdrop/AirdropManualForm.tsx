@@ -46,6 +46,7 @@ export function AirdropInternalForm({
     control,
     formState: { errors, isSubmitting },
   } = useForm<AirdropMember>({
+    // @ts-expect-error
     defaultValues,
     mode: 'onSubmit',
   })

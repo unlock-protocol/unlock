@@ -15,13 +15,11 @@ export function useStepperItems(
     hookType,
     isRenew,
     existingMember: isExistingMember,
-    useDelegatedProvider,
   }: {
     isRenew?: boolean
     isUnlockAccount?: boolean
     hookType?: CheckoutHookType
     existingMember?: boolean
-    useDelegatedProvider?: boolean
   } = {}
 ) {
   const {
@@ -62,76 +60,70 @@ export function useStepperItems(
       name: 'Select',
       to: 'SELECT',
     },
-  ]
-  if (!useDelegatedProvider) {
-    checkoutItems.push({
+    {
       name: 'Connect',
       to: isUnlockAccount ? 'UNLOCK_ACCOUNT' : 'CONNECT',
-    })
-  }
-  checkoutItems.push(
-    ...[
-      {
-        name: 'Choose quantity',
-        skip: (!hasOneLock ? skipQuantity : skipLockQuantity) || isExpired,
-        to: 'QUANTITY',
-      },
-      {
-        name: 'Recipient(s)',
-        to: 'METADATA',
-        skip:
-          (!hasOneLock
-            ? skipRecipient && skipQuantity && !isMember
-            : skipLockQuantity && skipLockRecipient && !isMember) || isExpired,
-      },
-      {
-        name: 'Sign message',
-        skip: !paywallConfig.messageToSign,
-        to: 'MESSAGE_TO_SIGN',
-      },
-      isPassword
-        ? {
-            name: 'Submit password',
-            to: 'PASSWORD',
-          }
-        : isPromo
-        ? {
-            name: 'Enter promo code',
-            to: 'PROMO',
-          }
-        : isGuild
-        ? {
-            name: 'Guild',
-            to: 'GUILD',
-          }
-        : isGitcoin
-        ? {
-            name: 'Gitcoin Passport Verification',
-            to: 'GITCOIN',
-          }
-        : {
-            name: 'Solve captcha',
-            to: 'CAPTCHA',
-            skip: !isCaptcha,
-          },
-      {
-        name: 'Payment method',
-        to: 'PAYMENT',
-      },
-      {
-        name: 'Add card',
-        to: 'CARD',
-        skip: !['card'].includes(payment?.method),
-      },
-      {
-        name: 'Confirm',
-        to: 'CONFIRM',
-      },
-      {
-        name: 'Minting NFT',
-      },
-    ]
-  )
+    },
+    {
+      name: 'Choose quantity',
+      skip: (!hasOneLock ? skipQuantity : skipLockQuantity) || isExpired,
+      to: 'QUANTITY',
+    },
+    {
+      name: 'Recipient(s)',
+      to: 'METADATA',
+      skip:
+        (!hasOneLock
+          ? skipRecipient && skipQuantity && !isMember
+          : skipLockQuantity && skipLockRecipient && !isMember) || isExpired,
+    },
+    {
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    isPassword
+      ? {
+          name: 'Submit password',
+          to: 'PASSWORD',
+        }
+      : isPromo
+      ? {
+          name: 'Enter promo code',
+          to: 'PROMO',
+        }
+      : isGuild
+      ? {
+          name: 'Guild',
+          to: 'GUILD',
+        }
+      : isGitcoin
+      ? {
+          name: 'Gitcoin Passport Verification',
+          to: 'GITCOIN',
+        }
+      : {
+          name: 'Solve captcha',
+          to: 'CAPTCHA',
+          skip: !isCaptcha,
+        },
+    {
+      name: 'Payment method',
+      to: 'PAYMENT',
+    },
+    {
+      name: 'Add card',
+      to: 'CARD',
+      skip: !['card'].includes(payment?.method),
+    },
+    {
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      name: 'Minting NFT',
+    },
+  ]
 
   return checkoutItems
 }
