@@ -1,4 +1,4 @@
-import { BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
+import { BigInt, log, Bytes, ethereum, Address } from '@graphprotocol/graph-ts'
 import {
   GNP_CHANGED_TOPIC0,
   ERC20_TRANSFER_TOPIC0,
@@ -89,14 +89,14 @@ export function createReceipt(event: ethereum.Event): void {
     // be happening inside of a larger transaction whose value is not the amount transfered,
     // In that case, we need to look up the GNPChanged event
     if (logs) {
-      const lockContract = PublicLock.bind(lockAddress)
+      const lockContract = PublicLock.bind(Address.fromString(lockAddress))
       const unlockAddress = lockContract.try_unlockProtocol()
 
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
 
         if (
-          txLog.address == unlockAddress &&
+          txLog.address.toHexString() == unlockAddress &&
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
           const value = ethereum.decode('uint256', txLog.topics[3])!.toBigInt()
