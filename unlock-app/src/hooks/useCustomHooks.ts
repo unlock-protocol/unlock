@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { HookMapping } from '~/components/interface/locks/Settings/forms/UpdateHooksForm'
+import { ADDRESS_ZERO } from '~/constants'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface GetHookValuesProps {
@@ -30,7 +30,7 @@ export function useCustomHook({
             })
             values = {
               ...values,
-              [fieldName]: hookValue || ZERO,
+              [fieldName]: hookValue || ADDRESS_ZERO,
             }
           }
         }

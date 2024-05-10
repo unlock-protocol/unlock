@@ -11,6 +11,7 @@ import { getAccountTokenBalance } from './useAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { ADDRESS_ZERO } from '~/constants'
 
 export interface UniswapRoute {
   network: number
@@ -67,7 +68,7 @@ export const useUniswapRoutes = ({
       const network = lock.network
       const isErc20 =
         lock.currencyContractAddress &&
-        lock.currencyContractAddress !== ethers.constants.AddressZero
+        lock.currencyContractAddress !== ADDRESS_ZERO
 
       const tokenOut = isErc20
         ? new Token(

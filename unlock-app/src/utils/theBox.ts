@@ -2,6 +2,7 @@ import { Lock } from '~/unlockTypes'
 import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
+import { ADDRESS_ZERO } from '~/constants'
 
 export interface BoxActionRequest {
   sender: string
@@ -59,9 +60,9 @@ export const getCrossChainRoutes = async ({
   const actionRequest: BoxActionRequest = {
     srcChainId: 1, // we be replaced when looping over networks
     sender,
-    srcToken: ethers.constants.AddressZero, // use the native token. Later: check the user balances!
+    srcToken: ADDRESS_ZERO, // use the native token. Later: check the user balances!
     dstChainId: lock.network,
-    dstToken: lock.currencyContractAddress || ethers.constants.AddressZero,
+    dstToken: lock.currencyContractAddress || ADDRESS_ZERO,
     slippage: 1, // 1%
     actionType: 'nft-mint',
     actionConfig: {
