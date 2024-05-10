@@ -19,11 +19,15 @@ const {
 } = require('../helpers')
 
 const unlockVersions = getUnlockVersionNumbers()
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 
-describe('Unlock / upgrades', async () => {
-  const [unlockOwner, lockOwner, keyOwner, anotherAccount] =
-    await ethers.getSigners()
-  const keyPrice = ethers.parseUnits('0.01', 'ether')
+describe('Unlock / upgrades', () => {
+  let unlockOwner, lockOwner, keyOwner, anotherAccount
+
+  before(async () => {
+    ;[unlockOwner, lockOwner, keyOwner, anotherAccount] =
+      await ethers.getSigners()
+  })
 
   after(async () => await cleanupContractVersions(__dirname))
 
@@ -324,7 +328,7 @@ describe('Unlock / upgrades', async () => {
                 )
               const receipt = await tx.wait()
               const evt = await getEvent(receipt, 'Transfer')
-              assert.equal(evt.event, 'Transfer')
+              assert.equal(evt.event.fragment.name, 'Transfer')
             })
 
             it('grossNetworkProduct remains', async () => {
