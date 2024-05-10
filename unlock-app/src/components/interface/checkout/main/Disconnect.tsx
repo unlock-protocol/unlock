@@ -36,7 +36,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
     setIsDisconnecting(false)
   }
 
-  if (!account) {
+  if (!account || state.context.paywallConfig.useDelegatedProvider) {
     return null
   }
 
