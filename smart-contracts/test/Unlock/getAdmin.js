@@ -1,5 +1,5 @@
 const { assert } = require('chai')
-const { upgrades } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 const { deployContracts, getProxyAdminAddress } = require('../helpers')
 
 describe('Unlock / getAdmin', () => {
@@ -8,8 +8,10 @@ describe('Unlock / getAdmin', () => {
     const admin = await unlock.getAdmin()
 
     // get instance from OZ plugin
-    const proxyAdmin = await upgrades.admin.getInstance()
-    assert.equal(await proxyAdmin.getAddress(), admin)
+    const proxyAdminAddress = await upgrades.erc1967.getAdminAddress(
+      await unlock.getAddress()
+    )
+    assert.equal(proxyAdminAddress, admin)
 
     // make sure it matches with address from storage
     assert.equal(
@@ -18,8 +20,14 @@ describe('Unlock / getAdmin', () => {
     )
 
     // change unlock proxyAdmin
-    const newProxyAdmin = await upgrades.deployProxyAdmin()
-    await proxyAdmin.changeProxyAdmin(await unlock.getAddress(), newProxyAdmin)
+    const ProxyAdminFactory = await ethers.getContractFactory(
+      'contracts/utils/UnlockProxyAdmin.sol:ProxyAdmin'
+    )
+    const newProxyAdmin = await ProxyAdminFactory.deploy()
+    await upgrades.admin.changeProxyAdmin(
+      await unlock.getAddress(),
+      await newProxyAdmin.getAddress()
+    )
     assert.equal(await unlock.getAdmin(), newProxyAdmin)
   })
 })

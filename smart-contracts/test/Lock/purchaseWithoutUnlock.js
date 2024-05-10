@@ -1,7 +1,6 @@
 const { assert } = require('chai')
-const { ethers } = require('hardhat')
-const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
-
+const { ethers, upgrades } = require('hardhat')
+console.log(upgrades)
 const {
   createLockCalldata,
   getEvent,
@@ -9,18 +8,20 @@ const {
 const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 const keyPrice = ethers.parseEther('0.01')
-let pastImpl
-let brokenImpl
-let proxyAdmin
 
 const breakUnlock = async (unlockAddress) => {
-  const upgradeTx = await proxyAdmin.upgrade(unlockAddress, brokenImpl)
-  await upgradeTx.wait()
+  // deploy a random contract to break Unlock implementation
+  const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
+  await upgrades.upgradeProxy(unlockAddress, BrokenUnlock, {
+    unsafeSkipStorageCheck: true,
+  })
 }
 
 const fixUnlock = async (unlockAddress) => {
-  const upgradeTx = await proxyAdmin.upgrade(unlockAddress, pastImpl)
-  await upgradeTx.wait()
+  const Unlock = await ethers.getContractFactory('Unlock')
+  await upgrades.upgradeProxy(unlockAddress, Unlock, {
+    unsafeSkipStorageCheck: true,
+  })
 }
 
 describe('Lock / purchaseWithoutUnlock', () => {
@@ -30,22 +31,6 @@ describe('Lock / purchaseWithoutUnlock', () => {
   // setup proxy admin etc
   before(async () => {
     ;({ unlock } = await deployContracts())
-
-    // deploy a random contract to break Unlock implementation
-    const BrokenUnlock = await ethers.getContractFactory('LockSerializer')
-    const broken = await BrokenUnlock.deploy()
-    brokenImpl = await broken.getAddress()
-
-    // get proxyAdmin address
-    const proxyAdminAddress = await unlock.getAdmin()
-
-    // upgrade proxy to broken contract
-    const [unlockOwner] = await ethers.getSigners()
-    proxyAdmin = await ethers.getContractAt(
-      ProxyAdmin.abi,
-      proxyAdminAddress,
-      unlockOwner
-    )
   })
 
   describe('purchase with a lock while Unlock is broken', () => {
@@ -65,14 +50,9 @@ describe('Lock / purchaseWithoutUnlock', () => {
         args: { newLockAddress },
       } = await getEvent(receipt, 'NewLock')
 
-      const PublicLock = await ethers.getContractFactory(
-        'contracts/PublicLock.sol:PublicLock'
-      )
-      lock = PublicLock.attach(newLockAddress)
-
-      // store past impl address
-      pastImpl = await proxyAdmin.getProxyImplementation(
-        await unlock.getAddress()
+      lock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
       )
 
       // break Unlock
@@ -114,7 +94,6 @@ describe('Lock / purchaseWithoutUnlock', () => {
       const [, buyer] = await ethers.getSigners()
       const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
       const testEventHooks = await TestEventHooks.deploy()
-      await testEventHooks.deployTransaction.wait()
 
       // set on purchase hook
       await lock.setEventHooks(
@@ -127,7 +106,7 @@ describe('Lock / purchaseWithoutUnlock', () => {
         ADDRESS_ZERO
       )
       // 50% discount
-      await testEventHooks.configure(true, keyPrice / 2)
+      await testEventHooks.configure(true, keyPrice / 2n)
       const tx = await lock
         .connect(buyer)
         .purchase(

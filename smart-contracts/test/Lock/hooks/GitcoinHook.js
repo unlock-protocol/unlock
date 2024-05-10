@@ -98,7 +98,7 @@ describe('GitcoinHook', function () {
     expect(await hook.owner()).to.equal(await user.getAddress())
 
     // Transfer ownership
-    expect(hook.transferOwnership(await anotherUser.getAddress()))
+    await hook.transferOwnership(await anotherUser.getAddress())
     expect(await hook.owner()).to.equal(await anotherUser.getAddress())
 
     // Add a signer again from previous owner

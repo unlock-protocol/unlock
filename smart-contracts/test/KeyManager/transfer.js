@@ -47,7 +47,7 @@ describe('KeyManager', () => {
       deadline: OneDayAgo,
     }
     const locksmithSigner = await ethers.getSigner(await locksmith.getAddress())
-    const signature = await locksmithSigner._signTypedData(
+    const signature = await locksmithSigner.signTypedData(
       domain,
       types,
       transfer
@@ -72,7 +72,7 @@ describe('KeyManager', () => {
       deadline: OneHourFromNow,
     }
     const attackerSigner = await ethers.getSigner(await attacker.getAddress())
-    const signature = await attackerSigner._signTypedData(
+    const signature = await attackerSigner.signTypedData(
       domain,
       types,
       transfer
@@ -98,7 +98,7 @@ describe('KeyManager', () => {
     }
     assert.notEqual(await lock.ownerOf(1), await realUser.getAddress())
     const locksmithSigner = await ethers.getSigner(await locksmith.getAddress())
-    const signature = await locksmithSigner._signTypedData(
+    const signature = await locksmithSigner.signTypedData(
       domain,
       types,
       transfer

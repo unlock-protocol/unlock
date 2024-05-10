@@ -115,15 +115,13 @@ describe('PasswordRequiredHook', function () {
     )
 
     // And a purchase that succeeds when we use the correct password!
-    await reverts(
-      lock.purchase(
-        [0],
-        [await user.getAddress()],
-        [await user.getAddress()],
-        [await user.getAddress()],
-        [data]
-      )
-    ).not
+    await lock.purchase(
+      [0],
+      [await user.getAddress()],
+      [await user.getAddress()],
+      [await user.getAddress()],
+      [data]
+    )
 
     // Check the usages!
     const usageAfter = await hook.counters(await lock.getAddress(), signer)

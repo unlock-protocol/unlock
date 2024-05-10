@@ -41,10 +41,16 @@ describe('KeyManager', () => {
       await upgrades.upgradeProxy(await proxy.getAddress(), KeyManagerV2)
       assert.equal(false, 'to have reverted')
     } catch (error) {
-      assert.equal(
-        error.message,
-        "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
+      const interface = new ethers.Interface([
+        'error OwnableUnauthorizedAccount(address)',
+      ])
+      // whatever comes after `return data:` flag in erro message is error bytes
+      const errordata = error.message.split('return data:')[1].slice(1, -1)
+      const encodedError = interface.encodeErrorResult(
+        'OwnableUnauthorizedAccount',
+        [await attacker.getAddress()]
       )
+      assert.equal(errordata, encodedError)
     }
   })
 })
