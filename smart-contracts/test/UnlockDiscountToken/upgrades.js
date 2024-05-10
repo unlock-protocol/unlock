@@ -1,10 +1,13 @@
 const { assert } = require('chai')
-const BigNumber = require('bignumber.js')
 const path = require('path')
 const fs = require('fs-extra')
 const { ethers, upgrades, network, run } = require('hardhat')
 const { ADDRESS_ZERO } = require('../helpers')
-const { createUniswapV2Exchange, increaseTime } = require('../helpers')
+const {
+  createUniswapV2Exchange,
+  increaseTime,
+  almostEqual,
+} = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const {
@@ -16,7 +19,7 @@ const {
 // skip on coverage until solidity-coverage supports EIP-1559
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
-const estimateGas = 252166 * 2
+const estimateGas = BigInt(252166 * 2)
 
 // files path
 const contractsPath = path.resolve(
@@ -212,7 +215,7 @@ describe('UnlockDiscountToken upgrade', async () => {
           [ADDRESS_ZERO, ADDRESS_ZERO],
           ['0x', '0x'],
           {
-            value: (await lock.keyPrice()) * 2,
+            value: (await lock.keyPrice()) * 2n,
           }
         )
 
@@ -269,7 +272,7 @@ describe('UnlockDiscountToken upgrade', async () => {
 
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
-        gasSpent = new BigNumber(baseFeePerGas).times(estimateGas)
+        gasSpent = baseFeePerGas * estimateGas
       })
 
       it('referrer has some UDT now', async () => {
@@ -279,13 +282,13 @@ describe('UnlockDiscountToken upgrade', async () => {
 
       it('amount minted for referrer ~= gas spent', async () => {
         // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
-        assert.equal(
-          new BigNumber(await udt.balanceOf(await referrer.getAddress()))
-            .shiftedBy(-18) // shift UDT balance
-            .times(rate)
-            .shiftedBy(-18) // shift the rate
-            .toFixed(3),
-          gasSpent.shiftedBy(-18).toFixed(3)
+        assert(
+          almostEqual(
+            ((await udt.balanceOf(await referrer.getAddress())) *
+              BigInt(rate)) /
+              10n ** 18n,
+            gasSpent
+          )
         )
       })
     })
@@ -295,12 +298,12 @@ describe('UnlockDiscountToken upgrade', async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
         // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
-        const initialGdp = (await lock.keyPrice()) * 40000
+        const initialGdp = (await lock.keyPrice()) * 40000n
         await unlock.resetTrackedValue(initialGdp, 0)
 
-        const baseFeePerGas = 1000000000 // in gwei
+        const baseFeePerGas = 1000000000n // in gwei
         await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-          BigInt(baseFeePerGas).toHexString(16),
+          `0x${BigInt(baseFeePerGas).toString(16)}`,
         ])
 
         lock.connect(keyBuyer)
@@ -311,8 +314,8 @@ describe('UnlockDiscountToken upgrade', async () => {
           [ADDRESS_ZERO],
           ['0x'],
           {
-            value: (await lock.keyPrice()) * 2,
-            gasPrice: BigInt(baseFeePerGas) * (2).toHexString(16),
+            value: (await lock.keyPrice()) * 2n,
+            gasPrice: `0x${(baseFeePerGas * 2n).toString(16)}`,
           }
         )
       })
@@ -324,8 +327,7 @@ describe('UnlockDiscountToken upgrade', async () => {
 
       it('amount minted for referrer ~= 12 UDT', async () => {
         const balance = await udt.balanceOf(await referrer2.getAddress())
-        const bn = new BigNumber(balance)
-        assert.equal(bn.shiftedBy(-18).toFixed(0), '12')
+        assert.equal(ethers.formatEther(balance).startsWith('12.'), true)
       })
     })
   })
