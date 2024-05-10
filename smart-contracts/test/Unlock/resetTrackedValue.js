@@ -72,7 +72,7 @@ describe('Unlock / resetTrackedValue', () => {
 
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {
         const grossNetworkProduct = await unlock.grossNetworkProduct()
-        compareBigNumbers(grossNetworkProduct, keyPrice + 42)
+        compareBigNumbers(grossNetworkProduct, keyPrice + 42n)
       })
     })
   })

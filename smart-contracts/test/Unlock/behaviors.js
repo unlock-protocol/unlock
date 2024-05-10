@@ -27,7 +27,7 @@ describe('Unlock / UnlockProxy', () => {
 
     await unlock.addLockTemplate(
       await template.getAddress(),
-      (await unlock.publicLockLatestVersion()) + 1
+      (await unlock.publicLockLatestVersion()) + 1n
     )
     await unlock.setLockTemplate(await template.getAddress())
   })

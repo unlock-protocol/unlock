@@ -41,7 +41,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
 
     await unlock.addLockTemplate(await publicLock.getAddress(), 1)
     await unlock.setLockTemplate(await publicLock.getAddress())
-    expect(await unlock.publicLockLatestVersion()).to.equals(1)
+    expect(await unlock.publicLockLatestVersion()).to.equals(1n)
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(
@@ -52,7 +52,7 @@ describe('Unlock / createUpgradeableLockAtVersion', () => {
     await unlock.addLockTemplate(await publicLockUpgraded.getAddress(), 2)
     expect(
       await unlock.publicLockVersions(await publicLockUpgraded.getAddress())
-    ).to.equals(2)
+    ).to.equals(2n)
 
     // create lock calldata
     calldata = await createLockCalldata({

@@ -76,12 +76,12 @@ describe('upgradeLock (deploy template with Proxy)', () => {
 
     await unlock.addLockTemplate(
       await publicLockUpgraded.getAddress(),
-      currentVersion + 2
+      currentVersion + 2n
     )
     await reverts(
       unlock
         .connect(creator)
-        .upgradeLock(await lock.getAddress(), currentVersion + 2),
+        .upgradeLock(await lock.getAddress(), currentVersion + 2n),
       'VERSION_TOO_HIGH'
     )
     await reverts(
@@ -99,7 +99,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     await reverts(
       unlock
         .connect(creator)
-        .upgradeLock(await lock.getAddress(), currentVersion + 1),
+        .upgradeLock(await lock.getAddress(), currentVersion + 1n),
       'MISSING_TEMPLATE'
     )
   })
@@ -110,11 +110,11 @@ describe('upgradeLock (deploy template with Proxy)', () => {
 
     await unlock.addLockTemplate(
       await publicLockUpgraded.getAddress(),
-      currentVersion + 1
+      currentVersion + 1n
     )
     await unlock
       .connect(creator)
-      .upgradeLock(await lock.getAddress(), currentVersion + 1)
+      .upgradeLock(await lock.getAddress(), currentVersion + 1n)
 
     // make sure upgrade was successful
     lock = await ethers.getContractAt(
@@ -128,12 +128,12 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [, , unknown] = await ethers.getSigners()
     await unlock.addLockTemplate(
       await publicLockUpgraded.getAddress(),
-      currentVersion + 1
+      currentVersion + 1n
     )
     await reverts(
       unlock
         .connect(unknown)
-        .upgradeLock(await lock.getAddress(), currentVersion + 1),
+        .upgradeLock(await lock.getAddress(), currentVersion + 1n),
       'MANAGER_ONLY'
     )
   })
@@ -142,12 +142,12 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [, creator] = await ethers.getSigners()
     await unlock.addLockTemplate(
       await publicLockUpgraded.getAddress(),
-      currentVersion + 1
+      currentVersion + 1n
     )
 
     const tx = await unlock
       .connect(creator)
-      .upgradeLock(await lock.getAddress(), currentVersion + 1)
+      .upgradeLock(await lock.getAddress(), currentVersion + 1n)
     const receipt = await tx.wait()
 
     // check if box instance works
@@ -155,7 +155,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const { lockAddress, version } = evt.args
 
     assert.equal(lockAddress, await lock.getAddress())
-    assert.equal(version, currentVersion + 1)
+    assert.equal(version, currentVersion + 1n)
 
     // make sure upgrade was successful
     lock = await ethers.getContractAt('ITestPublicLockUpgraded', lockAddress)

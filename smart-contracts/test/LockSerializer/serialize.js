@@ -18,13 +18,7 @@ describe('LockSerializer', () => {
     serializer = await LockSerializer.deploy()
 
     // get locks (truffle version)
-    const { address } = await deployLock()
-
-    // parse lock for ethers
-    lock = await ethers.getContractAt(
-      'contracts/PublicLock.sol:PublicLock',
-      address
-    )
+    lock = await deployLock()
   })
 
   describe('serialize', () => {
@@ -80,7 +74,7 @@ describe('LockSerializer', () => {
       beforeEach(async function () {
         const [, ..._purchasers] = await ethers.getSigners()
         const maxNumberOfKeys = await lock.maxNumberOfKeys()
-        purchasers = _purchasers.slice(0, maxNumberOfKeys) // prevent soldout revert
+        purchasers = _purchasers.slice(0, parseInt(maxNumberOfKeys.toString())) // prevent soldout revert
 
         // purchase keys
         await lock.connect(purchasers[0]).purchase(
@@ -89,7 +83,7 @@ describe('LockSerializer', () => {
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => '0x'),
-          { value: keyPrice * purchasers.length }
+          { value: keyPrice * BigInt(purchasers.length) }
         )
       })
 
