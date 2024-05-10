@@ -136,10 +136,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
     const { newLockAddress } = evt.args
 
     // get lock
-    lock = await ethers.getContractAt(
-      PublicLockPast.interface.format(ethers.FormatTypes.full),
-      newLockAddress
-    )
+    lock = await PublicLockPast.attach(newLockAddress)
     // add latest tempalte
     await unlock.addLockTemplate(await publicLockLatest.getAddress(), 10)
   })
@@ -175,7 +172,7 @@ describe('upgradeLock / data migration v9 > v10', () => {
                 await keyOwners[i].getAddress(),
                 ADDRESS_ZERO,
                 ADDRESS_ZERO,
-                [],
+                '0x',
                 {
                   value: keyPrice,
                 }

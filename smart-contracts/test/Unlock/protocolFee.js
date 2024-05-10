@@ -14,7 +14,7 @@ const {
 
 const scenarios = [false, true]
 const someDai = ethers.parseEther('10')
-const BASIS_POINT_DENOMINATOR = 10000
+const BASIS_POINT_DENOMINATOR = 10000n
 
 describe('Unlock / protocolFee', async () => {
   let unlock
@@ -105,14 +105,14 @@ describe('Unlock / protocolFee', async () => {
           if (isErc20) {
             await dai
               .connect(keyOwner)
-              .approve(await lock.getAddress(), keyPrice * 3)
+              .approve(await lock.getAddress(), keyPrice * 3n)
           }
           await purchaseKeys(lock, 3, isErc20, keyOwner)
           const unlockBalanceAfter = await getBalance(
             await unlock.getAddress(),
             tokenAddress
           )
-          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 3)
+          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 3n)
         })
 
         it('extending a key', async () => {
@@ -123,7 +123,7 @@ describe('Unlock / protocolFee', async () => {
           if (isErc20) {
             await dai
               .connect(keyOwner)
-              .approve(await lock.getAddress(), keyPrice * 2)
+              .approve(await lock.getAddress(), keyPrice * 2n)
           }
           const { tokenId } = await purchaseKey(
             lock,
@@ -140,7 +140,7 @@ describe('Unlock / protocolFee', async () => {
             await unlock.getAddress(),
             tokenAddress
           )
-          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 2)
+          assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 2n)
         })
 
         if (isErc20) {
@@ -152,7 +152,7 @@ describe('Unlock / protocolFee', async () => {
 
             await dai
               .connect(keyOwner)
-              .approve(await lock.getAddress(), keyPrice * 2)
+              .approve(await lock.getAddress(), keyPrice * 2n)
             const { tokenId } = await purchaseKey(
               lock,
               await keyOwner.getAddress(),
@@ -166,7 +166,7 @@ describe('Unlock / protocolFee', async () => {
               await unlock.getAddress(),
               tokenAddress
             )
-            assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 2)
+            assert.equal(unlockBalanceAfter, unlockBalanceBefore + fee * 2n)
           })
         }
       })
