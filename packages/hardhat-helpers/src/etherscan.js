@@ -19,7 +19,7 @@ const etherscan = {
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
     polygonZkEVM: '8H4ZB9SQBMQ7WA1TCIXFQVCHTVX8DXTY9Y',
     scroll: 'BZEXNPN6KKKJQ8VIMNXZDZNEX7QQZWZQ3P',
-    coredao: 'ab9a9095a2ba48c291115e0809b19b69',
+    core: 'ab9a9095a2ba48c291115e0809b19b69',
   },
   // TODO : generate from networks package!
   customChains: [
@@ -105,7 +105,7 @@ if (process.env.SEPOLIA_API_KEY) {
   etherscan.apiKey.sepolia = process.env.SEPOLIA_API_KEY
 }
 if (process.env.COREDAO_API_KEY) {
-  etherscan.apiKey.coredao = process.env.COREDAO_API_KEY
+  etherscan.apiKey.core = process.env.COREDAO_API_KEY
 }
 
 export default etherscan
