@@ -96,7 +96,7 @@ export function createReceipt(event: ethereum.Event): void {
         const txLog = logs[i]
 
         if (
-          txLog.address.toHexString() == unlockAddress &&
+          txLog.address == unlockAddress.value &&
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
           const value = ethereum.decode('uint256', txLog.topics[3])!.toBigInt()
