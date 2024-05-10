@@ -1,7 +1,9 @@
 import { Token } from '@unlock-protocol/types'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
+import networks from '@unlock-protocol/networks'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 
 export const SelectToken = ({
   network,
@@ -19,6 +21,26 @@ export const SelectToken = ({
     onChange(token)
     setToken(token)
   }
+
+  useEffect(() => {
+    const initialize = async () => {
+      if (defaultToken?.address) {
+        const web3Service = new Web3Service(networks)
+
+        const symbol = await web3Service.getTokenSymbol(
+          defaultToken.address,
+          network
+        )
+        setToken({
+          ...defaultToken,
+          symbol,
+        })
+      } else {
+        setToken(networks[network]?.nativeCurrency ?? {})
+      }
+    }
+    initialize()
+  }, [defaultToken, network])
 
   return (
     <div className="flex flex-col gap-1.5">

@@ -79,7 +79,6 @@ export const SelectCurrencyModal = ({
       }
 
       setTokens(featuredTokens)
-      onSelect(featuredTokens[0])
     }
     initializeTokens()
   }, [network, networks, defaultCurrencyAddress])
