@@ -20,7 +20,7 @@ import {
 } from '@radix-ui/react-avatar'
 import { RiExternalLinkFill as ExternalIcon } from 'react-icons/ri'
 import { getURL } from '~/utils/url'
-import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
@@ -104,9 +104,7 @@ export const KeyInfo = ({
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const config = useConfig()
-  const isERC20 =
-    lock.tokenAddress &&
-    lock.tokenAddress !== ethers.constants.AddressZero.toString()
+  const isERC20 = lock.tokenAddress && lock.tokenAddress !== ADDRESS_ZERO
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
