@@ -22,8 +22,9 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   useEffect(() => {
     // Skip Connect if already signed in
     const autoSignIn = async () => {
+      // connected is undefined on page reload
       const isConnectedAsUnlockAccount =
-        isSignedIn && !signing && connected && isUnlockAccount
+        isSignedIn && !signing && isUnlockAccount
 
       const isConnectedWithWallet = isSignedIn && !signing && !isUnlockAccount
 
