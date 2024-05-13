@@ -8,7 +8,7 @@ const {
   PERMIT2_ADDRESS,
 } = require('@unlock-protocol/hardhat-helpers')
 
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const someTokens = ethers.parseUnits('10', 'ether')
 const scenarios = [true, false]
 const isEthersJs = true
 
@@ -37,30 +37,38 @@ describe('UnlockSwapPurchaser / withdraw', () => {
         } = await getNetwork(1)
         const routers = [universalRouterAddress]
         swapper = await UnlockSwapPurchaser.deploy(
-          unlock.address,
+          await unlock.getAddress(),
           PERMIT2_ADDRESS,
           routers
         )
 
-        swapperBalanceBefore = await getBalance(swapper.address, tokenAddress)
-        unlockBalanceBefore = await getBalance(unlock.address, tokenAddress)
+        swapperBalanceBefore = await getBalance(
+          await swapper.getAddress(),
+          tokenAddress
+        )
+        unlockBalanceBefore = await getBalance(
+          await unlock.getAddress(),
+          tokenAddress
+        )
 
         if (isErc20) {
           testToken = await deployERC20(owner, isEthersJs)
-          tokenAddress = testToken.address
+          tokenAddress = await testToken.getAddress()
           // Send some tokens to purchaser
-          await testToken.connect(owner).mint(swapper.address, someTokens)
+          await testToken
+            .connect(owner)
+            .mint(await swapper.getAddress(), someTokens)
         } else {
           tokenAddress = ADDRESS_ZERO
           await owner.sendTransaction({
-            to: swapper.address,
+            to: await swapper.getAddress(),
             value: someTokens,
           })
         }
 
         assert.equal(
-          swapperBalanceBefore.add(someTokens).toString(),
-          (await getBalance(swapper.address, tokenAddress)).toString()
+          swapperBalanceBefore + someTokens,
+          await getBalance(await swapper.getAddress(), tokenAddress)
         )
 
         // actually withdraw the funds
@@ -69,12 +77,12 @@ describe('UnlockSwapPurchaser / withdraw', () => {
 
       it('should have transferred the funds to unlock', async () => {
         assert.equal(
-          unlockBalanceBefore.add(someTokens).toString(),
-          (await getBalance(unlock.address, tokenAddress)).toString()
+          unlockBalanceBefore + someTokens,
+          await getBalance(await unlock.getAddress(), tokenAddress)
         )
         assert.equal(
-          swapperBalanceBefore.toString(),
-          (await getBalance(swapper.address, tokenAddress)).toString()
+          swapperBalanceBefore,
+          await getBalance(await swapper.getAddress(), tokenAddress)
         )
       })
     })

@@ -13,23 +13,25 @@ describe('KeyManager / Ownable', () => {
 
   it('should be owned by the owner', async () => {
     const owner = await keyManager.owner()
-    expect(owner).to.equal(firstAccount.address)
+    expect(owner).to.equal(await firstAccount.getAddress())
   })
 
   it('should be transferable by the owner to a new owner', async () => {
-    await keyManager.transferOwnership(keyReceiver.address)
-    expect(await keyManager.owner()).to.equal(keyReceiver.address)
+    await keyManager.transferOwnership(await keyReceiver.getAddress())
+    expect(await keyManager.owner()).to.equal(await keyReceiver.getAddress())
   })
 
   it('should not be transferable by someone who is not an owner', async () => {
     const [, newOwner] = await ethers.getSigners()
-    expect(await keyManager.owner()).to.equal(firstAccount.address)
+    expect(await keyManager.owner()).to.equal(await firstAccount.getAddress())
 
     await reverts(
-      keyManager.connect(newOwner).transferOwnership(newOwner.address),
+      keyManager
+        .connect(newOwner)
+        .transferOwnership(await newOwner.getAddress()),
       `Ownable: caller is not the owner`
     )
 
-    expect(await keyManager.owner()).to.equal(firstAccount.address)
+    expect(await keyManager.owner()).to.equal(await firstAccount.getAddress())
   })
 })

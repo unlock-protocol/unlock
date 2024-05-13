@@ -20,7 +20,7 @@ const compareValues = async (serialized, lock) => {
       ethers.BigNumber.isBigNumber(values[i])
     ) {
       assert.equal(
-        serialized[k].eq(values[i]),
+        serialized[k] == values[i],
         true,
         `different serialized value ${k}, ${serialized[k]}, ${values[i]}`
       )
