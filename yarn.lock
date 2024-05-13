@@ -18323,7 +18323,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.6"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
-    "@openzeppelin/upgrades-core": "npm:1.32.5"
+    "@openzeppelin/upgrades-core": "npm:1.33.1"
     "@safe-global/api-kit": "npm:2.2.0"
     "@safe-global/protocol-kit": "npm:3.1.0"
     "@tenderly/hardhat-tenderly": "npm:2.2.2"
