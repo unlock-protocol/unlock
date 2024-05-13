@@ -6,7 +6,10 @@ const {
   deployContracts,
   compareBigNumbers,
 } = require('../helpers')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 
 let unlock
 
@@ -20,19 +23,22 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO, // token address
-        ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
       const calldata = await createLockCalldata({ args })
       const tx = await unlock.createUpgradeableLock(calldata)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { newLockAddress },
-      } = events.find(({ event }) => event === 'NewLock')
-      let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
+      } = await getEvent(receipt, 'NewLock')
+      let publicLock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
+      )
       const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
-      assert.equal(maxNumberOfKeys.toString(), MAX_UINT)
+      assert.equal(maxNumberOfKeys, MAX_UINT)
     })
   })
 
@@ -41,7 +47,7 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        ethers.utils.parseUnits('1', 'ether').toString(), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',
         // '0x000000000000000000000001',
@@ -49,11 +55,14 @@ describe('Lock / createLockWithInfiniteKeys', () => {
       const calldata = await createLockCalldata({ args })
       const tx = await unlock.createUpgradeableLock(calldata)
 
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { newLockAddress },
-      } = events.find(({ event }) => event === 'NewLock')
-      let publicLock = await ethers.getContractAt('PublicLock', newLockAddress)
+      } = await getEvent(receipt, 'NewLock')
+      let publicLock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
+      )
       compareBigNumbers(await publicLock.maxNumberOfKeys(), 0)
     })
   })

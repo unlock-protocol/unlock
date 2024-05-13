@@ -12,7 +12,7 @@ describe('Lock / onKeyCancelHook', () => {
   let testEventHooks
   let to
   let tokenId
-  let events
+  let receipt
 
   before(async () => {
     ;[, to] = await ethers.getSigners()
@@ -22,33 +22,33 @@ describe('Lock / onKeyCancelHook', () => {
     testEventHooks = await TestEventHooks.deploy()
     const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ events } = await tx.wait())
-    ;({ tokenId } = await purchaseKey(lock, to.address))
+    receipt = await tx.wait()
+    ;({ tokenId } = await purchaseKey(lock, await to.getAddress()))
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onKeyCancelHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 
   it('key cancels should log the hook event', async () => {
     await lock.connect(to).cancelAndRefund(tokenId)
     const { args } = (await testEventHooks.queryFilter('OnKeyCancel')).filter(
-      ({ event }) => event === 'OnKeyCancel'
+      ({ fragment }) => fragment.name === 'OnKeyCancel'
     )[0]
-    assert.equal(args.lock, lock.address)
-    assert.equal(args.operator, to.address)
-    assert.equal(args.to, to.address)
+    assert.equal(args.lock, await lock.getAddress())
+    assert.equal(args.operator, await to.getAddress())
+    assert.equal(args.to, await to.getAddress())
     assert.notEqual(args.refund, 0)
   })
 

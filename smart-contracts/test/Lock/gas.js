@@ -10,17 +10,17 @@ describe('Lock / gas', () => {
     const [signer] = await ethers.getSigners()
     let tx = await lock.purchase(
       [],
-      [signer.address],
+      [await signer.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]],
+      ['0x'],
       {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
+        value: ethers.parseUnits('0.01', 'ether'),
       }
     )
     const { gasUsed } = await tx.wait()
     if (!process.env.TEST_COVERAGE) {
-      assert(gasUsed.lte(WalletService.gasAmountConstants().purchaseKey))
+      assert(gasUsed <= WalletService.gasAmountConstants().purchaseKey)
     }
   })
 })

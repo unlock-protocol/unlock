@@ -1,18 +1,22 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { deployLock, reverts, compareBigNumbers } = require('../helpers')
-const { ADDRESS_ZERO, MAX_UINT } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  getEvent,
+  MAX_UINT,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   emitHookUpdatedEvent,
   canNotSetNonContractAddress,
 } = require('./behaviors/hooks.js')
 
-const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
+const dataField = ethers.hexlify(ethers.toUtf8Bytes('TestData'))
 
 describe('Lock / onKeyPurchaseHook', () => {
   let lock
   let testEventHooks
-  let events
+  let receipt
   let from, to
   let keyPrice
   let tokenId
@@ -24,7 +28,7 @@ describe('Lock / onKeyPurchaseHook', () => {
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
     testEventHooks = await TestEventHooks.deploy()
     const tx = await lock.setEventHooks(
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -32,16 +36,15 @@ describe('Lock / onKeyPurchaseHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    console.log({ testEventHooks: testEventHooks.address })
     keyPrice = await lock.keyPrice()
-    ;({ events } = await tx.wait())
+    receipt = await tx.wait()
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onKeyPurchaseHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 
@@ -51,7 +54,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -70,7 +73,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -78,18 +81,20 @@ describe('Lock / onKeyPurchaseHook', () => {
             value: keyPrice,
           }
         )
-      const { events } = await tx.wait()
-      ;({ tokenId } = await events[0].args)
+      const receipt = await tx.wait()
+      ;({
+        args: { tokenId },
+      } = await getEvent(receipt, 'Transfer'))
     })
 
     it('key sales should log the hook event', async () => {
       const { args } = (
         await testEventHooks.queryFilter('OnKeyPurchase')
-      ).filter(({ event }) => event === 'OnKeyPurchase')[0]
-      assert.equal(args.lock, lock.address)
+      ).filter(({ fragment }) => fragment.name === 'OnKeyPurchase')[0]
+      assert.equal(args.lock, await lock.getAddress())
       await compareBigNumbers(args.tokenId, tokenId)
-      assert.equal(args.from, from.address)
-      assert.equal(args.recipient, to.address)
+      assert.equal(args.from, await from.getAddress())
+      assert.equal(args.recipient, await to.getAddress())
       assert.equal(args.referrer, ADDRESS_ZERO)
       await compareBigNumbers(args.minKeyPrice, keyPrice)
       await compareBigNumbers(args.pricePaid, keyPrice)
@@ -101,12 +106,12 @@ describe('Lock / onKeyPurchaseHook', () => {
           .connect(from)
           .purchase(
             [],
-            [to.address],
+            [await to.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [dataField],
             {
-              value: keyPrice.div(2),
+              value: keyPrice / 2n,
             }
           ),
         'INSUFFICIENT_VALUE'
@@ -120,16 +125,16 @@ describe('Lock / onKeyPurchaseHook', () => {
 
   describe('with a 50% off discount', () => {
     beforeEach(async () => {
-      await testEventHooks.configure(true, keyPrice.div(2))
+      await testEventHooks.configure(true, keyPrice / 2n)
     })
 
     it('can estimate the price', async () => {
       const price = await lock.purchasePriceFor(
-        to.address,
+        await to.getAddress(),
         ADDRESS_ZERO,
         dataField
       )
-      await compareBigNumbers(price, keyPrice.div(2))
+      await compareBigNumbers(price, keyPrice / 2n)
     })
 
     it('can buy at half price', async () => {
@@ -137,12 +142,12 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
           {
-            value: keyPrice.div(2),
+            value: keyPrice / 2n,
           }
         )
     })
@@ -158,7 +163,7 @@ describe('Lock / onKeyPurchaseHook', () => {
         .connect(from)
         .purchase(
           [],
-          [to.address],
+          [await to.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
@@ -174,7 +179,7 @@ describe('Lock / onKeyPurchaseHook', () => {
           .connect(from)
           .purchase(
             [],
-            [to.address],
+            [await to.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
             [dataField],
@@ -187,11 +192,11 @@ describe('Lock / onKeyPurchaseHook', () => {
       it('key sales should log the hook event', async () => {
         const { args } = (
           await testEventHooks.queryFilter('OnKeyPurchase')
-        ).filter(({ event }) => event === 'OnKeyPurchase')[0]
+        ).filter(({ fragment }) => fragment.name === 'OnKeyPurchase')[0]
 
-        assert.equal(args.lock, lock.address)
-        assert.equal(args.from, from.address)
-        assert.equal(args.recipient, to.address)
+        assert.equal(args.lock, await lock.getAddress())
+        assert.equal(args.from, await from.getAddress())
+        assert.equal(args.recipient, await to.getAddress())
         assert.equal(args.referrer, ADDRESS_ZERO)
         await compareBigNumbers(args.minKeyPrice, '0')
         await compareBigNumbers(args.pricePaid, '42')

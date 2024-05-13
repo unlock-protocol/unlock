@@ -36,7 +36,7 @@ describe('ERC721BalanceOfHook', () => {
     await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      hook.address,
+      await hook.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -46,24 +46,29 @@ describe('ERC721BalanceOfHook', () => {
 
   describe('setting mapping', () => {
     beforeEach(async () => {
-      await hook.createMapping(lock.address, nft.address)
+      await hook.createMapping(await lock.getAddress(), await nft.getAddress())
     })
     it('should record the corresponding erc721 address', async () => {
-      assert.equal(await hook.nftAddresses(lock.address), nft.address)
+      assert.equal(
+        await hook.nftAddresses(await lock.getAddress()),
+        await nft.getAddress()
+      )
     })
     it('should only allow lock managers to set mapping', async () => {
       await reverts(
-        hook.connect(randomSigner).createMapping(lock.address, nft.address),
+        hook
+          .connect(randomSigner)
+          .createMapping(await lock.getAddress(), await nft.getAddress()),
         'Caller does not have the LockManager role'
       )
     })
     it('throws on zero addresses', async () => {
       await reverts(
-        hook.createMapping(ADDRESS_ZERO, nft.address),
+        hook.createMapping(ADDRESS_ZERO, await nft.getAddress()),
         'Lock address can not be zero'
       )
       await reverts(
-        hook.createMapping(lock.address, ADDRESS_ZERO),
+        hook.createMapping(await lock.getAddress(), ADDRESS_ZERO),
         'ERC721 address can not be zero'
       )
     })
@@ -71,7 +76,10 @@ describe('ERC721BalanceOfHook', () => {
 
   describe('mapping is not set', () => {
     it('mapping not set (fails)', async () => {
-      assert.notEqual(await hook.nftAddresses(lock.address), nft.address)
+      assert.notEqual(
+        await hook.nftAddresses(await lock.getAddress()),
+        await nft.getAddress()
+      )
     })
     it('with no valid key (fails)', async () => {
       assert.equal(await lock.getHasValidKey(keyOwner), false)
@@ -84,7 +92,7 @@ describe('ERC721BalanceOfHook', () => {
         [keyOwner],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: keyPrice,
         }
@@ -115,7 +123,7 @@ describe('ERC721BalanceOfHook', () => {
       assert.equal(await lock.getHasValidKey(nftOwner), false)
       assert.equal(await lock.balanceOf(nftOwner), 0)
       // create mapping
-      await hook.createMapping(lock.address, nft.address)
+      await hook.createMapping(await lock.getAddress(), await nft.getAddress())
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
     it('with a valid key (works)', async () => {
@@ -127,7 +135,7 @@ describe('ERC721BalanceOfHook', () => {
       assert.equal(await lock.getHasValidKey(nftOwner), true)
 
       // create mapping
-      await hook.createMapping(lock.address, nft.address)
+      await hook.createMapping(await lock.getAddress(), await nft.getAddress())
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
     it('with an expired key (works)', async () => {
@@ -145,7 +153,7 @@ describe('ERC721BalanceOfHook', () => {
       assert.equal(await lock.balanceOf(nftOwner), 0)
       assert.equal(await lock.getHasValidKey(nftOwner), false)
 
-      await hook.createMapping(lock.address, nft.address)
+      await hook.createMapping(await lock.getAddress(), await nft.getAddress())
       assert.equal(await lock.isValidKey(tokenId), true)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })

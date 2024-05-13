@@ -5,6 +5,7 @@ const {
   MAX_UINT,
   createLockCalldata,
   lockFixtures: Locks,
+  getEvent,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function deployLock({
@@ -44,14 +45,17 @@ async function deployLock({
     lockName,
   ]
 
-  const calldata = await createLockCalldata({ args, from: deployer.address })
+  const calldata = await createLockCalldata({
+    args,
+    from: await deployer.getAddress(),
+  })
 
   // attach Lock contract abi from newly created lock in Unlock event
   const tx = await unlock.createUpgradeableLock(calldata)
-  const { events } = await tx.wait()
+  const receipt = await tx.wait()
   const {
     args: { newLockAddress },
-  } = events.find((v) => v.event === 'NewLock')
+  } = await getEvent(receipt, 'NewLock')
 
   const lock = await ethers.getContractAt(
     'contracts/PublicLock.sol:PublicLock',

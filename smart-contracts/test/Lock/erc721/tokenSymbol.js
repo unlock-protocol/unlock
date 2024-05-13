@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { reverts, deployLock, deployContracts } = require('../../helpers')
 const metadata = require('../../fixtures/metadata')
@@ -68,8 +69,8 @@ describe('Lock / erc721 / tokenSymbol', () => {
 
     it('should emit the NewLockConfig event', async () => {
       const tx = await lock.setLockMetadata(...Object.values(metadata))
-      const { events } = await tx.wait()
-      const event = events.find(({ event }) => event === 'LockMetadata')
+      const receipt = await tx.wait()
+      const event = await getEvent(receipt, 'LockMetadata')
       assert.equal(event.args.symbol, metadata.symbol)
     })
 

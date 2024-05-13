@@ -9,27 +9,29 @@ const {
 
 let lock
 let unlock
-const price = ethers.utils.parseUnits('0.01', 'ether')
+let keyOwner
+const price = ethers.parseUnits('0.01', 'ether')
 
 describe('Unlock / lockTotalSales', () => {
   before(async () => {
+    ;[keyOwner] = await ethers.getSigners()
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })
   })
 
   it('total sales defaults to 0', async () => {
-    const { totalSales } = await unlock.locks(lock.address)
+    const { totalSales } = await unlock.locks(await lock.getAddress())
     assert.equal(totalSales, 0)
   })
 
   describe('buy 1 key', () => {
     before(async () => {
-      await purchaseKey(lock)
+      await purchaseKey(lock, await keyOwner.getAddress())
     })
 
     it('total sales includes the purchase', async () => {
-      const { totalSales } = await unlock.locks(lock.address)
-      assert.equal(totalSales.toString(), price.toString())
+      const { totalSales } = await unlock.locks(await lock.getAddress())
+      assert.equal(totalSales, price)
     })
   })
 
@@ -39,8 +41,8 @@ describe('Unlock / lockTotalSales', () => {
     })
 
     it('total sales incluse all purchases', async () => {
-      const { totalSales } = await unlock.locks(lock.address)
-      assert.equal(totalSales.toString(), price.mul(5).toString())
+      const { totalSales } = await unlock.locks(await lock.getAddress())
+      assert.equal(totalSales, price * 5n)
     })
   })
 })

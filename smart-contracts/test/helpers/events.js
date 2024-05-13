@@ -1,8 +1,10 @@
 const { assert } = require('chai')
 const { isBigNumber } = require('./bigNumber')
+const { getEvent, getEvents } = require('@unlock-protocol/hardhat-helpers')
 
-function notExpectEvent(events, eventName) {
-  assert(events.find(({ event }) => event !== eventName))
+async function notExpectEvent(receipt, eventName) {
+  const { arg } = await getEvent(receipt, eventName)
+  assert(arg, null)
 }
 
 function contains(args, key, value) {
@@ -31,12 +33,12 @@ function contains(args, key, value) {
   }
 }
 
-function expectEvent(events, eventName, eventArgs = {}) {
-  const relevantEvents = events.filter(({ event }) => event === eventName)
+async function expectEvent(receipt, eventName, eventArgs = {}) {
+  const { events: relevantEvents } = await getEvents(receipt, eventName)
   assert(relevantEvents.length > 0, `No '${eventName}' events found`)
 
   const exception = []
-  const event = events.find(function (e) {
+  const event = relevantEvents.find(function (e) {
     for (const [k, v] of Object.entries(eventArgs)) {
       try {
         contains(e.args, k, v)

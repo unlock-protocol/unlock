@@ -1,13 +1,8 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
-
 const { reverts } = require('../helpers/errors')
-const {
-  ADDRESS_ZERO,
-  purchaseKey,
-  deployLock,
-  compareBigNumbers,
-} = require('../helpers')
+const { getEvent, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { purchaseKey, deployLock, compareBigNumbers } = require('../helpers')
 
 describe('Lock / burn', () => {
   let keyOwner
@@ -20,51 +15,56 @@ describe('Lock / burn', () => {
   })
 
   beforeEach(async () => {
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('should delete ownership record', async () => {
-    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
-    assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
+    assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
     await lock.connect(keyOwner).burn(tokenId)
-    assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('emit a transfer event', async () => {
     const tx = await lock.connect(keyOwner).burn(tokenId)
-    const { events } = await tx.wait()
-    const { args } = events.find((v) => v.event === 'Transfer')
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'Transfer')
     compareBigNumbers(args.tokenId, tokenId)
     assert.equal(args.to, ADDRESS_ZERO)
-    assert.equal(args.from, keyOwner.address)
+    assert.equal(args.from, await keyOwner.getAddress())
   })
 
   it('allow key manager to burn a key', async () => {
     const [, , keyManager] = await ethers.getSigners()
-    await lock.connect(keyOwner).setKeyManagerOf(tokenId, keyManager.address)
-    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
-    assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+    await lock
+      .connect(keyOwner)
+      .setKeyManagerOf(tokenId, await keyManager.getAddress())
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
+    assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
     await lock.connect(keyManager).burn(tokenId)
-    assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('balance is updated correctly', async () => {
-    compareBigNumbers(await lock.balanceOf(keyOwner.address), 1)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 1)
     compareBigNumbers(
-      await lock.tokenOfOwnerByIndex(keyOwner.address, 0),
-      tokenId.toNumber()
+      await lock.tokenOfOwnerByIndex(await keyOwner.getAddress(), 0),
+      tokenId
     )
     await lock.connect(keyOwner).burn(tokenId)
-    compareBigNumbers(await lock.balanceOf(keyOwner.address), 0)
-    await reverts(lock.tokenOfOwnerByIndex(keyOwner.address, 0), 'OUT_OF_RANGE')
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
+    await reverts(
+      lock.tokenOfOwnerByIndex(await keyOwner.getAddress(), 0),
+      'OUT_OF_RANGE'
+    )
   })
 
   it('totalSupply is decreased', async () => {
     const totalSupply = await lock.totalSupply()
     await lock.connect(keyOwner).burn(tokenId)
-    compareBigNumbers(await lock.totalSupply(), totalSupply.sub(1))
+    compareBigNumbers(await lock.totalSupply(), totalSupply - 1n)
   })
 
   it('should work only on existing keys', async () => {

@@ -5,10 +5,10 @@ const {
   parseForkUrl,
 } = require('@unlock-protocol/hardhat-helpers')
 
-require('@nomiclabs/hardhat-ethers')
+require('@nomicfoundation/hardhat-ethers')
 
 // full stack trace if needed
-require('hardhat-tracer')
+// require('hardhat-tracer')
 
 // erc1820 deployment
 require('hardhat-erc1820')
@@ -26,7 +26,7 @@ require('hardhat-gas-reporter')
 require('solidity-coverage')
 
 // eslint-disable-next-line global-require
-require('@nomiclabs/hardhat-etherscan')
+require('@nomicfoundation/hardhat-verify')
 
 // check contract size
 require('hardhat-contract-sizer')

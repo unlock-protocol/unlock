@@ -9,7 +9,6 @@ const setup = async () => {
   const KeyManager = await ethers.getContractFactory('KeyManager')
 
   const keyManager = await upgrades.deployProxy(KeyManager, [])
-  await keyManager.deployed()
 
   return [keyManager, lock]
 }

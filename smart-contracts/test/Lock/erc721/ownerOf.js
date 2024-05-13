@@ -16,20 +16,24 @@ describe('Lock / erc721 / ownerOf', () => {
   })
 
   it('should return the owner of the key', async () => {
-    const { tokenId } = await purchaseKey(lock, keyOwner.address)
+    const { tokenId } = await purchaseKey(lock, await keyOwner.getAddress())
     let address = await lock.ownerOf(tokenId)
-    assert.equal(address, keyOwner.address)
+    assert.equal(address, await keyOwner.getAddress())
   })
 
   it('should work correctly after a transfer', async () => {
-    const { tokenId } = await purchaseKey(lock, keyOwner.address)
+    const { tokenId } = await purchaseKey(lock, await keyOwner.getAddress())
     let address = await lock.ownerOf(tokenId)
-    assert.equal(address, keyOwner.address)
+    assert.equal(address, await keyOwner.getAddress())
 
     // transfer
     await lock
       .connect(keyOwner)
-      .transferFrom(keyOwner.address, anotherAccount.address, tokenId)
-    assert.equal(await lock.ownerOf(tokenId), anotherAccount.address)
+      .transferFrom(
+        await keyOwner.getAddress(),
+        await anotherAccount.getAddress(),
+        tokenId
+      )
+    assert.equal(await lock.ownerOf(tokenId), await anotherAccount.getAddress())
   })
 })

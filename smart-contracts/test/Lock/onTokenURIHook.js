@@ -11,7 +11,7 @@ let testEventHooks
 
 describe('Lock / onTokenURIHook', () => {
   let tokenId
-  let events
+  let receipt
   let keyOwner, lockOwner
 
   before(async () => {
@@ -23,24 +23,24 @@ describe('Lock / onTokenURIHook', () => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
-    ;({ events } = await tx.wait())
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
+    receipt = await tx.wait()
   })
 
   it('is set correctly', async () => {
-    assert.equal(await lock.onTokenURIHook(), testEventHooks.address)
+    assert.equal(await lock.onTokenURIHook(), await testEventHooks.getAddress())
   })
 
   it('emit the correct event', async () => {
     await emitHookUpdatedEvent({
-      events,
+      receipt,
       hookName: 'onTokenURIHook',
-      hookAddress: testEventHooks.address,
+      hookAddress: await testEventHooks.getAddress(),
     })
   })
 
@@ -48,14 +48,14 @@ describe('Lock / onTokenURIHook', () => {
     const baseTokenURI = await testEventHooks.baseURI()
     const expirationTimestamp = await lock.keyExpirationTimestampFor(tokenId)
     const params = [
-      lock.address.toLowerCase(), // lockAddress
-      keyOwner.address.toLowerCase(), // owner
-      lockOwner.address.toLowerCase(), // operator
+      (await lock.getAddress()).toLowerCase(), // lockAddress
+      (await keyOwner.getAddress()).toLowerCase(), // owner
+      (await lockOwner.getAddress()).toLowerCase(), // operator
       expirationTimestamp, // expirationTimestamp
       tokenId, // tokenId
     ]
 
-    assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+    assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
     const tokenURI = await lock.tokenURI(tokenId)
     assert.equal(tokenURI, `${baseTokenURI}${params.join('/')}`)
   })

@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 describe('Lock / purchaseForFrom', () => {
   let lock
@@ -16,12 +17,12 @@ describe('Lock / purchaseForFrom', () => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [keyOwner.address],
-        [referrer.address],
+        [await keyOwner.getAddress()],
+        [await referrer.getAddress()],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
     })
@@ -31,22 +32,22 @@ describe('Lock / purchaseForFrom', () => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await lock.purchase(
         [],
-        [referrer.address],
-        [keyOwner.address],
+        [await referrer.getAddress()],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
     })
@@ -54,23 +55,23 @@ describe('Lock / purchaseForFrom', () => {
     it('can purchaseForFrom a free key', async () => {
       await lockFree.purchase(
         [],
-        [keyOwner.address],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
       const tx = await lockFree.purchase(
         [],
-        [keyOwner.address],
-        [referrer.address],
+        [await keyOwner.getAddress()],
+        [await referrer.getAddress()],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
 
-      const { events } = await tx.wait()
-      const { args } = events.find(({ event }) => event === 'Transfer')
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
       assert.equal(args.from, 0)
-      assert.equal(args.to, keyOwner.address)
+      assert.equal(args.to, await keyOwner.getAddress())
     })
   })
 })

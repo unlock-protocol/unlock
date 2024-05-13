@@ -7,7 +7,7 @@ const {
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
 
 let unlock
 let lock
@@ -18,7 +18,7 @@ describe('Unlock / resetTrackedValue', () => {
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })
     ;[unlockOwner, keyOwner, anotherKeyOwner] = await ethers.getSigners()
-    await purchaseKey(lock, keyOwner.address)
+    await purchaseKey(lock, await keyOwner.getAddress())
   })
 
   it('grossNetworkProduct has a non-zero value after a purchase', async () => {
@@ -45,7 +45,7 @@ describe('Unlock / resetTrackedValue', () => {
 
     describe('After purchase', () => {
       beforeEach(async () => {
-        await purchaseKey(lock, anotherKeyOwner.address)
+        await purchaseKey(lock, await anotherKeyOwner.getAddress())
       })
 
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {
@@ -67,12 +67,12 @@ describe('Unlock / resetTrackedValue', () => {
 
     describe('After purchase', () => {
       beforeEach(async () => {
-        await purchaseKey(lock, anotherKeyOwner.address)
+        await purchaseKey(lock, await anotherKeyOwner.getAddress())
       })
 
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {
         const grossNetworkProduct = await unlock.grossNetworkProduct()
-        compareBigNumbers(grossNetworkProduct, keyPrice.add(42))
+        compareBigNumbers(grossNetworkProduct, keyPrice + 42n)
       })
     })
   })
