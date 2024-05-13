@@ -15,9 +15,9 @@ const targetChainsIds = [
 
 // TODO: deploy swap burner contracts
 const swapBurnerAddresses = {
-  42161: ADDRESS_ZERO, // Arbitrum
-  8453: ADDRESS_ZERO, // Base
-  10: ADDRESS_ZERO, // Optimism
+  42161: '0x316A4650e70594FA3D947a43A237bEF427Bd80d6', // Arbitrum
+  8453: '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591', // Base
+  10: '0xd8250925527e769d90C6F2Fc55384B9110f26b62', // Optimism
 }
 
 const parseCall = async (destChainId) => {
