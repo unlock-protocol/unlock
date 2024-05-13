@@ -11124,6 +11124,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/upgrades-core@npm:1.33.1":
+  version: 1.33.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.33.1"
+  dependencies:
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/09a145ab9ca79237231daa2dc984d3257db10557ec48ced70e5862822a29a2011407b4761d1cd1ac17e1637a0ac64e5541c9a112f1b35d01f4313873aaa8514f
+  languageName: node
+  linkType: hard
+
 "@parcel/watcher-android-arm64@npm:2.4.1":
   version: 2.4.1
   resolution: "@parcel/watcher-android-arm64@npm:2.4.1"
@@ -18278,7 +18296,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.6"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
-    "@openzeppelin/upgrades-core": "npm:1.32.5"
+    "@openzeppelin/upgrades-core": "npm:1.33.1"
     "@safe-global/api-kit": "npm:2.2.0"
     "@safe-global/protocol-kit": "npm:3.1.0"
     "@tenderly/hardhat-tenderly": "npm:2.2.2"
