@@ -138,6 +138,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     }
   )
 
+  // TODO: eventVerifiers is deprecated
   const {
     isLoading: isLoadingItems,
     refetch: refetchList,

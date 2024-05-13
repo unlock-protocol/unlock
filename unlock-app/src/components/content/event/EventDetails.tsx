@@ -39,8 +39,6 @@ import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
 import { AttendeeCues } from './Registration/AttendeeCues'
-import { useQuery } from '@tanstack/react-query'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
 
 interface EventDetailsProps {
@@ -251,7 +249,7 @@ export const EventDetails = ({
             </>
           )}
 
-          {(isOrganizer || verifier) && (
+          {verifier && (
             <>
               <Button
                 onClick={() => {
