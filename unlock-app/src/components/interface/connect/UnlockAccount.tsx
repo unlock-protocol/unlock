@@ -1,17 +1,15 @@
-import { Input } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
-import { FieldValues, useForm } from 'react-hook-form'
-import SvgComponents from '../svg'
-import { ConnectButton, CustomAnchorButton } from './Custom'
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { IoWalletOutline as WalletIcon } from 'react-icons/io5'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -22,67 +20,6 @@ export type SignUpForm = Record<
   'email' | 'password' | 'confirmPassword',
   string
 >
-
-interface EnterEmailProps {
-  onSubmitEmail(email: string, existingUser: boolean): void
-}
-
-const EnterEmail = ({ onSubmitEmail }: EnterEmailProps) => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm<UserDetails>()
-
-  const [isContinuing, setIsContinuing] = useState(false)
-  const storageService = useStorageService()
-
-  async function onSubmit({ email }: FieldValues) {
-    try {
-      setIsContinuing(true)
-      const existingUser = await storageService.userExist(email)
-      setIsContinuing(false)
-      onSubmitEmail(email, existingUser)
-    } catch (error) {
-      if (error instanceof Error) {
-        setError('email', {
-          type: 'value',
-          message: error.message,
-        })
-      }
-      setIsContinuing(false)
-    }
-  }
-
-  return (
-    <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: 'Email is required',
-          })}
-          error={errors.email?.message}
-        />
-        <ConnectButton
-          primary
-          loading={isContinuing}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Continue
-        </ConnectButton>
-      </form>
-    </div>
-  )
-}
 
 export interface SignInProps {
   email: string
@@ -135,16 +72,15 @@ const SignIn = ({
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
-          {useIcon && (
+        {useIcon && (
+          <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
             <BlockiesSvg
               address={account || '0x'}
               size={6}
               className="rounded-full"
             />
-          )}
-          <div className="text-center">{email}</div>
-        </div>
+          </div>
+        )}
         <Input
           label={'Password'}
           type="password"
@@ -158,27 +94,17 @@ const SignIn = ({
           })}
           error={errors.password?.message}
         />
-        <ConnectButton
-          primary
-          loading={isSubmitting}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Sign In
-        </ConnectButton>
+        <Button type="submit" loading={isSubmitting} className="p-2.5">
+          <div className="flex justify-center items-center gap-2">Sign In</div>
+        </Button>
       </form>
-      <div className="flex items-center justify-end px-6">
+      <div className="flex items-center justify-end px-6 py-4">
         <button
           onClick={(event) => {
             event.preventDefault()
             onReturn()
           }}
-          className="hover:text-ui-main-600"
+          className="hover:text-ui-main-600 underline"
         >
           Sign Out
         </button>
@@ -203,7 +129,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
     formState: { errors, isSubmitting },
   } = useForm<SignUpForm>()
 
-  const onSubmit = async ({ email, password }: SignUpForm) => {
+  const onSubmit = async ({ password }: SignUpForm) => {
     try {
       await signUp({ email, password })
       if (onSignIn) {
@@ -227,19 +153,6 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
   return (
     <div className="grid gap-2">
       <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          type="email"
-          label="Email"
-          placeholder="your@email.com"
-          {...register('email', {
-            required: {
-              value: true,
-              message: 'Email is required',
-            },
-          })}
-          value={email}
-          error={errors.email?.message}
-        />
         <Input
           label="Password"
           type="password"
@@ -274,20 +187,11 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
           })}
           error={errors.confirmPassword?.message}
         />
-        <ConnectButton
-          type="submit"
-          primary
-          loading={isSubmitting}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
-          Create an account
-        </ConnectButton>
+        <Button type="submit" loading={isSubmitting} className="p-2.5">
+          <div className="flex justify-center items-center gap-2">
+            Create an account
+          </div>
+        </Button>
       </form>
       <div className="flex items-center justify-end px-6">
         <button
@@ -295,7 +199,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
             event.preventDefault()
             onReturn()
           }}
-          className="hover:text-ui-main-600"
+          className="hover:text-ui-main-600 underline"
         >
           Back
         </button>
@@ -305,6 +209,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
+  defaultEmail?: string
   onExit(): void
   onSignIn?(): void
   useIcon?: boolean
@@ -314,20 +219,18 @@ export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
   useIcon = true,
+  defaultEmail = '',
 }: Props) => {
-  const [enteredEmail, setEnteredEmail] = useState('')
   const [isValidEmail, setIsValidEmail] = useState(false)
-  const [isSigningUp, setIsSigningUp] = useState(false)
 
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, account, connected, deAuthenticate } = useAuth()
+  const { email, deAuthenticate } = useAuth()
   // TODO: Consider adding a way to set the email address to Auth context
   const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
-
-  const requireSignIn = account && !connected
+  const storageService = useStorageService()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -348,11 +251,23 @@ export const ConnectUnlockAccount = ({
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onSubmitEmail = (email: string, existingUser: boolean) => {
-    setEnteredEmail(email)
-    setIsValidEmail(existingUser)
-    setIsSigningUp(!existingUser)
-  }
+  const onEmail = useCallback(
+    async ({ email }: { email: string }) => {
+      try {
+        const existingUser = await storageService.userExist(email)
+        setIsValidEmail(existingUser)
+      } catch (error) {
+        if (error instanceof Error) {
+          ToastHelper.error(`Email Error: ${error.message}`)
+        }
+      }
+    },
+    [storageService]
+  )
+
+  useEffect(() => {
+    onEmail({ email: defaultEmail })
+  }, [defaultEmail, onEmail])
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
@@ -370,55 +285,31 @@ export const ConnectUnlockAccount = ({
         />
       ) : (
         <>
-          {!enteredEmail && <EnterEmail onSubmitEmail={onSubmitEmail} />}
-          {enteredEmail && isValidEmail && (
+          {isValidEmail && (
             <SignIn
-              email={enteredEmail}
+              email={defaultEmail}
               signIn={signIn}
               onSignIn={onSignIn}
               useIcon={useIcon}
               onReturn={() => {
-                setEnteredEmail('')
+                onExit()
                 setIsValidEmail(false)
               }}
             />
           )}
-          {enteredEmail && !isValidEmail && (
+          {!isValidEmail && (
             <SignUp
-              email={enteredEmail}
+              email={defaultEmail}
               signUp={signUp}
               onSignIn={onSignIn}
               onReturn={() => {
-                setIsSigningUp(false)
-                setEnteredEmail('')
+                onExit()
                 setIsValidEmail(false)
               }}
             />
           )}
         </>
       )}
-      <div className="grid gap-4 p-6">
-        {!requireSignIn && !isSigningUp && (
-          <div className="grid gap-2">
-            <CustomAnchorButton
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/find-wallet/"
-            >
-              Get a crypto wallet
-            </CustomAnchorButton>
-            <ConnectButton
-              icon={<WalletIcon size={24} />}
-              onClick={(event) => {
-                event.preventDefault()
-                onExit()
-              }}
-            >
-              <span>Back to using your crypto wallet</span>
-            </ConnectButton>
-          </div>
-        )}
-      </div>
     </div>
   )
 }

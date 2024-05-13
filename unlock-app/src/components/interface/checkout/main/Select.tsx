@@ -29,6 +29,7 @@ import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
+import { useSIWE } from '~/hooks/useSIWE'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -318,6 +319,8 @@ export function Select({ checkoutService }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
+  const [isSigning, setSigning] = useState(false)
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -325,7 +328,8 @@ export function Select({ checkoutService }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook
+    isLoadingHook ||
+    isSigning
 
   useEffect(() => {
     if (locks?.length) {
@@ -337,7 +341,19 @@ export function Select({ checkoutService }: Props) {
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
   useEffect(() => {
+    const signToSignIn = async () => {
+      await signIn()
+    }
+
+    if (!connected && useDelegatedProvider) {
+      signToSignIn()
+    }
+
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
@@ -365,6 +381,33 @@ export function Select({ checkoutService }: Props) {
     skipSelect,
     isLoading,
   ])
+
+  const selectLock = async (event: any) => {
+    event.preventDefault()
+
+    if (!lock) {
+      return
+    }
+
+    // TODO: Change state before signing and on CONNECT place loader
+
+    if (!isSignedIn && useDelegatedProvider) {
+      setSigning(true)
+
+      await signIn()
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: lock.isMember,
+      expiredMember: lock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }
 
   return (
     <Fragment>
@@ -437,27 +480,7 @@ export function Select({ checkoutService }: Props) {
               continue.
             </p>
           )}
-          <Button
-            disabled={isDisabled}
-            onClick={async (event) => {
-              event.preventDefault()
-
-              if (!lock) {
-                return
-              }
-
-              checkoutService.send({
-                type: 'CONNECT',
-                lock,
-                existingMember: lock.isMember,
-                expiredMember: lock.isExpired,
-                skipQuantity,
-                skipRecipient,
-                recipients: account ? [account] : [],
-                hook: hookType,
-              })
-            }}
-          >
+          <Button disabled={isDisabled} onClick={selectLock}>
             Next
           </Button>
         </div>

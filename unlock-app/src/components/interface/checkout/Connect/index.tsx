@@ -4,7 +4,7 @@ import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
-import { TopNavigation } from '../Shell'
+import { CheckoutHead, TopNavigation } from '../Shell'
 import { useMachine } from '@xstate/react'
 
 interface Props {
@@ -65,9 +65,7 @@ export function Connect({
           <ConfirmConnect
             communication={communication}
             onClose={onClose}
-            connectService={connectService}
             oauthConfig={oauthConfig}
-            injectedProvider={injectedProvider}
           />
         )
       }
@@ -81,15 +79,19 @@ export function Connect({
   }, [matched, onClose, connectService, injectedProvider, oauthConfig])
 
   return (
-    <div className="bg-white max-w-md rounded-xl flex flex-col w-full gap-2 h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
+    <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
       <TopNavigation onClose={onClose} onBack={onBack} />
+      <CheckoutHead />
       <header>
-        <h1 className="text-xl text-center font-medium">
+        <h1 className="text-xl text-center font-medium p-1">
           <span className="font-bold text-brand-ui-primary">
-            {oauthConfig.clientId}
+            {oauthConfig.clientId.length > 20
+              ? oauthConfig.clientId.slice(0, 17) + '...'
+              : oauthConfig.clientId}
           </span>{' '}
           wants you to sign in
         </h1>
+        <div className="border-t"></div>
       </header>
       <Content />
     </div>

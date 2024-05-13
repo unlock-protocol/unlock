@@ -8,10 +8,9 @@ const {
   reverts,
 } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-const PROPOSER_ROLE = ethers.utils.keccak256(
-  ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
-)
+const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
 describe('UnlockProtocolGovernor', () => {
   let gov
@@ -21,14 +20,14 @@ describe('UnlockProtocolGovernor', () => {
   // default values
   const votingDelay = 1
   const votingPeriod = 45818
-  const defaultQuorum = ethers.utils.parseEther('15000')
+  const defaultQuorum = ethers.parseEther('15000')
 
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
     const proposalTx = await gov.propose(...proposal)
 
-    const { events } = await proposalTx.wait()
-    const evt = events.find((v) => v.event === 'ProposalCreated')
+    const receipt = await proposalTx.wait()
+    const evt = await getEvent(receipt, 'ProposalCreated')
     const { proposalId } = evt.args
 
     // proposale exists but does not accep votes yet
@@ -47,13 +46,13 @@ describe('UnlockProtocolGovernor', () => {
 
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await advanceBlockTo(deadline.toNumber() + 1)
+    await advanceBlockTo(deadline + 1n)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
     // get params
-    const descriptionHash = ethers.utils.keccak256(
-      ethers.utils.toUtf8Bytes(proposal.slice(-1).find(Boolean))
+    const descriptionHash = ethers.keccak256(
+      ethers.toUtf8Bytes(proposal.slice(-1).find(Boolean))
     )
     const [targets, values, calldatas] = proposal
 
@@ -83,7 +82,6 @@ describe('UnlockProtocolGovernor', () => {
       [], // proposers list is empty at deployment
       [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
     ])
-    await timelock.deployed()
 
     // deploy governor
     const UnlockProtocolGovernor = await ethers.getContractFactory(
@@ -91,16 +89,15 @@ describe('UnlockProtocolGovernor', () => {
     )
 
     gov = await upgrades.deployProxy(UnlockProtocolGovernor, [
-      udt.address,
+      await udt.getAddress(),
       votingDelay,
       votingPeriod,
       defaultQuorum,
-      timelock.address,
+      await timelock.getAddress(),
     ])
-    await gov.deployed()
 
     // grant role
-    await timelock.grantRole(PROPOSER_ROLE, gov.address)
+    await timelock.grantRole(PROPOSER_ROLE, await gov.getAddress())
   })
 
   describe('Default values', () => {
@@ -113,7 +110,7 @@ describe('UnlockProtocolGovernor', () => {
     })
 
     it('quorum is 15k UDT', async () => {
-      assert.equal((await gov.quorum(1)).toString(), defaultQuorum.toString())
+      assert.equal(await gov.quorum(1), defaultQuorum)
     })
   })
 
@@ -126,43 +123,46 @@ describe('UnlockProtocolGovernor', () => {
     })
 
     beforeEach(async () => {
-      const quorum = ethers.utils.parseUnits('15000.0', 18)
+      const quorum = ethers.parseUnits('15000.0', 18)
       const [owner, minter, voter] = await ethers.getSigners()
 
       // bring default voting period to 10 blocks for testing purposes
       await network.provider.send('hardhat_setStorageAt', [
-        gov.address,
+        await gov.getAddress(),
         '0x1c7', // '455' storage slot
         '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
       ])
 
       // get tokens
       udt = await udt.connect(minter)
-      await udt.mint(owner.address, quorum)
+      await udt.mint(await owner.getAddress(), quorum)
 
       // give voter a few more tokens of its own to make sure we are above quorum
-      await udt.mint(minter.address, ethers.utils.parseUnits('10.0', 18))
-      await udt.delegate(voter.address)
+      await udt.mint(await minter.getAddress(), ethers.parseUnits('10.0', 18))
+      await udt.delegate(await voter.getAddress())
 
       // delegate votes
       udt = await udt.connect(owner)
-      const tx = await udt.delegate(voter.address)
+      const tx = await udt.delegate(await voter.getAddress())
       await tx.wait()
 
-      assert.equal((await udt.getVotes(voter.address)).gt(quorum), true)
+      assert.equal(
+        (await udt.getVotes(await voter.getAddress())) > quorum,
+        true
+      )
     })
 
     describe('Quorum', () => {
       it('should be properly updated through voting', async () => {
-        const quorum = ethers.utils.parseUnits('35.0', 18)
+        const quorum = ethers.parseUnits('35.0', 18)
 
         const [, , voter] = await ethers.getSigners()
         const encoded = gov.interface.encodeFunctionData('setQuorum', [quorum])
 
         // propose
         const proposal = [
-          [gov.address],
-          [ethers.utils.parseUnits('0')],
+          [await gov.getAddress()],
+          [ethers.parseUnits('0')],
           [encoded],
           '<proposal description: update the quorum>',
         ]
@@ -174,13 +174,13 @@ describe('UnlockProtocolGovernor', () => {
 
         // make sure quorum has been changed succesfully
         const changed = await gov.quorum(lastBlock)
-        assert.equal(changed.eq(quorum), true)
+        assert.equal(changed == quorum, true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find((v) => v.event === 'QuorumUpdated')
-        const { oldQuorum, newQuorum } = evt.args
-        assert.equal(newQuorum.eq(quorum), true)
-        assert.equal(oldQuorum.toString(), defaultQuorum.toString())
+        const { args } = await getEvent(updateTx, 'QuorumUpdated')
+        const { oldQuorum, newQuorum } = args
+        assert.equal(newQuorum == quorum, true)
+        assert.equal(oldQuorum, defaultQuorum)
       })
     })
 
@@ -195,8 +195,8 @@ describe('UnlockProtocolGovernor', () => {
 
         // propose
         const proposal = [
-          [gov.address],
-          [ethers.utils.parseUnits('0')],
+          [await gov.getAddress()],
+          [ethers.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]
@@ -204,16 +204,14 @@ describe('UnlockProtocolGovernor', () => {
         await launchVotingProcess(voter, proposal)
 
         const changed = await gov.votingPeriod()
-        assert.equal(changed.eq(votingPeriod), true)
+        assert.equal(changed == votingPeriod, true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find(
-          (v) => v.event === 'VotingPeriodUpdated'
-        )
-        const { oldVotingPeriod, newVotingPeriod } = evt.args
-        assert.equal(newVotingPeriod.eq(votingPeriod), true)
+        const { args } = await getEvent(updateTx, 'VotingPeriodUpdated')
+        const { oldVotingPeriod, newVotingPeriod } = args
+        assert.equal(newVotingPeriod == votingPeriod, true)
         // nb: old value is the one we enforced through eth_storageAt
-        assert.equal(oldVotingPeriod.toNumber(), 50)
+        assert.equal(oldVotingPeriod, 50)
       })
     })
 
@@ -227,8 +225,8 @@ describe('UnlockProtocolGovernor', () => {
         ])
 
         const proposal = [
-          [gov.address],
-          [ethers.utils.parseUnits('0')],
+          [await gov.getAddress()],
+          [ethers.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]
@@ -236,13 +234,11 @@ describe('UnlockProtocolGovernor', () => {
         await launchVotingProcess(voter, proposal)
 
         const changed = await gov.votingDelay()
-        assert.equal(changed.eq(votingDelay), true)
+        assert.equal(changed == votingDelay, true)
 
         // make sure event has been fired
-        const evt = updateTx.events.find(
-          (v) => v.event === 'VotingDelayUpdated'
-        )
-        const { oldVotingDelay, newVotingDelay } = evt.args
+        const { args } = await getEvent(updateTx, 'VotingDelayUpdated')
+        const { oldVotingDelay, newVotingDelay } = args
         assert.equal(newVotingDelay, votingDelay)
         assert.equal(oldVotingDelay, 1)
       })
