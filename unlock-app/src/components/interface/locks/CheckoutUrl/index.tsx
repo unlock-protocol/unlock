@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -53,13 +53,16 @@ export const CheckoutUrlPage = () => {
 
   const { control, trigger, watch, setValue } = methods
 
-  const DEFAULT_CONFIG: CheckoutConfig = {
-    id: null,
-    config: {
-      locks: {},
-      icon: '',
-    },
-  } as CheckoutConfig
+  const DEFAULT_CONFIG = useMemo(
+    () => ({
+      id: null,
+      config: {
+        locks: {},
+        icon: '',
+      },
+    }),
+    []
+  ) as CheckoutConfig
 
   const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
 
