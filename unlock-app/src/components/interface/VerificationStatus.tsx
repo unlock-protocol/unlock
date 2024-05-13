@@ -18,6 +18,7 @@ import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface Props {
+  eventAddress?: string
   config: MembershipVerificationConfig
   onVerified: () => void
   onClose?: () => void
@@ -100,7 +101,12 @@ const WarningDialog = ({
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
+export const VerificationStatus = ({
+  eventAddress,
+  config,
+  onVerified,
+  onClose,
+}: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -162,6 +168,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
 
   const invalid = ticket
     ? invalidMembership({
+        eventAddress,
         network,
         manager: ticket!.manager,
         keyId: ticket!.keyId,
@@ -178,7 +185,13 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const disableActions = !ticket?.isVerifier || isCheckingIn || !!invalid
 
   const onClickVerified = () => {
-    if (!checkedInAt && ticket!.isVerifier && !showWarning) {
+    if (
+      !checkedInAt &&
+      ticket!.isVerifier &&
+      !showWarning &&
+      eventAddress &&
+      ticket!.lockAddress.toLowerCase() === eventAddress.toLowerCase()
+    ) {
       setShowWarning(true)
     } else if (typeof onVerified === 'function') {
       onVerified()
@@ -188,7 +201,9 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const CardActions = () => (
     <div className="grid w-full gap-2">
       {viewer ? (
-        ticket!.isVerifier ? (
+        eventAddress &&
+        ticket!.isVerifier &&
+        ticket!.lockAddress.toLowerCase() === eventAddress.toLowerCase() ? (
           <Button
             loading={isCheckingIn}
             disabled={disableActions}

@@ -3,6 +3,7 @@ import { config } from '~/config/app'
 import { MembershipVerificationData } from '~/utils/verification'
 
 interface Options {
+  eventAddress?: string
   network: number
   owner: string
   manager: string
@@ -13,6 +14,7 @@ interface Options {
 }
 
 export function invalidMembership({
+  eventAddress,
   network,
   owner,
   manager,
@@ -31,6 +33,13 @@ export function invalidMembership({
 
   if (tokenId && keyId !== tokenId.toString()) {
     return 'This key does not match the user'
+  }
+
+  if (
+    eventAddress &&
+    eventAddress.toLowerCase() !== verificationData.lockAddress.toLowerCase()
+  ) {
+    return 'This QR does not match the event'
   }
 
   // When the key manager is our key manager contract, the owner can be different as the key

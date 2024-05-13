@@ -243,6 +243,16 @@ export const EventDetails = ({
                 <span>Attendees</span>
               </div>
             </Button>
+            <Button
+              onClick={() => {
+                router.push(`/event/${eventProp.slug}/verification`)
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Icon icon={FaUsers} size={20} />
+                <span>Verification</span>
+              </div>
+            </Button>
           </div>
         )}
 

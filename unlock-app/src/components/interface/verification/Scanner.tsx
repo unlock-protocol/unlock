@@ -43,7 +43,11 @@ const getVerificationConfigFromURL = async (content?: string) => {
   }
 }
 
-export function Scanner() {
+interface ScannerProps {
+  eventAddress?: string
+}
+
+export function Scanner(eventAddress?: ScannerProps) {
   const [membershipVerificationConfig, setMembershipVerificationConfig] =
     useState<MembershipVerificationConfig | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -169,6 +173,7 @@ export function Scanner() {
                 <div className="flex items-center justify-center min-h-full">
                   <Dialog.Panel className="w-full max-w-sm">
                     <VerificationStatus
+                      eventAddress={eventAddress?.eventAddress}
                       onClose={() => setMembershipVerificationConfig(null)}
                       onVerified={() => setMembershipVerificationConfig(null)}
                       config={membershipVerificationConfig}
