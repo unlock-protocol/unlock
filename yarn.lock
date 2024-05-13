@@ -11077,6 +11077,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/hardhat-upgrades@npm:3.1.0":
+  version: 3.1.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:3.1.0"
+  dependencies:
+    "@openzeppelin/defender-admin-client": "npm:^1.52.0"
+    "@openzeppelin/defender-base-client": "npm:^1.52.0"
+    "@openzeppelin/defender-sdk-base-client": "npm:^1.10.0"
+    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.10.0"
+    "@openzeppelin/defender-sdk-network-client": "npm:^1.10.0"
+    "@openzeppelin/upgrades-core": "npm:^1.32.0"
+    chalk: "npm:^4.1.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.1.5"
+    proper-lockfile: "npm:^4.1.1"
+    undici: "npm:^6.11.1"
+  peerDependencies:
+    "@nomicfoundation/hardhat-ethers": ^3.0.0
+    "@nomicfoundation/hardhat-verify": ^2.0.0
+    ethers: ^6.6.0
+    hardhat: ^2.0.2
+  peerDependenciesMeta:
+    "@nomicfoundation/hardhat-verify":
+      optional: true
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 10/91e3a183b00654dbb926cd3a1ba12346f0b1a4b73f945a12c06846f88999112e4769c1b8c7d820dfa9c8a5bc78e91a46edd168d13bbb689d0bc05c377423d392
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/hardhat-upgrades@npm:^3.0.1":
   version: 3.0.5
   resolution: "@openzeppelin/hardhat-upgrades@npm:3.0.5"
@@ -11121,6 +11150,24 @@ __metadata:
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
   checksum: 10/71d768046968dac866e5310bb2c1df0618cb2d84914f2889b94d54a32e1c2b6c3a288f00b07e0f233dc3cbc34e6e9a29b4c06dc3409c6f017832b5b050406190
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:1.33.1":
+  version: 1.33.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.33.1"
+  dependencies:
+    cbor: "npm:^9.0.0"
+    chalk: "npm:^4.1.0"
+    compare-versions: "npm:^6.0.0"
+    debug: "npm:^4.1.1"
+    ethereumjs-util: "npm:^7.0.3"
+    minimist: "npm:^1.2.7"
+    proper-lockfile: "npm:^4.1.1"
+    solidity-ast: "npm:^0.4.51"
+  bin:
+    openzeppelin-upgrades-core: dist/cli/cli.js
+  checksum: 10/09a145ab9ca79237231daa2dc984d3257db10557ec48ced70e5862822a29a2011407b4761d1cd1ac17e1637a0ac64e5541c9a112f1b35d01f4313873aaa8514f
   languageName: node
   linkType: hard
 
@@ -13839,12 +13886,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solidity-parser/parser@npm:^0.16.0":
-  version: 0.16.2
-  resolution: "@solidity-parser/parser@npm:0.16.2"
-  dependencies:
-    antlr4ts: "npm:^0.5.0-alpha.4"
-  checksum: 10/a95b0c45331623e587e938e69d49832814ab8867371bd58f9946346b99a18705ee47b98a1006c3da6dae33ec8c8c1bf7d203a4acfa1ced0bfd68632acf2cd19c
+"@solidity-parser/parser@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "@solidity-parser/parser@npm:0.17.0"
+  checksum: 10/76de7d1268de676c101b9a41576c324c0d0b9699e3ba3d846b5e580d6cae454fd7ec088011c316ce18af1b23a1482da88768d30f0e41becfd9da90f692fb9a65
   languageName: node
   linkType: hard
 
@@ -18517,8 +18562,8 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.6"
     "@openzeppelin/contracts": "npm:4.9.5"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.5"
-    "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
-    "@openzeppelin/upgrades-core": "npm:1.32.5"
+    "@openzeppelin/hardhat-upgrades": "npm:3.1.0"
+    "@openzeppelin/upgrades-core": "npm:1.33.1"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
     "@safe-global/safe-service-client": "npm:2.0.3"
@@ -18532,20 +18577,20 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     babel-polyfill: "npm:6.26.0"
     babel-register: "npm:6.26.0"
-    chai: "npm:4.3.10"
-    eslint: "npm:8.46.0"
+    chai: "npm:4.4.1"
+    eslint: "npm:8.57.0"
     eth-gas-reporter: "npm:0.2.27"
-    ethers: "npm:6.10.0"
-    fs-extra: "npm:11.1.1"
+    ethers: "npm:6.12.1"
+    fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.3"
     hardhat-contract-sizer: "npm:2.10.0"
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:1.0.10"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:2.8.2"
-    prettier: "npm:3.0.0"
-    prettier-plugin-solidity: "npm:1.1.3"
-    solhint: "npm:4.0.0"
+    prettier: "npm:3.2.5"
+    prettier-plugin-solidity: "npm:1.3.1"
+    solhint: "npm:4.5.4"
     solidity-coverage: "npm:0.8.6"
     yesno: "npm:0.4.0"
   languageName: unknown
@@ -20637,7 +20682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"antlr4@npm:^4.11.0":
+"antlr4@npm:^4.13.1-patch-1":
   version: 4.13.1
   resolution: "antlr4@npm:4.13.1"
   checksum: 10/b17ee045cf30c7cec563f3ce81dc8bffd2c17b546646cd76e7b5f4cc4b676a1960c1a8a9aea53769947b0c6de70ed2aea73431e76c3840ab3b69cf3de5f1fc89
@@ -23322,21 +23367,6 @@ __metadata:
     pathval: "npm:^1.1.0"
     type-detect: "npm:^4.0.5"
   checksum: 10/e6116e8c19005909cd9ad0540061f3e0f943ae63935aca8e20d118306954b0ff42b4e3e8a4d740b4152a452aab016ac9d24406dfcf82a2e747004037a0f40485
-  languageName: node
-  linkType: hard
-
-"chai@npm:4.3.10":
-  version: 4.3.10
-  resolution: "chai@npm:4.3.10"
-  dependencies:
-    assertion-error: "npm:^1.1.0"
-    check-error: "npm:^1.0.3"
-    deep-eql: "npm:^4.1.3"
-    get-func-name: "npm:^2.0.2"
-    loupe: "npm:^2.3.6"
-    pathval: "npm:^1.1.1"
-    type-detect: "npm:^4.0.8"
-  checksum: 10/9e545fd60f5efee4f06f7ad62f7b1b142932b08fbb3454db69defd511e7c58771ce51843764212da1e129b2c9d1b029fbf5f98da030fe67a95a0853e8679524f
   languageName: node
   linkType: hard
 
@@ -42990,16 +43020,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-solidity@npm:1.1.3":
-  version: 1.1.3
-  resolution: "prettier-plugin-solidity@npm:1.1.3"
+"prettier-plugin-solidity@npm:1.3.1":
+  version: 1.3.1
+  resolution: "prettier-plugin-solidity@npm:1.3.1"
   dependencies:
-    "@solidity-parser/parser": "npm:^0.16.0"
-    semver: "npm:^7.3.8"
-    solidity-comments-extractor: "npm:^0.0.7"
+    "@solidity-parser/parser": "npm:^0.17.0"
+    semver: "npm:^7.5.4"
+    solidity-comments-extractor: "npm:^0.0.8"
   peerDependencies:
-    prettier: ">=2.3.0 || >=3.0.0-alpha.0"
-  checksum: 10/601ef5f843325006c1cb2541a4482da8325c81ad45241b28549976f5a8436045ce7f3927b044b1853f4519be068c7e9c64d144cd88e1a2cdf9c1b3598022dbbe
+    prettier: ">=2.3.0"
+  checksum: 10/45c1bf16ca960e43e8dc518db95a9eecfce941480e2737272ab259ea9dcb9796a7830a8884de21637f286f80f06d4b4163418d4d55e41347aee96ee93bc4e8f0
   languageName: node
   linkType: hard
 
@@ -47140,13 +47170,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solhint@npm:4.0.0":
-  version: 4.0.0
-  resolution: "solhint@npm:4.0.0"
+"solhint@npm:4.5.4":
+  version: 4.5.4
+  resolution: "solhint@npm:4.5.4"
   dependencies:
-    "@solidity-parser/parser": "npm:^0.16.0"
+    "@solidity-parser/parser": "npm:^0.18.0"
     ajv: "npm:^6.12.6"
-    antlr4: "npm:^4.11.0"
+    antlr4: "npm:^4.13.1-patch-1"
     ast-parents: "npm:^0.0.1"
     chalk: "npm:^4.1.2"
     commander: "npm:^10.0.0"
@@ -47168,7 +47198,7 @@ __metadata:
       optional: true
   bin:
     solhint: solhint.js
-  checksum: 10/41e01c292ea16d9b1303d689c6381426aa845697911edd915ccf4019b58fae499af4ee7c47aa2c83601535f3824a1d27220735aa8e35816e03768518ccb18fb6
+  checksum: 10/0d839f4c81b83ec2fa9db5003971623b4ca6895348d55874bd9189c4af06c8c5328789410a2859496b7cbdee0ed0321694d63d83f5c94955f4d00bc15e317e41
   languageName: node
   linkType: hard
 
@@ -47181,10 +47211,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"solidity-comments-extractor@npm:^0.0.7":
-  version: 0.0.7
-  resolution: "solidity-comments-extractor@npm:0.0.7"
-  checksum: 10/a5cedf2310709969bc1783a6c336171478536f2f0ea96ad88437e0ef1e8844c0b37dd75591b0a824ec9c30640ea7e31b5f03128e871e6235bef3426617ce96c4
+"solidity-comments-extractor@npm:^0.0.8":
+  version: 0.0.8
+  resolution: "solidity-comments-extractor@npm:0.0.8"
+  checksum: 10/615d53c2e8f5e7a1ad26e4e7e3bdc8b7c7885420611fcd690864bb54a9af2813a93cf30bdede16273791bda16eebc7a4ce1379d458ac2d7834074eb4936dea70
   languageName: node
   linkType: hard
 
@@ -50436,6 +50466,13 @@ __metadata:
   version: 6.12.0
   resolution: "undici@npm:6.12.0"
   checksum: 10/6cdc05c7ed4eef3f998ccd41f355b7f8ffd34ba6962f582b7ee8b3e9488ba95199fb6f23ff92ef87e53762286c45c19fb23aa64f12d33d2c61a45c56c5b85a4b
+  languageName: node
+  linkType: hard
+
+"undici@npm:^6.11.1":
+  version: 6.16.1
+  resolution: "undici@npm:6.16.1"
+  checksum: 10/07dc67ec7a81323952effcbdb4aa674dd4f23aa872a03bdd4773d4e3b0b2aed268d116c8cfb012ecf272d2d1a0399055bf6ed134dd79b6a0920bab83ca483fcb
   languageName: node
   linkType: hard
 
