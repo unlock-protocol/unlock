@@ -223,7 +223,7 @@ export const EventDetails = ({
         ]}
       />
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row-reverse gap-2 ">
+        <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2 ">
           {isOrganizer && (
             <>
               <Button
