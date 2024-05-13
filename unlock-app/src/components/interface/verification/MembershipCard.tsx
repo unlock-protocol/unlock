@@ -57,8 +57,6 @@ export function MembershipCard({
   )
   const config = useConfig()
 
-  console.log('membership card')
-
   return (
     <div className="w-full max-w-sm bg-white rounded-xl">
       <div
