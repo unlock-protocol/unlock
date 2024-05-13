@@ -1773,29 +1773,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:7.21.5":
-  version: 7.21.5
-  resolution: "@babel/core@npm:7.21.5"
-  dependencies:
-    "@ampproject/remapping": "npm:^2.2.0"
-    "@babel/code-frame": "npm:^7.21.4"
-    "@babel/generator": "npm:^7.21.5"
-    "@babel/helper-compilation-targets": "npm:^7.21.5"
-    "@babel/helper-module-transforms": "npm:^7.21.5"
-    "@babel/helpers": "npm:^7.21.5"
-    "@babel/parser": "npm:^7.21.5"
-    "@babel/template": "npm:^7.20.7"
-    "@babel/traverse": "npm:^7.21.5"
-    "@babel/types": "npm:^7.21.5"
-    convert-source-map: "npm:^1.7.0"
-    debug: "npm:^4.1.0"
-    gensync: "npm:^1.0.0-beta.2"
-    json5: "npm:^2.2.2"
-    semver: "npm:^6.3.0"
-  checksum: 10/53fc509207f0894df837c78c522183437682a53db1234b4e9f14464602e846df84871041eb6db7cf694d6408c3400cba9b4c6c5625a07cf7306aa63ee11ef6c1
-  languageName: node
-  linkType: hard
-
 "@babel/core@npm:7.22.9":
   version: 7.22.9
   resolution: "@babel/core@npm:7.22.9"
@@ -18874,7 +18851,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
-    "@babel/core": "npm:7.21.5"
+    "@babel/core": "npm:7.24.5"
     "@headlessui/react": "npm:1.7.19"
     "@observablehq/plot": "npm:0.6.14"
     "@radix-ui/react-avatar": "npm:1.0.4"
@@ -50883,7 +50860,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
   dependencies:
-    "@babel/core": "npm:7.21.5"
+    "@babel/core": "npm:7.24.5"
     "@typescript-eslint/eslint-plugin": "npm:7.8.0"
     "@typescript-eslint/parser": "npm:7.8.0"
     babel-plugin-polyfill-corejs2: "npm:0.4.11"
