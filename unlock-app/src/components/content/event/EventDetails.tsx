@@ -39,7 +39,9 @@ import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
 import { AttendeeCues } from './Registration/AttendeeCues'
-import Link from 'next/link'
+import { useQuery } from '@tanstack/react-query'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useEventVerifiers } from '~/hooks/useEventVerifiers'
 
 interface EventDetailsProps {
   event: Event
@@ -80,6 +82,8 @@ export const EventDetails = ({
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
   })
+
+  const verifier = useEventVerifiers({ event: eventProp })
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
@@ -221,40 +225,47 @@ export const EventDetails = ({
         ]}
       />
       <div className="flex flex-col gap-4">
-        {isOrganizer && (
-          <div className="flex flex-row-reverse gap-2 ">
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/settings`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={TbSettings} size={20} />
-                <span>Settings</span>
-              </div>
-            </Button>
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/attendees`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={FaUsers} size={20} />
-                <span>Attendees</span>
-              </div>
-            </Button>
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/verification`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={ScanIcon} size={20} />
-                <span>Verification</span>
-              </div>
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-row-reverse gap-2 ">
+          {isOrganizer && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/settings`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={TbSettings} size={20} />
+                  <span>Settings</span>
+                </div>
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/attendees`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={FaUsers} size={20} />
+                  <span>Attendees</span>
+                </div>
+              </Button>
+            </>
+          )}
+
+          {(isOrganizer || verifier) && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/verification`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={ScanIcon} size={20} />
+                  <span>Verification</span>
+                </div>
+              </Button>
+            </>
+          )}
+        </div>
 
         <div className="relative">
           <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
