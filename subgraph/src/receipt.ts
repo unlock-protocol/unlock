@@ -88,10 +88,14 @@ export function createReceipt(event: ethereum.Event): void {
     // We cannot trust `event.transaction.value` because the purchase function could in fact
     // be happening inside of a larger transaction whose value is not the amount transfered,
     // In that case, we need to look up the GNPChanged event
+    // This is a very fragile setup and we should consider moving to a more formal event triggered
+    // by the contract, like a `Receipt` event that would include everything we need.
     if (logs) {
       const lockContract = PublicLock.bind(Address.fromString(lockAddress))
       const unlockAddress = lockContract.try_unlockProtocol()
 
+      const foundGNPChanged = false
+      let value = BigInt.zero()
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
 
@@ -99,9 +103,13 @@ export function createReceipt(event: ethereum.Event): void {
           txLog.address == unlockAddress.value &&
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
-          const value = ethereum.decode('uint256', txLog.topics[3])!.toBigInt()
-          receipt.amountTransferred = value
+          value = value.plus(
+            ethereum.decode('uint256', txLog.topics[3])!.toBigInt()
+          )
         }
+      }
+      if (foundGNPChanged) {
+        receipt.amountTransferred = value
       }
     }
   }
