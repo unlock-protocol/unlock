@@ -249,7 +249,7 @@ export const EventDetails = ({
               }}
             >
               <div className="flex items-center gap-2">
-                <Icon icon={FaUsers} size={20} />
+                <Icon icon={ScanIcon} size={20} />
                 <span>Verification</span>
               </div>
             </Button>
@@ -429,30 +429,6 @@ export const EventDetails = ({
                     }}
                   >
                     Configure
-                  </Button>
-                </div>
-              </Card>
-
-              {/*  */}
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Verification"
-                    description="Scan and verify the authentication of tickets for your events"
-                  />
-                </div>
-
-                <div className="md:col-span-1">
-                  <Button
-                    target="_blank"
-                    iconLeft={<ScanIcon />}
-                    as={Link}
-                    variant="black"
-                    className="button border w-full"
-                    size="small"
-                    href={`/verification`}
-                  >
-                    Verification app
                   </Button>
                 </div>
               </Card>
