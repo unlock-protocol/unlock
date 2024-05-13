@@ -15,12 +15,15 @@ describe('KeyManager', () => {
     const KeyManagerV2 = await ethers.getContractFactory('KeyManagerV2')
 
     // We attach before so we are able to use the "new" ABI, on the proxy before
-    const proxyBefore = KeyManagerV2.attach(proxy.address)
+    const proxyBefore = KeyManagerV2.attach(await proxy.getAddress())
     // This should not work as someNewFeature is in the new version
     await reverts(proxyBefore.someNewFeature())
 
     // upgrade through proxy
-    const afterProxy = await upgrades.upgradeProxy(proxy.address, KeyManagerV2)
+    const afterProxy = await upgrades.upgradeProxy(
+      await proxy.getAddress(),
+      KeyManagerV2
+    )
 
     // This should now work!
     await afterProxy.someNewFeature()
@@ -35,13 +38,19 @@ describe('KeyManager', () => {
 
     // the `reverts` helper does not seem to work here.
     try {
-      await upgrades.upgradeProxy(proxy.address, KeyManagerV2)
+      await upgrades.upgradeProxy(await proxy.getAddress(), KeyManagerV2)
       assert.equal(false, 'to have reverted')
     } catch (error) {
-      assert.equal(
-        error.message,
-        "VM Exception while processing transaction: reverted with reason string 'Ownable: caller is not the owner'"
+      const interface = new ethers.Interface([
+        'error OwnableUnauthorizedAccount(address)',
+      ])
+      // whatever comes after `return data:` flag in erro message is error bytes
+      const errordata = error.message.split('return data:')[1].slice(1, -1)
+      const encodedError = interface.encodeErrorResult(
+        'OwnableUnauthorizedAccount',
+        [await attacker.getAddress()]
       )
+      assert.equal(errordata, encodedError)
     }
   })
 })
