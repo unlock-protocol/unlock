@@ -1,5 +1,6 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const {
   deployLock,
@@ -54,8 +55,8 @@ describe('Lock / erc721 / tokenURI', () => {
           defaultTokenURI,
           1 // mainnet
         )
-        const { events } = await tx.wait()
-        configUnlockEvent = events.find(({ event }) => event === 'ConfigUnlock')
+        const receipt = await tx.wait()
+        configUnlockEvent = await getEvent(receipt, 'ConfigUnlock')
       })
 
       it('should allow the owner to set the global base token URI', async () => {
@@ -94,12 +95,12 @@ describe('Lock / erc721 / tokenURI', () => {
       const tx = await lock
         .connect(lockManager)
         .setLockMetadata(...Object.values(metadata))
-      const { events } = await tx.wait()
-      lockMetadataEvent = events.find(({ event }) => event === 'LockMetadata')
+      const receipt = await tx.wait()
+      lockMetadataEvent = await getEvent(receipt, 'LockMetadata')
     })
 
     it('should allow the lock creator to set a custom base tokenURI', async () => {
-      await purchaseKey(lock, lockManager.address)
+      await purchaseKey(lock, await lockManager.getAddress())
       const uri = await lock.tokenURI(1)
       assert.equal(uri, `${metadata.baseTokenURI}1`)
     })
@@ -122,7 +123,7 @@ describe('Lock / erc721 / tokenURI', () => {
       )
 
       const baseTokenURI = await lock.tokenURI(0)
-      const lockAddressStr = lock.address.toString()
+      const lockAddressStr = await lock.getAddress()
       const lowerCaseAddress = stringShifter(lockAddressStr)
 
       // should now return the globalBaseTokenURI + the lock address
