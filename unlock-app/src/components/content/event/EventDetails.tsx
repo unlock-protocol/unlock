@@ -39,7 +39,6 @@ import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
 import { AttendeeCues } from './Registration/AttendeeCues'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
-import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 
 interface EventDetailsProps {
