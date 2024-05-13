@@ -17980,6 +17980,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     "@unlock-protocol/ui": "workspace:^"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
+    "@vitest/coverage-v8": "npm:1.6.0"
     color-scheme: "npm:1.0.1"
     connect-timeout: "npm:1.9.0"
     cookie-parser: "npm:1.4.6"
