@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { useMetadata } from '~/hooks/metadata'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import {
@@ -13,6 +12,7 @@ import {
   Card,
 } from '@unlock-protocol/ui'
 import router from 'next/router'
+import ReactMarkdown from 'react-markdown'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { networks } from '@unlock-protocol/networks'
