@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -53,13 +53,16 @@ export const CheckoutUrlPage = () => {
 
   const { control, trigger, watch, setValue } = methods
 
-  const DEFAULT_CONFIG: CheckoutConfig = {
-    id: null,
-    config: {
-      locks: {},
-      icon: '',
-    },
-  } as CheckoutConfig
+  const DEFAULT_CONFIG = useMemo(
+    () => ({
+      id: null,
+      config: {
+        locks: {},
+        icon: '',
+      },
+    }),
+    []
+  ) as CheckoutConfig
 
   const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
 
@@ -168,7 +171,7 @@ export const CheckoutUrlPage = () => {
         // TODO: handle the case where the user is a lock manager but the config was not created by them
       }
     }
-  }, [checkoutConfigList, query.id])
+  }, [checkoutConfigList, query.id, handleSetConfiguration])
 
   const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
 
