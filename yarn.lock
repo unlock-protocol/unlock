@@ -10647,7 +10647,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.13.0, @openzeppelin/defender-sdk-base-client@npm:^1.8.0":
+"@openzeppelin/defender-sdk-base-client@npm:^1.10.0, @openzeppelin/defender-sdk-base-client@npm:^1.13.0":
   version: 1.13.0
   resolution: "@openzeppelin/defender-sdk-base-client@npm:1.13.0"
   dependencies:
@@ -10657,7 +10657,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0, @openzeppelin/defender-sdk-deploy-client@npm:^1.8.0":
+"@openzeppelin/defender-sdk-deploy-client@npm:^1.10.0":
   version: 1.13.0
   resolution: "@openzeppelin/defender-sdk-deploy-client@npm:1.13.0"
   dependencies:
@@ -10676,34 +10676,6 @@ __metadata:
     axios: "npm:^1.6.7"
     lodash: "npm:^4.17.21"
   checksum: 10/5fb13938d960175e4be36fc921ae56f28bb43274c552e1d7f9bf35876adbf6d95738b321f043857c5ea9e29c0791fa4e1530d52c908f5c3c6f551d7bdce9468a
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/hardhat-upgrades@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@openzeppelin/hardhat-upgrades@npm:3.0.2"
-  dependencies:
-    "@openzeppelin/defender-admin-client": "npm:^1.52.0"
-    "@openzeppelin/defender-base-client": "npm:^1.52.0"
-    "@openzeppelin/defender-sdk-base-client": "npm:^1.8.0"
-    "@openzeppelin/defender-sdk-deploy-client": "npm:^1.8.0"
-    "@openzeppelin/upgrades-core": "npm:^1.32.0"
-    chalk: "npm:^4.1.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.1.5"
-    proper-lockfile: "npm:^4.1.1"
-    undici: "npm:^5.28.2"
-  peerDependencies:
-    "@nomicfoundation/hardhat-ethers": ^3.0.0
-    "@nomicfoundation/hardhat-verify": ^2.0.0
-    ethers: ^6.6.0
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomicfoundation/hardhat-verify":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 10/6460b266f0e8ea5fcb5dc1516ccd74b82fc6b930220981889758a0a138e94e995b98c0a1f53095c54ecf99d47021ff1ad29e5aaa76e4db5a483c7ff85d2ee019
   languageName: node
   linkType: hard
 
@@ -10733,24 +10705,6 @@ __metadata:
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
   checksum: 10/91e3a183b00654dbb926cd3a1ba12346f0b1a4b73f945a12c06846f88999112e4769c1b8c7d820dfa9c8a5bc78e91a46edd168d13bbb689d0bc05c377423d392
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:1.32.5":
-  version: 1.32.5
-  resolution: "@openzeppelin/upgrades-core@npm:1.32.5"
-  dependencies:
-    cbor: "npm:^9.0.0"
-    chalk: "npm:^4.1.0"
-    compare-versions: "npm:^6.0.0"
-    debug: "npm:^4.1.1"
-    ethereumjs-util: "npm:^7.0.3"
-    minimist: "npm:^1.2.7"
-    proper-lockfile: "npm:^4.1.1"
-    solidity-ast: "npm:^0.4.51"
-  bin:
-    openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/71d768046968dac866e5310bb2c1df0618cb2d84914f2889b94d54a32e1c2b6c3a288f00b07e0f233dc3cbc34e6e9a29b4c06dc3409c6f017832b5b050406190
   languageName: node
   linkType: hard
 
@@ -17880,7 +17834,7 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
     "@nomicfoundation/hardhat-verify": "npm:2.0.6"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
-    "@openzeppelin/hardhat-upgrades": "npm:3.0.2"
+    "@openzeppelin/hardhat-upgrades": "npm:3.1.0"
     "@openzeppelin/upgrades-core": "npm:1.33.1"
     "@safe-global/api-kit": "npm:2.2.0"
     "@safe-global/protocol-kit": "npm:3.1.0"
