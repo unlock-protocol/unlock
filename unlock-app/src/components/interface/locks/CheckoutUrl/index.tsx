@@ -168,7 +168,7 @@ export const CheckoutUrlPage = () => {
         // TODO: handle the case where the user is a lock manager but the config was not created by them
       }
     }
-  }, [checkoutConfigList])
+  }, [checkoutConfigList, query.id])
 
   const handleSetConfigurationMutation = useMutation(handleSetConfiguration)
 
