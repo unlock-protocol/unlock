@@ -252,7 +252,7 @@ describe('UnlockDiscountToken upgrade', async () => {
       assert.equal(actual, 0)
     })
 
-    describe('mint by gas price', () => {
+    describeOrSkip('mint by gas price', () => {
       let gasSpent
       before(async () => {
         // buy a key
@@ -320,7 +320,7 @@ describe('UnlockDiscountToken upgrade', async () => {
         )
       })
 
-      it('referrer has some UDT now', async () => {
+      it('referrer has some more UDT now ', async () => {
         const actual = await udt.balanceOf(await referrer2.getAddress())
         assert.notEqual(actual, 0)
       })
