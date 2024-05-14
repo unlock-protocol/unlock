@@ -277,13 +277,23 @@ export function Metadata({ checkoutService }: Props) {
   const isEmailRequired =
     locksConfig.emailRequired || paywallConfig.emailRequired
   const metadataInputs = useMemo(() => {
-    const inputs =
+    let inputs =
       locksConfig.metadataInputs || paywallConfig.metadataInputs || []
+
     if (isEmailRequired) {
+      /** Filter out any input fields of type 'email', to avoid duplicating
+          email input fields in the UI.
+       */
+      inputs = inputs.filter((input) => input.type.toLowerCase() !== 'email')
+
+      /** Prepend the default email input to the start of the array.
+          this prioritization ensures that the default email input appears
+          first in the form.
+       */
       return [emailInput, ...inputs]
-    } else {
-      return inputs
     }
+
+    return inputs
   }, [
     locksConfig.metadataInputs,
     paywallConfig.metadataInputs,
