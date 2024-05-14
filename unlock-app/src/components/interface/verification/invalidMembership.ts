@@ -35,14 +35,16 @@ export function invalidMembership({
     return 'This key does not match the user'
   }
 
-  if (
-    eventAddresses &&
-    !eventAddresses.some(
-      (address) =>
+  if (eventAddresses) {
+    let isValid = false
+    eventAddresses.forEach((address) => {
+      if (
         address.toLowerCase() === verificationData.lockAddress.toLowerCase()
-    )
-  ) {
-    return 'This QR does not match the event'
+      ) {
+        isValid = true
+      }
+    })
+    if (!isValid) return 'This QR does not match the event'
   }
 
   // When the key manager is our key manager contract, the owner can be different as the key
