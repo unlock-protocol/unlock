@@ -10,7 +10,10 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
-import { getVerifiersListForLock } from '../../operations/verifierOperations'
+import {
+  getEventVerifiers,
+  getVerifiersListForLock,
+} from '../../operations/verifierOperations'
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
@@ -308,7 +311,7 @@ export const generateTicket: RequestHandler = async (request, response) => {
   return response.end(ticket)
 }
 
-export const getTicket: RequestHandler = async (request, response) => {
+export const getLockTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
   const tokenId = request.params.keyId.toLowerCase().trim()
@@ -328,6 +331,118 @@ export const getTicket: RequestHandler = async (request, response) => {
       }
     ),
     getVerifiersListForLock(lockAddress, network),
+  ])
+
+  if (!key) {
+    return response.status(404).send({
+      message: 'Key not found',
+    })
+  }
+
+  const baseTicket = {
+    keyId: key.tokenId,
+    lockAddress: key.lock.address,
+    owner: key.owner,
+    manager: key.manager,
+    publicLockVersion: key.lock.version,
+  }
+
+  if (!userAddress) {
+    const keyData = await generateKeyMetadata(
+      lockAddress,
+      tokenId,
+      false,
+      config.services.locksmith,
+      network
+    )
+    return response.status(200).send({
+      ...baseTicket,
+      name:
+        keyData.name?.replace(/ +/, '')?.trim()?.toLowerCase() === 'unlockkey'
+          ? key.lock.name
+          : keyData.name,
+      image: keyData.image,
+      description: keyData.description,
+      checkedInAt: keyData?.metadata?.checkedInAt,
+      attributes: keyData.attributes,
+      expiration: key.expiration,
+      userMetadata: {
+        public: {},
+        protected: {},
+      },
+      isVerifier: false,
+    })
+  }
+
+  const isManager = key.lock.lockManagers
+    .map((item: string) => Normalizer.ethereumAddress(item))
+    .includes(Normalizer.ethereumAddress(userAddress))
+
+  const verifier = verifiers.find(
+    (item) =>
+      Normalizer.ethereumAddress(item.address) ===
+      Normalizer.ethereumAddress(userAddress)
+  )
+
+  const isVerifier = verifiers
+    ?.map((item) => Normalizer.ethereumAddress(item.address))
+    .includes(Normalizer.ethereumAddress(userAddress))
+
+  const includeProtected =
+    isManager ||
+    isVerifier ||
+    Normalizer.ethereumAddress(key.owner) ===
+      Normalizer.ethereumAddress(userAddress)
+
+  const keyData = await generateKeyMetadata(
+    lockAddress,
+    tokenId,
+    includeProtected,
+    config.services.locksmith,
+    network
+  )
+
+  return response.status(200).send({
+    ...baseTicket,
+    name:
+      keyData.name?.replace(/ +/, '')?.trim()?.toLowerCase() === 'unlockkey'
+        ? key.lock.name
+        : keyData.name,
+    image: keyData.image,
+    description: keyData.description,
+    checkedInAt: keyData?.metadata?.checkedInAt,
+    attributes: keyData.attributes,
+    expiration: key.expiration,
+    userMetadata: {
+      public: keyData?.userMetadata?.public || {},
+      protected: keyData?.userMetadata?.protected || {},
+    },
+    isVerifier: isVerifier || isManager,
+    verifierName: isVerifier ? verifier?.name : null,
+  })
+}
+
+export const getEventTicket: RequestHandler = async (request, response) => {
+  const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network)
+  const eventSlug = request.params.eventSlug
+  const tokenId = request.params.keyId.toLowerCase().trim()
+  const userAddress = request.user?.walletAddress
+  const subgraph = new SubgraphService()
+
+  const [key, verifiers] = await Promise.all([
+    subgraph.key(
+      {
+        where: {
+          tokenId,
+          lock: lockAddress.toLowerCase().trim(),
+        },
+      },
+      {
+        network,
+      }
+    ),
+    getEventVerifiers(eventSlug),
   ])
 
   if (!key) {

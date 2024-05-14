@@ -11,7 +11,11 @@ import { Button } from '@unlock-protocol/ui'
 import { isSignatureValidForAddress } from '~/utils/signatures'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
-import { useLocksmithGranterAddress, useTicket } from '~/hooks/useTicket'
+import {
+  useEventTicket,
+  useLockTicket,
+  useLocksmithGranterAddress,
+} from '~/hooks/useTicket'
 import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
@@ -105,6 +109,7 @@ const WarningDialog = ({
  */
 export const VerificationStatus = ({
   eventAddresses,
+  eventProp,
   config,
   onVerified,
   onClose,
@@ -123,16 +128,32 @@ export const VerificationStatus = ({
     isLoading: isTicketLoading,
     data: ticket,
     refetch: refetchTicket,
-  } = useTicket({
-    lockAddress,
-    keyId: tokenId!,
-    network,
-  })
+  } = eventProp
+    ? useEventTicket({
+        lockAddress,
+        keyId: tokenId!,
+        network,
+        eventProp,
+      })
+    : useLockTicket({
+        lockAddress,
+        keyId: tokenId!,
+        network,
+      })
 
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
-      await storage.checkTicket(network, lockAddress, tokenId!)
+      if (eventProp) {
+        await storage.checkEventTicket(
+          network,
+          lockAddress,
+          eventProp.slug,
+          tokenId!
+        )
+      } else {
+        await storage.checkLockTicket(network, lockAddress, tokenId!)
+      }
       await refetchTicket()
       setIsCheckingIn(false)
       setShowWarning(false)
