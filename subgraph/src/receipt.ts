@@ -93,7 +93,6 @@ export function createReceipt(event: ethereum.Event): void {
     if (logs) {
       const lockContract = PublicLock.bind(Address.fromString(lockAddress))
       const unlockAddress = lockContract.try_unlockProtocol()
-
       let value = BigInt.zero()
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
@@ -102,9 +101,11 @@ export function createReceipt(event: ethereum.Event): void {
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
           // log all topics
-          const keyValue = ethereum
-            .decode('uint', Bytes.fromHexString(txLog.topics[2].toHexString()))!
-            .toBigInt()
+          const decoded = ethereum
+            .decode('(uint256,uint256,address,uint256,address)', txLog.data)!
+            .toTuple()
+
+          const keyValue = decoded[1].toBigInt()
           value = value.plus(keyValue)
         }
       }

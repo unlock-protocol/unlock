@@ -27,6 +27,7 @@ const defaultZeroIntBytes = Bytes.fromI32(0)
 export function bigIntToBytes(num: BigInt): Bytes {
   return Bytes.fromUint8Array(stripZeros(Bytes.fromBigInt(num).reverse()))
 }
+
 export function bigIntToTopic(num: BigInt): Bytes {
   const bigIntHex = bigIntToBytes(num).toHexString().slice(2)
   const paddedHex = bigIntHex.padStart(64, '0')
@@ -153,20 +154,26 @@ export function newGNPChangedTransactionReceipt(
 ): ethereum.TransactionReceipt {
   const eventSignature = Bytes.fromHexString(GNP_CHANGED_TOPIC0)
   const grossNetworkProduct = BigInt.fromU32(0)
-  const topics = [
-    eventSignature,
-    bigIntToTopic(grossNetworkProduct),
-    bigIntToTopic(keyValue), // _valueInETH
-    addressToTopic(Address.fromString(nullAddress)),
-    bigIntToTopic(keyValue), // value
-    addressToTopic(Address.fromString(lockAddress)),
+
+  // as the tx is sent from another contract (NOT the lock)
+  // only the signature is passed as topic
+  // the rest of the log topics are passed as data
+  const topics = [eventSignature]
+
+  const GNPChangedValues: Array<ethereum.Value> = [
+    ethereum.Value.fromUnsignedBigInt(grossNetworkProduct),
+    ethereum.Value.fromUnsignedBigInt(keyValue),
+    ethereum.Value.fromAddress(Address.fromString(nullAddress)),
+    ethereum.Value.fromUnsignedBigInt(keyValue),
+    ethereum.Value.fromAddress(Address.fromString(lockAddress)),
   ]
+  const values = changetype<ethereum.Tuple>(GNPChangedValues)
 
   return newTransactionReceipt([
     new ethereum.Log(
       Address.fromString(unlockAddress),
       topics,
-      bigIntToBytes(totalValue),
+      ethereum.encode(ethereum.Value.fromTuple(values))!,
       defaultAddressBytes,
       defaultIntBytes,
       defaultAddressBytes,
