@@ -97,28 +97,18 @@ export function createReceipt(event: ethereum.Event): void {
       let value = BigInt.zero()
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
-        log.debug('Event found. unlockAddress: {} address: {}, topic: {}. ', [
-          unlockAddress.value.toHexString(),
-          txLog.address.toHexString(),
-          txLog.topics[0].toHexString(),
-        ])
-
         if (
           txLog.address == unlockAddress.value &&
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
+          // log all topics
           const keyValue = ethereum
-            .decode('uint256', txLog.topics[4])!
+            .decode('uint', Bytes.fromHexString(txLog.topics[2].toHexString()))!
             .toBigInt()
-
-          log.debug('GNPChanged event found. Value changed: {}. ', [
-            keyValue.toString(),
-          ])
           value = value.plus(keyValue)
         }
       }
       if (value > BigInt.zero()) {
-        log.debug('Stored value: {}. ', [value.toString()])
         receipt.amountTransferred = value
       }
     }

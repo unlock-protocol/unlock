@@ -107,8 +107,8 @@ describe('Receipts for base currency locks', () => {
     )
 
     // append GNP event to tx
-    const keyValue = BigInt.fromU32(200)
-    const totalValue = BigInt.fromU32(1000) // specified a wrong tx.value
+    const keyValue = BigInt.fromI32(200)
+    const totalValue = BigInt.fromI32(1000) // specified a wrong tx.value
 
     // bind receipt and value to the tx
     newTransferEvent.transaction.value = totalValue

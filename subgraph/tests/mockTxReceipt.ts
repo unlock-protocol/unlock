@@ -4,6 +4,7 @@ import {
   BigInt,
   Bytes,
   Wrapped,
+  ByteArray,
 } from '@graphprotocol/graph-ts'
 import {
   defaultMockAddress,
@@ -23,16 +24,21 @@ const defaultBigInt = BigInt.fromU32(keyPrice)
 const defaultIntBytes = Bytes.fromUint8Array(defaultBigInt.reverse())
 const defaultZeroIntBytes = Bytes.fromI32(0)
 
-function bigIntToBytes(bi: BigInt): Bytes {
-  let hexString = bi.toHexString()
-  // Remove the '0x' prefix and pad the hex string to be even length
-  hexString = hexString
-    .slice(2)
-    .padStart(
-      hexString.length % 2 == 0 ? hexString.length : hexString.length + 1,
-      '0'
-    )
-  return Bytes.fromHexString('0x' + hexString) as Bytes
+export function bigIntToBytes(num: BigInt): Bytes {
+  return Bytes.fromUint8Array(stripZeros(Bytes.fromBigInt(num).reverse()))
+}
+export function bigIntToTopic(num: BigInt): Bytes {
+  const bigIntHex = bigIntToBytes(num).toHexString().slice(2)
+  const paddedHex = bigIntHex.padStart(64, '0')
+  return Bytes.fromHexString('0x' + paddedHex) as Bytes
+}
+
+export function stripZeros(bytes: Uint8Array): ByteArray {
+  let i = 0
+  while (i < bytes.length && bytes[i] == 0) {
+    i++
+  }
+  return Bytes.fromUint8Array(bytes.slice(i))
 }
 
 function addressToTopic(address: Address): Bytes {
@@ -54,7 +60,7 @@ function createCancelKeyEventLog(
   const eventSignature = defaultAddressBytes
   const topics = [
     eventSignature,
-    bigIntToBytes(tokenId),
+    bigIntToTopic(tokenId),
     addressToTopic(owner),
     addressToTopic(sendTo),
   ]
@@ -149,10 +155,10 @@ export function newGNPChangedTransactionReceipt(
   const grossNetworkProduct = BigInt.fromU32(0)
   const topics = [
     eventSignature,
-    bigIntToBytes(grossNetworkProduct),
-    bigIntToBytes(keyValue), // _valueInETH
+    bigIntToTopic(grossNetworkProduct),
+    bigIntToTopic(keyValue), // _valueInETH
     addressToTopic(Address.fromString(nullAddress)),
-    bigIntToBytes(keyValue), // value
+    bigIntToTopic(keyValue), // value
     addressToTopic(Address.fromString(lockAddress)),
   ]
 
