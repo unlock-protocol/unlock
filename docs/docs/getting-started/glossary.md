@@ -1,7 +1,7 @@
 ---
 title: Glossary
 sidebar_position: 2
-description: >- 
+description: >-
   A glossary of terms used in the Unlock Protocol community and also
   the greater web3 ecosystem we belong to.
 ---
@@ -68,7 +68,7 @@ Welcome, Locksmith! Let’s start with getting the lay of the land with a few co
     to act as “digital membership cards.”</dd>
 
   <dt>Paywall</dt>
-    <dd><a href="/tools/paywall/">The Paywall</a> is a web application which 
+    <dd><a href="/tools/checkout/paywall/">The Paywall</a> is a web application which 
     provides a user interface allowing people to purchase keys to given locks and 
     easily lock or unlock content on a web page based on the ownership of those 
     keys.</dd>

@@ -1,6 +1,5 @@
 import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
-import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -29,8 +28,9 @@ import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import Disconnect from './Disconnect'
+import { useSIWE } from '~/hooks/useSIWE'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -182,7 +182,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
   )
 }
 
-export function Select({ checkoutService, injectedProvider }: Props) {
+export function Select({ checkoutService }: Props) {
   const { paywallConfig, lock: selectedLock } = useSelector(
     checkoutService,
     (state) => state.context
@@ -319,6 +319,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
+  const [isSigning, setSigning] = useState(false)
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -326,7 +328,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook
+    isLoadingHook ||
+    isSigning
 
   useEffect(() => {
     if (locks?.length) {
@@ -338,13 +341,25 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
   useEffect(() => {
+    const signToSignIn = async () => {
+      await signIn()
+    }
+
+    if (!connected && useDelegatedProvider) {
+      signToSignIn()
+    }
+
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
 
     checkoutService.send({
-      type: 'SELECT_LOCK',
+      type: 'CONNECT',
       lock,
       existingMember: !!membership?.member,
       skipQuantity,
@@ -366,6 +381,33 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     skipSelect,
     isLoading,
   ])
+
+  const selectLock = async (event: any) => {
+    event.preventDefault()
+
+    if (!lock) {
+      return
+    }
+
+    // TODO: Change state before signing and on CONNECT place loader
+
+    if (!isSignedIn && useDelegatedProvider) {
+      setSigning(true)
+
+      await signIn()
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: lock.isMember,
+      expiredMember: lock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }
 
   return (
     <Fragment>
@@ -431,42 +473,18 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            {isNotExpectedAddress && (
-              <p className="mb-2 text-sm text-center">
-                Switch to wallet address {minifyAddress(expectedAddress)} to
-                continue.
-              </p>
-            )}
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
-
-                if (!lock) {
-                  return
-                }
-
-                checkoutService.send({
-                  type: 'SELECT_LOCK',
-                  lock,
-                  existingMember: lock.isMember,
-                  expiredMember: lock.isExpired,
-                  skipQuantity,
-                  skipRecipient,
-                  recipients: account ? [account] : [],
-                  hook: hookType,
-                })
-              }}
-            >
-              Next
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          {isNotExpectedAddress && (
+            <p className="mb-2 text-sm text-center">
+              Switch to wallet address {minifyAddress(expectedAddress)} to
+              continue.
+            </p>
+          )}
+          <Button disabled={isDisabled} onClick={selectLock}>
+            Next
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

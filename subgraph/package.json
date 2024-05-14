@@ -37,6 +37,7 @@
     "hoistingLimits": "workspaces"
   },
   "devDependencies": {
+    "ethers": "6",
     "graphql": "16.8.1",
     "matchstick-as": "0.6.0",
     "mustache": "4.2.0"

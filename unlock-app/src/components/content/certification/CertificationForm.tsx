@@ -46,7 +46,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const networkOptions = useAvailableNetworks()
   const network = networkOptions[0]?.value
 
-  const [isFree, setIsFree] = useState(true)
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
   const [allowPurchase, setAllowPurchase] = useState(false)
   const [forever, setForever] = useState(true)
@@ -327,21 +326,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 <>
                   <div className="relative flex flex-col gap-4">
                     <div className="flex items-center justify-between">
-                      <label className="px-1 mb-2 text-base" htmlFor="">
+                      <label className="px-1 -mb-2 text-base" htmlFor="">
                         Currency & Price:
                       </label>
-                      <ToggleSwitch
-                        title="Free"
-                        enabled={isFree}
-                        setEnabled={setIsFree}
-                        onChange={(enable: boolean) => {
-                          if (enable) {
-                            setValue('lock.keyPrice', '0', {
-                              shouldValidate: true,
-                            })
-                          }
-                        }}
-                      />
                     </div>
                     <div className="relative">
                       <SelectCurrencyModal
@@ -375,11 +362,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                             placeholder="0.00"
                             min="0"
                             step="any"
-                            disabled={isFree}
                             {...register('lock.keyPrice', {
                               valueAsNumber: true,
                               required: {
-                                value: !isFree,
+                                value: true,
                                 message: 'This value is required',
                               },
                             })}

@@ -11,8 +11,8 @@ const {
 const { ethers } = require('hardhat')
 const scenarios = [false, true]
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const tip = ethers.utils.parseUnits('1', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const tip = ethers.parseUnits('1', 'ether')
 
 describe('Lock / purchaseTip', () => {
   scenarios.forEach((isErc20) => {
@@ -26,16 +26,21 @@ describe('Lock / purchaseTip', () => {
         ;[deployer, spender] = await ethers.getSigners()
         testToken = await deployERC20(deployer)
         // Mint some tokens for testing
-        await testToken.mint(spender.address, '100000000000000000000')
+        await testToken.mint(
+          await spender.getAddress(),
+          '100000000000000000000'
+        )
 
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
         lock = await deployLock({ tokenAddress })
         // default to spender
         lock = lock.connect(spender)
 
         // Approve spending
         if (isErc20) {
-          await testToken.connect(spender).approve(lock.address, MAX_UINT)
+          await testToken
+            .connect(spender)
+            .approve(await lock.getAddress(), MAX_UINT)
         }
       })
 
@@ -43,10 +48,10 @@ describe('Lock / purchaseTip', () => {
         beforeEach(async () => {
           await lock.purchase(
             [keyPrice],
-            [spender.address],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
               value: isErc20 ? 0 : keyPrice,
             }
@@ -55,7 +60,7 @@ describe('Lock / purchaseTip', () => {
 
         it('user sent keyPrice to the contract', async () => {
           compareBigNumbers(
-            await getBalance(lock.address, tokenAddress),
+            await getBalance(await lock.getAddress(), tokenAddress),
             keyPrice
           )
         })
@@ -64,21 +69,21 @@ describe('Lock / purchaseTip', () => {
       describe('purchase with tip', () => {
         beforeEach(async () => {
           await lock.purchase(
-            [keyPrice.add(tip)],
-            [spender.address],
+            [keyPrice + tip],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
-              value: isErc20 ? 0 : keyPrice.add(tip),
+              value: isErc20 ? 0 : keyPrice + tip,
             }
           )
         })
 
         it('user sent the tip to the contract', async () => {
           compareBigNumbers(
-            await getBalance(lock.address, tokenAddress),
-            isErc20 ? keyPrice : keyPrice.add(tip)
+            await getBalance(await lock.getAddress(), tokenAddress),
+            isErc20 ? keyPrice : keyPrice + tip
           )
         })
       })
@@ -87,20 +92,23 @@ describe('Lock / purchaseTip', () => {
         beforeEach(async () => {
           await lock.purchase(
             [keyPrice],
-            [spender.address],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
-              value: isErc20 ? 0 : keyPrice.add(tip),
+              value: isErc20 ? 0 : keyPrice + tip,
             }
           )
         })
 
         it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-          const balance = await getBalance(lock.address, tokenAddress)
+          const balance = await getBalance(
+            await lock.getAddress(),
+            tokenAddress
+          )
           if (!isErc20) {
-            compareBigNumbers(balance, keyPrice.add(tip))
+            compareBigNumbers(balance, keyPrice + tip)
           } else {
             compareBigNumbers(balance, keyPrice)
           }
@@ -112,19 +120,22 @@ describe('Lock / purchaseTip', () => {
           beforeEach(async () => {
             await lock.purchase(
               [],
-              [spender.address],
+              [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
-                value: keyPrice.add(tip),
+                value: keyPrice + tip,
               }
             )
           })
 
           it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-            const balance = await getBalance(lock.address, tokenAddress)
-            compareBigNumbers(balance, keyPrice.add(tip))
+            const balance = await getBalance(
+              await lock.getAddress(),
+              tokenAddress
+            )
+            compareBigNumbers(balance, keyPrice + tip)
           })
         })
       }
@@ -133,11 +144,11 @@ describe('Lock / purchaseTip', () => {
         it('should fail if value is less than keyPrice', async () => {
           await reverts(
             lock.purchase(
-              [ethers.utils.parseUnits('0.001', 'ether')],
-              [spender.address],
+              [ethers.parseUnits('0.001', 'ether')],
+              [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
                 value: 0,
               }

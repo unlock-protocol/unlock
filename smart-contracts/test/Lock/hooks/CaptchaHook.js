@@ -1,6 +1,6 @@
 const { expect } = require('chai')
-const { ethers, unlock } = require('hardhat')
-const { reverts } = require('../../helpers')
+const { ethers } = require('hardhat')
+const { reverts, deployLock } = require('../../helpers')
 
 describe('CaptchaHook', function () {
   it('Should work', async function () {
@@ -10,9 +10,8 @@ describe('CaptchaHook', function () {
 
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
     const hook = await CaptchaHook.deploy()
-    await hook.deployed()
 
-    await (await hook.addSigner(secretSigner.address)).wait()
+    await (await hook.addSigner(await secretSigner.getAddress())).wait()
 
     // signing wrong message
     expect(
@@ -29,16 +28,16 @@ describe('CaptchaHook', function () {
 
     // Correct signer, correct message
     const message = 'hello'
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
       [message.toLowerCase()]
     )
     const signedMessage = await secretSigner.signMessage(
-      ethers.utils.arrayify(messageHash)
+      ethers.getBytes(messageHash)
     )
     expect(
-      ethers.utils.verifyMessage(message, signedMessage),
-      secretSigner.address
+      ethers.verifyMessage(message, signedMessage),
+      await secretSigner.getAddress()
     )
     expect(await hook.checkIsSigner(message, signedMessage)).to.equal(true)
   })
@@ -47,67 +46,64 @@ describe('CaptchaHook', function () {
     const [user, another, aThird] = await ethers.getSigners()
     const secretSigner = ethers.Wallet.createRandom()
 
-    await unlock.deployProtocol()
-    const expirationDuration = 60 * 60 * 24 * 7
-    const maxNumberOfKeys = 100
-    const keyPrice = 0
-
-    const { lock } = await unlock.createLock({
-      expirationDuration,
-      maxNumberOfKeys,
-      keyPrice,
-      name: 'ticket',
+    const lock = await deployLock({
+      name: 'FREE',
     })
     const CaptchaHook = await ethers.getContractFactory('CaptchaHook')
     const hook = await CaptchaHook.deploy()
-    await hook.deployed()
 
-    await (await hook.addSigner(secretSigner.address)).wait()
+    await (await hook.addSigner(await secretSigner.getAddress())).wait()
 
     // Set the hook on avatar
     await (
       await lock.setEventHooks(
-        hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        await hook.getAddress(),
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [user.address.toLowerCase()]
+      [(await user.getAddress()).toLowerCase()]
     )
     const signedMessage = await secretSigner.signMessage(
-      ethers.utils.arrayify(messageHash)
+      ethers.getBytes(messageHash)
     )
 
-    const anotherMessageHash = ethers.utils.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [another.address.toLowerCase()]
+      [(await another.getAddress()).toLowerCase()]
     )
     const anotherSignedMessage = await secretSigner.signMessage(
-      ethers.utils.arrayify(anotherMessageHash)
+      ethers.getBytes(anotherMessageHash)
     )
 
     // Health check!
     expect(
-      ethers.utils.verifyMessage(user.address.toLowerCase(), signedMessage),
-      secretSigner.address
+      ethers.verifyMessage(
+        (await user.getAddress()).toLowerCase(),
+        signedMessage
+      ),
+      await secretSigner.getAddress()
     )
     expect(
-      await hook.checkIsSigner(user.address.toLowerCase(), signedMessage)
+      await hook.checkIsSigner(
+        (await user.getAddress()).toLowerCase(),
+        signedMessage
+      )
     ).to.equal(true)
 
     // Let's now purchase a key!
     const tx = await lock.purchase(
       [0],
-      [user.address, another.address],
-      [user.address, another.address],
-      [user.address, another.address],
+      [await user.getAddress(), await another.getAddress()],
+      [await user.getAddress(), await another.getAddress()],
+      [await user.getAddress(), await another.getAddress()],
       [signedMessage, anotherSignedMessage]
     )
     await tx.wait()
@@ -116,9 +112,9 @@ describe('CaptchaHook', function () {
     await reverts(
       lock.purchase(
         [0],
-        [aThird.address],
-        [aThird.address],
-        [aThird.address],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
         [signedMessage]
       ),
       'WRONG_SIGNATURE'
@@ -128,10 +124,10 @@ describe('CaptchaHook', function () {
     await reverts(
       lock.purchase(
         [0],
-        [aThird.address],
-        [aThird.address],
-        [aThird.address],
-        [[]]
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        ['0x']
       ),
       'ECDSA: invalid signature length'
     )

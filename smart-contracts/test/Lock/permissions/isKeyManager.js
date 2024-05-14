@@ -1,10 +1,11 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let keyManagerMock
 let keyOwner, keyManager, random, notKeyManager
 let tokenId
-const expirationDuration = ethers.BigNumber.from(60 * 60 * 24 * 30)
+const expirationDuration = BigInt(60 * 60 * 24 * 30)
 
 describe('Permissions / isKeyManager', () => {
   before(async () => {
@@ -14,18 +15,17 @@ describe('Permissions / isKeyManager', () => {
 
     keyManagerMock = await KeyManagerMock.deploy()
     const { timestamp } = await ethers.provider.getBlock('latest')
-    const timestampBefore =
-      ethers.BigNumber.from(timestamp).add(expirationDuration)
+    const timestampBefore = BigInt(timestamp) + expirationDuration
 
     const tx = await keyManagerMock.createNewKey(
-      keyOwner.address,
-      keyManager.address,
+      await keyOwner.getAddress(),
+      await keyManager.getAddress(),
       timestampBefore
     )
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
     ;({
       args: { tokenId },
-    } = events.find((v) => v.event === 'Transfer'))
+    } = await getEvent(receipt, 'Transfer'))
   })
 
   describe('confirming the key manager', () => {
@@ -33,20 +33,23 @@ describe('Permissions / isKeyManager', () => {
       assert.equal(
         await keyManagerMock
           .connect(keyManager)
-          .isKeyManager(tokenId, keyManager.address),
+          .isKeyManager(tokenId, await keyManager.getAddress()),
         true
       )
       // it shouldn't matter who is calling
       assert.equal(
         await keyManagerMock
           .connect(random)
-          .isKeyManager(tokenId, keyManager.address),
+          .isKeyManager(tokenId, await keyManager.getAddress()),
         true
       )
     })
     it('should return false if address is not the KM', async () => {
       assert.equal(
-        await keyManagerMock.isKeyManager(tokenId, notKeyManager.address),
+        await keyManagerMock.isKeyManager(
+          tokenId,
+          await notKeyManager.getAddress()
+        ),
         false
       )
     })

@@ -7,14 +7,13 @@ import {
   FaCheckCircle as CheckIcon,
   FaExclamationCircle as FailIcon,
 } from 'react-icons/fa'
-import { Connected } from '../Connected'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import LoadingIcon from '../../Loading'
 import { useDataForGitcoinPassport } from '~/hooks/useDataForGitcoinPassport'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -24,7 +23,7 @@ interface CustomErrorType {
   isTimeoutError?: boolean
 }
 
-export function Gitcoin({ injectedProvider, checkoutService }: Props) {
+export function Gitcoin({ checkoutService }: Props) {
   const { recipients, lock } = useSelector(
     checkoutService,
     (state) => state.context
@@ -237,78 +236,74 @@ export function Gitcoin({ injectedProvider, checkoutService }: Props) {
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          {/* Show the "Verify" button only initially, before any attempt at verification has been made */}
-          {!isFetchingGitcoinPassportData && !isError && !isSuccess && (
-            <Button
-              className="w-full"
-              onClick={(event) => {
-                event.preventDefault()
-                refetch()
-              }}
-            >
-              Verify Gitcoin Passport{recipients.length > 1 && 's'}
-            </Button>
-          )}
+        {/* Show the "Verify" button only initially, before any attempt at verification has been made */}
+        {!isFetchingGitcoinPassportData && !isError && !isSuccess && (
+          <Button
+            className="w-full"
+            onClick={(event) => {
+              event.preventDefault()
+              refetch()
+            }}
+          >
+            Verify Gitcoin Passport{recipients.length > 1 && 's'}
+          </Button>
+        )}
 
-          {/* Verification in progress button */}
-          {isFetchingGitcoinPassportData && (
-            <Button
-              className="w-full"
-              disabled={
-                isLoadingGitcoinPassportData || isFetchingGitcoinPassportData
-              }
-              loading={
-                isLoadingGitcoinPassportData || isFetchingGitcoinPassportData
-              }
-            >
-              Verifying...
-            </Button>
-          )}
+        {/* Verification in progress button */}
+        {isFetchingGitcoinPassportData && (
+          <Button
+            className="w-full"
+            disabled={
+              isLoadingGitcoinPassportData || isFetchingGitcoinPassportData
+            }
+            loading={
+              isLoadingGitcoinPassportData || isFetchingGitcoinPassportData
+            }
+          >
+            Verifying...
+          </Button>
+        )}
 
-          {/* Button to continue to next step upon successful verification */}
-          {isSuccess && !isFetchingGitcoinPassportData && allValidPassports && (
-            <Button
-              className="w-full"
-              onClick={(event) => {
-                event.preventDefault()
-                onContinue()
-              }}
-            >
-              Continue
-            </Button>
-          )}
+        {/* Button to continue to next step upon successful verification */}
+        {isSuccess && !isFetchingGitcoinPassportData && allValidPassports && (
+          <Button
+            className="w-full"
+            onClick={(event) => {
+              event.preventDefault()
+              onContinue()
+            }}
+          >
+            Continue
+          </Button>
+        )}
 
-          {/* Verification failed disabled button */}
-          {disabled && (
-            <Button
-              className="w-full"
-              disabled
-              onClick={(event) => {
-                event.preventDefault()
-                refetch()
-              }}
-            >
-              Continue
-            </Button>
-          )}
+        {/* Verification failed disabled button */}
+        {disabled && (
+          <Button
+            className="w-full"
+            disabled
+            onClick={(event) => {
+              event.preventDefault()
+              refetch()
+            }}
+          >
+            Continue
+          </Button>
+        )}
 
-          {/* Retry verification button */}
-          {isError && (
-            <Button
-              className="w-full"
-              onClick={(event) => {
-                event.preventDefault()
-                refetch()
-              }}
-            >
-              Retry
-            </Button>
-          )}
-        </Connected>
+        {/* Retry verification button */}
+        {isError && (
+          <Button
+            className="w-full"
+            onClick={(event) => {
+              event.preventDefault()
+              refetch()
+            }}
+          >
+            Retry
+          </Button>
+        )}
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

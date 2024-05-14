@@ -14,8 +14,8 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-verify": "2.0.6",
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@openzeppelin/hardhat-upgrades": "3.0.2",
-    "@openzeppelin/upgrades-core": "1.32.5",
+    "@openzeppelin/hardhat-upgrades": "3.1.0",
+    "@openzeppelin/upgrades-core": "1.33.1",
     "@safe-global/api-kit": "2.2.0",
     "@safe-global/protocol-kit": "3.1.0",
     "@tenderly/hardhat-tenderly": "2.2.2",
@@ -27,10 +27,11 @@
     "arb-shared-dependencies": "1.0.0",
     "eslint": "8.57.0",
     "ethers": "6.10.0",
+    "ethers-multisend": "3.0.0",
     "ethers5": "npm:ethers@5.7.2",
     "fs-extra": "11.2.0",
-    "hardhat": "2.20.1",
-    "zksync-ethers": "6.1.0"
+    "hardhat": "2.22.3",
+    "zksync-ethers": "6.7.0"
   },
   "scripts": {
     "test": "hardhat test",
