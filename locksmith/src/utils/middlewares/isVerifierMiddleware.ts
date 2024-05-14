@@ -5,7 +5,6 @@ import Normalizer from '../normalizer'
 import { logger } from '@sentry/utils'
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
-import { CheckoutConfig } from '../../models'
 import { getEventVerifiers } from '../../operations/verifierOperations'
 
 export const isVerifierOrManagerForLock = async (
