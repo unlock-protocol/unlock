@@ -4,15 +4,18 @@ import { useEffect, useState } from 'react'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
+import { twMerge } from 'tailwind-merge'
 
 export const SelectToken = ({
   network,
   onChange,
   defaultToken,
+  className,
 }: {
   network: number
   defaultToken?: Partial<Token>
   onChange: (token: Token) => void
+  className?: string
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [token, setToken] = useState(defaultToken)
@@ -43,7 +46,7 @@ export const SelectToken = ({
   }, [defaultToken, network])
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className={twMerge('flex flex-col gap-1.5', className)}>
       <SelectCurrencyModal
         isOpen={isOpen}
         setIsOpen={setIsOpen}

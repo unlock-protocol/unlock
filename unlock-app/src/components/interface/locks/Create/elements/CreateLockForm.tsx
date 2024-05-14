@@ -30,6 +30,7 @@ export interface LockFormProps {
 interface CreateLockFormProps {
   onSubmit: any
   defaultValues: LockFormProps
+  hideFields?: string[]
 }
 
 export const networkDescription = (network: number) => {
@@ -63,6 +64,7 @@ export const networkDescription = (network: number) => {
 export const CreateLockForm = ({
   onSubmit,
   defaultValues,
+  hideFields = [],
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -147,30 +149,32 @@ export const CreateLockForm = ({
             className="flex flex-col w-full gap-6"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
-            <Select
-              label="Network:"
-              tooltip={
-                <p className="py-2">
-                  Unlock supports{' '}
-                  <Link
-                    target="_blank"
-                    className="underline"
-                    href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
-                  >
-                    {Object.keys(networks).length} networks
-                  </Link>
-                  .
-                  <br />
-                  If yours is not in the list below, switch your wallet to it{' '}
-                  <br />
-                  and it will be added to the list.
-                </p>
-              }
-              defaultValue={selectedNetwork}
-              options={networkOptions}
-              onChange={onChangeNetwork}
-              description={networkDescription(selectedNetwork!)}
-            />
+            {!hideFields.includes('network') && (
+              <Select
+                label="Network:"
+                tooltip={
+                  <p className="py-2">
+                    Unlock supports{' '}
+                    <Link
+                      target="_blank"
+                      className="underline"
+                      href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
+                    >
+                      {Object.keys(networks).length} networks
+                    </Link>
+                    .
+                    <br />
+                    If yours is not in the list below, switch your wallet to it{' '}
+                    <br />
+                    and it will be added to the list.
+                  </p>
+                }
+                defaultValue={selectedNetwork}
+                options={networkOptions}
+                onChange={onChangeNetwork}
+                description={networkDescription(selectedNetwork!)}
+              />
+            )}
             <div className="relative">
               <Input
                 label="Name:"
@@ -226,50 +230,52 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between">
-                <label className="block px-1 text-base" htmlFor="">
-                  Number of memberships for sale:
-                </label>
-                <ToggleSwitch
-                  title="Unlimited"
-                  enabled={unlimitedQuantity}
-                  setEnabled={setUnlimitedQuantity}
-                  onChange={(enable: boolean) => {
-                    if (enable) {
-                      setValue('maxNumberOfKeys', undefined)
-                    }
-                    setValue('unlimitedQuantity', enable, {
-                      shouldValidate: true,
-                    })
-                  }}
-                />
+            {!hideFields.includes('quantity') && (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <label className="block px-1 text-base" htmlFor="">
+                    Number of memberships for sale:
+                  </label>
+                  <ToggleSwitch
+                    title="Unlimited"
+                    enabled={unlimitedQuantity}
+                    setEnabled={setUnlimitedQuantity}
+                    onChange={(enable: boolean) => {
+                      if (enable) {
+                        setValue('maxNumberOfKeys', undefined)
+                      }
+                      setValue('unlimitedQuantity', enable, {
+                        shouldValidate: true,
+                      })
+                    }}
+                  />
+                </div>
+                <div className="relative">
+                  <Input
+                    placeholder="Enter quantity"
+                    type="number"
+                    autoComplete="off"
+                    step={1}
+                    disabled={unlimitedQuantity}
+                    {...register('maxNumberOfKeys', {
+                      valueAsNumber: true,
+                      min: 0,
+                      required: !unlimitedQuantity,
+                    })}
+                  />
+                  {errors?.maxNumberOfKeys && (
+                    <span className="absolute mt-1 text-xs text-red-700">
+                      Please choose a number of memberships for your lock.
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="relative">
-                <Input
-                  placeholder="Enter quantity"
-                  type="number"
-                  autoComplete="off"
-                  step={1}
-                  disabled={unlimitedQuantity}
-                  {...register('maxNumberOfKeys', {
-                    valueAsNumber: true,
-                    min: 0,
-                    required: !unlimitedQuantity,
-                  })}
-                />
-                {errors?.maxNumberOfKeys && (
-                  <span className="absolute mt-1 text-xs text-red-700">
-                    Please choose a number of memberships for your lock.
-                  </span>
-                )}
-              </div>
-            </div>
+            )}
 
             <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
-                  Currency & Price:
+                  Membership price:
                 </label>
                 <ToggleSwitch
                   title="Free"
@@ -284,8 +290,10 @@ export const CreateLockForm = ({
                 />
               </div>
               <div className="relative">
-                <div className="grid grid-cols-2 gap-2 justify-items-stretch">
+                <div className="flex gap-2 ">
+                  {/* {!hideFields.includes('currency') && ( */}
                   <SelectToken
+                    className="grow"
                     onChange={(token: Token) => {
                       setValue('currencyContractAddress', token.address)
                       setValue('symbol', token.symbol)
@@ -295,6 +303,7 @@ export const CreateLockForm = ({
                     }}
                     network={selectedNetwork!}
                   />
+                  {/* )} */}
 
                   <Input
                     type="number"
