@@ -15,6 +15,7 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockManagers,
+  unlockAddress,
 } from './constants'
 
 createMockedFunction(
@@ -69,7 +70,7 @@ createMockedFunction(
   'unlockProtocol():(address)'
 )
   .withArgs([])
-  .returns([ethereum.Value.fromAddress(Address.fromString(nullAddress))])
+  .returns([ethereum.Value.fromAddress(Address.fromString(unlockAddress))])
 
 createMockedFunction(
   Address.fromString(lockAddress),

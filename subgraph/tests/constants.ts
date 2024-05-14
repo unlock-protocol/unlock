@@ -8,6 +8,9 @@ export const lockManagers = [
   '0x0000000000000000000000000000000000000125',
 ]
 
+// protocol
+export const unlockAddress = '0x0000000000000000000000000000000000000018'
+
 // key
 export const keyOwnerAddress = '0x0000000000000000000000000000000000000002'
 export const tokenId = 1234

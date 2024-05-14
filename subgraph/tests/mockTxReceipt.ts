@@ -9,10 +9,12 @@ import {
   defaultMockAddress,
   keyOwnerAddress,
   keyPrice,
+  unlockAddress,
   lockAddress,
   lockOwner,
   nullAddress,
   tokenId,
+  GNP_CHANGED_TOPIC0,
 } from './constants'
 
 const defaultAddress = Address.fromString(defaultMockAddress)
@@ -143,9 +145,7 @@ export function newGNPChangedTransactionReceipt(
   keyValue: BigInt,
   totalValue: BigInt
 ): ethereum.TransactionReceipt {
-  const eventSignature = Bytes.fromHexString(
-    '0x3b50eb9d9b4a8db204f2928c9e572c2865b0d02803493ccb6aa256848323ebb7'
-  )
+  const eventSignature = Bytes.fromHexString(GNP_CHANGED_TOPIC0)
   const grossNetworkProduct = BigInt.fromU32(0)
   const topics = [
     eventSignature,
@@ -158,7 +158,7 @@ export function newGNPChangedTransactionReceipt(
 
   return newTransactionReceipt([
     new ethereum.Log(
-      Address.fromString(lockAddress),
+      Address.fromString(unlockAddress),
       topics,
       bigIntToBytes(totalValue),
       defaultAddressBytes,

@@ -94,21 +94,31 @@ export function createReceipt(event: ethereum.Event): void {
       const lockContract = PublicLock.bind(Address.fromString(lockAddress))
       const unlockAddress = lockContract.try_unlockProtocol()
 
-      const foundGNPChanged = false
       let value = BigInt.zero()
       for (let i = 0; i < logs.length; i++) {
         const txLog = logs[i]
+        log.debug('Event found. unlockAddress: {} address: {}, topic: {}. ', [
+          unlockAddress.value.toHexString(),
+          txLog.address.toHexString(),
+          txLog.topics[0].toHexString(),
+        ])
 
         if (
           txLog.address == unlockAddress.value &&
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
-          value = value.plus(
-            ethereum.decode('uint256', txLog.topics[3])!.toBigInt()
-          )
+          const keyValue = ethereum
+            .decode('uint256', txLog.topics[4])!
+            .toBigInt()
+
+          log.debug('GNPChanged event found. Value changed: {}. ', [
+            keyValue.toString(),
+          ])
+          value = value.plus(keyValue)
         }
       }
-      if (foundGNPChanged) {
+      if (value > BigInt.zero()) {
+        log.debug('Stored value: {}. ', [value.toString()])
         receipt.amountTransferred = value
       }
     }
