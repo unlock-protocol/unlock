@@ -23,6 +23,7 @@ import {
   Transfer,
   RenewKeyPurchase,
 } from '../generated/templates/PublicLock/PublicLock'
+import { GNPChanged } from '../generated/Unlock/Unlock'
 
 import {
   now,
@@ -31,8 +32,9 @@ import {
   tokenId,
   keyOwnerAddress,
   lockOwner,
+  nullAddress,
 } from './constants'
-import { newTransactionReceipt } from './createCancelKeyEvent'
+import { newCancelKeyTransactionReceipt } from './mockTxReceipt'
 
 export function mockDataSourceV8(): void {
   const v8context = new DataSourceContext()
@@ -204,7 +206,7 @@ export function createCancelKeyEvent(
 ): CancelKey {
   const cancelKeyEvent = changetype<CancelKey>(newMockEvent())
 
-  cancelKeyEvent.receipt = newTransactionReceipt(tokenAddress, refund)
+  cancelKeyEvent.receipt = newCancelKeyTransactionReceipt(tokenAddress, refund)
   cancelKeyEvent.address = dataSource.address()
 
   cancelKeyEvent.parameters = []

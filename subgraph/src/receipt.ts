@@ -82,7 +82,7 @@ export function createReceipt(event: ethereum.Event): void {
       // which means we don't need to create a receipt.
     }
   } else {
-    log.debug('Creating receipt for base currency lock {}', [lockAddress])
+    log.debug('Creating receipt for native currency lock {}', [lockAddress])
     receipt.payer = event.transaction.from.toHexString()
     receipt.amountTransferred = event.transaction.value
     // We cannot trust `event.transaction.value` because the purchase function could in fact

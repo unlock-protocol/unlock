@@ -11,6 +11,7 @@ import {
   keyPrice,
   lockAddress,
   lockOwner,
+  nullAddress,
   tokenId,
 } from './constants'
 
@@ -98,8 +99,7 @@ function createTransferEventLog(
 
 // Create transaction receipt for mock transaction
 export function newTransactionReceipt(
-  tokenAddress: Address,
-  refund: BigInt
+  logs: ethereum.Log[]
 ): ethereum.TransactionReceipt {
   return new ethereum.TransactionReceipt(
     defaultAddressBytes,
@@ -109,23 +109,66 @@ export function newTransactionReceipt(
     defaultBigInt,
     defaultBigInt,
     defaultAddress,
-    [
-      createCancelKeyEventLog(
-        BigInt.fromU32(tokenId),
-        Address.fromString(lockOwner),
-        Address.fromString(keyOwnerAddress),
-        refund > BigInt.fromU32(0) ? defaultIntBytes : defaultZeroIntBytes
-      ),
-      // This Log shouldn't be there if the tokenAddress is nullAddress but id does not really matter
-      createTransferEventLog(
-        tokenAddress,
-        Address.fromString(lockAddress),
-        Address.fromString(keyOwnerAddress),
-        refund > BigInt.fromU32(0) ? defaultIntBytes : defaultZeroIntBytes
-      ),
-    ],
+    logs,
     defaultBigInt,
     defaultAddressBytes,
     defaultAddressBytes
   )
+}
+
+// Create transaction receipt for mock transaction
+export function newCancelKeyTransactionReceipt(
+  tokenAddress: Address,
+  refund: BigInt
+): ethereum.TransactionReceipt {
+  return newTransactionReceipt([
+    createCancelKeyEventLog(
+      BigInt.fromU32(tokenId),
+      Address.fromString(lockOwner),
+      Address.fromString(keyOwnerAddress),
+      refund > BigInt.fromU32(0) ? defaultIntBytes : defaultZeroIntBytes
+    ),
+    // This Log shouldn't be there if the tokenAddress is nullAddress but id does not really matter
+    createTransferEventLog(
+      tokenAddress,
+      Address.fromString(lockAddress),
+      Address.fromString(keyOwnerAddress),
+      refund > BigInt.fromU32(0) ? defaultIntBytes : defaultZeroIntBytes
+    ),
+  ])
+}
+
+// adds a GNPChanged event to the tx receipt
+export function newGNPChangedTransactionReceipt(
+  keyValue: BigInt,
+  totalValue: BigInt
+): ethereum.TransactionReceipt {
+  const eventSignature = Bytes.fromHexString(
+    '0x3b50eb9d9b4a8db204f2928c9e572c2865b0d02803493ccb6aa256848323ebb7'
+  )
+  const grossNetworkProduct = BigInt.fromU32(0)
+  const topics = [
+    eventSignature,
+    bigIntToBytes(grossNetworkProduct),
+    bigIntToBytes(keyValue), // _valueInETH
+    addressToTopic(Address.fromString(nullAddress)),
+    bigIntToBytes(keyValue), // value
+    addressToTopic(Address.fromString(lockAddress)),
+  ]
+
+  return newTransactionReceipt([
+    new ethereum.Log(
+      Address.fromString(lockAddress),
+      topics,
+      bigIntToBytes(totalValue),
+      defaultAddressBytes,
+      defaultIntBytes,
+      defaultAddressBytes,
+      defaultBigInt,
+      defaultBigInt,
+      defaultBigInt,
+      'GNPChanged',
+      new Wrapped(false)
+    ),
+  ])
 }
