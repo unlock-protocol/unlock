@@ -1,5 +1,10 @@
-import { BigInt, log, Bytes, ethereum } from '@graphprotocol/graph-ts'
-import { ERC20_TRANSFER_TOPIC0, nullAddress } from '../tests/constants'
+import { BigInt, log, Bytes, ethereum, Address } from '@graphprotocol/graph-ts'
+import {
+  GNP_CHANGED_TOPIC0,
+  ERC20_TRANSFER_TOPIC0,
+  nullAddress,
+} from '../tests/constants'
+import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 
 import { Lock, Receipt } from '../generated/schema'
 
@@ -32,13 +37,14 @@ export function createReceipt(event: ethereum.Event): void {
     ? lock.tokenAddress
     : Bytes.fromHexString(nullAddress)
 
+  const txReceipt = event.receipt!
+  const logs: ethereum.Log[] = txReceipt.logs
+
   if (tokenAddress != Bytes.fromHexString(nullAddress)) {
     log.debug('Creating receipt for ERC20 lock {} {}', [
       lockAddress,
       tokenAddress.toHexString(),
     ])
-    const txReceipt = event.receipt!
-    const logs: ethereum.Log[] = txReceipt.logs
 
     if (logs) {
       // If it is an ERC20 lock, there should be multiple events
@@ -76,9 +82,36 @@ export function createReceipt(event: ethereum.Event): void {
       // which means we don't need to create a receipt.
     }
   } else {
-    log.debug('Creating receipt for base currency lock {}', [lockAddress])
+    log.debug('Creating receipt for native currency lock {}', [lockAddress])
     receipt.payer = event.transaction.from.toHexString()
     receipt.amountTransferred = event.transaction.value
+    // We cannot trust `event.transaction.value` because the purchase function could in fact
+    // be happening inside of a larger transaction whose value is not the amount transfered,
+    // In that case, we need to look up the GNPChanged event
+    // This is a very fragile setup and we should consider moving to a more formal event triggered
+    // by the contract, like a `Receipt` event that would include everything we need.
+    if (logs) {
+      const lockContract = PublicLock.bind(Address.fromString(lockAddress))
+      const unlockAddress = lockContract.try_unlockProtocol()
+      let value = BigInt.zero()
+      for (let i = 0; i < logs.length; i++) {
+        const txLog = logs[i]
+        if (
+          txLog.address == unlockAddress.value &&
+          txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
+        ) {
+          const decoded = ethereum
+            .decode('(uint256,uint256,address,uint256,address)', txLog.data)!
+            .toTuple()
+
+          const keyValue = decoded[1].toBigInt()
+          value = value.plus(keyValue)
+        }
+      }
+      if (value > BigInt.zero()) {
+        receipt.amountTransferred = value
+      }
+    }
   }
 
   const totalGas = event.transaction.gasPrice.plus(event.transaction.gasLimit)
