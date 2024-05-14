@@ -108,7 +108,6 @@
     "@types/supertest": "6.0.2",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitest/coverage-c8": "0.31.4",
     "eslint": "8.41.0",
     "eslint-config-standard": "17.1.0",
     "nock": "13.3.7",
@@ -118,7 +117,7 @@
     "supertest": "6.3.4",
     "tsx": "4.7.1",
     "typescript": "5.3.3",
-    "vitest": "0.31.4"
+    "vitest": "0.34.4"
   },
   "files": [
     "build",
