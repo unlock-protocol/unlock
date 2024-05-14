@@ -16364,8 +16364,8 @@ __metadata:
   linkType: hard
 
 "@smithy/signature-v4@npm:^2.1.3":
-  version: 2.2.1
-  resolution: "@smithy/signature-v4@npm:2.2.1"
+  version: 2.3.0
+  resolution: "@smithy/signature-v4@npm:2.3.0"
   dependencies:
     "@smithy/is-array-buffer": "npm:^2.2.0"
     "@smithy/types": "npm:^2.12.0"
@@ -16374,7 +16374,7 @@ __metadata:
     "@smithy/util-uri-escape": "npm:^2.2.0"
     "@smithy/util-utf8": "npm:^2.3.0"
     tslib: "npm:^2.6.2"
-  checksum: 10/ee85a1e0d69b4f125960d499d1aa7ac3c270a070b0a433c3c2b58aae4c6eb5c74f56130fb41f2317583ed9151553d8c704d4d396d9e555558d7e064a5ef1fd3b
+  checksum: 10/42ec84c1d3e81e3487d8f4860334dfdca715bd379e219101e8eafd72bdc2973d831266093774669beebfb4f59118be2a73162fac16cccf4223bc65822a1bdeac
   languageName: node
   linkType: hard
 
