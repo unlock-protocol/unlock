@@ -36,8 +36,9 @@ import {
   handleTransfer,
 } from '../src/public-lock'
 
-// mock contract functions
+// mock functions
 import './mocks'
+import { newGNPChangedTransactionReceipt } from './mockTxReceipt'
 
 const keyID = `${lockAddress}-${tokenId}`
 
@@ -82,6 +83,55 @@ describe('Receipts for base currency locks', () => {
     assert.entityCount('Receipt', 1)
   })
 
+  test('GNP value should override the tx value', () => {
+    mockDataSourceV11()
+
+    // create fake ETH lock in subgraph
+    const lock = new Lock(lockAddress)
+    lock.address = Bytes.fromHexString(lockAddress)
+    lock.tokenAddress = Bytes.fromHexString(nullAddress)
+    lock.price = BigInt.fromU32(keyPrice)
+    lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.version = BigInt.fromU32(12)
+    lock.totalKeys = BigInt.fromU32(0)
+    lock.deployer = Bytes.fromHexString(lockManagers[0])
+    lock.numberOfReceipts = BigInt.fromU32(0)
+    lock.numberOfCancelReceipts = BigInt.fromU32(0)
+    lock.save()
+
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+
+    // append GNP event to tx
+    const keyValue = BigInt.fromU32(200)
+    const totalValue = BigInt.fromU32(1000) // specified a wrong tx.value
+
+    // bind receipt and value to the tx
+    newTransferEvent.transaction.value = totalValue
+    newTransferEvent.receipt = newGNPChangedTransactionReceipt(
+      keyValue,
+      totalValue
+    )
+
+    handleTransfer(newTransferEvent)
+
+    // receipt is there
+    assert.entityCount('Receipt', 1)
+
+    // make sure the GNPChanged event has been picked up correctly
+    const hash = newTransferEvent.transaction.hash.toHexString()
+    assert.fieldEquals(
+      'Receipt',
+      hash,
+      'amountTransferred',
+      keyValue.toString()
+    )
+  })
+
   test('Receipt has not been created for transfers with no value', () => {
     mockDataSourceV11()
 
@@ -106,11 +156,6 @@ describe('Receipts for base currency locks', () => {
     )
     newTransferEvent.transaction.value = BigInt.fromU32(0) // This is a grantKeys transaction
     handleTransfer(newTransferEvent)
-
-    const hash = newTransferEvent.transaction.hash.toHexString()
-    const timestamp = newTransferEvent.block.timestamp.toString()
-    const msgSender = newTransferEvent.transaction.from.toHexString()
-    const amount = newTransferEvent.transaction.value
 
     // key is there
     assert.entityCount('Key', 1)
@@ -249,11 +294,6 @@ describe('Receipts for an ERC20 locks', () => {
     )
     newTransferEvent.transaction.value = BigInt.fromU32(0) // This is a grantKeys transaction
     handleTransfer(newTransferEvent)
-
-    const hash = newTransferEvent.transaction.hash.toHexString()
-    const timestamp = newTransferEvent.block.timestamp.toString()
-    const msgSender = newTransferEvent.transaction.from.toHexString()
-    const amount = newTransferEvent.transaction.value
 
     // key is there
     assert.entityCount('Key', 1)
