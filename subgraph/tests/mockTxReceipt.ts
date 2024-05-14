@@ -156,7 +156,7 @@ export function newGNPChangedTransactionReceipt(
   const grossNetworkProduct = BigInt.fromU32(0)
 
   // as the tx is sent from another contract (NOT the lock)
-  // only the signature is passed as topic
+  // only the event signature is passed as topics[0]
   // the rest of the log topics are passed as data
   const topics = [eventSignature]
 
