@@ -20843,7 +20843,6 @@ __metadata:
     eslint: "npm:8.57.0"
     tsup: "npm:8.0.2"
     typescript: "npm:5.4.5"
-    vitest: "npm:0.34.6"
   peerDependencies:
     zod: 3.23.5
   languageName: unknown
@@ -54391,6 +54390,7 @@ __metadata:
     lint-staged: "npm:15.2.2"
     prettier: "npm:3.0.0"
     typescript: "npm:5.4.5"
+    vitest: "npm:0.34.6"
   languageName: unknown
   linkType: soft
 
