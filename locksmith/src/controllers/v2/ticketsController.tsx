@@ -10,7 +10,10 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
-import { getVerifiersListForLock } from '../../operations/verifierOperations'
+import {
+  getEventVerifiers,
+  getVerifiersListForLock,
+} from '../../operations/verifierOperations'
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
@@ -330,6 +333,12 @@ export const getTicket: RequestHandler = async (request, response) => {
     getVerifiersListForLock(lockAddress, network),
   ])
 
+  const event = await getEventForLock(lockAddress, network, false)
+  let eventVerifiers
+  if (event) {
+    eventVerifiers = await getEventVerifiers(event?.slug as string)
+  }
+
   if (!key) {
     return response.status(404).send({
       message: 'Key not found',
@@ -381,9 +390,13 @@ export const getTicket: RequestHandler = async (request, response) => {
       Normalizer.ethereumAddress(userAddress)
   )
 
-  const isVerifier = verifiers
-    ?.map((item) => Normalizer.ethereumAddress(item.address))
-    .includes(Normalizer.ethereumAddress(userAddress))
+  const isVerifier =
+    verifiers
+      ?.map((item) => Normalizer.ethereumAddress(item.address))
+      .includes(Normalizer.ethereumAddress(userAddress)) ||
+    eventVerifiers
+      ?.map((item) => Normalizer.ethereumAddress(item.address))
+      .includes(Normalizer.ethereumAddress(userAddress))
 
   const includeProtected =
     isManager ||

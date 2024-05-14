@@ -31,6 +31,7 @@ export const getVerifiersListForLock = async (
   lockAddress: string,
   network: number
 ): Promise<any[]> => {
+  // TODO: Verify if this works, always getting [] as response
   const response = await Verifier.findAll({
     where: {
       lockAddress,
