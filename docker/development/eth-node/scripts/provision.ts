@@ -76,7 +76,13 @@ async function main() {
    * 3. Deploy UNLOCK contracts
    */
   const { unlock: unlockContract } = await unlock.deployProtocol()
-  log('UNLOCK PROTOCOL DEPLOYED')
+  const [publicLockVersion, unlockVersion] = await Promise.all([
+    await unlockContract.publicLockLatestVersion(),
+    await unlockContract.unlockVersion(),
+  ])
+  log(
+    `UNLOCK PROTOCOL DEPLOYED : Unlock v${unlockVersion}, PublicLock v${publicLockVersion}`
+  )
 
   // grant Unlock minting permissions
   await udt.addMinter(await unlockContract.getAddress())
@@ -100,8 +106,7 @@ async function main() {
   // Finally, deploy locks and for each of them, if it's an ERC20, approve it for locksmith purchases
   await Promise.all(
     locksArgs(erc20Address).map(async (lockParams) => {
-      const { lock } = await unlock.createLock(lockParams)
-
+      const { lock } = await unlock.createLock({ ...lockParams })
       log(
         `LOCK "${await lockParams.name}" DEPLOYED TO ${await lock.getAddress()}`
       )

@@ -1,3 +1,5 @@
 node_modules
+**/node_modules
 cache
-.yarn
+.yarn/cache
+.yarn/install-state.gz
