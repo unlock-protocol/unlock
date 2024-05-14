@@ -100,7 +100,6 @@ export function createReceipt(event: ethereum.Event): void {
           txLog.address == unlockAddress.value &&
           txLog.topics[0].toHexString() == GNP_CHANGED_TOPIC0
         ) {
-          // log all topics
           const decoded = ethereum
             .decode('(uint256,uint256,address,uint256,address)', txLog.data)!
             .toTuple()
