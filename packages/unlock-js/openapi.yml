@@ -1005,42 +1005,10 @@ paths:
 
   /v2/events/{slug}/verifiers:
     get:
-      deprecated: true
-      operationId: eventVerifiers
-      security:
-        - User: ['lockManager']
-      description: List of verifiers for an event.
-      parameters:
-        - $ref: '#/components/parameters/Slug'
-      responses:
-        200:
-          description: 'List of verifier addresses'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Verifier'
-
-        204:
-          $ref: '#/components/responses/204.Empty'
-
-        403:
-          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
-  /v2/events/{slug}/verifiers/{verifierAddress}:
-    get:
       operationId: eventVerifier
       description: Returns a verifier for an event.
       parameters:
         - $ref: '#/components/parameters/Slug'
-        - $ref: '#/components/parameters/VerifierAddress'
           application/json:
             schema:
               type: object

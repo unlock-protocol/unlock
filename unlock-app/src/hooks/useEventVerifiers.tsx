@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { storage } from '~/config/storage'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface useEventVerifiersProps {
   event: any
@@ -13,14 +12,27 @@ export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
   const { account } = useAuth()
 
   return useQuery(
-    ['getEventVerifiers', event.slug],
+    ['getEventVerifiers', event.slug, account],
     async () => {
-      const response = await storage.eventVerifier(event.slug, account!)
-      return response.status === 200
+      if (!account) {
+        return false
+      }
+      const response = await storage.eventVerifier(event.slug)
+      console.log(response.data.results)
+      let isVerifier = false
+      response.data.results.forEach((item) => {
+        console.log(item)
+        if (item.address.toLowerCase() === account.toLowerCase()) {
+          console.log('true')
+          isVerifier = true
+          return isVerifier
+        }
+      })
+      return isVerifier
     },
     {
       onError: (err: any) => {
-        ToastHelper.error(
+        console.error(
           err?.error ??
             'We could not load the list of verifiers for your lock. Please reload to to try again.'
         )

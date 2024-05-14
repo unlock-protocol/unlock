@@ -70,6 +70,7 @@ export const isEventVerifierMiddleware: RequestHandler = async (
     const address = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
     const eventVerifiers = await getEventVerifiers(eventSlug)
+    console.log('Event Verifiers', eventVerifiers)
 
     const isVerifier = eventVerifiers
       ?.map((item) => Normalizer.ethereumAddress(item.address))

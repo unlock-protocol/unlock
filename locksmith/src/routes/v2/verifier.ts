@@ -2,7 +2,7 @@ import express from 'express'
 import VerifierController from '../../controllers/v2/verifierController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
-import { isLockVerifierMiddleware } from '../../utils/middlewares/isVerifierMiddleware'
+import { isEventVerifierMiddleware } from '../../utils/middlewares/isVerifierMiddleware'
 
 const router = express.Router({ mergeParams: true })
 
@@ -28,7 +28,7 @@ router.delete(
 
 router.get(
   '/:network/lock/:lockAddress/address/:verifierAddress',
-  isLockVerifierMiddleware,
+  isEventVerifierMiddleware,
   (req, res) => verifierController.isVerifierEnabled(req, res)
 )
 

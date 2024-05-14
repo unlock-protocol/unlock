@@ -81,7 +81,8 @@ export const EventDetails = ({
     checkoutConfig,
   })
 
-  const verifier = useEventVerifiers({ event: eventProp })
+  const { data: verifier } = useEventVerifiers({ event: eventProp })
+  console.log('verifier', verifier)
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
