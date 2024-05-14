@@ -3,8 +3,7 @@ import networks from '@unlock-protocol/networks'
 import {
   TicketsController,
   generateTicket,
-  getEventTicket,
-  getLockTicket,
+  getTicket,
 } from '../../controllers/v2/ticketsController'
 import { keyOwnerMiddleware } from '../../utils/middlewares/keyOwnerMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
@@ -82,8 +81,8 @@ router.get(
   generateTicket
 )
 
-router.get('/:network/lock/:lockAddress/key/:keyId', getLockTicket)
+router.get('/:network/lock/:lockAddress/key/:keyId', getTicket)
 
-router.get('/:network/lock/:lockAddress/:eventSlug/key/:keyId', getEventTicket)
+router.get('/:network/lock/:lockAddress/:eventSlug/key/:keyId', getTicket)
 
 export default router
