@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.21.5",
+    "@babel/core": "7.24.5",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
     "babel-plugin-polyfill-corejs2": "0.4.11",
@@ -54,7 +54,11 @@
     "version:check": "yarn version check --interactive",
     "bump": "yarn packages:version patch && yarn version:apply",
     "release": "yarn build && yarn bump && yarn packages:publish",
-    "start": "./scripts/start.sh",
+    "start": "yarn start:infra && yarn start:apps",
+    "start:infra": "./scripts/start-infra.sh",
+    "start:apps": "./scripts/start-apps.sh",
+    "logs:infra": "./scripts/start/logs.sh",
+    "stop": "./scripts/stop.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn packages --parallel run lint",
     "lint:contracts": "yarn workspace @unlock-protocol/smart-contracts lint:contracts --fix",
@@ -80,7 +84,7 @@
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@4.1.1",
+  "packageManager": "yarn@4.2.2",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
     "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",

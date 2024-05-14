@@ -38,3 +38,6 @@ yarn-error.log
 .netlify
 .vercel
 governance/.openzeppelin/unknown-31337.json
+
+# log files
+nohup.out
