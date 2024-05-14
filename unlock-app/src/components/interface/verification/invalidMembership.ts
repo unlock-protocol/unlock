@@ -3,7 +3,7 @@ import { config } from '~/config/app'
 import { MembershipVerificationData } from '~/utils/verification'
 
 interface Options {
-  eventAddress?: string
+  eventAddresses?: string[]
   network: number
   owner: string
   manager: string
@@ -14,7 +14,7 @@ interface Options {
 }
 
 export function invalidMembership({
-  eventAddress,
+  eventAddresses,
   network,
   owner,
   manager,
@@ -36,8 +36,11 @@ export function invalidMembership({
   }
 
   if (
-    eventAddress &&
-    eventAddress.toLowerCase() !== verificationData.lockAddress.toLowerCase()
+    eventAddresses &&
+    !eventAddresses.some(
+      (address) =>
+        address.toLowerCase() === verificationData.lockAddress.toLowerCase()
+    )
   ) {
     return 'This QR does not match the event'
   }

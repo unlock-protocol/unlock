@@ -20,6 +20,8 @@ export const EventVerification = ({
 }: EventVerificationProps) => {
   const { data: event } = useEvent({ slug: slug })
 
+  const allLockKeys = Object.keys(checkoutConfig.config.locks)
+
   return (
     <BrowserOnly>
       <AppLayout authRequired={true} showHeader={false}>
@@ -44,9 +46,7 @@ export const EventVerification = ({
               </div>
             </div>
             <div className="pt-10">
-              <Scanner
-                eventAddress={Object.keys(checkoutConfig.config.locks)[0]}
-              />
+              <Scanner eventAddresses={allLockKeys} eventProp={event} />
             </div>
           </div>
         )}

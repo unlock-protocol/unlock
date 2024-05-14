@@ -16,9 +16,11 @@ import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import { Event } from '@unlock-protocol/core'
 
 interface Props {
-  eventAddress?: string
+  eventAddresses?: string[]
+  eventProp?: Event
   config: MembershipVerificationConfig
   onVerified: () => void
   onClose?: () => void
@@ -102,7 +104,7 @@ const WarningDialog = ({
  * and display the right status
  */
 export const VerificationStatus = ({
-  eventAddress,
+  eventAddresses,
   config,
   onVerified,
   onClose,
@@ -168,7 +170,7 @@ export const VerificationStatus = ({
 
   const invalid = ticket
     ? invalidMembership({
-        eventAddress,
+        eventAddresses,
         network,
         manager: ticket!.manager,
         keyId: ticket!.keyId,
@@ -189,8 +191,10 @@ export const VerificationStatus = ({
       !checkedInAt &&
       ticket!.isVerifier &&
       !showWarning &&
-      eventAddress &&
-      ticket!.lockAddress.toLowerCase() === eventAddress.toLowerCase()
+      eventAddresses &&
+      eventAddresses.some(
+        (adress) => adress.toLowerCase() === ticket!.lockAddress.toLowerCase()
+      )
     ) {
       setShowWarning(true)
     } else if (typeof onVerified === 'function') {
@@ -201,9 +205,11 @@ export const VerificationStatus = ({
   const CardActions = () => (
     <div className="grid w-full gap-2">
       {viewer ? (
-        eventAddress &&
-        ticket!.isVerifier &&
-        ticket!.lockAddress.toLowerCase() === eventAddress.toLowerCase() ? (
+        eventAddresses &&
+        eventAddresses.some(
+          (adress) => adress.toLowerCase() === ticket!.lockAddress.toLowerCase()
+        ) &&
+        ticket!.isVerifier ? (
           <Button
             loading={isCheckingIn}
             disabled={disableActions}
