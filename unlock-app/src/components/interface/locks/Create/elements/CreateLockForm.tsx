@@ -87,11 +87,12 @@ export const CreateLockForm = ({
   } = useForm<LockFormProps>({
     mode: 'onChange',
     defaultValues: {
-      name: '',
-      network: networkOptions[0]?.value,
+      name: defaultValues.name || '',
+      network: defaultValues.network || networkOptions[0]?.value,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
+      currencyContractAddress: defaultValues.currencyContractAddress,
       unlimitedDuration,
       unlimitedQuantity,
       isFree,
@@ -194,7 +195,7 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  Membership duration (in days):
+                  Membership duration:
                 </label>
                 <ToggleSwitch
                   title="Unlimited"
@@ -220,7 +221,7 @@ export const CreateLockForm = ({
                     min: 0,
                     required: !unlimitedDuration,
                   })}
-                  placeholder="Enter duration"
+                  placeholder="In days"
                   type="number"
                 />
                 {errors?.expirationDuration && (
@@ -319,7 +320,7 @@ export const CreateLockForm = ({
                 </div>
                 {errors?.keyPrice && (
                   <span className="absolute text-xs text-red-700 ">
-                    Please enter a positive number
+                    Please enter a positive number for the price
                   </span>
                 )}
               </div>

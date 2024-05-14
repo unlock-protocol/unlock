@@ -57,7 +57,7 @@ export const SelectToken = ({
 
       <div
         onClick={() => setIsOpen(true)}
-        className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+        className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none px-3"
       >
         <CryptoIcon symbol={token?.symbol || ''} />
         <span>{token?.symbol}</span>
