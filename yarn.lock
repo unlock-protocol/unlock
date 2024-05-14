@@ -21366,7 +21366,7 @@ __metadata:
   resolution: "@unlock-protocol/docs@workspace:docs"
   dependencies:
     "@babel/helper-get-function-arity": "npm:7.16.7"
-    "@docusaurus/core": "npm:3.2.1"
+    "@docusaurus/core": "npm:3.3.2"
     "@docusaurus/plugin-client-redirects": "npm:3.2.1"
     "@docusaurus/plugin-content-docs": "npm:3.2.1"
     "@flockler/react-flockler-embed": "npm:1.0.4"
