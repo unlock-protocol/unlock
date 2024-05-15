@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@airstack/airstack-react": "0.6.3",
-    "@crossmint/client-sdk-react-ui": "1.1.5",
+    "@crossmint/client-sdk-react-ui": "1.1.9",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "1.1.1",
     "@headlessui/react": "1.7.19",
