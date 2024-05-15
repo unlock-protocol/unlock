@@ -24,15 +24,14 @@ export const isEventOrganizer = async (address: string, slug: string) => {
   }
 
   if (isEmpty(locks)) {
-    return null
+    return undefined
   }
 
-  const managers = await Promise.all(
+  const lockManagers = await Promise.all(
     Object.keys(locks).map((lockAddress: string) => {
       const networkId = locks[lockAddress].network
       return web3Service.isLockManager(lockAddress, address, Number(networkId))
     })
   )
-
-  return managers.some((isManager) => isManager)
+  return lockManagers.some((isManager) => isManager)
 }
