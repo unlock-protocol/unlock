@@ -17,7 +17,6 @@ import {
 import { Verifier } from '../../models/verifier'
 import { getEventForLock } from '../../operations/eventOperations'
 import { notify } from '../../worker/helpers'
-import { isEventOrganizer } from '../../utils/getEventOrganizers'
 
 export class TicketsController {
   public web3Service: Web3Service
