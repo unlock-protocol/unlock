@@ -137,7 +137,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
         `/v2/events/${slug}/verifiers`
       )
       expect(getListEndpoint.status).toBe(200)
-      expect(getListEndpoint.body.results).toStrictEqual([])
+      expect(getListEndpoint.body.results).toStrictEqual(undefined)
     })
 
     it('Add verifier fails if not authenticated as a manager for the lock on the event!', async () => {
