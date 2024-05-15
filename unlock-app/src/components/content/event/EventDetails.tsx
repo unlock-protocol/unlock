@@ -2,7 +2,6 @@ import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { MdAssignmentLate } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
 import {
   Button,
@@ -40,6 +39,7 @@ import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
 import { AttendeeCues } from './Registration/AttendeeCues'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 
 interface EventDetailsProps {
   event: Event

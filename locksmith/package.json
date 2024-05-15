@@ -35,7 +35,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.525.0",
+    "@aws-sdk/client-s3": "3.575.0",
     "@logtail/node": "0.4.21",
     "@logtail/winston": "0.4.21",
     "@nuintun/qrcode": "4.1.2",
@@ -104,11 +104,10 @@
     "@types/node": "20.8.10",
     "@types/node-cron": "3.0.11",
     "@types/request-promise-native": "1.0.21",
-    "@types/stripe": "8.0.416",
+    "@types/stripe": "8.0.417",
     "@types/supertest": "6.0.2",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitest/coverage-c8": "0.31.4",
     "eslint": "8.41.0",
     "eslint-config-standard": "17.1.0",
     "nock": "13.3.7",
@@ -118,7 +117,7 @@
     "supertest": "6.3.4",
     "tsx": "4.7.1",
     "typescript": "5.3.3",
-    "vitest": "0.31.4"
+    "vitest": "0.34.4"
   },
   "files": [
     "build",

@@ -1,6 +1,6 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
@@ -53,13 +53,16 @@ export const CheckoutUrlPage = () => {
 
   const { control, trigger, watch, setValue } = methods
 
-  const DEFAULT_CONFIG: CheckoutConfig = {
-    id: null,
-    config: {
-      locks: {},
-      icon: '',
-    },
-  } as CheckoutConfig
+  const DEFAULT_CONFIG = useMemo(
+    () => ({
+      id: null,
+      config: {
+        locks: {},
+        icon: '',
+      },
+    }),
+    []
+  ) as CheckoutConfig
 
   const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
 
@@ -80,6 +83,26 @@ export const CheckoutUrlPage = () => {
       setConfiguration('existing')
     }
   }, [checkoutConfigList?.length])
+
+  useEffect(() => {
+    const url = new URL(`${window.location.origin}/checkout`)
+
+    // remove redirectUri if not applicable
+    if (checkoutConfig.config?.redirectUri?.length === 0) {
+      delete checkoutConfig.config.redirectUri
+    }
+
+    if (checkoutConfig.id) {
+      url.searchParams.append('id', checkoutConfig.id)
+    } else {
+      url.searchParams.append(
+        'checkoutConfig',
+        JSON.stringify(checkoutConfig.config)
+      )
+    }
+
+    setCheckoutUrl(url.toString())
+  }, [checkoutConfig, setCheckoutUrl])
 
   const onConfigRemove = useCallback(async () => {
     if (!checkoutConfig.id) {
@@ -247,7 +270,6 @@ export const CheckoutUrlPage = () => {
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
-            setCheckoutUrl={setCheckoutUrl}
             checkoutUrl={checkoutUrl}
           />
         </div>
@@ -340,7 +362,6 @@ export const CheckoutUrlPage = () => {
                     <CheckoutShareOrDownload
                       paywallConfig={checkoutConfig.config}
                       checkoutUrl={checkoutUrl}
-                      setCheckoutUrl={setCheckoutUrl}
                       size="medium"
                       id={checkoutConfig.id}
                     />
