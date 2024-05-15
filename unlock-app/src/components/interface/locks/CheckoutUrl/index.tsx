@@ -84,6 +84,26 @@ export const CheckoutUrlPage = () => {
     }
   }, [checkoutConfigList?.length])
 
+  useEffect(() => {
+    const url = new URL(`${window.location.origin}/checkout`)
+
+    // remove redirectUri if not applicable
+    if (checkoutConfig.config?.redirectUri?.length === 0) {
+      delete checkoutConfig.config.redirectUri
+    }
+
+    if (checkoutConfig.id) {
+      url.searchParams.append('id', checkoutConfig.id)
+    } else {
+      url.searchParams.append(
+        'checkoutConfig',
+        JSON.stringify(checkoutConfig.config)
+      )
+    }
+
+    setCheckoutUrl(url.toString())
+  }, [checkoutConfig, setCheckoutUrl])
+
   const onConfigRemove = useCallback(async () => {
     if (!checkoutConfig.id) {
       setDeleteConfirmation(false)
@@ -250,7 +270,6 @@ export const CheckoutUrlPage = () => {
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
-            setCheckoutUrl={setCheckoutUrl}
             checkoutUrl={checkoutUrl}
           />
         </div>
@@ -343,7 +362,6 @@ export const CheckoutUrlPage = () => {
                     <CheckoutShareOrDownload
                       paywallConfig={checkoutConfig.config}
                       checkoutUrl={checkoutUrl}
-                      setCheckoutUrl={setCheckoutUrl}
                       size="medium"
                       id={checkoutConfig.id}
                     />

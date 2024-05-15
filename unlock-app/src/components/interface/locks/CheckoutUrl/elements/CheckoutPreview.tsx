@@ -1,5 +1,4 @@
 import { Button, Size } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
 import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useConfig } from '~/utils/withConfig'
@@ -12,7 +11,6 @@ interface CheckoutPreviewProps {
   paywallConfig?: PaywallConfigType
   id?: string | null
   checkoutUrl: string
-  setCheckoutUrl: (value: string) => void
 }
 
 const onDownloadJson = (paywallConfig: PaywallConfigType) => {
@@ -29,7 +27,6 @@ const onDownloadJson = (paywallConfig: PaywallConfigType) => {
 interface CheckoutShareOrDownloadProps {
   paywallConfig?: PaywallConfigType
   checkoutUrl: string
-  setCheckoutUrl: (value: string) => void
   size?: Size
   id?: string | null
 }
@@ -38,30 +35,11 @@ export const CheckoutShareOrDownload = ({
   paywallConfig,
   checkoutUrl,
   size = 'small',
-  setCheckoutUrl,
-  id,
 }: CheckoutShareOrDownloadProps) => {
   const [_isCopied, setCopied] = useClipboard(checkoutUrl, {
     successDuration: 2000,
   })
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
-
-  useEffect(() => {
-    const url = new URL(`${window.location.origin}/checkout`)
-
-    // remove redirectUri if not applicable
-    if (paywallConfig?.redirectUri?.length === 0) {
-      delete paywallConfig.redirectUri
-    }
-
-    if (id) {
-      url.searchParams.append('id', id)
-    } else {
-      url.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
-    }
-
-    setCheckoutUrl(url.toString())
-  }, [paywallConfig, id, setCheckoutUrl])
 
   return paywallConfig ? (
     <div className="flex flex-col gap-3 md:flex-row">
