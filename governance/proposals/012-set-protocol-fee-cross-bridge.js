@@ -5,14 +5,11 @@
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { Unlock } = require('@unlock-protocol/contracts')
 const { IConnext, targetChains } = require('../helpers/bridge')
-const { parseSafeMulticall } = require('../helpers/multisig')
 const { ethers } = require('hardhat')
-const PROTOCOL_FEE_STRING = '0.0001'
+const PROTOCOL_FEE_IN_BASIS_POINTS = '100' // 1% in basis points
 
 const parseSetProtocolFeeCalls = async (destChainId) => {
   const { unlockAddress } = await getNetwork(destChainId)
-
-  const protocolFee = ethers.parseEther(PROTOCOL_FEE_STRING)
 
   console.log(`Proposol to set protocolFee to ${ethers.formatEther(protocolFee)}
     - unlock : ${unlockAddress}`)
@@ -23,51 +20,31 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
     unlockAddress
   )
 
-  // parse unlock calls
-  const calls = [
-    {
-      contractAddress: unlockAddress,
-      calldata: unlockInterface.encodeFunctionData('setProtocolFee', [
-        protocolFee,
-      ]),
-      value: 0,
-      operation: 1, // Unlock is a proxy so use DELEGATECALL
-    },
-  ]
+  const calldata = unlockInterface.encodeFunctionData('setProtocolFee', [
+    PROTOCOL_FEE_IN_BASIS_POINTS,
+  ])
+
+  // encode instructions to be executed by the SAFE
+  const moduleData = await ethers.defaultAbiCoder.encode(
+    ['address', 'uint256', 'bytes', 'bool'],
+    [
+      unlockAddress, // to
+      0, // value
+      calldata, // data
+      1, // operation: 0 for CALL, 1 for DELEGATECALL
+    ]
+  )
 
   const oldProtocolFee = await unlockInterface.protocolFee()
   const explainers = [
-    `- Protocol fee for ${unlockAddress} set to ${PROTOCOL_FEE_STRING}
-  \`setProtocolFee(${protocolFee})\` (Previous Protocol Fee: ${ethers.formatEther(
-    oldProtocolFee
-  )})`,
+    `- Protocol fee for ${unlockAddress} set to ${PROTOCOL_FEE_IN_BASIS_POINTS}
+  \`setProtocolFee(${PROTOCOL_FEE_IN_BASIS_POINTS})\` (Previous Protocol Fee: ${oldProtocolFee})`,
   ]
 
   return {
-    calls,
     explainers,
+    moduleData,
   }
-}
-
-const parseSafeCall = async ({ destChainId, calls }) => {
-  // parse multicall
-  const { to, data, value, operation } = await parseSafeMulticall({
-    chainId: destChainId,
-    calls,
-  })
-
-  // encode multicall instructions to be executed by the SAFE
-  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
-  const moduleData = abiCoder.encode(
-    ['address', 'uint256', 'bytes', 'bool'],
-    [
-      to, // to
-      value, // value
-      data, // data
-      operation, // operation: 0 for CALL, 1 for DELEGATECALL
-    ]
-  )
-  return moduleData
 }
 
 const parseBridgeCall = async ({ destChainId, moduleData }) => {
@@ -108,7 +85,7 @@ const parseBridgeCall = async ({ destChainId, moduleData }) => {
 module.exports = async () => {
   const explainers = []
 
-  // get oracle calls for mainnet
+  // get protocol fee call for mainnet
   console.log(`Parsing for Ethereum Mainnet (1)`)
   const { calls: mainnetCalls, explainers: mainnetExplainers } =
     await parseSetProtocolFeeCalls(1)
@@ -124,9 +101,8 @@ module.exports = async () => {
   for (let i in [...targetChains]) {
     const { name, id } = targetChains[i]
     console.log(`Parsing for chain ${name} (${id})`)
-    const { calls, explainers: destExplainers } =
+    const { explainers: destExplainers, moduleData } =
       await parseSetProtocolFeeCalls(id)
-    const moduleData = await parseSafeCall({ destChainId: id, calls })
     const bridgedCall = await parseBridgeCall({ destChainId: id, moduleData })
     bridgedCalls.push(bridgedCall)
     explainers.push({
@@ -149,7 +125,7 @@ This proposal sets the protocol fee in Unlock factory contracts across the follo
     .map(({ name }) => name)
     .toString()}. 
   
-The goal is to turn on the protocol's fee switch and set it to ${PROTOCOL_FEE_STRING}.
+The goal is to turn on the protocol's fee switch and set it to 1% (${PROTOCOL_FEE_IN_BASIS_POINTS} basis points) as [voted by the Unlock DAO on Snapshot](https://snapshot.org/#/unlock-protocol.eth/proposal/0xfb31abbb3ff6c8ef60bc3db9cd47adab0158ce1f955709f75cc2022b075dac8b).
 
 ## About this proposal
 
@@ -160,18 +136,13 @@ using the \`setProtocolFee\` function.
 
 The proposal uses a cross-chain proposal pattern that, once passed, will send the calls to multiple chains at once. This pattern has been introduced and tested in a [previous proposal](https://www.tally.xyz/gov/unlock/proposal/1926572528290918174819693611122933562560576845671089759587616947457423587439). 
 
-Here, the calls for each chain have been packed with Gnosis Multicall contract to be executed at once on the destination chain.
-
 ## The calls
 
 This DAO proposal contains ${calls.length} calls:
 
 ${explainers
   .map(
-    ({ name, id, explainers: exp }) => `### ${name} (${id}) ${
-      exp.length
-    } calls ${id !== 1 ? `(packed in a single multicall)` : ''}
-
+    ({ name, id, explainers: exp }) => `### ${name} (${id}) ${exp.length} calls
 ${exp.join(`\n`)}
   `
   )
