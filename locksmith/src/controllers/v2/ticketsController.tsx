@@ -58,6 +58,7 @@ export class TicketsController {
       const address = Normalizer.ethereumAddress(request.user!.walletAddress!)
       // event slug is used by /:network/lock/:lockAddress/:eventSlug/key/:keyId/check' route
       const eventSlug = request.params.eventSlug
+      console.log('Slug', eventSlug)
       const verifier = eventSlug
         ? await Verifier.findOne({
             where: {

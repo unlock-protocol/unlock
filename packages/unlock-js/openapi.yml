@@ -1153,16 +1153,16 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/ticket/{network}/lock/{lockAddress}/{slug}/key/{keyId}/check:
+  /v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}/check:
     put:
       operationId: checkEventTicket
       security:
         - User: ['Verifier']
       description: Mark an event ticket as checked in.
       parameters:
+        - $ref: '#/components/parameters/Slug'
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/Slug'
         - $ref: '#/components/parameters/KeyId'
       responses:
         202:

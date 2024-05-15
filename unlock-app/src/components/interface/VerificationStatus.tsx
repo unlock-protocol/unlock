@@ -136,13 +136,13 @@ export const VerificationStatus = ({
       setIsCheckingIn(true)
       if (eventProp) {
         await storage.checkEventTicket(
+          eventProp.slug,
           network,
           lockAddress,
-          eventProp.slug,
           tokenId!
         )
       } else {
-        await storage.checkLockTicket(network, lockAddress, tokenId!)
+        await storage.checkTicket(network, lockAddress, tokenId!)
       }
       await refetchTicket()
       setIsCheckingIn(false)

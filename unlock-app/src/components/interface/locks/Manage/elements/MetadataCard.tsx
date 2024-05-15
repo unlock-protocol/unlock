@@ -352,10 +352,9 @@ export const MetadataCard = ({
 
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}&keyId=${tokenId}`
 
-  // TODO: change to checkEventTicket
   const onMarkAsCheckIn = async () => {
     const { lockAddress, token: keyId } = data
-    return storage.checkLockTicket(network, lockAddress, keyId)
+    return storage.checkTicket(network, lockAddress, keyId)
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
