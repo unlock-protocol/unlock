@@ -1125,7 +1125,8 @@ paths:
 
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/check:
     put:
-      operationId: checkLockTicket
+      operationId: checkTicket
+      deprecated: true
       security:
         - User: ['Verifier']
       description: Mark a lock ticket as checked in.

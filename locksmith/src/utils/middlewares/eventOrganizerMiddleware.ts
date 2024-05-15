@@ -1,11 +1,6 @@
 import { RequestHandler } from 'express'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { PaywallLocksConfigType } from '@unlock-protocol/core'
-import networks from '@unlock-protocol/networks'
-import { getEventBySlug } from '../../operations/eventOperations'
-import { getCheckoutConfigById } from '../../operations/checkoutConfigOperations'
 import { EventBody } from '../../controllers/v2/eventsController'
-import { isEmpty } from 'lodash'
 import { isEventOrganizer } from '../eventOrganizers'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
