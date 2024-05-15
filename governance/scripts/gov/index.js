@@ -1,8 +1,10 @@
 const { ethers } = require('hardhat')
 const { mine } = require('@nomicfoundation/hardhat-network-helpers')
 const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
+const { parseXCalledEvents } = require('../../helpers/bridge')
 const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
+const { default: networks } = require('@unlock-protocol/networks')
 
 // workflow
 const submit = require('./submit')
@@ -79,6 +81,49 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   // log all events
   console.log(logs)
+
+  const xCalled = await parseXCalledEvents(logs)
+
+  // decode xcall
+  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+  await Promise.all(
+    xCalled.map(({ transferId, params: { callData, destinationDomain } }) => {
+      console.log(`------- Connext transfer ${transferId}`)
+
+      const {
+        name,
+        id,
+        governanceBridge: {
+          modules: { delayMod, connextMod },
+        },
+      } = Object.values(networks).find((network) =>
+        network.governanceBridge
+          ? network.governanceBridge.domainId.toString() ==
+            destinationDomain.toString()
+          : false
+      )
+      console.log(
+        `To simulate results on receiving end - chain ${name} (${id})
+        - call \`execTransactionFromModule\` on contract ${delayMod} with from set as ${connextMod}
+        - wait for cooldown period (default: +172800)
+        - call \`executeNexTx\` on contract ${delayMod} with from set as ${connextMod}
+        `
+      )
+      const [
+        to, // to
+        value, // value
+        data, // data
+        operation, // operation: 0 for CALL, 1 for DELEGATECALL
+      ] = abiCoder.decode(['address', 'uint256', 'bytes', 'bool'], callData)
+
+      console.log({
+        to, // to
+        value, // value
+        data, // data
+        operation,
+      })
+    })
+  )
 }
 
 // execute as standalone
