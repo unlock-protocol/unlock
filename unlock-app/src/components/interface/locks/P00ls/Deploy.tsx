@@ -46,7 +46,7 @@ export const Deploy: React.FC = () => {
   )
 
   useEffect(() => {
-    if (locks) {
+    if (locks && locks[0]) {
       setLockAddress(locks[0].address)
     }
   }, [locks])

@@ -20,6 +20,7 @@ import { LocksForm } from './elements/LocksForm'
 import { ChooseConfiguration, CheckoutConfig } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDebounce } from 'react-use'
+import { getCheckoutUrl } from '~/components/content/event/utils'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -85,23 +86,7 @@ export const CheckoutUrlPage = () => {
   }, [checkoutConfigList?.length])
 
   useEffect(() => {
-    const url = new URL(`${window.location.origin}/checkout`)
-
-    // remove redirectUri if not applicable
-    if (checkoutConfig.config?.redirectUri?.length === 0) {
-      delete checkoutConfig.config.redirectUri
-    }
-
-    if (checkoutConfig.id) {
-      url.searchParams.append('id', checkoutConfig.id)
-    } else {
-      url.searchParams.append(
-        'checkoutConfig',
-        JSON.stringify(checkoutConfig.config)
-      )
-    }
-
-    setCheckoutUrl(url.toString())
+    setCheckoutUrl(getCheckoutUrl(checkoutConfig))
   }, [checkoutConfig, setCheckoutUrl])
 
   const onConfigRemove = useCallback(async () => {
