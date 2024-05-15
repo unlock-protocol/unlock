@@ -5,6 +5,7 @@ import Normalizer from '../normalizer'
 import { logger } from '@sentry/utils'
 import { Verifier } from '../../models/verifier'
 import { getEventVerifiers } from '../../operations/verifierOperations'
+import { isEventOrganizer } from '../getEventOrganizers'
 
 export const isVerifierOrManagerForLock = async (
   lockAddress: string,
@@ -59,7 +60,7 @@ export const isLockVerifierMiddleware: RequestHandler = async (
   }
 }
 
-export const isEventVerifierMiddleware: RequestHandler = async (
+export const isEventVerifierOrManagerMiddleware: RequestHandler = async (
   req,
   res,
   next
@@ -70,9 +71,13 @@ export const isEventVerifierMiddleware: RequestHandler = async (
 
     const eventVerifiers = await getEventVerifiers(eventSlug)
 
-    const isVerifier = eventVerifiers
-      ?.map((item) => Normalizer.ethereumAddress(item.address))
-      .includes(Normalizer.ethereumAddress(address))
+    const isVerifier =
+      eventVerifiers
+        ?.map((item) => Normalizer.ethereumAddress(item.address))
+        .includes(Normalizer.ethereumAddress(address)) ||
+      (await isEventOrganizer(address, eventSlug))?.find(
+        (isManager) => isManager
+      )
 
     if (isVerifier) {
       // The user is verifier for the event

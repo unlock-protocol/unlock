@@ -11,7 +11,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { lockManagerMiddleware } from './../../utils/middlewares/lockManager'
 import { lockManagerOrKeyOwnerMiddleware } from '../../utils/middlewares/lockManagerOrKeyOwner'
 import {
-  isEventVerifierMiddleware,
+  isEventVerifierOrManagerMiddleware,
   isLockVerifierMiddleware,
 } from '../../utils/middlewares/isVerifierMiddleware'
 
@@ -41,7 +41,7 @@ router.put(
 router.put(
   '/:network/lock/:lockAddress/:eventSlug/key/:keyId/check',
   authenticatedMiddleware,
-  isEventVerifierMiddleware,
+  isEventVerifierOrManagerMiddleware,
   (req, res) => {
     ticketsController.markTicketAsCheckIn(req, res)
   }
