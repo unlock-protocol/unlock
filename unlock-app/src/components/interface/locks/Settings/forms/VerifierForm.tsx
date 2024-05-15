@@ -146,7 +146,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     ['eventVerifiers', event.slug],
     async () => {
       const response = await storage.eventVerifiers(event.slug)
-      return response.data || []
+      return (response.data as []) || []
     },
     {
       onError: (err: any) => {
@@ -157,7 +157,6 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
       },
     }
   )
-  console.log(verifiers)
 
   const onAddVerifier = async ({ verifier, name }: VerifierFormDataProps) => {
     await addEventVerifierMutation.mutateAsync({ address: verifier, name })
