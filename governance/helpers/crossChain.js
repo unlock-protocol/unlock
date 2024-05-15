@@ -12,6 +12,7 @@ async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
     },
   } = network
 
+  console.log({ rpcUrl, moduleCall })
   const {
     to, // to
     value, // value
@@ -37,14 +38,33 @@ async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
   const forkProvider = new ethers.JsonRpcProvider(rpcUrl)
 
   // send all tx as connext
-  const signer = await forkProvider.getSigner(connextMod)
+  const [{ address: signerAddress }] = await forkProvider.listAccounts()
+
+  const signer = await forkProvider.getSigner(signerAddress)
 
   // parse calls
   const delayInterface = new ethers.Interface(delayABI)
 
+  // 0. override: set signer as owner 0xdc6bdc37b2714ee601734cf55a05625c9e512461
+  await forkProvider.send('tenderly_setStorageAt', [
+    delayMod,
+    // storage location for owner
+    ethers.utils.hexZeroPad('0x0', 32),
+    // set to new address
+    '0x000000000000000000000000f241f12506fb6bf1909c6bc176a199166414007a',
+  ])
+
+  // 0bis. enable signer as module
+  await signer.sendTransaction({
+    from: signerAddress,
+    to: delayMod,
+    data: delayInterface.encodeFunctionData('enableModule', [signerAddress]),
+    gasLimit: 800000,
+  })
+
   // 1. add tx to delay module
   await signer.sendTransaction({
-    from: connextMod,
+    from: signerAddress,
     to: delayMod,
     data: delayInterface.encodeFunctionData('execTransactionFromModule', [
       to,
@@ -99,6 +119,8 @@ async function simulateDestCalls(xCalls) {
       }
     }
   )
+  console.log(destChainCalls)
+
   // simulate
   await Promise.all(
     destChainCalls.map(async ({ network, moduleCall }) => {
