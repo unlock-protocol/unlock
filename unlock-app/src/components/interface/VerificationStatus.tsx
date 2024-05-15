@@ -203,20 +203,21 @@ export const VerificationStatus = ({
       })
     : 'Invalid QR code'
 
+  let isVerifier = false
+  if (eventAddresses) {
+    eventAddresses.forEach((address) => {
+      if (address.toLowerCase() === ticket!.lockAddress.toLowerCase()) {
+        isVerifier = true
+      }
+    })
+  }
+
   const checkedInAt = ticket?.checkedInAt
 
   const disableActions = !ticket?.isVerifier || isCheckingIn || !!invalid
 
   const onClickVerified = () => {
-    if (
-      !checkedInAt &&
-      ticket!.isVerifier &&
-      !showWarning &&
-      eventAddresses &&
-      eventAddresses.some(
-        (adress) => adress.toLowerCase() === ticket!.lockAddress.toLowerCase()
-      )
-    ) {
+    if (!checkedInAt && ticket!.isVerifier && !showWarning && isVerifier) {
       setShowWarning(true)
     } else if (typeof onVerified === 'function') {
       onVerified()
@@ -226,11 +227,7 @@ export const VerificationStatus = ({
   const CardActions = () => (
     <div className="grid w-full gap-2">
       {viewer ? (
-        eventAddresses &&
-        eventAddresses.some(
-          (adress) => adress.toLowerCase() === ticket!.lockAddress.toLowerCase()
-        ) &&
-        ticket!.isVerifier ? (
+        isVerifier && ticket!.isVerifier ? (
           <Button
             loading={isCheckingIn}
             disabled={disableActions}

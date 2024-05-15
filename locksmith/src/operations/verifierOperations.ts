@@ -1,4 +1,3 @@
-import { KeyManager } from '@unlock-protocol/unlock-js'
 import { Verifier } from '../models/verifier'
 
 /**
