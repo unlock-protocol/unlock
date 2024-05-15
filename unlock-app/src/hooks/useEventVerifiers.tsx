@@ -21,7 +21,6 @@ export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
       let isVerifier = false
       // @ts-expect-error Property 'forEach' does not exist on type 'Verifiers200Response'
       response.data.forEach((item) => {
-        console.log(item)
         if (item.address.toLowerCase() === account.toLowerCase()) {
           isVerifier = true
           return isVerifier
