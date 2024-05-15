@@ -5,6 +5,8 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useMembership } from '~/hooks/useMembership'
 
 interface ConnectedCheckoutProps {
   service: CheckoutService
@@ -16,8 +18,20 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   const [signing, _] = useState(false)
   const { signIn, isSignedIn } = useSIWE()
 
+  const web3Service = useWeb3Service()
+
   const useDelegatedProvider =
     state.context?.paywallConfig?.useDelegatedProvider
+
+  const { data: memberships } = useMembership({
+    account,
+    paywallConfig: state.context.paywallConfig,
+    web3Service,
+  })
+
+  const membership = memberships?.find(
+    (item) => item.lock === state.context.lock?.address
+  )
 
   useEffect(() => {
     // Skip Connect if already signed in
@@ -29,14 +43,31 @@ export function Connected({ service }: ConnectedCheckoutProps) {
 
       if (isConnectedAsUnlockAccount || isConnectedWithWallet) {
         await signIn()
-        service.send({ type: 'SELECT_LOCK' })
+        service.send({
+          type: 'SELECT_LOCK',
+          existingMember: !!membership?.member,
+          expiredMember: isUnlockAccount ? false : !!membership?.expired,
+        })
       } else if (account && connected) {
-        service.send({ type: 'SELECT_LOCK' })
+        service.send({
+          type: 'SELECT_LOCK',
+          existingMember: !!membership?.member,
+          expiredMember: isUnlockAccount ? false : !!membership?.expired,
+        })
       }
     }
-    autoSignIn()
+    if (memberships) {
+      autoSignIn()
+    }
     // adding signIn creates an inifnite loop for some reason
-  }, [connected, useDelegatedProvider, isUnlockAccount, signing, isSignedIn])
+  }, [
+    connected,
+    useDelegatedProvider,
+    isUnlockAccount,
+    signing,
+    isSignedIn,
+    memberships,
+  ])
 
   useEffect(() => {
     if (!account) {

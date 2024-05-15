@@ -183,7 +183,7 @@ export function Returning({ checkoutService, communication, onClose }: Props) {
                 returnLabel="Return"
                 checkoutService={checkoutService}
               />
-              {!lock?.isSoldOut && (
+              {!lock?.isSoldOut && !paywallConfig.skipRecipient && (
                 <Button
                   className="w-full"
                   onClick={() =>
