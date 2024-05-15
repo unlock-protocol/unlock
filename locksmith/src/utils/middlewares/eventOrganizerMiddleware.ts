@@ -8,7 +8,7 @@ export const eventOrganizerMiddleware: RequestHandler = async (
 ) => {
   const userAddress = request.user!.walletAddress
 
-  let slug = request.params.slug
+  const slug = request.params.slug
 
   if (!slug) {
     return response.status(404).send({
