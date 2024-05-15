@@ -56,6 +56,7 @@ export class TicketsController {
       const network = Number(request.params.network)
       const id = request.params.keyId.toLowerCase()
       const address = Normalizer.ethereumAddress(request.user!.walletAddress!)
+      // event slug is used by /:network/lock/:lockAddress/:eventSlug/key/:keyId/check' route
       const eventSlug = request.params.eventSlug
       const verifier = eventSlug
         ? await Verifier.findOne({

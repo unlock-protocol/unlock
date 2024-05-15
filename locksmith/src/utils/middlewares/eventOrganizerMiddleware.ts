@@ -6,13 +6,13 @@ import { getEventBySlug } from '../../operations/eventOperations'
 import { getCheckoutConfigById } from '../../operations/checkoutConfigOperations'
 import { EventBody } from '../../controllers/v2/eventsController'
 import { isEmpty } from 'lodash'
+import { isEventOrganizer } from '../eventOrganizers'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
   request,
   response,
   next
 ) => {
-  const web3Service = new Web3Service(networks)
   const userAddress = request.user!.walletAddress
 
   let slug = request.params.slug
@@ -25,37 +25,13 @@ export const eventOrganizerMiddleware: RequestHandler = async (
     slug = parsed.data.slug
   }
 
-  // If this is an existing event!
-  if (slug) {
-    const existingEvent = await getEventBySlug(
-      slug,
-      false /** includeProtected */
-    )
-    if (existingEvent?.checkoutConfigId) {
-      const checkoutConfig = await getCheckoutConfigById(
-        existingEvent.checkoutConfigId
-      )
-      locks = checkoutConfig?.config.locks || {}
-    }
-  }
+  const isLockManager = isEventOrganizer(userAddress, slug)
 
-  if (isEmpty(locks)) {
+  if (isLockManager === null) {
     return response.status(404).send({
       message: `No such event`,
     })
   }
-
-  const lockManagers = await Promise.all(
-    Object.keys(locks).map((lockAddress: string) => {
-      const networkId = locks[lockAddress].network
-      return web3Service.isLockManager(
-        lockAddress,
-        userAddress,
-        Number(networkId)
-      )
-    })
-  )
-  const isLockManager = lockManagers.some((isManager) => isManager)
 
   if (!isLockManager) {
     return response.status(403).send({

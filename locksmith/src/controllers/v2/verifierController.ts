@@ -148,7 +148,7 @@ export const getEventVerifiers = async (
 
   const list = await VerifierOperations.getEventVerifiers(slug)
 
-  return response.status(200).send(list)
+  return response.status(200).send({ results: list })
 }
 
 // Adds a verifier to an event

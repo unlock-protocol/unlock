@@ -39,7 +39,7 @@ router.put(
 )
 
 router.put(
-  '/:network/lock/:lockAddress/:eventSlug/key/:keyId/check',
+  '/:eventSlug/:network/lock/:lockAddress/key/:keyId/check',
   authenticatedMiddleware,
   isEventVerifierOrManagerMiddleware,
   (req, res) => {
