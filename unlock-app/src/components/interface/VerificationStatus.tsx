@@ -193,14 +193,10 @@ export const VerificationStatus = ({
       })
     : 'Invalid QR code'
 
-  let isVerifier = false
-  if (eventAddresses) {
-    eventAddresses.forEach((address) => {
-      if (address.toLowerCase() === ticket!.lockAddress.toLowerCase()) {
-        isVerifier = true
-      }
-    })
-  }
+  const isVerifier =
+    eventAddresses?.some(
+      (address) => address.toLowerCase() === ticket!.lockAddress.toLowerCase()
+    ) || false
 
   const checkedInAt = ticket?.checkedInAt
 
