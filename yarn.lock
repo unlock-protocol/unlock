@@ -14566,19 +14566,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/api-kit@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@safe-global/api-kit@npm:2.2.0"
+"@safe-global/api-kit@npm:2.3.1":
+  version: 2.3.1
+  resolution: "@safe-global/api-kit@npm:2.3.1"
   dependencies:
-    "@safe-global/protocol-kit": "npm:^3.0.1"
-    "@safe-global/safe-core-sdk-types": "npm:^4.0.1"
+    "@safe-global/protocol-kit": "npm:^3.1.0"
+    "@safe-global/safe-core-sdk-types": "npm:^4.1.0"
     ethers: "npm:^6.7.1"
     node-fetch: "npm:^2.7.0"
-  checksum: 10/5e65e2346775f07c8ea9c509b0b2e2eb3d4062d20f894bebab5eaa8bef96e57b5bd77dd7fabf9ada5f058ff1b4e794143fdc0f97be532b30fd0f253a73133ba2
+  checksum: 10/76a8fc0bfe9788825f0c0c50f76460e7e445329645c5de8c9a48565b0d508d97eab0f70c5b09c2edc5d430feb79e6c33375a70639a3818862a1fdb6bf50c4169
   languageName: node
   linkType: hard
 
-"@safe-global/protocol-kit@npm:3.1.0":
+"@safe-global/protocol-kit@npm:3.1.0, @safe-global/protocol-kit@npm:^3.1.0":
   version: 3.1.0
   resolution: "@safe-global/protocol-kit@npm:3.1.0"
   dependencies:
@@ -14591,22 +14591,6 @@ __metadata:
     web3-core: "npm:^1.10.3"
     web3-utils: "npm:^1.10.3"
   checksum: 10/67d2facbfa784a89fb6636bd759095fbea279e508306f974aa90f138add93625cb2f977fdaf9a30960ddb3b28dcc3a509bee6f5ed14d8ff8423cc3a57ee5b8cd
-  languageName: node
-  linkType: hard
-
-"@safe-global/protocol-kit@npm:^3.0.1":
-  version: 3.0.2
-  resolution: "@safe-global/protocol-kit@npm:3.0.2"
-  dependencies:
-    "@noble/hashes": "npm:^1.3.3"
-    "@safe-global/safe-deployments": "npm:^1.34.0"
-    ethereumjs-util: "npm:^7.1.5"
-    ethers: "npm:^6.7.1"
-    semver: "npm:^7.5.4"
-    web3: "npm:^1.10.3"
-    web3-core: "npm:^1.10.3"
-    web3-utils: "npm:^1.10.3"
-  checksum: 10/6eda029c510d05c38b07f6889804865c70a65bc2e6a9e411dc0bd1332c496ed37d522820214514d4b3115c02c6eb43b1ad1c3c6df48ad9b3db714f0a84a7a334
   languageName: node
   linkType: hard
 
@@ -14623,7 +14607,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@safe-global/safe-core-sdk-types@npm:^4.0.1":
+"@safe-global/safe-core-sdk-types@npm:^4.1.0":
   version: 4.1.0
   resolution: "@safe-global/safe-core-sdk-types@npm:4.1.0"
   dependencies:
@@ -14677,15 +14661,6 @@ __metadata:
   dependencies:
     semver: "npm:^7.3.7"
   checksum: 10/8aa697eeed760ce710c717e0b116278c10493100df590e9f1f7b2e8b3bfc6a9f10e6ee8a9f3325d8c7b40887c2b36deb5e72d9f03d33833bde37395cb9f60124
-  languageName: node
-  linkType: hard
-
-"@safe-global/safe-deployments@npm:^1.34.0":
-  version: 1.34.0
-  resolution: "@safe-global/safe-deployments@npm:1.34.0"
-  dependencies:
-    semver: "npm:^7.3.7"
-  checksum: 10/3d92eb51ab801e916d9fe52ffceeac189fbff6b1f3655d3540aa54100d792bc21187de632e5d8de07205c256f1500298b69a0382bcc0102d27831f3704cbb6e4
   languageName: node
   linkType: hard
 
@@ -20946,7 +20921,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.1.0"
     "@openzeppelin/upgrades-core": "npm:1.33.1"
-    "@safe-global/api-kit": "npm:2.2.0"
+    "@safe-global/api-kit": "npm:2.3.1"
     "@safe-global/protocol-kit": "npm:3.1.0"
     "@tenderly/hardhat-tenderly": "npm:2.2.2"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
