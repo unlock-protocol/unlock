@@ -11,11 +11,7 @@ import { Button } from '@unlock-protocol/ui'
 import { isSignatureValidForAddress } from '~/utils/signatures'
 import { storage } from '~/config/storage'
 import { AxiosError } from 'axios'
-import {
-  useEventTicket,
-  useLockTicket,
-  useLocksmithGranterAddress,
-} from '~/hooks/useTicket'
+import { useEventTicket, useLocksmithGranterAddress } from '~/hooks/useTicket'
 import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
