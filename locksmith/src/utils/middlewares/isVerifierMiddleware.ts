@@ -75,9 +75,7 @@ export const isEventVerifierOrManagerMiddleware: RequestHandler = async (
       eventVerifiers
         ?.map((item) => Normalizer.ethereumAddress(item.address))
         .includes(Normalizer.ethereumAddress(address)) ||
-      (await isEventOrganizer(address, eventSlug))?.find(
-        (isManager) => isManager
-      )
+      (await isEventOrganizer(address, eventSlug))
 
     if (isVerifier) {
       // The user is verifier for the event
