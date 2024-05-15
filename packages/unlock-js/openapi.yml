@@ -1025,6 +1025,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/{slug}/verifiers/{verifierAddress}:
     put:
       operationId: addEventVerifier
       security:

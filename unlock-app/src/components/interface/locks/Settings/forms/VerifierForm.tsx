@@ -138,16 +138,15 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     }
   )
 
-  // TODO: eventVerifiers is deprecated
   const {
     isLoading: isLoadingItems,
     refetch: refetchList,
     data: verifiers,
   } = useQuery(
-    ['getEventVerifiers', event.slug],
+    ['eventVerifiers', event.slug],
     async () => {
       const response = await storage.eventVerifiers(event.slug)
-      return response.data.results || []
+      return response.data || []
     },
     {
       onError: (err: any) => {
@@ -173,6 +172,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     deleteVerifierMutation.isLoading
 
   const noVerifiers = verifiers?.length === 0
+  console.log(verifiers)
 
   return (
     <div className="relative">
