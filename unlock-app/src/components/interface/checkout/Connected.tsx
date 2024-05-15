@@ -5,7 +5,6 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { CheckoutService } from './main/checkoutMachine'
 import { Stepper } from './Stepper'
 import { ConnectPage } from './main/ConnectPage'
-import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useMembership } from '~/hooks/useMembership'
 
