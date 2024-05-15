@@ -128,18 +128,12 @@ export const VerificationStatus = ({
     isLoading: isTicketLoading,
     data: ticket,
     refetch: refetchTicket,
-  } = eventProp
-    ? useEventTicket({
-        lockAddress,
-        keyId: tokenId!,
-        network,
-        eventProp,
-      })
-    : useLockTicket({
-        lockAddress,
-        keyId: tokenId!,
-        network,
-      })
+  } = useEventTicket({
+    lockAddress,
+    keyId: tokenId!,
+    network,
+    eventProp,
+  })
 
   const onCheckIn = async () => {
     try {
