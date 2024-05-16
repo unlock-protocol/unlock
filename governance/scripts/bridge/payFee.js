@@ -11,7 +11,7 @@
 const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const submitTx = require('../multisig/submitTx')
-const { getXCalledEvents } = require('../../helpers/bridge')
+const { getXCalledEventsFromTx } = require('../../helpers/bridge')
 
 const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
   const res = await fetch(
@@ -41,7 +41,7 @@ async function main({
 
   console.log(`Using multisig: ${multisig}`)
 
-  const xCalls = await getXCalledEvents(txId)
+  const xCalls = await getXCalledEventsFromTx(txId)
   const transferIds = xCalls.map(({ transferId }) => transferId)
 
   console.log(`Transfers to bump: ${transferIds.length}
