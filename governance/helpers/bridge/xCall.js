@@ -13,9 +13,13 @@ const targetChains = Object.keys(networks)
 /***
  * CONNEXT logic
  */
-const getXCalledEvents = async (hash) => {
-  const { interface } = await ethers.getContractAt(IXCalled, ADDRESS_ZERO)
+const getXCalledEventsFromTx = async (hash) => {
   const { logs } = await ethers.provider.getTransactionReceipt(hash)
+  return await parseXCalledEvents(logs)
+}
+
+const parseXCalledEvents = async (logs) => {
+  const { interface } = await ethers.getContractAt(IXCalled, ADDRESS_ZERO)
   const parsedLogs = logs.map((log) => {
     try {
       return interface.parseLog(log)
@@ -146,7 +150,8 @@ const fetchXCall = async ({ query, chainId }) => {
 
 module.exports = {
   targetChains,
-  getXCalledEvents,
+  parseXCalledEvents,
+  getXCalledEventsFromTx,
   fetchOriginXCall,
   fetchDestinationXCall,
   getSupportedChainsByDomainId,
