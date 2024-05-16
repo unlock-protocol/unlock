@@ -997,7 +997,6 @@ paths:
 
   /v2/events/{slug}/verifiers:
     get:
-      deprecated: true
       operationId: eventVerifiers
       security:
         - User: ['lockManager']
@@ -1027,33 +1026,6 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/events/{slug}/verifiers/{verifierAddress}:
-    get:
-      operationId: eventVerifier
-      description: Returns a verifier for an event.
-      parameters:
-        - $ref: '#/components/parameters/Slug'
-        - $ref: '#/components/parameters/VerifierAddress'
-          application/json:
-            schema:
-              type: object
-              properties:
-                verifierName:
-                  type: string
-                  description: optional verifier name
-      responses:
-        201:
-          description: Verifier details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Verifier'
-
-        404:
-          $ref: '#/components/responses/404.NotFound'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
-
     put:
       operationId: addEventVerifier
       security:
@@ -1154,10 +1126,41 @@ paths:
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/check:
     put:
       operationId: checkTicket
+      deprecated: true
       security:
         - User: ['Verifier']
-      description: Mark a ticket as checked in.
+      description: Mark a lock ticket as checked in.
       parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        202:
+          description: Ticket is checked in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccess'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}/check:
+    put:
+      operationId: checkEventTicket
+      security:
+        - User: ['Verifier']
+      description: Mark an event ticket as checked in.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/KeyId'
@@ -2117,13 +2120,90 @@ paths:
 
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}:
     get:
-      operationId: getTicket
+      operationId: getLockTicket
       security:
         - User: []
-      description: get a ticket for a key.
+      description: get a ticket for a key by lock.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully retrieved the ticket.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                required:
+                  - name
+                  - lockAddress
+                  - keyId
+                  - manager
+                  - publicLockVersion
+                  - userMetadata
+                  - isVerifier
+                  - attributes
+                  - image
+                  - description
+                  - owner
+                  - expiration
+
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  manager:
+                    type: string
+                  lockAddress:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+                  checkedInAt:
+                    type: number
+                  userMetadata:
+                    type: object
+                    additionalProperties: true
+                  expiration:
+                    type: string
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - 'value'
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          type: string
+                        display_type:
+                          type: string
+                  publicLockVersion:
+                    type: string
+                  isVerifier:
+                    description: Whether the user who requested the ticket can verify the ticket.
+                    type: boolean
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+  /v2/api/ticket/{network}/lock/{lockAddress}/{slug}/key/{keyId}:
+    get:
+      operationId: getEventTicket
+      security:
+        - User: []
+      description: get a ticket for a key by event.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/Slug'
         - $ref: '#/components/parameters/KeyId'
       responses:
         200:
