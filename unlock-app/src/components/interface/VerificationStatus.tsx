@@ -181,7 +181,7 @@ export const VerificationStatus = ({
 
   const invalid = ticket
     ? invalidMembership({
-        locks: checkoutConfig?.locks ?? {},
+        locks: checkoutConfig ? checkoutConfig?.locks : null,
         network,
         manager: ticket!.manager,
         keyId: ticket!.keyId,
