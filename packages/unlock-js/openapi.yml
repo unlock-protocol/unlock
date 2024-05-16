@@ -1157,6 +1157,36 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}/check:
+    put:
+      operationId: checkEventTicket
+      security:
+        - User: ['Verifier']
+      description: Mark an event ticket as checked in.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        202:
+          description: Ticket is checked in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccess'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}:
     get:
       operationId: getEventTicket
       security:
@@ -1232,34 +1262,6 @@ paths:
 
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
-    put:
-      operationId: checkEventTicket
-      security:
-        - User: ['Verifier']
-      description: Mark an event ticket as checked in.
-      parameters:
-        - $ref: '#/components/parameters/Slug'
-        - $ref: '#/components/parameters/Network'
-        - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/KeyId'
-      responses:
-        202:
-          description: Ticket is checked in.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GenericSuccess'
-        403:
-          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
-
-        404:
-          $ref: '#/components/responses/404.NotFound'
-
-        409:
-          $ref: '#/components/responses/409.Conflict'
-
-        500:
-          $ref: '#/components/responses/500.InternalError'
 
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/email:
     post:
