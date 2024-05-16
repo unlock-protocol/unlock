@@ -12,7 +12,7 @@
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-verify": "2.0.6",
-    "@openzeppelin/contracts": "4.9.5",
+    "@openzeppelin/contracts": "4.9.6",
     "@openzeppelin/contracts-upgradeable": "4.9.6",
     "@openzeppelin/hardhat-upgrades": "3.1.0",
     "@openzeppelin/upgrades-core": "1.33.1",
