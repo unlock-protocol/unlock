@@ -8,7 +8,7 @@
  *  `yarn hardhat run scripts/bridge/status.js --network mainnet`
  */
 const {
-  getXCalledEvents,
+  getXCalledEventsFromTx,
   fetchOriginXCall,
   fetchDestinationXCall,
   getSupportedChainsByDomainId,
@@ -24,7 +24,7 @@ async function main({
   // TODO: pass this hash via cli
   txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
 } = {}) {
-  const xCalls = await getXCalledEvents(txId)
+  const xCalls = await getXCalledEventsFromTx(txId)
 
   // sort by domain id
   const sorted = xCalls.reduce((prev, curr) => {
