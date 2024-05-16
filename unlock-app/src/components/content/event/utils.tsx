@@ -3,7 +3,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { config } from '~/config/app'
-import { CheckoutConfig } from '@unlock-protocol/unlock-js'
+import { CheckoutConfig } from '@unlock-protocol/core'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { CreateLockForm } from '../Create/elements/CreateLockForm'
-import { use, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import {
   ONE_DAY_IN_SECONDS,
@@ -12,7 +12,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 import { useCheckoutConfigUpdate } from '~/hooks/useCheckoutConfig'
 import { subgraph } from '~/config/subgraph'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { Placeholder } from '@unlock-protocol/ui'
 import { Deployed } from './Deployed'
 
@@ -67,6 +67,8 @@ export const Deploy: React.FC = () => {
       await updateConfig({
         name: `Checkout Config for P00ls Membership for ${lockAddress}`,
         config: {
+          title: `Buy a membership NFT!`,
+          image: query.mediaUri?.toString(),
           locks: {
             [lockAddress]: {
               network,
@@ -79,7 +81,7 @@ export const Deploy: React.FC = () => {
     [updateConfig, query.mediaUri]
   )
 
-  const onSubmit = useCallback(
+  const deployLock = useCallback(
     async (values: {
       network: number
       expirationDuration: number
@@ -102,7 +104,7 @@ export const Deploy: React.FC = () => {
           publicLockVersion: networks[values.network].publicLockVersionToDeploy,
         },
         {},
-        (error: any, transactionHash) => {
+        (error: any) => {
           if (error) {
             console.error(error)
             ToastHelper.error(
@@ -110,7 +112,6 @@ export const Deploy: React.FC = () => {
             )
           } else {
             ToastHelper.success('Transaction sent, waiting for confirmation...')
-            console.log(transactionHash)
           }
         }
       )
@@ -119,6 +120,8 @@ export const Deploy: React.FC = () => {
     },
     [getWalletService, onLockDeployed]
   )
+
+  const onSubmitMutation = useMutation(deployLock)
 
   return (
     <div>
@@ -150,9 +153,9 @@ export const Deploy: React.FC = () => {
               </Placeholder.Root>
             </Placeholder.Root>
           )}
-          {!isLoadingLocks && !locks?.length && (
+          {!isLoadingLocks && !locks?.length && !lockAddress && (
             <CreateLockForm
-              onSubmit={onSubmit}
+              onSubmit={onSubmitMutation.mutate}
               hideFields={['network', 'currency', 'quantity']}
               defaultValues={{
                 currencyContractAddress: query.address?.toString(),
@@ -160,24 +163,20 @@ export const Deploy: React.FC = () => {
                 unlimitedQuantity: true,
                 unlimitedDuration: false,
                 isFree: false,
-                network: Number(query.chainId?.toString() || 137),
+                network: Number(query.chainId?.toString()),
               }}
+              isLoading={onSubmitMutation.isLoading}
             />
           )}
           {lockAddress && (
-            <Deployed lockAddress={lockAddress} network={query.network} />
+            <Deployed
+              lockAddress={lockAddress}
+              network={Number(query.chainId?.toString())}
+            />
           )}
         </div>
       </div>
     </div>
-
-    // <div>
-    //   <p>Create an NFT Membership priced in $TOKEN NAME!</p>
-    //   <p>Name</p>
-    //   <p>Duration</p>
-    //   <p>Price</p>
-    //   <Button>Next</Button>
-    // </div>
   )
 }
 

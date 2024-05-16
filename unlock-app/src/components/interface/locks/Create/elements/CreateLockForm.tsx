@@ -31,6 +31,7 @@ interface CreateLockFormProps {
   onSubmit: any
   defaultValues: LockFormProps
   hideFields?: string[]
+  isLoading?: boolean
 }
 
 export const networkDescription = (network: number) => {
@@ -65,6 +66,7 @@ export const CreateLockForm = ({
   onSubmit,
   defaultValues,
   hideFields = [],
+  isLoading = false,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -292,7 +294,6 @@ export const CreateLockForm = ({
               </div>
               <div className="relative">
                 <div className="flex gap-2 ">
-                  {/* {!hideFields.includes('currency') && ( */}
                   <SelectToken
                     className="grow"
                     onChange={(token: Token) => {
@@ -304,7 +305,6 @@ export const CreateLockForm = ({
                     }}
                     network={selectedNetwork!}
                   />
-                  {/* )} */}
 
                   <Input
                     type="number"
@@ -329,6 +329,7 @@ export const CreateLockForm = ({
               className="mt-8 md:mt-0"
               type="submit"
               disabled={submitDisabled}
+              loading={isLoading}
             >
               Next
             </Button>

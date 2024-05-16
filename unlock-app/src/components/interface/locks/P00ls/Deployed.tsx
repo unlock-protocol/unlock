@@ -2,6 +2,7 @@ import { useCheckoutConfigsByUserAndLock } from '~/hooks/useCheckoutConfig'
 import { CheckoutShareOrDownload } from '../CheckoutUrl/elements/CheckoutPreview'
 import { getCheckoutUrl } from '~/components/content/event/utils'
 import Link from 'next/link'
+import { CheckoutConfig } from '@unlock-protocol/core'
 
 export const Deployed = ({
   lockAddress,
@@ -16,8 +17,9 @@ export const Deployed = ({
   const checkoutConfig = checkoutConfigs?.[0]
 
   const checkoutUrl = checkoutConfig
-    ? getCheckoutUrl(checkoutConfig)
+    ? getCheckoutUrl(checkoutConfig as CheckoutConfig)
     : undefined
+
   return (
     <div className="prose">
       <h1 className="text-2xl">Your Membership contract is deployed!</h1>
