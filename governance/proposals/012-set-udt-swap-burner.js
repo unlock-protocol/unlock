@@ -210,7 +210,8 @@ ${explainers
   )
   .join('\n\n')}
 
-LFG 🚀🚀🚀
+  
+The Unlock Protocol Team
 `
   console.log(proposalName)
   console.log(calls)
