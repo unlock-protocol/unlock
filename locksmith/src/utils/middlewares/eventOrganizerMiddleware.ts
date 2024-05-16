@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { isEventOrganizer } from '../eventOrganizers'
+import { IsEventOrganizerEnum, isEventOrganizer } from '../eventOrganizers'
 
 export const eventOrganizerMiddleware: RequestHandler = async (
   request,
@@ -16,13 +16,13 @@ export const eventOrganizerMiddleware: RequestHandler = async (
 
   const isLockManager = await isEventOrganizer(userAddress, slug)
 
-  if (isLockManager == undefined) {
+  if (isLockManager == IsEventOrganizerEnum.NO_EVENT) {
     return response.status(404).send({
       message: `No such event`,
     })
   }
 
-  if (isLockManager == false) {
+  if (isLockManager == IsEventOrganizerEnum.NOT_ORGANIZER) {
     return response.status(403).send({
       message: `${userAddress} is not a lock manager of this transaction`,
     })

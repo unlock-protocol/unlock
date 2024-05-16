@@ -5,7 +5,16 @@ import { isEmpty } from 'lodash'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 
-export const isEventOrganizer = async (address: string, slug: string) => {
+export enum IsEventOrganizerEnum {
+  NO_EVENT,
+  NOT_ORGANIZER,
+  ORGANIZER,
+}
+
+export const isEventOrganizer = async (
+  address: string,
+  slug: string
+): Promise<IsEventOrganizerEnum> => {
   const web3Service = new Web3Service(networks)
   let locks: PaywallLocksConfigType = {}
 
@@ -24,7 +33,7 @@ export const isEventOrganizer = async (address: string, slug: string) => {
   }
 
   if (isEmpty(locks)) {
-    return undefined
+    return IsEventOrganizerEnum.NO_EVENT
   }
 
   const lockManagers = await Promise.all(
@@ -33,5 +42,9 @@ export const isEventOrganizer = async (address: string, slug: string) => {
       return web3Service.isLockManager(lockAddress, address, Number(networkId))
     })
   )
-  return lockManagers.some((isManager) => isManager)
+  if (lockManagers.some((isManager) => isManager)) {
+    return IsEventOrganizerEnum.ORGANIZER
+  }
+
+  return IsEventOrganizerEnum.NOT_ORGANIZER
 }
