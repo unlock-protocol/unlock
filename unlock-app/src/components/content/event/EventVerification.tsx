@@ -44,7 +44,10 @@ export const EventVerification = ({
               </div>
             </div>
             <div className="pt-10">
-              <Scanner checkoutConfig={checkoutConfig} eventProp={event} />
+              <Scanner
+                checkoutConfig={checkoutConfig.config}
+                eventProp={event}
+              />
             </div>
           </div>
         )}
