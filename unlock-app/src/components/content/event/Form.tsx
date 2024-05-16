@@ -280,12 +280,6 @@ export const Form = ({ onSubmit }: FormProps) => {
                           <>{networkDescription(details.network)}</>
                         )}
                       </p>
-                      {details.network === 1 && (
-                        <p className="text-red-600 font-bold">
-                          Due to high gas costs, we strongly discourage the use
-                          of the Ethereum Mainnet.
-                        </p>
-                      )}
                       <p>
                         This is the network on which your ticketing contract
                         will be deployed.{' '}

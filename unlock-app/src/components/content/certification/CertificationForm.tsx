@@ -118,12 +118,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     return (
       <div className="flex flex-col gap-2">
         <p>{details.network && <>{networkDescription(details.network)}</>}</p>
-        {details.network === 1 && (
-          <p className="text-red-600 font-bold">
-            Due to high gas costs, we strongly discourage the use of the
-            Ethereum Mainnet.
-          </p>
-        )}
       </div>
     )
   }
