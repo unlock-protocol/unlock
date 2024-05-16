@@ -100,9 +100,12 @@ components:
         config:
           type: object
           additionalProperties: true
+          required:
+            - 'locks'
           properties:
             locks:
               type: object
+              additionalProperties: true
         createdAt:
           type: string
           format: date-time

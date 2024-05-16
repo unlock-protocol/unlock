@@ -340,3 +340,9 @@ export const EventObject = z.object({
   }),
 })
 export type Event = z.infer<typeof EventObject>
+
+export interface CheckoutConfig {
+  id: string | null
+  name: string
+  config: PaywallConfigType
+}

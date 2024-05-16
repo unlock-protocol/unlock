@@ -3,6 +3,7 @@ import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
 import { config } from '~/config/app'
+import { CheckoutConfig } from '@unlock-protocol/core'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -63,4 +64,23 @@ export const getEventUrl = ({
     lockAddress,
     network,
   })}`
+}
+
+export const getCheckoutUrl = (checkoutConfig: CheckoutConfig) => {
+  const url = new URL(`${window.location.origin}/checkout`)
+
+  // remove redirectUri if not applicable
+  if (checkoutConfig.config?.redirectUri?.length === 0) {
+    delete checkoutConfig.config.redirectUri
+  }
+
+  if (checkoutConfig.id) {
+    url.searchParams.append('id', checkoutConfig.id)
+  } else {
+    url.searchParams.append(
+      'checkoutConfig',
+      JSON.stringify(checkoutConfig.config)
+    )
+  }
+  return url.toString()
 }

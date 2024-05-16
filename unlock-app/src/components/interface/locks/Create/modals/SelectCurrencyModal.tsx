@@ -71,13 +71,14 @@ export const SelectCurrencyModal = ({
           defaultCurrencyAddress,
           network
         )
-        featuredTokens.unshift({
-          name: defaultCurrencySymbol,
-          symbol: defaultCurrencySymbol,
-          address: defaultCurrencyAddress,
-        })
+        if (defaultCurrencySymbol) {
+          featuredTokens.unshift({
+            name: defaultCurrencySymbol,
+            symbol: defaultCurrencySymbol,
+            address: defaultCurrencyAddress,
+          })
+        }
       }
-
       setTokens(featuredTokens)
     }
     initializeTokens()
@@ -204,9 +205,9 @@ export const SelectCurrencyModal = ({
                             onClick={() => onSelectToken(token)}
                             className="inline-flex items-center gap-3 cursor-pointer"
                           >
-                            <CryptoIcon symbol={token.symbol} />
-                            <span className="font-bold">
-                              {token.symbol.toUpperCase()}
+                            <CryptoIcon symbol={token?.symbol} />
+                            <span className="font-bold uppercase">
+                              {token?.symbol}
                             </span>
                           </span>
                         </div>
