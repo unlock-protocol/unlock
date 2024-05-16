@@ -38,7 +38,7 @@ router.put(
   }
 )
 
-router.get(':eventSlug/:network/lock/:lockAddress/key/:keyId/check', getTicket)
+router.get('/:eventSlug/:network/lock/:lockAddress/key/:keyId/check', getTicket)
 
 router.put(
   '/:eventSlug/:network/lock/:lockAddress/key/:keyId/check',
