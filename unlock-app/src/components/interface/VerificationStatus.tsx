@@ -122,11 +122,8 @@ export const VerificationStatus = ({
 
   let eventAddresses
   if (checkoutConfig) {
-    // @ts-expect-error Property 'locks' does not exist on type '{}'
-    eventAddresses = Object.keys(checkoutConfig?.config?.locks)
+    eventAddresses = Object.keys(checkoutConfig?.locks)
   }
-
-  console.log(eventAddresses)
 
   const {
     isLoading: isTicketLoading,
