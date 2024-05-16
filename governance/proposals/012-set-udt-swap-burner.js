@@ -39,7 +39,7 @@ const parseCalls = async (destChainId) => {
   }
 
   // TODO: double check this number
-  const estimatedGasForPurchase = 20000n
+  const estimatedGasForPurchase = 200000n
 
   const configUnlockArgs = [
     unlockDaoToken.address,
