@@ -48,6 +48,8 @@ export interface LockState extends Lock, Required<PaywallConfigLock> {
 
 export interface SelectLockEvent {
   type: 'SELECT_LOCK'
+  existingMember: boolean
+  expiredMember: boolean
 }
 
 export interface ConnectEvent {
@@ -272,19 +274,19 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               target: 'RETURNING',
-              guard: ({ context }) => context.existingMember,
+              guard: ({ event }) => event.existingMember,
             },
             {
               target: 'QUANTITY',
-              guard: ({ context }) =>
-                !context.skipQuantity && !context.expiredMember,
+              guard: ({ context, event }) =>
+                !context.skipQuantity && !event.expiredMember,
             },
             {
               target: 'METADATA',
-              guard: ({ context }) => {
+              guard: ({ context, event }) => {
                 // For expired memberships we do not offer the ability
                 // to change the metadadata and recipient...
-                return !context.skipRecipient && !context.expiredMember
+                return !context.skipRecipient && !event.expiredMember
               },
             },
             {
