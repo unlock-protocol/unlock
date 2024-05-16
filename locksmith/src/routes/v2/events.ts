@@ -31,6 +31,7 @@ router.delete(
 router.get('/:network/:lockAddress', getEventDetailsByLock)
 router.get('/:slug', getEvent)
 router.get('/', getAllEvents)
+
 router.post(
   '/save',
   authenticatedMiddleware,
