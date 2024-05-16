@@ -38,6 +38,8 @@ router.put(
   }
 )
 
+router.get(':eventSlug/:network/lock/:lockAddress/key/:keyId/check', getTicket)
+
 router.put(
   '/:eventSlug/:network/lock/:lockAddress/key/:keyId/check',
   authenticatedMiddleware,
@@ -81,8 +83,7 @@ router.get(
   generateTicket
 )
 
+// DEPRECATED
 router.get('/:network/lock/:lockAddress/key/:keyId', getTicket)
-
-router.get('/:network/lock/:lockAddress/:eventSlug/key/:keyId', getTicket)
 
 export default router
