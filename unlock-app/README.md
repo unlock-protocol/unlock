@@ -12,7 +12,7 @@ On the front-end, you should have a [web3](https://web3js.readthedocs.io/en/1.0/
 
 ## Getting Started
 
-See README at the root of the repo;
+See README at the root of the repo
 
 ## Default accounts for testing (set up thru ganache-cli)
 
