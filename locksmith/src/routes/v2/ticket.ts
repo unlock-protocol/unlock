@@ -7,10 +7,13 @@ import {
 } from '../../controllers/v2/ticketsController'
 import { keyOwnerMiddleware } from '../../utils/middlewares/keyOwnerMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
-import { isVerifierMiddleware } from '../../utils/middlewares/isVerifierMiddleware'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { lockManagerMiddleware } from './../../utils/middlewares/lockManager'
 import { lockManagerOrKeyOwnerMiddleware } from '../../utils/middlewares/lockManagerOrKeyOwner'
+import {
+  isEventVerifierOrManagerMiddleware,
+  isLockVerifierMiddleware,
+} from '../../utils/middlewares/isVerifierMiddleware'
 
 const router = express.Router({ mergeParams: true })
 
@@ -29,7 +32,16 @@ router.get(
 router.put(
   '/:network/lock/:lockAddress/key/:keyId/check',
   authenticatedMiddleware,
-  isVerifierMiddleware,
+  isLockVerifierMiddleware,
+  (req, res) => {
+    ticketsController.markTicketAsCheckIn(req, res)
+  }
+)
+
+router.put(
+  '/:eventSlug/:network/lock/:lockAddress/key/:keyId/check',
+  authenticatedMiddleware,
+  isEventVerifierOrManagerMiddleware,
   (req, res) => {
     ticketsController.markTicketAsCheckIn(req, res)
   }
@@ -70,5 +82,7 @@ router.get(
 )
 
 router.get('/:network/lock/:lockAddress/key/:keyId', getTicket)
+
+router.get('/:network/lock/:lockAddress/:eventSlug/key/:keyId', getTicket)
 
 export default router
