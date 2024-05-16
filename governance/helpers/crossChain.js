@@ -46,12 +46,13 @@ async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
   const delayInterface = new ethers.Interface(delayABI)
 
   // 0. override: set signer as owner 0xdc6bdc37b2714ee601734cf55a05625c9e512461
+  console.log(`> enabling signer as zodiac Delay module...`)
   await forkProvider.send('tenderly_setStorageAt', [
     delayMod,
     // storage location for owner
-    ethers.utils.hexZeroPad('0x0', 32),
+    '0x0000000000000000000000000000000000000000000000000000000000000033',
     // set to new address
-    '0x000000000000000000000000f241f12506fb6bf1909c6bc176a199166414007a',
+    ethers.zeroPadValue(signerAddress, 32),
   ])
 
   // 0bis. enable signer as module
@@ -63,6 +64,7 @@ async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
   })
 
   // 1. add tx to delay module
+  console.log(`> adding tx to Delay module...`)
   await signer.sendTransaction({
     from: signerAddress,
     to: delayMod,
