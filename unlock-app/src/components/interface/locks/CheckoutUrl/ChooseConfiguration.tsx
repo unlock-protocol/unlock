@@ -4,7 +4,7 @@ import { RadioGroup } from '@headlessui/react'
 import { Input, Placeholder, Select } from '@unlock-protocol/ui'
 import { useController, useFormContext } from 'react-hook-form'
 import { Configuration } from '.'
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { CheckoutConfig } from '@unlock-protocol/core'
 
 const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
   variants: {
@@ -13,12 +13,6 @@ const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
     },
   },
 })
-
-export interface CheckoutConfig {
-  id: string | null
-  name: string
-  config: PaywallConfigType
-}
 
 interface ConfigurationOptions {
   label: string
