@@ -2198,7 +2198,7 @@ paths:
 
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}:
     get:
-      operationId: getLockTicket
+      operationId: getTicket
       security:
         - User: []
       description: get a ticket for a key by lock.

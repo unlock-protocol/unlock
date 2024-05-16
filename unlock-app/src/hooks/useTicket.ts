@@ -38,11 +38,7 @@ export const useEventTicket = ({
     ['ticket', network, lockAddress, keyId],
     async () => {
       if (!eventProp) {
-        const response = await storage.getLockTicket(
-          network,
-          lockAddress,
-          keyId
-        )
+        const response = await storage.getTicket(network, lockAddress, keyId)
         return response.data
       } else {
         const response = await storage.getEventTicket(
