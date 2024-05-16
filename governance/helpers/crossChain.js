@@ -86,7 +86,7 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   await signer.sendTransaction({
     from: connextMod,
     to: delayMod,
-    data: delayInterface.encodeFunctionData('executeNexTx', [
+    data: delayInterface.encodeFunctionData('executeNextTx', [
       to,
       value,
       data,
