@@ -3,7 +3,7 @@ const { ethers } = require('ethers')
 const { createFork } = require('./tenderly')
 const { delayABI } = require('./bridge')
 
-async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
+async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   const {
     name,
     id,
@@ -12,7 +12,6 @@ async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
     },
   } = network
 
-  console.log({ rpcUrl, moduleCall })
   const {
     to, // to
     value, // value
@@ -91,10 +90,12 @@ async function simulateDelayCall({ rpcUrl, network, moduleCall }) {
       to,
       value,
       data,
-      operation,
+      operation ? 1n : 0n,
     ]),
     gasLimit: 800000,
   })
+
+  console.log(`Simulation successful: check last tx at ${projectURL}`)
 }
 
 async function simulateDestCalls(xCalls) {
@@ -127,12 +128,11 @@ async function simulateDestCalls(xCalls) {
   await Promise.all(
     destChainCalls.map(async ({ network, moduleCall }) => {
       // create a fork
-      const { rpcUrl } = await createFork(network.id)
-      console.log('Fork URL\n\t' + rpcUrl)
+      const fork = await createFork(network.id)
 
       // simulate calls on Tenderly
       await simulateDelayCall({
-        rpcUrl,
+        ...fork,
         network,
         moduleCall,
       })
