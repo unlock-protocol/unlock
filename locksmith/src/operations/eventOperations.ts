@@ -224,5 +224,5 @@ export const saveEvent = async (
     await savedEvent.save()
   }
 
-  return [savedEvent, !!parsed.data.slug]
+  return [savedEvent, !parsed.data.slug]
 }
