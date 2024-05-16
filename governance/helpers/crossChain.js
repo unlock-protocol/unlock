@@ -30,7 +30,6 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   const delayInterface = new ethers.Interface(delayABI)
 
   // 0. override: set signer as owner 0xdc6bdc37b2714ee601734cf55a05625c9e512461
-  console.log(`> enabling signer as zodiac Delay module...`)
   await forkProvider.send('tenderly_setStorageAt', [
     delayMod,
     // storage location for owner
@@ -48,7 +47,6 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   })
 
   // 1. add tx to delay module
-  console.log(`> adding tx to Delay module...`)
   await signer.sendTransaction({
     from: signerAddress,
     to: delayMod,
@@ -63,7 +61,6 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   const coolDown = 172800n // TODO: fetch from contract
   const params = [ethers.toQuantity(coolDown)]
   await forkProvider.send('evm_increaseTime', params)
-  console.log(`> skipping cool down period: advancing ${coolDown} seconds`)
 
   // 3. execute tx
   await signer.sendTransaction({
@@ -72,7 +69,9 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
     data: delayInterface.encodeFunctionData('executeNextTx', moduleArgs),
     gasLimit: 800000,
   })
-  console.log(`Simulation successful: check last tx at ${projectURL}`)
+  console.log(
+    `${name} [${id}]: Simulation successful: check last tx at ${projectURL}`
+  )
 }
 
 async function simulateDestCalls(xCalls) {
