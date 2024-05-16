@@ -1163,9 +1163,9 @@ paths:
         - User: []
       description: get a ticket for a key by event.
       parameters:
+        - $ref: '#/components/parameters/Slug'
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
-        - $ref: '#/components/parameters/Slug'
         - $ref: '#/components/parameters/KeyId'
       responses:
         200:

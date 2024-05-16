@@ -46,9 +46,9 @@ export const useEventTicket = ({
         return response.data
       } else {
         const response = await storage.getEventTicket(
+          eventProp.slug,
           network,
           lockAddress,
-          eventProp.slug,
           keyId
         )
         return response.data
