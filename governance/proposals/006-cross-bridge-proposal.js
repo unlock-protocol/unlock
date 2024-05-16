@@ -2,22 +2,20 @@
  * Example of a bridged proposal that will be sent across Connext to multisigs
  * on the other side of the network.
  */
-const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { ADDRESS_ZERO, getUnlock } = require('@unlock-protocol/hardhat-helpers')
 const { IConnext, targetChains } = require('../helpers/bridge')
-const { ethers } = require('hardhat')
+const { ethers } = require('ethers')
 const { networks } = require('@unlock-protocol/networks')
 
 module.exports = async () => {
   // parse call data for function call
-  const { interface: unlockInterface } = await ethers.getContractAt(
-    'Unlock',
-    ADDRESS_ZERO
-  )
+  const { interface: unlockInterface } = await getUnlock()
   const randInt = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min
 
   const burnAddress = ADDRESS_ZERO
-  const tokenAmount = ethers.parseEther(`0.000001`).add(`${randInt(1, 999)}`)
+  const tokenAmount =
+    ethers.parseEther(`0.000001`) + BigInt(`${randInt(1, 999)}`)
 
   const calldata = unlockInterface.encodeFunctionData('transferTokens', [
     ADDRESS_ZERO, // native tokens
@@ -28,11 +26,12 @@ module.exports = async () => {
   console.log(`action: transferTokens(${tokenAmount})`)
 
   // src info
-  const { chainId } = await ethers.provider.getNetwork()
+  const chainId = 1
   console.log(
-    `from ${chainId} to chains ${targetChains.map(({ id }) => id).join(' - ')}`
+    `from mainnet (${chainId}) to chains ${targetChains
+      .map(({ id }) => id)
+      .join(' - ')}`
   )
-
   const {
     governanceBridge: { connext: bridgeAddress },
   } = networks[chainId]
@@ -61,17 +60,16 @@ module.exports = async () => {
       }
 
       // encode instructions to be executed by the SAFE
-      const moduleData = await ethers.defaultAbiCoder.encode(
+      const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+      const moduleData = abiCoder.encode(
         ['address', 'uint256', 'bytes', 'bool'],
         [
           unlockAddress, // to
           0, // value
           calldata, // data
           0, // operation: 0 for CALL, 1 for DELEGATECALL
-          // 0,
         ]
       )
-
       console.log(moduleData)
 
       // add a small explanation
