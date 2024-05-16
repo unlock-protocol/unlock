@@ -2,7 +2,6 @@ import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { MdAssignmentLate } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown'
 import { NextSeo } from 'next-seo'
 import {
   Button,
@@ -39,7 +38,8 @@ import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
 import { AttendeeCues } from './Registration/AttendeeCues'
-import Link from 'next/link'
+import { useEventVerifiers } from '~/hooks/useEventVerifiers'
+import ReactMarkdown from 'react-markdown'
 
 interface EventDetailsProps {
   event: Event
@@ -80,6 +80,8 @@ export const EventDetails = ({
   const { data: organizers } = useEventOrganizers({
     checkoutConfig,
   })
+
+  const { data: verifier } = useEventVerifiers({ event: eventProp })
 
   // Migrate legacy event and/or redirect
   // TODO: remove by June 1st 2024
@@ -221,30 +223,47 @@ export const EventDetails = ({
         ]}
       />
       <div className="flex flex-col gap-4">
-        {isOrganizer && (
-          <div className="flex flex-row-reverse gap-2 ">
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/settings`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={TbSettings} size={20} />
-                <span>Settings</span>
-              </div>
-            </Button>
-            <Button
-              onClick={() => {
-                router.push(`/event/${eventProp.slug}/attendees`)
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Icon icon={FaUsers} size={20} />
-                <span>Attendees</span>
-              </div>
-            </Button>
-          </div>
-        )}
+        <div className="flex flex-col-reverse px-4 md:px-0 md:flex-row-reverse gap-2 ">
+          {isOrganizer && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/settings`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={TbSettings} size={20} />
+                  <span>Settings</span>
+                </div>
+              </Button>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/attendees`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={FaUsers} size={20} />
+                  <span>Attendees</span>
+                </div>
+              </Button>
+            </>
+          )}
+
+          {(verifier || isOrganizer) && (
+            <>
+              <Button
+                onClick={() => {
+                  router.push(`/event/${eventProp.slug}/verification`)
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <Icon icon={ScanIcon} size={20} />
+                  <span>Verification</span>
+                </div>
+              </Button>
+            </>
+          )}
+        </div>
 
         <div className="relative">
           <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
@@ -419,30 +438,6 @@ export const EventDetails = ({
                     }}
                   >
                     Configure
-                  </Button>
-                </div>
-              </Card>
-
-              {/*  */}
-              <Card className="grid grid-cols-1 gap-2 md:items-center md:grid-cols-3">
-                <div className="md:col-span-2">
-                  <Card.Label
-                    title="Verification"
-                    description="Scan and verify the authentication of tickets for your events"
-                  />
-                </div>
-
-                <div className="md:col-span-1">
-                  <Button
-                    target="_blank"
-                    iconLeft={<ScanIcon />}
-                    as={Link}
-                    variant="black"
-                    className="button border w-full"
-                    size="small"
-                    href={`/verification`}
-                  >
-                    Verification app
                   </Button>
                 </div>
               </Card>

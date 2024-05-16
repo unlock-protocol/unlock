@@ -11,7 +11,7 @@ describe('Lock / disableTransfers', () => {
   before(async () => {
     ;[, keyOwner, accountWithNoKey] = await ethers.getSigners()
     lock = await deployLock()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
 
     // Change the fee to 100%
     await lock.updateTransferFee(10000)
@@ -21,21 +21,31 @@ describe('Lock / disableTransfers', () => {
     describe('disabling transferFrom', () => {
       it('should prevent key transfers by reverting', async () => {
         // check owner has a key
-        assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
         // try to transfer it
         await reverts(
           lock
             .connect(keyOwner)
-            .transferFrom(keyOwner.address, accountWithNoKey.address, tokenId),
+            .transferFrom(
+              await keyOwner.getAddress(),
+              await accountWithNoKey.getAddress(),
+              tokenId
+            ),
           'KEY_TRANSFERS_DISABLED'
         )
         // check owner still has a key
-        assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
         // check recipient never received a key
         assert.equal(
           await lock
             .connect(accountWithNoKey)
-            .keyExpirationTimestampFor(accountWithNoKey.address),
+            .keyExpirationTimestampFor(await accountWithNoKey.getAddress()),
           0
         )
       })
@@ -45,7 +55,9 @@ describe('Lock / disableTransfers', () => {
       it('should prevent user from setting setApprovalForAll', async () => {
         const [, , , , random] = await ethers.getSigners()
         await reverts(
-          lock.connect(keyOwner).setApprovalForAll(random.address, true),
+          lock
+            .connect(keyOwner)
+            .setApprovalForAll(await random.getAddress(), true),
           'KEY_TRANSFERS_DISABLED'
         )
       })
@@ -54,19 +66,27 @@ describe('Lock / disableTransfers', () => {
     describe('disabling shareKey', () => {
       it('should prevent key sharing by reverting', async () => {
         // check owner has a key
-        assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
         // try to share it
         await reverts(
           lock
             .connect(keyOwner)
-            .shareKey(accountWithNoKey.address, tokenId, oneDay),
+            .shareKey(await accountWithNoKey.getAddress(), tokenId, oneDay),
           'KEY_TRANSFERS_DISABLED'
         )
         // check owner still has a key
-        assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          true
+        )
         // check recipient never received a key
         assert.equal(
-          await lock.keyExpirationTimestampFor(accountWithNoKey.address),
+          await lock.keyExpirationTimestampFor(
+            await accountWithNoKey.getAddress()
+          ),
           0
         )
       })
@@ -78,14 +98,24 @@ describe('Lock / disableTransfers', () => {
       // Change the fee to 99%
       await lock.updateTransferFee(1000)
       // check owner has a key
-      assert.equal(await lock.getHasValidKey(keyOwner.address), true)
-      assert.equal(await lock.getHasValidKey(accountWithNoKey.address), false)
+      assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
+      assert.equal(
+        await lock.getHasValidKey(await accountWithNoKey.getAddress()),
+        false
+      )
       // attempt a transfer
       await lock
         .connect(keyOwner)
-        .transferFrom(keyOwner.address, accountWithNoKey.address, tokenId)
+        .transferFrom(
+          await keyOwner.getAddress(),
+          await accountWithNoKey.getAddress(),
+          tokenId
+        )
       // check that recipient received a key
-      assert.equal(await lock.getHasValidKey(accountWithNoKey.address), true)
+      assert.equal(
+        await lock.getHasValidKey(await accountWithNoKey.getAddress()),
+        true
+      )
     })
   })
 })

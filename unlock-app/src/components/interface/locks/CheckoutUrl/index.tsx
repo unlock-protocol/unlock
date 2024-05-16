@@ -1,7 +1,7 @@
 import { Button, Modal, Tabs } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { PaywallConfigType } from '@unlock-protocol/core'
+import { CheckoutConfig, PaywallConfigType } from '@unlock-protocol/core'
 import {
   CheckoutPreview,
   CheckoutShareOrDownload,
@@ -17,9 +17,10 @@ import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { BasicConfigForm } from './elements/BasicConfigForm'
 import { LocksForm } from './elements/LocksForm'
-import { ChooseConfiguration, CheckoutConfig } from './ChooseConfiguration'
+import { ChooseConfiguration } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDebounce } from 'react-use'
+import { getCheckoutUrl } from '~/components/content/event/utils'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -83,6 +84,10 @@ export const CheckoutUrlPage = () => {
       setConfiguration('existing')
     }
   }, [checkoutConfigList?.length])
+
+  useEffect(() => {
+    setCheckoutUrl(getCheckoutUrl(checkoutConfig))
+  }, [checkoutConfig, setCheckoutUrl])
 
   const onConfigRemove = useCallback(async () => {
     if (!checkoutConfig.id) {
@@ -250,7 +255,6 @@ export const CheckoutUrlPage = () => {
           <CheckoutPreview
             id={checkoutConfig.id}
             paywallConfig={checkoutConfig.config}
-            setCheckoutUrl={setCheckoutUrl}
             checkoutUrl={checkoutUrl}
           />
         </div>
@@ -343,7 +347,6 @@ export const CheckoutUrlPage = () => {
                     <CheckoutShareOrDownload
                       paywallConfig={checkoutConfig.config}
                       checkoutUrl={checkoutUrl}
-                      setCheckoutUrl={setCheckoutUrl}
                       size="medium"
                       id={checkoutConfig.id}
                     />

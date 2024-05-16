@@ -6,7 +6,7 @@ import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
 import { MouseEventHandler, useState } from 'react'
-import { Input } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 
 interface ConnectWalletProps {
@@ -67,20 +67,9 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
             },
           })}
         />
-        <ConnectButton
-          type="submit"
-          primary
-          loading={isSubmitting}
-          icon={
-            <SvgComponents.Unlock
-              width={40}
-              height={40}
-              className="fill-inherit"
-            />
-          }
-        >
+        <Button type="submit" loading={isSubmitting} className="p-2.5">
           Continue with Email
-        </ConnectButton>
+        </Button>
       </form>
     </div>
   )
