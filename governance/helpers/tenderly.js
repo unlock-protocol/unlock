@@ -45,6 +45,7 @@ TENDERLY_ACCOUNT_SLUG, TENDERLY_PROJECT_SLUG, TENDERLY_ACCESS_KEY to your env`)
     console.log(`Fork for chain ${network_id} created: ${forkId}`)
     const rpcUrl = `https://rpc.tenderly.co/fork/${forkId}`
     return {
+      projectURL: `https://dashboard.tenderly.co/${TENDERLY_ACCOUNT_SLUG}/${TENDERLY_PROJECT_SLUG}/fork/${forkId}`,
       rpcUrl,
       data,
     }
