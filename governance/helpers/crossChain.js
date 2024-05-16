@@ -36,6 +36,14 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
     // set to new address
     ethers.zeroPadValue(signerAddress, 32),
   ])
+  // override ownable for more recent OZ Ownable using OwnableStorageLocation
+  await forkProvider.send('tenderly_setStorageAt', [
+    delayMod,
+    // storage location for owner
+    '0x9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c199300',
+    // set to new address
+    ethers.zeroPadValue(signerAddress, 32),
+  ])
 
   // 0bis. enable signer as module
   await signer.sendTransaction({
@@ -78,13 +86,14 @@ async function simulateDestCalls(xCalls) {
   const abiCoder = ethers.AbiCoder.defaultAbiCoder()
   const destChainCalls = xCalls.map(
     ({ transferId, params: { callData, destinationDomain } }) => {
-      console.log(`------- Connext transfer ${transferId}`)
-
       const network = Object.values(networks).find((network) =>
         network.governanceBridge
           ? network.governanceBridge.domainId.toString() ==
             destinationDomain.toString()
           : false
+      )
+      console.log(
+        `${network.name} [${network.id}] Connext transfer ${transferId}`
       )
       const moduleCall = abiCoder.decode(
         ['address', 'uint256', 'bytes', 'bool'],
@@ -97,7 +106,6 @@ async function simulateDestCalls(xCalls) {
       }
     }
   )
-  console.log(destChainCalls)
 
   // simulate
   await Promise.all(
