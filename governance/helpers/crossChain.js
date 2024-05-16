@@ -13,10 +13,9 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   } = network
 
   // package module args
-  const { to, value, data, operation } = moduleCall
+  const [to, value, data, operation] = moduleCall
   const moduleArgs = [to, value, data, operation ? 1n : 0n]
-
-  console.log(`Simulating results for chain ${name} (${id})`)
+  console.log(`${name} [${id}]: simulating execution on receving chain`)
 
   // ethers provider and signer
   const forkProvider = new ethers.JsonRpcProvider(rpcUrl)
@@ -105,7 +104,6 @@ async function simulateDestCalls(xCalls) {
     destChainCalls.map(async ({ network, moduleCall }) => {
       // create a fork
       const fork = await createFork(network.id)
-
       // simulate calls on Tenderly
       await simulateDelayCall({
         ...fork,
