@@ -3,6 +3,7 @@ import { config } from '~/config/app'
 import { MembershipVerificationData } from '~/utils/verification'
 
 interface Options {
+  locks?: any
   network: number
   owner: string
   manager: string
@@ -13,6 +14,7 @@ interface Options {
 }
 
 export function invalidMembership({
+  locks,
   network,
   owner,
   manager,
@@ -31,6 +33,18 @@ export function invalidMembership({
 
   if (tokenId && keyId !== tokenId.toString()) {
     return 'This key does not match the user'
+  }
+
+  if (locks) {
+    let isValid = false
+    Object.keys(locks).forEach((address) => {
+      if (
+        address.toLowerCase() === verificationData.lockAddress.toLowerCase()
+      ) {
+        isValid = true
+      }
+    })
+    if (!isValid) return 'This QR does not match the event'
   }
 
   // When the key manager is our key manager contract, the owner can be different as the key

@@ -29,6 +29,7 @@ router.get(
   (req, res) => ticketsController.sign(req, res)
 )
 
+// Deprecated
 router.put(
   '/:network/lock/:lockAddress/key/:keyId/check',
   authenticatedMiddleware,
@@ -38,7 +39,7 @@ router.put(
   }
 )
 
-router.get('/:eventSlug/:network/lock/:lockAddress/key/:keyId/check', getTicket)
+router.get('/:eventSlug/:network/lock/:lockAddress/key/:keyId', getTicket)
 
 router.put(
   '/:eventSlug/:network/lock/:lockAddress/key/:keyId/check',

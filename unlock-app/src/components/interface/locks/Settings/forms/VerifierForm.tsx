@@ -143,7 +143,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     refetch: refetchList,
     data: verifiers,
   } = useQuery(
-    ['getEventVerifiers', event.slug],
+    ['eventVerifiers', event.slug],
     async () => {
       const response = await storage.eventVerifiers(event.slug)
       return response.data.results || []
