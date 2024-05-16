@@ -1,6 +1,5 @@
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import Link from 'next/link'
-
 import { SettingCard } from '~/components/interface/locks/Settings/elements/SettingCard'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
 
