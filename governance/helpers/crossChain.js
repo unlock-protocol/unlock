@@ -8,31 +8,16 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
     name,
     id,
     governanceBridge: {
-      modules: { delayMod, connextMod },
+      modules: { delayMod },
     },
   } = network
 
-  const {
-    to, // to
-    value, // value
-    data, // data
-    operation,
-  } = moduleCall
+  // package module args
+  const { to, value, data, operation } = moduleCall
+  const moduleArgs = [to, value, data, operation ? 1n : 0n]
 
-  console.log({
-    to, // to
-    value, // value
-    data, // data
-    operation,
-  })
+  console.log(`Simulating results for chain ${name} (${id})`)
 
-  console.log(
-    `To simulate results on receiving end - chain ${name} (${id})
-  - call \`execTransactionFromModule\` on contract ${delayMod} with from set as ${connextMod}
-  - wait for cooldown period (default: +172800)
-  - call \`executeNexTx\` on contract ${delayMod} with from set as ${connextMod}
-  `
-  )
   // ethers provider and signer
   const forkProvider = new ethers.JsonRpcProvider(rpcUrl)
 
@@ -67,12 +52,10 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   await signer.sendTransaction({
     from: signerAddress,
     to: delayMod,
-    data: delayInterface.encodeFunctionData('execTransactionFromModule', [
-      to,
-      value,
-      data,
-      operation ? 1n : 0n,
-    ]),
+    data: delayInterface.encodeFunctionData(
+      'execTransactionFromModule',
+      moduleArgs
+    ),
     gasLimit: 800000,
   })
 
@@ -86,15 +69,9 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   await signer.sendTransaction({
     from: signerAddress,
     to: delayMod,
-    data: delayInterface.encodeFunctionData('executeNextTx', [
-      to,
-      value,
-      data,
-      operation ? 1n : 0n,
-    ]),
+    data: delayInterface.encodeFunctionData('executeNextTx', moduleArgs),
     gasLimit: 800000,
   })
-
   console.log(`Simulation successful: check last tx at ${projectURL}`)
 }
 
