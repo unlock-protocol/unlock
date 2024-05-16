@@ -16,10 +16,10 @@ import { Dialog, Transition } from '@headlessui/react'
 import { MAX_UINT } from '~/constants'
 import { config as AppConfig } from '~/config/app'
 import { useConnectModal } from '~/hooks/useConnectModal'
-import { Event } from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 interface Props {
-  eventAddresses?: string[]
+  checkoutConfig?: PaywallConfigType
   eventProp?: Event
   config: MembershipVerificationConfig
   onVerified: () => void
@@ -104,7 +104,7 @@ const WarningDialog = ({
  * and display the right status
  */
 export const VerificationStatus = ({
-  eventAddresses,
+  checkoutConfig,
   eventProp,
   config,
   onVerified,
@@ -119,6 +119,14 @@ export const VerificationStatus = ({
 
   const { isLoading: isKeyGranterLoading, data: keyGranter } =
     useLocksmithGranterAddress()
+
+  let eventAddresses
+  if (checkoutConfig) {
+    // @ts-expect-error Property 'locks' does not exist on type '{}'
+    eventAddresses = Object.keys(checkoutConfig?.config?.locks)
+  }
+
+  console.log(eventAddresses)
 
   const {
     isLoading: isTicketLoading,

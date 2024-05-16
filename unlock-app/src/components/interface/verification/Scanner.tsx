@@ -11,7 +11,7 @@ import { getURL } from '~/utils/url'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { config as AppConfig } from '~/config/app'
 import { Button } from '@unlock-protocol/ui'
-import { Event } from '@unlock-protocol/core'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 
 const getVerificationConfigFromURL = async (content?: string) => {
   try {
@@ -45,11 +45,11 @@ const getVerificationConfigFromURL = async (content?: string) => {
 }
 
 interface ScannerProps {
-  eventAddresses?: string[]
+  checkoutConfig?: PaywallConfigType
   eventProp?: Event
 }
 
-export function Scanner({ eventAddresses, eventProp }: ScannerProps) {
+export function Scanner({ checkoutConfig, eventProp }: ScannerProps) {
   const [membershipVerificationConfig, setMembershipVerificationConfig] =
     useState<MembershipVerificationConfig | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -175,7 +175,7 @@ export function Scanner({ eventAddresses, eventProp }: ScannerProps) {
                 <div className="flex items-center justify-center min-h-full">
                   <Dialog.Panel className="w-full max-w-sm">
                     <VerificationStatus
-                      eventAddresses={eventAddresses}
+                      checkoutConfig={checkoutConfig}
                       eventProp={eventProp}
                       onClose={() => setMembershipVerificationConfig(null)}
                       onVerified={() => setMembershipVerificationConfig(null)}
