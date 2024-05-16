@@ -44,7 +44,11 @@ describe('Lock / owners', () => {
       numberOfOwners = await lock.numberOfOwners()
       await lock
         .connect(keyOwners[0])
-        .transferFrom(keyOwners[0].address, random.address, tokenIds[0])
+        .transferFrom(
+          await keyOwners[0].getAddress(),
+          await random.getAddress(),
+          tokenIds[0]
+        )
     })
 
     it('should have the right number of keys', async () => {
@@ -52,8 +56,11 @@ describe('Lock / owners', () => {
     })
 
     it('should have the right number of owners', async () => {
-      compareBigNumbers(await lock.balanceOf(random.address), 1)
-      compareBigNumbers(await lock.balanceOf(keyOwners[0].address), 0)
+      compareBigNumbers(await lock.balanceOf(await random.getAddress()), 1)
+      compareBigNumbers(
+        await lock.balanceOf(await keyOwners[0].getAddress()),
+        0
+      )
       compareBigNumbers(await lock.numberOfOwners(), numberOfOwners)
     })
   })
@@ -65,11 +72,21 @@ describe('Lock / owners', () => {
       numberOfOwners = await lock.numberOfOwners()
 
       // both have tokens
-      compareBigNumbers(await lock.balanceOf(keyOwners[1].address), 1)
-      compareBigNumbers(await lock.balanceOf(keyOwners[2].address), 1)
+      compareBigNumbers(
+        await lock.balanceOf(await keyOwners[1].getAddress()),
+        1
+      )
+      compareBigNumbers(
+        await lock.balanceOf(await keyOwners[2].getAddress()),
+        1
+      )
       await lock
         .connect(keyOwners[1])
-        .transferFrom(keyOwners[1].address, keyOwners[2].address, tokenIds[1])
+        .transferFrom(
+          await keyOwners[1].getAddress(),
+          await keyOwners[2].getAddress(),
+          tokenIds[1]
+        )
     })
 
     it('should have the right number of keys', async () => {
@@ -77,7 +94,7 @@ describe('Lock / owners', () => {
     })
 
     it('should have the right number of owners', async () => {
-      compareBigNumbers(await lock.numberOfOwners(), numberOfOwners.sub(1))
+      compareBigNumbers(await lock.numberOfOwners(), numberOfOwners - 1n)
     })
   })
 
@@ -89,27 +106,40 @@ describe('Lock / owners', () => {
       const totalSupplyBefore = await lock.totalSupply()
 
       // transfer the key to an existing owner
-      assert.equal(await lock.balanceOf(keyOwners[4].address), 1)
+      assert.equal(await lock.balanceOf(await keyOwners[4].getAddress()), 1)
       await lock
         .connect(keyOwners[3])
-        .transferFrom(keyOwners[3].address, keyOwners[4].address, tokenIds[3])
-      compareBigNumbers(await lock.ownerOf(tokenIds[3]), keyOwners[4].address)
-      compareBigNumbers(await lock.balanceOf(keyOwners[4].address), 2)
-      compareBigNumbers(await lock.balanceOf(keyOwners[3].address), 0)
+        .transferFrom(
+          await keyOwners[3].getAddress(),
+          await keyOwners[4].getAddress(),
+          tokenIds[3]
+        )
+      compareBigNumbers(
+        await lock.ownerOf(tokenIds[3]),
+        await keyOwners[4].getAddress()
+      )
+      compareBigNumbers(
+        await lock.balanceOf(await keyOwners[4].getAddress()),
+        2
+      )
+      compareBigNumbers(
+        await lock.balanceOf(await keyOwners[3].getAddress()),
+        0
+      )
 
       // supply unchanged
       compareBigNumbers(totalSupplyBefore, await lock.totalSupply())
 
       // number of owners changed
-      compareBigNumbers(numberOfOwners.sub(1), await lock.numberOfOwners())
+      compareBigNumbers(numberOfOwners - 1n, await lock.numberOfOwners())
 
       // someone buys a key again for the previous owner
       await lock.purchase(
         [],
-        [keyOwners[3].address],
+        [await keyOwners[3].getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
           value: await lock.keyPrice(),
         }

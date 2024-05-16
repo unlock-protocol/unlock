@@ -4,10 +4,9 @@ import {
   WalletlessRegistrationClaim,
 } from '../WalletlessRegistration'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { LockPriceInternals } from '../LockPriceDetails'
 import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
-import { UNLIMITED_KEYS_COUNT } from '~/constants'
+import { ADDRESS_ZERO, UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useLockData } from '~/hooks/useLockData'
 import { EmbeddedCheckout } from '../EmbeddedCheckout'
 import { PaywallConfigType } from '@unlock-protocol/core'
@@ -41,7 +40,7 @@ export const RegistrationCardSingleLock = ({
 
   const { isInitialLoading: isClaimableLoading, data: canClaim } = useCanClaim(
     {
-      recipients: [account || ZERO],
+      recipients: [account || ADDRESS_ZERO],
       lockAddress,
       network,
       data: [],

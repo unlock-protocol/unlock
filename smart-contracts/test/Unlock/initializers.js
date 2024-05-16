@@ -14,6 +14,9 @@ describe('Unlock / initializers', () => {
   it('initialize may not be called again', async () => {
     const { unlock } = await deployContracts()
     const [, someAccount] = await ethers.getSigners()
-    await reverts(unlock.initialize(someAccount.address), 'ALREADY_INITIALIZED')
+    await reverts(
+      unlock.initialize(await someAccount.getAddress()),
+      'ALREADY_INITIALIZED'
+    )
   })
 })

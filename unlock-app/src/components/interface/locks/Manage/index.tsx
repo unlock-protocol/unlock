@@ -1,3 +1,5 @@
+import { MdOutlineTipsAndUpdates } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import React, { Fragment, useEffect, useState } from 'react'
@@ -390,6 +392,17 @@ export const ManageLockPage = () => {
   })
   const [page, setPage] = useState(1)
 
+  const { data: eventData } = useQuery(
+    ['getEventForLock', lockAddress, network],
+    async () => {
+      const { data: eventDetails } = await storage.getEventDetails(
+        Number(network),
+        lockAddress
+      )
+      return eventDetails
+    }
+  )
+
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
@@ -467,6 +480,20 @@ export const ManageLockPage = () => {
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
                 <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                {eventData?.eventUrl && (
+                  <div className="p-2 text-base text-center flex gap-2 items-center border rounded-xl">
+                    <MdOutlineTipsAndUpdates size="24" />
+                    <p>
+                      This lock is used to sell {eventData.eventName}. You can
+                      update this event&apos;s{' '}
+                      <Link href={eventData.eventUrl} className="underline">
+                        settings directly
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                )}
+
                 <ActionBar
                   page={page}
                   lockAddress={lockAddress}

@@ -7,7 +7,7 @@ export default defineConfig({
     },
     globals: true,
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
     },
     dir: '__tests__',
     include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

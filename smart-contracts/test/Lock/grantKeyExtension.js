@@ -6,11 +6,12 @@ const {
   ADDRESS_ZERO,
   compareBigNumbers,
 } = require('../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 
 // 10 minutes
-const duration = 60 * 60 * 10
+const duration = BigInt(60 * 60 * 10)
 
 describe('Lock / grantKeyExtension', () => {
   let keyOwner, attacker
@@ -30,12 +31,12 @@ describe('Lock / grantKeyExtension', () => {
 
     // the lock creator is assigned the KeyGranter role by default
     const tx = await lock.grantKeys(
-      [keyOwner.address],
+      [await keyOwner.getAddress()],
       [validExpirationTimestamp],
       [ADDRESS_ZERO]
     )
-    const { events } = await tx.wait()
-    ;({ args } = events.find(({ event }) => event === 'Transfer'))
+    const receipt = await tx.wait()
+    ;({ args } = await getEvent(receipt, 'Transfer'))
     ;({ tokenId } = args)
   })
 
@@ -46,8 +47,8 @@ describe('Lock / grantKeyExtension', () => {
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
       const tx = await lock.grantKeyExtension(tokenId, 0)
-      const { events } = await tx.wait()
-      ;({ args } = events.find(({ event }) => event === 'KeyExtended'))
+      const receipt = await tx.wait()
+      ;({ args } = await getEvent(receipt, 'KeyExtended'))
     })
 
     it('key should stay valid', async () => {
@@ -57,7 +58,7 @@ describe('Lock / grantKeyExtension', () => {
     it('duration has been extended accordingly', async () => {
       const expirationDuration = await lock.expirationDuration()
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      compareBigNumbers(tsBefore.add(expirationDuration), tsAfter)
+      compareBigNumbers(tsBefore + expirationDuration, tsAfter)
     })
 
     it('should emit a KeyExtended event', async () => {
@@ -74,8 +75,8 @@ describe('Lock / grantKeyExtension', () => {
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
       const tx = await lock.grantKeyExtension(tokenId, duration)
-      const { events } = await tx.wait()
-      ;({ args } = events.find(({ event }) => event === 'KeyExtended'))
+      const receipt = await tx.wait()
+      ;({ args } = await getEvent(receipt, 'KeyExtended'))
     })
 
     it('key should stay valid', async () => {
@@ -84,7 +85,7 @@ describe('Lock / grantKeyExtension', () => {
 
     it('duration has been extended accordingly', async () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-      compareBigNumbers(tsBefore.add(duration), tsAfter)
+      compareBigNumbers(tsBefore + duration, tsAfter)
     })
 
     it('should emit a KeyExtended event', async () => {
@@ -113,7 +114,7 @@ describe('Lock / grantKeyExtension', () => {
       const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
       const blockNumber = await ethers.provider.getBlockNumber()
       const { timestamp } = await ethers.provider.getBlock(blockNumber)
-      compareBigNumbers(expirationDuration.add(timestamp), tsAfter)
+      compareBigNumbers(expirationDuration + BigInt(timestamp), tsAfter)
     })
   })
 

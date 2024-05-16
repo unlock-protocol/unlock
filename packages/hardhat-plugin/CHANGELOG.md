@@ -1,6 +1,6 @@
 # CHANGELOG
 
-### 0.2.0
+### 0.2.1
 
 - Upgrade to support ethers v6
 

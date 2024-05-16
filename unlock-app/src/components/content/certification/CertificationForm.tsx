@@ -46,7 +46,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const networkOptions = useAvailableNetworks()
   const network = networkOptions[0]?.value
 
-  const [isFree, setIsFree] = useState(true)
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
   const [allowPurchase, setAllowPurchase] = useState(false)
   const [forever, setForever] = useState(true)
@@ -119,18 +118,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     return (
       <div className="flex flex-col gap-2">
         <p>{details.network && <>{networkDescription(details.network)}</>}</p>
-        <p>
-          This is the network on which your certification contract will be
-          deployed.{' '}
-          <Link
-            className="underline text-brand-ui-primary "
-            target="_blank"
-            href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
-          >
-            Read our guide
-          </Link>{' '}
-          on how to chose the right network.
-        </p>
       </div>
     )
   }
@@ -267,6 +254,18 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
           <Disclosure label="Network" defaultOpen>
             <div className="grid gap-6">
+              <p>
+                This is the network on which your certification contract will be
+                deployed.{' '}
+                <Link
+                  className="underline text-brand-ui-primary "
+                  target="_blank"
+                  href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
+                >
+                  Read our guide
+                </Link>{' '}
+                on how to chose the right network.
+              </p>
               <Select
                 onChange={(newValue) => {
                   setValue('network', Number(newValue))
@@ -327,21 +326,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 <>
                   <div className="relative flex flex-col gap-4">
                     <div className="flex items-center justify-between">
-                      <label className="px-1 mb-2 text-base" htmlFor="">
+                      <label className="px-1 -mb-2 text-base" htmlFor="">
                         Currency & Price:
                       </label>
-                      <ToggleSwitch
-                        title="Free"
-                        enabled={isFree}
-                        setEnabled={setIsFree}
-                        onChange={(enable: boolean) => {
-                          if (enable) {
-                            setValue('lock.keyPrice', '0', {
-                              shouldValidate: true,
-                            })
-                          }
-                        }}
-                      />
                     </div>
                     <div className="relative">
                       <SelectCurrencyModal
@@ -375,11 +362,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                             placeholder="0.00"
                             min="0"
                             step="any"
-                            disabled={isFree}
                             {...register('lock.keyPrice', {
                               valueAsNumber: true,
                               required: {
-                                value: !isFree,
+                                value: true,
                                 message: 'This value is required',
                               },
                             })}

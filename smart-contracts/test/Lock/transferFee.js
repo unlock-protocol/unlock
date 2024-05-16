@@ -1,5 +1,6 @@
 const { assert } = require('chai')
-const { ethers } = require('hardhat')
+const { ethers, network } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   deployLock,
   reverts,
@@ -11,7 +12,7 @@ const {
 describe('Lock / transferFee', () => {
   let lock
   let keyOwner, newOwner, randomSigner, lockManager
-  const denominator = 10000
+  const denominator = 10000n
   let tokenId
 
   // TODO test using an ERC20 priced lock as well
@@ -19,12 +20,12 @@ describe('Lock / transferFee', () => {
     lock = await deployLock({ isEthers: true })
     ;[, keyOwner, newOwner, randomSigner, lockManager] =
       await ethers.getSigners()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('has a default fee of 0%', async () => {
     const feeNumerator = await lock.transferFeeBasisPoints()
-    compareBigNumbers(feeNumerator.div(denominator), '0')
+    compareBigNumbers(feeNumerator / denominator, '0')
   })
 
   it('reverts if a non-manager attempts to change the fee', async () => {
@@ -49,16 +50,20 @@ describe('Lock / transferFee', () => {
       const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = await lock.getTransferFee(tokenId, 0)
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await purchaseKey(lock, randomSigner.address)
+      await purchaseKey(lock, await randomSigner.getAddress())
+      await network.provider.send('hardhat_mine', ['0x10', '0x3c'])
 
       const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
       let expiration = await lock.keyExpirationTimestampFor(tokenId)
 
       // Fee is <= the expected fee before the call
-      assert(fee.lte(expiration.sub(nowBefore).mul(5).div(100)))
-
       // and >= the expected fee after the call
-      assert(fee.gte(expiration.sub(nowAfter).mul(5).div(100)))
+      const expected = [
+        ((expiration - BigInt(nowBefore)) * 5n) / 100n,
+        ((expiration - BigInt(nowAfter)) * 5n) / 100n,
+      ]
+      assert(fee <= BigInt(parseInt(expected[0])))
+      assert(fee >= BigInt(parseInt(expected[1])))
     })
 
     it('calculates the fee based on the time value passed in', async () => {
@@ -85,23 +90,31 @@ describe('Lock / transferFee', () => {
         fee = await lock.getTransferFee(tokenId, 0)
         await lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, newOwner.address, tokenId)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await newOwner.getAddress(),
+            tokenId
+          )
         expirationAfter = await lock.keyExpirationTimestampFor(tokenId)
       })
 
       it('the fee is deducted from the time transferred', async () => {
         // make sure that a fee was taken
         // fee may be over-estimated (but not under-estimated)
-        assert(expirationAfter.gte(expirationBefore.sub(fee)))
+        assert(expirationAfter >= expirationBefore - fee)
         // if less than 5 seconds have passed than the delta should be <= 1
-        assert(expirationAfter.lte(expirationBefore.sub(fee).add(1)))
+        assert(expirationAfter <= expirationBefore - fee + 1n)
       })
 
       after(async () => {
         // Reset owners
         await lock
           .connect(newOwner)
-          .transferFrom(newOwner.address, keyOwner.address, tokenId)
+          .transferFrom(
+            await newOwner.getAddress(),
+            await keyOwner.getAddress(),
+            tokenId
+          )
       })
     })
 
@@ -119,12 +132,12 @@ describe('Lock / transferFee', () => {
     })
 
     describe('the lock owner can change the fee', () => {
-      let events
+      let receipt
 
       before(async () => {
         // Change the fee to 0.25%
         const tx = await lock.updateTransferFee(25)
-        ;({ events } = await tx.wait())
+        receipt = await tx.wait()
       })
 
       it('has an updated fee', async () => {
@@ -133,10 +146,8 @@ describe('Lock / transferFee', () => {
       })
 
       it('emits TransferFeeChanged event', async () => {
-        const { args } = events.find(
-          ({ event }) => event === 'TransferFeeChanged'
-        )
-        assert.equal(args.transferFeeBasisPoints.toString(), '25')
+        const { args } = await getEvent(receipt, 'TransferFeeChanged')
+        assert.equal(args.transferFeeBasisPoints, '25')
       })
     })
 
@@ -151,25 +162,32 @@ describe('Lock / transferFee', () => {
     before(async () => {
       // Change the fee to 0.25%
       await lock.updateTransferFee(25)
-      await lock.addLockManager(lockManager.address)
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      await lock.addLockManager(await lockManager.getAddress())
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('is correctly set', async () => {
-      assert.equal(await lock.isLockManager(lockManager.address), true)
+      assert.equal(
+        await lock.isLockManager(await lockManager.getAddress()),
+        true
+      )
       assert.equal(await lock.transferFeeBasisPoints(), 25)
     })
 
     it('does not pay the fee when transferring', async () => {
-      assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+      assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
       const expirationBefore = await lock.keyExpirationTimestampFor(tokenId)
 
       await lock
         .connect(lockManager)
-        .transferFrom(keyOwner.address, newOwner.address, tokenId)
+        .transferFrom(
+          await keyOwner.getAddress(),
+          await newOwner.getAddress(),
+          tokenId
+        )
 
       // make sure the transfer happened correctly
-      assert.equal(await lock.ownerOf(tokenId), newOwner.address)
+      assert.equal(await lock.ownerOf(tokenId), await newOwner.getAddress())
 
       // balance stay unchanged
       compareBigNumbers(

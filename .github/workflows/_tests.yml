@@ -54,6 +54,11 @@ jobs:
       BUILDKIT_PROGRESS: plain
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Prepare repo
+        run: yarn && yarn build
       - name: Run Integration Tests
         run: scripts/integration-tests.sh
       - name: Archive production artifacts

@@ -21,7 +21,7 @@ describe('Lock / maxKeysPerAddress', () => {
   describe('enforcing the number of keys per address', () => {
     let tokenId
     before(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('default to 1', async () => {
@@ -32,12 +32,12 @@ describe('Lock / maxKeysPerAddress', () => {
       await reverts(
         lock.purchase(
           [],
-          [keyOwner.address],
+          [await keyOwner.getAddress()],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
-          [[]],
+          ['0x'],
           {
-            value: ethers.utils.parseUnits('0.01', 'ether'),
+            value: ethers.parseUnits('0.01', 'ether'),
           }
         ),
         'MAX_KEYS'
@@ -51,9 +51,9 @@ describe('Lock / maxKeysPerAddress', () => {
           [someAccount, someAccount],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
-          [[], []],
+          ['0x', '0x'],
           {
-            value: ethers.utils.parseUnits('0.02', 'ether'),
+            value: ethers.parseUnits('0.02', 'ether'),
           }
         ),
         'MAX_KEYS'
@@ -66,9 +66,9 @@ describe('Lock / maxKeysPerAddress', () => {
         [someAccount],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(
@@ -83,15 +83,15 @@ describe('Lock / maxKeysPerAddress', () => {
         [anotherAccount],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(
         lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, anotherAccount, tokenId),
+          .transferFrom(await keyOwner.getAddress(), anotherAccount, tokenId),
         'MAX_KEYS'
       )
     })
