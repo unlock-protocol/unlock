@@ -38,13 +38,12 @@ const parseCalls = async (destChainId) => {
     )
   }
 
-  // TODO: double check this number
+  // parse config args
   const estimatedGasForPurchase = 200000n
-
   const configUnlockArgs = [
     unlockDaoToken.address,
     nativeCurrency.wrapped,
-    await unlock.estimatedGasForPurchase(), // estimatedGasForPurchase
+    estimatedGasForPurchase,
     await unlock.globalTokenSymbol(),
     await unlock.globalBaseTokenURI(),
     await unlock.chainId(),
