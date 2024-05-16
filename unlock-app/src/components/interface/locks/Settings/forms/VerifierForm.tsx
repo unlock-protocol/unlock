@@ -146,7 +146,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
     ['eventVerifiers', event.slug],
     async () => {
       const response = await storage.eventVerifiers(event.slug)
-      return (response.data.results as []) || []
+      return response.data.results || []
     },
     {
       onError: (err: any) => {

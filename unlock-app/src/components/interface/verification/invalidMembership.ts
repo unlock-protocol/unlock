@@ -3,7 +3,7 @@ import { config } from '~/config/app'
 import { MembershipVerificationData } from '~/utils/verification'
 
 interface Options {
-  eventAddresses?: string[]
+  locks?: any
   network: number
   owner: string
   manager: string
@@ -14,7 +14,7 @@ interface Options {
 }
 
 export function invalidMembership({
-  eventAddresses,
+  locks,
   network,
   owner,
   manager,
@@ -35,9 +35,9 @@ export function invalidMembership({
     return 'This key does not match the user'
   }
 
-  if (eventAddresses) {
+  if (locks) {
     let isValid = false
-    eventAddresses.forEach((address) => {
+    Object.keys(locks).forEach((address) => {
       if (
         address.toLowerCase() === verificationData.lockAddress.toLowerCase()
       ) {

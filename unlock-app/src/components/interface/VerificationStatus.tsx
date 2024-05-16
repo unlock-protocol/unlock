@@ -120,11 +120,6 @@ export const VerificationStatus = ({
   const { isLoading: isKeyGranterLoading, data: keyGranter } =
     useLocksmithGranterAddress()
 
-  let eventAddresses
-  if (checkoutConfig) {
-    eventAddresses = Object.keys(checkoutConfig?.locks)
-  }
-
   const {
     isLoading: isTicketLoading,
     data: ticket,
@@ -186,7 +181,7 @@ export const VerificationStatus = ({
 
   const invalid = ticket
     ? invalidMembership({
-        eventAddresses,
+        locks: checkoutConfig?.locks ?? {},
         network,
         manager: ticket!.manager,
         keyId: ticket!.keyId,
@@ -198,8 +193,8 @@ export const VerificationStatus = ({
       })
     : 'Invalid QR code'
 
-  const isVerifier =
-    eventAddresses?.some(
+  const isTicketVerifiable =
+    Object.keys(checkoutConfig?.locks ?? {}).some(
       (address) => address.toLowerCase() === ticket!.lockAddress.toLowerCase()
     ) || false
 
@@ -208,7 +203,12 @@ export const VerificationStatus = ({
   const disableActions = !ticket?.isVerifier || isCheckingIn || !!invalid
 
   const onClickVerified = () => {
-    if (!checkedInAt && ticket!.isVerifier && !showWarning && isVerifier) {
+    if (
+      !checkedInAt &&
+      ticket!.isVerifier &&
+      !showWarning &&
+      isTicketVerifiable
+    ) {
       setShowWarning(true)
     } else if (typeof onVerified === 'function') {
       onVerified()
@@ -218,7 +218,7 @@ export const VerificationStatus = ({
   const CardActions = () => (
     <div className="grid w-full gap-2">
       {viewer ? (
-        isVerifier && ticket!.isVerifier ? (
+        isTicketVerifiable && ticket!.isVerifier ? (
           <Button
             loading={isCheckingIn}
             disabled={disableActions}
