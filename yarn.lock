@@ -18326,10 +18326,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:1.54.2":
-  version: 1.54.2
-  resolution: "@stripe/stripe-js@npm:1.54.2"
-  checksum: 10/52d6e814dd6e4979a050d9c06d8aa463f583138bb6b1aaf6e8856e92dcfa3ce7fd2231ce86882b44ffd0299b8e1d93f6c6dd9d1461b957ef2a6d548a801e506f
+"@stripe/stripe-js@npm:3.4.0":
+  version: 3.4.0
+  resolution: "@stripe/stripe-js@npm:3.4.0"
+  checksum: 10/6dc71c24882ad6b138619a143f17127f52655537cd79be4332fec1214eb40e33ebda103a2fc60a34cbd6dc1d330dda8084c5b94727a319339489c0d0669b5b16
   languageName: node
   linkType: hard
 
@@ -21386,7 +21386,7 @@ __metadata:
     "@rehooks/local-storage": "npm:2.4.5"
     "@sentry/nextjs": "npm:7.113.0"
     "@stripe/react-stripe-js": "npm:2.7.0"
-    "@stripe/stripe-js": "npm:1.54.2"
+    "@stripe/stripe-js": "npm:3.4.0"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:15.0.7"
     "@testing-library/react-hooks": "npm:8.0.1"
@@ -21436,7 +21436,6 @@ __metadata:
     postcss: "npm:8.4.38"
     postmate: "npm:1.5.2"
     prettier: "npm:3.2.5"
-    prop-types: "npm:15.8.1"
     qr-scanner: "npm:1.4.2"
     qrcode.react: "npm:3.1.0"
     react-device-detect: "npm:2.2.3"
@@ -46639,7 +46638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.8.1, prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.0.0, prop-types@npm:^15.5.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
