@@ -10,9 +10,8 @@ export const getLockTypeByMetadata = (metadata?: any): LockType => {
   const attributes: Record<string, string>[] = metadata?.attributes || []
 
   const hasAttribute = (name: 'event' | 'certification' | 'stamp') => {
-    return attributes.some(
-      (attribute: { trait_type?: string }) =>
-        attribute?.trait_type?.startsWith(name)
+    return attributes.some((attribute: { trait_type?: string }) =>
+      attribute?.trait_type?.startsWith(name)
     )
   }
 
