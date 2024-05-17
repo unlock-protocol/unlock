@@ -17,8 +17,6 @@ export default {
   eventUrl
 }}
 
-<p>If you do not want to receive emails for this person, you can <a href="{{unsubscribeLink}}">unsubscribe</a>.</p>
-
 
 `,
 }
