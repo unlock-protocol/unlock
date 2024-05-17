@@ -10,6 +10,10 @@ export const isStaging = ['staging'].includes(
   process.env.UNLOCK_ENV?.toLowerCase().trim() ?? ''
 )
 
+export const isDevelopment = ['development'].includes(
+  process.env.NODE_ENV?.toLowerCase().trim() ?? ''
+)
+
 const stagingConfig = {
   storage: {
     publicHost: 'https://staging-storage.unlock-protocol.com',
