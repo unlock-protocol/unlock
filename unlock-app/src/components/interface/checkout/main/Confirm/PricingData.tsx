@@ -63,12 +63,12 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                   {item.amount <= 0
                     ? 'FREE'
                     : payment?.route
-                    ? `${formatNumber(
-                        payment.route
-                          .convertToQuoteToken(item.amount.toString())
-                          .toFixed()
-                      ).toLocaleString()} ${symbol}`
-                    : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+                      ? `${formatNumber(
+                          payment.route
+                            .convertToQuoteToken(item.amount.toString())
+                            .toFixed()
+                        ).toLocaleString()} ${symbol}`
+                      : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
                 </span>
               )}
             </div>

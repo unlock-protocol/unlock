@@ -45,8 +45,8 @@ export const PasswordCappedContractHook = ({
       if (settings?.passwords) {
         const passwordDetails = await Promise.all(
           settings.passwords.map(async (password) => {
-            const signerAddress = await getEthersWalletFromPassword(password)
-              .address
+            const signerAddress =
+              await getEthersWalletFromPassword(password).address
             const details = await web3Service.getPasswordHookWithCapValues({
               lockAddress,
               signerAddress,
