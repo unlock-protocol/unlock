@@ -21311,7 +21311,6 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    ethers: "npm:5.7.2"
     typescript: "npm:5.3.3"
   languageName: unknown
   linkType: soft
@@ -21342,7 +21341,6 @@ __metadata:
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vitejs/plugin-react": "npm:4.2.1"
     autoprefixer: "npm:10.4.19"
-    ethers: "npm:5.7.2"
     postcss: "npm:8.4.38"
     prism-react-renderer: "npm:2.3.0"
     react: "npm:18.3.1"
@@ -46805,7 +46803,7 @@ __metadata:
     "@cloudflare/workers-types": "npm:4.20240423.0"
     "@types/node": "npm:20.12.8"
     "@unlock-protocol/networks": "workspace:^"
-    ethers: "npm:5.7.2"
+    ethers: "npm:6.12.1"
     toucan-js: "npm:3.4.0"
     typescript: "npm:5.4.5"
     vitest: "npm:0.34.6"
