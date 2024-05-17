@@ -95,25 +95,25 @@ export function useStepperItems(
             to: 'PASSWORD',
           }
         : isPromo
-        ? {
-            name: 'Enter promo code',
-            to: 'PROMO',
-          }
-        : isGuild
-        ? {
-            name: 'Guild',
-            to: 'GUILD',
-          }
-        : isGitcoin
-        ? {
-            name: 'Gitcoin Passport Verification',
-            to: 'GITCOIN',
-          }
-        : {
-            name: 'Solve captcha',
-            to: 'CAPTCHA',
-            skip: !isCaptcha,
-          },
+          ? {
+              name: 'Enter promo code',
+              to: 'PROMO',
+            }
+          : isGuild
+            ? {
+                name: 'Guild',
+                to: 'GUILD',
+              }
+            : isGitcoin
+              ? {
+                  name: 'Gitcoin Passport Verification',
+                  to: 'GITCOIN',
+                }
+              : {
+                  name: 'Solve captcha',
+                  to: 'CAPTCHA',
+                  skip: !isCaptcha,
+                },
       {
         name: 'Payment method',
         to: 'PAYMENT',
