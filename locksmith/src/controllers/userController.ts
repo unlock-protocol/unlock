@@ -59,9 +59,8 @@ export const retrieveEncryptedPrivatekey = async (
     return res.sendStatus(404)
   }
 
-  const result = await UserOperations.getUserPrivateKeyByEmailAddress(
-    emailAddress
-  )
+  const result =
+    await UserOperations.getUserPrivateKeyByEmailAddress(emailAddress)
 
   if (result) {
     return res.json({ passwordEncryptedPrivateKey: result })
@@ -102,9 +101,8 @@ export const retrieveRecoveryPhrase = async (
   if (ejected) {
     return res.sendStatus(404)
   }
-  const result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
-    emailAddress
-  )
+  const result =
+    await UserOperations.getUserRecoveryPhraseByEmailAddress(emailAddress)
 
   if (result) {
     return res.json({ recoveryPhrase: result })
@@ -195,9 +193,8 @@ export const getAddressPaymentDetails = async (
     return res.sendStatus(401)
   }
 
-  const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
-    ethereumAddress
-  )
+  const stripeCustomerId =
+    await StripeOperations.getStripeCustomerIdForAddress(ethereumAddress)
   if (!stripeCustomerId) {
     return res.json([])
   }
@@ -221,9 +218,8 @@ export const deleteAddressPaymentDetails = async (
     return res.sendStatus(401)
   }
 
-  const result = await StripeOperations.deletePaymentDetailsForAddress(
-    ethereumAddress
-  )
+  const result =
+    await StripeOperations.deletePaymentDetailsForAddress(ethereumAddress)
 
   if (result) {
     return res.sendStatus(202)

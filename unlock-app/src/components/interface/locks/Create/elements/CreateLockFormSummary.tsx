@@ -130,8 +130,8 @@ export const CreateLockFormSummary = ({
   const currentStatus: DeployStatus = hasError
     ? 'txError'
     : isDeployed
-    ? 'deployed'
-    : 'progress'
+      ? 'deployed'
+      : 'progress'
 
   const { title, description, status, nextNext, nextUrl } =
     DEPLOY_STATUS_MAPPING[currentStatus]

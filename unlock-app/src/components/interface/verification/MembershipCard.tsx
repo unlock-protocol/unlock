@@ -64,8 +64,8 @@ export function MembershipCard({
           invalid
             ? 'bg-red-500'
             : lastCheckedInAt
-            ? 'bg-amber-300'
-            : 'bg-green-500'
+              ? 'bg-amber-300'
+              : 'bg-green-500'
         }   rounded-t-xl`}
       >
         <div className="flex items-center justify-end">
@@ -99,8 +99,8 @@ export function MembershipCard({
             {invalid
               ? invalid
               : lastCheckedInAt
-              ? `Checked-in ${timeSinceCheckedIn} ago`
-              : `${name}`}
+                ? `Checked-in ${timeSinceCheckedIn} ago`
+                : `${name}`}
           </p>
         </div>
       </div>

@@ -385,9 +385,8 @@ describe('Unlock / upgrades', () => {
                   'After-Upgrade Lock',
                 ]
                 const calldata = await createLockCalldata({ args })
-                const lockLatestTx = await unlock.createUpgradeableLock(
-                  calldata
-                )
+                const lockLatestTx =
+                  await unlock.createUpgradeableLock(calldata)
 
                 const receipt = await lockLatestTx.wait()
                 const evt = await getEvent(receipt, 'NewLock')

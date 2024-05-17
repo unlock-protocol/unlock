@@ -39,9 +39,8 @@ describe('Unlock GNP conversion', () => {
     const [deployer] = await ethers.getSigners()
     await addSomeETH(await deployer.getAddress())
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    const UnlockUniswapOracle = await ethers.getContractFactory(
-      'UniswapOracleV3'
-    )
+    const UnlockUniswapOracle =
+      await ethers.getContractFactory('UniswapOracleV3')
     oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
 
     //impersonate unlock multisig

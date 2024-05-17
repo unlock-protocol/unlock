@@ -1,9 +1,8 @@
 const { ethers, run } = require('hardhat')
 
 async function main() {
-  const ERC20BalanceOfHook = await ethers.getContractFactory(
-    'ERC20BalanceOfHook'
-  )
+  const ERC20BalanceOfHook =
+    await ethers.getContractFactory('ERC20BalanceOfHook')
   const hook = await ERC20BalanceOfHook.deploy()
   await hook.deployed()
 

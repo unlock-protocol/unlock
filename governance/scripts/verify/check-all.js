@@ -93,9 +93,8 @@ async function main() {
         const lockVersion = await unlock.publicLockLatestVersion()
         const previousLockVersion = lockVersion - 1n
         const PublicLockLatest = await unlock.publicLockImpls(lockVersion)
-        const PublicLockPrevious = await unlock.publicLockImpls(
-          previousLockVersion
-        )
+        const PublicLockPrevious =
+          await unlock.publicLockImpls(previousLockVersion)
         toVerify.PublicLockLatest = PublicLockLatest
         // get latest lock proxy
         const lockAddress = await queryLockAddress(subgraph, lockVersion)

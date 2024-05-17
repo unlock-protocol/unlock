@@ -84,9 +84,8 @@ export function Password({ checkoutService }: Props) {
       if (hookAddress && password) {
         setPasswordLoading(true)
         setIsPasswordCorrect(false)
-        const privateKeyFromAccount = await getEthersWalletFromPassword(
-          password
-        )
+        const privateKeyFromAccount =
+          await getEthersWalletFromPassword(password)
         // Now check if this is a valid signer!
         const passwordDetails = await web3Service.getPasswordHookWithCapValues({
           lockAddress: lock!.address,
@@ -107,18 +106,18 @@ export function Password({ checkoutService }: Props) {
   const iconRight = isPasswordLoading
     ? LoadingIcon
     : isPasswordCorrect
-    ? () => (
-        <Badge variant="green" size="tiny">
-          <FaCheck />
-        </Badge>
-      )
-    : password
-    ? () => (
-        <Badge variant="red" size="tiny">
-          <FaXmark />
-        </Badge>
-      )
-    : undefined
+      ? () => (
+          <Badge variant="green" size="tiny">
+            <FaCheck />
+          </Badge>
+        )
+      : password
+        ? () => (
+            <Badge variant="red" size="tiny">
+              <FaXmark />
+            </Badge>
+          )
+        : undefined
 
   let error = errors.password?.message
   if (!error && password && !isPasswordCorrect) {

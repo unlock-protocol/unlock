@@ -71,9 +71,8 @@ async function main({
 
     // get original proposal to organize calls in correct order
     const proposalPath = resolve('./proposals/009-protocol-upgrade')
-    const { calls, explainers: allExplainers } = await loadProposal(
-      proposalPath
-    )
+    const { calls, explainers: allExplainers } =
+      await loadProposal(proposalPath)
     const explainers = allExplainers[id]
 
     // unpack calls from proposal

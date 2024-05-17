@@ -229,8 +229,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 ? addressMinify(receiptDetails?.recipient)
                 : ''
               : receiptDetails?.payer?.length > 0
-              ? addressMinify(receiptDetails?.payer)
-              : ''}
+                ? addressMinify(receiptDetails?.payer)
+                : ''}
           </span>
           <span className="text-base">{purchaser?.fullname}</span>
           <Address {...purchaser} />

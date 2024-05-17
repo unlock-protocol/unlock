@@ -41,9 +41,8 @@ async function main({ proposal, proposalId, txId, govAddress }) {
         return
       }
     } else {
-      const { timestamp: currentTime } = await ethers.provider.getBlock(
-        'latest'
-      )
+      const { timestamp: currentTime } =
+        await ethers.provider.getBlock('latest')
       console.log(
         `GOV EXEC > : increasing currentTime ${etaToDate(
           currentTime

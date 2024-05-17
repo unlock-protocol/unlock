@@ -259,8 +259,9 @@ export function ConfirmCrossmint({
             )}
             {quote?.totalPrice && (
               <Pricing
-                keyPrice={`${quote?.totalPrice
-                  .amount} ${quote?.totalPrice.currency.toUpperCase()}`}
+                keyPrice={`${
+                  quote?.totalPrice.amount
+                } ${quote?.totalPrice.currency.toUpperCase()}`}
                 isCardEnabled={false}
               />
             )}

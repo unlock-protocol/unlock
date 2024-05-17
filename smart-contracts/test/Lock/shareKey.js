@@ -68,9 +68,8 @@ describe('Lock / shareKey', () => {
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
       // A contract which does NOT implement onERC721Received:
-      const NonCompliantContract = await ethers.getContractFactory(
-        'TestEventHooks'
-      )
+      const NonCompliantContract =
+        await ethers.getContractFactory('TestEventHooks')
       const { address } = await NonCompliantContract.deploy()
 
       assert.equal(await lock.isValidKey(tokenIds[2]), true)
@@ -189,9 +188,8 @@ describe('Lock / shareKey', () => {
       // fetch new token Id
       const { args } = await getEvent(receipt, 'Transfer')
       ;({ tokenId: newTokenId } = args)
-      ;({ timestamp: timestampAfter } = await ethers.provider.getBlock(
-        'latest'
-      ))
+      ;({ timestamp: timestampAfter } =
+        await ethers.provider.getBlock('latest'))
     })
 
     describe('events', () => {
@@ -246,9 +244,8 @@ describe('Lock / shareKey', () => {
 
     describe('new key', () => {
       it('should create a new key and add the time shared to it', async () => {
-        const sharedKeyExpiration = await lock.keyExpirationTimestampFor(
-          newTokenId
-        )
+        const sharedKeyExpiration =
+          await lock.keyExpirationTimestampFor(newTokenId)
         assert.equal(await lock.isValidKey(newTokenId), true)
         assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
         assert.equal(sharedKeyExpiration, ONE_DAY + BigInt(timestampAfter))

@@ -11,9 +11,8 @@ describe('Lock / interface', () => {
   let lockInterface
 
   before(async () => {
-    ;({ interface: lockContract } = await ethers.getContractFactory(
-      'PublicLock'
-    ))
+    ;({ interface: lockContract } =
+      await ethers.getContractFactory('PublicLock'))
     ;({ interface: lockInterface } = await ethers.getContractAt(
       'IPublicLock',
       ADDRESS_ZERO

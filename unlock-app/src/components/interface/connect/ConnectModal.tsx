@@ -52,8 +52,8 @@ export const ConnectModal = () => {
                       {!connected
                         ? 'Connect Account'
                         : useUnlockAccount
-                        ? 'Unlock Account'
-                        : 'Connected Wallet'}
+                          ? 'Unlock Account'
+                          : 'Connected Wallet'}
                     </h1>
                   </div>
                   <div>

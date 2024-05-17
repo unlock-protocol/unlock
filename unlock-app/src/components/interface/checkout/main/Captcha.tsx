@@ -81,8 +81,8 @@ export function Captcha({ checkoutService }: Props) {
           {!recaptchaValue
             ? 'Solve captcha to continue'
             : isContinuing
-            ? 'Continuing'
-            : 'Continue'}
+              ? 'Continuing'
+              : 'Continue'}
         </Button>
         <Disconnect service={checkoutService} />
         <PoweredByUnlock />
