@@ -10,7 +10,7 @@
     "@airstack/airstack-react": "0.6.3",
     "@crossmint/client-sdk-react-ui": "1.1.9",
     "@enzoferey/ethers-error-parser": "0.2.3",
-    "@guildxyz/sdk": "1.1.1",
+    "@guildxyz/sdk": "2.5.0",
     "@headlessui/react": "1.7.19",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.3.4",

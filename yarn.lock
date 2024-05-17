@@ -9534,14 +9534,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guildxyz/sdk@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@guildxyz/sdk@npm:1.1.1"
+"@guildxyz/sdk@npm:2.5.0":
+  version: 2.5.0
+  resolution: "@guildxyz/sdk@npm:2.5.0"
   dependencies:
-    axios: "npm:^0.26.1"
-    ethers: "npm:^5.5.4"
-    fast-json-stable-stringify: "npm:^2.1.0"
-  checksum: 10/28cc1ac4fb4e24207c3caa7aab4e39036153b5bf09fbfaffb56fab1c960a26919c045400e651f607e7f4d1b9d293a7963dffd9bac5f93440a6fa3edb8cb3e8e6
+    "@guildxyz/types": "npm:^1.7.31"
+    ethers: "npm:^6.7.1"
+    randombytes: "npm:^2.1.0"
+  checksum: 10/4cf5f2ddfeb374bfe0263e263d00754695c138ffc5db26fa9c4e227314cf6ecf40863183439995f164a49f342c6875284c0e1d27cc28bdc994d9a6f1c1831ea4
+  languageName: node
+  linkType: hard
+
+"@guildxyz/types@npm:^1.7.31":
+  version: 1.9.7
+  resolution: "@guildxyz/types@npm:1.9.7"
+  dependencies:
+    zod: "npm:^3.22.4"
+  checksum: 10/e6396150d8e1603f34d4ca2294eeb2d9fc02078a9422b4fd1f7748021ecf82a430ec93a97723a7a4479076adb40118a4ac06f81bb07344a5435b87f5b1cfdf37
   languageName: node
   linkType: hard
 
@@ -21376,7 +21385,7 @@ __metadata:
     "@airstack/airstack-react": "npm:0.6.3"
     "@crossmint/client-sdk-react-ui": "npm:1.1.9"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
-    "@guildxyz/sdk": "npm:1.1.1"
+    "@guildxyz/sdk": "npm:2.5.0"
     "@headlessui/react": "npm:1.7.19"
     "@hookform/error-message": "npm:2.0.1"
     "@hookform/resolvers": "npm:3.3.4"
@@ -24315,15 +24324,6 @@ __metadata:
   dependencies:
     follow-redirects: "npm:^1.14.0"
   checksum: 10/da644592cb6f8f9f8c64fdabd7e1396d6769d7a4c1ea5f8ae8beb5c2eb90a823e3a574352b0b934ac62edc762c0f52647753dc54f7d07279127a7e5c4cd20272
-  languageName: node
-  linkType: hard
-
-"axios@npm:^0.26.1":
-  version: 0.26.1
-  resolution: "axios@npm:0.26.1"
-  dependencies:
-    follow-redirects: "npm:^1.14.8"
-  checksum: 10/02863f4a4fd4e43ad6e0c8bc9d1359a0863c43cc57bda42ea21dfce34681e3211df193b2bf2e8ee10b2c3870ab8d6bed38a3cf80cd6e8ee17749b7d73ccd4752
   languageName: node
   linkType: hard
 
@@ -32328,7 +32328,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers5@npm:ethers@5.7.2, ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.5.4, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
+"ethers5@npm:ethers@5.7.2, ethers@npm:5.7.2, ethers@npm:^5.1.0, ethers@npm:^5.3.1, ethers@npm:^5.6.1, ethers@npm:^5.7.0, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -33715,7 +33715,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.12.1, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.8, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.6":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.12.1, follow-redirects@npm:^1.14.0, follow-redirects@npm:^1.14.9, follow-redirects@npm:^1.15.6":
   version: 1.15.6
   resolution: "follow-redirects@npm:1.15.6"
   peerDependenciesMeta:
@@ -57353,7 +57353,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.20.6, zod@npm:^3.21.4":
+"zod@npm:^3.20.6, zod@npm:^3.21.4, zod@npm:^3.22.4":
   version: 3.23.8
   resolution: "zod@npm:3.23.8"
   checksum: 10/846fd73e1af0def79c19d510ea9e4a795544a67d5b34b7e1c4d0425bf6bfd1c719446d94cdfa1721c1987d891321d61f779e8236fde517dc0e524aa851a6eff1
