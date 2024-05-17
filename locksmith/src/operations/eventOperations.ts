@@ -1,5 +1,5 @@
 import dayjs from '../config/dayjs'
-import { kebabCase } from 'lodash'
+import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
 import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
 import { CheckoutConfig, EventData } from '../models'
@@ -195,14 +195,27 @@ export const saveEvent = async (
   walletAddress: string
 ): Promise<[EventData, boolean]> => {
   const slug = parsed.data.slug || (await createEventSlug(parsed.data.name))
+
+  let data = {}
+  const previousEvent = await EventData.findOne({
+    where: { slug },
+  })
+  if (previousEvent) {
+    data = defaultsDeep(previousEvent.data, {
+      ...parsed.data,
+    })
+  } else {
+    data = {
+      ...parsed.data,
+      slug, // Making sure we add the slug to the data as well.
+    }
+  }
+
   const [savedEvent, _] = await EventData.upsert(
     {
       name: parsed.data.name,
       slug,
-      data: {
-        ...parsed.data,
-        slug, // Making sure we add the slug to the data as well.
-      },
+      data,
       createdBy: walletAddress,
     },
     {
