@@ -6176,6 +6176,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@decent.xyz/box-common@npm:2.0.24":
+  version: 2.0.24
+  resolution: "@decent.xyz/box-common@npm:2.0.24"
+  peerDependencies:
+    "@wagmi/core": ^1.0.0
+    react: ^18.0.0
+    viem: ^1.0.0
+    wagmi: ^1.0.0
+  checksum: 10/41aa911a0d14182edb4440ceecb2ac8c4a28e0db3eed3d7bd0a7dfd32240709a42d8612ea43dadb7851c96a4d4cbcf17696831d6d2dc56e96d638135169ed184
+  languageName: node
+  linkType: hard
+
 "@dependents/detective-less@npm:^4.1.0":
   version: 4.1.0
   resolution: "@dependents/detective-less@npm:4.1.0"
@@ -19968,6 +19980,7 @@ __metadata:
   dependencies:
     "@airstack/airstack-react": "npm:0.6.3"
     "@crossmint/client-sdk-react-ui": "npm:1.1.9"
+    "@decent.xyz/box-common": "npm:2.0.24"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:1.1.1"
     "@headlessui/react": "npm:1.7.19"
