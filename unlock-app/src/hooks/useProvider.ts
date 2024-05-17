@@ -107,9 +107,8 @@ export const useProvider = (config: any) => {
 
   const getWalletService = async (networkId?: number) => {
     const networkProvider = await getNetworkProvider(networkId)
-    const { walletService: _walletService } = await createWalletService(
-      networkProvider
-    )
+    const { walletService: _walletService } =
+      await createWalletService(networkProvider)
     return _walletService
   }
 

@@ -25,9 +25,8 @@ describe('ERC20BalanceOfHook', () => {
     token = await deployERC20(await deployer.getAddress())
 
     // deploy the hook
-    const Erc20TokenUriHook = await ethers.getContractFactory(
-      'ERC20BalanceOfHook'
-    )
+    const Erc20TokenUriHook =
+      await ethers.getContractFactory('ERC20BalanceOfHook')
     hook = await Erc20TokenUriHook.deploy()
 
     // set the hook

@@ -173,8 +173,9 @@ export const FilterBar = ({
     label,
   }))
 
-  const placeholder = FILTER_ITEMS.find((filter) => filter.key === filterKey)
-    ?.placeholder
+  const placeholder = FILTER_ITEMS.find(
+    (filter) => filter.key === filterKey
+  )?.placeholder
 
   const lockOptions = locks
     ? Object.keys(locks).map((address) => {
