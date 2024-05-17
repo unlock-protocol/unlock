@@ -177,9 +177,8 @@ describe('Unlock (on mainnet)', async () => {
       )
       let publicLock = await PublicLock.attach(evt.args.newLockAddress)
 
-      const expirationBefore = await publicLock.keyExpirationTimestampFor(
-        recipient
-      )
+      const expirationBefore =
+        await publicLock.keyExpirationTimestampFor(recipient)
       assert(expirationBefore == 0)
 
       let purchaseTx = await publicLock.purchase(
@@ -191,9 +190,8 @@ describe('Unlock (on mainnet)', async () => {
       )
       await purchaseTx.wait()
 
-      const expirationAfter = await publicLock.keyExpirationTimestampFor(
-        recipient
-      )
+      const expirationAfter =
+        await publicLock.keyExpirationTimestampFor(recipient)
 
       assert(expirationAfter > 0)
     })

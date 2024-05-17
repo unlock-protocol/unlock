@@ -39,9 +39,8 @@ describe(`oracle`, () => {
       uniswapV3: { factoryAddress },
     } = await getNetwork()
 
-    const UnlockUniswapOracle = await ethers.getContractFactory(
-      'UniswapOracleV3'
-    )
+    const UnlockUniswapOracle =
+      await ethers.getContractFactory('UniswapOracleV3')
     oracle = await UnlockUniswapOracle.deploy(factoryAddress, FEE)
   })
 
