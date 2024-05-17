@@ -46,9 +46,8 @@ export const connectStripe = async (req: Request, res: Response) => {
 
 export const getConnectionsForManager = async (req: Request, res: Response) => {
   const userAddress = req.user!.walletAddress
-  const connections = await stripeOperations.getConnectionsForManager(
-    userAddress
-  )
+  const connections =
+    await stripeOperations.getConnectionsForManager(userAddress)
   if (!connections) {
     return {
       result: [],

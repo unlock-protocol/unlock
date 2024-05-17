@@ -63,9 +63,8 @@ export const deployUpgradeableContract = async (
 
   // get addresses
   const address = await contract.getAddress()
-  const implementation = await upgrades.erc1967.getImplementationAddress(
-    address
-  )
+  const implementation =
+    await upgrades.erc1967.getImplementationAddress(address)
 
   if (!(await isLocalhost())) {
     await verify({ address, deployArgs })

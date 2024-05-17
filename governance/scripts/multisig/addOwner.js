@@ -60,9 +60,8 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   }
 
   await safeService.proposeTransaction(txParams)
-  const { nonce: actualNonce } = await safeService.getTransaction(
-    safeTransactionHash
-  )
+  const { nonce: actualNonce } =
+    await safeService.getTransaction(safeTransactionHash)
   console.log(`tx submitted - nonce: [${actualNonce}].`)
 }
 
