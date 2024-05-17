@@ -9,6 +9,7 @@ import { networks } from '@unlock-protocol/networks'
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import useEventGatedRoom from '~/hooks/useEventGatedRoom'
 
 export interface TransactionDetails {
   hash: string
@@ -54,6 +55,9 @@ export const NewEvent = () => {
   const [lockAddress, setLockAddress] = useState<string>()
   const { getWalletService } = useAuth()
 
+  // event gated room custom hook
+  const eventGatedRoomHook = useEventGatedRoom()
+
   const onSubmit = async (formData: NewEventForm) => {
     let lockAddress
     const walletService = await getWalletService(formData.network)
@@ -89,13 +93,47 @@ export const NewEvent = () => {
           image: formData.metadata.image,
         },
       })
+
+      // Initialize a variable to store the created token-gated room
+      let generatedEventRoomUrl = ''
+
+      // Check if the event has the huddle meeting option enabled and if the lock address is available
+      if (eventGatedRoomHook.isHuddleMeeting && lockAddress) {
+        // Create the event's room
+        try {
+          const response = await storage.createEventTokenGatedRoom({
+            title: `${formData.lock.name} | Event Room`,
+            chain: eventGatedRoomHook.selectedHuddleNetwork,
+            contractAddress: lockAddress,
+          })
+          const data = await response.data
+          // directly assign the generated URL to the generated event address variable
+          generatedEventRoomUrl = data.eventRoomUrl!
+        } catch (error) {
+          console.error("Failed to create the event's room", error)
+          ToastHelper.error("Failed to create the event's room.")
+        }
+      }
+
       const { data: event } = await storage.saveEventData({
         data: {
           ...formDataToMetadata({
             name: formData.lock.name,
             ...formData.metadata,
+            ticket: {
+              ...formData.metadata.ticket,
+              event_address: eventGatedRoomHook.isHuddleMeeting
+                ? generatedEventRoomUrl
+                : formData.metadata.ticket?.event_address,
+            },
           }),
           ...formData.metadata,
+          ticket: {
+            ...formData.metadata.ticket,
+            event_address: eventGatedRoomHook.isHuddleMeeting
+              ? generatedEventRoomUrl
+              : formData.metadata.ticket?.event_address,
+          },
         },
         checkoutConfig: {
           name: `Checkout config for ${formData.lock.name}`,
@@ -128,7 +166,13 @@ export const NewEvent = () => {
             slug={slug}
           />
         )}
-        {!transactionDetails && <Form onSubmit={onSubmit} />}
+        {!transactionDetails && (
+          <Form
+            onSubmit={onSubmit}
+            // share event gated room hook
+            eventGatedRoomHook={eventGatedRoomHook}
+          />
+        )}
       </div>
     </AppLayout>
   )
