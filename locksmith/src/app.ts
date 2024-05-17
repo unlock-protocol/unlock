@@ -51,6 +51,13 @@ app.use(Sentry.Handlers.tracingHandler())
 // Parse cookies
 app.use(cookieParser())
 
+// Cors
+app.use(cors())
+
+// Parse body
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '5mb' }))
+
 // Request logging
 app.use(
   expressWinston.logger({
@@ -65,13 +72,6 @@ app.use(
     colorize: false, // Color the text and status code, using the Express/morgan color palette (text: gray, status: default green, 3XX cyan, 4XX yellow, 5XX red).
   })
 )
-
-// Cors
-app.use(cors())
-
-// Parse body
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json({ limit: '5mb' }))
 
 app.use('/', router)
 
