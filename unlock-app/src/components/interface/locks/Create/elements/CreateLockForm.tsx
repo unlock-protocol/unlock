@@ -29,7 +29,7 @@ export interface LockFormProps {
 
 interface CreateLockFormProps {
   onSubmit: any
-  defaultValues: LockFormProps
+  defaultValues?: Partial<LockFormProps>
   hideFields?: string[]
   isLoading?: boolean
 }
@@ -46,6 +46,12 @@ export const networkDescription = (network: number) => {
           </Link>
           .
         </>
+      )}
+      {network === 1 && (
+        <p className="text-red-600 font-bold">
+          Due to high gas costs, we strongly discourage the use of the Ethereum
+          Mainnet.
+        </p>
       )}
       {faucet && (
         <>
@@ -64,7 +70,7 @@ export const networkDescription = (network: number) => {
 
 export const CreateLockForm = ({
   onSubmit,
-  defaultValues,
+  defaultValues = {},
   hideFields = [],
   isLoading = false,
 }: CreateLockFormProps) => {
@@ -241,7 +247,7 @@ export const CreateLockForm = ({
                   </label>
                   <ToggleSwitch
                     title="Unlimited"
-                    enabled={unlimitedQuantity}
+                    enabled={!!unlimitedQuantity}
                     setEnabled={setUnlimitedQuantity}
                     onChange={(enable: boolean) => {
                       if (enable) {

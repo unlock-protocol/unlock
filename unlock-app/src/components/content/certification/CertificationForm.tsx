@@ -118,18 +118,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     return (
       <div className="flex flex-col gap-2">
         <p>{details.network && <>{networkDescription(details.network)}</>}</p>
-        <p>
-          This is the network on which your certification contract will be
-          deployed.{' '}
-          <Link
-            className="underline text-brand-ui-primary "
-            target="_blank"
-            href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
-          >
-            Read our guide
-          </Link>{' '}
-          on how to chose the right network.
-        </p>
       </div>
     )
   }
@@ -266,6 +254,18 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
 
           <Disclosure label="Network" defaultOpen>
             <div className="grid gap-6">
+              <p>
+                This is the network on which your certification contract will be
+                deployed.{' '}
+                <Link
+                  className="underline text-brand-ui-primary "
+                  target="_blank"
+                  href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
+                >
+                  Read our guide
+                </Link>{' '}
+                on how to chose the right network.
+              </p>
               <Select
                 onChange={(newValue) => {
                   setValue('network', Number(newValue))
