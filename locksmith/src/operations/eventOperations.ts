@@ -201,9 +201,12 @@ export const saveEvent = async (
     where: { slug },
   })
   if (previousEvent) {
-    data = defaultsDeep(previousEvent.data, {
-      ...parsed.data,
-    })
+    data = defaultsDeep(
+      {
+        ...parsed.data,
+      },
+      previousEvent.data
+    )
   } else {
     data = {
       ...parsed.data,
