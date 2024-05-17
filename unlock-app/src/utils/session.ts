@@ -6,8 +6,8 @@ export const getSessionKey = (address: string) =>
   `${APP_NAME}.session_${address.trim().toLowerCase()}`
 
 export const getCurrentAccount = () => {
-  if (typeof window === 'undefined') return null
-  return localStorage.getItem(CURRENT_ACCOUNT_KEY)
+  if (typeof window === 'undefined') return undefined
+  return localStorage.getItem(CURRENT_ACCOUNT_KEY) || undefined
 }
 
 export const getCurrentProvider = () => {
@@ -19,11 +19,11 @@ export const getCurrentProvider = () => {
 export const getCurrentNetwork = () => {
   if (typeof window === 'undefined') return 1
   const network = localStorage.getItem(`${APP_NAME}.network`)
-  return network ? parseInt(network) : null
+  return network ? parseInt(network) : undefined
 }
 
 export const getAccessToken = (
-  address: string | null = getCurrentAccount()
+  address: string | undefined = getCurrentAccount()
 ) => {
   if (!address) {
     return null
@@ -33,7 +33,7 @@ export const getAccessToken = (
 }
 
 export const removeAccessToken = (
-  address: string | null = getCurrentAccount()
+  address: string | undefined = getCurrentAccount()
 ) => {
   if (!address) {
     return null

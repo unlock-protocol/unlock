@@ -1,5 +1,4 @@
 import { Component } from 'react'
-import PropTypes from 'prop-types'
 
 export default class BrowserOnly extends Component {
   constructor(props) {
@@ -23,6 +22,3 @@ export default class BrowserOnly extends Component {
   }
 }
 
-BrowserOnly.propTypes = {
-  children: PropTypes.node.isRequired,
-}

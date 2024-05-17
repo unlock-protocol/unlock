@@ -1,48 +1,40 @@
-/* eslint react/prop-types: 0 */
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useEffect,
-} from 'react'
-import PropTypes, { number } from 'prop-types'
-import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
+import React, { useContext, useMemo, useEffect } from 'react'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
-import Loading from './Loading'
 import { ConfigContext } from '../../utils/withConfig'
-import UnlockPropTypes from '../../propTypes'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
 import { SIWEProvider } from '~/hooks/useSIWE'
-import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import { ConnectModal } from './connect'
 import { config } from '~/config/app'
+import { networks } from '@unlock-protocol/networks'
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 
+interface ProvidersProps {
+  children: any
+}
 /**
  * Utility providers set to retrieve content based on network settings
  * @returns
  */
-const Providers = ({ network, networkConfig, children, authenticate }) => {
+const Providers = ({ children }: ProvidersProps) => {
   const storageService = useMemo(
     () => new StorageService(config.services.storage.host),
     []
   )
 
+  // TODO: remove this and the Web3ServiceProvider
   const web3Service = useMemo(() => {
-    return new Web3Service(networkConfig)
-  }, [networkConfig])
+    return new Web3Service(networks)
+  }, [])
 
-  const { tryAutoLogin } = useAutoLogin({
-    authenticate,
-  })
+  const { tryAutoLogin } = useAutoLogin()
 
   useEffect(() => {
     tryAutoLogin()
@@ -57,32 +49,19 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
   )
 }
 
-Providers.propTypes = {
-  network: number,
-  // networkConfig: object.isRequired,
-}
-
-Providers.defaultProps = {
-  network: 1, // defaults to mainnet (can we change this?)
+interface AuthenticateProps {
+  children: React.ReactNode
+  providerAdapter: any
 }
 
 export const Authenticate = ({
   children,
-  unlockUserAccount,
-  requiredNetwork,
-  optional,
-  onCancel,
-  embedded,
-  onAuthenticated,
   providerAdapter,
-}) => {
+}: AuthenticateProps) => {
   const config = useContext(ConfigContext)
 
   const {
-    error,
-    loading,
     network,
-    signMessage,
     account,
     email,
     encryptedPrivateKey,
@@ -97,7 +76,7 @@ export const Authenticate = ({
     displayAccount,
   } = useProvider(config)
 
-  const authenticate = async (provider) => {
+  const authenticate = async (provider: any) => {
     if (!provider) {
       if (providerAdapter) {
         return connectProvider(providerAdapter)
@@ -114,7 +93,6 @@ export const Authenticate = ({
     <AuthenticationContext.Provider
       value={{
         providerSend,
-        signMessage,
         account,
         network,
         email,
@@ -129,14 +107,7 @@ export const Authenticate = ({
       }}
     >
       <WalletServiceContext.Provider value={walletService}>
-        <Providers
-          network={requiredNetwork || network}
-          networkConfig={config.networks}
-          account={account}
-          email={email}
-          encryptedPrivateKey={encryptedPrivateKey}
-          authenticate={authenticate}
-        >
+        <Providers>
           <SIWEProvider>
             {children}
             <ConnectModal />
@@ -145,28 +116,6 @@ export const Authenticate = ({
       </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>
   )
-}
-
-Authenticate.propTypes = {
-  children: PropTypes.node,
-  unlockUserAccount: PropTypes.bool,
-  requiredNetwork: PropTypes.string,
-  optional: PropTypes.bool,
-  onCancel: PropTypes.func,
-  embedded: PropTypes.bool,
-  onAuthenticated: PropTypes.func,
-  // eslint-disable-next-line react/forbid-prop-types
-  providerAdapter: PropTypes.object,
-}
-
-Authenticate.defaultProps = {
-  unlockUserAccount: false,
-  requiredNetwork: null,
-  optional: false,
-  onCancel: null,
-  embedded: false,
-  onAuthenticated: () => { },
-  providerAdapter: null,
 }
 
 export default Authenticate
