@@ -21546,7 +21546,7 @@ __metadata:
     embla-carousel-react: "npm:8.0.2"
     eslint: "npm:8.57.0"
     eslint-config-next: "npm:14.2.3"
-    ethers: "npm:5.7.2"
+    ethers: "npm:6.12.1"
     feed: "npm:4.2.2"
     gray-matter: "npm:4.0.3"
     next: "npm:14.2.3"
