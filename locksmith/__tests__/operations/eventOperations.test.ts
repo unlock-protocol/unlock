@@ -77,6 +77,44 @@ describe('eventOperations', () => {
       expect(sameEvent.slug).toEqual(event.slug)
     })
 
+    it('should not override previously set event data', async () => {
+      expect.assertions(3)
+      const eventParams = getEventFixture({
+        data: {
+          name: 'my party',
+          requiresApproval: true,
+          emailSender: 'Julien Genestoux',
+          ticket: {
+            event_address: '29 Little W 12th St, New York, NY 10014, USA',
+            event_end_date: '2024-05-22',
+            event_end_time: '14:00',
+            event_timezone: 'America/New_York',
+            event_start_date: '2024-05-22',
+            event_start_time: '08:30',
+          },
+        },
+        checkoutConfig: { config: { locks: {} } },
+      })
+      const [event] = await saveEvent(eventParams, '0x123')
+      expect(event.data.ticket.event_end_date).toEqual('2024-05-22')
+
+      const [sameEvent] = await saveEvent(
+        {
+          data: {
+            slug: event.slug,
+            name: 'name changed!',
+            ticket: {
+              event_address: 'Central Park, New York, NY 10014, USA',
+            },
+          },
+          checkoutConfig: { config: { locks: {} } },
+        },
+        '0x123'
+      )
+      expect(sameEvent.slug).toEqual(event.slug)
+      expect(sameEvent.data.ticket.event_end_date).toEqual('2024-05-22')
+    })
+
     it('should save requiresAppoval when applicable', async () => {
       expect.assertions(2)
       const eventParams = getEventFixture({
