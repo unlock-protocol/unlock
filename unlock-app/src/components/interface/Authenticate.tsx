@@ -86,7 +86,6 @@ export const Authenticate = ({
   }
 
   const deAuthenticate = () => {
-    console.log('OK HERE!')
     return disconnectProvider()
   }
 

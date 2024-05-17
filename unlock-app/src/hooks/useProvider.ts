@@ -196,7 +196,6 @@ export const useProvider = (config: any) => {
   }
 
   const disconnectProvider = async () => {
-    console.log('disconnectProvider')
     setLoading(true)
     const _walletService = new WalletService(config.networks)
     setWalletService(_walletService)
