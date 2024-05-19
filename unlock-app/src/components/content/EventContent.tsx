@@ -24,6 +24,7 @@ import {
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
+// import { CoverImageDrawer } from './CoverImageDrawer'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './Registration/RegistrationCard'
@@ -160,6 +161,8 @@ export const EventDetails = ({
   const hasLocation = (event.ticket.event_address || '')?.length > 0
   const hasDate = startDate || startTime || endDate || endTime
 
+  // const coverImage = event.ticket.event_cover_image
+
   return (
     <div>
       <NextSeo
@@ -261,14 +264,35 @@ export const EventDetails = ({
             </>
           )}
         </div>
-        <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8">
-          <div className="flex flex-col col-span-3 gap-4 md:col-span-2 ">
-            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
-              {event.name}
-            </h1>
-            <div className="flex justify-between flex-col sm:flex-row">
-              <div></div>
-              <ul className="flex items-center justify-center gap-0 mt-auto md:gap-2">
+
+        <div className="relative">
+          <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
+            {/* <img
+              className="object-cover w-full h-full"
+              src={coverImage || event.image}
+              alt="Cover image"
+            />
+           */}
+          </div>
+          {/* <CoverImageDrawer
+            image={image}
+            setImage={setImage}
+            checkoutConfig={checkoutConfig}
+            event={event}
+            handleClose={() => {
+              refetch()
+            }}
+          /> */}
+          <div className=" flex flex-col w-full gap-6 px-4 sm:px-10 -bottom-12  ">
+            <section className="flex flex-col  justify-center items-center md:hidden ">
+              <div className="flex bg-white p-1 sm:rounded-3xl lg:w-96 xl:w-96 lg:h-96 xl:h-96 md:w-96  md:h-96   rounded-xl border">
+                <img
+                  alt={event.title}
+                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
+                  src={event.image}
+                />
+              </div>
+              <ul className="flex items-center justify-center pt-2 gap-8 mt-auto md:gap-4 ">
                 <li>
                   <AddToCalendarButton event={event} eventUrl={eventUrl} />
                 </li>
@@ -282,7 +306,15 @@ export const EventDetails = ({
                   <CopyUrlButton url={eventUrl} />
                 </li>
               </ul>
-            </div>
+            </section>
+          </div>
+        </div>
+
+        <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3  mt-6">
+          <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
+            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
+              {event.name}
+            </h1>
             <section className="flex flex-col gap-4">
               {organizers && organizers.length > 0 && (
                 <Hosts organizers={organizers} />
@@ -319,14 +351,30 @@ export const EventDetails = ({
               </div>
             </section>
           </div>
-          <div className="flex flex-col gap-4 items-center  ">
-            <div className="flex  bg-white h-96 w-96 sm:rounded-3xl  rounded-xl border">
-              <img
-                alt={event.title}
-                className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                src={event.image}
-              />
-            </div>
+          <div className="flex flex-col gap-4">
+            <section className="md:flex md:flex-col justify-center items-center hidden ">
+              <div className="flex  bg-white  p-2 sm:rounded-3xl  w-full h-full  rounded-xl border">
+                <img
+                  alt={event.title}
+                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
+                  src={event.image}
+                />
+              </div>
+              <ul className="flex items-center justify-center pt-2 gap-8 mt-auto md:gap-4">
+                <li>
+                  <AddToCalendarButton event={event} eventUrl={eventUrl} />
+                </li>
+                <li>
+                  <TweetItButton event={event} eventUrl={eventUrl} />
+                </li>
+                <li>
+                  <CastItButton event={event} eventUrl={eventUrl} />
+                </li>
+                <li>
+                  <CopyUrlButton url={eventUrl} />
+                </li>
+              </ul>
+            </section>
             {!hasPassed && (
               <RegistrationCard
                 requiresApproval={event.requiresApproval}
