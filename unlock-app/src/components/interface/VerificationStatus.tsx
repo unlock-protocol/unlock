@@ -196,7 +196,7 @@ export const VerificationStatus = ({
   const isTicketVerifiable =
     Object.keys(checkoutConfig?.locks ?? {}).some(
       (address) => address.toLowerCase() === ticket!.lockAddress.toLowerCase()
-    ) || false
+    ) || !checkoutConfig
 
   const checkedInAt = ticket?.checkedInAt
 
