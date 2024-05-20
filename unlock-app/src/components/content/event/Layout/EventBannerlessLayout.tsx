@@ -22,8 +22,6 @@ type EventBannerlessProps = {
   }
   hasLocation: boolean
   hasDate: string | null
-  coverImage: string
-  refetch: () => void
   organizers: string[] | undefined
   startDate: string | null
   endDate: string | null
@@ -33,15 +31,11 @@ type EventBannerlessProps = {
   hasPassed: boolean
 }
 
-// grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8
-
 export const EventBannerlessLayout = ({
   event,
   checkoutConfig,
   hasLocation,
   hasDate,
-  coverImage,
-  refetch,
   organizers,
   startDate,
   endDate,

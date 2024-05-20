@@ -152,6 +152,8 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
+  event.layout = event.layout || EventsLayoutEnum.Bannerless
+
   const renderEventLayout = () => {
     switch (event.layout) {
       case EventsLayoutEnum.Bannerless:
@@ -167,9 +169,7 @@ export const EventDetails = ({
             endTime={endTime}
             eventUrl={eventUrl}
             hasPassed={hasPassed}
-            refetch={refetch}
             organizers={organizers}
-            coverImage={coverImage}
           />
         )
       default:
@@ -295,22 +295,7 @@ export const EventDetails = ({
           )}
         </div>
       </div>
-      <div>{renderEventLayout(event)}</div>
-      <EventBannerlessLayout
-        event={event}
-        checkoutConfig={checkoutConfig}
-        hasLocation={hasLocation}
-        hasDate={hasDate}
-        startDate={startDate}
-        startTime={startTime}
-        endDate={endDate}
-        endTime={endTime}
-        eventUrl={eventUrl}
-        hasPassed={hasPassed}
-        refetch={refetch}
-        organizers={organizers}
-        coverImage={coverImage}
-      />
+      <div>{renderEventLayout()}</div>
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
