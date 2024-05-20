@@ -152,8 +152,6 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
-  event.layout = event.layout || EventsLayoutEnum.Bannerless
-
   const renderEventLayout = () => {
     switch (event.layout) {
       case EventsLayoutEnum.Bannerless:
