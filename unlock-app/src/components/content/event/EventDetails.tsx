@@ -1,6 +1,5 @@
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
-import { MdAssignmentLate } from 'react-icons/md'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import {
@@ -10,36 +9,26 @@ import {
   Icon,
   minifyAddress,
 } from '@unlock-protocol/ui'
-import AddToCalendarButton from './AddToCalendarButton'
-import { TweetItButton } from './TweetItButton'
-import { CastItButton } from './CastItButton'
-import { CopyUrlButton } from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import dayjs from 'dayjs'
-import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import {
   Event,
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import { CoverImageDrawer } from './CoverImageDrawer'
-import { EventDetail } from './EventDetail'
-import { EventLocation } from './EventLocation'
-import { RegistrationCard } from './Registration/RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
 import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
-import Hosts from './Hosts'
 import removeMd from 'remove-markdown'
 import { truncateString } from '~/utils/truncateString'
-import { AttendeeCues } from './Registration/AttendeeCues'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
-import ReactMarkdown from 'react-markdown'
+import { EventDefaultLayout } from './Layout/EventDefaultLayout'
+import { EventBannerlessLayout } from './Layout/EventBannerlessLayout'
 
 interface EventDetailsProps {
   event: Event
@@ -60,7 +49,6 @@ export const EventDetails = ({
   event: eventProp,
   checkoutConfig,
 }: EventDetailsProps) => {
-  const [image, setImage] = useState('')
   const router = useRouter()
 
   // Check if the user is one of the lock manager
@@ -264,114 +252,23 @@ export const EventDetails = ({
             </>
           )}
         </div>
-
-        <div className="relative">
-          <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
-            <img
-              className="object-cover w-full h-full"
-              src={coverImage || event.image}
-              alt="Cover image"
-            />
-          </div>
-
-          <CoverImageDrawer
-            image={image}
-            setImage={setImage}
-            checkoutConfig={checkoutConfig}
-            event={event}
-            handleClose={() => {
-              refetch()
-            }}
-          />
-
-          <div className="sm:absolute flex sm:flex-col w-full gap-6 px-4 sm:px-10 -bottom-12">
-            <section className="flex justify-between flex-col sm:flex-row">
-              <div className="flex p-1 bg-white sm:p-2 sm:w-48 sm:h-48 sm:rounded-3xl rounded-xl border">
-                <img
-                  alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                  src={event.image}
-                />
-              </div>
-              <ul className="flex items-center justify-center gap-0 mt-auto md:gap-2">
-                <li>
-                  <AddToCalendarButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <TweetItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CastItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CopyUrlButton url={eventUrl} />
-                </li>
-              </ul>
-            </section>
-          </div>
-        </div>
-
-        <section className="grid items-start grid-cols-1 md:gap-4 md:grid-cols-3 md:mt-16 mt-8">
-          <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
-            <h1 className="mt-4 text-3xl font-bold md:text-6xl">
-              {event.name}
-            </h1>
-            <section className="flex flex-col gap-4">
-              {organizers && organizers.length > 0 && (
-                <Hosts organizers={organizers} />
-              )}
-              <div className="grid grid-cols-1 gap-6 md:p-6 md:grid-cols-2 rounded-xl">
-                {hasDate && (
-                  <EventDetail label="Date" icon={CalendarIcon}>
-                    <div
-                      style={{ color: `#${event.background_color}` }}
-                      className="flex flex-col text-lg font-normal text-brand-dark"
-                    >
-                      {(startDate || endDate) && (
-                        <span>
-                          {startDate} {endDate && <>to {endDate}</>}
-                        </span>
-                      )}
-                      {startTime && endTime && (
-                        <span>
-                          {startTime} {endTime && <>to {endTime}</>}
-                        </span>
-                      )}
-                    </div>
-                  </EventDetail>
-                )}
-                {hasLocation && <EventLocation event={event} />}
-              </div>
-              <div className="mt-10">
-                {event.description && (
-                  <div className="mt-4 markdown">
-                    {/* eslint-disable-next-line react/no-children-prop */}
-                    <ReactMarkdown children={event.description} />
-                  </div>
-                )}
-              </div>
-            </section>
-          </div>
-          <div className="flex flex-col gap-4">
-            {!hasPassed && (
-              <RegistrationCard
-                requiresApproval={event.requiresApproval}
-                checkoutConfig={checkoutConfig}
-              />
-            )}
-            {hasPassed && (
-              <Card className="grid gap-4 mt-10 md:mt-0">
-                <p className="text-lg">
-                  <MdAssignmentLate />
-                  This event is over. It is not possible to register for it
-                  anymore.
-                </p>
-              </Card>
-            )}
-            <AttendeeCues checkoutConfig={checkoutConfig} />
-          </div>
-        </section>
       </div>
+
+      <EventBannerlessLayout
+        event={event}
+        checkoutConfig={checkoutConfig}
+        hasLocation={hasLocation}
+        hasDate={hasDate}
+        startDate={startDate}
+        startTime={startTime}
+        endDate={endDate}
+        endTime={endTime}
+        eventUrl={eventUrl}
+        hasPassed={hasPassed}
+        refetch={refetch}
+        organizers={organizers}
+        coverImage={coverImage}
+      />
 
       <section className="flex flex-col">
         {isOrganizer && (
