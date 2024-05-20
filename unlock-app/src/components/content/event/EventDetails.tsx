@@ -29,7 +29,7 @@ import { truncateString } from '~/utils/truncateString'
 import { useEventVerifiers } from '~/hooks/useEventVerifiers'
 import { EventDefaultLayout } from './Layout/EventDefaultLayout'
 import { EventBannerlessLayout } from './Layout/EventBannerlessLayout'
-import EventsLayoutEnum from './Layout/EventsLayoutEnum'
+import { EventsLayout } from './Layout/constants'
 
 interface EventDetailsProps {
   event: Event
@@ -152,42 +152,28 @@ export const EventDetails = ({
 
   const coverImage = event.ticket.event_cover_image
 
+  const layoutProps = {
+    event,
+    checkoutConfig,
+    hasLocation,
+    hasDate,
+    startDate,
+    startTime,
+    endDate,
+    endTime,
+    eventUrl,
+    hasPassed,
+    organizers,
+    coverImage,
+    refetch,
+  }
+
   const renderEventLayout = () => {
     switch (event.layout) {
-      case EventsLayoutEnum.Bannerless:
-        return (
-          <EventBannerlessLayout
-            event={event}
-            checkoutConfig={checkoutConfig}
-            hasLocation={hasLocation}
-            hasDate={hasDate}
-            startDate={startDate}
-            startTime={startTime}
-            endDate={endDate}
-            endTime={endTime}
-            eventUrl={eventUrl}
-            hasPassed={hasPassed}
-            organizers={organizers}
-          />
-        )
+      case EventsLayout.Bannerless:
+        return <EventBannerlessLayout {...layoutProps} />
       default:
-        return (
-          <EventDefaultLayout
-            event={event}
-            checkoutConfig={checkoutConfig}
-            hasLocation={hasLocation}
-            hasDate={hasDate}
-            startDate={startDate}
-            startTime={startTime}
-            endDate={endDate}
-            endTime={endTime}
-            eventUrl={eventUrl}
-            hasPassed={hasPassed}
-            refetch={refetch}
-            organizers={organizers}
-            coverImage={coverImage}
-          />
-        )
+        return <EventDefaultLayout {...layoutProps} />
     }
   }
 
@@ -293,7 +279,7 @@ export const EventDetails = ({
           )}
         </div>
       </div>
-      <div>{renderEventLayout()}</div>
+      {renderEventLayout()}
       <section className="flex flex-col">
         {isOrganizer && (
           <div className="grid gap-6 mt-12">
