@@ -1,6 +1,5 @@
 import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { MdAssignmentLate } from 'react-icons/md'
-import { useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { NextSeo } from 'next-seo'
 import {
@@ -11,26 +10,20 @@ import {
   minifyAddress,
 } from '@unlock-protocol/ui'
 import AddToCalendarButton from './AddToCalendarButton'
-import { TweetItButton } from './TweetItButton'
-import { CastItButton } from './CastItButton'
-import { CopyUrlButton } from './CopyUrlButton'
+import TweetItButton from './TweetItButton'
+import CastItButton from './CastItButton'
+import CopyUrlButton from './CopyUrlButton'
 import { getEventDate, getEventEndDate, getEventUrl } from './utils'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
 import { useEventOrganizers } from '~/hooks/useEventOrganizers'
 import dayjs from 'dayjs'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
-import {
-  Event,
-  PaywallConfigType,
-  formDataToMetadata,
-} from '@unlock-protocol/core'
-// import { CoverImageDrawer } from './CoverImageDrawer'
+import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { EventDetail } from './EventDetail'
 import { EventLocation } from './EventLocation'
 import { RegistrationCard } from './Registration/RegistrationCard'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
-import { storage } from '~/config/storage'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
@@ -60,7 +53,6 @@ export const EventDetails = ({
   event: eventProp,
   checkoutConfig,
 }: EventDetailsProps) => {
-  // const [image, setImage] = useState('')
   const router = useRouter()
 
   // Check if the user is one of the lock manager
@@ -82,32 +74,6 @@ export const EventDetails = ({
   })
 
   const { data: verifier } = useEventVerifiers({ event: eventProp })
-
-  // Migrate legacy event and/or redirect
-  // TODO: remove by June 1st 2024
-  useEffect(() => {
-    const migrateAndRedirect = async () => {
-      if (router.pathname === '/event') {
-        if (event.slug) {
-          router.push(eventUrl)
-        } else {
-          const { data: savedEvent } = await storage.saveEventData({
-            data: formDataToMetadata(event),
-            // @ts-expect-error Property ''name'' is missing in type
-            checkoutConfig,
-          })
-          if (savedEvent.data) {
-            router.push(
-              getEventUrl({
-                event: savedEvent.data,
-              })
-            )
-          }
-        }
-      }
-    }
-    migrateAndRedirect()
-  }, [router, event, eventUrl])
 
   const eventDate = getEventDate(event.ticket) // Full date + time of event
   const eventEndDate = getEventEndDate(event.ticket)
@@ -161,7 +127,33 @@ export const EventDetails = ({
   const hasLocation = (event.ticket.event_address || '')?.length > 0
   const hasDate = startDate || startTime || endDate || endTime
 
-  // const coverImage = event.ticket.event_cover_image
+  const SectionComponent = () => {
+    return (
+      <>
+        <div className="flex bg-white p-1 sm:rounded-3xl w-auto h-auto  rounded-xl border">
+          <img
+            alt={event.title}
+            className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
+            src={event.image}
+          />
+        </div>
+        <ul className="flex items-center justify-center pt-2 gap-8 mt-auto md:gap-4 ">
+          <li>
+            <AddToCalendarButton event={event} eventUrl={eventUrl} />
+          </li>
+          <li>
+            <TweetItButton event={event} eventUrl={eventUrl} />
+          </li>
+          <li>
+            <CastItButton event={event} eventUrl={eventUrl} />
+          </li>
+          <li>
+            <CopyUrlButton url={eventUrl} />
+          </li>
+        </ul>
+      </>
+    )
+  }
 
   return (
     <div>
@@ -266,46 +258,10 @@ export const EventDetails = ({
         </div>
 
         <div className="relative">
-          <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl">
-            {/* <img
-              className="object-cover w-full h-full"
-              src={coverImage || event.image}
-              alt="Cover image"
-            />
-           */}
-          </div>
-          {/* <CoverImageDrawer
-            image={image}
-            setImage={setImage}
-            checkoutConfig={checkoutConfig}
-            event={event}
-            handleClose={() => {
-              refetch()
-            }}
-          /> */}
+          <div className="w-full hidden sm:block sm:overflow-hidden bg-slate-200 max-h-80 sm:rounded-3xl"></div>
           <div className=" flex flex-col w-full gap-6 px-4 sm:px-10 -bottom-12  ">
             <section className="flex flex-col  justify-center items-center md:hidden ">
-              <div className="flex bg-white p-1 sm:rounded-3xl lg:w-96 xl:w-96 lg:h-96 xl:h-96 md:w-96  md:h-96   rounded-xl border">
-                <img
-                  alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                  src={event.image}
-                />
-              </div>
-              <ul className="flex items-center justify-center pt-2 gap-8 mt-auto md:gap-4 ">
-                <li>
-                  <AddToCalendarButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <TweetItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CastItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CopyUrlButton url={eventUrl} />
-                </li>
-              </ul>
+              <SectionComponent />
             </section>
           </div>
         </div>
@@ -353,27 +309,7 @@ export const EventDetails = ({
           </div>
           <div className="flex flex-col gap-4">
             <section className="md:flex md:flex-col justify-center items-center hidden ">
-              <div className="flex  bg-white  p-2 sm:rounded-3xl  w-full h-full  rounded-xl border">
-                <img
-                  alt={event.title}
-                  className="object-cover w-full m-auto aspect-1 sm:rounded-2xl rounded-lg"
-                  src={event.image}
-                />
-              </div>
-              <ul className="flex items-center justify-center pt-2 gap-8 mt-auto md:gap-4">
-                <li>
-                  <AddToCalendarButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <TweetItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CastItButton event={event} eventUrl={eventUrl} />
-                </li>
-                <li>
-                  <CopyUrlButton url={eventUrl} />
-                </li>
-              </ul>
+              <SectionComponent />
             </section>
             {!hasPassed && (
               <RegistrationCard
