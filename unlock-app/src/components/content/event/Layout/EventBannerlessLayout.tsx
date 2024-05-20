@@ -47,7 +47,7 @@ export const EventBannerlessLayout = ({
   return (
     <div>
       <div className="md:flex md:flex-row-reverse md:gap-4 md:mt-16 mt-8">
-        <div className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4">
           <div className="flex justify-center w-full">
             <section className="flex justify-between flex-col">
               <div className="flex p-1 bg-white sm:p-2 sm:w-96 sm:h-96 sm:rounded-3xl rounded-xl border">
@@ -89,7 +89,7 @@ export const EventBannerlessLayout = ({
             </Card>
           )}
           <AttendeeCues checkoutConfig={checkoutConfig} />
-        </div>
+        </section>
         <div className="flex flex-col col-span-3 gap-4 md:col-span-2">
           <h1 className="mt-4 text-3xl font-bold md:text-6xl">{event.name}</h1>
           <section className="flex flex-col gap-4">
