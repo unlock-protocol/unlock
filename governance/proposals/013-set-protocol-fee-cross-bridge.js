@@ -11,21 +11,22 @@ const PROTOCOL_FEE_IN_BASIS_POINTS = '100' // 1% in basis points
 const parseSetProtocolFeeCalls = async (destChainId) => {
   const { unlockAddress } = await getNetwork(destChainId)
 
-  console.log(`Proposol to set protocolFee to ${ethers.formatEther(protocolFee)}
-    - unlock : ${unlockAddress}`)
+  console.log(
+    `Proposol to set protocolFee to ${ethers.formatEther(
+      PROTOCOL_FEE_IN_BASIS_POINTS
+    )}`
+  )
 
   // get Unlock interface
-  const { interface: unlockInterface } = await ethers.getContractAt(
-    Unlock.abi,
-    unlockAddress
-  )
+  const unlockInterface = new ethers.Interface(Unlock.abi)
 
   const calldata = unlockInterface.encodeFunctionData('setProtocolFee', [
     PROTOCOL_FEE_IN_BASIS_POINTS,
   ])
 
   // encode instructions to be executed by the SAFE
-  const moduleData = await ethers.defaultAbiCoder.encode(
+  const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+  const moduleData = await abiCoder.encode(
     ['address', 'uint256', 'bytes', 'bool'],
     [
       unlockAddress, // to
@@ -35,10 +36,10 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
     ]
   )
 
-  const oldProtocolFee = await unlockInterface.protocolFee()
   const explainers = [
     `- Protocol fee for ${unlockAddress} set to ${PROTOCOL_FEE_IN_BASIS_POINTS}
-  \`setProtocolFee(${PROTOCOL_FEE_IN_BASIS_POINTS})\` (Previous Protocol Fee: ${oldProtocolFee})`,
+  \`setProtocolFee(${PROTOCOL_FEE_IN_BASIS_POINTS})\`
+  `,
   ]
 
   return {
@@ -84,11 +85,15 @@ const parseBridgeCall = async ({ destChainId, moduleData }) => {
 
 module.exports = async () => {
   const explainers = []
-
+  const { unlockAddress } = await getNetwork(1)
   // get protocol fee call for mainnet
   console.log(`Parsing for Ethereum Mainnet (1)`)
-  const { calls: mainnetCalls, explainers: mainnetExplainers } =
+  const { moduleData: mainnetModuleData, explainers: mainnetExplainers } =
     await parseSetProtocolFeeCalls(1)
+  const mainnetCall = {
+    calldata: mainnetModuleData,
+    contractAddress: unlockAddress,
+  }
 
   explainers.push({
     name: 'Ethereum Mainnet',
@@ -112,7 +117,7 @@ module.exports = async () => {
     })
   }
 
-  const calls = [...mainnetCalls, ...bridgedCalls]
+  const calls = [...mainnetCall, ...bridgedCalls]
   console.log(explainers)
   // parse proposal
   const title = `Set Protocol Fee for Unlock Protocol`
