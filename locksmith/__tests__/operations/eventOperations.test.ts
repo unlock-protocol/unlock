@@ -78,7 +78,7 @@ describe('eventOperations', () => {
     })
 
     it('should not override previously set event data', async () => {
-      expect.assertions(3)
+      expect.assertions(6)
       const eventParams = getEventFixture({
         data: {
           name: 'my party',
@@ -97,6 +97,9 @@ describe('eventOperations', () => {
       })
       const [event] = await saveEvent(eventParams, '0x123')
       expect(event.data.ticket.event_end_date).toEqual('2024-05-22')
+      expect(event.data.ticket.event_address).toEqual(
+        '29 Little W 12th St, New York, NY 10014, USA'
+      )
 
       const [sameEvent] = await saveEvent(
         {
@@ -112,7 +115,11 @@ describe('eventOperations', () => {
         '0x123'
       )
       expect(sameEvent.slug).toEqual(event.slug)
-      expect(sameEvent.data.ticket.event_end_date).toEqual('2024-05-22')
+      expect(sameEvent.name).toEqual('name changed!')
+      expect(sameEvent.data.ticket.event_end_date).toEqual('2024-05-22') // unchanged
+      expect(sameEvent.data.ticket.event_address).toEqual(
+        'Central Park, New York, NY 10014, USA'
+      )
     })
 
     it('should save requiresAppoval when applicable', async () => {

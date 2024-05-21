@@ -1,7 +1,11 @@
 import dayjs from '../config/dayjs'
 import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
-import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
+import {
+  PaywallConfig,
+  getLockTypeByMetadata,
+  toFormData,
+} from '@unlock-protocol/core'
 import { CheckoutConfig, EventData } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
@@ -62,6 +66,11 @@ export const getEventForLock = async (
   })
   if (event && !includeProtected) {
     event.data = removeProtectedAttributesFromObject(event.data)
+  }
+  // Robustness principle: the front-end, as well as mailers expects a ticket object to be present
+  if (event) {
+    const ticket = toFormData(event?.data).ticket
+    event.data.ticket = defaultsDeep(ticket, event.data.ticket)
   }
   return event
 }
@@ -169,6 +178,12 @@ export const getEventBySlug = async (
       slug,
     },
   })
+  // Robustness principle: the front-end, as well as mailers expects a ticket object to be present
+  if (event) {
+    const ticket = toFormData(event?.data).ticket
+    event.data.ticket = defaultsDeep(ticket, event.data.ticket)
+  }
+
   if (event && !includeProtected) {
     event.data = removeProtectedAttributesFromObject(event.data)
   }
@@ -201,9 +216,12 @@ export const saveEvent = async (
     where: { slug },
   })
   if (previousEvent) {
-    data = defaultsDeep(previousEvent.data, {
-      ...parsed.data,
-    })
+    data = defaultsDeep(
+      {
+        ...parsed.data,
+      },
+      previousEvent.data
+    )
   } else {
     data = {
       ...parsed.data,
