@@ -168,7 +168,7 @@ export default ({ publicLockVersion }) =>
         tokenIds[0],
         chainId
       )
-      expect(owner).toEqual(keyOwners[0])
+      expect(owner).toBe(keyOwners[0])
 
       // 2nd key
       expect(keys[1].owner).toEqual(keyOwners[1])
