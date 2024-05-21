@@ -129,7 +129,7 @@ describe('CaptchaHook', function () {
         [await aThird.getAddress()],
         ['0x']
       ),
-      'ECDSA: invalid signature length'
+      'ECDSAInvalidSignatureLength'
     )
   })
 })
