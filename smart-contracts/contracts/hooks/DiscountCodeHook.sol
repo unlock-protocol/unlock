@@ -2,6 +2,7 @@
 pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV12.sol";
+import "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 error TOO_BIG();
 error NOT_AUTHORIZED();
@@ -86,7 +87,7 @@ contract DiscountHook {
     bytes calldata signature
   ) public pure returns (address recoveredAddress) {
     bytes32 hash = keccak256(abi.encodePacked(message));
-    bytes32 signedMessageHash = ECDSA.toEthSignedMessageHash(hash);
+    bytes32 signedMessageHash = MessageHashUtils.toEthSignedMessageHash(hash);
     return ECDSA.recover(signedMessageHash, signature);
   }
 

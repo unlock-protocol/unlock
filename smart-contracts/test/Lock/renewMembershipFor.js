@@ -221,7 +221,7 @@ describe('Lock / Recurring memberships', () => {
         // now reverts
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'ERC20: insufficient allowance'
+          'ERC20InsufficientAllowance'
         )
       })
 
@@ -250,7 +250,7 @@ describe('Lock / Recurring memberships', () => {
         // now funds are not enough
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'ERC20: transfer amount exceeds balance'
+          'ERC20InsufficientBalance'
         )
       })
     })
