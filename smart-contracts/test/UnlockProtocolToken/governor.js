@@ -12,15 +12,16 @@ const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
-describe('UnlockProtocolGovernor', () => {
+// default values
+const SIX_DAYS = 43200 // in blocks
+const votingDelay = SIX_DAYS //
+const votingPeriod = SIX_DAYS
+const defaultQuorum = BigInt('30000') * BigInt(10 ** 18)
+
+describe('UP Governor & Timelock', () => {
   let gov
   let udt
   let updateTx
-
-  // default values
-  const votingDelay = 1
-  const votingPeriod = 45818
-  const defaultQuorum = ethers.parseEther('15000')
 
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
@@ -35,7 +36,7 @@ describe('UnlockProtocolGovernor', () => {
 
     // wait for a block (default voting delay)
     const currentBlock = await ethers.provider.getBlockNumber()
-    await advanceBlockTo(currentBlock + 2)
+    await advanceBlock(BigInt(currentBlock + 1) + (await gov.votingDelay()))
 
     // now ready to receive votes
     assert.equal(await gov.state(proposalId), 1) // Active
@@ -73,26 +74,19 @@ describe('UnlockProtocolGovernor', () => {
 
   beforeEach(async () => {
     // deploying timelock with a proxy
-    const UnlockProtocolTimelock = await ethers.getContractFactory(
-      'UnlockProtocolTimelock'
-    )
+    const UPTimelock = await ethers.getContractFactory('UPTimelock')
 
-    const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
+    const timelock = await upgrades.deployProxy(UPTimelock, [
       1, // 1 second delay
       [], // proposers list is empty at deployment
       [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
     ])
 
     // deploy governor
-    const UnlockProtocolGovernor = await ethers.getContractFactory(
-      'UnlockProtocolGovernor'
-    )
+    const UPGovernor = await ethers.getContractFactory('UPGovernor')
 
-    gov = await upgrades.deployProxy(UnlockProtocolGovernor, [
+    gov = await upgrades.deployProxy(UPGovernor, [
       await udt.getAddress(),
-      votingDelay,
-      votingPeriod,
-      defaultQuorum,
       await timelock.getAddress(),
     ])
 
@@ -109,7 +103,7 @@ describe('UnlockProtocolGovernor', () => {
       assert.equal(await gov.votingPeriod(), votingPeriod)
     })
 
-    it('quorum is 15k UDT', async () => {
+    it('quorum is 30k UDT', async () => {
       assert.equal(await gov.quorum(1), defaultQuorum)
     })
   })
@@ -117,9 +111,9 @@ describe('UnlockProtocolGovernor', () => {
   describe('Update voting params', () => {
     it('should only be possible through voting', async () => {
       assert.equal(await gov.votingDelay(), votingDelay)
-      await reverts(gov.setVotingDelay(2), 'Governor: onlyGovernance')
-      await reverts(gov.setQuorum(2), 'Governor: onlyGovernance')
-      await reverts(gov.setVotingPeriod(2), 'Governor: onlyGovernance')
+      await reverts(gov.setVotingDelay(2), 'GovernorOnlyExecutor')
+      await reverts(gov.setQuorum(2), 'GovernorOnlyExecutor')
+      await reverts(gov.setVotingPeriod(2), 'GovernorOnlyExecutor')
     })
 
     beforeEach(async () => {
