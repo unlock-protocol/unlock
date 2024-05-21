@@ -42,7 +42,8 @@
     "paywall-app",
     "wedlocks",
     "provider",
-    "docs"
+    "docs",
+    "docker/development/eth-node"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

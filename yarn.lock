@@ -20988,6 +20988,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@unlock-protocol/eth-node@workspace:docker/development/eth-node":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/eth-node@workspace:docker/development/eth-node"
+  dependencies:
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
+    "@unlock-protocol/contracts": "workspace:^"
+    "@unlock-protocol/hardhat-plugin": "workspace:^"
+    "@unlock-protocol/networks": "workspace:^"
+    eslint: "npm:8.57.0"
+    ethers: "npm:6.10.0"
+    fs-extra: "npm:11.2.0"
+    hardhat: "npm:2.22.3"
+    hardhat-erc1820: "npm:0.1.0"
+    ts-node: "npm:10.9.2"
+    typescript: "npm:5.4.5"
+  languageName: unknown
+  linkType: soft
+
 "@unlock-protocol/governance@workspace:governance":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/governance@workspace:governance"
