@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { ethers } from 'ethers'
+import { ethers, formatEther } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
 
 async function getGdpForNetwork({
@@ -25,7 +24,7 @@ async function getGdpForNetwork({
           provider
         )
         const previousGnp = await previousContract.grossNetworkProduct()
-        gnp = previousGnp.add(gnp)
+        gnp = previousGnp + gnp
       } catch (error) {
         console.error(
           `Error retrieving GNP for ${name} at ${previousDeploys[i].name}`,
@@ -53,7 +52,7 @@ export async function getGNPs() {
         if (!unlockAddress) {
           return null
         }
-        const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
+        const provider = new ethers.JsonRpcProvider(providerUrl)
         const gdp = await getGdpForNetwork({
           provider,
           unlockAddress,
@@ -61,7 +60,7 @@ export async function getGNPs() {
           name,
           id,
         })
-        const total = parseFloat(ethers.utils.formatUnits(gdp, '18'))
+        const total = parseFloat(formatEther(gdp))
         return {
           total,
           chain,
