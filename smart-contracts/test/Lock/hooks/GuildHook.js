@@ -82,7 +82,7 @@ describe('GuildHook', function () {
         [await aThird.getAddress()],
         ['0x']
       ),
-      'ECDSA: invalid signature length'
+      'ECDSAInvalidSignatureLength'
     )
   })
 
@@ -105,7 +105,7 @@ describe('GuildHook', function () {
     const anotherSigner = ethers.Wallet.createRandom()
     await reverts(
       hook.addSigner(await anotherSigner.getAddress()),
-      'Ownable: caller is not the owner'
+      'OwnableUnauthorizedAccount'
     )
     expect(await hook.signers(await anotherSigner.getAddress())).to.equal(false)
 
