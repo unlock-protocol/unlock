@@ -12,6 +12,9 @@
     "provision": "hardhat run scripts/provision.ts",
     "start": "hardhat node"
   },
+  "workspaces": [
+    "packages/**"
+  ],
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@unlock-protocol/contracts": "workspace:^",
