@@ -5,8 +5,7 @@ export const mainnet: NetworkConfig = {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
   chain: 'ethereum',
-  description:
-    'The original and most secure EVM network. Gas fees are expensive on this network.',
+  description: 'The original and most secure EVM network. ',
   explorer: {
     name: 'Etherscan',
     urls: {

@@ -122,9 +122,8 @@ describe('Unlock Provider', () => {
           recipient: publicKey,
           lock: '0xaC6b4470B0cba92b823aB96762972e67a1C851d5',
         }
-        const { data, signature } = await provider.signKeyPurchaseRequestData(
-          input
-        )
+        const { data, signature } =
+          await provider.signKeyPurchaseRequestData(input)
         const currentTime = Math.floor(Date.now() / 1000)
 
         const { domain, types, message, messageKey } = data

@@ -1,6 +1,6 @@
 export default {
   subject: 'Your event {{eventName}} is live onchain!',
-  html: `<h1>You are invited to {{eventName}}!</h1>
+  html: `<h1>Your event is live onchain!</h1>
 
 <p>
   <strong>Congratulations</strong>! Now, it's time to share your beautiful new event page and invite attendees to RSVP!

@@ -93,7 +93,7 @@ export const UpdateDurationForm = ({
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <label className="block px-1 text-base" htmlFor="">
-            Membership duration (in days):
+            Membership duration:
           </label>
           <ToggleSwitch
             title="Unlimited"
@@ -122,7 +122,7 @@ export const UpdateDurationForm = ({
               required: !unlimitedDuration,
               min: 0,
             })}
-            placeholder="Enter duration"
+            placeholder="In days"
             type="number"
             error={errors?.expirationDuration && 'Please enter amount of days.'}
           />

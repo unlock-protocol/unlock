@@ -12,50 +12,51 @@ describe('GitcoinHook', function () {
     })
     const GitcoinHook = await ethers.getContractFactory('GitcoinHook')
     const hook = await GitcoinHook.deploy()
-    await hook.deployed()
-    await hook.addSigner(signer.address)
+
+    await hook.addSigner(await signer.getAddress())
 
     // Set the hook on avatar
     await (
       await lock.setEventHooks(
-        hook.address,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero,
-        ethers.constants.AddressZero
+        await hook.getAddress(),
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress,
+        ethers.ZeroAddress
       )
     ).wait()
 
-    const messageHash = ethers.utils.solidityKeccak256(
+    const messageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [user.address.toLowerCase()]
+      [(await user.getAddress()).toLowerCase()]
     )
-    const signedMessage = await signer.signMessage(
-      ethers.utils.arrayify(messageHash)
-    )
+    const signedMessage = await signer.signMessage(ethers.getBytes(messageHash))
 
-    const anotherMessageHash = ethers.utils.solidityKeccak256(
+    const anotherMessageHash = ethers.solidityPackedKeccak256(
       ['string'],
-      [another.address.toLowerCase()]
+      [(await another.getAddress()).toLowerCase()]
     )
     const anotherSignedMessage = await signer.signMessage(
-      ethers.utils.arrayify(anotherMessageHash)
+      ethers.getBytes(anotherMessageHash)
     )
 
     // Health check!
     expect(
-      ethers.utils.verifyMessage(user.address.toLowerCase(), signedMessage),
-      signer.address
+      ethers.verifyMessage(
+        (await user.getAddress()).toLowerCase(),
+        signedMessage
+      ),
+      await signer.getAddress()
     )
 
     // purchase a key
     const tx = await lock.purchase(
       [0],
-      [user.address, another.address],
-      [user.address, another.address],
-      [user.address, another.address],
+      [await user.getAddress(), await another.getAddress()],
+      [await user.getAddress(), await another.getAddress()],
+      [await user.getAddress(), await another.getAddress()],
       [signedMessage, anotherSignedMessage]
     )
     await tx.wait()
@@ -64,9 +65,9 @@ describe('GitcoinHook', function () {
     await reverts(
       lock.purchase(
         [0],
-        [aThird.address],
-        [aThird.address],
-        [aThird.address],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
         [signedMessage]
       ),
       'WRONG_SIGNATURE'
@@ -76,10 +77,10 @@ describe('GitcoinHook', function () {
     await reverts(
       lock.purchase(
         [0],
-        [aThird.address],
-        [aThird.address],
-        [aThird.address],
-        [[]]
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        [await aThird.getAddress()],
+        ['0x']
       ),
       'ECDSA: invalid signature length'
     )
@@ -90,31 +91,30 @@ describe('GitcoinHook', function () {
     const signer = ethers.Wallet.createRandom()
     const GitcoinHook = await ethers.getContractFactory('GitcoinHook')
     const hook = await GitcoinHook.deploy()
-    await hook.deployed()
 
     // Add a signer
-    await hook.addSigner(signer.address)
-    expect(await hook.signers(signer.address)).to.equal(true)
-    expect(await hook.owner()).to.equal(user.address)
+    await hook.addSigner(await signer.getAddress())
+    expect(await hook.signers(await signer.getAddress())).to.equal(true)
+    expect(await hook.owner()).to.equal(await user.getAddress())
 
     // Transfer ownership
-    expect(hook.transferOwnership(anotherUser.address))
-    expect(await hook.owner()).to.equal(anotherUser.address)
+    await hook.transferOwnership(await anotherUser.getAddress())
+    expect(await hook.owner()).to.equal(await anotherUser.getAddress())
 
     // Add a signer again from previous owner
     const anotherSigner = ethers.Wallet.createRandom()
     await reverts(
-      hook.addSigner(anotherSigner.address),
+      hook.addSigner(await anotherSigner.getAddress()),
       'Ownable: caller is not the owner'
     )
-    expect(await hook.signers(anotherSigner.address)).to.equal(false)
+    expect(await hook.signers(await anotherSigner.getAddress())).to.equal(false)
 
     // Add a signer from new owner
-    await hook.connect(anotherUser).addSigner(anotherSigner.address)
-    expect(await hook.signers(anotherSigner.address)).to.equal(true)
+    await hook.connect(anotherUser).addSigner(await anotherSigner.getAddress())
+    expect(await hook.signers(await anotherSigner.getAddress())).to.equal(true)
 
     // Remove signer from new owner
-    await hook.connect(anotherUser).removeSigner(signer.address)
-    expect(await hook.signers(signer.address)).to.equal(false)
+    await hook.connect(anotherUser).removeSigner(await signer.getAddress())
+    expect(await hook.signers(await signer.getAddress())).to.equal(false)
   })
 })

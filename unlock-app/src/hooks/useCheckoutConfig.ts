@@ -26,6 +26,25 @@ export const useCheckoutConfig = ({ id }: CheckoutConfigOptions) => {
   )
 }
 
+export const useCheckoutConfigsByUserAndLock = ({
+  lockAddress,
+}: {
+  lockAddress: string
+}) => {
+  const { account } = useAuth()
+  return useQuery(['checkoutConfigsByUser', account!], async () => {
+    const response = await storage.listCheckoutConfigs()
+    const locks = response.data.results?.filter((config) => {
+      const configLocks = Object.keys(config.config.locks || {}).map(
+        (lockAddress: string) => lockAddress.toLowerCase()
+      )
+      return configLocks.includes(lockAddress.toLowerCase())
+    })
+
+    return locks
+  })
+}
+
 export const useCheckoutConfigsByUser = () => {
   const { account } = useAuth()
   return useQuery(['checkoutConfigsByUser', account!], async () => {

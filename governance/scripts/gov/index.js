@@ -1,6 +1,8 @@
 const { ethers } = require('hardhat')
 const { mine } = require('@nomicfoundation/hardhat-network-helpers')
 const { getQuorum, getGovTokenAddress } = require('../../helpers/gov')
+const { parseXCalledEvents } = require('../../helpers/bridge')
+const { simulateDestCalls } = require('../../helpers/crossChain')
 const { addUDT, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const { UnlockDiscountTokenV2 } = require('@unlock-protocol/contracts')
 
@@ -79,6 +81,10 @@ async function main({ proposal, proposalId, govAddress, txId }) {
 
   // log all events
   console.log(logs)
+
+  // simulate bridge calls
+  const xCalled = await parseXCalledEvents(logs)
+  await simulateDestCalls(xCalled)
 }
 
 // execute as standalone
