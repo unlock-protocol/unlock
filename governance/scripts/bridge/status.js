@@ -22,7 +22,7 @@ const filepath = './xcalled.json.tmp'
 
 async function main({
   // TODO: pass this hash via cli
-  txId = '0x12d380bb7f995930872122033988524727a9f847687eede0b4e1fb2dcb8fce68',
+  txId = '0xaa9c5da11ccb270ce2760ddcd64f2be8d56702c7aeaa32ef8da1536e7e7e4e98',
 } = {}) {
   const xCalls = await getXCalledEventsFromTx(txId)
 
@@ -91,7 +91,6 @@ async function main({
   }
 
   // log all results
-
   Object.keys(statuses).map((transferId) =>
     logStatus(transferId, statuses[transferId])
   )

@@ -439,18 +439,25 @@ const getDelayModule = async (delayModuleAddress) => {
   return { delayMod, currentNonce, queueNonce }
 }
 
-const logStatus = (transferId, status) => {
-  const { dest } = status
-  const { explorer, name, id } = networks[dest.chainId]
-  console.log(`To ${name} (${id}) https://connextscan.io/tx/${transferId} (${
-    dest.status
-  })
-    - executedTransactionHash: ${explorer.urls.transaction(
-      dest.executedTransactionHash
-    )}
-    - reconciledTransactionHash ${explorer.urls.transaction(
-      dest.reconciledTransactionHash
-    )}\n`)
+const logStatus = (transferId, { origin, dest }) => {
+  if (origin) {
+    const { name, id } = networks[origin.chainId]
+    console.log(
+      `From ${name} (${id}) https://connextscan.io/tx/${transferId} - status: ${origin.status}`
+    )
+  }
+  if (dest) {
+    const { explorer, name, id } = networks[dest.chainId]
+    console.log(`To ${name} (${id}) https://connextscan.io/tx/${transferId} (${
+      dest.status
+    })
+      - executedTransactionHash: ${explorer.urls.transaction(
+        dest.executedTransactionHash
+      )}
+      - reconciledTransactionHash ${explorer.urls.transaction(
+        dest.reconciledTransactionHash
+      )}\n`)
+  }
 }
 
 module.exports = {

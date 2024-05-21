@@ -112,6 +112,7 @@ const connextSubgraphIds = {
   10: `3115xfkzXPrYzbqDHTiWGtzRDYNXBxs8dyitva6J18jf`, //optimims
   42161: `F325dMRiLVCJpX8EUFHg3SX8LE3kXBUmrsLRASisPEQ3`, // arb
   100: `6oJrPk9YJEU9rWU4DAizjZdALSccxe5ZahBsTtFaGksU`, //gnosis
+  8453: `4YtEYNhpX6x1G21wra23DQF871yNs62D6H2E98EY3uCd`, // base
 }
 
 const connextSubgraphURL = (chainId) => {
