@@ -36,6 +36,7 @@ interface CreateLockFormProps {
 
 export const networkDescription = (network: number) => {
   const { description, url, faucet, nativeCurrency } = networks[network!]
+  console.log(description)
   return (
     <>
       {description}{' '}
@@ -323,6 +324,21 @@ export const CreateLockForm = ({
                       required: !isFree,
                     })}
                   />
+                </div>
+                <div className="text-gray-600 text-sm">
+                  <p>
+                    You can select any ERC20 currency deployed on{' '}
+                    {networks[selectedNetwork!].name}
+                  </p>
+                  <Link
+                    className="underline"
+                    href={
+                      'https://unlock-protocol.com/guides/using-a-custom-currency/'
+                    }
+                    target="_blank"
+                  >
+                    Learn more
+                  </Link>
                 </div>
                 {errors?.keyPrice && (
                   <span className="absolute text-xs text-red-700 ">
