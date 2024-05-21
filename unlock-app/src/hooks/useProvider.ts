@@ -30,7 +30,7 @@ export const useProvider = (config: any) => {
   const { openConnectModalAsync, closeConnectModal } = useConnectModal()
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
-  const [network, setNetwork] = useState<number | null | undefined>(
+  const [network, setNetwork] = useState<number | undefined>(
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
@@ -208,7 +208,7 @@ export const useProvider = (config: any) => {
     )
     try {
       // unlock provider does not support removing listeners or closing.
-      if (!provider?.isUnlock) {
+      if (provider && !provider?.isUnlock) {
         provider.provider.removeAllListeners()
         // metamask does not support disconnect
         if (provider?.connection?.url !== 'metamask') {
@@ -248,7 +248,7 @@ export const useProvider = (config: any) => {
   return {
     loading,
     network,
-    account,
+    account: provider ? account : undefined,
     email,
     getWalletService,
     isUnlockAccount,
