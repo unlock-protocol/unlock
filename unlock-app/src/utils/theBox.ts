@@ -112,11 +112,11 @@ export const getCrossChainRoutes = async ({
     await Promise.all(
       BoxChains.filter((boxChain: BoxChainInfo) => {
         if (
-          boxChain.id === lock.network ||
-          !lock.currencyContractAddress ||
-          lock.currencyContractAddress === ADDRESS_ZERO
+          boxChain.id === lock.network &&
+          (!lock.currencyContractAddress ||
+            lock.currencyContractAddress === ADDRESS_ZERO)
         ) {
-          return false // No need to go look for the lock itself.? Maybe?
+          return false // Not checking the chain's lock.
         }
         const network = networks[boxChain.id]
         return !!network && !network.isTestNetwork
