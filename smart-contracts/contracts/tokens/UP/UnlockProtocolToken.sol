@@ -13,17 +13,22 @@ contract UnlockProtocolToken is
   ERC20PermitUpgradeable,
   OwnableUpgradeable
 {
+  uint public constant TOTAL_SUPPLY = 1_000_000_000;
+
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
   }
 
-  function initialize(address initialOwner) public initializer {
+  function initialize(
+    address initialOwner,
+    address preMinter
+  ) public initializer {
     __ERC20_init("UnlockProtocolToken", "UP");
     __ERC20Permit_init("UnlockProtocolToken");
     __Ownable_init(initialOwner);
 
     // premint the supply
-    _mint(address(this), 1000000000 * 10 ** decimals());
+    _mint(preMinter, TOTAL_SUPPLY * 10 ** decimals());
   }
 }
