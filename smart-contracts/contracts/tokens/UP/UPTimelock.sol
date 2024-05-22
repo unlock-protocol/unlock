@@ -7,8 +7,9 @@ contract UPTimelock is TimelockControllerUpgradeable {
   function initialize(
     uint256 minDelay,
     address[] memory proposers,
-    address[] memory executors
+    address[] memory executors,
+    address admin
   ) public initializer {
-    __TimelockController_init(minDelay, proposers, executors, msg.sender);
+    __TimelockController_init(minDelay, proposers, executors, admin);
   }
 }

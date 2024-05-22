@@ -75,6 +75,7 @@ describe('UP Governor & Timelock', () => {
   })
 
   beforeEach(async () => {
+    const [timelockAdmin] = await ethers.getSigners()
     // deploying timelock with a proxy
     const UPTimelock = await ethers.getContractFactory('UPTimelock')
 
@@ -82,6 +83,7 @@ describe('UP Governor & Timelock', () => {
       1, // 1 second delay
       [], // proposers list is empty at deployment
       [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
+      await timelockAdmin.getAddress(),
     ])
 
     // deploy governor
