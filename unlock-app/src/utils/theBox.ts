@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 import { networks } from '@unlock-protocol/networks'
 import { ADDRESS_ZERO } from '~/constants'
+import { BoxChainInfo, BoxChains } from '@decent.xyz/box-common'
 
 export interface BoxActionRequest {
   sender: string
@@ -55,34 +56,22 @@ export const getCrossChainRoutes = async ({
   referrers,
   purchaseData,
 }: getCrossChainRoutesParams): Promise<CrossChainRoute[]> => {
-  const baseUrl = 'https://box-v1.api.decent.xyz/api/getBoxAction'
-  const apiKey = '9f3ef983290e05e38264f4eb65e09754'
+  const baseUrl = 'https://box-v2.api.decent.xyz/api/getBoxAction'
+  const apiKey = '6477b3b3671589d81df0cba67ba9f3e6'
   const actionRequest: BoxActionRequest = {
-    srcChainId: 1, // we be replaced when looping over networks
+    actionType: 'evm-function',
     sender,
+
     srcToken: ADDRESS_ZERO, // use the native token. Later: check the user balances!
-    dstChainId: lock.network,
     dstToken: lock.currencyContractAddress || ADDRESS_ZERO,
     slippage: 1, // 1%
-    actionType: 'nft-mint',
+
+    srcChainId: 1, // will be replaced when looping over networks
+    dstChainId: lock.network,
     actionConfig: {
-      contractAddress: lock.address,
       chainId: lock.network,
-      signature:
-        'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])', // We need to get this from walletService!
-      args: [
-        prices.map((price) => {
-          const priceInBigNumber = ethers.utils.parseUnits(
-            price.amount.toString(),
-            price.decimals
-          )
-          return priceInBigNumber.toBigInt()
-        }),
-        recipients,
-        referrers,
-        keyManagers,
-        purchaseData,
-      ],
+      contractAddress: lock.address,
+
       cost: {
         isNative: true,
         amount: prices
@@ -98,16 +87,44 @@ export const getCrossChainRoutes = async ({
           )
           .toBigInt(),
       },
+
+      signature: encodeURIComponent(
+        'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])'
+      ), // We need to get this from walletService!
+
+      args: [
+        prices.map((price) => {
+          const priceInBigNumber = ethers.utils.parseUnits(
+            price.amount.toString(),
+            price.decimals
+          )
+          return priceInBigNumber.toBigInt()
+        }),
+        recipients,
+        referrers,
+        keyManagers,
+        purchaseData,
+      ],
     },
   }
 
   const routes: CrossChainRoute[] = (
     await Promise.all(
-      Object.values(networks)
-        .filter((network) => {
-          return !network.isTestNetwork && network.id !== lock.network
-        })
-        .map(async (network): Promise<CrossChainRoute | undefined> => {
+      BoxChains.filter((boxChain: BoxChainInfo) => {
+        if (
+          boxChain.id === lock.network &&
+          (!lock.currencyContractAddress ||
+            lock.currencyContractAddress === ADDRESS_ZERO)
+        ) {
+          return false // Not checking the chain's lock.
+        }
+        const network = networks[boxChain.id]
+        return !!network && !network.isTestNetwork
+      }).map(
+        async (
+          boxChain: BoxChainInfo
+        ): Promise<CrossChainRoute | undefined> => {
+          const network = networks[boxChain.id]
           const query = JSON.stringify(
             {
               ...actionRequest,
@@ -141,7 +158,8 @@ export const getCrossChainRoutes = async ({
             } as CrossChainRoute
           }
           return
-        })
+        }
+      )
     )
   ).filter<CrossChainRoute>(
     (route: CrossChainRoute | undefined): route is CrossChainRoute => {
