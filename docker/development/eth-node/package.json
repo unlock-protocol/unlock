@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@nomicfoundation/hardhat-ethers": "3.0.5",
-    "@unlock-protocol/contracts": "./packages/contracts",
-    "@unlock-protocol/hardhat-plugin": "./packages/hardhat-plugin",
-    "@unlock-protocol/networks": "./packages/networks",
+    "@unlock-protocol/contracts": "file:../../../packages/contracts",
+    "@unlock-protocol/hardhat-plugin": "file:../../../packages/hardhat-plugin",
+    "@unlock-protocol/networks": "file:../../../packages/networks",
     "eslint": "8.57.0",
     "ethers": "6.12.1",
     "fs-extra": "11.2.0",
