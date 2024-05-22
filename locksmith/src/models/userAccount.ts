@@ -28,7 +28,13 @@ UserAccount.init(
       unique: true,
     },
     loginMethod: {
-      type: DataTypes.ENUM,
+      type: DataTypes.ENUM(
+        'unlockAccount',
+        'googleAccount',
+        'passkeyAccout',
+        'emailCodeAccount',
+        'none'
+      ),
       allowNull: false,
     },
     createdAt: {

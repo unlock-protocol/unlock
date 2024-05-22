@@ -290,17 +290,12 @@ export const eject = async (req: Request, res: Response) => {
 
 export const exist = async (request: Request, response: Response) => {
   const { emailAddress } = request.params
-  const unlockUser = await UserOperations.findByEmail(emailAddress)
+  const userAccountType = await UserOperations.findTypeByEmail(emailAddress)
 
-  if (!unlockUser) {
-    // TODO: Handle different account types
-    return response
-      .status(404)
-      .json({ userAccountType: UserAccountType.GoogleAccount })
+  if (!userAccountType) {
+    return response.sendStatus(404)
   }
-  return response
-    .status(200)
-    .json({ userAccountType: UserAccountType.UnlockAccount })
+  return response.status(200).json({ userAccountType })
 }
 
 const UserController = {

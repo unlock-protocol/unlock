@@ -6,6 +6,8 @@ import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
 import { User, UserReference } from '../models'
 import RecoveryPhrase from '../utils/recoveryPhrase'
+import { UserAccount } from '../models/userAccount'
+import { UserAccountType } from '../controllers/userController'
 
 export const createUser = async (
   input: UserCreationInput
@@ -195,12 +197,45 @@ export const eject = async (publicKey: ethereumAddress): Promise<any> => {
 }
 
 export const findByEmail = async (emailAddress: string) => {
-  const user = await UserReference.findOne({
+  const user = await UserAccount.findOne({
     where: {
       emailAddress: Normalizer.emailAddress(emailAddress),
     },
   })
+
+  if (!user) {
+    const unlockUser = await UserReference.findOne({
+      where: {
+        emailAddress: Normalizer.emailAddress(emailAddress),
+      },
+    })
+
+    return unlockUser
+  }
+
   return user
+}
+
+export const findTypeByEmail = async (emailAddress: string) => {
+  const user = await UserAccount.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+
+  if (!user) {
+    const unlockUser = await UserReference.findOne({
+      where: {
+        emailAddress: Normalizer.emailAddress(emailAddress),
+      },
+    })
+
+    if (!unlockUser) return null
+
+    return UserAccountType.UnlockAccount
+  }
+
+  return user.loginMethod
 }
 
 export const findByWalletAddress = async (walletAddress: string) => {
@@ -225,6 +260,7 @@ const UserOperations = {
   getCardDetailsFromStripe,
   eject,
   findByEmail,
+  findTypeByEmail,
 }
 
 export default UserOperations
