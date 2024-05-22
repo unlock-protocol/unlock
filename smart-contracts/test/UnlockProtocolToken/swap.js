@@ -12,11 +12,11 @@ const parseLogs = (logs, interface) =>
   })
 
 describe('UPSwap / swap UDT for UP', () => {
-  let owner, preMinter, sender, recipient
+  let owner, preMinter, sender, recipient, random
   let up, udt, swap
 
   before(async () => {
-    ;[owner, preMinter, sender, recipient] = await ethers.getSigners()
+    ;[owner, preMinter, sender, recipient, random] = await ethers.getSigners()
 
     const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
     udt = await upgrades.deployProxy(UDT, [await preMinter.getAddress()], {
@@ -106,10 +106,10 @@ describe('UPSwap / swap UDT for UP', () => {
         parsedLogs = parseLogs(receipt.logs, udt.interface)
       })
 
-      it('UP has been sent', async () => {
+      it('UP has been sent to recipient', async () => {
         assert.equal(await up.balanceOf(await recipient.getAddress()), amount)
       })
-      it('UDT has been transferred', async () => {
+      it('UDT has been transferred to swap contract', async () => {
         assert.equal(
           await udt.balanceOf(await swap.getAddress()),
           swapBalanceBefore + amount
@@ -147,6 +147,110 @@ describe('UPSwap / swap UDT for UP', () => {
       })
       it('fired custom event', async () => {
         const { args } = await getEvent(receipt, 'UDTSwapped')
+        assert.equal(await sender.getAddress(), args.sender)
+        assert.equal(await recipient.getAddress(), args.recipient)
+        assert.equal(amount, args.amount)
+      })
+    })
+  })
+
+  describe('swapUPforUDT', () => {
+    before(async () => {
+      // before all, get sender some UP token
+      await udt.connect(preMinter).mint(await sender.getAddress(), amount)
+      await udt.connect(sender).approve(await swap.getAddress(), amount)
+      // swap to itself
+      await swap.swapUDTForUP(
+        await sender.getAddress(),
+        amount,
+        await sender.getAddress()
+      )
+    })
+    describe('reverts', () => {
+      it('when balance is too low', async () => {
+        await reverts(
+          swap.swapUPforUDT(
+            await random.getAddress(),
+            amount,
+            await recipient.getAddress()
+          ),
+          'BalanceTooLow'
+        )
+      })
+      it('when allowance is not properly set', async () => {
+        await reverts(
+          swap.swapUPforUDT(
+            await sender.getAddress(),
+            amount,
+            await recipient.getAddress()
+          ),
+          'AllowanceTooLow'
+        )
+      })
+    })
+
+    describe('swap', () => {
+      let receipt, parsedLogs
+      let senderBalanceBefore
+      let swapBalanceBefore
+
+      before(async () => {
+        // prepare allowance
+        await up.connect(sender).approve(await swap.getAddress(), amount)
+
+        // get balances
+        senderBalanceBefore = await up.balanceOf(await sender.getAddress())
+        swapBalanceBefore = await up.balanceOf(await swap.getAddress())
+
+        // do the swap
+        const tx = await swap.swapUPforUDT(
+          await sender.getAddress(),
+          amount,
+          await recipient.getAddress()
+        )
+
+        // parse receipt
+        receipt = await tx.wait()
+        parsedLogs = parseLogs(receipt.logs, up.interface)
+      })
+
+      it('UDT has been sent to recipient', async () => {
+        assert.equal(await udt.balanceOf(await recipient.getAddress()), amount)
+      })
+      it('UP has been transferred to contract', async () => {
+        assert.equal(
+          await up.balanceOf(await swap.getAddress()),
+          swapBalanceBefore + amount
+        )
+        assert.equal(
+          await up.balanceOf(await sender.getAddress()),
+          senderBalanceBefore - amount
+        )
+      })
+
+      it('allowance is reset', async () => {
+        assert.equal(
+          await up.allowance(
+            await sender.getAddress(),
+            await swap.getAddress()
+          ),
+          0n
+        )
+
+        // approval reset event has NOT been fired (udt contract)
+        const approvals = parsedLogs.filter(
+          ({ fragment }) => fragment.name === 'Approval'
+        )
+        assert.equal(approvals.length, 0)
+      })
+      it('fired Transfer events', async () => {
+        const transfers = parsedLogs.filter(
+          ({ fragment }) => fragment.name === 'Transfer'
+        )
+        assert.equal(transfers.length, 2)
+      })
+      it('fired custom event', async () => {
+        const { args } = await getEvent(receipt, 'UPSwapped')
         assert.equal(await sender.getAddress(), args.sender)
         assert.equal(await recipient.getAddress(), args.recipient)
         assert.equal(amount, args.amount)
