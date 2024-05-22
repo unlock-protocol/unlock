@@ -54,8 +54,12 @@ export const GoogleMapsAutoComplete = ({
     },
     apiKey: config.googleMapsApiKey,
     onPlaceSelected: (place, inputRef) => {
+      if (place.formatted_address) {
+        // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
+        return onChange(`${inputRef.value}, ${place.formatted_address}`)
+      }
       // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
-      return onChange(`${inputRef.value}, ${place.formatted_address}`)
+      return onChange(inputRef.value)
     },
   })
 
