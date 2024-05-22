@@ -10,6 +10,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface UserDetails {
   email: string
@@ -254,7 +255,9 @@ export const ConnectUnlockAccount = ({
   const onEmail = useCallback(
     async ({ email }: { email: string }) => {
       try {
-        const existingUser = await storageService.userExist(email)
+        const existingUser =
+          (await storageService.getUserAccountType(email)) ===
+          UserAccountType.UnlockAccount
         setIsValidEmail(existingUser)
       } catch (error) {
         if (error instanceof Error) {
