@@ -42,7 +42,6 @@ contract UPGovernor is
     _quorum = 30000e18;
   }
 
-  // quorum set to 30k
   function quorum(uint256) public view override returns (uint256) {
     return _quorum;
   }
