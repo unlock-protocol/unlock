@@ -6,11 +6,17 @@ import "@openzeppelin/contracts-upgradeable5/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
 
 contract UPSwap is Initializable, OwnableUpgradeable {
-  uint constant RATE = 1000;
+  // 1 UDT for 100 UP
+  uint public constant RATE = 1000;
 
+  // pause swap if necessary
+  bool public swapIsPaused;
+
+  // tokens
   IERC20 public up;
   IERC20 public udt;
 
+  // errors
   error AllowanceTooLow();
   error BalanceTooLow(
     address tokenAddress,
@@ -18,7 +24,9 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     uint expectedAmount
   );
   error TransferFailed(address tokenAddress);
+  error SwapPaused();
 
+  // events
   event UPSwapped(
     address sender,
     uint amountUDT,
@@ -37,6 +45,13 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     _disableInitializers();
   }
 
+  modifier swapIsOn() {
+    if (swapIsPaused) {
+      revert SwapPaused();
+    }
+    _;
+  }
+
   function initialize(
     address _up,
     address _udt,
@@ -47,13 +62,16 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     // store addresses
     up = IERC20(_up);
     udt = IERC20(_udt);
+
+    // swap enable by default
+    swapIsPaused = false;
   }
 
   function swapUDTForUP(
     address sender,
     uint amountUDT,
     address recipient
-  ) public {
+  ) public swapIsOn {
     // check balance
     if (udt.balanceOf(sender) < amountUDT) {
       revert BalanceTooLow(address(udt), sender, amountUDT);
@@ -82,11 +100,11 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     emit UDTSwapped(sender, amountUDT, amountUP, recipient);
   }
 
-  function swapUPforUDT(
+  function swapUPForUDT(
     address sender,
     uint amountUP,
     address recipient
-  ) public {
+  ) public swapIsOn {
     // check balance
     if (up.balanceOf(sender) < amountUP) {
       revert BalanceTooLow(address(up), sender, amountUP);
@@ -124,4 +142,8 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     address recipient,
     bytes calldata signature
   ) public {}
+
+  function pauseSwap(bool _swapIsPaused) public onlyOwner {
+    swapIsPaused = _swapIsPaused;
+  }
 }

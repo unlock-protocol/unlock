@@ -51,9 +51,53 @@ describe('UPSwap / swap UDT for UP', () => {
       assert.equal(await swap.udt(), await udt.getAddress())
     })
   })
+
   describe('contract ownership', () => {
     it('is properly set', async () => {
       assert.equal(await owner.getAddress(), await swap.owner())
+    })
+  })
+
+  describe('pausable', () => {
+    describe('pauseSwap', () => {
+      it('default to false', async () => {
+        assert.equal(await swap.swapIsPaused(), false)
+      })
+      it('properly set pause', async () => {
+        await swap.connect(owner).pauseSwap(true)
+        assert.equal(await swap.swapIsPaused(), true)
+        await swap.connect(owner).pauseSwap(false)
+        assert.equal(await swap.swapIsPaused(), false)
+      })
+      it('can only be set by owner', async () => {
+        await reverts(swap.connect(random).pauseSwap(true), 'Ownable')
+      })
+    })
+    describe('pause swapping when active', () => {
+      before(async () => {
+        await swap.connect(owner).pauseSwap(true)
+      })
+      it('prevent swap from happening', async () => {
+        await reverts(
+          swap.swapUDTForUP(
+            await sender.getAddress(),
+            amountUDT,
+            await recipient.getAddress()
+          ),
+          `SwapPaused`
+        )
+        await reverts(
+          swap.swapUPForUDT(
+            await sender.getAddress(),
+            amountUDT,
+            await recipient.getAddress()
+          ),
+          `SwapPaused`
+        )
+      })
+      after(async () => {
+        await swap.connect(owner).pauseSwap(false)
+      })
     })
   })
 
@@ -156,7 +200,7 @@ describe('UPSwap / swap UDT for UP', () => {
     })
   })
 
-  describe('swapUPforUDT', () => {
+  describe('swapUPForUDT', () => {
     before(async () => {
       // before all, get sender some UP tokens
       await udt.connect(preMinter).mint(await sender.getAddress(), amountUDT)
@@ -173,7 +217,7 @@ describe('UPSwap / swap UDT for UP', () => {
     describe('reverts', () => {
       it('when sender UP balance is too low', async () => {
         await reverts(
-          swap.swapUPforUDT(
+          swap.swapUPForUDT(
             await random.getAddress(),
             amountUP,
             await recipient.getAddress()
@@ -183,7 +227,7 @@ describe('UPSwap / swap UDT for UP', () => {
       })
       it('when UP allowance is not properly set', async () => {
         await reverts(
-          swap.swapUPforUDT(
+          swap.swapUPForUDT(
             await sender.getAddress(),
             amountUP,
             await recipient.getAddress()
@@ -207,7 +251,7 @@ describe('UPSwap / swap UDT for UP', () => {
         swapBalanceBefore = await up.balanceOf(await swap.getAddress())
 
         // do the swap
-        const tx = await swap.swapUPforUDT(
+        const tx = await swap.swapUPForUDT(
           await sender.getAddress(),
           amountUP,
           await recipient.getAddress()
