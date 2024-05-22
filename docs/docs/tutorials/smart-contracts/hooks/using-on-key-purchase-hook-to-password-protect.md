@@ -74,7 +74,7 @@ contract PurchaseHook {
   constructor() {}
 
   /**
-   * Function that is called at the begining of the
+   * Function that is called at the beginning of the
    * `purchase` function on the Public Lock contract.
    * It is expected to return the price that has to be
    * paid by the purchaser (as a uint256). If this
