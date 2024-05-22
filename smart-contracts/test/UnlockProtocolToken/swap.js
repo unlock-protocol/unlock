@@ -3,7 +3,8 @@ const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-const amount = ethers.parseEther('10')
+const amountUDT = ethers.parseEther('1')
+const amountUP = ethers.parseEther('1000')
 
 const parseLogs = (logs, interface) =>
   logs.map((log) => {
@@ -50,7 +51,7 @@ describe('UPSwap / swap UDT for UP', () => {
       assert.equal(await swap.udt(), await udt.getAddress())
     })
   })
-  describe('ownership', () => {
+  describe('contract ownership', () => {
     it('is properly set', async () => {
       assert.equal(await owner.getAddress(), await swap.owner())
     })
@@ -58,22 +59,22 @@ describe('UPSwap / swap UDT for UP', () => {
 
   describe('swapUDTForUP', () => {
     describe('reverts', () => {
-      it('when balance is too low', async () => {
+      it('when UDT balance is too low', async () => {
         await reverts(
           swap.swapUDTForUP(
             await sender.getAddress(),
-            amount,
+            amountUDT,
             await recipient.getAddress()
           ),
-          'BalanceTooLow'
+          `BalanceTooLow("${await udt.getAddress()}", "${await sender.getAddress()}", ${amountUDT.toString()})`
         )
       })
-      it('when allowance is not properly set', async () => {
-        await udt.connect(preMinter).mint(await sender.getAddress(), amount)
+      it('when UDT allowance is not properly set', async () => {
+        await udt.connect(preMinter).mint(await sender.getAddress(), amountUDT)
         await reverts(
           swap.swapUDTForUP(
             await sender.getAddress(),
-            amount,
+            amountUDT,
             await recipient.getAddress()
           ),
           'AllowanceTooLow'
@@ -87,8 +88,8 @@ describe('UPSwap / swap UDT for UP', () => {
 
       before(async () => {
         // prepare funds and allowance
-        await udt.connect(preMinter).mint(await sender.getAddress(), amount)
-        await udt.connect(sender).approve(await swap.getAddress(), amount)
+        await udt.connect(preMinter).mint(await sender.getAddress(), amountUDT)
+        await udt.connect(sender).approve(await swap.getAddress(), amountUDT)
 
         // get balances
         senderBalanceBefore = await udt.balanceOf(await sender.getAddress())
@@ -97,7 +98,7 @@ describe('UPSwap / swap UDT for UP', () => {
         // do the swap
         const tx = await swap.swapUDTForUP(
           await sender.getAddress(),
-          amount,
+          amountUDT,
           await recipient.getAddress()
         )
 
@@ -107,16 +108,16 @@ describe('UPSwap / swap UDT for UP', () => {
       })
 
       it('UP has been sent to recipient', async () => {
-        assert.equal(await up.balanceOf(await recipient.getAddress()), amount)
+        assert.equal(await up.balanceOf(await recipient.getAddress()), amountUP)
       })
       it('UDT has been transferred to swap contract', async () => {
         assert.equal(
           await udt.balanceOf(await swap.getAddress()),
-          swapBalanceBefore + amount
+          swapBalanceBefore + amountUDT
         )
         assert.equal(
           await udt.balanceOf(await sender.getAddress()),
-          senderBalanceBefore - amount
+          senderBalanceBefore - amountUDT
         )
       })
 
@@ -149,39 +150,42 @@ describe('UPSwap / swap UDT for UP', () => {
         const { args } = await getEvent(receipt, 'UDTSwapped')
         assert.equal(await sender.getAddress(), args.sender)
         assert.equal(await recipient.getAddress(), args.recipient)
-        assert.equal(amount, args.amount)
+        assert.equal(amountUDT, args.amountUDT)
+        assert.equal(amountUP, args.amountUP)
       })
     })
   })
 
   describe('swapUPforUDT', () => {
     before(async () => {
-      // before all, get sender some UP token
-      await udt.connect(preMinter).mint(await sender.getAddress(), amount)
-      await udt.connect(sender).approve(await swap.getAddress(), amount)
-      // swap to itself
+      // before all, get sender some UP tokens
+      await udt.connect(preMinter).mint(await sender.getAddress(), amountUDT)
+      await udt.connect(sender).approve(await swap.getAddress(), amountUDT)
+      // sender swap UDT for UP
       await swap.swapUDTForUP(
         await sender.getAddress(),
-        amount,
+        amountUDT,
         await sender.getAddress()
       )
+      assert.equal(await up.balanceOf(await sender.getAddress()), amountUP)
     })
+
     describe('reverts', () => {
-      it('when balance is too low', async () => {
+      it('when sender UP balance is too low', async () => {
         await reverts(
           swap.swapUPforUDT(
             await random.getAddress(),
-            amount,
+            amountUP,
             await recipient.getAddress()
           ),
-          'BalanceTooLow'
+          `BalanceTooLow("${await up.getAddress()}", "${await random.getAddress()}", ${amountUP.toString()})`
         )
       })
-      it('when allowance is not properly set', async () => {
+      it('when UP allowance is not properly set', async () => {
         await reverts(
           swap.swapUPforUDT(
             await sender.getAddress(),
-            amount,
+            amountUP,
             await recipient.getAddress()
           ),
           'AllowanceTooLow'
@@ -196,7 +200,7 @@ describe('UPSwap / swap UDT for UP', () => {
 
       before(async () => {
         // prepare allowance
-        await up.connect(sender).approve(await swap.getAddress(), amount)
+        await up.connect(sender).approve(await swap.getAddress(), amountUP)
 
         // get balances
         senderBalanceBefore = await up.balanceOf(await sender.getAddress())
@@ -205,7 +209,7 @@ describe('UPSwap / swap UDT for UP', () => {
         // do the swap
         const tx = await swap.swapUPforUDT(
           await sender.getAddress(),
-          amount,
+          amountUP,
           await recipient.getAddress()
         )
 
@@ -215,16 +219,19 @@ describe('UPSwap / swap UDT for UP', () => {
       })
 
       it('UDT has been sent to recipient', async () => {
-        assert.equal(await udt.balanceOf(await recipient.getAddress()), amount)
+        assert.equal(
+          await udt.balanceOf(await recipient.getAddress()),
+          amountUDT
+        )
       })
-      it('UP has been transferred to contract', async () => {
+      it('UP has been transferred from sender to contract', async () => {
         assert.equal(
           await up.balanceOf(await swap.getAddress()),
-          swapBalanceBefore + amount
+          swapBalanceBefore + amountUP
         )
         assert.equal(
           await up.balanceOf(await sender.getAddress()),
-          senderBalanceBefore - amount
+          senderBalanceBefore - amountUP
         )
       })
 
@@ -253,7 +260,8 @@ describe('UPSwap / swap UDT for UP', () => {
         const { args } = await getEvent(receipt, 'UPSwapped')
         assert.equal(await sender.getAddress(), args.sender)
         assert.equal(await recipient.getAddress(), args.recipient)
-        assert.equal(amount, args.amount)
+        assert.equal(amountUDT, args.amountUDT)
+        assert.equal(amountUP, args.amountUP)
       })
     })
   })

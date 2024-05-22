@@ -6,15 +6,31 @@ import "@openzeppelin/contracts-upgradeable5/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
 
 contract UPSwap is Initializable, OwnableUpgradeable {
+  uint constant RATE = 1000;
+
   IERC20 public up;
   IERC20 public udt;
 
   error AllowanceTooLow();
-  error BalanceTooLow();
+  error BalanceTooLow(
+    address tokenAddress,
+    address account,
+    uint expectedAmount
+  );
   error TransferFailed(address tokenAddress);
 
-  event UPSwapped(address sender, uint amount, address recipient);
-  event UDTSwapped(address sender, uint amount, address recipient);
+  event UPSwapped(
+    address sender,
+    uint amountUDT,
+    uint amountUP,
+    address recipient
+  );
+  event UDTSwapped(
+    address sender,
+    uint amountUDT,
+    uint amountUP,
+    address recipient
+  );
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
@@ -33,56 +49,73 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     udt = IERC20(_udt);
   }
 
-  function swapUDTForUP(address sender, uint amount, address recipient) public {
+  function swapUDTForUP(
+    address sender,
+    uint amountUDT,
+    address recipient
+  ) public {
     // check balance
-    if (udt.balanceOf(sender) < amount) {
-      revert BalanceTooLow();
+    if (udt.balanceOf(sender) < amountUDT) {
+      revert BalanceTooLow(address(udt), sender, amountUDT);
     }
 
     // check allowance
-    if (udt.allowance(sender, address(this)) < amount) {
+    if (udt.allowance(sender, address(this)) < amountUDT) {
       revert AllowanceTooLow();
     }
 
     // get the UDT from sender
-    bool UDTSent = udt.transferFrom(sender, address(this), amount);
+    bool UDTSent = udt.transferFrom(sender, address(this), amountUDT);
     if (!UDTSent) {
       revert TransferFailed(address(udt));
     }
 
+    // 1 UDT for 1,000 UP tokens
+    uint amountUP = amountUDT * RATE;
+
     // send UP token to recipient
-    bool UPSent = up.transfer(recipient, amount);
+    bool UPSent = up.transfer(recipient, amountUP);
     if (!UPSent) {
       revert TransferFailed(address(up));
     }
 
-    emit UDTSwapped(sender, amount, recipient);
+    emit UDTSwapped(sender, amountUDT, amountUP, recipient);
   }
 
-  function swapUPforUDT(address sender, uint amount, address recipient) public {
+  function swapUPforUDT(
+    address sender,
+    uint amountUP,
+    address recipient
+  ) public {
     // check balance
-    if (up.balanceOf(sender) < amount) {
-      revert BalanceTooLow();
+    if (up.balanceOf(sender) < amountUP) {
+      revert BalanceTooLow(address(up), sender, amountUP);
+    }
+
+    // check contract UDT balance
+    uint amountUDT = amountUP / RATE;
+    if (udt.balanceOf(address(this)) < amountUDT) {
+      revert BalanceTooLow(address(udt), address(this), amountUDT);
     }
 
     // check allowance
-    if (up.allowance(sender, address(this)) < amount) {
+    if (up.allowance(sender, address(this)) < amountUP) {
       revert AllowanceTooLow();
     }
 
     // get UP token from sender
-    bool UPSent = up.transferFrom(sender, address(this), amount);
+    bool UPSent = up.transferFrom(sender, address(this), amountUP);
     if (!UPSent) {
       revert TransferFailed(address(up));
     }
 
     // send the UDT to recipient
-    bool UDTSent = udt.transfer(recipient, amount);
+    bool UDTSent = udt.transfer(recipient, amountUDT);
     if (!UDTSent) {
       revert TransferFailed(address(udt));
     }
 
-    emit UPSwapped(sender, amount, recipient);
+    emit UPSwapped(sender, amountUDT, amountUP, recipient);
   }
 
   function swapUPForUDTWithSignature(
