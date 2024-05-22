@@ -1,4 +1,4 @@
-const { ethers, upgrades, network } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 const { assert } = require('chai')
 const {
   ADDRESS_ZERO,
@@ -21,7 +21,6 @@ const defaultQuorum = BigInt('30000') * BigInt(10 ** 18)
 describe('UP Governor & Timelock', () => {
   let gov
   let udt
-  let updateTx
 
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
@@ -34,9 +33,9 @@ describe('UP Governor & Timelock', () => {
     // proposale exists but does not accep votes yet
     assert.equal(await gov.state(proposalId), 0) // Pending
 
-    // wait for a block (default voting delay)
-    const currentBlock = await ethers.provider.getBlockNumber()
-    await advanceBlock(BigInt(currentBlock + 1) + (await gov.votingDelay()))
+    // wait for voting delay
+    const timepoint = await gov.proposalSnapshot(proposalId)
+    await advanceBlockTo(timepoint + 1n)
 
     // now ready to receive votes
     assert.equal(await gov.state(proposalId), 1) // Active
@@ -65,7 +64,10 @@ describe('UP Governor & Timelock', () => {
     const tx = await gov.execute(targets, values, calldatas, descriptionHash)
     assert.equal(await gov.state(proposalId), 7) // Executed
 
-    updateTx = await tx.wait()
+    const execReceipt = await tx.wait()
+    const execEvent = await getEvent(execReceipt, 'ProposalExecuted')
+    assert.notEqual(execEvent, null) // Executed
+    return execReceipt
   }
 
   before(async () => {
@@ -120,13 +122,6 @@ describe('UP Governor & Timelock', () => {
       const quorum = ethers.parseUnits('15000.0', 18)
       const [owner, minter, voter] = await ethers.getSigners()
 
-      // bring default voting period to 10 blocks for testing purposes
-      await network.provider.send('hardhat_setStorageAt', [
-        await gov.getAddress(),
-        '0x1c7', // '455' storage slot
-        '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
-      ])
-
       // get tokens
       udt = await udt.connect(minter)
       await udt.mint(await owner.getAddress(), quorum)
@@ -156,12 +151,12 @@ describe('UP Governor & Timelock', () => {
         // propose
         const proposal = [
           [await gov.getAddress()],
-          [ethers.parseUnits('0')],
+          ['0'],
           [encoded],
           '<proposal description: update the quorum>',
         ]
 
-        await launchVotingProcess(voter, proposal)
+        const execReceipt = await launchVotingProcess(voter, proposal)
 
         const lastBlock = await getLatestBlock()
         await advanceBlock()
@@ -171,7 +166,7 @@ describe('UP Governor & Timelock', () => {
         assert.equal(changed == quorum, true)
 
         // make sure event has been fired
-        const { args } = await getEvent(updateTx, 'QuorumUpdated')
+        const { args } = await getEvent(execReceipt, 'QuorumSet')
         const { oldQuorum, newQuorum } = args
         assert.equal(newQuorum == quorum, true)
         assert.equal(oldQuorum, defaultQuorum)
@@ -190,28 +185,26 @@ describe('UP Governor & Timelock', () => {
         // propose
         const proposal = [
           [await gov.getAddress()],
-          [ethers.parseUnits('0')],
+          ['0'],
           [encoded],
           '<proposal description>',
         ]
 
-        await launchVotingProcess(voter, proposal)
+        const execTx = await launchVotingProcess(voter, proposal)
 
         const changed = await gov.votingPeriod()
         assert.equal(changed == votingPeriod, true)
 
         // make sure event has been fired
-        const { args } = await getEvent(updateTx, 'VotingPeriodUpdated')
-        const { oldVotingPeriod, newVotingPeriod } = args
+        const { args } = await getEvent(execTx, 'VotingPeriodSet')
+        const { newVotingPeriod } = args
         assert.equal(newVotingPeriod == votingPeriod, true)
-        // nb: old value is the one we enforced through eth_storageAt
-        assert.equal(oldVotingPeriod, 50)
       })
     })
 
     describe('VotingDelay', () => {
       it('should be properly updated through voting', async () => {
-        const votingDelay = 10000
+        const votingDelay = 10000n
 
         const [, , voter] = await ethers.getSigners()
         const encoded = gov.interface.encodeFunctionData('setVotingDelay', [
@@ -220,21 +213,20 @@ describe('UP Governor & Timelock', () => {
 
         const proposal = [
           [await gov.getAddress()],
-          [ethers.parseUnits('0')],
+          ['0'],
           [encoded],
           '<proposal description>',
         ]
 
-        await launchVotingProcess(voter, proposal)
+        const execTx = await launchVotingProcess(voter, proposal)
 
         const changed = await gov.votingDelay()
         assert.equal(changed == votingDelay, true)
 
         // make sure event has been fired
-        const { args } = await getEvent(updateTx, 'VotingDelayUpdated')
-        const { oldVotingDelay, newVotingDelay } = args
+        const { args } = await getEvent(execTx, 'VotingDelaySet')
+        const { newVotingDelay } = args
         assert.equal(newVotingDelay, votingDelay)
-        assert.equal(oldVotingDelay, 1)
       })
     })
   })
