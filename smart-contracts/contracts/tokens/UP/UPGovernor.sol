@@ -21,7 +21,7 @@ contract UPGovernor is
   uint private _quorum;
 
   // add custom event for quorum changes
-  event QuorumSet(uint oldVotingDelay, uint newVotingDelay);
+  event QuorumSet(uint oldQuorum, uint newQuorum);
 
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
