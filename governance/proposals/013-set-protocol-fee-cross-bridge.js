@@ -12,9 +12,7 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
   const { unlockAddress } = await getNetwork(destChainId)
 
   console.log(
-    `Proposol to set protocolFee to ${ethers.formatEther(
-      PROTOCOL_FEE_IN_BASIS_POINTS
-    )}`
+    `Proposol to set protocolFee to ${PROTOCOL_FEE_IN_BASIS_POINTS} basis points`
   )
 
   // get Unlock interface
@@ -36,6 +34,14 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
     ]
   )
 
+  const calls = [
+    {
+      contractAddress: unlockAddress,
+      calldata,
+      value: 0,
+      operation: 1, // Unlock is a proxy so use DELEGATECALL
+    },
+  ]
   const explainers = [
     `- Protocol fee for ${unlockAddress} set to ${PROTOCOL_FEE_IN_BASIS_POINTS}
   \`setProtocolFee(${PROTOCOL_FEE_IN_BASIS_POINTS})\`
@@ -43,6 +49,7 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
   ]
 
   return {
+    calls,
     explainers,
     moduleData,
   }
@@ -85,15 +92,11 @@ const parseBridgeCall = async ({ destChainId, moduleData }) => {
 
 module.exports = async () => {
   const explainers = []
-  const { unlockAddress } = await getNetwork(1)
+
   // get protocol fee call for mainnet
   console.log(`Parsing for Ethereum Mainnet (1)`)
-  const { moduleData: mainnetModuleData, explainers: mainnetExplainers } =
+  const { calls: mainnetCall, explainers: mainnetExplainers } =
     await parseSetProtocolFeeCalls(1)
-  const mainnetCall = {
-    calldata: mainnetModuleData,
-    contractAddress: unlockAddress,
-  }
 
   explainers.push({
     name: 'Ethereum Mainnet',
