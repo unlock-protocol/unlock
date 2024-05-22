@@ -33,13 +33,13 @@ contract UPGovernor is
     TimelockControllerUpgradeable _timelock
   ) public initializer {
     __Governor_init("UnlockProtocolGovernor");
-    __GovernorSettings_init(43200 /* 6 day */, 43200 /* 6 days */, 0);
+    __GovernorSettings_init(6 days, 6 days, 0);
     __GovernorCountingSimple_init();
     __GovernorVotes_init(_token);
     __GovernorTimelockControl_init(_timelock);
 
-    // default quorum set to 30k
-    _quorum = 30000e18;
+    // default quorum set to 3000
+    _quorum = 3000e18;
   }
 
   // quorum set to 30k

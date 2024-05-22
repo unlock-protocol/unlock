@@ -13,10 +13,10 @@ const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 
 // default values
-const SIX_DAYS = 43200 // in blocks
-const votingDelay = SIX_DAYS //
+const SIX_DAYS = 6 * 24 * 60 * 60 // in seconds
+const votingDelay = SIX_DAYS
 const votingPeriod = SIX_DAYS
-const defaultQuorum = BigInt('30000') * BigInt(10 ** 18)
+const defaultQuorum = BigInt('3000') * BigInt(10 ** 18)
 
 describe('UP Governor & Timelock', () => {
   let gov

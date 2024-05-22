@@ -37,6 +37,16 @@ contract UnlockProtocolToken is
     _mint(preMinter, TOTAL_SUPPLY * 10 ** decimals());
   }
 
+  // required to base votes on timestamp instead of blocks
+  function clock() public view override returns (uint48) {
+    return uint48(block.timestamp);
+  }
+
+  // solhint-disable-next-line func-name-mixedcase
+  function CLOCK_MODE() public pure override returns (string memory) {
+    return "mode=timestamp";
+  }
+
   // The following functions are overrides required by Solidity.
 
   function _update(

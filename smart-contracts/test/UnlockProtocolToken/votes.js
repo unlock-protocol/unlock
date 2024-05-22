@@ -9,7 +9,6 @@ const {
   notExpectEvent,
   compareBigNumbers,
   compareBigNumberArrays,
-  getLatestBlock,
 } = require('../helpers')
 
 const supply = BigInt('100000000')
@@ -54,13 +53,6 @@ describe('UnlockProtocolToken / Votes', () => {
         assert(supply == (await up.balanceOf(holder)))
       })
     })
-    // it('minting restriction', async () => {
-    //   const amount = BigInt('2') ** BigInt('96')
-    //   await reverts(
-    //     up.mint(minter, amount),
-    //     'ERC20Votes: total supply risks overflowing votes'
-    //   )
-    // })
   })
 
   describe('Delegation', () => {
@@ -69,9 +61,8 @@ describe('UnlockProtocolToken / Votes', () => {
       assert.equal(await up.delegates(minter), ADDRESS_ZERO)
       const tx = await up.connect(holderSigner).delegate(holder)
       const receipt = await tx.wait()
-      const { blockNumber } = receipt
+      const { timestamp } = await ethers.provider.getBlock(receipt.blockNumber)
 
-      // console.log(events)
       expectEvent(receipt, 'DelegateChanged', {
         delegator: holder,
         fromDelegate: ADDRESS_ZERO,
@@ -84,9 +75,9 @@ describe('UnlockProtocolToken / Votes', () => {
       })
 
       compareBigNumbers(supply, await up.getVotes(holder))
-      compareBigNumbers('0', await up.getPastVotes(holder, blockNumber - 1))
+      compareBigNumbers('0', await up.getPastVotes(holder, timestamp - 1))
       await advanceBlock()
-      compareBigNumbers(supply, await up.getPastVotes(holder, blockNumber))
+      compareBigNumbers(supply, await up.getPastVotes(holder, timestamp))
     })
     it('delegation without balance', async () => {
       assert.equal(await up.delegates(holder), ADDRESS_ZERO)
@@ -115,7 +106,9 @@ describe('UnlockProtocolToken / Votes', () => {
 
         const tx = await up.connect(holderSigner).delegate(holderDelegatee)
         const receipt = await tx.wait()
-        const { blockNumber } = receipt
+        const { timestamp } = await ethers.provider.getBlock(
+          receipt.blockNumber
+        )
 
         expectEvent(receipt, 'DelegateChanged', {
           delegator: holder,
@@ -137,22 +130,19 @@ describe('UnlockProtocolToken / Votes', () => {
         compareBigNumbers('0', await up.getVotes(holder))
         compareBigNumbers(supply, await up.getVotes(holderDelegatee))
 
-        compareBigNumbers(
-          supply,
-          await up.getPastVotes(holder, blockNumber - 1)
-        )
+        compareBigNumbers(supply, await up.getPastVotes(holder, timestamp - 1))
 
         compareBigNumbers(
           '0',
-          await up.getPastVotes(holderDelegatee, blockNumber - 1)
+          await up.getPastVotes(holderDelegatee, timestamp - 1)
         )
 
         await advanceBlock()
-        compareBigNumbers('0', await up.getPastVotes(holder, blockNumber))
+        compareBigNumbers('0', await up.getPastVotes(holder, timestamp))
 
         compareBigNumbers(
           supply,
-          await up.getPastVotes(holderDelegatee, blockNumber)
+          await up.getPastVotes(holderDelegatee, timestamp)
         )
       })
     })
@@ -250,12 +240,12 @@ describe('UnlockProtocolToken / Votes', () => {
       compareBigNumbers(recipientVotes, await up.getVotes(recipient))
 
       // need to advance 2 blocks to see the effect of a transfer on "getPastVotes"
-      const blockNumber = await getLatestBlock()
+      const { timestamp } = await ethers.provider.getBlock()
       await advanceBlock()
-      compareBigNumbers(holderVotes, await up.getPastVotes(holder, blockNumber))
+      compareBigNumbers(holderVotes, await up.getPastVotes(holder, timestamp))
       compareBigNumbers(
         recipientVotes,
-        await up.getPastVotes(recipient, blockNumber)
+        await up.getPastVotes(recipient, timestamp)
       )
     })
   })
@@ -276,43 +266,40 @@ describe('UnlockProtocolToken / Votes', () => {
         await up.connect(holderSigner).transfer(recipient, '100') // give an account a few tokens for readability
         compareBigNumbers('0', await up.numCheckpoints(other1))
 
-        const t1 = await up.connect(recipientSigner).delegate(other1)
+        const tx1 = await up.connect(recipientSigner).delegate(other1)
+        const { timestamp: t1 } = await ethers.provider.getBlock(
+          tx1.blockNumber
+        )
         compareBigNumbers('1', await up.numCheckpoints(other1))
 
-        const t2 = await up.connect(recipientSigner).transfer(other2, 10)
+        const tx2 = await up.connect(recipientSigner).transfer(other2, 10)
+        const { timestamp: t2 } = await ethers.provider.getBlock(
+          tx2.blockNumber
+        )
         compareBigNumbers('2', await up.numCheckpoints(other1))
 
-        const t3 = await up.connect(recipientSigner).transfer(other2, 10)
+        const tx3 = await up.connect(recipientSigner).transfer(other2, 10)
+        const { timestamp: t3 } = await ethers.provider.getBlock(
+          tx3.blockNumber
+        )
         compareBigNumbers('3', await up.numCheckpoints(other1))
 
-        const t4 = await up.connect(holderSigner).transfer(recipient, 20)
+        const tx4 = await up.connect(holderSigner).transfer(recipient, 20)
+        const { timestamp: t4 } = await ethers.provider.getBlock(
+          tx4.blockNumber
+        )
         compareBigNumbers('4', await up.numCheckpoints(other1))
 
-        compareBigNumberArrays(await up.checkpoints(other1, 0), [
-          t1.blockNumber,
-          '100',
-        ])
-        compareBigNumberArrays(await up.checkpoints(other1, 1), [
-          t2.blockNumber,
-          '90',
-        ])
-        compareBigNumberArrays(await up.checkpoints(other1, 2), [
-          t3.blockNumber,
-          '80',
-        ])
-        compareBigNumberArrays(await up.checkpoints(other1, 3), [
-          t4.blockNumber,
-          '100',
-        ])
+        compareBigNumberArrays(await up.checkpoints(other1, 0), [t1, '100'])
+        compareBigNumberArrays(await up.checkpoints(other1, 1), [t2, '90'])
+        compareBigNumberArrays(await up.checkpoints(other1, 2), [t3, '80'])
+        compareBigNumberArrays(await up.checkpoints(other1, 3), [t4, '100'])
 
         await advanceBlock()
-        compareBigNumbers('100', await up.getPastVotes(other1, t1.blockNumber))
-
-        compareBigNumbers('90', await up.getPastVotes(other1, t2.blockNumber))
-
-        compareBigNumbers('80', await up.getPastVotes(other1, t3.blockNumber))
-
-        compareBigNumbers('100', await up.getPastVotes(other1, t4.blockNumber))
+        compareBigNumbers('100', await up.getPastVotes(other1, t1))
+        compareBigNumbers('90', await up.getPastVotes(other1, t2))
+        compareBigNumbers('80', await up.getPastVotes(other1, t3))
+        compareBigNumbers('100', await up.getPastVotes(other1, t4))
       })
     })
 
@@ -328,78 +315,63 @@ describe('UnlockProtocolToken / Votes', () => {
       it('returns the latest block if >= last checkpoint block', async () => {
         const t1 = await up.connect(holderSigner).delegate(other1)
         const { blockNumber } = await t1.wait()
+        const { timestamp } = await ethers.provider.getBlock(blockNumber)
         await advanceBlock()
         await advanceBlock()
 
-        compareBigNumbers(supply, await up.getPastVotes(other1, blockNumber))
-
-        compareBigNumbers(
-          supply,
-          await up.getPastVotes(other1, blockNumber + 1)
-        )
+        compareBigNumbers(supply, await up.getPastVotes(other1, timestamp))
+        compareBigNumbers(supply, await up.getPastVotes(other1, timestamp + 1))
       })
 
       it('returns zero if < first checkpoint block', async () => {
         await advanceBlock()
         const t1 = await up.connect(holderSigner).delegate(other1)
         const { blockNumber } = await t1.wait()
+        const { timestamp } = await ethers.provider.getBlock(blockNumber)
         await advanceBlock()
         await advanceBlock()
 
-        compareBigNumbers('0', await up.getPastVotes(other1, blockNumber - 1))
-
-        compareBigNumbers(
-          supply,
-          await up.getPastVotes(other1, blockNumber + 1)
-        )
+        compareBigNumbers('0', await up.getPastVotes(other1, timestamp - 1))
+        compareBigNumbers(supply, await up.getPastVotes(other1, timestamp + 1))
       })
 
       it('generally returns the voting balance at the appropriate checkpoint', async () => {
-        const t1 = await up.connect(holderSigner).delegate(other1)
+        const tx1 = await up.connect(holderSigner).delegate(other1)
+        const { timestamp: t1 } = await ethers.provider.getBlock(
+          tx1.blockNumber
+        )
         await advanceBlock()
         await advanceBlock()
-        const t2 = await up.connect(holderSigner).transfer(other2, 10)
+        const tx2 = await up.connect(holderSigner).transfer(other2, 10)
+        const { timestamp: t2 } = await ethers.provider.getBlock(
+          tx2.blockNumber
+        )
         await advanceBlock()
         await advanceBlock()
-        const t3 = await up.connect(holderSigner).transfer(other2, 10)
+        const tx3 = await up.connect(holderSigner).transfer(other2, 10)
+        const { timestamp: t3 } = await ethers.provider.getBlock(
+          tx3.blockNumber
+        )
         await advanceBlock()
         await advanceBlock()
-        const t4 = await up
+        const tx4 = await up
           .connect(await ethers.getSigner(other2))
           .transfer(holder, 20)
+        const { timestamp: t4 } = await ethers.provider.getBlock(
+          tx4.blockNumber
+        )
         await advanceBlock()
         await advanceBlock()
 
-        compareBigNumbers(
-          '0',
-          await up.getPastVotes(other1, t1.blockNumber - 1)
-        )
-        compareBigNumbers(supply, await up.getPastVotes(other1, t1.blockNumber))
-        compareBigNumbers(
-          supply,
-          await up.getPastVotes(other1, t1.blockNumber + 1)
-        )
-        compareBigNumbers(
-          '99999990',
-          await up.getPastVotes(other1, t2.blockNumber)
-        )
-        compareBigNumbers(
-          '99999990',
-          await up.getPastVotes(other1, t2.blockNumber + 1)
-        )
-        compareBigNumbers(
-          '99999980',
-          await up.getPastVotes(other1, t3.blockNumber)
-        )
-        compareBigNumbers(
-          '99999980',
-          await up.getPastVotes(other1, t3.blockNumber + 1)
-        )
-        compareBigNumbers(supply, await up.getPastVotes(other1, t4.blockNumber))
-        compareBigNumbers(
-          supply,
-          await up.getPastVotes(other1, t4.blockNumber + 1)
-        )
+        compareBigNumbers('0', await up.getPastVotes(other1, t1 - 1))
+        compareBigNumbers(supply, await up.getPastVotes(other1, t1))
+        compareBigNumbers(supply, await up.getPastVotes(other1, t1 + 1))
+        compareBigNumbers('99999990', await up.getPastVotes(other1, t2))
+        compareBigNumbers('99999990', await up.getPastVotes(other1, t2 + 1))
+        compareBigNumbers('99999980', await up.getPastVotes(other1, t3))
+        compareBigNumbers('99999980', await up.getPastVotes(other1, t3 + 1))
+        compareBigNumbers(supply, await up.getPastVotes(other1, t4))
+        compareBigNumbers(supply, await up.getPastVotes(other1, t4 + 1))
       })
     })
   })
