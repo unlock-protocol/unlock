@@ -6,6 +6,7 @@ import { ConnectUnlockAccount } from './UnlockAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectedWallet } from './ConnectedWallet'
 import { useConnectModal } from '~/hooks/useConnectModal'
+import { SelectConnectMethod } from './SelectConnectMethod'
 
 export const ConnectModal = () => {
   const [email, setEmail] = useState('')
@@ -70,7 +71,8 @@ export const ConnectModal = () => {
                   </div>
                 </div>
               </header>
-              {!useUnlockAccount && !connected && (
+              <SelectConnectMethod connected={connected} />
+              {/*!useUnlockAccount && !connected && (
                 <ConnectWallet
                   onUnlockAccount={(email) => {
                     setEmail(email || '') // Assign an empty string if email is undefined
@@ -86,7 +88,7 @@ export const ConnectModal = () => {
                   }}
                 />
               )}
-              {connected && <ConnectedWallet />}
+            {connected && <ConnectedWallet />*/}
             </div>
           </Transition.Child>
         </div>

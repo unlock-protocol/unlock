@@ -3,6 +3,7 @@ import { ConnectedWallet } from '../../connect/ConnectedWallet'
 import { ConnectWallet } from '../../connect/Wallet'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
+import { SelectConnectMethod } from '../../connect/SelectConnectMethod'
 
 interface ConnectPageProps {
   style: string
@@ -17,25 +18,7 @@ export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
   return (
     <Fragment>
       <main className={style}>
-        {!useUnlockAccount && !connected && (
-          <ConnectWallet
-            onUnlockAccount={(email) => {
-              setEmail(email || '') // Assign an empty string if email is undefined
-              setUseUnlockAccount(true)
-            }}
-          />
-        )}
-        {useUnlockAccount && !connected && (
-          <ConnectUnlockAccount
-            defaultEmail={email}
-            useIcon={false}
-            onExit={() => {
-              setEmail('')
-              setUseUnlockAccount(false)
-            }}
-          />
-        )}
-        {connected && <ConnectedWallet showIcon={false} onNext={onNext} />}
+        <SelectConnectMethod connected={connected} onNext={onNext} />
       </main>
       <footer className="grid items-center px-6 pt-2 border-t">
         <PoweredByUnlock />
