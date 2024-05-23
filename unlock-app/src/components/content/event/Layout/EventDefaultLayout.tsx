@@ -144,6 +144,7 @@ export const EventDefaultLayout = ({
             <RegistrationCard
               requiresApproval={event.requiresApproval}
               checkoutConfig={checkoutConfig}
+              hideRemaining={!!event.hideRemaining}
             />
           )}
           {hasPassed && (

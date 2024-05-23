@@ -77,6 +77,7 @@ export const EventBannerlessLayout = ({
           <RegistrationCard
             requiresApproval={event.requiresApproval}
             checkoutConfig={checkoutConfig}
+            hideRemaining={!!event.hideRemaining}
           />
         )}
         {hasPassed && (
