@@ -107,6 +107,7 @@ describe('RSVP', () => {
       expect(responseAfterUpdate.body.approval).toEqual('approved')
     })
   })
+
   describe('approval/denials', () => {
     beforeEach(async () => {
       // CReate an RSVP
@@ -117,6 +118,7 @@ describe('RSVP', () => {
         approval: 'pending',
       })
     })
+
     it('should require the user to be authenticated', async () => {
       expect.assertions(1)
       const response = await request(app).post(
@@ -124,6 +126,7 @@ describe('RSVP', () => {
       )
       expect(response.status).toBe(401)
     })
+
     it('should require the user to be authenticated as a lock manager', async () => {
       expect.assertions(2)
       const { loginResponse } = await loginRandomUser(app)
@@ -159,6 +162,90 @@ describe('RSVP', () => {
       const response = await request(app)
         .post(`/v2/rsvp/${network}/${lockAddress}/deny/${userAddress}`)
         .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(200)
+      expect(response.body.approval).toEqual('denied')
+    })
+  })
+
+  describe('bulk approval/denials', () => {
+    const userAddress2 = '0x81Dd955D02D337DB81BA6c9C5F6213E647672053'
+
+    beforeEach(async () => {
+      // Create an RSVP
+      await Rsvp.create({
+        network,
+        userAddress,
+        lockAddress,
+        approval: 'pending',
+      })
+      // Create another RSVP
+      await Rsvp.create({
+        network,
+        userAddress: userAddress2,
+        lockAddress,
+        approval: 'pending',
+      })
+    })
+
+    it('should require the user to be authenticated', async () => {
+      expect.assertions(1)
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/approve`)
+        .type('json')
+        .send({
+          recipients: [userAddress, userAddress2],
+        })
+      expect(response.status).toBe(401)
+    })
+
+    it('should require the user to be authenticated as a lock manager', async () => {
+      expect.assertions(2)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/approve`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+        .type('json')
+        .send({
+          recipients: [userAddress, userAddress2],
+        })
+
+      expect(response.status).toBe(403)
+    })
+
+    it('should change the RSVP approval when approved by a lock manager', async () => {
+      expect.assertions(3)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
+
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/approve`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+        .type('json')
+        .send({
+          recipients: [userAddress, userAddress2],
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.body.approval).toEqual('approved')
+    })
+
+    it('should change the RSVP approval when denied by a lock manager', async () => {
+      expect.assertions(3)
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+      mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
+
+      const response = await request(app)
+        .post(`/v2/rsvp/${network}/${lockAddress}/deny`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+        .type('json')
+        .send({
+          recipients: [userAddress, userAddress2],
+        })
 
       expect(response.status).toBe(200)
       expect(response.body.approval).toEqual('denied')
