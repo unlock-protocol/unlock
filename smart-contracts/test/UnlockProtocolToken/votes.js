@@ -304,8 +304,12 @@ describe('UnlockProtocolToken / Votes', () => {
     })
 
     describe('getPastVotes', () => {
-      it('reverts if block number >= current block', async () => {
-        await reverts(up.getPastVotes(other1, 5e10), 'ERC5805FutureLookup')
+      it('reverts if timestamp >= current time', async () => {
+        const { timestamp } = await ethers.provider.getBlock()
+        await reverts(
+          up.getPastVotes(other1, timestamp + 1),
+          'ERC5805FutureLookup'
+        )
       })
 
       it('returns 0 if there are no checkpoints', async () => {
