@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
 export const AttendeesActionsWrapper = ({
   toggleAll,

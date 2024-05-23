@@ -189,7 +189,7 @@ export const Members = ({
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard
-            key={metadata.token}
+            key={metadata.token || owner}
             token={token}
             owner={owner}
             expiration={expiration}

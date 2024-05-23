@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
@@ -20,6 +20,7 @@ import { AttendeeInfo } from './AttendeeInfo'
 import { ApplicantInfo } from './ApplicantInfo'
 import { Detail } from '@unlock-protocol/ui'
 import { AttendeesActionsWrapper } from './AttendeesActions'
+import { ApproveAttendeeModalModal } from './ApproveAttendeeModal'
 
 interface AttendeesProps {
   event: Event
@@ -34,6 +35,8 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const [allSelected, setAllSelected] = useState(false)
+  const [approveAttendeeModalOpen, setApproveAttendeeModalOpen] =
+    useState(false)
 
   const router = useRouter()
   const [lockAddress, setLockAddress] = useState(
@@ -41,6 +44,9 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
       ? Object.keys(checkoutConfig.config.locks)[0]
       : null
   )
+  const network =
+    checkoutConfig.config.locks[lockAddress]?.network ||
+    checkoutConfig.config.network
 
   const { data: isOrganizer, isLoading: isLoadingLockManager } =
     useEventOrganizer({
@@ -58,6 +64,12 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
       : ApprovalStatus.MINTED,
   })
   const [page, setPage] = useState(1)
+
+  // Reset selected keys when changing page
+  useEffect(() => {
+    setAllSelected(false)
+    setSelected({})
+  }, [page])
 
   // Placeholders
   const lockNetwork = lockAddress
@@ -87,6 +99,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
 
   const bulkApprove = (keys: any) => {
     console.log('bulkApprove', selected, keys)
+    setApproveAttendeeModalOpen(true)
   }
 
   const bulkDeny = (keys: any) => {
@@ -105,6 +118,12 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
           setIsOpen={setAirdropKeys}
           locks={checkoutConfig.config.locks}
         />
+        {/* <ApproveAttendeeModalModal
+          network={network}
+          isOpen={approveAttendeeModalOpen}
+          setIsOpen={setApproveAttendeeModalOpen}
+          lockAddress={lockAddress}
+        /> */}
         <div className="min-h-screen bg-ui-secondary-200 pb-60 flex flex-col gap-4">
           <div className="flex flex-row-reverse gap-2">
             <Button onClick={() => setAirdropKeys(!airdropKeys)}>
