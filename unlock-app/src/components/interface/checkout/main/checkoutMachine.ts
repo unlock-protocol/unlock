@@ -15,6 +15,7 @@ export type CheckoutPage =
   | 'MESSAGE_TO_SIGN'
   | 'CAPTCHA'
   | 'RETURNING'
+  | 'UNLOCK_ACCOUNT'
   | 'PAYMENT'
   | 'PASSWORD'
   | 'PROMO'
@@ -103,6 +104,9 @@ interface ConfirmMintEvent extends Transaction {
   type: 'CONFIRM_MINT'
 }
 
+interface UnlockAccountEvent {
+  type: 'UNLOCK_ACCOUNT'
+}
 interface UpdatePaywallConfigEvent {
   type: 'UPDATE_PAYWALL_CONFIG'
   config: PaywallConfigType
@@ -134,6 +138,7 @@ export type CheckoutMachineEvents =
   | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | ConfirmMintEvent
+  | UnlockAccountEvent
   | UpdatePaywallConfigEvent
   | ResetEvent
   | DisconnectEvent
@@ -236,6 +241,7 @@ export const checkoutMachine = createMachine(
     },
     on: {
       CONNECT: '.CONNECT',
+      UNLOCK_ACCOUNT: '.UNLOCK_ACCOUNT',
       SELECT: '.SELECT',
       QUANTITY: '.QUANTITY',
       PAYMENT: '.PAYMENT',
@@ -661,6 +667,9 @@ export const checkoutMachine = createMachine(
             actions: ['confirmMint'],
           },
         },
+      },
+      UNLOCK_ACCOUNT: {
+        target: 'CONNECT',
       },
       RETURNING: {
         on: {
