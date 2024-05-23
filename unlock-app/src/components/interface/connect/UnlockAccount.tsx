@@ -3,13 +3,9 @@ import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
-import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
-import { useStorageService } from '~/utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { UserAccountType } from '~/utils/userAccountType'
 
 interface UserDetails {
@@ -30,7 +26,7 @@ export interface SignInProps {
   useIcon?: boolean
 }
 
-const SignIn = ({
+const SignInUnlockAccount = ({
   email,
   onReturn,
   signIn,
@@ -212,7 +208,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 export interface Props {
   defaultEmail: string
   onExit(): void
-  isValidEmail: boolean
+  accountType: UserAccountType
   onSignIn?(): void
   useIcon?: boolean
 }
@@ -220,17 +216,13 @@ export interface Props {
 export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
-  isValidEmail,
+  accountType,
   useIcon = true,
   defaultEmail,
 }: Props) => {
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, deAuthenticate } = useAuth()
-  // TODO: Consider adding a way to set the email address to Auth context
-  const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
-  const { signOut } = useSIWE()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -253,8 +245,8 @@ export const ConnectUnlockAccount = ({
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {isValidEmail && (
-        <SignIn
+      {accountType === UserAccountType.UnlockAccount ? (
+        <SignInUnlockAccount
           email={defaultEmail}
           signIn={signIn}
           onSignIn={onSignIn}
@@ -263,8 +255,7 @@ export const ConnectUnlockAccount = ({
             onExit()
           }}
         />
-      )}
-      {!isValidEmail && (
+      ) : (
         <SignUp
           email={defaultEmail}
           signUp={signUp}

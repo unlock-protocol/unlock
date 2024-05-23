@@ -17,9 +17,11 @@ export const SelectConnectMethod = ({
   onNext,
 }: SelectConnectMethodProps) => {
   const [email, setEmail] = useState('')
-  const [useUnlockAccount, setUseUnlockAccount] = useState(false)
+  const [useEmail, setUseEmail] = useState(false)
 
-  const [isValidEmail, setIsValidEmail] = useState(false)
+  const [accountType, setAccountType] = useState<UserAccountType>(
+    UserAccountType.None
+  )
   const [isVerifyingEmail, setIsVerifyingEmail] = useState(false)
 
   const storageService = useStorageService()
@@ -30,10 +32,8 @@ export const SelectConnectMethod = ({
     setIsVerifyingEmail(true)
     setEmail(email)
     try {
-      const existingUser =
-        (await storageService.getUserAccountType(email)) ===
-        UserAccountType.UnlockAccount
-      setIsValidEmail(existingUser)
+      const existingUser = await storageService.getUserAccountType(email)
+      setAccountType(existingUser)
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(`Email Error: ${error.message}`)
@@ -44,24 +44,25 @@ export const SelectConnectMethod = ({
 
   return (
     <div>
-      {!useUnlockAccount && !connected && (
+      {!useEmail && !connected && (
         <ConnectWallet
           isVerifyingEmail={isVerifyingEmail}
           onUnlockAccount={async (email) => {
             openConnectModal('unlock_account')
             await verifyAndSetEmail(email || '')
-            setUseUnlockAccount(true)
+            setUseEmail(true)
           }}
         />
       )}
-      {useUnlockAccount && !connected && !isVerifyingEmail && (
+      {useEmail && !connected && !isVerifyingEmail && (
         <ConnectUnlockAccount
           defaultEmail={email}
           useIcon={false}
-          isValidEmail={isValidEmail}
+          accountType={accountType}
           onExit={() => {
+            openConnectModal('crypto')
             setEmail('')
-            setUseUnlockAccount(false)
+            setUseEmail(false)
           }}
         />
       )}
