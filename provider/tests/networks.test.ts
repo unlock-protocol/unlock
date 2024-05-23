@@ -16,7 +16,7 @@ describe('worker', () => {
       if (id !== '31337') {
         const provider = new JsonRpcProvider(`${process.env.ENDPOINT}/${id}`)
         const { chainId } = await provider.getNetwork()
-        expect(chainId).to.equal(parseInt(id, 10))
+        expect(chainId).to.equal(BigInt(parseInt(id, 10)))
       }
     }
   })
