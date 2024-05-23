@@ -55,7 +55,7 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
 
   // 0ter. make sure we bypass pending txs in delay mod
   const delayModInstance = new Contract(delayMod, delayABI, signer)
-  const currentNonce = await delayMod.txNonce()
+  const currentNonce = await delayModInstance.txNonce()
   const nextNonce = await delayModInstance.queueNonce()
   if (currentNonce != nextNonce) {
     await signer.sendTransaction({
