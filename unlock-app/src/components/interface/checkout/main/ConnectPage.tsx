@@ -1,8 +1,5 @@
-import React, { Fragment, useState } from 'react'
-import { ConnectedWallet } from '../../connect/ConnectedWallet'
-import { ConnectWallet } from '../../connect/Wallet'
+import React, { Fragment } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
 import { SelectConnectMethod } from '../../connect/SelectConnectMethod'
 
 interface ConnectPageProps {
@@ -12,9 +9,6 @@ interface ConnectPageProps {
 }
 
 export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
-  const [email, setEmail] = useState('')
-  const [useUnlockAccount, setUseUnlockAccount] = useState(false)
-
   return (
     <Fragment>
       <main className={style}>

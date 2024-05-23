@@ -5,16 +5,19 @@ import { ConnectedWallet } from './ConnectedWallet'
 import { useStorageService } from '~/utils/withStorageService'
 import { UserAccountType } from '~/utils/userAccountType'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useConnectModal } from '~/hooks/useConnectModal'
 
 interface SelectConnectMethodProps {
   connected: string | undefined
   onNext?: () => void
+  onUnlockAccount?: () => void
+  onExit?: () => void
 }
 
 export const SelectConnectMethod = ({
   connected,
   onNext,
+  onUnlockAccount,
+  onExit,
 }: SelectConnectMethodProps) => {
   const [email, setEmail] = useState('')
   const [useEmail, setUseEmail] = useState(false)
@@ -25,8 +28,6 @@ export const SelectConnectMethod = ({
   const [isVerifyingEmail, setIsVerifyingEmail] = useState(false)
 
   const storageService = useStorageService()
-
-  const { openConnectModal } = useConnectModal()
 
   const verifyAndSetEmail = async (email: string) => {
     setIsVerifyingEmail(true)
@@ -48,9 +49,11 @@ export const SelectConnectMethod = ({
         <ConnectWallet
           isVerifyingEmail={isVerifyingEmail}
           onUnlockAccount={async (email) => {
-            openConnectModal('unlock_account')
             await verifyAndSetEmail(email || '')
             setUseEmail(true)
+            if (onUnlockAccount) {
+              onUnlockAccount()
+            }
           }}
         />
       )}
@@ -60,9 +63,11 @@ export const SelectConnectMethod = ({
           useIcon={false}
           accountType={accountType}
           onExit={() => {
-            openConnectModal('crypto')
             setEmail('')
             setUseEmail(false)
+            if (onExit) {
+              onExit()
+            }
           }}
         />
       )}
