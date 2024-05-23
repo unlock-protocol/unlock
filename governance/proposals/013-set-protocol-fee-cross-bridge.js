@@ -30,7 +30,7 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
       unlockAddress, // to
       0, // value
       calldata, // data
-      1, // operation: 0 for CALL, 1 for DELEGATECALL
+      0, // operation: 0 for CALL, 1 for DELEGATECALL
     ]
   )
 
@@ -39,7 +39,7 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
       contractAddress: unlockAddress,
       calldata,
       value: 0,
-      operation: 1, // Unlock is a proxy so use DELEGATECALL
+      operation: 0,
     },
   ]
   const explainers = [
