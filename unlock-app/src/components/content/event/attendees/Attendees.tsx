@@ -19,6 +19,7 @@ import { MemberCard } from '~/components/interface/locks/Manage/elements/MemberC
 import { AttendeeInfo } from './AttendeeInfo'
 import { ApplicantInfo } from './ApplicantInfo'
 import { Detail } from '@unlock-protocol/ui'
+import { AttendeesActionsWrapper } from './AttendeesActions'
 
 interface AttendeesProps {
   event: Event
@@ -31,6 +32,9 @@ interface AttendeesProps {
 export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
+  const [allSelected, setAllSelected] = useState(false)
+
   const router = useRouter()
   const [lockAddress, setLockAddress] = useState(
     checkoutConfig.config.locks
@@ -66,6 +70,27 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
 
   if (!lockAddress || !lockNetwork) {
     return null
+  }
+
+  const toggleAll = (keys: any) => {
+    setAllSelected(!allSelected)
+    if (allSelected) {
+      setSelected({})
+    } else {
+      setSelected(
+        keys.reduce((acc: any, key: any) => {
+          return { ...acc, [key.keyholderAddress]: true }
+        }, {})
+      )
+    }
+  }
+
+  const bulkApprove = (keys: any) => {
+    console.log('bulkApprove', selected, keys)
+  }
+
+  const bulkDeny = (keys: any) => {
+    console.log('bulkApprove', selected, keys)
   }
 
   return (
@@ -113,7 +138,6 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
               loading={loading}
               setPage={setPage}
               page={page}
-              allowSelection={true}
               MemberCard={({
                 token,
                 owner,
@@ -124,8 +148,6 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                 network,
                 expirationDuration,
                 lockSettings,
-                isSelected,
-                setIsSelected,
               }) => {
                 return (
                   <MemberCard
@@ -172,10 +194,13 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                             lockAddress={lockAddress}
                             owner={owner}
                             metadata={metadata}
-                            // @ts-expect-error
-                            isSelected={isSelected}
-                            // @ts-expect-error
-                            setIsSelected={setIsSelected}
+                            isSelected={selected[owner]}
+                            setIsSelected={() => {
+                              setSelected({
+                                ...selected,
+                                [owner]: !selected[owner],
+                              })
+                            }}
                           />
                         )
                       }
@@ -198,6 +223,13 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
               NoMemberWithFilter={() => {
                 return <p>No ticket matches your filter.</p>
               }}
+              MembersActions={AttendeesActionsWrapper({
+                toggleAll,
+                selected,
+                bulkApprove,
+                bulkDeny,
+                allSelected,
+              })}
             />
           </div>
         </div>
