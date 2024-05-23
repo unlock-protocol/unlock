@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable5/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
 
 contract UPSwap is Initializable, OwnableUpgradeable {
-  // 1 UDT for 100 UP
+  // 1 UDT for 1000 UP
   uint public constant RATE = 1000;
 
   // tokens
