@@ -13,11 +13,13 @@ export interface RegistrationCardProps {
     config: PaywallConfigType
   }
   requiresApproval: boolean
+  hideRemaining: boolean
 }
 
 export const RegistrationCard = ({
   requiresApproval,
   checkoutConfig,
+  hideRemaining,
 }: RegistrationCardProps) => {
   const [hasRefreshed, setHasRefreshed] = useState(false)
   // Check if the user has a key!
@@ -48,6 +50,7 @@ export const RegistrationCard = ({
           requiresApproval={requiresApproval}
           refresh={refresh}
           checkoutConfig={checkoutConfig}
+          hideRemaining={hideRemaining}
         />
       </Card>
     )
@@ -75,6 +78,7 @@ export const RegistrationCard = ({
               }
               lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
               showContract
+              hideRemaining={hideRemaining}
             />
           )
         })}
