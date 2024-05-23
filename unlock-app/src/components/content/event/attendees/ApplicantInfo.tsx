@@ -50,15 +50,23 @@ export const ApplicantInfo = ({
         isOpen={approveAttendeeModalOpen}
         setIsOpen={setApproveAttendeeModalOpen}
         lockAddress={lockAddress}
-        keyOwner={owner}
-        metadata={metadata}
+        attendees={[
+          {
+            keyOwner: owner,
+            metadata: metadata,
+          },
+        ]}
       />
       <DenyAttendeeModalModal
         network={network}
         isOpen={denyAttendeeModalOpen}
         setIsOpen={setDenyAttendeeModalOpen}
         lockAddress={lockAddress}
-        keyOwner={owner}
+        attendees={[
+          {
+            keyOwner: owner,
+          },
+        ]}
       />
 
       <div className="flex md:flex-row flex-col gap-4 space-between w-full group relative">

@@ -6,7 +6,7 @@ import { storage } from '~/config/storage'
 interface ApproveAttendeeModalProps {
   isOpen: boolean
   lockAddress: string
-  keyOwner: string
+  attendees: string[]
   setIsOpen: (open: boolean) => void
   network: number
 }
@@ -14,12 +14,12 @@ interface ApproveAttendeeModalProps {
 export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
   isOpen,
   lockAddress,
-  keyOwner,
+  attendees,
   setIsOpen,
   network,
 }) => {
   const [loading, setLoading] = useState(false)
-
+  const keyOwner = attendees[0]
   const onCloseCallback = () => {
     setIsOpen(false)
     setLoading(false)

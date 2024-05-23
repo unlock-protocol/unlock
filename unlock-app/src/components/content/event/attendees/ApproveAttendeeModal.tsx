@@ -9,25 +9,26 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean
-  lockAddress: string
-  keyOwner: string
   setIsOpen: (open: boolean) => void
   network: number
-  metadata: Metadata
+  lockAddress: string
+  attendees: Array<{
+    keyOwner: string
+    metadata: Metadata
+  }>
 }
 
 export const ApproveAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
   isOpen,
-  lockAddress,
-  keyOwner,
   setIsOpen,
   network,
-  metadata,
+  lockAddress,
+  attendees,
 }) => {
   const web3Service = useWeb3Service()
   const { getWalletService } = useAuth()
   const [loading, setLoading] = useState(false)
-
+  const { keyOwner, metadata } = attendees[0]
   const onCloseCallback = () => {
     setIsOpen(false)
     setLoading(false)
