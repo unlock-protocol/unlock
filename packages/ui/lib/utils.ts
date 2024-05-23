@@ -1,14 +1,14 @@
-import { ethers } from 'ethers'
+import { isAddress as ethersIsAddress } from 'ethers'
 
 export const minifyAddress = (address: string) => {
-  const checked = ethers.utils.isAddress(address)
+  const checked = ethersIsAddress(address)
   return checked
     ? `${address.slice(0, 5)}...${address.slice(address.length - 5)}`
     : address
 }
 
 export const isAddress = (address = '') => {
-  return ethers.utils.isAddress(address)
+  return ethersIsAddress(address)
 }
 
 // TODO: support other TLDs
