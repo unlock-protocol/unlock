@@ -113,6 +113,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
               loading={loading}
               setPage={setPage}
               page={page}
+              allowSelection={true}
               MemberCard={({
                 token,
                 owner,
@@ -123,6 +124,8 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                 network,
                 expirationDuration,
                 lockSettings,
+                isSelected,
+                setIsSelected,
               }) => {
                 return (
                   <MemberCard
@@ -169,6 +172,10 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
                             lockAddress={lockAddress}
                             owner={owner}
                             metadata={metadata}
+                            // @ts-expect-error
+                            isSelected={isSelected}
+                            // @ts-expect-error
+                            setIsSelected={setIsSelected}
                           />
                         )
                       }

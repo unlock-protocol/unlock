@@ -4,11 +4,11 @@ import { ImageBar } from './ImageBar'
 import { MemberCard as DefaultMemberCard, MemberCardProps } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import React from 'react'
+import React, { useState } from 'react'
 import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
 import { storage } from '~/config/storage'
-import { Placeholder } from '@unlock-protocol/ui'
+import { Button, Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 
 const DefaultNoMemberNoFilter = () => {
@@ -41,6 +41,7 @@ interface MembersProps {
   MemberCard?: React.FC<MemberCardProps>
   NoMemberNoFilter?: React.FC
   NoMemberWithFilter?: React.FC
+  allowSelection?: boolean
 }
 
 export interface FilterProps {
@@ -65,7 +66,10 @@ export const Members = ({
   MemberCard = DefaultMemberCard,
   NoMemberWithFilter = DefaultNoMemberWithFilter,
   NoMemberNoFilter = DefaultNoMemberNoFilter,
+  allowSelection = false,
 }: MembersProps) => {
+  const [allSelected, setAllSelected] = useState(false)
+  const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const getMembers = async () => {
     const { query, filterKey, expiration, approval } = filters
     const response = await storage.keysByPage(
@@ -180,10 +184,48 @@ export const Members = ({
     )
   }
 
+  const toggleAll = () => {
+    setAllSelected(!allSelected)
+    if (!allSelected) {
+      setSelected({})
+    }
+  }
+
+  const atLeastOneSelected =
+    allSelected || Object.values(selected).some((value) => value)
+
   return (
     <div className="flex flex-col  gap-6">
+      {allowSelection && (
+        <div className="flex gap-2">
+          <Button onClick={toggleAll} variant="secondary" size="small">
+            {allSelected ? 'Unselect all' : 'Select all'}
+          </Button>
+          <Button
+            disabled={!atLeastOneSelected}
+            variant="secondary"
+            size="small"
+          >
+            Approve all
+          </Button>
+          <Button
+            disabled={!atLeastOneSelected}
+            variant="secondary"
+            size="small"
+          >
+            Deny all
+          </Button>
+        </div>
+      )}
       {(keys || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
+        let isSelected = allSelected
+        if (selected[owner] === true) {
+          isSelected = true
+        } else if (selected[owner] === false) {
+          isSelected = false
+        }
+
         return (
           <MemberCard
             key={metadata.token}
@@ -196,6 +238,13 @@ export const Members = ({
             network={network}
             expirationDuration={lock?.expirationDuration}
             lockSettings={lockSettings}
+            isSelected={isSelected}
+            setIsSelected={(isSelected: boolean) => {
+              setSelected({
+                ...selected,
+                [owner]: isSelected,
+              })
+            }}
           />
         )
       })}
