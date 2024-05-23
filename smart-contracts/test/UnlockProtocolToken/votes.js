@@ -32,10 +32,10 @@ describe('UnlockProtocolToken / Votes', () => {
     ;({ address: holder } = holderSigner)
     ;({ address: recipient } = recipientSigner)
 
-    const UnlockDiscountTokenV3 = await ethers.getContractFactory(
+    const UnlockProtocolToken = await ethers.getContractFactory(
       'UnlockProtocolToken'
     )
-    up = await upgrades.deployProxy(UnlockDiscountTokenV3, [
+    up = await upgrades.deployProxy(UnlockProtocolToken, [
       owner,
       await minter.getAddress(),
     ])

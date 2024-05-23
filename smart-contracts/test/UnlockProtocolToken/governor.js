@@ -2,12 +2,10 @@ const { ethers, upgrades } = require('hardhat')
 const { assert } = require('chai')
 const {
   ADDRESS_ZERO,
-  getLatestBlock,
-  advanceBlock,
-  advanceBlockTo,
+  increaseTime,
+  increaseTimeTo,
   reverts,
 } = require('../helpers')
-const deployContracts = require('../fixtures/deploy')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
@@ -16,11 +14,14 @@ const PROPOSER_ROLE = ethers.keccak256(ethers.toUtf8Bytes('PROPOSER_ROLE'))
 const SIX_DAYS = 6 * 24 * 60 * 60 // in seconds
 const votingDelay = SIX_DAYS
 const votingPeriod = SIX_DAYS
-const defaultQuorum = BigInt('3000') * BigInt(10 ** 18)
+const defaultQuorumNumerator = 3n
+const defaultQuorumDenominator = 1000n
 
 describe('UP Governor & Timelock', () => {
   let gov
-  let udt
+  let up
+  let admin, minter, delegater, voter, resetter
+  let expectedQuorum
 
   // helper to recreate voting process
   const launchVotingProcess = async (voter, proposal) => {
@@ -35,7 +36,7 @@ describe('UP Governor & Timelock', () => {
 
     // wait for voting delay
     const timepoint = await gov.proposalSnapshot(proposalId)
-    await advanceBlockTo(timepoint + 1n)
+    await increaseTimeTo(timepoint + 1n)
 
     // now ready to receive votes
     assert.equal(await gov.state(proposalId), 1) // Active
@@ -43,10 +44,13 @@ describe('UP Governor & Timelock', () => {
     // vote
     gov = gov.connect(voter)
     await gov.castVote(proposalId, 1)
+    await increaseTime()
 
+    // const { timestamp } = await ethers.provider.getBlock()
+    // console.log(await gov.proposalVotes(proposalId, timestamp))
     // wait until voting delay is over
     const deadline = await gov.proposalDeadline(proposalId)
-    await advanceBlockTo(deadline + 1n)
+    await increaseTimeTo(deadline + 1n)
 
     assert.equal(await gov.state(proposalId), 4) // Succeeded
 
@@ -67,35 +71,45 @@ describe('UP Governor & Timelock', () => {
     const execReceipt = await tx.wait()
     const execEvent = await getEvent(execReceipt, 'ProposalExecuted')
     assert.notEqual(execEvent, null) // Executed
+    await increaseTime()
     return execReceipt
   }
 
   before(async () => {
-    ;({ udt } = await deployContracts())
-  })
+    ;[admin, minter, delegater, voter, resetter] = await ethers.getSigners()
 
-  beforeEach(async () => {
-    const [timelockAdmin] = await ethers.getSigners()
+    //
+    const UP = await ethers.getContractFactory('UnlockProtocolToken')
+    up = await upgrades.deployProxy(UP, [
+      await admin.getAddress(),
+      await minter.getAddress(),
+    ])
+
     // deploying timelock with a proxy
     const UPTimelock = await ethers.getContractFactory('UPTimelock')
-
     const timelock = await upgrades.deployProxy(UPTimelock, [
       1, // 1 second delay
       [], // proposers list is empty at deployment
       [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
-      await timelockAdmin.getAddress(),
+      await admin.getAddress(),
     ])
 
     // deploy governor
     const UPGovernor = await ethers.getContractFactory('UPGovernor')
-
     gov = await upgrades.deployProxy(UPGovernor, [
-      await udt.getAddress(),
+      await up.getAddress(),
       await timelock.getAddress(),
     ])
 
     // grant role
     await timelock.grantRole(PROPOSER_ROLE, await gov.getAddress())
+
+    // increase time so the quorum is taken into account
+    await increaseTime()
+
+    expectedQuorum =
+      ((await up.TOTAL_SUPPLY()) * 10n ** 18n * defaultQuorumNumerator) /
+      defaultQuorumDenominator
   })
 
   describe('Default values', () => {
@@ -107,48 +121,52 @@ describe('UP Governor & Timelock', () => {
       assert.equal(await gov.votingPeriod(), votingPeriod)
     })
 
-    it('quorum is 30k UDT', async () => {
-      assert.equal(await gov.quorum(1), defaultQuorum)
+    it('default quorum is 0.3% of total supply', async () => {
+      const { timestamp } = await ethers.provider.getBlock()
+      assert.equal(await gov.quorumNumerator(), defaultQuorumNumerator)
+      assert.equal(await gov.quorumDenominator(), defaultQuorumDenominator)
+      assert.equal(
+        await gov['quorumNumerator(uint256)'](timestamp),
+        defaultQuorumNumerator
+      )
+      assert.equal(await gov.quorum(timestamp - 1), expectedQuorum)
     })
   })
 
   describe('Update voting params', () => {
-    it('should only be possible through voting', async () => {
-      assert.equal(await gov.votingDelay(), votingDelay)
-      await reverts(gov.setVotingDelay(2), 'GovernorOnlyExecutor')
-      await reverts(gov.setQuorum(2), 'GovernorOnlyExecutor')
-      await reverts(gov.setVotingPeriod(2), 'GovernorOnlyExecutor')
-    })
+    before(async () => {
+      // transfer and delegate anout tokens for voter to reach quorum alone
+      await up
+        .connect(minter)
+        .transfer(await delegater.getAddress(), expectedQuorum + 1n)
+      await up.connect(delegater).delegate(await voter.getAddress())
 
-    beforeEach(async () => {
-      const quorum = ethers.parseUnits('15000.0', 18)
-      const [owner, minter, voter] = await ethers.getSigners()
+      const { timestamp } = await ethers.provider.getBlock()
+      await increaseTime()
 
-      // get tokens
-      udt = await udt.connect(minter)
-      await udt.mint(await owner.getAddress(), quorum)
-
-      // give voter a few more tokens of its own to make sure we are above quorum
-      await udt.mint(await minter.getAddress(), ethers.parseUnits('10.0', 18))
-      await udt.delegate(await voter.getAddress())
-
-      // delegate votes
-      udt = await udt.connect(owner)
-      const tx = await udt.delegate(await voter.getAddress())
-      await tx.wait()
-
+      // make sure voter as enough vote
       assert.equal(
-        (await udt.getVotes(await voter.getAddress())) > quorum,
+        (await up.getVotes(await voter.getAddress())) >
+          (await gov.quorum(timestamp)),
         true
       )
     })
 
+    it('should only be possible through voting', async () => {
+      assert.equal(await gov.votingDelay(), votingDelay)
+      await reverts(gov.setVotingDelay(2), 'GovernorOnlyExecutor')
+      await reverts(gov.updateQuorumNumerator(2), 'GovernorOnlyExecutor')
+      await reverts(gov.setVotingPeriod(2), 'GovernorOnlyExecutor')
+    })
+
     describe('Quorum', () => {
       it('should be properly updated through voting', async () => {
-        const quorum = ethers.parseUnits('35.0', 18)
+        const newQuorumNumerator = 10n
 
-        const [, , voter] = await ethers.getSigners()
-        const encoded = gov.interface.encodeFunctionData('setQuorum', [quorum])
+        const encoded = gov.interface.encodeFunctionData(
+          'updateQuorumNumerator',
+          [newQuorumNumerator]
+        )
 
         // propose
         const proposal = [
@@ -160,18 +178,23 @@ describe('UP Governor & Timelock', () => {
 
         const execReceipt = await launchVotingProcess(voter, proposal)
 
-        const lastBlock = await getLatestBlock()
-        await advanceBlock()
-
         // make sure quorum has been changed succesfully
-        const changed = await gov.quorum(lastBlock)
-        assert.equal(changed == quorum, true)
+        const { timestamp } = await ethers.provider.getBlock(
+          execReceipt.blockNumber
+        )
+
+        assert.equal(await gov.quorumNumerator(), newQuorumNumerator)
+        assert.equal(
+          await gov.quorum(timestamp),
+          ((await up.TOTAL_SUPPLY()) * 10n ** 18n * newQuorumNumerator) /
+            defaultQuorumDenominator
+        )
 
         // make sure event has been fired
-        const { args } = await getEvent(execReceipt, 'QuorumSet')
-        const { oldQuorum, newQuorum } = args
-        assert.equal(newQuorum == quorum, true)
-        assert.equal(oldQuorum, defaultQuorum)
+        const { args } = await getEvent(execReceipt, 'QuorumNumeratorUpdated')
+
+        assert.equal(args.newQuorumNumerator, newQuorumNumerator)
+        assert.equal(args.oldQuorumNumerator, defaultQuorumNumerator)
       })
     })
 
@@ -179,7 +202,6 @@ describe('UP Governor & Timelock', () => {
       it('should be properly updated through voting', async () => {
         const votingPeriod = 10
 
-        const [, , voter] = await ethers.getSigners()
         const encoded = gov.interface.encodeFunctionData('setVotingPeriod', [
           votingPeriod,
         ])
@@ -207,8 +229,6 @@ describe('UP Governor & Timelock', () => {
     describe('VotingDelay', () => {
       it('should be properly updated through voting', async () => {
         const votingDelay = 10000n
-
-        const [, , voter] = await ethers.getSigners()
         const encoded = gov.interface.encodeFunctionData('setVotingDelay', [
           votingDelay,
         ])
@@ -220,16 +240,44 @@ describe('UP Governor & Timelock', () => {
           '<proposal description>',
         ]
 
-        const execTx = await launchVotingProcess(voter, proposal)
-
+        const execReceipt = await launchVotingProcess(voter, proposal)
         const changed = await gov.votingDelay()
         assert.equal(changed == votingDelay, true)
 
         // make sure event has been fired
-        const { args } = await getEvent(execTx, 'VotingDelaySet')
+        const { args } = await getEvent(execReceipt, 'VotingDelaySet')
         const { newVotingDelay } = args
         assert.equal(newVotingDelay, votingDelay)
       })
+    })
+
+    afterEach(async () => {
+      // reset to original state after tests
+      const { timestamp } = await ethers.provider.getBlock()
+      await increaseTime()
+      const quorum = await gov.quorum(timestamp)
+
+      // transfer and delegate anout tokens for voter to reach quorum alone
+      if (quorum > expectedQuorum) {
+        await up
+          .connect(minter)
+          .transfer(await resetter.getAddress(), quorum + 1n)
+        await up.connect(resetter).delegate(await resetter.getAddress())
+        await increaseTime()
+
+        // reset quorum through proposal
+        const proposal = [
+          [await gov.getAddress()],
+          ['0'],
+          [
+            gov.interface.encodeFunctionData('updateQuorumNumerator', [
+              defaultQuorumNumerator,
+            ]),
+          ],
+          `<proposal description: reset quorum ${Math.random()}>`,
+        ]
+        await launchVotingProcess(resetter, proposal)
+      }
     })
   })
 })

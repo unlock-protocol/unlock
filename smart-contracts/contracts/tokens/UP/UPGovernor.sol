@@ -2,12 +2,13 @@
 // Compatible with OpenZeppelin Contracts ^5.0.0
 pragma solidity ^0.8.21;
 
+import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable5/governance/GovernorUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/governance/extensions/GovernorSettingsUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/governance/extensions/GovernorCountingSimpleUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/governance/extensions/GovernorVotesUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/governance/extensions/GovernorTimelockControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
+import "@openzeppelin/contracts-upgradeable5/governance/extensions/GovernorVotesQuorumFractionUpgradeable.sol";
 
 /// @custom:security-contact hello@unlock-protocol.com
 contract UPGovernor is
@@ -16,13 +17,9 @@ contract UPGovernor is
   GovernorSettingsUpgradeable,
   GovernorCountingSimpleUpgradeable,
   GovernorVotesUpgradeable,
+  GovernorVotesQuorumFractionUpgradeable,
   GovernorTimelockControlUpgradeable
 {
-  uint private _quorum;
-
-  // add custom event for quorum changes
-  event QuorumSet(uint oldQuorum, uint newQuorum);
-
   /// @custom:oz-upgrades-unsafe-allow constructor
   constructor() {
     _disableInitializers();
@@ -36,21 +33,12 @@ contract UPGovernor is
     __GovernorSettings_init(6 days, 6 days, 0);
     __GovernorCountingSimple_init();
     __GovernorVotes_init(_token);
+    __GovernorVotesQuorumFraction_init(3);
     __GovernorTimelockControl_init(_timelock);
-
-    // default quorum set to 3000
-    _quorum = 3000e18;
   }
 
-  function quorum(uint256) public view override returns (uint256) {
-    return _quorum;
-  }
-
-  // helper to change quorum
-  function setQuorum(uint256 newQuorum) public onlyGovernance {
-    uint256 oldQuorum = _quorum;
-    _quorum = newQuorum;
-    emit QuorumSet(oldQuorum, newQuorum);
+  function quorumDenominator() public pure override returns (uint256) {
+    return 1000;
   }
 
   // The following functions are overrides required by Solidity.
