@@ -11,19 +11,19 @@ export const useSessionUser = () => {
       const accessToken = getAccessToken()
       const address = getCurrentAccount()
       try {
-        if (!accessToken) return undefined
+        if (!accessToken) return null
         const response = await storage.user()
-        return response.data!.walletAddress || undefined
+        return response.data!.walletAddress || null
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401 && accessToken) {
-            return undefined
+            return null
           }
           // To handle temporary network errors and fallback if locksmith is not behaving correctly
           if (accessToken) {
             return address
           }
-          return undefined
+          return null
         }
       }
     },
