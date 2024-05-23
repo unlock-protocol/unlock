@@ -19338,13 +19338,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@file:../../../packages/contracts::locator=%40unlock-protocol%2Feth-node%40workspace%3Adocker%2Fdevelopment%2Feth-node":
-  version: 0.0.26
-  resolution: "@unlock-protocol/contracts@file:../../../packages/contracts#../../../packages/contracts::hash=731d52&locator=%40unlock-protocol%2Feth-node%40workspace%3Adocker%2Fdevelopment%2Feth-node"
-  checksum: 10/747c15c113ea2d712a3074a844ce4f97a0cc1d87aec981cfe7f273dbca02725d4657be00a4e99044cf8770f38397b5c564dfeaef766563a2af62cf5d643a14d2
-  languageName: node
-  linkType: hard
-
 "@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
@@ -19463,9 +19456,9 @@ __metadata:
   resolution: "@unlock-protocol/eth-node@workspace:docker/development/eth-node"
   dependencies:
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
-    "@unlock-protocol/contracts": "file:../../../packages/contracts"
-    "@unlock-protocol/hardhat-plugin": "file:../../../packages/hardhat-plugin"
-    "@unlock-protocol/networks": "file:../../../packages/networks"
+    "@unlock-protocol/contracts": "workspace:^"
+    "@unlock-protocol/hardhat-plugin": "workspace:^"
+    "@unlock-protocol/networks": "workspace:^"
     eslint: "npm:8.57.0"
     ethers: "npm:6.12.1"
     fs-extra: "npm:11.2.0"
@@ -19538,19 +19531,6 @@ __metadata:
     zksync-ethers: "npm:6.7.0"
   languageName: unknown
   linkType: soft
-
-"@unlock-protocol/hardhat-plugin@file:../../../packages/hardhat-plugin::locator=%40unlock-protocol%2Feth-node%40workspace%3Adocker%2Fdevelopment%2Feth-node":
-  version: 0.2.1
-  resolution: "@unlock-protocol/hardhat-plugin@file:../../../packages/hardhat-plugin#../../../packages/hardhat-plugin::hash=674a23&locator=%40unlock-protocol%2Feth-node%40workspace%3Adocker%2Fdevelopment%2Feth-node"
-  dependencies:
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
-  peerDependencies:
-    "@unlock-protocol/contracts": "*"
-    "@unlock-protocol/networks": "*"
-    ethers: 6
-  checksum: 10/876e3a05a0643d9d8ab8fa6ae59e4094777496ac14cf53d4251bc86421980c66cdb0348e182119c9114fcf83130f65ad95767acc03b3ac12c387fbc9c7a4d0e9
-  languageName: node
-  linkType: hard
 
 "@unlock-protocol/hardhat-plugin@workspace:^, @unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin":
   version: 0.0.0-use.local
@@ -19678,17 +19658,6 @@ __metadata:
     zod: "npm:3.22.4"
   languageName: unknown
   linkType: soft
-
-"@unlock-protocol/networks@file:../../../packages/networks::locator=%40unlock-protocol%2Feth-node%40workspace%3Adocker%2Fdevelopment%2Feth-node":
-  version: 0.0.21
-  resolution: "@unlock-protocol/networks@file:../../../packages/networks#../../../packages/networks::hash=355aaf&locator=%40unlock-protocol%2Feth-node%40workspace%3Adocker%2Fdevelopment%2Feth-node"
-  dependencies:
-    eslint-plugin-sort-keys-fix: "npm:1.1.2"
-    ethers: "npm:6.12.1"
-    tsx: "npm:4.8.2"
-  checksum: 10/9cc1e5341d09171e1ed1f4bf094399f343f373ef9751c0b4f2260bc224c8669fad0db6acc843a580da3f4d535a5b1fcdf50adc72074186c7d9b98686bfc83cdf
-  languageName: node
-  linkType: hard
 
 "@unlock-protocol/networks@workspace:./packages/networks, @unlock-protocol/networks@workspace:^, @unlock-protocol/networks@workspace:packages/networks":
   version: 0.0.0-use.local
