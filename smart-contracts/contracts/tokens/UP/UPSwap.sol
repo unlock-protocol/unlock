@@ -10,9 +10,6 @@ contract UPSwap is Initializable, OwnableUpgradeable {
   // 1 UDT for 100 UP
   uint public constant RATE = 1000;
 
-  // pause swap if necessary
-  bool public swapIsPaused;
-
   // tokens
   IERC20 public up;
   IERC20 public udt;
@@ -48,13 +45,6 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     _disableInitializers();
   }
 
-  modifier swapIsOn() {
-    if (swapIsPaused) {
-      revert SwapPaused();
-    }
-    _;
-  }
-
   function initialize(
     address _up,
     address _udt,
@@ -68,16 +58,13 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     udt = IERC20(_udt);
 
     PERMIT2 = permit2;
-
-    // swap enable by default
-    swapIsPaused = false;
   }
 
   function swapUDTForUP(
     address spender,
     uint amountUDT,
     address recipient
-  ) public swapIsOn {
+  ) public {
     // check balance
     if (udt.balanceOf(spender) < amountUDT) {
       revert BalanceTooLow(address(udt), spender, amountUDT);
@@ -110,7 +97,7 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     address spender,
     uint amountUP,
     address recipient
-  ) public swapIsOn {
+  ) public {
     // check balance
     if (up.balanceOf(spender) < amountUP) {
       revert BalanceTooLow(address(up), spender, amountUP);
@@ -167,9 +154,5 @@ contract UPSwap is Initializable, OwnableUpgradeable {
       revert TransferFailed(address(udt));
     }
     emit UPSwapped(spender, amountUDT, amountUP, recipient);
-  }
-
-  function pauseSwap(bool _swapIsPaused) public onlyOwner {
-    swapIsPaused = _swapIsPaused;
   }
 }

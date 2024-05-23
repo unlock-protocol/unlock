@@ -16,7 +16,10 @@ const parseLogs = (logs, interface) =>
     return parsed ? parsed : log
   })
 
-const toDeadline = (expiration) => Math.floor((Date.now() + expiration) / 1000)
+const toDeadline = async (expiration) => {
+  const { timestamp } = await ethers.provider.getBlock()
+  return timestamp + expiration
+}
 
 const PERMIT_DETAILS = [
   { name: 'token', type: 'address' },
@@ -81,49 +84,6 @@ describe('UPSwap / swap UDT for UP', () => {
   describe('contract ownership', () => {
     it('is properly set', async () => {
       assert.equal(await owner.getAddress(), await swap.owner())
-    })
-  })
-
-  describe('pausable', () => {
-    describe('pauseSwap', () => {
-      it('default to false', async () => {
-        assert.equal(await swap.swapIsPaused(), false)
-      })
-      it('properly set pause', async () => {
-        await swap.connect(owner).pauseSwap(true)
-        assert.equal(await swap.swapIsPaused(), true)
-        await swap.connect(owner).pauseSwap(false)
-        assert.equal(await swap.swapIsPaused(), false)
-      })
-      it('can only be set by owner', async () => {
-        await reverts(swap.connect(random).pauseSwap(true), 'Ownable')
-      })
-    })
-    describe('pause swapping when active', () => {
-      before(async () => {
-        await swap.connect(owner).pauseSwap(true)
-      })
-      it('prevent swap from happening', async () => {
-        await reverts(
-          swap.swapUDTForUP(
-            await spender.getAddress(),
-            amountUDT,
-            await recipient.getAddress()
-          ),
-          `SwapPaused`
-        )
-        await reverts(
-          swap.swapUPForUDT(
-            await spender.getAddress(),
-            amountUDT,
-            await recipient.getAddress()
-          ),
-          `SwapPaused`
-        )
-      })
-      after(async () => {
-        await swap.connect(owner).pauseSwap(false)
-      })
     })
   })
 
@@ -366,11 +326,11 @@ describe('UPSwap / swap UDT for UP', () => {
         details: {
           token: await up.getAddress(),
           amount: amountUP,
-          expiration: toDeadline(/* 30 days= */ 1000 * 60 * 60 * 24 * 30),
+          expiration: await toDeadline(/* 30 days= */ 60 * 60 * 24 * 30),
           nonce: 0n,
         },
         spender: await swap.getAddress(),
-        sigDeadline: toDeadline(/* 30 minutes= */ 1000 * 60 * 60 * 30),
+        sigDeadline: await toDeadline(/* 30 minutes= */ 60 * 60 * 30),
       }
 
       const domain = {
