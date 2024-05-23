@@ -30,8 +30,8 @@ export const getEventDetailsByLock: RequestHandler = async (
 export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
+  // @ts-expect-error Type instantiation is excessively deep and possibly infinite
   checkoutConfig: z.object({
-    // @ts-expect-error object incomplete
     config: PaywallConfig,
     id: z.string().optional(),
   }),
