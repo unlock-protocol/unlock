@@ -52,8 +52,8 @@ export const ApplicantInfo = ({
         lockAddress={lockAddress}
         attendees={[
           {
-            keyOwner: owner,
-            metadata: metadata,
+            keyholderAddress: owner,
+            ...metadata,
           },
         ]}
       />

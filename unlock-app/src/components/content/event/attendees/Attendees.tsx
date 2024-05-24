@@ -35,8 +35,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [loading, setLoading] = useState(false)
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const [allSelected, setAllSelected] = useState(false)
-  const [approveAttendeeModalOpen, setApproveAttendeeModalOpen] =
-    useState(false)
+  const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
 
   const router = useRouter()
   const [lockAddress, setLockAddress] = useState(
@@ -69,7 +68,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   useEffect(() => {
     setAllSelected(false)
     setSelected({})
-  }, [page])
+  }, [page, filters])
 
   // Placeholders
   const lockNetwork = lockAddress
@@ -98,8 +97,9 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   }
 
   const bulkApprove = (keys: any) => {
-    console.log('bulkApprove', selected, keys)
-    setApproveAttendeeModalOpen(true)
+    setApprovedAttendees(
+      keys.filter((key: any) => selected[key.keyholderAddress])
+    )
   }
 
   const bulkDeny = (keys: any) => {
@@ -118,12 +118,13 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
           setIsOpen={setAirdropKeys}
           locks={checkoutConfig.config.locks}
         />
-        {/* <ApproveAttendeeModalModal
+        <ApproveAttendeeModalModal
           network={network}
-          isOpen={approveAttendeeModalOpen}
-          setIsOpen={setApproveAttendeeModalOpen}
+          isOpen={approvedAttendees.length > 0}
+          setIsOpen={() => setApprovedAttendees([])}
           lockAddress={lockAddress}
-        /> */}
+          attendees={approvedAttendees}
+        />
         <div className="min-h-screen bg-ui-secondary-200 pb-60 flex flex-col gap-4">
           <div className="flex flex-row-reverse gap-2">
             <Button onClick={() => setAirdropKeys(!airdropKeys)}>
