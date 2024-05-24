@@ -46,8 +46,8 @@ export const DenyAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
       <div className="flex flex-col gap-3">
         <h1 className="text-2xl font-bold">Are you sure?</h1>
         <p>
-          The user will <em>not</em> receive an email and you can still approve
-          them later if needed.
+          The user(s) will <em>not</em> receive an email and you can still
+          approve them later if needed.
         </p>
 
         <Button
