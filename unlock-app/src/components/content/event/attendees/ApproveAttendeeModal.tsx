@@ -113,24 +113,6 @@ export const ApproveAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
           })}
         </ul>
 
-        {/* {Object.keys(metadata)
-          .filter(
-            (value) =>
-              [
-                'keyholderAddress',
-                'keyManager',
-                'approval',
-                'lockAddress',
-              ].indexOf(value) === -1
-          )
-          .map((key) => {
-            return (
-              <Detail key={key} label={key}>
-                {metadata[key]}
-              </Detail>
-            )
-          })} */}
-
         <Button
           type="button"
           onClick={onConfirm}

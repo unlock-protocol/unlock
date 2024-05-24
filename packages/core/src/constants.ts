@@ -1,4 +1,4 @@
-export const PAGE_SIZE = 10
+export const PAGE_SIZE = 30
 
 export const UNLOCK_CONSOLE_MESSAGE = `
 *********************************************************************
