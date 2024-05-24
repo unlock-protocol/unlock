@@ -131,10 +131,10 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
 
         <DenyAttendeeModal
           network={network!}
-          isOpen={approvedAttendees.length > 0}
-          setIsOpen={() => setApprovedAttendees([])}
+          isOpen={deniedAttendees.length > 0}
+          setIsOpen={() => setDeniedAttendees([])}
           lockAddress={lockAddress}
-          attendees={approvedAttendees}
+          attendees={deniedAttendees}
         />
         <div className="min-h-screen bg-ui-secondary-200 pb-60 flex flex-col gap-4">
           <div className="flex flex-row-reverse gap-2">

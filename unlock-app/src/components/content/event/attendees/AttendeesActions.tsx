@@ -43,7 +43,7 @@ export const AttendeesActionsWrapper = ({
           {allSelected ? 'Unselect all' : 'Select all'}
         </Button>
 
-        {numberOfSelected > 0 && (
+        {numberOfSelected > 1 && (
           <>
             <Button
               onClick={() => bulkApprove(keys)}
