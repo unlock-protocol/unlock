@@ -25,6 +25,7 @@ export const useEventOrganizer = ({
       if (!account) {
         return false
       }
+      console.log('eventOrganizer')
       const isManagerByLock = await Promise.all(
         Object.keys(checkoutConfig.config.locks).map((lockAddress: string) =>
           web3Service.isLockManager(
