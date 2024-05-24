@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
-import { useState, useEffect } from 'react'
 import configure from '../config'
+import { useQuery } from '@tanstack/react-query'
 
 const config = configure()
 
@@ -48,17 +48,14 @@ export const getAddressForName = async (_name: string): Promise<string> => {
  * @param {*} address
  */
 export const useEns = (address: string) => {
-  const [name, setName] = useState(address)
-
-  const getNameForAddress = async (_address: string) => {
-    setName(await getNameOrAddressForAddress(_address))
-  }
-
-  useEffect(() => {
-    getNameForAddress(address)
-  }, [address])
-
-  return name
+  const { data: name } = useQuery(
+    ['ens', address],
+    async () => {
+      return getNameOrAddressForAddress(address)
+    },
+    { staleTime: Infinity }
+  )
+  return name || address
 }
 
 export default useEns
