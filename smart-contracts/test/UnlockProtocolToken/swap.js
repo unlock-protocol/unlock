@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { reverts } = require('../helpers')
+const { reverts, ADDRESS_ZERO } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const amountUDT = ethers.parseEther('1')
@@ -37,6 +37,7 @@ describe('Swapper UP / UDT', () => {
     ])
 
     // set up address
+    assert.equal(await swap.up(), ADDRESS_ZERO)
     await swap.setUp(await up.getAddress())
 
     // transfer entire UP supply to swap contract
@@ -45,7 +46,10 @@ describe('Swapper UP / UDT', () => {
       .transfer(await swap.getAddress(), await up.totalSupply())
   })
 
-  describe('settings', () => {
+  describe('initialization', () => {
+    it('reverts if tries to set UP token address twice', async () => {
+      reverts(swap.setUp(await up.getAddress()), 'UpAlreadySet')
+    })
     it('udt is properly set', async () => {
       assert.equal(await swap.up(), await up.getAddress())
     })
@@ -160,19 +164,6 @@ describe('Swapper UP / UDT', () => {
   })
 
   describe('swapUPForUDT', () => {
-    before(async () => {
-      // before all, get spender some UP tokens
-      await udt.connect(preMinter).mint(await spender.getAddress(), amountUDT)
-      await udt.connect(spender).approve(await swap.getAddress(), amountUDT)
-      // spender swap UDT for UP
-      await swap.swapUDTForUP(
-        await spender.getAddress(),
-        amountUDT,
-        await spender.getAddress()
-      )
-      assert.equal(await up.balanceOf(await spender.getAddress()), amountUP)
-    })
-
     describe('reverts', () => {
       it('when UP allowance is not properly set', async () => {
         await reverts(
@@ -203,6 +194,18 @@ describe('Swapper UP / UDT', () => {
       let swapBalanceBefore
 
       before(async () => {
+        // before all, get spender some UP tokens
+        await udt.connect(preMinter).mint(await spender.getAddress(), amountUDT)
+        await udt.connect(spender).approve(await swap.getAddress(), amountUDT)
+
+        // spender swap UDT for UP
+        await swap.swapUDTForUP(
+          await spender.getAddress(),
+          amountUDT,
+          await spender.getAddress()
+        )
+        assert.equal(await up.balanceOf(await spender.getAddress()), amountUP)
+
         // prepare allowance
         await up.connect(spender).approve(await swap.getAddress(), amountUP)
 
