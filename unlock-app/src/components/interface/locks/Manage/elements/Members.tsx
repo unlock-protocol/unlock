@@ -40,7 +40,7 @@ interface MembersProps {
   MemberCard?: React.FC<MemberCardProps>
   NoMemberNoFilter?: React.FC
   NoMemberWithFilter?: React.FC
-  MembersActions?: React.FC<{ keys: any }>
+  MembersActions?: React.FC<{ keys: any; filters: FilterProps }>
 }
 
 export interface FilterProps {
@@ -182,7 +182,7 @@ export const Members = ({
 
   return (
     <div className="flex flex-col  gap-6">
-      {MembersActions ? <MembersActions keys={keys} /> : null}
+      {MembersActions ? <MembersActions filters={filters} keys={keys} /> : null}
 
       {(keys || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}

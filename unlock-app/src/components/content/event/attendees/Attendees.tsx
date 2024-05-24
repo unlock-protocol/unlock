@@ -39,10 +39,9 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
 
   const router = useRouter()
   const [lockAddress, setLockAddress] = useState(
-    checkoutConfig.config.locks
-      ? Object.keys(checkoutConfig.config.locks)[0]
-      : null
+    Object.keys(checkoutConfig.config.locks)[0]
   )
+
   const network =
     checkoutConfig.config.locks[lockAddress]?.network ||
     checkoutConfig.config.network
@@ -119,7 +118,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
           locks={checkoutConfig.config.locks}
         />
         <ApproveAttendeeModalModal
-          network={network}
+          network={network!}
           isOpen={approvedAttendees.length > 0}
           setIsOpen={() => setApprovedAttendees([])}
           lockAddress={lockAddress}

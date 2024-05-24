@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { Metadata } from '@unlock-protocol/core'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { storage } from '~/config/storage'
@@ -14,7 +13,7 @@ interface ApproveAttendeeModalProps {
   lockAddress: string
   attendees: Array<{
     keyholderAddress: string
-    email: Metadata
+    email: string
   }>
 }
 
@@ -37,9 +36,7 @@ export const ApproveAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
     setLoading(true)
 
     try {
-      // Airdrop + call API!
       const walletService = await getWalletService(network)
-
       const airdropRecipients = []
       for (let i = 0; i < attendees.length; i++) {
         const keyOwner = attendees[i].keyholderAddress
@@ -50,66 +47,41 @@ export const ApproveAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
         )
         if (!alreadyHasTicket) {
           airdropRecipients.push(keyOwner)
-          // // Grant keys
-          // await walletService
-          //   .grantKeys(
-          //     {
-          //       recipients: [keyOwner],
-          //       expirations: [MAX_UINT],
-          //       lockAddress,
-          //     },
-          //     {},
-          //     async (error, hash: string | null) => {
-          //       if (error) {
-          //         throw error
-          //       }
-          //       if (hash) {
-          //         await storage.approveRsvp(network, lockAddress, keyOwner)
-          //       }
-          //     }
-          //   )
-          //   .catch((error: any) => {
-          //     console.error(error)
-          //     throw new Error('We were unable to airdrop this ticket.')
-          //   })
         }
-        // else {
-        //  await storage.approveRsvp(network, lockAddress, keyOwner)
-        // }
       }
-      console.log(airdropRecipients)
-      await storage.approveAttendeesRsvp(network, lockAddress, {
-        recipients: airdropRecipients,
-      })
-      // await walletService
-      //   .grantKeys(
-      //     {
-      //       recipients: airdropRecipients,
-      //       expirations: airdropRecipients.map((r) => MAX_UINT),
-      //       lockAddress,
-      //     },
-      //     {},
-      //     async (error, hash: string | null) => {
-      //       if (error) {
-      //         throw error
-      //       }
-      //       if (hash) {
-      //         await storage.approveAttendeesRsvp(
-      //           network,
-      //           lockAddress,
-      //           airdropRecipients
-      //         )
-      //       }
-      //     }
-      //   )
-      //   .catch((error: any) => {
-      //     console.error(error)
-      //     throw new Error('We were unable to airdrop this ticket.')
-      //   })
+      // Mark all as approved!
+      if (airdropRecipients.length === 0) {
+        await storage.approveAttendeesRsvp(network, lockAddress, {
+          recipients: attendees.map((a) => a.keyholderAddress),
+        })
+      }
+      await walletService
+        .grantKeys(
+          {
+            recipients: airdropRecipients,
+            expirations: airdropRecipients.map(() => MAX_UINT),
+            lockAddress,
+          },
+          {},
+          async (error, hash: string | null) => {
+            if (error) {
+              throw error
+            }
+            if (hash) {
+              await storage.approveAttendeesRsvp(network, lockAddress, {
+                recipients: attendees.map((a) => a.keyholderAddress),
+              })
+            }
+          }
+        )
+        .catch((error: any) => {
+          console.error(error)
+          throw new Error('We were unable to airdrop this ticket.')
+        })
 
-      // ToastHelper.success(
-      //   `The ticket for ${metadata.email} was successfuly airdropped!`
-      // )
+      ToastHelper.success(
+        `You have successfully approved and airdropped ${airdropRecipients.length} ticket(s) to the selected user(s).`
+      )
       onCloseCallback()
     } catch (err: any) {
       onCloseCallback()

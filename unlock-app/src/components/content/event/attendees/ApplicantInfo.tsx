@@ -5,7 +5,6 @@ import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { Metadata } from '@unlock-protocol/core'
 import { ApproveAttendeeModalModal } from './ApproveAttendeeModal'
 import { DenyAttendeeModalModal } from './DenyAttendeeModalModal'
 
@@ -13,7 +12,7 @@ interface ApplicantInfoProps {
   network: number
   lockAddress: string
   owner: string
-  metadata: Metadata
+  metadata: any
   isSelected: boolean
   setIsSelected: (selected: boolean) => void
 }
@@ -64,7 +63,8 @@ export const ApplicantInfo = ({
         lockAddress={lockAddress}
         attendees={[
           {
-            keyOwner: owner,
+            keyholderAddress: owner,
+            ...metadata,
           },
         ]}
       />
