@@ -48,11 +48,14 @@ export const getAddressForName = async (_name: string): Promise<string> => {
  * @param {*} address
  */
 export const useEns = (address: string) => {
-  return address
-  // const { data: name } = useQuery(['ens', address], async () => {
-  //   return getNameOrAddressForAddress(address)
-  // })
-  // return name || address
+  const { data: name } = useQuery(
+    ['ens', address],
+    async () => {
+      return getNameOrAddressForAddress(address)
+    },
+    { staleTime: Infinity }
+  )
+  return name || address
 }
 
 export default useEns

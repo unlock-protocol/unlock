@@ -18,17 +18,16 @@ export const useLockManager = ({
   network,
 }: UseLocKManagerProps) => {
   const { account } = useAuth()
-
   const { data: isManager = false, isLoading } = useQuery(
     ['getLockManagerStatus', network, lockAddress, account],
     async () => {
-      console.log('getLockManagerStatus', account, network, lockAddress)
       if (!account || !lockAddress || !network) {
         return false
       }
       const web3Service = new Web3Service(networks)
       return web3Service.isLockManager(lockAddress, account, network)
-    }
+    },
+    { staleTime: 1000 * 60 } // Cached for 1 minute!
   )
 
   return {
