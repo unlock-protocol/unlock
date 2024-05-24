@@ -17,7 +17,7 @@ interface ApproveAttendeeModalProps {
   }>
 }
 
-export const ApproveAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
+export const ApproveAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
   isOpen,
   setIsOpen,
   network,

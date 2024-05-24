@@ -14,7 +14,7 @@ interface ApproveAttendeeModalProps {
   network: number
 }
 
-export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
+export const DenyAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
   isOpen,
   lockAddress,
   attendees,

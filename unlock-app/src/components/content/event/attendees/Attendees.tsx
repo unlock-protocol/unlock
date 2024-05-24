@@ -20,7 +20,8 @@ import { AttendeeInfo } from './AttendeeInfo'
 import { ApplicantInfo } from './ApplicantInfo'
 import { Detail } from '@unlock-protocol/ui'
 import { AttendeesActionsWrapper } from './AttendeesActions'
-import { ApproveAttendeeModalModal } from './ApproveAttendeeModal'
+import { ApproveAttendeeModal } from './ApproveAttendeeModal'
+import { DenyAttendeeModal } from './DenyAttendeeModal'
 
 interface AttendeesProps {
   event: Event
@@ -36,6 +37,7 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   const [selected, setSelected] = useState<{ [key: string]: boolean }>({})
   const [allSelected, setAllSelected] = useState(false)
   const [approvedAttendees, setApprovedAttendees] = useState<any[]>([])
+  const [deniedAttendees, setDeniedAttendees] = useState<any[]>([])
 
   const router = useRouter()
   const [lockAddress, setLockAddress] = useState(
@@ -102,7 +104,9 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
   }
 
   const bulkDeny = (keys: any) => {
-    console.log('bulkApprove', selected, keys)
+    setDeniedAttendees(
+      keys.filter((key: any) => selected[key.keyholderAddress])
+    )
   }
 
   return (
@@ -117,7 +121,15 @@ export const Attendees = ({ checkoutConfig, event }: AttendeesProps) => {
           setIsOpen={setAirdropKeys}
           locks={checkoutConfig.config.locks}
         />
-        <ApproveAttendeeModalModal
+        <ApproveAttendeeModal
+          network={network!}
+          isOpen={approvedAttendees.length > 0}
+          setIsOpen={() => setApprovedAttendees([])}
+          lockAddress={lockAddress}
+          attendees={approvedAttendees}
+        />
+
+        <DenyAttendeeModal
           network={network!}
           isOpen={approvedAttendees.length > 0}
           setIsOpen={() => setApprovedAttendees([])}

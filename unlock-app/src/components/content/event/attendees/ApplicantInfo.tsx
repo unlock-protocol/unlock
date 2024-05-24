@@ -5,8 +5,8 @@ import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { ApproveAttendeeModalModal } from './ApproveAttendeeModal'
-import { DenyAttendeeModalModal } from './DenyAttendeeModalModal'
+import { ApproveAttendeeModal } from './ApproveAttendeeModal'
+import { DenyAttendeeModal } from './DenyAttendeeModal'
 
 interface ApplicantInfoProps {
   network: number
@@ -44,7 +44,7 @@ export const ApplicantInfo = ({
 
   return (
     <>
-      <ApproveAttendeeModalModal
+      <ApproveAttendeeModal
         network={network}
         isOpen={approveAttendeeModalOpen}
         setIsOpen={setApproveAttendeeModalOpen}
@@ -56,7 +56,7 @@ export const ApplicantInfo = ({
           },
         ]}
       />
-      <DenyAttendeeModalModal
+      <DenyAttendeeModal
         network={network}
         isOpen={denyAttendeeModalOpen}
         setIsOpen={setDenyAttendeeModalOpen}
