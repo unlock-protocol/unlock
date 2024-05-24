@@ -45,15 +45,19 @@ contract UPSwap is Initializable, OwnableUpgradeable {
   function initialize(address _udt, address initialOwner) public initializer {
     __Ownable_init(initialOwner);
 
-    // store addresses
+    // store UDT address
     udt = IERC20(_udt);
   }
 
-  function setUp(address _up) public {
+  /**
+   * This function is called by the UP ERC20 initializer
+   * to set directly the token address when pre-mint supply is sent
+   */
+  function setUp() public {
     if (address(up) != address(0)) {
       revert UpAlreadySet();
     }
-    up = IERC20(_up);
+    up = IERC20(msg.sender);
   }
 
   function swapUDTForUP(

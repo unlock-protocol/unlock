@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { reverts, ADDRESS_ZERO } = require('../helpers')
+const { reverts } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const amountUDT = ethers.parseEther('1')
@@ -35,10 +35,6 @@ describe('Swapper UP / UDT', () => {
       await owner.getAddress(),
       await swap.getAddress(),
     ])
-
-    // set up address
-    assert.equal(await swap.up(), ADDRESS_ZERO)
-    await swap.setUp(await up.getAddress())
   })
 
   describe('initialization', () => {
