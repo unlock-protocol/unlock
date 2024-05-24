@@ -17,7 +17,7 @@ const votingPeriod = SIX_DAYS
 const defaultQuorumNumerator = 3n
 const defaultQuorumDenominator = 1000n
 
-describe('UP Governor & Timelock', () => {
+describe('UPToken Governor & Timelock', () => {
   let gov
   let up
   let admin, minter, delegater, voter, resetter
@@ -79,7 +79,7 @@ describe('UP Governor & Timelock', () => {
     ;[admin, minter, delegater, voter, resetter] = await ethers.getSigners()
 
     //
-    const UP = await ethers.getContractFactory('UnlockProtocolToken')
+    const UP = await ethers.getContractFactory('UPToken')
     up = await upgrades.deployProxy(UP, [
       await admin.getAddress(),
       await minter.getAddress(),

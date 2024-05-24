@@ -1,13 +1,13 @@
 const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 
-describe('UnlockProtocolToken / initialization', () => {
+describe('UPToken / initialization', () => {
   let owner, preMinter
   let up
   before(async () => {
     ;[owner, preMinter] = await ethers.getSigners()
 
-    const UP = await ethers.getContractFactory('UnlockProtocolToken')
+    const UP = await ethers.getContractFactory('UPToken')
     up = await upgrades.deployProxy(UP, [
       await owner.getAddress(),
       await preMinter.getAddress(),

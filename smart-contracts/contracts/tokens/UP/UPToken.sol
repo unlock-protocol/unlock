@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
 import {NoncesUpgradeable} from "@openzeppelin/contracts-upgradeable5/utils/NoncesUpgradeable.sol";
 
 /// @custom:security-contact hello@unlock-protocol.com
-contract UnlockProtocolToken is
+contract UPToken is
   Initializable,
   ERC20Upgradeable,
   ERC20PermitUpgradeable,

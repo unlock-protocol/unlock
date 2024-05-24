@@ -13,7 +13,7 @@ const {
 
 const supply = BigInt('100000000')
 
-describe('UnlockProtocolToken / Votes', () => {
+describe('UPToken / Votes', () => {
   let up
   let transferToken
   let holderSigner, recipientSigner
@@ -32,9 +32,7 @@ describe('UnlockProtocolToken / Votes', () => {
     ;({ address: holder } = holderSigner)
     ;({ address: recipient } = recipientSigner)
 
-    const UnlockProtocolToken = await ethers.getContractFactory(
-      'UnlockProtocolToken'
-    )
+    const UnlockProtocolToken = await ethers.getContractFactory('UPToken')
     up = await upgrades.deployProxy(UnlockProtocolToken, [
       owner,
       await minter.getAddress(),
