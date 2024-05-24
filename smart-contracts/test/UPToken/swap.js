@@ -13,22 +13,16 @@ const parseLogs = (logs, interface) =>
   })
 
 describe('Swapper UP / UDT', () => {
-  let owner, preMinter, spender, recipient, random
+  let owner, udtMinter, spender, recipient, random
   let up, udt, swap
 
   before(async () => {
-    ;[owner, preMinter, spender, recipient, random] = await ethers.getSigners()
+    ;[owner, udtMinter, spender, recipient, random] = await ethers.getSigners()
 
     const UDT = await ethers.getContractFactory('UnlockDiscountTokenV3')
-    udt = await upgrades.deployProxy(UDT, [await preMinter.getAddress()], {
+    udt = await upgrades.deployProxy(UDT, [await udtMinter.getAddress()], {
       initializer: 'initialize(address)',
     })
-
-    const UP = await ethers.getContractFactory('UnlockProtocolToken')
-    up = await upgrades.deployProxy(UP, [
-      await owner.getAddress(),
-      await preMinter.getAddress(),
-    ])
 
     const UPSwap = await ethers.getContractFactory('UPSwap')
     swap = await upgrades.deployProxy(UPSwap, [
@@ -36,19 +30,26 @@ describe('Swapper UP / UDT', () => {
       await owner.getAddress(),
     ])
 
+    const UP = await ethers.getContractFactory('UPToken')
+    up = await upgrades.deployProxy(UP, [
+      await owner.getAddress(),
+      await swap.getAddress(),
+    ])
+
     // set up address
     assert.equal(await swap.up(), ADDRESS_ZERO)
     await swap.setUp(await up.getAddress())
-
-    // transfer entire UP supply to swap contract
-    await up
-      .connect(preMinter)
-      .transfer(await swap.getAddress(), await up.totalSupply())
   })
 
   describe('initialization', () => {
     it('reverts if tries to set UP token address twice', async () => {
       reverts(swap.setUp(await up.getAddress()), 'UpAlreadySet')
+    })
+    it('owns entire supply of UP', async () => {
+      assert.equal(
+        await up.balanceOf(await swap.getAddress()),
+        (await up.TOTAL_SUPPLY()) * 10n ** (await up.decimals())
+      )
     })
     it('udt is properly set', async () => {
       assert.equal(await swap.up(), await up.getAddress())
@@ -77,7 +78,7 @@ describe('Swapper UP / UDT', () => {
         )
       })
       it('when UDT allowance is not properly set', async () => {
-        await udt.connect(preMinter).mint(await spender.getAddress(), amountUDT)
+        await udt.connect(udtMinter).mint(await spender.getAddress(), amountUDT)
         await reverts(
           swap.swapUDTForUP(
             await spender.getAddress(),
@@ -95,7 +96,7 @@ describe('Swapper UP / UDT', () => {
 
       before(async () => {
         // prepare funds and allowance
-        await udt.connect(preMinter).mint(await spender.getAddress(), amountUDT)
+        await udt.connect(udtMinter).mint(await spender.getAddress(), amountUDT)
         await udt.connect(spender).approve(await swap.getAddress(), amountUDT)
 
         // get balances
@@ -195,7 +196,7 @@ describe('Swapper UP / UDT', () => {
 
       before(async () => {
         // before all, get spender some UP tokens
-        await udt.connect(preMinter).mint(await spender.getAddress(), amountUDT)
+        await udt.connect(udtMinter).mint(await spender.getAddress(), amountUDT)
         await udt.connect(spender).approve(await swap.getAddress(), amountUDT)
 
         // spender swap UDT for UP
