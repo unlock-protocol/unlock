@@ -142,6 +142,8 @@ export const updateBulk = (approval: 'approved' | 'denied') => {
         returning: true,
       }
     )
-    return response.status(200).send(rsvps.map((rsvp) => rsvp.toJSON()))
+    return response.status(200).send({
+      results: rsvps.map((rsvp) => rsvp.toJSON()),
+    })
   }
 }
