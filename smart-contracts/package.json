@@ -39,7 +39,7 @@
     "hardhat": "2.22.3",
     "hardhat-contract-sizer": "2.10.0",
     "hardhat-erc1820": "0.1.0",
-    "hardhat-gas-reporter": "1.0.10",
+    "hardhat-gas-reporter": "2.2.0",
     "hardhat-storage-layout": "0.1.7",
     "hardhat-tracer": "2.8.2",
     "prettier": "3.2.5",
