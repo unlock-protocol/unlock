@@ -1,6 +1,5 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
-const { expect } = require('chai')
 const { deployLock, purchaseKey, getUnlock, reverts } = require('../helpers')
 
 const {
@@ -53,12 +52,10 @@ describe(`swapAndCall`, function () {
   })
 
   it('unlock is set properly', async () => {
-    expect(await swapPurchaser.unlockAddress()).to.equal(
-      await unlock.getAddress()
-    )
+    assert.equal(await swapPurchaser.unlockAddress(), await unlock.getAddress())
   })
   it('permit2 is set properly', async () => {
-    expect(await swapPurchaser.permit2()).to.equal(PERMIT2_ADDRESS)
+    assert.equal(await swapPurchaser.permit2(), PERMIT2_ADDRESS)
   })
 
   it('swaps', () => {
@@ -81,14 +78,15 @@ describe(`swapAndCall`, function () {
             keyPrice,
             isEthers: true,
           })
-          expect(keyPrice).to.equal(await lock.keyPrice())
+          assert.equal(keyPrice, await lock.keyPrice())
         })
 
         it('lock is set properly', async () => {
-          expect(await lock.tokenAddress()).to.equal(
+          assert.equal(
+            await lock.tokenAddress(),
             (await lockToken.getAddress()) || ADDRESS_ZERO
           )
-          expect(await lock.balanceOf(await keyOwner.getAddress())).to.equal(0)
+          assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
         })
 
         it(`signer has enough ${srcToken.symbol} to buy/renew a bunch of keys`, async () => {
@@ -96,7 +94,7 @@ describe(`swapAndCall`, function () {
             await keyOwner.getAddress(),
             await srcToken.getAddress()
           )
-          expect(balance >= 0).to.equal(true)
+          assert.equal(balance >= 0, true)
         })
 
         describe('purchase', () => {
@@ -158,18 +156,20 @@ describe(`swapAndCall`, function () {
           })
 
           it('purchase a key for the sender', async () => {
-            expect(await lock.balanceOf(await keyOwner.getAddress())).to.equal(
+            assert.equal(
+              await lock.balanceOf(await keyOwner.getAddress()),
               keyOwnerBalanceBefore + 1
             )
           })
 
           it('lock has received the tokens', async () => {
-            expect(
+            assert.equal(
               await getBalance(
                 await lock.getAddress(),
                 await lockToken.getAddress()
-              )
-            ).to.equal(lockBalanceBefore.plus(keyPrice))
+              ),
+              lockBalanceBefore.plus(keyPrice)
+            )
           })
         })
 
@@ -258,7 +258,7 @@ describe(`swapAndCall`, function () {
               await lock.getAddress(),
               await lockToken.getAddress()
             )
-            expect(balance).to.equal(lockBalanceBefore.plus(keyPrice))
+            assert.equal(balance, lockBalanceBefore.plus(keyPrice))
           })
         })
 

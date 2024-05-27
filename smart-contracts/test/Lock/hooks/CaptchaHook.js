@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts, deployLock } = require('../../helpers')
 
@@ -14,17 +14,20 @@ describe('CaptchaHook', function () {
     await (await hook.addSigner(await secretSigner.getAddress())).wait()
 
     // signing wrong message
-    expect(
-      await hook.checkIsSigner(sender, await secretSigner.signMessage('hello'))
-    ).to.equal(false)
-    expect(
-      await hook.checkIsSigner('hello', await secretSigner.signMessage(sender))
-    ).to.equal(false)
+    assert.equal(
+      await hook.checkIsSigner(sender, await secretSigner.signMessage('hello')),
+      false
+    )
+    assert.equal(
+      await hook.checkIsSigner('hello', await secretSigner.signMessage(sender)),
+      false
+    )
 
     // wrong signer
-    expect(
-      await hook.checkIsSigner(sender, await user.signMessage(sender))
-    ).to.equal(false)
+    assert.equal(
+      await hook.checkIsSigner(sender, await user.signMessage(sender)),
+      false
+    )
 
     // Correct signer, correct message
     const message = 'hello'
@@ -35,11 +38,11 @@ describe('CaptchaHook', function () {
     const signedMessage = await secretSigner.signMessage(
       ethers.getBytes(messageHash)
     )
-    expect(
+    assert.equal(
       ethers.verifyMessage(message, signedMessage),
       await secretSigner.getAddress()
     )
-    expect(await hook.checkIsSigner(message, signedMessage)).to.equal(true)
+    assert.equal(await hook.checkIsSigner(message, signedMessage), true)
   })
 
   it('should work as a hook', async function () {
@@ -84,19 +87,20 @@ describe('CaptchaHook', function () {
     )
 
     // Health check!
-    expect(
+    assert.equal(
       ethers.verifyMessage(
         (await user.getAddress()).toLowerCase(),
         signedMessage
       ),
       await secretSigner.getAddress()
     )
-    expect(
+    assert.equal(
       await hook.checkIsSigner(
         (await user.getAddress()).toLowerCase(),
         signedMessage
-      )
-    ).to.equal(true)
+      ),
+      true
+    )
 
     // Let's now purchase a key!
     const tx = await lock.purchase(

@@ -1,7 +1,6 @@
 const assert = require('assert')
 const { ethers } = require('hardhat')
 const { mainnet } = require('@unlock-protocol/networks')
-const { expect } = require('chai')
 
 const ShibaInuAbi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/erc20.json')
 const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
@@ -56,11 +55,11 @@ describe('Unlock / uniswapValue', () => {
   })
 
   it('weth is set correctly already', async () => {
-    expect(await unlock.weth()).to.equals(WETH)
+    assert.equal(await unlock.weth(), WETH)
   })
 
   it('oracle for USDC was already set to the v2 oracle address', async () => {
-    expect(oracleAddress).to.not.equals(await unlock.uniswapOracles(USDC))
+    assert.notEqual(oracleAddress, await unlock.uniswapOracles(USDC))
   })
 
   describe('A supported token (USDC)', () => {
@@ -88,13 +87,13 @@ describe('Unlock / uniswapValue', () => {
     })
 
     it('sets oracle address correctly', async () => {
-      expect(oracleAddress).to.equals(await unlock.uniswapOracles(USDC))
+      assert.equal(oracleAddress, await unlock.uniswapOracles(USDC))
     })
 
     it('pricing is set correctly', async () => {
       // make sure price is correct
-      expect(await lock.tokenAddress()).to.equals(USDC)
-      expect(await lock.keyPrice()).to.equals(keyPriceUSDC)
+      assert.equal(await lock.tokenAddress(), USDC)
+      assert.equal(await lock.keyPrice(), keyPriceUSDC)
     })
 
     describe('Purchase keys', () => {
@@ -116,11 +115,11 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP went up by the expected ETH value', async () => {
         const GNP = await unlock.grossNetworkProduct()
-        expect(GNP).to.not.equals(gnpBefore)
+        assert.notEqual(GNP, gnpBefore)
 
         // 5 keys at 50 USDC at oracle rate
         const priceConverted = rate * 250
-        expect(GNP.div(1000)).to.equals(gnpBefore.add(priceConverted).div(1000))
+        assert.equal(GNP.div(1000), gnpBefore.add(priceConverted).div(1000))
 
         // show approx value in ETH for reference
         console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)
@@ -156,7 +155,7 @@ describe('Unlock / uniswapValue', () => {
           }
         )
         const gnp = await unlock.grossNetworkProduct()
-        expect(gnp).to.equals(events[4].args.grossNetworkProduct)
+        assert.equal(gnp, events[4].args.grossNetworkProduct)
       })
     })
   })
@@ -186,13 +185,13 @@ describe('Unlock / uniswapValue', () => {
     })
 
     it('sets oracle address correctly', async () => {
-      expect(oracleAddress).to.equals(await unlock.uniswapOracles(SHIBA_INU))
+      assert.equal(oracleAddress, await unlock.uniswapOracles(SHIBA_INU))
     })
 
     it('pricing is set correctly', async () => {
       // make sure price is correct
-      expect(await lock.tokenAddress()).to.equals(SHIBA_INU)
-      expect(await lock.keyPrice()).to.equals(keyPrice)
+      assert.equal(await lock.tokenAddress(), SHIBA_INU)
+      assert.equal(await lock.keyPrice(), keyPrice)
     })
 
     describe('Purchase keys', () => {
@@ -214,12 +213,12 @@ describe('Unlock / uniswapValue', () => {
 
       it('GDP went up by the expected ETH value', async () => {
         const GNP = await unlock.grossNetworkProduct()
-        expect(GNP).to.not.equals(gnpBefore)
+        assert.notEqual(GNP, gnpBefore)
 
         // 5 keys at 50 SHIBA_INU at oracle rate
         const priceConverted = rate * 250
         const diff = GNP.sub(gnpBefore.add(priceConverted))
-        expect(diff).to.be <= 1000 // price variation
+        assert.equal(diff <= 1000, true) // price variation
 
         // show approx value in ETH for reference
         console.log(`250 SHIBA_INU =~ ${ethers.formatUnits(GNP)} ETH`)
@@ -256,7 +255,7 @@ describe('Unlock / uniswapValue', () => {
           }
         )
         const gnp = await unlock.grossNetworkProduct()
-        expect(gnp).to.equals(events[4].args.grossNetworkProduct)
+        assert.equal(gnp, events[4].args.grossNetworkProduct)
       })
     })
   })

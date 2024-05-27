@@ -1,5 +1,4 @@
 const assert = require('assert')
-const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { deployLock } = require('../../helpers')
 
@@ -36,12 +35,14 @@ describe('DiscountHook', function () {
 
     // with wrong password
     const [badData] = await getSignatureForPassword('wrongpassword', recipient)
-    expect(await hook.getSigner(recipient.toLowerCase(), badData)).to.not.equal(
+    assert.notEqual(
+      await hook.getSigner(recipient.toLowerCase(), badData),
       signerAddress
     )
 
     // with correct password
-    expect(await hook.getSigner(recipient.toLowerCase(), data)).to.equal(
+    assert.equal(
+      await hook.getSigner(recipient.toLowerCase(), data),
       signerAddress
     )
   })
@@ -110,7 +111,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect(await lock.balanceOf(await user.getAddress())).to.equal(1n)
+    assert.equal(await lock.balanceOf(await user.getAddress()), 1n)
   })
 
   it('should work as a hook even when a bad signature is provided', async function () {
@@ -164,7 +165,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect(await lock.balanceOf(await user.getAddress())).to.equal(1n)
+    assert.equal(await lock.balanceOf(await user.getAddress()), 1n)
   })
 
   it('should enforce the cap', async function () {
@@ -231,7 +232,7 @@ describe('DiscountHook', function () {
       )
     ).wait()
 
-    expect(await lock.balanceOf(await user.getAddress())).to.equal(1n)
+    assert.equal(await lock.balanceOf(await user.getAddress()), 1n)
 
     // Let's now get the price again for another user with the same code
     const [dataOther] = await getSignatureForPassword(
