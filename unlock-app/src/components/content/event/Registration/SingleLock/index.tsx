@@ -20,12 +20,14 @@ export interface RegistrationCardSingleLockProps {
   }
   refresh: any
   requiresApproval: boolean
+  hideRemaining: boolean
 }
 
 export const RegistrationCardSingleLock = ({
   checkoutConfig,
   refresh,
   requiresApproval,
+  hideRemaining,
 }: RegistrationCardSingleLockProps) => {
   const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
   const network = (checkoutConfig.config.locks[lockAddress].network ||
@@ -93,6 +95,7 @@ export const RegistrationCardSingleLock = ({
             isSoldOut={isSoldOut}
             keysLeft={keysLeft}
             showContract={true}
+            hideRemaining={hideRemaining}
           />
           {!isSoldOut && isClaimable && (
             <WalletlessRegistrationClaim
