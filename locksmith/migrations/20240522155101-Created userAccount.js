@@ -17,11 +17,11 @@ module.exports = {
       },
       loginMethod: {
         type: Sequelize.ENUM(
-          'unlockAccount',
-          'googleAccount',
-          'passkeyAccout',
-          'emailCodeAccount',
-          'none'
+          'UNLOCK_ACCOUNT',
+          'GOOGLE_ACCOUNT',
+          'PASSKEY_ACCOUNT',
+          'EMAIL_CODE',
+          'NONE'
         ),
         allowNull: false,
       },

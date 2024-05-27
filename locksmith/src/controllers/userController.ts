@@ -11,11 +11,11 @@ const cacheDuration = 60 * 15
 const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
 
 export const enum UserAccountType {
-  UnlockAccount = 'unlockAccount',
-  GoogleAccount = 'googleAccount',
-  PasskeyAccount = 'passkeyAccout',
-  EmailCodeAccount = 'emailCodeAccount',
-  None = 'none',
+  UnlockAccount = 'UNLOCK_ACCOUNT',
+  GoogleAccount = 'GOOGLE_ACCOUNT',
+  PasskeyAccount = 'PASSKEY_ACCOUNT',
+  EmailCodeAccount = 'EMAIL_CODE',
+  None = 'NONE',
 }
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {

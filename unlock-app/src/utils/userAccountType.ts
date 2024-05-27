@@ -1,7 +1,7 @@
 export const enum UserAccountType {
-  UnlockAccount = 'unlockAccount',
-  GoogleAccount = 'googleAccount',
-  PasskeyAccount = 'passkeyAccout',
-  EmailCodeAccount = 'emailCodeAccount',
-  None = 'none',
+  UnlockAccount = 'UNLOCK_ACCOUNT',
+  GoogleAccount = 'GOOGLE_ACCOUNT',
+  PasskeyAccount = 'PASSKEY_ACCOUNT',
+  EmailCodeAccount = 'EMAIL_CODE',
+  None = 'NONE',
 }
