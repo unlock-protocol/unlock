@@ -1,5 +1,5 @@
 const { default: networks } = require('@unlock-protocol/networks')
-const { ethers } = require('ethers')
+const { ethers, Contract } = require('ethers')
 const { createFork } = require('./tenderly')
 const { delayABI } = require('./bridge')
 
@@ -52,6 +52,19 @@ async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
     data: delayInterface.encodeFunctionData('enableModule', [signerAddress]),
     gasLimit: 800000,
   })
+
+  // 0ter. make sure we bypass pending txs in delay mod
+  const delayModInstance = new Contract(delayMod, delayABI, signer)
+  const currentNonce = await delayModInstance.txNonce()
+  const nextNonce = await delayModInstance.queueNonce()
+  if (currentNonce != nextNonce) {
+    await signer.sendTransaction({
+      from: signerAddress,
+      to: delayMod,
+      data: delayInterface.encodeFunctionData('setTxNonce', [nextNonce]),
+      gasLimit: 800000,
+    })
+  }
 
   // 1. add tx to delay module
   await signer.sendTransaction({
