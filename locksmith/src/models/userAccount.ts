@@ -1,9 +1,7 @@
-import { User } from './user'
 import type {
   CreationOptional,
   InferAttributes,
   InferCreationAttributes,
-  NonAttribute,
 } from 'sequelize'
 import { Model, DataTypes } from 'sequelize'
 import { sequelize } from './sequelize'
@@ -15,7 +13,6 @@ export class UserAccount extends Model<
 > {
   declare emailAddress: string
   declare loginMethod: UserAccountType
-  declare User?: NonAttribute<User>
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
