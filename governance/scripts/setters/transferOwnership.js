@@ -88,7 +88,7 @@ async function main({ contractAddress, newOwner }) {
     )
   } catch {
     console.log(
-      `> The current owner is not a multisig : ${address(newOwner)} \n`
+      `> The current owner is not a multisig : ${address(previousOwner)} \n`
     )
   }
 

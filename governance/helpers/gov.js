@@ -1,6 +1,7 @@
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
 const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
+const { fetchDataFromTx } = require('./tx')
 
 /**
  * Helper to parse a DAO proposal from an object
@@ -15,8 +16,26 @@ const { GovernorUnlockProtocol } = require('@unlock-protocol/contracts')
  * @returns a formatted proposal in the form of an array of 3 arrays and a string
  * ex. [ [ to (address) ], [ value (in ETH) ], [ calldata (as string) ],  "name of the proposal"]
  */
-
 const parseProposal = async ({
+  calls, // should be an array. If present will bypass functionName / functionArgs logic
+  proposalName,
+  txId,
+  govAddress = ADDRESS_ZERO,
+}) => {
+  let proposal
+  const gov = await getGovContract(govAddress)
+  if (calls && proposalName) {
+    proposal = await parseProposalFromFile({
+      calls,
+      proposalName,
+    })
+  } else {
+    proposal = await getProposalArgsFromTx({ txId, gov })
+  }
+  return { ...proposal, gov }
+}
+
+const parseProposalFromFile = async ({
   calls, // should be an array. If present will bypass functionName / functionArgs logic
   proposalName,
 }) => {
@@ -37,6 +56,7 @@ const parseProposal = async ({
         contractAddress,
         functionName,
         functionArgs,
+        value = 0,
       }) => {
         if (!calldata) {
           calldata = await encodeProposalArgs({
@@ -45,33 +65,69 @@ const parseProposal = async ({
             functionArgs,
           })
         }
-        return { calldata, contractAddress, value: 0 }
+        return { calldata, contractAddress, value }
       }
     )
   )
 
-  const parsed = encodedCalls.reduce(
-    (arr, { calldata, contractAddress, value }) => {
-      return !arr.length
-        ? [[contractAddress], [value], [calldata]]
-        : [
-            [...arr[0], contractAddress], // contracts to send the proposal to
-            [...arr[1], value], // value in ETH, default to 0
-            [...arr[2], calldata], // encoded func calls
-          ]
-    },
-    []
+  const { targets, values, calldatas } = encodedCalls.reduce(
+    ({ targets, values, calldatas }, { calldata, contractAddress, value }) => ({
+      targets: [...targets, contractAddress], // contracts to send the proposal to
+      values: [...values, value], // value in ETH, default to 0
+      calldatas: [...calldatas, calldata], // encoded func calls
+    }),
+    {
+      targets: [],
+      values: [],
+      calldatas: [],
+    }
   )
-
-  return [...parsed, proposalName]
+  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(proposalName))
+  return {
+    targets,
+    values,
+    calldatas,
+    descriptionHash,
+    description: proposalName,
+  }
 }
 
+const getProposalArgsFromTx = async ({ gov, txId }) => {
+  const [proposalId, , _targets, _values, , _calldatas, , , description] =
+    await fetchDataFromTx({
+      txHash: txId,
+      eventName: 'ProposalCreated',
+      abi: GovernorUnlockProtocol.abi,
+    })
+  // make sure values are correct
+  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
+  const targets = _targets.toArray()
+  const values = _values.toArray()
+  const calldatas = _calldatas.toArray()
+  const proposalIdFromFetchedValues = await gov.hashProposal(
+    targets,
+    values,
+    calldatas,
+    descriptionHash
+  )
+  if (proposalIdFromFetchedValues !== proposalId) {
+    throw new Error('proposalId mismatch')
+  }
+  return {
+    targets,
+    values,
+    calldatas,
+    descriptionHash,
+  }
+}
+
+/**
+ * HELPERS
+ */
 const getProposalId = async (proposal) => {
-  const [targets, values, calldata, description] = await parseProposal({
+  const { targets, values, calldatas, descriptionHash } = await parseProposal({
     ...proposal,
   })
-
-  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
 
   // solidityKeccak256
   const encoder = ethers.AbiCoder.defaultAbiCoder()
@@ -79,7 +135,7 @@ const getProposalId = async (proposal) => {
     ethers.keccak256(
       encoder.encode(
         ['address[]', 'uint256[]', 'bytes[]', 'bytes32'],
-        [targets, values, calldata, descriptionHash]
+        [targets, values, calldatas, descriptionHash]
       )
     )
   )
@@ -87,39 +143,13 @@ const getProposalId = async (proposal) => {
   return proposalId
 }
 
-const getProposalIdFromContract = async (proposal, govAddress) => {
-  const { proposerAddress } = proposal
-  const [to, value, calldata, description] = await parseProposal({
-    ...proposal,
-  })
-
-  const [defaultSigner] = await ethers.getSigners()
-  const proposerWallet = proposerAddress
-    ? defaultSigner
-    : await ethers.getSigner(proposerAddress)
-
-  const gov = await ethers.getContractAt(
-    GovernorUnlockProtocol.abi,
-    govAddress,
-    proposerWallet
-  )
-
-  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
-
-  const proposalId = await gov.hashProposal(
-    to,
-    value,
-    calldata,
-    descriptionHash
-  )
-
-  return proposalId
-}
-
-const validateProposalCall = (proposal) => {
+const validateProposalCall = (call) => {
   // proposal contains a single contract call
-  if (!proposal.calldata && !proposal.functionArgs) {
+  if (!call.calldata && !call.functionArgs) {
     throw new Error('Missing calldata or function args.')
+  }
+  if (!call.contractAddress) {
+    throw new Error('Missing target (to) in proposal call.')
   }
 }
 
@@ -153,78 +183,85 @@ const decodeProposalArgs = async ({
   return decoded
 }
 
-const queueProposal = async ({ proposal, govAddress }) => {
-  const [targets, values, calldatas, description] = await parseProposal({
+const getProposalIdFromContract = async ({ proposal, govAddress, txId }) => {
+  const { targets, values, calldatas, descriptionHash } = await parseProposal({
     ...proposal,
+    govAddress,
+    txId,
   })
-  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
-  const { proposerAddress } = proposal
-  let voterWallet
-  if (!proposerAddress) {
-    ;[voterWallet] = await ethers.getSigners()
-  } else {
-    voterWallet = await ethers.getSigner(proposerAddress)
-  }
 
-  console.log({ targets, values, calldatas, description })
+  const gov = await getGovContract(govAddress)
+  const proposalId = await gov.hashProposal(
+    targets,
+    values,
+    calldatas,
+    descriptionHash
+  )
 
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
-
-  return await gov
-    .connect(voterWallet)
-    .queue(targets, values, calldatas, descriptionHash)
+  return proposalId
 }
 
-const executeProposal = async ({ proposal, govAddress }) => {
-  const { proposerAddress } = proposal
-  const [targets, values, calldatas, description] = await parseProposal({
-    ...proposal,
-  })
-  const descriptionHash = ethers.keccak256(ethers.toUtf8Bytes(description))
-  let voterWallet
-  if (!proposerAddress) {
-    ;[voterWallet] = await ethers.getSigners()
-  } else {
-    voterWallet = await ethers.getSigner(proposerAddress)
-  }
+const queueProposal = async ({ proposal, govAddress, proposalId, txId }) => {
+  const { targets, values, calldatas, descriptionHash, gov } =
+    await parseProposal({
+      ...proposal,
+      govAddress,
+      txId,
+    })
+  return await gov.queue(targets, values, calldatas, descriptionHash)
+}
 
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
-  return await gov
-    .connect(voterWallet)
-    .execute(targets, values, calldatas, descriptionHash)
+const executeProposal = async ({ proposal, govAddress, proposalId, txId }) => {
+  const { gov, targets, values, calldatas, descriptionHash } =
+    await parseProposal({
+      ...proposal,
+      proposalId,
+      govAddress,
+      txId,
+    })
+  return await gov.execute(targets, values, calldatas, descriptionHash)
 }
 
 /**
  * Submits a proposal
  */
-const submitProposal = async ({ proposerAddress, proposal, govAddress }) => {
+const submitProposal = async ({ proposal, govAddress, proposalId, txId }) => {
+  const gov = await getGovContract(govAddress)
+  const { targets, values, calldatas, description } = await parseProposal({
+    ...proposal,
+    govAddress,
+    proposalId,
+    txId,
+  })
+  return await gov.propose(targets, values, calldatas, description)
+}
+
+const getGovContract = async (govAddress) => {
   const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
-  let proposer
-  if (!proposerAddress) {
-    ;[proposer] = await ethers.getSigners()
-  } else {
-    proposer = await ethers.getSigner(proposerAddress)
-  }
-  const parsed = await parseProposal(proposal)
-  return await gov.connect(proposer).propose(...parsed)
+  return gov
 }
 
 const getProposalVotes = async (proposalId, govAddress) => {
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   const votes = await gov.proposalVotes(proposalId)
   return votes
 }
 
 const getQuorum = async (govAddress) => {
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
 
   const currentBlock = await ethers.provider.getBlockNumber()
   return await gov.quorum(currentBlock - 1)
 }
 
 const getGovTokenAddress = async (govAddress) => {
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   return await gov.token()
+}
+
+const getTimelockAddress = async (govAddress) => {
+  const gov = await getGovContract(govAddress)
+  return await gov.timelock()
 }
 
 const getProposalState = async (proposalId, govAddress) => {
@@ -239,7 +276,7 @@ const getProposalState = async (proposalId, govAddress) => {
     'Executed',
   ]
 
-  const gov = await ethers.getContractAt(GovernorUnlockProtocol.abi, govAddress)
+  const gov = await getGovContract(govAddress)
   const state = await gov.state(proposalId)
   return states[state]
 }
@@ -261,7 +298,9 @@ module.exports = {
   loadProposal,
   getProposalVotes,
   getQuorum,
+  getGovContract,
   getGovTokenAddress,
+  getTimelockAddress,
   getProposalState,
   getProposalId,
   getProposalIdFromContract,
@@ -273,4 +312,5 @@ module.exports = {
   executeProposal,
   etaToDate,
   isAlreadyPast,
+  getProposalArgsFromTx,
 }

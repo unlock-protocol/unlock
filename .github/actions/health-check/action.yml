@@ -32,10 +32,21 @@ runs:
         yarn workspace @unlock-protocol/networks check-tokens >> networks-tokens.log
         sentry-cli send-event -m "Networks Tokens" --logfile networks-tokens.log
       shell: bash
+    - name: Check hooks in networks package
+      run: |
+        yarn workspace @unlock-protocol/networks check-hooks >> networks-hooks.log
+        sentry-cli send-event -m "Networks Hooks" --logfile networks-tokens.log
+      shell: bash
     - name: Check Unlock info
       run: |
         yarn workspace @unlock-protocol/governance check >> governance.log
         sentry-cli send-event -m "Governance" --logfile governance.log
+      shell: bash
+
+    - name: Check Contract Verification
+      run: |
+        yarn workspace @unlock-protocol/governance check:verify >> verification.log
+        sentry-cli send-event -m "Contract Verification" --logfile verification.log
       shell: bash
     - name: Check Subgraphs
       run: |

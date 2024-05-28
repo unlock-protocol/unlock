@@ -4,15 +4,14 @@ import {
   WalletlessRegistrationClaim,
 } from '../WalletlessRegistration'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ZERO } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { LockPriceInternals } from '../LockPriceDetails'
-import { Placeholder } from '@unlock-protocol/ui'
 import { useGetLockCurrencySymbol } from '~/hooks/useSymbol'
-import { UNLIMITED_KEYS_COUNT } from '~/constants'
+import { ADDRESS_ZERO, UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useLockData } from '~/hooks/useLockData'
 import { EmbeddedCheckout } from '../EmbeddedCheckout'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { emailInput } from '~/components/interface/checkout/main/Metadata'
+import { LoadingRegistrationCard } from '../LoadingRegistrationCard'
 
 export interface RegistrationCardSingleLockProps {
   checkoutConfig: {
@@ -21,12 +20,14 @@ export interface RegistrationCardSingleLockProps {
   }
   refresh: any
   requiresApproval: boolean
+  hideRemaining: boolean
 }
 
 export const RegistrationCardSingleLock = ({
   checkoutConfig,
   refresh,
   requiresApproval,
+  hideRemaining,
 }: RegistrationCardSingleLockProps) => {
   const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
   const network = (checkoutConfig.config.locks[lockAddress].network ||
@@ -41,7 +42,7 @@ export const RegistrationCardSingleLock = ({
 
   const { isInitialLoading: isClaimableLoading, data: canClaim } = useCanClaim(
     {
-      recipients: [account || ZERO],
+      recipients: [account || ADDRESS_ZERO],
       lockAddress,
       network,
       data: [],
@@ -70,13 +71,7 @@ export const RegistrationCardSingleLock = ({
   const showApplication = requiresApproval || lock?.maxNumberOfKeys == 0
 
   if (isLockLoading || isClaimableLoading || !lock) {
-    return (
-      <Placeholder.Root inline>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="lg" />
-      </Placeholder.Root>
-    )
+    return <LoadingRegistrationCard />
   }
 
   const metadataInputs =
@@ -100,6 +95,7 @@ export const RegistrationCardSingleLock = ({
             isSoldOut={isSoldOut}
             keysLeft={keysLeft}
             showContract={true}
+            hideRemaining={hideRemaining}
           />
           {!isSoldOut && isClaimable && (
             <WalletlessRegistrationClaim

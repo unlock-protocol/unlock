@@ -18,6 +18,7 @@ interface LockPriceInternalsProps {
   keysLeft: number
   showContract?: boolean
   lockCheckoutConfig: PaywallLockConfigType
+  hideRemaining: boolean
 }
 export const LockPriceInternals = ({
   lock,
@@ -29,6 +30,7 @@ export const LockPriceInternals = ({
   keysLeft,
   showContract = false,
   lockCheckoutConfig,
+  hideRemaining,
 }: LockPriceInternalsProps) => {
   const name = lockCheckoutConfig.name || lock.name
   return (
@@ -47,17 +49,19 @@ export const LockPriceInternals = ({
             </span>
           </>
         </div>
-        <div className="flex items-center gap-2">
-          <Icon icon={TicketIcon} size={30} />
-          {hasUnlimitedKeys ? (
-            <span className="text-base font-bold">&infin;</span>
-          ) : (
-            <span className="text-base font-bold">
-              {isSoldOut ? 'Sold out' : keysLeft}
-            </span>
-          )}
-          {!isSoldOut && <span className="text-gray-600">Left</span>}
-        </div>
+        {!hideRemaining && (
+          <div className="flex items-center gap-2">
+            <Icon icon={TicketIcon} size={30} />
+            {hasUnlimitedKeys ? (
+              <span className="text-base font-bold">&infin;</span>
+            ) : (
+              <span className="text-base font-bold">
+                {isSoldOut ? 'Sold out' : keysLeft}
+              </span>
+            )}
+            {!isSoldOut && <span className="text-gray-600">Left</span>}
+          </div>
+        )}
       </div>
     </div>
   )
@@ -68,12 +72,14 @@ interface LockPriceDetailsProps {
   network: number
   showContract?: boolean
   lockCheckoutConfig: PaywallLockConfigType
+  hideRemaining: boolean
 }
 export const LockPriceDetails = ({
   lockAddress,
   network,
   showContract = false,
   lockCheckoutConfig,
+  hideRemaining,
 }: LockPriceDetailsProps) => {
   const { lock, isLockLoading } = useLockData({
     lockAddress,
@@ -98,9 +104,12 @@ export const LockPriceDetails = ({
 
   if (isLockLoading || !lock) {
     return (
-      <Placeholder.Root inline>
-        <Placeholder.Line width="sm" />
-        <Placeholder.Line width="sm" />
+      <Placeholder.Root>
+        <Placeholder.Line width="md" />
+        <Placeholder.Root inline>
+          <Placeholder.Line width="sm" />
+          <Placeholder.Line width="sm" />
+        </Placeholder.Root>
       </Placeholder.Root>
     )
   }
@@ -116,6 +125,7 @@ export const LockPriceDetails = ({
       isSoldOut={isSoldOut}
       keysLeft={keysLeft}
       showContract={showContract}
+      hideRemaining={hideRemaining}
     />
   )
 }

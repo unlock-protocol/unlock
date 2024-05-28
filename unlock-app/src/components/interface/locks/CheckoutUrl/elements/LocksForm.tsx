@@ -15,6 +15,7 @@ import {
   ToggleSwitch,
   Tooltip,
   minifyAddress,
+  Checkbox,
 } from '@unlock-protocol/ui'
 import {
   TiArrowSortedUp as UpIcon,
@@ -30,7 +31,6 @@ import { useLockSettings } from '~/hooks/useLockSettings'
 import { getLocksByNetwork } from '~/hooks/useLocksByManager'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckBoxInput } from './BasicConfigForm'
 
 interface LockListItemProps {
   position: number
@@ -105,13 +105,13 @@ export const BasicConfigForm: React.FC<Props> = ({
         description={PaywallLockConfig.shape.dataBuilder?.description}
         {...register('dataBuilder')}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Skip Recipient"
         description={PaywallLockConfig.shape.skipRecipient?.description}
         error={errors.skipRecipient?.message}
         {...register('skipRecipient')}
       />
-      <CheckBoxInput
+      <Checkbox
         label="Collect Email"
         description={PaywallLockConfig.shape.emailRequired?.description}
         error={errors.emailRequired?.message}

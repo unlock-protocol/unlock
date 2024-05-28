@@ -16,6 +16,7 @@ export type SettingTab =
   | 'emails'
   | 'verifiers'
   | 'checkout'
+  | 'referrals'
 
 const Settings: NextPage = () => {
   const { query } = useRouter()
@@ -31,7 +32,7 @@ const Settings: NextPage = () => {
     setDefaultTab((query?.defaultTab as SettingTab) ?? 'general')
   }, [query?.network, query?.address, query.defaultTab])
 
-  const withoutParams = query?.address?.length === 0 && !query.network
+  const withoutParams = !query?.address || !query.network
 
   const onLockPick = (lockAddress?: string, network?: string | number) => {
     if (lockAddress && network) {
@@ -66,10 +67,10 @@ const Settings: NextPage = () => {
     <BrowserOnly>
       <AppLayout authRequired={true} showHeader={false}>
         <LockSelection />
-        {!withoutParams && (
+        {!withoutParams && lockAddress && network && (
           <LockSettingsPage
-            lockAddress={lockAddress! as string}
-            network={parseInt((network as string)!, 10)}
+            lockAddress={lockAddress}
+            network={parseInt(network, 10)}
             defaultTab={defaultTab}
           />
         )}

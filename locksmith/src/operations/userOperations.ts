@@ -163,6 +163,7 @@ export const getCards = async (emailAddress: string): Promise<any[]> => {
   }
   return []
 }
+
 export const getCardDetailsFromStripe = async (
   customer_id: any
 ): Promise<any[]> => {
@@ -197,6 +198,15 @@ export const findByEmail = async (emailAddress: string) => {
   const user = await UserReference.findOne({
     where: {
       emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+  return user
+}
+
+export const findByWalletAddress = async (walletAddress: string) => {
+  const user = await UserReference.findOne({
+    where: {
+      publicKey: Normalizer.emailAddress(walletAddress),
     },
   })
   return user

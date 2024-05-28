@@ -6,6 +6,12 @@ const run = async () => {
   for (const networkId in networks) {
     const network = networks[networkId]
     const provider = new ethers.JsonRpcProvider(network.provider)
+    const unlock = new ethers.Contract(
+      network.unlockAddress,
+      ['function uniswapOracles(address) view returns (address)'],
+      provider
+    )
+
     if (network.tokens) {
       for (const token of network.tokens) {
         const contract = new ethers.Contract(token.address, ERC20, provider)
@@ -13,7 +19,6 @@ const run = async () => {
           const symbol = await contract.symbol()
           const name = await contract.name()
           const decimals = parseInt(await contract.decimals())
-
           if (decimals !== token.decimals) {
             console.error(
               `❌ Decimals mismatch for ${token.address} on ${networkId}. It needs to be "${decimals}"`
@@ -27,6 +32,14 @@ const run = async () => {
           if (symbol !== token.symbol) {
             console.error(
               `❌ Symbol mismatch for ${token.address} on ${networkId}. It needs to be "${symbol}"`
+            )
+          }
+
+          // check if oracle is set in Unlock
+          const isSetInUnlock = await unlock.uniswapOracles(token.address)
+          if (isSetInUnlock === ethers.ZeroAddress) {
+            console.error(
+              `❌ Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${networkId}) is not set correctly`
             )
           }
         } catch (error) {

@@ -50,6 +50,23 @@ export const gnosis: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x111C61BD66a8c4f142e452b9087Dae5893C5C3cF',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0xd6129cAC45a16187F4D09Dd69C512F68F0f2B371',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 100,

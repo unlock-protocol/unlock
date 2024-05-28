@@ -1,4 +1,4 @@
-import { Button, Modal, Placeholder } from '@unlock-protocol/ui'
+import { Button, Modal, Placeholder, PriceFormatter } from '@unlock-protocol/ui'
 import React from 'react'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -9,7 +9,7 @@ export interface CancelAndRefundProps {
   isOpen: boolean
   lock: any
   setIsOpen: (open: boolean) => void
-  account: string
+  owner: string
   currency: string
   tokenId: string
   network: number
@@ -22,7 +22,7 @@ export const CancelAndRefundModal = ({
   isOpen,
   lock,
   setIsOpen,
-  account: owner,
+  owner,
   currency,
   tokenId,
   network,
@@ -117,7 +117,8 @@ export const CancelAndRefundModal = ({
                 ) : isRefundable ? (
                   <>
                     <span>
-                      {currency} {parseFloat(`${refundAmount}`!).toFixed(3)}
+                      {currency}{' '}
+                      <PriceFormatter price={refundAmount.toString()} />{' '}
                     </span>
                     {` will be refunded, Do you want to proceed?`}
                   </>

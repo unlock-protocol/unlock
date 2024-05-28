@@ -55,9 +55,8 @@ export class GrantKeysController {
         return
       }
 
-      const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
-        network
-      )
+      const hasEnoughToPayForGas =
+        await dispatcher.hasFundsForTransaction(network)
 
       if (!hasEnoughToPayForGas) {
         response.status(422).send({

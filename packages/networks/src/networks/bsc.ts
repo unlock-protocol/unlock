@@ -48,6 +48,23 @@ export const bsc: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xa2abAeaba0ac658A1DF5517B57e45e857E3137Ad',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0x5B6C5a766edBc6c7988108A689C96AfCEa95a2f1',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 56,

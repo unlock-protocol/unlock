@@ -11,19 +11,19 @@ export const useSessionUser = () => {
       const accessToken = getAccessToken()
       const address = getCurrentAccount()
       try {
-        if (!accessToken) return null
+        if (!accessToken) return ''
         const response = await storage.user()
-        return response.data!.walletAddress
+        return response.data!.walletAddress || ''
       } catch (error) {
         if (error instanceof AxiosError) {
           if (error.response?.status === 401 && accessToken) {
-            return null
+            return ''
           }
           // To handle temporary network errors and fallback if locksmith is not behaving correctly
           if (accessToken) {
             return address
           }
-          return null
+          return ''
         }
       }
     },
@@ -38,12 +38,12 @@ export const useSessionUser = () => {
 
 interface SessionContextType {
   isInitialLoading: boolean
-  session?: string | null
+  session?: string
   refetchSession: () => Promise<UseQueryResult<string | null | undefined>>
 }
 
 export const SessionContext = createContext<SessionContextType>({
-  session: null,
+  session: undefined,
   isInitialLoading: false,
   refetchSession: async () => {
     throw new Error('Session context not initialized')

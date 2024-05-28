@@ -8,7 +8,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useInterpret } from '@xstate/react'
+import { useMachine } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
@@ -20,6 +20,8 @@ import { isEqual } from 'lodash'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
+import { Gitcoin } from './Gitcoin'
+import { Connected } from '../Connected'
 interface Props {
   injectedProvider: any
   paywallConfig: PaywallConfigType
@@ -35,12 +37,12 @@ export function Checkout({
   redirectURI,
   handleClose,
 }: Props) {
-  const checkoutService = useInterpret(checkoutMachine, {
-    context: {
+  // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
+  const [state, send, checkoutService] = useMachine(checkoutMachine, {
+    input: {
       paywallConfig,
     },
   })
-  const [state] = useActor(checkoutService)
   const { account } = useAuth()
 
   const { mint, messageToSign } = state.context
@@ -49,6 +51,10 @@ export function Checkout({
     paywallConfig,
     state.context.paywallConfig
   )
+
+  useEffect(() => {
+    console.debug('Unlock paywall config', paywallConfig)
+  }, [paywallConfig])
 
   useEffect(() => {
     if (paywallConfigChanged) {
@@ -69,7 +75,7 @@ export function Checkout({
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
-      checkoutService.send('RESET_CHECKOUT')
+      checkoutService.send({ type: 'RESET_CHECKOUT' })
       if (handleClose) {
         handleClose(params)
       } else if (redirectURI) {
@@ -112,62 +118,39 @@ export function Checkout({
     const canBackInUnlockAccountService = unlockAccount
       ?.getSnapshot()
       .can('BACK')
-    const canBack = state.can('BACK')
+    const canBack = state.can({ type: 'BACK' })
     if (canBackInUnlockAccountService) {
       return () => unlockAccount.send('BACK')
     }
     if (canBack) {
-      return () => checkoutService.send('BACK')
+      return () => checkoutService.send({ type: 'BACK' })
     }
     return undefined
   }, [state, checkoutService])
 
   const Content = useCallback(() => {
     switch (matched) {
+      case 'CONNECT': {
+        return <Connected service={checkoutService} />
+      }
       case 'SELECT': {
-        return (
-          <Select
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Select checkoutService={checkoutService} />
       }
       case 'QUANTITY': {
-        return (
-          <Quantity
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Quantity checkoutService={checkoutService} />
       }
       case 'PAYMENT': {
-        return (
-          <Payment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Payment checkoutService={checkoutService} />
       }
       case 'CARD': {
-        return (
-          <CardPayment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <CardPayment checkoutService={checkoutService} />
       }
       case 'METADATA': {
-        return (
-          <Metadata
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Metadata checkoutService={checkoutService} />
       }
       case 'CONFIRM': {
         return (
           <Confirm
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
@@ -176,7 +159,6 @@ export function Checkout({
       case 'MESSAGE_TO_SIGN': {
         return (
           <MessageToSign
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
@@ -186,65 +168,39 @@ export function Checkout({
         return (
           <Minting
             onClose={onClose}
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
             communication={communication}
           />
         )
       }
       case 'UNLOCK_ACCOUNT': {
-        return (
-          <UnlockAccountSignIn
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <UnlockAccountSignIn checkoutService={checkoutService} />
       }
       case 'CAPTCHA': {
-        return (
-          <Captcha
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Captcha checkoutService={checkoutService} />
       }
       case 'GUILD': {
-        return (
-          <Guild
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Guild checkoutService={checkoutService} />
       }
       case 'PASSWORD': {
-        return (
-          <Password
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Password checkoutService={checkoutService} />
       }
 
       case 'PROMO': {
-        return (
-          <Promo
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
+        return <Promo checkoutService={checkoutService} />
       }
-
+      case 'GITCOIN': {
+        return <Gitcoin checkoutService={checkoutService} />
+      }
       case 'RETURNING': {
         return (
           <Returning
             communication={communication}
             onClose={onClose}
-            injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
         )
       }
-
       default: {
         return null
       }

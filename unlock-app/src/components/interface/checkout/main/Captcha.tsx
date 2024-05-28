@@ -1,28 +1,29 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import React, { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Captcha({ injectedProvider, checkoutService }: Props) {
-  const [state, send] = useActor(checkoutService)
+export function Captcha({ checkoutService }: Props) {
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const config = useConfig()
   const { account } = useAuth()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients, lock } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -44,7 +45,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       }
       const data: string[] = response.signatures
       setIsContinuing(false)
-      send({
+      checkoutService.send({
         type: 'SUBMIT_DATA',
         data,
       })
@@ -68,26 +69,22 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          className="w-full"
+          disabled={!recaptchaValue || isContinuing}
+          loading={isContinuing}
+          onClick={(event) => {
+            event.preventDefault()
+            onContinue()
+          }}
         >
-          <Button
-            className="w-full"
-            disabled={!recaptchaValue || isContinuing}
-            loading={isContinuing}
-            onClick={(event) => {
-              event.preventDefault()
-              onContinue()
-            }}
-          >
-            {!recaptchaValue
-              ? 'Solve captcha to continue'
-              : isContinuing
+          {!recaptchaValue
+            ? 'Solve captcha to continue'
+            : isContinuing
               ? 'Continuing'
               : 'Continue'}
-          </Button>
-        </Connected>
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

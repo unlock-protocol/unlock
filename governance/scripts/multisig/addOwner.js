@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const Safe = require('@safe-global/protocol-kit').default
 const { EthersAdapter } = require('@safe-global/protocol-kit')
@@ -61,9 +60,8 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   }
 
   await safeService.proposeTransaction(txParams)
-  const { nonce: actualNonce } = await safeService.getTransaction(
-    safeTransactionHash
-  )
+  const { nonce: actualNonce } =
+    await safeService.getTransaction(safeTransactionHash)
   console.log(`tx submitted - nonce: [${actualNonce}].`)
 }
 

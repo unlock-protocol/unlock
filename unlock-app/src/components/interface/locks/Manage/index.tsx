@@ -1,3 +1,5 @@
+import { MdOutlineTipsAndUpdates } from 'react-icons/md'
+import { useQuery } from '@tanstack/react-query'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import React, { Fragment, useEffect, useState } from 'react'
@@ -31,7 +33,6 @@ import { FaRegEdit as EditIcon } from 'react-icons/fa'
 import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { IconType } from 'react-icons'
-import { BiQrScan as ScanIcon } from 'react-icons/bi'
 import { Picker } from '../../Picker'
 import { storage } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
@@ -133,9 +134,17 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       setIsKeysJobLoading(false)
 
       const members = response.data
-      const cols = members.keys ? Object.keys(members.keys[0]) : []
+      const cols: { [key: string]: boolean } = { token: true, data: false }
+      if (members.keys) {
+        for (let i = 0; i < members.keys.length; i++) {
+          Object.keys(members.keys[i]).forEach((key) => {
+            cols[key] = true
+          })
+        }
+      }
+      delete cols.data
       downloadAsCSV({
-        cols,
+        cols: Object.keys(cols),
         metadata: members.keys as any[],
       })
     }
@@ -153,27 +162,25 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   })
 
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-brand-ui-primary">
-          {isEvent ? 'Attendees' : 'Members'}
-        </span>
-        {isManager && (
-          <div className="flex gap-2">
-            <Button
-              variant="outlined-primary"
-              size="small"
-              disabled={isLoadingMetadata || isKeysJobLoading}
-              loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
-              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-              onClick={() => onDownloadCsvMutation.mutate()}
-            >
-              Download {isEvent ? 'attendee' : 'member'} list
-            </Button>
-          </div>
-        )}
-      </div>
-    </>
+    <div className="flex items-center justify-between">
+      <span className="text-xl font-bold text-brand-ui-primary">
+        {isEvent ? 'Attendees' : 'Members'}
+      </span>
+      {isManager && (
+        <div className="flex gap-2">
+          <Button
+            variant="outlined-primary"
+            size="small"
+            disabled={isLoadingMetadata || isKeysJobLoading}
+            loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
+            iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
+            onClick={() => onDownloadCsvMutation.mutate()}
+          >
+            Download {isEvent ? 'attendee' : 'member'} list
+          </Button>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -215,8 +222,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
   const [airdropKeys, setAirdropKeys] = useState(false)
   const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
   const metadataPageUrl = `/locks/metadata?lockAddress=${lockAddress}&network=${network}`
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
-  const verificationLink = `/verification`
+  const checkoutLink = `/locks/checkout-url`
 
   const { isManager } = useLockManager({
     lockAddress,
@@ -267,7 +273,7 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                     </a>
                     <Link href={checkoutLink} className="text-left">
                       <PopoverItem
-                        label="Create Checkout URL"
+                        label="Checkout URLs"
                         description="Customize your member's purchase journey"
                         icon={RightArrowIcon}
                       />
@@ -289,13 +295,6 @@ const ToolsMenu = ({ lockAddress, network }: TopActionBarProps) => {
                         </Link>
                       </>
                     )}
-                    <Link href={verificationLink} className="text-left">
-                      <PopoverItem
-                        label="Verification"
-                        description="Scan and verify the authentication of tickets for your events"
-                        icon={ScanIcon}
-                      />
-                    </Link>
                   </div>
                 </div>
               </Popover.Panel>
@@ -391,6 +390,17 @@ export const ManageLockPage = () => {
   })
   const [page, setPage] = useState(1)
 
+  const { data: eventData } = useQuery(
+    ['getEventForLock', lockAddress, network],
+    async () => {
+      const { data: eventDetails } = await storage.getEventDetails(
+        Number(network),
+        lockAddress
+      )
+      return eventDetails
+    }
+  )
+
   if (!owner) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
@@ -468,6 +478,20 @@ export const ManageLockPage = () => {
               </div>
               <div className="flex flex-col gap-6 lg:col-span-9">
                 <TotalBar lockAddress={lockAddress} network={lockNetwork!} />
+                {eventData?.eventUrl && (
+                  <div className="p-2 text-base text-center flex gap-2 items-center border rounded-xl">
+                    <MdOutlineTipsAndUpdates size="24" />
+                    <p>
+                      This lock is used to sell {eventData.eventName}. You can
+                      update this event&apos;s{' '}
+                      <Link href={eventData.eventUrl} className="underline">
+                        settings directly
+                      </Link>
+                      .
+                    </p>
+                  </div>
+                )}
+
                 <ActionBar
                   page={page}
                   lockAddress={lockAddress}
@@ -490,7 +514,7 @@ export const ManageLockPage = () => {
                   setPage={setPage}
                   page={page}
                   NoMemberNoFilter={() => {
-                    const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+                    const checkoutLink = `/locks/checkout-url`
                     return (
                       <ImageBar
                         src="/images/illustrations/no-member.svg"

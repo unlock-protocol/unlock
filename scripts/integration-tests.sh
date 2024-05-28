@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 set -e
 
-# First this script will deploy 
-REPO_ROOT=`dirname "$0"`/..
-INTEGRATION_TESTS_FOLDER=$REPO_ROOT/tests
-EXTRA_ARGS=$*
+# export required envs
+source ./scripts/start/envs.sh
 
 # run Unlock Protocol stack
-sh -c "$REPO_ROOT/scripts/run-stack-dockerized.sh"
+sh -c "./scripts/start-infra.sh"
 
 # run the actual tests
-sh $INTEGRATION_TESTS_FOLDER/bin/tests.sh
+echo "Running integration tests \n"
+CI=true yarn workspace tests ci --network localhost

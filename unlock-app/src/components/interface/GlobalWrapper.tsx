@@ -7,12 +7,11 @@ import Authenticate from './Authenticate'
 import { config } from '~/config/app'
 import { UnlockUIProvider } from '@unlock-protocol/ui'
 import NextLink from 'next/link'
-import { ReactNodeLike } from 'prop-types'
 import { UNLOCK_CONSOLE_MESSAGE } from '@unlock-protocol/core'
 const wedlockService = new WedlockService(config.services.wedlocks.host)
 
 interface GlobalWrapperProps {
-  children: ReactNodeLike
+  children: React.ReactNode
 }
 
 export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
@@ -28,7 +27,7 @@ export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
       <ConfigContext.Provider value={config}>
         <WedlockServiceContext.Provider value={wedlockService}>
           <ProviderContext.Provider value={{ provider, setProvider }}>
-            <Authenticate>{children}</Authenticate>
+            <Authenticate providerAdapter={provider}>{children}</Authenticate>
           </ProviderContext.Provider>
         </WedlockServiceContext.Provider>
       </ConfigContext.Provider>

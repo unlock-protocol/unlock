@@ -3,8 +3,7 @@ import {
   PaywallConfigType,
   PaywallLockConfigType as PaywallConfigLock,
 } from '@unlock-protocol/core'
-import { createMachine, assign, InterpreterFrom } from 'xstate'
-import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
+import { createMachine, assign, ActorRefFrom, Actor } from 'xstate'
 
 export type CheckoutPage =
   | 'SELECT'
@@ -21,6 +20,8 @@ export type CheckoutPage =
   | 'PASSWORD'
   | 'PROMO'
   | 'GUILD'
+  | 'GITCOIN'
+  | 'CONNECT'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -31,7 +32,12 @@ export interface FiatPricing {
   }
 }
 
-export type CheckoutHookType = 'password' | 'promocode' | 'captcha' | 'guild'
+export type CheckoutHookType =
+  | 'password'
+  | 'promocode'
+  | 'captcha'
+  | 'guild'
+  | 'gitcoin'
 
 export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
@@ -42,6 +48,12 @@ export interface LockState extends Lock, Required<PaywallConfigLock> {
 
 export interface SelectLockEvent {
   type: 'SELECT_LOCK'
+  existingMember: boolean
+  expiredMember: boolean
+}
+
+export interface ConnectEvent {
+  type: 'CONNECT'
   lock: LockState
   existingMember: boolean
   expiredMember: boolean
@@ -102,6 +114,14 @@ interface UpdatePaywallConfigEvent {
 
 interface BackEvent {
   type: CheckoutPage | 'BACK'
+  lock?: LockState
+  existingMember?: boolean
+  expiredMember?: boolean
+  skipQuantity?: boolean
+  skipRecipient?: boolean
+  recipients?: string[]
+  keyManagers?: string[]
+  hook?: CheckoutHookType
 }
 
 interface ResetEvent {
@@ -109,6 +129,7 @@ interface ResetEvent {
 }
 
 export type CheckoutMachineEvents =
+  | ConnectEvent
   | SelectLockEvent
   | SelectQuantityEvent
   | SelectPaymentMethodEvent
@@ -173,6 +194,7 @@ export interface CheckoutMachineContext {
   hook?: CheckoutHookType
   renew: boolean
   existingMember: boolean
+  expiredMember: boolean
 }
 
 const DEFAULT_CONTEXT: CheckoutMachineContext = {
@@ -192,6 +214,7 @@ const DEFAULT_CONTEXT: CheckoutMachineContext = {
   hook: undefined,
   metadata: undefined,
   existingMember: false,
+  expiredMember: false,
 }
 
 const DISCONNECT = {
@@ -199,31 +222,39 @@ const DISCONNECT = {
   actions: ['disconnect'],
 }
 
+// TODO: consider setup({})
 export const checkoutMachine = createMachine(
   {
-    predictableActionArguments: true, // https://xstate.js.org/docs/guides/actions.html
     id: 'checkout',
     initial: 'SELECT',
-    tsTypes: {} as import('./checkoutMachine.typegen').Typegen0,
-    schema: {
+    types: {
+      typegen: {} as import('./checkoutMachine.typegen').Typegen0,
       context: {} as CheckoutMachineContext,
       events: {} as CheckoutMachineEvents,
+      input: {} as Partial<CheckoutMachineContext>,
     },
-    context: DEFAULT_CONTEXT,
+    context: ({ input }) => {
+      return {
+        ...(DEFAULT_CONTEXT as CheckoutMachineContext),
+        ...input,
+      } as CheckoutMachineContext
+    },
     on: {
-      UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
-      SELECT: 'SELECT',
-      QUANTITY: 'QUANTITY',
-      PAYMENT: 'PAYMENT',
-      METADATA: 'METADATA',
-      MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
-      CAPTCHA: 'CAPTCHA',
-      PASSWORD: 'PASSWORD',
-      PROMO: 'PROMO',
-      GUILD: 'GUILD',
-      CARD: 'CARD',
+      CONNECT: '.CONNECT',
+      UNLOCK_ACCOUNT: '.UNLOCK_ACCOUNT',
+      SELECT: '.SELECT',
+      QUANTITY: '.QUANTITY',
+      PAYMENT: '.PAYMENT',
+      METADATA: '.METADATA',
+      MESSAGE_TO_SIGN: '.MESSAGE_TO_SIGN',
+      CAPTCHA: '.CAPTCHA',
+      PASSWORD: '.PASSWORD',
+      PROMO: '.PROMO',
+      GUILD: '.GUILD',
+      GITCOIN: '.GITCOIN',
+      CARD: '.CARD',
       UPDATE_PAYWALL_CONFIG: {
-        target: 'SELECT',
+        target: '.SELECT',
         actions: ['updatePaywallConfig'],
       },
       SIGN_MESSAGE: {
@@ -233,80 +264,121 @@ export const checkoutMachine = createMachine(
         actions: ['submitData'],
       },
       RESET_CHECKOUT: {
-        target: 'SELECT',
+        target: '.SELECT',
         actions: ['disconnect'],
       },
     },
     states: {
-      SELECT: {
+      CONNECT: {
         on: {
           SELECT_LOCK: [
             {
-              actions: ['selectLock'],
               target: 'RETURNING',
-              cond: (_, event) => event.existingMember,
+              guard: ({ event }) => event.existingMember,
             },
             {
-              actions: ['selectLock'],
               target: 'QUANTITY',
-              cond: (_, event) => !event.skipQuantity && !event.expiredMember,
+              guard: ({ context, event }) =>
+                !context.skipQuantity && !event.expiredMember,
             },
             {
-              actions: ['selectLock'],
               target: 'METADATA',
-              cond: (_, event) => {
+              guard: ({ context, event }) => {
                 // For expired memberships we do not offer the ability
                 // to change the metadadata and recipient...
-                return !event.skipRecipient && !event.expiredMember
+                return !context.skipRecipient && !event.expiredMember
               },
             },
             {
-              actions: ['selectLock'],
-              cond: 'requireMessageToSign',
+              guard: 'requireMessageToSign',
               target: 'MESSAGE_TO_SIGN',
             },
             {
-              actions: ['selectLock'],
               target: 'PASSWORD',
-              cond: (_, event) => {
-                return !event.expiredMember && event.hook === 'password'
+              guard: ({ context }) => {
+                return context.hook === 'password'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'PROMO',
-              cond: (_, event) => {
-                return !event.expiredMember && event.hook === 'promocode'
+              guard: ({ context }) => {
+                return context.hook === 'promocode'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'GUILD',
-              cond: (_, event) => {
-                return event.hook === 'guild'
+              guard: ({ context }) => {
+                return context.hook === 'guild'
               },
             },
             {
-              actions: ['selectLock'],
               target: 'CAPTCHA',
-              cond: (_, event) => {
-                return event.hook === 'captcha'
+              guard: ({ context }) => {
+                return context.hook === 'captcha'
               },
             },
             {
-              actions: ['selectLock'],
+              target: 'GITCOIN',
+              guard: ({ context }) => {
+                return context.hook === 'gitcoin'
+              },
+            },
+            {
               target: 'PAYMENT',
             },
           ],
           DISCONNECT,
         },
       },
+      SELECT: {
+        on: {
+          CONNECT: {
+            target: 'CONNECT',
+            actions: ['connect'],
+          },
+
+          DISCONNECT,
+        },
+      },
       QUANTITY: {
         on: {
-          SELECT_QUANTITY: {
-            actions: ['selectQuantity'],
-            target: 'METADATA',
-          },
+          SELECT_QUANTITY: [
+            {
+              actions: ['selectQuantity'],
+              target: 'METADATA',
+              guard: ({ context }) => {
+                return !context.skipRecipient && !context.existingMember
+              },
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              guard: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              guard: 'requirePassword',
+            },
+            {
+              target: 'PROMO',
+              guard: 'requirePromo',
+            },
+            {
+              target: 'CAPTCHA',
+              guard: 'requireCaptcha',
+            },
+            {
+              target: 'GUILD',
+              guard: 'requireGuild',
+            },
+            {
+              target: 'GITCOIN',
+              guard: 'requireGitcoin',
+            },
+            {
+              target: 'PAYMENT',
+            },
+          ],
+
           BACK: 'SELECT',
           DISCONNECT,
         },
@@ -317,27 +389,32 @@ export const checkoutMachine = createMachine(
             {
               target: 'MESSAGE_TO_SIGN',
               actions: ['selectRecipients'],
-              cond: 'requireMessageToSign',
+              guard: 'requireMessageToSign',
             },
             {
               target: 'PASSWORD',
               actions: ['selectRecipients'],
-              cond: 'requirePassword',
+              guard: 'requirePassword',
             },
             {
               target: 'PROMO',
               actions: ['selectRecipients'],
-              cond: 'requirePromo',
+              guard: 'requirePromo',
             },
             {
               target: 'CAPTCHA',
               actions: ['selectRecipients'],
-              cond: 'requireCaptcha',
+              guard: 'requireCaptcha',
             },
             {
               target: 'GUILD',
               actions: ['selectRecipients'],
-              cond: 'requireGuild',
+              guard: 'requireGuild',
+            },
+            {
+              target: 'GITCOIN',
+              actions: ['selectRecipients'],
+              guard: 'requireGitcoin',
             },
             {
               actions: ['selectRecipients'],
@@ -347,8 +424,8 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'SELECT',
-              cond: (ctx) => {
-                return !!ctx.skipQuantity
+              guard: ({ context }) => {
+                return !!context.skipQuantity
               },
             },
             {
@@ -363,23 +440,28 @@ export const checkoutMachine = createMachine(
           SIGN_MESSAGE: [
             {
               actions: ['signMessage'],
-              cond: 'requirePassword',
+              guard: 'requirePassword',
               target: 'PASSWORD',
             },
             {
               actions: ['signMessage'],
-              cond: 'requirePromo',
+              guard: 'requirePromo',
               target: 'PROMO',
             },
             {
               actions: ['signMessage'],
-              cond: 'requireGuild',
+              guard: 'requireGuild',
               target: 'GUILD',
             },
             {
               actions: ['signMessage'],
-              cond: 'requireCaptcha',
+              guard: 'requireCaptcha',
               target: 'CAPTCHA',
+            },
+            {
+              actions: ['signMessage'],
+              guard: 'requireGitcoin',
+              target: 'GITCOIN',
             },
             {
               actions: ['signMessage'],
@@ -401,7 +483,7 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
-              cond: 'requireMessageToSign',
+              guard: 'requireMessageToSign',
             },
             {
               target: 'METADATA',
@@ -421,7 +503,7 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
-              cond: 'requireMessageToSign',
+              guard: 'requireMessageToSign',
             },
             {
               target: 'METADATA',
@@ -441,7 +523,7 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
-              cond: 'requireMessageToSign',
+              guard: 'requireMessageToSign',
             },
             {
               target: 'METADATA',
@@ -461,7 +543,27 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
-              cond: 'requireMessageToSign',
+              guard: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
+          DISCONNECT,
+        },
+      },
+      GITCOIN: {
+        on: {
+          SUBMIT_DATA: [
+            {
+              target: 'PAYMENT',
+              actions: ['submitData'],
+            },
+          ],
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              guard: 'requireMessageToSign',
             },
             {
               target: 'METADATA',
@@ -476,7 +578,7 @@ export const checkoutMachine = createMachine(
             {
               target: 'CARD',
               actions: ['selectPaymentMethod'],
-              cond: (_, event) => {
+              guard: ({ event }) => {
                 return ['card'].includes(event.payment.method)
               },
             },
@@ -487,35 +589,39 @@ export const checkoutMachine = createMachine(
           ],
           BACK: [
             {
-              cond: 'requirePassword',
+              guard: 'requirePassword',
               target: 'PASSWORD',
             },
             {
-              cond: 'requirePromo',
+              guard: 'requirePromo',
               target: 'PROMO',
             },
             {
-              cond: 'requireGuild',
+              guard: 'requireGuild',
               target: 'GUILD',
             },
             {
-              cond: 'requireCaptcha',
+              guard: 'requireCaptcha',
               target: 'CAPTCHA',
             },
             {
-              cond: 'requireMessageToSign',
+              guard: 'requireGitcoin',
+              target: 'GITCOIN',
+            },
+            {
+              guard: 'requireMessageToSign',
               target: 'MESSAGE_TO_SIGN',
             },
             {
               target: 'METADATA',
-              cond: (ctx) => {
-                return !ctx.skipRecipient
+              guard: ({ context }) => {
+                return !context.skipRecipient
               },
             },
             {
               target: 'QUANTITY',
-              cond: (ctx) => {
-                return !ctx.skipQuantity
+              guard: ({ context }) => {
+                return !context.skipQuantity
               },
             },
             {
@@ -546,7 +652,7 @@ export const checkoutMachine = createMachine(
           BACK: [
             {
               target: 'CARD',
-              cond: 'isCardPayment',
+              guard: 'isCardPayment',
             },
             {
               target: 'PAYMENT',
@@ -558,28 +664,20 @@ export const checkoutMachine = createMachine(
       MINTING: {
         on: {
           CONFIRM_MINT: {
-            type: 'final',
             actions: ['confirmMint'],
           },
         },
       },
-
       UNLOCK_ACCOUNT: {
-        invoke: {
-          id: 'unlockAccount',
-          src: unlockAccountMachine,
-          onDone: {
-            target: 'SELECT',
-          },
-        },
+        target: 'CONNECT',
       },
       RETURNING: {
         on: {
           MAKE_ANOTHER_PURCHASE: [
             {
               target: 'METADATA',
-              cond: (ctx) => {
-                return ctx.skipQuantity
+              guard: ({ context }) => {
+                return !context.skipRecipient
               },
             },
             {
@@ -593,84 +691,92 @@ export const checkoutMachine = createMachine(
   },
   {
     actions: {
-      disconnect: assign((_context) => {
+      disconnect: assign(({ context }) => {
         return {
           ...DEFAULT_CONTEXT,
-          paywallConfig: _context.paywallConfig,
+          paywallConfig: context.paywallConfig,
         }
       }),
-      selectLock: assign((context, event) => {
-        return {
-          ...context,
-          lock: event.lock,
-          renew: event.expiredMember,
-          skipQuantity: event.skipQuantity,
-          skipRecipient: event.skipRecipient,
-          recipients: event.recipients,
-          keyManagers: event.keyManagers,
-          hook: event.hook,
-          existingMember: event.existingMember,
-        }
+
+      connect: assign({
+        lock: ({ event }) => event.lock,
+        renew: ({ event }) => event.expiredMember as boolean,
+        // Handle undefined case by providing a default value of a boolean
+        skipQuantity: ({ event }) => !!event.skipQuantity || false,
+        // Explicitly type the assignment to boolean
+        skipRecipient: ({ event }) => event.skipRecipient as boolean,
+        // Handle undefined case by providing a default value of an empty array
+        recipients: ({ event }) => event.recipients || [],
+        keyManagers: ({ event }) => event.keyManagers,
+        hook: ({ event }) => event.hook,
+        existingMember: ({ event }) => event.existingMember as boolean,
+        expiredMember: ({ event }) => event.expiredMember as boolean,
       }),
+
       selectQuantity: assign({
-        quantity: (_, event) => {
+        quantity: ({ event }) => {
           return event.quantity
         },
       }),
       selectPaymentMethod: assign({
-        payment: (_, event) => {
+        payment: ({ event }) => {
           return event.payment
         },
       }),
       selectRecipients: assign({
-        recipients: (_, event) => {
+        recipients: ({ event }) => {
           return event.recipients
         },
-        keyManagers: (_, event) => {
+        keyManagers: ({ event }) => {
           return event.keyManagers
         },
-        metadata: (_, event) => {
+        metadata: ({ event }) => {
           return event.metadata
         },
       }),
       signMessage: assign({
-        messageToSign: (_, event) => {
+        messageToSign: ({ event }) => {
           return {
             address: event.address,
             signature: event.signature,
           } as const
         },
       }),
+
       confirmMint: assign({
-        mint: (_, { status, transactionHash, network }) => {
+        mint: ({ event }) => {
           return {
-            status,
-            transactionHash,
-            network,
+            status: event.status,
+            transactionHash: event.transactionHash,
+            network: event.network,
           } as const
         },
       }),
-      updatePaywallConfig: assign((_, event) => {
+      updatePaywallConfig: assign(({ event }) => {
         return {
           ...DEFAULT_CONTEXT,
           paywallConfig: event.config,
         } as CheckoutMachineContext
       }),
       submitData: assign({
-        data: (_, event) => {
+        data: ({ event }) => {
           return event.data
         },
       }),
     },
     guards: {
-      requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
-      requireCaptcha: (context) => context && context?.hook === 'captcha',
-      requirePassword: (context) => context && context?.hook === 'password',
-      requirePromo: (context) => context && context?.hook === 'promocode',
-      requireGuild: (context) => context && context?.hook === 'guild',
-      isCardPayment: (context) => ['card'].includes(context.payment.method),
+      requireMessageToSign: ({ context }) =>
+        !!context.paywallConfig.messageToSign,
+      requireCaptcha: ({ context }) => context && context?.hook === 'captcha',
+      requirePassword: ({ context }) => context && context?.hook === 'password',
+      requirePromo: ({ context }) => context && context?.hook === 'promocode',
+      requireGuild: ({ context }) => context && context?.hook === 'guild',
+      requireGitcoin: ({ context }) => context && context?.hook === 'gitcoin',
+      isCardPayment: ({ context }) => ['card'].includes(context.payment.method),
     },
   }
 )
 
-export type CheckoutService = InterpreterFrom<typeof checkoutMachine>
+export type CheckoutService =
+  | ActorRefFrom<typeof checkoutMachine>
+  | Actor<typeof checkoutMachine>

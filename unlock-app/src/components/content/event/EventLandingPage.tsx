@@ -4,6 +4,7 @@ import { LockTypeLandingPage } from '~/components/interface/LockTypeLandingPage'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PastEventsByManager } from './PastEventsByManager'
 import { NextSeo } from 'next-seo'
+import Image from 'next/image'
 
 const customers = [
   {
@@ -188,10 +189,12 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
           />
         }
         illustration={
-          <object
+          <Image
+            width="2004"
+            height="1236"
+            alt="Farcon uses Events by Unlock"
             className="w-full 4xl:right-0 md:absolute md:top-0"
-            type="image/svg+xml"
-            data="/images/illustrations/events/dappcon-screenshot-hero.svg"
+            src="/images/illustrations/events/farcon-hero.png"
           />
         }
         coverImage="/images/illustrations/events/party.svg"

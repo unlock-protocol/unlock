@@ -1,6 +1,5 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
-import type { BigNumber } from 'ethers'
 
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
@@ -46,9 +45,11 @@ export enum HookType {
   PASSWORD = 'PASSWORD',
   PROMOCODE = 'PROMOCODE',
   PROMO_CODE_CAPPED = 'PROMO_CODE_CAPPED',
+  PASSWORD_CAPPED = 'PASSWORD_CAPPED',
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
   GITCOIN = 'GITCOIN',
+  ADVANCED_TOKEN_URI = 'ADVANCED_TOKEN_URI',
 }
 
 export const HooksName = [
@@ -107,7 +108,12 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    oracle: string
+    // uniswap oracles with varioous pool fees
+    oracle: Partial<{
+      500: string
+      100: string
+      3000: string
+    }>
     universalRouterAddress: string
     positionManager: string
   }>
@@ -116,6 +122,7 @@ export interface NetworkConfig {
   unlockDaoToken?: {
     address: string
     mainnetBridge?: string
+    uniswapV3Pool?: string
   }
   explorer?: {
     name: string
@@ -140,7 +147,7 @@ export interface NetworkConfig {
     symbol: string
     address: string
   } | null
-  maxFreeClaimCost?: number
+  maxFreeClaimCost?: number // in cents!
   nativeCurrency: Omit<Token, 'address'>
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
@@ -292,7 +299,7 @@ export interface UserMetadata {
 export interface UnlockUniswapRoute {
   swapCalldata?: string
   value: string
-  amountInMax: BigNumber
+  amountInMax: any
   swapRouter: string
   quote: any
   trade: any

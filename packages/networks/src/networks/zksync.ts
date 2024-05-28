@@ -19,14 +19,16 @@ export const zksync: NetworkConfig = {
     },
   },
   featured: false,
-  hooks: {},
+  hooks: {
+    onKeyPurchaseHook: [],
+  },
   id: 324,
   isTestNetwork: false,
   maxFreeClaimCost: 1,
   multisig: '0xFa5592CE9C52FA5214ccEa10cB72Faa88eC80a3c',
   name: 'zkSync Era',
   nativeCurrency: {
-    coingecko: 'zksync-eth',
+    coingecko: 'ethereum',
     decimals: 18,
     name: 'zkSync Ether',
     symbol: 'ETH',
@@ -40,13 +42,14 @@ export const zksync: NetworkConfig = {
     endpoint:
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-zksync/version/latest',
     networkName: 'zksync-era',
+    studioName: 'unlock-protocol-zksync',
   },
   tokens: [
     {
       address: '0x000000000000000000000000000000000000800A',
       decimals: 18,
-      name: 'Wrapped Ether',
-      symbol: 'WETH',
+      name: 'Ether',
+      symbol: 'ETH',
     },
     {
       address: '0x4B9eb6c0b6ea15176BBF62841C6B2A8a398cb656',

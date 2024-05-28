@@ -1,10 +1,9 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { networks } from '@unlock-protocol/networks'
 import { Button, Input, Badge } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ethers } from 'ethers'
@@ -14,9 +13,13 @@ import { getEthersWalletFromPassword } from '~/utils/strings'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useDebounce } from 'react-use'
 import LoadingIcon from '../../Loading'
+import { useRouter } from 'next/router'
+import Disconnect from './Disconnect'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
+  recipients: string[]
+  lock: any
+  promoCode?: string
 }
 
 interface FormData {
@@ -25,13 +28,31 @@ interface FormData {
 
 const web3Service = new Web3Service(networks)
 
-export function Promo({ injectedProvider, checkoutService }: Props) {
+export const computePromoData = async (promo: string, recipients: string[]) => {
+  const privateKeyAccount = await getEthersWalletFromPassword(promo)
+  return Promise.all(
+    recipients.map((address) => {
+      const messageHash = ethers.utils.solidityKeccak256(
+        ['string'],
+        [address.toLowerCase()]
+      )
+      const messageHashBinary = ethers.utils.arrayify(messageHash)
+      return privateKeyAccount.signMessage(messageHashBinary)
+    })
+  )
+}
+
+export function PromoContent({
+  recipients,
+  lock,
+  promoCode,
+  checkoutService,
+}: Props) {
   const { account } = useAuth()
-  const [state, send] = useActor(checkoutService)
   const [hookAddress, setHookAddress] = useState<string>()
-  const [code, setCode] = useState<string>()
+  const [code, setCode] = useState<string | undefined>(promoCode)
+  const [promoCodeLoading, setPromoCodeLoading] = useState<boolean>(false)
   const [promoCodeDetails, setPromoCodeDetails] = useState<any>()
-  const { recipients, lock } = state.context
   const {
     register,
     handleSubmit,
@@ -54,6 +75,7 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
   useDebounce(
     async () => {
       if (hookAddress && code) {
+        setPromoCodeLoading(true)
         const privateKeyFromAccount = await getEthersWalletFromPassword(code)
         const promoCodeDetails = await web3Service.getDiscountHookWithCapValues(
           {
@@ -64,27 +86,18 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
           }
         )
         setPromoCodeDetails(promoCodeDetails)
+        setPromoCodeLoading(false)
       }
     },
-    300,
-    [code]
+    100,
+    [code, hookAddress, lock]
   )
 
   const onSubmit = async (formData: FormData) => {
     try {
       const { promo } = formData
-      const privateKeyAccount = await getEthersWalletFromPassword(promo)
-      const data = await Promise.all(
-        users.map((address) => {
-          const messageHash = ethers.utils.solidityKeccak256(
-            ['string'],
-            [address.toLowerCase()]
-          )
-          const messageHashBinary = ethers.utils.arrayify(messageHash)
-          return privateKeyAccount.signMessage(messageHashBinary)
-        })
-      )
-      send({
+      const data = await computePromoData(promo, users)
+      checkoutService.send({
         type: 'SUBMIT_DATA',
         data,
       })
@@ -102,22 +115,24 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
 
   const iconRight = isLoading
     ? LoadingIcon
-    : () => {
-        if (hasDiscount) {
-          return (
-            <Badge variant="green" size="tiny">
-              {promoCodeDetails.discount / 100}% Discount
-            </Badge>
-          )
-        } else if (promoCodeDetails?.discount > 0) {
-          return (
+    : hasDiscount
+      ? () => (
+          <Badge variant="green" size="tiny">
+            {promoCodeDetails.discount / 100}% Discount
+          </Badge>
+        )
+      : promoCodeDetails?.discount > 0
+        ? () => (
             <Badge variant="dark" size="tiny">
               Code expired
             </Badge>
           )
-        }
-        return null
-      }
+        : undefined
+
+  let error = errors.promo?.message
+  if (!error && code && promoCodeDetails?.discount === 0) {
+    error = "We couldn't find a discount for this code. "
+  }
 
   return (
     <Fragment>
@@ -128,11 +143,17 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
             // @ts-ignore
             iconRight={iconRight}
             label="Enter Promo Code"
-            description="If you have a promo code to receive discounts, please enter it now."
+            description={
+              !promoCodeDetails?.discount
+                ? 'If you have a promo code to receive discounts, please enter it now.'
+                : ''
+            }
             type="text"
             size="small"
-            {...register('promo')}
-            error={errors.promo?.message}
+            {...register('promo', {
+              value: code,
+            })}
+            error={error}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               setCode(event.target.value)
               setPromoCodeDetails(undefined)
@@ -141,23 +162,47 @@ export function Promo({ injectedProvider, checkoutService }: Props) {
         </form>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          form="promo"
+          className="w-full"
+          disabled={isSubmitting || promoCodeLoading}
+          loading={isSubmitting}
+          onClick={handleSubmit(onSubmit)}
         >
-          <Button
-            type="submit"
-            form="promo"
-            className="w-full"
-            disabled={isSubmitting}
-            loading={isSubmitting}
-            onClick={handleSubmit(onSubmit)}
-          >
-            {hasDiscount ? 'Next' : 'Skip'}
-          </Button>
-        </Connected>
+          {hasDiscount ? 'Next' : 'Skip'}
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
+  )
+}
+
+interface PromoProps {
+  checkoutService: CheckoutService
+}
+
+export function Promo({ checkoutService }: PromoProps) {
+  const { recipients, lock, paywallConfig } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
+  const { query } = useRouter()
+
+  let promoCode = ''
+  if (query?.promo) {
+    promoCode = query?.promo.toString()
+  } else if (typeof paywallConfig.locks[lock!.address].promo === 'string') {
+    promoCode = paywallConfig.locks[lock!.address].promo as string
+  }
+
+  return (
+    <PromoContent
+      recipients={recipients}
+      lock={lock}
+      promoCode={promoCode}
+      checkoutService={checkoutService}
+    />
   )
 }

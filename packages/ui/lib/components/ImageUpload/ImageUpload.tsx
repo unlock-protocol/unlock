@@ -51,6 +51,7 @@ export type ImageUploadWrapperProps = React.ComponentProps<
     isUploading?: boolean
     onChange: (fileOrFileUrl: File[] | string) => Promise<unknown> | unknown
     description?: string
+    error?: string
   }
 
 export const ImageUpload = ({
@@ -61,6 +62,7 @@ export const ImageUpload = ({
   size,
   imageRatio,
   className,
+  error,
 }: ImageUploadWrapperProps) => {
   const { getInputProps, getRootProps } = useDropzone({
     accept: {
@@ -73,7 +75,10 @@ export const ImageUpload = ({
   })
   return (
     <ImageUploadWrapper size={size} className={className}>
-      <ImageContainer imageRatio={imageRatio}>
+      <ImageContainer
+        imageRatio={imageRatio}
+        className={error ? 'border-red-500' : ''}
+      >
         {isUploading && (
           <div className="flex flex-col items-center justify-center h-full ">
             <SpinnerIcon
@@ -140,6 +145,7 @@ export const ImageUpload = ({
               />
             </Tab.Panel>
           </Tab.Panels>
+          {error && <p className="-mt-5 text-sm text-red-500">{error}</p>}
         </div>
       </Tab.Group>
     </ImageUploadWrapper>

@@ -1,5 +1,3 @@
-import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Fragment, useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
@@ -7,29 +5,30 @@ import {
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { Pricing } from '../Lock'
-import { ViewContract } from '../ViewContract'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import { CheckoutService } from './checkoutMachine'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Quantity({ injectedProvider, checkoutService }: Props) {
-  const [state, send] = useActor(checkoutService)
+export function Quantity({ checkoutService }: Props) {
+  const {
+    paywallConfig,
+    quantity: selectedQuantity,
+    lock,
+  } = useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
 
-  const { paywallConfig, quantity: selectedQuantity } = state.context
-  const lock = state.context.lock!
-
-  const lockConfig = paywallConfig.locks[lock.address]
+  const lockConfig = paywallConfig.locks[lock!.address]
 
   const maxRecipients =
     lockConfig?.maxRecipients || paywallConfig.maxRecipients || 1
@@ -46,13 +45,13 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isLoadingFormattedData, data: formattedData } =
     useGetLockProps({
       lock: lock,
-      baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
+      baseCurrencySymbol: config.networks[lock!.network].nativeCurrency.symbol,
       numberOfRecipients: quantity,
     })
 
   const { data: creditCardEnabled } = useCreditCardEnabled({
-    lockAddress: lock.address,
-    network: lock.network,
+    lockAddress: lock!.address,
+    network: lock!.network,
   })
 
   const isDisabled = quantity < 1
@@ -91,10 +90,6 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                   }
                 />
               </div>
-              <ViewContract
-                network={lock!.network}
-                lockAddress={lock!.address}
-              />
             </div>
             <div>
               <input
@@ -132,25 +127,21 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
         </div>
       </main>
       <footer className="items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
-                send({
-                  type: 'SELECT_QUANTITY',
-                  quantity,
-                })
-              }}
-            >
-              {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            disabled={isDisabled}
+            onClick={async (event) => {
+              event.preventDefault()
+              checkoutService.send({
+                type: 'SELECT_QUANTITY',
+                quantity,
+              })
+            }}
+          >
+            {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

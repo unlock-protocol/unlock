@@ -18,7 +18,7 @@ const currencyContractAddress = '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6'
 const cabinDaoLock = '0x45aCCac0E5C953009cDa713a3b722F87F2907F86'
 
 const lockAddress = '0x551c6ecdf819Dc90c5287971072B4651119accD3'
-const network = 5
+const network = 10
 const keyPrice = 9000000000000000
 const gasPrice = 12.4
 vi.mock('../../src/operations/lockSettingOperations', () => {

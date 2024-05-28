@@ -1,8 +1,7 @@
 import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
-import { Connected } from '../Connected'
 import { LockOptionPlaceholder, Pricing } from '../Lock'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
@@ -23,15 +22,16 @@ import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 import { minifyAddress } from '@unlock-protocol/ui'
-import { ViewContract } from '../ViewContract'
 import { useCheckoutHook } from './useCheckoutHook'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { getLockUsdPrice } from '~/hooks/useUSDPricing'
 import { shouldSkip } from './utils'
 import { AiFillWarning as WarningIcon } from 'react-icons/ai'
 import { useGetLockProps } from '~/hooks/useGetLockProps'
+import Disconnect from './Disconnect'
+import { useSIWE } from '~/hooks/useSIWE'
+import { useMembership } from '~/hooks/useMembership'
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -91,10 +91,6 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   >
                     {lock.name}
                   </RadioGroup.Label>
-                  <ViewContract
-                    network={lock.network}
-                    lockAddress={lock.address}
-                  />
                 </div>
 
                 <Pricing
@@ -187,9 +183,11 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
   )
 }
 
-export function Select({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock: selectedLock } = state.context
+export function Select({ checkoutService }: Props) {
+  const { paywallConfig, lock: selectedLock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
   const { isLoading: isLocksLoading, data: locks } = useQuery(
@@ -281,34 +279,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   )
 
   const { isInitialLoading: isMembershipsLoading, data: memberships } =
-    useQuery(
-      ['memberships', account, JSON.stringify(paywallConfig)],
-      async () => {
-        const memberships = await Promise.all(
-          Object.entries(paywallConfig.locks).map(
-            async ([lockAddress, props]) => {
-              const lockNetwork = props.network || paywallConfig.network || 1
-              const [member, total] = await Promise.all([
-                web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
-                web3Service.totalKeys(lockAddress, account!, lockNetwork),
-              ])
-              // if not member but total is above 0
-              const expired = !member && total > 0
-              return {
-                lock: lockAddress,
-                expired,
-                member,
-                network: lockNetwork,
-              }
-            }
-          )
-        )
-        return memberships
-      },
-      {
-        enabled: !!account,
-      }
-    )
+    useMembership({
+      account,
+      paywallConfig: paywallConfig,
+      web3Service,
+    })
 
   const membership = memberships?.find((item) => item.lock === lock?.address)
   const { isLoading: isLoadingHook, lockHookMapping } =
@@ -322,6 +297,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     return hook
   }, [lockHookMapping, lock])
 
+  const [isSigning, setSigning] = useState(false)
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -329,7 +306,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
-    isLoadingHook
+    isLoadingHook ||
+    isSigning
 
   useEffect(() => {
     if (locks?.length) {
@@ -341,13 +319,25 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
   useEffect(() => {
+    const signToSignIn = async () => {
+      await signIn()
+    }
+
+    if (!connected && useDelegatedProvider) {
+      signToSignIn()
+    }
+
     if (!(lock && skipSelect && account && !isLoading)) {
       return
     }
 
-    send({
-      type: 'SELECT_LOCK',
+    checkoutService.send({
+      type: 'CONNECT',
       lock,
       existingMember: !!membership?.member,
       skipQuantity,
@@ -365,10 +355,37 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     skipQuantity,
     skipRecipient,
     isUnlockAccount,
-    send,
+    checkoutService,
     skipSelect,
     isLoading,
   ])
+
+  const selectLock = async (event: any) => {
+    event.preventDefault()
+
+    if (!lock) {
+      return
+    }
+
+    // TODO: Change state before signing and on CONNECT place loader
+
+    if (!isSignedIn && useDelegatedProvider) {
+      setSigning(true)
+
+      await signIn()
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: lock.isMember,
+      expiredMember: lock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }
 
   return (
     <Fragment>
@@ -434,42 +451,18 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        >
-          <div className="grid">
-            {isNotExpectedAddress && (
-              <p className="mb-2 text-sm text-center">
-                Switch to wallet address {minifyAddress(expectedAddress)} to
-                continue.
-              </p>
-            )}
-            <Button
-              disabled={isDisabled}
-              onClick={async (event) => {
-                event.preventDefault()
-
-                if (!lock) {
-                  return
-                }
-
-                send({
-                  type: 'SELECT_LOCK',
-                  lock,
-                  existingMember: lock.isMember,
-                  expiredMember: lock.isExpired,
-                  skipQuantity,
-                  skipRecipient,
-                  recipients: account ? [account] : [],
-                  hook: hookType,
-                })
-              }}
-            >
-              Next
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          {isNotExpectedAddress && (
+            <p className="mb-2 text-sm text-center">
+              Switch to wallet address {minifyAddress(expectedAddress)} to
+              continue.
+            </p>
+          )}
+          <Button disabled={isDisabled} onClick={selectLock}>
+            Next
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

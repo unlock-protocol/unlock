@@ -16,6 +16,10 @@ copy_package "tsconfig"
 copy_package "hardhat-plugin"
 copy_package "networks"
 copy_package "contracts"
+<<<<<<< HEAD
 copy_package "eslint-config"
 
 docker-compose $COMPOSE_CONFIG build eth-node
+=======
+copy_package "eslint-config"
+>>>>>>> master

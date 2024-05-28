@@ -54,6 +54,23 @@ export const optimism: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0x7217b772788374391e890b773e6b8B7101b5Acde',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0x6a0971717ABFfCfE08f67b53DeAC5D234A6676Ed',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0x5765883E120F707A528F3e476636304De9280b6c',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 10,
@@ -141,12 +158,21 @@ export const optimism: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+    oracle: {
+      100: '0xa55F8Ba16C5Bb580967f7dD94f927B21d0acF86c',
+      3000: '0x1dA6c13515362B42ACb1Ad24a713f74f925F3AEB',
+      500: '0xafF14D23630d5A4BF5e36e52847bE593F0f87672',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0xb555edF5dcF85f42cEeF1f3630a52A108E55A654',
   },
   unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+  unlockDaoToken: {
+    address: '0xc709c9116dBf29Da9c25041b13a07A0e68aC5d2D',
+    mainnetBridge: '0x99C9fc46f92E8a1c0deC1b1747d010903E884bE1',
+    uniswapV3Pool: '0x98b506bf1916f674a7BEC5284A043a21fCC3d206',
+  },
   url: 'https://www.optimism.io/',
 }
 

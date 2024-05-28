@@ -22,7 +22,7 @@ describe('KeyManager / locksmiths', () => {
     expect(await keyManager.locksmiths(someAccount)).to.equal(false)
 
     await reverts(
-      keyManager.connect(newOwner).addLocksmith(newOwner.address),
+      keyManager.connect(newOwner).addLocksmith(await newOwner.getAddress()),
       `Ownable: caller is not the owner`
     )
 
@@ -42,7 +42,7 @@ describe('KeyManager / locksmiths', () => {
 
     const [, newOwner] = await ethers.getSigners()
     await reverts(
-      keyManager.connect(newOwner).removeLocksmith(newOwner.address),
+      keyManager.connect(newOwner).removeLocksmith(await newOwner.getAddress()),
       `Ownable: caller is not the owner`
     )
 

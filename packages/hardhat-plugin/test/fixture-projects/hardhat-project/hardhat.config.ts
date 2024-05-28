@@ -1,5 +1,7 @@
 import { HardhatUserConfig } from 'hardhat/types'
 
+import '@nomicfoundation/hardhat-toolbox'
+
 // We load the plugin here.
 import '../../../src/index'
 
@@ -22,6 +24,9 @@ const config: HardhatUserConfig = {
       subgraph: {
         endpoint: 'here goes a subgraph URI',
       },
+    },
+    1: {
+      unlockAddress: 'newAddress',
     },
     12345: {
       name: 'New Network',

@@ -1,12 +1,11 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -110,22 +109,23 @@ export const MintingScreen = ({
 }
 
 interface MintingProps {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: CheckoutCommunication
 }
 
 export function Minting({
-  injectedProvider,
   onClose,
   checkoutService,
   communication,
 }: MintingProps) {
   const { account } = useAuth()
-  const [state, send] = useActor(checkoutService)
+  const { mint, lock, messageToSign, metadata, recipients } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
+
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
   const [doneWaiting, setDoneWaiting] = useState(false)
 
@@ -181,18 +181,21 @@ export function Minting({
 
           communication?.emitMetadata(metadata)
 
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
             network: mint!.network,
             transactionHash: mint!.transactionHash!,
           })
+
           setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
+          console.log('Error waiting for confirmation', error)
           ToastHelper.error(error.message)
-          send({
+
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
             network: mint!.network,
@@ -206,7 +209,7 @@ export function Minting({
     mint,
     lock,
     config,
-    send,
+    checkoutService,
     communication,
     account,
     messageToSign,
@@ -226,17 +229,12 @@ export function Minting({
         ></MintingScreen>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <ReturningButton
-            loading={processing}
-            disabled={!account || processing}
-            onClick={() => onClose()}
-            checkoutService={checkoutService}
-          />
-        </Connected>
+        <ReturningButton
+          loading={processing}
+          disabled={!account || processing}
+          onClick={() => onClose()}
+          checkoutService={checkoutService}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

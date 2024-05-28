@@ -285,7 +285,7 @@ export const stripeConnection = async (
   try {
     account = await stripe.accounts.retrieve(stripeAccount)
   } catch (error) {
-    console.error(error)
+    logger.error(error)
   }
   return account
 }

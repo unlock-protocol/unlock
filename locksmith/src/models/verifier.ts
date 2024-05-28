@@ -12,10 +12,11 @@ export class Verifier extends Model<
 > {
   declare id: CreationOptional<number>
   declare address: string
-  declare lockAddress: string
-  declare lockManager: string
-  declare network: number
   declare name: string | null
+  declare lockAddress: string | null
+  declare network: number | null
+  declare slug: string | null
+  declare lockManager: string
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -34,7 +35,7 @@ Verifier.init(
     },
     lockAddress: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -43,7 +44,11 @@ Verifier.init(
     },
     network: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     lockManager: {
       type: DataTypes.STRING,

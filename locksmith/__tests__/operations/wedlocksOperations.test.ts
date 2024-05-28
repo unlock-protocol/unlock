@@ -6,14 +6,14 @@ import {
   getTemplates,
   getAttachments,
 } from '../../src/operations/wedlocksOperations'
-import { vi, expect } from 'vitest'
+import { vi, expect, afterAll } from 'vitest'
 import app from '../app'
 import request from 'supertest'
 import { loginRandomUser } from '../test-helpers/utils'
 import config from '../../src/config/config'
 
 const lockAddressMock = '0x8D33b257bce083eE0c7504C7635D1840b3858AFD'
-const network = 80001
+const network = 8453
 
 vi.mock('@unlock-protocol/unlock-js', async () => {
   const actual: any = await vi.importActual('@unlock-protocol/unlock-js')
@@ -72,9 +72,11 @@ vi.mock('../../src/operations/userMetadataOperations', async () => {
 })
 
 describe('Wedlocks operations', () => {
-  afterEach(() => {
-    vi.clearAllMocks()
+  beforeEach(() => {
+    fetchMock.resetMocks()
+    fetchMock.enableMocks()
   })
+
   describe('notifyNewKeyToWedlocks', () => {
     it('should notify wedlocks if there is an email metadata', async () => {
       expect.assertions(1)
@@ -113,7 +115,7 @@ describe('Wedlocks operations', () => {
       const transactionReceiptUrl = `${config.unlockApp}/receipts?address=0x95de5F777A3e283bFf0c47374998E10D8A2183C7&network=${network}&hash=0x`
 
       expect(fetch).toHaveBeenCalledWith(config.services.wedlocks, {
-        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keyId":"","network":"Mumbai (Polygon)","keychainUrl":"${keychainUrl}","transactionReceiptUrl":"${transactionReceiptUrl}","transferUrl":"${transferUrl}","eventUrl":""},"attachments":[]}`,
+        body: `{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockAddress":"0x95de5F777A3e283bFf0c47374998E10D8A2183C7","lockName":"Alice in Wonderland","keyId":"","network":"Base","keychainUrl":"${keychainUrl}","transactionReceiptUrl":"${transactionReceiptUrl}","transferUrl":"${transferUrl}","eventUrl":""},"attachments":[]}`,
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
@@ -201,7 +203,7 @@ describe('Wedlocks operations', () => {
 
     it('Correctly save and retrieve', async () => {
       expect.assertions(2)
-      const network = 5
+      const network = 10
       const template = 'keyMined'
 
       const { loginResponse } = await loginRandomUser(app)
@@ -225,7 +227,7 @@ describe('Wedlocks operations', () => {
 
     it('Custom content can not be retrieved when is not stored', async () => {
       expect.assertions(3)
-      const network = 5
+      const network = 10
       const template = 'RandomTemplate'
 
       const { loginResponse } = await loginRandomUser(app)

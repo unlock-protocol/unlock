@@ -46,7 +46,6 @@ export function AirdropInternalForm({
     control,
     formState: { errors, isSubmitting },
   } = useForm<AirdropMember>({
-    // @ts-expect-error
     defaultValues,
     mode: 'onSubmit',
   })
@@ -72,8 +71,8 @@ export function AirdropInternalForm({
   const label = useEmail ? 'Email' : 'Wallet address'
 
   const description = useEmail
-    ? 'Enter the email address that will receive the membership NFT'
-    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+    ? 'Enter the email address that will receive the NFT'
+    : 'Enter the wallet address or an ENS that will receive the NFT'
   const error = errors?.wallet?.message
   const placeholder = useEmail ? 'user@email.com' : '0x...'
 

@@ -3,7 +3,7 @@ import { FaRegCalendarPlus } from 'react-icons/fa'
 
 import {
   SiGooglecalendar,
-  SiMicrosoftoffice,
+  SiMicrosoft as SiMicrosoftoffice,
   SiMicrosoftoutlook,
 } from 'react-icons/si'
 import { BsCalendarDate } from 'react-icons/bs'
@@ -46,15 +46,20 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
   const startDateWeekday = weekday[startDate.day()]
   const endDateWeekday = weekday[startDate.day()]
+  const startDateYear = startDate.year()
 
   const isSameDay = startDate.diff(endDate, 'day') === 0
 
-  const formattedDate = `${startDateWeekday}, ${startDate.format(`MMMM D`)}`
+  const formattedDate = `${startDateWeekday}, ${startDate.format(
+    `MMMM D`
+  )}, ${startDateYear}`
   const formattedHour = isSameDay
     ? `${startDate.format('HH:mm A')} - ${endDate.format('HH:mm A')}`
     : `${startDate.format('HH:mm')}`
 
-  const formattedEndDate = `${endDateWeekday}, ${endDate.format('MMMM D')}`
+  const formattedEndDate = `${endDateWeekday}, ${endDate.format(
+    'MMMM D'
+  )}, ${startDateYear}`
 
   const extraClassDisabled = disabled ? 'opacity-60 pointer-events-none' : ''
 

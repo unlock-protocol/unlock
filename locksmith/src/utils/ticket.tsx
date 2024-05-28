@@ -7,7 +7,7 @@ const inter400 = readFileSync('src/fonts/inter-400.woff')
 const inter700 = readFileSync('src/fonts/inter-700.woff')
 import { Ticket } from '@unlock-protocol/ui'
 import normalizer from './normalizer'
-import { imageUrlToBase64 } from './image'
+// import { imageUrlToBase64 } from './image'
 import FilBangalore from '../assets/FilBangalore'
 
 interface Options {
@@ -57,10 +57,11 @@ export const createTicket = async ({
   )
 
   const email = metadata?.userMetadata?.protected?.email
-  const imageURL: string =
-    metadata?.image ||
-    `${config.services.locksmith}/lock/${lockAddress}/icon?id=${tokenId}`
-  const iconURL = await imageUrlToBase64(imageURL, lockAddress)
+  // Disabled because if the image is too big, this breaks satori (it broke for Farcon)
+  // const imageURL: string =
+  //   // metadata?.image ||
+  //   `${config.services.locksmith}/lock/${lockAddress}/icon?id=${tokenId}`
+  // const iconURL = await imageUrlToBase64(imageURL, lockAddress)
 
   const ticket = await satori(
     <div
@@ -73,7 +74,7 @@ export const createTicket = async ({
       }}
     >
       <Ticket
-        iconURL={iconURL}
+        // iconURL={iconURL}
         title={metadata?.name || name}
         email={email}
         id={tokenId}

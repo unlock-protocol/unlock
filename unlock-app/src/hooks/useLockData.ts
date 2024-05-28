@@ -32,17 +32,13 @@ export const useLockData = ({ lockAddress, network }: Options) => {
 
 export const useMultipleLockData = (locks: PaywallLocksConfigType) => {
   const web3Service = new Web3Service(networks)
-  const results = useQueries<Lock[]>({
+  const results = useQueries({
     queries: Object.keys(locks).map((lockAddress: string) => {
       const network = locks[lockAddress].network
       return {
         queryKey: ['lock', lockAddress, network],
         queryFn: async () => {
-          const result = await web3Service.getLock(lockAddress, network!)
-          return {
-            ...result,
-            network,
-          }
+          return web3Service.getLock(lockAddress, network!) as Promise<Lock>
         },
       }
     }),

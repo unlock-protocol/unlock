@@ -6,9 +6,8 @@ import {
   RiExternalLinkLine as ExternalLinkIcon,
   RiErrorWarningFill as ErrorIcon,
 } from 'react-icons/ri'
-import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -31,9 +30,9 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -63,8 +62,8 @@ const defaultPaymentMethods = {
   claim: true,
 }
 
-export function Payment({ injectedProvider, checkoutService }: Props) {
-  const [state, send] = useActor(checkoutService)
+export function Payment({ checkoutService }: Props) {
+  const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
   const { recipients } = state.context
   const lock = state.context.lock!
@@ -72,6 +71,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+
+  if (recipients.length === 0) {
+    recipients.push(account as string)
+  } else if (recipients.length > 1 && recipients[0] === '') {
+    recipients[0] = account as string
+  }
 
   const configPaymentMethods =
     state.context.paywallConfig.locks[lock.address]?.paymentMethods ||
@@ -212,7 +217,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               <button
                 onClick={(event) => {
                   event.preventDefault()
-                  send({
+                  checkoutService.send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'card',
@@ -247,7 +252,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 disabled={!canAfford}
                 onClick={(event) => {
                   event.preventDefault()
-                  send({
+                  checkoutService.send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'crypto',
@@ -287,7 +292,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 <button
                   onClick={(event) => {
                     event.preventDefault()
-                    send({
+                    checkoutService.send({
                       type: 'SELECT_PAYMENT_METHOD',
                       payment: {
                         method: 'crossmint',
@@ -328,7 +333,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               <button
                 onClick={(event) => {
                   event.preventDefault()
-                  send({
+                  checkoutService.send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'claim',
@@ -365,7 +370,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     key={index}
                     onClick={(event) => {
                       event.preventDefault()
-                      send({
+                      checkoutService.send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
                           method: 'swap_and_purchase',
@@ -408,7 +413,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     key={index}
                     onClick={(event) => {
                       event.preventDefault()
-                      send({
+                      checkoutService.send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
                           method: 'crosschain_purchase',
@@ -491,10 +496,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

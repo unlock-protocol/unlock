@@ -4,9 +4,9 @@
   "scripts": {
     "lint:fix": "yarn lint --fix",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js scripts/ test/",
-    "test": "yarn test:subgraph",
-    "test:subgraph": "hardhat test",
-    "ci": "hardhat test --network 0.0.0.0"
+    "test": "hardhat test",
+    "test:prepare": "sh bin/prepare.sh",
+    "ci": "yarn test:prepare && yarn test"
   },
   "dependencies": {
     "@apollo/client": "3.6.9",
@@ -17,8 +17,6 @@
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
     "@nomicfoundation/hardhat-toolbox": "4.0.0",
     "@nomicfoundation/hardhat-verify": "2.0.4",
-    "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@nomiclabs/hardhat-etherscan": "3.1.8",
     "@typechain/ethers-v5": "10.1.0",
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "6.1.2",
@@ -27,10 +25,11 @@
     "@types/node": "12.0.0",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
+    "@unlock-protocol/networks": "workspace:^",
     "apollo-link-http": "1.5.17",
     "chai": "4.2.0",
     "eslint": "8.46.0",
-    "ethers": "5.7.2",
+    "ethers": "6.12.1",
     "graphql": "16.6.0",
     "hardhat": "2.20.1",
     "hardhat-gas-reporter": "1.0.8",

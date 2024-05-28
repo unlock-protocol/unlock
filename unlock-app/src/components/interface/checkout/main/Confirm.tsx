@@ -1,10 +1,9 @@
 import { CheckoutService } from './checkoutMachine'
 import { Fragment } from 'react'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
 import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
@@ -14,18 +13,15 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   communication?: CheckoutCommunication
 }
 
-export function Confirm({
-  injectedProvider,
-  checkoutService,
-  communication,
-}: Props) {
-  const [state, send] = useActor(checkoutService)
-  const { payment, paywallConfig, messageToSign, metadata } = state.context
+export function Confirm({ checkoutService, communication }: Props) {
+  const { payment, paywallConfig, messageToSign, metadata } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
 
   const onError = (message: string) => {
@@ -48,7 +44,7 @@ export function Confirm({
       })
       communication?.emitMetadata(metadata)
     }
-    send({
+    checkoutService.send({
       type: 'CONFIRM_MINT',
       status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
       transactionHash: hash!,
@@ -62,7 +58,6 @@ export function Confirm({
       {payment.method === 'card' && (
         <ConfirmCard
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -70,7 +65,6 @@ export function Confirm({
       {payment.method === 'swap_and_purchase' && (
         <ConfirmSwapAndPurchase
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -78,7 +72,6 @@ export function Confirm({
       {payment.method === 'crosschain_purchase' && (
         <ConfirmCrossChainPurchase
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -86,7 +79,6 @@ export function Confirm({
       {payment.method === 'crossmint' && (
         <ConfirmCrossmint
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -94,7 +86,6 @@ export function Confirm({
       {payment.method === 'crypto' && (
         <ConfirmCrypto
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
@@ -102,7 +93,6 @@ export function Confirm({
       {payment.method === 'claim' && (
         <ConfirmClaim
           checkoutService={checkoutService}
-          injectedProvider={injectedProvider}
           onConfirmed={onConfirmed}
           onError={onError}
         />
