@@ -70,10 +70,8 @@ describe('CaptchaHook', function () {
       )
     ).wait()
 
-    const messageHash = ethers.solidityPackedKeccak256(
-      ['string'],
-      [(await user.getAddress()).toLowerCase()]
-    )
+    const msg = (await user.getAddress()).toLowerCase()
+    const messageHash = ethers.solidityPackedKeccak256(['string'], [msg])
     const signedMessage = await secretSigner.signMessage(
       ethers.getBytes(messageHash)
     )
@@ -88,19 +86,10 @@ describe('CaptchaHook', function () {
 
     // Health check!
     assert.equal(
-      ethers.verifyMessage(
-        ethers.getBytes((await user.getAddress()).toLowerCase()),
-        signedMessage
-      ),
+      ethers.verifyMessage(ethers.getBytes(messageHash), signedMessage),
       await secretSigner.getAddress()
     )
-    assert.equal(
-      await hook.checkIsSigner(
-        (await user.getAddress()).toLowerCase(),
-        signedMessage
-      ),
-      true
-    )
+    assert.equal(await hook.checkIsSigner(msg, signedMessage), true)
 
     // Let's now purchase a key!
     const tx = await lock.purchase(
