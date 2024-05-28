@@ -17,5 +17,3 @@ copy_package "hardhat-plugin"
 copy_package "networks"
 copy_package "contracts"
 copy_package "eslint-config"
-
-docker-compose $COMPOSE_CONFIG build eth-node
