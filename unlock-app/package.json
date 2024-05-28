@@ -9,8 +9,9 @@
   "dependencies": {
     "@airstack/airstack-react": "0.6.3",
     "@crossmint/client-sdk-react-ui": "1.1.9",
+    "@decent.xyz/box-common": "2.0.24",
     "@enzoferey/ethers-error-parser": "0.2.3",
-    "@guildxyz/sdk": "1.1.1",
+    "@guildxyz/sdk": "2.5.0",
     "@headlessui/react": "1.7.19",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.3.4",
@@ -98,7 +99,7 @@
     "postcss": "8.4.38",
     "react-test-renderer": "18.3.1",
     "tailwindcss": "3.4.3",
-    "vitest": "0.34.6",
+    "vitest": "1.6.0",
     "vitest-fetch-mock": "0.2.2",
     "vitest-localstorage-mock": "0.1.2"
   },
