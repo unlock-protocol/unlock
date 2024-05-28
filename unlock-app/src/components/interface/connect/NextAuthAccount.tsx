@@ -8,7 +8,8 @@ const NextAuthAccount = ({}: NextAuthAccountProps) => {
 
   return (
     <div className="">
-      <button onClick={() => signIn()}>Sign in</button>
+      <button onClick={() => signIn('google')}>Sign in</button>
+      {session && <p>WAAS UUID: {session.waasToken}</p>}
     </div>
   )
 

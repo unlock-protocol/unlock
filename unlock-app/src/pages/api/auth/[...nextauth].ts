@@ -1,5 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
+import { config } from '~/config/app'
+import { StorageService } from '~/services/storageService'
 
 export const authOptions = {
   providers: [
@@ -9,10 +11,11 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token, user }) {
+    async session({ session }) {
+      const storageService = new StorageService(config.services.storage.host)
+      const waasToken = await storageService.getUserWaasUuid(session.user.email)
       // Send properties to the client, like an access_token and user id from a provider.
-      session.accessToken = token.accessToken
-      session.user.id = token.id
+      session.waasToken = waasToken
 
       return session
     },
