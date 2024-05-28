@@ -88,12 +88,13 @@ hash: \`${hash}\`\n`)
 
     // execute all
     if (execute) {
-      await Promise.all(
+      const txs = await Promise.all(
         dataFromChain.map(([, , to, value, data, operation]) =>
           delayMod.executeNextTx(to, value, data, operation)
         )
       )
-      console.log(`Executed.`)
+      const receipts = await Promise.all(txs.map((tx) => tx.wait()))
+      console.log(`Executed. Tx(s) : ${receipts.map(({ hash }) => hash)}`)
     }
 
     // to cancel use `setTxNonce(queueNonce)` from the multisig
