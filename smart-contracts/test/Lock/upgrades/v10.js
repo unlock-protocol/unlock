@@ -198,7 +198,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
       it('preserves all keys data', async () => {
         const totalSupply = await lock.totalSupply()
-        for (let i = 0; i < totalSupply; i++) {
+        for (let i of Array(totalSupply).fill(0)) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
           assert.equal(
