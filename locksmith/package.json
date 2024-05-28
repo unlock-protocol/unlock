@@ -14,7 +14,7 @@
     "test:db:create": "",
     "test:db:migrate": "NODE_ENV=test yarn sequelize db:migrate",
     "test:db:drop": "",
-    "test:run": "NODE_ENV=test vitest run --no-threads --coverage ",
+    "test:run": "NODE_ENV=test vitest run --poolOptions.threads.singleThread --coverage ",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ __tests__/",
     "db:migrate": "yarn sequelize db:migrate",
     "sequelize": "sequelize --config ./config/sequelize.config.js",
@@ -117,7 +117,7 @@
     "supertest": "7.0.0",
     "tsx": "4.11.0",
     "typescript": "5.4.5",
-    "vitest": "0.34.4"
+    "vitest": "1.6.0"
   },
   "files": [
     "build",

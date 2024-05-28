@@ -4,12 +4,11 @@ import { SubgraphService } from '../subgraph'
 
 describe('SubgraphService', () => {
   it('creates SDK with provided endpoint URL', async () => {
-    const endpointUrl = 'https://test.endpoint.url';
-    const subgraphService = new SubgraphService(endpointUrl);
+    const endpointUrl = 'https://test.endpoint.url'
+    const subgraphService = new SubgraphService(endpointUrl)
 
-    expect(subgraphService).toContain({
-      endpointUrl: endpointUrl
-    });
-    
+    expect(subgraphService).toMatchObject({
+      endpointUrl: endpointUrl,
+    })
   })
 })

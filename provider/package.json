@@ -5,7 +5,7 @@
     "@types/node": "20.12.8",
     "@unlock-protocol/networks": "workspace:^",
     "typescript": "5.4.5",
-    "vitest": "0.34.6"
+    "vitest": "1.6.0"
   },
   "dependencies": {
     "ethers": "6.12.1",
