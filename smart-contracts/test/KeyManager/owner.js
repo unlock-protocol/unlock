@@ -1,4 +1,4 @@
-const { assert } = require('assert')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { setup } = require('./setup')
 const { reverts } = require('../helpers')

@@ -39,7 +39,7 @@ describe('CaptchaHook', function () {
       ethers.getBytes(messageHash)
     )
     assert.equal(
-      ethers.verifyMessage(message, signedMessage),
+      ethers.verifyMessage(ethers.getBytes(messageHash), signedMessage),
       await secretSigner.getAddress()
     )
     assert.equal(await hook.checkIsSigner(message, signedMessage), true)
@@ -89,7 +89,7 @@ describe('CaptchaHook', function () {
     // Health check!
     assert.equal(
       ethers.verifyMessage(
-        (await user.getAddress()).toLowerCase(),
+        ethers.getBytes((await user.getAddress()).toLowerCase()),
         signedMessage
       ),
       await secretSigner.getAddress()
