@@ -2,6 +2,8 @@ import React from 'react'
 import Container from './Container'
 import { FrameButton, FrameImage } from 'frames.js/next/server'
 import { config } from '../../../../src/config/app'
+import removeMd from 'remove-markdown'
+import { truncateString } from '~/utils/truncateString'
 
 export const Description = ({
   event,
@@ -15,7 +17,14 @@ export const Description = ({
   return (
     <Container slug={event.slug} previousFrame={previousFrame} state={state}>
       <FrameImage>
-        <p tw="px-4">{event.data.description}</p>
+        <div tw="flex bg-[#F5F5F5] h-full">
+          <p tw="px-8 h-full w-full">
+            {truncateString(
+              removeMd(event.data.description, { useImgAltText: false }),
+              650
+            )}
+          </p>
+        </div>
       </FrameImage>
       <FrameButton
         action="link"

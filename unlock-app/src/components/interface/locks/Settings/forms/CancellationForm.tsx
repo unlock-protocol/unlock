@@ -219,7 +219,7 @@ export const CancellationForm = ({
             step={1}
             error={
               errors?.refundPenaltyPercentage &&
-              'This field accept percentage value between 0 and 100.'
+              'This field accepts percentage values between 0 and 100.'
             }
             {...register('refundPenaltyPercentage', {
               valueAsNumber: true,

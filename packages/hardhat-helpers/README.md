@@ -37,9 +37,6 @@ You need to export the API keys in your env for it to work properly
 // 'mainnet', 'goerli'
 ETHERSCAN_API_KEY
 
-// polygon mumbai
-POLYGONSCAN_API_KEY
-
 // binance bsc
 BSCSCAN_API_KEY
 

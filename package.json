@@ -8,22 +8,25 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.21.5",
-    "@typescript-eslint/eslint-plugin": "7.1.0",
-    "@typescript-eslint/parser": "7.1.0",
-    "babel-plugin-polyfill-corejs2": "0.4.8",
-    "typescript": "5.3.3"
+    "@babel/core": "7.24.5",
+    "@typescript-eslint/eslint-plugin": "7.8.0",
+    "@typescript-eslint/parser": "7.8.0",
+    "babel-plugin-polyfill-corejs2": "0.4.11",
+    "prettier-plugin-solidity": "1.3.1",
+    "typescript": "5.4.5"
   },
   "devDependencies": {
-    "eslint": "8.54.0",
+    "@vitest/coverage-v8": "1.6.0",
+    "eslint": "8.57.0",
     "eslint-plugin-evm-address-to-checksummed": "0.0.6",
-    "eslint-plugin-mocha": "10.3.0",
+    "eslint-plugin-mocha": "10.4.3",
     "eslint-plugin-prettier": "5.1.3",
     "eslint-plugin-sort-keys-fix": "1.1.2",
-    "eslint-plugin-vitest": "0.3.0",
+    "eslint-plugin-vitest": "0.5.4",
     "husky": "9.0.11",
-    "lint-staged": "15.1.0",
-    "prettier": "3.0.0"
+    "lint-staged": "15.2.2",
+    "prettier": "3.2.5",
+    "vitest": "1.6.0"
   },
   "workspaces": [
     "packages/**",
@@ -54,7 +57,11 @@
     "version:check": "yarn version check --interactive",
     "bump": "yarn packages:version patch && yarn version:apply",
     "release": "yarn build && yarn bump && yarn packages:publish",
-    "start": "./scripts/start.sh",
+    "start": "yarn start:infra && yarn start:apps",
+    "start:infra": "./scripts/start-infra.sh",
+    "start:apps": "./scripts/start-apps.sh",
+    "logs:infra": "./scripts/start/logs.sh",
+    "stop": "./scripts/stop.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn packages --parallel run lint",
     "lint:contracts": "yarn workspace @unlock-protocol/smart-contracts lint:contracts --fix",
@@ -80,7 +87,7 @@
   },
   "engineStrict": true,
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@4.1.1",
+  "packageManager": "yarn@4.2.2",
   "lint-staged": {
     "*.{js,ts,tsx}": "yarn run lint --fix",
     "*.{js,ts,tsx,sol,css,md}": "prettier --write --plugin=prettier-plugin-solidity",

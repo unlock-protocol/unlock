@@ -41,8 +41,8 @@ export const CastItButton = ({ event, eventUrl }: CastItButtonProps) => {
         className="w-12 h-12 flex justify-center items-center p-2"
       >
         <svg
-          width="429"
-          height="429"
+          width="32"
+          height="32"
           viewBox="0 0 429 429"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

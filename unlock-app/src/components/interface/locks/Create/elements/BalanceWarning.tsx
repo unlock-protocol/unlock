@@ -13,11 +13,6 @@ const CALL_TO_ACTION_MAPPING: Record<number | 'default', LinkProps> = {
     link: 'https://www.coinbase.com/',
     ref: 'Coinbase',
   },
-  5: {
-    label: 'Get some test ETH from ',
-    link: 'https://goerlifaucet.com/',
-    ref: 'the faucet.',
-  },
   10: {
     label: 'Transfer some ETH from ',
     link: 'https://app.optimism.io/bridge/deposit',

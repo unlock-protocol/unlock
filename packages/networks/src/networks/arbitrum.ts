@@ -48,6 +48,23 @@ export const arbitrum: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xBa81C9379AC1221BF8C100800dD0B0b0b048ba14',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0x8e1158A7f9d0905602f90191AC4DFb30DD4Ee04C',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0xA321fEa1E5c772043a466b2969CBEB1c095Cf3BA',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 42161,
@@ -132,12 +149,21 @@ export const arbitrum: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
+    oracle: {
+      100: '0x1dA6c13515362B42ACb1Ad24a713f74f925F3AEB',
+      3000: '0xa55F8Ba16C5Bb580967f7dD94f927B21d0acF86c',
+      500: '0x2D11eEf659801cc13ADAde21667af332E77ca9AD',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
   },
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  unlockDaoToken: {
+    address: '0xd5d3aA404D7562d09a848F96a8a8d5D65977bF90',
+    mainnetBridge: '0xa3A7B6F88361F48403514059F1F16C8E78d60EeC',
+    uniswapV3Pool: '0xF0498d3BDD28fA39d248aE2c65D7F90A794Ed9fE',
+  },
   url: 'https://arbitrum.io/',
 }
 

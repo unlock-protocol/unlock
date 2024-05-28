@@ -58,6 +58,7 @@ require('./tasks/deploy')
 require('./tasks/set')
 require('./tasks/unlock')
 require('./tasks/lock')
+require('./tasks/uniswap')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -66,7 +67,11 @@ const config = {
   networks,
   etherscan,
   solidity: {
-    compilers: [{ version: '0.8.21', settings }],
+    compilers: [
+      // required to compile oracle as Uniswap v3-periphery supports only solc < 0.8
+      { version: '0.7.6', settings: { ...settings, evmVersion: 'istanbul' } },
+      { version: '0.8.21', settings },
+    ],
   },
   sourcify: {
     enabled: true,

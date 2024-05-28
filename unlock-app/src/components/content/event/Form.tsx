@@ -29,6 +29,7 @@ import { useImageUpload } from '~/hooks/useImageUpload'
 import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
+import Link from 'next/link'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewEventForm {
@@ -52,7 +53,14 @@ export const GoogleMapsAutoComplete = ({
       types: [],
     },
     apiKey: config.googleMapsApiKey,
-    onPlaceSelected: (place) => onChange(place.formatted_address),
+    onPlaceSelected: (place, inputRef) => {
+      if (place.formatted_address) {
+        // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
+        return onChange(`${inputRef.value}, ${place.formatted_address}`)
+      }
+      // @ts-expect-error Property 'value' does not exist on type 'RefObject<HTMLInputElement>'.ts(2339)
+      return onChange(inputRef.value)
+    },
   })
 
   return (
@@ -112,6 +120,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         },
         image: '',
         requiresApproval: false,
+        emailSender: '',
       },
     },
   })
@@ -119,6 +128,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const {
     control,
     register,
+    trigger,
     setValue,
     getValues,
     formState: { errors },
@@ -158,6 +168,19 @@ export const Form = ({ onSubmit }: FormProps) => {
   const minEndDate = dayjs(ticket?.event_start_date).format('YYYY-MM-DD')
 
   const router = useRouter()
+
+  register('metadata.image', {
+    required: {
+      value: true,
+      message: 'Please select an image to illustrate your event!',
+    },
+    pattern: {
+      value:
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
+      message: 'Please, use a valid image URL',
+    },
+  })
+
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
@@ -197,7 +220,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                       }
                       setValue('metadata.image', image)
                     }
+                    trigger('metadata.image')
                   }}
+                  error={errors.metadata?.image?.message as string}
                 />
               </div>
               <div className="grid order-1 gap-4 md:order-2">
@@ -256,13 +281,25 @@ export const Form = ({ onSubmit }: FormProps) => {
                   label="Network"
                   defaultValue={network}
                   description={
-                    <p>
-                      This is the network on which your ticketing contract will
-                      be deployed.{' '}
-                      {details.network && (
-                        <>{networkDescription(details.network)}</>
-                      )}
-                    </p>
+                    <div className="flex flex-col gap-2">
+                      <p>
+                        {details.network && (
+                          <>{networkDescription(details.network)}</>
+                        )}
+                      </p>
+                      <p>
+                        This is the network on which your ticketing contract
+                        will be deployed.{' '}
+                        <Link
+                          className="underline text-brand-ui-primary "
+                          target="_blank"
+                          href="https://unlock-protocol.com/guides/how-to-choose-a-network-for-your-smart-contract-deployment/"
+                        >
+                          Read our guide
+                        </Link>{' '}
+                        on how to chose the right network.
+                      </p>
+                    </div>
                   }
                 />
                 <NetworkWarning network={details.network} />
@@ -443,6 +480,38 @@ export const Form = ({ onSubmit }: FormProps) => {
                   </div>
                 </div>
               </div>
+            </div>
+          </Disclosure>
+
+          <Disclosure label="Organizer" defaultOpen>
+            <div className="grid md:grid-cols-2 gap-2 justify-items-stretch">
+              <Input
+                {...register('metadata.emailSender', {
+                  required: {
+                    value: true,
+                    message: 'A name is required',
+                  },
+                })}
+                type="text"
+                placeholder="Satoshi Nakamoto"
+                label="Name:"
+                description="Used on confirmation emails sent to attendees."
+                error={errors.metadata?.emailSender?.message as string}
+              />
+              <Input
+                label="Email address:"
+                {...register('metadata.replyTo', {
+                  required: {
+                    value: true,
+                    message: 'A name is required',
+                  },
+                })}
+                type="email"
+                autoComplete="off"
+                placeholder="your@email.com"
+                error={errors.metadata?.replyTo?.message as string}
+                description={`Used when users respond to automated emails.`}
+              />
             </div>
           </Disclosure>
 

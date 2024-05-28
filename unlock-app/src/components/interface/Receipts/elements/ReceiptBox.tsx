@@ -1,4 +1,10 @@
-import { Button, Disclosure, Placeholder, Detail } from '@unlock-protocol/ui'
+import {
+  Button,
+  Disclosure,
+  Placeholder,
+  Detail,
+  PriceFormatter,
+} from '@unlock-protocol/ui'
 import ReactToPrint from 'react-to-print'
 import { useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../checkout/PoweredByUnlock'
@@ -97,8 +103,6 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     }
   )
 
-  const receiptPrefix = supplier?.prefix ? supplier.prefix + '-' : ''
-
   // enable edit of purchaser only if purchaser match the account
   const isPurchaser =
     receiptDetails?.payer?.toLowerCase() === account?.toLowerCase()
@@ -114,7 +118,14 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
     receiptDetails && receiptDetails.timestamp
       ? dayjs.unix(receiptDetails.timestamp).format('D MMM YYYY') // example: 20 Jan 1977
       : ''
-  const receiptNumber = receiptPrefix + (receiptDetails?.receiptNumber || '')
+
+  const receiptNumber = [
+    supplier?.prefix,
+    receiptDetails?.receiptNumber || '',
+    isCancelReceipt ? 'REFUND' : '',
+  ]
+    .filter((z: string) => !!z)
+    .join('-')
 
   const PurchaseDetails = () => {
     return (
@@ -135,9 +146,11 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
       currencyContractAddress: receiptDetails?.tokenAddress,
       hash,
     })
+    const multiplier = isCancelReceipt ? -1 : 1
 
     const vatRatePercentage = (supplier?.vatBasisPointsRate ?? 0) / 100
-    const subtotal = receiptPrice?.total / (1 + vatRatePercentage / 100)
+    const subtotal =
+      (multiplier * receiptPrice?.total) / (1 + vatRatePercentage / 100)
     const vatTotalInAmount = Number((subtotal * vatRatePercentage) / 100)
 
     return (
@@ -168,7 +181,12 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                   </>
                 )}
                 <Detail label="TOTAL" labelSize="medium" inline>
-                  {parseFloat(receiptPrice?.total).toFixed(2)} {symbol}
+                  <PriceFormatter
+                    price={(
+                      multiplier * parseFloat(receiptPrice?.total)
+                    ).toString()}
+                  />{' '}
+                  {symbol}
                 </Detail>
               </div>
             </div>
@@ -211,8 +229,8 @@ export const ReceiptBox = ({ lockAddress, hash, network }: ReceiptBoxProps) => {
                 ? addressMinify(receiptDetails?.recipient)
                 : ''
               : receiptDetails?.payer?.length > 0
-              ? addressMinify(receiptDetails?.payer)
-              : ''}
+                ? addressMinify(receiptDetails?.payer)
+                : ''}
           </span>
           <span className="text-base">{purchaser?.fullname}</span>
           <Address {...purchaser} />

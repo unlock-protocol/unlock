@@ -9,10 +9,10 @@ const {
 } = require('../helpers')
 const { ethers } = require('hardhat')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const newPrice = ethers.utils.parseUnits('0.011', 'ether')
-const totalPrice = keyPrice.mul(10).toString()
-const someDai = ethers.utils.parseUnits('100', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const newPrice = ethers.parseUnits('0.011', 'ether')
+const totalPrice = keyPrice * 10n
+const someDai = ethers.parseUnits('100', 'ether')
 
 let dai
 let lock
@@ -27,20 +27,24 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
     dai = await deployERC20(lockOwner)
 
     // Mint some dais for testing
-    await dai.mint(keyOwner.address, someDai)
+    await dai.mint(await keyOwner.getAddress(), someDai)
 
-    lock = await deployLock({ tokenAddress: dai.address })
+    lock = await deployLock({ tokenAddress: await dai.getAddress() })
 
     // set ERC20 approval for entire scope
-    await dai.connect(keyOwner).approve(lock.address, someDai)
+    await dai.connect(keyOwner).approve(await lock.getAddress(), someDai)
   })
 
   describe('Use extend() to restart recurring payments', () => {
     let tokenId
     beforeEach(async () => {
       // reset pricing
-      await lock.updateKeyPricing(keyPrice, dai.address)
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      await lock.updateKeyPricing(keyPrice, await dai.getAddress())
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await increaseTimeTo(expirationTs)
@@ -52,7 +56,7 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
     describe('price changed', () => {
       it('should renew once key has been extended', async () => {
         // change price
-        await lock.updateKeyPricing(newPrice, dai.address)
+        await lock.updateKeyPricing(newPrice, await dai.getAddress())
 
         // fails because price has changed
         await reverts(
@@ -61,21 +65,23 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         )
 
         // user extend key
-        await lock.connect(keyOwner).extend(newPrice, tokenId, ADDRESS_ZERO, [])
+        await lock
+          .connect(keyOwner)
+          .extend(newPrice, tokenId, ADDRESS_ZERO, '0x')
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
 
         // renewal should work
-        await increaseTimeTo(newExpirationTs.toNumber() - 1)
+        await increaseTimeTo(newExpirationTs - 1n)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
 
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+        const tsExpected = newExpirationTs + (await lock.expirationDuration())
 
         assert.equal(
           // assert results for +/- 2 sec
-          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          tsAfter - tsExpected <= 2,
           true
         )
       })
@@ -97,20 +103,22 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         )
 
         // user extend key
-        await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+        await lock
+          .connect(keyOwner)
+          .extend(keyPrice, tokenId, ADDRESS_ZERO, '0x')
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
 
         // renewal should work
-        await increaseTimeTo(newExpirationTs.toNumber() - 1)
+        await increaseTimeTo(newExpirationTs - 1n)
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+        const tsExpected = newExpirationTs + (await lock.expirationDuration())
 
         assert.equal(
           // assert results for +/- 2 sec
-          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          tsAfter - tsExpected <= 2,
           true
         )
       })
@@ -119,12 +127,14 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
     describe('token changed', () => {
       it('should renew once key has been extended', async () => {
         // deploy a new erc20 token
-        const xdai = await deployERC20(lockOwner.address)
-        await xdai.mint(keyOwner.address, someDai)
-        await xdai.connect(keyOwner).approve(lock.address, totalPrice)
+        const xdai = await deployERC20(await lockOwner.getAddress())
+        await xdai.mint(await keyOwner.getAddress(), someDai)
+        await xdai
+          .connect(keyOwner)
+          .approve(await lock.getAddress(), totalPrice)
 
         // change pricing to use new erc20
-        await lock.updateKeyPricing(keyPrice, xdai.address)
+        await lock.updateKeyPricing(keyPrice, await xdai.getAddress())
 
         // fails because token has changed
         await reverts(
@@ -133,21 +143,23 @@ describe('Lock / Extend with recurring memberships (ERC20 only)', () => {
         )
 
         // user extend key
-        await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+        await lock
+          .connect(keyOwner)
+          .extend(keyPrice, tokenId, ADDRESS_ZERO, '0x')
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
-        await increaseTimeTo(newExpirationTs.toNumber())
+        await increaseTimeTo(newExpirationTs)
 
         // renewal should work
         await lock.connect(keyOwner).renewMembershipFor(tokenId, ADDRESS_ZERO)
 
-        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+        const tsExpected = newExpirationTs + (await lock.expirationDuration())
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
 
         assert.equal(
           // assert results for +/- 2 sec
-          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          tsAfter - tsExpected <= 2,
           true
         )
       })

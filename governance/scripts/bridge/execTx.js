@@ -7,100 +7,94 @@
  *
  */
 
-const { getDelayModule, fetchDataFromTx, logStatus } = require('./_lib')
+const { getDelayModule, logStatus, DelayMod } = require('../../helpers/bridge')
+const { fetchDataFromTx } = require('../../helpers/tx')
 const fs = require('fs-extra')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 // use cache file to gather tx hashes from calls
-const filepath = './xcalled.json.tmp'
+const filepath = './xcalled.tmp.json'
 
 const bigIntToDate = (num) => new Date(parseInt((num * 1000n).toString()))
 
-const getTxStatus = async ({ delayMod, txHash, nextNonce } = {}) => {
-  const currentNonce = nextNonce - 1n
-  const { to, value, data, operation } = await fetchDataFromTx({ txHash })
-
-  // make sure tx is scheduled correctly
-  const txHashExec = await delayMod.getTransactionHash(
-    to,
-    value,
-    data,
-    operation
-  )
-
-  // verify tx hash from nonce
-  const txHashFromNonce = await delayMod.getTxHash(currentNonce)
-  if (txHashFromNonce !== txHashExec) {
-    console.error(`tx mismatch`)
-    console.error({ txHashFromNonce, txHashExec })
-  }
-
-  const createdAt = await delayMod.txCreatedAt(currentNonce)
+const getTxStatus = async (delayMod, nonce) => {
+  const hash = await delayMod.getTxHash(nonce)
+  const createdAt = await delayMod.txCreatedAt(nonce)
   const cooldown = await delayMod.txCooldown()
   const expiration = await delayMod.txExpiration()
-
   return {
-    execArgs: [to, value, data, operation],
+    nonce,
+    hash,
     createdAt,
     cooldown: createdAt + cooldown,
     expiration: createdAt + expiration,
-    nonce: currentNonce,
   }
 }
 
-async function main({
-  delayModuleAddress,
-  bridgeTxHash,
-  execute = false,
-} = {}) {
+async function main({ delayModuleAddress, bridgeTxHash, execute = true } = {}) {
   const { delayMod, currentNonce } = await getDelayModule(delayModuleAddress)
   if (typeof bridgeTxHash) {
     bridgeTxHash = [bridgeTxHash]
   }
 
+  console.log(`\n-------\n`)
+
   if (await fs.exists(filepath)) {
     // parse statuses from cache file
     const statuses = await fs.readJSON(filepath)
-    const { id } = await getNetwork()
+    const { id, name } = await getNetwork()
 
-    // prune calls only for the current chain
+    // pick bridged calls statuses only for the current chain
     const transfers = Object.keys(statuses)
+      .reverse()
       .map((transferId) => ({
         transferId,
         ...statuses[transferId],
       }))
       .filter(({ dest }) => dest.chainId == id)
-    console.log(`${transfers.length} calls`)
 
-    // get info on calls from multisig
-    let nonce = currentNonce
-    const txs = await Promise.all(
-      transfers.map(async ({ dest: { executedTransactionHash } }) => {
-        nonce++ // increment nonce
-        return await getTxStatus({
-          delayMod,
-          txHash: executedTransactionHash,
-          nextNonce: nonce,
-        })
-      })
+    const dataFromChain = await Promise.all(
+      transfers.map(({ dest: { executedTransactionHash } }) =>
+        fetchDataFromTx({ txHash: executedTransactionHash, abi: DelayMod })
+      )
+    )
+    console.log(`${transfers.length} txs bridged to ${name} (${id}) \n`)
+    transfers.map(({ transferId, ...status }, i) => {
+      console.log(`#### [Connext bridged call ${i}]`)
+      logStatus(transferId, status)
+      const [nonce, hash] = dataFromChain[i]
+      console.log(`Containing a \`TransactionAdded\` call to multisig (nonce: ${nonce}) 
+hash: \`${hash}\`\n`)
+    })
+    console.log(`\n-------\n`)
+
+    // get tx hash from nonce
+    const txHashesFromNonce = await Promise.all(
+      transfers.map((_, i) => getTxStatus(delayMod, currentNonce + BigInt(i)))
     )
 
-    transfers.forEach((transfer, i) => {
-      console.log('----------------------\n')
-      logStatus(transfer.transferId, transfer)
-      const { createdAt, cooldown, expiration } = txs[i]
-      console.log(
-        `Status on the multisig delay mod
-    - createdAt: ${bigIntToDate(createdAt)}
+    console.log(
+      `Txs present in the Delay module at ${await delayMod.getAddress()}:\n`,
+      txHashesFromNonce
+        .map(
+          ({ hash, createdAt, cooldown, expiration, nonce }) => `
+    ${hash} (nonce: ${nonce})
+    - createdAt: ${bigIntToDate(createdAt)} (${createdAt})
     - cooldown: ${bigIntToDate(cooldown)}
-    - expiration: ${bigIntToDate(expiration)}
-        `
-      )
-    })
+    - expiration: ${bigIntToDate(expiration)}`
+        )
+        .join(`\n`)
+    )
 
     // execute all
     if (execute) {
-      // await delayMod.executeNextTx(...execArgs)
+      const txs = await Promise.all(
+        dataFromChain.map(([, , to, value, data, operation]) =>
+          delayMod.executeNextTx(to, value, data, operation)
+        )
+      )
+      const receipts = await Promise.all(txs.map((tx) => tx.wait()))
+      console.log(`Executed. Tx(s) : ${receipts.map(({ hash }) => hash)}`)
     }
 
     // to cancel use `setTxNonce(queueNonce)` from the multisig

@@ -7,15 +7,15 @@ import { logger } from '../../logger'
 
 interface NotifyOptions {
   timeout?: number
-  hookSecret?: string
-  hookCallback: string
+  hookSecret?: string // TODO: change to just `secret`
+  hookCallback: string // TODO: change to just `callback`
   body: unknown
 }
 
 export async function notify({
   timeout = 1000,
-  hookSecret,
-  hookCallback,
+  hookSecret, // TODO: change to just `secret`
+  hookCallback, // TODO: change to just `callback`
   body,
 }: NotifyOptions) {
   const headers: Record<string, string> = {}
@@ -41,6 +41,15 @@ export async function notify({
     method: 'POST',
     body: content,
     signal: ac.signal,
+  }).catch((error) => {
+    logger.error('Error in notify function: ', error)
+    return {
+      ok: false,
+      statusText: 'client error',
+      status: '400',
+      text: () => error.message,
+      json: () => Promise.resolve({ message: error.message }),
+    }
   })
 
   clearTimeout(abortTimeout)

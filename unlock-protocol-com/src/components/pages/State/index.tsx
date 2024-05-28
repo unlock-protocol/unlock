@@ -1,177 +1,89 @@
-import { Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
-import { ActiveLock, Lock, Key } from '../../icons'
-import numeral from 'numeral'
-import { useQuery } from '@tanstack/react-query'
-import dynamic from 'next/dynamic'
 import { networks } from '@unlock-protocol/networks'
-import { CryptoIcon } from '@unlock-protocol/crypto-icon'
-import { getGNPs } from '../../../utils/apiRequest'
 import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
-import { IconBaseProps } from 'react-icons'
-import { utils } from 'ethers'
+import * as Plot from '@observablehq/plot'
 
-const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
+// sections components
+import { Overview } from './sections/overview'
+import { GNP } from './sections/gnp'
+import { HistoricalChart } from './sections/chart'
 
-type IOverView = {
-  Icon: (props: IconBaseProps) => JSX.Element
-  value: number
-  title: string
-  description: string
-}
-
-type ISeries = {
+type IDailyStats = {
   name: string
-  data: number[]
+  id: number
+  date: Date
+  activeLocks: string[]
+  totalKeysSold: string
+  totalLockDeployed: string
 }
 
-type INetworkSubgraph = {
-  lockStats: {
-    totalKeysSold: string
-    totalLocksDeployed: string
-  }
-  unlockDailyDatas: {
-    activeLocks: string[]
-    id: number
-    totalKeysSold: string
-    totalLockDeployed: string
-  }[]
-}
-
-type IXaxis = {
-  categories: string[]
-}
-
-type IGNPSum = {
+type ILockStats = {
   name: string
-  gnpSum: number
+  id: number
+  totalKeysSold: string
+  totalLocksDeployed: string
+  activeLocks: number
 }
 
-const filters = ['7D', '1M', '1Y', 'All']
-
-function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
-  if (!series || series.length === 0) {
-    return null
-  }
-
-  const chartOptions = {
-    options: {
-      chart: { zoom: { enabled: false } },
-      stroke: {
-        curve: 'smooth' as 'smooth' | 'straight' | 'stepline',
-        width: 3,
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      markers: {
-        size: 0,
-        hover: {
-          sizeOffset: 6,
-        },
-      },
-      xaxis,
-      yaxis: [
-        {
-          opposite: false,
-          title: {
-            text: 'Keys',
-          },
-          min: Math.max(
-            0,
-            Math.min(...series[0].data) -
-              0.1 *
-                (Math.max(...series[0].data) - Math.min(...series[0].data)) -
-              1
-          ),
-          labels: {
-            formatter: function (val, index) {
-              return val.toFixed(0)
-            },
-          },
-        },
-        {
-          show: false,
-        },
-        {
-          opposite: true,
-          title: {
-            text: 'Locks',
-          },
-          min: Math.max(
-            0,
-            Math.min(...series[2].data) -
-              0.1 *
-                (Math.max(...series[2].data) - Math.min(...series[2].data)) -
-              1
-          ),
-          labels: {
-            formatter: function (val, index) {
-              return val.toFixed(0)
-            },
-          },
-        },
-      ],
-      tooltip: {
-        y: [
-          {
-            title: {
-              formatter: (val) => val,
-            },
-          },
-          {
-            title: {
-              formatter: (val) => val,
-            },
-          },
-          {
-            title: {
-              formatter: (val) => val,
-            },
-          },
-        ],
-      },
-      grid: {
-        borderColor: '#f1f1f1',
-        xaxis: { lines: { show: true } },
-        yaxis: { lines: { show: true } },
-      },
-    },
-  }
-
-  return (
-    <div className="w-full h-96">
-      <ReactApexChart
-        options={chartOptions.options}
-        series={series}
-        type="line"
-        height={320}
-      />
-    </div>
-  )
+type IFilter = {
+  period: number
+  selectedNetworks: string[]
 }
 
-function DateFilter({
-  filter,
-  setFilter,
+interface IViewFilter {
+  label: string
+  value: string
+  cumulative?: boolean
+}
+
+const views = [
+  {
+    label: 'Locks deployed',
+    value: 'lockDeployed',
+  },
+  {
+    label: 'Locks active',
+    value: 'activeLocks',
+  },
+  {
+    label: 'Keys',
+    value: 'keySold',
+  },
+  {
+    label: 'Locks deployed (cumulative)',
+    value: 'lockDeployed',
+    cumulative: true,
+  },
+  {
+    label: 'Keys (cumulative)',
+    value: 'keySold',
+    cumulative: true,
+  },
+]
+
+function ViewFilter({
+  viewFilter,
+  setViewFilter,
 }: {
-  filter: string
-  setFilter: (value: string) => void
+  viewFilter: IViewFilter
+  setViewFilter: (value: IViewFilter) => void
 }) {
   return (
-    <div className="flex flex-row items-center justify-center gap-4 p-2 bg-white rounded-md">
-      {filters.map((item, index) => (
+    <div className="flex flex-row items-center justify-center gap-4 m-2 p-2 rounded-md">
+      {views.map((view, index) => (
         <div
           className="cursor-pointer"
-          onClick={() => setFilter(item)}
+          onClick={() => setViewFilter(view)}
           key={index}
         >
           <p
             className={`text-gray font-lg px-3 py-1 ${
-              filter === item ? 'bg-black text-white rounded-md' : 'bg-white'
+              viewFilter.value === view.value
+                ? 'bg-black text-white rounded-md'
+                : 'bg-white'
             }`}
           >
-            {item}
+            {view.label}
           </p>
         </div>
       ))}
@@ -179,421 +91,225 @@ function DateFilter({
   )
 }
 
-function CalcActiveLocksCount(graphData: any[]) {
-  const currentDay = Math.round(new Date().getTime() / 86400000)
-  const unlockDailyDatas = graphData
-    .map((item) => item.data.unlockDailyDatas)
-    .flatMap((data) => data)
-  const activeLockList = unlockDailyDatas
-    .filter(
-      (dailyData) =>
-        dailyData.id > currentDay - 30 && dailyData.id <= currentDay
-    )
-    .map((item) => item.activeLocks)
-    .flatMap((data) => data)
-  return [...new Set(activeLockList)].length
+const timeFilters = [
+  { label: '1 Month', period: 30 },
+  { label: '6 Months', period: 180 },
+  { label: '1 Year', period: 365 },
+  { label: 'ALL', period: 1000 },
+]
+
+const supportedNetworks = Object.keys(networks)
+  .map((id) => networks[id])
+  .filter(({ isTestNetwork, id }) => !isTestNetwork && id)
+  .map(({ name, chain, id, subgraph }) => ({
+    name,
+    chain,
+    id,
+    subgraphURI: subgraph.endpoint,
+  }))
+
+function isWithin(date, days) {
+  const toTest = new Date(date)
+  const now = new Date()
+  const fewDaysAgo = new Date()
+  fewDaysAgo.setDate(now.getDate() - days)
+  return (
+    fewDaysAgo.getTime() <= toTest.getTime() && toTest.getTime() < now.getTime()
+  )
 }
 
-function CalcRenderData(
-  graphData: INetworkSubgraph,
-  timestampArray: number[],
-  flag: 0 | 1 | 2,
-  filter: string
-) {
-  return timestampArray.map((dayId) => {
-    const dayDatas = graphData.unlockDailyDatas.filter(
-      (item) => item.id >= dayId - 1 && item.id < dayId
+function filterData({ dailyStats, filter }) {
+  const { period, selectedNetworks } = filter
+  return dailyStats.filter(
+    ({ chain, date }) =>
+      isWithin(date, period) &&
+      (!selectedNetworks.length ? true : selectedNetworks.includes(chain))
+  )
+}
+
+function DateFilter({
+  filter,
+  setFilter,
+}: {
+  filter: IFilter
+  setFilter: (value: IFilter) => void
+}) {
+  return (
+    <div className="flex flex-row items-center justify-center gap-4 bg-white rounded-md">
+      {timeFilters.map(({ label, period }, index) => (
+        <div
+          className="cursor-pointer"
+          onClick={() => setFilter({ ...filter, period })}
+          key={index}
+        >
+          <p
+            className={`text-gray px-3 py-1 ${
+              filter.period === period
+                ? 'bg-black text-white rounded-md'
+                : 'bg-white'
+            }`}
+          >
+            {label}
+          </p>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function NetworkRadioPicker({
+  filter,
+  setFilter,
+}: {
+  filter: IFilter
+  setFilter: (value: IFilter) => void
+}) {
+  const handleOnChange = (selectedChain) => {
+    const updatedSelectedNetworks = filter.selectedNetworks.includes(
+      selectedChain
     )
-    if (flag === 0)
-      return dayDatas.reduce((x, y) => x + Number(y.totalKeysSold), 0)
-    if (flag === 1) {
-      const lastMonthActiveLocks = graphData.unlockDailyDatas
-        .filter((item) => item.id > dayId - 30 && item.id <= dayId)
-        .map((item) => item.activeLocks)
-        .flatMap((lock) => lock)
-      return [...new Set(lastMonthActiveLocks)].length
-    }
-    if (flag === 2)
-      return dayDatas.reduce((x, y) => x + Number(y.totalLockDeployed), 0)
+      ? filter.selectedNetworks.filter((chain) => chain !== selectedChain)
+      : [...filter.selectedNetworks, selectedChain]
+    setFilter({ ...filter, selectedNetworks: updatedSelectedNetworks })
+  }
+
+  const color = Plot.scale({
+    color: {
+      scheme: 'Tableau10',
+      domain: supportedNetworks.map((_, i) => i),
+    },
   })
+
+  return (
+    <div className="flex flex-row items-center text-xs justify-center">
+      {supportedNetworks.map(({ name, chain }, index) => (
+        <label className="mr-4" key={index}>
+          <input
+            className="mr-2"
+            style={{ backgroundColor: color.apply(index) }}
+            key={index}
+            type="checkbox"
+            value={chain}
+            checked={filter.selectedNetworks.includes(chain)}
+            onChange={() => handleOnChange(chain)}
+          />
+          {name}
+        </label>
+      ))}
+    </div>
+  )
 }
 
 export function State() {
   const currentDay = Math.round(new Date().getTime() / 86400000)
-  const [subgraphData, setSubgraphData] = useState<any[]>([])
-  const [filter, setFilter] = useState<string>('7D')
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [gnpValues, setGNPValues] = useState<any[]>([])
-  const [overViewData, setOverViewData] = useState<IOverView[]>([])
-  const [selectedNetwork, setSelectedNetwork] = useState<string>('ALL')
-  const [selectedNetworkSubgraphData, setSelectedNetworkSubgraphData] =
-    useState<INetworkSubgraph | undefined>(undefined)
-  const [series, setSeries] = useState<ISeries[]>([])
-  const [xaxis, setXaxis] = useState<IXaxis | undefined>(undefined)
-  const [gnpTotalValueByNetwork, setGnpTotalValueByNetwork] = useState<
-    IGNPSum[]
-  >([])
-  const [gnpPByNetworks, setGNPPByNetworks] = useState<any[]>([])
+  const [dailyStats, setDailyStats] = useState<IDailyStats[]>([])
+  const [lockStats, setLockStats] = useState<ILockStats[]>([])
+  const [filter, setFilter] = useState<IFilter>({
+    period: 1000,
+    selectedNetworks: supportedNetworks.map(({ chain }) => chain),
+  })
+  const [viewFilter, setViewFilter] = useState<IViewFilter>(views[1])
+  const [filteredData, setFilteredData] = useState<IDailyStats[]>([])
 
-  useEffect(() => {
-    if (selectedNetworkSubgraphData) {
-      let xAxisLabels
-      let timestampArray
-      switch (filter) {
-        case '7D': {
-          xAxisLabels = [...Array(7).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
-              'default',
-              { dateStyle: 'short' }
-            )
-          })
-          timestampArray = [...Array(7).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
-          })
-          break
-        }
-        case '1M': {
-          xAxisLabels = [...Array(30).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
-              'default',
-              { dateStyle: 'short' }
-            )
-          })
-          timestampArray = [...Array(30).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
-          })
-          break
-        }
-        case '1Y': {
-          xAxisLabels = [...Array(12).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
-              'default',
-              { dateStyle: 'short' }
-            )
-          })
-          timestampArray = [...Array(12).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
-          })
-          break
-        }
-        case 'All': {
-          xAxisLabels = [...Array(36).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
-              'default',
-              { dateStyle: 'short' }
-            )
-          })
-          timestampArray = [...Array(36).keys()].reverse().map((key) => {
-            const cur = new Date()
-            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
-          })
-          break
-        }
-      }
-
-      setXaxis({
-        categories: xAxisLabels,
-      })
-      setSeries([
-        {
-          name: 'Keys (Memberships) Minted',
-          data: CalcRenderData(
-            selectedNetworkSubgraphData,
-            timestampArray,
-            0,
-            filter
-          ),
-        },
-        {
-          name: 'Active Locks',
-          data: CalcRenderData(
-            selectedNetworkSubgraphData,
-            timestampArray,
-            1,
-            filter
-          ),
-        },
-        {
-          name: 'Locks Deployed',
-          data: CalcRenderData(
-            selectedNetworkSubgraphData,
-            timestampArray,
-            2,
-            filter
-          ),
-        },
-      ])
-    }
-  }, [selectedNetworkSubgraphData, filter])
-
+  // get data from all subgraphs
   useEffect(() => {
     const run = async () => {
-      const values = await getGNPs()
-      values.sort((a, b) => {
-        if (a.total < b.total) return 1
-        if (a.total > b.total) return -1
-        return 0
-      })
-      setGNPValues(values)
-      setIsLoading(false)
-    }
-    run()
-  }, [])
-
-  useEffect(() => {
-    const run = async () => {
-      if (selectedNetwork === 'ALL') {
-        const subgraphData = await Promise.all(
-          Object.keys(networks).map(async (key) => {
-            if (!networks[key].isTestNetwork) {
-              const { data } = await getSubgraph4GNP(
-                networks[key].subgraph.endpoint,
-                currentDay - 1030 // why?
-              )
-              return data
-            }
-          })
-        )
-        setSelectedNetworkSubgraphData(
-          subgraphData
-            .filter((item) => item)
-            .reduce(
-              (a, b) => ({
-                lockStats: {
-                  totalKeysSold:
-                    a.lockStats.totalKeysSold +
-                    parseInt(b.lockStats.totalKeysSold),
-                  totalLocksDeployed:
-                    a.lockStats.totalLocksDeployed +
-                    parseInt(b.lockStats.totalLocksDeployed),
-                },
-                unlockDailyDatas: [
-                  ...a.unlockDailyDatas,
-                  ...b.unlockDailyDatas,
-                ],
-              }),
-              {
-                lockStats: { totalKeysSold: 0, totalLocksDeployed: 0 },
-                unlockDailyDatas: [],
-              }
-            )
-        )
-      } else {
-        const { data } = await getSubgraph4GNP(
-          networks[selectedNetwork].subgraph.endpoint,
-          currentDay - 1030 // why?
-        )
-        setSelectedNetworkSubgraphData(data)
-      }
-    }
-    run()
-  }, [selectedNetwork, filter, subgraphData, currentDay])
-
-  useEffect(() => {
-    const gnpPercentageByNetworks = subgraphData.map((networkData) => {
-      const sumOfGNP = parseFloat(
-        utils.formatUnits(
-          BigInt(
-            networkData.data.unlockDailyDatas
-              .filter(
-                (item) =>
-                  item.id >=
-                    currentDay -
-                      (filter === '7D'
-                        ? 8
-                        : filter === '1M'
-                        ? 31
-                        : filter === '1Y'
-                        ? 200
-                        : 10000) && item.id <= currentDay
-              )
-              .reduce((pv, b) => pv + parseInt(b.grossNetworkProduct), 0)
-          ),
-          '18'
-        )
-      )
-      return {
-        name: networkData.name,
-        gnpPercentage:
-          sumOfGNP /
-          gnpTotalValueByNetwork.find((item) => item.name === networkData.name)
-            ?.gnpSum,
-      }
-    })
-    setGNPPByNetworks(gnpPercentageByNetworks)
-  }, [filter, currentDay, subgraphData, gnpTotalValueByNetwork])
-
-  useEffect(() => {
-    const run = async () => {
-      const subgraphData = await Promise.all(
-        Object.keys(networks).map(async (key) => {
-          if (!networks[key].isTestNetwork) {
-            const { data } = await getSubgraph4GNP(
-              networks[key].subgraph.endpoint,
-              currentDay - 1030 // why?
-            )
-            return { name: networks[key].name, data }
+      const allData = await Promise.all(
+        supportedNetworks.map(async ({ name, id, chain, subgraphURI }) => {
+          const data = await getSubgraph4GNP(subgraphURI, currentDay - 1000)
+          return {
+            name,
+            id,
+            data,
+            chain,
           }
         })
       )
-      setSubgraphData(subgraphData.filter((item) => item && item.data))
+
+      const dailyStats = allData.reduce(
+        (obj, { data: { unlockDailyDatas }, name, id, chain }) => {
+          unlockDailyDatas.forEach(({ date, ...datum }, i) => {
+            obj = [
+              ...obj,
+              {
+                date,
+                name,
+                chain,
+                id,
+                // compute locks per day
+                lockDeployed: i
+                  ? datum.totalLockDeployed -
+                    unlockDailyDatas[i - 1].totalLockDeployed
+                  : 0,
+                // compute keys per day
+                keySold: i
+                  ? datum.totalKeysSold - unlockDailyDatas[i - 1].totalKeysSold
+                  : 0,
+                ...datum,
+              },
+            ]
+          })
+          return obj
+        },
+        []
+      )
+      setDailyStats(dailyStats)
+
+      const lockStats = allData.map(
+        ({ data: { lockStats, unlockDailyDatas }, name, id }) => ({
+          name,
+          id,
+          ...lockStats,
+          activeLocks: unlockDailyDatas
+            .filter(({ date }) => isWithin(date, 30)) // last 30 days
+            .map(({ activeLocks }) => activeLocks)
+            .reduce((pv, a) => pv + a, 0),
+        })
+      )
+      setLockStats(lockStats)
     }
     run()
   }, [currentDay])
 
+  // filter data properly
   useEffect(() => {
-    if (subgraphData !== undefined && subgraphData.length > 0) {
-      const overview_contents: IOverView[] = [
-        {
-          value: subgraphData.reduce(
-            (pv, b) => pv + parseInt(b?.data?.lockStats?.totalLocksDeployed),
-            0
-          ),
-          title: 'Total of Locks Deployed',
-          description: 'All Time, production networks only',
-          Icon: Lock,
-        },
-        {
-          value: subgraphData.reduce(
-            (pv, b) => pv + parseInt(b?.data?.lockStats?.totalKeysSold),
-            0
-          ),
-          title: 'Total of Keys Sold',
-          description: 'All Time, production networks only',
-          Icon: Key,
-        },
-        {
-          value: CalcActiveLocksCount(subgraphData),
-          title: 'Active Locks',
-          description: 'Minted at least 1 membership in the last 30 days',
-          Icon: ActiveLock,
-        },
-      ]
-      const gnpDataByNetworks = subgraphData.map((networkData) => ({
-        name: networkData.name,
-        gnpSum: parseFloat(
-          utils.formatUnits(
-            BigInt(
-              networkData.data.unlockDailyDatas.reduce(
-                (pv, b) => pv + parseInt(b.grossNetworkProduct),
-                0
-              )
-            ),
-            '18'
-          )
-        ),
-      }))
-      setOverViewData(overview_contents)
-      setGnpTotalValueByNetwork(gnpDataByNetworks)
-    }
-  }, [subgraphData])
+    setFilteredData(filterData({ filter, dailyStats }))
+  }, [filter, dailyStats])
 
   return (
     <div className="p-6">
       <div className="mx-auto max-w-7xl">
         <div className="space-y-4">
           <h1 className="space-y-8 text-center heading"> State of Unlock </h1>
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <p className="space-y-1 text-2xl font-bold">Overview</p>
-              <div className="grid grid-cols-1 gap-1 md:gap-4 md:grid-cols-3">
-                {overViewData &&
-                  overViewData.map(
-                    ({ value, title, description, Icon }, index) => (
-                      <div
-                        key={index}
-                        className="w-full p-8 rounded-md trans-pane"
-                      >
-                        <h2 className="space-y-4 heading-small">
-                          {numeral(value).format('0,0')}
-                        </h2>
-                        <p className="py-2 text-lg font-bold text-black sm:text-xl lg:text-2xl max-w-prose">
-                          {title}
-                        </p>
-                        <div className="flex justify-between">
-                          <span>{description}</span>
-                          <Icon className="self-center not-sr-only w-7 h-7" />
-                        </div>
-                      </div>
-                    )
-                  )}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <p className="space-y-1 text-2xl font-bold">Activity over time</p>
-              <div className="flex flex-wrap justify-between gap-2">
-                <select
-                  id="network"
-                  className="px-4 text-black bg-white border-none rounded-md w-96"
-                  value={selectedNetwork}
-                  onChange={(e) => {
-                    setSelectedNetwork(e.target.value)
-                  }}
-                >
-                  <option value="ALL" key="ALL">
-                    All
-                  </option>
-                  {gnpValues &&
-                    gnpValues
-                      .filter(({ network }) => !network.isTestNetwork)
-                      .map(({ network }, index) => (
-                        <option
-                          value={Object.keys(networks).find(
-                            (key) => networks[key].name === network.name
-                          )}
-                          key={index}
-                        >
-                          {network.name}
-                        </option>
-                      ))}
-                </select>
-                <DateFilter filter={filter} setFilter={setFilter} />
-              </div>
-              <RenderChart series={series} xaxis={xaxis} />
-            </div>
-            <div className="space-y-2">
-              <p className="space-y-1 text-2xl font-bold">
-                Gross Network Product
-              </p>
-              {!isLoading && (
-                <div className="grid grid-cols-1 gap-4 xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-2">
-                  {gnpValues
-                    .filter((item) => !item.network.isTestNetwork)
-                    .map(({ total, network }, index) => (
-                      <div
-                        key={index}
-                        className="p-4 border border-gray-300 rounded-md"
-                      >
-                        <div className="flex justify-between pb-2">
-                          <p className="text-xl font-bold">{network.name}</p>
-                        </div>
-
-                        <div className="flex justify-start pt-2 border-t border-gray-300">
-                          <CryptoIcon
-                            className="mr-2"
-                            symbol={network.nativeCurrency.symbol}
-                            size={40}
-                          />
-                          <p className="self-center pr-2 heading-small">
-                            {numeral(total).format('0,0.000')}{' '}
-                          </p>
-                          <p className="self-center pr-2 heading-small">
-                            {network.nativeCurrency.symbol}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
-              )}
-            </div>
+        </div>
+        <div className="space-y-4 mt-16">
+          <Overview lockStats={lockStats} />
+        </div>
+        <div className="space-y-2 mt-16">
+          <p className="space-y-1 text-center text-2xl font-bold">
+            Activity over time
+          </p>
+          <div className="flex flex-wrap space-y-2 justify-between gap-2">
+            <ViewFilter viewFilter={viewFilter} setViewFilter={setViewFilter} />
+            <DateFilter filter={filter} setFilter={setFilter} />
           </div>
+          {filteredData.length && (
+            <HistoricalChart
+              dailyStats={filteredData}
+              filter={filter}
+              supportedNetworks={supportedNetworks}
+              viewFilter={viewFilter}
+            />
+          )}
+        </div>
+        <div className="space-y-2">
+          <NetworkRadioPicker filter={filter} setFilter={setFilter} />
+        </div>
+        <div className="space-y-2 mt-16">
+          <p className="space-y-1 text-2xl font-bold m-8">
+            Gross Network Product
+          </p>
+          <GNP />
         </div>
       </div>
     </div>

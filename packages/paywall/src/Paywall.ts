@@ -119,7 +119,7 @@ export class Paywall {
   }
 
   /**
-   * Loads the checkout modal!
+   * Loads the checkout modal. Returns a Promise that resolves when the modal is closed.
    * @param config
    * @param unlockUrl
    */
@@ -153,6 +153,7 @@ export class Paywall {
     })
   }
 
+  // Explicitly sets a checkout config on the paywall object.
   setPaywallConfig = (config: PaywallConfigType) => {
     if (this.provider && !this.provider.isPaywallProvider) {
       config.autoconnect = true // force autoconnect, when the provider is external
@@ -169,6 +170,10 @@ export class Paywall {
       injectProviderInfo(config || this.paywallConfig, this.provider)
     )
   }
+
+  /********************
+   * Internal methods
+   ********************/
 
   shakeHands = async (
     unlockAppUrl: string,

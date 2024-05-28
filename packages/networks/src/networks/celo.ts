@@ -35,6 +35,18 @@ export const celo: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xC4E6FDfe46CD1DF46801e080000a4897c42Fd75F',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 42220,
@@ -80,7 +92,11 @@ export const celo: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
-    oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
+    oracle: {
+      100: '0xaB82D702A4e0cD165072C005dc504A21c019718F',
+      3000: '0x5c67AD0CAfe61aF3706347aBc695D7ACcb38EFb3',
+      500: '0xc9F29DdBD4D828cFb2EB491E9d48013a9c0E3C89',
+    },
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
     universalRouterAddress: '0xC73d61d192FB994157168Fb56730FdEc64C9Cb8F',
   },

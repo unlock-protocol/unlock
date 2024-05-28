@@ -11,7 +11,7 @@ import {
 } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { ToggleSwitch } from '@unlock-protocol/ui'
 import { durationAsText } from '~/utils/durations'
 import { KeyItem } from './KeyInfoDrawer'
@@ -40,7 +40,7 @@ export interface Props {
   isOpen: boolean
   lock: any
   setIsOpen: (open: boolean) => void
-  account: string
+  owner: string
   currency: string
   tokenId: string
   network: number
@@ -51,7 +51,7 @@ export const ExtendMembershipModal = ({
   isOpen,
   lock,
   setIsOpen,
-  account: owner,
+  owner,
   network,
   ownedKey,
 }: Props) => {
@@ -76,7 +76,7 @@ export const ExtendMembershipModal = ({
     async () => {
       if (
         ownedKey.lock.tokenAddress &&
-        ownedKey.lock.tokenAddress === ethers.constants.AddressZero
+        ownedKey.lock.tokenAddress === ADDRESS_ZERO
       ) {
         const nativeCurrency = config.networks[network]?.nativeCurrency
         return {

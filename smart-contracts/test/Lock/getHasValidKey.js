@@ -1,6 +1,7 @@
 const { assert } = require('chai')
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvents } = require('@unlock-protocol/hardhat-helpers')
 
 describe('Lock / getHasValidKey', () => {
   let lock
@@ -14,18 +15,18 @@ describe('Lock / getHasValidKey', () => {
   })
 
   it('should be false before purchasing a key', async () => {
-    const isValid = await lock.getHasValidKey(keyOwner.address)
+    const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
     assert.equal(isValid, false)
   })
 
   describe('after purchase', () => {
     beforeEach(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('should be true', async () => {
-      assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 1)
-      const isValid = await lock.getHasValidKey(keyOwner.address)
+      assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 1)
+      const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
       assert.equal(isValid, true)
     })
 
@@ -33,11 +34,15 @@ describe('Lock / getHasValidKey', () => {
       beforeEach(async () => {
         await lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, receiver.address, tokenId)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await receiver.getAddress(),
+            tokenId
+          )
       })
 
       it('should be false', async () => {
-        const isValid = await lock.getHasValidKey(keyOwner.address)
+        const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
         assert.equal(isValid, false)
       })
     })
@@ -48,22 +53,25 @@ describe('Lock / getHasValidKey', () => {
     beforeEach(async () => {
       const tx = await lock.purchase(
         [],
-        [keyOwner.address, keyOwner.address, keyOwner.address],
+        [
+          await keyOwner.getAddress(),
+          await keyOwner.getAddress(),
+          await keyOwner.getAddress(),
+        ],
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
-        [[], [], []],
+        ['0x', '0x', '0x'],
         {
-          value: ethers.utils.parseUnits('0.03', 'ether'),
+          value: ethers.parseUnits('0.03', 'ether'),
         }
       )
-      const { events } = await tx.wait()
-      tokenIds = await events
-        .filter((v) => v.event === 'Transfer')
-        .map(({ args }) => args.tokenId)
+      const receipt = await tx.wait()
+      const { events } = await getEvents(receipt, 'Transfer')
+      tokenIds = events.map(({ args }) => args.tokenId)
     })
 
     it('should be true', async () => {
-      const isValid = await lock.getHasValidKey(keyOwner.address)
+      const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
       assert.equal(isValid, true)
     })
 
@@ -71,13 +79,20 @@ describe('Lock / getHasValidKey', () => {
       beforeEach(async () => {
         await lock
           .connect(keyOwner)
-          .transferFrom(keyOwner.address, receiver.address, tokenIds[0])
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await receiver.getAddress(),
+            tokenIds[0]
+          )
       })
 
       it('should still be true', async () => {
-        const isValid = await lock.getHasValidKey(keyOwner.address)
+        const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
         assert.equal(isValid, true)
-        assert.equal(await lock.getHasValidKey(receiver.address), true)
+        assert.equal(
+          await lock.getHasValidKey(await receiver.getAddress()),
+          true
+        )
       })
     })
 
@@ -87,7 +102,7 @@ describe('Lock / getHasValidKey', () => {
       })
 
       it('should be true', async () => {
-        const isValid = await lock.getHasValidKey(keyOwner.address)
+        const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
         assert.equal(isValid, true)
       })
     })
@@ -95,18 +110,22 @@ describe('Lock / getHasValidKey', () => {
     describe('after transferring all of the purchased key', () => {
       beforeEach(async () => {
         await Promise.all(
-          tokenIds.map((id) =>
-            lock
+          tokenIds.map(async (id) => {
+            await lock
               .connect(keyOwner)
-              .transferFrom(keyOwner.address, receiver.address, id)
-          )
+              .transferFrom(
+                await keyOwner.getAddress(),
+                await receiver.getAddress(),
+                id
+              )
+          })
         )
       })
 
       it('should be false', async () => {
-        assert.equal((await lock.balanceOf(keyOwner.address)).toNumber(), 0)
-        assert.equal((await lock.balanceOf(receiver.address)).toNumber(), 3)
-        const isValid = await lock.getHasValidKey(keyOwner.address)
+        assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
+        assert.equal(await lock.balanceOf(await receiver.getAddress()), 3)
+        const isValid = await lock.getHasValidKey(await keyOwner.getAddress())
         assert.equal(isValid, false)
       })
     })

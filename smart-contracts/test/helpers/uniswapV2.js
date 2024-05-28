@@ -18,8 +18,7 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
     UniswapV2Factory.bytecode,
     signer
   )
-  const factory = await Factory.deploy(signer.address)
-  await factory.deployed()
+  const factory = await Factory.deploy(await signer.getAddress())
 
   // Deploy Router passing Factory Address and WETH Address
   const Router = await ethers.getContractFactory(
@@ -27,9 +26,7 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
     UniswapV2Router02.bytecode,
     signer
   )
-  const router = await Router.deploy(factory.address, wethAddress)
-  await router.deployed()
-
+  const router = await Router.deploy(await factory.getAddress(), wethAddress)
   return router
 }
 
@@ -43,8 +40,6 @@ const deployUniswapV2Oracle = async (uniswapFactoryAddress, deployer) => {
     signer
   )
   const oracle = await Oracle.deploy(uniswapFactoryAddress)
-  await oracle.deployed()
-
   return oracle
 }
 
@@ -52,7 +47,7 @@ const createUniswapV2Exchange = async ({
   protocolOwner,
   minter,
   udtAddress,
-  amount = ethers.utils.parseEther('1000000'),
+  amount = ethers.parseEther('1000000'),
 }) => {
   const udt = await ethers.getContractAt(
     'UnlockDiscountTokenV3',
@@ -62,35 +57,46 @@ const createUniswapV2Exchange = async ({
 
   // Deploy the exchange
   const weth = await deployWETH(protocolOwner)
-  const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
+  const uniswapRouter = await deployUniswapV2(
+    await weth.getAddress(),
+    protocolOwner
+  )
 
   // Create UDT <-> WETH pool
-  await udt.mint(minter.address, amount)
-  await udt.approve(uniswapRouter.address, MAX_UINT)
+  await udt.mint(await minter.getAddress(), amount)
+  await udt.approve(await uniswapRouter.getAddress(), MAX_UINT)
 
   await uniswapRouter
     .connect(minter)
-    .addLiquidityETH(udt.address, amount, '1', '1', minter.address, MAX_UINT, {
-      value: ethers.utils.parseEther('40', 'ether'),
-    })
+    .addLiquidityETH(
+      await udt.getAddress(),
+      amount,
+      '1',
+      '1',
+      await minter.getAddress(),
+      MAX_UINT,
+      {
+        value: ethers.parseEther('40', 'ether'),
+      }
+    )
 
   const uniswapOracle = await deployUniswapV2Oracle(
     await uniswapRouter.factory(),
     protocolOwner
   )
 
-  // Advancing time to avoid an intermittent test fail
-  await increaseTime(1)
+  // Advancing one hour to avoid an intermittent test fail
+  await increaseTime(3600)
 
   // Do a swap so there is some data accumulated
   await uniswapRouter
     .connect(minter)
     .swapExactETHForTokens(
       1,
-      [weth.address, udt.address],
-      minter.address,
+      [await weth.getAddress(), await udt.getAddress()],
+      await minter.getAddress(),
       MAX_UINT,
-      { value: ethers.utils.parseEther('1') }
+      { value: ethers.parseEther('1') }
     )
 
   return {

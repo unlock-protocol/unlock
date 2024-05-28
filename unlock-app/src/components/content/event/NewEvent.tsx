@@ -28,7 +28,7 @@ export const defaultEventCheckoutConfigForLockOnNetwork = (
           {
             name: 'email',
             type: 'email',
-            label: 'Email address (will receive the QR code)',
+            label: 'Email address (will receive the ticket)',
             required: true,
             placeholder: 'your@email.com',
             defaultValue: '',

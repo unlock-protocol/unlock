@@ -1,5 +1,9 @@
 # Changes
 
+# 0.45.0
+
+- adding support for a password hook with caps and multiple passwords per lock
+
 # 0.44.0
 
 - adding the possibility to pass a custom url endpoint to the `SubgraphService` constructor.

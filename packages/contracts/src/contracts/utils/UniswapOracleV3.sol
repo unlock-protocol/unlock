@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.18.3 https://hardhat.org
+// Sources flattened with hardhat v2.20.1 https://hardhat.org
 
 // SPDX-License-Identifier: GPL-2.0-or-later AND MIT
 
@@ -1127,12 +1127,13 @@ pragma solidity >=0.5.0;
 contract UniswapOracleV3 is IUniswapOracleV3 {
   uint256 public constant override PERIOD = 60 * 60; // in seconds
   address public immutable override factory;
-  uint24 FEE = 500;
+  uint24 public immutable fee;
 
   event PairAdded(address token1, address token2);
 
-  constructor(address _factory) {
+  constructor(address _factory, uint24 _fee) {
     factory = _factory;
+    fee = _fee;
   }
 
   function consult(
@@ -1140,7 +1141,7 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
     uint256 _amountIn,
     address _tokenOut
   ) public view override returns (uint256 quoteAmount) {
-    address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
+    address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, fee);
     if (pool == address(0)) {
       return 0;
     }
@@ -1157,21 +1158,14 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
   }
 
   // deprec
-  function update(address _tokenIn, address _tokenOut) public override {
-    address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
-    if (pool == address(0)) {
-      pool = IUniswapV3Factory(factory).createPool(_tokenIn, _tokenOut, FEE);
-    }
-    emit PairAdded(_tokenIn, _tokenOut);
-  }
+  function update(address _tokenIn, address _tokenOut) public override {}
 
   // deprec
   function updateAndConsult(
     address _tokenIn,
     uint256 _amountIn,
     address _tokenOut
-  ) external override returns (uint256 _amountOut) {
-    update(_tokenIn, _tokenOut);
+  ) external view override returns (uint256 _amountOut) {
     _amountOut = consult(_tokenIn, _amountIn, _tokenOut);
   }
 }

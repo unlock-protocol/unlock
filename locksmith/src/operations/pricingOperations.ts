@@ -30,7 +30,6 @@ interface Price {
   price: number
   timestamp: number
   confidence: number
-  creditCardEnabled: boolean
 }
 
 export interface Options {
@@ -152,10 +151,10 @@ export async function getDefiLammaPriceNoCache({
   network,
   erc20Address,
 }: Options): Promise<PriceResults> {
-  const networkConfig = networks[network]
   if (!network) {
     return {}
   }
+  const networkConfig = networks[network]
   const items: string[] = []
   const coingecko = `coingecko:${networkConfig.nativeCurrency?.coingecko}`
   const mainnetTokenAddress = networkConfig.tokens?.find(

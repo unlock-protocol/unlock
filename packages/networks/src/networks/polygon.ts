@@ -54,6 +54,11 @@ export const polygon: NetworkConfig = {
         id: HookType.PROMO_CODE_CAPPED,
         name: 'Discount code with caps',
       },
+      {
+        address: '0xc2D767a87d74d82CD4B290a63E2D703Ff1CDf6b9',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 137,
@@ -91,6 +96,7 @@ export const polygon: NetworkConfig = {
     networkName: 'matic',
     studioName: 'unlock-protocol-polygon',
   },
+  swapPurchaser: '0x144C1ae588e3A67Db02D1f3C43671eB246b2f13b',
   tokens: [
     {
       address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
@@ -148,7 +154,11 @@ export const polygon: NetworkConfig = {
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
+    oracle: {
+      100: '0x8c0AC149FabEeC9b759a43fC7d301B1a1D8DE0d0',
+      3000: '0x86399725a83bB14C47bB5ce8311Ed25378BAa162',
+      500: '0xfA3F427d2691ce680f96E6916a9Dac6c9042CBd2',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
@@ -162,6 +172,7 @@ export const polygon: NetworkConfig = {
   unlockDaoToken: {
     address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
     mainnetBridge: '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf',
+    uniswapV3Pool: '0x8B2b66ec1E6C1895eb408F8b8fcd8cD9510F9115',
   },
   url: 'https://polygon.technology/',
 }

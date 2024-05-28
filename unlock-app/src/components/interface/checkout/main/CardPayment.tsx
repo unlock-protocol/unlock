@@ -1,5 +1,4 @@
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useCallback, useEffect, useState } from 'react'
@@ -28,11 +27,10 @@ import {
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function CardPayment({ checkoutService, injectedProvider }: Props) {
+export function CardPayment({ checkoutService }: Props) {
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
   const [isSaving, setIsSaving] = useState(false)
@@ -82,38 +80,33 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          {!card ? (
-            <Button
-              loading={isSaving}
-              disabled={isMethodLoading || isSaving || !stripe}
-              type="submit"
-              form="payment"
-              className="w-full"
-            >
-              Next
-            </Button>
-          ) : (
-            <Button
-              className="w-full"
-              disabled={!card}
-              onClick={() => {
-                checkoutService.send({
-                  type: 'SELECT_PAYMENT_METHOD',
-                  payment: {
-                    method: 'card',
-                    cardId: payment!.id!,
-                  },
-                })
-              }}
-            >
-              Continue
-            </Button>
-          )}
-        </Connected>
+        {!card ? (
+          <Button
+            loading={isSaving}
+            disabled={isMethodLoading || isSaving || !stripe}
+            type="submit"
+            form="payment"
+            className="w-full"
+          >
+            Next
+          </Button>
+        ) : (
+          <Button
+            className="w-full"
+            disabled={!card}
+            onClick={() => {
+              checkoutService.send({
+                type: 'SELECT_PAYMENT_METHOD',
+                payment: {
+                  method: 'card',
+                  cardId: payment!.id!,
+                },
+              })
+            }}
+          >
+            Continue
+          </Button>
+        )}
         <PoweredByUnlock />
       </footer>
     </Fragment>
@@ -191,12 +184,27 @@ export function PaymentForm({
   const {
     register,
     formState: { errors, isSubmitting },
+    setValue,
     handleSubmit,
   } = useForm<{
     name: string
     email: string
-  }>()
+  }>({
+    defaultValues: {
+      email: '',
+    },
+  })
   const { email } = useAuth()
+  // state to check if the email field should be filled with the user's email address
+  const [fillUnlockEmail, setFillUnlockEmail] = useState<boolean>(!!email)
+
+  useEffect(() => {
+    // this effect ensures that the form default value updates when the authentication context changes
+    if (email) {
+      setValue('email', email)
+      setFillUnlockEmail(!!email)
+    }
+  }, [email, setValue])
 
   const onHandleSubmit = async ({
     name,
@@ -257,17 +265,36 @@ export function PaymentForm({
         <label className="text-sm text-gray-700" htmlFor="name">
           Email
         </label>
-        <input
-          disabled={isSubmitting}
-          id="email"
-          className={`border-gray-200 rounded shadow-sm outline-none appearance-none focus:border-gray-200 focus:ring-2 focus:outline-none focus:shadow-outline focus:ring-blue-200 ${
-            errors.email && 'border-red-600 border-2'
-          }`}
-          type="email"
-          {...register('email', {
-            value: email || undefined,
-          })}
-        />
+
+        {fillUnlockEmail ? (
+          <div className="flex items-center pl-4 pr-2 py-2 justify-between bg-gray-200 rounded-md">
+            <div className="w-32 text-sm truncate">{email}</div>
+            <Button
+              type="button"
+              onClick={(event) => {
+                event.preventDefault()
+                setFillUnlockEmail(false)
+              }}
+              size="tiny"
+            >
+              Change
+            </Button>
+          </div>
+        ) : (
+          <input
+            disabled={isSubmitting}
+            id="email"
+            className={`border-gray-200 rounded shadow-sm outline-none appearance-none focus:border-gray-200 focus:ring-2 focus:outline-none focus:shadow-outline focus:ring-blue-200 ${
+              errors.email && 'border-red-600 border-2'
+            }`}
+            type="email"
+            {...register('email', {
+              value: email || undefined,
+              required: 'Email address is required',
+            })}
+          />
+        )}
+
         <p className="mt-2 text-sm text-red-600">{errors.email?.message}</p>
       </div>
       <PaymentElement />

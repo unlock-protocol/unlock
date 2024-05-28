@@ -149,6 +149,22 @@ export const getUnlockServiceFee = (
     return Math.ceil(cost * 0.025)
   }
 
+  if (
+    normalizer.ethereumAddress(options?.lockAddress) ===
+    '0x68445fE0f063f60B3C2Ec460f13E17b7FCb868b9'
+  ) {
+    // For Best Dish Ever Sous Chef, we take 4% only
+    return Math.ceil(cost * 0.04)
+  }
+
+  if (
+    normalizer.ethereumAddress(options?.lockAddress) ===
+    '0x1a84dEf3EC4d03E3c509E4708890dF9D4428f9fb'
+  ) {
+    // For Best Dish Ever OWNER CHEF MEMBER, we take 2% only
+    return Math.ceil(cost * 0.02)
+  }
+
   return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
 }
 

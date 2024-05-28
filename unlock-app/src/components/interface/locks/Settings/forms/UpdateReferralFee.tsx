@@ -15,6 +15,7 @@ import LoadingIcon from '~/components/interface/Loading'
 import useEns from '~/hooks/useEns'
 import { useReferrerFee } from '~/hooks/useReferrerFee'
 import { onResolveName } from '~/utils/resolvers'
+import { ADDRESS_ZERO } from '~/constants'
 
 interface UpdateReferralFeeProps {
   lockAddress: string
@@ -27,8 +28,6 @@ interface FormProps {
   referralFeePercentage: number
   referralAddress: string
 }
-
-const zeroAddress = ethers.constants.AddressZero
 
 export const UpdateReferralFee = ({
   lockAddress,
@@ -63,7 +62,7 @@ export const UpdateReferralFee = ({
   const onSubmit = async (fields: FormProps) => {
     const setReferrerFeePromise = setReferrerFee.mutateAsync({
       ...fields,
-      referralAddress: referralAddress || zeroAddress,
+      referralAddress: referralAddress || ADDRESS_ZERO,
     })
 
     await ToastHelper.promise(setReferrerFeePromise, {
@@ -125,7 +124,7 @@ export const UpdateReferralFee = ({
           })}
           error={
             errors?.referralFeePercentage &&
-            'This field accept percentage value between 1 and 100.'
+            'This field accepts percentage values between 1 and 100.'
           }
           disabled={isDisabledReferrerInput}
         />
@@ -206,7 +205,7 @@ interface ReferrerRowProps {
 
 const ReferrerRow = ({ fee, referrer, setReferrerFee }: ReferrerRowProps) => {
   const feeNumber = Number(fee)
-  const isAddressLinkedToAnyReferrer = referrer === zeroAddress
+  const isAddressLinkedToAnyReferrer = referrer === ADDRESS_ZERO
   const addressToEns = useEns(referrer!)
 
   const removeReferrer = async () => {

@@ -1,9 +1,7 @@
 import { TfiReload } from 'react-icons/tfi'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import { Fragment } from 'react'
-import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -12,16 +10,19 @@ import Link from 'next/link'
 import { useDataForGuild } from '~/hooks/useDataForGuild'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import LoadingIcon from '../../Loading'
+import { useSelector } from '@xstate/react'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
-export function Guild({ injectedProvider, checkoutService }: Props) {
+export function Guild({ checkoutService }: Props) {
   const { account } = useAuth()
-  const [state, send] = useActor(checkoutService)
-  const { recipients, lock } = state.context
+  const { recipients, lock } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
 
   const users = recipients.length > 0 ? recipients : [account!]
 
@@ -43,7 +44,7 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
 
   const onSubmit = async () => {
     if (data) {
-      send({
+      checkoutService.send({
         type: 'SUBMIT_DATA',
         data: data,
       })
@@ -232,20 +233,16 @@ export function Guild({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          type="submit"
+          className="w-full"
+          disabled={isLoadingGuildData || disabled}
+          loading={isLoading}
+          onClick={onSubmit}
         >
-          <Button
-            type="submit"
-            className="w-full"
-            disabled={isLoadingGuildData || disabled}
-            loading={isLoading}
-            onClick={onSubmit}
-          >
-            Continue
-          </Button>
-        </Connected>
+          Continue
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
