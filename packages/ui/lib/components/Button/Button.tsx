@@ -13,6 +13,7 @@ export type Variant =
   | 'transparent'
   | 'black'
   | 'borderless'
+  | 'borderless-primary'
 
 export interface Props extends BoxProps {
   iconRight?: ReactNode
@@ -40,6 +41,8 @@ const VARIANTS_STYLES: Record<Variant, string> = {
   black: 'border-2 border-black text-black text-medium',
   borderless:
     'bg-transparent text-black transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium p-0',
+  'borderless-primary':
+    'bg-transparent text-black transition ease-in-out duration-300 text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium p-0',
 }
 
 export const Button = forwardRef(

@@ -61,15 +61,14 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
         const showDots = pagesToShow[index - 1] < currentPage - 1
         if (currentPage > 0 && currentPage <= maxNumbersOfPage) {
           return (
-            <>
+            <div key={currentPage}>
               {showDots && <span>...</span>}
               <Page
-                key={index}
                 page={currentPage}
                 active={currentPage === page}
                 setPage={setPage}
               />
-            </>
+            </div>
           )
         }
       })}

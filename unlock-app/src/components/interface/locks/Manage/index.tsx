@@ -162,27 +162,25 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
   })
 
   return (
-    <>
-      <div className="flex items-center justify-between">
-        <span className="text-xl font-bold text-brand-ui-primary">
-          {isEvent ? 'Attendees' : 'Members'}
-        </span>
-        {isManager && (
-          <div className="flex gap-2">
-            <Button
-              variant="outlined-primary"
-              size="small"
-              disabled={isLoadingMetadata || isKeysJobLoading}
-              loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
-              iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
-              onClick={() => onDownloadCsvMutation.mutate()}
-            >
-              Download {isEvent ? 'attendee' : 'member'} list
-            </Button>
-          </div>
-        )}
-      </div>
-    </>
+    <div className="flex items-center justify-between">
+      <span className="text-xl font-bold text-brand-ui-primary">
+        {isEvent ? 'Attendees' : 'Members'}
+      </span>
+      {isManager && (
+        <div className="flex gap-2">
+          <Button
+            variant="outlined-primary"
+            size="small"
+            disabled={isLoadingMetadata || isKeysJobLoading}
+            loading={onDownloadCsvMutation.isLoading || isKeysJobLoading}
+            iconLeft={<CsvIcon className="text-brand-ui-primary" size={16} />}
+            onClick={() => onDownloadCsvMutation.mutate()}
+          >
+            Download {isEvent ? 'attendee' : 'member'} list
+          </Button>
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -3995,6 +3995,7 @@ paths:
 
   /v2/rsvp/{network}/{lockAddress}/approve/{userAddress}:
     post:
+      deprecated: true
       operationId: approveRsvp
       parameters:
         - $ref: '#/components/parameters/Network'
@@ -4021,6 +4022,7 @@ paths:
 
   /v2/rsvp/{network}/{lockAddress}/deny/{userAddress}:
     post:
+      deprecated: true
       operationId: denyRsvp
       parameters:
         - $ref: '#/components/parameters/Network'
@@ -4031,6 +4033,78 @@ paths:
       responses:
         200:
           description: Successfully denied the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/approve:
+    post:
+      operationId: approveAttendeesRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+
+      description: Approves users to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully approves the users to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/deny:
+    post:
+      operationId: denyAttendeesRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+
+      description: Denies users to attend an event.
+      responses:
+        200:
+          description: Successfully denied users to attend the event
           content:
             application/json:
               schema:

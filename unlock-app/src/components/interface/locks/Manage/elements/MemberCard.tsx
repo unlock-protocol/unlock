@@ -26,6 +26,8 @@ export interface MemberCardProps {
   showExpiration?: boolean
   MemberInfo?: React.FC
   MetadataCard?: any
+  isSelected?: boolean
+  setIsSelected?: (selected: boolean) => void
 }
 
 export const MemberCard = ({
