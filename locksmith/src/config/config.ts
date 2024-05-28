@@ -70,8 +70,18 @@ Object.values(networks).forEach((network) => {
 //    export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-file.json"
 // For more details, visit: https://cloud.google.com/docs/authentication/application-default-credentials
 */
+
+const googleApplicationCredentialsPath =
+  process.env.GOOGLE_APPLICATION_CREDENTIALS
+
+if (!googleApplicationCredentialsPath) {
+  throw new Error(
+    'The GOOGLE_APPLICATION_CREDENTIALS environment variable is not set.'
+  )
+}
+
 const googleApplicationCredentials: Credentials = JSON.parse(
-  fs.readFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS as string, 'utf-8')
+  fs.readFileSync(googleApplicationCredentialsPath as string, 'utf-8')
 )
 
 const config = {
@@ -118,8 +128,8 @@ const config = {
   For more details, visit: https://codelabs.developers.google.com/add-to-wallet-web#3
   */
   googleWalletIssuerID: process.env.GOOGLE_WALLET_API_ISSUER_ID,
-  // Google wallet class ID
-  googleWalletClass: process.env.GOOGLE_WALLET_API_CLASS_ID,
+  // Google wallet class
+  googleWalletClass: process.env.GOOGLE_WALLET_API_CLASS,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
