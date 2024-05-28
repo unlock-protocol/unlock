@@ -25,12 +25,14 @@ UserAccount.init(
       unique: true,
     },
     loginMethod: {
-      type: DataTypes.ENUM(
-        'UNLOCK_ACCOUNT',
-        'GOOGLE_ACCOUNT',
-        'PASSKEY_ACCOUNT',
-        'EMAIL_CODE',
-        'NONE'
+      type: DataTypes.ARRAY(
+        DataTypes.ENUM(
+          'UNLOCK_ACCOUNT',
+          'GOOGLE_ACCOUNT',
+          'PASSKEY_ACCOUNT',
+          'EMAIL_CODE',
+          'NONE'
+        )
       ),
       allowNull: false,
     },

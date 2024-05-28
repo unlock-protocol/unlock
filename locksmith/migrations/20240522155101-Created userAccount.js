@@ -16,12 +16,14 @@ module.exports = {
         unique: true,
       },
       loginMethod: {
-        type: Sequelize.ENUM(
-          'UNLOCK_ACCOUNT',
-          'GOOGLE_ACCOUNT',
-          'PASSKEY_ACCOUNT',
-          'EMAIL_CODE',
-          'NONE'
+        type: Sequelize.ARRAY(
+          Sequelize.ENUM(
+            'UNLOCK_ACCOUNT',
+            'GOOGLE_ACCOUNT',
+            'PASSKEY_ACCOUNT',
+            'EMAIL_CODE',
+            'NONE'
+          )
         ),
         allowNull: false,
       },
