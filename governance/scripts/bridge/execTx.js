@@ -21,7 +21,7 @@ const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { loadProposal } = require('../../helpers/gov')
 
 // use cache file to gather tx hashes from calls
-const filepath = './xcalled.json.tmp'
+const filepath = './xcalled.tmp.json'
 
 const bigIntToDate = (num) => new Date(parseInt((num * 1000n).toString()))
 
