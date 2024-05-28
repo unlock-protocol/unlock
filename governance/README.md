@@ -271,7 +271,7 @@ You can check the status of all calls on various chains manually with the [Conne
 yarn hardhat run scripts/bridge/status.js --network mainnet
 ```
 
-NB: This will create a temporary JSON file named `xcalled.json.tmp` with the info and statuses of all tx.
+NB: This will create a temporary JSON file named `xcalled.tmp.json` with the info and statuses of all tx.
 
 ### Execute all tx on destination chains
 
