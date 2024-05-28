@@ -85,8 +85,8 @@ const createUniswapV2Exchange = async ({
     protocolOwner
   )
 
-  // Advancing time to avoid an intermittent test fail
-  await increaseTime(1)
+  // Advancing one hour to avoid an intermittent test fail
+  await increaseTime(3600)
 
   // Do a swap so there is some data accumulated
   await uniswapRouter
