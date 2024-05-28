@@ -31,7 +31,7 @@ describe('UPToken Governor & Timelock', () => {
     const evt = await getEvent(receipt, 'ProposalCreated')
     const { proposalId } = evt.args
 
-    // proposale exists but does not accep votes yet
+    // proposal exists but does not accept votes yet
     assert.equal(await gov.state(proposalId), 0) // Pending
 
     // wait for voting delay
