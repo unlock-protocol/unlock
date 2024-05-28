@@ -10,6 +10,8 @@ import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useRouter } from 'next/router'
+import NextAuthAccount from './NextAuthAccount'
 
 interface UserDetails {
   email: string
@@ -223,6 +225,11 @@ export const ConnectUnlockAccount = ({
 }: Props) => {
   const [isValidEmail, setIsValidEmail] = useState(false)
 
+  const router = useRouter()
+  const nexthAuthValue = router.query.nextAuth as string
+  console.log(nexthAuthValue)
+  const useNextAuth = nexthAuthValue === 'true'
+
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const { email, deAuthenticate } = useAuth()
@@ -308,6 +315,7 @@ export const ConnectUnlockAccount = ({
               }}
             />
           )}
+          {useNextAuth && <NextAuthAccount />}
         </>
       )}
     </div>
