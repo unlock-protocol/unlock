@@ -11,7 +11,10 @@ const reverts = async (call, msg) => {
       ''
     )
     if (msg) {
-      assert.include(actualError, msg, `Wrong Error received: ${error.message}`)
+      assert(
+        actualError.includes(msg),
+        `Wrong Error received: ${error.message}`
+      )
     }
   }
   if (!hasReverted) {
