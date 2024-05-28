@@ -71,17 +71,11 @@ Object.values(networks).forEach((network) => {
 // For more details, visit: https://cloud.google.com/docs/authentication/application-default-credentials
 */
 
-const googleApplicationCredentialsPath =
-  process.env.GOOGLE_APPLICATION_CREDENTIALS
-
-if (!googleApplicationCredentialsPath) {
-  throw new Error(
-    'The GOOGLE_APPLICATION_CREDENTIALS environment variable is not set.'
-  )
-}
-
 const googleApplicationCredentials: Credentials = JSON.parse(
-  fs.readFileSync(googleApplicationCredentialsPath as string, 'utf-8')
+  fs.readFileSync(
+    process.env.GOOGLE_APPLICATION_CREDENTIALS! as string,
+    'utf-8'
+  )
 )
 
 const config = {
