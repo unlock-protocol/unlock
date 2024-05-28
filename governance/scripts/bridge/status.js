@@ -18,7 +18,7 @@ const {
 const fs = require('fs-extra')
 
 // small cache to prevent numerous calls to subgraph api
-const filepath = './xcalled.json.tmp'
+const filepath = './xcalled.tmp.json'
 
 async function main({
   // TODO: pass this hash via cli
@@ -87,7 +87,7 @@ async function main({
         )
       })
     )
-    await fs.outputJson(filepath, statuses)
+    await fs.outputJson(filepath, statuses, { spaces: 2 })
   }
 
   // log all results
