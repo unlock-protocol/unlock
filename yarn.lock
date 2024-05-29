@@ -19955,6 +19955,7 @@ __metadata:
     react-jwt: "npm:1.2.1"
     react-markdown: "npm:8.0.7"
     react-test-renderer: "npm:18.3.1"
+    react-to-print: "npm:2.15.1"
     react-use: "npm:17.5.0"
     react-use-clipboard: "npm:1.0.9"
     remark-html: "npm:16.0.1"
@@ -20017,7 +20018,6 @@ __metadata:
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.20.1"
     prettier: "npm:3.2.5"
-    react-to-print: "npm:2.14.15"
     siwe: "npm:2.1.4"
     tsup: "npm:8.0.2"
     typescript: "npm:5.3.3"
@@ -45804,13 +45804,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-to-print@npm:2.14.15":
-  version: 2.14.15
-  resolution: "react-to-print@npm:2.14.15"
+"react-to-print@npm:2.15.1":
+  version: 2.15.1
+  resolution: "react-to-print@npm:2.15.1"
   peerDependencies:
     react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
     react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/a6f79082a177491555eb6725f5d4622df1a632e9196b95c4d6e574a317d39eec80f811eafd97526b6af8f65aeb2febc15245c91c563b5f6fc1692ce4ef9d066c
+  checksum: 10/0786fd5dd055b5b50f9a0dba99f0ccb30b9407b8e77748f5fc2557446ed0d0c65759e927cc2cdaa9e34f286838bbb230d3b0ba03d20b9754d0469fc4dac7c529
   languageName: node
   linkType: hard
 

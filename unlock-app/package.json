@@ -67,6 +67,7 @@
     "react-icons": "5.2.0",
     "react-jwt": "1.2.1",
     "react-markdown": "8.0.7",
+    "react-to-print": "2.15.1",
     "react-use": "17.5.0",
     "react-use-clipboard": "1.0.9",
     "remark-html": "16.0.1",
