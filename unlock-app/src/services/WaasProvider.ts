@@ -66,4 +66,37 @@ export default class WaasProvider extends ethers.providers
     }
     return []
   }
+
+  getSigner(addressOrIndex?: string | number | undefined): any {
+    if (this.wallet) {
+      return this.wallet
+    }
+    throw new Error('No signer available')
+  }
+
+  async send(method: string, params: any) {
+    if (typeof this[method] === 'undefined') {
+      // We haven't implemented this method, defer to the fallback provider.
+      // TODO: Catch methods we don't want to dispatch and throw an error
+      return super.send(method, params)
+    }
+    return this[method](params)
+  }
+
+  /**
+   * Implementation of personal_sign JSON-RPC call
+   * @param {string} data the data to sign.
+   * @param {string} _ the address to sign it with -- ignored because
+   * we use the address in this class.
+   */
+  // eslint-disable-next-line no-unused-vars
+  async personal_sign([data, _]: any[]) {
+    const content = ethers.utils.arrayify(data)
+    const signature = await this.wallet?.signMessage(content)
+    return signature
+  }
+
+  async signData(data: any) {
+    console.log('Signing data', data)
+  }
 }

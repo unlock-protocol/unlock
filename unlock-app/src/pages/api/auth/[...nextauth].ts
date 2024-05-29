@@ -14,7 +14,7 @@ export const authOptions = {
     async session({ session }) {
       const storageService = new StorageService(config.services.storage.host)
       const waasToken = await storageService.getUserWaasUuid(session.user.email)
-      // Send properties to the client, like an access_token and user id from a provider.
+      // Send properties to the client
       session.waasToken = waasToken
 
       return session

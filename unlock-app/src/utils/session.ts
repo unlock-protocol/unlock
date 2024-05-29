@@ -51,6 +51,7 @@ export const saveAccessToken = ({
   walletAddress,
   accessToken,
 }: Record<'walletAddress' | 'accessToken', string>) => {
+  console.log('saveAccessToken', walletAddress, accessToken)
   const ACCESS_TOKEN_KEY = getSessionKey(walletAddress)
   localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
   return accessToken

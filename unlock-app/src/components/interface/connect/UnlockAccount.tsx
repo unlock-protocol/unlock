@@ -11,7 +11,7 @@ import BlockiesSvg from 'blockies-react-svg'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useRouter } from 'next/router'
-import NextAuthAccount from './NextAuthAccount'
+import { NextAuthAccount } from './NextAuthAccount'
 
 interface UserDetails {
   email: string
@@ -227,7 +227,7 @@ export const ConnectUnlockAccount = ({
 
   const router = useRouter()
   const nexthAuthValue = router.query.nextAuth as string
-  console.log(nexthAuthValue)
+  console.log('NextAuth', nexthAuthValue)
   const useNextAuth = nexthAuthValue === 'true'
 
   const { retrieveUserAccount, createUserAccount } = useAccount('')

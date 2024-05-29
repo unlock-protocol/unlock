@@ -5,27 +5,24 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { Button } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Launcher } from '~/components/interface/Launcher'
-import WaasProvider from '~/services/WaasProvider'
-import { config } from '~/config/app'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useRouter } from 'next/router'
+import { NextAuthAccount } from '~/components/interface/connect/NextAuthAccount'
 
 const Locks: NextPage = () => {
   const { account } = useAuth()
   const [showLauncher, setShowLauncher] = React.useState(false)
 
-  const { authenticateWithProvider } = useAuthenticate()
+  console.log('Account', account)
 
-  const provider = async () => {
-    const waasProvider = new WaasProvider(config.networks[1])
-    await waasProvider.connect()
-    await authenticateWithProvider('WAAS', waasProvider)
-  }
-
-  return <button onClick={provider}>Click me</button>
+  const router = useRouter()
+  const nexthAuthValue = router.query.nextAuth as string
+  console.log('NextAuth', nexthAuthValue)
+  const useNextAuth = nexthAuthValue === 'true'
 
   const Description = () => {
     return (
       <div className="flex flex-col gap-4 md:gap-0 md:justify-between md:flex-row">
+        {useNextAuth && <NextAuthAccount />}
         <span className="w-full max-w-lg text-base text-gray-700">
           A Lock is a membership smart contract you create, deploy, and own on
           Unlock Protocol
