@@ -8,7 +8,6 @@ export const useSessionUser = () => {
   return useQuery(
     ['session'],
     async () => {
-      console.log('Fetching session')
       const accessToken = getAccessToken()
       const address = getCurrentAccount()
       try {

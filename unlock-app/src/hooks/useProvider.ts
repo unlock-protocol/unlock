@@ -131,11 +131,9 @@ export const useProvider = (config: any) => {
         setStorage('network', _network)
       }
 
-      console.log('Refetching session')
       await refetchSession()
 
       setNetwork(_network || undefined)
-      console.log('Setting connected', _account || undefined)
       setConnected(_account || undefined)
 
       return {

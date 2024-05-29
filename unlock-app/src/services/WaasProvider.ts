@@ -77,7 +77,8 @@ export default class WaasProvider extends ethers.providers
     if (this.wallet) {
       return this.wallet
     }
-    throw new Error('No signer available')
+    console.error('No signer available')
+    return null
   }
 
   async send(method: string, params: any) {
