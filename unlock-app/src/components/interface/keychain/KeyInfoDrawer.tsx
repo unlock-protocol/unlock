@@ -180,7 +180,7 @@ export const KeyInfo = ({
     const video = videoRef.current
     if (video) {
       try {
-        await video.play()
+        await (video as HTMLVideoElement).play()
         setCanPlayImageAsVideo(true)
       } catch (error) {
         setCanPlayImageAsVideo(false)
@@ -188,7 +188,7 @@ export const KeyInfo = ({
     }
   }
 
-  const onLoadingStatusChangeOfImage = useCallback((status) => {
+  const onLoadingStatusChangeOfImage = useCallback((status: string) => {
     if (status === 'error') {
       checkIfImageUrlIsVideo()
     }
