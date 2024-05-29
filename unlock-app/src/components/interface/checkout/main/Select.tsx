@@ -373,6 +373,7 @@ export function Select({ checkoutService }: Props) {
       setSigning(true)
 
       await signIn()
+      return
     }
 
     checkoutService.send({
@@ -459,7 +460,7 @@ export function Select({ checkoutService }: Props) {
             </p>
           )}
           <Button disabled={isDisabled} onClick={selectLock}>
-            Next
+            {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
           </Button>
         </div>
         <Disconnect service={checkoutService} />
