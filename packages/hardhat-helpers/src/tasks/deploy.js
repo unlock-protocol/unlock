@@ -14,7 +14,6 @@ task('deploy:contract', 'Deploy any contract by name')
     'List of deployment args to pass to the constructor'
   )
   .setAction(async ({ contract, params, proxied, constructorArgs }) => {
-
     const contractName = path
       .basename(contract)
       .replace('.sol', '')
