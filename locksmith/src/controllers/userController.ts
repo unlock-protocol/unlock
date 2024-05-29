@@ -103,7 +103,7 @@ export const retrieveWaasUuid = async (
   // If the user ID in your system is not a UUID, you should either generate and
   // store a UUID for each user or deterministically create a UUID using your
   // current user ID.
-  const userID = 'bb8467db-4808-4179-9850-a2b27c65277c'
+  const userID = 'bd8467db-4808-4179-9850-a2b27c65277c'
 
   // `issueUserToken` issues an auth token for your authenticated user to interact
   // with the WaaS backend scoped to their user ID.

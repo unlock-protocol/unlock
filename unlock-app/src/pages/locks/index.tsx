@@ -5,10 +5,23 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { Button } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Launcher } from '~/components/interface/Launcher'
+import WaasProvider from '~/services/WaasProvider'
+import { config } from '~/config/app'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 const Locks: NextPage = () => {
   const { account } = useAuth()
   const [showLauncher, setShowLauncher] = React.useState(false)
+
+  const { authenticateWithProvider } = useAuthenticate()
+
+  const provider = async () => {
+    const waasProvider = new WaasProvider(config.networks[1])
+    await waasProvider.connect()
+    await authenticateWithProvider('WAAS', waasProvider)
+  }
+
+  return <button onClick={provider}>Click me</button>
 
   const Description = () => {
     return (

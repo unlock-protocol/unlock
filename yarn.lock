@@ -6033,7 +6033,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bugsnag/js@npm:^7.0.0, @bugsnag/js@npm:^7.20.0":
+"@bugsnag/js@npm:^7.0.0, @bugsnag/js@npm:^7.20.0, @bugsnag/js@npm:^7.22.3":
   version: 7.23.0
   resolution: "@bugsnag/js@npm:7.23.0"
   dependencies:
@@ -6112,6 +6112,48 @@ __metadata:
   version: 4.20240423.0
   resolution: "@cloudflare/workers-types@npm:4.20240423.0"
   checksum: 10/70beae06cf929b01883c847d0a41aee8ac6734350785a8d1b913fe8b7ceb050b0d339967e373b7016da0b7697bf8d58dfb69de5c8a3b79cf2bbc72f2681695eb
+  languageName: node
+  linkType: hard
+
+"@coinbase/cbpay-js@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "@coinbase/cbpay-js@npm:1.10.0"
+  peerDependencies:
+    regenerator-runtime: ^0.13.9
+  peerDependenciesMeta:
+    regenerator-runtime:
+      optional: true
+  checksum: 10/f011abeac07b5dc9028ed6d766632874135c2182e9bcc6636e5cd026ddcfbe6f8c29432efe36cf2bdaf5df2197a56ccccde6c95b590964a80ef9b741f022b1f4
+  languageName: node
+  linkType: hard
+
+"@coinbase/corekms@npm:0.1.12":
+  version: 0.1.12
+  resolution: "@coinbase/corekms@npm:0.1.12"
+  checksum: 10/d8d828141d40a523a4dc693a2c01aba9423ea4b1eefca6bc5461c759cce9ae688cacfea872515639476b0d12a0a865bfcfb2399c40423d51511fa97f3cf7cffe
+  languageName: node
+  linkType: hard
+
+"@coinbase/sandbox-rpc@npm:1.1.6":
+  version: 1.1.6
+  resolution: "@coinbase/sandbox-rpc@npm:1.1.6"
+  checksum: 10/af8ff89016459260f2b144fecce39258dbeb15ddf79dc96e934ff45fce1daf72c9255fac2fdee87fb88b012f493cbf52000dadd95b20f1790d9b8725e811540c
+  languageName: node
+  linkType: hard
+
+"@coinbase/waas-sdk-web@npm:3.3.2":
+  version: 3.3.2
+  resolution: "@coinbase/waas-sdk-web@npm:3.3.2"
+  dependencies:
+    "@bugsnag/js": "npm:^7.22.3"
+    "@coinbase/cbpay-js": "npm:^1.10.0"
+    "@coinbase/corekms": "npm:0.1.12"
+    "@coinbase/sandbox-rpc": "npm:1.1.6"
+    client-analytics: "npm:0.0.8"
+  dependenciesMeta:
+    "@coinbase/cbpay-js":
+      optional: true
+  checksum: 10/3f4252a273be5d84d0302810c33ca7cad106e0e2ad4dd98bb14a753a7e2499659d63363f829ed2d2b71b270cc5b62738bf1bde02ac7bce549d549a7529ce07ca
   languageName: node
   linkType: hard
 
@@ -18609,7 +18651,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-router@npm:*, @types/react-router@npm:^5.1.0":
+"@types/react-router@npm:*, @types/react-router@npm:^5.1.0, @types/react-router@npm:^5.1.20":
   version: 5.1.20
   resolution: "@types/react-router@npm:5.1.20"
   dependencies:
@@ -20070,6 +20112,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
     "@airstack/airstack-react": "npm:0.6.3"
+    "@coinbase/waas-sdk-web": "npm:3.3.2"
     "@crossmint/client-sdk-react-ui": "npm:1.1.9"
     "@decent.xyz/box-common": "npm:2.0.24"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
@@ -20158,6 +20201,7 @@ __metadata:
     vitest: "npm:0.34.6"
     vitest-fetch-mock: "npm:0.2.2"
     vitest-localstorage-mock: "npm:0.1.2"
+    waas-ethers: "https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz"
     walletlink: "npm:2.5.0"
     xstate: "npm:5.12.0"
     zod: "npm:3.23.5"
@@ -25053,7 +25097,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"charenc@npm:>= 0.0.1":
+"charenc@npm:0.0.2, charenc@npm:>= 0.0.1":
   version: 0.0.2
   resolution: "charenc@npm:0.0.2"
   checksum: 10/81dcadbe57e861d527faf6dd3855dc857395a1c4d6781f4847288ab23cffb7b3ee80d57c15bba7252ffe3e5e8019db767757ee7975663ad2ca0939bb8fcaf2e5
@@ -25452,6 +25496,17 @@ __metadata:
   version: 3.0.0
   resolution: "cli-width@npm:3.0.0"
   checksum: 10/8730848b04fb189666ab037a35888d191c8f05b630b1d770b0b0e4c920b47bb5cc14bddf6b8ffe5bfc66cee97c8211d4d18e756c1ffcc75d7dbe7e1186cd7826
+  languageName: node
+  linkType: hard
+
+"client-analytics@npm:0.0.8":
+  version: 0.0.8
+  resolution: "client-analytics@npm:0.0.8"
+  dependencies:
+    "@types/react-router": "npm:^5.1.20"
+    md5: "npm:^2.3.0"
+    perfume.js: "npm:^9.2.0"
+  checksum: 10/684d56459332dbf079ea6175efd8aed7781b4408db5468e3692f110bde4fe0b59857c2f84a7c60d7faa020b93fc724d78ed860c3b522dd865f28d29275b39623
   languageName: node
   linkType: hard
 
@@ -26662,7 +26717,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypt@npm:>= 0.0.1":
+"crypt@npm:0.0.2, crypt@npm:>= 0.0.1":
   version: 0.0.2
   resolution: "crypt@npm:0.0.2"
   checksum: 10/2c72768de3d28278c7c9ffd81a298b26f87ecdfe94415084f339e6632f089b43fe039f2c93f612bcb5ffe447238373d93b2e8c90894cba6cfb0ac7a74616f8b9
@@ -35707,7 +35762,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-buffer@npm:^1.1.5":
+"is-buffer@npm:^1.1.5, is-buffer@npm:~1.1.6":
   version: 1.1.6
   resolution: "is-buffer@npm:1.1.6"
   checksum: 10/f63da109e74bbe8947036ed529d43e4ae0c5fcd0909921dce4917ad3ea212c6a87c29f525ba1d17c0858c18331cf1046d4fc69ef59ed26896b25c8288a627133
@@ -39006,6 +39061,17 @@ __metadata:
     inherits: "npm:^2.0.1"
     safe-buffer: "npm:^5.1.2"
   checksum: 10/098494d885684bcc4f92294b18ba61b7bd353c23147fbc4688c75b45cb8590f5a95fd4584d742415dcc52487f7a1ef6ea611cfa1543b0dc4492fe026357f3f0c
+  languageName: node
+  linkType: hard
+
+"md5@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "md5@npm:2.3.0"
+  dependencies:
+    charenc: "npm:0.0.2"
+    crypt: "npm:0.0.2"
+    is-buffer: "npm:~1.1.6"
+  checksum: 10/88dce9fb8df1a084c2385726dcc18c7f54e0b64c261b5def7cdfe4928c4ee1cd68695c34108b4fab7ecceb05838c938aa411c6143df9fdc0026c4ddb4e4e72fa
   languageName: node
   linkType: hard
 
@@ -43630,6 +43696,15 @@ __metadata:
   version: 2.1.0
   resolution: "performance-now@npm:2.1.0"
   checksum: 10/534e641aa8f7cba160f0afec0599b6cecefbb516a2e837b512be0adbe6c1da5550e89c78059c7fabc5c9ffdf6627edabe23eb7c518c4500067a898fa65c2b550
+  languageName: node
+  linkType: hard
+
+"perfume.js@npm:^9.2.0":
+  version: 9.4.0
+  resolution: "perfume.js@npm:9.4.0"
+  dependencies:
+    web-vitals: "npm:^3.5.0"
+  checksum: 10/92e80e9a50700e289bdd01a11e867bd960eb0155f976655b096cf9a32a0c33c3b7ae7561f7bb89e0bf400e19820cfe932d354db4e8011ff3f4b250c60dfc1e46
   languageName: node
   linkType: hard
 
@@ -53774,6 +53849,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"waas-ethers@https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz":
+  version: 3.0.0
+  resolution: "waas-ethers@https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz"
+  peerDependencies:
+    "@coinbase/waas-sdk-web": ^3.0.0
+    ethers: ^5.7.2
+  checksum: 10/fbe237e11bb1da91a1a93707791df993985ea530cd68f6f78c920dfacbd720d9e24fcc3a93080373980dabed150ed0bf705ac1f3c69d2dbdd968b71920d4c392
+  languageName: node
+  linkType: hard
+
 "wabt@npm:1.0.24":
   version: 1.0.24
   resolution: "wabt@npm:1.0.24"
@@ -53864,6 +53949,13 @@ __metadata:
   version: 3.3.3
   resolution: "web-streams-polyfill@npm:3.3.3"
   checksum: 10/8e7e13501b3834094a50abe7c0b6456155a55d7571312b89570012ef47ec2a46d766934768c50aabad10a9c30dd764a407623e8bfcc74fcb58495c29130edea9
+  languageName: node
+  linkType: hard
+
+"web-vitals@npm:^3.5.0":
+  version: 3.5.2
+  resolution: "web-vitals@npm:3.5.2"
+  checksum: 10/59c5d7775c32977eb9156d186113f4de66c235cfea7a113d2f430ef25db25a5efe1980d2ba466f7ceefc7b1a3847764933dc1567b6d9b8f340d12e75209e3f79
   languageName: node
   linkType: hard
 
