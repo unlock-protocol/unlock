@@ -1,4 +1,11 @@
-import React, { useState, useContext, Fragment, MouseEventHandler } from 'react'
+import React, {
+  useState,
+  useContext,
+  Fragment,
+  MouseEventHandler,
+  useRef,
+  useCallback,
+} from 'react'
 import useClipboard from 'react-use-clipboard'
 import { isEthPassSupported, Platform } from '../../../services/ethpass'
 import {
@@ -79,6 +86,8 @@ function Key({ ownedKey, owner, network }: Props) {
   const [showExtendMembershipModal, setShowExtendMembership] = useState(false)
   const [showApplePassModal, setShowApplePassModal] = useState(false)
   const [applePassUrl, setPassUrl] = useState<string>()
+  const videoRef = useRef(null)
+  const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
   const isKeyExpired = isExpired || expireAndRefunded
 
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
@@ -186,6 +195,24 @@ function Key({ ownedKey, owner, network }: Props) {
 
     router.push(receiptsPageUrl)
   }
+
+  const checkIfImageUrlIsVideo = async () => {
+    const video = videoRef.current
+    if (video) {
+      try {
+        await (video as HTMLVideoElement).play()
+        setCanPlayImageAsVideo(true)
+      } catch (error) {
+        setCanPlayImageAsVideo(false)
+      }
+    }
+  }
+
+  const onLoadingStatusChangeOfImage = useCallback((status: string) => {
+    if (status === 'error') {
+      checkIfImageUrlIsVideo()
+    }
+  }, [])
 
   return (
     <Card className="grid gap-6" shadow="lg" padding="xs">
@@ -473,12 +500,21 @@ function Key({ ownedKey, owner, network }: Props) {
             src={metadata.image}
             width={250}
             height={250}
+            onLoadingStatusChange={onLoadingStatusChangeOfImage}
           />
           <AvatarFallback
             className="flex flex-col items-center justify-center text-3xl font-bold uppercase rounded-xl aspect-1 h-72 w-72"
             delayMs={100}
           >
-            {lock?.name?.slice(0, 2)}
+            {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
+            <video
+              className="w-full h-full rounded-xl aspect-1 max-h-72 max-w-72"
+              muted
+              playsInline
+              src={metadata.image}
+              ref={videoRef}
+              style={{ display: canPlayImageAsVideo ? 'block' : 'none' }}
+            />
           </AvatarFallback>
         </Avatar>
         <div className="flex items-center justify-between text-sm">
