@@ -201,7 +201,7 @@ function Key({ ownedKey, account, network }: Props) {
     const video = videoRef.current
     if (video) {
       try {
-        await video.play()
+        await (video as HTMLVideoElement).play()
         setCanPlayImageAsVideo(true)
       } catch (error) {
         setCanPlayImageAsVideo(false)
@@ -209,7 +209,7 @@ function Key({ ownedKey, account, network }: Props) {
     }
   }
 
-  const onLoadingStatusChangeOfImage = useCallback((status) => {
+  const onLoadingStatusChangeOfImage = useCallback((status: string) => {
     if (status === 'error') {
       checkIfImageUrlIsVideo()
     }
