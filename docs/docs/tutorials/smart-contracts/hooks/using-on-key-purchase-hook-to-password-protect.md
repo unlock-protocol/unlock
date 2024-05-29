@@ -52,7 +52,7 @@ Finally, let's make sure Hardhat knows about this plugin.
 In the `hardhat.config.js` file, you just need to add the following line (at the top):
 
 ```js
-require("@unlock-protocol/hardhat-plugin");
+require('@unlock-protocol/hardhat-plugin')
 ```
 
 We are now ready to write some code! Let's create the source file for our hook:
@@ -66,42 +66,41 @@ And let's now add the most basic implementation of a purchase hook that does... 
 ```solidity
 pragma solidity ^0.8.0;
 
-import "@unlock-protocol/contracts/dist/PublicLock/IPublicLockV10.sol";
+import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV10.sol';
 
 contract PurchaseHook {
-
   /** Constructor */
   constructor() {}
 
   /**
-   * Function that is called at the begining of the
+   * Function that is called at the beginning of the
    * `purchase` function on the Public Lock contract.
    * It is expected to return the price that has to be
    * paid by the purchaser (as a uint256). If this
    * reverts, the purchase function fails.
    */
   function keyPurchasePrice(
-      address, /* from */
-      address, /*recipient */
-      address, /* referrer */
-      bytes calldata /* data */
+    address /* from */,
+    address /*recipient */,
+    address /* referrer */,
+    bytes calldata /* data */
   ) external view returns (uint256 minKeyPrice) {
-      return IPublicLockV10(msg.sender).keyPrice();
+    return IPublicLockV10(msg.sender).keyPrice();
   }
 
   /**
-    * Function that is called at the end of the `purchase`
-    * function and that can be used to record and store
-    * elements on the hook. Similarly, if this reverts, the
-    * purchase function fails.
-    */
+   * Function that is called at the end of the `purchase`
+   * function and that can be used to record and store
+   * elements on the hook. Similarly, if this reverts, the
+   * purchase function fails.
+   */
   function onKeyPurchase(
-      address, /*from*/
-      address, /*recipient*/
-      address, /*referrer*/
-      bytes calldata, /*data*/
-      uint256, /*minKeyPrice*/
-      uint256 /*pricePaid*/
+    address /*from*/,
+    address /*recipient*/,
+    address /*referrer*/,
+    bytes calldata /*data*/,
+    uint256 /*minKeyPrice*/,
+    uint256 /*pricePaid*/
   ) external {
     // Do nothing
   }
@@ -113,30 +112,30 @@ As you can see it really has 2 functions: `keyPurchasePrice` and `onKeyPurchase`
 Next, let's actually write a basic test to make sure that things work. Hardhat comes with its own execution environment which means we don't have to worry about running an EVM node, or deploying the contract to a test network... etc.
 
 ```javascript
-const { expect } = require("chai");
-const { ethers, unlock } = require("hardhat");
+const { expect } = require('chai')
+const { ethers, unlock } = require('hardhat')
 
-describe("PurchaseHook", function () {
+describe('PurchaseHook', function () {
   before(async () => {
     // Deploy the core Unlock protocol
-    await unlock.deployProtocol();
-  });
+    await unlock.deployProtocol()
+  })
 
-  it("should work as a hook", async function () {
-    const [user] = await ethers.getSigners();
+  it('should work as a hook', async function () {
+    const [user] = await ethers.getSigners()
 
     // Deploy a lock
     const { lock } = await unlock.createLock({
       expirationDuration: 60 * 60 * 24 * 7,
       maxNumberOfKeys: 100,
       keyPrice: 0,
-      name: "My NFT membership contract",
-    });
+      name: 'My NFT membership contract',
+    })
 
     // Deploy the hook
-    const PurchaseHook = await ethers.getContractFactory("PurchaseHook");
-    const hook = await PurchaseHook.deploy();
-    await hook.deployed();
+    const PurchaseHook = await ethers.getContractFactory('PurchaseHook')
+    const hook = await PurchaseHook.deploy()
+    await hook.deployed()
 
     // Attach the hook to our lock
     await (
@@ -146,14 +145,14 @@ describe("PurchaseHook", function () {
         ethers.constants.AddressZero,
         ethers.constants.AddressZero
       )
-    ).wait();
+    ).wait()
 
     // And now make a purchase
     await expect(
       lock.purchase([0], [user.address], [user.address], [user.address], [[]])
-    ).not.to.reverted;
-  });
-});
+    ).not.to.reverted
+  })
+})
 ```
 
 We can run the test via the command line with the following:
@@ -196,20 +195,20 @@ Then, we can update the function:
 
 ```solidity
 /**
-  * Price is the same for everyone...
-  * but we fail if signer of data does not match
-  * the lock's password.
-  */
+ * Price is the same for everyone...
+ * but we fail if signer of data does not match
+ * the lock's password.
+ */
 function keyPurchasePrice(
-    address, /* from */
-    address recipient,
-    address, /* referrer */
-    bytes calldata signature /* data */
+  address /* from */,
+  address recipient,
+  address /* referrer */,
+  bytes calldata signature /* data */
 ) external view returns (uint256 minKeyPrice) {
-    if(getSigner(addressToString(recipient), signature) == signer) {
-        return IPublicLock(msg.sender).keyPrice();
-    }
-    revert WRONG_PASSWORD();
+  if (getSigner(addressToString(recipient), signature) == signer) {
+    return IPublicLock(msg.sender).keyPrice();
+  }
+  revert WRONG_PASSWORD();
 }
 ```
 
@@ -217,33 +216,33 @@ In the code above, you can identify 2 functions that we're implementing below: `
 
 ```solidity
 /**
-  * Helper function to cast an address into a string.
-  */
+ * Helper function to cast an address into a string.
+ */
 function addressToString(address signer) public pure returns (string memory) {
-    bytes memory alphabet = "0123456789abcdef";
-    bytes memory data = abi.encodePacked(signer);
-    bytes memory str = new bytes(2 + data.length * 2);
-    str[0] = "0";
-    str[1] = "x";
-    for (uint256 i = 0; i < data.length; i++) {
-        str[2 + i * 2] = alphabet[uint256(uint8(data[i] >> 4))];
-        str[3 + i * 2] = alphabet[uint256(uint8(data[i] & 0x0f))];
-    }
-    return string(str);
+  bytes memory alphabet = '0123456789abcdef';
+  bytes memory data = abi.encodePacked(signer);
+  bytes memory str = new bytes(2 + data.length * 2);
+  str[0] = '0';
+  str[1] = 'x';
+  for (uint256 i = 0; i < data.length; i++) {
+    str[2 + i * 2] = alphabet[uint256(uint8(data[i] >> 4))];
+    str[3 + i * 2] = alphabet[uint256(uint8(data[i] & 0x0f))];
+  }
+  return string(str);
 }
 
 /**
-  * Verification function which, given a message and a
-  * signature returns the address of the signer.
-  * It leverages the ECDSA libraries from OpenZeppelin
-  */
+ * Verification function which, given a message and a
+ * signature returns the address of the signer.
+ * It leverages the ECDSA libraries from OpenZeppelin
+ */
 function getSigner(
   string memory message,
   bytes calldata signature
 ) public pure returns (address recoveredAddress) {
-    bytes32 hash = keccak256(abi.encodePacked(message));
-    bytes32 signedMessageHash = ECDSA.toEthSignedMessageHash(hash);
-    return ECDSA.recover(signedMessageHash, signature);
+  bytes32 hash = keccak256(abi.encodePacked(message));
+  bytes32 signedMessageHash = ECDSA.toEthSignedMessageHash(hash);
+  return ECDSA.recover(signedMessageHash, signature);
 }
 ```
 
@@ -261,12 +260,12 @@ We start by adding 2 helper functions:
  */
 const createWalletFromPassword = async (password) => {
   const encoded = ethers.utils.defaultAbiCoder.encode(
-    ["bytes32"],
+    ['bytes32'],
     [ethers.utils.id(password)]
-  );
-  const privateKey = ethers.utils.keccak256(encoded);
-  return new ethers.Wallet(privateKey);
-};
+  )
+  const privateKey = ethers.utils.keccak256(encoded)
+  return new ethers.Wallet(privateKey)
+}
 
 /**
  * Helper function
@@ -276,19 +275,19 @@ const createWalletFromPassword = async (password) => {
  */
 const signMessage = async (wallet, message) => {
   const messageHash = ethers.utils.solidityKeccak256(
-    ["string"],
+    ['string'],
     [message.toLowerCase()]
-  );
-  const messageHashBinary = ethers.utils.arrayify(messageHash);
-  return wallet.signMessage(messageHashBinary);
-};
+  )
+  const messageHashBinary = ethers.utils.arrayify(messageHash)
+  return wallet.signMessage(messageHashBinary)
+}
 ```
 
 We can now write the full test.
 
 ```javascript
-const { expect } = require("chai");
-const { ethers, unlock } = require("hardhat");
+const { expect } = require('chai')
+const { ethers, unlock } = require('hardhat')
 
 /**
  * Creates a wallet from a password.
@@ -296,12 +295,12 @@ const { ethers, unlock } = require("hardhat");
  */
 const createWalletFromPassword = async (password) => {
   const encoded = ethers.utils.defaultAbiCoder.encode(
-    ["bytes32"],
+    ['bytes32'],
     [ethers.utils.id(password)]
-  );
-  const privateKey = ethers.utils.keccak256(encoded);
-  return new ethers.Wallet(privateKey);
-};
+  )
+  const privateKey = ethers.utils.keccak256(encoded)
+  return new ethers.Wallet(privateKey)
+}
 
 /**
  * Helper function
@@ -311,37 +310,37 @@ const createWalletFromPassword = async (password) => {
  */
 const signMessage = async (wallet, message) => {
   const messageHash = ethers.utils.solidityKeccak256(
-    ["string"],
+    ['string'],
     [message.toLowerCase()]
-  );
-  const messageHashBinary = ethers.utils.arrayify(messageHash);
-  return wallet.signMessage(messageHashBinary);
-};
+  )
+  const messageHashBinary = ethers.utils.arrayify(messageHash)
+  return wallet.signMessage(messageHashBinary)
+}
 
-describe("PurchaseHook", function () {
+describe('PurchaseHook', function () {
   before(async () => {
     // Deploy the core Unlock protocol
-    await unlock.deployProtocol();
-  });
+    await unlock.deployProtocol()
+  })
 
-  it("should work as a hook", async function () {
-    const [user] = await ethers.getSigners();
+  it('should work as a hook', async function () {
+    const [user] = await ethers.getSigners()
 
-    const password = "ThiS Is s3cr3+";
-    const signerWallet = await createWalletFromPassword(password);
+    const password = 'ThiS Is s3cr3+'
+    const signerWallet = await createWalletFromPassword(password)
 
     // Deploy a lock
     const { lock } = await unlock.createLock({
       expirationDuration: 60 * 60 * 24 * 7,
       maxNumberOfKeys: 100,
       keyPrice: 0,
-      name: "My NFT membership contract",
-    });
+      name: 'My NFT membership contract',
+    })
 
     // Deploy the hook
-    const PurchaseHook = await ethers.getContractFactory("PurchaseHook");
-    const hook = await PurchaseHook.deploy(signerWallet.address);
-    await hook.deployed();
+    const PurchaseHook = await ethers.getContractFactory('PurchaseHook')
+    const hook = await PurchaseHook.deploy(signerWallet.address)
+    await hook.deployed()
 
     // Attach the hook to our lock
     await (
@@ -351,16 +350,16 @@ describe("PurchaseHook", function () {
         ethers.constants.AddressZero,
         ethers.constants.AddressZero
       )
-    ).wait();
+    ).wait()
 
     // And now make a purchase without a password, it should revert
     await expect(
       lock.purchase([0], [user.address], [user.address], [user.address], [[]])
-    ).to.reverted;
+    ).to.reverted
 
     // And now make a purchase with the wrong password, it should revert
-    const wrongSignerWallet = await createWalletFromPassword("wrong password");
-    const wrongSignature = signMessage(wrongSignerWallet, user.address);
+    const wrongSignerWallet = await createWalletFromPassword('wrong password')
+    const wrongSignature = signMessage(wrongSignerWallet, user.address)
     await expect(
       lock.purchase(
         [0],
@@ -369,10 +368,10 @@ describe("PurchaseHook", function () {
         [user.address],
         [wrongSignature]
       )
-    ).to.reverted;
+    ).to.reverted
 
     // And now make a purchase with the correct password, it should not revert
-    const signature = signMessage(signerWallet, user.address);
+    const signature = signMessage(signerWallet, user.address)
     await expect(
       lock.purchase(
         [0],
@@ -381,9 +380,9 @@ describe("PurchaseHook", function () {
         [user.address],
         [signature]
       )
-    ).to.not.reverted;
-  });
-});
+    ).to.not.reverted
+  })
+})
 ```
 
 Make sure you run the tests again and they should pass!
