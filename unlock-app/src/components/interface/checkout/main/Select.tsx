@@ -460,7 +460,7 @@ export function Select({ checkoutService }: Props) {
             </p>
           )}
           <Button disabled={isDisabled} onClick={selectLock}>
-            {!isSignedIn && useDelegatedProvider ? 'Confirm Wallet' : 'Next'}
+            {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
           </Button>
         </div>
         <Disconnect service={checkoutService} />
