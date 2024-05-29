@@ -1,65 +1,72 @@
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
-
-const { ADDRESS_ZERO, deployLock } = require('../helpers')
+const { getEvents } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  increaseTimeTo,
+  deployLock,
+  compareBigNumbers,
+} = require('../helpers')
 
 let lock
 let tokenIds
+let keyOwner
 
-contract('Lock / totalKeys', (accounts) => {
+describe('Lock / totalKeys', () => {
   before(async () => {
     lock = await deployLock()
+    ;[keyOwner] = await ethers.getSigners()
     const tx = await lock.purchase(
       [],
-      [accounts[1], accounts[1], accounts[1]],
+      [
+        await keyOwner.getAddress(),
+        await keyOwner.getAddress(),
+        await keyOwner.getAddress(),
+      ],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
-      [[], [], []],
+      ['0x', '0x', '0x'],
       {
-        value: ethers.utils.parseUnits('0.03', 'ether'),
-        from: accounts[1],
+        value: ethers.parseUnits('0.03', 'ether'),
       }
     )
-
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    const receipt = await tx.wait()
+    const { events } = await getEvents(receipt, 'Transfer')
+    tokenIds = events.map(({ args }) => args.tokenId)
   })
 
   it('should count all valid keys', async () => {
-    assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
+    compareBigNumbers(await lock.totalKeys(await keyOwner.getAddress()), 3)
   })
 
   it('should count expired keys', async () => {
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await time.increaseTo(expirationTs.toNumber() + 10)
+    await increaseTimeTo(expirationTs + 10n)
 
-    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 0)
-    assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
+    compareBigNumbers(await lock.totalKeys(await keyOwner.getAddress()), 3)
   })
 
   it('should count both expired and renewed keys', async () => {
     // extend once to fix block time in the past in test
-    await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
-      from: accounts[1],
+    await lock.extend(0, tokenIds[0], ADDRESS_ZERO, '0x', {
+      value: ethers.parseUnits('0.03', 'ether'),
+      from: await keyOwner.getAddress(),
     })
 
     // expire all keys
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
-    await time.increaseTo(expirationTs.toNumber() + 10)
+    await increaseTimeTo(expirationTs + 10n)
 
-    assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
-    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 0)
+    compareBigNumbers(await lock.totalKeys(await keyOwner.getAddress()), 3)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
 
     // renew one
-    await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
-      from: accounts[1],
+    await lock.connect(keyOwner).extend(0, tokenIds[0], ADDRESS_ZERO, '0x', {
+      value: ethers.parseUnits('0.03', 'ether'),
     })
 
-    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 1)
-    assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 1)
+    compareBigNumbers(await lock.totalKeys(await keyOwner.getAddress()), 3)
   })
 })

@@ -1,24 +1,21 @@
-import { useActor } from '@xstate/react'
-import { UnlockAccount } from '../UnlockAccount'
-import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { ConnectService } from './connectMachine'
+import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
 
 interface Props {
   connectService: ConnectService
-  injectedProvider: unknown
 }
 
-export function UnlockAccountSignIn({
-  connectService,
-  injectedProvider,
-}: Props) {
-  const [state] = useActor(connectService)
-  const unlockAccountService = state.children
-    .unlockAccount as UnlockAccountService
+export function UnlockAccountSignIn({ connectService }: Props) {
   return (
-    <UnlockAccount
-      unlockAccountService={unlockAccountService}
-      injectedProvider={injectedProvider}
+    // onSignIn and onExit represents different actions, in this case logic should be the same
+    <ConnectUnlockAccount
+      onSignIn={() => {
+        connectService.send({ type: 'CONNECT' })
+      }}
+      onExit={() => {
+        connectService.send({ type: 'CONNECT' })
+      }}
+      useIcon={false}
     />
   )
 }

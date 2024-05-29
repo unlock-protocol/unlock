@@ -8,12 +8,12 @@ import { SupplierBody } from '../../../src/controllers/v2/receiptBaseController'
 import { PurchaserBody } from '../../../src/controllers/v2/receiptController'
 import { ethers } from 'ethers'
 
-const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const lockAddress = '0x62CcB13A72E6F991dE53b9B7AC42885151588Cd2'
 const lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const hash =
   '0x68bd005bd3fba4c467f3289afdb773a797d3f5fe63ca13fd3ec7f16794b3858b'
 const payer = '0xE91efB608747f8f99CBB7d77020B80ECaEc16E26'
-const network = 5
+const network = 10
 
 const purchaser: z.infer<typeof PurchaserBody> = {
   fullname: 'Mario Rossi',
@@ -135,8 +135,8 @@ describe('Receipt v2', () => {
     expect(receiptResponse.body.supplier).toBeDefined()
     expect(receiptResponse.body.purchaser).toBeDefined()
 
-    expect(receiptResponse.body.supplier).toContain(supplier)
-    expect(receiptResponse.body.purchaser).toContain(purchaser)
+    expect(receiptResponse.body.supplier).toMatchObject(supplier)
+    expect(receiptResponse.body.purchaser).toMatchObject(purchaser)
   })
 
   it('Get receipt fails when user is not lock manager', async () => {

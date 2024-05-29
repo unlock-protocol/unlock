@@ -4,9 +4,9 @@ import networks from '@unlock-protocol/networks'
 
 import { KeyRenewal } from '../../models'
 import GasPrice from '../../utils/gasPrice'
-import PriceConversion from '../../utils/priceConversion'
 import Dispatcher from '../../fulfillment/dispatcher'
 import logger from '../../logger'
+import { getDefiLammaPrice } from '../../operations/pricingOperations'
 
 // multiply factor to increase precision for gas calculations
 const BASE_POINT_ACCURACY = 1000
@@ -42,10 +42,13 @@ const getGasFee = async (network: number, gasCost: number) => {
 }
 
 // calculate price of any ERC20 to USD cents
-const getERC20AmountInUSD = async (symbol: string, amount: string) => {
-  const conversion = new PriceConversion()
-  const priceUSD = await conversion.convertToUSD(symbol, parseFloat(amount))
-  return priceUSD * BASE_POINT_ACCURACY
+export const getRefundAmountInUSD = async (network: number, amount: string) => {
+  const { priceInAmount: priceUSD } = await getDefiLammaPrice({
+    network,
+    amount: parseFloat(amount) * BASE_POINT_ACCURACY,
+  })
+
+  return priceUSD || 0
 }
 
 export const isWorthRenewing = async (
@@ -58,17 +61,35 @@ export const isWorthRenewing = async (
     networks[network].provider
   )
 
+  // locks for which renewals are disabled
+  // TODO: move to database
+  if (
+    [
+      '0xa99fBa0E795b7Ac1a38BD5Ec02176aC28BaC9EC8',
+      '0x16772aEeB638A45810bCe514F00a666eBe5e25A0',
+      '0x5d6df242127B01f5FBDD9Bb23Dcf76139873f8ac',
+      '0xc3a9193F80eb5042ED6B77b120D6e48881321c90',
+      '0xd59723c30D56fA84DefaBebe85594cee6AEF25CA',
+      '0xfc0116392B4464cDb6Ab28acdcdC1e81601F4580',
+    ].indexOf(lockAddress) > -1
+  ) {
+    logger.info(`Renewals disabled for ${lockAddress} on network ${network}.`)
+
+    return {
+      shouldRenew: false,
+    }
+  }
+
   try {
     const lock = await web3Service.getLockContract(lockAddress, provider)
-
-    const isRenewable = await lock
-      .isRenewable(keyId, constants.AddressZero)
-      .catch((error: any) => {
-        logger.info(
-          `Key ${keyId} on ${lockAddress} from network ${network} is not renewable: ${error.errorName}`
-        )
-        return false
-      })
+    let isRenewable = false
+    try {
+      isRenewable = await lock.isRenewable(keyId, constants.AddressZero)
+    } catch (error) {
+      logger.info(
+        `Key ${keyId} on ${lockAddress} from network ${network} is not renewable: ${error.message}`
+      )
+    }
 
     if (!isRenewable) {
       return {
@@ -80,8 +101,10 @@ export const isWorthRenewing = async (
     const gasRefund = await lock.gasRefundValue()
 
     // get ERC20 info
-    const { currencySymbol, currencyContractAddress } =
-      await web3Service.getLock(lockAddress, network)
+    const { currencyContractAddress } = await web3Service.getLock(
+      lockAddress,
+      network
+    )
     const abi = ['function decimals() public view returns (uint decimals)']
     const tokenContract = new Contract(currencyContractAddress, abi, provider)
     const decimals = await tokenContract.decimals()
@@ -106,8 +129,9 @@ export const isWorthRenewing = async (
 
     // find costs in USD cents
     const costToRenew = await getGasFee(network, gasLimit.toNumber())
-    const costRefunded = await getERC20AmountInUSD(
-      currencySymbol,
+
+    const costRefunded = await getRefundAmountInUSD(
+      network,
       ethers.utils.formatUnits(gasRefund, decimals)
     )
 

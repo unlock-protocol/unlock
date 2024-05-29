@@ -2,15 +2,12 @@ import { Disclosure, Input, TextBox, ImageUpload } from '@unlock-protocol/ui'
 import { useFormContext, useWatch } from 'react-hook-form'
 import { MetadataFormData } from './utils'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { SLUG_REGEXP } from '~/constants'
-import { storage } from '~/config/storage'
 
 interface Props {
   disabled?: boolean
-  defaultValues?: any
 }
 
-export function DetailForm({ disabled, defaultValues }: Props) {
+export function DetailForm({ disabled }: Props) {
   const {
     register,
     setValue,
@@ -74,7 +71,7 @@ export function DetailForm({ disabled, defaultValues }: Props) {
               }}
             />
           </div>
-          <div className="grid order-1 gap-6 md:order-2">
+          <div className="flex flex-col order-1 gap-6 md:order-2">
             <Input
               {...register('name', {
                 required: {
@@ -97,30 +94,6 @@ export function DetailForm({ disabled, defaultValues }: Props) {
               description={<DescDescription />}
               error={errors.description?.message}
               rows={4}
-            />
-            <Input
-              {...register('slug', {
-                pattern: {
-                  value: SLUG_REGEXP,
-                  message: 'Slug format is not valid',
-                },
-                validate: async (slug: string | undefined) => {
-                  const slugChanged = defaultValues?.slug !== slug
-                  if (slugChanged && slug) {
-                    const data = (await storage.getLockSettingsBySlug(slug))
-                      .data
-                    return data
-                      ? 'Slug already used, please use another one'
-                      : true
-                  }
-                  return true
-                },
-              })}
-              disabled={disabled || defaultValues?.slug}
-              type="text"
-              label="Custom URL"
-              error={errors.slug?.message}
-              description="Custom URL that will be used for the page."
             />
             <Input
               {...register('external_url')}

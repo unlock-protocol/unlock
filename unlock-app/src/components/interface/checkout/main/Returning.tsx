@@ -2,11 +2,10 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { Stepper } from '../Stepper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -15,28 +14,23 @@ import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
 import Image from 'next/image'
 import { isAndroid, isIOS } from 'react-device-detect'
 import { isEthPassSupported, Platform } from '~/services/ethpass'
-import { useQuery } from '@tanstack/react-query'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Returning({
-  checkoutService,
-  injectedProvider,
-  communication,
-  onClose,
-}: Props) {
+export function Returning({ checkoutService, communication, onClose }: Props) {
   const config = useConfig()
-  const [state, send] = useActor(checkoutService)
-  const web3Service = useWeb3Service()
-  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
+  const {
+    paywallConfig,
+    lock,
+    messageToSign: signedMessage,
+  } = useSelector(checkoutService, (state) => state.context)
   const { account, getWalletService } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
@@ -53,7 +47,7 @@ export function Returning({
         'personal_sign'
       )
       setIsSigningMessage(false)
-      send({
+      checkoutService.send({
         type: 'SIGN_MESSAGE',
         signature,
         address: account!,
@@ -72,15 +66,8 @@ export function Returning({
     }
   }
 
-  const { data: tokenId } = useQuery(
-    ['userTokenId', account, lock, web3Service],
-    async () => {
-      return web3Service.getTokenIdForOwner(
-        lock!.address,
-        account!,
-        lock!.network
-      )
-    },
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: account!, lockAddress: lock!.address, network: lock!.network },
     {
       enabled: !!(account && lock),
     }
@@ -173,47 +160,42 @@ export function Returning({
         </div>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div>
-            {hasMessageToSign ? (
-              <Button
-                disabled={isSigningMessage}
-                loading={isSigningMessage}
-                onClick={onSign}
-                className="w-full"
-              >
-                Sign message
-              </Button>
-            ) : (
-              <div
-                className={`gap-4 ${
-                  paywallConfig?.endingCallToAction
-                    ? 'grid grid-cols-1'
-                    : 'flex justify-between '
-                }`}
-              >
-                <ReturningButton
-                  onClick={() => onClose()}
-                  returnLabel="Return"
-                  checkoutService={checkoutService}
-                />
-                {!lock?.isSoldOut && (
-                  <Button
-                    className="w-full"
-                    onClick={() =>
-                      checkoutService.send('MAKE_ANOTHER_PURCHASE')
-                    }
-                  >
-                    Buy more
-                  </Button>
-                )}
-              </div>
-            )}
-          </div>
-        </Connected>
+        <div>
+          {hasMessageToSign ? (
+            <Button
+              disabled={isSigningMessage}
+              loading={isSigningMessage}
+              onClick={onSign}
+              className="w-full"
+            >
+              Sign message
+            </Button>
+          ) : (
+            <div
+              className={`gap-4 ${
+                paywallConfig?.endingCallToAction
+                  ? 'grid grid-cols-1'
+                  : 'flex justify-between '
+              }`}
+            >
+              <ReturningButton
+                onClick={() => onClose()}
+                returnLabel="Return"
+                checkoutService={checkoutService}
+              />
+              {!lock?.isSoldOut && !paywallConfig.skipRecipient && (
+                <Button
+                  className="w-full"
+                  onClick={() =>
+                    checkoutService.send({ type: 'MAKE_ANOTHER_PURCHASE' })
+                  }
+                >
+                  Buy more
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
         <PoweredByUnlock />
       </footer>
     </Fragment>

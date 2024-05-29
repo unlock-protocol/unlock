@@ -3,6 +3,15 @@ import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 
 import VerifierOperations from '../../operations/verifierOperations'
+import { z } from 'zod'
+
+const AddVerifierBody = z
+  .object({
+    verifierName: z.string().optional(),
+  })
+  .optional()
+
+// Deprecated methods to add verifier to lock only.
 
 export default class VerifierController {
   // for a lock manager to list all verifiers for a specicifc lock address
@@ -11,7 +20,7 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
 
-      const list = await VerifierOperations.getVerifiersList(
+      const list = await VerifierOperations.getVerifiersListForLock(
         lockAddress,
         network
       )
@@ -37,27 +46,34 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
+      const addVerifierBody = await AddVerifierBody.parseAsync(request.body)
+
+      const name = addVerifierBody?.verifierName
+        ? addVerifierBody?.verifierName
+        : null
 
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
 
-      const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
-        lockAddress,
-        address,
-        network
-      )
+      const alreadyExists =
+        await VerifierOperations.isVerifierAlreadyExitsOnLock(
+          lockAddress,
+          address,
+          network
+        )
 
       if (alreadyExists) {
         return response.status(409).send({
           message: 'Verifier already exists',
         })
       } else {
-        const createdVerifier = await VerifierOperations.createVerifier(
+        const createdVerifier = await VerifierOperations.createVerifierForLock(
           lockAddress,
           address,
           loggedUserAddress,
-          network
+          network,
+          name
         )
         return response.status(201).send(createdVerifier)
       }
@@ -76,19 +92,24 @@ export default class VerifierController {
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
 
-      const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
-        lockAddress,
-        address,
-        network
-      )
+      const alreadyExists =
+        await VerifierOperations.isVerifierAlreadyExitsOnLock(
+          lockAddress,
+          address,
+          network
+        )
 
       if (!alreadyExists) {
         return response.status(404).send({
           message: 'Verifier does not exists',
         })
       } else {
-        await VerifierOperations.deleteVerifier(lockAddress, address, network)
-        const list = await VerifierOperations.getVerifiersList(
+        await VerifierOperations.deleteVerifierForLock(
+          lockAddress,
+          address,
+          network
+        )
+        const list = await VerifierOperations.getVerifiersListForLock(
           lockAddress,
           network
         )
@@ -116,4 +137,60 @@ export default class VerifierController {
       enabled: true,
     })
   }
+}
+
+// Returns a list of verifiers for an event
+export const getEventVerifiers = async (
+  request: Request,
+  response: Response
+) => {
+  const slug = request.params.slug
+
+  const list = await VerifierOperations.getEventVerifiers(slug)
+
+  return response.status(200).send({ results: list })
+}
+
+// Adds a verifier to an event
+export const addEventVerifier = async (
+  request: Request,
+  response: Response
+) => {
+  const slug = request.params.slug
+  const address = request.params.address
+
+  const loggedUserAddress = Normalizer.ethereumAddress(
+    request.user!.walletAddress!
+  )
+  const addVerifierBody = await AddVerifierBody.parseAsync(request.body)
+
+  const name = addVerifierBody?.verifierName
+    ? addVerifierBody?.verifierName
+    : null
+
+  await VerifierOperations.addEventVerifier(
+    slug,
+    address,
+    loggedUserAddress,
+    name
+  )
+  const list = await VerifierOperations.getEventVerifiers(slug)
+
+  return response.status(201).send({
+    results: list,
+  })
+}
+
+export const deleteEventVerifier = async (
+  request: Request,
+  response: Response
+) => {
+  const slug = request.params.slug
+  const address = request.params.address
+
+  await VerifierOperations.deleteVerifierForEvent(address, slug)
+  const list = await VerifierOperations.getEventVerifiers(slug)
+  return response.status(200).send({
+    results: list,
+  })
 }

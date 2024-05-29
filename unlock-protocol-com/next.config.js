@@ -69,6 +69,7 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
 })
 
 const nextConfig = {
+  output: 'export',
   images: {
     unoptimized: true,
   },

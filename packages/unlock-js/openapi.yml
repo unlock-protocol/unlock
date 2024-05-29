@@ -100,9 +100,12 @@ components:
         config:
           type: object
           additionalProperties: true
+          required:
+            - 'locks'
           properties:
             locks:
               type: object
+              additionalProperties: true
         createdAt:
           type: string
           format: date-time
@@ -143,6 +146,7 @@ components:
     Verifier:
       type: object
       nullable: false
+      required: ['address']
       properties:
         address:
           type: string
@@ -159,6 +163,10 @@ components:
         network:
           type: integer
           nullable: false
+
+        name:
+          type: string
+          nullable: true
 
     KeyMetadata:
       type: object
@@ -438,6 +446,17 @@ components:
         crossmintClientId:
           type: string
           nullable: true
+        promoCodes:
+          type: array
+          items:
+            type: string
+        passwords:
+          type: array
+          items:
+            type: string
+        requiredGitcoinPassportScore:
+          type: number
+          nullable: true
 
     EventDetails:
       type: object
@@ -456,6 +475,43 @@ components:
         startDate:
           type: string
         endDate:
+          type: string
+        eventUrl:
+          type: string
+
+    Rsvp:
+      type: object
+      nullable: false
+      properties:
+        lockAddress:
+          type: string
+        userAddress:
+          type: string
+        approval:
+          type: string
+        network:
+          type: number
+
+    Key:
+      type: object
+      properties:
+        token:
+          type: string
+        lockName:
+          type: string
+        expiration:
+          type: string
+        keyholderAddress:
+          type: string
+        keyManager:
+          type: string
+        lockAddress:
+          type: string
+        transactionsHash:
+          type: array
+          items:
+            type: string
+        email:
           type: string
 
   parameters:
@@ -491,6 +547,14 @@ components:
       schema:
         type: string
 
+    VerifierName:
+      in: path
+      name: verifierName
+      required: true
+      description: Name to easily identify verifier
+      schema:
+        type: string
+
     KeyId:
       in: path
       name: keyId
@@ -520,6 +584,14 @@ components:
       name: slug
       required: true
       description: Slug
+      schema:
+        type: string
+
+    JobId:
+      in: path
+      name: jobId
+      required: true
+      description: Id of the exported job.
       schema:
         type: string
 
@@ -796,10 +868,11 @@ paths:
 
   /v2/api/verifier/list/{network}/{lockAddress}:
     get:
+      deprecated: true
       operationId: verifiers
       security:
         - User: ['lockManager']
-      description: List of verifiers for the lock address.
+      description: List of verifiers for the lock address. (deprecated in favor of eventVerifiers)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -827,14 +900,25 @@ paths:
 
   /v2/api/verifier/{network}/{lockAddress}/{verifierAddress}:
     put:
+      deprecated: true
       operationId: createVerifier
       security:
         - User: ['lockManager']
-      description: Create verifier.
+      description: Create verifier. (deprecated in favor of addEventVerifier)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/VerifierAddress'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
       responses:
         201:
           description: Added verifier.
@@ -853,10 +937,11 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
     delete:
+      deprecated: true
       operationId: deleteVerifier
       security:
         - User: []
-      description: Remove verifier.
+      description: Remove verifier. (deprecated in favor of deleteEventVerifier)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -884,10 +969,11 @@ paths:
 
   /v2/api/verifier/{network}/lock/{lockAddress}/address/{verifierAddress}:
     get:
+      deprecated: true
       operationId: verifier
       security:
         - User: ['lockManager']
-      description: Check if an address is a verifier of the lock.
+      description: Check if an address is a verifier of the lock. (deprecated in favor of eventVerifier)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -903,6 +989,101 @@ paths:
                   enabled:
                     type: boolean
                     default: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}/verifiers:
+    get:
+      operationId: eventVerifiers
+      security:
+        - User: ['lockManager']
+      description: List of verifiers for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        200:
+          description: 'List of verifier addresses'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Verifier'
+
+        204:
+          $ref: '#/components/responses/204.Empty'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/{slug}/verifiers/{verifierAddress}:
+    put:
+      operationId: addEventVerifier
+      security:
+        - User: ['lockManager']
+      description: Adds a verifier for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/VerifierAddress'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                verifierName:
+                  type: string
+                  description: optional verifier name
+      responses:
+        201:
+          description: Added verifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verifier'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+    delete:
+      operationId: deleteEventVerifier
+      security:
+        - User: []
+      description: Removes a verifier for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/VerifierAddress'
+      responses:
+        200:
+          description: List of remaining verifiers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Verifier'
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 
@@ -948,9 +1129,10 @@ paths:
   /v2/api/ticket/{network}/lock/{lockAddress}/key/{keyId}/check:
     put:
       operationId: checkTicket
+      deprecated: true
       security:
         - User: ['Verifier']
-      description: Mark a ticket as checked in.
+      description: Mark a lock ticket as checked in.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -973,6 +1155,113 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}/check:
+    put:
+      operationId: checkEventTicket
+      security:
+        - User: ['Verifier']
+      description: Mark an event ticket as checked in.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        202:
+          description: Ticket is checked in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccess'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{slug}/{network}/lock/{lockAddress}/key/{keyId}:
+    get:
+      operationId: getEventTicket
+      security:
+        - User: []
+      description: get a ticket for a key by event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Successfully retrieved the ticket.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                required:
+                  - name
+                  - lockAddress
+                  - keyId
+                  - manager
+                  - publicLockVersion
+                  - userMetadata
+                  - isVerifier
+                  - attributes
+                  - image
+                  - description
+                  - owner
+                  - expiration
+
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                  name:
+                    type: string
+                  owner:
+                    type: string
+                  manager:
+                    type: string
+                  lockAddress:
+                    type: string
+                  image:
+                    type: string
+                  description:
+                    type: string
+                  checkedInAt:
+                    type: number
+                  userMetadata:
+                    type: object
+                    additionalProperties: true
+                  expiration:
+                    type: string
+                  attributes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - 'value'
+                      properties:
+                        trait_type:
+                          type: string
+                        value:
+                          type: string
+                        display_type:
+                          type: string
+                  publicLockVersion:
+                    type: string
+                  isVerifier:
+                    description: Whether the user who requested the ticket can verify the ticket.
+                    type: boolean
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
 
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/email:
     post:
@@ -1299,12 +1588,13 @@ paths:
 
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
+      deprecated: true
       operationId: keys
       security:
         - User: []
         - Application: []
 
-      description: List of lock keys by network with additional metadata if the caller is the lockManager
+      description: List of lock keys by network with additional metadata if the caller is the lockManager (deprecated, use keys-by-page)
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -1325,6 +1615,11 @@ paths:
           schema:
             type: string
           description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
         - in: query
           name: page
           schema:
@@ -1351,6 +1646,165 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/{network}/locks/{lockAddress}/keys-by-page:
+    get:
+      operationId: keysByPage
+      security:
+        - User: []
+        - Application: []
+
+      description: List of lock keys by network with additional metadata if the caller is the lockManager
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: Query you want to search for.
+        - in: query
+          name: filterKey
+          required: true
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page number when paginating
+        - in: query
+          name: max
+          schema:
+            type: integer
+          description: Maximum number of items to get by page
+      responses:
+        200:
+          description: List of keys matching the query
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      byPage:
+                        type: integer
+                  keys:
+                    nullable: false
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KeyMetadata'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/{network}/locks/{lockAddress}/export-keys:
+    get:
+      operationId: exportKeys
+      security:
+        - User: []
+        - Application: []
+      description: Starts Job process to get all the keys for the given lock
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: Query you want to search for.
+        - in: query
+          name: filterKey
+          required: true
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: approval
+          schema:
+            type: string
+          description: Approval status (relevant for offchain approvals on events for example)
+      responses:
+        '200':
+          description: Successfully started Keys Job
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobId:
+                    type: string
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+
+  /v2/api/{network}/locks/{lockAddress}/export-keys/{jobId}:
+    get:
+      operationId: getExportedKeys
+      security:
+        - User: []
+        - Application: []
+      description: Get job result by job id
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/JobId'
+      responses:
+        '200':
+          description: Successfully retrieved job result
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                      page:
+                        type: integer
+                      byPage:
+                        type: integer
+                  keys:
+                    nullable: false
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/KeyMetadata'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Job not found
 
   /purchase:
     get:
@@ -1749,7 +2203,7 @@ paths:
       operationId: getTicket
       security:
         - User: []
-      description: get a ticket for a key.
+      description: get a ticket for a key by lock.
       parameters:
         - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
@@ -2091,6 +2545,8 @@ paths:
                           type: string
                         payer:
                           type: string
+                        recipient:
+                          type: string
                         lockAddress:
                           type: string
                         tokenAddress:
@@ -2192,6 +2648,8 @@ paths:
                       sender:
                         type: string
                       payer:
+                        type: string
+                      recipient:
                         type: string
                       lockAddress:
                         type: string
@@ -2702,9 +3160,9 @@ paths:
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
-  # TODO: Deprecate me!
   /v2/events/{network}/{lockAddress}:
     get:
+      deprecated: true
       operationId: getEventDetails
       description: Get the event details from lock
       parameters:
@@ -2874,7 +3332,42 @@ paths:
                     type: array
                     items:
                       type: string
+  /v2/hooks/gitcoin:
+    get:
+      operationId: getDataForRecipientsAndGitcoinPassport
+      description: Get the data for recipients and gitcoin passport. This is to be used in conjunction with the Gitcoin passport scorer.
+      parameters:
+        - in: query
+          name: network
+          required: true
+          description: The network the lock is on
+          schema:
+            type: number
+        - in: query
+          name: lockAddress
+          description: The address of the lock
+          schema:
+            type: string
+        - in: query
+          name: recipients
+          description: The list of recipients for the purchase
+          schema:
+            type: array
+            items:
+              type: string
 
+      responses:
+        200:
+          description: the list of data inputs to use for the transaction
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: string
   /purchase/capture:
     post:
       operationId: capturePurchase
@@ -3348,6 +3841,42 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/email/{slug}/invite:
+    post:
+      operationId: sendEventInvites
+      security:
+        - User: []
+      description: Send event invites to a list of recipients
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+                  maxItems: 10
+      responses:
+        200:
+          description: Successfully sent invites!
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                    type: boolean
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/events/save:
     post:
       operationId: saveEventData
@@ -3416,6 +3945,173 @@ paths:
                     $ref: '#/components/schemas/CheckoutConfig'
                   slug:
                     type: string
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}:
+    post:
+      operationId: rsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
+
+      description: User applies to attend an event.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient:
+                  type: string
+                email:
+                  type: string
+                data:
+                  type: object
+                  additionalProperties: true
+      responses:
+        200:
+          description: Successfully applied to event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/approve/{userAddress}:
+    post:
+      deprecated: true
+      operationId: approveRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
+      description: Approves a user to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully approves the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/deny/{userAddress}:
+    post:
+      deprecated: true
+      operationId: denyRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
+      description: Denies a user to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully denied the user to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/approve:
+    post:
+      operationId: approveAttendeesRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+
+      description: Approves users to attend an event. (does not airdrop!)
+      responses:
+        200:
+          description: Successfully approves the users to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/rsvp/{network}/{lockAddress}/deny:
+    post:
+      operationId: denyAttendeesRsvp
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipients:
+                  type: array
+                  items:
+                    type: string
+
+      description: Denies users to attend an event.
+      responses:
+        200:
+          description: Successfully denied users to attend the event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rsvp'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
 
         400:
           $ref: '#/components/responses/400.Invalid'

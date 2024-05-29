@@ -1,3 +1,4 @@
+/* solhint-disable no-inline-assembly */
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -53,12 +54,11 @@ contract CardPurchaser is Ownable, EIP712 {
     address _owner,
     address _unlockAddress,
     address _usdc
-  ) EIP712("Card Purchaser", "1") Ownable() {
+  ) EIP712("Card Purchaser", "1") Ownable(_owner) {
     name = "Card Purchaser";
     version = "1";
     unlockAddress = _unlockAddress;
     usdc = _usdc;
-    transferOwnership(_owner);
   }
 
   /**

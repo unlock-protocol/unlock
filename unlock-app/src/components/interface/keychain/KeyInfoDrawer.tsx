@@ -20,7 +20,7 @@ import {
 } from '@radix-ui/react-avatar'
 import { RiExternalLinkFill as ExternalIcon } from 'react-icons/ri'
 import { getURL } from '~/utils/url'
-import { MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
+import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
@@ -88,7 +88,7 @@ interface KeyInfoProps {
   tokenId: string
   network: number
   lock: any
-  account: string
+  owner: string
   expiration: string
   imageURL?: string
 }
@@ -97,16 +97,15 @@ export const KeyInfo = ({
   tokenId,
   lock,
   network,
-  account,
+  owner,
   expiration,
   imageURL,
 }: KeyInfoProps) => {
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const config = useConfig()
-  const isERC20 =
-    lock.tokenAddress &&
-    lock.tokenAddress !== ethers.constants.AddressZero.toString()
+
+  const isERC20 = lock.tokenAddress && lock.tokenAddress !== ADDRESS_ZERO
   const videoRef = useRef(null)
   const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
 
@@ -167,7 +166,7 @@ export const KeyInfo = ({
       },
       {
         retry: 0,
-        enabled: !!(lock?.address && account),
+        enabled: !!(lock?.address && owner),
         onError(error) {
           console.error(error)
         },
@@ -263,7 +262,7 @@ export const KeyInfo = ({
             {`${keyPrice.amount} ${keyPrice.symbol}`}
           </KeyItem>
         )}
-        {subscription && (
+        {expiration !== MAX_UINT && subscription && (
           <KeyRenewal
             possibleRenewals={subscription.possibleRenewals!}
             approvedRenewals={subscription.approvedRenewals!}
@@ -416,7 +415,7 @@ interface KeyInfoDrawerProps {
   tokenId: string
   network: number
   lock: any
-  account: string
+  owner: string
   expiration: string
   imageURL?: string
 }
@@ -427,14 +426,14 @@ export const KeyInfoDrawer = ({
   lock,
   tokenId,
   network,
-  account,
+  owner,
   expiration,
   imageURL,
 }: KeyInfoDrawerProps) => {
   return (
     <Drawer isOpen={isOpen} setIsOpen={setIsOpen}>
       <KeyInfo
-        account={account}
+        owner={owner}
         lock={lock}
         tokenId={tokenId}
         network={network}

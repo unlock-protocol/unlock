@@ -1,63 +1,69 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO, MAX_UINT, deployContracts } = require('../helpers')
-const PublicLock = artifacts.require('PublicLock')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  ADDRESS_ZERO,
+  MAX_UINT,
+  deployContracts,
+  compareBigNumbers,
+} = require('../helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 
 let unlock
 
-contract('Lock / createLockWithInfiniteKeys', () => {
+describe('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
     ;({ unlock } = await deployContracts())
   })
 
   describe('Create a Lock with infinite keys', () => {
-    let transaction
-    before(async () => {
+    it('should have created the lock with an infinite number of keys', async () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO, // token address
-        ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
       const calldata = await createLockCalldata({ args })
-      transaction = await unlock.createUpgradeableLock(calldata)
-    })
-
-    it('should have created the lock with an infinite number of keys', async () => {
-      let publicLock = await PublicLock.at(
-        transaction.logs[0].args.newLockAddress
+      const tx = await unlock.createUpgradeableLock(calldata)
+      const receipt = await tx.wait()
+      const {
+        args: { newLockAddress },
+      } = await getEvent(receipt, 'NewLock')
+      let publicLock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
       )
-      const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
-      assert.equal(
-        maxNumberOfKeys.toFixed(),
-        new BigNumber(2).pow(256).minus(1).toFixed()
-      )
+      const maxNumberOfKeys = await publicLock.maxNumberOfKeys()
+      assert.equal(maxNumberOfKeys, MAX_UINT)
     })
   })
 
   describe('Create a Lock with 0 keys', () => {
-    let transaction
-    before(async () => {
+    it('should have created the lock with 0 keys', async () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
+        ethers.parseUnits('1', 'ether'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',
         // '0x000000000000000000000001',
       ]
       const calldata = await createLockCalldata({ args })
-      transaction = await unlock.createUpgradeableLock(calldata)
-    })
+      const tx = await unlock.createUpgradeableLock(calldata)
 
-    it('should have created the lock with 0 keys', async () => {
-      let publicLock = await PublicLock.at(
-        transaction.logs[0].args.newLockAddress
+      const receipt = await tx.wait()
+      const {
+        args: { newLockAddress },
+      } = await getEvent(receipt, 'NewLock')
+      let publicLock = await ethers.getContractAt(
+        'contracts/PublicLock.sol:PublicLock',
+        newLockAddress
       )
-      const maxNumberOfKeys = new BigNumber(await publicLock.maxNumberOfKeys())
-      assert.equal(maxNumberOfKeys.toFixed(), 0)
+      compareBigNumbers(await publicLock.maxNumberOfKeys(), 0)
     })
   })
 })

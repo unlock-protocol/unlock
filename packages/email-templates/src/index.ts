@@ -8,9 +8,12 @@ import keyAirdropped from './templates/keyAirdropped'
 import keyExpiring from './templates/keyExpiring'
 import keyExpired from './templates/keyExpired'
 import eventKeyMined from './templates/eventKeyMined'
+import eventRsvpSubmitted from './templates/eventRsvpSubmitted'
 import eventKeyAirdropped from './templates/eventKeyAirdropped'
 import certificationKeyMined from './templates/certificationKeyMined'
 import certificationKeyAirdropped from './templates/certificationKeyAirdropped'
+import inviteEvent from './templates/inviteEvent'
+import eventDeployed from './templates/eventDeployed'
 import LockTemplates from './templates/locks'
 import bases from './templates/base/index'
 import custom from './templates/custom'
@@ -30,7 +33,10 @@ type Template =
   | 'transferCode'
   | 'keyExpiring'
   | 'keyExpired'
+  | 'inviteEvent'
+  | 'eventDeployed'
   | 'eventKeyMined'
+  | 'eventRsvpSubmitted'
   | 'eventKeyAirdropped'
   | 'certificationKeyMined'
   | 'certificationKeyAirdropped'
@@ -47,10 +53,13 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   keyExpired,
   keyExpiring,
   eventKeyMined,
+  eventRsvpSubmitted,
   eventKeyAirdropped,
   certificationKeyMined,
   certificationKeyAirdropped,
   custom,
+  inviteEvent,
+  eventDeployed,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}

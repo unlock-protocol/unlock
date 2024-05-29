@@ -14,14 +14,6 @@ task('deploy', 'Deploy the entire Unlock protocol')
   .addOptionalParam('publicLockVersion', 'the version of public Lock to deploy')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam(
-    'uniswapFactoryAddress',
-    'the address of an existing Uniswap V2 Factory contract'
-  )
-  .addOptionalParam(
-    'uniswapRouterAddress',
-    'the address of an existing Uniswap V2 Router contract'
-  )
-  .addOptionalParam(
     'oracleAddress',
     'the address of an existing Uniswap Oracle contract'
   )
@@ -42,43 +34,33 @@ task('deploy', 'Deploy the entire Unlock protocol')
   )
   .addFlag('setTemplate', 'set the PublicLock instance in Unlock')
   .setAction(
-    async (
-      {
-        unlockAddress,
-        unlockVersion,
-        publicLockVersion,
-        udtAddress,
-        publicLockAddress,
-        wethAddress,
-        uniswapFactoryAddress,
-        oracleAddress,
-        premintAmount,
-        liquidity,
-        setTemplate,
-        estimatedGasForPurchase,
-        locksmithURI,
-        uniswapRouterAddress,
-        owner,
-      },
-      { ethers }
-    ) => {
-      const { chainId } = await ethers.provider.getNetwork()
-      const networkName = networks[chainId].name
-
-      // eslint-disable-next-line no-console
-      console.log(`Starting deployments on ${networkName}...`)
-
+    async ({
+      unlockAddress,
+      unlockVersion,
+      publicLockVersion,
+      udtAddress,
+      publicLockAddress,
+      wethAddress,
+      oracleAddress,
+      premintAmount,
+      liquidity,
+      setTemplate,
+      estimatedGasForPurchase,
+      locksmithURI,
+      owner,
+    }) => {
       // eslint-disable-next-line global-require
       const mainDeployer = require('../scripts/deployments')
-      await mainDeployer({
+      const {
+        unlockAddress: newUnlockAddress,
+        publicLockAddress: newPublicLockAddress,
+      } = await mainDeployer({
         unlockAddress,
         unlockVersion,
         publicLockVersion,
         udtAddress,
         publicLockAddress,
         wethAddress,
-        uniswapRouterAddress,
-        uniswapFactoryAddress,
         oracleAddress,
         premintAmount,
         liquidity,
@@ -87,6 +69,11 @@ task('deploy', 'Deploy the entire Unlock protocol')
         locksmithURI,
         owner,
       })
+
+      return {
+        unlockAddress: newUnlockAddress,
+        publicLockAddress: newPublicLockAddress,
+      }
     }
   )
 
@@ -110,23 +97,16 @@ task('deploy:weth', 'Deploy WETH contract').setAction(async () => {
   return await wethDeployer()
 })
 
-task('deploy:uniswap', 'Deploy Uniswap V2 Factory and Router')
-  .addOptionalParam('wethAddress', 'the address of the WETH token contract')
-  .setAction(async ({ wethAddress }) => {
-    // eslint-disable-next-line global-require
-    const uniswapDeployer = require('../scripts/deployments/uniswap-v2')
-    return await uniswapDeployer({ wethAddress })
-  })
-
 task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   .addOptionalParam(
     'uniswapFactoryAddress',
-    'the address of an existing Uniswap V2 Factory contract'
+    'the address of an existing Uniswap V3 Factory contract'
   )
-  .setAction(async ({ uniswapFactoryAddress }) => {
+  .addOptionalParam('fee', 'the fee of the Uniswap pools to check')
+  .setAction(async ({ uniswapFactoryAddress, fee }) => {
     // eslint-disable-next-line global-require
     const oracleDeployer = require('../scripts/deployments/oracle')
-    return await oracleDeployer({ uniswapFactoryAddress })
+    return await oracleDeployer({ uniswapFactoryAddress, fee })
   })
 
 task('deploy:template', 'Deploy PublicLock contract')
@@ -164,4 +144,34 @@ task('deploy:keyManager', 'Deploy KeyManager contract')
     // eslint-disable-next-line global-require
     const keyManagerDeployer = require('../scripts/deployments/keyManager')
     return await keyManagerDeployer(locksmithsArray)
+  })
+
+task(
+  'deploy:protocol-upgrade',
+  'Deploy latest versions of Unlock and PublicLock contracts'
+)
+  .addParam('publicLockVersion', 'version for publicLock')
+  .addParam('unlockVersion', 'version for Unlock')
+  .setAction(async ({ publicLockVersion, unlockVersion }, { ethers }) => {
+    // eslint-disable-next-line global-require
+    const deployPublicLock = require('../scripts/deployments/publicLock')
+
+    // eslint-disable-next-line global-require
+    const deployImpl = require('../scripts/upgrade/prepare')
+
+    const { chainId } = await ethers.provider.getNetwork()
+    const { unlockAddress, name } = networks[chainId]
+    console.log(`Deploying to ${name}(${chainId}) - Unlock: ${unlockAddress}`)
+
+    // deploy publicLock
+    const publicLockAddress = await deployPublicLock({ publicLockVersion })
+
+    // deploy unlock impl
+    const unlockImplAddress = await deployImpl({
+      proxyAddress: unlockAddress,
+      contractName: 'Unlock',
+      contractVersion: unlockVersion,
+    })
+
+    return { publicLockAddress, unlockImplAddress }
   })

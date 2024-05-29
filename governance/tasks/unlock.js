@@ -57,10 +57,36 @@ task(
     }
   )
 
+task('unlock:prepare', 'Deploy an implementaton of the Unlock contract')
+  .addOptionalParam(
+    'unlockVersion',
+    'The version of the implementation to deploy'
+  )
+  .addOptionalParam('unlockAddress', 'The address of the Unlock contract')
+  .setAction(async ({ unlockVersion, unlockAddress }, { ethers }) => {
+    const { chainId } = await ethers.provider.getNetwork()
+
+    if (!unlockAddress) {
+      ;({ unlockAddress } = networks[chainId])
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(`Deploying new implementation of Unlock on ${chainId}.`)
+
+    const prepareUpgrade = require('../scripts/upgrade/prepare')
+
+    await prepareUpgrade({
+      proxyAddress: unlockAddress,
+      contractName: 'Unlock',
+      contractVersion: unlockVersion,
+    })
+  })
+
 task('unlock:info', 'Show the owner of the Unlock contract')
   .addOptionalParam('unlockAddress', 'The address of the Unlock contract')
-  .setAction(async ({ unlockAddress }) => {
+  .addFlag('quiet', 'Show only errors')
+  .setAction(async ({ unlockAddress, quiet }) => {
     // eslint-disable-next-line global-require
     const unlockInfo = require('../scripts/getters/unlock-info')
-    await unlockInfo({ unlockAddress })
+    await unlockInfo({ unlockAddress, quiet })
   })

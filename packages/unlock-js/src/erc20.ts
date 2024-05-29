@@ -3,7 +3,7 @@ import utils from './utils'
 import erc20abi from './erc20abi'
 
 // The SAI contract does not have the symbol method implemented correctly
-const SAI_ADDRESS = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'.toLowerCase()
+const SAI_ADDRESS = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'.toLowerCase()
 
 export const TransferWithAuthorizationTypes = {
   TransferWithAuthorization: [
@@ -40,6 +40,7 @@ export async function getErc20Decimals(
   try {
     decimals = await contract.decimals()
   } catch (e) {
+    console.error(e)
     /** Some ERC20 contracts do not have the right decimals method. Defaults to 18 */
     return 18
   }

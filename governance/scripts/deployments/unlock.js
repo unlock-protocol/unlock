@@ -1,52 +1,45 @@
-const { ethers, upgrades, run } = require('hardhat')
-const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
+const { ethers } = require('hardhat')
 
 const {
   copyAndBuildContractsAtVersion,
   cleanupContractVersions,
+  deployUpgradeableContract,
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ unlockVersion } = {}) {
   const [deployer] = await ethers.getSigners()
-  let Unlock
   // need to fetch previous unlock versions
-  if (unlockVersion) {
-    console.log(`Setting up version ${unlockVersion} from package`)
-    Unlock = (
-      await copyAndBuildContractsAtVersion(__dirname, [
-        { contractName: 'Unlock', version: unlockVersion },
-      ])
-    )[0]
-  } else {
+  if (!unlockVersion) {
     throw 'Need to set --unlock-version'
   }
 
-  const unlock = await upgrades.deployProxy(Unlock, [deployer.address], {
+  console.log(`Setting up version ${unlockVersion} from package`)
+
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'Unlock', version: unlockVersion },
+  ])
+
+  // deploy proxy w impl
+  const {
+    address: unlockAddress,
+    implementation,
+    hash,
+  } = await deployUpgradeableContract(qualifiedPath, [deployer.address], {
     initializer: 'initialize(address)',
   })
-  await unlock.deployed()
 
   // eslint-disable-next-line no-console
-  const implementation = await getImplementationAddress(
-    ethers.provider,
-    unlock.address
-  )
   console.log(
-    `UNLOCK SETUP > Unlock proxy deployed to: ${unlock.address} (tx: ${unlock.deployTransaction.hash}) `,
+    `UNLOCK SETUP > Unlock proxy deployed to: ${unlockAddress} (tx: ${hash}) `,
     `- implementation at: ${implementation}`
   )
-
-  const { chainId } = await ethers.provider.getNetwork()
-  if (chainId !== 31337) {
-    await run('verify:verify', { address: implementation })
-  }
 
   // delete remaining files if we are using a packaged version
   if (unlockVersion) {
     await cleanupContractVersions(__dirname)
   }
 
-  return unlock.address
+  return unlockAddress
 }
 
 // execute as standalone

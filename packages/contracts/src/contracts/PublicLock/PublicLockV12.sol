@@ -3731,7 +3731,7 @@ contract MixinTransfer is
    * @param _recipient the address that will receive the token
    * @param _tokenId the id of the token
    * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
-   * either {approve} or {setApprovalForAll}.
+   * either `approve` or `setApprovalForAll`.
    * The key manager will be reset to address zero after the transfer
    */
   function transferFrom(

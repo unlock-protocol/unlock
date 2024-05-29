@@ -43,6 +43,28 @@ export const bsc: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x1Bc951F8ed90F6c135F01Fe62CA348F4c3F43D00',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
+      {
+        address: '0xa2abAeaba0ac658A1DF5517B57e45e857E3137Ad',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0x5B6C5a766edBc6c7988108A689C96AfCEa95a2f1',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0x15922b77301Df5EA532074e9fb30d115FB6A03fE',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 56,
@@ -81,43 +103,53 @@ export const bsc: NetworkConfig = {
   startBlock: 13079000,
 
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-bsc/version/latest',
+    studioName: 'unlock-protocol-bsc',
   },
 
-  swapPurchaser: '0x5Ad19758103D474bdF5E8764D97cB02b83c3c844',
+  swapPurchaser: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
 
   tokens: [
     {
-      address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+      address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
       decimals: 18,
-      name: 'Ethereum',
+      featured: true,
+      name: 'Ethereum Token',
       symbol: 'ETH',
     },
     {
-      address: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
+      address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
       decimals: 18,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
-      address: '0x55d398326f99059ff775485246999027b3197955',
+      address: '0x55d398326f99059fF775485246999027B3197955',
       decimals: 18,
-      name: 'Tether',
+      featured: true,
+      name: 'Tether USD',
       symbol: 'USDT',
     },
     {
-      address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
+      address: '0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3',
       decimals: 18,
-      name: 'Dai',
+      featured: true,
+      name: 'Dai Token',
       symbol: 'DAI',
+    },
+    {
+      address: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
+      decimals: 18,
+      name: 'Wrapped BNB',
+      symbol: 'WBNB',
     },
   ],
   uniswapV3: {
     factoryAddress: '0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7',
     positionManager: '0x7b8A01B39D58278b5DE7e48c8449c9f4F5170613',
-    universalRouterAddress: '0x5302086A3a25d473aAbBd0356eFf8Dd811a4d89B',
+    universalRouterAddress: '0x5Dc88340E1c5c6366864Ee415d6034cadd1A9897',
   },
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   url: 'https://www.bnbchain.org/en',

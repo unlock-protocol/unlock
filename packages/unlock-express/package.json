@@ -14,7 +14,7 @@
     "passport-custom": "1.1.1"
   },
   "peerDependencies": {
-    "passport": "^0.6.x || ^0.7.0"
+    "passport": "0.6 || 0.7"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,6 @@
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "prettier": "3.1.0"
+    "prettier": "3.2.5"
   }
 }

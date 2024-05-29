@@ -158,7 +158,7 @@ const Tab = ({
           open={isOpen}
           scrollIntoView={scrollIntoView}
           onClick={() => {
-            handleChange(tabNumber)
+            handleChange(isOpen ? 0 : tabNumber)
           }}
         />
         <TabContent open={isOpen}>

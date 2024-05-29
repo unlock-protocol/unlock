@@ -1,51 +1,57 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO } = require('../../helpers')
-
-const KeyManagerMock = artifacts.require('KeyManagerMock')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let keyManagerMock
-let keyOwner
+let keyOwner, keyManager, random, notKeyManager
 let tokenId
-const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
+const expirationDuration = BigInt(60 * 60 * 24 * 30)
 
-contract('Permissions / isKeyManager', (accounts) => {
-  keyOwner = accounts[1]
+describe('Permissions / isKeyManager', () => {
   before(async () => {
+    ;[, keyOwner, keyManager, random, notKeyManager] = await ethers.getSigners()
     // init template
-    keyManagerMock = await KeyManagerMock.new()
+    const KeyManagerMock = await ethers.getContractFactory('KeyManagerMock')
+
+    keyManagerMock = await KeyManagerMock.deploy()
     const { timestamp } = await ethers.provider.getBlock('latest')
-    const timestampBefore = new BigNumber(timestamp).plus(expirationDuration)
+    const timestampBefore = BigInt(timestamp) + expirationDuration
 
     const tx = await keyManagerMock.createNewKey(
-      keyOwner,
-      ADDRESS_ZERO, // beneficiary
+      await keyOwner.getAddress(),
+      await keyManager.getAddress(),
       timestampBefore
     )
-
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    const receipt = await tx.wait()
+    ;({
+      args: { tokenId },
+    } = await getEvent(receipt, 'Transfer'))
   })
 
   describe('confirming the key manager', () => {
-    let isKeyManager
-
     it('should return true if address is the KM', async () => {
-      isKeyManager = await keyManagerMock.isKeyManager(tokenId, accounts[1], {
-        from: accounts[1],
-      })
-      assert.equal(isKeyManager, true)
+      assert.equal(
+        await keyManagerMock
+          .connect(keyManager)
+          .isKeyManager(tokenId, await keyManager.getAddress()),
+        true
+      )
       // it shouldn't matter who is calling
-      isKeyManager = await keyManagerMock.isKeyManager(tokenId, accounts[1], {
-        from: accounts[5],
-      })
-      assert.equal(isKeyManager, true)
+      assert.equal(
+        await keyManagerMock
+          .connect(random)
+          .isKeyManager(tokenId, await keyManager.getAddress()),
+        true
+      )
     })
     it('should return false if address is not the KM', async () => {
-      isKeyManager = await keyManagerMock.isKeyManager(tokenId, accounts[9], {
-        from: accounts[1],
-      })
-      assert.equal(isKeyManager, false)
+      assert.equal(
+        await keyManagerMock.isKeyManager(
+          tokenId,
+          await notKeyManager.getAddress()
+        ),
+        false
+      )
     })
   })
 })

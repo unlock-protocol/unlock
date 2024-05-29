@@ -1,60 +1,70 @@
-const { reverts } = require('../helpers/errors')
-const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
+const { ethers } = require('hardhat')
 const { assert } = require('chai')
+const { reverts } = require('../helpers/errors')
+const { getEvent, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { purchaseKey, deployLock, compareBigNumbers } = require('../helpers')
 
-contract('Lock / burn', (accounts) => {
-  let keyOwner = accounts[1]
+describe('Lock / burn', () => {
+  let keyOwner
   let lock
   let tokenId
 
   before(async () => {
+    ;[, keyOwner] = await ethers.getSigners()
     lock = await deployLock()
   })
 
   beforeEach(async () => {
-    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('should delete ownership record', async () => {
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
-    assert.equal(await lock.ownerOf(tokenId), keyOwner)
-    await lock.burn(tokenId, { from: keyOwner })
-    assert.equal(await lock.getHasValidKey(keyOwner), false)
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
+    assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
+    await lock.connect(keyOwner).burn(tokenId)
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('emit a transfer event', async () => {
-    const tx = await lock.burn(tokenId, { from: keyOwner })
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
+    const tx = await lock.connect(keyOwner).burn(tokenId)
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'Transfer')
+    compareBigNumbers(args.tokenId, tokenId)
     assert.equal(args.to, ADDRESS_ZERO)
-    assert.equal(args.from, keyOwner)
+    assert.equal(args.from, await keyOwner.getAddress())
   })
 
   it('allow key manager to burn a key', async () => {
-    await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner })
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
-    assert.equal(await lock.ownerOf(tokenId), keyOwner)
-    await lock.burn(tokenId, { from: accounts[9] })
-    assert.equal(await lock.getHasValidKey(keyOwner), false)
+    const [, , keyManager] = await ethers.getSigners()
+    await lock
+      .connect(keyOwner)
+      .setKeyManagerOf(tokenId, await keyManager.getAddress())
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), true)
+    assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
+    await lock.connect(keyManager).burn(tokenId)
+    assert.equal(await lock.getHasValidKey(await keyOwner.getAddress()), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('balance is updated correctly', async () => {
-    assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 1)
-    assert.equal(
-      (await lock.tokenOfOwnerByIndex(keyOwner, 0)).toNumber(),
-      tokenId.toNumber()
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 1)
+    compareBigNumbers(
+      await lock.tokenOfOwnerByIndex(await keyOwner.getAddress(), 0),
+      tokenId
     )
-    await lock.burn(tokenId, { from: keyOwner })
-    assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 0)
-    await reverts(lock.tokenOfOwnerByIndex(keyOwner, 0), 'OUT_OF_RANGE')
+    await lock.connect(keyOwner).burn(tokenId)
+    compareBigNumbers(await lock.balanceOf(await keyOwner.getAddress()), 0)
+    await reverts(
+      lock.tokenOfOwnerByIndex(await keyOwner.getAddress(), 0),
+      'OUT_OF_RANGE'
+    )
   })
 
   it('totalSupply is decreased', async () => {
-    const totalSupply = (await lock.totalSupply()).toNumber()
-    await lock.burn(tokenId, { from: keyOwner })
-    assert.equal(await lock.totalSupply(), totalSupply - 1)
+    const totalSupply = await lock.totalSupply()
+    await lock.connect(keyOwner).burn(tokenId)
+    compareBigNumbers(await lock.totalSupply(), totalSupply - 1n)
   })
 
   it('should work only on existing keys', async () => {
@@ -62,8 +72,9 @@ contract('Lock / burn', (accounts) => {
   })
 
   it('should be callable only by owner', async () => {
+    const [, , random] = await ethers.getSigners()
     await reverts(
-      lock.burn(tokenId, { from: accounts[5] }),
+      lock.connect(random).burn(tokenId),
       'ONLY_KEY_MANAGER_OR_APPROVED'
     )
   })

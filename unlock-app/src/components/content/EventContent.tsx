@@ -1,9 +1,8 @@
 import React from 'react'
-
 import Head from 'next/head'
 import { pageTitle } from '../../constants'
 import { useRouter } from 'next/router'
-import { AppLayout } from '../interface/layouts/AppLayout'
+import { AppLayout, FOOTER } from '../interface/layouts/AppLayout'
 import LoadingIcon from '../interface/Loading'
 import EventDetails from './event/EventDetails'
 import { EventLandingPage } from './event/EventLandingPage'
@@ -11,6 +10,7 @@ import { useRouterQueryForLockAddressAndNetworks } from '~/hooks/useRouterQueryF
 import { useMetadata } from '~/hooks/metadata'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
+import { defaultEventCheckoutConfigForLockOnNetwork } from './event/NewEvent'
 
 export const EventContent = () => {
   const {
@@ -25,29 +25,10 @@ export const EventContent = () => {
   const event = metadata ? (toFormData(metadata) as Event) : undefined
   const isLoading = isLoadingQuery || isMetadataLoading
 
-  // Create a checkout config
+  // Create a checkout config if none is set
   const checkoutConfig = {
-    config: {
-      locks: {
-        [lockAddress]: {
-          network,
-        },
-      },
-      title: 'Registration',
-      emailRequired: true,
-      metadataInputs: [
-        {
-          name: 'fullname',
-          type: 'text',
-          label: 'Full name',
-          required: true,
-          placeholder: 'Satoshi Nakamoto',
-          defaultValue: '',
-        },
-      ],
-    } as PaywallConfigType,
+    config: defaultEventCheckoutConfigForLockOnNetwork(lockAddress, network),
   }
-
   return EventContentWithProps({ isLoading, checkoutConfig, event })
 }
 
@@ -79,7 +60,7 @@ export const EventContentWithProps = ({
 
   return (
     <AppLayout
-      showFooter={!event}
+      showFooter={{ ...FOOTER, subscriptionForm: undefined }}
       showLinks={false}
       authRequired={false}
       logoRedirectUrl="/event"

@@ -1,5 +1,9 @@
 const { ethers } = require('hardhat')
-const { getUnlock } = require('@unlock-protocol/hardhat-helpers')
+const {
+  getUnlock,
+  getNetwork,
+  ADDRESS_ZERO,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main({
   unlockAddress,
@@ -15,17 +19,16 @@ async function main({
       'UNLOCK CONFIG > Missing Unlock address... aborting. Please use --unlock-address'
     )
   }
-  if (!wethAddress) {
-    // eslint-disable-next-line no-console
-    throw new Error(
-      'UNLOCK CONFIG > Missing WETH address... aborting. Please use --weth-address'
-    )
-  }
+
   if (!udtAddress) {
-    // eslint-disable-next-line no-console
-    throw new Error(
-      'UNLOCK CONFIG > Missing UDT address... aborting. Please use --udt-address'
-    )
+    udtAddress = ADDRESS_ZERO
+  }
+
+  if (!wethAddress) {
+    const {
+      nativeCurrency: { wrapped },
+    } = await getNetwork()
+    wethAddress = wrapped || ADDRESS_ZERO
   }
 
   const [deployer] = await ethers.getSigners()
@@ -67,12 +70,10 @@ async function main({
       chainId
     )
 
-  const { transactionHash } = await tx.wait()
+  const { hash } = await tx.wait()
 
   // eslint-disable-next-line no-console
-  console.log(
-    `UNLOCK CONFIG > Unlock configured properly. (tx: ${transactionHash})`
-  )
+  console.log(`UNLOCK CONFIG > Unlock configured properly. (tx: ${hash})`)
 }
 
 // execute as standalone

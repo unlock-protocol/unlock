@@ -1,10 +1,16 @@
 import dayjs from '../config/dayjs'
-import { kebabCase } from 'lodash'
+import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
-import { PaywallConfig, getLockTypeByMetadata } from '@unlock-protocol/core'
-import { EventData } from '../models'
+import {
+  PaywallConfig,
+  getLockTypeByMetadata,
+  toFormData,
+} from '@unlock-protocol/core'
+import { CheckoutConfig, EventData } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
+import { Op } from 'sequelize'
+import { removeProtectedAttributesFromObject } from '../utils/protectedAttributes'
 
 interface AttributeProps {
   value: string
@@ -36,7 +42,40 @@ const getEventDate = (
   return null
 }
 
-export const getEventDataForLock = async (
+export const getEventForLock = async (
+  lockAddress: string,
+  network: number,
+  includeProtected: boolean
+) => {
+  const checkoutConfigs = await CheckoutConfig.findAll({
+    where: {
+      [Op.or]: [
+        { [`config.locks.${lockAddress}.network`]: network },
+        { [`config.locks.${lockAddress.toLowerCase()}.network`]: network },
+      ],
+    },
+    order: [['updatedAt', 'DESC']],
+  })
+
+  // If there are checkout configs, let's see if an even exists with them!
+  // Let's now find any event that uses this checkout config!
+  const event = await EventData.findOne({
+    where: {
+      checkoutConfigId: checkoutConfigs.map((record) => record.id),
+    },
+  })
+  if (event && !includeProtected) {
+    event.data = removeProtectedAttributesFromObject(event.data)
+  }
+  // Robustness principle: the front-end, as well as mailers expects a ticket object to be present
+  if (event) {
+    const ticket = toFormData(event?.data).ticket
+    event.data.ticket = defaultsDeep(ticket, event.data.ticket)
+  }
+  return event
+}
+
+export const getEventMetadataForLock = async (
   lockAddress: string,
   network?: number
 ): Promise<EventProps | undefined> => {
@@ -130,23 +169,38 @@ export const getEventDataForLock = async (
   return eventDetail
 }
 
-export const getEventBySlug = async (slug: string) => {
-  return await EventData.findOne({
+export const getEventBySlug = async (
+  slug: string,
+  includeProtected: boolean
+) => {
+  const event = await EventData.findOne({
     where: {
       slug,
     },
   })
+  // Robustness principle: the front-end, as well as mailers expects a ticket object to be present
+  if (event) {
+    const ticket = toFormData(event?.data).ticket
+    event.data.ticket = defaultsDeep(ticket, event.data.ticket)
+  }
+
+  if (event && !includeProtected) {
+    event.data = removeProtectedAttributesFromObject(event.data)
+  }
+  return event
 }
 
 export const createEventSlug = async (
   name: string,
-  eventId?: number,
   index: number | undefined = undefined
 ): Promise<string> => {
-  const slug = index ? kebabCase([name, index].join('-')) : kebabCase(name)
-  const event = await getEventBySlug(slug)
-  if (!!event && event.id !== eventId) {
-    return createEventSlug(name, eventId, index ? index + 1 : 1)
+  const cleanName = name.replace(/[^\x20-\x7E]/g, '')
+  const slug = index
+    ? kebabCase([cleanName, index].join('-'))
+    : kebabCase(cleanName)
+  const event = await getEventBySlug(slug, false /** includeProtected */)
+  if (event) {
+    return createEventSlug(name, index ? index + 1 : 1)
   }
   return slug
 }
@@ -155,18 +209,31 @@ export const saveEvent = async (
   parsed: EventBodyType,
   walletAddress: string
 ): Promise<[EventData, boolean]> => {
-  const slug =
-    parsed.data.slug || (await createEventSlug(parsed.data.name, parsed.id))
+  const slug = parsed.data.slug || (await createEventSlug(parsed.data.name))
 
-  const [savedEvent, created] = await EventData.upsert(
+  let data = {}
+  const previousEvent = await EventData.findOne({
+    where: { slug },
+  })
+  if (previousEvent) {
+    data = defaultsDeep(
+      {
+        ...parsed.data,
+      },
+      previousEvent.data
+    )
+  } else {
+    data = {
+      ...parsed.data,
+      slug, // Making sure we add the slug to the data as well.
+    }
+  }
+
+  const [savedEvent, _] = await EventData.upsert(
     {
-      id: parsed.id,
       name: parsed.data.name,
       slug,
-      data: {
-        ...parsed.data,
-        slug, // Making sure we add the slug to the data as well.
-      },
+      data,
       createdBy: walletAddress,
     },
     {
@@ -179,7 +246,7 @@ export const saveEvent = async (
       parsed.checkoutConfig.config
     )
     const createdConfig = await saveCheckoutConfig({
-      name: `Checkout config for ${savedEvent.name}`,
+      name: `Checkout config for ${savedEvent.name} (${savedEvent.slug})`,
       config: checkoutConfig,
       createdBy: walletAddress,
     })
@@ -187,5 +254,6 @@ export const saveEvent = async (
     savedEvent.checkoutConfigId = createdConfig.id
     await savedEvent.save()
   }
-  return [savedEvent, !!created]
+
+  return [savedEvent, !parsed.data.slug]
 }

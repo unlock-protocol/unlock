@@ -6,9 +6,8 @@ import {
   RiExternalLinkLine as ExternalLinkIcon,
   RiErrorWarningFill as ErrorIcon,
 } from 'react-icons/ri'
-import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
@@ -31,9 +30,9 @@ import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
+import Disconnect from './Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -53,8 +52,18 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   )
 }
 
-export function Payment({ injectedProvider, checkoutService }: Props) {
-  const [state, send] = useActor(checkoutService)
+// All enabled by default.
+const defaultPaymentMethods = {
+  crypto: true,
+  card: true,
+  crossmint: true,
+  swap: true,
+  crosschain: true,
+  claim: true,
+}
+
+export function Payment({ checkoutService }: Props) {
+  const state = useSelector(checkoutService, (state) => state)
   const config = useConfig()
   const { recipients } = state.context
   const lock = state.context.lock!
@@ -62,6 +71,22 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const networkConfig = config.networks[lock.network]
   const baseSymbol = networkConfig.nativeCurrency.symbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
+
+  if (recipients.length === 0) {
+    recipients.push(account as string)
+  } else if (recipients.length > 1 && recipients[0] === '') {
+    recipients[0] = account as string
+  }
+
+  const configPaymentMethods =
+    state.context.paywallConfig.locks[lock.address]?.paymentMethods ||
+    state.context.paywallConfig.paymentMethods ||
+    {}
+
+  const paymentMethods = {
+    ...defaultPaymentMethods,
+    ...configPaymentMethods,
+  }
 
   const { isLoading: isLoading, data: enableCreditCard } = useCreditCardEnabled(
     {
@@ -94,12 +119,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     symbol: lockTickerSymbol(lock, baseSymbol),
   })
 
-  const { isLoading: isCrossmintLoading, crossmintClientId } =
+  const { isLoading: isCrossmintLoading, crossmintEnabled } =
     useCrossmintEnabled({
       network: lock.network,
       lockAddress: lock.address,
       recipients,
     })
+
+  const enableCrossmint = !!crossmintEnabled
 
   const { isLoading: isBalanceLoading, data: balance } = useBalance({
     account: account!,
@@ -160,22 +187,11 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isLoadingMoreRoutes =
     isUniswapRoutesLoading || isCrossChaingRoutesLoading
 
-  // Universal card is enabled if credit card is not enabled by the lock manager and the lock is USDC
-  const USDC = networkConfig?.tokens?.find((t: any) => t.symbol === 'USDC')
-  const universalCardEnabled =
-    false && // disabled for now
-    window.top === window &&
-    !enableCreditCard &&
-    networkConfig.universalCard?.cardPurchaserAddress &&
-    lock.currencyContractAddress?.toLowerCase()?.trim() ===
-      USDC?.address?.toLowerCase()?.trim()
-
   const allDisabled = [
     enableCreditCard,
     enableClaim,
     enableCrypto,
-    universalCardEnabled,
-    !!crossmintClientId,
+    enableCrossmint,
   ].every((item) => !item)
 
   return (
@@ -196,12 +212,47 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           </div>
         ) : (
           <div className="space-y-6">
-            {enableCrypto && (
+            {/* Card Payment via Stripe! */}
+            {enableCreditCard && paymentMethods['card'] && !enableClaim && (
+              <button
+                onClick={(event) => {
+                  event.preventDefault()
+                  checkoutService.send({
+                    type: 'SELECT_PAYMENT_METHOD',
+                    payment: {
+                      method: 'card',
+                    },
+                  })
+                }}
+                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+              >
+                <div className="flex items-center justify-between w-full">
+                  <h3 className="font-bold"> Pay via card </h3>
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                    <VisaIcon size={18} />
+                    <MasterCardIcon size={18} />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-sm text-left text-gray-500">
+                    Use cards, Google Pay, or Apple Pay. <br />
+                    <span className="text-xs">Additional fees may apply</span>
+                  </div>
+                  <RightArrowIcon
+                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    size={20}
+                  />
+                </div>
+              </button>
+            )}
+
+            {/* Crypto Payment */}
+            {enableCrypto && paymentMethods['crypto'] && (
               <button
                 disabled={!canAfford}
                 onClick={(event) => {
                   event.preventDefault()
-                  send({
+                  checkoutService.send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'crypto',
@@ -235,12 +286,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
-            {crossmintClientId && !enableClaim && (
+            {/* Crossmint Payment */}
+            {enableCrossmint && paymentMethods['crossmint'] && !enableClaim && (
               <div>
                 <button
                   onClick={(event) => {
                     event.preventDefault()
-                    send({
+                    checkoutService.send({
                       type: 'SELECT_PAYMENT_METHOD',
                       payment: {
                         method: 'crossmint',
@@ -276,77 +328,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </div>
             )}
 
-            {universalCardEnabled && !enableClaim && (
+            {/* Claim */}
+            {enableClaim && paymentMethods['claim'] && (
               <button
                 onClick={(event) => {
                   event.preventDefault()
-                  send({
-                    type: 'SELECT_PAYMENT_METHOD',
-                    payment: {
-                      method: 'universal_card',
-                    },
-                  })
-                }}
-                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via Stripe </h3>
-                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                    <VisaIcon size={18} />
-                    <MasterCardIcon size={18} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between w-full">
-                  <div className="text-sm text-left text-gray-500">
-                    Use cards, Google Pay, or Apple Pay. <br />
-                    <span className="text-xs">Additional fees may apply</span>
-                  </div>
-                  <RightArrowIcon
-                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
-                    size={20}
-                  />
-                </div>
-              </button>
-            )}
-
-            {enableCreditCard && !enableClaim && (
-              <button
-                onClick={(event) => {
-                  event.preventDefault()
-                  send({
-                    type: 'SELECT_PAYMENT_METHOD',
-                    payment: {
-                      method: 'card',
-                    },
-                  })
-                }}
-                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
-              >
-                <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via card </h3>
-                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                    <VisaIcon size={18} />
-                    <MasterCardIcon size={18} />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between w-full">
-                  <div className="text-sm text-left text-gray-500">
-                    Use cards, Google Pay, or Apple Pay. <br />
-                    <span className="text-xs">Additional fees may apply</span>
-                  </div>
-                  <RightArrowIcon
-                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
-                    size={20}
-                  />
-                </div>
-              </button>
-            )}
-
-            {enableClaim && (
-              <button
-                onClick={(event) => {
-                  event.preventDefault()
-                  send({
+                  checkoutService.send({
                     type: 'SELECT_PAYMENT_METHOD',
                     payment: {
                       method: 'claim',
@@ -370,8 +357,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
 
+            {/* Swap and purchase */}
             {!isUniswapRoutesLoading &&
               !enableClaim &&
+              paymentMethods['swap'] &&
               uniswapRoutes?.map((route, index) => {
                 if (!route) {
                   return null
@@ -381,7 +370,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     key={index}
                     onClick={(event) => {
                       event.preventDefault()
-                      send({
+                      checkoutService.send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
                           method: 'swap_and_purchase',
@@ -414,16 +403,17 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 )
               })}
 
-            {/* Show cross chain! */}
+            {/* Crosschain purchase */}
             {!isCrossChaingRoutesLoading &&
               !enableClaim &&
+              paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
                 return (
                   <button
                     key={index}
                     onClick={(event) => {
                       event.preventDefault()
-                      send({
+                      checkoutService.send({
                         type: 'SELECT_PAYMENT_METHOD',
                         payment: {
                           method: 'crosschain_purchase',
@@ -469,12 +459,14 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 )
               })}
 
+            {/* Loading details */}
             {isLoadingMoreRoutes && !enableClaim && (
               <div className="flex items-center justify-center w-full gap-2 text-sm text-center">
                 <LoadingIcon size={16} /> Loading more payment options...
               </div>
             )}
 
+            {/* All disabled */}
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">
@@ -504,10 +496,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          service={checkoutService}
-          injectedProvider={injectedProvider}
-        />
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

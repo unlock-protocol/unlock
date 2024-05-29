@@ -2,6 +2,8 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { Attribute } from '../types'
+import { waitOrTimeout } from './promises'
+import { TIMEOUT_ON_SUBGRAPH } from './constants'
 
 interface Key {
   expiration?: number
@@ -14,15 +16,24 @@ export default class KeyData {
   async get(lockAddress: string, tokenId: string, network: number) {
     try {
       const subgraphClient = new SubgraphService()
-      const key = await subgraphClient.key(
-        {
-          where: {
-            lock: lockAddress.toLowerCase(),
-            tokenId: Number(tokenId),
+      const key = await waitOrTimeout(
+        subgraphClient.key(
+          {
+            where: {
+              lock: lockAddress.toLowerCase(),
+              tokenId: Number(tokenId),
+            },
           },
-        },
-        {
-          network,
+          {
+            network,
+          }
+        ),
+        TIMEOUT_ON_SUBGRAPH,
+        () => {
+          logger.error(
+            `Timed out after ${TIMEOUT_ON_SUBGRAPH}ms while retrieving info from Subgraph for metadata ${lockAddress} ${tokenId} on ${network}`
+          )
+          return {}
         }
       )
 
@@ -40,7 +51,6 @@ export default class KeyData {
         expiration: keyExpiration ? parseInt(keyExpiration) : undefined,
         tokenId: key?.tokenId,
         owner: key?.owner,
-        // @ts-expect-error Remove me once we have a createdAt in the Key object on the subgraph
         minted: key?.createdAt ? parseInt(key.createdAt) : undefined,
       }
 

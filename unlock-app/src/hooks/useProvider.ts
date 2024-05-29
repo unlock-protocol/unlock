@@ -17,9 +17,8 @@ export interface EthereumWindow extends Window {
 
 interface WatchAssetInterface {
   address: string
-  symbol: string
-  image: string
   network: number
+  tokenId: string
 }
 
 /**
@@ -31,7 +30,7 @@ export const useProvider = (config: any) => {
   const { openConnectModalAsync, closeConnectModal } = useConnectModal()
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
-  const [network, setNetwork] = useState<number | null | undefined>(
+  const [network, setNetwork] = useState<number | undefined>(
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
@@ -39,7 +38,8 @@ export const useProvider = (config: any) => {
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
 
-  const isUnlockAccount = !!provider?.isUnlock
+  const isUnlockAccount =
+    !!provider?.isUnlock || (!provider && getStorage('provider') === 'UNLOCK')
   const email = provider?.emailAddress || getStorage('email')
   const encryptedPrivateKey = provider?.passwordEncryptedPrivateKey
 
@@ -83,19 +83,19 @@ export const useProvider = (config: any) => {
     // If the user is not connected, we open the connect modal
     if (!connected) {
       const response = await openConnectModalAsync()
-      closeConnectModal()
+      await closeConnectModal()
       pr = response?.provider
     }
     let walletServiceProvider: ethers.providers.Web3Provider = pr
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
       if (pr.isUnlock) {
-        walletServiceProvider = UnlockProvider.reconnect(
+        walletServiceProvider = (await UnlockProvider.reconnect(
           pr,
           networkConfig
-        ) as unknown as ethers.providers.Web3Provider
+        )) as unknown as ethers.providers.Web3Provider
       } else {
-        await switchWeb3ProviderNetwork(networkId).catch(console.error)
+        await switchWeb3ProviderNetwork(networkId)
         walletServiceProvider = new ethers.providers.Web3Provider(
           pr.provider,
           'any'
@@ -107,9 +107,8 @@ export const useProvider = (config: any) => {
 
   const getWalletService = async (networkId?: number) => {
     const networkProvider = await getNetworkProvider(networkId)
-    const { walletService: _walletService } = await createWalletService(
-      networkProvider
-    )
+    const { walletService: _walletService } =
+      await createWalletService(networkProvider)
     return _walletService
   }
 
@@ -203,16 +202,18 @@ export const useProvider = (config: any) => {
     setNetwork(undefined)
     setConnected(undefined)
 
-    clearStorage()
+    clearStorage(
+      ['provider', 'network', 'account', `$session_${account}`, 'email'],
+      true
+    )
     try {
       // unlock provider does not support removing listeners or closing.
-      if (provider?.isUnlock) {
-        return
-      }
-      provider.provider.removeAllListeners()
-      // metamask does not support disconnect
-      if (provider?.connection?.url !== 'metamask') {
-        await provider.provider.close()
+      if (provider && !provider?.isUnlock) {
+        provider.provider.removeAllListeners()
+        // metamask does not support disconnect
+        if (provider?.connection?.url !== 'metamask') {
+          await provider.provider.close()
+        }
       }
     } catch (error) {
       console.error(
@@ -224,20 +225,18 @@ export const useProvider = (config: any) => {
     setLoading(false)
   }
 
+  // More info https://docs.metamask.io/wallet/reference/wallet_watchasset/
   const watchAsset = async ({
     address,
-    symbol,
-    image,
     network,
+    tokenId,
   }: WatchAssetInterface) => {
     await switchWeb3ProviderNetwork(network)
     await provider.send('wallet_watchAsset', {
-      type: 'ERC20', // THIS IS A LIE, BUT AT LEAST WE CAN GET ADDED THERE!
+      type: 'ERC721',
       options: {
         address,
-        symbol,
-        decimals: 0,
-        image,
+        tokenId,
       },
     })
   }
@@ -249,7 +248,7 @@ export const useProvider = (config: any) => {
   return {
     loading,
     network,
-    account,
+    account: provider ? account : undefined,
     email,
     getWalletService,
     isUnlockAccount,

@@ -1,14 +1,14 @@
 ---
 title: Frequently Asked Questions
-sidebar_position: 4
 description: Answering all of your faqs about Unlock DAO, UDT and governance.
+sidebar_position: 6
 ---
 
 # Governance FAQ
 
 ## What is ɄDT?
 
-ɄDT (Unlock Discount Token) is the native governance token of the Unlock Protocol DAO. It is an ERC20 deployed on the Ethereum main net, but also available on side chains and selected layer 2.
+ɄDT ([Unlock DAO Token](./unlock-dao-tokens.mdx)) is the native governance token of the Unlock Protocol DAO. It is an ERC20 deployed on the Ethereum main net, but also available on side chains and selected layer 2.
 
 ## What is ɄDT used for?
 
@@ -22,7 +22,7 @@ You can [earn UDT today by using the protocol](/governance/unlock-dao-tokens), o
 
 When Unlock Inc. created the [UDT tokens](/governance/unlock-dao-tokens), a total of 1,000,000 tokens were premined. These tokens are kept in Unlock's multisig wallet and our goal is to use 800,000 of them to foster adoption of the protocol (the company will keep at least 200,000).
 
-Additionally, the protocol itself distributes new tokens using a logarithmic curve, based on the usage of the protocol.
+Additionally, the protocol itself distributes tokens using a logarithmic curve, based on the usage of the protocol.
 
 ## What is Unlock Inc. (aka Unlock Labs)?
 
@@ -30,7 +30,7 @@ Unlock Inc. is the company that wrote the first versions of the Unlock Protocol.
 
 ## What is the Unlock DAO?
 
-The Unlock DAO is the decentralized organization of ɄDT token holders that govern and control the Unlock Protocol. Unlock Inc. is _one_ of the stakeholders on the DAO, and we expect other organizations to emerge and eventually lead some efforts independently of Unlock Inc.
+The [Unlock DAO](./unlock-dao/) is the decentralized organization of ɄDT token holders that govern and control the Unlock Protocol. Unlock Inc. is _one_ of the stakeholders on the DAO, and we expect other organizations to emerge and eventually lead some efforts independently of Unlock Inc.
 
 Governance happens through _proposals_.
 

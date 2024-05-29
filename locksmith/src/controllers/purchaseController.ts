@@ -219,7 +219,6 @@ export class PurchaseController {
       )
       logger.info(`Subscription updated for id: ${subscription?.id}`)
     } catch (error) {
-      console.log(error)
       if (response.headersSent) {
         return
       }
@@ -236,12 +235,21 @@ export class PurchaseController {
       const pricer = new KeyPricer()
 
       const fulfillmentDispatcher = new Dispatcher()
-      const totalAmount = await getTotalPurchasePriceInCrypto({
-        lockAddress,
-        network,
-        recipients,
-        data: data || [],
-      })
+      const [totalAmount, soldOut] = await Promise.all([
+        getTotalPurchasePriceInCrypto({
+          lockAddress,
+          network,
+          recipients,
+          data: data || [],
+        }),
+        isSoldOut(lockAddress, network, recipients.length),
+      ])
+
+      if (soldOut) {
+        return response.status(400).send({
+          message: 'Lock is sold out',
+        })
+      }
 
       if (totalAmount.gt(0)) {
         return response.status(400).send({

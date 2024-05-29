@@ -1,13 +1,12 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
 import { Pricing } from '../../Lock'
@@ -15,33 +14,25 @@ import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { PricingData } from './PricingData'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
 }
 
 export function ConfirmCrypto({
-  injectedProvider,
   checkoutService,
   onConfirmed,
   onError,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
-  const { account, getWalletService } = useAuth()
-  const config = useConfig()
-  const web3Service = useWeb3Service()
-  const recaptchaRef = useRef<any>()
-  const [isConfirming, setIsConfirming] = useState(false)
   const {
     lock,
     recipients,
@@ -51,7 +42,12 @@ export function ConfirmCrypto({
     metadata,
     data,
     renew,
-  } = state.context
+  } = useSelector(checkoutService, (state) => state.context)
+  const { account, getWalletService } = useAuth()
+  const config = useConfig()
+  const web3Service = useWeb3Service()
+  const recaptchaRef = useRef<any>()
+  const [isConfirming, setIsConfirming] = useState(false)
 
   const { address: lockAddress, network: lockNetwork, keyPrice } = lock!
 
@@ -166,7 +162,7 @@ export function ConfirmCrypto({
       const onErrorCallback = (error: Error | null, hash: string | null) => {
         setIsConfirming(false)
         if (error) {
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
             transactionHash: hash!,
@@ -248,10 +244,7 @@ export function ConfirmCrypto({
       />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
           {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>
@@ -296,44 +289,40 @@ export function ConfirmCrypto({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={
-                isConfirming || isLoading || !canAfford || isPricingDataError
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={
+              isConfirming || isLoading || !canAfford || isPricingDataError
+            }
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
               }
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCrypto()
-              }}
-            >
-              {buttonLabel}
-            </Button>
-            {!isLoading && !isPricingDataError && isPayable && (
-              <>
-                {!isPayable?.isTokenPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough {symbol} to complete this purchase.
-                  </small>
-                )}
-                {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
-                  <small className="text-center text-red-500">
-                    You do not have enough{' '}
-                    {config.networks[lock!.network].nativeCurrency.symbol} to
-                    pay transaction fees (gas).
-                  </small>
-                )}
-              </>
-            )}
-          </div>
-        </Connected>
+              onConfirmCrypto()
+            }}
+          >
+            {buttonLabel}
+          </Button>
+          {!isLoading && !isPricingDataError && isPayable && (
+            <>
+              {!isPayable?.isTokenPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough {symbol} to complete this purchase.
+                </small>
+              )}
+              {isPayable?.isTokenPayable && !isPayable?.isGasPayable && (
+                <small className="text-center text-red-500">
+                  You do not have enough{' '}
+                  {config.networks[lock!.network].nativeCurrency.symbol} to pay
+                  transaction fees (gas).
+                </small>
+              )}
+            </>
+          )}
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

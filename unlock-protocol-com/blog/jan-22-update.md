@@ -56,4 +56,4 @@ Ok, you’ll be glad you read down this far. This is kind of like the after-cred
 
 [![CDAA](https://unlock-protocol.com/images/blog/jan-22-update/5-min.png)](https://twitter.com/PlannerDAO/status/1480991827209641988?s=20)
 
-Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.com/invite/Ah6ZEJyTDp). #protip
+Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.unlock-protocol.com/). #protip

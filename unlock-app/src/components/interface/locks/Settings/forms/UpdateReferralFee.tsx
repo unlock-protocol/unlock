@@ -5,14 +5,17 @@ import {
   Card,
   AddressInput,
 } from '@unlock-protocol/ui'
+import { FaTrash as TrashIcon } from 'react-icons/fa'
 import { ethers } from 'ethers'
 import Image from 'next/image'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import LoadingIcon from '~/components/interface/Loading'
+import useEns from '~/hooks/useEns'
 import { useReferrerFee } from '~/hooks/useReferrerFee'
 import { onResolveName } from '~/utils/resolvers'
+import { ADDRESS_ZERO } from '~/constants'
 
 interface UpdateReferralFeeProps {
   lockAddress: string
@@ -25,8 +28,6 @@ interface FormProps {
   referralFeePercentage: number
   referralAddress: string
 }
-
-const zeroAddress = ethers.constants.AddressZero
 
 export const UpdateReferralFee = ({
   lockAddress,
@@ -51,7 +52,6 @@ export const UpdateReferralFee = ({
   const {
     data: referralFees,
     isLoading,
-    isSettingReferrerFee,
     setReferrerFee,
     refetch,
   } = useReferrerFee({
@@ -62,7 +62,7 @@ export const UpdateReferralFee = ({
   const onSubmit = async (fields: FormProps) => {
     const setReferrerFeePromise = setReferrerFee.mutateAsync({
       ...fields,
-      referralAddress: referralAddress || zeroAddress,
+      referralAddress: referralAddress || ADDRESS_ZERO,
     })
 
     await ToastHelper.promise(setReferrerFeePromise, {
@@ -79,7 +79,7 @@ export const UpdateReferralFee = ({
 
   const isValidAddress = ethers.utils.isAddress(referralAddress)
 
-  const isDisabledReferrerInput = disabled || isSettingReferrerFee || isLoading
+  const isDisabledReferrerInput = disabled || isLoading
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
@@ -124,7 +124,7 @@ export const UpdateReferralFee = ({
           })}
           error={
             errors?.referralFeePercentage &&
-            'This field accept percentage value between 1 and 100.'
+            'This field accepts percentage values between 1 and 100.'
           }
           disabled={isDisabledReferrerInput}
         />
@@ -140,7 +140,7 @@ export const UpdateReferralFee = ({
             (isReferralAddressToggled && !referralAddress) ||
             !!(referralAddress && !isValidAddress)
           }
-          loading={isSettingReferrerFee}
+          loading={isLoading}
         >
           Apply
         </Button>
@@ -178,26 +178,14 @@ export const UpdateReferralFee = ({
           </div>
         ) : referralFees.length ? (
           <div className="w-full grid gap-5 grid-cols-1 mt-3">
-            {referralFees.map(({ id, referrer, fee }) => {
-              const feeNumber = Number(fee)
-              const isAddressLinkedToAnyReferrer = referrer === zeroAddress
-
-              return (
-                <div
-                  key={id}
-                  className="w-full overflow-x-auto flex justify-between items-center border border-gray-300 p-3 rounded-xl"
-                >
-                  <h2 className="text-md font-medium break-words">
-                    {isAddressLinkedToAnyReferrer
-                      ? 'Referral fee applied to any referrer'
-                      : referrer}
-                  </h2>
-                  <h2 className="text-md pl-3 font-medium break-words">
-                    ({feeNumber / 100}%)
-                  </h2>
-                </div>
-              )
-            })}
+            {referralFees.map(({ id, referrer, fee }) => (
+              <ReferrerRow
+                key={id}
+                fee={fee}
+                referrer={referrer}
+                setReferrerFee={setReferrerFee}
+              />
+            ))}
           </div>
         ) : (
           <h2 className="text-1xl mt-3 w-full text-center">
@@ -206,5 +194,48 @@ export const UpdateReferralFee = ({
         )}
       </div>
     </form>
+  )
+}
+
+interface ReferrerRowProps {
+  fee: number
+  referrer: string
+  setReferrerFee: any
+}
+
+const ReferrerRow = ({ fee, referrer, setReferrerFee }: ReferrerRowProps) => {
+  const feeNumber = Number(fee)
+  const isAddressLinkedToAnyReferrer = referrer === ADDRESS_ZERO
+  const addressToEns = useEns(referrer!)
+
+  const removeReferrer = async () => {
+    const setReferrerFeePromise = setReferrerFee.mutateAsync({
+      referralFeePercentage: 0,
+      referralAddress: referrer,
+    })
+
+    await ToastHelper.promise(setReferrerFeePromise, {
+      loading: 'Removing referrer',
+      error: 'Failed to remove the referrer, please try again.',
+      success: 'Referrer removed',
+    })
+  }
+
+  if (feeNumber === 0) {
+    return null
+  }
+
+  return (
+    <div className="w-full overflow-x-auto flex justify-between items-center border border-gray-300 p-3 rounded-xl">
+      <span className="text-md pl-3 font-medium break-words">
+        {feeNumber / 100}%
+      </span>
+      <span className="text-md font-medium break-words w-4/5">
+        {isAddressLinkedToAnyReferrer
+          ? 'Referral fee applied to any referrer'
+          : addressToEns}
+      </span>
+      <TrashIcon className="cursor-pointer" onClick={removeReferrer} />
+    </div>
   )
 }

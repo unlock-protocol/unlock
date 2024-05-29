@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
-import { useState, useEffect } from 'react'
 import configure from '../config'
+import { useQuery } from '@tanstack/react-query'
 
 const config = configure()
 
@@ -9,13 +9,11 @@ export const getNameOrAddressForAddress = async (
 ): Promise<string> => {
   try {
     const address = _address.trim()
-    const isNotENS = ethers.utils.isAddress(address)
-    if (isNotENS) {
-      return address
-    }
     const result = await new ethers.providers.JsonRpcBatchProvider(
+      // It was decided to always do lookup on Mainnet
       config.networks[1].provider
     ).lookupAddress(address)
+
     if (result) {
       return result
     }
@@ -50,17 +48,14 @@ export const getAddressForName = async (_name: string): Promise<string> => {
  * @param {*} address
  */
 export const useEns = (address: string) => {
-  const [name, setName] = useState(address)
-
-  const getNameForAddress = async (_address: string) => {
-    setName(await getNameOrAddressForAddress(_address))
-  }
-
-  useEffect(() => {
-    getNameForAddress(address)
-  }, [address])
-
-  return name
+  const { data: name } = useQuery(
+    ['ens', address],
+    async () => {
+      return getNameOrAddressForAddress(address)
+    },
+    { staleTime: Infinity }
+  )
+  return name || address
 }
 
 export default useEns

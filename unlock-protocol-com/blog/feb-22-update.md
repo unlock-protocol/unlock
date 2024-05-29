@@ -29,4 +29,4 @@ Welcome to the February 2022 product updates from Unlock! The team delivered a n
 
 - **Refactored Cloudflare worker** — We made [improvements to Unlock's CloudFlare worker](https://github.com/unlock-protocol/cloudflare-worker).
 
-Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.com/invite/Ah6ZEJyTDp).
+Want to know what’s going on with Unlock in real time? [Jump into our Discord](https://discord.unlock-protocol.com/).

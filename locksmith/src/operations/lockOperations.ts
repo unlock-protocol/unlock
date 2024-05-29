@@ -122,12 +122,10 @@ export const getKeyIcon = async ({
   lockAddress: string
   keyId: string
 }): Promise<IconType | null> => {
-  console.log({ lockAddress, keyId })
-
   // Temporary icon for FilBangalore
   if (
     network == 42161 &&
-    lockAddress.toLowerCase() === '0x02c510be69fe87e052e065d8a40b437d55907b48'
+    lockAddress.toLowerCase() === '0x02c510bE69fe87E052E065D8A40B437d55907B48'
   ) {
     const icon = await ticketForFilBangalore({
       network,

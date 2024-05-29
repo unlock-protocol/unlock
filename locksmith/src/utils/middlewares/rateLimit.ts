@@ -26,7 +26,7 @@ export const createRateLimitMiddleware = ({
   })
   const rateLimiterMiddleware: RequestHandler = (request, response, next) => {
     rateLimiter
-      .consume(request.ip)
+      .consume(request.ip!)
       .then(() => {
         next()
       })

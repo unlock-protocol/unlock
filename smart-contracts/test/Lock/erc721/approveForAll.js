@@ -1,32 +1,41 @@
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
 const { deployLock, purchaseKey, reverts } = require('../../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 let lock
 let tokenId
+let keyOwner, approvedAccount, newApprovedAccount, signers
 
-contract('Lock / erc721 / approveForAll', (accounts) => {
+describe('Lock / erc721 / approveForAll', () => {
   before(async () => {
     lock = await deployLock()
+    ;[, keyOwner, approvedAccount, newApprovedAccount, ...signers] =
+      await ethers.getSigners()
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
-  let keyOwner = accounts[1]
-  let approvedUser = accounts[2]
-
   describe('when the key exists', () => {
     before(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner))
+      ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
     })
 
     it('isApprovedForAll defaults to false', async () => {
-      assert.equal(await lock.isApprovedForAll(keyOwner, approvedUser), false)
+      assert.equal(
+        await lock.isApprovedForAll(
+          await keyOwner.getAddress(),
+          await approvedAccount.getAddress()
+        ),
+        false
+      )
     })
 
     describe('when the sender is self approving', () => {
       it('should fail', async () => {
         await reverts(
-          lock.setApprovalForAll(keyOwner, true, {
-            from: keyOwner,
-          }),
+          lock
+            .connect(keyOwner)
+            .setApprovalForAll(await keyOwner.getAddress(), true),
           'APPROVE_SELF'
         )
       })
@@ -35,67 +44,92 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
     describe('when the approval succeeds', () => {
       let event
       before(async () => {
-        let result = await lock.setApprovalForAll(approvedUser, true, {
-          from: keyOwner,
-        })
-        event = result.logs[0]
+        const tx = await lock
+          .connect(keyOwner)
+          .setApprovalForAll(await approvedAccount.getAddress(), true)
+        const receipt = await tx.wait()
+        event = await getEvent(receipt, 'ApprovalForAll')
       })
 
       it('isApprovedForAll is true', async () => {
-        assert.equal(await lock.isApprovedForAll(keyOwner, approvedUser), true)
+        assert.equal(
+          await lock.isApprovedForAll(
+            await keyOwner.getAddress(),
+            await approvedAccount.getAddress()
+          ),
+          true
+        )
       })
 
-      it('should trigger the ApprovalForAll event', () => {
-        assert.equal(event.event, 'ApprovalForAll')
-        assert.equal(event.args.owner, keyOwner)
-        assert.equal(event.args.operator, approvedUser)
+      it('should trigger the ApprovalForAll event', async () => {
+        assert.equal(event.event.fragment.name, 'ApprovalForAll')
+        assert.equal(event.args.owner, await keyOwner.getAddress())
+        assert.equal(event.args.operator, await approvedAccount.getAddress())
         assert.equal(event.args.approved, true)
       })
 
       it('an authorized operator may set the approved address for an NFT', async () => {
-        let newApprovedUser = accounts[8]
-
-        await lock.approve(newApprovedUser, tokenId, {
-          from: approvedUser,
-        })
-
-        assert.equal(await lock.getApproved(tokenId), newApprovedUser)
+        await lock
+          .connect(approvedAccount)
+          .approve(await newApprovedAccount.getAddress(), tokenId)
+        assert.equal(
+          await lock.getApproved(tokenId),
+          await newApprovedAccount.getAddress()
+        )
       })
 
       it('should allow the approved user to transferFrom', async () => {
-        await lock.transferFrom(keyOwner, accounts[3], tokenId, {
-          from: approvedUser,
-        })
+        await lock
+          .connect(approvedAccount)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await newApprovedAccount.getAddress(),
+            tokenId
+          )
 
         // Transfer it back to the original keyOwner for other tests
-        await lock.transferFrom(accounts[3], keyOwner, tokenId, {
-          from: accounts[3],
-        })
+        await lock
+          .connect(newApprovedAccount)
+          .transferFrom(
+            await newApprovedAccount.getAddress(),
+            await keyOwner.getAddress(),
+            tokenId
+          )
       })
 
       it('isApprovedForAll is still true (not lost after transfer)', async () => {
-        assert.equal(await lock.isApprovedForAll(keyOwner, approvedUser), true)
+        assert.equal(
+          await lock.isApprovedForAll(
+            await keyOwner.getAddress(),
+            await approvedAccount.getAddress()
+          ),
+          true
+        )
       })
 
       describe('allows for multiple operators per keyOwner', () => {
-        let newApprovedUser = accounts[8]
-
         before(async () => {
-          await lock.setApprovalForAll(newApprovedUser, true, {
-            from: keyOwner,
-          })
+          await lock
+            .connect(keyOwner)
+            .setApprovalForAll(await newApprovedAccount.getAddress(), true)
         })
 
         it('new operator is approved', async () => {
           assert.equal(
-            await lock.isApprovedForAll(keyOwner, newApprovedUser),
+            await lock.isApprovedForAll(
+              await keyOwner.getAddress(),
+              await newApprovedAccount.getAddress()
+            ),
             true
           )
         })
 
         it('original operator is still approved', async () => {
           assert.equal(
-            await lock.isApprovedForAll(keyOwner, approvedUser),
+            await lock.isApprovedForAll(
+              await keyOwner.getAddress(),
+              await approvedAccount.getAddress()
+            ),
             true
           )
         })
@@ -106,48 +140,53 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
       let event
 
       before(async () => {
-        await lock.setApprovalForAll(approvedUser, true, {
-          from: keyOwner,
-        })
-        let result = await lock.setApprovalForAll(approvedUser, false, {
-          from: keyOwner,
-        })
-        event = result.logs[0]
+        // set key approval
+        await lock
+          .connect(keyOwner)
+          .setApprovalForAll(await approvedAccount.getAddress(), true)
+        // unset key approval
+        const tx = await lock
+          .connect(keyOwner)
+          .setApprovalForAll(await approvedAccount.getAddress(), false)
+        const receipt = await tx.wait()
+        event = await getEvent(receipt, 'ApprovalForAll')
       })
 
       it('isApprovedForAll is false again', async () => {
-        assert.equal(await lock.isApprovedForAll(keyOwner, approvedUser), false)
+        assert.equal(
+          await lock.isApprovedForAll(
+            await keyOwner.getAddress(),
+            await approvedAccount.getAddress()
+          ),
+          false
+        )
       })
 
       it('This emits when an operator is (enabled or) disabled for an owner.', async () => {
-        assert.equal(event.event, 'ApprovalForAll')
-        assert.equal(event.args.owner, keyOwner)
-        assert.equal(event.args.operator, approvedUser)
+        assert.equal(event.event.fragment.name, 'ApprovalForAll')
+        assert.equal(event.args.owner, await keyOwner.getAddress())
+        assert.equal(event.args.operator, await approvedAccount.getAddress())
         assert.equal(event.args.approved, false)
       })
     })
   })
 
   describe('when the owner does not have a key', () => {
-    let ownerWithoutAKey = accounts[7]
-
-    it('owner has no keys', async () => {
-      assert.equal(await lock.balanceOf(ownerWithoutAKey), 0)
-    })
-
-    describe('allows the owner to call approveForAll', () => {
-      before(async () => {
-        await lock.setApprovalForAll(approvedUser, true, {
-          from: ownerWithoutAKey,
-        })
-      })
-
-      it('operator is approved', async () => {
-        assert.equal(
-          await lock.isApprovedForAll(ownerWithoutAKey, approvedUser),
-          true
-        )
-      })
+    it('allows the owner to call approveForAll', async () => {
+      const ownerWithoutAKey = signers[8]
+      // owner has no key
+      assert.equal(await lock.balanceOf(await ownerWithoutAKey.getAddress()), 0)
+      // approval works
+      await lock
+        .connect(ownerWithoutAKey)
+        .setApprovalForAll(await approvedAccount.getAddress(), true)
+      assert.equal(
+        await lock.isApprovedForAll(
+          await ownerWithoutAKey.getAddress(),
+          await approvedAccount.getAddress()
+        ),
+        true
+      )
     })
   })
 })

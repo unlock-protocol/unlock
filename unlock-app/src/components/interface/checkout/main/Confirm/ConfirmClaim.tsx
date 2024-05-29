@@ -1,42 +1,34 @@
 import ReCaptcha from 'react-google-recaptcha'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { useClaim } from '~/hooks/useClaim'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useConfig } from '~/utils/withConfig'
 import { PricingData } from './PricingData'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
 }
 
-export function ConfirmClaim({
-  injectedProvider,
-  checkoutService,
-  onConfirmed,
-  onError,
-}: Props) {
-  const [state] = useActor(checkoutService)
+export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
+  const { lock, recipients, payment, paywallConfig, metadata, data } =
+    useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
 
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data } =
-    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -108,10 +100,7 @@ export function ConfirmClaim({
 
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
           {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>
@@ -153,26 +142,22 @@ export function ConfirmClaim({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isPricingDataError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmClaim()
-              }}
-            >
-              {isConfirming ? 'Claiming' : 'Claim'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isPricingDataError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirmClaim()
+            }}
+          >
+            {isConfirming ? 'Claiming' : 'Claim'}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

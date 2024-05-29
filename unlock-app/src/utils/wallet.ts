@@ -11,6 +11,10 @@ export const detectInjectedProvider = (provider: any) => {
     return 'status'
   }
 
+  if (provider?.isRainbow) {
+    return 'rainbow'
+  }
+
   if (provider?.isMetaMask) {
     return 'metamask'
   }

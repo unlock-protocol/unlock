@@ -1,6 +1,8 @@
 import { Badge, minifyAddress } from '@unlock-protocol/ui'
 import { formatNumber } from '~/utils/formatter'
 import { Lock } from '~/unlockTypes'
+import { useMetadata } from '~/hooks/metadata'
+import { getLockTypeByMetadata } from '@unlock-protocol/core'
 
 interface PricingDataProps {
   pricingData: any
@@ -10,6 +12,14 @@ interface PricingDataProps {
 }
 
 export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
+  const { data: metadata } = useMetadata({
+    lockAddress: lock.address,
+    network: lock.network,
+  })
+  const { isEvent } = getLockTypeByMetadata(metadata)
+
+  const typeOfNFT = isEvent ? 'Ticket' : 'Membership'
+
   return (
     <div>
       {!!pricingData?.prices?.length &&
@@ -22,9 +32,11 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
                 Number(lock!.keyPrice)
               : 0
 
-          const symbol = payment?.route?.trade
-            ? payment.route.trade.inputAmount.currency.symbol
-            : item.symbol
+          const symbol = (
+            payment?.route?.trade
+              ? payment.route.trade.inputAmount.currency.symbol
+              : item.symbol
+          ).toUpperCase()
 
           return (
             <div
@@ -34,7 +46,7 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
               } items-center justify-between text-sm px-0 py-2`}
             >
               <div>
-                1 Key for{' '}
+                1 {typeOfNFT} for{' '}
                 <span className="font-medium">
                   {minifyAddress(item.userAddress)}
                 </span>{' '}
@@ -47,17 +59,17 @@ export function PricingData({ pricingData, lock, payment }: PricingDataProps) {
 
               {/* We hide the unit prices since we don't have them when using swap and pay */}
               {!payment.route && (
-                <div className="font-bold">
+                <span className="font-bold whitespace-nowrap">
                   {item.amount <= 0
                     ? 'FREE'
                     : payment?.route
-                    ? `${formatNumber(
-                        payment.route
-                          .convertToQuoteToken(item.amount.toString())
-                          .toFixed()
-                      ).toLocaleString()} ${symbol}`
-                    : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
-                </div>
+                      ? `${formatNumber(
+                          payment.route
+                            .convertToQuoteToken(item.amount.toString())
+                            .toFixed()
+                        ).toLocaleString()} ${symbol}`
+                      : `${formatNumber(item.amount).toLocaleString()} ${symbol}`}
+                </span>
               )}
             </div>
           )

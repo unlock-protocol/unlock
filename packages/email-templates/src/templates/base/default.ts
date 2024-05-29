@@ -111,7 +111,7 @@ export const base = `<!DOCTYPE html>
       }
 
       h1 {
-        font-size: 24px;
+        font-size: 20px;
         line-height: 32px;
         font-weight: bold;
         margin: 0;
@@ -127,6 +127,7 @@ export const base = `<!DOCTYPE html>
       }
       
       code {
+        font-size: 14px;
         border-radius: 0.375rem;
         font-weight: 500;
         border-style: solid;
@@ -282,20 +283,6 @@ export const base = `<!DOCTYPE html>
                       >
                         {{{content}}}
 
-                        <p style="margin-top: 40px">
-                          -<br>
-                          If you have any questions, you can always email us at
-                          <br /><a
-                            href="mailto:hello@unlock-protocol.com"
-                            style="
-                              color: #603deb;
-                              font-family: sans-serif;
-                              text-decoration: none;
-                            "
-                            >hello@unlock-protocol.com.</a
-                          >
-                        </p>
-                        <p>Unlock Labs</p>
                       </td>
                     </tr>
                   </table>
@@ -374,7 +361,7 @@ export const base = `<!DOCTYPE html>
                           </td>
                           <td>
                             <a
-                              href="https://discord.com/invite/Ah6ZEJyTDp"
+                              href="https://discord.unlock-protocol.com/"
                               target="_blank"
                               ><img
                                 src="{{inlineImage 'discord.png'}}"
@@ -440,7 +427,7 @@ export const base = `<!DOCTYPE html>
                               href="https://unlock-protocol.com/grants"
                               target="_blank"
                               style="color: #373a3e; text-decoration: none"
-                              >Grant</a
+                              >Grants</a
                             >
                           </td>
                         </tr>

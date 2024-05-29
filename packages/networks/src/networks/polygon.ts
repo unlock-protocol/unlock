@@ -49,6 +49,16 @@ export const polygon: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0xa10a55EF6E41dE1267cA8A98010B58a7b6B21418',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
+      {
+        address: '0xc2D767a87d74d82CD4B290a63E2D703Ff1CDf6b9',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 137,
@@ -81,48 +91,74 @@ export const polygon: NetworkConfig = {
   publicProvider: 'https://polygon-rpc.com/',
   startBlock: 21986688,
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-polygon/version/latest',
     networkName: 'matic',
+    studioName: 'unlock-protocol-polygon',
   },
-  swapPurchaser: '0x33aC9CAE1Cd9CBB191116607f564F7381d81BAD9',
+  swapPurchaser: '0x144C1ae588e3A67Db02D1f3C43671eB246b2f13b',
   tokens: [
     {
       address: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
       decimals: 18,
+      featured: true,
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
     {
       address: '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',
       decimals: 18,
-      name: 'Dai Stablecoin',
+      featured: true,
+      name: '(PoS) Dai Stablecoin',
       symbol: 'DAI',
     },
-
     {
       address: '0xc2132D05D31c914a87C6611C10748AEb04B58e8F',
       decimals: 6,
-      name: 'Tether USD',
+      featured: true,
+      name: '(PoS) Tether USD',
       symbol: 'USDT',
     },
     {
-      address: '0x3c499c542cef5e3811e1192ce70d8cc03d5c3359',
+      address: '0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359',
       decimals: 6,
+      featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
     },
     {
       address: '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6',
       decimals: 8,
-      name: 'Wrapped BTC',
+      featured: true,
+      name: '(PoS) Wrapped BTC',
       symbol: 'WBTC',
+    },
+    {
+      address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
+      decimals: 6,
+      name: 'USD Coin (PoS)',
+      symbol: 'USDC',
+    },
+    {
+      address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+      decimals: 18,
+      name: 'Wrapped Matic',
+      symbol: 'WMATIC',
+    },
+    {
+      address: '0xE06Bd4F5aAc8D0aA337D13eC88dB6defC6eAEefE',
+      decimals: 18,
+      name: 'PlanetIX',
+      symbol: 'IXT',
     },
   ],
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
+    oracle: {
+      100: '0x8c0AC149FabEeC9b759a43fC7d301B1a1D8DE0d0',
+      3000: '0x86399725a83bB14C47bB5ce8311Ed25378BAa162',
+      500: '0xfA3F427d2691ce680f96E6916a9Dac6c9042CBd2',
+    },
     positionManager: '0xC36442b4a4522E871399CD717aBDD847Ab11FE88',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
     universalRouterAddress: '0x4C60051384bd2d3C01bfc845Cf5F4b44bcbE9de5',
@@ -133,7 +169,11 @@ export const polygon: NetworkConfig = {
     stripeDestinationNetwork: 'polygon',
   },
   unlockAddress: '0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f',
-  unlockDiscountToken: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+  unlockDaoToken: {
+    address: '0xf7E78d9C4c74df889A83C8C8d6D05BF70fF75876',
+    mainnetBridge: '0x40ec5B33f54e0E8A33A975908C5BA1c14e5BbbDf',
+    uniswapV3Pool: '0x8B2b66ec1E6C1895eb408F8b8fcd8cD9510F9115',
+  },
   url: 'https://polygon.technology/',
 }
 

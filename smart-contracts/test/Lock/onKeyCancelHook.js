@@ -1,61 +1,58 @@
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
-const { deployLock, ADDRESS_ZERO, purchaseKey, reverts } = require('../helpers')
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
 
-let lock
-let testEventHooks
-let tx
+const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../helpers')
+const {
+  emitHookUpdatedEvent,
+  canNotSetNonContractAddress,
+} = require('./behaviors/hooks.js')
 
-contract('Lock / onKeyCancelHook', (accounts) => {
-  const to = accounts[2]
+describe('Lock / onKeyCancelHook', () => {
+  let lock
+  let testEventHooks
+  let to
+  let tokenId
+  let receipt
 
   before(async () => {
-    lock = await deployLock()
-    testEventHooks = await TestEventHooks.new()
-    tx = await lock.setEventHooks(
+    ;[, to] = await ethers.getSigners()
+
+    lock = await deployLock({ isEthers: true })
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    const { tokenId } = await purchaseKey(lock, to)
-    await lock.cancelAndRefund(tokenId, { from: to })
+    receipt = await tx.wait()
+    ;({ tokenId } = await purchaseKey(lock, await to.getAddress()))
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
-    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyCancelHook, testEventHooks.address)
-    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
-    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
+    await emitHookUpdatedEvent({
+      receipt,
+      hookName: 'onKeyCancelHook',
+      hookAddress: await testEventHooks.getAddress(),
+    })
   })
 
   it('key cancels should log the hook event', async () => {
-    const log = (await testEventHooks.getPastEvents('OnKeyCancel'))[0]
-      .returnValues
-    assert.equal(log.lock, lock.address)
-    assert.equal(log.operator, to)
-    assert.equal(log.to, to)
-    assert.notEqual(log.refund, 0)
+    await lock.connect(to).cancelAndRefund(tokenId)
+    const { args } = (await testEventHooks.queryFilter('OnKeyCancel')).filter(
+      ({ fragment }) => fragment.name === 'OnKeyCancel'
+    )[0]
+    assert.equal(args.lock, await lock.getAddress())
+    assert.equal(args.operator, await to.getAddress())
+    assert.equal(args.to, await to.getAddress())
+    assert.notEqual(args.refund, 0)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
-    await reverts(
-      lock.setEventHooks(
-        ADDRESS_ZERO,
-        accounts[1],
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO
-      ),
-      'INVALID_HOOK(1)'
-    )
+    await canNotSetNonContractAddress({ lock, index: 1 })
   })
 })

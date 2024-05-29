@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
-import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import Link from 'next/link'
 import { networks } from '@unlock-protocol/networks'
-import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useAvailableNetworks } from '~/utils/networks'
+import { SelectToken } from './SelectToken'
 
 export interface LockFormProps {
   name: string
@@ -31,7 +29,9 @@ export interface LockFormProps {
 
 interface CreateLockFormProps {
   onSubmit: any
-  defaultValues: LockFormProps
+  defaultValues?: Partial<LockFormProps>
+  hideFields?: string[]
+  isLoading?: boolean
 }
 
 export const networkDescription = (network: number) => {
@@ -46,6 +46,12 @@ export const networkDescription = (network: number) => {
           </Link>
           .
         </>
+      )}
+      {network === 1 && (
+        <p className="text-red-600 font-bold">
+          Due to high gas costs, we strongly discourage the use of the Ethereum
+          Mainnet.
+        </p>
       )}
       {faucet && (
         <>
@@ -64,13 +70,15 @@ export const networkDescription = (network: number) => {
 
 export const CreateLockForm = ({
   onSubmit,
-  defaultValues,
+  defaultValues = {},
+  hideFields = [],
+  isLoading = false,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-  const { account, network } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedToken, setSelectedToken] = useState<Token | null>(null)
+  const { account } = useAuth()
+  const networkOptions = useAvailableNetworks()
+
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     defaultValues?.unlimitedDuration ?? false
   )
@@ -81,47 +89,40 @@ export const CreateLockForm = ({
   const {
     register,
     handleSubmit,
-    reset,
     control,
     setValue,
     formState: { isValid, errors },
   } = useForm<LockFormProps>({
     mode: 'onChange',
     defaultValues: {
-      name: '',
-      network,
+      name: defaultValues.name || '',
+      network: defaultValues.network || networkOptions[0]?.value,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
+      currencyContractAddress: defaultValues.currencyContractAddress,
       unlimitedDuration,
       unlimitedQuantity,
       isFree,
     },
   })
-  const { network: selectedNetwork } = useWatch({
+
+  const { network: selectedNetwork, currencyContractAddress } = useWatch({
     control,
   })
 
-  const baseCurrencySymbol = networks[selectedNetwork!].nativeCurrency.symbol
-
-  const getBalance = async () => {
-    const balance = await getAccountTokenBalance(
-      web3Service,
-      account!,
-      null,
-      selectedNetwork || 1
-    )
-    return parseFloat(balance)
-  }
-
   const { isLoading: isLoadingBalance, data: balance } = useQuery(
     ['getBalance', selectedNetwork, account],
-    () => getBalance()
+    async () => {
+      const balance = await getAccountTokenBalance(
+        web3Service,
+        account!,
+        null,
+        selectedNetwork || 10
+      )
+      return parseFloat(balance)
+    }
   )
-
-  useEffect(() => {
-    reset(defaultValues)
-  }, [defaultValues, reset])
 
   const onHandleSubmit = (values: LockFormProps) => {
     if (isValid) {
@@ -133,46 +134,19 @@ export const CreateLockForm = ({
     }
   }
 
-  const onSelectToken = (token: Token) => {
-    setSelectedToken(token)
-    setValue('currencyContractAddress', token.address)
-    setValue('symbol', token.symbol)
-  }
-
   const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
-  const selectedCurrency = (
-    selectedToken?.symbol ||
-    defaultValues?.symbol ||
-    baseCurrencySymbol
-  )?.toLowerCase()
-
-  const symbol = lockTickerSymbol(networks[selectedNetwork!], selectedCurrency)
-
-  const networkOptions = useAvailableNetworks()
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
-      setSelectedToken(null)
+      setValue('currencyContractAddress', undefined)
       setValue('network', parseInt(`${network}`))
     },
-    [setValue, setSelectedToken]
+    [setValue]
   )
-
-  useEffect(() => {
-    if (network) {
-      onChangeNetwork(network)
-    }
-  }, [onChangeNetwork, network])
 
   return (
     <>
-      <SelectCurrencyModal
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-        network={selectedNetwork!}
-        onSelect={onSelectToken}
-      />
       <div className="mb-4">
         {noBalance && (
           <BalanceWarning network={selectedNetwork!} balance={balance!} />
@@ -184,30 +158,32 @@ export const CreateLockForm = ({
             className="flex flex-col w-full gap-6"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
-            <Select
-              label="Network:"
-              tooltip={
-                <>
-                  Unlock supports{' '}
-                  <Link
-                    target="_blank"
-                    className="underline"
-                    href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
-                  >
-                    {Object.keys(networks).length} networks
-                  </Link>
-                  .
-                  <br />
-                  If yours is not in the list below, switch your wallet to it{' '}
-                  <br />
-                  and you will be able to deploy your contract on it.
-                </>
-              }
-              defaultValue={selectedNetwork}
-              options={networkOptions}
-              onChange={onChangeNetwork}
-              description={networkDescription(selectedNetwork!)}
-            />
+            {!hideFields.includes('network') && (
+              <Select
+                label="Network:"
+                tooltip={
+                  <p className="py-2">
+                    Unlock supports{' '}
+                    <Link
+                      target="_blank"
+                      className="underline"
+                      href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
+                    >
+                      {Object.keys(networks).length} networks
+                    </Link>
+                    .
+                    <br />
+                    If yours is not in the list below, switch your wallet to it{' '}
+                    <br />
+                    and it will be added to the list.
+                  </p>
+                }
+                defaultValue={selectedNetwork}
+                options={networkOptions}
+                onChange={onChangeNetwork}
+                description={networkDescription(selectedNetwork!)}
+              />
+            )}
             <div className="relative">
               <Input
                 label="Name:"
@@ -227,7 +203,7 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  Membership duration (in days):
+                  Membership duration:
                 </label>
                 <ToggleSwitch
                   title="Unlimited"
@@ -253,7 +229,7 @@ export const CreateLockForm = ({
                     min: 0,
                     required: !unlimitedDuration,
                   })}
-                  placeholder="Enter duration"
+                  placeholder="In days"
                   type="number"
                 />
                 {errors?.expirationDuration && (
@@ -263,50 +239,52 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between">
-                <label className="block px-1 text-base" htmlFor="">
-                  Number of memberships for sale:
-                </label>
-                <ToggleSwitch
-                  title="Unlimited"
-                  enabled={unlimitedQuantity}
-                  setEnabled={setUnlimitedQuantity}
-                  onChange={(enable: boolean) => {
-                    if (enable) {
-                      setValue('maxNumberOfKeys', undefined)
-                    }
-                    setValue('unlimitedQuantity', enable, {
-                      shouldValidate: true,
-                    })
-                  }}
-                />
+            {!hideFields.includes('quantity') && (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between">
+                  <label className="block px-1 text-base" htmlFor="">
+                    Number of memberships for sale:
+                  </label>
+                  <ToggleSwitch
+                    title="Unlimited"
+                    enabled={!!unlimitedQuantity}
+                    setEnabled={setUnlimitedQuantity}
+                    onChange={(enable: boolean) => {
+                      if (enable) {
+                        setValue('maxNumberOfKeys', undefined)
+                      }
+                      setValue('unlimitedQuantity', enable, {
+                        shouldValidate: true,
+                      })
+                    }}
+                  />
+                </div>
+                <div className="relative">
+                  <Input
+                    placeholder="Enter quantity"
+                    type="number"
+                    autoComplete="off"
+                    step={1}
+                    disabled={unlimitedQuantity}
+                    {...register('maxNumberOfKeys', {
+                      valueAsNumber: true,
+                      min: 0,
+                      required: !unlimitedQuantity,
+                    })}
+                  />
+                  {errors?.maxNumberOfKeys && (
+                    <span className="absolute mt-1 text-xs text-red-700">
+                      Please choose a number of memberships for your lock.
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="relative">
-                <Input
-                  placeholder="Enter quantity"
-                  type="number"
-                  autoComplete="off"
-                  step={1}
-                  disabled={unlimitedQuantity}
-                  {...register('maxNumberOfKeys', {
-                    valueAsNumber: true,
-                    min: 0,
-                    required: !unlimitedQuantity,
-                  })}
-                />
-                {errors?.maxNumberOfKeys && (
-                  <span className="absolute mt-1 text-xs text-red-700">
-                    Please choose a number of memberships for your lock.
-                  </span>
-                )}
-              </div>
-            </div>
+            )}
 
             <div className="relative flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
-                  Currency & Price:
+                  Membership price:
                 </label>
                 <ToggleSwitch
                   title="Free"
@@ -321,17 +299,18 @@ export const CreateLockForm = ({
                 />
               </div>
               <div className="relative">
-                <div className="grid grid-cols-2 gap-2 justify-items-stretch">
-                  <div className="flex flex-col gap-1.5">
-                    <div
-                      onClick={() => setIsOpen(true)}
-                      className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
-                    >
-                      <CryptoIcon symbol={symbol} />
-                      <span>{symbol}</span>
-                    </div>
-                    <div className="pl-1"></div>
-                  </div>
+                <div className="flex gap-2 ">
+                  <SelectToken
+                    className="grow"
+                    onChange={(token: Token) => {
+                      setValue('currencyContractAddress', token.address)
+                      setValue('symbol', token.symbol)
+                    }}
+                    defaultToken={{
+                      address: currencyContractAddress,
+                    }}
+                    network={selectedNetwork!}
+                  />
 
                   <Input
                     type="number"
@@ -347,7 +326,7 @@ export const CreateLockForm = ({
                 </div>
                 {errors?.keyPrice && (
                   <span className="absolute text-xs text-red-700 ">
-                    Please enter a positive number
+                    Please enter a positive number for the price
                   </span>
                 )}
               </div>
@@ -356,6 +335,7 @@ export const CreateLockForm = ({
               className="mt-8 md:mt-0"
               type="submit"
               disabled={submitDisabled}
+              loading={isLoading}
             >
               Next
             </Button>

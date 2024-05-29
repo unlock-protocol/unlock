@@ -1,218 +1,335 @@
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
 const {
   deployLock,
   reverts,
   ADDRESS_ZERO,
-  purchaseKeys,
   purchaseKey,
 } = require('../../helpers')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-let tokenIds
-let keyOwners
+let lock
+let lockSingleKey
+let tokenId, anotherTokenId
+let lockManager,
+  keyOwner,
+  anotherKeyOwner,
+  keyRecipient,
+  anotherKeyRecipient,
+  keyManager,
+  accountApproved,
+  approvedAllAccount
 
-contract('Lock / erc721 / transferFrom', (accounts) => {
-  let lock
-  let lockSingleKey
-  keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-
+describe('Lock / erc721 / transferFrom', () => {
   beforeEach(async () => {
+    // init 2 locks
     lock = await deployLock()
     lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
-    await lock.updateTransferFee(0) // disable the transfer fee for this test
-    await lockSingleKey.updateTransferFee(0) // disable the transfer fee for this test
-    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
+
+    // disable the transfer fee for this test
+    await lock.updateTransferFee(0)
+    await lockSingleKey.updateTransferFee(0)
+
+    // fetch signers
+    ;[
+      lockManager,
+      keyOwner,
+      anotherKeyOwner,
+      keyRecipient,
+      anotherKeyRecipient,
+      keyManager,
+      accountApproved,
+      approvedAllAccount,
+    ] = await ethers.getSigners()
+
+    // purchase some keys
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
+    ;({ tokenId: anotherTokenId } = await purchaseKey(
+      lock,
+      await anotherKeyOwner.getAddress()
+    ))
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized
-  // /  operator, or the approved address for this NFT. Throws if `_from` is
-  // /  not the current owner. Throws if `_to` is the zero address. Throws if
+  // /  operator, or the approved address for this NFT Throws if `_from` is
+  // /  not the current owner Throws if `_to` is the zero address Throws if
   // /  `_tokenId` is not a valid NFT.
 
   describe('when the lock is public', () => {
     it('should abort when there is no key to transfer', async () => {
       await reverts(
-        lock.transferFrom(keyOwners[0], accounts[9], 999),
+        lock.transferFrom(
+          await keyOwner.getAddress(),
+          await keyRecipient.getAddress(),
+          999
+        ),
         'KEY_NOT_VALID'
       )
     })
 
     it('should abort if token owner (from) is incorrect', async () => {
       await reverts(
-        lock.transferFrom(keyOwners[0], accounts[9], tokenIds[2], {
-          from: keyOwners[0],
-        }),
+        lock
+          .connect(keyOwner)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            anotherTokenId
+          ),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 
     it('should only allow owner without LM, KM, KM or approved to transfer', async () => {
       await reverts(
-        lock.transferFrom(keyOwners[2], accounts[9], tokenIds[2], {
-          from: keyOwners[0],
-        }),
+        lock
+          .connect(keyOwner)
+          .transferFrom(
+            await anotherKeyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            anotherTokenId
+          ),
         'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 
     it('should prevent transfering an expired key', async () => {
       // Then let's expire the key
-      await lock.expireAndRefundFor(tokenIds[0], 0, {
-        from: accounts[0],
-      })
+      await lock.connect(lockManager).expireAndRefundFor(tokenId, 0)
       await reverts(
-        lock.transferFrom(keyOwners[1], accounts[7], tokenIds[0], {
-          from: keyOwners[1],
-        })
+        lock
+          .connect(keyOwner)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            tokenId
+          ),
+        'KEY_NOT_VALID'
       )
     })
 
     describe('when the key owner is the sender', () => {
       beforeEach(async () => {
-        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
-          from: keyOwners[0],
-        })
+        await lock
+          .connect(keyOwner)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            tokenId
+          )
       })
 
       it('should transfer ownership correctly', async () => {
-        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
+        assert.equal(
+          await lock.ownerOf(tokenId),
+          await keyRecipient.getAddress()
+        )
       })
 
       it('update balances properly', async () => {
-        assert.equal(await lock.balanceOf(accounts[7]), 1)
-        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
+        assert.equal(await lock.balanceOf(await keyRecipient.getAddress()), 1)
+        assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
       })
 
       it('update key validity properly', async () => {
-        assert.equal(await lock.getHasValidKey(accounts[7]), true)
-        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
+        assert.equal(
+          await lock.getHasValidKey(await keyRecipient.getAddress()),
+          true
+        )
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          false
+        )
       })
     })
 
     describe('when the key owner is the sender and a key manager is set', async () => {
       it('should revert if a key manager is set', async () => {
-        const keyManager = accounts[8]
-        await lock.setKeyManagerOf(tokenIds[0], keyManager, {
-          from: keyOwners[0],
-        })
+        await lock
+          .connect(keyOwner)
+          .setKeyManagerOf(tokenId, await keyManager.getAddress())
         await reverts(
-          lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-            from: keyOwners[0],
-          }),
+          lock
+            .connect(keyOwner)
+            .transferFrom(
+              await keyOwner.getAddress(),
+              await keyRecipient.getAddress(),
+              tokenId
+            ),
           'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
     })
 
     describe('when the key owner is not the sender', async () => {
-      let accountApproved
-
       beforeEach(async () => {
-        accountApproved = accounts[8]
-        await lock.approve(accountApproved, tokenIds[0], {
-          from: keyOwners[0],
-        })
+        await lock
+          .connect(keyOwner)
+          .approve(await accountApproved.getAddress(), tokenId)
       })
 
       it('should fail if the sender has not been approved for that key', async () => {
         await reverts(
-          lock.transferFrom(keyOwners[0], accountApproved, tokenIds[2], {
-            from: accountApproved,
-          }),
+          lock
+            .connect(accountApproved)
+            .transferFrom(
+              await keyOwner.getAddress(),
+              await accountApproved.getAddress(),
+              anotherTokenId
+            ),
           'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
       it('should succeed if the sender has been approved for that key', async () => {
-        await lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-          from: accountApproved,
-        })
-        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[9])
-        assert.equal(await lock.balanceOf(accounts[9]), 1)
+        await lock
+          .connect(accountApproved)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            tokenId
+          )
+        assert.equal(
+          await lock.ownerOf(tokenId),
+          await keyRecipient.getAddress()
+        )
+        assert.equal(await lock.balanceOf(await keyRecipient.getAddress()), 1)
       })
 
       it('approval should be cleared after a transfer', async () => {
-        await lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-          from: accountApproved,
-        })
-        assert.equal(await lock.getApproved(tokenIds[0]), ADDRESS_ZERO)
+        await lock
+          .connect(accountApproved)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            tokenId
+          )
+        assert.equal(await lock.getApproved(tokenId), ADDRESS_ZERO)
       })
     })
 
     describe('when the sender is a key manager', async () => {
-      let keyManager
       beforeEach(async () => {
-        keyManager = accounts[8]
-        await lock.setKeyManagerOf(tokenIds[0], keyManager, {
-          from: keyOwners[0],
-        })
-        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
-          from: keyManager,
-        })
+        await lock
+          .connect(keyOwner)
+          .setKeyManagerOf(tokenId, await keyManager.getAddress())
+        await lock
+          .connect(keyManager)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await anotherKeyRecipient.getAddress(),
+            tokenId
+          )
       })
       it('should transfer ownership correctly to the sender', async () => {
-        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
+        assert.equal(
+          await lock.ownerOf(tokenId),
+          await anotherKeyRecipient.getAddress()
+        )
       })
 
       it('update balances properly', async () => {
-        assert.equal(await lock.balanceOf(accounts[7]), 1)
-        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
+        assert.equal(
+          await lock.balanceOf(await anotherKeyRecipient.getAddress()),
+          1
+        )
+        assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
       })
 
       it('update key validity properly', async () => {
-        assert.equal(await lock.getHasValidKey(accounts[7]), true)
-        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
+        assert.equal(
+          await lock.getHasValidKey(await anotherKeyRecipient.getAddress()),
+          true
+        )
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          false
+        )
       })
       it('reset the key manager to address zero', async () => {
-        assert.equal(await lock.keyManagerOf(tokenIds[0]), ADDRESS_ZERO)
+        assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
       })
     })
 
     describe('when the sender is a lock manager', async () => {
-      let lockManager
       beforeEach(async () => {
-        lockManager = accounts[0]
-        await lock.setKeyManagerOf(tokenIds[0], lockManager, {
-          from: keyOwners[0],
-        })
-        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
-          from: lockManager,
-        })
+        await lock
+          .connect(keyOwner)
+          .setKeyManagerOf(tokenId, await lockManager.getAddress())
+        await lock
+          .connect(lockManager)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await anotherKeyRecipient.getAddress(),
+            tokenId
+          )
       })
       it('should transfer ownership correctly to the sender', async () => {
-        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
+        assert.equal(
+          await lock.ownerOf(tokenId),
+          await anotherKeyRecipient.getAddress()
+        )
       })
 
       it('update balances properly', async () => {
-        assert.equal(await lock.balanceOf(accounts[7]), 1)
-        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
+        assert.equal(
+          await lock.balanceOf(await anotherKeyRecipient.getAddress()),
+          1
+        )
+        assert.equal(await lock.balanceOf(await keyOwner.getAddress()), 0)
       })
 
       it('update key validity properly', async () => {
-        assert.equal(await lock.getHasValidKey(accounts[7]), true)
-        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
+        assert.equal(
+          await lock.getHasValidKey(await anotherKeyRecipient.getAddress()),
+          true
+        )
+        assert.equal(
+          await lock.getHasValidKey(await keyOwner.getAddress()),
+          false
+        )
       })
       it('reset the key manager to address zero', async () => {
-        assert.equal(await lock.keyManagerOf(tokenIds[0]), ADDRESS_ZERO)
+        assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
       })
     })
 
     describe('when the sender is approved', async () => {
-      let approved
       beforeEach(async () => {
-        approved = accounts[8]
-        await lock.setApprovalForAll(approved, true, {
-          from: keyOwners[0],
-        })
-        assert.equal(await lock.isApprovedForAll(keyOwners[0], approved), true)
+        await lock
+          .connect(keyOwner)
+          .setApprovalForAll(await approvedAllAccount.getAddress(), true)
+        assert.equal(
+          await lock.isApprovedForAll(
+            await keyOwner.getAddress(),
+            await approvedAllAccount.getAddress()
+          ),
+          true
+        )
       })
       it('should allow the transfer', async () => {
-        await lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-          from: approved,
-        })
-        assert.equal(await lock.isApprovedForAll(keyOwners[0], approved), true)
+        await lock
+          .connect(approvedAllAccount)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            tokenId
+          )
+        assert.equal(
+          await lock.isApprovedForAll(
+            await keyOwner.getAddress(),
+            await approvedAllAccount.getAddress()
+          ),
+          true
+        )
         await reverts(
-          lock.transferFrom(accounts[9], approved, tokenIds[0], {
-            from: approved,
-          })
+          lock
+            .connect(approvedAllAccount)
+            .transferFrom(
+              await keyRecipient.getAddress(),
+              await approvedAllAccount.getAddress(),
+              tokenId
+            )
         )
       })
     })
@@ -220,20 +337,36 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     describe('when the lock is sold out', () => {
       it('should still allow the transfer of keys', async () => {
         // first we create a lock with only 1 key
-        const { tokenId } = await purchaseKey(lockSingleKey, keyOwners[0])
+        const { tokenId } = await purchaseKey(
+          lockSingleKey,
+          await keyOwner.getAddress()
+        )
 
         // confirm that the lock is sold out
-        await reverts(purchaseKey(lockSingleKey, keyOwners[0]), 'LOCK_SOLD_OUT')
+        await reverts(
+          purchaseKey(lockSingleKey, await keyOwner.getAddress()),
+          'LOCK_SOLD_OUT'
+        )
 
         // check ownership
-        assert.equal(await lockSingleKey.ownerOf(tokenId), keyOwners[0])
+        assert.equal(
+          await lockSingleKey.ownerOf(tokenId),
+          await keyOwner.getAddress()
+        )
 
         // transfer
-        await lockSingleKey.transferFrom(keyOwners[0], accounts[9], tokenId, {
-          from: keyOwners[0],
-        })
+        await lockSingleKey
+          .connect(keyOwner)
+          .transferFrom(
+            await keyOwner.getAddress(),
+            await keyRecipient.getAddress(),
+            tokenId
+          )
 
-        assert.equal(await lockSingleKey.ownerOf(tokenId), accounts[9])
+        assert.equal(
+          await lockSingleKey.ownerOf(tokenId),
+          await keyRecipient.getAddress()
+        )
       })
     })
   })
@@ -242,22 +375,25 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     const lockFree = await deployLock({ name: 'FREE' })
     const tx = await lockFree.purchase(
       [],
-      [accounts[1]],
+      [await keyOwner.getAddress()],
       [ADDRESS_ZERO],
       [ADDRESS_ZERO],
-      [[]],
-      {
-        from: accounts[1],
-      }
+      ['0x']
     )
-    const { args } = tx.logs.find(
-      (v) => v.event === 'Transfer' && v.args.from === ADDRESS_ZERO
-    )
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'Transfer')
     const { tokenId: newTokenId } = args
 
-    await lockFree.transferFrom(accounts[1], accounts[2], newTokenId, {
-      from: accounts[1],
-    })
-    assert.equal(await lockFree.ownerOf(newTokenId), accounts[2])
+    await lockFree
+      .connect(keyOwner)
+      .transferFrom(
+        await keyOwner.getAddress(),
+        await keyRecipient.getAddress(),
+        newTokenId
+      )
+    assert.equal(
+      await lockFree.ownerOf(newTokenId),
+      await keyRecipient.getAddress()
+    )
   })
 })

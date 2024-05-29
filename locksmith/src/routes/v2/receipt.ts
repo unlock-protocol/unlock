@@ -3,7 +3,11 @@ import { ReceiptController } from '../../controllers/v2/receiptController'
 
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerOrPayerMiddleware } from '../../utils/middlewares/lockManagerOrPayer'
-import { allReceipts } from '../../controllers/v2/receipts'
+import {
+  allReceipts,
+  createDownloadReceiptsRequest,
+  downloadReceipts,
+} from '../../controllers/v2/receipts'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
 const router = express.Router({ mergeParams: true })
@@ -30,5 +34,10 @@ router.post(
   lockManagerOrPayerMiddleware,
   (req, res) => receiptController.savePurchaser(req, res)
 )
+
+router
+  .use(authenticatedMiddleware, lockManagerMiddleware)
+  .get('/all/:network/:lockAddress', createDownloadReceiptsRequest)
+  .get('/all/:id', downloadReceipts)
 
 export default router

@@ -1,10 +1,4 @@
-import {
-  Address,
-  DataSourceContext,
-  Value,
-  BigInt,
-  ethereum,
-} from '@graphprotocol/graph-ts'
+import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { newMockEvent } from 'matchstick-as'
 import { ReferrerFee } from '../generated/templates/PublicLock/PublicLock'
 

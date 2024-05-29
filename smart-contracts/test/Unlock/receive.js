@@ -1,31 +1,32 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { deployContracts, reverts, getBalanceEthers } = require('../helpers')
+const { deployContracts, reverts, getBalance } = require('../helpers')
 
-const oneEth = ethers.utils.parseEther('1')
+const oneEth = ethers.parseEther('1')
 
-contract('Unlock / receive', async () => {
+describe('Unlock / receive', async () => {
   let unlock, signer
 
   before(async () => {
     ;[signer] = await ethers.getSigners()
-    ;({ unlockEthers: unlock } = await deployContracts())
+    ;({ unlock } = await deployContracts())
   })
 
   describe('Unlock contract receiving native tokens', () => {
     it('works correctly', async () => {
-      const balanceBefore = await getBalanceEthers(unlock.address)
+      const balanceBefore = await getBalance(await unlock.getAddress())
       await signer.sendTransaction({
-        to: unlock.address,
+        to: await unlock.getAddress(),
         value: oneEth,
       })
       assert.equal(
-        balanceBefore.add(oneEth).toString(),
-        (await getBalanceEthers(unlock.address)).toString()
+        balanceBefore + oneEth,
+        await getBalance(await unlock.getAddress())
       )
     })
     it('reverts with null value', async () => {
       await reverts(
-        signer.sendTransaction({ to: unlock.address, value: 0 }),
+        signer.sendTransaction({ to: await unlock.getAddress(), value: 0 }),
         'Unlock__INVALID_AMOUNT'
       )
     })

@@ -5,7 +5,7 @@ import { NewLock, LockUpgraded, GNPChanged } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
 import { Lock, LockStats, UnlockStats } from '../generated/schema'
-import { loadOrCreateUnlockDailyData, LOCK_MANAGER } from './helpers'
+import { loadOrCreateUnlockDailyData } from './helpers'
 
 const ROLE_GRANTED =
   '0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d'
@@ -75,6 +75,7 @@ export function handleNewLock(event: NewLock): void {
   lock.totalKeys = BigInt.fromI32(0)
   lock.deployer = event.params.lockOwner // The `lockOwner` name is wrong, as it is in fact msg.sender
   lock.numberOfReceipts = BigInt.fromI32(0)
+  lock.numberOfCancelReceipts = BigInt.fromI32(0)
 
   // default value
   const symbol = lockContract.try_symbol()

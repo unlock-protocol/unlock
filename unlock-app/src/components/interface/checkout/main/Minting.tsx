@@ -1,29 +1,25 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
-import { Connected } from '../Connected'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
-import { AddToDeviceWallet } from '../../keychain/AddToPhoneWallet'
-import { isEthPassSupported, Platform } from '~/services/ethpass'
-import { isAndroid, isIOS } from 'react-device-detect'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQuery } from '@tanstack/react-query'
-import Image from 'next/image'
+import { isEthPassSupported } from '~/services/ethpass'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
 import { sleeper } from '~/utils/promise'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { AddToWallet } from '../../keychain/AddToWallet'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 
 interface MintingScreenProps {
   lockName: string
@@ -54,30 +50,41 @@ export const MintingScreen = ({
   network,
   states = DEFAULT_STATES,
 }: MintingScreenProps) => {
-  const web3Service = useWeb3Service()
   const config = useConfig()
   const transactionNetwork = mint.network || network
-  const { data: tokenId } = useQuery(
-    ['userTokenId', mint, owner, lockAddress, transactionNetwork, web3Service],
-    async () => {
-      return web3Service.getTokenIdForOwner(
-        lockAddress,
-        owner!,
-        transactionNetwork
-      )
-    },
+
+  // TODO: This returns the Key with the lowest index for given lock dddres from the onwer causing weird behaviour when buying 2-nd... keys
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: owner!, lockAddress, network },
     {
       enabled: mint?.status === 'FINISHED',
     }
   )
   const hasTokenId = !!tokenId
-
   return (
-    <div className="flex flex-col items-center justify-center h-full space-y-2">
+    <div className="flex flex-col items-center justify-evenly h-full space-y-2">
       <TransactionAnimation status={mint?.status} />
-      <p className="text-lg font-bold text-brand-ui-primary">
-        {states[mint?.status]?.text}
-      </p>
+      {mint?.transactionHash && (
+        <a
+          href={config.networks[transactionNetwork].explorer.urls.transaction(
+            mint.transactionHash
+          )}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+        >
+          <p className="text-lg font-bold text-brand-ui-primary inline-flex items-center gap-2">
+            {/* 
+            This is not ideal realization, at least it works
+            mint.status === 'FINISHED' before the transaction is confirmed on chan
+             */}
+            {mint?.status === 'FINISHED' && !hasTokenId // TODO: Fix mint status
+              ? 'Minting NFT...'
+              : states[mint?.status]?.text}
+            <Icon icon={ExternalLinkIcon} size="small" />
+          </p>
+        </a>
+      )}
       {mint?.status === 'FINISHED' && hasTokenId && (
         <Link
           href="/keychain"
@@ -89,108 +96,43 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </Link>
       )}
-      {mint?.transactionHash && (
-        <a
-          href={config.networks[transactionNetwork].explorer.urls.transaction(
-            mint.transactionHash
-          )}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-        >
-          See in the block explorer
-          <Icon icon={ExternalLinkIcon} size="small" />
-        </a>
-      )}
       {hasTokenId && isEthPassSupported(transactionNetwork) && (
-        <ul className="grid grid-cols-2 gap-3 pt-4">
-          {!isIOS && (
-            <li className="">
-              <AddToDeviceWallet
-                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                iconLeft={
-                  <Image
-                    width="20"
-                    height="20"
-                    alt="Google Wallet"
-                    src={`/images/illustrations/google-wallet.svg`}
-                  />
-                }
-                size="small"
-                variant="secondary"
-                platform={Platform.GOOGLE}
-                as={Button}
-                network={network}
-                lockAddress={lockAddress}
-                tokenId={tokenId}
-                name={lockName}
-                handlePassUrl={(url: string) => {
-                  window.location.assign(url)
-                }}
-              >
-                Add to Google Wallet
-              </AddToDeviceWallet>
-            </li>
-          )}
-          {!isAndroid && (
-            <li className="">
-              <AddToDeviceWallet
-                className="w-full px-2 h-8 text-xs grid grid-cols-[20px_1fr] rounded-md bg-black text-white"
-                platform={Platform.APPLE}
-                size="small"
-                variant="secondary"
-                as={Button}
-                iconLeft={
-                  <Image
-                    className="justify-self-left"
-                    width="20"
-                    height="20"
-                    alt="Apple Wallet"
-                    src={`/images/illustrations/apple-wallet.svg`}
-                  />
-                }
-                network={network}
-                lockAddress={lockAddress}
-                tokenId={tokenId}
-                name={lockName}
-                handlePassUrl={(url: string) => {
-                  window.location.assign(url)
-                }}
-              >
-                Add to Apple Wallet
-              </AddToDeviceWallet>
-            </li>
-          )}
-        </ul>
+        <AddToWallet
+          network={network}
+          lockAddress={lockAddress}
+          tokenId={tokenId.toString()}
+          tokenName={lockName}
+        />
       )}
     </div>
   )
 }
 
 interface MintingProps {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication?: CheckoutCommunication
 }
 
 export function Minting({
-  injectedProvider,
   onClose,
   checkoutService,
   communication,
 }: MintingProps) {
   const { account } = useAuth()
-  const [state, send] = useActor(checkoutService)
+  const { mint, lock, messageToSign, metadata, recipients } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
+
   const config = useConfig()
-  const { mint, lock, messageToSign, metadata, recipients } = state.context
   const processing = mint?.status === 'PROCESSING'
+  const [doneWaiting, setDoneWaiting] = useState(false)
 
   useEffect(() => {
-    if (mint?.status !== 'PROCESSING') {
+    if (doneWaiting || !mint) {
       return
     }
-
     const waitForTokenIds = async (): Promise<string[]> => {
       const web3Service = new Web3Service(networks)
 
@@ -239,17 +181,21 @@ export function Minting({
 
           communication?.emitMetadata(metadata)
 
-          send({
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
             network: mint!.network,
             transactionHash: mint!.transactionHash!,
           })
+
+          setDoneWaiting(true)
         }
       } catch (error) {
         if (error instanceof Error) {
+          console.log('Error waiting for confirmation', error)
           ToastHelper.error(error.message)
-          send({
+
+          checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
             network: mint!.network,
@@ -263,7 +209,7 @@ export function Minting({
     mint,
     lock,
     config,
-    send,
+    checkoutService,
     communication,
     account,
     messageToSign,
@@ -283,17 +229,12 @@ export function Minting({
         ></MintingScreen>
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <ReturningButton
-            loading={processing}
-            disabled={!account || processing}
-            onClick={() => onClose()}
-            checkoutService={checkoutService}
-          />
-        </Connected>
+        <ReturningButton
+          loading={processing}
+          disabled={!account || processing}
+          onClick={() => onClose()}
+          checkoutService={checkoutService}
+        />
         <PoweredByUnlock />
       </footer>
     </Fragment>

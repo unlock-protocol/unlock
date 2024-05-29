@@ -1,0 +1,145 @@
+---
+sidebar_position: 2
+title: Cross-Chain Governance
+description: >-
+  Workflow to propagate DAO proposals accross multiple chains
+---
+
+import { networks } from '@unlock-protocol/networks'
+
+To fully decentralize the maintenance and management of the protocol contracts, we use a cross-chain governance that allows for a DAO proposal on Ethereum mainnet to reach the Unlock contracts on other networks.
+
+## How it works
+
+To reach other chains, calls emitted from the mainnet DAO go though the [Connext bridge](https://www.connext.network/) and are executed on the other side of the bridge, after a period of cooldown.
+
+```
+(mainnet)                       (destination chain)    (cooldown period)
+DAO proposal >  Connext Bridge >   Safe multisig    >  wait for 2 days   >
+```
+
+The workflow is as follows
+
+1. A DAO proposal is created, containing 1 call per chain.
+2. If the vote succeeds, the DAO proposal is executed. All calls are sent to the Connext bridge(s).
+3. Each call crosses the bridge separately towards its destination on a specific chain.
+4. The call is received on the destination chain by a SAFE multisig configured with a special bridge receiver plugin.
+5. Once received, the call is held in the multisig for a cooldown period of 2 days during which it can be cancelled.
+6. once the cooldown period ends, the call is ready to be executed by anyone
+
+NB: The cooldown period is useful to prevent malicious or errored calls from being executed if the bridge itself has been compromised.
+
+## Supported Networks
+
+To work, this workflow requires the [Connext bridge](https://bridge.connext.network/), [SAFE contracts](https://safe.global/) and Unlock Protocol to be deployed
+and active on the network.
+
+The list of supported networks are:
+
+export const supportedChains = Object.keys(networks).filter(
+  (chainId) =>
+    !!networks[chainId].governanceBridge?.modules &&
+    !networks[chainId].isTestNetwork
+)
+
+<ul>
+  {Object.values(networks)
+    .filter((network) => supportedChains.includes(network.id.toString()))
+    .map((network) => {
+      return (
+        <li key={network.id}>
+          <p>{network.name}</p>
+        </li>
+      )
+    })}
+</ul>
+
+## How to setup the multisig on the "remote" chain
+
+On every receiving chain, we need a [SAFE](https://safe.global/) multisig configured with two [Zodiac](https://zodiac.wiki/index.php/ZODIAC.WIKI) plugins, namely:
+
+- one [Zodiac Connext](https://github.com/gnosis/zodiac-module-connext/) bridge receiver
+- one [Delay](https://zodiac.wiki/index.php/Category:Delay_Modifier)
+
+Important note: we use a multisig here, but no signature is required for transactions to be executed. The Safe contracts are actually flexible enough to include the ability to execute transactions directly as long as they have been through pre-configured modules.
+
+### Using the Gnosis web UI
+
+1. Go to Apps > Zodiac
+2. Add the Delay module (cooldown : 2 days, expiration: 90 days)
+3. Add the Connext module (Origin sender address : DAO address, Origin domain ID: 6648936 - see [list of Connext domains](https://docs.connext.network/resources/deployments#ethereum))
+4. Go to Connext module > write > `setTarget` with the Delay address
+5. Get the Connext module address then remove the Connext module
+6. Go to Delay > write > `enableModule` with the Connext module address
+
+### Using scripts
+
+- Deploy the Delay module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md))
+  (NB: You can use the `deploy_multisig_mods` script in the `smart-contracts` folder to help you parse the commands)
+- Add the `delayMod` to the `bridge.modules` object in the `networks` package
+- Deploy the Connext module contract (see [this guide](https://github.com/gnosis/zodiac-modifier-delay/blob/main/docs/setup_guide.md)) (NB: you can use the `deploy_multisig_mods` script to help you parse the commands)
+- Add the `connextMod` to the `bridge.modules` object in the `networks` package
+- Send the `proposals/enableModule.js` to the multisig on the chain to check settings and activate the module there
+- NB: Make sure that `delayMod.target` is set to `safe.address` and `connextMod.target` is set to `delayMod.address`
+
+Now the multisig can receive calls from the bridge through the `connextMod` that will pass the call to the `delayMod` which will put it in cooldown.
+
+### Write a multichain DAO proposal
+
+We have a parser for DAO proposals that relies on an object being formatted as follows:
+
+```jsx
+return {
+  proposalName, // title of the proposal
+  calls: [
+    {
+      contractAddress: bridgeAddress, // the address of the Connext bridge
+      contractNameOrAbi: abiIConnext, // Connext Abi of `xcall`
+      functionName: 'xcall', // standard Connext function for bridge call
+      functionArgs: [
+        destDomainId, // the Domain ID of the receiving chain
+        destMultisigAddress, // the safe address on the receiving chain
+        ADDRESS_ZERO, // asset
+        ADDRESS_ZERO, // delegate
+        0, // amount
+        30, // slippage
+        moduleData, // the calldata to be executed on the receiving chain
+      ],
+    },
+  ],
+}
+```
+
+Once the proposal is correctly parsed, we can send it to the DAO.
+
+```jsx
+yarn hardhat gov:submit --gov-address <governor> --proposal <proposal-filepath> --network gnosis <arguments>
+```
+
+Here the `<arguments>` passed to the cli as POSIT args are passed to the proposal script. See an example in `proposals/006-cross-bridge-proposal.js`
+
+```jsx
+yarn hardhat gov:submit --gov-address 0xE85696a3419162452e6925816D8073374e4190b7 --proposal proposals/006-cross-bridge-proposal.js --network gnosis 137 0xfa2709Aa98F051c4190d70dE38F7c7A330c60ab7 0x2411336105D4451713d23B5156038A48569EcE3a
+```
+
+### Executing a call
+
+Once a call has passed the cooldown delay, it can be executed by anyone (the address submitting the transaction does not need to be a signer on the multisig) via the `executeNextTx` in the Delay module.
+
+The arguments to pass to the function are the ones that were passed in the original DAO proposal. You can also find them here in the `TransactionAdded` event that was fired by the bridge transaction ([example](https://polygonscan.com/tx/0xc7bb22753a6c9fccb9c389cd2c3108361f6ed9d3e069134844842d63cdd24ca9#eventlog) )
+
+There is a script that allows execution of a call stored in Safe Zodiac Delay module
+
+```jsx
+yarn hardhat safe:bridge:execute --bridge-tx <tx hash> --delay-mod <contract address> --network <network name>
+```
+
+`bridge-tx` : the tx sent by the bridge to the multisig. This is used to unpack and parse args from the original call ([example](https://connextscan.io/tx/0xb24ccc8a014be54acfe764f86c04ca9ec7669a8aaafb38610b1cc029a37379a2) on the “receive” end)
+
+`delay-mod` : the address of the Zodiac Delay module of the Safe that contains the tx
+
+### Canceling a call
+
+During the cooldown period, a call can be cancelled by the Safe multisig signers. That can prevent malicious or errored calls from being executed.
+
+To cancel a call, you need to call `setTxNonce` from the multisig with the value returned by `queueNonce()`. That way, the nonce will increase past the malicious tx, making the queue appear empty.

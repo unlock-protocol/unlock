@@ -1,32 +1,38 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 import { ReceiptBox } from './elements/ReceiptBox'
+import { CloseReceiptButton } from './elements/CloseReceiptButton'
+import { Button } from '@unlock-protocol/ui'
 
 export const ReceiptsPage = () => {
-  const { query } = useRouter()
+  const router = useRouter()
 
-  const hasParams = query.network && query.address && query.hash
+  const hasParams =
+    router.query.network && router.query.address && router.query.hash
+  const network = Number(router.query.network)
+  const lockAddress = router.query!.address as string
 
   let hashes: string[] = []
-  if (typeof query.hash === 'string') {
-    hashes.push(query.hash)
-  } else if (typeof query.hash?.length && query.hash) {
-    hashes = query.hash
+  if (typeof router.query.hash === 'string') {
+    hashes.push(router.query.hash)
+  } else if (typeof router.query.hash?.length && router.query.hash) {
+    hashes = router.query.hash
   }
 
   return (
     <>
-      {hasParams && (
+      {hasParams ? (
         <>
           <div className="flex flex-col items-center">
+            <CloseReceiptButton lockAddress={lockAddress} network={network} />
             <h1 className="mb-10 text-4xl font-bold">Receipt details</h1>
             <div className="flex flex-col items-center w-full gap-4">
               {hashes?.map((hash) => {
                 return (
                   <ReceiptBox
                     key={hash}
-                    lockAddress={query!.address as string}
-                    network={Number(query.network)}
+                    lockAddress={lockAddress}
+                    network={network}
                     hash={hash}
                   />
                 )
@@ -34,6 +40,16 @@ export const ReceiptsPage = () => {
             </div>
           </div>
         </>
+      ) : (
+        <div className="flex flex-col items-center mt-10">
+          <Button
+            onClick={() => {
+              router.push('keychain')
+            }}
+          >
+            To the main page
+          </Button>
+        </div>
       )}
     </>
   )

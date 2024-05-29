@@ -23,11 +23,12 @@ export const useAvailableNetworks = (all = false) => {
 
   // Add the user's network if it's suppported by Unlock (but not already featured)
   if (networks[network!] && !networks[network!].featured) {
-    networkOptions.push({
+    networkOptions.unshift({
       label: networks[network!].name,
       value: networks[network!].id,
     })
   }
-
-  return networkOptions
+  return networkOptions.sort((a, b) =>
+    a.value === network ? -1 : b.value === network ? 1 : 0
+  )
 }

@@ -1,9 +1,14 @@
 import { Request, Response } from 'express'
-import { DecoyUser } from '../utils/decoyUser'
 import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
+import { ethers } from 'ethers'
+import { MemoryCache } from 'memory-cache-node'
+
+// Decoy users are cached for 15 minutes
+const cacheDuration = 60 * 15
+const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -53,17 +58,35 @@ export const retrieveEncryptedPrivatekey = async (
   if (ejected) {
     return res.sendStatus(404)
   }
-  const result = await UserOperations.getUserPrivateKeyByEmailAddress(
-    emailAddress
-  )
+
+  const result =
+    await UserOperations.getUserPrivateKeyByEmailAddress(emailAddress)
 
   if (result) {
     return res.json({ passwordEncryptedPrivateKey: result })
   } else {
-    const result = await new DecoyUser().encryptedPrivateKey()
+    let passwordEncryptedPrivateKey =
+      decoyUserCache.retrieveItemValue(emailAddress)
+    if (!passwordEncryptedPrivateKey) {
+      passwordEncryptedPrivateKey = await ethers.Wallet.createRandom().encrypt(
+        (Math.random() + 1).toString(36),
+        {
+          scrypt: {
+            // web3 used 1 << 5, ethers default is 1 << 18. We want speedy encryption here since this is not a real account anyway.
+            // eslint-disable-next-line no-bitwise
+            N: 1 << 5,
+          },
+        }
+      )
+      decoyUserCache.storeExpiringItem(
+        emailAddress,
+        passwordEncryptedPrivateKey,
+        cacheDuration
+      )
+    }
 
     return res.json({
-      passwordEncryptedPrivateKey: result,
+      passwordEncryptedPrivateKey,
     })
   }
 }
@@ -78,14 +101,14 @@ export const retrieveRecoveryPhrase = async (
   if (ejected) {
     return res.sendStatus(404)
   }
-  const result = await UserOperations.getUserRecoveryPhraseByEmailAddress(
-    emailAddress
-  )
+  const result =
+    await UserOperations.getUserRecoveryPhraseByEmailAddress(emailAddress)
 
   if (result) {
     return res.json({ recoveryPhrase: result })
   }
-  const recoveryPhrase = new DecoyUser().recoveryPhrase()
+  // Create a fake recoveryPhrase
+  const recoveryPhrase = (Math.random() + 1).toString(36)
   return res.json({ recoveryPhrase })
 }
 
@@ -170,9 +193,8 @@ export const getAddressPaymentDetails = async (
     return res.sendStatus(401)
   }
 
-  const stripeCustomerId = await StripeOperations.getStripeCustomerIdForAddress(
-    ethereumAddress
-  )
+  const stripeCustomerId =
+    await StripeOperations.getStripeCustomerIdForAddress(ethereumAddress)
   if (!stripeCustomerId) {
     return res.json([])
   }
@@ -196,9 +218,8 @@ export const deleteAddressPaymentDetails = async (
     return res.sendStatus(401)
   }
 
-  const result = await StripeOperations.deletePaymentDetailsForAddress(
-    ethereumAddress
-  )
+  const result =
+    await StripeOperations.deletePaymentDetailsForAddress(ethereumAddress)
 
   if (result) {
     return res.sendStatus(202)

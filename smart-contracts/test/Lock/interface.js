@@ -6,14 +6,13 @@ const {
   compareInterfaces,
 } = require('../helpers')
 
-contract('Lock / interface', () => {
+describe('Lock / interface', () => {
   let lockContract
   let lockInterface
 
   before(async () => {
-    ;({ interface: lockContract } = await ethers.getContractFactory(
-      'PublicLock'
-    ))
+    ;({ interface: lockContract } =
+      await ethers.getContractFactory('PublicLock'))
     ;({ interface: lockInterface } = await ethers.getContractAt(
       'IPublicLock',
       ADDRESS_ZERO

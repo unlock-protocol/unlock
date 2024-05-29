@@ -1,23 +1,23 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { time } = require('@openzeppelin/test-helpers')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 const {
   deployERC20,
   deployLock,
-  ADDRESS_ZERO,
   purchaseKey,
   reverts,
   almostEqual,
+  increaseTimeTo,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const someTokens = ethers.parseUnits('10', 'ether')
 
-contract('Lock / onKeyExtendHook', (accounts) => {
+describe('Lock / onKeyExtendHook', () => {
   let lock
   let tokenId
   let keyOwner
-  let lockOwner
-  let testEventHooks
+  let lockOwner, testEventHooks
   let expirationDuration
   let tx
 
@@ -25,22 +25,21 @@ contract('Lock / onKeyExtendHook', (accounts) => {
     ;[lockOwner, keyOwner] = await ethers.getSigners()
 
     // ERC20 token setup
-    const testToken = await deployERC20(lockOwner.address)
-    await testToken.mint(keyOwner.address, someTokens, {
-      from: lockOwner.address,
+    const testToken = await deployERC20(await lockOwner.getAddress())
+    await testToken.mint(await keyOwner.getAddress(), someTokens)
+
+    lock = await deployLock({
+      tokenAddress: await testToken.getAddress(),
     })
 
-    // deploy ERC20 token
-    const { address } = await deployLock({ tokenAddress: testToken.address })
-    lock = await ethers.getContractAt('PublicLock', address)
-    await testToken.approve(lock.address, someTokens, {
-      from: keyOwner.address,
-    })
+    // approve lock for spending
+    await testToken
+      .connect(keyOwner)
+      .approve(await lock.getAddress(), someTokens)
 
     // deploy mock events contract
     const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
     testEventHooks = await TestEventHooks.deploy()
-    await testEventHooks.deployed()
 
     // set events in lock
     tx = await lock.setEventHooks(
@@ -49,79 +48,85 @@ contract('Lock / onKeyExtendHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO
     )
     expirationDuration = await lock.expirationDuration()
   })
 
   it('emit the correct event', async () => {
-    const { events } = await tx.wait()
-    const { args } = events.find(({ event }) => event === 'EventHooksUpdated')
+    const receipt = await tx.wait()
+    const { args } = await getEvent(receipt, 'EventHooksUpdated')
     assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
     assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
     assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
     assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
     assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyExtendHook, testEventHooks.address)
+    assert.equal(args.onKeyExtendHook, await testEventHooks.getAddress())
     assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
   })
 
   describe('extend', () => {
     it('key cancels should log the hook event', async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
       const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
-      await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+      await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, '0x')
       const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).filter(
-        ({ event }) => event === 'OnKeyExtend'
+        ({ fragment }) => fragment.name === 'OnKeyExtend'
       )[0]
-      assert.equal(args.msgSender, lock.address)
-      assert.equal(args.tokenId.toString(), tokenId.toString())
-      assert.equal(args.from, keyOwner.address)
-      assert.equal(
-        tsBefore.add(expirationDuration).toString(),
-        args.newTimestamp.toString()
-      )
-      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+      assert.equal(args.msgSender, await lock.getAddress())
+      assert.equal(args.tokenId, tokenId)
+      assert.equal(args.from, await keyOwner.getAddress())
+      assert.equal(tsBefore + expirationDuration, args.newTimestamp)
+      assert.equal(tsBefore, args.prevTimestamp)
     })
   })
 
   describe('grantKeyExtension', () => {
     it('key cancels should log the hook event', async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
       const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       await lock.grantKeyExtension(tokenId, expirationDuration)
       const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).filter(
-        ({ event }) => event === 'OnKeyExtend'
+        ({ fragment }) => fragment.name === 'OnKeyExtend'
       )[1]
-      assert.equal(args.msgSender, lock.address)
-      assert.equal(args.tokenId.toString(), tokenId.toString())
-      assert.equal(args.from, lockOwner.address)
-      assert.equal(
-        tsBefore.add(expirationDuration).toString(),
-        args.newTimestamp.toString()
-      )
-      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+      assert.equal(args.msgSender, await lock.getAddress())
+      assert.equal(args.tokenId, tokenId)
+      assert.equal(args.from, await lockOwner.getAddress())
+      assert.equal(tsBefore + expirationDuration, args.newTimestamp)
+      assert.equal(tsBefore, args.prevTimestamp)
     })
   })
 
   describe('renewMembershipFor', () => {
     it('key cancels should log the hook event', async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      ;({ tokenId } = await purchaseKey(
+        lock,
+        await keyOwner.getAddress(),
+        true
+      ))
       // expire key
       const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
-      await time.increaseTo(newExpirationTs.toNumber() - 1)
+      await increaseTimeTo(newExpirationTs - 1n)
       // renew
       const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
       const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).filter(
-        ({ event }) => event === 'OnKeyExtend'
+        ({ fragment }) => fragment.name === 'OnKeyExtend'
       )[2]
-      assert.equal(args.msgSender, lock.address)
-      assert.equal(args.tokenId.toString(), tokenId.toString())
-      assert.equal(args.from, lockOwner.address)
-      assert(almostEqual(tsBefore.add(expirationDuration), args.newTimestamp))
-      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+      assert.equal(args.msgSender, await lock.getAddress())
+      assert.equal(args.tokenId, tokenId)
+      assert.equal(args.from, await lockOwner.getAddress())
+      assert(almostEqual(tsBefore + expirationDuration, args.newTimestamp))
+      assert.equal(tsBefore, args.prevTimestamp)
     })
   })
 
@@ -133,7 +138,7 @@ contract('Lock / onKeyExtendHook', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
-        accounts[1],
+        await keyOwner.getAddress(),
         ADDRESS_ZERO
       ),
       'INVALID_HOOK(5)'

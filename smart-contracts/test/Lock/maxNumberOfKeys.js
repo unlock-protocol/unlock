@@ -1,7 +1,10 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
 const deployContracts = require('../fixtures/deploy')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   ADDRESS_ZERO,
   purchaseKey,
@@ -9,15 +12,15 @@ const {
   reverts,
 } = require('../helpers')
 
-const keyPrice = ethers.utils.parseEther('0.01')
+const keyPrice = ethers.parseEther('0.01')
 
-contract('Lock / maxNumberOfKeys', () => {
+describe('Lock / maxNumberOfKeys', () => {
   let unlock
   let lock
 
   describe('prevent from buying more keys than defined supply', () => {
     beforeEach(async () => {
-      const { unlockEthers: unlockDeployed } = await deployContracts()
+      const { unlock: unlockDeployed } = await deployContracts()
       unlock = unlockDeployed
       const [from] = await ethers.getSigners()
 
@@ -25,14 +28,19 @@ contract('Lock / maxNumberOfKeys', () => {
       const tokenAddress = ADDRESS_ZERO
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
-      const calldata = await createLockCalldata({ args, from: from.address })
+      const calldata = await createLockCalldata({
+        args,
+        from: await from.getAddress(),
+      })
       const tx = await unlock.createUpgradeableLock(calldata)
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { newLockAddress },
-      } = events.find(({ event }) => event === 'NewLock')
+      } = await getEvent(receipt, 'NewLock')
 
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       lock = PublicLock.attach(newLockAddress)
     })
 
@@ -43,7 +51,10 @@ contract('Lock / maxNumberOfKeys', () => {
       await purchaseKeys(lock, 10)
 
       // try to buy another key exceding totalSupply
-      await reverts(purchaseKey(lock, buyers[11].address), 'LOCK_SOLD_OUT')
+      await reverts(
+        purchaseKey(lock, await buyers[11].getAddress()),
+        'LOCK_SOLD_OUT'
+      )
 
       // increase supply
       await lock.updateLockConfig(
@@ -53,9 +64,9 @@ contract('Lock / maxNumberOfKeys', () => {
       )
 
       // actually buy the key
-      const { to } = await purchaseKey(lock, buyers[11].address)
+      const { to } = await purchaseKey(lock, await buyers[11].getAddress())
 
-      assert.equal(to, buyers[11].address)
+      assert.equal(to, await buyers[11].getAddress())
       assert.equal(await lock.maxNumberOfKeys(), 12)
     })
   })

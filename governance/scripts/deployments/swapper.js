@@ -1,43 +1,40 @@
-const { ethers, unlock, run } = require('hardhat')
 const { PERMIT2_ADDRESS } = require('@uniswap/universal-router-sdk')
-const { getUniswapRouters } = require('../../test/helpers')
+const {
+  getNetwork,
+  copyAndBuildContractsAtVersion,
+  deployContract,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main() {
-  const [deployer] = await ethers.getSigners()
-
   // fetch chain info
-  const chainId = await deployer.getChainId()
-  const { unlockAddress } = unlock.networks[chainId]
+  const {
+    unlockAddress,
+    id: chainId,
+    uniswapV3: { universalRouterAddress },
+  } = await getNetwork()
 
-  const routers = getUniswapRouters(chainId)
-  if (!routers.length) {
-    console.log('Uniswap undefined for this network')
+  const routers = [universalRouterAddress]
+
+  console.log(`Deploying SwapPurchaser to ${chainId}
+  - unlockAddress: ${unlockAddress}
+  - PERMIT2_ADDRESS : ${PERMIT2_ADDRESS}
+  - routers: ${routers}`)
+
+  if (!universalRouterAddress) {
+    console.log('`universalRouterAddress` undefined for this network')
     return
   }
 
-  console.log(
-    `Deploying UnlockSwapPurchaser on chain ${chainId} (unlock: ${unlockAddress}, permit2: ${PERMIT2_ADDRESS}, routers: ${routers.toString()}) `
-  )
-  const UnlockSwapPurchaser = await ethers.getContractFactory(
-    'UnlockSwapPurchaser'
-  )
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'UnlockSwapPurchaser', subfolder: 'utils' },
+  ])
 
-  const swapper = await UnlockSwapPurchaser.deploy(
-    unlockAddress,
-    PERMIT2_ADDRESS,
-    routers
+  const { hash, address: swapPurchaserAddress } = await deployContract(
+    qualifiedPath,
+    [unlockAddress, PERMIT2_ADDRESS, routers],
+    { wait: 5 }
   )
-  console.log(`  swapper deployed at ${swapper.address}`)
-
-  if (chainId !== 31337) {
-    console.log(`   waiting for tx to be mined for contract verification...`)
-    await swapper.deployTransaction.wait(5)
-
-    await run('verify:verify', {
-      address: swapper.address,
-      constructorArguments: [unlockAddress, PERMIT2_ADDRESS, routers],
-    })
-  }
+  console.log(`SwapPurchaser deployed at ${swapPurchaserAddress} (tx: ${hash})`)
 }
 
 // execute as standalone

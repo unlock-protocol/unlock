@@ -10,9 +10,8 @@ import * as lockOperations from './lockOperations'
 import { Attribute } from '../types'
 import metadata from '../config/metadata'
 import { getDefaultLockData } from '../utils/metadata'
-import { CheckoutConfig, EventData } from '../models'
 import { getEventUrl } from '../utils/eventHelpers'
-import { Op } from 'sequelize'
+import { getEventForLock } from './eventOperations'
 
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
@@ -116,7 +115,7 @@ export const getBaseTokenData = async (
   // Ok to remove after 03/31/2024
   // Uncoment for reveal!
   if (
-    address.toLowerCase() == '0x02c510be69fe87e052e065d8a40b437d55907b48' &&
+    address.toLowerCase() == '0x02c510bE69fe87E052E065D8A40B437d55907B48' &&
     network == 42161
   ) {
     result.image = `${host}/${network}/lock/${address}/icon?id=${keyId}`
@@ -125,7 +124,10 @@ export const getBaseTokenData = async (
   return result
 }
 
-export const getKeyCentricData = async (address: string, tokenId: string) => {
+export const getKeyCentricData = async (address: string, tokenId?: string) => {
+  if (!tokenId) {
+    return {}
+  }
   const keyCentricData = await KeyMetadata.findOne({
     where: {
       address,
@@ -221,19 +223,11 @@ export const getKeysMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const owners: { owner: string; tokenId: string }[] = keys?.map(
-    ({ owner, tokenId }: any) => {
-      return {
-        owner,
-        tokenId,
-      }
-    }
-  )
-
-  const mergedDataList = owners.map(async ({ owner, tokenId }) => {
+  const mergedDataList = keys?.map(async ({ owner, tokenId, approval }) => {
     let metadata: Record<string, any> = {
       owner,
       tokenId,
+      approval,
     }
     const keyData = await getKeyCentricData(lockAddress, tokenId)
     const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
@@ -295,33 +289,19 @@ export const getLockMetadata = async ({
     }
   }
 
-  // Now let's see if there is an event data that needs to be attached
-  // find checkout URLs that include this lock
-  // We look for both cases... because I am not sure how to look for
-  // keys in an insensitive way!
-  const checkoutConfigs = await CheckoutConfig.findAll({
-    where: {
-      [Op.or]: [
-        { [`config.locks.${lockAddress}.network`]: network },
-        { [`config.locks.${lockAddress.toLowerCase()}.network`]: network },
-      ],
-    },
-    order: [['updatedAt', 'DESC']],
-  })
-
-  // If there are checkout configs, let's see if an even exists with them!
-  // Let's now find any event that uses this checkout config!
-  const event = await EventData.findOne({
-    where: {
-      checkoutConfigId: checkoutConfigs.map((record) => record.id),
-    },
-  })
+  // Now let's see if there is an event data that needs to be attached to this lock!
+  const event = await getEventForLock(
+    lockAddress,
+    network,
+    false /** includeProtected, metadata is always public */
+  )
 
   // Add the event data!
   if (event) {
     lockMetadata = {
-      ...lockMetadata,
       ...event.data,
+      ...lockMetadata, // priority to the lock metadata if it has been set
+      attributes: [...event.data.attributes, ...lockMetadata.attributes],
       external_url: getEventUrl(event),
     }
   }

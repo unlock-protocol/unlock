@@ -249,7 +249,7 @@ describe('Signature Validation Middleware', () => {
             message: {
               lock: {
                 name: 'New Lock',
-                owner: '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
+                owner: '0xC66Ef2E0D0eDCce723b3fdd4307db6c5F0Dda1b8',
                 address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
               },
             },

@@ -17,6 +17,17 @@ const networks = require('@unlock-protocol/networks')
  * @returns
  */
 const { DEPLOYER_PRIVATE_KEY } = process.env
+
+if (!DEPLOYER_PRIVATE_KEY) {
+  console.error(
+    `⚠️ Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
+  )
+} else {
+  console.error(
+    `⚠️ Using account from DEPLOYER_PRIVATE_KEY environment variable.`
+  )
+}
+
 const getAccounts = () => {
   if (process.env.CI === 'true') {
     return {
@@ -28,9 +39,6 @@ const getAccounts = () => {
     return [DEPLOYER_PRIVATE_KEY]
   }
 
-  console.error(
-    `Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
-  )
   return {
     mnemonic: 'test test test test test test test test test test test junk',
     initialIndex: 0,
@@ -45,11 +53,12 @@ const hardhatNetworks = {
     chainId: 31337,
     url: `http://${testHost}:8545`,
     name: 'localhost',
+    zksync: !!process.env.ZK_SYNC, // allow zksync on localhost
   },
 }
 
 Object.keys(networks).forEach((key) => {
-  if (['default', 'networks', 'localhost'].indexOf(key) === -1) {
+  if (['default', 'networks'].indexOf(key) === -1) {
     hardhatNetworks[key] = {
       chainId: networks[key].id,
       name: networks[key].name,
@@ -57,12 +66,31 @@ Object.keys(networks).forEach((key) => {
       accounts: getAccounts(networks[key].name),
     }
   }
+
+  if (key.includes('zksync')) {
+    hardhatNetworks[key] = {
+      ...hardhatNetworks[key],
+      zksync: true,
+      ethNetwork: networks[key].isTestNetwork ? 'sepolia' : 'mainnet',
+      verifyURL: networks[key].isTestNetwork
+        ? 'https://explorer.sepolia.era.zksync.dev/contract_verification'
+        : 'https://zksync2-mainnet-explorer.zksync.io/contract_verification',
+    }
+  }
+
   // duplicate xdai record as gnosis
   if (key === 'xdai') {
     hardhatNetworks['gnosis'] = {
       chainId: 100,
       name: 'gnosis',
       url: networks[key].provider,
+    }
+  }
+
+  // allow zksync on hardhat default network
+  if (process.env.ZK_SYNC) {
+    hardhatNetworks.hardhat = {
+      zksync: true,
     }
   }
 })

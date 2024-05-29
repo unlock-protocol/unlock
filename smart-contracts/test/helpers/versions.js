@@ -9,8 +9,8 @@ const {
   bytecode: proxyAdminBytecode,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
 
-const LATEST_UNLOCK_VERSION = 12
-const LATEST_PUBLIC_LOCK_VERSION = 13
+const LATEST_UNLOCK_VERSION = 13
+const LATEST_PUBLIC_LOCK_VERSION = 14
 
 function getUnlockVersionNumbers() {
   return (
@@ -35,7 +35,8 @@ function getMatchingLockVersion(unlockVersion) {
   // after v10, they start decoupling
   publicLockVersions[10] = 9
   publicLockVersions[11] = 11
-  publicLockVersions[12] = 11
+  publicLockVersions[12] = 12
+  publicLockVersions[13] = 14
 
   return publicLockVersions[unlockVersion]
 }
@@ -63,7 +64,6 @@ async function deployUpgreadableContract(
 ) {
   // deploy implementation
   const impl = await Factory.deploy()
-  await impl.deployTransaction.wait()
 
   // encode initializer data
   const fragment = impl.interface.getFunction(initializer)
@@ -75,7 +75,6 @@ async function deployUpgreadableContract(
     proxyAdminBytecode
   )
   const proxyAdmin = await ProxyAdmin.deploy()
-  await proxyAdmin.deployTransaction.wait()
 
   // deploy proxy
   const TransparentUpgradeableProxy = await ethers.getContractFactory(
@@ -83,17 +82,13 @@ async function deployUpgreadableContract(
     proxyBytecode
   )
   const proxy = await TransparentUpgradeableProxy.deploy(
-    impl.address,
-    proxyAdmin.address,
+    await impl.getAddress(),
+    await proxyAdmin.getAddress(),
     data
   )
-  await proxy.deployTransaction.wait()
 
   // wait for proxy deployment
-  const contract = await ethers.getContractAt(
-    Factory.interface.format(ethers.utils.FormatTypes.full),
-    proxy.address
-  )
+  const contract = await Factory.attach(await proxy.getAddress())
   return {
     proxyAdmin,
     contract,
@@ -107,7 +102,6 @@ async function upgradeUpgreadableContract(
 ) {
   // deploy implementation
   const impl = await Factory.deploy()
-  await impl.deployTransaction.wait()
 
   // get proxyAdmin
   const proxyAdmin = await ethers.getContractAt(
@@ -116,12 +110,9 @@ async function upgradeUpgreadableContract(
   )
 
   // do the upgrade
-  await proxyAdmin.upgrade(proxyAddress, impl.address)
+  await proxyAdmin.upgrade(proxyAddress, await impl.getAddress())
 
-  const upgraded = await ethers.getContractAt(
-    Factory.interface.format(ethers.utils.FormatTypes.full),
-    proxyAddress
-  )
+  const upgraded = await Factory.attach(proxyAddress)
   return upgraded
 }
 

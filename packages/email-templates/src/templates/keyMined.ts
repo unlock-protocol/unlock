@@ -1,10 +1,11 @@
-import handlebars from 'handlebars'
-import { customContentStyle } from './helpers/customContentStyle'
+import Handlebars from 'handlebars'
 import { links } from './helpers/links'
 import { transactionLink } from './helpers/transactionLink'
+import { formattedCustomContent } from './helpers/customContent'
 
-handlebars.registerHelper('links', links)
-handlebars.registerHelper('transactionLink', transactionLink)
+Handlebars.registerHelper('links', links)
+Handlebars.registerHelper('transactionLink', transactionLink)
+Handlebars.registerHelper('formattedCustomContent', formattedCustomContent)
 
 export default {
   subject: 'You have received a new NFT!',
@@ -12,11 +13,7 @@ export default {
 
 <p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
-{{#if customContent}}
-<section style="${customContentStyle}">
-{{{customContent}}}
-  </section>
-{{/if}}
+{{formattedCustomContent "Membership Manager" customContent}}
 
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 

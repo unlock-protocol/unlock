@@ -10,6 +10,7 @@ import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
+import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 
 import {
   CurrencyAmount,
@@ -19,8 +20,8 @@ import {
   TradeType,
 } from '@uniswap/sdk-core'
 import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
-import { networks } from '@unlock-protocol/networks'
 import { UnlockUniswapRoute } from '@unlock-protocol/types'
+import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -145,11 +146,14 @@ export default class Web3Service extends UnlockService {
     )
     // Add the lock address
     lock.address = address
+    lock.network = network
 
+    // Add the unlock address
     lock.unlockContractAddress = ethers.utils.getAddress(
       lock.unlockContractAddress
     )
 
+    // Check that the Unlock address matches an "official one"
     const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
       (d: any) => ethers.utils.getAddress(d.unlockAddress)
     )
@@ -1164,5 +1168,55 @@ export default class Web3Service extends UnlockService {
       signerAddress
     )
     return ethers.BigNumber.from(discountForSigner).toNumber()
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getDiscountHookWithCapValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: discountCodeWithCapHookAbi,
+    })
+    const discount = await contract.discounts(lockAddress, signerAddress)
+    const cap = await contract.caps(lockAddress, signerAddress)
+    const count = await contract.counters(lockAddress, signerAddress)
+    return {
+      discount: ethers.BigNumber.from(discount).toNumber(),
+      cap: ethers.BigNumber.from(cap).toNumber(),
+      count: ethers.BigNumber.from(count).toNumber(),
+    }
+  }
+
+  /**
+   * Get signer for `Password hook contract`
+   */
+  async getPasswordHookWithCapValues(params: {
+    lockAddress: string
+    contractAddress: string
+    network: number
+    signerAddress: string
+  }) {
+    const { lockAddress, contractAddress, network, signerAddress } =
+      params ?? {}
+    const contract = await this.getHookContract({
+      network,
+      address: contractAddress,
+      abi: passwordCapHookAbi,
+    })
+    const cap = await contract.signers(lockAddress, signerAddress)
+    const count = await contract.counters(lockAddress, signerAddress)
+    return {
+      cap: ethers.BigNumber.from(cap).toNumber(),
+      count: ethers.BigNumber.from(count).toNumber(),
+    }
   }
 }

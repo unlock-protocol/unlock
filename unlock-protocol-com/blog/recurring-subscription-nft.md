@@ -55,7 +55,7 @@ For too long, perverse attention economics have both shaped and dictated the con
 
 ### Documentation and demo
 
-- Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
+- Community & Support: [Join the Unlock Discord](https://discord.unlock-protocol.com/)
 
 - Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
 

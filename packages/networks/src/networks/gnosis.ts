@@ -13,8 +13,8 @@ export const gnosis: NetworkConfig = {
       address: (address) =>
         `https://gnosisscan.io/address/${address}/transactions`,
       base: `https://gnosisscan.io/`,
-      token: (address, _holder) =>
-        `https://gnosisscan.io/token/${address}/token-holders#holders`,
+      token: (address, holder) =>
+        `https://gnosisscan.io/token/${address}?a=${holder}`,
       transaction: (hash) => `https://gnosisscan.io/tx/${hash}`,
     },
   },
@@ -45,6 +45,28 @@ export const gnosis: NetworkConfig = {
         id: HookType.GUILD,
         name: 'Guild',
       },
+      {
+        address: '0x5ff4d5733Cc2b0A069cFF409eCEad3C5C71Ee346',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
+      {
+        address: '0x111C61BD66a8c4f142e452b9087Dae5893C5C3cF',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
+      {
+        address: '0xd6129cAC45a16187F4D09Dd69C512F68F0f2B371',
+        id: HookType.GITCOIN,
+        name: 'Gitcoin',
+      },
+    ],
+    onTokenURIHook: [
+      {
+        address: '0x936Ed3E71b5990bC9A94074835D08C6ca7bbFad0',
+        id: HookType.ADVANCED_TOKEN_URI,
+        name: 'Advanced Token URI',
+      },
     ],
   },
   id: 100,
@@ -58,7 +80,7 @@ export const gnosis: NetworkConfig = {
     coingecko: 'xdai',
     decimals: 18,
     name: 'xDAI',
-    symbol: 'DAI',
+    symbol: 'xDAI',
   },
   previousDeploys: [
     {
@@ -72,26 +94,32 @@ export const gnosis: NetworkConfig = {
   startBlock: 19338700,
   // This is used in llama pricing API so can't rename.
   subgraph: {
-    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
-    endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/gnosis-v2',
-    networkName: 'xdai',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-gnosis/version/latest',
+    networkName: 'gnosis',
+    studioName: 'unlock-protocol-gnosis',
   },
   tokens: [
     {
-      address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+      address: '0xDDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
       decimals: 6,
-      name: 'USD Coin',
+      featured: true,
+      name: 'USD//C on xDai',
       symbol: 'USDC',
     },
     {
-      address: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
+      address: '0x4ECaBa5870353805a9F068101A40E0f32ed605C6',
       decimals: 6,
-      name: 'Tether USD',
+      featured: true,
+      name: 'Tether USD on xDai',
       symbol: 'USDT',
     },
   ],
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
+  unlockDaoToken: {
+    address: '0x8C84142c4a716a16a89d0e61707164d6107A9811',
+    mainnetBridge: '0x41a4ee2855A7Dc328524babB07d7f505B201133e',
+  },
   url: 'https://www.gnosis.io/',
 }
 export default gnosis

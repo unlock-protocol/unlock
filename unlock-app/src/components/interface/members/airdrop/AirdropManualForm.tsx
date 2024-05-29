@@ -17,9 +17,9 @@ import { ChangeEvent, useCallback, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
-import { twMerge } from 'tailwind-merge'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { onResolveName } from '~/utils/resolvers'
+
 export interface Props {
   add(member: AirdropMember): void
   lock: Lock
@@ -28,7 +28,7 @@ export interface Props {
   emailRequired?: boolean
 }
 
-export function AirdropForm({
+export function AirdropInternalForm({
   add,
   defaultValues,
   lock,
@@ -46,7 +46,6 @@ export function AirdropForm({
     control,
     formState: { errors, isSubmitting },
   } = useForm<AirdropMember>({
-    // @ts-expect-error
     defaultValues,
     mode: 'onSubmit',
   })
@@ -72,15 +71,10 @@ export function AirdropForm({
   const label = useEmail ? 'Email' : 'Wallet address'
 
   const description = useEmail
-    ? 'Enter the email address that will receive the membership NFT'
-    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+    ? 'Enter the email address that will receive the NFT'
+    : 'Enter the wallet address or an ENS that will receive the NFT'
   const error = errors?.wallet?.message
   const placeholder = useEmail ? 'user@email.com' : '0x...'
-  const inputClass = twMerge(
-    'box-border flex-1 block w-full transition-all border pl-4 py-2 text-base border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none disabled:bg-gray-100',
-    error &&
-      'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary'
-  )
 
   const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
   const web3Service = useWeb3Service()
@@ -111,7 +105,6 @@ export function AirdropForm({
       try {
         const address = await getAddressForName(member.wallet)
         member.wallet = address
-        console.log(member)
         const parsed = AirdropMember.parse(member)
         add(parsed)
         reset()
@@ -138,7 +131,7 @@ export function AirdropForm({
               }
 
               try {
-                const numberOfMemberships = await web3Service.balanceOf(
+                const numberOfMemberships = await web3Service.totalKeys(
                   lock!.address,
                   address,
                   lock!.network
@@ -155,14 +148,15 @@ export function AirdropForm({
         }}
         render={({ field: { onChange, ref, onBlur } }) => {
           return (
-            <div className="grid gap-1.5">
-              <div className="flex items-center justify-between">
+            <div className="grid">
+              <div className="flex items-center justify-between mb-1">
                 <label className="text-base" htmlFor={label}>
                   {label}
                 </label>
                 <div className="flex items-center gap-2">
-                  <div className="text-base">No wallet address?</div>
+                  <span className="text-base">No wallet address?</span>
                   <Toggle
+                    size="small"
                     value={useEmail}
                     onChange={(value: boolean) => {
                       resetField('email')
@@ -173,11 +167,9 @@ export function AirdropForm({
                 </div>
               </div>
               {useEmail ? (
-                <input
-                  className={inputClass}
+                <Input
                   placeholder={placeholder}
                   name={label}
-                  id={label}
                   type="email"
                   onChange={(event) => {
                     onChange(onWalletChange(event))
@@ -194,17 +186,15 @@ export function AirdropForm({
                   }}
                   render={() => {
                     return (
-                      <>
-                        <AddressInput
-                          withIcon
-                          value={wallet}
-                          onChange={(value: any) => {
-                            setValue('wallet', value)
-                          }}
-                          required
-                          onResolveName={onResolveName}
-                        />
-                      </>
+                      <AddressInput
+                        withIcon
+                        value={wallet}
+                        onChange={(value: any) => {
+                          setValue('wallet', value)
+                        }}
+                        required
+                        onResolveName={onResolveName}
+                      />
                     )
                   }}
                 />
@@ -227,59 +217,63 @@ export function AirdropForm({
               message: 'Email is required',
             },
           })}
-          description={
-            'A confirmation email will be sent to your recipient with the QR code and link for NFT.'
-          }
+          description={'A confirmation email will be sent to the recipient.'}
           error={errors.email?.message}
         />
       )}
-      <Input
-        pattern="\d+"
-        label="Number of keys to airdrop"
-        {...register('count', {
-          valueAsNumber: true,
-          validate: (item) => {
-            if (!Number.isInteger(item)) {
-              return 'Only positive numbers are allowed.'
-            }
-          },
-          max: {
-            value: maxKeysPerAddress,
-            message: `Your lock currently has a maximum of keys per address set to ${maxKeysPerAddress}.`,
-          },
-        })}
-        error={errors.count?.message}
-      />
-
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <span>Expiration</span>
-          <ToggleSwitch
-            enabled={formValues.neverExpire}
-            setEnabled={() => setValue('neverExpire', !formValues.neverExpire)}
-            onChange={(enabled: boolean) => {
-              if (enabled) {
-                setValue('expiration', undefined)
+      <div className="flex flex-row gap-4 w-full">
+        <Input
+          pattern="\d+"
+          label="Number of keys"
+          {...register('count', {
+            valueAsNumber: true,
+            validate: (item) => {
+              if (!Number.isInteger(item)) {
+                return 'Only positive numbers are allowed.'
               }
-            }}
-            title="Never expires"
-          />
-        </div>
-        <div className="relative">
-          <Input
-            disabled={formValues.neverExpire}
-            label=""
-            type="datetime-local"
-            required={!formValues.neverExpire}
-            {...register('expiration')}
-          />
-          {errors?.expiration && (
-            <span className="absolute text-xs text-red-700">
-              This field is required
-            </span>
-          )}
+            },
+            max: {
+              value: maxKeysPerAddress,
+              message: `Your lock currently has a maximum of keys per address set to ${maxKeysPerAddress}.`,
+            },
+          })}
+          error={errors.count?.message}
+        />
+
+        <div className="grow">
+          <div className="flex items-center justify-between">
+            <span>Expiration</span>
+            <ToggleSwitch
+              size="small"
+              enabled={formValues.neverExpire}
+              setEnabled={() =>
+                setValue('neverExpire', !formValues.neverExpire)
+              }
+              onChange={(enabled: boolean) => {
+                if (enabled) {
+                  setValue('expiration', undefined)
+                }
+              }}
+              title="Never"
+            />
+          </div>
+          <div className="relative">
+            <Input
+              disabled={formValues.neverExpire}
+              label=""
+              type="datetime-local"
+              required={!formValues.neverExpire}
+              {...register('expiration')}
+            />
+            {errors?.expiration && (
+              <span className="absolute text-xs text-red-700">
+                This field is required
+              </span>
+            )}
+          </div>
         </div>
       </div>
+
       {!useEmail && (
         <Input
           label="Key Manager"
@@ -290,6 +284,7 @@ export function AirdropForm({
           error={errors.manager?.message}
         />
       )}
+
       <Button loading={isSubmitting} disabled={isSubmitting} type="submit">
         Add recipient
       </Button>
@@ -320,7 +315,7 @@ export function AirdropManualForm({
 
   return (
     <div className="space-y-6 overflow-y-auto">
-      <AirdropForm
+      <AirdropInternalForm
         emailRequired={emailRequired}
         lock={lock}
         add={(member) => push(member)}
@@ -356,6 +351,7 @@ export function AirdropManualForm({
                 await onConfirm(list)
                 clear()
               } catch (error) {
+                console.error(error)
                 if (error instanceof Error) {
                   ToastHelper.error(error.message)
                 }

@@ -11,7 +11,7 @@ async function main({ account, udtAddress }) {
   // eslint-disable-next-line no-console
   console.log(
     'UDT balance:',
-    ethers.utils.formatUnits(await udt.balanceOf(account), 18)
+    ethers.formatUnits(await udt.balanceOf(account), 18)
   )
 }
 

@@ -13,7 +13,7 @@ Let's say we need to add a new `demo` template, there is the following steps:
 
 ```
 type Template =
-  | 'keyMinde'
+  | 'keyMined'
   | 'demo'
 ```
 

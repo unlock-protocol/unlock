@@ -34,7 +34,7 @@ async function main() {
   const unlock = await getUnlock(unlockAddress)
   const udtAddress = await unlock.udt()
 
-  const amountWrapped = ethers.utils.parseUnits(INITIAL_AMOUNT, 18)
+  const amountWrapped = ethers.parseUnits(INITIAL_AMOUNT, 18)
   const exchangeRate = Math.round(
     (NATIVE_USD_PRICE * BASIS_POINTS) / UDT_USD_PRICE
   )
@@ -52,8 +52,8 @@ async function main() {
   console.log(`Pool address: ${pool.address}`)
 
   console.log(
-    ` liquidity to add (Wrapped): ${ethers.utils.formatEther(amountWrapped)}\n`,
-    ` liquidity to add (UDT): ${ethers.utils.formatEther(amountUDT)}`
+    ` liquidity to add (Wrapped): ${ethers.formatEther(amountWrapped)}\n`,
+    ` liquidity to add (UDT): ${ethers.formatEther(amountUDT)}`
   )
 
   // make sure we have enough (for testing)

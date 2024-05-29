@@ -31,7 +31,7 @@ export default ({ publicLockVersion }) => {
         const now = Math.floor(new Date().getTime() / 1000)
         expect(expiration).toBeGreaterThan(now)
 
-        const recipient = '0x6524dbb97462ac3919866b8fbb22bf181d1d4113'
+        const recipient = '0x6524dBB97462aC3919866b8fbB22BF181D1D4113'
         const recipientDurationBefore =
           await web3Service.getKeyExpirationByLockForOwner(
             lockAddress,

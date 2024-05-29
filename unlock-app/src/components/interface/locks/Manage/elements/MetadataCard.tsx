@@ -38,6 +38,7 @@ interface MetadataCardProps {
   network: number
   expirationDuration?: string
   lockSettings?: Record<string, any>
+  isExpired?: boolean
 }
 
 const keysToIgnore = [
@@ -50,6 +51,7 @@ const keysToIgnore = [
   'checkedInAt',
   'email',
   'data',
+  'transactionsHash',
 ]
 
 interface KeyRenewalProps {
@@ -68,7 +70,7 @@ const MembershipRenewal = ({
 
   if (possible.lte(0)) {
     return (
-      <Detail className="py-2" label="Renewals" inline justify={false}>
+      <Detail className="py-2" label="Renewals:" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
       </Detail>
     )
@@ -229,7 +231,7 @@ const ChangeManagerModal = ({
         </div>
       </Modal>
       <Button
-        className="w-full md:w-auto"
+        className="w-full md:w-auto whitespace-nowrap"
         size="small"
         onClick={() => setIsOpen(true)}
       >
@@ -244,6 +246,7 @@ export const MetadataCard = ({
   network,
   expirationDuration,
   lockSettings,
+  isExpired,
 }: MetadataCardProps) => {
   const [showTransferKey, setShowTransferKey] = useState(false)
   const [data, setData] = useState(metadata)
@@ -528,9 +531,11 @@ export const MetadataCard = ({
                       side="bottom"
                     >
                       <div className="flex items-center gap-2">
-                        <span>Key Owner </span>
-                        <InfoIcon />:
-                        <div className="flex gap-2">
+                        <span>Owner:</span>
+                        <Link
+                          href={`/keychain?owner=${owner}`}
+                          className="flex gap-2 text-brand-ui-primary"
+                        >
                           {/* show full address on desktop */}
                           <div className="text-base font-semibold text-black break-words">
                             <span className="hidden md:block">{owner}</span>
@@ -539,33 +544,39 @@ export const MetadataCard = ({
                               {addressMinify(owner)}
                             </span>
                           </div>
-                          <Button
-                            className="p-0 outline-none text-brand-ui-primary ring-0"
-                            variant="transparent"
-                            aria-label="blockscan link"
-                          >
-                            <a
-                              href={`https://blockscan.com/address/${owner}`}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              <ExternalLinkIcon size={20} />
-                            </a>
-                          </Button>
-                        </div>
+                        </Link>
                       </div>
                     </Tooltip>
                   </div>
                   <div className="md:ml-auto">
                     <div className="flex flex-col gap-2 md:flex-row md:items-center">
                       {isLockManager && (
-                        <Button
-                          size="small"
-                          onClick={() => setShowTransferKey(true)}
-                          className="w-full md:w-auto"
-                        >
-                          Transfer ownership
-                        </Button>
+                        <>
+                          {isExpired ? (
+                            // conditionally render Tooltip if membership is expired
+                            <Tooltip
+                              tip="Expired memberships can't be transferred"
+                              label="Expired memberships can't be transferred."
+                            >
+                              <Button
+                                size="small"
+                                className="w-full md:w-auto"
+                                disabled={isExpired}
+                              >
+                                Transfer
+                              </Button>
+                            </Tooltip>
+                          ) : (
+                            <Button
+                              size="small"
+                              onClick={() => setShowTransferKey(true)}
+                              className="w-full md:w-auto"
+                              disabled={isExpired}
+                            >
+                              Transfer
+                            </Button>
+                          )}
+                        </>
                       )}
                       {ownerIsManager && (
                         <div className="md:ml-auto">
@@ -574,7 +585,7 @@ export const MetadataCard = ({
                             network={network}
                             manager={manager}
                             tokenId={tokenId}
-                            label="Set key manager"
+                            label="Set manager"
                             onChange={(keyManager) => {
                               setData({
                                 ...data,
@@ -602,7 +613,7 @@ export const MetadataCard = ({
                           side="right"
                         >
                           <div className="flex items-center gap-1">
-                            <span>Key Manager </span>
+                            <span>Manager</span>
                             <InfoIcon />:
                           </div>
                         </Tooltip>
@@ -633,7 +644,7 @@ export const MetadataCard = ({
                         network={network}
                         manager={manager}
                         tokenId={tokenId}
-                        label="Change key manager"
+                        label="Update"
                         onChange={(keyManager) => {
                           setData({
                             ...data,
@@ -646,33 +657,37 @@ export const MetadataCard = ({
                 />
               </div>
             )}
-            {!isSubscriptionLoading && subscription && (
-              <>
-                <Detail
-                  className="py-2"
-                  label="User Balance:"
-                  inline
-                  justify={false}
-                >
-                  {subscription.balance?.amount} {subscription.balance?.symbol}
-                </Detail>
-                <MembershipRenewal
-                  possibleRenewals={subscription.possibleRenewals!}
-                  approvedRenewals={subscription.approvedRenewals!}
-                  balance={subscription.balance as any}
-                />
-                {expirationDuration && expirationDuration !== MAX_UINT && (
+            {!isSubscriptionLoading &&
+              subscription &&
+              expirationDuration &&
+              expirationDuration !== MAX_UINT && (
+                <>
                   <Detail
                     className="py-2"
-                    label="Renewal duration:"
+                    label="User Balance:"
                     inline
                     justify={false}
                   >
-                    {durationAsText(expirationDuration)}
+                    {subscription.balance?.amount}{' '}
+                    {subscription.balance?.symbol}
                   </Detail>
-                )}
-              </>
-            )}
+                  <MembershipRenewal
+                    possibleRenewals={subscription.possibleRenewals!}
+                    approvedRenewals={subscription.approvedRenewals!}
+                    balance={subscription.balance as any}
+                  />
+                  {
+                    <Detail
+                      className="py-2"
+                      label="Renewal duration:"
+                      inline
+                      justify={false}
+                    >
+                      {durationAsText(expirationDuration)}
+                    </Detail>
+                  }
+                </>
+              )}
           </div>
         </div>
       </div>

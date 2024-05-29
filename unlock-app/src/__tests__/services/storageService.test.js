@@ -4,10 +4,10 @@ import UnlockUser from '../../structured_data/unlockUser'
 import { vi, describe, beforeAll, beforeEach, expect, it } from 'vitest'
 
 const emailAddress = 'stick@stick.ly'
-const publicKey = '0x88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290'
+const publicKey = '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290'
 const passwordEncryptedPrivateKey = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
-  address: '88a5c2d9919e46f883eb62f7b8dd9d0cc45bc290',
+  address: '0x88a5C2d9919e46F883EB62F7b8Dd9d0CC45bc290',
   Crypto: {
     kdfparams: {
       dklen: 32,

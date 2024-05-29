@@ -5,6 +5,9 @@ import normalizer from '../../utils/normalizer'
 import config from '../../config/config'
 import logger from '../../logger'
 import { minifyAddress } from '@unlock-protocol/ui'
+import { unified } from 'unified'
+import remarkParse from 'remark-parse'
+import remarkHtml from 'remark-html'
 
 const Payload = z.object({
   lockAddress: z.string().transform((item) => normalizer.ethereumAddress(item)),
@@ -33,6 +36,7 @@ export const sendToAllJob: Task = async (payload, helper) => {
       walletAddress: item.userAddress,
     }
   })
+
   const unsubscribedList = await UnsubscribeList.findAll({
     where: {
       lockAddress: parsed.lockAddress,
@@ -63,11 +67,16 @@ export const sendToAllJob: Task = async (payload, helper) => {
     unsubscribeLink.searchParams.set('lockAddress', parsed.lockAddress)
     unsubscribeLink.searchParams.set('network', parsed.network.toString())
 
+    const content = await unified()
+      .use(remarkParse)
+      .use(remarkHtml)
+      .process(parsed.content)
+
     await helper.addJob('sendEmailJob', {
       recipient: recipient.email,
       attachments: [],
       params: {
-        content: parsed.content,
+        content: String(content?.value),
         subject: parsed.subject,
         lockAddress: parsed.lockAddress,
         network: parsed.network,

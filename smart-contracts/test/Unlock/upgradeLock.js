@@ -1,7 +1,11 @@
+const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
 const contracts = require('@unlock-protocol/contracts')
 const { ADDRESS_ZERO, reverts } = require('../helpers')
-const { createLockCalldata } = require('@unlock-protocol/hardhat-helpers')
+const {
+  createLockCalldata,
+  getEvent,
+} = require('@unlock-protocol/hardhat-helpers')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
@@ -14,41 +18,46 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-    })
-    await unlock.deployed()
+    unlock = await upgrades.deployProxy(
+      Unlock,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    )
 
     const PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
     )
     publicLock = await PublicLock.deploy()
-    await publicLock.deployed()
 
     currentVersion = await publicLock.publicLockVersion()
 
     // add impl as v1
     const txImpl = await unlock.addLockTemplate(
-      publicLock.address,
+      await publicLock.getAddress(),
       currentVersion
     )
     await txImpl.wait()
 
     // set v1 as main template
-    await unlock.setLockTemplate(publicLock.address)
+    await unlock.setLockTemplate(await publicLock.getAddress())
 
     // deploy a simple lock
     const args = [
       60 * 60 * 24 * 30, // 30 days
       ADDRESS_ZERO,
-      ethers.utils.parseEther('0.01'),
+      ethers.parseEther('0.01'),
       10,
       'A neat upgradeable lock!',
     ]
-    const calldata = await createLockCalldata({ args, from: creator.address })
+    const calldata = await createLockCalldata({
+      args,
+      from: await creator.getAddress(),
+    })
     const tx = await unlock.createUpgradeableLock(calldata)
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'NewLock')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'NewLock')
     const { newLockAddress } = evt.args
     lock = await ethers.getContractAt(
       'contracts/interfaces/IPublicLock.sol:IPublicLock',
@@ -60,23 +69,27 @@ describe('upgradeLock (deploy template with Proxy)', () => {
       'TestPublicLockUpgraded'
     )
     publicLockUpgraded = await PublicLockUpgraded.deploy()
-    await publicLockUpgraded.deployed()
   })
 
   it('Should forbid bump more than 1 version', async () => {
     const [, creator] = await ethers.getSigners()
 
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 2)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 2n
+    )
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, currentVersion + 2),
+      unlock
+        .connect(creator)
+        .upgradeLock(await lock.getAddress(), currentVersion + 2n),
       'VERSION_TOO_HIGH'
     )
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, 1), // smaller one
+      unlock.connect(creator).upgradeLock(await lock.getAddress(), 1), // smaller one
       'VERSION_TOO_HIGH'
     )
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, 135),
+      unlock.connect(creator).upgradeLock(await lock.getAddress(), 135),
       'VERSION_TOO_HIGH'
     )
   })
@@ -84,7 +97,9 @@ describe('upgradeLock (deploy template with Proxy)', () => {
   it('Should forbid upgrade if version is not set', async () => {
     const [, creator] = await ethers.getSigners()
     await reverts(
-      unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1),
+      unlock
+        .connect(creator)
+        .upgradeLock(await lock.getAddress(), currentVersion + 1n),
       'MISSING_TEMPLATE'
     )
   })
@@ -93,38 +108,54 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const [, creator] = await ethers.getSigners()
     assert.equal(await unlock.publicLockLatestVersion(), currentVersion)
 
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
-    await unlock.connect(creator).upgradeLock(lock.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1n
+    )
+    await unlock
+      .connect(creator)
+      .upgradeLock(await lock.getAddress(), currentVersion + 1n)
 
     // make sure upgrade was successful
-    lock = await ethers.getContractAt('ITestPublicLockUpgraded', lock.address)
+    lock = await ethers.getContractAt(
+      'ITestPublicLockUpgraded',
+      await lock.getAddress()
+    )
     assert.equal(await lock.sayHello(), 'hello world')
   })
 
   it('Should forbid non-managers to upgrade', async () => {
     const [, , unknown] = await ethers.getSigners()
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1n
+    )
     await reverts(
-      unlock.connect(unknown).upgradeLock(lock.address, currentVersion + 1),
+      unlock
+        .connect(unknown)
+        .upgradeLock(await lock.getAddress(), currentVersion + 1n),
       'MANAGER_ONLY'
     )
   })
 
   it('Should emit an upgrade event', async () => {
     const [, creator] = await ethers.getSigners()
-    await unlock.addLockTemplate(publicLockUpgraded.address, currentVersion + 1)
+    await unlock.addLockTemplate(
+      await publicLockUpgraded.getAddress(),
+      currentVersion + 1n
+    )
 
     const tx = await unlock
       .connect(creator)
-      .upgradeLock(lock.address, currentVersion + 1)
-    const { events } = await tx.wait()
+      .upgradeLock(await lock.getAddress(), currentVersion + 1n)
+    const receipt = await tx.wait()
 
     // check if box instance works
-    const evt = events.find((v) => v.event === 'LockUpgraded')
+    const evt = await getEvent(receipt, 'LockUpgraded')
     const { lockAddress, version } = evt.args
 
-    assert.equal(lockAddress, lock.address)
-    assert.equal(version, currentVersion + 1)
+    assert.equal(lockAddress, await lock.getAddress())
+    assert.equal(version, currentVersion + 1n)
 
     // make sure upgrade was successful
     lock = await ethers.getContractAt('ITestPublicLockUpgraded', lockAddress)
@@ -141,7 +172,7 @@ describe('upgrades', async () => {
   const versions = {}
   const duration = 60 * 60 * 24 * 30 // 30 days
   const currency = ADDRESS_ZERO
-  const price = ethers.utils.parseEther('0.01')
+  const price = ethers.parseEther('0.01')
   const maxKeys = 10
   const name = 'A neat upgradeable lock!'
 
@@ -149,10 +180,13 @@ describe('upgrades', async () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
-      initializer: 'initialize(address)',
-    })
-    await unlock.deployed()
+    unlock = await upgrades.deployProxy(
+      Unlock,
+      [await unlockOwner.getAddress()],
+      {
+        initializer: 'initialize(address)',
+      }
+    )
 
     // Helper function
     const getPublicLockFactoryAtVersion = async (publicLockVersion) => {
@@ -167,9 +201,9 @@ describe('upgrades', async () => {
         : await getPublicLockFactoryAtVersion(publicLockVersion)
 
       const publicLock = await PublicLock.deploy()
-      await publicLock.deployed()
+
       const txImpl = await unlock.addLockTemplate(
-        publicLock.address,
+        await publicLock.getAddress(),
         await publicLock.publicLockVersion()
       )
       await txImpl.wait()
@@ -185,15 +219,15 @@ describe('upgrades', async () => {
     // deploy a simple lock
     const calldata = await createLockCalldata({
       args: [duration, currency, price, maxKeys, name],
-      from: creator.address,
+      from: await creator.getAddress(),
     })
 
     const tx = await unlock.createUpgradeableLockAtVersion(
       calldata,
       firstUpgradableVersion
     )
-    const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'NewLock')
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'NewLock')
     const { newLockAddress } = evt.args
     lock = oldestPublicLock.attach(newLockAddress)
 
@@ -218,10 +252,10 @@ describe('upgrades', async () => {
       assert.equal(await versions[version].publicLockVersion(), version)
       assert.equal(
         await unlock.publicLockImpls(version),
-        versions[version].address
+        await versions[version].getAddress()
       )
       assert.equal(
-        await unlock.publicLockVersions(versions[version].address),
+        await unlock.publicLockVersions(await versions[version].getAddress()),
         version
       )
     }
@@ -231,8 +265,8 @@ describe('upgrades', async () => {
     assert.equal(await lock.publicLockVersion(), firstUpgradableVersion)
     assert.equal(await lock.name(), name)
     assert.equal(await lock.expirationDuration(), duration)
-    assert.equal((await lock.keyPrice()).toString(), price.toString())
-    assert.equal((await lock.maxNumberOfKeys()).toString(), maxKeys.toString())
+    assert.equal(await lock.keyPrice(), price)
+    assert.equal(await lock.maxNumberOfKeys(), maxKeys)
     assert.equal(await lock.tokenAddress(), currency)
   })
 
@@ -246,15 +280,14 @@ describe('upgrades', async () => {
       console.log(
         `going to upgrade from ${await lock.publicLockVersion()} to ${currentVersion}`
       )
-      await unlock.connect(creator).upgradeLock(lock.address, currentVersion)
+      await unlock
+        .connect(creator)
+        .upgradeLock(await lock.getAddress(), currentVersion)
       assert.equal(await lock.publicLockVersion(), currentVersion)
       assert.equal(await lock.name(), name)
       assert.equal(await lock.expirationDuration(), duration)
-      assert.equal((await lock.keyPrice()).toString(), price.toString())
-      assert.equal(
-        (await lock.maxNumberOfKeys()).toString(),
-        maxKeys.toString()
-      )
+      assert.equal(await lock.keyPrice(), price)
+      assert.equal(await lock.maxNumberOfKeys(), maxKeys)
       assert.equal(await lock.tokenAddress(), currency)
     }
   })

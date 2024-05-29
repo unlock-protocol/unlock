@@ -418,7 +418,7 @@ contract IPublicLockV7 {
    * - `from`, `to` cannot be zero.
    * - `tokenId` must be owned by `from`.
    * - If the caller is not `from`, it must be have been allowed to move this
-   * NFT by either {approve} or {setApprovalForAll}.
+   * NFT by either `approve` or `setApprovalForAll`.
    */
   function safeTransferFrom(address from, address to, uint256 tokenId) public;
 
@@ -428,7 +428,7 @@ contract IPublicLockV7 {
    *
    * Requirements:
    * - If the caller is not `from`, it must be approved to move this NFT by
-   * either {approve} or {setApprovalForAll}.
+   * either `approve` or `setApprovalForAll`.
    */
   function transferFrom(address from, address to, uint256 tokenId) public;
 

@@ -1,68 +1,66 @@
-const { deployLock, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
-
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const { assert } = require('chai')
+const { deployLock, purchaseKey, ADDRESS_ZERO } = require('../helpers')
+const { ethers } = require('hardhat')
+const {
+  emitHookUpdatedEvent,
+  canNotSetNonContractAddress,
+} = require('./behaviors/hooks.js')
 
 let lock
 let testEventHooks
 
-contract('Lock / onTokenURIHook', (accounts) => {
-  const keyOwner = accounts[1]
+describe('Lock / onTokenURIHook', () => {
   let tokenId
-  let tx
+  let receipt
+  let keyOwner, lockOwner
 
   before(async () => {
-    lock = await deployLock()
-    testEventHooks = await TestEventHooks.new()
-    tx = await lock.setEventHooks(
+    ;[lockOwner, keyOwner] = await ethers.getSigners()
+    lock = await deployLock({ isEthers: true })
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
+    receipt = await tx.wait()
+  })
+
+  it('is set correctly', async () => {
+    assert.equal(await lock.onTokenURIHook(), await testEventHooks.getAddress())
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
-    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
-    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
-    assert.equal(args.onTokenURIHook, testEventHooks.address)
-    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
+    await emitHookUpdatedEvent({
+      receipt,
+      hookName: 'onTokenURIHook',
+      hookAddress: await testEventHooks.getAddress(),
+    })
   })
 
   it('tokenURI should returns a custom value', async () => {
-    const baseTokenURI = 'https://unlock-uri-hook.test/'
+    const baseTokenURI = await testEventHooks.baseURI()
     const expirationTimestamp = await lock.keyExpirationTimestampFor(tokenId)
     const params = [
-      lock.address.toLowerCase(), // lockAddress
-      keyOwner.toLowerCase(), // owner
-      accounts[3].toLowerCase(), // operator
+      (await lock.getAddress()).toLowerCase(), // lockAddress
+      (await keyOwner.getAddress()).toLowerCase(), // owner
+      (await lockOwner.getAddress()).toLowerCase(), // operator
       expirationTimestamp, // expirationTimestamp
       tokenId, // tokenId
     ]
 
-    const tokenURI = `${baseTokenURI}${params.join('/')}`
-    assert.equal(await lock.tokenURI(tokenId, { from: accounts[3] }), tokenURI)
+    assert.equal(await lock.ownerOf(tokenId), await keyOwner.getAddress())
+    const tokenURI = await lock.tokenURI(tokenId)
+    assert.equal(tokenURI, `${baseTokenURI}${params.join('/')}`)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
-    await reverts(
-      lock.setEventHooks(
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        accounts[3],
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO
-      ),
-      'INVALID_HOOK(3)'
-    )
+    await canNotSetNonContractAddress({ lock, index: 3 })
   })
 })

@@ -1,4 +1,5 @@
 import { Request, RequestHandler, Response } from 'express'
+import networks from '@unlock-protocol/networks'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
@@ -9,7 +10,13 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { createTicket } from '../../utils/ticket'
 import { generateKeyMetadata } from '../../operations/metadataOperations'
 import config from '../../config/config'
-import { getVerifiersList } from '../../operations/verifierOperations'
+import {
+  getEventVerifiers,
+  getVerifiersListForLock,
+} from '../../operations/verifierOperations'
+import { Verifier } from '../../models/verifier'
+import { getEventForLock } from '../../operations/eventOperations'
+import { notify } from '../../worker/helpers'
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -48,6 +55,23 @@ export class TicketsController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const id = request.params.keyId.toLowerCase()
+      const address = Normalizer.ethereumAddress(request.user!.walletAddress!)
+      // event slug is used by /:network/lock/:lockAddress/:eventSlug/key/:keyId/check' route
+      const eventSlug = request.params.eventSlug
+      const verifier = eventSlug
+        ? await Verifier.findOne({
+            where: {
+              address,
+              slug: eventSlug,
+            },
+          })
+        : await Verifier.findOne({
+            where: {
+              address,
+              lockAddress,
+              network,
+            },
+          })
 
       const keyMetadata = await KeyMetadata.findOne({
         where: {
@@ -57,7 +81,9 @@ export class TicketsController {
       })
 
       const data = keyMetadata?.data as unknown as {
-        metadata: { checkedInAt: number | number[] }
+        metadata: {
+          checkedInAt: number | number[] | { at: number; verifierName: string }
+        }
       }
 
       const checkedInAt = []
@@ -66,7 +92,14 @@ export class TicketsController {
       } else if (typeof data?.metadata?.checkedInAt === 'number') {
         checkedInAt.push(data?.metadata?.checkedInAt, new Date().getTime())
       } else if (Array.isArray(data?.metadata?.checkedInAt)) {
-        checkedInAt.push(...data.metadata.checkedInAt, new Date().getTime())
+        if (verifier?.name) {
+          checkedInAt.push(...data.metadata.checkedInAt, {
+            at: new Date().getTime(),
+            verifierName: verifier.name,
+          })
+        } else {
+          checkedInAt.push(...data.metadata.checkedInAt, new Date().getTime())
+        }
       }
 
       await KeyMetadata.upsert(
@@ -87,6 +120,41 @@ export class TicketsController {
           conflictFields: ['id', 'address'],
         }
       )
+
+      const event = await getEventForLock(
+        lockAddress,
+        network,
+        true /** includeProtected */
+      )
+
+      const web3Service = new Web3Service(networks)
+      const tokenOwner = await web3Service.ownerOf(lockAddress, id, network)
+
+      if (event?.data.notifyCheckInUrls) {
+        for (const url of event.data.notifyCheckInUrls) {
+          const response = await notify({
+            hookCallback: url,
+            body: {
+              ownerAddress: tokenOwner,
+              lockAddress,
+              network,
+              tokenId: id,
+              verifier: {
+                address: request.user!.walletAddress!,
+                name: verifier?.name,
+              },
+            },
+          })
+          if (response.status !== 200) {
+            logger.info(
+              `Received unxpected response when notifying ${url}: ${
+                response.status
+              } ${await response.text()}`
+            )
+          }
+        }
+      }
+
       return response.status(202).send({
         message: 'Ticket checked in',
       })
@@ -255,6 +323,7 @@ export const generateTicket: RequestHandler = async (request, response) => {
 export const getTicket: RequestHandler = async (request, response) => {
   const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
   const network = Number(request.params.network)
+  const eventSlug = request.params.eventSlug
   const tokenId = request.params.keyId.toLowerCase().trim()
   const userAddress = request.user?.walletAddress
   const subgraph = new SubgraphService()
@@ -271,7 +340,9 @@ export const getTicket: RequestHandler = async (request, response) => {
         network,
       }
     ),
-    getVerifiersList(lockAddress, network),
+    eventSlug
+      ? getEventVerifiers(eventSlug)
+      : getVerifiersListForLock(lockAddress, network),
   ])
 
   if (!key) {
@@ -319,6 +390,12 @@ export const getTicket: RequestHandler = async (request, response) => {
     .map((item: string) => Normalizer.ethereumAddress(item))
     .includes(Normalizer.ethereumAddress(userAddress))
 
+  const verifier = verifiers.find(
+    (item) =>
+      Normalizer.ethereumAddress(item.address) ===
+      Normalizer.ethereumAddress(userAddress)
+  )
+
   const isVerifier = verifiers
     ?.map((item) => Normalizer.ethereumAddress(item.address))
     .includes(Normalizer.ethereumAddress(userAddress))
@@ -353,5 +430,6 @@ export const getTicket: RequestHandler = async (request, response) => {
       protected: keyData?.userMetadata?.protected || {},
     },
     isVerifier: isVerifier || isManager,
+    verifierName: isVerifier ? verifier?.name : null,
   })
 }

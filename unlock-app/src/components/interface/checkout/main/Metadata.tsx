@@ -18,10 +18,9 @@ import {
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
-import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -35,8 +34,9 @@ import {
   PaywallConfigType,
 } from '@unlock-protocol/core'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
+import Disconnect from './Disconnect'
+
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
 }
 
@@ -61,8 +61,10 @@ export const MetadataInputs = ({
   lock,
   hideFirstRecipient,
 }: RecipientInputProps) => {
-  const [state] = useActor(checkoutService)
-  const { paywallConfig } = state.context
+  const paywallConfig = useSelector(
+    checkoutService,
+    (state) => state.context.paywallConfig
+  )
   const [hideRecipientAddress, setHideRecipientAddress] = useState<boolean>(
     hideFirstRecipient || false
   )
@@ -103,8 +105,8 @@ export const MetadataInputs = ({
   const labelText = useEmail ? 'Email' : 'Wallet'
   const label = id >= 1 ? `${labelText} #${id + 1}` : labelText
   const description = useEmail
-    ? 'Enter the email address that will receive the membership NFT'
-    : 'Enter the wallet address or an ENS that will receive the membership NFT'
+    ? 'Enter the email address that will receive the pass'
+    : 'Enter the wallet address or an ENS that will receive the pass'
   const error = errors?.metadata?.[id]?.recipient?.message
   const placeholder = useEmail ? 'user@email.com' : '0x...'
   const inputClass = twMerge(
@@ -114,99 +116,105 @@ export const MetadataInputs = ({
   )
 
   const recipient = recipientFromConfig(paywallConfig, lock) || account
+  const hideRecipient = shouldHideRecipient(paywallConfig, lock)
 
   return (
     <div className="grid gap-2">
-      {hideRecipientAddress ? (
-        <div className="space-y-1">
-          <div className="ml-1 text-sm">
-            {isUnlockAccount ? 'Email' : label}:
-          </div>
-          <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
-            <div className="w-32 text-sm truncate">
-              {isUnlockAccount ? email : recipient}
-            </div>
-            <Button
-              type="button"
-              onClick={(event) => {
-                event.preventDefault()
-                setHideRecipientAddress(false)
-              }}
-              size="tiny"
-            >
-              Change
-            </Button>
-          </div>
-          <p className="text-xs text-gray-600">
-            {isUnlockAccount
-              ? 'The email address that will receive the membership NFT'
-              : 'The wallet address that will receive the membership NFT'}
-          </p>
-        </div>
-      ) : (
-        <Controller
-          name={`metadata.${id}.recipient`}
-          rules={{
-            required,
-            validate: {
-              max_keys: async (value) => {
-                try {
-                  const address = await getAddressForName(value)
-                  const numberOfMemberships = await web3Service.balanceOf(
-                    lock!.address,
-                    address,
-                    lock!.network
-                  )
-                  return numberOfMemberships < (lock?.maxKeysPerAddress || 1)
-                    ? true
-                    : 'Address already holds the maximum number of memberships.'
-                } catch (error) {
-                  console.error(error)
-                  return 'There is a problem with using this address. Try another.'
-                }
-              },
-            },
-          }}
-          render={({ field: { onChange, ref, onBlur } }) => {
-            return (
-              <div className="grid gap-1.5">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm" htmlFor={label}>
-                    {label}:
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <div className="text-sm">No wallet address?</div>
-                    <Toggle
-                      value={useEmail}
-                      onChange={(value) => {
-                        setUseEmail(value)
-                      }}
-                      size="small"
-                    />
-                  </div>
-                </div>
-                <input
-                  className={inputClass}
-                  placeholder={placeholder}
-                  name={label}
-                  id={label}
-                  type={useEmail ? 'email' : 'text'}
-                  disabled={disabled}
-                  onChange={(event) => {
-                    onChange(onRecipientChange(event))
-                  }}
-                  ref={ref}
-                  onBlur={onBlur}
-                  autoComplete={useEmail ? 'email' : label}
-                />
-                {description && !error && (
-                  <p className="text-xs text-gray-600"> {description} </p>
-                )}
-                {error && <p className="text-xs text-red-500">{error}</p>}
+      {!hideRecipient && (
+        <>
+          {hideRecipientAddress ? (
+            <div className="space-y-1">
+              <div className="ml-1 text-sm">
+                {isUnlockAccount ? 'Email' : label}:
               </div>
-            )
-          }}
-        />
+              <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
+                <div className="w-32 text-sm truncate">
+                  {isUnlockAccount ? email : recipient}
+                </div>
+                <Button
+                  type="button"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    setHideRecipientAddress(false)
+                  }}
+                  size="tiny"
+                >
+                  Change
+                </Button>
+              </div>
+              <p className="text-xs text-gray-600">
+                {isUnlockAccount
+                  ? 'The email address that will receive the pass'
+                  : 'The wallet address that will receive the pass'}
+              </p>
+            </div>
+          ) : (
+            <Controller
+              name={`metadata.${id}.recipient`}
+              rules={{
+                required,
+                validate: {
+                  max_keys: async (value) => {
+                    try {
+                      const address = await getAddressForName(value)
+                      const numberOfMemberships = await web3Service.balanceOf(
+                        lock!.address,
+                        address,
+                        lock!.network
+                      )
+                      return numberOfMemberships <
+                        (lock?.maxKeysPerAddress || 1)
+                        ? true
+                        : 'Address already holds the maximum number of memberships.'
+                    } catch (error) {
+                      console.error(error)
+                      return 'There is a problem with using this address. Try another.'
+                    }
+                  },
+                },
+              }}
+              render={({ field: { onChange, ref, onBlur } }) => {
+                return (
+                  <div className="grid ">
+                    <div className="flex items-center justify-between">
+                      <label className="text-sm" htmlFor={label}>
+                        {label}:
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <div className="text-sm">No wallet address?</div>
+                        <Toggle
+                          value={useEmail}
+                          onChange={(value) => {
+                            setUseEmail(value)
+                          }}
+                          size="small"
+                        />
+                      </div>
+                    </div>
+                    <input
+                      className={inputClass}
+                      placeholder={placeholder}
+                      name={label}
+                      id={label}
+                      type={useEmail ? 'email' : 'text'}
+                      disabled={disabled}
+                      onChange={(event) => {
+                        onChange(onRecipientChange(event))
+                      }}
+                      ref={ref}
+                      onBlur={onBlur}
+                      autoComplete={useEmail ? 'email' : label}
+                    />
+                    {description && !error && (
+                      <p className="text-xs text-gray-600"> {description} </p>
+                    )}
+                    {error && <p className="text-xs text-red-500">{error}</p>}
+                  </div>
+                )
+              }}
+            />
+          )}
+        </>
       )}
 
       {metadataInputs
@@ -219,15 +227,14 @@ export const MetadataInputs = ({
           )
         })
         .map((metadataInputItem) => {
-          const {
-            name,
-            label,
-            defaultValue,
-            placeholder,
-            type,
-            required,
-            value,
-          } = metadataInputItem ?? {}
+          const { name, label, placeholder, required, value } =
+            metadataInputItem ?? {}
+          let { defaultValue, type } = metadataInputItem ?? {}
+          if (email && name === 'email') {
+            // We pre-fill it with the user's email!
+            defaultValue = email
+            type = 'hidden'
+          }
           const inputLabel = label || name
           return (
             <Input
@@ -251,7 +258,7 @@ export const MetadataInputs = ({
   )
 }
 
-const emailInput: MetadataInput = {
+export const emailInput: MetadataInput = {
   type: 'email',
   name: 'email',
   label: 'Email',
@@ -259,22 +266,34 @@ const emailInput: MetadataInput = {
   placeholder: 'your@email.com',
 }
 
-export function Metadata({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
+export function Metadata({ checkoutService }: Props) {
+  const { lock, paywallConfig, quantity } = useSelector(
+    checkoutService,
+    (state) => state.context
+  )
   const { account } = useAuth()
-  const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
   const locksConfig = paywallConfig.locks[lock!.address]
   const isEmailRequired =
     locksConfig.emailRequired || paywallConfig.emailRequired
   const metadataInputs = useMemo(() => {
-    const inputs =
+    let inputs =
       locksConfig.metadataInputs || paywallConfig.metadataInputs || []
+
     if (isEmailRequired) {
+      /** Filter out any input fields of type 'email', to avoid duplicating
+          email input fields in the UI.
+       */
+      inputs = inputs.filter((input) => input.type.toLowerCase() !== 'email')
+
+      /** Prepend the default email input to the start of the array.
+          this prioritization ensures that the default email input appears
+          first in the form.
+       */
       return [emailInput, ...inputs]
-    } else {
-      return inputs
     }
+
+    return inputs
   }, [
     locksConfig.metadataInputs,
     paywallConfig.metadataInputs,
@@ -339,9 +358,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       data.metadata = await Promise.all(
         data.metadata.map(async (item) => {
           const address = await getAddressForName(item.recipient)
+          // If the address is empty, we use the account address
           return {
             ...item,
-            recipient: address,
+            recipient: address !== '' ? address : (account as string),
           }
         })
       )
@@ -366,8 +386,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       const keyManagers = data.metadata.map(
         (item) => item.keyManager || item.recipient
       )
+
       await updateUsersMetadata(metadata)
-      send({
+      checkoutService.send({
         type: 'SELECT_RECIPIENTS',
         recipients,
         keyManagers,
@@ -420,19 +441,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
+        <Button
+          loading={isLoading}
+          disabled={isLoading || isMemberLoading}
+          className="w-full"
+          form="metadata"
         >
-          <Button
-            loading={isLoading}
-            disabled={isLoading || isMemberLoading}
-            className="w-full"
-            form="metadata"
-          >
-            {isLoading ? 'Continuing' : 'Next'}
-          </Button>
-        </Connected>
+          {isLoading ? 'Continuing' : 'Next'}
+        </Button>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>
@@ -452,4 +469,13 @@ const recipientFromConfig = (
     return lockRecipient
   }
   return ''
+}
+
+const shouldHideRecipient = (
+  paywall: PaywallConfigType,
+  lock: Lock | LockState | undefined
+): boolean => {
+  return !!(
+    paywall.skipRecipient || paywall?.locks[lock!.address].skipRecipient
+  )
 }

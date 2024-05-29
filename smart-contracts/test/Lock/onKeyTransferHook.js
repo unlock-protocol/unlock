@@ -1,111 +1,116 @@
-const { deployLock, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
+const { deployLock, purchaseKey, compareBigNumbers } = require('../helpers')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const { ethers } = require('hardhat')
 const { assert } = require('chai')
+const {
+  emitHookUpdatedEvent,
+  canNotSetNonContractAddress,
+} = require('./behaviors/hooks.js')
 
-let lock
-let testEventHooks
-let tx
-
-contract('Lock / onKeyTransfer hook', (accounts) => {
-  const keyOwner = accounts[1]
-  const to = accounts[2]
+describe('Lock / onKeyTransfer hook', () => {
+  let lock
+  let testEventHooks
+  let receipt
+  let keyOwner, to, random, random2
   let keyPrice
   let tokenId
 
   before(async () => {
-    lock = await deployLock()
-    testEventHooks = await TestEventHooks.new()
-    tx = await lock.setEventHooks(
+    ;[, keyOwner, to, random, random2] = await ethers.getSigners()
+    lock = await deployLock({ isEthers: true })
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
+    receipt = await tx.wait()
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
-    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
-    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
-    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyTransferHook, testEventHooks.address)
-    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
+    await emitHookUpdatedEvent({
+      receipt,
+      hookName: 'onKeyTransferHook',
+      hookAddress: await testEventHooks.getAddress(),
+    })
   })
 
   beforeEach(async () => {
-    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, await keyOwner.getAddress()))
   })
 
   it('is not fired when a key is created', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[5]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        from: keyOwner,
-        value: keyPrice,
-      }
-    )
-    const evt = tx.logs.find((v) => v.event === 'OnKeyTransfer')
+    const tx = await lock
+      .connect(keyOwner)
+      .purchase(
+        [],
+        [await random.getAddress()],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        ['0x'],
+        {
+          value: keyPrice,
+        }
+      )
+    const receipt = await tx.wait()
+    const evt = await getEvent(receipt, 'OnKeyTransfer')
     assert.equal(evt, null)
   })
 
   it('is fired when using transferFrom', async () => {
-    await lock.transferFrom(keyOwner, to, tokenId, { from: keyOwner })
-    const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0]
-      .returnValues
-    assert.equal(args.lock, lock.address)
-    assert.equal(args.tokenId, tokenId)
-    assert.equal(args.operator, keyOwner)
-    assert.equal(args.from, keyOwner)
-    assert.equal(args.to, to)
+    await lock
+      .connect(keyOwner)
+      .transferFrom(await keyOwner.getAddress(), await to.getAddress(), tokenId)
+    const { args } = (await testEventHooks.queryFilter('OnKeyTransfer')).filter(
+      ({ fragment }) => fragment.name === 'OnKeyTransfer'
+    )[0]
+    assert.equal(args.lock, await lock.getAddress())
+    compareBigNumbers(args.tokenId, tokenId)
+    assert.equal(args.operator, await keyOwner.getAddress())
+    assert.equal(args.from, await keyOwner.getAddress())
+    assert.equal(args.to, await to.getAddress())
     const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
-    assert.equal(args.time, expirationTs)
+    compareBigNumbers(args.time, expirationTs)
   })
 
   it('is fired when a key manager is set', async () => {
-    await lock.setKeyManagerOf(tokenId, accounts[6], { from: keyOwner })
-    await lock.transferFrom(keyOwner, accounts[3], tokenId, {
-      from: accounts[6],
-    })
-    const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0]
-      .returnValues
-    assert.equal(args.lock, lock.address)
-    assert.equal(args.tokenId, tokenId)
-    assert.equal(args.operator, accounts[6])
-    assert.equal(args.from, keyOwner)
-    assert.equal(args.to, accounts[3])
+    await lock
+      .connect(keyOwner)
+      .setKeyManagerOf(tokenId, await random2.getAddress())
+    await lock
+      .connect(random2)
+      .transferFrom(
+        await keyOwner.getAddress(),
+        await random.getAddress(),
+        tokenId
+      )
+    const { args } = (await testEventHooks.queryFilter('OnKeyTransfer')).filter(
+      ({ fragment }) => fragment.name === 'OnKeyTransfer'
+    )[1]
+
+    assert.equal(args.lock, await lock.getAddress())
+    compareBigNumbers(args.tokenId, tokenId)
+    assert.equal(args.operator, await random2.getAddress())
+    assert.equal(args.from, await keyOwner.getAddress())
+    assert.equal(args.to, await random.getAddress())
   })
 
   it('cannot set the hook to a non-contract address', async () => {
-    await reverts(
-      lock.setEventHooks(
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        accounts[1],
-        ADDRESS_ZERO,
-        ADDRESS_ZERO
-      ),
-      'INVALID_HOOK(4)'
-    )
+    await canNotSetNonContractAddress({ lock, index: 4 })
   })
 
   /*
   it('is fired when using transfer', async () => {
     await lock.transfer(tokenId, to, 100, { from: keyOwner })
     const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0].returnValues
-    assert.equal(args.lock, lock.address)
+    assert.equal(args.lock, await lock.getAddress())
     assert.equal(args.operator, keyOwner)
     assert.equal(args.tokenId, tokenId)
     assert.equal(args.from, keyOwner)
@@ -122,13 +127,13 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
 
     await lock.shareKey(to, tokenId, 2500, { from: keyOwner })
     const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0].returnValues
-    assert.equal(args.lock, lock.address)
+    assert.equal(args.lock, await lock.getAddress())
     assert.equal(args.operator, keyOwner)
     assert.equal(args.from, keyOwner)
     assert.equal(args.to, to)
     
     const expirationAfter = await lock.keyExpirationTimestampFor(tokenId)
-    assert.equal(args.time, expirationAfter.toString())
+    assert.equal(args.time, expirationAfter)
     assert.equal(args.time, expirationBefore + Math.floor(duration / 4))
   })
   */

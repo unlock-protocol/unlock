@@ -2,6 +2,9 @@ import { ethers } from 'ethers'
 import { RequestHandler } from 'express'
 import { getAllReceipts } from '../../utils/receipts'
 import { Receipt, ReceiptBase } from '../../models'
+import normalizer from '../../utils/normalizer'
+import { Payload } from '../../models/payload'
+import { addJob } from '../../worker/worker'
 
 export const allReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
@@ -54,4 +57,40 @@ export const allReceipts: RequestHandler = async (request, response) => {
       return Number(a.timestamp) - Number(b.timestamp)
     })
   return response.json({ items })
+}
+
+export const createDownloadReceiptsRequest: RequestHandler = async (
+  request,
+  response
+) => {
+  const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
+  const network = Number(request.params.network || 1)
+  const payload = new Payload()
+  payload.payload = {
+    status: 'pending',
+    result: [],
+  }
+  const { id } = await payload.save()
+
+  await addJob(
+    'downloadReceipts',
+    {
+      lockAddress,
+      network,
+      id,
+    },
+    {
+      maxAttempts: 3,
+    }
+  )
+  response.redirect(`/v2/receipts/download/${id}`)
+}
+
+export const downloadReceipts: RequestHandler = async (request, response) => {
+  const result = await Payload.findByPk(request.params.id)
+  if (!result) {
+    response.sendStatus(404)
+    return
+  }
+  response.json(result.payload)
 }

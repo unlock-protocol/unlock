@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { ethers } from 'ethers'
 import { storage } from '~/config/storage'
+import { ADDRESS_ZERO } from '~/constants'
 import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -28,7 +28,7 @@ export function useLockSettings() {
 
     const isERC20 =
       lock?.currencyContractAddress &&
-      lock.currencyContractAddress !== ethers.constants.AddressZero.toString()
+      lock.currencyContractAddress !== ADDRESS_ZERO
 
     // TODO: Add gas refund
     const isRecurringPossible =
@@ -83,20 +83,12 @@ interface SaveLockProps {
   emailSender?: string | null
   checkoutConfigId?: string | null
   hookGuildId?: string | null
-}
-
-interface SaveLockProps {
-  lockAddress: string
-  network: number
-  sendEmail?: boolean
-  slug?: string
-  replyTo?: string | null
-  creditCardPrice?: number | null
-  emailSender?: string | null
-  checkoutConfigId?: string | null
-  hookGuildId?: string | null
   unlockFeeChargedToUser?: boolean
   creditCardCurrency?: string
+  promoCodes?: string[]
+  crossmintClientId?: string
+  requiredGitcoinPassportScore?: number | null
+  passwords?: string[]
 }
 
 export function useSaveLockSettings() {

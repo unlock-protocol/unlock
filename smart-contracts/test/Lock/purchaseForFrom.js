@@ -1,10 +1,14 @@
+const { assert } = require('chai')
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-contract('Lock / purchaseForFrom', (accounts) => {
+describe('Lock / purchaseForFrom', () => {
   let lock
   let lockFree
+  let keyOwner, referrer
   before(async () => {
+    ;[, keyOwner, referrer] = await ethers.getSigners()
     lock = await deployLock()
     lockFree = await deployLock({ name: 'FREE' })
   })
@@ -13,12 +17,12 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [accounts[0]],
-        [accounts[1]],
+        [await keyOwner.getAddress()],
+        [await referrer.getAddress()],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
     })
@@ -28,22 +32,22 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('should succeed', async () => {
       await lock.purchase(
         [],
-        [accounts[0]],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
       await lock.purchase(
         [],
-        [accounts[1]],
-        [accounts[0]],
+        [await referrer.getAddress()],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
-        [[]],
+        ['0x'],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: ethers.parseUnits('0.01', 'ether'),
         }
       )
     })
@@ -51,21 +55,23 @@ contract('Lock / purchaseForFrom', (accounts) => {
     it('can purchaseForFrom a free key', async () => {
       await lockFree.purchase(
         [],
-        [accounts[0]],
+        [await keyOwner.getAddress()],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
       const tx = await lockFree.purchase(
         [],
-        [accounts[2]],
-        [accounts[0]],
+        [await keyOwner.getAddress()],
+        [await referrer.getAddress()],
         [ADDRESS_ZERO],
-        [[]]
+        ['0x']
       )
-      assert.equal(tx.logs[0].event, 'Transfer')
-      assert.equal(tx.logs[0].args.from, 0)
-      assert.equal(tx.logs[0].args.to, accounts[2])
+
+      const receipt = await tx.wait()
+      const { args } = await getEvent(receipt, 'Transfer')
+      assert.equal(args.from, 0)
+      assert.equal(args.to, await keyOwner.getAddress())
     })
   })
 })

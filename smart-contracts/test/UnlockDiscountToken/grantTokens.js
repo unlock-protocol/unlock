@@ -1,23 +1,24 @@
+// TODO: cleanup this test
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
-const BigNumber = require('bignumber.js')
-const { time } = require('@openzeppelin/test-helpers')
+const { assert } = require('chai')
 const { ethers, network } = require('hardhat')
 const {
   deployContracts,
   deployLock,
   ADDRESS_ZERO,
   createUniswapV2Exchange,
+  compareBigNumbers,
+  increaseTime,
 } = require('../helpers')
 
-const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
-
 let unlock, udt, lock, oracle, weth
+let protocolOwner, minter, referrer, keyBuyer
 
 // skip on coverage until solidity-coverage supports EIP-1559
 const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
-const estimateGas = 252166 * 2
+const estimateGas = BigInt(252166 * 2)
 
 // test with various chainIds
 const scenarios = [
@@ -26,89 +27,86 @@ const scenarios = [
   137, // polygon
 ]
 
-contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
-  const [protocolOwner, minter, referrer, keyBuyer] = accounts
+const mintAmount = ethers.parseUnits('1000000', 'ether')
+
+const round = (bn) => {
+  const [integral, decimals] = bn.toString().split('.')
+  const remainer = Math.round(`0.${decimals.slice(0, 4)}`)
+  return BigInt(integral) + BigInt(remainer)
+}
+
+describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
   let rate
 
-  before(async () => {
+  before(async function () {
+    ;[protocolOwner, minter, referrer, keyBuyer] = await ethers.getSigners()
     ;({ unlock, udt } = await deployContracts())
-    // parse for truffle
-    udt = await UnlockDiscountToken.at(udt.address)
-
     lock = await deployLock({ unlock })
 
     // Deploy the exchange
     ;({ oracle, weth } = await createUniswapV2Exchange({
-      protocolOwner: await ethers.getSigner(protocolOwner),
-      minter: await ethers.getSigner(minter),
-      udtAddress: udt.address,
+      protocolOwner,
+      minter,
+      udtAddress: await udt.getAddress(),
     }))
 
     // default config Unlock oracle
     await unlock.configUnlock(
-      udt.address,
-      weth.address,
+      await udt.getAddress(),
+      await weth.getAddress(),
       estimateGas,
       await unlock.globalTokenSymbol(),
       await unlock.globalBaseTokenURI(),
-      1,
-      { from: protocolOwner }
+      1
     )
 
-    await unlock.setOracle(udt.address, oracle.address, {
-      from: protocolOwner,
-    })
+    await unlock.setOracle(await udt.getAddress(), await oracle.getAddress())
 
     // Advance time so 1 full period has past and then update again so we have data point to read
-    await time.increase(time.duration.hours(30))
-    await oracle.update(weth.address, udt.address)
+    await increaseTime(30 * 3600)
+    await oracle.update(await weth.getAddress(), await udt.getAddress())
 
     // Purchase a valid key for the referrer
-    await lock.purchase([], [referrer], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-      from: referrer,
-      value: await lock.keyPrice(),
-    })
+    await lock.purchase(
+      [],
+      [await referrer.getAddress()],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      ['0x'],
+      {
+        value: await lock.keyPrice(),
+      }
+    )
 
     rate = await oracle.consult(
-      udt.address,
-      ethers.utils.parseUnits('1', 'ether'),
-      weth.address
+      await udt.getAddress(),
+      ethers.parseUnits('1', 'ether'),
+      await weth.getAddress()
     )
 
     // Mint another 1000000
-    await udt.mint(
-      unlock.address,
-      ethers.utils.parseUnits('1000000', 'ether'),
-      {
-        from: minter,
-      }
-    )
+    await udt.connect(minter).mint(await unlock.getAddress(), mintAmount)
   })
 
   it('exchange rate is > 0', async () => {
-    assert.notEqual(ethers.utils.formatUnits(rate), 0)
+    assert.notEqual(ethers.formatUnits(rate), 0)
     // 1 UDT is worth ~0.000042 ETH
-    assert.equal(Math.floor(ethers.utils.formatUnits(rate, 12)), 42)
+    assert.equal(Math.floor(ethers.formatUnits(rate, 12)), 42)
   })
 
   it('referrer has 0 UDT to start', async () => {
-    const actual = await udt.balanceOf(referrer)
-    assert.equal(actual.toString(), 0)
+    const actual = await udt.balanceOf(await referrer.getAddress())
+    compareBigNumbers(actual, '0')
   })
 
   it('owner starts with 0 UDT', async () => {
-    assert.equal(
-      new BigNumber(await udt.balanceOf(await unlock.owner())).toFixed(),
-      '0'
-    )
+    compareBigNumbers(await udt.balanceOf(await unlock.owner()), '0')
   })
 
   it('unlock has some 0 UDT', async () => {
-    assert.equal(
-      new BigNumber(await udt.balanceOf(await unlock.address))
-        .shiftedBy(-18)
-        .toFixed(5),
-      '1000000.00000'
+    compareBigNumbers(
+      await udt.balanceOf(await await unlock.getAddress()),
+      mintAmount
     )
   })
 
@@ -118,65 +116,58 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     describe(`behaviour on chain with ${chainId}`, () => {
       before(async () => {
         await unlock.configUnlock(
-          udt.address,
-          weth.address,
+          await udt.getAddress(),
+          await weth.getAddress(),
           estimateGas,
           await unlock.globalTokenSymbol(),
           await unlock.globalBaseTokenURI(),
-          chainId,
-          { from: protocolOwner }
+          chainId
         )
       })
 
-      describe('grant by gas price', () => {
+      describeOrSkip('grant by gas price', () => {
         let gasSpent
 
         before(async () => {
           // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
-          await unlock.resetTrackedValue(
-            ethers.utils.parseUnits('1', 'wei'),
-            0,
-            {
-              from: protocolOwner,
-            }
-          )
+          await unlock.resetTrackedValue(ethers.parseUnits('1', 'wei'), 0)
 
-          const balanceReferrerBefore = await udt.balanceOf(referrer)
-          const { blockNumber } = await lock.purchase(
-            [],
-            [keyBuyer],
-            [referrer],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              from: keyBuyer,
-              value: await lock.keyPrice(),
-            }
+          const balanceReferrerBefore = await udt.balanceOf(
+            await referrer.getAddress()
           )
+          const { blockNumber } = await lock
+            .connect(keyBuyer)
+            .purchase(
+              [],
+              [await keyBuyer.getAddress()],
+              [await referrer.getAddress()],
+              [ADDRESS_ZERO],
+              ['0x'],
+              {
+                value: await lock.keyPrice(),
+              }
+            )
 
           const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
+
           // using estimatedGas instead of the actual gas used so this test does
           // not regress as other features are implemented
-          gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
+          gasSpent = baseFeePerGas * estimateGas
 
-          balanceReferrer = new BigNumber(await udt.balanceOf(referrer)).minus(
+          balanceReferrer =
+            (await udt.balanceOf(await referrer.getAddress())) -
             balanceReferrerBefore
-          )
         })
 
         it('referrer has received some UDT now', async () => {
-          assert.notEqual(balanceReferrer.toString(), 0)
+          assert.notEqual(balanceReferrer, '0')
         })
 
         it('amount granted for referrer ~= gas spent', async () => {
           // 120 UDT granted * 0.000042 ETH/UDT == 0.005 ETH spent
-          assert.equal(
-            balanceReferrer
-              .shiftedBy(-18) // shift UDT balance
-              .times(rate.toString())
-              .shiftedBy(-18) // shift the rate
-              .toFixed(3),
-            gasSpent.shiftedBy(-18).toFixed(3)
+          compareBigNumbers(
+            gasSpent,
+            round(ethers.formatEther(balanceReferrer * rate))
           )
         })
       })
@@ -191,46 +182,41 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
           // Total value exchanged = 1M USD
           // Key purchase 0.01 ETH = 20 USD
           // user earns 10UDT or
-          await unlock.resetTrackedValue(
-            ethers.utils.parseUnits('500', 'ether'),
-            0,
-            {
-              from: protocolOwner,
-            }
-          )
+          await unlock.resetTrackedValue(ethers.parseUnits('500', 'ether'), 0)
 
-          const baseFeePerGas = 1000000000 // in gwei
+          const baseFeePerGas = 1000000000n // in gwei
           await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
-            ethers.BigNumber.from(baseFeePerGas).toHexString(16),
+            `0x${baseFeePerGas.toString(16)}`,
           ])
 
-          const balanceReferrerBefore = await udt.balanceOf(referrer)
-          await lock.purchase(
-            [],
-            [keyBuyer],
-            [referrer],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              from: keyBuyer,
-              value: await lock.keyPrice(),
-              gasPrice: ethers.BigNumber.from(baseFeePerGas)
-                .mul(2)
-                .toHexString(16),
-            }
+          const balanceReferrerBefore = await udt.balanceOf(
+            await referrer.getAddress()
           )
+          await lock
+            .connect(keyBuyer)
+            .purchase(
+              [],
+              [await keyBuyer.getAddress()],
+              [await referrer.getAddress()],
+              [ADDRESS_ZERO],
+              ['0x'],
+              {
+                value: await lock.keyPrice(),
+                gasPrice: `0x${(baseFeePerGas * 2n).toString(16)}`,
+              }
+            )
 
-          balanceReferrer = new BigNumber(await udt.balanceOf(referrer)).minus(
+          balanceReferrer =
+            (await udt.balanceOf(await referrer.getAddress())) -
             balanceReferrerBefore
-          )
         })
 
         it('referrer has some UDT now', async () => {
-          assert.notEqual(balanceReferrer.toString(), 0)
+          assert.notEqual(balanceReferrer, 0)
         })
 
         it('amount granted for referrer ~= 10 UDT', async () => {
-          assert.equal(balanceReferrer.shiftedBy(-18).toFixed(0), '10')
+          assert.equal(Math.round(ethers.formatEther(balanceReferrer)), '10')
         })
       })
     })

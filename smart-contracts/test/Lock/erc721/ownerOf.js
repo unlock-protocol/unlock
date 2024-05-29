@@ -1,8 +1,12 @@
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
 const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../../helpers')
 let lock
 
-contract('Lock / erc721 / ownerOf', (accounts) => {
+describe('Lock / erc721 / ownerOf', () => {
+  let keyOwner, anotherAccount
   before(async () => {
+    ;[, keyOwner, anotherAccount] = await ethers.getSigners()
     lock = await deployLock()
   })
 
@@ -12,20 +16,24 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
   })
 
   it('should return the owner of the key', async () => {
-    const { tokenId } = await purchaseKey(lock, accounts[1])
+    const { tokenId } = await purchaseKey(lock, await keyOwner.getAddress())
     let address = await lock.ownerOf(tokenId)
-    assert.equal(address, accounts[1])
+    assert.equal(address, await keyOwner.getAddress())
   })
 
   it('should work correctly after a transfer', async () => {
-    const { tokenId } = await purchaseKey(lock, accounts[1])
+    const { tokenId } = await purchaseKey(lock, await keyOwner.getAddress())
     let address = await lock.ownerOf(tokenId)
-    assert.equal(address, accounts[1])
+    assert.equal(address, await keyOwner.getAddress())
 
     // transfer
-    await lock.transferFrom(accounts[1], accounts[7], tokenId, {
-      from: accounts[1],
-    })
-    assert.equal(await lock.ownerOf(tokenId), accounts[7])
+    await lock
+      .connect(keyOwner)
+      .transferFrom(
+        await keyOwner.getAddress(),
+        await anotherAccount.getAddress(),
+        tokenId
+      )
+    assert.equal(await lock.ownerOf(tokenId), await anotherAccount.getAddress())
   })
 })

@@ -63,7 +63,7 @@ export function ErrorFallback(props: Props) {
           size="small"
           as="a"
           iconLeft={<DiscordIcon key="discord" />}
-          href="https://discord.com/invite/Ah6ZEJyTDp"
+          href="https://discord.unlock-protocol.com/"
         >
           Join Discord
         </Button>

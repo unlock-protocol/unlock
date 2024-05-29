@@ -63,6 +63,17 @@ const LockSettingSchema = z.object({
       description: 'Client Id for Crossmint if cards are enabled.',
     })
     .optional(),
+  promoCodes: z.array(z.string()).optional().optional(),
+
+  requiredGitcoinPassportScore: z
+    .preprocess(
+      (a) => parseInt(z.string().parse(a), 10),
+      z.number({
+        description: 'Required Gitcoin Passport score for the Gitcoin Hook.',
+      })
+    )
+    .nullish(),
+  passwords: z.array(z.string()).optional().optional(),
 })
 
 export type LockSettingProps = z.infer<typeof LockSettingSchema>
@@ -78,6 +89,9 @@ export const DEFAULT_LOCK_SETTINGS: LockSettingProps = {
   hookGuildId: undefined,
   creditCardCurrency: 'usd',
   crossmintClientId: undefined,
+  promoCodes: [],
+  requiredGitcoinPassportScore: undefined,
+  passwords: [],
 }
 
 export const updateSettings: RequestHandler = async (

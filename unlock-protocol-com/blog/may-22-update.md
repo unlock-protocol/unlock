@@ -36,4 +36,4 @@ image: /images/blog/may-22-update/may-22-banner.png
 
 - **Improved Subgraph handling** — Updated Subgraph to handle upgraded locks (between v10 and v11)
 
-Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
+Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.unlock-protocol.com/)!

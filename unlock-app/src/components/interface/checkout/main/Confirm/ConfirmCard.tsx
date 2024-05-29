@@ -1,17 +1,15 @@
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button, Detail } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Fragment, useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { usePurchase } from '~/hooks/usePurchase'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
@@ -24,9 +22,9 @@ import { formatFiatPriceFromCents } from '../utils'
 import { useGetTotalCharges } from '~/hooks/usePrice'
 import { useGetLockSettings } from '~/hooks/useLockSettings'
 import { getCurrencySymbol } from '~/utils/currency'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
@@ -44,7 +42,6 @@ interface CreditCardPricingBreakdownProps {
 
 export function CreditCardPricingBreakdown({
   unlockServiceFee,
-  total,
   creditCardProcessingFee,
   gasCosts,
   loading,
@@ -52,14 +49,14 @@ export function CreditCardPricingBreakdown({
   unlockFeeChargedToUser = true,
 }: CreditCardPricingBreakdownProps) {
   return (
-    <div className="flex flex-col gap-2 pt-4 text-sm">
+    <div className="flex flex-col gap-2 pt-4 text-xs">
       <h3 className="font-medium">
         Credit Card Fees{' '}
         <a
           href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-2 py-0.5 rounded-lg gap-2 text-xs hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
+          className="px-2 py-0.5 rounded-lg gap-2 hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
         >
           <span>Learn more</span> <ExternalLinkIcon className="inline" />
         </a>
@@ -68,7 +65,7 @@ export function CreditCardPricingBreakdown({
         {unlockFeeChargedToUser && !loading && (
           <Detail
             loading={loading}
-            className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
+            className="flex justify-between w-full py-2 text-xs border-t border-gray-300"
             label="Service Fee"
             labelSize="tiny"
             valueSize="tiny"
@@ -97,7 +94,7 @@ export function CreditCardPricingBreakdown({
           <Detail
             loading={loading}
             className="flex justify-between w-full py-2 text-sm"
-            label="Gas Costs"
+            label="Minting (gas) cost"
             labelSize="tiny"
             valueSize="tiny"
             inline
@@ -107,34 +104,16 @@ export function CreditCardPricingBreakdown({
             </div>
           </Detail>
         )}
-        <Detail
-          loading={loading}
-          className="flex justify-between w-full py-2 text-sm border-t border-gray-300"
-          label="Total"
-          labelSize="tiny"
-          valueSize="tiny"
-          inline
-        >
-          <div className="font-normal">
-            {formatFiatPriceFromCents(total, symbol)}
-          </div>
-        </Detail>
       </div>
     </div>
   )
 }
 
-export function ConfirmCard({
-  injectedProvider,
-  checkoutService,
-  onConfirmed,
-  onError,
-}: Props) {
-  const [state] = useActor(checkoutService)
+export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
+  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
+    useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data, renew } =
-    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -212,7 +191,7 @@ export function ConfirmCard({
   })
 
   // show gas cost only when custom credit card price is present
-  const gasCosts = creditCardPrice ? totalPricing?.gasCost : undefined
+  const gasCosts = creditCardPrice ? undefined : totalPricing?.gasCost
 
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
@@ -307,10 +286,7 @@ export function ConfirmCard({
     <Fragment>
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={lock!.address} network={lockNetwork} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
 
           {isError && (
             // TODO: use actual error from simulation
@@ -355,49 +331,52 @@ export function ConfirmCard({
             }
             usdPrice={
               usdTotalPricing
-                ? `~${formatNumber(
+                ? `${formatNumber(
                     usdTotalPricing
                   ).toLocaleString()} ${creditCardCurrencySymbol}`
                 : ''
             }
             isCardEnabled={!!creditCardEnabled}
-          />
-        )}
-        {!isError && pricingData && (
-          <CreditCardPricingBreakdown
-            loading={isTotalPricingDataLoading || !isTotalPricingDataFetched}
-            total={totalPricing?.total ?? 0}
-            creditCardProcessingFee={totalPricing?.creditCardProcessingFee}
-            unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
-            gasCosts={gasCosts}
-            symbol={creditCardCurrencySymbol}
-            unlockFeeChargedToUser={unlockFeeChargedToUser}
+            extra={
+              !isError &&
+              pricingData && (
+                <CreditCardPricingBreakdown
+                  loading={
+                    isTotalPricingDataLoading || !isTotalPricingDataFetched
+                  }
+                  total={totalPricing?.total ?? 0}
+                  creditCardProcessingFee={
+                    totalPricing?.creditCardProcessingFee
+                  }
+                  unlockServiceFee={totalPricing?.unlockServiceFee ?? 0}
+                  gasCosts={gasCosts}
+                  symbol={creditCardCurrencySymbol}
+                  unlockFeeChargedToUser={unlockFeeChargedToUser}
+                />
+              )
+            }
           />
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirmCard()
-              }}
-            >
-              {isConfirming
-                ? 'Paying using credit card'
-                : 'Pay using credit card'}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirmCard()
+            }}
+          >
+            {isConfirming
+              ? 'Paying using credit card'
+              : 'Pay using credit card'}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

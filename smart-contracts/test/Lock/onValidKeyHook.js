@@ -1,32 +1,39 @@
-const { deployLock, ADDRESS_ZERO, reverts, purchaseKey } = require('../helpers')
+const { assert } = require('chai')
+const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const { ethers } = require('hardhat')
+const {
+  emitHookUpdatedEvent,
+  canNotSetNonContractAddress,
+} = require('./behaviors/hooks.js')
 
-let lock
-let tokenId
-let testEventHooks
-let tx
-
-contract('Lock / onValidKeyHook', (accounts) => {
-  const keyOwner = accounts[1]
+describe('Lock / onValidKeyHook', () => {
+  let lock
+  let tokenId
+  let testEventHooks
+  let receipt
+  let keyOwner
 
   before(async () => {
-    lock = await deployLock()
+    ;[, { address: keyOwner }] = await ethers.getSigners()
+    lock = await deployLock({ isEthers: true })
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
-  })
-
-  it('hasValidKey should returns a custom value', async () => {
     assert.equal(await lock.getHasValidKey(keyOwner), true)
-    testEventHooks = await TestEventHooks.new()
-    tx = await lock.setEventHooks(
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address,
+      await testEventHooks.getAddress(),
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
+    receipt = await tx.wait()
+  })
+
+  it('hasValidKey should returns a custom value', async () => {
     // still returns value
     assert.equal(await lock.getHasValidKey(keyOwner), true)
 
@@ -36,33 +43,19 @@ contract('Lock / onValidKeyHook', (accounts) => {
     assert.equal(await lock.balanceOf(keyOwner), 0)
 
     // set custom value in hook
-    await testEventHooks.setSpecialMember(lock.address, keyOwner)
+    await testEventHooks.setSpecialMember(await lock.getAddress(), keyOwner)
     assert.equal(await lock.getHasValidKey(keyOwner), true)
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
-    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
-    assert.equal(args.onValidKeyHook, testEventHooks.address)
-    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyGrantHook, ADDRESS_ZERO)
+    await emitHookUpdatedEvent({
+      receipt,
+      hookName: 'onValidKeyHook',
+      hookAddress: await testEventHooks.getAddress(),
+    })
   })
 
   it('cannot set the hook to a non-contract address', async () => {
-    await reverts(
-      lock.setEventHooks(
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        accounts[3],
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO
-      ),
-      'INVALID_HOOK(2)'
-    )
+    await canNotSetNonContractAddress({ lock, index: 2 })
   })
 })

@@ -1,23 +1,137 @@
 # Unlock Protocol Governance
 
-This folders contains all the tools to manage the Unlock Protocol (DAO, contracts, etc).
+This folders contains all the tools to manage the Unlock Protocol (contracts, DAO, etc).
 
-## Verify contracts
+To get the list of all available tasks use `yarn hardhat --help`.
+
+## Deploy Unlock Protocol on a new network
+
+### List network in `@unlock-protocol/networks`
+
+First add your network to the list of supported networks:
+
+- create a `<your-network>.ts` file to `packages/networks/src`
+- add `export * from './<your-network>'` to `packages/networks/src/index.ts`
+
+Then you will need to edit the values for chain id, block explorer URLs, etc.
+
+When you are done, rebuild the networks package with
+
+```
+yarn workspace @unlock-protocol/networks build
+```
+
+## Add block explorer verification
+
+- add a `<your-network>` key to the `apiKey` object in [`packages/hardhat-helpers/src/etherscan.js`](/packages/hardhat-helpers/src/etherscan.js)
+- optionally can add support for env variable
+
+When you are done, rebuild the helpers package with
+
+```
+yarn workspace @unlock-protocol/hardhat-helpers build
+```
+
+### Deploy contracts
+
+Now you need to deploy and configure the two main contracts
+
+- The factory contract `Unlock`
+- The template contract `PublicLock`
+
+This can be done with the following command:
+
+```
+yarn hardhat deploy --unlock-version 13 --public-lock-version 14 --network <your-network>
+```
+
+You can resume a pre-existing deployment by using the contract addresses instead of version number with the `--unlock-address` or `--public-lock-address`.
+
+#### Update the `networks` package
+
+Once the deployments are done, you need to add to the `packages/networks/src/<your-network>.ts` package
+
+- `unlockAddress`: the address of the deployed Unlock contract
+- `startBlock`: the block number to start indexing data (usually right before Unlock contract creation)
+
+### Configure the contracts
+
+The contracts should have been configured correctly during the deployment step. However you do the configuration manually
+
+#### Set a lock template in Unlock
+
+```
+yarn hardhat set:template
+```
+
+#### Configure Unlock
+
+Run `configUnlock` on the Unlock contract with the following params
+
+```
+yarn hardhat set:unlock-config
+```
+
+### Deploy the subgraph
+
+1. First you will need to create a new graph on [The Graph studio](https://thegraph.com/studio).
+
+2. In the `packages/networks/src/<your-network>.ts` config file, fill the `subgraph` object as follow:
+
+```js
+subgraph: {
+    endpoint: '<>', // this is given to you by the graph after deploying
+    networkName: 'base-sepolia', // the graph name of the network see https://thegraph.com/docs/en/developing/supported-networks/
+    studioName: 'unlock-protocol-<your-network>', // the name of the graph
+  },
+```
+
+3. Rebuild the networks package
+
+```
+yarn workspace @unlock-protocol/networks build
+```
+
+4. Deploy the graph by using the following commands
+
+```shell
+# got to the subgraph folder
+cd subgraph
+
+# create the subgraph.yaml and generate the files
+yarn build <your-network>
+
+yarn deploy <your-subgraph-name>
+```
+
+The graph is now deployed. Add the URL that is shown to the network file.
+
+### Verify contracts
 
 Contracts can be verified on all supported networks using the command line.
 
 ```
 # example
-export POLYGONSCAN_API_KEY=<xxx>
-yarn hardhat verify <address> --network polygon
+yarn hardhat verify <address> --network <your-network>
 ```
 
 ### Verify locks proxy
 
-There is a dedicated script to verify the proxy used by Unlock to create locks
+There is a dedicated script to verify the proxy used by the Unlock factory contract to create locks. You need to pass the hash of the tx creation as a param to the following function.
 
 ```
-yarn hardhat verify-proxy <...>
+yarn hardhat verify-proxy
+```
+
+## Use a tenderly fork
+
+Forks on [Tenderly](https://docs.tenderly.co/forks) can be very useful to test behaviours of new settings and contracts before actually deploying them. A fork of a network allows to simulate the execution of multiple successive txs - which is very useful while working on a batch of changes.
+
+```
+export TENDERLY_FORK=https://rpc.tenderly.co/fork/xxx-xxx-xxx-xx
+
+# then use any command with tenderly as a network
+yarn hardhat deploy:template --network tenderly
 ```
 
 ## DAO Proposals
@@ -120,3 +234,51 @@ Edit directly the amounts and prices in the script
 ```
 yarn run scripts/uniswap/addLiquidity.js
 ```
+
+## Cross-Chain DAO Proposals
+
+To maintain the integrity of the protocol accross various chains, we use a pattern of DAO proposals that allows execution on multiple chains. Messaging is sent accross the [Connext bridge](https://connext.network) to all supported chains.
+
+### Prepare a cross-chain proposal
+
+#### Write a cross-chain DAO proposal
+
+Read the explanations and follow the template in [`./proposals/006-cross-bridge-proposal.js`](./proposals/006-cross-bridge-proposal.js) to submit a cross-chain proposal to the DAO.
+
+#### Test a cross-chain DAO proposal
+
+To make sure all calls can be executed properly, you can use Tenderly forks to test execution of calls on each destination chains.
+
+There is test DAO deployed with the entire cross-chain pipeline configured between Gnosis chain and Polygon mainnet - available at [0x530ff2daed410ca7d70c25f18dc770f106201151](https://www.tally.xyz/gov/unlock-cross-chain-test-dao-on-gnosis/proposals). A test version of the Unlock factory contract is deployed on Polygon at [0x2411336105D4451713d23B5156038A48569EcE3a](https://polygonscan.com/address/0x2411336105d4451713d23b5156038a48569ece3a) and can be used for testing cross-chain proposals execution.
+
+### After proposal execution
+
+#### Pay bridge fees
+
+Each transaction contained in the proposal is sent separately to the bridge. For each tx, the bridge fee needs to be paid on origin chain (mainnet) for the txs to proceed. To pay all fees for the bridge, use the following script:
+
+```
+# update the txId accordingly
+yarn hardhat run scripts/bridge/payFee.js --network mainnet
+```
+
+#### Check status of the calls
+
+You can check the status of all calls on various chains manually with the [Connext explorer](https://connextscan.io/) or directly parse calls from the execution tx using the following script:
+
+```
+# update the txId accordingly
+yarn hardhat run scripts/bridge/status.js --network mainnet
+```
+
+NB: This will create a temporary JSON file named `xcalled.tmp.json` with the info and statuses of all tx.
+
+### Execute all tx on destination chains
+
+Once all calls have crossed the bridges they stay in cooldown in multisigs. Once cooldown ends, they can be executed. To execute the calls, use the following command _for each network_:
+
+```
+yarn hardhat run scripts/bridge/execTx.js --network optimism
+```
+
+NB: The tmp file with all txs statuses is required, so you need to first run the "Check status" step above

@@ -7,7 +7,7 @@ description: Whether you are organizing events, selling subscriptions to your co
 image: /images/blog/promo-codes/coupon-code.png
 ---
 
-![Coupon code](/images/blog/promo-codes/coupon-code.png)
+> We now have a [great UI for Promo Code management](/blog/discount-codes-capped)!
 
 We're starting this year like we finished the previous one: 🚀 by shipping cool features. Today, we're introducing a new type of [purchase hook](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks): the **discount hook**! Whether you are organizing events, selling subscriptions to your content, or running a knitting club, sometimes, you want to provide discounts to your most loyal customers.
 

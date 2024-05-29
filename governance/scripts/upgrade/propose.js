@@ -34,7 +34,7 @@ async function main({
   const data = interface.encodeFunctionData('upgrade', args)
 
   // submit proxy upgrade tx to proxyAdmin
-  const transactionId = await submitTx({
+  const txArgs = {
     safeAddress: multisig,
     tx: {
       contractAddress: proxyAdminAddress,
@@ -44,7 +44,9 @@ async function main({
       calldata: data,
     },
     signer,
-  })
+  }
+  const transactionId = await submitTx(txArgs)
+  console.log(transactionId)
 }
 
 // execute as standalone

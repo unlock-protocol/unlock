@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthenticationContext'
 import { useAppStorage } from './useAppStorage'
 import { useConnectModal } from './useConnectModal'
 import { useCallback } from 'react'
+import networks from '@unlock-protocol/networks'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
@@ -82,18 +83,27 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     [authenticate]
   )
 
+  const chains = Object.keys(networks).map((network: string) => {
+    return Number(networks[network].id)
+  })
+
   const handleWalletConnectProvider = useCallback(async () => {
     // requires @walletconnect/modal for showQrModal:true
+    // @ts-expect-error Property '0' is missing in type 'number[]' but required in type '{ 0: number; }'.ts(2345)
     const client = await EthereumProvider.init({
       projectId: config.walletConnectApiKey,
       showQrModal: true, // if set to false, we could try displaying the QR code ourslves with on('display_uri')
       qrModalOptions: {
         themeMode: 'light',
       },
-      chains: [1],
-      optionalChains: Object.keys(config.networks).map((key) => {
-        return parseInt(key)
-      }),
+      optionalChains: chains,
+      metadata: {
+        name: 'Unlock Protocol App',
+        description:
+          'Unlock is a protocol for memberships, used for tickets, subscriptions, and more!',
+        url: 'https://unlock-protocol.com',
+        icons: ['https://app.unlock-protocol.com/images/svg/unlock-logo.svg'],
+      },
     })
 
     // Todo" consider handling this in our modal directly

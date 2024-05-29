@@ -106,7 +106,7 @@ export const isCardPaymentEnabledForLock: RequestHandler = async (
       lockAddress: Normalizer.ethereumAddress(lockAddress),
       network,
     })
-    return response.status(200).send({ creditCardEnabled })
+    return response.status(200).send(creditCardEnabled)
   } catch (error) {
     logger.error(error)
     return response.status(200).send({ creditCardEnabled: false })

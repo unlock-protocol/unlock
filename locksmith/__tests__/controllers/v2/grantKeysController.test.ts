@@ -63,7 +63,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: new Date().getTime() / 1000 + 60 * 60 * 24,
             manager: address,
           },
@@ -87,7 +87,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -109,7 +109,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -134,7 +134,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -160,7 +160,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -186,7 +186,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
@@ -212,7 +212,7 @@ describe('grantKeys endpoint', () => {
       .send({
         keys: [
           {
-            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            recipient: '0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8',
             expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },

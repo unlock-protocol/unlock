@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## 0.0.26
+- update `UniswapOracleV3` to allow pool fee to be passed in constructor
+
+## 0.0.25
+
+- update `UnlockSwapBurner` to latest version using Uniswap `UniversalRouter`
+
+## 0.0.22-0.0.24
+
+- add `contracts` alias for all versions
+- add `PublicLock` and `Unlock` alias for all versions
+- add version numbers as constant
+
 ## 0.0.21
 
 - release fix post-attack on Fri Apr 21st 2023 #11690
@@ -28,3 +41,7 @@ PublicLockV13 & UnlockV12:
 ## 0.0.16
 
 - added PublicLock v13 and Unlock v12
+
+## 0.0.17
+
+- added PublicLock v14 and Unlock v13

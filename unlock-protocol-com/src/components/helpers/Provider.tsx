@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from 'react'
+import { UNLOCK_CONSOLE_MESSAGE } from '@unlock-protocol/core'
 import useLocalStorage from 'use-local-storage'
-import { UNLOCK_CONSOLE_MESSAGE } from '../../config/constants'
 import reactGa from 'react-ga'
 import tagManager from 'react-gtm-module'
 import { unlockConfig } from '../../config/unlock'

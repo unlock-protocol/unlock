@@ -7,12 +7,9 @@ export const ETHERS_MAX_UINT = ethers.constants.MaxUint256
 
 export const UNLIMITED_KEYS_COUNT = -1
 
-export const KEY_ID = (lock: string, owner: string) => [lock, owner].join('-')
-
 export const ZERO = ethers.constants.AddressZero
 
 export default {
   MAX_UINT,
   UNLIMITED_KEYS_COUNT,
-  KEY_ID,
 }

@@ -1,6 +1,5 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
-import type { BigNumber } from 'ethers'
 
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
@@ -38,14 +37,19 @@ export interface Token {
   coinbase?: string
   mainnetAddress?: string
   wrapped?: string
+  featured?: boolean
 }
 
 export enum HookType {
   CUSTOM_CONTRACT = 'CUSTOM_CONTRACT',
   PASSWORD = 'PASSWORD',
   PROMOCODE = 'PROMOCODE',
+  PROMO_CODE_CAPPED = 'PROMO_CODE_CAPPED',
+  PASSWORD_CAPPED = 'PASSWORD_CAPPED',
   CAPTCHA = 'CAPTCHA',
   GUILD = 'GUILD',
+  GITCOIN = 'GITCOIN',
+  ADVANCED_TOKEN_URI = 'ADVANCED_TOKEN_URI',
 }
 
 export const HooksName = [
@@ -96,21 +100,30 @@ export interface NetworkConfig {
   publicLockVersionToDeploy: number
   subgraph: {
     endpoint: string
-    endpointV2?: string
-    networkName?: string // for thegraph hosted service
-    studioEndpoint?: string
+    // refers to thegraph services list : https://thegraph.com/docs/en/developing/supported-networks/
+    networkName?: string // network slug used by the graph
+    studioName?: string
   }
   uniswapV3?: Partial<{
     subgraph: string
     factoryAddress: string
     quoterAddress: string
-    oracle: string
+    // uniswap oracles with varioous pool fees
+    oracle: Partial<{
+      500: string
+      100: string
+      3000: string
+    }>
     universalRouterAddress: string
     positionManager: string
   }>
   swapPurchaser?: string
   unlockOwner?: string
-  unlockDiscountToken?: string
+  unlockDaoToken?: {
+    address: string
+    mainnetBridge?: string
+    uniswapV3Pool?: string
+  }
   explorer?: {
     name: string
     urls: {
@@ -134,7 +147,7 @@ export interface NetworkConfig {
     symbol: string
     address: string
   } | null
-  maxFreeClaimCost?: number
+  maxFreeClaimCost?: number // in cents!
   nativeCurrency: Omit<Token, 'address'>
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
@@ -286,7 +299,7 @@ export interface UserMetadata {
 export interface UnlockUniswapRoute {
   swapCalldata?: string
   value: string
-  amountInMax: BigNumber
+  amountInMax: any
   swapRouter: string
   quote: any
   trade: any

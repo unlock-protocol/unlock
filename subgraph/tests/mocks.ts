@@ -15,6 +15,7 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockManagers,
+  unlockAddress,
 } from './constants'
 
 createMockedFunction(
@@ -62,6 +63,14 @@ createMockedFunction(
 )
   .withArgs([])
   .returns([ethereum.Value.fromI32(BigInt.fromString('11').toI32())])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'unlockProtocol',
+  'unlockProtocol():(address)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromAddress(Address.fromString(unlockAddress))])
 
 createMockedFunction(
   Address.fromString(lockAddress),

@@ -60,7 +60,7 @@ describe('when ejecting an address', () => {
       const emailAddress = 'existing@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: '0xd8fdbf2302b13d4cf00bac1a25efb786759c7788',
+        publicKey: '0xD8fDbF2302b13d4CF00BAC1a25EFb786759c7788',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
         recoveryPhrase: 'a recovery phrase',
       }
@@ -86,7 +86,7 @@ describe('when ejecting an address', () => {
 
       const message = {
         user: {
-          publicKey: '0xef49773e0d59f607cea8c8be4ce87bd26fd8e208',
+          publicKey: '0xeF49773e0D59F607ceA8c8bE4Ce87bd26Fd8E208',
         },
       }
 
@@ -114,7 +114,7 @@ describe('when ejecting an address', () => {
 
       const message = {
         user: {
-          publicKey: '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
+          publicKey: '0x9409bD2F87F0698f89C04cAeE8DdB2fD9e44bCc3',
         },
       }
 
@@ -126,7 +126,7 @@ describe('when ejecting an address', () => {
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: '0x9409bd2f87f0698f89c04caee8ddb2fd9e44bcc3',
+        publicKey: '0x9409bD2F87F0698f89C04cAeE8DdB2fD9e44bCc3',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 

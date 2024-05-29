@@ -41,6 +41,16 @@ export const linea: NetworkConfig = {
         id: HookType.PROMOCODE,
         name: 'Discount code',
       },
+      {
+        address: '0x4Bf912519549DF750002814a2DcE7184b3971F06',
+        id: HookType.PROMO_CODE_CAPPED,
+        name: 'Discount code with caps',
+      },
+      {
+        address: '0xD925Ac2887Ba4372849F0fd64217A6749552bb21',
+        id: HookType.PASSWORD_CAPPED,
+        name: 'Passwords with caps. Multiple passwords can be used per contract',
+      },
     ],
   },
   id: 59144,
@@ -51,12 +61,12 @@ export const linea: NetworkConfig = {
 
   maxFreeClaimCost: 10,
 
-  // multisig: '', // TODO
+  multisig: '0x0b441f6A255a56670B6fdb37B527e091a394eeB9',
 
   name: 'Linea',
 
   nativeCurrency: {
-    coingecko: 'linea-eth',
+    coingecko: 'ethereum',
     decimals: 18,
     name: 'Linea Ether',
     symbol: 'ETH',
@@ -67,40 +77,43 @@ export const linea: NetworkConfig = {
   publicProvider: 'https://rpc.linea.build/',
   startBlock: 560908,
   subgraph: {
-    endpoint: 'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
-    endpointV2:
-      'https://graph-query.linea.build/subgraphs/name/unlock-protocol',
-    // NB: this name should be changed once The Graph supports Linea
-    networkName: 'linea-mainnet',
+    endpoint:
+      'https://api.studio.thegraph.com/query/65299/unlock-protocol-linea/version/latest',
+    studioName: 'unlock-protocol-linea',
   },
   tokens: [
     {
       address: '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f',
       decimals: 18,
+      featured: true,
       name: 'Wrapped Ether',
       symbol: 'WETH',
     },
     {
       address: '0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5',
       decimals: 18,
+      featured: true,
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
     {
       address: '0xA219439258ca9da29E9Cc4cE5596924745e12B93',
       decimals: 6,
+      featured: true,
       name: 'Tether USD',
       symbol: 'USDT',
     },
     {
       address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
       decimals: 6,
-      name: 'USD Coin',
+      featured: true,
+      name: 'USDC',
       symbol: 'USDC',
     },
     {
       address: '0x3aAB2285ddcDdaD8edf438C1bAB47e1a9D05a9b4',
       decimals: 8,
+      featured: true,
       name: 'Wrapped BTC',
       symbol: 'WBTC',
     },

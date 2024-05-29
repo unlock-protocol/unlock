@@ -50,10 +50,10 @@ export const CoverImageDrawer = ({
   }
 
   return (
-    <div className="relative inset-0 z-[1]">
+    <div className="absolute hidden sm:block sm:overflow-hidden inset-0 z-[1] ">
       {isOrganizer && (
         <Button
-          className="absolute bottom-3 right-3 md:bottom-8 nd:right-9"
+          className="absolute md:top-4 md:right-4"
           variant="secondary"
           size="tiny"
           onClick={() => {
@@ -69,7 +69,7 @@ export const CoverImageDrawer = ({
           <div className="z-10 mt-2 space-y-6">
             <ImageUpload
               size="full"
-              description="This illustration will be used as cover image for your event page"
+              description="This illustration will be used as cover image for your event page. The recommended aspect ratio is 1400x300."
               preview={image}
               isUploading={isUploading}
               imageRatio="cover"

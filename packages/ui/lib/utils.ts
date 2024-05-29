@@ -1,16 +1,23 @@
-import { ethers } from 'ethers'
+import { isAddress as ethersIsAddress } from 'ethers'
 
 export const minifyAddress = (address: string) => {
-  const checked = ethers.utils.isAddress(address)
+  const checked = ethersIsAddress(address)
   return checked
     ? `${address.slice(0, 5)}...${address.slice(address.length - 5)}`
     : address
 }
 
-export const isAddressOrEns = (address = '') => {
-  return (
-    address?.toLowerCase()?.includes('.eth') || ethers.utils.isAddress(address)
-  )
+export const isAddress = (address = '') => {
+  return ethersIsAddress(address)
+}
+
+// TODO: support other TLDs
+export const isEns = (address = '') => {
+  return address?.toLowerCase()?.includes('.eth')
+}
+
+export const isAddressOrEns = (addressOrEns = '') => {
+  return isEns(addressOrEns) || isAddress(addressOrEns)
 }
 
 export const unlockEmailSubscription = async (email: string) => {

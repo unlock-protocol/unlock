@@ -6,7 +6,7 @@ const purchaseController = new PurchaseController()
 const router = express.Router({ mergeParams: true })
 
 // Disallow claim due to spam and bot activity
-const geoRestriction = createGeoRestriction(['RU', 'UA'])
+const geoRestriction = createGeoRestriction([])
 
 router.post(
   '/:network/locks/:lockAddress',

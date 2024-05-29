@@ -26,14 +26,21 @@ interface QueryOptions {
 
 export class SubgraphService {
   networks: NetworkConfigs
-  constructor(networks?: NetworkConfigs) {
+  endpointUrl?: string
+  constructor(endpointUrl?: string, networks?: NetworkConfigs) {
     this.networks = networks || networkConfigs
+    this.endpointUrl = endpointUrl
   }
 
   createSdk(networkId = 1) {
     const network = this.networks[networkId]
+    const endpointUrl = this.endpointUrl
 
-    const client = new GraphQLClient(network.subgraph.endpointV2!)
+    const GraphQLClientURL = endpointUrl
+      ? endpointUrl
+      : network.subgraph.endpoint!
+
+    const client = new GraphQLClient(GraphQLClientURL)
     const sdk = getSdk(client)
     return sdk
   }

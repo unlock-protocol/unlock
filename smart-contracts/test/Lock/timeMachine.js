@@ -1,11 +1,12 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { ADDRESS_ZERO, reverts, MAX_UINT } = require('../helpers')
-
+const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 const ONE_DAY = 60 * 60 * 24
-const expirationDuration = ethers.BigNumber.from(`${ONE_DAY * 30}`)
-const tooMuchTime = ethers.BigNumber.from(`${ONE_DAY * 42}`) // 42 days
+const expirationDuration = BigInt(`${ONE_DAY * 30}`)
+const tooMuchTime = BigInt(`${ONE_DAY * 42}`) // 42 days
 
-contract('Lock / timeMachine', () => {
+describe('Lock / timeMachine', () => {
   let timeMachine
   let keyOwner
   let timestampBefore
@@ -20,19 +21,19 @@ contract('Lock / timeMachine', () => {
     timeMachine = await TimeMachineMock.deploy()
 
     const { timestamp: now } = await ethers.provider.getBlock('latest')
-    timestampBefore = await ethers.BigNumber.from(now).add(expirationDuration)
+    timestampBefore = (await BigInt(now)) + expirationDuration
 
     const tx = await timeMachine.createNewKey(
-      keyOwner.address,
+      await keyOwner.getAddress(),
       ADDRESS_ZERO, // beneficiary
       timestampBefore
     )
 
-    const { events } = await tx.wait()
+    const receipt = await tx.wait()
 
     ;({
       args: { tokenId },
-    } = events.find((v) => v.event === 'Transfer'))
+    } = await getEvent(receipt, 'Transfer'))
   })
 
   describe('modifying the time remaining for a key', () => {
@@ -41,14 +42,14 @@ contract('Lock / timeMachine', () => {
       await timeMachine.timeMachine(tokenId, 1000, false) // decrease the time with "false"
 
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(timestampBefore.sub(1000)))
+      assert(timestampAfter == timestampBefore - 1000n)
     })
 
     it('should increase the time by the amount specified if the key is not expired', async () => {
       timestampBefore = await timeMachine.keyExpirationTimestampFor(tokenId)
       await timeMachine.timeMachine(tokenId, 42, true) // increase the time with "true"
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(timestampAfter.eq(timestampBefore.add(42)))
+      assert(timestampAfter == timestampBefore + 42n)
     })
 
     it('should set a new expiration ts from current date/blocktime', async () => {
@@ -64,23 +65,21 @@ contract('Lock / timeMachine', () => {
 
       const { timestamp: now } = await ethers.provider.getBlock(blockNumber)
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
-      assert(
-        timestampAfter.eq(ethers.BigNumber.from(now).add(expirationDuration))
-      )
+      assert(timestampAfter == BigInt(now) + expirationDuration)
     })
 
     it('should emit the ExpirationChanged event', async () => {
       timestampBefore = await timeMachine.keyExpirationTimestampFor(tokenId)
       const tx = await timeMachine.timeMachine(tokenId, 42, true)
 
-      const { events } = await tx.wait()
-      const evt = events.find(({ event }) => event === 'ExpirationChanged')
+      const receipt = await tx.wait()
+      const evt = await getEvent(receipt, 'ExpirationChanged')
 
       timestampAfter = await timeMachine.keyExpirationTimestampFor(tokenId)
 
-      assert(timestampAfter.eq(evt.args.newExpiration))
-      assert(timestampBefore.eq(evt.args.prevExpiration))
-      assert.equal(evt.args.tokenId.eq(tokenId), true)
+      assert(timestampAfter == evt.args.newExpiration)
+      assert(timestampBefore == evt.args.prevExpiration)
+      assert.equal(evt.args.tokenId == tokenId, true)
     })
   })
 
@@ -90,15 +89,15 @@ contract('Lock / timeMachine', () => {
     })
     it('should prevent overflow work for a non-existant key', async () => {
       const tx = await timeMachine.createNewKey(
-        keyOwner.address,
+        await keyOwner.getAddress(),
         ADDRESS_ZERO, // beneficiary
         MAX_UINT
       )
 
-      const { events } = await tx.wait()
+      const receipt = await tx.wait()
       const {
         args: { tokenId: tokenIdNonExp },
-      } = events.find((v) => v.event === 'Transfer')
+      } = await getEvent(receipt, 'Transfer')
 
       await reverts(
         timeMachine.timeMachine(tokenIdNonExp, 42, true),

@@ -1,23 +1,32 @@
-const { network, ethers } = require('hardhat')
+const helpers = require('@nomicfoundation/hardhat-network-helpers')
+const { ethers } = require('hardhat')
 
-async function increaseTimeTo(expirationTs) {
-  expirationTs =
-    typeof expirationTs === 'number'
-      ? expirationTs
-      : expirationTs === 'string'
-      ? parseInt(expirationTs)
-      : expirationTs.toNumber()
+async function increaseTime(durationInSec = 1) {
+  const { timestamp } = await ethers.provider.getBlock()
+  const newTimestamp = timestamp + durationInSec
+  await increaseTimeTo(newTimestamp)
+}
 
-  const { timestamp } = await ethers.provider.getBlock('latest')
+async function advanceBlock() {
+  await helpers.mine(1)
+}
 
-  if (timestamp > expirationTs) {
-    throw new Error(
-      `Cannot increase time (${timestamp}) to the past (${expirationTs})`
-    )
-  }
-  await network.provider.send('evm_increaseTime', [expirationTs])
+async function advanceBlockTo(blockNumber) {
+  await helpers.mineUpTo(blockNumber)
+}
+
+async function getLatestBlock() {
+  return await helpers.time.latestBlock()
+}
+
+async function increaseTimeTo(newTimestamp) {
+  await helpers.time.increaseTo(BigInt(newTimestamp.toString()))
 }
 
 module.exports = {
   increaseTimeTo,
+  increaseTime,
+  advanceBlock,
+  advanceBlockTo,
+  getLatestBlock,
 }

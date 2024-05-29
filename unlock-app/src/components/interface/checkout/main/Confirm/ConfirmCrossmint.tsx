@@ -1,28 +1,26 @@
 import {
-  CrossmintCheckoutEventUnion,
   CrossmintPaymentElement,
   useCrossmintEvents,
 } from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
-import { useConfig } from '~/utils/withConfig'
 import { Fragment, useCallback, useState } from 'react'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { getReferrer, lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ethers } from 'ethers'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
 import { TransactionAnimation } from '../../Shell'
+import { config } from '~/config/app'
+import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
@@ -37,26 +35,29 @@ interface CrossmintQuote {
 }
 
 export function ConfirmCrossmint({
-  injectedProvider,
   onConfirmed,
   // onError,
   checkoutService,
 }: Props) {
-  const { email } = useAuth()
-  const [state] = useActor(checkoutService)
-  const config = useConfig()
+  const [error, setError] = useState<string | null>(null)
+  const [crossmintLoading, setCrossmintLoading] = useState(true)
+  const { email, account } = useAuth()
+  const { lock, recipients, paywallConfig, data, keyManagers, renew } =
+    useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
+
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
 
-  const { lock, recipients, paywallConfig, data, keyManagers } = state.context
-
-  const { isLoading: isCrossmintLoading, crossmintClientId } =
-    useCrossmintEnabled({
-      recipients,
-      network: lock!.network,
-      lockAddress: lock!.address,
-    })
+  const {
+    isLoading: isCrossmintEnabledLoading,
+    collectionId,
+    projectId,
+  } = useCrossmintEnabled({
+    recipients,
+    network: lock!.network,
+    lockAddress: lock!.address,
+  })
 
   const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
     usePurchaseData({
@@ -74,18 +75,22 @@ export function ConfirmCrossmint({
 
   // Handling payment events
   const onCrossmintPaymentEvent = useCallback(
-    (paymentEvent: CrossmintCheckoutEventUnion) => {
+    (paymentEvent: any) => {
       console.debug(paymentEvent)
       // We get the events from crossmint
       // https://docs.crossmint.com/docs/2c-embed-checkout-inside-your-ui#4-displaying-progress-success-and-errors-in-your-ui
-      if (paymentEvent.type === 'quote:status.changed') {
+      if (paymentEvent.type === 'payment:preparation.failed') {
+        setError(
+          `There was an error with Crossmint. ${paymentEvent.payload.error?.message}`
+        )
+      } else if (paymentEvent.type === 'quote:status.changed') {
+        setCrossmintLoading(false)
         setQuote(paymentEvent.payload)
       } else if (paymentEvent.type === 'payment:process.started') {
         // Wait!
       } else if (paymentEvent.type === 'payment:process.succeeded') {
         setIsConfirming(true)
         listenToMintingEvents(paymentEvent.payload, (mintingEvent) => {
-          console.debug(mintingEvent)
           if (mintingEvent.type === 'transaction:fulfillment.succeeded') {
             onConfirmed(lock!.address, mintingEvent.payload.txId)
           }
@@ -113,8 +118,20 @@ export function ConfirmCrossmint({
     ),
   })
 
+  const { data: tokenId } = useGetTokenIdForOwner(
+    { account: account!, lockAddress: lock!.address, network: lock!.network },
+    {
+      enabled: renew,
+    }
+  )
+
   const isLoading =
-    isCrossmintLoading || isInitialDataLoading || isPricingDataLoading || !quote
+    !error &&
+    (isCrossmintEnabledLoading ||
+      isInitialDataLoading ||
+      isPricingDataLoading ||
+      crossmintLoading ||
+      (!tokenId && renew))
 
   const referrers: string[] = recipients.map((recipient) => {
     return getReferrer(recipient, paywallConfig, lock!.address)
@@ -129,7 +146,8 @@ export function ConfirmCrossmint({
       ]
     : []
 
-  const argumentsReady = referrers && purchaseData && pricingData
+  const argumentsReady =
+    referrers && purchaseData && pricingData && (tokenId || !renew)
 
   // crossmint config
   const crossmintConfig = {
@@ -140,17 +158,34 @@ export function ConfirmCrossmint({
       email,
       wallet: recipients[0], // Crossmint only supports a single recipient for now!
     },
-    clientId: crossmintClientId!,
     environment: crossmintEnv,
-    mintConfig: {
+    mintConfig: {},
+    onEvent: onCrossmintPaymentEvent,
+    projectId,
+    collectionId: '', // To be completed below!
+  }
+
+  if (!renew) {
+    crossmintConfig.collectionId = collectionId
+    crossmintConfig.mintConfig = {
       totalPrice: pricingData?.total.toString(),
       _values: values,
       _referrers: referrers,
       _keyManagers: keyManagers || recipients,
       _data: purchaseData,
-    },
-    onEvent: onCrossmintPaymentEvent,
+    }
+  } else {
+    crossmintConfig.collectionId = [collectionId, 'extend'].join('-')
+    crossmintConfig.mintConfig = {
+      totalPrice: pricingData?.total.toString(),
+      _tokenId: tokenId,
+      _value: values[0],
+      _referrer: referrers[0],
+      _data: purchaseData ? purchaseData[0] : '',
+    }
   }
+
+  const showCrossmint = crossmintLoading || error ? 'hidden' : 'block'
 
   return (
     <Fragment>
@@ -158,13 +193,7 @@ export function ConfirmCrossmint({
         {!isConfirming && (
           <>
             <div className="grid gap-y-2">
-              <div>
-                <h4 className="text-xl font-bold"> {lock!.name}</h4>
-                <ViewContract
-                  lockAddress={lock!.address}
-                  network={lock!.network}
-                />
-              </div>
+              <h4 className="text-xl font-bold"> {lock!.name}</h4>
 
               {isPricingDataError && (
                 // TODO: use actual error from simulation
@@ -175,24 +204,43 @@ export function ConfirmCrossmint({
                   </p>
                 </div>
               )}
+              {error && (
+                <div>
+                  <p className="text-sm font-bold">
+                    <ErrorIcon className="inline" />
+                    {error}
+                  </p>
+                </div>
+              )}
 
               {!isLoading && (
                 <div>
-                  {quote.lineItems.map((item: any, index: number) => {
+                  {quote?.lineItems.map((item: any, index: number) => {
                     const first = index <= 0
 
                     return (
-                      <div
-                        key={index}
-                        className={`flex border-b ${
-                          first ? 'border-t' : null
-                        } items-center justify-between text-sm px-0 py-2`}
-                      >
-                        <div>{item.metadata.description}</div>{' '}
-                        <div className="font-bold">
-                          {item.price.amount}{' '}
-                          {item.price.currency.toUpperCase()}
+                      <div key={index} className="text-sm ">
+                        <div
+                          className={`flex border-b ${
+                            first ? 'border-t' : null
+                          }  items-center justify-between px-0 py-2`}
+                        >
+                          <div className="w-64 truncate ...">
+                            {item.metadata.description}
+                          </div>{' '}
+                          <div className="font-bold whitespace-nowrap">
+                            {item.price.amount}{' '}
+                            {item.price.currency.toUpperCase()}
+                          </div>
                         </div>
+                        {item.gasFee && (
+                          <div
+                            className={`flex items-center justify-between px-0 py-2`}
+                          >
+                            <div>Gas fee</div>
+                            <div>{item.gasFee?.amount} USD </div>
+                          </div>
+                        )}
                       </div>
                     )
                   })}
@@ -211,13 +259,16 @@ export function ConfirmCrossmint({
             )}
             {quote?.totalPrice && (
               <Pricing
-                keyPrice={`${quote?.totalPrice
-                  .amount} ${quote?.totalPrice.currency.toUpperCase()}`}
+                keyPrice={`${
+                  quote?.totalPrice.amount
+                } ${quote?.totalPrice.currency.toUpperCase()}`}
                 isCardEnabled={false}
               />
             )}
             {!isPricingDataError && argumentsReady && (
-              <CrossmintPaymentElement {...crossmintConfig} />
+              <div className={`[&>iframe]:w-full ${showCrossmint} `}>
+                <CrossmintPaymentElement {...crossmintConfig} />
+              </div>
             )}
           </>
         )}
@@ -232,10 +283,7 @@ export function ConfirmCrossmint({
       </main>
 
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        ></Connected>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

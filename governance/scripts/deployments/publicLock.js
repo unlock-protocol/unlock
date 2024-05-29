@@ -1,39 +1,48 @@
-const { ethers, run } = require('hardhat')
-const { networks } = require('@unlock-protocol/networks')
-const contracts = require('@unlock-protocol/contracts')
+const { ethers } = require('hardhat')
+const {
+  ADDRESS_ZERO,
+  deployContract,
+  copyAndBuildContractsAtVersion,
+} = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ publicLockVersion }) {
   // fetch chain info
-  const { chainId } = await ethers.provider.getNetwork()
-  const networkName = networks[chainId].name
   const [signer] = await ethers.getSigners()
 
-  let PublicLock
-  if (publicLockVersion) {
-    const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
-    console.log(
-      `PUBLIC LOCK > Deploying lock template on ${networkName} for released version ${publicLockVersion} with signer ${signer.address}`
-    )
-    PublicLock = await ethers.getContractFactory(abi, bytecode)
-  } else {
+  if (!publicLockVersion) {
     throw Error('Need to set --public-lock-version')
   }
 
-  const publicLock = await PublicLock.deploy()
-  await publicLock.deployed()
-
-  // eslint-disable-next-line no-console
   console.log(
-    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${
-      publicLock.address
-    } (tx: ${publicLock.deployTransaction.hash})`
+    `PUBLIC LOCK > Deploying lock template for released version ${publicLockVersion} with signer ${signer.address}`
   )
 
-  if (chainId !== 31337) {
-    await run('verify:verify', { address: publicLock.address })
-  }
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'PublicLock', version: publicLockVersion },
+  ])
 
-  return publicLock.address
+  const { contract: publicLock, address: publicLockAddress } =
+    await deployContract(qualifiedPath)
+
+  console.log(
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${publicLockAddress}`
+  )
+  // initialize the template to prevent someone else from doing it
+  const { hash: txInitHash } = await publicLock.initialize(
+    signer.address,
+    0,
+    ADDRESS_ZERO,
+    0,
+    0,
+    ''
+  )
+  console.log(`PUBLIC LOCK > Template initialized (tx: ${txInitHash})`)
+
+  // renounce the manager role that was added during initilization
+  const { hash: txRenounceHash } = await publicLock.renounceLockManager()
+  console.log(`PUBLIC LOCK > manager role revoked (tx: ${txRenounceHash})`)
+
+  return publicLockAddress
 }
 
 // execute as standalone

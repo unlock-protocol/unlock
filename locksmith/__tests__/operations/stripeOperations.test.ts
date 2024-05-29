@@ -25,7 +25,7 @@ describe('lockOperations', () => {
       StripeCustomer.findOne = vi.fn(() =>
         Promise.resolve({ StripeCustomerId: stripeCustomerId })
       )
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const result = await getStripeCustomerIdForAddress(publicKey)
       expect(StripeCustomer.findOne).toHaveBeenCalledWith({
         where: {
@@ -46,7 +46,7 @@ describe('lockOperations', () => {
       expect.assertions(2)
 
       StripeCustomer.destroy = vi.fn(() => Promise.resolve(1))
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const result = await deletePaymentDetailsForAddress(publicKey)
       expect(StripeCustomer.destroy).toHaveBeenCalledWith({
         where: {
@@ -59,7 +59,7 @@ describe('lockOperations', () => {
     it('should delete data from UserReference and StripeCustomer if it exists', async () => {
       expect.assertions(2)
       UserReference.update = vi.fn(() => Promise.resolve([1, 1]))
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const result = await deletePaymentDetailsForAddress(publicKey)
       expect(UserReference.update).toHaveBeenCalledWith(
         {
@@ -78,7 +78,7 @@ describe('lockOperations', () => {
 
     it('false if the data does not exist on any', async () => {
       expect.assertions(1)
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const result = await deletePaymentDetailsForAddress(publicKey)
       expect(result).toEqual(false)
     })
@@ -88,7 +88,7 @@ describe('lockOperations', () => {
     it('should store a stripeCustomer, normalized', async () => {
       expect.assertions(1)
       StripeCustomer.create = vi.fn(() => true)
-      const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
+      const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
       const stripeCustomerId = 'cus_customerId'
       await saveStripeCustomerIdForAddress(publicKey, stripeCustomerId)
       expect(StripeCustomer.create).toHaveBeenCalledWith({

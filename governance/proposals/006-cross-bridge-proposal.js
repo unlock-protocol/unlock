@@ -2,82 +2,20 @@
  * Example of a bridged proposal that will be sent across Connext to multisigs
  * on the other side of the network.
  */
-const { ADDRESS_ZERO } = require('../test/helpers')
-const { ethers } = require('hardhat')
+const { ADDRESS_ZERO, getUnlock } = require('@unlock-protocol/hardhat-helpers')
+const { IConnext, targetChains } = require('../helpers/bridge')
+const { ethers } = require('ethers')
 const { networks } = require('@unlock-protocol/networks')
-
-const abiIConnext = [
-  {
-    inputs: [
-      {
-        internalType: 'uint32',
-        name: '_destination',
-        type: 'uint32',
-      },
-      {
-        internalType: 'address',
-        name: '_to',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_asset',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_delegate',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_amount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: '_slippage',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bytes',
-        name: '_callData',
-        type: 'bytes',
-      },
-    ],
-    name: 'xcall',
-    outputs: [
-      {
-        internalType: 'bytes32',
-        name: '',
-        type: 'bytes32',
-      },
-    ],
-    stateMutability: 'payable',
-    type: 'function',
-  },
-]
-
-const targetChains = Object.keys(networks)
-  .map((id) => networks[id])
-  .filter(
-    ({ governanceBridge, isTestNetwork, id }) =>
-      !isTestNetwork && !!governanceBridge && id != 1
-  )
 
 module.exports = async () => {
   // parse call data for function call
-  const { interface: unlockInterface } = await ethers.getContractAt(
-    'Unlock',
-    ADDRESS_ZERO
-  )
+  const { interface: unlockInterface } = await getUnlock()
   const randInt = (min, max) =>
     Math.floor(Math.random() * (max - min + 1)) + min
 
   const burnAddress = ADDRESS_ZERO
-  const tokenAmount = ethers.utils
-    .parseEther(`0.000001`)
-    .add(`${randInt(1, 999)}`)
+  const tokenAmount =
+    ethers.parseEther(`0.000001`) + BigInt(`${randInt(1, 999)}`)
 
   const calldata = unlockInterface.encodeFunctionData('transferTokens', [
     ADDRESS_ZERO, // native tokens
@@ -88,11 +26,12 @@ module.exports = async () => {
   console.log(`action: transferTokens(${tokenAmount})`)
 
   // src info
-  const { chainId } = await ethers.provider.getNetwork()
+  const chainId = 1
   console.log(
-    `from ${chainId} to chains ${targetChains.map(({ id }) => id).join(' - ')}`
+    `from mainnet (${chainId}) to chains ${targetChains
+      .map(({ id }) => id)
+      .join(' - ')}`
   )
-
   const {
     governanceBridge: { connext: bridgeAddress },
   } = networks[chainId]
@@ -121,17 +60,16 @@ module.exports = async () => {
       }
 
       // encode instructions to be executed by the SAFE
-      const moduleData = await ethers.utils.defaultAbiCoder.encode(
+      const abiCoder = ethers.AbiCoder.defaultAbiCoder()
+      const moduleData = abiCoder.encode(
         ['address', 'uint256', 'bytes', 'bool'],
         [
           unlockAddress, // to
           0, // value
           calldata, // data
           0, // operation: 0 for CALL, 1 for DELEGATECALL
-          // 0,
         ]
       )
-
       console.log(moduleData)
 
       // add a small explanation
@@ -140,7 +78,7 @@ module.exports = async () => {
       // proposed changes
       return {
         contractAddress: bridgeAddress,
-        contractNameOrAbi: abiIConnext,
+        contractNameOrAbi: IConnext,
         functionName: 'xcall',
         functionArgs: [
           destDomainId,

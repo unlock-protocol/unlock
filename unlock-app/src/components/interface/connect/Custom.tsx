@@ -4,7 +4,7 @@ import { CgSpinnerAlt as SpinnerIcon } from 'react-icons/cg'
 
 const CustomButton = classed(
   'button',
-  'inline-flex items-center justify-between px-6 h-12 font-semibold rounded-2xl disabled:opacity-75 disabled:cursor-not-allowed',
+  'inline-flex items-center justify-between px-2 h-12 font-semibold rounded-xl disabled:opacity-75 disabled:cursor-not-allowed',
   {
     variants: {
       primary: {
@@ -13,8 +13,8 @@ const CustomButton = classed(
           'bg-gray-50 text-gray-800 fill-gray-800 hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-100 disabled:hover:bg-gray-50 disabled:active:bg-gray-50 disabled:focus:bg-gray-50',
       },
       highlight: {
-        true: 'ring-2 ring-ui-main-400',
-        false: '',
+        true: 'ring-1 ring-ui-main-100',
+        false: 'ring-1 ring-gray-200',
       },
     },
     defaultVariants: {
@@ -42,20 +42,22 @@ export const ConnectButton = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         highlight={!!highlight}
       >
-        <div className="flex flex-col items-start w-full">
-          {children}
-          {highlight && (
-            <div className="text-xs text-ui-main-400">Recently used</div>
+        <div className="flex justify-center gap-2">
+          {loading ? (
+            <SpinnerIcon
+              size={24}
+              className="animate-spin text-brand-ui-primary"
+            />
+          ) : (
+            icon
           )}
+          <div className="flex flex-col justify-center items-center w-full">
+            {children}
+            {highlight && (
+              <div className="text-xs text-ui-main-400">Recently used</div>
+            )}
+          </div>
         </div>
-        {loading ? (
-          <SpinnerIcon
-            size={24}
-            className="animate-spin text-brand-ui-primary"
-          />
-        ) : (
-          icon
-        )}
       </CustomButton>
     )
   }

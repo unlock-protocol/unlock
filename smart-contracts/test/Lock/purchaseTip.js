@@ -1,109 +1,116 @@
-const BigNumber = require('bignumber.js')
 const {
   getBalance,
   deployERC20,
   deployLock,
   reverts,
   ADDRESS_ZERO,
+  compareBigNumbers,
+  MAX_UINT,
 } = require('../helpers')
 
 const { ethers } = require('hardhat')
 const scenarios = [false, true]
 
-let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const tip = new BigNumber(keyPrice.toString()).plus(
-  ethers.utils.parseUnits('1', 'ether').toString()
-)
+const keyPrice = ethers.parseUnits('0.01', 'ether')
+const tip = ethers.parseUnits('1', 'ether')
 
-contract('Lock / purchaseTip', (accounts) => {
-  scenarios.forEach((isErc20, i) => {
+describe('Lock / purchaseTip', () => {
+  scenarios.forEach((isErc20) => {
     let lock
     let tokenAddress
-
-    if (i === 1) return
+    let testToken
+    let deployer, spender
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await deployERC20(accounts[0])
+        ;[deployer, spender] = await ethers.getSigners()
+        testToken = await deployERC20(deployer)
         // Mint some tokens for testing
-        await testToken.mint(accounts[2], '100000000000000000000', {
-          from: accounts[0],
-        })
+        await testToken.mint(
+          await spender.getAddress(),
+          '100000000000000000000'
+        )
 
-        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
+        tokenAddress = isErc20 ? await testToken.getAddress() : ADDRESS_ZERO
         lock = await deployLock({ tokenAddress })
+        // default to spender
+        lock = lock.connect(spender)
 
         // Approve spending
-        await testToken.approve(lock.address, tip, {
-          from: accounts[2],
-        })
+        if (isErc20) {
+          await testToken
+            .connect(spender)
+            .approve(await lock.getAddress(), MAX_UINT)
+        }
       })
 
       describe('purchase with exact value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            [keyPrice.toString()],
-            [accounts[2]],
+            [keyPrice],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
-              from: accounts[2],
-              value: isErc20 ? 0 : keyPrice.toString(),
+              value: isErc20 ? 0 : keyPrice,
             }
           )
         })
 
         it('user sent keyPrice to the contract', async () => {
-          const balance = await getBalance(lock.address, tokenAddress)
-          assert.equal(balance.toString(), keyPrice.toString())
+          compareBigNumbers(
+            await getBalance(await lock.getAddress(), tokenAddress),
+            keyPrice
+          )
         })
       })
 
       describe('purchase with tip', () => {
         beforeEach(async () => {
           await lock.purchase(
-            [tip.toString()],
-            [accounts[2]],
+            [keyPrice + tip],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
-              from: accounts[2],
-              value: isErc20 ? 0 : tip.toString(),
+              value: isErc20 ? 0 : keyPrice + tip,
             }
           )
         })
 
         it('user sent the tip to the contract', async () => {
-          const balance = await getBalance(lock.address, tokenAddress)
-          assert.notEqual(balance.toString(), keyPrice.toString())
-          assert.equal(balance.toString(), tip.toString())
+          compareBigNumbers(
+            await getBalance(await lock.getAddress(), tokenAddress),
+            isErc20 ? keyPrice : keyPrice + tip
+          )
         })
       })
 
       describe('purchase with ETH tip > value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            [keyPrice.toString()],
-            [accounts[2]],
+            [keyPrice],
+            [await spender.getAddress()],
             [ADDRESS_ZERO],
             [ADDRESS_ZERO],
-            [[]],
+            ['0x'],
             {
-              from: accounts[2],
-              value: isErc20 ? 0 : tip.toString(),
+              value: isErc20 ? 0 : keyPrice + tip,
             }
           )
         })
 
         it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-          const balance = await getBalance(lock.address, tokenAddress)
+          const balance = await getBalance(
+            await lock.getAddress(),
+            tokenAddress
+          )
           if (!isErc20) {
-            assert.equal(balance.toString(), tip.toString())
+            compareBigNumbers(balance, keyPrice + tip)
           } else {
-            assert.equal(balance.toString(), keyPrice.toString())
+            compareBigNumbers(balance, keyPrice)
           }
         })
       })
@@ -113,24 +120,22 @@ contract('Lock / purchaseTip', (accounts) => {
           beforeEach(async () => {
             await lock.purchase(
               [],
-              [accounts[2]],
+              [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
-                from: accounts[2],
-                value: isErc20 ? 0 : tip.toString(),
+                value: keyPrice + tip,
               }
             )
           })
 
           it('user sent tip to the contract if ETH (else send keyPrice)', async () => {
-            const balance = await getBalance(lock.address, tokenAddress)
-            if (!isErc20) {
-              assert.equal(balance.toString(), tip.toString())
-            } else {
-              assert.equal(balance.toString(), keyPrice.toString())
-            }
+            const balance = await getBalance(
+              await lock.getAddress(),
+              tokenAddress
+            )
+            compareBigNumbers(balance, keyPrice + tip)
           })
         })
       }
@@ -139,17 +144,16 @@ contract('Lock / purchaseTip', (accounts) => {
         it('should fail if value is less than keyPrice', async () => {
           await reverts(
             lock.purchase(
-              [1],
-              [accounts[2]],
+              [ethers.parseUnits('0.001', 'ether')],
+              [await spender.getAddress()],
               [ADDRESS_ZERO],
               [ADDRESS_ZERO],
-              [[]],
+              ['0x'],
               {
-                from: accounts[2],
-                value: isErc20 ? 0 : keyPrice.toString(),
+                value: 0,
               }
             ),
-            'INSUFFICIENT_VALUE'
+            'INSUFFICIENT_ERC20_VALUE'
           )
         })
       }

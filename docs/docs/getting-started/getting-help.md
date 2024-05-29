@@ -39,7 +39,7 @@ navigate the docs site and quickly find the resources you're looking for.
 ## Discord Server
 
 We have a thriving community at Unlock Protocol and our
-[Discord](https://discord.com/invite/Ah6ZEJyTDp) server is the hub. When you
+[Discord](https://discord.unlock-protocol.com/) server is the hub. When you
 first land there be sure to drop into the lobby and hit the "Unlock Discord"
 button where you can claim your Unlock Membership and gain access to the rest
 of our channels. If you have any technical implementation questions you'll find

@@ -31,8 +31,10 @@ type Lock @entity {
   lastKeyMintedAt: BigInt
   "Address of the lock deployer"
   deployer: Bytes!
-  "Total number of receipts of lock"
+  "Number of receipts of lock"
   numberOfReceipts: BigInt!
+  "Number of cancel receipts of lock"
+  numberOfCancelReceipts: BigInt!
   "Referrers fees set per custom address"
   referrerFees: [ReferrerFee!]! @derivedFrom(field: "lock")
 }
@@ -108,6 +110,8 @@ type Receipt @entity {
   sender: String!
   "Payer in the case of an ERC20 lock renewal, the sender and payer might differ"
   payer: String
+  "Fund receiver"
+  recipient: String
   "Address of the Lock smart contract"
   lockAddress: String!
   "Address of the 'currency' ERC20 contract if the keys are priced using an ERC20"

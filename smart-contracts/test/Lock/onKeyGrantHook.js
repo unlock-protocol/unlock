@@ -1,54 +1,61 @@
-const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
+const { deployLock } = require('../helpers')
 const { assert } = require('chai')
+const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const { ethers } = require('hardhat')
+const {
+  emitHookUpdatedEvent,
+  canNotSetNonContractAddress,
+} = require('./behaviors/hooks.js')
 
 let lock
 let testEventHooks
-let tx
 
-contract('Lock / onKeyGrantHook', (accounts) => {
-  const lockManager = accounts[0]
-  const to = accounts[2]
-  const keyManager = accounts[2]
+describe('Lock / onKeyGrantHook', () => {
+  let lockManager
+  let to
+  let keyManager
+  let receipt
 
   before(async () => {
-    lock = await deployLock()
-    testEventHooks = await TestEventHooks.new()
-    tx = await lock.setEventHooks(
+    ;[{ address: lockManager }, { address: to }, { address: keyManager }] =
+      await ethers.getSigners()
+    lock = await deployLock({ isEthers: true })
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    const tx = await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address
+      await testEventHooks.getAddress()
     )
+    receipt = await tx.wait()
   })
 
   it('emit the correct event', async () => {
-    const { args } = tx.logs.find(({ event }) => event === 'EventHooksUpdated')
-    assert.equal(args.onKeyPurchaseHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyCancelHook, ADDRESS_ZERO)
-    assert.equal(args.onValidKeyHook, ADDRESS_ZERO)
-    assert.equal(args.onTokenURIHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyTransferHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyExtendHook, ADDRESS_ZERO)
-    assert.equal(args.onKeyGrantHook, testEventHooks.address)
+    await emitHookUpdatedEvent({
+      receipt,
+      hookName: 'onKeyGrantHook',
+      hookAddress: await testEventHooks.getAddress(),
+    })
   })
 
   describe('grantKey', () => {
     it('can easily check if key is granted or purchase', async () => {
       const tx = await lock.grantKeys([to], [6200], [keyManager])
+      const receipt = await tx.wait()
 
-      const { args: argsGrantKeys } = tx.logs.find(
-        ({ event }) => event === 'Transfer'
-      )
+      const { args: argsGrantKeys } = await getEvent(receipt, 'Transfer')
       const { tokenId } = argsGrantKeys
 
       // get event from hook contract
-      const { args } = (await testEventHooks.getPastEvents('OnKeyGranted'))[0]
-      assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
+      const { args } = (
+        await testEventHooks.queryFilter('OnKeyGranted')
+      ).filter(({ fragment }) => fragment.name === 'OnKeyGranted')[0]
+      assert.equal(args.tokenId, tokenId)
       assert.equal(args.to, to)
       assert.equal(args.from, lockManager)
       assert.equal(args.keyManager, keyManager)
@@ -57,17 +64,6 @@ contract('Lock / onKeyGrantHook', (accounts) => {
   })
 
   it('cannot set the hook to a non-contract address', async () => {
-    await reverts(
-      lock.setEventHooks(
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        ADDRESS_ZERO,
-        accounts[1]
-      ),
-      'INVALID_HOOK(6)'
-    )
+    await canNotSetNonContractAddress({ lock, index: 6 })
   })
 })

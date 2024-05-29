@@ -1,9 +1,9 @@
 const { ethers, network } = require('hardhat')
-const { impersonate } = require('@unlock-protocol/hardhat-helpers')
+const { impersonate, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const MULTISIG_ADDRESS_OWNER = '0x4ce2dd8373ece0d7baaa16e559a5817cc875b16a'
+const MULTISIG_ADDRESS_OWNER = '0x4Ce2DD8373ECe0d7baAA16E559A5817CC875b16a'
 
 // test helper to reach concensus on multisig
 const confirmMultisigTx = async ({
@@ -22,10 +22,10 @@ const confirmMultisigTx = async ({
       return await tx.wait()
     })
   )
-  const [lastTx] = txs.slice(-1)
-  const { events, transactionHash } = lastTx
-  const failure = events.find((v) => v.event === 'ExecutionFailure')
-  const success = events.find((v) => v.event === 'Execution')
+  const [receipt] = txs.slice(-1)
+  const { transactionHash } = receipt
+  const failure = await getEvent(receipt, 'ExecutionFailure')
+  const success = await getEvent(receipt, 'Execution')
 
   if (failure) {
     // eslint-disable-next-line no-console

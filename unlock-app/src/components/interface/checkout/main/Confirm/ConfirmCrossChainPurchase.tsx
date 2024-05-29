@@ -1,43 +1,39 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './../checkoutMachine'
-import { Connected } from '../../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { Fragment, useRef, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
+import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
 import ReCaptcha from 'react-google-recaptcha'
 import { RiErrorWarningFill as ErrorIcon } from 'react-icons/ri'
-import { ViewContract } from '../../ViewContract'
 import { useUpdateUsersMetadata } from '~/hooks/useUserMetadata'
 import { usePricing } from '~/hooks/usePricing'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { formatNumber } from '~/utils/formatter'
 import { PricingData } from './PricingData'
+import Disconnect from '../Disconnect'
 
 interface Props {
-  injectedProvider: unknown
   checkoutService: CheckoutService
   onConfirmed: (lock: string, hash?: string, network?: number) => void
   onError: (message: string) => void
 }
 
 export function ConfirmCrossChainPurchase({
-  injectedProvider,
   checkoutService,
   onConfirmed,
 }: Props) {
-  const [state] = useActor(checkoutService)
+  const { lock, recipients, payment, paywallConfig, metadata, data } =
+    useSelector(checkoutService, (state) => state.context)
   const { getWalletService } = useAuth()
   const config = useConfig()
   const recaptchaRef = useRef<any>()
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, recipients, payment, paywallConfig, metadata, data } =
-    state.context
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -125,10 +121,7 @@ export function ConfirmCrossChainPurchase({
 
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="grid gap-y-2">
-          <div>
-            <h4 className="text-xl font-bold"> {lock!.name}</h4>
-            <ViewContract lockAddress={route.tx.to} network={route.network} />
-          </div>
+          <h4 className="text-xl font-bold"> {lock!.name}</h4>
           {isPricingDataError && (
             // TODO: use actual error from simulation
             <div>
@@ -173,26 +166,22 @@ export function ConfirmCrossChainPurchase({
         )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <div className="grid">
-            <Button
-              loading={isConfirming}
-              disabled={isConfirming || isLoading || isPricingDataError}
-              onClick={async (event) => {
-                event.preventDefault()
-                if (metadata) {
-                  await updateUsersMetadata(metadata)
-                }
-                onConfirm()
-              }}
-            >
-              {buttonLabel}
-            </Button>
-          </div>
-        </Connected>
+        <div className="grid">
+          <Button
+            loading={isConfirming}
+            disabled={isConfirming || isLoading || isPricingDataError}
+            onClick={async (event) => {
+              event.preventDefault()
+              if (metadata) {
+                await updateUsersMetadata(metadata)
+              }
+              onConfirm()
+            }}
+          >
+            {buttonLabel}
+          </Button>
+        </div>
+        <Disconnect service={checkoutService} />
         <PoweredByUnlock />
       </footer>
     </Fragment>

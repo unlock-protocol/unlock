@@ -1,6 +1,8 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueries } from '@tanstack/react-query'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { Lock } from '~/unlockTypes'
-import { useWeb3Service } from '~/utils/withWeb3Service'
+import { networks } from '@unlock-protocol/networks'
+import { PaywallLocksConfigType } from '@unlock-protocol/core'
 
 interface Options {
   lockAddress: string
@@ -8,7 +10,7 @@ interface Options {
 }
 
 export const useLockData = ({ lockAddress, network }: Options) => {
-  const web3Service = useWeb3Service()
+  const web3Service = new Web3Service(networks)
   const { data: lock, isLoading: isLockLoading } = useQuery<Lock>(
     ['lock', lockAddress, network],
     async () => {
@@ -26,4 +28,25 @@ export const useLockData = ({ lockAddress, network }: Options) => {
     lock,
     isLockLoading,
   }
+}
+
+export const useMultipleLockData = (locks: PaywallLocksConfigType) => {
+  const web3Service = new Web3Service(networks)
+  const results = useQueries({
+    queries: Object.keys(locks).map((lockAddress: string) => {
+      const network = locks[lockAddress].network
+      return {
+        queryKey: ['lock', lockAddress, network],
+        queryFn: async () => {
+          return web3Service.getLock(lockAddress, network!) as Promise<Lock>
+        },
+      }
+    }),
+  })
+  return results.map((result) => {
+    return {
+      lock: result.data,
+      isLockLoading: result.isLoading,
+    }
+  })
 }
