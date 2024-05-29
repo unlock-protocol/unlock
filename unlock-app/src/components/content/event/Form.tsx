@@ -14,6 +14,7 @@ import {
   Select,
   ToggleSwitch,
   ImageUpload,
+  Checkbox,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -540,8 +541,8 @@ export const Form = ({ onSubmit }: FormProps) => {
           </Disclosure>
 
           {!screeningEnabled && (
-            <Disclosure label="Price and Capacity" defaultOpen>
-              <div className="grid ">
+            <Disclosure label="Tickets" defaultOpen>
+              <div className="grid gap-4">
                 <p>
                   These settings can also be changed, but only by sending
                   on-chain transactions.
@@ -559,6 +560,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       onChange={(enable: boolean) => {
                         if (enable) {
                           setValue('lock.keyPrice', '0')
+                          setValue('metadata.attendeeRefund', false)
                         }
                       }}
                     />
@@ -599,44 +601,62 @@ export const Form = ({ onSubmit }: FormProps) => {
                       />
                     </div>
                   </div>
+
+                  {!isFree && !!details.lock?.keyPrice && (
+                    <div className="text-sm  mt-1 flex items-center justify-between">
+                      <Checkbox
+                        label="Refund attendees when they attend. This provides an
+                        incentive for users to RSVP and actually show up!"
+                        checked={watch('metadata.attendeeRefund')}
+                        onChange={() => {
+                          setValue(
+                            'metadata.attendeeRefund',
+                            !watch('metadata.attendeeRefund')
+                          )
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex items-center justify-between mt-4">
-                  <label className="" htmlFor="">
-                    Capacity:
-                  </label>
-                  <ToggleSwitch
-                    title="Unlimited"
-                    enabled={isUnlimitedCapacity}
-                    setEnabled={setIsUnlimitedCapacity}
-                    onChange={(enabled) => {
-                      if (enabled) {
-                        setValue('lock.maxNumberOfKeys', undefined)
-                      }
-                    }}
+                <div>
+                  <div className="flex items-center justify-between">
+                    <label className="" htmlFor="">
+                      Capacity:
+                    </label>
+                    <ToggleSwitch
+                      title="Unlimited"
+                      enabled={isUnlimitedCapacity}
+                      setEnabled={setIsUnlimitedCapacity}
+                      onChange={(enabled) => {
+                        if (enabled) {
+                          setValue('lock.maxNumberOfKeys', undefined)
+                        }
+                      }}
+                    />
+                  </div>
+
+                  <Input
+                    {...register('lock.maxNumberOfKeys', {
+                      min: 0,
+                      valueAsNumber: true,
+                      required: {
+                        value: !isUnlimitedCapacity,
+                        message: 'Capacity is required. ',
+                      },
+                    })}
+                    disabled={isUnlimitedCapacity}
+                    autoComplete="off"
+                    step={1}
+                    pattern="\d+"
+                    type="number"
+                    placeholder="Capacity"
+                    description={
+                      'This is the maximum number of tickets for your event. '
+                    }
+                    error={errors.lock?.maxNumberOfKeys?.message}
                   />
                 </div>
-
-                <Input
-                  {...register('lock.maxNumberOfKeys', {
-                    min: 0,
-                    valueAsNumber: true,
-                    required: {
-                      value: !isUnlimitedCapacity,
-                      message: 'Capacity is required. ',
-                    },
-                  })}
-                  disabled={isUnlimitedCapacity}
-                  autoComplete="off"
-                  step={1}
-                  pattern="\d+"
-                  type="number"
-                  placeholder="Capacity"
-                  description={
-                    'This is the maximum number of tickets for your event. '
-                  }
-                  error={errors.lock?.maxNumberOfKeys?.message}
-                />
               </div>
             </Disclosure>
           )}
