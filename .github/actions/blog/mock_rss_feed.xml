@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+    <title>Sample Blog</title>
+    <link>https://example.com</link>
+    <description>This is a sample RSS feed for testing.</description>
+    <language>en-us</language>
+
+    <item>
+        <title>First  Blog Post</title>
+        <link>https://example.com/first-blog-post</link>
+        <pubDate>Wed, 01 Apr 2023 12:00:00 GMT</pubDate>
+        <description>This is the summary of the first blog post.</description>
+        <author>Author One</author>
+        <content:encoded
+      ><![CDATA[<p>This is the <strong>content</strong> of the first blog post.</p>]]></content:encoded>
+        <image>
+            <href>https://example.com/images/first.jpg</href>
+        </image>
+    </item>
+
+    <item>
+        <title>Second Blog Post</title>
+        <link>https://example.com/second-blog-post</link>
+        <pubDate>Thu, 02 Apr 2023 12:00:00 GMT</pubDate>
+        <description>This is the summary of the second blog post.</description>
+        <author>Author Two</author>
+        <content:encoded
+      ><![CDATA[<p>This is the <strong>content</strong> of the second blog post.</p>]]></content:encoded>
+        <image>
+            <href>https://example.com/images/second.jpg</href>
+        </image>
+    </item>
+
+</channel>
+</rss>
