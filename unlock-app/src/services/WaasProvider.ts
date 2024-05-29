@@ -20,35 +20,41 @@ export default class WaasProvider extends ethers.providers
   }
 
   async connect() {
-    const waas = await InitializeWaas({
-      collectAndReportMetrics: true,
-      enableHostedBackups: true,
-      prod: false,
-      projectId: '5402f17b-ad54-4984-9417-b7b111226080',
-    })
+    try {
+      const waas = await InitializeWaas({
+        collectAndReportMetrics: true,
+        enableHostedBackups: true,
+        prod: false,
+        projectId: '5402f17b-ad54-4984-9417-b7b111226080',
+      })
 
-    const user = await waas.auth.login({ provideAuthToken: getWaasUuid })
+      const user = await waas.auth.login({ provideAuthToken: getWaasUuid })
 
-    let wallet: Wallet
+      let wallet: Wallet
 
-    if (waas.wallets.wallet) {
-      // Resuming wallet
-      wallet = waas.wallets.wallet
-    } else if (user.hasWallet) {
-      // Restoring wallet
-      wallet = await waas.wallets.restoreFromHostedBackup()
-    } else {
-      // Creating wallet
-      wallet = await waas.wallets.create()
+      if (waas.wallets.wallet) {
+        // Resuming wallet
+        wallet = waas.wallets.wallet
+      } else if (user.hasWallet) {
+        // Restoring wallet
+        wallet = await waas.wallets.restoreFromHostedBackup()
+      } else {
+        // Creating wallet
+        wallet = await waas.wallets.create()
+      }
+
+      const address = await wallet.addresses.for(ProtocolFamily.EVM)
+
+      this.wallet = new WaasEthersSigner(address)
+
+      this.wallet.connect(this)
+
+      return true
+    } catch (error) {
+      console.error(error)
     }
 
-    const address = await wallet.addresses.for(ProtocolFamily.EVM)
-
-    this.wallet = new WaasEthersSigner(address)
-
-    this.wallet.connect(this)
-
-    return true
+    return false
   }
 
   async eth_accounts() {
