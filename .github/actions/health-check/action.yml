@@ -42,7 +42,6 @@ runs:
         yarn workspace @unlock-protocol/governance check >> governance.log
         sentry-cli send-event -m "Governance" --logfile governance.log
       shell: bash
-
     - name: Check Contract Verification
       run: |
         yarn workspace @unlock-protocol/governance check:verify >> verification.log
