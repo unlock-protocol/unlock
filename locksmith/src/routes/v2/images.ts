@@ -6,7 +6,7 @@ import express from 'express'
 import { storageClient } from '../../config/storage'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import crypto from 'node:crypto'
-import config from '../../config/config'
+import config, { isProduction, isStaging } from '../../config/config'
 import { createRateLimitMiddleware } from '../../utils/middlewares/rateLimit'
 
 const router = express.Router()
@@ -25,7 +25,7 @@ if (!fs.existsSync(dirPath)) {
 }
 
 const storage =
-  process.env.NODE_ENV === 'development'
+  !isProduction && !isStaging
     ? multer.diskStorage({
         destination: function (_, __, cb) {
           cb(null, dirPath)
@@ -87,10 +87,10 @@ router.post(
         return {
           url: file.location,
           publicUrl:
-            process.env.NODE_ENV === 'development'
+            !isProduction && !isStaging
               ? new URL(
                   // @ts-expect-error Property 'filename' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
-                  `http://localhost:8080/v2/images/image/${request.filename}`
+                  `http://localhost:8080/v2/images/files/${request.filename}`
                 ).toString()
               : new URL(`/${file.key}`, config.storage.publicHost!).toString(),
           originamName: file.originalname,
@@ -106,15 +106,17 @@ router.post(
   }
 )
 
-router.get('/image/:name', (req, res) => {
-  const imageName = req.params.name
-  const imagePath = path.join(dirPath, imageName)
+if (!isProduction && !isStaging) {
+  router.get('/files/:name', (req, res) => {
+    const imageName = req.params.name
+    const imagePath = path.join(dirPath, imageName)
 
-  res.sendFile(imagePath, function (err) {
-    if (err) {
-      res.status(404).send('Sorry, we cannot find that image!')
-    }
+    res.sendFile(imagePath, function (err) {
+      if (err) {
+        res.status(404).send('Sorry, we cannot find that image!')
+      }
+    })
   })
-})
+}
 
 export default router
