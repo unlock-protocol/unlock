@@ -86,9 +86,13 @@ router.post(
       results: Object.values(request.files || []).map((file: any) => {
         return {
           url: file.location,
-          publicUrl: new URL(
-            `http://localhost:8080/v2/images/image/${request.filename}`
-          ).toString(),
+          publicUrl:
+            process.env.NODE_ENV === 'development'
+              ? new URL(
+                  // @ts-expect-error Property 'filename' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
+                  `http://localhost:8080/v2/images/image/${request.filename}`
+                ).toString()
+              : new URL(`/${file.key}`, config.storage.publicHost!).toString(),
           originamName: file.originalname,
           mimetype: file.mimetype,
           contentType: file.contentType,
