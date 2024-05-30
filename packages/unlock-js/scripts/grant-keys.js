@@ -23,17 +23,19 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
 
   const isKeyGranter = await web3Service.isKeyGranter(
     lockAddress,
-    signer.address,
+    await signer.getAddress(),
     networkId
   )
 
   const isLockManager = await web3Service.isLockManager(
     lockAddress,
-    signer.address,
+    await signer.getAddress(),
     networkId
   )
   if (!isKeyGranter && !isLockManager) {
-    throw new Error(`${signer.address} is not a lock manager or a key granter`)
+    throw new Error(
+      `${await signer.getAddress()} is not a lock manager or a key granter`
+    )
   }
 
   const recipients = []
@@ -66,7 +68,7 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
       if (manager) {
         managers.push(manager)
       } else {
-        managers.push(wallet.address)
+        managers.push(await wallet.getAddress())
       }
     } catch (error) {
       console.error(error)

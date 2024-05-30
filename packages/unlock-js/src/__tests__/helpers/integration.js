@@ -36,7 +36,8 @@ export const setupTest = async (unlockVersion) => {
   await walletService.connect(ethersProvider, signer)
   web3Service = new Web3Service(networks)
 
-  accounts = await walletService.provider.listAccounts()
+  // listAccounts() is missing from ethers BrowserProvider
+  accounts = await walletService.provider.send('eth_accounts', [])
 
   return {
     accounts,

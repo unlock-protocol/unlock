@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
 import { CardPurchaserABI } from './abis/CardPurchaserABI'
 
-type Signer = ethers.Wallet | ethers.providers.JsonRpcSigner
+type Signer = ethers.Wallet | ethers.JsonRpcSigner
 
 export interface GetContractOptions {
   network: number
@@ -59,15 +59,15 @@ export class CardPurchaser {
   async getDomain(network: number) {
     const contract = this.getContract({ network })
     const [name, version] = await Promise.all([
-      contract.name(),
-      contract.version(),
+      contract.getFunction('name')(),
+      contract.getFunction('version')(),
     ])
 
     return {
       name,
       version,
       chainId: network,
-      verifyingContract: contract.address,
+      verifyingContract: await contract.getAddress(),
     }
   }
 
