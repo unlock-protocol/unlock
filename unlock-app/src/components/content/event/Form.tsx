@@ -176,7 +176,7 @@ export const Form = ({ onSubmit }: FormProps) => {
     },
     pattern: {
       value:
-        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/,
+        /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]*)*[\w\-._~:/?#[\]@!$&'()*+,;=.]*$/,
       message: 'Please, use a valid image URL',
     },
   })
