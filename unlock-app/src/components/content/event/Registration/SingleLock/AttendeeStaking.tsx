@@ -2,13 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
+import { AttendeeRefundType } from '@unlock-protocol/core'
 
 interface AttendeeStakingProps {
-  attendeeRefund?: {
-    amount: string
-    currency: string
-    network: number
-  }
+  attendeeRefund?: AttendeeRefundType
 }
 
 export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {

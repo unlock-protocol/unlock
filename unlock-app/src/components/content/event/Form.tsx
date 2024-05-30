@@ -86,6 +86,7 @@ export const Form = ({ onSubmit }: FormProps) => {
   const [isInPerson, setIsInPerson] = useState(true)
   const [screeningEnabled, enableScreening] = useState(false)
   const [isUnlimitedCapacity, setIsUnlimitedCapacity] = useState(false)
+  const [attendeeRefund, setAttendeeRefund] = useState(false)
   const [isFree, setIsFree] = useState(true)
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
@@ -182,6 +183,17 @@ export const Form = ({ onSubmit }: FormProps) => {
     },
   })
 
+  const processAndSubmit = (values: any) => {
+    if (attendeeRefund) {
+      values.metadata.attendeeRefund = {
+        amount: values.lock!.keyPrice,
+        currency: values.lock!.currencyContractAddress,
+        network: values.network,
+      }
+    }
+    onSubmit(values)
+  }
+
   return (
     <FormProvider {...methods}>
       <div className="grid grid-cols-[50px_1fr_50px] items-center mb-4">
@@ -197,7 +209,7 @@ export const Form = ({ onSubmit }: FormProps) => {
         </h1>
       </div>
 
-      <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+      <form className="mb-6" onSubmit={methods.handleSubmit(processAndSubmit)}>
         <div className="grid gap-6">
           <Disclosure label="Basic Information" defaultOpen>
             <p className="mb-5">
@@ -560,7 +572,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       onChange={(enable: boolean) => {
                         if (enable) {
                           setValue('lock.keyPrice', '0')
-                          setValue('metadata.attendeeRefund', false)
+                          setAttendeeRefund(false)
                         }
                       }}
                     />
@@ -602,21 +614,18 @@ export const Form = ({ onSubmit }: FormProps) => {
                     </div>
                   </div>
 
-                  {!isFree && !!details.lock?.keyPrice && (
-                    <div className="text-sm  mt-1 flex items-center justify-between">
-                      <Checkbox
-                        label="Refund attendees when they attend. This provides an
-                        incentive for users to RSVP and actually show up!"
-                        checked={watch('metadata.attendeeRefund')}
-                        onChange={() => {
-                          setValue(
-                            'metadata.attendeeRefund',
-                            !watch('metadata.attendeeRefund')
-                          )
-                        }}
-                      />
-                    </div>
-                  )}
+                  <div className="text-sm mt-1 flex items-center justify-between">
+                    <Checkbox
+                      disabled={isFree || !details.lock?.keyPrice}
+                      label="Treat the price as a deposit which will be refunded when attendees check in at the event."
+                      checked={attendeeRefund}
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        setAttendeeRefund(event.target.checked)
+                      }}
+                    />
+                  </div>
                 </div>
 
                 <div>
