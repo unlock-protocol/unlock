@@ -37,18 +37,22 @@ export function Connected({ service }: ConnectedCheckoutProps) {
     // Skip Connect if already signed in
     const autoSignIn = async () => {
       const isConnectedAsUnlockAccount =
-        !isSignedIn && !signing && connected && isUnlockAccount
+        isSignedIn && !signing && isUnlockAccount && !useDelegatedProvider
 
-      const isConnectedWithWallet = isSignedIn && !signing && isUnlockAccount
+      const isConnectedWithWallet =
+        isSignedIn && !signing && !isUnlockAccount && !useDelegatedProvider
+
+      console.log('isConnectedAsUnlockAccount', isConnectedAsUnlockAccount)
+      console.log('isConnectedWithWallet', isConnectedWithWallet)
 
       if (isConnectedAsUnlockAccount || isConnectedWithWallet) {
-        await signIn()
+        // await signIn()
         service.send({
           type: 'SELECT_LOCK',
           existingMember: !!membership?.member,
           expiredMember: isUnlockAccount ? false : !!membership?.expired,
         })
-      } else if (account && connected) {
+      } else if (useDelegatedProvider) {
         service.send({
           type: 'SELECT_LOCK',
           existingMember: !!membership?.member,
