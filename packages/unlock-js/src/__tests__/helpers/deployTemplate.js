@@ -18,6 +18,5 @@ export default async (version, transactionOptions = {}, callback) => {
   if (callback) {
     callback(null, contract.deployTransaction.hash)
   }
-  await contract.deployed()
-  return contract.address
+  return await contract.getAddress()
 }
