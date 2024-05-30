@@ -42,7 +42,7 @@ export default async function (lock, transactionOptions = {}, callback) {
 
   // parse interface
   const { abi: lockAbi } = abis.PublicLock[`v${lockVersion}`]
-  const lockInterface = new ethers.utils.Interface(lockAbi)
+  const lockInterface = new ethers.Interface(lockAbi)
 
   // parse calldata
   const calldata = lockInterface.encodeFunctionData(

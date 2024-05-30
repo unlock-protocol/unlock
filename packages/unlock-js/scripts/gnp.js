@@ -60,14 +60,12 @@ const run = async () => {
         if (!network.unlockAddress) {
           return null
         }
-        const provider = new ethers.providers.JsonRpcBatchProvider(
-          network.provider
-        )
+        const provider = new ethers.JsonRpcProvider(network.provider)
         const latestBlockNumber = await provider.getBlockNumber()
         const gdp = await getGdpForNetwork(provider, network, latestBlockNumber)
         // TODO: consider retrieving value "last week"...
         const rate = await priceConversion(network)
-        const total = parseFloat(ethers.utils.formatUnits(gdp, '18'))
+        const total = parseFloat(ethers.formatUnits(gdp, '18'))
         return {
           id,
           total,

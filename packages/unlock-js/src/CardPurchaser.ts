@@ -29,10 +29,7 @@ export class CardPurchaser {
     if (!this.networks[network]) {
       throw new Error(`Missing config for ${network}`)
     }
-    return new ethers.providers.JsonRpcBatchProvider(
-      this.networks[network].provider,
-      network
-    )
+    return new ethers.JsonRpcProvider(this.networks[network].provider, network)
   }
 
   /**

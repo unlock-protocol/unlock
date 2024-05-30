@@ -7,11 +7,11 @@ describe('ethers utils', () => {
     expect.assertions(2)
 
     expect(ethersUtils.toWei('1000', 'ether')).toEqual(
-      ethers.BigNumber.from('1000000000000000000000')
+      BigInt('1000000000000000000000')
     )
 
     expect(ethersUtils.toWei('1000000000000', 'gwei')).toEqual(
-      ethers.BigNumber.from('1000000000000000000000')
+      BigInt('1000000000000000000000')
     )
   })
 
@@ -20,23 +20,21 @@ describe('ethers utils', () => {
       expect.assertions(2)
 
       expect(ethersUtils.toDecimal('1', 18)).toEqual(
-        ethers.BigNumber.from('1000000000000000000')
+        BigInt('1000000000000000000')
       )
 
       expect(ethersUtils.toDecimal('100', 18)).toEqual(
-        ethers.BigNumber.from('100000000000000000000')
+        BigInt('100000000000000000000')
       )
     })
 
     it('supports 0 decimal', () => {
       expect.assertions(2)
 
-      expect(ethersUtils.toDecimal('1000', 0)).toEqual(
-        ethers.BigNumber.from('1000')
-      )
+      expect(ethersUtils.toDecimal('1000', 0)).toEqual(BigInt('1000'))
 
       expect(ethersUtils.toDecimal('1000000000000', 0)).toEqual(
-        ethers.BigNumber.from('1000000000000')
+        BigInt('1000000000000')
       )
     })
   })
@@ -102,7 +100,7 @@ describe('ethers utils', () => {
 
     expect(ethersUtils.toNumber('0x12355')).toBe(74581)
     expect(ethersUtils.toNumber(74581)).toBe(74581)
-    expect(ethersUtils.toNumber(ethers.BigNumber.from('0x12355'))).toBe(74581)
+    expect(ethersUtils.toNumber(BigInt('0x12355'))).toBe(74581)
   })
 
   it('rpcResultNumber', () => {
@@ -120,9 +118,9 @@ describe('ethers utils', () => {
       '0x0000000000000000000000000000000000000000000000000000000000012345'
     )
 
-    expect(
-      ethersUtils.toRpcResultNumber(ethers.BigNumber.from('0x12345'))
-    ).toBe('0x0000000000000000000000000000000000000000000000000000000000012345')
+    expect(ethersUtils.toRpcResultNumber(BigInt('0x12345'))).toBe(
+      '0x0000000000000000000000000000000000000000000000000000000000012345'
+    )
   })
 
   it('utf8ToHex', () => {

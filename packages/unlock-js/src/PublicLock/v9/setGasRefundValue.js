@@ -12,11 +12,11 @@ export async function setMaxNumberOfKeys(
   let decimals = this.networks[network].nativeCurrency.decimals
   const erc20Address = await lockContract.tokenAddress()
 
-  if (erc20Address !== ethers.constants.AddressZero) {
+  if (erc20Address !== ethers.AddressZero) {
     decimals = await getErc20Decimals(erc20Address, this.provider)
   }
 
-  const refundValue = ethers.utils.parseUnits(gasRefundValue, decimals)
+  const refundValue = ethers.parseUnits(gasRefundValue, decimals)
 
   const transactionPromise = lockContract.setGasRefundValue(refundValue)
   const hash = await this._handleMethodCall(transactionPromise)
