@@ -34,7 +34,7 @@ export const celoAlfajores: NetworkConfig = {
   provider: 'https://alfajores-forno.celo-testnet.org',
   publicLockVersionToDeploy: 14,
   publicProvider: 'https://alfajores-forno.celo-testnet.org',
-  startBlock: 13994123,
+  startBlock: 24337460,
   subgraph: {
     endpoint:
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
