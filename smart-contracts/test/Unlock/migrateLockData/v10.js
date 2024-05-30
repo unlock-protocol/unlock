@@ -169,9 +169,8 @@ describe('upgradeLock / data migration v9 > v10', () => {
             const {
               args: { tokenId },
             } = await getEvent(receipt, 'Transfer')
-            const expirationTimestamp = await lock.keyExpirationTimestampFor(
-              keyOwner
-            )
+            const expirationTimestamp =
+              await lock.keyExpirationTimestampFor(keyOwner)
             return {
               keyOwner,
               tokenId,

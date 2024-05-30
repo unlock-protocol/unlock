@@ -96,7 +96,7 @@ const AttributeFilter = ({
     <div className="flex gap-1 flex-wrap md:flex-nowrap">
       {Object.values(values as string[]).map((value: string, index) => {
         const isActive = value === currentValue
-        const variant = isActive ? 'primary' : 'outlined-primary'
+        const variant = isActive ? 'borderless-primary' : 'borderless'
         return (
           <Button
             key={index}
@@ -106,7 +106,7 @@ const AttributeFilter = ({
               return onChange(value as string)
             }}
           >
-            {value?.toUpperCase()}
+            {value}
           </Button>
         )
       })}
@@ -173,8 +173,9 @@ export const FilterBar = ({
     label,
   }))
 
-  const placeholder = FILTER_ITEMS.find((filter) => filter.key === filterKey)
-    ?.placeholder
+  const placeholder = FILTER_ITEMS.find(
+    (filter) => filter.key === filterKey
+  )?.placeholder
 
   const lockOptions = locks
     ? Object.keys(locks).map((address) => {
@@ -242,7 +243,7 @@ export const FilterBar = ({
           >
             <div className="w-24 md:w-fit  flex items-center gap-1">
               <FilterIcon size={18} />
-              <span>Approval</span>
+              <span>Approval {expandApprovalFilter ? ':' : ''}</span>
             </div>
           </Button>
           {expandApprovalFilter && (

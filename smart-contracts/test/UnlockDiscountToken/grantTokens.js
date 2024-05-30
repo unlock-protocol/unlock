@@ -63,7 +63,7 @@ describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', () => {
     await unlock.setOracle(await udt.getAddress(), await oracle.getAddress())
 
     // Advance time so 1 full period has past and then update again so we have data point to read
-    await increaseTime(30)
+    await increaseTime(30 * 3600)
     await oracle.update(await weth.getAddress(), await udt.getAddress())
 
     // Purchase a valid key for the referrer

@@ -79,8 +79,8 @@ export const getSubscriptionsForLockByOwner = async ({
     key.expiration === ethers.constants.MaxUint256.toString()
       ? null
       : dayjs.unix(key.expiration).isBefore(dayjs())
-      ? null
-      : parseInt(key.expiration)
+        ? null
+        : parseInt(key.expiration)
 
   // Approved renewals
   const numberOfRenewalsApprovedValue =

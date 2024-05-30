@@ -1,5 +1,5 @@
 import { networks } from '@unlock-protocol/networks'
-import { ethers } from 'ethers'
+import { JsonRpcProvider } from 'ethers'
 import { expect, test, describe, beforeAll } from 'vitest'
 
 // A simple test file that queries the provider and checks all the supported networks are returning the right network di
@@ -14,11 +14,9 @@ describe('worker', () => {
   test('get network id', async () => {
     for (const id of Object.keys(networks)) {
       if (id !== '31337') {
-        const provider = new ethers.providers.JsonRpcBatchProvider(
-          `${process.env.ENDPOINT}/${id}`
-        )
+        const provider = new JsonRpcProvider(`${process.env.ENDPOINT}/${id}`)
         const { chainId } = await provider.getNetwork()
-        expect(chainId).to.equal(parseInt(id, 10))
+        expect(chainId).to.equal(BigInt(parseInt(id, 10)))
       }
     }
   })

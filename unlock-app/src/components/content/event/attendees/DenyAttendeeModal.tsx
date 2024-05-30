@@ -6,20 +6,22 @@ import { storage } from '~/config/storage'
 interface ApproveAttendeeModalProps {
   isOpen: boolean
   lockAddress: string
-  keyOwner: string
+  attendees: Array<{
+    keyholderAddress: string
+    email: string
+  }>
   setIsOpen: (open: boolean) => void
   network: number
 }
 
-export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
+export const DenyAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
   isOpen,
   lockAddress,
-  keyOwner,
+  attendees,
   setIsOpen,
   network,
 }) => {
   const [loading, setLoading] = useState(false)
-
   const onCloseCallback = () => {
     setIsOpen(false)
     setLoading(false)
@@ -28,7 +30,9 @@ export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
   const confirm = async () => {
     try {
       setLoading(true)
-      await storage.denyRsvp(network, lockAddress, keyOwner)
+      await storage.denyAttendeesRsvp(network, lockAddress, {
+        recipients: attendees.map((a) => a.keyholderAddress),
+      })
       setLoading(false)
       ToastHelper.success('The attendee was denied. ')
       onCloseCallback()
@@ -42,8 +46,8 @@ export const DenyAttendeeModalModal: React.FC<ApproveAttendeeModalProps> = ({
       <div className="flex flex-col gap-3">
         <h1 className="text-2xl font-bold">Are you sure?</h1>
         <p>
-          The user will <em>not</em> receive an email and you can still approve
-          them later if needed.
+          The user(s) will <em>not</em> receive an email and you can still
+          approve them later if needed.
         </p>
 
         <Button

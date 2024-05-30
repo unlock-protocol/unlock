@@ -2,35 +2,9 @@ name: Fetch and Create Blog Posts
 description: Fetches the latest blog posts from the Unlock Protocol blog and creates new posts in the website repository.
 on:
   schedule:
-    - cron: '0 0 * * *'  # Run once per day at midnight
+    - cron: '0 0 * * *' # Run once per day at midnight
   pull_request:
 
 jobs:
   fetch_and_create_posts:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install feedparser requests
-
-      - name: Fetch RSS feed and create posts
-        run: python rss_feed.py
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Add new blog posts"
-          title: "New blog posts from RSS feed"
-          body: "Automatically generated PR to add new blog posts fetched from the RSS feed."
-          branch: new-blog-posts
+    uses: ./.github/workflows/import-blog

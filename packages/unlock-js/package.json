@@ -29,37 +29,36 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "axios": "1.4.0",
+    "axios": "1.7.2",
     "ethers": "5.7.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.22.9",
-    "@babel/core": "7.22.9",
-    "@babel/preset-env": "7.22.9",
+    "@babel/cli": "7.24.6",
+    "@babel/core": "7.24.6",
+    "@babel/preset-env": "7.24.6",
     "@graphql-codegen/cli": "5.0.2",
     "@graphql-codegen/typescript": "4.0.6",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
-    "@graphql-codegen/typescript-operations": "4.0.1",
+    "@graphql-codegen/typescript-operations": "4.2.1",
     "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@openapitools/openapi-generator-cli": "2.7.0",
+    "@openapitools/openapi-generator-cli": "2.13.4",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "eslint": "8.46.0",
+    "eslint": "8.57.0",
     "ethers": "5.7.2",
     "hardhat": "2.20.1",
-    "prettier": "3.0.0",
+    "prettier": "3.2.5",
     "tsup": "8.0.2",
-    "typescript": "5.3.3",
-    "vitest": "0.34.6"
+    "typescript": "5.4.5",
+    "vitest": "1.6.0"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "4.2.1",
+    "@uniswap/sdk-core": "5.0.0",
     "@uniswap/smart-order-router": "3.17.4",
     "graphql": "16.8.1",
     "graphql-request": "6.1.0",
-    "react-to-print": "2.14.15",
-    "siwe": "2.1.4"
+    "siwe": "2.3.2"
   }
 }

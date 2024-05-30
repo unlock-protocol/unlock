@@ -21,11 +21,12 @@
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "eslint": "8.57.0",
-    "ethers": "6.10.0",
+    "ethers": "6.12.1",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.3",
     "hardhat-erc1820": "0.1.0",
     "ts-node": "10.9.2",
     "typescript": "5.4.5"
-  }
+  },
+  "packageManager": "yarn@4.2.2"
 }
