@@ -1,6 +1,8 @@
 // Etherscan api for verification
 // NB: list of supported network can be obtained with `yarn hardhat verify --list-networks`
 
+import { celoAlfajores } from '@unlock-protocol/networks'
+
 const etherscan = {
   apiKey: {
     // xdai requires only placeholder api key
@@ -14,6 +16,7 @@ const etherscan = {
     arbitrumOne: 'W5XNFPZS8D6JZ5AXVWD4XCG8B5ZH5JCD4Y',
     avalanche: 'N4AF8AYN8PXY2MFPUT8PAFSZNVJX5Q814X',
     celo: '6KBKUFYV3NQR4Y1BQN3Q34S2U7NTZBBPQZ',
+    celoAlfajores: '6KBKUFYV3NQR4Y1BQN3Q34S2U7NTZBBPQZ',
     base: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
     baseSepolia: 'F9E5R4E8HIJQZMRE9U9IZMP7NVZ2IAXNB8',
     linea: 'S66J314Q7PICPB4RP2G117KDFQRBEUYIFX',
@@ -28,6 +31,14 @@ const etherscan = {
       urls: {
         apiURL: 'https://api.celoscan.io/api',
         browserURL: 'https://celoscan.io/',
+      },
+    },
+    {
+      network: 'celoAlfajores',
+      chainId: 44787,
+      urls: {
+        apiURL: 'https://api-alfajores.celoscan.io/api',
+        browserURL: 'https://alfajores.celoscan.io',
       },
     },
     {
@@ -85,6 +96,9 @@ if (process.env.ARBISCAN_API_KEY) {
 }
 if (process.env.CELO_API_KEY) {
   etherscan.apiKey.celo = process.env.CELO_API_KEY
+}
+if (process.env.CELO_API_KEY) {
+  etherscan.apiKey.celoAlfajores = process.env.CELO_API_KEY
 }
 if (process.env.SNOWTRACE_API_KEY) {
   etherscan.apiKey.avalanche = process.env.SNOWTRACE_API_KEY
