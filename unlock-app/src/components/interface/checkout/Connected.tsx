@@ -42,9 +42,6 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       const isConnectedWithWallet =
         isSignedIn && !signing && !isUnlockAccount && !useDelegatedProvider
 
-      console.log('isConnectedAsUnlockAccount', isConnectedAsUnlockAccount)
-      console.log('isConnectedWithWallet', isConnectedWithWallet)
-
       if (isConnectedWithWallet) {
         await signIn()
 
