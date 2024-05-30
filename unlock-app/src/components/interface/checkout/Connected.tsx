@@ -45,14 +45,21 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       console.log('isConnectedAsUnlockAccount', isConnectedAsUnlockAccount)
       console.log('isConnectedWithWallet', isConnectedWithWallet)
 
-      if (isConnectedAsUnlockAccount || isConnectedWithWallet) {
-        // await signIn()
+      if (isConnectedWithWallet) {
+        await signIn()
+
         service.send({
           type: 'SELECT_LOCK',
           existingMember: !!membership?.member,
           expiredMember: isUnlockAccount ? false : !!membership?.expired,
         })
-      } else if (useDelegatedProvider) {
+      } else if (isConnectedAsUnlockAccount) {
+        service.send({
+          type: 'SELECT_LOCK',
+          existingMember: !!membership?.member,
+          expiredMember: isUnlockAccount ? false : !!membership?.expired,
+        })
+      } else if (account && connected) {
         service.send({
           type: 'SELECT_LOCK',
           existingMember: !!membership?.member,
