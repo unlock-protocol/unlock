@@ -175,13 +175,13 @@ export const MetadataInputs = ({
               }}
               render={({ field: { onChange, ref, onBlur } }) => {
                 return (
-                  <div className="grid ">
-                    <div className="flex items-center justify-between">
+                  <div className="grid gap-1">
+                    <div className="flex items-center justify-between ">
                       <label className="text-sm" htmlFor={label}>
                         {label}:
                       </label>
-                      <div className="flex items-center gap-2">
-                        <div className="text-sm">No wallet address?</div>
+                      <div className="flex items-center gap-2 ">
+                        <div className="text-sm ">No wallet address?</div>
                         <Toggle
                           value={useEmail}
                           onChange={(value) => {
@@ -191,11 +191,11 @@ export const MetadataInputs = ({
                         />
                       </div>
                     </div>
-                    <input
+                    <Input
                       className={inputClass}
                       placeholder={placeholder}
                       name={label}
-                      id={label}
+                      size="small"
                       type={useEmail ? 'email' : 'text'}
                       disabled={disabled}
                       onChange={(event) => {
