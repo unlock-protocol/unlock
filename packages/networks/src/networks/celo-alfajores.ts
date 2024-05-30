@@ -37,8 +37,9 @@ export const celoAlfajores: NetworkConfig = {
   startBlock: 24337460,
   subgraph: {
     endpoint:
-      'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
-    studioName: 'unlock-protocol-celo',
+      'https://api.studio.thegraph.com/query/47158/unlock-protocol-celo-alfajores/version/latest',
+    networkName: 'celo-alfajores',
+    studioName: 'unlock-protocol-celo-alfajores',
   },
   swapPurchaser: '',
   tokens: [],
