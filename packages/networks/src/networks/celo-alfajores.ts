@@ -1,4 +1,4 @@
-import { HookType, NetworkConfig } from '@unlock-protocol/types'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 export const celoAlfajores: NetworkConfig = {
   blockScan: {
@@ -42,6 +42,7 @@ export const celoAlfajores: NetworkConfig = {
   },
   swapPurchaser: '',
   tokens: [],
+  unlockAddress: '0x42E2E35876FD1912972bc926E7b8e34bb501a10C',
   url: 'https://celo.org',
 }
 
