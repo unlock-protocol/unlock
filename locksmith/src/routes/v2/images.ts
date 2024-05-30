@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import multer from 'multer'
 import multerS3 from 'multer-s3'
 import express from 'express'
@@ -16,6 +18,46 @@ const rateLimiter = createRateLimitMiddleware({
   requests: 10,
 })
 
+const dirPath = path.join(__dirname, '../../../uploads')
+
+if (!fs.existsSync(dirPath)) {
+  fs.mkdirSync(dirPath, { recursive: true })
+}
+
+const storage =
+  process.env.NODE_ENV === 'development'
+    ? multer.diskStorage({
+        destination: function (_, __, cb) {
+          cb(null, dirPath)
+        },
+        filename: function (req, file, cb) {
+          const filename = file.fieldname + '-' + Date.now()
+          // @ts-expect-error Property 'filename' does not exist on type 'Request<ParamsDictionary, any, any, ParsedQs>'.
+          req.filename = filename
+          cb(null, filename)
+        },
+      })
+    : multerS3({
+        // @ts-expect-error Type 'import("/home/unlock/node_modules/@aws-sdk/client-s3/dist-types/S3Client").S3Client' is not assignable to type 'import("/home/unlock/node_modules/@types/multer-s3/node_modules/@aws-sdk/client-s3/dist-types/S3Client").S3Client'.
+        s3: storageClient,
+        // Cloudflare R2 does not support other ACLs schemes. See: https://developers.cloudflare.com/r2/data-access/s3-api/api/
+        // That said, we only require public-read.
+        acl: 'public-read',
+        bucket: config.storage.bucket,
+        contentType(_, file, callback) {
+          callback(null, file.mimetype)
+        },
+        key(_, __, callback) {
+          callback(null, crypto.randomUUID())
+        },
+        metadata(request, file, callback) {
+          callback(null, {
+            fieldName: file.fieldname,
+            createdBy: request.user?.walletAddress,
+          })
+        },
+      })
+
 export const upload = multer({
   limits: {
     fileSize: 104857600, // 100MB
@@ -30,26 +72,7 @@ export const upload = multer({
       )
     }
   },
-  storage: multerS3({
-    // @ts-expect-error Type 'import("/home/unlock/node_modules/@aws-sdk/client-s3/dist-types/S3Client").S3Client' is not assignable to type 'import("/home/unlock/node_modules/@types/multer-s3/node_modules/@aws-sdk/client-s3/dist-types/S3Client").S3Client'.
-    s3: storageClient,
-    // Cloudflare R2 does not support other ACLs schemes. See: https://developers.cloudflare.com/r2/data-access/s3-api/api/
-    // That said, we only require public-read.
-    acl: 'public-read',
-    bucket: config.storage.bucket,
-    contentType(_, file, callback) {
-      callback(null, file.mimetype)
-    },
-    key(_, __, callback) {
-      callback(null, crypto.randomUUID())
-    },
-    metadata(request, file, callback) {
-      callback(null, {
-        fieldName: file.fieldname,
-        createdBy: request.user?.walletAddress,
-      })
-    },
-  }),
+  storage: storage,
 })
 
 router.post(
@@ -64,8 +87,7 @@ router.post(
         return {
           url: file.location,
           publicUrl: new URL(
-            `/${file.key}`,
-            config.storage.publicHost!
+            `http://localhost:8080/v2/images/image/${request.filename}`
           ).toString(),
           originamName: file.originalname,
           mimetype: file.mimetype,
@@ -79,5 +101,16 @@ router.post(
     })
   }
 )
+
+router.get('/image/:name', (req, res) => {
+  const imageName = req.params.name
+  const imagePath = path.join(dirPath, imageName)
+
+  res.sendFile(imagePath, function (err) {
+    if (err) {
+      res.status(404).send('Sorry, we cannot find that image!')
+    }
+  })
+})
 
 export default router
