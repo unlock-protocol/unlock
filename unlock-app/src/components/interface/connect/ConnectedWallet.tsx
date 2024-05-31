@@ -3,7 +3,6 @@ import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
-import { useConnectModal } from '~/hooks/useConnectModal'
 import BlockiesSvg from 'blockies-react-svg'
 
 interface ConnectedWalletProps {
@@ -16,7 +15,6 @@ export const ConnectedWallet = ({
   onNext,
 }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
-  const { closeConnectModal } = useConnectModal()
   const { session, signIn, signOut } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
@@ -29,16 +27,14 @@ export const ConnectedWallet = ({
     setIsSigningIn(true)
     await signIn()
     setIsSigningIn(false)
-    closeConnectModal()
-  }, [setIsSigningIn, signIn, closeConnectModal])
+  }, [setIsSigningIn, signIn])
 
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
     await signOut()
     deAuthenticate()
-    closeConnectModal()
     setIsDisconnecting(false)
-  }, [signOut, deAuthenticate, setIsDisconnecting, closeConnectModal])
+  }, [signOut, deAuthenticate, setIsDisconnecting])
 
   useEffect(() => {
     if (connected && !session && isUnlockAccount) {

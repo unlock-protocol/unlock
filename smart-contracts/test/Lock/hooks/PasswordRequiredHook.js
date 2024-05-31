@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts, deployLock } = require('../../helpers')
 
@@ -40,12 +40,14 @@ describe('PasswordRequiredHook', function () {
 
     // with wrong password
     const [badData] = await getSignatureForPassword('wrongpassword', recipient)
-    expect(await hook.getSigner(recipient.toLowerCase(), badData)).to.not.equal(
+    assert.notEqual(
+      await hook.getSigner(recipient.toLowerCase(), badData),
       signerAddress
     )
 
     // with correct password
-    expect(await hook.getSigner(recipient.toLowerCase(), data)).to.equal(
+    assert.equal(
+      await hook.getSigner(recipient.toLowerCase(), data),
       signerAddress
     )
   })
@@ -86,7 +88,7 @@ describe('PasswordRequiredHook', function () {
     await (await hook.setSigner(await lock.getAddress(), signer, usages)).wait()
 
     const s = await hook.signers(await lock.getAddress(), signer)
-    expect(s).to.equal(usages)
+    assert.equal(s, usages)
 
     // And now make a purchase that should fail because we did not submit a data
     await reverts(
@@ -125,7 +127,7 @@ describe('PasswordRequiredHook', function () {
 
     // Check the usages!
     const usageAfter = await hook.counters(await lock.getAddress(), signer)
-    expect(usageAfter).to.equal(1n)
+    assert.equal(usageAfter, 1n)
   })
 
   it('should fail if the code has been used enough', async function () {

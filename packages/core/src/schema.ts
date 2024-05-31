@@ -320,6 +320,13 @@ export type PaywallConfigType = z.infer<typeof PaywallConfig>
 export const PaywallLocksConfig = z.record(z.string(), PaywallLockConfig)
 export type PaywallLocksConfigType = z.infer<typeof PaywallLocksConfig>
 
+export const AttendeeRefund = z.object({
+  amount: z.string(),
+  currency: z.string(),
+  network: z.number().int().positive(),
+})
+export type AttendeeRefundType = z.infer<typeof AttendeeRefund>
+
 export const EventObject = z.object({
   name: z.string(),
   slug: z.string(),
@@ -327,6 +334,7 @@ export const EventObject = z.object({
   description: z.string(),
   requiresApproval: z.boolean(),
   hideRemaining: z.boolean().optional(), // This should rather be a checkoutConfig property.
+  attendeeRefund: AttendeeRefund.optional(),
   emailSender: z.string(),
   replyTo: z.string(),
   ticket: z.object({
