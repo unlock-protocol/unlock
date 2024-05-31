@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import ethersUtils from '../utils'
 import { describe, it, expect } from 'vitest'
 

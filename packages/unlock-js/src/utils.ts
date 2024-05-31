@@ -28,12 +28,10 @@ export default {
   isInfiniteDuration: (value: string) => {
     return BigInt(value) === ethers.MaxUint256
   },
-  toNumber: (value: string) => {
-    return parseInt(BigInt(value).toString())
-  },
-  toRpcResultNumber: (value: number) => {
-    const num = ethers.hexlify(ethers.toUtf8Bytes(BigInt(value).toString()))
-    return ethers.zeroPadValue(num, 32)
+  toNumber: ethers.toNumber,
+  toRpcResultNumber: (value: bigint) => {
+    const num = ethers.toBeArray(value)
+    return ethers.zeroPadValue(ethers.getBytes(num), 32)
   },
   toRpcResultString: (str: string) => {
     return str
