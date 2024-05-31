@@ -121,18 +121,31 @@ const SignUp = ({}: SignUpProps) => {
   const restoredState = JSON.parse(
     decodeURIComponent((router.query.state as string) || '{}')
   )
-  console.log(restoredState)
+  console.log('restoredState', restoredState)
+
+  const fullUrl =
+    typeof window !== 'undefined'
+      ? `${window.location.protocol}//${window.location.host}${router.asPath}`
+      : ''
+
+  console.log('Full URL:', fullUrl)
 
   const state = JSON.stringify({
     Login: 'Google',
   })
-  const callbackUrl = `${window.location.origin}/?state=${encodeURIComponent(state)}`
+  const callbackUrl = `${fullUrl}/?state=${encodeURIComponent(state)}`
+  console.log('callbackUrl', callbackUrl)
 
   // ...
   return (
     <div className="grid gap-2">
       <div className="grid gap-4 px-6">
-        <button onClick={() => signIn('google', { callbackUrl: callbackUrl })}>
+        <button
+          onClick={() => {
+            console.log('callbackUrl', callbackUrl)
+            signIn('google', { callbackUrl: callbackUrl })
+          }}
+        >
           Sign In with Google
         </button>
         <button onClick={() => signOut()}>Sign out</button>

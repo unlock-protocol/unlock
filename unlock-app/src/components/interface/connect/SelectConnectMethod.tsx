@@ -5,6 +5,8 @@ import { ConnectedWallet } from './ConnectedWallet'
 import { useStorageService } from '~/utils/withStorageService'
 import { UserAccountType } from '~/utils/userAccountType'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useSIWE } from '~/hooks/useSIWE'
 
 interface SelectConnectMethodProps {
   connected: string | undefined
@@ -41,6 +43,13 @@ export const SelectConnectMethod = ({
       }
     }
     setIsVerifyingEmail(false)
+  }
+
+  const { isConnectingProvider } = useAuthenticate()
+  const { isSigningSiwe } = useSIWE()
+
+  if (isSigningSiwe || isConnectingProvider) {
+    return <div>Loading</div>
   }
 
   return (

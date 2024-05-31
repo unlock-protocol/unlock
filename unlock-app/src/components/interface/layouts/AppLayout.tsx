@@ -163,8 +163,8 @@ export const AppLayout = ({
   const logoRedirectUri = logoRedirectUrl || '/'
 
   const { data: session } = useSession()
-  const { authenticateWithProvider } = useAuthenticate()
-  const { signIn: siweSignIn } = useSIWE()
+  const { isConnectingProvider, authenticateWithProvider } = useAuthenticate()
+  const { signIn: siweSignIn, isSignedIn } = useSIWE()
 
   const { connected } = useAuth()
 
@@ -175,6 +175,7 @@ export const AppLayout = ({
 
     const connectWaasProvider = async () => {
       console.log('Connecting to WAAS')
+      openConnectModal()
       const waasProvider = new WaasProvider(config.networks[1])
       await waasProvider.connect()
       await authenticateWithProvider('WAAS', waasProvider)
@@ -185,7 +186,7 @@ export const AppLayout = ({
   }, [session?.waasToken])
 
   useEffect(() => {
-    if (!connected) return
+    if (!connected && !isSignedIn) return
 
     const connect = async () => {
       console.log('Connecting to SIWE in useEffect')
