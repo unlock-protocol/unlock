@@ -145,6 +145,7 @@ export const EventDefaultLayout = ({
               requiresApproval={event.requiresApproval}
               checkoutConfig={checkoutConfig}
               hideRemaining={!!event.hideRemaining}
+              attendeeRefund={event.attendeeRefund}
             />
           )}
           {hasPassed && (

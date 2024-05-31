@@ -208,8 +208,8 @@ export const WalletlessRegistrationApply = ({
       <div className="flex rounded-md bg-[#FFF7E8] p-2">
         <IoWarningOutline size="32" className="w-24" />
         <p>
-          This event requires approval, once approved you will receive an email
-          with your ticket and location details!{' '}
+          This amount is a deposit to hold your reservation for the event. $XX
+          Will be refunded to you when you check in at the event
         </p>
       </div>
       <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />
