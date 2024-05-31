@@ -126,7 +126,7 @@ export default async function (options, transactionOptions = {}, callback) {
   }
 
   const transactionRequestPromise = swap
-    ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
+    ? unlockSwapPurchaserContract?.swapAndCall.populateTransaction(
         lockAddress,
         swap.srcTokenAddress || ZERO,
         totalPrice,
@@ -136,7 +136,7 @@ export default async function (options, transactionOptions = {}, callback) {
         callData,
         transactionOptions
       )
-    : lockContract.populateTransaction.purchase(
+    : lockContract.purchase.populateTransaction(
         keyPrices,
         owners,
         referrers,
@@ -146,17 +146,15 @@ export default async function (options, transactionOptions = {}, callback) {
       )
 
   const transactionRequest = await transactionRequestPromise
-
   if (transactionOptions.runEstimate) {
-    const estimate = lockContract.signer.estimateGas(transactionRequest)
+    const estimate = this.signer.estimateGas(transactionRequest)
     return {
       transactionRequest,
       estimate,
     }
   }
 
-  const transactionPromise =
-    lockContract.signer.sendTransaction(transactionRequest)
+  const transactionPromise = this.signer.sendTransaction(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
@@ -171,13 +169,12 @@ export default async function (options, transactionOptions = {}, callback) {
     throw new Error('Transaction failed')
   }
 
-  const parser = lockContract.interface
   const transferEvents = receipt.logs
     .map((log) => {
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
-      return parser.parseLog(log)
+      return lockContract.interface.parseLog(log)
     })
-    .filter(({ fragment }) => fragment && fragment.name === 'Transfer')
+    .filter((evt) => evt?.fragment && evt.fragment?.name === 'Transfer')
 
   if (transferEvents && transferEvents.length) {
     return transferEvents.map((v) => v.args.tokenId.toString())

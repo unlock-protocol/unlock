@@ -165,6 +165,6 @@ export default () =>
         keyOwner,
         chainId
       )
-      expect(totalKeys).toBe(totalKeysBefore + 1)
+      expect(totalKeys).toBe(totalKeysBefore + 1n)
     })
   })

@@ -40,7 +40,7 @@ export default async function getPurchaseKeysArguments({
   )
   const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
   const referrers = (_referrers || defaultArray).map((km) => km || ZERO)
-  const data = (_data || defaultArray).map((d) => d || [])
+  const data = (_data || defaultArray).map((d) => d || '0x')
 
   if (
     !(

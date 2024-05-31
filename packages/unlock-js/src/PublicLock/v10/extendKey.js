@@ -41,7 +41,7 @@ export default async function (
   }
 
   if (!data) {
-    data = []
+    data = '0x'
   }
 
   // If erc20Address was not provided, get it
@@ -163,7 +163,7 @@ export default async function (
   }
 
   const transactionRequestpromise = swap
-    ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
+    ? unlockSwapPurchaserContract?.swapAndCall.populateTransaction(
         lockAddress,
         swap.srcTokenAddress || ZERO,
         actualAmount,
@@ -173,7 +173,7 @@ export default async function (
         callData,
         transactionOptions
       )
-    : lockContract.populateTransaction.extend(
+    : lockContract.extend.populateTransaction(
         actualAmount,
         tokenId,
         referrer,
@@ -184,15 +184,14 @@ export default async function (
   const transactionRequest = await transactionRequestpromise
 
   if (transactionOptions.runEstimate) {
-    const estimate = lockContract.signer.estimateGas(transactionRequest)
+    const estimate = this.signer.estimateGas(transactionRequest)
     return {
       transactionRequest,
       estimate,
     }
   }
 
-  const transactionPromise =
-    lockContract.signer.sendTransaction(transactionRequest)
+  const transactionPromise = this.signer.sendTransaction(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
