@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { getEvent, getEvents } = require('@unlock-protocol/hardhat-helpers')
 const {

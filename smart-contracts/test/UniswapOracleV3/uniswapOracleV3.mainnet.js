@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers')
 
@@ -54,24 +54,27 @@ describe(`oracle`, () => {
             ethers.parseEther('1'),
             token1
           )
-          expect(converted.constructor.name).to.equals('BigNumber')
-          expect(
+          assert.equal(converted.constructor.name, 'BigNumber')
+          assert.equal(
             round(
               await oracle.consult(token0, ethers.parseEther('0.1'), token1)
-            )
-          ).to.be.equals(round(converted / 10))
+            ),
+            round(converted / 10)
+          )
 
-          expect(
-            round(await oracle.consult(token0, ethers.parseEther('10'), token1))
-          ).to.be.equals(round(converted * 10))
+          assert.equal(
+            round(
+              await oracle.consult(token0, ethers.parseEther('10'), token1)
+            ),
+            round(converted * 10)
+          )
         })
       )
     })
 
     it('DAI and USDC has roughly the same value', async () => {
-      expect(
-        round(await oracle.consult(WETH, ethers.parseEther('1'), USDC))
-      ).to.be.equals(
+      assert.equal(
+        round(await oracle.consult(WETH, ethers.parseEther('1'), USDC)),
         round(await oracle.consult(WETH, ethers.parseEther('1'), DAI))
       )
     })

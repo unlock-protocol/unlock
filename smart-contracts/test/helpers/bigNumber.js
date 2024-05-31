@@ -1,5 +1,5 @@
 const { BigNumber } = require('ethers')
-const { assert } = require('chai')
+const assert = require('assert')
 
 function isBigNumber(object) {
   return object instanceof BigNumber

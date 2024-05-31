@@ -1,6 +1,6 @@
 /* eslint strict: 0, global-require: 0 */
 const { run } = require('hardhat')
-const { expect } = require('chai')
+const assert = require('assert')
 const fs = require('fs-extra')
 const { listAllContracts } = require('./helpers')
 
@@ -27,7 +27,7 @@ contracts.forEach((contractsPaths, i) => {
             '.sol',
             '.json'
           )}`
-          expect(await fs.pathExists(abiPath)).to.be.true
+          assert(await fs.pathExists(abiPath))
         })
       })
     })

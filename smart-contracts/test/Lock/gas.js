@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 
 const { deployLock, ADDRESS_ZERO } = require('../helpers')

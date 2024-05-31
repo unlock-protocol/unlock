@@ -2,7 +2,7 @@ const { deployLock, purchaseKey, compareBigNumbers } = require('../helpers')
 const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { ethers } = require('hardhat')
-const { assert } = require('chai')
+const assert = require('assert')
 const {
   emitHookUpdatedEvent,
   canNotSetNonContractAddress,

@@ -3,7 +3,7 @@ const {
   GovernorUnlockProtocolTimelock,
 } = require('@unlock-protocol/contracts')
 const { ethers } = require('hardhat')
-const { assert } = require('chai')
+const assert = require('assert')
 const {
   encodeProposalArgs,
   decodeProposalArgs,

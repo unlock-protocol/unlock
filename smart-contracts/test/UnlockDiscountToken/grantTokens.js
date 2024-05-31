@@ -1,7 +1,7 @@
 // TODO: cleanup this test
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers, network } = require('hardhat')
 const {
   deployContracts,

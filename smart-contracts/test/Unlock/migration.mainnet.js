@@ -15,7 +15,7 @@
  * RUN_FORK=1 yarn hardhat test test/Unlock/migration.mainnet.js --network localhost
  */
 const { ethers } = require('hardhat')
-const { expect } = require('chai')
+const assert = require('assert')
 
 const {
   getNetwork,
@@ -118,38 +118,40 @@ describe(`Unlock migration`, function () {
 
   describe('Unlock (old) settings', () => {
     it('correct v13 template', async () => {
-      expect(await unlock.publicLockAddress()).to.equals(
+      assert.equal(
+        await unlock.publicLockAddress(),
         await publicLock.getAddress()
       )
-      expect(await unlock.publicLockLatestVersion()).to.equals(13)
+      assert.equal(await unlock.publicLockLatestVersion(), 13)
     })
   })
 
   describe('Lock before upgrade', () => {
     it('show previous unlock address', async () => {
-      expect(await lock.unlockProtocol()).to.equals(await unlock.getAddress())
+      assert.equal(await lock.unlockProtocol(), await unlock.getAddress())
     })
   })
 
   describe('Lock upgrade', () => {
     before(async () => {
-      expect(await lock.publicLockVersion()).to.equals(12)
+      assert.equal(await lock.publicLockVersion(), 12)
       // upgrade the lock
       await unlock.upgradeLock(await lock.getAddress(), 13)
     })
     it('upgrade version correctly', async () => {
-      expect(await lock.publicLockVersion()).to.equals(13)
+      assert.equal(await lock.publicLockVersion(), 13)
     })
     it('show new unlock address', async () => {
-      expect(await lock.unlockProtocol()).to.equals(
+      assert.equal(
+        await lock.unlockProtocol(),
         await unlockModified.getAddress()
       )
     })
     it('new unlock has lock info', async () => {
       const lockBalance = await unlockModified.locks(await lock.getAddress())
-      expect(lockBalance.deployed).to.equals(true)
-      expect(lockBalance.totalSales).to.equals(await lock.keyPrice())
-      expect(lockBalance.yieldedDiscountTokens).to.equals(0)
+      assert.equal(lockBalance.deployed, true)
+      assert.equal(lockBalance.totalSales, await lock.keyPrice())
+      assert.equal(lockBalance.yieldedDiscountTokens, 0)
     })
   })
 

@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { isBigNumber } = require('./bigNumber')
 const { getEvent, getEvents } = require('@unlock-protocol/hardhat-helpers')
 

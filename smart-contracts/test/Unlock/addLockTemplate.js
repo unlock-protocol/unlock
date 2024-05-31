@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
 const { reverts, ADDRESS_ZERO } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
@@ -42,18 +42,20 @@ describe('PublicLock template versions', () => {
   it('Should store version number properly', async () => {
     const tx1 = await unlock.addLockTemplate(await publicLock.getAddress(), 1)
     await tx1.wait()
-    expect(
-      await unlock.publicLockVersions(await publicLock.getAddress())
-    ).to.equals(1n)
+    assert.equal(
+      await unlock.publicLockVersions(await publicLock.getAddress()),
+      1n
+    )
 
     const tx2 = await unlock.addLockTemplate(
       await publicLockUpgraded.getAddress(),
       2
     )
     await tx2.wait()
-    expect(
-      await unlock.publicLockVersions(await publicLockUpgraded.getAddress())
-    ).to.equals(2n)
+    assert.equal(
+      await unlock.publicLockVersions(await publicLockUpgraded.getAddress()),
+      2n
+    )
   })
 
   it('should revert if the template was already initialized', async () => {
@@ -80,12 +82,11 @@ describe('PublicLock template versions', () => {
   it('Should store publicLockImpls properly', async () => {
     const tx1 = await unlock.addLockTemplate(await publicLock.getAddress(), 1)
     await tx1.wait()
-    expect(await unlock.publicLockImpls(1)).to.equals(
-      await publicLock.getAddress()
+    assert.equal(await unlock.publicLockImpls(1), await publicLock.getAddress())
+    assert.equal(
+      await unlock.publicLockVersions(await publicLock.getAddress()),
+      1n
     )
-    expect(
-      await unlock.publicLockVersions(await publicLock.getAddress())
-    ).to.equals(1n)
 
     // make sure everything is stored properly
     const tx2 = await unlock.addLockTemplate(
@@ -93,12 +94,14 @@ describe('PublicLock template versions', () => {
       2
     )
     await tx2.wait()
-    expect(await unlock.publicLockImpls(2)).to.equals(
+    assert.equal(
+      await unlock.publicLockImpls(2),
       await publicLockUpgraded.getAddress()
     )
-    expect(
-      await unlock.publicLockVersions(await publicLockUpgraded.getAddress())
-    ).to.equals(2n)
+    assert.equal(
+      await unlock.publicLockVersions(await publicLockUpgraded.getAddress()),
+      2n
+    )
   })
 
   it('should fire an event when template is added', async () => {
@@ -106,12 +109,11 @@ describe('PublicLock template versions', () => {
     const receipt = await tx.wait()
     const evt = await getEvent(receipt, 'UnlockTemplateAdded')
     const { impl } = evt.args
-    expect(impl).to.equals(await publicLock.getAddress())
-    expect(await unlock.publicLockImpls(3)).to.equals(
-      await publicLock.getAddress()
+    assert.equal(impl, await publicLock.getAddress())
+    assert.equal(await unlock.publicLockImpls(3), await publicLock.getAddress())
+    assert.equal(
+      await unlock.publicLockVersions(await publicLock.getAddress()),
+      3n
     )
-    expect(
-      await unlock.publicLockVersions(await publicLock.getAddress())
-    ).to.equals(3n)
   })
 })

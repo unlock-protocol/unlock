@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 
 const reverts = async (call, msg) => {
   let hasReverted = false
@@ -11,7 +11,10 @@ const reverts = async (call, msg) => {
       ''
     )
     if (msg) {
-      assert.include(actualError, msg, `Wrong Error received: ${error.message}`)
+      assert(
+        actualError.includes(msg),
+        `Wrong Error received: ${error.message}`
+      )
     }
   }
   if (!hasReverted) {

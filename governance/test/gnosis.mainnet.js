@@ -11,7 +11,7 @@ const {
 
 const { submitTx, getSafeAddress, getOwners } = require('../scripts/multisig')
 
-const { assert } = require('chai')
+const assert = require('assert')
 const { unlockAddress, multisig } = networks[1]
 
 const getSafe = async ({ safeAddress, signer }) => {

@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { expect } = require('chai')
+const assert = require('assert')
 const {
   deployLock,
   getUnlockAddress,
@@ -140,14 +140,14 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
   })
 
   it('should be owned by the right address when deployed', async () => {
-    expect(await cardPurchaser.owner()).to.equal(await signer.getAddress())
+    assert.equal(await cardPurchaser.owner(), await signer.getAddress())
   })
 
   it('should have the right values', async () => {
-    expect(await cardPurchaser.unlockAddress()).to.equal(unlockAddress)
-    expect(await cardPurchaser.usdc()).to.equal(USDC)
-    expect(await cardPurchaser.name()).to.equal('Card Purchaser')
-    expect(await cardPurchaser.version()).to.equal('1')
+    assert.equal(await cardPurchaser.unlockAddress(), unlockAddress)
+    assert.equal(await cardPurchaser.usdc(), USDC)
+    assert.equal(await cardPurchaser.name(), 'Card Purchaser')
+    assert.equal(await cardPurchaser.version(), '1')
   })
 
   it('should fail if called for a non existing lock', async () => {
@@ -366,7 +366,7 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     const balanceBefore = await usdcContract.balanceOf(
       await cardPurchaser.getAddress()
     )
-    expect(await lock.balanceOf(await signer.getAddress())).to.equal(0)
+    assert.equal(await lock.balanceOf(await signer.getAddress()), 0)
     await (
       await cardPurchaser.purchase(
         transfer.message,
@@ -376,11 +376,12 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         await purchaseCallData(lock, await signer.getAddress())
       )
     ).wait()
-    expect(await lock.balanceOf(await signer.getAddress())).to.equal(1)
+    assert.equal(await lock.balanceOf(await signer.getAddress()), 1)
 
-    expect(
-      await usdcContract.balanceOf(await cardPurchaser.getAddress())
-    ).to.equal(balanceBefore + ethers.parseUnits('1', 6))
+    assert.equal(
+      await usdcContract.balanceOf(await cardPurchaser.getAddress()),
+      balanceBefore + ethers.parseUnits('1', 6)
+    )
   })
 
   it('should reset the approval to 0', async () => {
@@ -407,11 +408,12 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
         await purchaseCallData(lock, await signer.getAddress())
       )
     ).wait()
-    expect(
+    assert.equal(
       await usdcContract.allowance(
         await cardPurchaser.getAddress(),
         await lock.getAddress()
-      )
-    ).to.equal(0)
+      ),
+      0
+    )
   })
 })

@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const path = require('path')
 const fs = require('fs-extra')
 const { ethers, upgrades, network, run } = require('hardhat')

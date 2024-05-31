@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
-
-const { expect } = require('chai')
+const assert = require('assert')
 const USDCabi = require('@unlock-protocol/hardhat-helpers/dist/ABIs/USDC.json')
 const { mainnet } = require('@unlock-protocol/networks')
 const { purchaseKeys, deployLock } = require('../helpers')
@@ -56,11 +55,11 @@ describe('Unlock GNP conversion', () => {
   })
 
   it('weth is set correctly already', async () => {
-    expect(await unlock.weth()).to.equals(WETH)
+    assert.equal(await unlock.weth(), WETH)
   })
 
   it('sets oracle address correctly', async () => {
-    expect(await unlock.uniswapOracles[USDC]).to.equals(oracle.adress)
+    assert.equal(await unlock.uniswapOracles[USDC], oracle.adress)
   })
 
   describe('USDC conversion in GNP', () => {
@@ -68,7 +67,7 @@ describe('Unlock GNP conversion', () => {
     before(async () => {
       // reset GNP to zero
       await unlock.resetTrackedValue(0, 0)
-      expect(await unlock.grossNetworkProduct()).to.equals(0)
+      assert.equal(await unlock.grossNetworkProduct(), 0)
 
       // create a USDC lock
       lock = await deployLock({
@@ -79,8 +78,8 @@ describe('Unlock GNP conversion', () => {
     })
     it('pricing is set correctly', async () => {
       // make sure price is correct
-      expect(await lock.tokenAddress()).to.equals(USDC)
-      expect(await lock.keyPrice()).to.equals(keyPriceUSDC)
+      assert.equal(await lock.tokenAddress(), USDC)
+      assert.equal(await lock.keyPrice(), keyPriceUSDC)
     })
     it('updates GNP correctly a value correctly ', async () => {
       const NUMBER_OF_KEYS = 5
@@ -109,9 +108,9 @@ describe('Unlock GNP conversion', () => {
 
       // check GNP
       const GNP = await unlock.grossNetworkProduct()
-      expect(GNP).to.not.equals('0')
+      assert.notEqual(GNP, '0')
       // 5 keys at 50 USDC at oracle rate
-      expect(GNP / 1000).to.equals((rate * 250) / 1000)
+      assert.equal(GNP / 1000, (rate * 250) / 1000)
 
       // show value in ETH to approx
       console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)
