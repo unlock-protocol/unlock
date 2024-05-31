@@ -101,7 +101,6 @@ export const setupLock = async ({
       lockCreationHash = hash
     }
   )
-  console.log({ lockAddress })
   lock = await web3Service.getLock(lockAddress, chainId)
 
   // test will fail with default to 1 key per address
