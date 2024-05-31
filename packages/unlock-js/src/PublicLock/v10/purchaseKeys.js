@@ -91,7 +91,7 @@ export default async function (options, transactionOptions = {}, callback) {
       }
 
       const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
+        ? unlockSwapPurchaserContract?.swapAndCall.estimateGas(
             lockAddress,
             swap.srcTokenAddress || ZERO,
             totalPrice,
@@ -101,7 +101,7 @@ export default async function (options, transactionOptions = {}, callback) {
             callData,
             transactionOptions
           )
-        : lockContract.estimateGas.purchase(
+        : lockContract.purchase.estimateGas(
             keyPrices,
             owners,
             referrers,
@@ -111,7 +111,7 @@ export default async function (options, transactionOptions = {}, callback) {
           )
 
       const gasLimit = await gasLimitPromise
-      transactionOptions.gasLimit = (gasLimit * 13) / 10
+      transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

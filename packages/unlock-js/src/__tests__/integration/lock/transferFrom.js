@@ -62,7 +62,7 @@ export default ({ publicLockVersion }) => {
         const newWallet = ethers.Wallet.createRandom()
         newOwner = newWallet.address
 
-        await walletService.connect(wallet).transferFrom({
+        await walletService.transferFrom({
           keyOwner,
           to: newOwner,
           lockAddress,

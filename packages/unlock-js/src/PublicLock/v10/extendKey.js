@@ -128,7 +128,7 @@ export default async function (
       }
 
       const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
+        ? unlockSwapPurchaserContract?.swapAndCall?.estimateGas(
             lockAddress,
             swap.srcTokenAddress || ZERO,
             actualAmount,
@@ -138,7 +138,7 @@ export default async function (
             callData,
             transactionOptions
           )
-        : lockContract.estimateGas.extend(
+        : lockContract.extend.estimateGas(
             actualAmount,
             tokenId,
             referrer,
