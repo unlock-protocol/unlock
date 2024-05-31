@@ -123,7 +123,7 @@ export default class UnlockService {
   async _getPublicLockVersionFromContract(
     address: string,
     provider: ethers.Provider
-  ) {
+  ): Promise<number> {
     const contract = new ethers.Contract(
       address,
       ['function publicLockVersion() view returns (uint8)'],
@@ -149,7 +149,7 @@ export default class UnlockService {
   async _getUnlockVersionFromContract(
     address: string,
     provider: ethers.Provider
-  ) {
+  ): Promise<number> {
     const contract = new ethers.Contract(
       address,
       ['function unlockVersion() view returns (uint8)'],
@@ -176,20 +176,24 @@ export default class UnlockService {
 
   getContract(
     address: string,
-    contract: ethers.Contract,
+    contractAbi: ethers.InterfaceAbi,
     provider: ethers.Provider
   ) {
-    return new ethers.Contract(address, contract.interface, provider)
+    return new ethers.Contract(
+      address,
+      new ethers.Interface(contractAbi),
+      provider
+    )
   }
 
   async getLockContract(lockAddress: string, provider: ethers.Provider) {
     const version = await this.lockContractAbiVersion(lockAddress, provider)
-    return this.getContract(lockAddress, version.PublicLock, provider)
+    return this.getContract(lockAddress, version.PublicLock.abi, provider)
   }
 
   async getUnlockContract(unlockAddress: string, provider: ethers.Provider) {
     const version = await this.unlockContractAbiVersion(unlockAddress, provider)
-    return this.getContract(unlockAddress, version.Unlock, provider)
+    return this.getContract(unlockAddress, version.Unlock.abi, provider)
   }
 
   async getHookContract({

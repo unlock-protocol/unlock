@@ -16,7 +16,7 @@ export default async (version, transactionOptions = {}, callback) => {
   const factory = await ethers.getContractFactory(abi, bytecode, signer)
   const contract = await factory.deploy()
   if (callback) {
-    callback(null, contract.deployTransaction.hash)
+    callback(null, contract.deploymentTransaction().hash)
   }
   return await contract.getAddress()
 }

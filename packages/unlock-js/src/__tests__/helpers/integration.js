@@ -19,6 +19,10 @@ export const setupTest = async (unlockVersion) => {
   const [signer] = await hre.ethers.getSigners()
   const ethersProvider = signer.provider
 
+  // mock functions that are not implemented in hardhat
+  signer.provider.waitForTransaction = async (hash) =>
+    await signer.provider.getTransactionReceipt(hash)
+
   // pass hardhat ethers provider
   const networks = {
     [chainId]: {
@@ -77,7 +81,7 @@ export const setupLock = async ({
   }
   // parse erc20
   const { isERC20 } = lockParams
-  lockParams.currencyContractAddress = isERC20 ? ERC20.address : null
+  lockParams.currencyContractAddress = isERC20 ? await ERC20.getAddress() : null
 
   // unique Lock name to avoid conflicting addresses
   lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
@@ -97,7 +101,7 @@ export const setupLock = async ({
       lockCreationHash = hash
     }
   )
-
+  console.log({ lockAddress })
   lock = await web3Service.getLock(lockAddress, chainId)
 
   // test will fail with default to 1 key per address
