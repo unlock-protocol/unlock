@@ -10,6 +10,14 @@ import { MemoryCache } from 'memory-cache-node'
 const cacheDuration = 60 * 15
 const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
 
+export const enum UserAccountType {
+  UnlockAccount = 'UNLOCK_ACCOUNT',
+  GoogleAccount = 'GOOGLE_ACCOUNT',
+  PasskeyAccount = 'PASSKEY_ACCOUNT',
+  EmailCodeAccount = 'EMAIL_CODE',
+  None = 'NONE',
+}
+
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
     const { user } = req.body.message
@@ -282,12 +290,12 @@ export const eject = async (req: Request, res: Response) => {
 
 export const exist = async (request: Request, response: Response) => {
   const { emailAddress } = request.params
-  const user = await UserOperations.findByEmail(emailAddress)
+  const userAccountType = await UserOperations.findTypeByEmail(emailAddress)
 
-  if (!user) {
+  if (!userAccountType) {
     return response.sendStatus(404)
   }
-  return response.sendStatus(200)
+  return response.status(200).json({ userAccountType })
 }
 
 const UserController = {

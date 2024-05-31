@@ -3,13 +3,10 @@ import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
-import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
-import { useStorageService } from '~/utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface UserDetails {
   email: string
@@ -29,7 +26,7 @@ export interface SignInProps {
   useIcon?: boolean
 }
 
-const SignIn = ({
+const SignInUnlockAccount = ({
   email,
   onReturn,
   signIn,
@@ -209,8 +206,9 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
-  defaultEmail?: string
+  defaultEmail: string
   onExit(): void
+  accountType: UserAccountType
   onSignIn?(): void
   useIcon?: boolean
 }
@@ -218,19 +216,13 @@ export interface Props {
 export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
+  accountType,
   useIcon = true,
-  defaultEmail = '',
+  defaultEmail,
 }: Props) => {
-  const [isValidEmail, setIsValidEmail] = useState(false)
-
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, deAuthenticate } = useAuth()
-  // TODO: Consider adding a way to set the email address to Auth context
-  const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
-  const { signOut } = useSIWE()
-  const storageService = useStorageService()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -251,64 +243,27 @@ export const ConnectUnlockAccount = ({
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onEmail = useCallback(
-    async ({ email }: { email: string }) => {
-      try {
-        const existingUser = await storageService.userExist(email)
-        setIsValidEmail(existingUser)
-      } catch (error) {
-        if (error instanceof Error) {
-          ToastHelper.error(`Email Error: ${error.message}`)
-        }
-      }
-    },
-    [storageService]
-  )
-
-  useEffect(() => {
-    onEmail({ email: defaultEmail })
-  }, [defaultEmail, onEmail])
-
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {authEmail ? (
-        <SignIn
-          email={authEmail}
+      {accountType === UserAccountType.UnlockAccount ? (
+        <SignInUnlockAccount
+          email={defaultEmail}
           signIn={signIn}
           onSignIn={onSignIn}
           useIcon={useIcon}
           onReturn={() => {
-            signOut()
-            deAuthenticate()
-            setAuthEmail('')
+            onExit()
           }}
         />
       ) : (
-        <>
-          {isValidEmail && (
-            <SignIn
-              email={defaultEmail}
-              signIn={signIn}
-              onSignIn={onSignIn}
-              useIcon={useIcon}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-          {!isValidEmail && (
-            <SignUp
-              email={defaultEmail}
-              signUp={signUp}
-              onSignIn={onSignIn}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-        </>
+        <SignUp
+          email={defaultEmail}
+          signUp={signUp}
+          onSignIn={onSignIn}
+          onReturn={() => {
+            onExit()
+          }}
+        />
       )}
     </div>
   )

@@ -10,12 +10,14 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 
 interface ConnectWalletProps {
+  isVerifyingEmail: boolean
   onUnlockAccount: (email?: string) => void
   // Optional, but required for Checkout
   injectedProvider?: unknown
 }
 
 interface ConnectViaEmailProps {
+  isVerifyingEmail: boolean
   onUnlockAccount: (email?: string) => void
 }
 
@@ -23,7 +25,10 @@ interface UserDetails {
   email: string
 }
 
-export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
+export const ConnectViaEmail = ({
+  isVerifyingEmail,
+  onUnlockAccount,
+}: ConnectViaEmailProps) => {
   const {
     register,
     handleSubmit,
@@ -34,7 +39,7 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
     try {
-      onUnlockAccount(data.email)
+      await onUnlockAccount(data.email)
     } catch (error) {
       if (error instanceof Error) {
         if (error instanceof Error) {
@@ -67,7 +72,11 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
             },
           })}
         />
-        <Button type="submit" loading={isSubmitting} className="p-2.5">
+        <Button
+          type="submit"
+          loading={isSubmitting || isVerifyingEmail}
+          className="p-2.5"
+        >
           Continue with Email
         </Button>
       </form>
@@ -76,6 +85,7 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
 }
 
 export const ConnectWallet = ({
+  isVerifyingEmail,
   onUnlockAccount,
   injectedProvider,
 }: ConnectWalletProps) => {
@@ -130,7 +140,10 @@ export const ConnectWallet = ({
           If you previously created an unlock account or do not have a wallet,
           use this option.
         </div>
-        <ConnectViaEmail onUnlockAccount={onUnlockAccount} />
+        <ConnectViaEmail
+          isVerifyingEmail={isVerifyingEmail}
+          onUnlockAccount={onUnlockAccount}
+        />
       </div>
     </div>
   )

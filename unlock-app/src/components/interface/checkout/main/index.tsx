@@ -9,7 +9,6 @@ import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
 import { useMachine } from '@xstate/react'
-import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
@@ -172,9 +171,6 @@ export function Checkout({
             communication={communication}
           />
         )
-      }
-      case 'UNLOCK_ACCOUNT': {
-        return <UnlockAccountSignIn checkoutService={checkoutService} />
       }
       case 'CAPTCHA': {
         return <Captcha checkoutService={checkoutService} />

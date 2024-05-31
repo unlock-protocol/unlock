@@ -4,6 +4,7 @@ import {
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
+import { UserAccountType } from '~/utils/userAccountType'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -250,16 +251,18 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async userExist(emailAddress: string) {
+  async getUserAccountType(emailAddress: string): Promise<UserAccountType> {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
 
       const response = await fetch(endpoint, {
         method: 'GET',
       })
-      return response.status === 200
+
+      const data = await response.json()
+      return data.userAccountType
     } catch (error) {
-      return false
+      return UserAccountType.None
     }
   }
 }
