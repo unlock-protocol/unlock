@@ -19,6 +19,9 @@ export const authOptions = {
 
       return session
     },
+    async redirect({ url, baseUrl }) {
+      return url.startsWith(baseUrl) ? url : baseUrl
+    },
   },
 }
 

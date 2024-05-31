@@ -150,8 +150,10 @@ export const SIWEProvider = ({ children }: Props) => {
   }
 
   const signIn = async () => {
+    console.log('Signing in with SIWE')
     setStatus('loading')
     try {
+      console.log('Signing in with SIWE', connected)
       if (!connected) {
         throw new Error('No wallet connected.')
       }

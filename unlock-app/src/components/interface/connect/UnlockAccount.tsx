@@ -7,6 +7,8 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
+import { signIn, signOut } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 interface UserDetails {
   email: string
@@ -111,95 +113,29 @@ const SignInUnlockAccount = ({
 }
 
 export interface SignUpProps {
-  email: string
   onReturn(): void
-  signUp: (details: UserDetails) => Promise<unknown> | unknown
-  onSignIn?(): void
 }
 
-const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
-  const {
-    register,
-    getValues,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<SignUpForm>()
+const SignUp = ({}: SignUpProps) => {
+  const router = useRouter()
+  const restoredState = JSON.parse(
+    decodeURIComponent((router.query.state as string) || '{}')
+  )
+  console.log(restoredState)
 
-  const onSubmit = async ({ password }: SignUpForm) => {
-    try {
-      await signUp({ email, password })
-      if (onSignIn) {
-        onSignIn()
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(
-          'confirmPassword',
-          {
-            type: 'value',
-            message: error.message,
-          },
-          {
-            shouldFocus: true,
-          }
-        )
-      }
-    }
-  }
+  const state = JSON.stringify({
+    Login: 'Google',
+  })
+  const callbackUrl = `${window.location.origin}/?state=${encodeURIComponent(state)}`
+
+  // ...
   return (
     <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Password"
-          type="password"
-          placeholder="Password"
-          {...register('password', {
-            required: {
-              value: true,
-              message: 'Password is required',
-            },
-            minLength: {
-              value: 8,
-              message: 'Password must be at least 8 characters',
-            },
-          })}
-          error={errors.password?.message}
-        />
-        <Input
-          label="Confirm Password"
-          type="password"
-          placeholder="Re-type your password"
-          {...register('confirmPassword', {
-            required: {
-              value: true,
-              message: 'Password confirmation is required',
-            },
-            validate: (value) => {
-              if (value !== getValues('password')) {
-                return 'Passwords do not match'
-              }
-              return true
-            },
-          })}
-          error={errors.confirmPassword?.message}
-        />
-        <Button type="submit" loading={isSubmitting} className="p-2.5">
-          <div className="flex justify-center items-center gap-2">
-            Create an account
-          </div>
-        </Button>
-      </form>
-      <div className="flex items-center justify-end px-6">
-        <button
-          onClick={(event) => {
-            event.preventDefault()
-            onReturn()
-          }}
-          className="hover:text-ui-main-600 underline"
-        >
-          Back
+      <div className="grid gap-4 px-6">
+        <button onClick={() => signIn('google', { callbackUrl: callbackUrl })}>
+          Sign In with Google
         </button>
+        <button onClick={() => signOut()}>Sign out</button>
       </div>
     </div>
   )
@@ -257,9 +193,6 @@ export const ConnectUnlockAccount = ({
         />
       ) : (
         <SignUp
-          email={defaultEmail}
-          signUp={signUp}
-          onSignIn={onSignIn}
           onReturn={() => {
             onExit()
           }}
