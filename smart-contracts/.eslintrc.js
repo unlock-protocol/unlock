@@ -14,24 +14,13 @@ const rulesToIgnore = [
   'no-return-await',
   'prefer-object-spread',
   '@typescript-eslint/no-var-requires',
+  'import/extensions',
 ]
 
 module.exports = {
   extends: ['@unlock-protocol/eslint-config'],
-  globals: {
-    it: true,
-    describe: true,
-    before: true,
-    beforeEach: true,
-    abi: true,
-    after: true,
-    afterEach: true,
-  },
   ignorePatterns: ['coverage'],
   rules: {
-    'import/extensions': 0,
-    'no-unused-vars': 'error',
-    'mocha/no-exclusive-tests': 'error',
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }
     }, {}),
