@@ -195,9 +195,7 @@ export default async function (
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event && event.name === 'Transfer'
-    })[0]
+    .find(({ fragment }) => fragment && fragment.name === 'Transfer')
 
   if (transferEvent) {
     return transferEvent.args.tokenId.toString()

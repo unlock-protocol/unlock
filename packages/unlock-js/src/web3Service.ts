@@ -1098,23 +1098,22 @@ export default class Web3Service extends UnlockService {
     const provider = this.providerForNetwork(network)
     const lockContract = await this.getLockContract(lockAddress, provider)
     const txReceipt = await provider.getTransactionReceipt(hash)
-    const parser = lockContract.interface
     const events = txReceipt?.logs.map((log) => {
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Filter events not emitted by the lock contract
-      return parser.parseLog(log)
+      return lockContract.interface.parseLog(log)
     })
 
-    const purchaseItems = events?.filter((event) => {
-      return event && event.name === 'Transfer'
-    })
+    const purchaseItems = events?.filter(
+      (event) => event?.fragment && event?.fragment.name === 'Transfer'
+    )
 
     if (purchaseItems?.length) {
       return purchaseItems.map((item) => item?.args?.tokenId?.toString())
     }
 
-    const extendItems = events?.filter((event) => {
-      return event && event.name === 'KeyExtended'
-    })
+    const extendItems = events?.filter(
+      (event) => event?.fragment && event?.fragment.name === 'KeyExtended'
+    )
 
     if (extendItems?.length) {
       return extendItems.map((item) => item?.args?.tokenId?.toString())
