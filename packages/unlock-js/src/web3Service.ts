@@ -274,7 +274,7 @@ export default class Web3Service extends UnlockService {
         // this portion is probably unnecessary, will need to test against the app to be sure
         return 0
       }
-      if (expiration.eq(ETHERS_MAX_UINT)) {
+      if (expiration === ETHERS_MAX_UINT) {
         return -1
       }
       return parseInt(expiration, 10)
@@ -614,7 +614,7 @@ export default class Web3Service extends UnlockService {
       maxNumberOfKeysPromise,
     ])
 
-    return maxNumberOfKeys.sub(totalSupply)
+    return maxNumberOfKeys - totalSupply
   }
 
   /**
@@ -691,8 +691,8 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const totalKeys = await lockContract.totalKeys(owner)
-    if (totalKeys.gt(0)) {
-      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys.sub(1))
+    if (totalKeys > 0) {
+      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys - 1)
       return id.toNumber()
     }
     return null

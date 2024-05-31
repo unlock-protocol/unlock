@@ -18,11 +18,11 @@ const getGdpForNetwork = async (provider, network, blockTag) => {
       provider
     )
     let value = await contract.grossNetworkProduct({ blockTag })
-    return value.add(await getOldNetwork(previousDeploys))
+    return value + (await getOldNetwork(previousDeploys))
   }
   if (network.previousDeploys) {
     const oldNetworksGdp = await getOldNetwork(network.previousDeploys)
-    current = current.add(oldNetworksGdp)
+    current = current + oldNetworksGdp
   }
 
   return current

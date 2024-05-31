@@ -104,9 +104,8 @@ export default () =>
       }
 
       expect(new BigDecimal(newBalance).toString()).toEqual(
-        new BigDecimal(lockBalanceBefore)
-          .add(new BigDecimal(lock.keyPrice))
-          .toString()
+        new BigDecimal(lockBalanceBefore) +
+          new BigDecimal(lock.keyPrice).toString()
       )
     })
 

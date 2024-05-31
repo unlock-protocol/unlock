@@ -30,7 +30,7 @@ export default async function getPurchaseKeysArguments({
 
   // calculate total price for all keys
   const totalPrice = prices.reduce(
-    (total, kp) => total.add(kp),
+    (total, kp) => total + kp,
     utils.bigNumberify(0)
   )
 

@@ -111,7 +111,7 @@ export default async function (options, transactionOptions = {}, callback) {
           )
 
       const gasLimit = await gasLimitPromise
-      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      transactionOptions.gasLimit = (gasLimit * 13) / (10).toNumber()
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

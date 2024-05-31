@@ -11,7 +11,7 @@ export default async function (
     // Let's get the expiration from the duration (+/- given that the transaction can take time to be mined!)
     const duration = await lockContract.expirationDuration()
 
-    if (ETHERS_MAX_UINT.eq(duration)) {
+    if (ETHERS_MAX_UINT === duration) {
       // Add equal number of expirations to recipients length
       expirations = new Array(recipients.length).fill(ETHERS_MAX_UINT)
     } else {
