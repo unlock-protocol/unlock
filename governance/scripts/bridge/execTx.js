@@ -7,21 +7,13 @@
  *
  */
 
-const {
-  getDelayModule,
-  fetchDataFromTx,
-  logStatus,
-} = require('../../helpers/bridge')
+const { getDelayModule, logStatus, DelayMod } = require('../../helpers/bridge')
+const { fetchDataFromTx } = require('../../helpers/tx')
 const fs = require('fs-extra')
-const { resolve } = require('path')
-const { ethers } = require('hardhat')
-
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
-const { loadProposal } = require('../../helpers/gov')
-
 // use cache file to gather tx hashes from calls
-const filepath = './xcalled.json.tmp'
+const filepath = './xcalled.tmp.json'
 
 const bigIntToDate = (num) => new Date(parseInt((num * 1000n).toString()))
 
@@ -39,20 +31,7 @@ const getTxStatus = async (delayMod, nonce) => {
   }
 }
 
-const explain = (explainers, args) => {
-  const exp = explainers.find(
-    ({ contractAddress, calldata }) =>
-      contractAddress === args[0] && calldata === args[2]
-  )
-  return `to: \`${exp.contractAddress}\` 
-func: \`${exp.explainer}\``
-}
-
-async function main({
-  delayModuleAddress,
-  bridgeTxHash,
-  execute = false,
-} = {}) {
+async function main({ delayModuleAddress, bridgeTxHash, execute = true } = {}) {
   const { delayMod, currentNonce } = await getDelayModule(delayModuleAddress)
   if (typeof bridgeTxHash) {
     bridgeTxHash = [bridgeTxHash]
@@ -63,59 +42,7 @@ async function main({
   if (await fs.exists(filepath)) {
     // parse statuses from cache file
     const statuses = await fs.readJSON(filepath)
-    const {
-      id,
-      name,
-      governanceBridge: { domainId },
-    } = await getNetwork()
-
-    // get original proposal to organize calls in correct order
-    const proposalPath = resolve('./proposals/009-protocol-upgrade')
-    const { calls, explainers: allExplainers } = await loadProposal(
-      proposalPath
-    )
-    const explainers = allExplainers[id]
-
-    // unpack calls from proposal
-    const proposalCalls = calls.filter(
-      ({ calldata, functionArgs }) => !calldata && functionArgs[0] === domainId
-    )
-
-    // compute expected tx hashes from proposal data
-    const abiCoder = ethers.AbiCoder.defaultAbiCoder()
-    const computedFromProposal = await Promise.all(
-      proposalCalls
-        .map((call) =>
-          // decode args from proposal
-          abiCoder.decode(
-            ['address', 'uint256', 'bytes', 'bool'],
-            call.functionArgs[6]
-          )
-        )
-        .map(async (a) => {
-          // compute expected hash from proposal args
-          let args = a.toArray()
-          // parse bool as uint
-          args[3] = args[3] ? 1n : 0n
-          const hash = await delayMod.getTransactionHash(...args)
-          return { hash, args }
-        })
-    )
-
-    console.log(
-      `${
-        proposalCalls.length
-      } bridge calls sent to ${name} in the original proposal
-${computedFromProposal
-  .map(
-    ({ hash, args }, i) =>
-      `[${i}]: 
-expected hash: \`${hash}\`
-${explain(explainers, args)}\n`
-  )
-  .join('\n')}`
-    )
-    console.log(`\n-------\n`)
+    const { id, name } = await getNetwork()
 
     // pick bridged calls statuses only for the current chain
     const transfers = Object.keys(statuses)
@@ -128,18 +55,16 @@ ${explain(explainers, args)}\n`
 
     const dataFromChain = await Promise.all(
       transfers.map(({ dest: { executedTransactionHash } }) =>
-        fetchDataFromTx({ txHash: executedTransactionHash })
+        fetchDataFromTx({ txHash: executedTransactionHash, abi: DelayMod })
       )
     )
     console.log(`${transfers.length} txs bridged to ${name} (${id}) \n`)
     transfers.map(({ transferId, ...status }, i) => {
       console.log(`#### [Connext bridged call ${i}]`)
-
       logStatus(transferId, status)
-      const [nonce, hash, ...args] = dataFromChain[i]
+      const [nonce, hash] = dataFromChain[i]
       console.log(`Containing a \`TransactionAdded\` call to multisig (nonce: ${nonce}) 
-hash: \`${hash}\`
-${explain(explainers, args)}\n`)
+hash: \`${hash}\`\n`)
     })
     console.log(`\n-------\n`)
 
@@ -163,7 +88,13 @@ ${explain(explainers, args)}\n`)
 
     // execute all
     if (execute) {
-      // await delayMod.executeNextTx(...execArgs)
+      const txs = await Promise.all(
+        dataFromChain.map(([, , to, value, data, operation]) =>
+          delayMod.executeNextTx(to, value, data, operation)
+        )
+      )
+      const receipts = await Promise.all(txs.map((tx) => tx.wait()))
+      console.log(`Executed. Tx(s) : ${receipts.map(({ hash }) => hash)}`)
     }
 
     // to cancel use `setTxNonce(queueNonce)` from the multisig

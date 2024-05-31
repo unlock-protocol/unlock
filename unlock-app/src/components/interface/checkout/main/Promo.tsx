@@ -116,18 +116,18 @@ export function PromoContent({
   const iconRight = isLoading
     ? LoadingIcon
     : hasDiscount
-    ? () => (
-        <Badge variant="green" size="tiny">
-          {promoCodeDetails.discount / 100}% Discount
-        </Badge>
-      )
-    : promoCodeDetails?.discount > 0
-    ? () => (
-        <Badge variant="dark" size="tiny">
-          Code expired
-        </Badge>
-      )
-    : undefined
+      ? () => (
+          <Badge variant="green" size="tiny">
+            {promoCodeDetails.discount / 100}% Discount
+          </Badge>
+        )
+      : promoCodeDetails?.discount > 0
+        ? () => (
+            <Badge variant="dark" size="tiny">
+              Code expired
+            </Badge>
+          )
+        : undefined
 
   let error = errors.promo?.message
   if (!error && code && promoCodeDetails?.discount === 0) {

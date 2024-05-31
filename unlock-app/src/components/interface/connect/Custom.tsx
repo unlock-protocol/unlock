@@ -43,18 +43,22 @@ export const ConnectButton = forwardRef<HTMLButtonElement, Props>(
         highlight={!!highlight}
       >
         <div className="flex justify-center gap-2">
-          {loading ? (
-            <SpinnerIcon
-              size={24}
-              className="animate-spin text-brand-ui-primary"
-            />
-          ) : (
-            icon
-          )}
-          <div className="flex flex-col justify-center items-center w-full">
+          <div>
+            {loading ? (
+              <SpinnerIcon
+                size={36}
+                className="animate-spin text-brand-ui-primary"
+              />
+            ) : (
+              icon
+            )}
+          </div>
+          <div className="flex flex-col justify-center items-left w-full">
             {children}
             {highlight && (
-              <div className="text-xs text-ui-main-400">Recently used</div>
+              <div className="text-xs text-ui-main-400 text-left">
+                Recently used
+              </div>
             )}
           </div>
         </div>

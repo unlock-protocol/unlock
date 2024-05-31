@@ -4,11 +4,11 @@
     "@cloudflare/workers-types": "4.20240423.0",
     "@types/node": "20.12.8",
     "@unlock-protocol/networks": "workspace:^",
-    "ethers": "5.7.2",
     "typescript": "5.4.5",
-    "vitest": "0.34.6"
+    "vitest": "1.6.0"
   },
   "dependencies": {
+    "ethers": "6.12.1",
     "toucan-js": "3.4.0",
     "wrangler": "3.53.0"
   },

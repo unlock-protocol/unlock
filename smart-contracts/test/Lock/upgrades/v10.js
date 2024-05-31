@@ -198,7 +198,7 @@ describe('PublicLock upgrade  v9 > v10', () => {
 
       it('preserves all keys data', async () => {
         const totalSupply = await lock.totalSupply()
-        for (let i = 0; i < totalSupply; i++) {
+        for (let i of Array(totalSupply).fill(0)) {
           const tokenId = i + 1
           assert.equal(await lock.isValidKey(tokenId), true)
           assert.equal(
@@ -230,9 +230,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const receipt = await tx.wait()
         const { events } = await getEvents(receipt, 'Transfer')
-        tokenIds = events.map(({ args }) => args.tokenId)
-
-        assert.equal(tokenIds.length, buyers.length)
+        const purchasedTokenIds = events.map(({ args }) => args.tokenId)
+        assert.equal(purchasedTokenIds.length, buyers.length)
       })
 
       it('grantKeys should now work ', async () => {
@@ -243,9 +242,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const receipt = await tx.wait()
         const { events } = await getEvents(receipt, 'Transfer')
-        tokenIds = events.map(({ args }) => args.tokenId)
-
-        assert.equal(tokenIds.length, buyers.length)
+        const grantedTokenIds = events.map(({ args }) => args.tokenId)
+        assert.equal(grantedTokenIds.length, buyers.length)
       })
 
       it('extend should now work ', async () => {

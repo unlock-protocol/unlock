@@ -35,7 +35,7 @@ In June 2023, the Governor contract was upgraded from `0x7757f7f21f5fa9b1fd16864
 
 ### Voting
 
-The Governor can execute any transaction as long as the transaction was approved by token holders. These transactions range from transfering some if its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
+The Governor can execute any transaction as long as the transaction was approved by token holders. These transactions range from transferring some if its own tokens as grants, to upgrading the core protocol, or even changing its own governance parameters.
 
 #### Making a proposal
 

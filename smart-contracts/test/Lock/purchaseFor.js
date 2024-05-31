@@ -221,9 +221,8 @@ describe('Lock / purchaseFor', () => {
       })
 
       it('should have the right expiration timestamp for the key', async () => {
-        const expirationTimestamp = await lock.keyExpirationTimestampFor(
-          tokenId
-        )
+        const expirationTimestamp =
+          await lock.keyExpirationTimestampFor(tokenId)
 
         const expirationDuration = await lock.expirationDuration()
 

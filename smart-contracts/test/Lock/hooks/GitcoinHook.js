@@ -82,7 +82,7 @@ describe('GitcoinHook', function () {
         [await aThird.getAddress()],
         ['0x']
       ),
-      'ECDSA: invalid signature length'
+      'ECDSAInvalidSignatureLength'
     )
   })
 
@@ -96,6 +96,7 @@ describe('GitcoinHook', function () {
     await hook.addSigner(await signer.getAddress())
     expect(await hook.signers(await signer.getAddress())).to.equal(true)
     expect(await hook.owner()).to.equal(await user.getAddress())
+    const previousOwner = await hook.owner()
 
     // Transfer ownership
     await hook.transferOwnership(await anotherUser.getAddress())
@@ -105,7 +106,7 @@ describe('GitcoinHook', function () {
     const anotherSigner = ethers.Wallet.createRandom()
     await reverts(
       hook.addSigner(await anotherSigner.getAddress()),
-      'Ownable: caller is not the owner'
+      `OwnableUnauthorizedAccount("${previousOwner}")`
     )
     expect(await hook.signers(await anotherSigner.getAddress())).to.equal(false)
 
