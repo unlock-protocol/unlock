@@ -5,6 +5,7 @@ import UserOperations from '../operations/userOperations'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
+import { issueUserToken } from '@coinbase/waas-server-auth'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -97,6 +98,26 @@ export const retrieveEncryptedPrivatekey = async (
       passwordEncryptedPrivateKey,
     })
   }
+}
+
+export const retrieveWaasUuid = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const apiKeyName = process.env.COINBASE_CLOUD_API_KEY_NAME
+  const privateKey = process.env.COINBASE_CLOUD_PRIVATE_KEY
+  console.log(apiKeyName, privateKey)
+  // User ID representing the authenticated user in your system (this must be a UUID).
+  // If the user ID in your system is not a UUID, you should either generate and
+  // store a UUID for each user or deterministically create a UUID using your
+  // current user ID.
+  const userID = 'bd8467db-4808-4179-9850-a2b27c65277c'
+
+  // `issueUserToken` issues an auth token for your authenticated user to interact
+  // with the WaaS backend scoped to their user ID.
+  const token = await issueUserToken({ apiKeyName, privateKey, userID })
+
+  res.json({ token })
 }
 
 export const retrieveRecoveryPhrase = async (
@@ -302,6 +323,7 @@ const UserController = {
   createUser,
   userCreationStatus,
   retrieveEncryptedPrivatekey,
+  retrieveWaasUuid,
   retrieveRecoveryPhrase,
   updateUser,
   updatePaymentDetails,

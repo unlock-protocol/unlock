@@ -29,6 +29,11 @@ export const getAccessToken = (
     return null
   }
   const ACCESS_TOKEN_KEY = getSessionKey(address)
+  console.log('ACCESS_TOKEN_KEY', ACCESS_TOKEN_KEY)
+  console.log(
+    'localStorage.getItem(ACCESS_TOKEN_KEY)',
+    localStorage.getItem(ACCESS_TOKEN_KEY)
+  )
   return localStorage.getItem(ACCESS_TOKEN_KEY)
 }
 
