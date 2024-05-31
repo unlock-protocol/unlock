@@ -96,7 +96,7 @@ export const bsc: NetworkConfig = {
 
   provider: 'https://rpc.unlock-protocol.com/56',
 
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://bsc-dataseed.binance.org/',
 
