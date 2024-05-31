@@ -11,6 +11,7 @@ import { addressMinify } from '~/utils/strings'
 import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import useEns from '~/hooks/useEns'
+import { ConnectModal } from '../connect/ConnectModal'
 
 interface DashboardLayoutProps {
   title?: ReactNode
@@ -218,6 +219,8 @@ export const AppLayout = ({
         </div>
       </Modal>
       <Container>
+        <ConnectModal />
+
         {showHeader && (
           <HeaderNav
             {...MENU}

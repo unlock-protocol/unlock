@@ -16,7 +16,7 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   const state = useSelector(service, (state) => state)
   const { account, isUnlockAccount, connected } = useAuth()
   const [signing, _] = useState(false)
-  const { signIn, isSignedIn } = useSIWE()
+  const { isSignedIn } = useSIWE()
 
   const web3Service = useWeb3Service()
 
@@ -42,21 +42,13 @@ export function Connected({ service }: ConnectedCheckoutProps) {
       const isConnectedWithWallet =
         isSignedIn && !signing && !isUnlockAccount && !useDelegatedProvider
 
-      if (isConnectedWithWallet) {
-        await signIn()
+      const isConectedWithOtherMethod = account && connected
 
-        service.send({
-          type: 'SELECT_LOCK',
-          existingMember: !!membership?.member,
-          expiredMember: isUnlockAccount ? false : !!membership?.expired,
-        })
-      } else if (isConnectedAsUnlockAccount) {
-        service.send({
-          type: 'SELECT_LOCK',
-          existingMember: !!membership?.member,
-          expiredMember: isUnlockAccount ? false : !!membership?.expired,
-        })
-      } else if (account && connected) {
+      if (
+        isConnectedWithWallet ||
+        isConnectedAsUnlockAccount ||
+        isConectedWithOtherMethod
+      ) {
         service.send({
           type: 'SELECT_LOCK',
           existingMember: !!membership?.member,

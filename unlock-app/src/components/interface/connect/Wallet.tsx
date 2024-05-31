@@ -68,7 +68,7 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
           })}
         />
         <Button type="submit" loading={isSubmitting} className="p-2.5">
-          Continue with Email
+          Continue with email
         </Button>
       </form>
     </div>
