@@ -150,7 +150,7 @@ export default async function (
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
-      transactionOptions.gasLimit = (gasLimit * 13) / (10).toNumber()
+      transactionOptions.gasLimit = (gasLimit * 13) / 10
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

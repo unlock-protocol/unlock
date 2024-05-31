@@ -1602,7 +1602,7 @@ const abis = {
         "function setOracle(address _tokenAddress,address _oracleAddress)",
         "function setProtocolFee(uint256 _protocolFee)",
         "function setSwapBurner(address _swapBurnerAddress)",
-        "function swapAndBurn(address token,uint256 amount,uint24 poolFee)",
+        "function swapAndBurn(address token,uint256 amount,uint24npoolFee)",
         "function swapBurnerAddress() view returns (address)",
         "function totalDiscountGranted() view returns (uint256)",
         "function transferOwnership(address newOwner)",

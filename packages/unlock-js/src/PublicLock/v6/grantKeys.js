@@ -16,7 +16,7 @@ export default async function (
       expirations = new Array(recipients.length).fill(ETHERS_MAX_UINT)
     } else {
       expirations = new Array(recipients.length).fill(
-        Math.floor(new Date().getTime() / 1000 + duration.toNumber())
+        BigInt(Math.floor(new Date().getTime() / 1000)) + duration
       )
     }
   }

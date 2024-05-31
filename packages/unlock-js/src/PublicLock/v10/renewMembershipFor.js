@@ -30,7 +30,7 @@ export default async function (
         referrer,
         transactionOptions
       )
-      transactionOptions.gasLimit = (gasLimit * 13) / (10).toNumber()
+      transactionOptions.gasLimit = (gasLimit * 13) / 10
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

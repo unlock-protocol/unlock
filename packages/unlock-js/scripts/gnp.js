@@ -31,12 +31,12 @@ const getGdpForNetwork = async (provider, network, blockTag) => {
 const getLastWeekBlockNumber = async (provider) => {
   const latestBlockNumber = await provider.getBlockNumber()
   const latestBlock = await provider.getBlock(latestBlockNumber)
-  const numberOfBlocks = 10000
+  const numberOfBlocks = 10000n
   const oldBlock = await provider.getBlock(latestBlockNumber - numberOfBlocks) //10,000 blocks ago!
   let timePerBlock =
     (latestBlock.timestamp - oldBlock.timestamp) / numberOfBlocks
 
-  const weekInSeconds = 60 * 60 * 24 * 7
+  const weekInSeconds = BigInt(60 * 60 * 24 * 7)
   return latestBlockNumber - parseInt(weekInSeconds / timePerBlock)
 }
 

@@ -570,7 +570,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
 
-    return count.toNumber()
+    return count
   }
 
   /**
@@ -661,7 +661,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const balance = await lockContract.balanceOf(owner)
-    return balance.toNumber()
+    return balance
   }
 
   // Return key ID of owner at the specified index.
@@ -677,7 +677,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const id = await lockContract.tokenOfOwnerByIndex(owner, index)
-    return id.toNumber()
+    return id
   }
 
   // Return the latest key ID of owner.
@@ -693,7 +693,7 @@ export default class Web3Service extends UnlockService {
     const totalKeys = await lockContract.totalKeys(owner)
     if (totalKeys > 0) {
       const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys - 1)
-      return id.toNumber()
+      return id
     }
     return null
   }
@@ -1045,7 +1045,7 @@ export default class Web3Service extends UnlockService {
         type: SwapType.UNIVERSAL_ROUTER,
         recipient,
         slippageTolerance: new Percent(15, 100),
-        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
+        deadline: Math.floor(new Date().getTime() / 1000 + 60n * 60), // 1 hour
       },
     ] as const
     // call router
