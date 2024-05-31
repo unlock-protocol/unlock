@@ -34,7 +34,6 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   )
 
   useEffect(() => {
-    console.log('Connected Checkout')
     // Skip Connect if already signed in
     const autoSignIn = async () => {
       const isConnectedAsUnlockAccount =
