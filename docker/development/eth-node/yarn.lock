@@ -1727,13 +1727,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:4.3.15":
-  version: 4.3.15
-  resolution: "@types/chai@npm:4.3.15"
-  checksum: 10/9466d6620bf958a380c3250a40f955d3d0f986c5f601e65d0bf340e5d848653c209e22259d1250fbbdbc9c030e0b3a5f485ab878caffd0fe6a4d2f5a37892f5e
-  languageName: node
-  linkType: hard
-
 "@types/estree@npm:1.0.5, @types/estree@npm:^1.0.0":
   version: 1.0.5
   resolution: "@types/estree@npm:1.0.5"
@@ -2089,7 +2082,6 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
-    chai: "npm:4.4.1"
     copyfiles: "npm:2.4.1"
     eslint: "npm:8.57.0"
     fs-extra: "npm:11.2.0"
@@ -2148,14 +2140,12 @@ __metadata:
     "@nomicfoundation/ignition-core": "npm:0.15.1"
     "@typechain/ethers-v6": "npm:0.5.0"
     "@typechain/hardhat": "npm:9.0.0"
-    "@types/chai": "npm:4.3.15"
     "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.12.8"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
-    chai: "npm:4.4.1"
     eslint: "npm:8.57.0"
     ethers: "npm:6.12.1"
     hardhat: "npm:2.22.3"
@@ -2966,7 +2956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:4.4.1, chai@npm:^4.3.10":
+"chai@npm:^4.3.10":
   version: 4.4.1
   resolution: "chai@npm:4.4.1"
   dependencies:
@@ -8822,8 +8812,8 @@ __metadata:
   linkType: hard
 
 "vite@npm:^5.0.0":
-  version: 5.2.11
-  resolution: "vite@npm:5.2.11"
+  version: 5.2.12
+  resolution: "vite@npm:5.2.12"
   dependencies:
     esbuild: "npm:^0.20.1"
     fsevents: "npm:~2.3.3"
@@ -8857,7 +8847,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10/ee0ad038f0831c9514796522deb1e2dcb84bc311abbccb77e4b12216d37fc9559137f4f1b8e75187d51007b954e845c6518e36ee3acac2e2a2789c1181ebb16c
+  checksum: 10/c27d3efff93016e8171b6a362f605ad5f78e24086292987097ad4a7382ae78d9e0659065976a13bf7b51ba0f593d675579010692097ef36d8a5cc965f3efec4c
   languageName: node
   linkType: hard
 
