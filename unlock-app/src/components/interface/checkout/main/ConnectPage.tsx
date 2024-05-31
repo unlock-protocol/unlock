@@ -3,7 +3,6 @@ import { ConnectedWallet } from '../../connect/ConnectedWallet'
 import { ConnectWallet } from '../../connect/Wallet'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
-import { useSIWE } from '~/hooks/useSIWE'
 
 interface ConnectPageProps {
   style: string
