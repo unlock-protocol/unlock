@@ -31,7 +31,7 @@
     "ethers5": "npm:ethers@5.7.2",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.3",
-    "zksync-ethers": "6.7.0"
+    "zksync-ethers": "6.7.1"
   },
   "scripts": {
     "test": "hardhat test",
