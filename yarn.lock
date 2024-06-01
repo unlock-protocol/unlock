@@ -20092,7 +20092,7 @@ __metadata:
     ethers: "npm:6.12.1"
     fs-extra: "npm:11.2.0"
     tsup: "npm:8.0.2"
-    tsx: "npm:4.8.2"
+    tsx: "npm:4.11.0"
     typescript: "npm:5.4.5"
   languageName: unknown
   linkType: soft
