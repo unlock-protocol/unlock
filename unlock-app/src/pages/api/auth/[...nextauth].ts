@@ -8,6 +8,8 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization:
+        'https://accounts.google.com/o/oauth2/auth?prompt=select_account',
     }),
   ],
   callbacks: {
