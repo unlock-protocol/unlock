@@ -12,7 +12,7 @@
     "@matterlabs/hardhat-zksync-verify": "1.4.2",
     "@nomicfoundation/hardhat-ethers": "3.0.5",
     "@nomicfoundation/hardhat-network-helpers": "1.0.10",
-    "@nomicfoundation/hardhat-verify": "2.0.6",
+    "@nomicfoundation/hardhat-verify": "2.0.7",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@openzeppelin/hardhat-upgrades": "3.1.0",
     "@openzeppelin/upgrades-core": "1.33.1",
