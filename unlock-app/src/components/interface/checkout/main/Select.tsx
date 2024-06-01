@@ -31,6 +31,9 @@ import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
+import ConnectingContent from '~/components/content/ConnectingContent'
+import { useSession } from 'next-auth/react'
+import { a } from 'vitest/dist/suite-IbNSsUWN'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -360,6 +363,9 @@ export function Select({ checkoutService }: Props) {
     isLoading,
   ])
 
+  console.log('Conected: ', connected)
+  console.log('Account: ', account)
+
   const selectLock = async (event: any) => {
     event.preventDefault()
 
@@ -386,6 +392,42 @@ export function Select({ checkoutService }: Props) {
       recipients: account ? [account] : [],
       hook: hookType,
     })
+  }
+
+  const { data: session } = useSession()
+
+  console.log('Session: ', session)
+  console.log('Connected', connected)
+  console.log('isSignedIn', isSignedIn)
+  console.log('Account', account)
+
+  if (session && (!connected || !isSignedIn || account === '')) {
+    return (
+      <Fragment>
+        <Stepper
+          service={checkoutService}
+          hookType={hookType}
+          existingMember={!!membership?.member}
+          isRenew={!!membership?.expired}
+        />
+        <ConnectingContent />
+        <footer className="grid items-center px-6 pt-6 border-t">
+          <div className="grid">
+            {isNotExpectedAddress && (
+              <p className="mb-2 text-sm text-center">
+                Switch to wallet address {minifyAddress(expectedAddress)} to
+                continue.
+              </p>
+            )}
+            <Button disabled={isDisabled} onClick={selectLock}>
+              {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
+            </Button>
+          </div>
+          <Disconnect service={checkoutService} />
+          <PoweredByUnlock />
+        </footer>
+      </Fragment>
+    )
   }
 
   return (

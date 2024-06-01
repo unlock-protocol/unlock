@@ -43,8 +43,10 @@ export const ConnectingContent = () => {
       console.log('Connecting to SIWE in useEffect')
       await siweSignIn()
 
-      console.log(restoredState.redirectUrl)
-      router.push(restoredState.redirectUrl)
+      if (restoredState.redirectUrl) {
+        console.log(restoredState.redirectUrl)
+        router.push(restoredState.redirectUrl)
+      }
     }
 
     connect()

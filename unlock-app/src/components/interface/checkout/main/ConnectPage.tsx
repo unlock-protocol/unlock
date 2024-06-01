@@ -12,7 +12,11 @@ export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
   return (
     <Fragment>
       <main className={style}>
-        <SelectConnectMethod connected={connected} onNext={onNext} />
+        <SelectConnectMethod
+          shouldRedirect={false}
+          connected={connected}
+          onNext={onNext}
+        />
       </main>
       <footer className="grid items-center px-6 pt-2 border-t">
         <PoweredByUnlock />

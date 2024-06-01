@@ -130,20 +130,25 @@ const SignUp = ({ shouldRedirect }: SignUpProps) => {
       typeof window !== 'undefined'
         ? `${window.location.protocol}//${window.location.host}/connecting`
         : ''
+  } else {
+    redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.protocol}//${window.location.host}${router.asPath}`
+        : ''
   }
 
   console.log('redirectUrl', redirectUrl)
 
-  const callbackUrl = `${redirectUrl}/?state=${encodeURIComponent(state)}`
+  const callbackUrl = shouldRedirect
+    ? `${redirectUrl}/?state=${encodeURIComponent(state)}`
+    : redirectUrl
   console.log('callbackUrl', callbackUrl)
 
-  // ...
   return (
     <div className="grid gap-2">
       <div className="grid gap-4 px-6">
         <button
           onClick={() => {
-            console.log('callbackUrl', callbackUrl)
             signIn('google', { callbackUrl: callbackUrl })
           }}
         >
