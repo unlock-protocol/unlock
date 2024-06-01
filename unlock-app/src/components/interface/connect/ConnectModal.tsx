@@ -68,6 +68,7 @@ export const ConnectModal = () => {
                 </div>
               </header>
               <SelectConnectMethod
+                shouldRedirect={true}
                 connected={connected}
                 onUnlockAccount={() => openConnectModal('unlock_account')}
                 onExit={() => openConnectModal('crypto')}

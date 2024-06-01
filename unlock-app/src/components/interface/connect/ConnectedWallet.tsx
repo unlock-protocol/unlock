@@ -5,7 +5,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import BlockiesSvg from 'blockies-react-svg'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { signOut as nextSighOut } from 'next-auth/react'
 
 interface ConnectedWalletProps {
   showIcon?: boolean
@@ -18,14 +18,13 @@ export const ConnectedWallet = ({
 }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
   const { closeConnectModal } = useConnectModal()
-  const { session, signIn, signOut, isSigningSiwe } = useSIWE()
+  const { session, signIn, signOut } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
   const { isUnlockAccount } = useAuth()
   const [_, copy] = useClipboard(displayAccount!, {
     successDuration: 1000,
   })
-  const { isConnectingProvider } = useAuthenticate()
 
   const onSignIn = useCallback(async () => {
     setIsSigningIn(true)
@@ -37,6 +36,7 @@ export const ConnectedWallet = ({
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
     await signOut()
+    await nextSighOut()
     deAuthenticate()
     closeConnectModal()
     setIsDisconnecting(false)
@@ -47,12 +47,6 @@ export const ConnectedWallet = ({
       onSignIn()
     }
   }, [connected, session, isUnlockAccount])
-
-  console.log('IsConnectedProvider', isConnectingProvider)
-
-  if (isSigningSiwe || isConnectingProvider) {
-    return <div>Loading</div>
-  }
 
   return (
     <div className="grid divide-y divide-gray-100">

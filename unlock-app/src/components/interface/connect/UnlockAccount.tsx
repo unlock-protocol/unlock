@@ -113,27 +113,28 @@ const SignInUnlockAccount = ({
 }
 
 export interface SignUpProps {
+  shouldRedirect: boolean
   onReturn(): void
 }
 
-const SignUp = ({}: SignUpProps) => {
+const SignUp = ({ shouldRedirect }: SignUpProps) => {
   const router = useRouter()
-  const restoredState = JSON.parse(
-    decodeURIComponent((router.query.state as string) || '{}')
-  )
-  console.log('restoredState', restoredState)
-
-  const fullUrl =
-    typeof window !== 'undefined'
-      ? `${window.location.protocol}//${window.location.host}${router.asPath}`
-      : ''
-
-  console.log('Full URL:', fullUrl)
-
   const state = JSON.stringify({
-    Login: 'Google',
+    redirectUrl: shouldRedirect ? router.asPath : undefined,
   })
-  const callbackUrl = `${fullUrl}/?state=${encodeURIComponent(state)}`
+
+  let redirectUrl
+
+  if (shouldRedirect) {
+    redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.protocol}//${window.location.host}/connecting`
+        : ''
+  }
+
+  console.log('redirectUrl', redirectUrl)
+
+  const callbackUrl = `${redirectUrl}/?state=${encodeURIComponent(state)}`
   console.log('callbackUrl', callbackUrl)
 
   // ...
@@ -160,6 +161,7 @@ export interface Props {
   accountType: UserAccountType
   onSignIn?(): void
   useIcon?: boolean
+  shouldRedirect: boolean
 }
 
 export const ConnectUnlockAccount = ({
@@ -168,6 +170,7 @@ export const ConnectUnlockAccount = ({
   accountType,
   useIcon = true,
   defaultEmail,
+  shouldRedirect,
 }: Props) => {
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
@@ -206,6 +209,7 @@ export const ConnectUnlockAccount = ({
         />
       ) : (
         <SignUp
+          shouldRedirect={shouldRedirect}
           onReturn={() => {
             onExit()
           }}

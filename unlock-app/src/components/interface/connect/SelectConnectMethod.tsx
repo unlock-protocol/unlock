@@ -5,14 +5,13 @@ import { ConnectedWallet } from './ConnectedWallet'
 import { useStorageService } from '~/utils/withStorageService'
 import { UserAccountType } from '~/utils/userAccountType'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuthenticate } from '~/hooks/useAuthenticate'
-import { useSIWE } from '~/hooks/useSIWE'
 
 interface SelectConnectMethodProps {
   connected: string | undefined
   onNext?: () => void
   onUnlockAccount?: () => void
   onExit?: () => void
+  shouldRedirect: boolean
 }
 
 export const SelectConnectMethod = ({
@@ -20,6 +19,7 @@ export const SelectConnectMethod = ({
   onNext,
   onUnlockAccount,
   onExit,
+  shouldRedirect,
 }: SelectConnectMethodProps) => {
   const [email, setEmail] = useState('')
   const [useEmail, setUseEmail] = useState(false)
@@ -45,13 +45,6 @@ export const SelectConnectMethod = ({
     setIsVerifyingEmail(false)
   }
 
-  const { isConnectingProvider } = useAuthenticate()
-  const { isSigningSiwe } = useSIWE()
-
-  if (isSigningSiwe || isConnectingProvider) {
-    return <div>Loading</div>
-  }
-
   return (
     <div>
       {!useEmail && !connected && (
@@ -68,6 +61,7 @@ export const SelectConnectMethod = ({
       )}
       {useEmail && !connected && !isVerifyingEmail && (
         <ConnectUnlockAccount
+          shouldRedirect={shouldRedirect}
           defaultEmail={email}
           useIcon={false}
           accountType={accountType}
