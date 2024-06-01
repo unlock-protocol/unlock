@@ -20171,7 +20171,7 @@ __metadata:
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.0"
     hardhat-storage-layout: "npm:0.1.7"
-    hardhat-tracer: "npm:2.8.2"
+    hardhat-tracer: "npm:3.0.0"
     prettier: "npm:3.2.5"
     prettier-plugin-solidity: "npm:1.3.1"
     solhint: "npm:4.5.4"
@@ -33821,17 +33821,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:2.8.2":
-  version: 2.8.2
-  resolution: "hardhat-tracer@npm:2.8.2"
+"hardhat-tracer@npm:3.0.0":
+  version: 3.0.0
+  resolution: "hardhat-tracer@npm:3.0.0"
   dependencies:
     chalk: "npm:^4.1.2"
     debug: "npm:^4.3.4"
     ethers: "npm:^5.6.1"
   peerDependencies:
     chai: 4.x
-    hardhat: ">=2.16 <2.21.0"
-  checksum: 10/4763211284ed287f3479ea434939fcf2eb50f1a8aef931b63df173ad09c46e379a0b345f8a2def9e409b32a00bb40f9d8d8d4e9d7a6c839ad9990db7029c4cc8
+    hardhat: ">=2.16 <3.x"
+  checksum: 10/a39eda35aea833fabefb6d93497efd247f646b373a7025662940d33b50201873ac385dddfe62c8705b2383fc4a47759bd943c1a5f346fa83111666d4311d2676
   languageName: node
   linkType: hard
 
