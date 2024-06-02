@@ -41,7 +41,6 @@ const SignInUnlockAccount = ({
     setError,
     formState: { isSubmitting, errors },
   } = useForm<UserDetails>()
-
   const { account } = useAuth()
 
   const onSubmit = async (data: UserDetails) => {

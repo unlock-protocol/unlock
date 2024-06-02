@@ -5,7 +5,7 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
-const { assert } = require('chai')
+const assert = require('assert')
 
 const keyPrice = ethers.parseEther('0.01')
 

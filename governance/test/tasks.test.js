@@ -1,7 +1,7 @@
 const { run } = require('hardhat')
 const { getUnlock } = require('@unlock-protocol/hardhat-helpers')
 
-const { assert } = require('chai')
+const assert = require('assert')
 
 const unlockVersion = 13
 const publicLockVersion = 14

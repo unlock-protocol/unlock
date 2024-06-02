@@ -19,7 +19,7 @@ let swapper,
   owner,
   unlockBalanceBefore,
   swapperBalanceBefore
-const { assert } = require('chai')
+const assert = require('assert')
 
 describe('UnlockSwapPurchaser / withdraw', () => {
   scenarios.forEach((isErc20) => {
