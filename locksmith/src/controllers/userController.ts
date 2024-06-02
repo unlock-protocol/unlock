@@ -1,7 +1,10 @@
 import { Request, Response } from 'express'
 import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
-import UserOperations from '../operations/userOperations'
+import UserOperations, {
+  createUserAccount,
+  findUserAccountByEmail,
+} from '../operations/userOperations'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
@@ -106,18 +109,38 @@ export const retrieveWaasUuid = async (
 ): Promise<any> => {
   const apiKeyName = process.env.COINBASE_CLOUD_API_KEY_NAME
   const privateKey = process.env.COINBASE_CLOUD_PRIVATE_KEY
-  console.log(apiKeyName, privateKey)
-  // User ID representing the authenticated user in your system (this must be a UUID).
-  // If the user ID in your system is not a UUID, you should either generate and
-  // store a UUID for each user or deterministically create a UUID using your
-  // current user ID.
-  const userID = 'bd8467db-4808-4179-9850-a2b27c65277c'
 
-  // `issueUserToken` issues an auth token for your authenticated user to interact
-  // with the WaaS backend scoped to their user ID.
-  const token = await issueUserToken({ apiKeyName, privateKey, userID })
+  const { emailAddress, selectedProvider } = req.params
 
-  res.json({ token })
+  let userUUID
+
+  const user = await findUserAccountByEmail(req.params.emailAddress)
+  userUUID = user?.id
+
+  // If no user is found, create
+  if (!user) {
+    if (!selectedProvider) return res.sendStatus(400)
+    const newUserUUID = await createUserAccount(
+      emailAddress,
+      selectedProvider as UserAccountType
+    )
+    userUUID = newUserUUID
+  }
+
+  console.log('userUUID', userUUID)
+
+  try {
+    const token = await issueUserToken({
+      apiKeyName,
+      privateKey,
+      userID: userUUID,
+    })
+    res.json({ token })
+  } catch (error) {
+    console.error('Error issuing token', error.message)
+  }
+
+  return res.sendStatus(400).json('Error issuing token')
 }
 
 export const retrieveRecoveryPhrase = async (

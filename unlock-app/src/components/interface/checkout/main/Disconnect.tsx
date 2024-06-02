@@ -5,6 +5,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { addressMinify } from '~/utils/strings'
 import { CheckoutService } from './checkoutMachine'
 import { useSelector } from '@xstate/react'
+import { signOut as nextSighOut } from 'next-auth/react'
 
 interface DisconnectProps {
   service: CheckoutService
@@ -32,6 +33,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
+    await nextSighOut()
     service.send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }

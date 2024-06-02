@@ -1,10 +1,13 @@
 import { ethers } from 'ethers'
 import { WaasEthersSigner } from 'waas-ethers'
 import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
-import { getWaasUuid } from '~/utils/waasUuid'
+import { StorageService } from './storageService'
+import { config } from '~/config/app'
 
 interface WaasProviderOptions {
   provider: ethers.utils.ConnectionInfo | string
+  email: string
+  selectedLoginProvider: string
 }
 
 // WaasProvider implements a subset of Web3 provider functionality, sufficient
@@ -14,9 +17,14 @@ export default class WaasProvider extends ethers.providers
   .JsonRpcBatchProvider {
   public wallet: WaasEthersSigner | null
 
-  constructor({ provider }: WaasProviderOptions) {
+  public email: string
+  private selectedLoginProvider: string
+
+  constructor({ provider, email, selectedLoginProvider }: WaasProviderOptions) {
     super(provider)
     this.wallet = null
+    this.email = email
+    this.selectedLoginProvider = selectedLoginProvider
   }
 
   async connect() {
@@ -28,7 +36,9 @@ export default class WaasProvider extends ethers.providers
         projectId: '5402f17b-ad54-4984-9417-b7b111226080',
       })
 
-      const user = await waas.auth.login({ provideAuthToken: getWaasUuid })
+      const user = await waas.auth.login({
+        provideAuthToken: this.getWaasUuid,
+      })
 
       let wallet: Wallet
 
@@ -55,6 +65,16 @@ export default class WaasProvider extends ethers.providers
     }
 
     return false
+  }
+
+  getWaasUuid = async () => {
+    const storageService = new StorageService(config.services.storage.host)
+    const waasToken = await storageService.getUserWaasUuid(
+      this.email,
+      this.selectedLoginProvider
+    )
+
+    return waasToken
   }
 
   async eth_accounts() {

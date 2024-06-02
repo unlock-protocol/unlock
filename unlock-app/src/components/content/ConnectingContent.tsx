@@ -18,23 +18,23 @@ export const ConnectingContent = () => {
   const restoredState = JSON.parse(
     decodeURIComponent((router.query.state as string) || '{}')
   )
-  console.log('restoredState', restoredState)
 
   useEffect(() => {
-    if (!session || !session?.waasToken) return
-
-    console.log('Connecting to WAAS')
+    if (!session || !session?.selectedProvider) return
 
     const connectWaasProvider = async () => {
-      console.log('Connecting to WAAS')
-      const waasProvider = new WaasProvider(config.networks[1])
+      const waasProvider = new WaasProvider({
+        ...config.networks[1],
+        email: session.user?.email as string,
+        selectedLoginProvider: session.selectedProvider,
+      })
       await waasProvider.connect()
       await authenticateWithProvider('WAAS', waasProvider)
-      session.waasToken = null
+      session.selectedProvider = null
     }
 
     connectWaasProvider()
-  }, [session?.waasToken])
+  }, [session?.selectedProvider])
 
   useEffect(() => {
     if (!connected && !isSignedIn) return

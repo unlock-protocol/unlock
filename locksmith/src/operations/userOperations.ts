@@ -37,6 +37,23 @@ export const createUser = async (
   return undefined
 }
 
+export const createUserAccount = async (
+  email: string,
+  selectedProvider: UserAccountType
+): Promise<string | null> => {
+  const userAccount = await UserAccount.create({
+    id: crypto.randomUUID(),
+    emailAddress: Normalizer.emailAddress(email),
+    loginMethod: [selectedProvider],
+  })
+
+  if (userAccount) {
+    return userAccount.id
+  }
+
+  return null
+}
+
 export const getUserPrivateKeyByEmailAddress = async (
   emailAddress: string
 ): Promise<string | null> => {
@@ -212,6 +229,16 @@ export const findByEmail = async (emailAddress: string) => {
 
     return unlockUser
   }
+
+  return user
+}
+
+export const findUserAccountByEmail = async (emailAddress: string) => {
+  const user = await UserAccount.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
 
   return user
 }
