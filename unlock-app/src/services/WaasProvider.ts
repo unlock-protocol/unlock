@@ -3,6 +3,10 @@ import { WaasEthersSigner } from 'waas-ethers'
 import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
 import { StorageService } from './storageService'
 import { config } from '~/config/app'
+import UnlockUser from '~/structured_data/unlockUser'
+import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
+import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
+import EjectionRequest from '~/structured_data/ejectionRequest'
 
 interface WaasProviderOptions {
   provider: ethers.utils.ConnectionInfo | string
@@ -17,13 +21,13 @@ export default class WaasProvider extends ethers.providers
   .JsonRpcBatchProvider {
   public wallet: WaasEthersSigner | null
 
-  public email: string
+  public emailAddress: string
   private selectedLoginProvider: string
 
   constructor({ provider, email, selectedLoginProvider }: WaasProviderOptions) {
     super(provider)
     this.wallet = null
-    this.email = email
+    this.emailAddress = email
     this.selectedLoginProvider = selectedLoginProvider
   }
 
@@ -70,7 +74,7 @@ export default class WaasProvider extends ethers.providers
   getWaasUuid = async () => {
     const storageService = new StorageService(config.services.storage.host)
     const waasToken = await storageService.getUserWaasUuid(
-      this.email,
+      this.emailAddress,
       this.selectedLoginProvider
     )
 
@@ -123,7 +127,75 @@ export default class WaasProvider extends ethers.providers
     return signature
   }
 
+  // TODO: this almost certainly doesn't work
+  async eth_signTypedData([_, data]: any[]) {
+    const { domain, types, message, messageKey } = data
+    return await this.wallet?.signTypedData(domain, types, message[messageKey])
+  }
+
+  async eth_signTypedData_v4([_, data]: any[]) {
+    const { domain, types, message, primaryType } = JSON.parse(data)
+    return this.wallet?.signTypedData(
+      domain,
+      {
+        [primaryType]: types[primaryType],
+      },
+      message
+    )
+  }
+
+  // Signature methods
+  // TODO: move these into their own module so they aren't directly accessible
+  // on the provider?
   async signData(data: any) {
-    console.log('Signing data', data)
+    const { domain, types, message, messageKey } = data
+    const signature = await this.wallet?.signTypedData(
+      domain,
+      types,
+      message[messageKey]
+    )
+    return { data, signature }
+  }
+
+  // input conforms to unlockUser structured_data; missing properties default to
+  // those stored on provider
+  async signUserData(input: any) {
+    const user = { ...input }
+    user.emailAddress = user.emailAddress || this.emailAddress
+
+    const data = UnlockUser.build(user)
+    return await this.signData(data)
+  }
+
+  // takes and signs a stripe card token
+  async signPaymentData(stripeTokenId: string) {
+    const data = UnlockPaymentDetails.build({
+      emailAddress: this.emailAddress,
+      publicKey: (await this.wallet?.getAddress()) as string,
+      stripeTokenId,
+    })
+    return await this.signData(data)
+  }
+
+  // input contains recipient and lock addresses
+  async signKeyPurchaseRequestData(input: any) {
+    // default signature expiration to now + 60 seconds
+    const expiry = Math.floor(Date.now() / 1000) + 60
+    const purchaseRequest = {
+      expiry,
+      ...input,
+    }
+    const data = UnlockPurchaseRequest.build(purchaseRequest)
+    return await this.signData(data)
+  }
+
+  async generateSignedEjectionRequest() {
+    const ejectionRequest = {
+      user: {
+        publicKey: (await this.wallet?.getAddress()) as string,
+      },
+    }
+    const data = EjectionRequest.build(ejectionRequest)
+    return await this.signData(data)
   }
 }
