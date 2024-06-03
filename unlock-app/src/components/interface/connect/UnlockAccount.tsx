@@ -201,7 +201,7 @@ export const ConnectUnlockAccount = ({
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {accountType === UserAccountType.UnlockAccount ? (
+      {accountType.includes(UserAccountType.UnlockAccount) ? (
         <SignInUnlockAccount
           email={defaultEmail}
           signIn={signIn}

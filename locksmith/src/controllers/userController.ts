@@ -127,20 +127,17 @@ export const retrieveWaasUuid = async (
     userUUID = newUserUUID
   }
 
-  console.log('userUUID', userUUID)
-
   try {
     const token = await issueUserToken({
-      apiKeyName,
-      privateKey,
-      userID: userUUID,
+      apiKeyName: apiKeyName as string,
+      privateKey: privateKey as string,
+      userID: userUUID as string,
     })
     res.json({ token })
   } catch (error) {
     console.error('Error issuing token', error.message)
+    return res.sendStatus(400).json('Error issuing token')
   }
-
-  return res.sendStatus(400).json('Error issuing token')
 }
 
 export const retrieveRecoveryPhrase = async (

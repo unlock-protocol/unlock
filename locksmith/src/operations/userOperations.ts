@@ -244,25 +244,23 @@ export const findUserAccountByEmail = async (emailAddress: string) => {
 }
 
 export const findTypeByEmail = async (emailAddress: string) => {
+  const unlockUser = await UserReference.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+
+  if (unlockUser) return [UserAccountType.UnlockAccount]
+
   const user = await UserAccount.findOne({
     where: {
       emailAddress: Normalizer.emailAddress(emailAddress),
     },
   })
 
-  if (!user) {
-    const unlockUser = await UserReference.findOne({
-      where: {
-        emailAddress: Normalizer.emailAddress(emailAddress),
-      },
-    })
+  if (user) return user.loginMethod
 
-    if (!unlockUser) return null
-
-    return UserAccountType.UnlockAccount
-  }
-
-  return user.loginMethod
+  return [UserAccountType.None]
 }
 
 export const findByWalletAddress = async (walletAddress: string) => {
