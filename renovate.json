@@ -116,6 +116,12 @@
         "groupName": "subgraph"
       },
       "matchPaths": ["subgraph/**"]
+    },
+    {
+      "minor": {
+        "groupName": "eth-node"
+      },
+      "matchPaths": ["docker/development/eth-node/**"]
     }
   ],
   "rebaseWhen": "never",
