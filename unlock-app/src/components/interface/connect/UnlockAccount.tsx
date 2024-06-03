@@ -9,6 +9,8 @@ import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
 import { signIn, signOut } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { ConnectButton } from './Custom'
+import SvgComponents from '../svg'
 
 interface UserDetails {
   email: string
@@ -116,7 +118,7 @@ export interface SignUpProps {
   onReturn(): void
 }
 
-const SignUp = ({ shouldRedirect }: SignUpProps) => {
+const SignUp = ({ shouldRedirect, onReturn }: SignUpProps) => {
   const router = useRouter()
   const state = JSON.stringify({
     redirectUrl: shouldRedirect ? router.asPath : undefined,
@@ -146,14 +148,38 @@ const SignUp = ({ shouldRedirect }: SignUpProps) => {
   return (
     <div className="grid gap-2">
       <div className="grid gap-4 px-6">
-        <button
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
           onClick={() => {
             signIn('google', { callbackUrl: callbackUrl })
           }}
         >
-          Sign In with Google
-        </button>
-        <button onClick={() => signOut()}>Sign out</button>
+          Sign in with Google
+        </ConnectButton>
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
+          onClick={() => {
+            signIn('google', { callbackUrl: callbackUrl })
+          }}
+        >
+          Sign in with Google
+        </ConnectButton>
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
+          onClick={() => {
+            signIn('google', { callbackUrl: callbackUrl })
+          }}
+        >
+          Sign in with Google
+        </ConnectButton>
+        <div className="w-full flex items-center justify-end px-6 py-4">
+          <button
+            onClick={() => onReturn()}
+            className="hover:text-ui-main-600 underline"
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   )
