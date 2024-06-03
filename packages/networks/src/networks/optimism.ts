@@ -94,7 +94,7 @@ export const optimism: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/10',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://mainnet.optimism.io',
   startBlock: 302400,
   subgraph: {

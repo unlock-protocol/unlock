@@ -91,7 +91,7 @@ export const sepolia: NetworkConfig = {
 
   provider: 'https://rpc.unlock-protocol.com/11155111',
 
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://rpc2.sepolia.org/',
 

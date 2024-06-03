@@ -69,7 +69,7 @@ export const avalanche: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/43114',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
   startBlock: 17188332,
   subgraph: {
