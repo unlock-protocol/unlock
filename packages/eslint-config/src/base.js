@@ -8,6 +8,20 @@ module.exports = {
     es6: true,
     node: true,
     browser: true,
+    es2020: true,
+  },
+  globals: {
+    abi: true,
+    after: true,
+    afterEach: true,
+    artifacts: true,
+    assert: true,
+    before: true,
+    beforeEach: true,
+    contract: true,
+    describe: true,
+    it: true,
+    web3: true,
   },
   root: true,
   plugins: [
@@ -30,6 +44,7 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
     'linebreak-style': ['error', 'unix'],
+    'mocha/no-exclusive-tests': 'error',
     quotes: [
       'error',
       'single',
