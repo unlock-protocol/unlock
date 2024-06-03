@@ -6,6 +6,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useSIWE } from '~/hooks/useSIWE'
 import WaasProvider from '~/services/WaasProvider'
+import { ToastHelper } from '../helpers/toast.helper'
 
 export const ConnectingContent = () => {
   const { data: session } = useSession()
@@ -19,18 +20,31 @@ export const ConnectingContent = () => {
     decodeURIComponent((router.query.state as string) || '{}')
   )
 
+  const redirect = () => {
+    if (restoredState.redirectUrl) {
+      router.push(restoredState.redirectUrl)
+    } else {
+      router.push('/')
+    }
+  }
+
   useEffect(() => {
     if (!session || !session?.selectedProvider) return
 
     const connectWaasProvider = async () => {
-      const waasProvider = new WaasProvider({
-        ...config.networks[1],
-        email: session.user?.email as string,
-        selectedLoginProvider: session.selectedProvider,
-      })
-      await waasProvider.connect()
-      await authenticateWithProvider('WAAS', waasProvider)
-      session.selectedProvider = null
+      try {
+        const waasProvider = new WaasProvider({
+          ...config.networks[1],
+          email: session.user?.email as string,
+          selectedLoginProvider: session.selectedProvider,
+        })
+        await waasProvider.connect()
+        await authenticateWithProvider('WAAS', waasProvider)
+        session.selectedProvider = null
+      } catch (err) {
+        ToastHelper.error(`Error: ${err}`)
+        redirect()
+      }
     }
 
     connectWaasProvider()
@@ -40,12 +54,13 @@ export const ConnectingContent = () => {
     if (!connected && !isSignedIn) return
 
     const connect = async () => {
-      console.log('Connecting to SIWE in useEffect')
-      await siweSignIn()
+      try {
+        await siweSignIn()
 
-      if (restoredState.redirectUrl) {
-        console.log(restoredState.redirectUrl)
-        router.push(restoredState.redirectUrl)
+        redirect()
+      } catch (err) {
+        ToastHelper.error(`Error: ${err}`)
+        redirect()
       }
     }
 
