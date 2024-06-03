@@ -83,7 +83,7 @@ export const ConnectingWaas = () => {
   }, [connected, isSignedIn])
 
   return (
-    <div className="h-full mt-2">
+    <div className="h-full px-6 py-2">
       <Placeholder.Root>
         <Placeholder.Line />
         <Placeholder.Line />
