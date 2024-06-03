@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const path = require('path')
@@ -230,9 +230,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const receipt = await tx.wait()
         const { events } = await getEvents(receipt, 'Transfer')
-        tokenIds = events.map(({ args }) => args.tokenId)
-
-        assert.equal(tokenIds.length, buyers.length)
+        const purchasedTokenIds = events.map(({ args }) => args.tokenId)
+        assert.equal(purchasedTokenIds.length, buyers.length)
       })
 
       it('grantKeys should now work ', async () => {
@@ -243,9 +242,8 @@ describe('PublicLock upgrade  v9 > v10', () => {
         )
         const receipt = await tx.wait()
         const { events } = await getEvents(receipt, 'Transfer')
-        tokenIds = events.map(({ args }) => args.tokenId)
-
-        assert.equal(tokenIds.length, buyers.length)
+        const grantedTokenIds = events.map(({ args }) => args.tokenId)
+        assert.equal(grantedTokenIds.length, buyers.length)
       })
 
       it('extend should now work ', async () => {

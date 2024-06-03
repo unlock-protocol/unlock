@@ -9,16 +9,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20
+
+      - name: Prepare repo
+        run: yarn && yarn build
 
       - name: Run RSS Feed Script
         run: node rss_feed.js

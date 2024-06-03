@@ -1,5 +1,5 @@
 const { reverts } = require('../helpers')
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers } = require('hardhat')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
