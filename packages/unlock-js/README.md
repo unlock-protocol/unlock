@@ -51,8 +51,10 @@ yarn test
 
 Run a single test
 
+You can edit `testPath` and versions values in `./src/__integrations__/single.js` to test for specific functions on specific versions of the protocol.
+
 ```
-yarn test:single --file src/__tests__/utils.test.js
+yarn test:single
 ```
 
 Run a single integration test with specific versions
