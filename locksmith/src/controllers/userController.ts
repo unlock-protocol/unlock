@@ -129,7 +129,7 @@ export const retrieveWaasUuid = async (
 
   try {
     const token = await issueUserToken({
-      apiKeyName: '',
+      apiKeyName: apiKeyName as string,
       privateKey: privateKey as string,
       userID: userUUID as string,
     })

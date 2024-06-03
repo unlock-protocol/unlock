@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -19,6 +19,23 @@ export const ConnectingContent = () => {
   const restoredState = JSON.parse(
     decodeURIComponent((router.query.state as string) || '{}')
   )
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (!timeoutRef.current) {
+      timeoutRef.current = setTimeout(() => {
+        redirect()
+        timeoutRef.current = null
+      }, 10000)
+    }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [])
 
   const redirect = () => {
     if (restoredState.redirectUrl) {
