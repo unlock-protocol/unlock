@@ -301,6 +301,13 @@ export function Select({ checkoutService }: Props) {
 
   const [isSigning, setSigning] = useState(false)
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
+  const { data: session } = useSession()
+  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -309,7 +316,8 @@ export function Select({ checkoutService }: Props) {
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
     isLoadingHook ||
-    isSigning
+    isSigning ||
+    isLoadingWaas
 
   useEffect(() => {
     if (locks?.length) {
@@ -320,10 +328,6 @@ export function Select({ checkoutService }: Props) {
   }, [locks])
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
-
-  const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
-  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
     const signToSignIn = async () => {
@@ -393,14 +397,7 @@ export function Select({ checkoutService }: Props) {
     })
   }
 
-  const { data: session } = useSession()
-
-  console.log('Session: ', session)
-  console.log('Connected', connected)
-  console.log('isSignedIn', isSignedIn)
-  console.log('Account', account)
-
-  if (session && (!connected || !isSignedIn || account === '')) {
+  if (isLoadingWaas) {
     return (
       <Fragment>
         <Stepper
