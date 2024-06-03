@@ -5,6 +5,7 @@ import { ConnectedWallet } from './ConnectedWallet'
 import { useStorageService } from '~/utils/withStorageService'
 import { UserAccountType } from '~/utils/userAccountType'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
 
 interface SelectConnectMethodProps {
   connected: string | undefined
@@ -12,6 +13,7 @@ interface SelectConnectMethodProps {
   onUnlockAccount?: () => void
   onExit?: () => void
   shouldRedirect: boolean
+  checkoutService?: CheckoutService
 }
 
 export const SelectConnectMethod = ({
@@ -20,6 +22,7 @@ export const SelectConnectMethod = ({
   onUnlockAccount,
   onExit,
   shouldRedirect,
+  checkoutService,
 }: SelectConnectMethodProps) => {
   const [email, setEmail] = useState('')
   const [useEmail, setUseEmail] = useState(false)
@@ -72,6 +75,7 @@ export const SelectConnectMethod = ({
               onExit()
             }
           }}
+          checkoutService={checkoutService}
         />
       )}
       {connected && <ConnectedWallet showIcon={false} onNext={onNext} />}

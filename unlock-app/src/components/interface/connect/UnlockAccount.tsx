@@ -1,16 +1,16 @@
 import { Button, Input } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
-import { useConfig } from '~/utils/withConfig'
-import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
-import { signIn, signOut } from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { ConnectButton } from './Custom'
 import SvgComponents from '../svg'
+import { popupCenter } from '~/utils/popup'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
 
 interface UserDetails {
   email: string
@@ -115,10 +115,11 @@ const SignInUnlockAccount = ({
 
 export interface SignUpProps {
   shouldRedirect: boolean
+  checkoutService?: CheckoutService
   onReturn(): void
 }
 
-const SignUp = ({ shouldRedirect, onReturn }: SignUpProps) => {
+const SignUp = ({ shouldRedirect, onReturn, checkoutService }: SignUpProps) => {
   const router = useRouter()
   const state = JSON.stringify({
     redirectUrl: shouldRedirect ? router.asPath : undefined,
@@ -138,12 +139,19 @@ const SignUp = ({ shouldRedirect, onReturn }: SignUpProps) => {
         : ''
   }
 
-  console.log('redirectUrl', redirectUrl)
-
   const callbackUrl = shouldRedirect
     ? `${redirectUrl}/?state=${encodeURIComponent(state)}`
     : redirectUrl
-  console.log('callbackUrl', callbackUrl)
+
+  const signWithGoogle = () => {
+    if (window !== window.parent) {
+      popupCenter('/google', 'Sample Sign In')
+      checkoutService?.send({ type: 'SELECT' })
+      return
+    }
+
+    signIn('google', { callbackUrl: callbackUrl })
+  }
 
   return (
     <div className="grid gap-2">
@@ -151,7 +159,7 @@ const SignUp = ({ shouldRedirect, onReturn }: SignUpProps) => {
         <ConnectButton
           icon={<SvgComponents.Unlock width={40} height={40} />}
           onClick={() => {
-            signIn('google', { callbackUrl: callbackUrl })
+            signWithGoogle()
           }}
         >
           Sign in with Google
@@ -159,7 +167,7 @@ const SignUp = ({ shouldRedirect, onReturn }: SignUpProps) => {
         <ConnectButton
           icon={<SvgComponents.Unlock width={40} height={40} />}
           onClick={() => {
-            signIn('google', { callbackUrl: callbackUrl })
+            signWithGoogle()
           }}
         >
           Sign in with Google
@@ -167,7 +175,7 @@ const SignUp = ({ shouldRedirect, onReturn }: SignUpProps) => {
         <ConnectButton
           icon={<SvgComponents.Unlock width={40} height={40} />}
           onClick={() => {
-            signIn('google', { callbackUrl: callbackUrl })
+            signWithGoogle()
           }}
         >
           Sign in with Google
@@ -192,6 +200,7 @@ export interface Props {
   onSignIn?(): void
   useIcon?: boolean
   shouldRedirect: boolean
+  checkoutService?: CheckoutService
 }
 
 export const ConnectUnlockAccount = ({
@@ -201,27 +210,13 @@ export const ConnectUnlockAccount = ({
   useIcon = true,
   defaultEmail,
   shouldRedirect,
+  checkoutService,
 }: Props) => {
-  const { retrieveUserAccount, createUserAccount } = useAccount('')
+  const { retrieveUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const config = useConfig()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
-    await authenticateWithProvider('UNLOCK', unlockProvider)
-  }
-
-  const signUp = async ({ email, password }: UserDetails) => {
-    const { passwordEncryptedPrivateKey } = await createUserAccount(
-      email,
-      password
-    )
-    const unlockProvider = new UnlockProvider(config.networks[1])
-    await unlockProvider.connect({
-      key: passwordEncryptedPrivateKey,
-      emailAddress: email,
-      password,
-    })
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
@@ -240,6 +235,7 @@ export const ConnectUnlockAccount = ({
       ) : (
         <SignUp
           shouldRedirect={shouldRedirect}
+          checkoutService={checkoutService}
           onReturn={() => {
             onExit()
           }}
