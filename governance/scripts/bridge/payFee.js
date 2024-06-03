@@ -31,7 +31,7 @@ const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
 
 async function main({
   // TODO: pass this hash via cli
-  txId = '0xa052760d9770ccade190b840335c3943ea90b920fb2d68614a7c4a06fed13c6a',
+  txId = '0xaa9c5da11ccb270ce2760ddcd64f2be8d56702c7aeaa32ef8da1536e7e7e4e98',
   // default to DAO executor multisig
   multisig = '0xEFF26E4Cf0a0e71B3c406A763dacB8875469cbb2',
 } = {}) {
