@@ -47,7 +47,7 @@ export default async function (
   }
 
   if (!data) {
-    data = []
+    data = '0x'
   }
 
   // If erc20Address was not provided, get it
@@ -121,7 +121,7 @@ export default async function (
       }
 
       const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
+        ? unlockSwapPurchaserContract?.swapAndCall.estimateGas(
             lockAddress,
             swap.srcTokenAddress || ZERO,
             actualAmount,
@@ -131,7 +131,7 @@ export default async function (
             callData,
             transactionOptions
           )
-        : lockContract.estimateGas.purchase(
+        : lockContract.purchase.estimateGas(
             actualAmount,
             owner,
             referrer,
@@ -144,7 +144,7 @@ export default async function (
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
-      transactionOptions.gasLimit = (gasLimit * 13) / 10
+      transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

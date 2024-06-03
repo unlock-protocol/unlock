@@ -29,7 +29,7 @@ export default async function (
     keyManagers = [],
     keyPrices = [],
     referrers = [],
-    data = [],
+    data = '0x',
   },
   transactionOptions = {},
   callback

@@ -128,7 +128,7 @@ export default async function (
       }
 
       const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.swapAndCall?.estimateGas(
+        ? unlockSwapPurchaserContract?.swapAndCall.estimateGas(
             lockAddress,
             swap.srcTokenAddress || ZERO,
             actualAmount,
@@ -150,7 +150,7 @@ export default async function (
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
-      transactionOptions.gasLimit = (gasLimit * 13) / 10
+      transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

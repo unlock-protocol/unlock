@@ -25,7 +25,7 @@ export default async function (
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions?.gasLimit) {
     try {
-      const gasLimit = await lockContract.estimateGas.renewMembershipFor(
+      const gasLimit = await lockContract.renewMembershipFor.estimateGas(
         tokenId,
         referrer,
         transactionOptions

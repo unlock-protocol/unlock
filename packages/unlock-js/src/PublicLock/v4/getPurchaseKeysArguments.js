@@ -9,7 +9,7 @@ export default async function getPurchaseKeysArguments({
   keyManagers = [],
   keyPrices = [],
   referrers = [],
-  data = [],
+  data = '0x',
 }) {
   // If erc20Address was not provided, get it
   const lockContract = await this.getLockContract(lockAddress)
