@@ -40,3 +40,6 @@ yarn-error.log
 
 # log files
 nohup.out
+
+#locksmith
+locksmith/uploads
