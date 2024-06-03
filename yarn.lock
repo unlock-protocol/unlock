@@ -11889,9 +11889,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/hardhat-verify@npm:2.0.6":
-  version: 2.0.6
-  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.6"
+"@nomicfoundation/hardhat-verify@npm:2.0.7":
+  version: 2.0.7
+  resolution: "@nomicfoundation/hardhat-verify@npm:2.0.7"
   dependencies:
     "@ethersproject/abi": "npm:^5.1.2"
     "@ethersproject/address": "npm:^5.0.2"
@@ -11904,7 +11904,7 @@ __metadata:
     undici: "npm:^5.14.0"
   peerDependencies:
     hardhat: ^2.0.4
-  checksum: 10/70f6cc1337a057d97b443d06475072cece2e28e1df41536041abfdaedf468cffb286fd8a3551ddb1e750d549f049aa96117c1a6af7d769d243ad9ba70973573d
+  checksum: 10/5ee492990b51a75a4599e29dcba9d72a6da72ebc0d470cae2ac7c7899bb6f0dc7d75238352537e7bdf825fb535c155d523d3f33f10b7830fbb0c9bebd1580066
   languageName: node
   linkType: hard
 
@@ -19927,7 +19927,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-verify": "npm:1.4.2"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
-    "@nomicfoundation/hardhat-verify": "npm:2.0.6"
+    "@nomicfoundation/hardhat-verify": "npm:2.0.7"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.1.0"
     "@openzeppelin/upgrades-core": "npm:1.33.1"
@@ -20163,7 +20163,7 @@ __metadata:
     "@connext/interfaces": "npm:2.0.5"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.10"
-    "@nomicfoundation/hardhat-verify": "npm:2.0.6"
+    "@nomicfoundation/hardhat-verify": "npm:2.0.7"
     "@openzeppelin/contracts": "npm:5.0.2"
     "@openzeppelin/contracts-upgradeable": "npm:4.9.6"
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
