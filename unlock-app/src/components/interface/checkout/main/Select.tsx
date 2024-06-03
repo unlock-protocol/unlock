@@ -31,9 +31,8 @@ import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
-import ConnectingContent from '~/components/content/ConnectingContent'
 import { useSession } from 'next-auth/react'
-import { a } from 'vitest/dist/suite-IbNSsUWN'
+import ConnectingWaas from '../../connect/ConnectingWaas'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -410,7 +409,7 @@ export function Select({ checkoutService }: Props) {
           existingMember={!!membership?.member}
           isRenew={!!membership?.expired}
         />
-        <ConnectingContent />
+        <ConnectingWaas />
         <footer className="grid items-center px-6 pt-6 border-t">
           <div className="grid">
             {isNotExpectedAddress && (

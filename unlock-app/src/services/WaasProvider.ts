@@ -7,7 +7,6 @@ import UnlockUser from '~/structured_data/unlockUser'
 import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
 import EjectionRequest from '~/structured_data/ejectionRequest'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface WaasProviderOptions {
   provider: ethers.utils.ConnectionInfo | string

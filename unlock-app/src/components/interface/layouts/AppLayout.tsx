@@ -23,6 +23,7 @@ interface DashboardLayoutProps {
   logoImageUrl?: string
   logoRedirectUrl?: string
   showFooter?: any
+  showConnectButton?: boolean
 }
 
 export const WalletNotConnected = () => {
@@ -148,6 +149,7 @@ export const AppLayout = ({
   showFooter = FOOTER,
   logoImageUrl, // replace default logo
   logoRedirectUrl, // replace default redirect logo url
+  showConnectButton = true,
 }: DashboardLayoutProps) => {
   const { account, email } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -224,43 +226,47 @@ export const AppLayout = ({
         {showHeader && (
           <HeaderNav
             {...MENU}
-            actions={[
-              {
-                content: account ? (
-                  <div className="flex gap-2">
-                    <button
-                      onClick={(event) => {
-                        event.preventDefault()
-                        openConnectModal()
-                      }}
-                    >
-                      <div className="flex items-center gap-2">
-                        <span className="text-brand-ui-primary text-right">
-                          {userEns === account
-                            ? email
-                              ? email
-                              : addressMinify(userEns)
-                            : userEns}
-                        </span>
-                        <DisconnectIcon
-                          className="text-brand-ui-primary"
-                          size={20}
-                        />
-                      </div>
-                    </button>
-                  </div>
-                ) : (
-                  <Button
-                    onClick={(event) => {
-                      event.preventDefault()
-                      openConnectModal()
-                    }}
-                  >
-                    Connect
-                  </Button>
-                ),
-              },
-            ]}
+            actions={
+              showConnectButton
+                ? [
+                    {
+                      content: account ? (
+                        <div className="flex gap-2">
+                          <button
+                            onClick={(event) => {
+                              event.preventDefault()
+                              openConnectModal()
+                            }}
+                          >
+                            <div className="flex items-center gap-2">
+                              <span className="text-brand-ui-primary text-right">
+                                {userEns === account
+                                  ? email
+                                    ? email
+                                    : addressMinify(userEns)
+                                  : userEns}
+                              </span>
+                              <DisconnectIcon
+                                className="text-brand-ui-primary"
+                                size={20}
+                              />
+                            </div>
+                          </button>
+                        </div>
+                      ) : (
+                        <Button
+                          onClick={(event) => {
+                            event.preventDefault()
+                            openConnectModal()
+                          }}
+                        >
+                          Connect
+                        </Button>
+                      ),
+                    },
+                  ]
+                : []
+            }
           />
         )}
         <div
