@@ -1679,17 +1679,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typechain/hardhat@npm:9.0.0":
-  version: 9.0.0
-  resolution: "@typechain/hardhat@npm:9.0.0"
+"@typechain/hardhat@npm:9.1.0":
+  version: 9.1.0
+  resolution: "@typechain/hardhat@npm:9.1.0"
   dependencies:
     fs-extra: "npm:^9.1.0"
   peerDependencies:
-    "@typechain/ethers-v6": ^0.5.0
+    "@typechain/ethers-v6": ^0.5.1
     ethers: ^6.1.0
     hardhat: ^2.9.9
-    typechain: ^8.3.1
-  checksum: 10/90c76b6971ed69a262741c6c89dab4dde40e0e2bc0c004c6bbab64b378c31a76c6bc453780fc1aed23446557442ded77347cb09209e00914bc665d4d735b6ccc
+    typechain: ^8.3.2
+  checksum: 10/1f59d8243af020905f3cdb96125cf9fcad33bd16f919d5e07762c63e0220bccb658abf59b0ad74be784a3387c0a6b0262612fa1adeb9f6c99061a6abaa6afc53
   languageName: node
   linkType: hard
 
@@ -1778,12 +1778,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.12.8":
-  version: 20.12.8
-  resolution: "@types/node@npm:20.12.8"
+"@types/node@npm:20.13.0":
+  version: 20.13.0
+  resolution: "@types/node@npm:20.13.0"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10/1feab4c8cb08588eea10811ed4d02485a5cde47fdf92e7b3193fc9f8ee39ea556f6e3124dc6d5378354466ed5f7e5fbe5e20f625908de40ea37560368a50f72c
+  checksum: 10/82f0e999078fa5e251de002c755d18f63c47ff09c192fdd1381ca91774327563ad778244ab51f52304a9432b5ba678c1328585ef5e92ffdc5eed8e950a6ad1b9
   languageName: node
   linkType: hard
 
@@ -2139,9 +2139,9 @@ __metadata:
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
     "@nomicfoundation/ignition-core": "npm:0.15.1"
     "@typechain/ethers-v6": "npm:0.5.0"
-    "@typechain/hardhat": "npm:9.0.0"
+    "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.6"
-    "@types/node": "npm:20.12.8"
+    "@types/node": "npm:20.13.0"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
