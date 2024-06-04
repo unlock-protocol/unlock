@@ -28,6 +28,7 @@ export async function getAccountFromPrivateKey(
     JSON.stringify(encryptedPrivateKey),
     password
   )
+
   return wallet
 }
 

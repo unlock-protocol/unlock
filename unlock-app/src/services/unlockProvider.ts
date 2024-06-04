@@ -13,7 +13,7 @@ interface UnlockProviderOptions {
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
 export default class UnlockProvider extends ethers.JsonRpcProvider {
-  public wallet: ethers.Wallet | null
+  public wallet: ethers.Wallet | ethers.HDNodeWallet | null
 
   public emailAddress: string | null
 
@@ -115,11 +115,13 @@ export default class UnlockProvider extends ethers.JsonRpcProvider {
   // on the provider?
   async signData(data: any) {
     const { domain, types, message, messageKey } = data
+    console.log('signData', { domain, types, msg: message[messageKey] })
     const signature = await this.wallet?.signTypedData(
       domain,
       types,
       message[messageKey]
     )
+    // console.log(data, signature)
     return { data, signature }
   }
 
@@ -129,9 +131,9 @@ export default class UnlockProvider extends ethers.JsonRpcProvider {
     const user = { ...input }
     user.emailAddress = user.emailAddress || this.emailAddress
     user.publicKey = user.publicKey || this.wallet!.address
-    user.passwordEncryptedPrivateKey =
+    user.passwordEncryptedPrivateKey = (
       user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
-
+    ).toString()
     const data = UnlockUser.build(user)
     return await this.signData(data)
   }

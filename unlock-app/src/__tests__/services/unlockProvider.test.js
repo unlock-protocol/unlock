@@ -4,7 +4,7 @@ import UnlockProvider from '../../services/unlockProvider'
 import { vi, describe, beforeAll, expect, it } from 'vitest'
 
 const utf8ToHex = (str) =>
-  ethers.toBeHex(str.length ? ethers.toUtf8Bytes(str) : 0)
+  ethers.hexlify(ethers.toUtf8Bytes(str.length ? str : '0x'))
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
