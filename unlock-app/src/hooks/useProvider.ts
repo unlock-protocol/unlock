@@ -57,7 +57,7 @@ export const useProvider = (config: any) => {
 
   const displayAccount = email || connected
 
-  const switchWeb3ProviderNetwork = async (id: number) => {
+  const switchBrowserProviderNetwork = async (id: number) => {
     try {
       await provider.send(
         'wallet_switchEthereumChain',
@@ -86,17 +86,17 @@ export const useProvider = (config: any) => {
       await closeConnectModal()
       pr = response?.provider
     }
-    let walletServiceProvider: ethers.Web3Provider = pr
+    let walletServiceProvider: ethers.BrowserProvider = pr
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
       if (pr.isUnlock) {
         walletServiceProvider = (await UnlockProvider.reconnect(
           pr,
           networkConfig
-        )) as unknown as ethers.Web3Provider
+        )) as unknown as ethers.BrowserProvider
       } else {
-        await switchWeb3ProviderNetwork(networkId)
-        walletServiceProvider = new ethers.Web3Provider(pr.provider, 'any')
+        await switchBrowserProviderNetwork(networkId)
+        walletServiceProvider = new ethers.BrowserProvider(pr.provider, 'any')
       }
     }
     return walletServiceProvider
@@ -109,7 +109,7 @@ export const useProvider = (config: any) => {
     return _walletService
   }
 
-  const resetProvider = async (provider: ethers.Provider) => {
+  const resetProvider = async (provider: ethers.AbstractProvider) => {
     try {
       setProvider(provider)
       const {
@@ -162,7 +162,7 @@ export const useProvider = (config: any) => {
   const connectProvider = async (provider: any) => {
     setLoading(true)
     let auth
-    if (provider instanceof ethers.Provider) {
+    if (provider instanceof ethers.AbstractProvider) {
       auth = await resetProvider(provider)
     } else {
       if (provider.enable) {
@@ -174,15 +174,15 @@ export const useProvider = (config: any) => {
           return
         }
       }
-      const ethersProvider = new ethers.Web3Provider(provider)
+      const ethersProvider = new ethers.BrowserProvider(provider)
 
       if (provider.on) {
         provider.on('accountsChanged', async () => {
-          await resetProvider(new ethers.Web3Provider(provider))
+          await resetProvider(new ethers.BrowserProvider(provider))
         })
 
         provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.Web3Provider(provider))
+          await resetProvider(new ethers.BrowserProvider(provider))
         })
       }
       auth = await resetProvider(ethersProvider)
@@ -228,7 +228,7 @@ export const useProvider = (config: any) => {
     network,
     tokenId,
   }: WatchAssetInterface) => {
-    await switchWeb3ProviderNetwork(network)
+    await switchBrowserProviderNetwork(network)
     await provider.send('wallet_watchAsset', {
       type: 'ERC721',
       options: {

@@ -61,7 +61,7 @@ const KeyRenewal = ({
   const possible = BigInt(possibleRenewals)
   const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <KeyItem label="Renewals">
         Your balance of {balance.amount} {balance.symbol} is too low to renew
@@ -69,15 +69,15 @@ const KeyRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return <KeyItem label="Renewals">No renewals approved</KeyItem>
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">{approved.toString()} times</KeyItem>
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">Renews unlimited times</KeyItem>
   }
 

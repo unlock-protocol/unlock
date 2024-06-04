@@ -91,11 +91,11 @@ export const getCrossChainRoutes = async ({
 
       args: [
         prices.map((price) => {
-          const priceInBigNumber = ethers.parseUnits(
+          const priceParsed = ethers.parseUnits(
             price.amount.toString(),
             price.decimals
           )
-          return priceInBigNumber.toBigInt()
+          return priceParsed
         }),
         recipients,
         referrers,

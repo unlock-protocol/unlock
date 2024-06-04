@@ -59,7 +59,7 @@ export const ExtendMembershipModal = ({
   const provider = web3Service.providerForNetwork(network)
   const { account, getWalletService } = useAuth()
   const { address: lockAddress, tokenAddress } = lock ?? {}
-  const [renewalAmount, setRenewalAmount] = useState(0)
+  const [renewalAmount, setRenewalAmount] = useState(BigInt(0))
   const [unlimited, setUnlimited] = useState(false)
   const { isRenewable, isExpired: isKeyExpired, isERC20 } = ownedKey
   const {
@@ -183,7 +183,7 @@ export const ExtendMembershipModal = ({
               <div className="divide-y">
                 {renewalInfo?.renewals && (
                   <KeyItem label="Renews">
-                    {renewalInfo.renewals.gte(UNLIMITED_RENEWAL_LIMIT)
+                    {renewalInfo.renewals >= UNLIMITED_RENEWAL_LIMIT
                       ? 'Unlimited'
                       : `${renewalInfo.renewals.toString()} times`}
                   </KeyItem>
@@ -199,7 +199,7 @@ export const ExtendMembershipModal = ({
                   enabled={unlimited}
                   size="small"
                   setEnabled={(enabled) => {
-                    setRenewalAmount(0)
+                    setRenewalAmount(BigInt(0))
                     setUnlimited(enabled)
                   }}
                 />
@@ -208,11 +208,11 @@ export const ExtendMembershipModal = ({
                 type="number"
                 pattern="\d*"
                 disabled={unlimited}
-                value={renewalAmount}
+                value={renewalAmount.toString()}
                 onChange={(event) => {
                   event.preventDefault()
                   const amount = parseInt(event.target.value)
-                  setRenewalAmount(amount)
+                  setRenewalAmount(BigInt(amount))
                 }}
                 label={`Number of renewals`}
               />
@@ -221,7 +221,7 @@ export const ExtendMembershipModal = ({
                   Your membership will renew for {renewalAmount} times and will
                   cost{' '}
                   {ethers.formatUnits(
-                    BigInt(ownedKey.lock.price) * (renewalAmount || 1),
+                    BigInt(ownedKey.lock.price) * (renewalAmount || BigInt(1)),
                     renewalInfo?.decimal
                   )}{' '}
                   {renewalInfo?.symbol}
@@ -234,7 +234,7 @@ export const ExtendMembershipModal = ({
             disabled={extend.isLoading || isRenewalInfoLoading}
             onClick={(event) => {
               event.preventDefault()
-              extend.mutate(renewalAmount)
+              extend.mutate(parseInt(renewalAmount.toString()))
             }}
             loading={extend.isLoading}
           >

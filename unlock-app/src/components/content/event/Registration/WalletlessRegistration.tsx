@@ -61,7 +61,7 @@ const WalletlessRegistrationClaiming = ({
         2
       )
 
-      if (transaction.status !== 1) {
+      if (!transaction || transaction.status !== 1) {
         setTransactionStatus('ERROR')
       } else {
         setTransactionStatus('FINISHED')

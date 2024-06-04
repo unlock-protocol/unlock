@@ -159,7 +159,7 @@ export function Minting({
             2
           )
 
-          if (transaction.status !== 1) {
+          if (!transaction || transaction.status !== 1) {
             throw new Error('Transaction failed.')
           }
 

@@ -43,10 +43,8 @@ export const getValidNumber = (value: string | number): number | undefined => {
 export const getEthersWalletFromPassword = (
   password: string
 ): ethers.Wallet => {
-  const encoded = ethers.defaultAbiCoder.encode(
-    ['bytes32'],
-    [ethers.id(password)]
-  )
+  const encoder = ethers.AbiCoder.defaultAbiCoder()
+  const encoded = encoder.encode(['bytes32'], [ethers.id(password)])
   const privateKey = ethers.keccak256(encoded)
   const privateKeyAccount = new ethers.Wallet(privateKey)
   return privateKeyAccount
