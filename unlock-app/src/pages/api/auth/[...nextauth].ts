@@ -10,19 +10,19 @@ export const authOptions = {
   ],
   callbacks: {
     // We need to pass provider to the session so that we can use it in the WaasProvider
-    async signIn({ user, account }) {
+    async signIn({ user, account }: { user: any; account: any }) {
       user.selectedProvider = account.provider
 
       return true
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.selectedProvider = user.selectedProvider
       }
 
       return token
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       session.selectedProvider = token.selectedProvider
 
       return session

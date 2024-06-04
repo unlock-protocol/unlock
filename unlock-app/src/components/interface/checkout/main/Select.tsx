@@ -317,7 +317,10 @@ export function Select({ checkoutService }: Props) {
     isNotExpectedAddress ||
     isLoadingHook ||
     isSigning ||
-    isLoadingWaas
+    // Prevent isLoadingWaas from being null
+    !isLoadingWaas
+      ? undefined
+      : isLoadingWaas
 
   useEffect(() => {
     if (locks?.length) {

@@ -1,5 +1,5 @@
 import { signOut, useSession } from 'next-auth/react'
-import React, {  useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { config } from '~/config/app'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useSIWE } from '~/hooks/useSIWE'
@@ -15,22 +15,26 @@ export const NextAuthAccount = ({}: NextAuthAccountProps) => {
   const { signIn: siweSignIn } = useSIWE()
 
   useEffect(() => {
+    // @ts-ignore - Property 'selectedProvider' does not exist on type 'Session'
     if (!session || !session?.selectedProvider) return
 
     const connectWaasProvider = async () => {
       const waasProvider = new WaasProvider({
         ...config.networks[1],
         email: session.user?.email as string,
+        // @ts-ignore - Property 'selectedProvider' does not exist on type 'Session'
         selectedLoginProvider: session.selectedProvider,
       })
       await waasProvider.connect()
       await authenticateWithProvider('WAAS', waasProvider)
+      // @ts-ignore - Property 'selectedProvider' does not exist on type 'Session'
       session.selectedProvider = null
 
       await siweSignIn()
     }
 
     connectWaasProvider()
+    // @ts-ignore - Property 'selectedProvider' does not exist on type 'Session'
   }, [session?.selectedProvider])
 
   return (

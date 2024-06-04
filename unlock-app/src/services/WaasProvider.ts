@@ -97,7 +97,7 @@ export default class WaasProvider extends ethers.providers
     return []
   }
 
-  getSigner(addressOrIndex?: string | number | undefined): any {
+  getSigner(): any {
     if (this.wallet) {
       return this.wallet
     }
@@ -106,11 +106,13 @@ export default class WaasProvider extends ethers.providers
   }
 
   async send(method: string, params: any) {
+    // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'WaasProvider'
     if (typeof this[method] === 'undefined') {
       // We haven't implemented this method, defer to the fallback provider.
       // TODO: Catch methods we don't want to dispatch and throw an error
       return super.send(method, params)
     }
+    // @ts-expect-error Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'WaasProvider'
     return this[method](params)
   }
 
