@@ -61,7 +61,7 @@ export function ConfirmConnect({
     }
   }
 
-  const { signIn, isSignedIn } = useSIWE()
+  const { isSignedIn } = useSIWE()
   const { data: session } = useSession()
   const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
 
