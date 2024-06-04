@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@arbitrum/nitro-contracts": "1.2.1",
-    "@arbitrum/sdk": "3.4.0",
+    "@arbitrum/sdk": "3.4.1",
     "@eth-optimism/sdk": "3.3.0",
     "@matterlabs/hardhat-zksync-deploy": "1.4.0",
     "@matterlabs/hardhat-zksync-solc": "1.1.4",
