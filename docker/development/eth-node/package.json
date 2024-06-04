@@ -20,7 +20,7 @@
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
-    "eslint": "8.57.0",
+    "eslint": "9.4.0",
     "ethers": "6.12.1",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.3",
