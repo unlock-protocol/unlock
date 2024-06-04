@@ -6,7 +6,7 @@ import {
   getLockTypeByMetadata,
   toFormData,
 } from '@unlock-protocol/core'
-import { CheckoutConfig, EventData } from '../models'
+import { CheckoutConfig, EventData, KeyMetadata } from '../models'
 import { saveCheckoutConfig } from './checkoutConfigOperations'
 import { EventBodyType } from '../controllers/v2/eventsController'
 import { Op } from 'sequelize'
@@ -256,4 +256,25 @@ export const saveEvent = async (
   }
 
   return [savedEvent, !parsed.data.slug]
+}
+
+export const getCheckedInAttendees = async (slug: string) => {
+  // get the event, get the locks, get the KeyMetadata, get the owners for each of these
+  // this can take a while? We need to use the subgraph!
+  const event = await getEventBySlug(slug, false /** includeProtected */)
+  if (!event || !event.checkoutConfigId) {
+    return []
+  }
+  const checkout = await CheckoutConfig.findByPk(event.checkoutConfigId)
+  if (!checkout) {
+    return []
+  }
+  const locks = Object.keys(checkout.config.locks)
+  const allKeys = await KeyMetadata.findAll({
+    where: {
+      address: locks,
+    },
+  })
+  console.log(allKeys)
+  return []
 }

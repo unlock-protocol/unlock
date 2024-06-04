@@ -4,6 +4,7 @@ import {
   saveEventDetails,
   getEvent,
   getAllEvents,
+  approveRefunds,
 } from '../../controllers/v2/eventsController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { eventOrganizerMiddleware } from '../../utils/middlewares/eventOrganizerMiddleware'
@@ -37,6 +38,13 @@ router.post(
   authenticatedMiddleware,
   eventOrganizerMiddleware,
   saveEventDetails
+)
+
+router.post(
+  '/approve-refunds',
+  authenticatedMiddleware,
+  eventOrganizerMiddleware,
+  approveRefunds
 )
 
 export default router

@@ -196,3 +196,14 @@ export const getEvent: RequestHandler = async (request, response) => {
     message: `No event found for slug ${slug}`,
   })
 }
+
+// API endpoint that a manager can call to approve refunds for attendees
+// This will create a a Merkle proof for the refunds and store it
+export const approveRefunds: RequestHandler = async (request, response) => {
+  const slug = request.params.slug.toLowerCase().trim()
+  // Then, get the list of all attendees that attendees!
+  // then, create the merkel tree using the OZ library
+  // Then, store the tree (at <root>.json), and save the root hash in the event's data
+
+  return response.status(200).send(event.toJSON())
+}

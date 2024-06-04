@@ -13205,6 +13205,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/merkle-tree@npm:1.0.6":
+  version: 1.0.6
+  resolution: "@openzeppelin/merkle-tree@npm:1.0.6"
+  dependencies:
+    "@ethersproject/abi": "npm:^5.7.0"
+    ethereum-cryptography: "npm:^1.1.2"
+  checksum: 10/4e050b82e4e3a24df50c699dfaeb85c00138373d70cb0c60303b3c36ccabbcf81a25d6b2542d5f46199f97944df2d6c2552fe2292719c1ee3f54ce1b1b5c3a7f
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/upgrades-core@npm:1.33.1, @openzeppelin/upgrades-core@npm:^1.32.2":
   version: 1.33.1
   resolution: "@openzeppelin/upgrades-core@npm:1.33.1"
@@ -20176,6 +20186,7 @@ __metadata:
     "@logtail/winston": "npm:0.4.21"
     "@nuintun/qrcode": "npm:4.1.2"
     "@openzeppelin/defender-relay-client": "npm:1.54.1"
+    "@openzeppelin/merkle-tree": "npm:1.0.6"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.116.0"
     "@sentry/tracing": "npm:7.114.0"
@@ -30907,7 +30918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereum-cryptography@npm:^1.0.3":
+"ethereum-cryptography@npm:^1.0.3, ethereum-cryptography@npm:^1.1.2":
   version: 1.2.0
   resolution: "ethereum-cryptography@npm:1.2.0"
   dependencies:

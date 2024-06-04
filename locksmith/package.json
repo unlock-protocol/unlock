@@ -40,6 +40,7 @@
     "@logtail/winston": "0.4.21",
     "@nuintun/qrcode": "4.1.2",
     "@openzeppelin/defender-relay-client": "1.54.1",
+    "@openzeppelin/merkle-tree": "1.0.6",
     "@resvg/resvg-js": "2.6.2",
     "@sentry/node": "7.116.0",
     "@sentry/tracing": "7.114.0",
