@@ -1,15 +1,16 @@
 import { Button, Input } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
-import { useConfig } from '~/utils/withConfig'
-import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
-import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
-import { useStorageService } from '~/utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { UserAccountType } from '~/utils/userAccountType'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { ConnectButton } from './Custom'
+import SvgComponents from '../svg'
+import { popupCenter } from '~/utils/popup'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
 
 interface UserDetails {
   email: string
@@ -29,7 +30,7 @@ export interface SignInProps {
   useIcon?: boolean
 }
 
-const SignIn = ({
+const SignInUnlockAccount = ({
   email,
   onReturn,
   signIn,
@@ -113,201 +114,132 @@ const SignIn = ({
 }
 
 export interface SignUpProps {
-  email: string
+  shouldRedirect: boolean
+  checkoutService?: CheckoutService
   onReturn(): void
-  signUp: (details: UserDetails) => Promise<unknown> | unknown
-  onSignIn?(): void
 }
 
-const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
-  const {
-    register,
-    getValues,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<SignUpForm>()
+const SignUp = ({ shouldRedirect, onReturn, checkoutService }: SignUpProps) => {
+  const router = useRouter()
+  const state = JSON.stringify({
+    redirectUrl: shouldRedirect ? router.asPath : undefined,
+  })
 
-  const onSubmit = async ({ password }: SignUpForm) => {
-    try {
-      await signUp({ email, password })
-      if (onSignIn) {
-        onSignIn()
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(
-          'confirmPassword',
-          {
-            type: 'value',
-            message: error.message,
-          },
-          {
-            shouldFocus: true,
-          }
-        )
-      }
-    }
+  let redirectUrl
+
+  if (shouldRedirect) {
+    redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.protocol}//${window.location.host}/connecting`
+        : ''
+  } else {
+    redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.protocol}//${window.location.host}${router.asPath}`
+        : ''
   }
+
+  const callbackUrl = shouldRedirect
+    ? `${redirectUrl}/?state=${encodeURIComponent(state)}`
+    : redirectUrl
+
+  const signWithGoogle = () => {
+    if (window !== window.parent) {
+      popupCenter('/google', 'Sample Sign In')
+      checkoutService?.send({ type: 'SELECT' })
+      return
+    }
+
+    signIn('google', { callbackUrl: callbackUrl })
+  }
+
   return (
     <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Password"
-          type="password"
-          placeholder="Password"
-          {...register('password', {
-            required: {
-              value: true,
-              message: 'Password is required',
-            },
-            minLength: {
-              value: 8,
-              message: 'Password must be at least 8 characters',
-            },
-          })}
-          error={errors.password?.message}
-        />
-        <Input
-          label="Confirm Password"
-          type="password"
-          placeholder="Re-type your password"
-          {...register('confirmPassword', {
-            required: {
-              value: true,
-              message: 'Password confirmation is required',
-            },
-            validate: (value) => {
-              if (value !== getValues('password')) {
-                return 'Passwords do not match'
-              }
-              return true
-            },
-          })}
-          error={errors.confirmPassword?.message}
-        />
-        <Button type="submit" loading={isSubmitting} className="p-2.5">
-          <div className="flex justify-center items-center gap-2">
-            Create an account
-          </div>
-        </Button>
-      </form>
-      <div className="flex items-center justify-end px-6">
-        <button
-          onClick={(event) => {
-            event.preventDefault()
-            onReturn()
+      <div className="grid gap-4 px-6">
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
+          onClick={() => {
+            signWithGoogle()
           }}
-          className="hover:text-ui-main-600 underline"
         >
-          Back
-        </button>
+          Sign in with Google
+        </ConnectButton>
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
+          onClick={() => {
+            signWithGoogle()
+          }}
+        >
+          Sign in with Google
+        </ConnectButton>
+        <ConnectButton
+          icon={<SvgComponents.Unlock width={40} height={40} />}
+          onClick={() => {
+            signWithGoogle()
+          }}
+        >
+          Sign in with Google
+        </ConnectButton>
+        <div className="w-full flex items-center justify-end px-6 py-4">
+          <button
+            onClick={() => onReturn()}
+            className="hover:text-ui-main-600 underline"
+          >
+            Back
+          </button>
+        </div>
       </div>
     </div>
   )
 }
 
 export interface Props {
-  defaultEmail?: string
+  defaultEmail: string
   onExit(): void
+  accountType: UserAccountType
   onSignIn?(): void
   useIcon?: boolean
+  shouldRedirect: boolean
+  checkoutService?: CheckoutService
 }
 
 export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
+  accountType,
   useIcon = true,
-  defaultEmail = '',
+  defaultEmail,
+  shouldRedirect,
+  checkoutService,
 }: Props) => {
-  const [isValidEmail, setIsValidEmail] = useState(false)
-
-  const { retrieveUserAccount, createUserAccount } = useAccount('')
+  const { retrieveUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, deAuthenticate } = useAuth()
-  // TODO: Consider adding a way to set the email address to Auth context
-  const [authEmail, setAuthEmail] = useState(email)
-  const config = useConfig()
-  const { signOut } = useSIWE()
-  const storageService = useStorageService()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const signUp = async ({ email, password }: UserDetails) => {
-    const { passwordEncryptedPrivateKey } = await createUserAccount(
-      email,
-      password
-    )
-    const unlockProvider = new UnlockProvider(config.networks[1])
-    await unlockProvider.connect({
-      key: passwordEncryptedPrivateKey,
-      emailAddress: email,
-      password,
-    })
-    await authenticateWithProvider('UNLOCK', unlockProvider)
-  }
-
-  const onEmail = useCallback(
-    async ({ email }: { email: string }) => {
-      try {
-        const existingUser = await storageService.userExist(email)
-        setIsValidEmail(existingUser)
-      } catch (error) {
-        if (error instanceof Error) {
-          ToastHelper.error(`Email Error: ${error.message}`)
-        }
-      }
-    },
-    [storageService]
-  )
-
-  useEffect(() => {
-    onEmail({ email: defaultEmail })
-  }, [defaultEmail, onEmail])
-
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {authEmail ? (
-        <SignIn
-          email={authEmail}
+      {accountType.includes(UserAccountType.UnlockAccount) ? (
+        <SignInUnlockAccount
+          email={defaultEmail}
           signIn={signIn}
           onSignIn={onSignIn}
           useIcon={useIcon}
           onReturn={() => {
-            signOut()
-            deAuthenticate()
-            setAuthEmail('')
+            onExit()
           }}
         />
       ) : (
-        <>
-          {isValidEmail && (
-            <SignIn
-              email={defaultEmail}
-              signIn={signIn}
-              onSignIn={onSignIn}
-              useIcon={useIcon}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-          {!isValidEmail && (
-            <SignUp
-              email={defaultEmail}
-              signUp={signUp}
-              onSignIn={onSignIn}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-        </>
+        <SignUp
+          shouldRedirect={shouldRedirect}
+          checkoutService={checkoutService}
+          onReturn={() => {
+            onExit()
+          }}
+        />
       )}
     </div>
   )

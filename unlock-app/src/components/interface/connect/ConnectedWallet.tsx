@@ -1,9 +1,11 @@
+'use client'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
 import BlockiesSvg from 'blockies-react-svg'
+import { signOut as nextSighOut } from 'next-auth/react'
 
 interface ConnectedWalletProps {
   showIcon?: boolean
@@ -32,6 +34,7 @@ export const ConnectedWallet = ({
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
     await signOut()
+    await nextSighOut()
     deAuthenticate()
     setIsDisconnecting(false)
   }, [signOut, deAuthenticate, setIsDisconnecting])

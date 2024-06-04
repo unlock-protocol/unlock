@@ -3,7 +3,6 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
 import { connectMachine } from './connectMachine'
-import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { useMachine } from '@xstate/react'
 
@@ -68,9 +67,6 @@ export function Connect({
             oauthConfig={oauthConfig}
           />
         )
-      }
-      case 'SIGN_IN': {
-        return <UnlockAccountSignIn connectService={connectService} />
       }
       default: {
         return null

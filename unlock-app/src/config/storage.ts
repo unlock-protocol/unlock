@@ -15,6 +15,7 @@ storageClient.interceptors.request.use((request) => {
     return request
   }
   const accessToken = getAccessToken(currentAccountAddress)
+
   if (!accessToken) {
     return request
   }

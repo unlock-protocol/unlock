@@ -80,7 +80,11 @@ export function Connected({ service }: ConnectedCheckoutProps) {
   return (
     <>
       <Stepper service={service} />
-      <ConnectPage style="h-full mt-4 space-y-4" connected={connected} />
+      <ConnectPage
+        style="h-full mt-4 space-y-4"
+        connected={connected}
+        checkoutService={service}
+      />
     </>
   )
 }

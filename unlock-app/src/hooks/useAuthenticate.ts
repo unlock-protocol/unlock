@@ -5,7 +5,7 @@ import { useConfig } from '../utils/withConfig'
 import { useAuth } from '../contexts/AuthenticationContext'
 import { useAppStorage } from './useAppStorage'
 import { useConnectModal } from './useConnectModal'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import networks from '@unlock-protocol/networks'
 
 export interface EthereumWindow extends Window {
@@ -52,6 +52,7 @@ export enum WALLET_PROVIDER {
   WALLET_CONNECT,
   COINBASE,
   UNLOCK,
+  WAAS,
 }
 
 export type WalletProvider = keyof typeof WALLET_PROVIDER
@@ -63,6 +64,8 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   const { setStorage, removeKey } = useAppStorage()
   const { send } = useConnectModal()
 
+  const [isConnectingProvider, setIsConnectingProvider] = useState(false)
+
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
   const handleInjectProvider = useCallback(async () => {
@@ -70,6 +73,13 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   }, [authenticate, injectedOrDefaultProvider])
 
   const handleUnlockProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
+
+  const handleWaasProvider = useCallback(
     async (provider: any) => {
       return authenticate(provider)
     },
@@ -133,11 +143,14 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     WALLET_CONNECT: handleWalletConnectProvider,
     COINBASE: handleCoinbaseWalletProvider,
     UNLOCK: handleUnlockProvider,
+    WAAS: handleWaasProvider,
   }
 
   const authenticateWithProvider = useCallback(
     async (providerType: WalletProvider, provider?: any) => {
       try {
+        setIsConnectingProvider(true)
+        console.warn('Authenticating with provider', providerType)
         if (!walletHandlers[providerType]) {
           removeKey('provider')
         }
@@ -155,6 +168,8 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
         localStorage.setItem(RECENTLY_USED_PROVIDER, providerType)
         setStorage('provider', providerType)
         send(connectedProvider)
+        console.warn('Connected provider', connectedProvider)
+        setIsConnectingProvider(false)
         return connectedProvider
       } catch (error) {
         console.error('We could not connect to the provider', error)
@@ -165,6 +180,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   )
 
   return {
+    isConnectingProvider,
     handleUnlockProvider,
     handleInjectProvider,
     handleWalletConnectProvider,
