@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { UnlockV9 } = require('@unlock-protocol/contracts')
 const { PublicLockV8, LockSerializer } = require('@unlock-protocol/contracts')
-const { assert } = require('chai')
+const assert = require('assert')
 
 const {
   lockFixtures: Locks,
