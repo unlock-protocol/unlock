@@ -6,13 +6,16 @@ import { useController, useFormContext } from 'react-hook-form'
 import { Configuration } from '.'
 import { CheckoutConfig } from '@unlock-protocol/core'
 
-const RadioContentWrapper = classed.div('grid grid-cols-[24px_1fr] gap-2', {
-  variants: {
-    disabled: {
-      true: 'opacity-50 pointer-events-none',
+const RadioContentWrapper =
+  classed /
+  ('grid grid-cols-[24px_1fr] gap-2',
+  {
+    variants: {
+      disabled: {
+        true: 'opacity-50 pointer-events-none',
+      },
     },
-  },
-})
+  })
 
 interface ConfigurationOptions {
   label: string

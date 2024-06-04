@@ -152,10 +152,10 @@ export const durationAsText = (duration?: string) => {
   if (!duration) {
     return null
   }
-  if (ethers.BigNumber.from(duration).eq(MAX_UINT)) {
+  if (BigInt(duration).eq(MAX_UINT)) {
     return 'Unlimited'
   }
   return dayjs
-    .duration(ethers.BigNumber.from(duration).div(60).toNumber(), 'minutes')
+    .duration(BigInt(duration) / (60).toNumber(), 'minutes')
     .humanize()
 }

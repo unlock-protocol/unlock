@@ -52,7 +52,7 @@ const WalletlessRegistrationClaiming = ({
       return
     }
     const waitForConfirmation = async () => {
-      const provider = new ethers.providers.JsonRpcBatchProvider(
+      const provider = new ethers.JsonRpcProvider(
         config.networks[network].provider
       )
 

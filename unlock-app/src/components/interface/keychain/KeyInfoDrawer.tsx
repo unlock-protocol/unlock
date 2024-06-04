@@ -58,8 +58,8 @@ const KeyRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
   if (possible.lte(0)) {
     return (
@@ -130,7 +130,7 @@ export const KeyInfo = ({
           getErc20TokenSymbol(lock.tokenAddress, provider),
           getErc20Decimals(lock.tokenAddress, provider),
         ])
-        const amount = ethers.utils.formatUnits(lock.price, decimals)
+        const amount = ethers.formatUnits(lock.price, decimals)
         return {
           amount,
           symbol,
@@ -139,10 +139,7 @@ export const KeyInfo = ({
       } else {
         const native = config.networks[network]?.nativeCurrency
         const decimals = native.decimals
-        const amount = ethers.utils.formatUnits(
-          lock.price,
-          native.decimals || 18
-        )
+        const amount = ethers.formatUnits(lock.price, native.decimals || 18)
         const symbol = native.symbol || ''
         return {
           amount,

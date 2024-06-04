@@ -12,7 +12,7 @@ export async function setMaxNumberOfKeys(
   let decimals = this.networks[network].nativeCurrency.decimals
   const erc20Address = await lockContract.tokenAddress()
 
-  if (erc20Address !== ethers.AddressZero) {
+  if (erc20Address !== ethers.ZeroAddress) {
     decimals = await getErc20Decimals(erc20Address, this.provider)
   }
 

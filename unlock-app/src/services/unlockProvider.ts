@@ -6,14 +6,13 @@ import UnlockPurchaseRequest from '../structured_data/unlockPurchaseRequest'
 import EjectionRequest from '../structured_data/ejectionRequest'
 
 interface UnlockProviderOptions {
-  provider: ethers.utils.ConnectionInfo | string
-  id: ethers.providers.Networkish
+  provider: ethers.ConnectionInfo | string
+  id: ethers.Networkish
 }
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
-export default class UnlockProvider extends ethers.providers
-  .JsonRpcBatchProvider {
+export default class UnlockProvider extends ethers.JsonRpcProvider {
   public wallet: ethers.Wallet | null
 
   public emailAddress: string | null
@@ -89,7 +88,7 @@ export default class UnlockProvider extends ethers.providers
    */
   // eslint-disable-next-line no-unused-vars
   async personal_sign([data, _]: any[]) {
-    const content = ethers.utils.arrayify(data)
+    const content = ethers.getBytes(data)
     const signature = await this.wallet?.signMessage(content)
     return signature
   }
@@ -97,12 +96,12 @@ export default class UnlockProvider extends ethers.providers
   // TODO: this almost certainly doesn't work
   async eth_signTypedData([_, data]: any[]) {
     const { domain, types, message, messageKey } = data
-    return await this.wallet?._signTypedData(domain, types, message[messageKey])
+    return await this.wallet?.signTypedData(domain, types, message[messageKey])
   }
 
   async eth_signTypedData_v4([_, data]: any[]) {
     const { domain, types, message, primaryType } = JSON.parse(data)
-    return this.wallet?._signTypedData(
+    return this.wallet?.signTypedData(
       domain,
       {
         [primaryType]: types[primaryType],
@@ -116,7 +115,7 @@ export default class UnlockProvider extends ethers.providers
   // on the provider?
   async signData(data: any) {
     const { domain, types, message, messageKey } = data
-    const signature = await this.wallet?._signTypedData(
+    const signature = await this.wallet?.signTypedData(
       domain,
       types,
       message[messageKey]

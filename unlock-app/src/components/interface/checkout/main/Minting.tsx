@@ -152,9 +152,7 @@ export function Minting({
       try {
         const network = config.networks[mint.network || lock!.network]
         if (network) {
-          const provider = new ethers.providers.JsonRpcBatchProvider(
-            network.provider
-          )
+          const provider = new ethers.JsonRpcProvider(network.provider)
 
           const transaction = await provider.waitForTransaction(
             mint!.transactionHash!,

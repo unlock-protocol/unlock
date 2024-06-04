@@ -83,8 +83,8 @@ export const ExtendMembershipModal = ({
           symbol: nativeCurrency?.symbol,
           decimal: nativeCurrency?.decimals,
           balance: await web3Service.getAddressBalance(account!, network),
-          allowance: ethers.BigNumber.from(0),
-          renewals: ethers.BigNumber.from(0),
+          allowance: BigInt(0),
+          renewals: BigInt(0),
         }
       }
       const [symbol, decimal, balance, allowance] = await Promise.all([
@@ -98,7 +98,7 @@ export const ExtendMembershipModal = ({
         decimal,
         balance,
         allowance,
-        renewals: allowance.div(ownedKey.lock.price),
+        renewals: allowance / ownedKey.lock.price,
       }
     },
     {
@@ -115,9 +115,7 @@ export const ExtendMembershipModal = ({
         lockAddress,
         unlimited
           ? MAX_UINT
-          : ethers.BigNumber.from(renewal?.toString() || '1')
-              .mul(ownedKey.lock.price)
-              .toString(),
+          : BigInt(renewal?.toString() || '1') * ownedKey.lock.price.toString(),
         provider,
         walletService.signer
       )
@@ -170,10 +168,7 @@ export const ExtendMembershipModal = ({
             <h3 className="text-lg font-bold"> Membership Details </h3>
             <div className="divide-y">
               <KeyItem label="Price">
-                {ethers.utils.formatUnits(
-                  ownedKey.lock.price,
-                  renewalInfo?.decimal
-                )}{' '}
+                {ethers.formatUnits(ownedKey.lock.price, renewalInfo?.decimal)}{' '}
                 {renewalInfo?.symbol}
               </KeyItem>
               <KeyItem label="Duration">
@@ -225,10 +220,8 @@ export const ExtendMembershipModal = ({
                 <div className="text-sm text-gray-600">
                   Your membership will renew for {renewalAmount} times and will
                   cost{' '}
-                  {ethers.utils.formatUnits(
-                    ethers.BigNumber.from(ownedKey.lock.price).mul(
-                      renewalAmount || 1
-                    ),
+                  {ethers.formatUnits(
+                    BigInt(ownedKey.lock.price) * (renewalAmount || 1),
                     renewalInfo?.decimal
                   )}{' '}
                   {renewalInfo?.symbol}

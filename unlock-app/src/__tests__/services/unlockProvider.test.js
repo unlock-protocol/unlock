@@ -1,10 +1,10 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
 import { vi, describe, beforeAll, expect, it } from 'vitest'
 
 const utf8ToHex = (str) =>
-  utils.hexlify(str.length ? utils.toUtf8Bytes(str) : 0)
+  ethers.toBeHex(str.length ? ethers.toUtf8Bytes(str) : 0)
 
 const key = {
   id: 'fb1280c0-d646-4e40-9550-7026b1be504a',
@@ -85,8 +85,8 @@ describe('Unlock Provider', () => {
         // sigutil seems to downcase things
 
         expect(
-          utils.verifyTypedData(domain, types, message[messageKey], signature)
-        ).toEqual(utils.getAddress(publicKey))
+          ethers.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(ethers.getAddress(publicKey))
       })
 
       it('should also sign an object with default values when not everything is passed', async () => {
@@ -97,8 +97,8 @@ describe('Unlock Provider', () => {
         const { domain, types, message, messageKey } = data
         // sigutil seems to downcase things
         expect(
-          utils.verifyTypedData(domain, types, message[messageKey], signature)
-        ).toEqual(utils.getAddress(publicKey))
+          ethers.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(ethers.getAddress(publicKey))
       })
     })
 
@@ -110,8 +110,8 @@ describe('Unlock Provider', () => {
         const { domain, types, message, messageKey } = data
 
         expect(
-          utils.verifyTypedData(domain, types, message[messageKey], signature)
-        ).toEqual(utils.getAddress(publicKey))
+          ethers.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(ethers.getAddress(publicKey))
       })
     })
 
@@ -128,8 +128,8 @@ describe('Unlock Provider', () => {
 
         const { domain, types, message, messageKey } = data
         expect(
-          utils.verifyTypedData(domain, types, message[messageKey], signature)
-        ).toEqual(utils.getAddress(publicKey))
+          ethers.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(ethers.getAddress(publicKey))
         // Expiration must be some amount of time after right now
         expect(data.message.purchaseRequest.expiry > currentTime).toBeTruthy()
       })
@@ -144,8 +144,8 @@ describe('Unlock Provider', () => {
         // second param is unused, but in keeping with what we receive from WalletService
         const sig = await provider.personal_sign([messageHash, ''])
 
-        expect(utils.verifyMessage(utils.arrayify(messageHash), sig)).toEqual(
-          utils.getAddress(publicKey)
+        expect(ethers.verifyMessage(ethers.getBytes(messageHash), sig)).toEqual(
+          ethers.getAddress(publicKey)
         )
       })
 
@@ -172,8 +172,8 @@ describe('Unlock Provider', () => {
 
         const { domain, types, message, messageKey } = data
         expect(
-          utils.verifyTypedData(domain, types, message[messageKey], signature)
-        ).toEqual(utils.getAddress(publicKey))
+          ethers.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(ethers.getAddress(publicKey))
       })
     })
   })

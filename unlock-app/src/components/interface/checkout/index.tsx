@@ -38,11 +38,7 @@ export function CheckoutPage() {
     paywallConfigFromQuery
 
   // If the referrer address is valid, override the paywall config referrer with it.
-  if (
-    referrerAddress &&
-    paywallConfig &&
-    ethers.utils.isAddress(referrerAddress)
-  ) {
+  if (referrerAddress && paywallConfig && ethers.isAddress(referrerAddress)) {
     paywallConfig.referrer = referrerAddress
   }
 

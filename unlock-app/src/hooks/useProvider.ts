@@ -86,20 +86,17 @@ export const useProvider = (config: any) => {
       await closeConnectModal()
       pr = response?.provider
     }
-    let walletServiceProvider: ethers.providers.Web3Provider = pr
+    let walletServiceProvider: ethers.Web3Provider = pr
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
       if (pr.isUnlock) {
         walletServiceProvider = (await UnlockProvider.reconnect(
           pr,
           networkConfig
-        )) as unknown as ethers.providers.Web3Provider
+        )) as unknown as ethers.Web3Provider
       } else {
         await switchWeb3ProviderNetwork(networkId)
-        walletServiceProvider = new ethers.providers.Web3Provider(
-          pr.provider,
-          'any'
-        )
+        walletServiceProvider = new ethers.Web3Provider(pr.provider, 'any')
       }
     }
     return walletServiceProvider
@@ -112,7 +109,7 @@ export const useProvider = (config: any) => {
     return _walletService
   }
 
-  const resetProvider = async (provider: ethers.providers.Provider) => {
+  const resetProvider = async (provider: ethers.Provider) => {
     try {
       setProvider(provider)
       const {
@@ -165,7 +162,7 @@ export const useProvider = (config: any) => {
   const connectProvider = async (provider: any) => {
     setLoading(true)
     let auth
-    if (provider instanceof ethers.providers.Provider) {
+    if (provider instanceof ethers.Provider) {
       auth = await resetProvider(provider)
     } else {
       if (provider.enable) {
@@ -177,15 +174,15 @@ export const useProvider = (config: any) => {
           return
         }
       }
-      const ethersProvider = new ethers.providers.Web3Provider(provider)
+      const ethersProvider = new ethers.Web3Provider(provider)
 
       if (provider.on) {
         provider.on('accountsChanged', async () => {
-          await resetProvider(new ethers.providers.Web3Provider(provider))
+          await resetProvider(new ethers.Web3Provider(provider))
         })
 
         provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.providers.Web3Provider(provider))
+          await resetProvider(new ethers.Web3Provider(provider))
         })
       }
       auth = await resetProvider(ethersProvider)

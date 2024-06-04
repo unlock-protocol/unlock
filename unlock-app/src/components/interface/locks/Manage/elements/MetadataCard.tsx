@@ -65,8 +65,8 @@ const MembershipRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
   if (possible.lte(0)) {
     return (

@@ -9,7 +9,7 @@ export default {
   // This converts a string representation from a value to a number of units, based on the number of decimals passed in
   toDecimal: (value: string, decimals: number) =>
     ethers.parseUnits(value, decimals),
-  hexlify: ethers.hexlify,
+  hexlify: ethers.toBeHex,
   hexStripZeros: ethers.stripZerosLeft,
   bigNumberify: BigInt,
   hexToNumberString: (num: number) =>
