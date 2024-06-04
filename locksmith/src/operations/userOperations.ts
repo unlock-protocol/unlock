@@ -6,6 +6,8 @@ import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
 import { User, UserReference } from '../models'
 import RecoveryPhrase from '../utils/recoveryPhrase'
+import { UserAccount } from '../models/userAccount'
+import { UserAccountType } from '../controllers/userController'
 
 export const createUser = async (
   input: UserCreationInput
@@ -33,6 +35,23 @@ export const createUser = async (
   }
 
   return undefined
+}
+
+export const createUserAccount = async (
+  email: string,
+  selectedProvider: UserAccountType
+): Promise<string | null> => {
+  const userAccount = await UserAccount.create({
+    id: crypto.randomUUID(),
+    emailAddress: Normalizer.emailAddress(email),
+    loginMethod: [selectedProvider],
+  })
+
+  if (userAccount) {
+    return userAccount.id
+  }
+
+  return null
 }
 
 export const getUserPrivateKeyByEmailAddress = async (
@@ -195,12 +214,53 @@ export const eject = async (publicKey: ethereumAddress): Promise<any> => {
 }
 
 export const findByEmail = async (emailAddress: string) => {
-  const user = await UserReference.findOne({
+  const user = await UserAccount.findOne({
     where: {
       emailAddress: Normalizer.emailAddress(emailAddress),
     },
   })
+
+  if (!user) {
+    const unlockUser = await UserReference.findOne({
+      where: {
+        emailAddress: Normalizer.emailAddress(emailAddress),
+      },
+    })
+
+    return unlockUser
+  }
+
   return user
+}
+
+export const findUserAccountByEmail = async (emailAddress: string) => {
+  const user = await UserAccount.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+
+  return user
+}
+
+export const findTypeByEmail = async (emailAddress: string) => {
+  const unlockUser = await UserReference.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+
+  if (unlockUser) return [UserAccountType.UnlockAccount]
+
+  const user = await UserAccount.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+
+  if (user) return user.loginMethod
+
+  return [UserAccountType.None]
 }
 
 export const findByWalletAddress = async (walletAddress: string) => {
@@ -225,6 +285,7 @@ const UserOperations = {
   getCardDetailsFromStripe,
   eject,
   findByEmail,
+  findTypeByEmail,
 }
 
 export default UserOperations

@@ -5,10 +5,19 @@ import UserOperations from '../operations/userOperations'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
+import { issueUserToken } from '@coinbase/waas-server-auth'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
 const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
+
+export const enum UserAccountType {
+  UnlockAccount = 'UNLOCK_ACCOUNT',
+  GoogleAccount = 'GOOGLE_ACCOUNT',
+  PasskeyAccount = 'PASSKEY_ACCOUNT',
+  EmailCodeAccount = 'EMAIL_CODE',
+  None = 'NONE',
+}
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -88,6 +97,45 @@ export const retrieveEncryptedPrivatekey = async (
     return res.json({
       passwordEncryptedPrivateKey,
     })
+  }
+}
+
+export const retrieveWaasUuid = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const apiKeyName = process.env.COINBASE_CLOUD_API_KEY_NAME
+  const privateKey = process.env.COINBASE_CLOUD_PRIVATE_KEY
+
+  const { emailAddress, selectedProvider } = req.params
+
+  let userUUID
+
+  const user = await UserOperations.findUserAccountByEmail(
+    req.params.emailAddress
+  )
+  userUUID = user?.id
+
+  // If no user is found, create
+  if (!user) {
+    if (!selectedProvider) return res.sendStatus(400)
+    const newUserUUID = await UserOperations.createUserAccount(
+      emailAddress,
+      selectedProvider as UserAccountType
+    )
+    userUUID = newUserUUID
+  }
+
+  try {
+    const token = await issueUserToken({
+      apiKeyName: apiKeyName as string,
+      privateKey: privateKey as string,
+      userID: userUUID as string,
+    })
+    res.json({ token })
+  } catch (error) {
+    console.error('Error issuing token', error.message)
+    return res.sendStatus(400).json('Error issuing token')
   }
 }
 
@@ -282,18 +330,19 @@ export const eject = async (req: Request, res: Response) => {
 
 export const exist = async (request: Request, response: Response) => {
   const { emailAddress } = request.params
-  const user = await UserOperations.findByEmail(emailAddress)
+  const userAccountType = await UserOperations.findTypeByEmail(emailAddress)
 
-  if (!user) {
+  if (!userAccountType) {
     return response.sendStatus(404)
   }
-  return response.sendStatus(200)
+  return response.status(200).json({ userAccountType })
 }
 
 const UserController = {
   createUser,
   userCreationStatus,
   retrieveEncryptedPrivatekey,
+  retrieveWaasUuid,
   retrieveRecoveryPhrase,
   updateUser,
   updatePaymentDetails,

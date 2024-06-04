@@ -73,6 +73,10 @@ router.get(
   userController.retrieveEncryptedPrivatekey
 )
 router.get(
+  '/:emailAddress/:selectedProvider/waas',
+  userController.retrieveWaasUuid
+)
+router.get(
   '/:emailAddress/recoveryphrase',
   userController.retrieveRecoveryPhrase
 )
