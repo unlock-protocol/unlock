@@ -20265,7 +20265,7 @@ __metadata:
     hardhat-erc1820: "npm:0.1.0"
     hardhat-gas-reporter: "npm:2.2.0"
     hardhat-storage-layout: "npm:0.1.7"
-    hardhat-tracer: "npm:3.0.0"
+    hardhat-tracer: "npm:3.0.1"
     prettier: "npm:3.2.5"
     prettier-plugin-solidity: "npm:1.3.1"
     solhint: "npm:4.5.4"
@@ -33915,17 +33915,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hardhat-tracer@npm:3.0.0":
-  version: 3.0.0
-  resolution: "hardhat-tracer@npm:3.0.0"
+"hardhat-tracer@npm:3.0.1":
+  version: 3.0.1
+  resolution: "hardhat-tracer@npm:3.0.1"
   dependencies:
     chalk: "npm:^4.1.2"
     debug: "npm:^4.3.4"
     ethers: "npm:^5.6.1"
+    semver: "npm:^7.6.2"
   peerDependencies:
     chai: 4.x
-    hardhat: ">=2.16 <3.x"
-  checksum: 10/a39eda35aea833fabefb6d93497efd247f646b373a7025662940d33b50201873ac385dddfe62c8705b2383fc4a47759bd943c1a5f346fa83111666d4311d2676
+    hardhat: ">=2.22.5 <3.x"
+  checksum: 10/980fffbaa4f6b46a8b37348e36988c38c9f5fb67c23fe027e038d7cee3e1f4f16d199730221de9e01de26e4117b2009cfdc12968c61acad24c42debd702c795c
   languageName: node
   linkType: hard
 
@@ -47962,7 +47963,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.0.0, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.1, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0":
+"semver@npm:^7.0.0, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5, semver@npm:^7.3.7, semver@npm:^7.3.8, semver@npm:^7.5.1, semver@npm:^7.5.2, semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.0, semver@npm:^7.6.2":
   version: 7.6.2
   resolution: "semver@npm:7.6.2"
   bin:
