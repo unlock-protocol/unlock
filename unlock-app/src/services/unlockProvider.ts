@@ -115,13 +115,11 @@ export default class UnlockProvider extends ethers.JsonRpcProvider {
   // on the provider?
   async signData(data: any) {
     const { domain, types, message, messageKey } = data
-    console.log('signData', { domain, types, msg: message[messageKey] })
     const signature = await this.wallet?.signTypedData(
       domain,
       types,
       message[messageKey]
     )
-    // console.log(data, signature)
     return { data, signature }
   }
 

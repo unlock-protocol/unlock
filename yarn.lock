@@ -20591,7 +20591,7 @@ __metadata:
     deep-object-diff: "npm:1.1.9"
     dotenv: "npm:16.4.5"
     eslint: "npm:8.57.0"
-    ethers: "npm:6.12.1"
+    ethers: "npm:6.13.0"
     file-saver: "npm:2.0.5"
     frames.js: "npm:0.15.1"
     from-exponential: "npm:1.1.1"
