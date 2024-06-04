@@ -87,7 +87,7 @@ export const polygon: NetworkConfig = {
     },
   ],
   provider: 'https://rpc.unlock-protocol.com/137',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://polygon-rpc.com/',
   startBlock: 21986688,
   subgraph: {
