@@ -68,7 +68,7 @@ describe('useCheckoutCommunication', () => {
 
     await waitFor(() => result.current.ready)
 
-    const methodCall = { method: 'net_version', id: 42, params: [] }
+    const methodCall = { method: 'net_version', id: '42', params: [] }
     result.current.emitMethodCall(methodCall)
 
     expect(emit).toHaveBeenCalledWith(CheckoutEvents.methodCall, methodCall)

@@ -126,7 +126,7 @@ export const SelectCurrencyModal = ({
     setContractAddress('')
   }
 
-  const isValidAddress = utils.isAddress(contractAddress)
+  const isValidAddress = ethers.isAddress(contractAddress)
 
   const noItems =
     tokens?.length === 0 &&

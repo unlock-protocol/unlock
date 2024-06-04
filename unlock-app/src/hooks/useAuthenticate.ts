@@ -121,10 +121,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
       appLogoUrl: '/static/images/svg/default-lock-logo.svg',
     })
 
-    const ethereum = walletLink.makeBrowserProvider(
-      config.networks[1].provider,
-      1
-    )
+    const ethereum = walletLink.makeWeb3Provider(config.networks[1].provider, 1)
     return authenticate(ethereum)
   }, [authenticate, config])
 

@@ -6,7 +6,7 @@ import UnlockPurchaseRequest from '../structured_data/unlockPurchaseRequest'
 import EjectionRequest from '../structured_data/ejectionRequest'
 
 interface UnlockProviderOptions {
-  provider: ethers.ConnectionInfo | string
+  provider: ethers.FetchRequest | string
   id: ethers.Networkish
 }
 // UnlockProvider implements a subset of Web3 provider functionality, sufficient
