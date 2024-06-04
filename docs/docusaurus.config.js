@@ -304,13 +304,7 @@ const config = {
           href: "https://github.com/unlock-protocol/unlock",
           label: "GitHub",
           position: "right",
-        },
-        {
-          to: "https://unlock-protocol.gitbook.io/",
-          label: "Older Docs",
-          position: "right",
-          rel: "nofollow,noindex",
-        },
+        }
       ],
     },
     footer: {
