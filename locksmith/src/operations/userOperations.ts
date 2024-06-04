@@ -286,6 +286,8 @@ const UserOperations = {
   eject,
   findByEmail,
   findTypeByEmail,
+  findUserAccountByEmail,
+  createUserAccount,
 }
 
 export default UserOperations
