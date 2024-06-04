@@ -14,7 +14,7 @@ export class UserAccount extends Model<
 > {
   declare id: UUID
   declare emailAddress: string
-  declare loginMethod: UserAccountType[]
+  declare loginMethods: UserAccountType[]
   declare createdAt: CreationOptional<Date>
   declare updatedAt: CreationOptional<Date>
 }
@@ -32,7 +32,7 @@ UserAccount.init(
       allowNull: false,
       unique: true,
     },
-    loginMethod: {
+    loginMethods: {
       type: DataTypes.ARRAY(
         DataTypes.ENUM(
           'UNLOCK_ACCOUNT',

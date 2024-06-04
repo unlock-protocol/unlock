@@ -44,7 +44,7 @@ export const createUserAccount = async (
   const userAccount = await UserAccount.create({
     id: crypto.randomUUID(),
     emailAddress: Normalizer.emailAddress(email),
-    loginMethod: [selectedProvider],
+    loginMethods: [selectedProvider],
   })
 
   if (userAccount) {
@@ -243,7 +243,7 @@ export const findUserAccountByEmail = async (emailAddress: string) => {
   return user
 }
 
-export const findTypeByEmail = async (emailAddress: string) => {
+export const findLoginMethodsByEmail = async (emailAddress: string) => {
   const unlockUser = await UserReference.findOne({
     where: {
       emailAddress: Normalizer.emailAddress(emailAddress),
@@ -258,7 +258,7 @@ export const findTypeByEmail = async (emailAddress: string) => {
     },
   })
 
-  if (user) return user.loginMethod
+  if (user) return user.loginMethods
 
   return [UserAccountType.None]
 }
@@ -285,7 +285,7 @@ const UserOperations = {
   getCardDetailsFromStripe,
   eject,
   findByEmail,
-  findTypeByEmail,
+  findTypeByEmail: findLoginMethodsByEmail,
   findUserAccountByEmail,
   createUserAccount,
 }

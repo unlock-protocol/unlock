@@ -15,7 +15,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      loginMethod: {
+      loginMethods: {
         type: Sequelize.ARRAY(
           Sequelize.ENUM(
             'UNLOCK_ACCOUNT',

@@ -6,6 +6,7 @@ import logger from '../logger'
 import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
+import config from '../config/config'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -104,9 +105,6 @@ export const retrieveWaasUuid = async (
   req: Request,
   res: Response
 ): Promise<any> => {
-  const apiKeyName = process.env.COINBASE_CLOUD_API_KEY_NAME
-  const privateKey = process.env.COINBASE_CLOUD_PRIVATE_KEY
-
   const { emailAddress, selectedProvider } = req.params
 
   let userUUID
@@ -118,7 +116,10 @@ export const retrieveWaasUuid = async (
 
   // If no user is found, create
   if (!user) {
-    if (!selectedProvider) return res.sendStatus(400)
+    if (!selectedProvider) {
+      console.error('No selectedProvider provided')
+      return res.sendStatus(500)
+    }
     const newUserUUID = await UserOperations.createUserAccount(
       emailAddress,
       selectedProvider as UserAccountType
@@ -128,14 +129,20 @@ export const retrieveWaasUuid = async (
 
   try {
     const token = await issueUserToken({
-      apiKeyName: apiKeyName as string,
-      privateKey: privateKey as string,
+      apiKeyName: config.coinbaseCloudApiKeyName as string,
+      privateKey: config.coinbaseCloudPrivateKey as string,
       userID: userUUID as string,
     })
     res.json({ token })
   } catch (error) {
-    console.error('Error issuing token', error.message)
-    return res.sendStatus(400).json('Error issuing token')
+    console.error(
+      'Error issuing Coinbase WAAS token for user',
+      userUUID,
+      error.message
+    )
+    return res
+      .sendStatus(400)
+      .json('Error issuing Coinbase WAAS token for user')
   }
 }
 
