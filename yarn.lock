@@ -18583,15 +18583,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.13.0":
-  version: 20.13.0
-  resolution: "@types/node@npm:20.13.0"
-  dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10/82f0e999078fa5e251de002c755d18f63c47ff09c192fdd1381ca91774327563ad778244ab51f52304a9432b5ba678c1328585ef5e92ffdc5eed8e950a6ad1b9
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:20.14.1":
   version: 20.14.1
   resolution: "@types/node@npm:20.14.1"
@@ -20152,16 +20143,16 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.0"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.6"
-    "@types/node": "npm:20.13.0"
+    "@types/node": "npm:20.14.1"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     eslint: "npm:8.57.0"
-    ethers: "npm:6.12.1"
+    ethers: "npm:6.13.0"
     hardhat: "npm:2.22.3"
     mocha: "npm:10.4.0"
-    prettier: "npm:3.2.5"
+    prettier: "npm:3.3.0"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
     tslint: "npm:6.1.3"
