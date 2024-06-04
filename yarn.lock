@@ -20308,11 +20308,11 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     eslint: "npm:8.57.0"
     postmate: "npm:1.5.2"
-    tsup: "npm:8.0.2"
+    tsup: "npm:8.1.0"
     typescript: "npm:5.4.5"
     vite: "npm:5.2.11"
     vite-plugin-css-injected-by-js: "npm:3.5.1"
-    vite-plugin-node-polyfills: "npm:0.21.0"
+    vite-plugin-node-polyfills: "npm:0.22.0"
     vitest: "npm:1.6.0"
     vitest-fetch-mock: "npm:0.2.2"
   languageName: unknown
