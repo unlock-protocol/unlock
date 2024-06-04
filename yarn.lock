@@ -40624,9 +40624,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"miniflare@npm:3.20240524.1":
-  version: 3.20240524.1
-  resolution: "miniflare@npm:3.20240524.1"
+"miniflare@npm:3.20240524.2":
+  version: 3.20240524.2
+  resolution: "miniflare@npm:3.20240524.2"
   dependencies:
     "@cspotcode/source-map-support": "npm:0.8.1"
     acorn: "npm:^8.8.0"
@@ -40642,7 +40642,7 @@ __metadata:
     zod: "npm:^3.20.6"
   bin:
     miniflare: bootstrap.js
-  checksum: 10/e6353ada3d9d2296481d3c4f17b3105c9abe0ba0ff0cfcd2a2a962e61faae5df27ee7a539f44d006b6a750c289ed2639dfd694a52d6ab1c579d89aeffc0a9d12
+  checksum: 10/ee419f14c640aeba1f713d44a407ac37b99406e81cebdffde2b8a589289f47a2880d9c6e0d6372d18cae191f88b48d11a9b63010bbccf9c7004993a28843b386
   languageName: node
   linkType: hard
 
@@ -45338,7 +45338,7 @@ __metadata:
     toucan-js: "npm:3.4.0"
     typescript: "npm:5.4.5"
     vitest: "npm:1.6.0"
-    wrangler: "npm:3.58.0"
+    wrangler: "npm:3.59.0"
   languageName: unknown
   linkType: soft
 
@@ -54598,9 +54598,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"wrangler@npm:3.58.0":
-  version: 3.58.0
-  resolution: "wrangler@npm:3.58.0"
+"wrangler@npm:3.59.0":
+  version: 3.59.0
+  resolution: "wrangler@npm:3.59.0"
   dependencies:
     "@cloudflare/kv-asset-handler": "npm:0.3.2"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
@@ -54609,7 +54609,7 @@ __metadata:
     chokidar: "npm:^3.5.3"
     esbuild: "npm:0.17.19"
     fsevents: "npm:~2.3.2"
-    miniflare: "npm:3.20240524.1"
+    miniflare: "npm:3.20240524.2"
     nanoid: "npm:^3.3.3"
     path-to-regexp: "npm:^6.2.0"
     resolve: "npm:^1.22.8"
@@ -54628,7 +54628,7 @@ __metadata:
   bin:
     wrangler: bin/wrangler.js
     wrangler2: bin/wrangler.js
-  checksum: 10/e47ecc0ff9422550b22fa7cab491f20f1aee68f81b1b758743ce2042de2f26f4649d5b56ec09e039c8bd9ce1f7c60ce966e00a855ac2ee96fc81b5fc60597879
+  checksum: 10/6096094ee012a51a7ce24e08ba8fa32777cf5dae83c613c8b09e64416a99e95005431d6d6ce7f8f74a956dc2939c8aef9e882033624eb589b4c50d2a26a721d1
   languageName: node
   linkType: hard
 
