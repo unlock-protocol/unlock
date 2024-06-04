@@ -20236,10 +20236,10 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:8.57.0"
     next: "npm:14.2.3"
-    prettier: "npm:3.2.5"
+    prettier: "npm:3.3.0"
     typescript: "npm:5.4.5"
     vite: "npm:5.2.11"
-    vite-plugin-node-polyfills: "npm:0.21.0"
+    vite-plugin-node-polyfills: "npm:0.22.0"
   languageName: unknown
   linkType: soft
 
