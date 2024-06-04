@@ -1,4 +1,3 @@
-'use client'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'

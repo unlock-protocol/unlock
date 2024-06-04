@@ -369,9 +369,6 @@ export function Select({ checkoutService }: Props) {
     isLoading,
   ])
 
-  console.log('Conected: ', connected)
-  console.log('Account: ', account)
-
   const selectLock = async (event: any) => {
     event.preventDefault()
 
