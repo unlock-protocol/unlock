@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -6,6 +6,9 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
 import { ConnectPage } from '../main/ConnectPage'
+import { useSession } from 'next-auth/react'
+import ConnectingWaas from '../../connect/ConnectingWaas'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   paywallConfig?: PaywallConfigType
@@ -56,6 +59,23 @@ export function ConfirmConnect({
         onSuccess(result.signature, result.message)
       }
     }
+  }
+
+  const { signIn, isSignedIn } = useSIWE()
+  const { data: session } = useSession()
+  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
+
+  if (isLoadingWaas) {
+    return (
+      <Fragment>
+        <main className="h-full mt-4 space-y-5">
+          <ConnectingWaas />
+        </main>
+        <footer className="grid items-center px-6 pt-2 border-t">
+          <PoweredByUnlock />
+        </footer>
+      </Fragment>
+    )
   }
 
   return (

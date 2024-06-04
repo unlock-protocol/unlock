@@ -21,7 +21,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
   let userText: string
   let signOutText: string
 
-  if (isUnlockAccount && email) {
+  if (email) {
     userText = `User: ${email}`
     signOutText = 'Sign out'
   } else {
