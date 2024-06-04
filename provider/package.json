@@ -10,7 +10,7 @@
   "dependencies": {
     "ethers": "6.12.1",
     "toucan-js": "3.4.0",
-    "wrangler": "3.53.0"
+    "wrangler": "3.58.0"
   },
   "scripts": {
     "dev": "yarn wrangler dev",
