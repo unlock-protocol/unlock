@@ -136,9 +136,6 @@ export const useProvider = (config: any) => {
       setNetwork(_network || undefined)
       setConnected(_account || undefined)
 
-      console.log('Set account', _account)
-      console.log('Set Connected', connected)
-
       return {
         email,
         provider,

@@ -27,7 +27,6 @@ export interface SIWEContextType {
   isSignedIn: boolean
   signature?: string
   message?: string
-  isSigningSiwe: boolean
 }
 
 const signOutToken = async () => {
@@ -52,7 +51,6 @@ const SIWEContext = createContext<SIWEContextType>({
   signOut: signOutToken,
   session: undefined,
   isSignedIn: false,
-  isSigningSiwe: false,
 })
 
 interface Props {
@@ -69,7 +67,6 @@ export const SIWEProvider = ({ children }: Props) => {
   const { session, refetchSession } = useSession()
   const [status, setStatus] = useState<Status>('idle')
   const queryClient = useQueryClient()
-  const [isSigningSiwe, setIsSigningSiwe] = useState(false)
 
   const onError = (error: any) => {
     console.error(error)
@@ -153,8 +150,6 @@ export const SIWEProvider = ({ children }: Props) => {
   }
 
   const signIn = async () => {
-    console.log('Signing in with SIWE')
-    setIsSigningSiwe(true)
     setStatus('loading')
     try {
       console.log('Signing in with SIWE', connected)
@@ -188,14 +183,12 @@ export const SIWEProvider = ({ children }: Props) => {
       return null
     }
     setStatus('idle')
-    setIsSigningSiwe(false)
   }
 
   const isSignedIn = !!session
   return (
     <SIWEContext.Provider
       value={{
-        isSigningSiwe,
         session,
         signIn,
         siweSign,
