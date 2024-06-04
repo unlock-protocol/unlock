@@ -19934,7 +19934,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:8.57.0"
-    tsup: "npm:8.0.2"
+    tsup: "npm:8.1.0"
     typescript: "npm:5.4.5"
     vitest: "npm:1.6.0"
   peerDependencies:
@@ -19958,7 +19958,7 @@ __metadata:
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     storybook: "npm:8.1.1"
-    tsup: "npm:8.0.2"
+    tsup: "npm:8.1.0"
     tsx: "npm:4.8.2"
     typescript: "npm:5.4.5"
     vite: "npm:5.2.11"
@@ -20079,7 +20079,7 @@ __metadata:
     copyfiles: "npm:2.4.1"
     ethers: "npm:6.12.1"
     hardhat: "npm:2.22.3"
-    tsup: "npm:8.0.2"
+    tsup: "npm:8.1.0"
     typescript: "npm:5.4.5"
     zksync-ethers: "npm:6.7.1"
   languageName: unknown
