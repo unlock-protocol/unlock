@@ -20,6 +20,7 @@ describe('eventOperations', () => {
   beforeEach(async () => {
     await EventData.truncate()
     await CheckoutConfig.truncate()
+    await KeyMetadata.truncate()
   })
   describe('createEventSlug', () => {
     it('should create the event with the correct slug', async () => {
@@ -208,7 +209,7 @@ describe('eventOperations', () => {
     })
   })
 
-  describe.only('getCheckedInAttendees', () => {
+  describe('getCheckedInAttendees', () => {
     let slug
     beforeEach(async () => {
       const network = 11155111
@@ -228,13 +229,20 @@ describe('eventOperations', () => {
       slug = event.slug
       // And now check in a few attendees, but not all!
       for (let i = 0; i < 10; i++) {
-        let metadata: { checkedInAt: any? } = {}
-        if (i % 2) {
+        const metadata: { checkedInAt?: any } = {}
+        if (i === 0) {
           metadata.checkedInAt = new Date().toISOString()
-        } else if (i % 3) {
+        } else if (i === 3) {
           metadata.checkedInAt = [new Date().toISOString()]
-        } else if (i % 5) {
-          metadata.checkedInAt = [new Date().toISOString()]
+        } else if (i === 5) {
+          metadata.checkedInAt = [
+            { at: new Date().toISOString(), verifierName: 'Verifier A' },
+          ]
+        } else if (i === 7) {
+          metadata.checkedInAt = [
+            new Date().toISOString(),
+            { at: new Date().toISOString(), verifierName: 'Verifier A' },
+          ]
         }
 
         await KeyMetadata.upsert(
