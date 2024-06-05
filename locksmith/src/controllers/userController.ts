@@ -7,7 +7,7 @@ import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
-import { OAuth2Client } from 'google-auth-library'
+import { verifyToken } from '../utils/verifyGoogleToken'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -100,22 +100,6 @@ export const retrieveEncryptedPrivatekey = async (
       passwordEncryptedPrivateKey,
     })
   }
-}
-
-const verifyToken = async (email: string, token: string) => {
-  const client = new OAuth2Client()
-  const ticket = await client.verifyIdToken({
-    idToken: token,
-    audience: config.googleAuthClientId,
-  })
-
-  const payload = ticket.getPayload()
-
-  if (payload?.email === email) {
-    return true
-  }
-
-  return false
 }
 
 export const retrieveWaasUuid = async (

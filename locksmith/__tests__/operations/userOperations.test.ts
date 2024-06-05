@@ -2,7 +2,9 @@ import { Op } from 'sequelize'
 import UserOperations from '../../src/operations/userOperations'
 import RecoveryPhrase from '../../src/utils/recoveryPhrase'
 import * as models from '../../src/models'
-import { vi } from 'vitest'
+import { afterAll, beforeAll, expect, vi } from 'vitest'
+import { UserAccountType } from '../../src/controllers/userController'
+import { UserAccount } from '../../src/models/userAccount'
 
 // TODO: remove this hack with proper mocking
 const { User, UserReference } = models as any
@@ -261,5 +263,37 @@ describe("Retrieving a user's cards", () => {
       )
       expect(cards).toEqual([])
     })
+  })
+})
+
+describe('createUserAccount', () => {
+  let createdUserId: string | null
+
+  const email = 'testing@example.com'
+  const selectedProvider = UserAccountType.GoogleAccount
+
+  afterAll(async () => {
+    if (createdUserId) {
+      await UserAccount.destroy({ where: { id: createdUserId } })
+    }
+  })
+
+  it('should create a user account and return its id', async () => {
+    createdUserId = await UserOperations.createUserAccount(
+      email,
+      selectedProvider
+    )
+
+    expect(typeof createdUserId).toBe('string')
+  })
+
+  it('should find user account by email', async () => {
+    const userAccount = await UserOperations.findUserAccountByEmail(email)
+    expect(userAccount).not.toBeNull()
+  })
+  it('should not find user account by email', async () => {
+    const userAccount =
+      await UserOperations.findUserAccountByEmail('other@email.com')
+    expect(userAccount).toBeNull()
   })
 })
