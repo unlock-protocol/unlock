@@ -20309,7 +20309,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
     eslint: "npm:8.57.0"
-    ethers: "npm:6"
+    ethers: "npm:6.12.1"
     fs-extra: "npm:11.2.0"
     graphql: "npm:16.8.1"
     handlebars: "npm:4.7.8"
@@ -30994,7 +30994,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:6, ethers@npm:6.12.1":
+"ethers@npm:6.12.1":
   version: 6.12.1
   resolution: "ethers@npm:6.12.1"
   dependencies:
