@@ -29,6 +29,7 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm<UserDetails>()
 
   const onSubmit = async (data: UserDetails) => {
@@ -66,10 +67,18 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
               message: 'Email is required',
             },
           })}
+          actions={
+            <Button
+              type="submit"
+              disabled={!watch('email')}
+              variant="borderless"
+              loading={isSubmitting}
+              className="p-2.5"
+            >
+              Continue
+            </Button>
+          }
         />
-        <Button type="submit" loading={isSubmitting} className="p-2.5">
-          Continue with email
-        </Button>
       </form>
     </div>
   )
@@ -95,7 +104,10 @@ export const ConnectWallet = ({
 
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      <div className="grid gap-4 px-6">
+      <div className="grid gap-2 pt-4 px-6">
+        <div className="px-2 text-sm text-gray-600">
+          If you have a wallet, connect it:
+        </div>
         {window.ethereum && (
           <ConnectButton
             icon={<SvgComponents.Metamask width={40} height={40} />}
@@ -125,10 +137,9 @@ export const ConnectWallet = ({
           Coinbase Wallet
         </ConnectButton>
       </div>
-      <div className="grid gap-2 pt-6 px-6 pb-1">
-        <div className="px-2 text-sm text-center text-gray-600">
-          If you previously created an unlock account or do not have a wallet,
-          use this option.
+      <div className="grid gap-2 pt-4 px-6">
+        <div className="px-2 text-sm text-gray-600">
+          Otherwise, enter your email address:
         </div>
         <ConnectViaEmail onUnlockAccount={onUnlockAccount} />
       </div>
