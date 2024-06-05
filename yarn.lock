@@ -19969,7 +19969,7 @@ __metadata:
     prism-react-renderer: "npm:2.0.6"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-icons: "npm:5.2.0"
+    react-icons: "npm:5.2.1"
   languageName: unknown
   linkType: soft
 
@@ -20452,7 +20452,7 @@ __metadata:
     react-gtm-module: "npm:2.0.11"
     react-hook-form: "npm:7.51.3"
     react-hot-toast: "npm:2.4.1"
-    react-icons: "npm:5.2.0"
+    react-icons: "npm:5.2.1"
     react-jwt: "npm:1.2.1"
     react-markdown: "npm:9.0.1"
     react-test-renderer: "npm:18.3.1"
@@ -45777,15 +45777,6 @@ __metadata:
     react: ">=16"
     react-dom: ">=16"
   checksum: 10/9af91efdb98837e39a126aff084b54db0336c5f88a7dad7c42daf7ee873d06a79d6e59f398412cc250a35ddf1a73c25700fe90b3c3a2a0c394fd17d99b2bcf8b
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:5.2.0":
-  version: 5.2.0
-  resolution: "react-icons@npm:5.2.0"
-  peerDependencies:
-    react: "*"
-  checksum: 10/708c827dba6b10a27340792b4a1b51a6c9cd2aca2cf201207922fd64182bc93ccbf4cfebeb1e5e490da27a1d365772dcc4d51b1beab53db5a5385ce5ed1a278f
   languageName: node
   linkType: hard
 
