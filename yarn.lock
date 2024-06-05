@@ -20450,7 +20450,7 @@ __metadata:
     react-google-autocomplete: "npm:2.7.3"
     react-google-recaptcha: "npm:3.1.0"
     react-gtm-module: "npm:2.0.11"
-    react-hook-form: "npm:7.51.3"
+    react-hook-form: "npm:7.51.5"
     react-hot-toast: "npm:2.4.1"
     react-icons: "npm:5.2.1"
     react-jwt: "npm:1.2.1"
@@ -45747,15 +45747,6 @@ __metadata:
     react: ^16.6.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.6.0 || ^17.0.0 || ^18.0.0
   checksum: 10/73d6383dd5d5794cad3837cf6b71d7e23afa6f3ba745e50a9d0d6bf42ff0ab175e4292f250ffe757f4bd782e64c37c4583fb884340cd63891deb33e144628661
-  languageName: node
-  linkType: hard
-
-"react-hook-form@npm:7.51.3":
-  version: 7.51.3
-  resolution: "react-hook-form@npm:7.51.3"
-  peerDependencies:
-    react: ^16.8.0 || ^17 || ^18
-  checksum: 10/37f5d681b0f9d6a64b56e38c6ea98941c78d2634e175e7722e66a6bd72b4b22a73a5b912ada8cc010b5ec9e1019b8e2d4a6b0f38e87280600f8e921dee96aaca
   languageName: node
   linkType: hard
 
