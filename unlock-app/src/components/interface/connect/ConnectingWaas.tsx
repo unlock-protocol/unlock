@@ -1,5 +1,5 @@
 import { Placeholder } from '@unlock-protocol/ui'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useRef } from 'react'
 import { config } from '~/config/app'
@@ -8,7 +8,13 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useSIWE } from '~/hooks/useSIWE'
 import WaasProvider from '~/services/WaasProvider'
 
-export const ConnectingWaas = () => {
+export type ConnectingWaasProps = {
+  shouldReloadOnTimeout?: boolean
+}
+
+export const ConnectingWaas = ({
+  shouldReloadOnTimeout = false,
+}: ConnectingWaasProps) => {
   const { data: session } = useSession()
   const { authenticateWithProvider } = useAuthenticate()
   const { signIn: siweSignIn, isSignedIn } = useSIWE()
@@ -30,9 +36,15 @@ export const ConnectingWaas = () => {
 
   useEffect(() => {
     if (!timeoutRef.current) {
-      timeoutRef.current = setTimeout(() => {
-        router.push('/')
-        timeoutRef.current = null
+      timeoutRef.current = setTimeout(async () => {
+        if (shouldReloadOnTimeout) {
+          await signOut()
+          timeoutRef.current = null
+          window.location.reload()
+        } else {
+          timeoutRef.current = null
+          router.push('/')
+        }
       }, 10000)
     }
 
@@ -88,11 +100,17 @@ export const ConnectingWaas = () => {
 
   return (
     <div className="h-full px-6 py-2">
-      <Placeholder.Root>
-        <Placeholder.Line />
-        <Placeholder.Line />
-        <Placeholder.Line />
-      </Placeholder.Root>
+      <span className="w-full max-w-lg text-base text-gray-700">
+        We are connecting to the Unlock Protocol, please be patient and do not
+        refresh the page.
+      </span>
+      <div>
+        <Placeholder.Root className="mt-4">
+          <Placeholder.Line />
+          <Placeholder.Line />
+          <Placeholder.Line />
+        </Placeholder.Root>
+      </div>
     </div>
   )
 }

@@ -406,7 +406,9 @@ export function Select({ checkoutService }: Props) {
           existingMember={!!membership?.member}
           isRenew={!!membership?.expired}
         />
-        <ConnectingWaas />
+        <main className="h-full mt-4 space-y-5">
+          <ConnectingWaas shouldReloadOnTimeout={true} />
+        </main>
         <footer className="grid items-center px-6 pt-6 border-t">
           <div className="grid">
             {isNotExpectedAddress && (
