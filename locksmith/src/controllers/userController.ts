@@ -345,7 +345,8 @@ export const eject = async (req: Request, res: Response) => {
 
 export const exist = async (request: Request, response: Response) => {
   const { emailAddress } = request.params
-  const userAccountType = await UserOperations.findTypeByEmail(emailAddress)
+  const userAccountType =
+    await UserOperations.findLoginMethodsByEmail(emailAddress)
 
   if (!userAccountType) {
     return response.sendStatus(404)

@@ -221,26 +221,6 @@ export const eject = async (publicKey: ethereumAddress): Promise<any> => {
   )
 }
 
-export const findByEmail = async (emailAddress: string) => {
-  const user = await UserAccount.findOne({
-    where: {
-      emailAddress: Normalizer.emailAddress(emailAddress),
-    },
-  })
-
-  if (!user) {
-    const unlockUser = await UserReference.findOne({
-      where: {
-        emailAddress: Normalizer.emailAddress(emailAddress),
-      },
-    })
-
-    return unlockUser
-  }
-
-  return user
-}
-
 export const findUserAccountByEmail = async (emailAddress: string) => {
   const user = await UserAccount.findOne({
     where: {
@@ -292,8 +272,7 @@ const UserOperations = {
   getCards,
   getCardDetailsFromStripe,
   eject,
-  findByEmail,
-  findTypeByEmail: findLoginMethodsByEmail,
+  findLoginMethodsByEmail,
   findUserAccountByEmail,
   createUserAccount,
 }
