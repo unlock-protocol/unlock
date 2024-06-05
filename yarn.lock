@@ -8806,9 +8806,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.71.0":
-  version: 0.71.0
-  resolution: "@graphprotocol/graph-cli@npm:0.71.0"
+"@graphprotocol/graph-cli@npm:0.73.0":
+  version: 0.73.0
+  resolution: "@graphprotocol/graph-cli@npm:0.73.0"
   dependencies:
     "@float-capital/float-subgraph-uncrashable": "npm:^0.0.0-alpha.4"
     "@oclif/core": "npm:2.8.6"
@@ -8830,6 +8830,7 @@ __metadata:
     ipfs-http-client: "npm:55.0.0"
     jayson: "npm:4.0.0"
     js-yaml: "npm:3.14.1"
+    open: "npm:8.4.2"
     prettier: "npm:3.0.3"
     semver: "npm:7.4.0"
     sync-request: "npm:6.1.0"
@@ -8839,7 +8840,7 @@ __metadata:
     yaml: "npm:1.10.2"
   bin:
     graph: bin/run
-  checksum: 10/88c59c4874b0a951d3e9d6682de3a0dbcef775b2601f9bf9ea166ab9903d1e594d3587823d119684001a159655c55f2f5cc707e64cc4d73d9f363c32cfb32891
+  checksum: 10/ebcd5b8163257e8920fcad90b074b4e35a9bbe4d979cabcf6deb731480b8d86a069ccb56cbbd695623e10291f0288d7ae12806ba359ca67df6a77dcf7a427726
   languageName: node
   linkType: hard
 
@@ -20304,12 +20305,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": "npm:0.71.0"
+    "@graphprotocol/graph-cli": "npm:0.73.0"
     "@graphprotocol/graph-ts": "npm:0.35.1"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
     eslint: "npm:8.57.0"
-    ethers: "npm:6.12.1"
+    ethers: "npm:6.13.0"
     fs-extra: "npm:11.2.0"
     graphql: "npm:16.8.1"
     handlebars: "npm:4.7.8"
@@ -42489,17 +42490,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^7.4.2":
-  version: 7.4.2
-  resolution: "open@npm:7.4.2"
-  dependencies:
-    is-docker: "npm:^2.0.0"
-    is-wsl: "npm:^2.1.1"
-  checksum: 10/4fc02ed3368dcd5d7247ad3566433ea2695b0713b041ebc0eeb2f0f9e5d4e29fc2068f5cdd500976b3464e77fe8b61662b1b059c73233ccc601fe8b16d6c1cd6
-  languageName: node
-  linkType: hard
-
-"open@npm:^8.0.4, open@npm:^8.0.9, open@npm:^8.4.0":
+"open@npm:8.4.2, open@npm:^8.0.4, open@npm:^8.0.9, open@npm:^8.4.0":
   version: 8.4.2
   resolution: "open@npm:8.4.2"
   dependencies:
@@ -42507,6 +42498,16 @@ __metadata:
     is-docker: "npm:^2.1.1"
     is-wsl: "npm:^2.2.0"
   checksum: 10/acd81a1d19879c818acb3af2d2e8e9d81d17b5367561e623248133deb7dd3aefaed527531df2677d3e6aaf0199f84df57b6b2262babff8bf46ea0029aac536c9
+  languageName: node
+  linkType: hard
+
+"open@npm:^7.4.2":
+  version: 7.4.2
+  resolution: "open@npm:7.4.2"
+  dependencies:
+    is-docker: "npm:^2.0.0"
+    is-wsl: "npm:^2.1.1"
+  checksum: 10/4fc02ed3368dcd5d7247ad3566433ea2695b0713b041ebc0eeb2f0f9e5d4e29fc2068f5cdd500976b3464e77fe8b61662b1b059c73233ccc601fe8b16d6c1cd6
   languageName: node
   linkType: hard
 
