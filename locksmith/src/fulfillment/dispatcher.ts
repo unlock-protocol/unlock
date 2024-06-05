@@ -30,7 +30,7 @@ interface KeyToGrant {
  * @returns
  */
 export const getProviderForNetwork = async function (network = 1) {
-  return new ethers.providers.JsonRpcProvider(networks[network].provider)
+  return new ethers.JsonRpcProvider(networks[network].provider)
 }
 
 /**
@@ -40,7 +40,7 @@ export const getProviderForNetwork = async function (network = 1) {
  * @returns
  */
 export const getPublicProviderForNetwork = async function (network = 1) {
-  return new ethers.providers.JsonRpcProvider(networks[network].publicProvider)
+  return new ethers.JsonRpcProvider(networks[network].publicProvider)
 }
 
 interface PurchaserArgs {
@@ -234,7 +234,7 @@ export default class Dispatcher {
               {
                 address,
                 name: network.name,
-                balance: ethers.utils.formatEther(balance),
+                balance: ethers.formatEther(balance),
               },
             ]
           } catch (error) {
@@ -271,13 +271,13 @@ export default class Dispatcher {
       provider.getGasPrice(),
       provider.getBalance(address),
     ])
-    if (balance.lt(gasPrice.mul(GAS_COST))) {
+    if (balance < gasPrice * GAS_COST) {
       logger.warn(
-        `Purchaser ${address} does not have enough coins (${ethers.utils.formatUnits(
+        `Purchaser ${address} does not have enough coins (${ethers.formatUnits(
           balance,
           '18'
-        )}) to pay for gas (${ethers.utils.formatUnits(
-          gasPrice.mul(GAS_COST)
+        )}) to pay for gas (${ethers.formatUnits(
+          gasPrice * GAS_COST
         )}) on ${network}`
       )
       return false

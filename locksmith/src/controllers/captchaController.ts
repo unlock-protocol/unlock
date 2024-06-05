@@ -55,10 +55,8 @@ export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   while (messages.length < recipients.length) {
     // Lowercasing because addresses are passed to the hook as lowercase
     const message = (recipients[i] as string).toLowerCase()
-    const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
-    const signature = await wallet.signMessage(
-      ethers.utils.arrayify(messageHash)
-    )
+    const messageHash = ethers.solidityPackedSha256(['string'], [message])
+    const signature = await wallet.signMessage(ethers.getBytes(messageHash))
     messages.push(message)
     signatures.push(signature)
     i += 1

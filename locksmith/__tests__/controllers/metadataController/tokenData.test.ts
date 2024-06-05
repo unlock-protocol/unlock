@@ -225,7 +225,7 @@ describe('Requesting Token Data', () => {
           mockWeb3Service.isLockManager = vi.fn(() => Promise.resolve(true))
 
           const { domain, types, message } = typedData
-          const sig = await wallet._signTypedData(
+          const sig = await wallet.signTypedData(
             domain,
             types,
             message['LockMetaData']
@@ -258,7 +258,7 @@ describe('Requesting Token Data', () => {
           expect.assertions(2)
 
           const { domain, types, message } = keyHolderStructuredData
-          const keyHolderSignature = await keyHolderWallet._signTypedData(
+          const keyHolderSignature = await keyHolderWallet.signTypedData(
             domain,
             types,
             message['LockMetaData']
