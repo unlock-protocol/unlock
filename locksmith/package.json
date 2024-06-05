@@ -35,7 +35,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@aws-sdk/client-s3": "3.588.0",
+    "@aws-sdk/client-s3": "3.590.0",
     "@logtail/node": "0.4.21",
     "@logtail/winston": "0.4.21",
     "@nuintun/qrcode": "4.1.2",
@@ -74,7 +74,7 @@
     "multer-s3": "3.0.1",
     "p-retry": "6.2.0",
     "path-to-regexp": "6.2.2",
-    "pg": "8.11.5",
+    "pg": "8.12.0",
     "rate-limiter-flexible": "5.0.3",
     "react": "18.3.1",
     "remark-html": "16.0.1",
