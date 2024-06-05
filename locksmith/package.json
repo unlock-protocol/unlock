@@ -61,7 +61,7 @@
     "express": "5.0.0-beta.3",
     "express-winston": "4.2.0",
     "fuse.js": "7.0.0",
-    "geoip-country": "4.2.99",
+    "geoip-country": "4.2.103",
     "graphile-worker": "0.16.6",
     "graphql": "16.8.1",
     "graphql-tag": "2.12.6",
