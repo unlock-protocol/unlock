@@ -28,10 +28,22 @@ vi.mock('@coinbase/waas-server-auth', () => {
 
 describe('Get UUID from Coinbase WAAS', () => {
   it('returns UUID from Coinbase Waas', async () => {
+    expect.assertions(2)
     const retrieveWaasUuidRes = await request(app)
-      .post(`/users/${emailAddress}/${selectedProvider}/waas-uuid`)
+      .post(`/users/${emailAddress}/${selectedProvider}/waas`)
       .send({ token: googleAuthToken })
 
     expect(retrieveWaasUuidRes.status).toBe(200)
+    expect(retrieveWaasUuidRes.body).toEqual({ token: coinbaseAuthToken })
+  })
+
+  it('returns error if googleAuthToken is invalid', async () => {
+    expect.assertions(2)
+    const retrieveWaasUuidRes = await request(app)
+      .post(`/users/${emailAddress}/${selectedProvider}/waas`)
+      .send({ token: 'gsa' })
+
+    expect(retrieveWaasUuidRes.status).toBe(200)
+    expect(retrieveWaasUuidRes.body).toEqual({ token: coinbaseAuthToken })
   })
 })
