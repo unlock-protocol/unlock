@@ -232,7 +232,7 @@ export const createOnRampSession: RequestHandler = async (
   const recovered = await recoverTransferAuthorization(
     usdcContractAddress,
     transferMessage,
-    network,
+    BigInt(network),
     transferSignature,
     provider
   )

@@ -110,18 +110,19 @@ export const isWorthRenewing = async (
     // if gas refund is set, we use a a random signer to get estimate to prevent
     // tx to reverts with msg.sender `ERC20: transfer to address zero`
     let gasEstimate
-    if (gasRefund.toNumber() !== 0) {
-      const randomWallet = await Wallet.createRandom().connect(provider)
+    console.log(lock)
+    if (gasRefund !== BigInt(0)) {
+      const randomWallet = await Wallet.createRandom(provider)
       gasEstimate = await lock
         .connect(randomWallet)
-        .renewMembershipFor.estimateGas(keyId, ethers.ZeroAddress)
-      lock.estimateGas
+        .getFunction('renewMembershipFor')
+        .estimateGas(keyId, ethers.ZeroAddress)
     } else {
-      gasEstimate = await lock.renewMembershipFor.estimateGas(
-        keyId,
-        ethers.ZeroAddress
-      )
+      gasEstimate = await lock
+        .getFunction('renewMembershipFor')
+        .estimateGas(keyId, ethers.ZeroAddress)
     }
+    console.log(gasEstimate)
 
     // estimate gas for the renewMembership function (check if reverts).
     // we bump by 20%, just to cover temporary changes
@@ -141,7 +142,7 @@ export const isWorthRenewing = async (
     return {
       shouldRenew,
       gasLimit,
-      gasRefund: gasRefund.toNumber(),
+      gasRefund,
     }
   } catch (error) {
     logger.error(error)

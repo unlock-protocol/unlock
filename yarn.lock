@@ -20675,7 +20675,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/types": "workspace:./packages/types"
     eslint: "npm:8.57.0"
-    ethers: "npm:6.12.1"
+    ethers: "npm:6.13.0"
     graphql: "npm:16.8.1"
     graphql-request: "npm:6.1.0"
     hardhat: "npm:2.20.1"

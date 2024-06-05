@@ -84,7 +84,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   }
 
   try {
-    const gasPrice = await provider.getGasPrice()
+    const { gasPrice } = await provider.getFeeData()
     if (gasPrice) {
       return {
         gasPrice,

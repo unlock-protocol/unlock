@@ -63,7 +63,7 @@ export const getLocalPurchaser = async function ({ network = 1 }) {
 export const getPurchaser = async function ({
   network = 1,
   address = undefined,
-}: PurchaserArgs) {
+}: PurchaserArgs): Promise<ethers.Signer> {
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
@@ -86,7 +86,7 @@ export const getPurchaser = async function ({
   const provider = await getPublicProviderForNetwork(network)
   const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
   if (!address || address === (await wallet.getAddress())) {
-    return wallet
+    return wallet as ethers.Signer
   }
   throw new Error(`The purchaser at ${address} is unavailable!`)
 }
@@ -267,17 +267,17 @@ export default class Dispatcher {
       getPurchaser({ network, address: purchaser }),
     ])
     const address = await wallet.getAddress()
-    const [gasPrice, balance] = await Promise.all([
-      provider.getGasPrice(),
+    const [feeData, balance] = await Promise.all([
+      provider.getFeeData(),
       provider.getBalance(address),
     ])
-    if (balance < gasPrice * GAS_COST) {
+    if (balance < (feeData.gasPrice || BigInt(0)) * GAS_COST) {
       logger.warn(
         `Purchaser ${address} does not have enough coins (${ethers.formatUnits(
           balance,
           '18'
         )}) to pay for gas (${ethers.formatUnits(
-          gasPrice * GAS_COST
+          (feeData.gasPrice || BigInt(0)) * GAS_COST
         )}) on ${network}`
       )
       return false
@@ -651,7 +651,7 @@ export default class Dispatcher {
       })
     )
 
-    const transaction = await lockContract.populateTransaction.purchase(
+    const transaction = await lockContract.purchase.populateTransaction(
       keyPrices,
       recipients,
       recipients.map(() => referrer),

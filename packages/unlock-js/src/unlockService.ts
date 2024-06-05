@@ -186,7 +186,10 @@ export default class UnlockService {
     )
   }
 
-  async getLockContract(lockAddress: string, provider: ethers.Provider) {
+  async getLockContract(
+    lockAddress: string,
+    provider: ethers.Provider | ethers.JsonRpcApiProvider
+  ) {
     const version = await this.lockContractAbiVersion(lockAddress, provider)
     return this.getContract(lockAddress, version.PublicLock.abi, provider)
   }
