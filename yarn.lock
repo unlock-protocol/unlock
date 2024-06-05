@@ -20435,7 +20435,7 @@ __metadata:
     axios: "npm:1.7.2"
     blockies-react-svg: "npm:0.0.13"
     calendar-link: "npm:2.6.0"
-    csv: "npm:6.3.8"
+    csv: "npm:6.3.9"
     dayjs: "npm:1.11.11"
     deep-object-diff: "npm:1.1.9"
     dotenv: "npm:16.4.5"
@@ -27227,36 +27227,36 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-generate@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "csv-generate@npm:4.4.0"
-  checksum: 10/17561d284a0b55d041d42b4e13b1d928af6259242efb65fef7a47702ce9f2a1009b202f76262b0b5fddb9e36f4c7e92ea37e27faff370d1d4106b6fdb07a91e0
+"csv-generate@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "csv-generate@npm:4.4.1"
+  checksum: 10/5e7afeec7b740f11067afd9994aebc1b405a6ab470dc9dfa3a84af3300def311fee64b584365127432fde869ba27c342935133d22ac1b9ec9e35b2cece5c3436
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.5.5":
-  version: 5.5.5
-  resolution: "csv-parse@npm:5.5.5"
-  checksum: 10/759ca2e5f3977cac7cbf3b1992dd507c6dd458163ab60671e7959d7aefd5b367d7043db65d55ed77ec56aeba2ecfa0881a2c416a44341edcfd266c3d29a424f0
+"csv-parse@npm:^5.5.6":
+  version: 5.5.6
+  resolution: "csv-parse@npm:5.5.6"
+  checksum: 10/8682bd3846d8159eb6f686423d16493fffeceeef742d947e39ea3a3fb9b4a243b41a4cfbac56d721a2f7825b01335ba9b993bf68c4817e7abee0bd20754ee78d
   languageName: node
   linkType: hard
 
-"csv-stringify@npm:^6.4.6":
-  version: 6.4.6
-  resolution: "csv-stringify@npm:6.4.6"
-  checksum: 10/724366f3c9d2b9a61113a4bd9e5908b6ecb6ed212d70ef3e351355441e0620fba55dba2fcf8119d1cf1ced4e48687377ae51e9fce28e04aa49f0011f7f9d574e
+"csv-stringify@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "csv-stringify@npm:6.5.0"
+  checksum: 10/757e38915c9ee1278487ed50f8d6593297c093f3fc94813e5dc35a4fb0d10eadd3bb619ccd03d94b93aa03fde726f4d2df31ee0529036a911c7256d7d363cde7
   languageName: node
   linkType: hard
 
-"csv@npm:6.3.8":
-  version: 6.3.8
-  resolution: "csv@npm:6.3.8"
+"csv@npm:6.3.9":
+  version: 6.3.9
+  resolution: "csv@npm:6.3.9"
   dependencies:
-    csv-generate: "npm:^4.4.0"
-    csv-parse: "npm:^5.5.5"
-    csv-stringify: "npm:^6.4.6"
-    stream-transform: "npm:^3.3.1"
-  checksum: 10/129adbf282669161e0372ac4685bfeb12cff9b17b8913fcd7238f723cc18cdb951f6c09abc595d2e24c8309fb789650f0d6e88d55b8549a948e879b14807284e
+    csv-generate: "npm:^4.4.1"
+    csv-parse: "npm:^5.5.6"
+    csv-stringify: "npm:^6.5.0"
+    stream-transform: "npm:^3.3.2"
+  checksum: 10/c6b475117cb4abc668d123bfe8598e15279d66d047003dce4167d495fca308fba436d66d4160cbd1be3e764d510017dae2e483e47f2bf9eafcf69b93346f9121
   languageName: node
   linkType: hard
 
@@ -49502,10 +49502,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stream-transform@npm:^3.3.1":
-  version: 3.3.1
-  resolution: "stream-transform@npm:3.3.1"
-  checksum: 10/361cccfa7c1bf9886639a19f7c41d0b69e50f827f6cf8228746b7687473614b8506c653f71f074a20db4270bbd9ef0d3ed96cbf0932f37810cca633a4991d72e
+"stream-transform@npm:^3.3.2":
+  version: 3.3.2
+  resolution: "stream-transform@npm:3.3.2"
+  checksum: 10/5e52210daaa81e692e49fcd72f8cbcd8b0a17c94b964d3e3b48bafd65bc0f22537639c9322414f2132fc809320941fbeea7062b16ba84d76b7c9c6539f9af9b2
   languageName: node
   linkType: hard
 
