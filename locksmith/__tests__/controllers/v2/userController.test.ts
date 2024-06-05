@@ -38,12 +38,11 @@ describe('Get UUID from Coinbase WAAS', () => {
   })
 
   it('returns error if googleAuthToken is invalid', async () => {
-    expect.assertions(2)
+    expect.assertions(1)
     const retrieveWaasUuidRes = await request(app)
       .post(`/users/${emailAddress}/${selectedProvider}/waas`)
       .send({ token: 'gsa' })
 
-    expect(retrieveWaasUuidRes.status).toBe(200)
-    expect(retrieveWaasUuidRes.body).toEqual({ token: coinbaseAuthToken })
+    expect(retrieveWaasUuidRes.status).toBe(401)
   })
 })
