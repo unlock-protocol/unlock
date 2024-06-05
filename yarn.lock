@@ -19919,7 +19919,7 @@ __metadata:
     typescript: "npm:5.4.5"
     vitest: "npm:1.6.0"
   peerDependencies:
-    zod: 3.23.5
+    zod: 3.23.8
   languageName: unknown
   linkType: soft
 
@@ -20473,7 +20473,7 @@ __metadata:
     vitest-localstorage-mock: "npm:0.1.2"
     walletlink: "npm:2.5.0"
     xstate: "npm:5.13.1"
-    zod: "npm:3.23.5"
+    zod: "npm:3.23.8"
     zod-to-json-schema: "npm:3.23.0"
   peerDependencies:
     react: 18.3.1
@@ -55080,13 +55080,6 @@ __metadata:
   peerDependencies:
     zod: ^3.23.3
   checksum: 10/f546c5add42cccc63c980dd3dc94eb3aafd70d9d7c18663404fef823ae0c7a359e7d24e7d71206172f50a09d0605caf633aa63d067ab69ae40ca6fa2a51a6fbb
-  languageName: node
-  linkType: hard
-
-"zod@npm:3.23.5":
-  version: 3.23.5
-  resolution: "zod@npm:3.23.5"
-  checksum: 10/e9169bc3d477f48cfcf193a755926dc2cbed20b59b51256a772de02ad6f7b016b121087209fcd2e5bbd62ad625e8c0583dff16c24cfee0bfeaa95f23155a38af
   languageName: node
   linkType: hard
 
