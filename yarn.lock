@@ -20031,7 +20031,7 @@ __metadata:
     arb-shared-dependencies: "npm:1.0.0"
     eslint: "npm:8.57.0"
     ethers: "npm:6.12.1"
-    ethers-multisend: "npm:3.0.0"
+    ethers-multisend: "npm:3.1.0"
     ethers5: "npm:ethers@5.7.2"
     fs-extra: "npm:11.2.0"
     hardhat: "npm:2.22.3"
@@ -30915,9 +30915,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers-multisend@npm:3.0.0":
-  version: 3.0.0
-  resolution: "ethers-multisend@npm:3.0.0"
+"ethers-multisend@npm:3.1.0":
+  version: 3.1.0
+  resolution: "ethers-multisend@npm:3.1.0"
   dependencies:
     "@ethersproject/abi": "npm:^5.0.0"
     "@ethersproject/abstract-provider": "npm:^5.5.1"
@@ -30927,7 +30927,7 @@ __metadata:
     "@ethersproject/contracts": "npm:^5.5.0"
     "@ethersproject/solidity": "npm:^5.0.0"
     "@ethersproject/units": "npm:^5.0.0"
-  checksum: 10/41fc39698ec161b5993975f3ded7a18058ee717ba0fb7570ad87d047edb758509254cad99bf3d862df20115980995416b3cd4f4eb3ea967f63439ddc06d7de64
+  checksum: 10/1c0760fb4e080b2b7e53e41bc3dcfc6b9f2217d5fa10097736a2ebb3f0095cae44b9bb4337af60bb60763fd4b88c591c7aa45615798c6b7d1aa08957be76ecbd
   languageName: node
   linkType: hard
 
