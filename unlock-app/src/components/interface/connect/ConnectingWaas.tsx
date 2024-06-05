@@ -54,6 +54,7 @@ export const ConnectingWaas = () => {
           email: session.user?.email as string,
           // @ts-expect-error - selectedProvider is not in the type definition
           selectedLoginProvider: session.selectedProvider,
+          token: session.token,
         })
         await waasProvider.connect()
         await authenticateWithProvider('WAAS', waasProvider)

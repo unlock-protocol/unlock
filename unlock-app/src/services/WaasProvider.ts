@@ -12,6 +12,7 @@ interface WaasProviderOptions {
   provider: ethers.utils.ConnectionInfo | string
   email: string
   selectedLoginProvider: string
+  token: string
 }
 
 // WaasProvider implements a subset of Web3 provider functionality, sufficient
@@ -23,12 +24,19 @@ export default class WaasProvider extends ethers.providers
 
   public emailAddress: string
   private selectedLoginProvider: string
+  private token: string
 
-  constructor({ provider, email, selectedLoginProvider }: WaasProviderOptions) {
+  constructor({
+    provider,
+    email,
+    selectedLoginProvider,
+    token,
+  }: WaasProviderOptions) {
     super(provider)
     this.wallet = null
     this.emailAddress = email
     this.selectedLoginProvider = selectedLoginProvider
+    this.token = token
   }
 
   async connect() {
@@ -75,7 +83,8 @@ export default class WaasProvider extends ethers.providers
     const storageService = new StorageService(config.services.storage.host)
     const waasToken = await storageService.getUserWaasUuid(
       this.emailAddress,
-      this.selectedLoginProvider
+      this.selectedLoginProvider,
+      this.token
     )
 
     return waasToken

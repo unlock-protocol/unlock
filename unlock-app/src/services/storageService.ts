@@ -140,8 +140,7 @@ export class StorageService extends EventEmitter {
    * @param {*} emailAddress
    * @returns {Promise<*>}
    */
-  async getUserWaasUuid(emailAddress: string, provider: string) {
-    const opts = {}
+  async getUserWaasUuid(emailAddress: string, provider: string, token: string) {
     let selectedProvider
 
     switch (provider) {
@@ -156,7 +155,13 @@ export class StorageService extends EventEmitter {
     try {
       const response = await fetch(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/${encodeURIComponent(selectedProvider as string)}/waas`,
-        { method: 'GET', headers: opts }
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        }
       )
       const data = await response.json()
 
