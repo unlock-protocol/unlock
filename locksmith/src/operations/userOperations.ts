@@ -41,6 +41,14 @@ export const createUserAccount = async (
   email: string,
   selectedProvider: UserAccountType
 ): Promise<string | null> => {
+  const existingUserAccount = await UserAccount.findOne({
+    where: { emailAddress: Normalizer.emailAddress(email) },
+  })
+
+  if (existingUserAccount) {
+    throw new Error('A user with this email address already exists.')
+  }
+
   const userAccount = await UserAccount.create({
     id: crypto.randomUUID(),
     emailAddress: Normalizer.emailAddress(email),

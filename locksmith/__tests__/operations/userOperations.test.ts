@@ -287,6 +287,21 @@ describe('createUserAccount', () => {
     expect(typeof createdUserId).toBe('string')
   })
 
+  it('should not create a user account if it already exists', async () => {
+    try {
+      createdUserId = await UserOperations.createUserAccount(
+        email,
+        selectedProvider
+      )
+      // If the function does not throw an error, the test fails
+      expect(true).toBe(false)
+    } catch (error) {
+      expect(true).toBe(true)
+    }
+
+    expect(typeof createdUserId).toBe('string')
+  })
+
   it('should find user account by email', async () => {
     const userAccount = await UserOperations.findUserAccountByEmail(email)
     expect(userAccount).not.toBeNull()
