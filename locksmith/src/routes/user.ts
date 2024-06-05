@@ -72,7 +72,8 @@ router.get(
   '/:emailAddress/privatekey',
   userController.retrieveEncryptedPrivatekey
 )
-router.get(
+
+router.post(
   '/:emailAddress/:selectedProvider/waas',
   userController.retrieveWaasUuid
 )
