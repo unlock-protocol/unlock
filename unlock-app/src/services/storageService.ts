@@ -4,6 +4,7 @@ import {
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
+import { UserAccountType } from '~/utils/userAccountType'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -134,6 +135,43 @@ export class StorageService extends EventEmitter {
   }
 
   /**
+   * Given a user's email address, retrieves their WAAS UUID. In the case of failure a rejected promise
+   * is returned to the caller.
+   * @param {*} emailAddress
+   * @returns {Promise<*>}
+   */
+  async getUserWaasUuid(emailAddress: string, provider: string, token: string) {
+    let selectedProvider
+
+    switch (provider) {
+      case 'google':
+        selectedProvider = UserAccountType.GoogleAccount
+        break
+      default:
+        selectedProvider = UserAccountType.None
+        break
+    }
+
+    try {
+      const response = await fetch(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/${encodeURIComponent(selectedProvider as string)}/waas`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        }
+      )
+      const data = await response.json()
+
+      return data.token
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  /**
    * Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise
    * is returned to the caller.
    * @param {*} emailAddress
@@ -250,16 +288,18 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async userExist(emailAddress: string) {
+  async getUserAccountType(emailAddress: string): Promise<UserAccountType> {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
 
       const response = await fetch(endpoint, {
         method: 'GET',
       })
-      return response.status === 200
+
+      const data = await response.json()
+      return data.userAccountType
     } catch (error) {
-      return false
+      return UserAccountType.None
     }
   }
 }
