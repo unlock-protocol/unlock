@@ -8,7 +8,7 @@ mkdir $ETH_NODE_ROOT
 
 # function to copy a package into the eth-node packages folder
 copy_package () {
-  ln -s $REPO_ROOT/packages/$1  $ETH_NODE_ROOT/$1
+  cp -R $REPO_ROOT/packages/$1  $ETH_NODE_ROOT/$1
 }
 
 copy_package "types"
