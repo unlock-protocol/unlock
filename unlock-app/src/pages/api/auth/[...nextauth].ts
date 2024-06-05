@@ -13,7 +13,6 @@ export const authOptions = {
     // We need to pass provider to the session so that we can use it in the WaasProvider
     async signIn({ user, account }: { user: any; account: any }) {
       user.selectedProvider = account.provider
-
       user.idToken = account.id_token
 
       return true
@@ -22,7 +21,6 @@ export const authOptions = {
       if (user) {
         token.selectedProvider = user.selectedProvider
         token.nextAuthLoginToken = user.nextAuthLoginToken
-
         token.idToken = user.idToken
       }
 
