@@ -6,14 +6,10 @@ import { useCallback, useEffect, useState } from 'react'
 import BlockiesSvg from 'blockies-react-svg'
 
 interface ConnectedWalletProps {
-  showIcon?: boolean
   onNext?: () => void
 }
 
-export const ConnectedWallet = ({
-  showIcon = true,
-  onNext,
-}: ConnectedWalletProps) => {
+export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
   const { session, signIn, signOut } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
@@ -43,15 +39,9 @@ export const ConnectedWallet = ({
   }, [connected, session, isUnlockAccount])
 
   return (
-    <div className="grid divide-y divide-gray-100">
+    <div className="grid">
       <div className="flex flex-col items-center justify-center gap-6 p-6">
-        {showIcon && (
-          <BlockiesSvg
-            address={connected!}
-            size={14}
-            className="rounded-full"
-          />
-        )}
+        <BlockiesSvg address={connected!} size={14} className="rounded-full" />
         <div className="inline-flex items-center gap-2 text-lg font-bold">
           <button
             onClick={(event) => {

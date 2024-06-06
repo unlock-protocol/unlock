@@ -1,4 +1,4 @@
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
@@ -69,8 +69,8 @@ const SignIn = ({
     }
   }
   return (
-    <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+    <div className="grid gap-2 px-6">
+      <form className="grid gap-4 " onSubmit={handleSubmit(onSubmit)}>
         {useIcon && (
           <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
             <BlockiesSvg
@@ -81,7 +81,7 @@ const SignIn = ({
           </div>
         )}
         <Input
-          label={'Password'}
+          label={'Welcome back! '}
           type="password"
           placeholder="Password"
           {...register('password', {
@@ -91,13 +91,14 @@ const SignIn = ({
               message: 'Password must be at least 8 characters',
             },
           })}
+          description={`Enter the password for ${email}`}
           error={errors.password?.message}
         />
         <Button type="submit" loading={isSubmitting} className="p-2.5">
           <div className="flex justify-center items-center gap-2">Sign In</div>
         </Button>
       </form>
-      <div className="flex items-center justify-end px-6 py-4">
+      <div className="flex items-center justify-end py-4">
         <button
           onClick={(event) => {
             event.preventDefault()
@@ -221,7 +222,7 @@ export const ConnectUnlockAccount = ({
   defaultEmail = '',
 }: Props) => {
   const [isValidEmail, setIsValidEmail] = useState(false)
-
+  const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const { email, deAuthenticate } = useAuth()
@@ -252,6 +253,7 @@ export const ConnectUnlockAccount = ({
 
   const onEmail = useCallback(
     async ({ email }: { email: string }) => {
+      setIsLoadingUserExists(true)
       try {
         const existingUser = await storageService.userExist(email)
         setIsValidEmail(existingUser)
@@ -260,6 +262,7 @@ export const ConnectUnlockAccount = ({
           ToastHelper.error(`Email Error: ${error.message}`)
         }
       }
+      setIsLoadingUserExists(false)
     },
     [storageService]
   )
@@ -268,6 +271,17 @@ export const ConnectUnlockAccount = ({
     onEmail({ email: defaultEmail })
   }, [defaultEmail, onEmail])
 
+  if (isLoadingUserExists) {
+    return (
+      <div className="px-6">
+        <Placeholder.Root className="grid w-full">
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+        </Placeholder.Root>
+      </div>
+    )
+  }
   return (
     <div className="space-y-6 divide-y divide-gray-100">
       {authEmail ? (
