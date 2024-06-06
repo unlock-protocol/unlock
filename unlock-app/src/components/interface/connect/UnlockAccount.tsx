@@ -51,7 +51,7 @@ const SignIn = ({
     try {
       await signIn(data)
       if (onSignIn) {
-        onSignIn()
+        await onSignIn()
       }
     } catch (error) {
       if (error instanceof Error) {

@@ -53,13 +53,13 @@ const Disconnect = ({ service }: DisconnectProps) => {
           variant="borderless"
           size="small"
           loading={isDisconnecting}
-          onClick={(event) => {
+          onClick={(event: ChangeEvent<HTMLInputElement>) => {
             event.preventDefault()
             state.can({ type: 'DISCONNECT' }) ? onDisconnect() : undefined
           }}
           type="button"
         >
-          ⤫ {signOutText}
+          {signOutText}
         </Button>
       </Tooltip>
     </div>

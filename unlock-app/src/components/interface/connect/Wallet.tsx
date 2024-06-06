@@ -104,8 +104,8 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
     <div className="space-y-4">
       {!useUnlockAccount && (
         <>
-          <div className="grid gap-2 px-6">
-            <div className="px-2 text-sm text-gray-600">
+          <div className="grid gap-4 px-6">
+            <div className=" text-sm text-gray-600">
               If you have a wallet, connect it now:
             </div>
             {window.ethereum && (
@@ -137,8 +137,8 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
               Coinbase Wallet
             </ConnectButton>
           </div>
-          <div className="grid gap-2 pt-4 px-6">
-            <div className="px-2 text-sm text-gray-600">
+          <div className="grid gap-4 pt-2 px-6">
+            <div className="text-sm text-gray-600">
               Otherwise, enter your email address:
             </div>
             <ConnectViaEmail

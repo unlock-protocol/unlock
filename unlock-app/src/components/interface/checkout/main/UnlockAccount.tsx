@@ -14,7 +14,9 @@ export function UnlockAccount({ checkoutService }: Props) {
       return (
         // onSignIn and onExit represents different actions, in this case logic should be the same
         <ConnectUnlockAccount
-          onSignIn={() => checkoutService.send({ type: 'CONNECT' })}
+          onSignIn={() => {
+            checkoutService.send({ type: 'CONNECT' })
+          }}
           onExit={() => checkoutService.send({ type: 'CONNECT' })}
           useIcon={false}
         />
