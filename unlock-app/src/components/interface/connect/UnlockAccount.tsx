@@ -126,6 +126,9 @@ const SignUp = ({ shouldRedirect, onReturn, checkoutService }: SignUpProps) => {
     redirectUrl: shouldRedirect ? router.asPath : undefined,
   })
 
+  // Placeholder return
+  return <></>
+
   let redirectUrl
 
   if (shouldRedirect) {
@@ -234,14 +237,13 @@ export const ConnectUnlockAccount = ({
           }}
         />
       ) : (
-        <></>
-        /*<SignUp
+        <SignUp
           shouldRedirect={shouldRedirect}
           checkoutService={checkoutService}
           onReturn={() => {
             onExit()
           }}
-        />*/
+        />
       )}
     </div>
   )
