@@ -163,7 +163,6 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
       case 'PASSWORD': {
         return <Password checkoutService={checkoutService} />
       }
-
       case 'PROMO': {
         return <Promo checkoutService={checkoutService} />
       }
@@ -177,7 +176,7 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
         return null
       }
     }
-  }, [onClose, checkoutService, matched])
+  }, [onClose, matched])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
