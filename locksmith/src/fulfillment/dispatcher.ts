@@ -63,7 +63,7 @@ export const getLocalPurchaser = async function ({ network = 1 }) {
 export const getPurchaser = async function ({
   network = 1,
   address = undefined,
-}: PurchaserArgs): Promise<ethers.Signer> {
+}: PurchaserArgs): Promise<ethers.Signer | DefenderRelaySigner> {
   // If we have a provider, we need to fetch that one... or yield an error!
   const defenderRelayCredential = config.defenderRelayCredentials[network]
   if (defenderRelayCredential?.apiKey && defenderRelayCredential?.apiSecret) {
@@ -338,7 +338,9 @@ export default class Dispatcher {
         return null
       })
     )
-    const signer = signers.find((purchaser) => purchaser !== null)
+    const signer = signers.find(
+      (purchaser) => purchaser !== null
+    ) as ethers.Signer
 
     if (!signer) {
       throw new Error(
@@ -440,7 +442,7 @@ export default class Dispatcher {
       getPurchaser({ network }),
     ])
 
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
 
     const referrer = networks[network]?.multisig
 
@@ -473,10 +475,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter!
-    const wallet = await getSignerWhoIsKeyGranterOnLock({
+    const wallet = (await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
-    })
+    })) as ethers.Signer
     if (!wallet) {
       throw new Error('No signer set as key granter on this lock!')
     }
@@ -516,7 +518,7 @@ export default class Dispatcher {
       getProviderForNetwork(network),
       getPurchaser({ network }),
     ])
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
     return executeAndRetry(
       walletService.extendKey(
         {
@@ -542,10 +544,10 @@ export default class Dispatcher {
     const walletService = new WalletService(networks)
 
     // Get a purchaser that is a key granter
-    const wallet = await getSignerWhoIsKeyGranterOnLock({
+    const wallet = (await getSignerWhoIsKeyGranterOnLock({
       lockAddress,
       network,
-    })
+    })) as ethers.Signer
     if (!wallet) {
       throw new Error('No signer set as key granter on this lock!')
     }
@@ -597,7 +599,7 @@ export default class Dispatcher {
       getPurchaser({ network }),
     ])
     const walletService = new WalletService(networks)
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
 
     return executeAndRetry(
@@ -633,7 +635,7 @@ export default class Dispatcher {
       getProviderForNetwork(network),
       getPurchaser({ network }),
     ])
-    await walletService.connect(provider, wallet)
+    await walletService.connect(provider, wallet as ethers.Signer)
 
     const referrer = networks[network]?.multisig
     const teamMultisig = networks[network]?.multisig
