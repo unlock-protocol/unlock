@@ -17299,16 +17299,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/react-stripe-js@npm:2.7.0":
-  version: 2.7.0
-  resolution: "@stripe/react-stripe-js@npm:2.7.0"
+"@stripe/react-stripe-js@npm:2.7.1":
+  version: 2.7.1
+  resolution: "@stripe/react-stripe-js@npm:2.7.1"
   dependencies:
     prop-types: "npm:^15.7.2"
   peerDependencies:
     "@stripe/stripe-js": ^1.44.1 || ^2.0.0 || ^3.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
     react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 10/f0441cc7e6f169675d09009cb6b6f9fdb16d5238b558f17e62cf2365e347c11511b8df6c96865ed384dd11cbc6c12f00857ad6f0d89f9cd9dc37c1ecf26c7d6a
+  checksum: 10/dd9d28933dd7419568bee183d8f6cda4225fc3095d9cc15337d02f9e6b6df6d54dbdf299757782190693cf74250f9b0b273c5b38bc714a0d39244ec0823737ce
   languageName: node
   linkType: hard
 
@@ -20408,7 +20408,7 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.0.4"
     "@rehooks/local-storage": "npm:2.4.5"
     "@sentry/nextjs": "npm:7.116.0"
-    "@stripe/react-stripe-js": "npm:2.7.0"
+    "@stripe/react-stripe-js": "npm:2.7.1"
     "@stripe/stripe-js": "npm:3.5.0"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:15.0.7"
