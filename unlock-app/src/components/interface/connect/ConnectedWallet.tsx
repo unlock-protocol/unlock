@@ -71,11 +71,12 @@ export const ConnectedWallet = ({
           </Placeholder.Root>
         )}
         {session && !isDisconnecting && (
-          <div className="flex flex-col gap-4">
-            <div className="text-gray-700">
-              You are successfully verified as {minifyAddress(displayAccount!)}
-            </div>
-            {onNext && <Button onClick={onNext}>Continue</Button>}
+          <div className="flex flex-col gap-4 w-full">
+            {onNext && (
+              <Button className="w-full" onClick={onNext}>
+                Continue
+              </Button>
+            )}
           </div>
         )}
         {!session && !isDisconnecting && !isUnlockAccount && (

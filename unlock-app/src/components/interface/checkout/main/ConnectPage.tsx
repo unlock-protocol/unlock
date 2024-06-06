@@ -3,16 +3,17 @@ import { ConnectedWallet } from '../../connect/ConnectedWallet'
 import { ConnectWallet } from '../../connect/Wallet'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface ConnectPageProps {
   style: string
-  connected: string | undefined
   onNext?: () => void
 }
 
-export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
+export const ConnectPage = ({ style, onNext }: ConnectPageProps) => {
   const [email, setEmail] = useState('')
   const [useUnlockAccount, setUseUnlockAccount] = useState(false)
+  const { connected } = useAuth()
 
   return (
     <Fragment>

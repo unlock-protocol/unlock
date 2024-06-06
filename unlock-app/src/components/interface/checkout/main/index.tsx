@@ -174,6 +174,7 @@ export function Checkout({
         )
       }
       case 'UNLOCK_ACCOUNT': {
+        // Do we still need this? This should be handled by 'CONNECT' state
         return <UnlockAccountSignIn checkoutService={checkoutService} />
       }
       case 'CAPTCHA': {

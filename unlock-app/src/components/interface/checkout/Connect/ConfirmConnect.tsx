@@ -20,8 +20,9 @@ export function ConfirmConnect({
   onClose,
   communication,
 }: Props) {
+  const [isConnected, setIsConnected] = React.useState(false)
   const { siweSign, signature, message } = useSIWE()
-  const { account, connected } = useAuth()
+  const { account } = useAuth()
 
   const onSuccess = (signature: string, message: string) => {
     const code = Buffer.from(
@@ -41,7 +42,7 @@ export function ConfirmConnect({
     })
   }
 
-  const onSignIn = async () => {
+  const onConfirm = async () => {
     if (signature && message) {
       onSuccess(signature, message)
     } else {
@@ -57,12 +58,27 @@ export function ConfirmConnect({
       }
     }
   }
+  if (!isConnected) {
+    return (
+      <ConnectPage
+        style="h-full mt-4 space-y-5"
+        onNext={() => {
+          console.log('connected! ')
+          setIsConnected(true)
+          // onConfirm()
+        }}
+      />
+    )
+  }
 
   return (
-    <ConnectPage
-      style="h-full mt-4 space-y-5"
-      connected={connected}
-      onNext={onSignIn}
-    />
+    <h1 className="text-xl text-center font-medium p-1">
+      <span className="font-bold text-brand-ui-primary">
+        {oauthConfig.clientId.length > 20
+          ? oauthConfig.clientId.slice(0, 17) + '...'
+          : oauthConfig.clientId}
+      </span>{' '}
+      wants you to sign in
+    </h1>
   )
 }
