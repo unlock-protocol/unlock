@@ -113,7 +113,6 @@ interface MintingProps {
 }
 
 export function Minting({ onClose, checkoutService }: MintingProps) {
-  console.log('rendering Minting')
   const communication = useCheckoutCommunication()
   const { account } = useAuth()
   const { mint, lock, messageToSign, metadata, recipients } = useSelector(
@@ -126,7 +125,6 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
   const [doneWaiting, setDoneWaiting] = useState(false)
 
   useEffect(() => {
-    console.log('re-render!', mint, doneWaiting)
     if (!mint || doneWaiting) {
       return
     }
@@ -148,13 +146,11 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
       }
       return new Promise((resolve) =>
         setTimeout(() => {
-          console.log('waiting for tokenIds')
           resolve(waitForTokenIds())
         }, 1000)
       )
     }
     const waitForConfirmation = async () => {
-      console.log('waitForConfirmation')
       try {
         const transaction = await provider.waitForTransaction(
           mint!.transactionHash!,
@@ -197,7 +193,6 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
           })
         }
       }
-      console.log('DONE WAITING!')
       setDoneWaiting(true)
     }
     setTimeout(() => {

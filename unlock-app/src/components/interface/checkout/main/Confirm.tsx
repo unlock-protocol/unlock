@@ -48,7 +48,7 @@ export function Confirm({ checkoutService }: Props) {
       type: 'CONFIRM_MINT',
       status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
       transactionHash: hash!,
-      network: network,
+      network,
     })
   }
 
