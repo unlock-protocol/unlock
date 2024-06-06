@@ -3,6 +3,8 @@ import { ConnectedWallet } from '../../connect/ConnectedWallet'
 import { ConnectWallet } from '../../connect/Wallet'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
+import { useSIWE } from '~/hooks/useSIWE'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface ConnectPageProps {
   style: string
@@ -14,10 +16,12 @@ export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
   const [email, setEmail] = useState('')
   const [useUnlockAccount, setUseUnlockAccount] = useState(false)
 
+  const { isUnlockAccount } = useAuth()
+
   return (
     <Fragment>
       <main className={style}>
-        {!useUnlockAccount && !connected && (
+        {!useUnlockAccount && !connected && !isUnlockAccount && (
           <ConnectWallet
             onUnlockAccount={(email) => {
               setEmail(email || '') // Assign an empty string if email is undefined
@@ -25,7 +29,7 @@ export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
             }}
           />
         )}
-        {useUnlockAccount && !connected && (
+        {(useUnlockAccount || isUnlockAccount) && !connected && (
           <ConnectUnlockAccount
             defaultEmail={email}
             useIcon={false}
