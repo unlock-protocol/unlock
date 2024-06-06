@@ -90,7 +90,6 @@ export function CheckoutPage() {
       <Container>
         <Connect
           injectedProvider={injectedProvider}
-          communication={communication}
           oauthConfig={oauthConfig}
         />
       </Container>
@@ -100,8 +99,6 @@ export function CheckoutPage() {
     return (
       <Container>
         <Checkout
-          injectedProvider={injectedProvider}
-          communication={communication}
           paywallConfig={paywallConfig}
           redirectURI={
             checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined

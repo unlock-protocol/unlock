@@ -11,10 +11,10 @@ import Disconnect from './Disconnect'
 
 interface Props {
   checkoutService: CheckoutService
-  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function MessageToSign({ communication, checkoutService }: Props) {
+export function MessageToSign({ checkoutService }: Props) {
+  const communication = useCheckoutCommunication()
   const { messageToSign } = useSelector(
     checkoutService,
     (state) => state.context.paywallConfig

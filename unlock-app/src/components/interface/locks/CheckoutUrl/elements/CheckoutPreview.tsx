@@ -1,7 +1,5 @@
 import { Button, Size } from '@unlock-protocol/ui'
 import { Checkout } from '~/components/interface/checkout/main'
-import { selectProvider } from '~/hooks/useAuthenticate'
-import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import FileSaver from 'file-saver'
@@ -66,10 +64,6 @@ export const CheckoutShareOrDownload = ({
 }
 
 export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
-  const config = useConfig()
-
-  const injectedProvider = selectProvider(config)
-
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
   return (
@@ -77,10 +71,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
       <div className="flex items-center justify-center w-full max-w-lg">
         {paywallConfig && (
           <div className="flex flex-col items-center w-full gap-4">
-            <Checkout
-              injectedProvider={injectedProvider as any}
-              paywallConfig={paywallConfig as any}
-            />
+            <Checkout paywallConfig={paywallConfig as any} />
             <div className="flex flex-col items-center gap-2">
               <span className="text-sm">
                 {hasLocks

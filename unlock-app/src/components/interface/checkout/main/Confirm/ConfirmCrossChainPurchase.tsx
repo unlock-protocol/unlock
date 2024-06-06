@@ -20,7 +20,7 @@ import Disconnect from '../Disconnect'
 
 interface Props {
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string, network?: number) => void
+  onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
 }
 
@@ -96,7 +96,7 @@ export function ConfirmCrossChainPurchase({
       setIsConfirming(true)
       const walletService = await getWalletService(route.network)
       const tx = await walletService.signer.sendTransaction(route.tx)
-      onConfirmed(lockAddress, tx.hash, route.network)
+      onConfirmed(lockAddress, route.network, tx.hash)
     } catch (error: any) {
       setIsConfirming(false)
       onError(error)
