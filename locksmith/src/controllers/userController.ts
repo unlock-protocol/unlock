@@ -8,6 +8,7 @@ import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
 import { verifyToken } from '../utils/verifyGoogleToken'
+import { z } from 'zod'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -18,7 +19,6 @@ export const enum UserAccountType {
   GoogleAccount = 'GOOGLE_ACCOUNT',
   PasskeyAccount = 'PASSKEY_ACCOUNT',
   EmailCodeAccount = 'EMAIL_CODE',
-  None = 'NONE',
 }
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
@@ -102,17 +102,25 @@ export const retrieveEncryptedPrivatekey = async (
   }
 }
 
+const RetrieveWaasUuidBodySchema = z.object({
+  token: z.string(),
+})
+
 export const retrieveWaasUuid = async (
   req: Request,
   res: Response
 ): Promise<any> => {
   const { emailAddress, selectedProvider } = req.params
-  const { token } = req.body
+  const { token } = RetrieveWaasUuidBodySchema.parse(req.body)
+
+  if (!token) {
+    return res.sendStatus(401)
+  }
 
   // Verify the JWT token
   const isTokenValid = await verifyToken(emailAddress, token)
   if (!isTokenValid) {
-    return res.sendStatus(401)
+    return res.status(401).json({ message: 'No google token provided' })
   }
 
   let userUUID
@@ -120,13 +128,21 @@ export const retrieveWaasUuid = async (
   const user = await UserOperations.findUserAccountByEmail(
     req.params.emailAddress
   )
+
   userUUID = user?.id
 
   // If no user is found, create
   if (!user) {
-    if (!selectedProvider) {
+    const userAccountType = selectedProvider as UserAccountType
+    if (!userAccountType) {
       console.error('No selectedProvider provided')
-      return res.sendStatus(500)
+      return res.status(500).json({ message: 'No selectedProvider provided' })
+    }
+    if (userAccountType === UserAccountType.UnlockAccount) {
+      console.error('Creating a user with UnlockAccount type is not allowed')
+      return res.status(500).json({
+        message: 'Creating a user with UnlockAccount type is not allowed',
+      })
     }
     const newUserUUID = await UserOperations.createUserAccount(
       emailAddress,
@@ -149,8 +165,8 @@ export const retrieveWaasUuid = async (
       error.message
     )
     return res
-      .sendStatus(400)
-      .json('Error issuing Coinbase WAAS token for user')
+      .send(400)
+      .json({ message: 'Error issuing Coinbase WAAS token for user' })
   }
 }
 

@@ -248,7 +248,7 @@ export const findLoginMethodsByEmail = async (emailAddress: string) => {
 
   if (user) return user.loginMethods
 
-  return [UserAccountType.None]
+  return []
 }
 
 export const findByWalletAddress = async (walletAddress: string) => {

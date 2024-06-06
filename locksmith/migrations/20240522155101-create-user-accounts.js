@@ -21,8 +21,7 @@ module.exports = {
             'UNLOCK_ACCOUNT',
             'GOOGLE_ACCOUNT',
             'PASSKEY_ACCOUNT',
-            'EMAIL_CODE',
-            'NONE'
+            'EMAIL_CODE'
           )
         ),
         allowNull: false,

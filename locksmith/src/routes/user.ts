@@ -4,6 +4,7 @@ import signatureValidationMiddleware from '../middlewares/signatureValidationMid
 const router = express.Router({ mergeParams: true })
 import userController from '../controllers/userController'
 import { SignedRequest } from '../types'
+import { captchaMiddleware } from '../utils/middlewares/recaptchaMiddleware'
 
 const passwordEncryptedPrivateKeyPathRegex = new RegExp(
   '^/users/S+/passwordEncryptedPrivateKey/?$',
@@ -75,6 +76,7 @@ router.get(
 
 router.post(
   '/:emailAddress/:selectedProvider/waas',
+  captchaMiddleware,
   userController.retrieveWaasUuid
 )
 router.get(
