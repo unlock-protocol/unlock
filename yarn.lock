@@ -17621,7 +17621,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/dom@npm:10.1.0, @testing-library/dom@npm:^10.0.0":
+"@testing-library/dom@npm:10.1.0":
   version: 10.1.0
   resolution: "@testing-library/dom@npm:10.1.0"
   dependencies:
@@ -17659,21 +17659,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/react@npm:15.0.7":
-  version: 15.0.7
-  resolution: "@testing-library/react@npm:15.0.7"
+"@testing-library/react@npm:16.0.0":
+  version: 16.0.0
+  resolution: "@testing-library/react@npm:16.0.0"
   dependencies:
     "@babel/runtime": "npm:^7.12.5"
-    "@testing-library/dom": "npm:^10.0.0"
-    "@types/react-dom": "npm:^18.0.0"
   peerDependencies:
+    "@testing-library/dom": ^10.0.0
     "@types/react": ^18.0.0
+    "@types/react-dom": ^18.0.0
     react: ^18.0.0
     react-dom: ^18.0.0
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/a9342ad09b019b0f99688fb50265899bc93adfe23c22aa6743fd920635b43fdc66877e66d95f240923aa6f7d3aa360837f5b053fb363a31975788974dff7bc93
+    "@types/react-dom":
+      optional: true
+  checksum: 10/b32894be94e31276138decfa6bcea69dfebc0c37cf91499ff6c878f41eb1154a43a7df6eb1e72e7bede78468af6cb67ca59e4acd3206b41f3ecdae2c6efdf67e
   languageName: node
   linkType: hard
 
@@ -18765,15 +18767,6 @@ __metadata:
   dependencies:
     "@types/react": "npm:*"
   checksum: 10/6ff53f5a7b7fba952a68e114d3b542ebdc1e87a794234785ebab0bcd9bde7fb4885f21ebaf93d26dc0a1b5b93287f42cad68b78ae04dddf6b20da7aceff0beaf
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:^18.0.0":
-  version: 18.2.24
-  resolution: "@types/react-dom@npm:18.2.24"
-  dependencies:
-    "@types/react": "npm:*"
-  checksum: 10/bbd4005f2f65b7606505e9b8759b6e99e222d503602765594ea327893fb7061de8951279baef47a1932f04d94d1865daea05a32f9fcf6f9f1143dbabce5b33de
   languageName: node
   linkType: hard
 
@@ -20412,7 +20405,7 @@ __metadata:
     "@stripe/stripe-js": "npm:3.5.0"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/dom": "npm:10.1.0"
-    "@testing-library/react": "npm:15.0.7"
+    "@testing-library/react": "npm:16.0.0"
     "@testing-library/react-hooks": "npm:8.0.1"
     "@tw-classed/react": "npm:1.7.0"
     "@types/file-saver": "npm:2.0.7"
@@ -20555,7 +20548,7 @@ __metadata:
     "@observablehq/plot": "npm:0.6.14"
     "@radix-ui/react-avatar": "npm:1.0.4"
     "@tanstack/react-query": "npm:4.36.1"
-    "@testing-library/react": "npm:15.0.7"
+    "@testing-library/react": "npm:16.0.0"
     "@types/next": "npm:9.0.0"
     "@types/node": "npm:20.12.8"
     "@types/react": "npm:18.3.3"
