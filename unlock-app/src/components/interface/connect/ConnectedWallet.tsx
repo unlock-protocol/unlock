@@ -83,7 +83,7 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
             onClick={onSignOut}
             className="hover:text-ui-main-600 underline"
           >
-            Sign Out
+            Sign out
           </button>
         </div>
       </div>
