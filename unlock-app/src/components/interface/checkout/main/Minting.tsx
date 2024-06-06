@@ -154,7 +154,7 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
       try {
         const transaction = await provider.waitForTransaction(
           mint!.transactionHash!,
-          2
+          1
         )
         if (transaction.status !== 1) {
           throw new Error('Transaction failed.')
@@ -171,14 +171,12 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
           signedMessage: messageToSign?.signature,
         })
         communication?.emitMetadata(metadata)
-        if (mint.status !== 'FINISHED') {
-          checkoutService.send({
-            type: 'CONFIRM_MINT',
-            status: 'FINISHED',
-            network: mint!.network,
-            transactionHash: mint!.transactionHash!,
-          })
-        }
+        checkoutService.send({
+          type: 'CONFIRM_MINT',
+          status: 'FINISHED',
+          network: mint!.network,
+          transactionHash: mint!.transactionHash!,
+        })
       } catch (error) {
         if (error instanceof Error) {
           console.log('Error waiting for confirmation', error)
