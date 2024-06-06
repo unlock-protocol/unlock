@@ -77,7 +77,7 @@ export const CreateLockForm = ({
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const { account } = useAuth()
-  const networkOptions = useAvailableNetworks()
+  const networkOptions = useAvailableNetworks(true)
 
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     defaultValues?.unlimitedDuration ?? false
@@ -182,6 +182,7 @@ export const CreateLockForm = ({
                 options={networkOptions}
                 onChange={onChangeNetwork}
                 description={networkDescription(selectedNetwork!)}
+                showMoreButton={true}
               />
             )}
             <div className="relative">
