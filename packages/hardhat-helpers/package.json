@@ -15,8 +15,8 @@
   "dependencies": {
     "@matterlabs/hardhat-zksync-deploy": "1.4.0",
     "@matterlabs/hardhat-zksync-solc": "1.1.4",
-    "@matterlabs/hardhat-zksync-upgradable": "1.4.0",
-    "@matterlabs/hardhat-zksync-verify": "1.4.2",
+    "@matterlabs/hardhat-zksync-upgradable": "1.4.1",
+    "@matterlabs/hardhat-zksync-verify": "1.4.3",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-waffle": "2.0.6",
     "@uniswap/permit2-sdk": "1.2.1",
@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
-    "tsup": "8.0.2"
+    "tsup": "8.1.0"
   },
   "repository": {
     "type": "git",
