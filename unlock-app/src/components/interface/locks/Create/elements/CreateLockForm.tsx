@@ -182,7 +182,7 @@ export const CreateLockForm = ({
                 options={networkOptions}
                 onChange={onChangeNetwork}
                 description={networkDescription(selectedNetwork!)}
-                showMoreButton={true}
+                moreOptions={{ showMoreAfter: 6 }}
               />
             )}
             <div className="relative">

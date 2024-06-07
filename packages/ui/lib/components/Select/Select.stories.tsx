@@ -20,7 +20,7 @@ export const SelectComponent = {
     ),
     description: <>description example</>,
     customOption: true,
-    showMoreButton: true,
+    moreOptions: { showMoreAfter: 6 },
     options: [
       {
         label: 'Test 1',

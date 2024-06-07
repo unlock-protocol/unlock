@@ -19,6 +19,10 @@ export interface Option {
   disabled?: boolean
 }
 
+export interface MoreOptions {
+  showMoreAfter: number
+}
+
 export interface SelectProps<T> {
   label?: string
   description?: ReactNode
@@ -30,8 +34,7 @@ export interface SelectProps<T> {
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
   loading?: boolean
-  showMoreButton?: boolean
-  showMoreAfter?: number
+  moreOptions?: MoreOptions
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -104,8 +107,7 @@ export const Select = <T extends unknown>({
   customOption = false,
   disabled: fieldDisabled = false,
   loading = false,
-  showMoreButton = false,
-  showMoreAfter = 6,
+  moreOptions = { showMoreAfter: 0 },
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
@@ -116,7 +118,10 @@ export const Select = <T extends unknown>({
 
   const visibleOptions = isOtherSelected
     ? options
-    : [...options.slice(0, showMoreAfter)]
+    : [...options.slice(0, moreOptions.showMoreAfter)]
+
+  const displayedOptions =
+    moreOptions.showMoreAfter > 0 ? visibleOptions : options
 
   const onChangeOption = (value: Option['value']) => {
     if (value === 'other') {
@@ -236,7 +241,7 @@ export const Select = <T extends unknown>({
                 </div>
               </Listbox.Button>
               <Listbox.Options className="absolute z-10 mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
-                {visibleOptions?.map((option: Option) => {
+                {displayedOptions?.map((option: Option) => {
                   const hasAnyAppend = options?.some((option) => option.append)
                   const hasAnyPrepend = options?.some(
                     (option) => option.prepend
@@ -276,17 +281,19 @@ export const Select = <T extends unknown>({
                     />
                   </Listbox.Option>
                 )}
-                {!isOtherSelected && options.length > showMoreAfter && (
-                  <button
-                    className="w-full"
-                    type="button"
-                    onClick={() => setIsOtherSelected(true)}
-                  >
-                    <SelectOption
-                      option={{ label: 'Show more', value: CUSTOM_VALUE }}
-                    />
-                  </button>
-                )}
+                {!isOtherSelected &&
+                  moreOptions.showMoreAfter > 0 &&
+                  options.length > moreOptions.showMoreAfter && (
+                    <button
+                      className="w-full"
+                      type="button"
+                      onClick={() => setIsOtherSelected(true)}
+                    >
+                      <SelectOption
+                        option={{ label: 'Show more', value: CUSTOM_VALUE }}
+                      />
+                    </button>
+                  )}
               </Listbox.Options>
             </>
           )}
