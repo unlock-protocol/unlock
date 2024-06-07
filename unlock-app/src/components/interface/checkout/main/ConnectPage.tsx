@@ -4,7 +4,6 @@ import ConnectWalletComponent from '../../connect/ConnectWalletComponent'
 
 interface ConnectPageProps {
   style: string
-  connected: string | undefined
   onNext?: () => void
 }
 
