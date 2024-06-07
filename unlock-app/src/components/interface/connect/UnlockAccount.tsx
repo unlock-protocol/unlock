@@ -3,13 +3,10 @@ import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
-import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
-import { useStorageService } from '~/utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -209,30 +206,25 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
-  defaultEmail: string
+  defaultEmail: string | undefined
   isExistingUser: boolean
-  onExit(): void
   onSignIn?(): void
   useIcon?: boolean
 }
 
 export const ConnectUnlockAccount = ({
-  onExit,
   onSignIn,
   useIcon = true,
   defaultEmail,
   isExistingUser,
 }: Props) => {
-  const [isValidEmail, setIsValidEmail] = useState(false)
-  const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, deAuthenticate } = useAuth()
+  const { deAuthenticate } = useAuth()
+
   // TODO: Consider adding a way to set the email address to Auth context
-  const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
-  const storageService = useStorageService()
 
   const { isUnlockAccount, encryptedPrivateKey } = useAuth()
 
@@ -257,7 +249,7 @@ export const ConnectUnlockAccount = ({
 
   // If isUserAccount and there is a pk, then we are signing the user
   // If isUserAccount and there is no pk, then the user has to retrivi pk from the server
-  if (isLoadingUserExists || (isUnlockAccount && encryptedPrivateKey)) {
+  if (isUnlockAccount && encryptedPrivateKey) {
     return (
       <div className="px-6">
         <Placeholder.Root className="grid w-full">
@@ -270,7 +262,7 @@ export const ConnectUnlockAccount = ({
   }
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {isExistingUser ? (
+      {isExistingUser && defaultEmail != undefined ? (
         <SignIn
           email={defaultEmail}
           signIn={signIn}
@@ -279,17 +271,16 @@ export const ConnectUnlockAccount = ({
           onReturn={() => {
             signOut()
             deAuthenticate()
-            setAuthEmail('')
           }}
         />
       ) : (
         <SignUp
-          email={defaultEmail}
+          email={defaultEmail!}
           signUp={signUp}
           onSignIn={onSignIn}
           onReturn={() => {
-            onExit()
-            setIsValidEmail(false)
+            signOut()
+            deAuthenticate()
           }}
         />
       )}

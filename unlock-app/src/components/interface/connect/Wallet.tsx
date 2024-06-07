@@ -92,15 +92,19 @@ export const ConnectViaEmail = ({
 }
 
 export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
-  const [useUnlockAccount, setUseUnlockAccount] = useState<string>('')
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(false)
+  const { email, isUnlockAccount } = useAuth()
+  const [useUnlockAccount, setUseUnlockAccount] = useState<string | undefined>(
+    email || undefined
+  )
+  console.log('useUnlockAccount', useUnlockAccount)
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(
+    useUnlockAccount !== ''
+  )
 
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
   const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
-
-  const { isUnlockAccount } = useAuth()
 
   const storageService = useStorageService()
 
@@ -129,14 +133,14 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
         ToastHelper.error(`Email Error: ${error.message}`)
       }
     }
-    setUseUnlockAccount('')
+    setUseUnlockAccount(email)
     setIsLoadingUserExists(false)
     setIsExistingUser(false)
   }
 
   return (
     <div className="space-y-4">
-      {!useUnlockAccount && !isUnlockAccount && (
+      {useUnlockAccount === undefined && !isUnlockAccount && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -185,7 +189,7 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
           </div>
         </>
       )}
-      {(useUnlockAccount || isUnlockAccount) && (
+      {(useUnlockAccount != undefined || isUnlockAccount) && (
         <ConnectUnlockAccount
           defaultEmail={useUnlockAccount}
           isExistingUser={isExistingUser}
