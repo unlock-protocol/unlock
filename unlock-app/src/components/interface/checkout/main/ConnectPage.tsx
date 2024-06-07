@@ -1,8 +1,6 @@
-import React, { Fragment, useState } from 'react'
-import { ConnectedWallet } from '../../connect/ConnectedWallet'
-import { ConnectWallet } from '../../connect/Wallet'
+import React, { Fragment } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ConnectUnlockAccount } from '../../connect/UnlockAccount'
+import ConnectWalletComponent from '../../connect/ConnectWalletComponent'
 
 interface ConnectPageProps {
   style: string
@@ -10,32 +8,11 @@ interface ConnectPageProps {
   onNext?: () => void
 }
 
-export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
-  const [email, setEmail] = useState('')
-  const [useUnlockAccount, setUseUnlockAccount] = useState(false)
-
+export const ConnectPage = ({ style, onNext }: ConnectPageProps) => {
   return (
     <Fragment>
       <main className={style}>
-        {!useUnlockAccount && !connected && (
-          <ConnectWallet
-            onUnlockAccount={(email) => {
-              setEmail(email || '') // Assign an empty string if email is undefined
-              setUseUnlockAccount(true)
-            }}
-          />
-        )}
-        {useUnlockAccount && !connected && (
-          <ConnectUnlockAccount
-            defaultEmail={email}
-            useIcon={false}
-            onExit={() => {
-              setEmail('')
-              setUseUnlockAccount(false)
-            }}
-          />
-        )}
-        {connected && <ConnectedWallet showIcon={false} onNext={onNext} />}
+        <ConnectWalletComponent onNext={onNext} />
       </main>
       <footer className="grid items-center px-6 pt-2 border-t">
         <PoweredByUnlock />
