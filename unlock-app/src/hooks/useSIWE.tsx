@@ -12,7 +12,7 @@ import {
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
 
-type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
+export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
 export interface SIWEContextType {
   session?: string | null

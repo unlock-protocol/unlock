@@ -1,23 +1,25 @@
 import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
-import { ConfirmConnect } from './Confirm'
 import { connectMachine } from './connectMachine'
-import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { CheckoutHead, TopNavigation } from '../Shell'
 import { useMachine } from '@xstate/react'
+import ConnectWalletComponent from '../../connect/ConnectWalletComponent'
+import { generateNonce } from 'siwe'
+import { useSIWE } from '~/hooks/useSIWE'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 interface Props {
   oauthConfig: OAuthConfig
-  injectedProvider: unknown
+  paywallConfig: PaywallConfigType
 }
 
-export function Connect({ injectedProvider, oauthConfig }: Props) {
+export function Connect({ paywallConfig, oauthConfig }: Props) {
   const communication = useCheckoutCommunication()
 
   // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, connectService] = useMachine(connectMachine)
-  const matched = state.value.toString()
 
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
@@ -55,25 +57,43 @@ export function Connect({ injectedProvider, oauthConfig }: Props) {
     return undefined
   }, [state, connectService])
 
-  const Content = useCallback(() => {
-    switch (matched) {
-      case 'CONNECT': {
-        return (
-          <ConfirmConnect
-            communication={communication}
-            onClose={onClose}
-            oauthConfig={oauthConfig}
-          />
-        )
-      }
-      case 'SIGN_IN': {
-        return <UnlockAccountSignIn connectService={connectService} />
-      }
-      default: {
-        return null
+  const { siweSign, signature, message } = useSIWE()
+  const { account } = useAuth()
+
+  const onSuccess = (signature: string, message: string) => {
+    const code = Buffer.from(
+      JSON.stringify({
+        d: message,
+        s: signature,
+      })
+    ).toString('base64')
+    communication?.emitUserInfo({
+      address: account,
+      message: message,
+      signedMessage: signature,
+    })
+    onClose({
+      code,
+      state: oauthConfig.state,
+    })
+  }
+
+  const onSignIn = async () => {
+    if (signature && message) {
+      onSuccess(signature, message)
+    } else {
+      const result = await siweSign(
+        generateNonce(),
+        paywallConfig?.messageToSign || '',
+        {
+          resources: [new URL('https://' + oauthConfig.clientId).toString()],
+        }
+      )
+      if (result) {
+        onSuccess(result.signature, result.message)
       }
     }
-  }, [matched, onClose, connectService, injectedProvider, oauthConfig])
+  }
 
   return (
     <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
@@ -90,7 +110,9 @@ export function Connect({ injectedProvider, oauthConfig }: Props) {
         </h1>
         <div className="border-t"></div>
       </header>
-      <Content />
+      <div className="h-full mt-4 space-y-5">
+        <ConnectWalletComponent onNext={onSignIn} />
+      </div>
     </div>
   )
 }
