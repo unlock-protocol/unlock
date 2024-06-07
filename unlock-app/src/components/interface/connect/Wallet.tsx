@@ -16,7 +16,7 @@ interface ConnectWalletProps {
 }
 
 interface ConnectViaEmailProps {
-  onUnlockAccount: (email?: string) => void
+  onUnlockAccount: (email: string) => void
 }
 
 interface UserDetails {

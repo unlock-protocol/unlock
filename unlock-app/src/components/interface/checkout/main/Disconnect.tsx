@@ -53,7 +53,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
           variant="borderless"
           size="small"
           loading={isDisconnecting}
-          onClick={(event: ChangeEvent<HTMLInputElement>) => {
+          onClick={(event) => {
             event.preventDefault()
             state.can({ type: 'DISCONNECT' }) ? onDisconnect() : undefined
           }}
