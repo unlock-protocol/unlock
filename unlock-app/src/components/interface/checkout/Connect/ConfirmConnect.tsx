@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
+import { PoweredByUnlock } from '../PoweredByUnlock'
+import { Button } from '@unlock-protocol/ui'
 
 interface Props {
+  className: string
   paywallConfig?: PaywallConfigType
   oauthConfig: OAuthConfig
   onClose(params?: Record<string, string>): void
@@ -14,6 +17,7 @@ interface Props {
 }
 
 export function ConfirmConnect({
+  className,
   oauthConfig,
   paywallConfig,
   onClose,
@@ -58,13 +62,61 @@ export function ConfirmConnect({
   }
 
   return (
-    <h1 className="text-xl mt-4 px-4 font-medium">
-      <span className="font-bold text-brand-ui-primary">
-        {oauthConfig.clientId.length > 20
-          ? oauthConfig.clientId.slice(0, 17) + '...'
-          : oauthConfig.clientId}
-      </span>{' '}
-      wants you to sign in
-    </h1>
+    <Fragment>
+      <main className={className}>
+        <div className="grid gap-6 px-6 ">
+          <div className="text-center text-xl my-4">
+            Are you sure you want to connect to{' '}
+            <span className="text-brand-ui-primary">
+              {oauthConfig.clientId.length > 20
+                ? oauthConfig.clientId.slice(0, 17) + '...'
+                : oauthConfig.clientId}{' '}
+            </span>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <p>If you approve, this website may: </p>
+            <ul className="flex flex-col gap-2">
+              <li>✅ See your wallet balance and activity</li>
+              <li>✅ Identify what memberships you own</li>
+            </ul>
+          </div>
+          <div className="flex flex-col gap-2">
+            {' '}
+            <p>But it will not be able to: </p>
+            <ul className="flex flex-col gap-2">
+              <li>❌ move your funds</li>
+              <li>❌ transfer your memberships</li>
+            </ul>
+          </div>
+          <div className="flex w-full gap-4 mt-8">
+            <Button
+              onClick={() =>
+                onClose({
+                  error: 'access-denied',
+                })
+              }
+              className="w-full"
+              variant="secondary"
+            >
+              Deny
+            </Button>
+            <Button onClick={() => onConfirm()} className="w-full">
+              Approve
+            </Button>
+          </div>
+        </div>
+      </main>
+      <footer className="grid items-center px-6 pt-2 border-t">
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
+
+    // <h1 className="text-xl  px-4 font-medium">
+    //   <span className="font-bold text-brand-ui-primary">
+
+    //   </span>{' '}
+    //   wants you to sign in
+    // </h1>
   )
 }

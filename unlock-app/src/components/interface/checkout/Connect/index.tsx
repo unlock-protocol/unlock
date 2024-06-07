@@ -1,15 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
+
 import { ConfirmConnect } from './ConfirmConnect'
-import { TopNavigation } from '../Shell'
 import { Step, StepButton, StepTitle } from '../Stepper'
 import { ConnectPage } from '../main/ConnectPage'
+import { TopNavigation } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { PaywallConfigType } from '@unlock-protocol/core'
 
 interface Props {
   oauthConfig: OAuthConfig
-  injectedProvider: unknown
+  paywallConfig: PaywallConfigType
 }
 
 interface StepperProps {
@@ -61,10 +63,9 @@ export function Connect({ oauthConfig }: Props) {
   const communication = useCheckoutCommunication()
   const { account } = useAuth()
   const [state, setState] = useState('connect')
+
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
-      // Reset the Paywall State!
-
       if (oauthConfig.redirectUri) {
         const redirectURI = new URL(oauthConfig.redirectUri)
 
@@ -100,6 +101,7 @@ export function Connect({ oauthConfig }: Props) {
       {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
       {account && (
         <ConfirmConnect
+          className="h-full mt-4 space-y-5"
           communication={communication}
           onClose={onClose}
           oauthConfig={oauthConfig}

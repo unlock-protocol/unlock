@@ -59,7 +59,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
           }}
           type="button"
         >
-          ⤫ {signOutText}
+          {signOutText}
         </Button>
       </Tooltip>
     </div>

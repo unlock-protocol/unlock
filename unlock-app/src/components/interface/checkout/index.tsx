@@ -1,10 +1,9 @@
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import { selectProvider, useAuthenticate } from '~/hooks/useAuthenticate'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { getPaywallConfigFromQuery } from '~/utils/paywallConfig'
 import getOauthConfigFromQuery from '~/utils/oauth'
-import { useConfig } from '~/utils/withConfig'
 import { Checkout } from './main'
 import { Container } from './Container'
 import { CloseButton } from './Shell'
@@ -17,7 +16,6 @@ import { Connect } from './Connect'
 
 export function CheckoutPage() {
   const { query } = useRouter()
-  const config = useConfig()
   const { authenticateWithProvider } = useAuthenticate({})
 
   // Fetch config from parent in iframe context
@@ -56,10 +54,6 @@ export function CheckoutPage() {
     }
   }, [authenticateWithProvider, communication.providerAdapter])
 
-  // TODO: do we need to pass it down?
-  const injectedProvider =
-    communication.providerAdapter || selectProvider(config)
-
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||
     Object.entries(query)
@@ -88,10 +82,7 @@ export function CheckoutPage() {
   if (oauthConfig) {
     return (
       <Container>
-        <Connect
-          injectedProvider={injectedProvider}
-          oauthConfig={oauthConfig}
-        />
+        <Connect paywallConfig={paywallConfig} oauthConfig={oauthConfig} />
       </Container>
     )
   }

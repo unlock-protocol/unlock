@@ -9,7 +9,6 @@ import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
 import { useMachine } from '@xstate/react'
-import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
@@ -150,10 +149,6 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
       }
       case 'MINTING': {
         return <Minting onClose={onClose} checkoutService={checkoutService} />
-      }
-      case 'UNLOCK_ACCOUNT': {
-        // Do we still need this? This should be handled by 'CONNECT' state
-        return <UnlockAccountSignIn checkoutService={checkoutService} />
       }
       case 'CAPTCHA': {
         return <Captcha checkoutService={checkoutService} />
