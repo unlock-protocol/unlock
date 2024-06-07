@@ -13090,11 +13090,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/defender-relay-client@npm:1.54.1":
-  version: 1.54.1
-  resolution: "@openzeppelin/defender-relay-client@npm:1.54.1"
+"@openzeppelin/defender-base-client@npm:1.54.6":
+  version: 1.54.6
+  resolution: "@openzeppelin/defender-base-client@npm:1.54.6"
   dependencies:
-    "@openzeppelin/defender-base-client": "npm:1.54.1"
+    amazon-cognito-identity-js: "npm:^6.0.1"
+    async-retry: "npm:^1.3.3"
+    axios: "npm:^1.4.0"
+    lodash: "npm:^4.17.19"
+    node-fetch: "npm:^2.6.0"
+  checksum: 10/64d75eb1d3d5c043481310865df6042860a18def6114f12e9e38d3ef60db1e0a883ed987d291b1329c6cae1aa4d96575c37d944374fc9cb75094489291fe5d0b
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/defender-relay-client@npm:1.54.6":
+  version: 1.54.6
+  resolution: "@openzeppelin/defender-relay-client@npm:1.54.6"
+  dependencies:
+    "@openzeppelin/defender-base-client": "npm:1.54.6"
     amazon-cognito-identity-js: "npm:^6.0.1"
     axios: "npm:^1.4.0"
     lodash: "npm:^4.17.19"
@@ -13107,7 +13120,7 @@ __metadata:
     "@ethersproject/transactions": ^5.6.2
     web3-core: ^1.8.2
     web3-core-helpers: ^1.8.2
-  checksum: 10/484fd4eae9e000857a601cd41e6bdb4d8965f1b180a461ebafb4c7b6321a318ddaf675d5e5e7e72fd6cb44e6c350de702fa0cb37bdbc8cf36f0acda84895386e
+  checksum: 10/fe21b14ef318572d260f2fa1cf7b8ff5665a18864abbf7636d456cc5e7bb10a36e8ce5c4f292d5812af950d529851d068b3775ffc88c5778e9113e313db7cf6b
   languageName: node
   linkType: hard
 
@@ -20120,7 +20133,7 @@ __metadata:
     "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.21"
     "@nuintun/qrcode": "npm:4.1.2"
-    "@openzeppelin/defender-relay-client": "npm:1.54.1"
+    "@openzeppelin/defender-relay-client": "npm:1.54.6"
     "@resvg/resvg-js": "npm:2.6.2"
     "@sentry/node": "npm:7.116.0"
     "@sentry/tracing": "npm:7.114.0"
