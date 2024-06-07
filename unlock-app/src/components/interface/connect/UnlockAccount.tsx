@@ -209,7 +209,8 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
-  defaultEmail?: string
+  defaultEmail: string
+  isExistingUser: boolean
   onExit(): void
   onSignIn?(): void
   useIcon?: boolean
@@ -219,7 +220,8 @@ export const ConnectUnlockAccount = ({
   onExit,
   onSignIn,
   useIcon = true,
-  defaultEmail = '',
+  defaultEmail,
+  isExistingUser,
 }: Props) => {
   const [isValidEmail, setIsValidEmail] = useState(false)
   const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
@@ -253,26 +255,6 @@ export const ConnectUnlockAccount = ({
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onEmail = useCallback(
-    async ({ email }: { email: string }) => {
-      setIsLoadingUserExists(true)
-      try {
-        const existingUser = await storageService.userExist(email)
-        setIsValidEmail(existingUser)
-      } catch (error) {
-        if (error instanceof Error) {
-          ToastHelper.error(`Email Error: ${error.message}`)
-        }
-      }
-      setIsLoadingUserExists(false)
-    },
-    [storageService]
-  )
-
-  useEffect(() => {
-    onEmail({ email: defaultEmail })
-  }, [defaultEmail, onEmail])
-
   // If isUserAccount and there is a pk, then we are signing the user
   // If isUserAccount and there is no pk, then the user has to retrivi pk from the server
   if (isLoadingUserExists || (isUnlockAccount && encryptedPrivateKey)) {
@@ -288,9 +270,9 @@ export const ConnectUnlockAccount = ({
   }
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {authEmail ? (
+      {isExistingUser ? (
         <SignIn
-          email={authEmail}
+          email={defaultEmail}
           signIn={signIn}
           onSignIn={onSignIn}
           useIcon={useIcon}
@@ -301,31 +283,15 @@ export const ConnectUnlockAccount = ({
           }}
         />
       ) : (
-        <>
-          {isValidEmail && (
-            <SignIn
-              email={defaultEmail}
-              signIn={signIn}
-              onSignIn={onSignIn}
-              useIcon={useIcon}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-          {!isValidEmail && (
-            <SignUp
-              email={defaultEmail}
-              signUp={signUp}
-              onSignIn={onSignIn}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-        </>
+        <SignUp
+          email={defaultEmail}
+          signUp={signUp}
+          onSignIn={onSignIn}
+          onReturn={() => {
+            onExit()
+            setIsValidEmail(false)
+          }}
+        />
       )}
     </div>
   )

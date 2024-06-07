@@ -92,7 +92,9 @@ export const ConnectViaEmail = ({
 }
 
 export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
-  const [useUnlockAccount, setUseUnlockAccount] = useState('')
+  const [useUnlockAccount, setUseUnlockAccount] = useState<string>('')
+  const [isExistingUser, setIsExistingUser] = useState<boolean>(false)
+
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
@@ -118,13 +120,18 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
       const existingUser = await storageService.userExist(email)
       if (existingUser) {
         setUseUnlockAccount(email)
+        setIsExistingUser(true)
+        setIsLoadingUserExists(false)
+        return
       }
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(`Email Error: ${error.message}`)
       }
     }
+    setUseUnlockAccount('')
     setIsLoadingUserExists(false)
+    setIsExistingUser(false)
   }
 
   return (
@@ -171,6 +178,7 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
             <ConnectViaEmail
               isLoadingUserExists={isLoadingUserExists}
               onUnlockAccount={(email: string) => {
+                console.log('email', email)
                 verifyAndSetEmail(email)
               }}
             />
@@ -180,6 +188,7 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
       {(useUnlockAccount || isUnlockAccount) && (
         <ConnectUnlockAccount
           defaultEmail={useUnlockAccount}
+          isExistingUser={isExistingUser}
           useIcon={false}
           onExit={() => {
             setUseUnlockAccount('')
