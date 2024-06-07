@@ -157,7 +157,7 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
           1
         )
 
-        if (transaction.status !== 1) {
+        if (transaction?.status !== 1) {
           throw new Error('Transaction failed.')
         }
         const tokenIds = await waitForTokenIds()
