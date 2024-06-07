@@ -6,7 +6,7 @@ import { Fragment, useEffect, useState } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSelector } from '@xstate/react'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
@@ -16,7 +16,6 @@ import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { networks } from '@unlock-protocol/networks'
-import { sleeper } from '~/utils/promise'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { AddToWallet } from '../../keychain/AddToWallet'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
@@ -111,14 +110,10 @@ export const MintingScreen = ({
 interface MintingProps {
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
-  communication?: CheckoutCommunication
 }
 
-export function Minting({
-  onClose,
-  checkoutService,
-  communication,
-}: MintingProps) {
+export function Minting({ onClose, checkoutService }: MintingProps) {
+  const communication = useCheckoutCommunication()
   const { account } = useAuth()
   const { mint, lock, messageToSign, metadata, recipients } = useSelector(
     checkoutService,
@@ -130,12 +125,17 @@ export function Minting({
   const [doneWaiting, setDoneWaiting] = useState(false)
 
   useEffect(() => {
-    if (doneWaiting || !mint) {
+    if (!mint || doneWaiting) {
       return
     }
-    const waitForTokenIds = async (): Promise<string[]> => {
-      const web3Service = new Web3Service(networks)
+    const web3Service = new Web3Service(networks)
+    const network = config.networks[mint!.network || lock!.network]
+    if (!network) {
+      return
+    }
+    const provider = new ethers.JsonRpcProvider(network.provider)
 
+    const waitForTokenIds = async (): Promise<string[]> => {
       const tokenIds = await Promise.all(
         recipients.map((r: string) =>
           web3Service.latestTokenOfOwner(lock!.address, r, lock!.network)
@@ -144,55 +144,46 @@ export function Minting({
       if (tokenIds.filter((tokenId?: string) => !!tokenId).length) {
         return tokenIds
       }
-      await sleeper(1000)
-      return waitForTokenIds()
+      return new Promise((resolve) =>
+        setTimeout(() => {
+          resolve(waitForTokenIds())
+        }, 1000)
+      )
     }
-
     const waitForConfirmation = async () => {
       try {
-        const network = config.networks[mint.network || lock!.network]
-        if (network) {
-          const provider = new ethers.JsonRpcProvider(network.provider)
+        const transaction = await provider.waitForTransaction(
+          mint!.transactionHash!,
+          1
+        )
 
-          const transaction = await provider.waitForTransaction(
-            mint!.transactionHash!,
-            2
-          )
-
-          if (!transaction || transaction.status !== 1) {
-            throw new Error('Transaction failed.')
-          }
-
-          const tokenIds = await waitForTokenIds()
-
-          communication?.emitTransactionInfo({
-            hash: mint!.transactionHash!,
-            lock: lock?.address,
-            tokenIds: tokenIds?.length ? tokenIds : [],
-            metadata,
-          })
-
-          communication?.emitUserInfo({
-            address: account,
-            signedMessage: messageToSign?.signature,
-          })
-
-          communication?.emitMetadata(metadata)
-
-          checkoutService.send({
-            type: 'CONFIRM_MINT',
-            status: 'FINISHED',
-            network: mint!.network,
-            transactionHash: mint!.transactionHash!,
-          })
-
-          setDoneWaiting(true)
+        if (transaction.status !== 1) {
+          throw new Error('Transaction failed.')
         }
+        const tokenIds = await waitForTokenIds()
+        communication?.emitTransactionInfo({
+          hash: mint!.transactionHash!,
+          lock: lock?.address,
+          tokenIds: tokenIds?.length ? tokenIds : [],
+          metadata,
+        })
+        communication?.emitUserInfo({
+          address: account,
+          signedMessage: messageToSign?.signature,
+        })
+        communication?.emitMetadata(metadata)
+        checkoutService.send({
+          type: 'CONFIRM_MINT',
+          status: 'FINISHED',
+          network: mint!.network,
+          transactionHash: mint!.transactionHash!,
+        })
       } catch (error) {
         if (error instanceof Error) {
           console.log('Error waiting for confirmation', error)
-          ToastHelper.error(error.message)
-
+          ToastHelper.error(
+            'There was an error while we waited for your NFT to be minted. Please refresh the page and try again if needed.'
+          )
           checkoutService.send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
@@ -201,18 +192,12 @@ export function Minting({
           })
         }
       }
+      setDoneWaiting(true)
     }
-    waitForConfirmation()
-  }, [
-    mint,
-    lock,
-    config,
-    checkoutService,
-    communication,
-    account,
-    messageToSign,
-    metadata,
-  ])
+    setTimeout(() => {
+      waitForConfirmation()
+    }, 1000)
+  }, [mint?.status])
 
   return (
     <Fragment>
@@ -224,7 +209,7 @@ export function Minting({
           lockAddress={lock!.address}
           lockName={lock!.name}
           network={lock!.network}
-        ></MintingScreen>
+        />
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <ReturningButton
