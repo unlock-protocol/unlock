@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
-import { ConnectedWallet } from '../../connect/ConnectedWallet'
-import { ConnectWallet } from '../../connect/Wallet'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import ConnectWalletComponent from '../../connect/ConnectWalletComponent'
 
 interface ConnectPageProps {
   style: string
@@ -9,12 +8,11 @@ interface ConnectPageProps {
   onNext?: () => void
 }
 
-export const ConnectPage = ({ style, connected, onNext }: ConnectPageProps) => {
+export const ConnectPage = ({ style, onNext }: ConnectPageProps) => {
   return (
     <Fragment>
       <main className={style}>
-        {!connected && <ConnectWallet />}
-        {connected && <ConnectedWallet onNext={onNext} />}
+        <ConnectWalletComponent onNext={onNext} />
       </main>
       <footer className="grid items-center px-6 pt-2 border-t">
         <PoweredByUnlock />
