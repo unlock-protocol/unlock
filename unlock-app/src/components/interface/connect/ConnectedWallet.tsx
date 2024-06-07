@@ -22,11 +22,8 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const onSignIn = useCallback(async () => {
     setIsSigningIn(true)
     await signIn()
-    if (onNext) {
-      await onNext()
-    }
     setIsSigningIn(false)
-  }, [setIsSigningIn, signIn, onNext])
+  }, [setIsSigningIn, signIn])
 
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
@@ -36,7 +33,6 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   }, [signOut, deAuthenticate, setIsDisconnecting])
 
   useEffect(() => {
-    // Unlock accounts are automatically signed in
     if (connected && !session && isUnlockAccount) {
       onSignIn()
     }
@@ -64,6 +60,14 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
             <Placeholder.Line />
           </Placeholder.Root>
         )}
+        {session && !isDisconnecting && (
+          <div className="flex flex-col gap-4">
+            <div className="text-gray-700">
+              You are successfully verified as {minifyAddress(displayAccount!)}
+            </div>
+            {onNext && <Button onClick={onNext}>Continue</Button>}
+          </div>
+        )}
         {!session && !isDisconnecting && !isUnlockAccount && (
           <div className="flex flex-col gap-4">
             <h3 className="text-gray-700">
@@ -74,7 +78,6 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
             </Button>
           </div>
         )}
-
         {!session &&
           !isDisconnecting &&
           isUnlockAccount &&

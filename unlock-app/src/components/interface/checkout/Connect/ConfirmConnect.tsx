@@ -111,12 +111,5 @@ export function ConfirmConnect({
         <PoweredByUnlock />
       </footer>
     </Fragment>
-
-    // <h1 className="text-xl  px-4 font-medium">
-    //   <span className="font-bold text-brand-ui-primary">
-
-    //   </span>{' '}
-    //   wants you to sign in
-    // </h1>
   )
 }

@@ -14,12 +14,11 @@ interface ConnectedCheckoutProps {
 
 export function Connected({ service }: ConnectedCheckoutProps) {
   const state = useSelector(service, (state) => state)
-  const { account, isUnlockAccount, connected, ...rest } = useAuth()
+  const { account, isUnlockAccount, connected } = useAuth()
   const [signing, _] = useState(false)
   const { isSignedIn } = useSIWE()
 
   const web3Service = useWeb3Service()
-  console.log('Connected Compoent!', rest)
 
   const useDelegatedProvider =
     state.context?.paywallConfig?.useDelegatedProvider
