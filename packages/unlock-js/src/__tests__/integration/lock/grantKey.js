@@ -84,7 +84,7 @@ export default ({ publicLockVersion }) =>
           key.tokenId,
           chainId
         )
-        expect(keyManager).toBe(accounts[0])
+        expect(keyManager.toLowerCase()).toBe(accounts[0])
       })
     }
   })

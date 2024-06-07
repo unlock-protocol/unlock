@@ -133,7 +133,7 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
     if (!network) {
       return
     }
-    const provider = new ethers.providers.JsonRpcBatchProvider(network.provider)
+    const provider = new ethers.JsonRpcProvider(network.provider)
 
     const waitForTokenIds = async (): Promise<string[]> => {
       const tokenIds = await Promise.all(
@@ -156,7 +156,8 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
           mint!.transactionHash!,
           1
         )
-        if (transaction.status !== 1) {
+
+        if (!transaction || transaction.status !== 1) {
           throw new Error('Transaction failed.')
         }
         const tokenIds = await waitForTokenIds()

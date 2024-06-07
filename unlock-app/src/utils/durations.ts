@@ -4,7 +4,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import updateLocale from 'dayjs/plugin/updateLocale'
-import { ethers } from 'ethers'
+
 dayjs.extend(relative)
 dayjs.extend(duration)
 dayjs.extend(custom)
@@ -152,10 +152,8 @@ export const durationAsText = (duration?: string) => {
   if (!duration) {
     return null
   }
-  if (ethers.BigNumber.from(duration).eq(MAX_UINT)) {
+  if (duration.toString() == MAX_UINT) {
     return 'Unlimited'
   }
-  return dayjs
-    .duration(ethers.BigNumber.from(duration).div(60).toNumber(), 'minutes')
-    .humanize()
+  return dayjs.duration(parseInt(duration) / 60, 'minutes').humanize()
 }

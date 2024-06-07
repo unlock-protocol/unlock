@@ -1,6 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks'
 import useMetadata from '../../hooks/useMetadata'
-import { fetchJson } from 'ethers/lib/utils'
 import { vi, expect, describe, it } from 'vitest'
 
 describe('useMetadata', () => {

@@ -1,4 +1,4 @@
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import { getGasSettings } from '../../src/utils/gasSettings'
 
 vi.mock('@unlock-protocol/networks', async () => {
@@ -15,25 +15,21 @@ vi.mock('@unlock-protocol/networks', async () => {
 })
 
 vi.mock('ethers', async () => {
-  const { ethers, BigNumber } = await vi.importActual<any>('ethers')
+  const { ethers } = await vi.importActual<any>('ethers')
   const provider = vi.fn((providerUrl: string) => ({
     // when providerUrl is undefined gasFeeData throws
     getFeeData: providerUrl
       ? vi.fn(async () => ({
-          maxFeePerGas: BigNumber.from(10000000000),
-          maxPriorityFeePerGas: BigNumber.from(10000000000),
+          maxFeePerGas: BigInt(10000000000),
+          maxPriorityFeePerGas: BigInt(10000000000),
           catch: vi.fn(() => null),
         }))
       : vi.fn(() => Promise.reject()),
   }))
   return {
-    BigNumber,
     ethers: {
       ...ethers,
-      providers: {
-        JsonRpcProvider: provider,
-        JsonRpcBatchProvider: provider,
-      },
+      JsonRpcProvider: provider,
       Wallet: vi.fn(),
     },
   }
@@ -51,21 +47,21 @@ describe('getGasSettings', () => {
   it.skip('returns correct value from provider', async () => {
     expect.assertions(2)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(1)
-    expect(maxFeePerGas?.toNumber()).toBe(20000000000)
-    expect(maxPriorityFeePerGas?.toNumber()).toBe(20000000000)
+    expect(maxFeePerGas).toBe(20000000000n)
+    expect(maxPriorityFeePerGas).toBe(20000000000n)
   })
   it('returns value from gas station on Polygon mainnet', async () => {
     expect.assertions(2)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(137)
-    expect(maxFeePerGas?.toNumber()).toBe(37000000000)
-    expect(maxPriorityFeePerGas?.toNumber()).toBe(37000000000)
+    expect(maxFeePerGas).toBe(37000000000n)
+    expect(maxPriorityFeePerGas).toBe(37000000000n)
   })
   it('returns default value if gasFee fails ', async () => {
     expect.assertions(3)
     const { maxFeePerGas, maxPriorityFeePerGas, gasPrice } =
       await getGasSettings(123)
-    expect(gasPrice?.toNumber()).toBe(40000000000)
-    expect(maxFeePerGas?.toNumber()).toBe(undefined)
-    expect(maxPriorityFeePerGas?.toNumber()).toBe(undefined)
+    expect(gasPrice).toBe(40000000000n)
+    expect(maxFeePerGas).toBe(undefined)
+    expect(maxPriorityFeePerGas).toBe(undefined)
   })
 })

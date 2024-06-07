@@ -1,5 +1,5 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { ContractInterface, ethers } from 'ethers'
+import { Interface, ethers } from 'ethers'
 
 import PublicLockVersions from './PublicLock/index'
 import UnlockVersions from './Unlock/index'
@@ -34,9 +34,9 @@ export default class UnlockService {
     // @ts-expect-error Property 'ethersProvider' does not exist on type 'NetworkConfig'.
     const ethersProvider = this.networks[networkId].ethersProvider
     if (ethersProvider) {
-      return ethersProvider as ethers.providers.Provider
+      return ethersProvider as ethers.Provider
     }
-    return new ethers.providers.JsonRpcBatchProvider(
+    return new ethers.JsonRpcProvider(
       this.networks[networkId].provider,
       networkId
     )
@@ -53,7 +53,7 @@ export default class UnlockService {
     }
 
     let opCode = await (
-      this.providerForNetwork(network) as ethers.providers.Provider
+      this.providerForNetwork(network) as ethers.Provider
     ).getCode(this.networks[network].unlockAddress!)
     return opCode !== '0x'
   }
@@ -65,7 +65,7 @@ export default class UnlockService {
   async contractAbiVersion(
     address: string,
     versionRetrievalMethodName: any,
-    provider: ethers.providers.Provider
+    provider: ethers.Provider
   ) {
     const contractAddress = address.toLowerCase()
     let version = this.versionForAddress[contractAddress]
@@ -95,10 +95,7 @@ export default class UnlockService {
     )
   }
 
-  async unlockContractAbiVersion(
-    address: string,
-    provider: ethers.providers.Provider
-  ) {
+  async unlockContractAbiVersion(address: string, provider: ethers.Provider) {
     // Get the contract address from the provider's netwrk?
     return this.contractAbiVersion(
       address,
@@ -111,10 +108,7 @@ export default class UnlockService {
    * Returns the ABI for the Lock contract deployed at the provided address
    * @param {*} address
    */
-  async lockContractAbiVersion(
-    address: string,
-    provider: ethers.providers.Provider
-  ) {
+  async lockContractAbiVersion(address: string, provider: ethers.Provider) {
     return this.contractAbiVersion(
       address,
       '_getPublicLockVersionFromContract',
@@ -128,8 +122,8 @@ export default class UnlockService {
    */
   async _getPublicLockVersionFromContract(
     address: string,
-    provider: ethers.providers.Provider
-  ) {
+    provider: ethers.Provider
+  ): Promise<number> {
     const contract = new ethers.Contract(
       address,
       ['function publicLockVersion() view returns (uint8)'],
@@ -154,8 +148,8 @@ export default class UnlockService {
    */
   async _getUnlockVersionFromContract(
     address: string,
-    provider: ethers.providers.Provider
-  ) {
+    provider: ethers.Provider
+  ): Promise<number> {
     const contract = new ethers.Contract(
       address,
       ['function unlockVersion() view returns (uint8)'],
@@ -169,7 +163,7 @@ export default class UnlockService {
       // This is an older version of Unlock which did not support unlockVersion
       // It can be either v0 or v1. To distinguish let's use their opcode!
       const opCode = await provider.getCode(address)
-      const hash = ethers.utils.sha256(opCode)
+      const hash = ethers.sha256(opCode)
       if (
         hash ===
         '0x886b9da11c0a665e98fd914bc79908925a4f6a549286de92ee6825e441a26309'
@@ -182,26 +176,27 @@ export default class UnlockService {
 
   getContract(
     address: string,
-    contract: ethers.Contract,
-    provider: ethers.providers.Provider
+    contractAbi: ethers.InterfaceAbi,
+    provider: ethers.Provider
   ) {
-    return new ethers.Contract(address, contract.abi, provider)
+    return new ethers.Contract(
+      address,
+      new ethers.Interface(contractAbi),
+      provider
+    )
   }
 
   async getLockContract(
     lockAddress: string,
-    provider: ethers.providers.Provider
+    provider: ethers.Provider | ethers.JsonRpcApiProvider
   ) {
     const version = await this.lockContractAbiVersion(lockAddress, provider)
-    return this.getContract(lockAddress, version.PublicLock, provider)
+    return this.getContract(lockAddress, version.PublicLock.abi, provider)
   }
 
-  async getUnlockContract(
-    unlockAddress: string,
-    provider: ethers.providers.Provider
-  ) {
+  async getUnlockContract(unlockAddress: string, provider: ethers.Provider) {
     const version = await this.unlockContractAbiVersion(unlockAddress, provider)
-    return this.getContract(unlockAddress, version.Unlock, provider)
+    return this.getContract(unlockAddress, version.Unlock.abi, provider)
   }
 
   async getHookContract({
@@ -211,7 +206,7 @@ export default class UnlockService {
   }: {
     network: number
     address: string
-    abi: ContractInterface
+    abi: Interface
   }) {
     const provider = this.providerForNetwork(network)
     return new ethers.Contract(address, abi, provider)

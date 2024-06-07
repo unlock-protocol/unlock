@@ -3,7 +3,7 @@ import { Token } from '@unlock-protocol/types'
 import { Button, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { addressMinify } from '~/utils/strings'
@@ -34,8 +34,8 @@ export const SelectCurrencyModal = ({
   const [_isReady] = useDebounce(
     () => {
       try {
-        if (utils.isAddress(query)) {
-          const address = utils.getAddress(query)
+        if (ethers.isAddress(query)) {
+          const address = ethers.getAddress(query)
           setContractAddress(address)
         } else {
           setContractAddress(query)
@@ -126,7 +126,7 @@ export const SelectCurrencyModal = ({
     setContractAddress('')
   }
 
-  const isValidAddress = utils.isAddress(contractAddress)
+  const isValidAddress = ethers.isAddress(contractAddress)
 
   const noItems =
     tokens?.length === 0 &&

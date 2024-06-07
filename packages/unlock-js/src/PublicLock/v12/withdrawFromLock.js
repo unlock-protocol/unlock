@@ -55,9 +55,7 @@ export default async function (
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event && event.name === 'Withdrawal'
-    })[0]
+    .find(({ fragment }) => fragment && fragment.name === 'Withdrawal')
   if (withdrawalEvent) {
     return utils.fromWei(withdrawalEvent.args.amount.toString(), 'ether')
   }

@@ -41,7 +41,7 @@ describe('updateKeyMetadata', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(
+      const sig = await wallet.signTypedData(
         domain,
         types,
         message['KeyMetaData']

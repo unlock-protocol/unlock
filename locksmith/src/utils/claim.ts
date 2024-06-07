@@ -28,9 +28,9 @@ export const getTotalPurchasePriceInCrypto = async ({
     })
   )
 
-  const totalAmount = prices.reduce<ethers.BigNumber>(
-    (a, b) => a.add(b),
-    ethers.BigNumber.from(0)
+  const totalAmount = prices.reduce<ethers.BigNumberish>(
+    (a, b) => a + b,
+    BigInt(0)
   )
   return totalAmount
 }

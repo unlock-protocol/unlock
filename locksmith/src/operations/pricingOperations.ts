@@ -72,9 +72,7 @@ interface DefaultPricingProps {
 
 export function fromDecimal(num: string, decimals: number) {
   return parseFloat(
-    ethers.utils
-      .formatUnits(ethers.BigNumber.from(num), decimals)
-      .replace(/\.0$/, '')
+    ethers.formatUnits(BigInt(num), decimals).replace(/\.0$/, '')
   )
 }
 
@@ -281,8 +279,7 @@ export async function getLockKeyPricing({
     lockContract.tokenAddress(),
   ])
   const decimals =
-    currencyContractAddress &&
-    currencyContractAddress !== ethers.constants.AddressZero
+    currencyContractAddress && currencyContractAddress !== ethers.ZeroAddress
       ? await getErc20Decimals(currencyContractAddress, provider)
       : networks[network].nativeCurrency?.decimals || 18
 
@@ -317,8 +314,7 @@ export const getDefaultUsdPricing = async ({
   const usdPricing = await getDefiLammaPrice({
     network,
     erc20Address:
-      !currencyContractAddress ||
-      currencyContractAddress === ethers.constants.AddressZero
+      !currencyContractAddress || currencyContractAddress === ethers.ZeroAddress
         ? undefined
         : currencyContractAddress,
   })
@@ -353,7 +349,7 @@ export const getUsdPricingForRecipient = async ({
       network,
       erc20Address:
         !currencyContractAddress ||
-        currencyContractAddress === ethers.constants.AddressZero
+        currencyContractAddress === ethers.ZeroAddress
           ? undefined
           : currencyContractAddress,
     }),

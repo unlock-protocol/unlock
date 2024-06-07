@@ -1,7 +1,6 @@
 // see hardhat script https://github.com/unlock-protocol/unlock/blob/8e3b93f0c3b0c1ff0d8d883e2dbe8b01ca029e06/smart-contracts/scripts/renew.js
-import { BigNumber } from 'ethers'
 import { KeyRenewal } from '../../src/models'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 import { renewKey, isWorthRenewing } from '../../src/worker/helpers/renewKey'
 
 const renewalInfo = {
@@ -14,12 +13,12 @@ const { network, keyId, lockAddress } = renewalInfo
 
 const mockLock = {
   publicLockVersion: async () => 10,
-  gasRefundValue: async () => BigNumber.from(150000),
-  estimateGas: {
-    renewMembershipFor: async () => BigNumber.from(115000),
-  },
-  renewMembershipFor: async () => ({
-    hash: 'txhash',
+  gasRefundValue: async () => BigInt(150000),
+  getFunction: vi.fn(() => {
+    return {
+      estimateGas: async () => BigInt(115000),
+      hash: 'txhash',
+    }
   }),
   isRenewable: async () => true,
 }
@@ -31,14 +30,16 @@ const mockLockFunctions = vi.fn((lockAddress: string) => {
     case 'noRefund':
       return {
         ...mockLock,
-        gasRefundValue: async () => BigNumber.from(0),
+        gasRefundValue: async () => BigInt(0),
       }
     case 'highCost':
       return {
         ...mockLock,
-        estimateGas: {
-          renewMembershipFor: async () => BigNumber.from(200000),
-        },
+        getFunction: vi.fn(() => {
+          return {
+            estimateGas: async () => BigInt(200000),
+          }
+        }),
       }
     default:
       return mockLock
@@ -70,8 +71,8 @@ vi.mock('ethers', async () => {
   const original = await vi.importActual<any>('ethers')
   const provider = vi.fn(() => ({
     getFeeData: vi.fn(() => ({
-      maxFeePerGas: BigNumber.from(10),
-      maxPriorityFeePerGas: BigNumber.from(20),
+      maxFeePerGas: BigInt(10),
+      maxPriorityFeePerGas: BigInt(20),
       catch: vi.fn(),
     })),
   }))
@@ -88,10 +89,7 @@ vi.mock('ethers', async () => {
     })),
     ethers: {
       ...original.ethers,
-      providers: {
-        JsonRpcProvider: provider,
-        JsonRpcBatchProvider: provider,
-      },
+      JsonRpcProvider: provider,
       Wallet: vi.fn(),
       utils: {
         formatUnits: vi.fn(() => '0.01'),
@@ -134,7 +132,7 @@ describe('isWorthRenewing', () => {
       lockAddress,
       keyId
     )
-    expect(gasRefund).toEqual(150000)
+    expect(gasRefund).toEqual(150000n)
     expect(shouldRenew).toBeTruthy()
   })
   it('should return true when gas fee is covered', async () => {
@@ -145,7 +143,7 @@ describe('isWorthRenewing', () => {
       keyId
     )
     expect(shouldRenew).toBeTruthy()
-    expect(gasRefund).toEqual(0)
+    expect(gasRefund).toEqual(0n)
   })
   it('should return false when both conditions arent unmet (gasrefund too low + higher than max covered)', async () => {
     expect.assertions(2)
@@ -154,7 +152,7 @@ describe('isWorthRenewing', () => {
       'noRefund',
       keyId
     )
-    expect(gasRefund).toEqual(0)
+    expect(gasRefund).toEqual(0n)
     expect(shouldRenew).toBeFalsy()
   })
 })

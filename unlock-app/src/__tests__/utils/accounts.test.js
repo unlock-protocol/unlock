@@ -11,7 +11,6 @@ describe('account helpers', () => {
   describe('web3 accounts creation', () => {
     it('should call ethers.createRandom', async () => {
       expect.assertions(3)
-
       const { address, passwordEncryptedPrivateKey } =
         await createAccountAndPasswordEncryptKey('hello')
 
@@ -19,7 +18,7 @@ describe('account helpers', () => {
       expect(passwordEncryptedPrivateKey.address).toBe(
         address.substring(2).toLowerCase()
       )
-      expect(passwordEncryptedPrivateKey.crypto.kdfparams.n).toBe(
+      expect(passwordEncryptedPrivateKey.Crypto.kdfparams.n).toBe(
         WALLET_ENCRYPTION_OPTIONS.scrypt.N
       )
     })
@@ -52,7 +51,7 @@ describe('account helpers', () => {
         await getAccountFromPrivateKey(passwordEncryptedPrivateKey, 'ghost')
       } catch (e) {
         expect(e).toBeInstanceOf(Error)
-        expect(e.message).toBe('invalid password')
+        expect(e.message).toContain('incorrect password')
       }
     })
   })
@@ -93,7 +92,7 @@ describe('account helpers', () => {
       await reEncryptPrivateKey(passwordEncryptedPrivateKey, 'geist', 'ghost')
     } catch (e) {
       expect(e).toBeInstanceOf(Error)
-      expect(e.message).toBe('invalid password')
+      expect(e.message).toContain('incorrect password')
     }
   })
 })

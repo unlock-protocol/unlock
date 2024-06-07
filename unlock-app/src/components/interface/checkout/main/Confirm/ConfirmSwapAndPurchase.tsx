@@ -152,15 +152,14 @@ export function ConfirmSwapAndPurchase({
         uniswapRouter: route.swapRouter,
         swapCallData: route.swapCalldata,
         value: route.value,
-        amountInMax: ethers.utils
-          .parseUnits(
+        amountInMax:
+          (ethers.parseUnits(
             route!.quote.toFixed(),
             route.trade.inputAmount.currency.decimals
-          )
-          // 1% slippage buffer
-          .mul(101)
-          .div(100)
-          .toString(),
+          ) *
+            // 1% slippage buffer
+            BigInt(101)) /
+          BigInt(100),
       }
 
       const walletService = await getWalletService(lockNetwork)

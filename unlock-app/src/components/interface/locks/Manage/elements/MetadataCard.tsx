@@ -15,7 +15,6 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { ethers } from 'ethers'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
 import { storage } from '~/config/storage'
@@ -65,10 +64,10 @@ const MembershipRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <Detail className="py-2" label="Renewals:" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
@@ -76,7 +75,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         No renewals approved
@@ -84,7 +83,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         {approved.toString()} times
@@ -92,7 +91,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         Renews unlimited times

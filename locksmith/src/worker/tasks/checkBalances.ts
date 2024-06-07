@@ -26,9 +26,7 @@ export const checkBalances: Task = async () => {
     for (let j = 0; j < purchasers.length; j++) {
       const purchaser = purchasers[j]
       const address = await purchaser.getAddress()
-      const balance = ethers.utils.formatEther(
-        await provider.getBalance(address)
-      )
+      const balance = ethers.formatEther(await provider.getBalance(address))
       const usdPricing = await getDefiLammaPrice({
         network: network.id,
       })

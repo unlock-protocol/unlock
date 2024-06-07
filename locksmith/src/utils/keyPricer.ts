@@ -28,7 +28,7 @@ export default class KeyPricer {
       ),
     ])
     // Balance is too low to afford the gas cost
-    if (balance.lt(gasCost)) {
+    if (balance < gasCost) {
       return { canAfford: false, reason: 'Insufficient purchaser balance' }
     }
 

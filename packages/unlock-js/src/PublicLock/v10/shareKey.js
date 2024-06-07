@@ -10,7 +10,7 @@ export default async function (
 
   if (!duration) {
     const expiration = await lockContract.keyExpirationTimestampFor(tokenId)
-    duration = Math.floor(new Date().getTime() / 1000) - expiration.toNumber()
+    duration = Math.floor(new Date().getTime() / 1000) - expiration
   }
 
   const transactionPromise = lockContract.shareKey(
@@ -39,9 +39,7 @@ export default async function (
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event && event.name === 'Transfer'
-    })[0]
+    .find(({ fragment }) => fragment && fragment.name === 'Transfer')
 
   if (transferEvent) {
     return transferEvent.args.tokenId.toString()

@@ -1,7 +1,7 @@
-import { MetadataInput } from '@unlock-protocol/types'
+import type { MetadataInputType } from '@unlock-protocol/core'
 import { getPublicInputs, formResultToMetadata } from '../../utils/userMetadata'
 import { expect, it, describe } from 'vitest'
-const inputs: MetadataInput[] = [
+const inputs: MetadataInputType[] = [
   {
     name: 'First Name',
     type: 'text',

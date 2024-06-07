@@ -17,7 +17,7 @@ export default async function approveAllowance({
 
     if (
       !approvedAmount ||
-      utils.bigNumberify(approvedAmount).lt(totalAmountToApprove)
+      utils.bigNumberify(approvedAmount) < totalAmountToApprove
     ) {
       // We must wait for the transaction to pass if we want estimates for the next one to succeed!
       await (

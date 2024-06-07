@@ -27,7 +27,7 @@ export const CustomContractHook = ({
         size="small"
         label="Contract address:"
         {...register(name, {
-          validate: ethers.utils.isAddress,
+          validate: ethers.isAddress,
         })}
         disabled={disabled}
         placeholder="Contract address"

@@ -29,7 +29,7 @@ export default async function (
     keyManagers = [],
     keyPrices = [],
     referrers = [],
-    data = [],
+    data = ['0x'],
   },
   transactionOptions = {},
   callback
@@ -55,7 +55,7 @@ export default async function (
 
       // calculate total price for all keys
       const totalPrice = prices.reduce(
-        (total, kp) => total.add(kp),
+        (total, kp) => total + kp,
         utils.bigNumberify(0)
       )
 
@@ -67,7 +67,7 @@ export default async function (
         this.signer.getAddress()
       )
       // approve entire price
-      if (!approvedAmount || approvedAmount.lt(totalPrice)) {
+      if (!approvedAmount || approvedAmount < totalPrice) {
         // We must wait for the transaction to pass if we want the next one to succeed!
         await (
           await approveTransfer(

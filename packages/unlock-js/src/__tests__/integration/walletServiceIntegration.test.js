@@ -2,7 +2,6 @@ import locks from '../helpers/fixtures/locks'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 import UnlockVersions from '../../Unlock'
 import { describe, it, expect, beforeAll } from 'vitest'
-
 import {
   chainId,
   setupTest,

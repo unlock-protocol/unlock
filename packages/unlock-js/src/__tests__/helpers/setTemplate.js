@@ -25,12 +25,12 @@ export default async (
   const txAdd = await unlock.addLockTemplate(templateAddress, version)
 
   if (callback) {
-    callback(null, txAdd.transactionHash)
+    callback(null, txAdd.hash)
   }
 
   // set as default
   const txSet = await unlock.setLockTemplate(templateAddress)
   if (callback) {
-    callback(null, txSet.transactionHash)
+    callback(null, txSet.hash)
   }
 }

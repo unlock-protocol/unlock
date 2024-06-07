@@ -29,7 +29,7 @@ export const useGetPrice = ({
         : currencyContractAddress
 
     const decimals = await getErc20Decimals(tokenAddress ?? '', provider)
-    const total = ethers.utils.formatUnits(`${amount}`, decimals)
+    const total = ethers.formatUnits(`${amount}`, decimals)
 
     const response = await storage.price(
       network,

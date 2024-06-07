@@ -24,7 +24,7 @@ export default async function (lockAddress, owner, network) {
       // this portion is probably unnecessary, will need to test against the app to be sure
       return 0
     }
-    if (expiration.eq(ETHERS_MAX_UINT)) {
+    if (expiration === ETHERS_MAX_UINT) {
       return -1
     }
     return parseInt(expiration, 10)

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeAll } from 'vitest'
-import { BigDecimal } from '../../helpers'
+import { ethers } from 'ethers'
 let web3Service, walletService, accounts, lock, lockAddress, chainId
 
 export default () =>
@@ -103,10 +103,8 @@ export default () =>
         )
       }
 
-      expect(new BigDecimal(newBalance).toString()).toEqual(
-        new BigDecimal(lockBalanceBefore)
-          .add(new BigDecimal(lock.keyPrice))
-          .toString()
+      expect(ethers.parseEther(newBalance)).toEqual(
+        ethers.parseEther(lockBalanceBefore) + ethers.parseEther(lock.keyPrice)
       )
     })
 
@@ -140,7 +138,7 @@ export default () =>
       expect.assertions(2)
       expect(key.owner).toEqual(keyOwner)
       const owner = await web3Service.ownerOf(key.lock, tokenId, chainId)
-      expect(owner).toEqual(keyOwner)
+      expect(owner.toLowerCase()).toEqual(keyOwner)
     })
 
     it('should have assigned the key to the right lock', async () => {
@@ -166,6 +164,6 @@ export default () =>
         keyOwner,
         chainId
       )
-      expect(totalKeys).toBe(totalKeysBefore + 1)
+      expect(totalKeys).toBe(totalKeysBefore + 1n)
     })
   })

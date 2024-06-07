@@ -62,11 +62,11 @@ export function Password({ checkoutService }: Props) {
       const privateKeyAccount = getEthersWalletFromPassword(password)
       const data = await Promise.all(
         users.map((address) => {
-          const messageHash = ethers.utils.solidityKeccak256(
+          const messageHash = ethers.solidityPackedKeccak256(
             ['string'],
             [address.toLowerCase()]
           )
-          const messageHashBinary = ethers.utils.arrayify(messageHash)
+          const messageHashBinary = ethers.getBytes(messageHash)
           return privateKeyAccount.signMessage(messageHashBinary)
         })
       )

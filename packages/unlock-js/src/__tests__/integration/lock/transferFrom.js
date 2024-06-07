@@ -27,7 +27,7 @@ export default ({ publicLockVersion }) => {
           unlockVersion,
           lockParams: {
             name: 'Lock for transfer',
-            expirationDuration: 60 * 60 * 24 * 30,
+            expirationDuration: 60n * 60n * 24n * 30n,
             maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
             isERC20: false,
             keyPrice: '0.1',

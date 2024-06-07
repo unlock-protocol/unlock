@@ -18,11 +18,11 @@ const getGdpForNetwork = async (provider, network, blockTag) => {
       provider
     )
     let value = await contract.grossNetworkProduct({ blockTag })
-    return value.add(await getOldNetwork(previousDeploys))
+    return value + (await getOldNetwork(previousDeploys))
   }
   if (network.previousDeploys) {
     const oldNetworksGdp = await getOldNetwork(network.previousDeploys)
-    current = current.add(oldNetworksGdp)
+    current = current + oldNetworksGdp
   }
 
   return current
@@ -31,12 +31,12 @@ const getGdpForNetwork = async (provider, network, blockTag) => {
 const getLastWeekBlockNumber = async (provider) => {
   const latestBlockNumber = await provider.getBlockNumber()
   const latestBlock = await provider.getBlock(latestBlockNumber)
-  const numberOfBlocks = 10000
+  const numberOfBlocks = 10000n
   const oldBlock = await provider.getBlock(latestBlockNumber - numberOfBlocks) //10,000 blocks ago!
   let timePerBlock =
     (latestBlock.timestamp - oldBlock.timestamp) / numberOfBlocks
 
-  const weekInSeconds = 60 * 60 * 24 * 7
+  const weekInSeconds = BigInt(60 * 60 * 24 * 7)
   return latestBlockNumber - parseInt(weekInSeconds / timePerBlock)
 }
 
@@ -60,14 +60,12 @@ const run = async () => {
         if (!network.unlockAddress) {
           return null
         }
-        const provider = new ethers.providers.JsonRpcBatchProvider(
-          network.provider
-        )
+        const provider = new ethers.JsonRpcProvider(network.provider)
         const latestBlockNumber = await provider.getBlockNumber()
         const gdp = await getGdpForNetwork(provider, network, latestBlockNumber)
         // TODO: consider retrieving value "last week"...
         const rate = await priceConversion(network)
-        const total = parseFloat(ethers.utils.formatUnits(gdp, '18'))
+        const total = parseFloat(ethers.formatUnits(gdp, '18'))
         return {
           id,
           total,

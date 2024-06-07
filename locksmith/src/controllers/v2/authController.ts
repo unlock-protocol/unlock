@@ -22,9 +22,7 @@ export const login: RequestHandler = async (request, response) => {
     const networkConfig = networks[message.chainId || 1]
     let provider
     if (networkConfig) {
-      provider = new ethers.providers.JsonRpcProvider(
-        networkConfig.publicProvider
-      )
+      provider = new ethers.JsonRpcProvider(networkConfig.publicProvider)
     }
     const { data: fields } = await message.verify(
       {

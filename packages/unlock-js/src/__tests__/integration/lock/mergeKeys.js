@@ -60,11 +60,15 @@ export default ({ publicLockVersion }) => {
       it('should not have transfer the keys', async () => {
         expect.assertions(2)
         expect(
-          await web3Service.ownerOf(keys[0].lock, tokenIds[0], chainId)
+          (
+            await web3Service.ownerOf(keys[0].lock, tokenIds[0], chainId)
+          ).toLowerCase()
         ).toEqual(keyOwners[0])
 
         expect(
-          await web3Service.ownerOf(keys[1].lock, tokenIds[1], chainId)
+          (
+            await web3Service.ownerOf(keys[1].lock, tokenIds[1], chainId)
+          ).toLowerCase()
         ).toEqual(keyOwners[1])
       })
 

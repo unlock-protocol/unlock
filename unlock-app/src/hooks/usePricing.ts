@@ -44,7 +44,7 @@ export const purchasePriceFor = async (
         data: data?.[index] || '0x',
       }
       const price = await web3Service.purchasePriceFor(options)
-      const amount = parseFloat(ethers.utils.formatUnits(price, decimals))
+      const amount = parseFloat(ethers.formatUnits(price, decimals))
       return {
         symbol,
         userAddress,
@@ -86,7 +86,7 @@ export const usePricing = ({
       if (payment?.route?.quote) {
         total = payment.route!.quote.toFixed()
       } else if (payment?.route?.tx.value) {
-        total = Number(ethers.utils.formatEther(payment.route!.tx.value))
+        total = Number(ethers.formatEther(payment.route!.tx.value))
       }
       const item = {
         prices,

@@ -45,9 +45,8 @@ export default async function (address, provider, { fields = [] } = {}) {
   }
 
   const update = {}
-
   const constantPromises = Object.keys(attributes)
-    .filter((func) => Object.keys(contract).includes(func))
+    .filter((attribute) => contract.interface.getFunction(attribute))
     .map(async (attribute) => {
       if (
         fields.length &&
@@ -55,8 +54,8 @@ export default async function (address, provider, { fields = [] } = {}) {
       ) {
         return
       }
-      const result = await contract.functions[`${attribute}()`]()
-      update[attribute] = attributes[attribute](result[0]) // We cast the value
+      const result = await contract.getFunction(attribute)()
+      update[attribute] = attributes[attribute](result) // We cast the value
     })
 
   constantPromises.push(getBlockNumber())

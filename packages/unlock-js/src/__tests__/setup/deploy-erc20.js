@@ -19,8 +19,6 @@ const deploy = async (provider, signer) => {
   )
 
   const erc20Contract = await factory.deploy()
-  await erc20Contract.deployed()
-
   return erc20Contract
 }
 
@@ -45,7 +43,7 @@ const transfer = async (
 
   const mintTx = await erc20Contract.mint(
     recipient,
-    ethers.utils.parseUnits(amount, decimals)
+    ethers.parseUnits(amount, decimals)
   )
   return await mintTx.wait()
 }
@@ -75,7 +73,7 @@ const approve = async (
   let contractWPurchaser = erc20Contract.connect(purchaserWallet)
   const approveTx = await contractWPurchaser.approve(
     lockAddress,
-    ethers.utils.parseUnits(amount, decimals)
+    ethers.parseUnits(amount, decimals)
   )
   return await approveTx.wait()
 }

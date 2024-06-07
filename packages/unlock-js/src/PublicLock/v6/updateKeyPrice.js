@@ -51,9 +51,7 @@ export default async function (
     .map((log) => {
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event.name === 'PricingChanged'
-    })[0]
+    .find(({ fragment }) => fragment && fragment.name === 'PricingChanged')
   if (priceChangedEvent) {
     // TODO: also return contract?
     return utils.fromDecimal(priceChangedEvent.args.keyPrice, decimals)

@@ -76,11 +76,7 @@ describe('when requesting cards', () => {
       const typedData = generateTypedData(message, 'Get Card')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(
-        domain,
-        types,
-        message['Get Card']
-      )
+      const sig = await wallet.signTypedData(domain, types, message['Get Card'])
 
       const response = await request(app)
         .get(`/users/${publicKey}/credit-cards`)

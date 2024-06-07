@@ -111,7 +111,7 @@ export default ({ publicLockVersion }) =>
           keys[0].tokenId,
           chainId
         )
-        expect(keyManager).toBe(accounts[0])
+        expect(keyManager.toLowerCase()).toBe(accounts[0])
       })
     }
 
@@ -122,9 +122,9 @@ export default ({ publicLockVersion }) =>
           web3Service.totalKeys(lockAddress, owner, chainId)
         )
       )
-      expect(totalKeys[0]).toBe(1)
-      expect(totalKeys[1]).toBe(1)
-      expect(totalKeysBefore[0]).toBe(0)
-      expect(totalKeysBefore[1]).toBe(0)
+      expect(totalKeys[0]).toBe(1n)
+      expect(totalKeys[1]).toBe(1n)
+      expect(totalKeysBefore[0]).toBe(0n)
+      expect(totalKeysBefore[1]).toBe(0n)
     })
   })

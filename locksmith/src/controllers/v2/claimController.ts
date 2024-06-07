@@ -97,7 +97,7 @@ export const claim: RequestHandler = async (request, response: Response) => {
       web3Service.totalKeys(lockAddress, owner, network),
     ])
 
-  if (totalAmount.gt(0)) {
+  if (BigInt(totalAmount) > 0) {
     return response.status(402).send({
       message: 'Lock is not free',
     })

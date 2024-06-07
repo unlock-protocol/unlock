@@ -54,7 +54,7 @@ describe('Signature Validation Middleware', () => {
         )
 
         const { domain, types, message } = body
-        const sig = await wallet._signTypedData(domain, types, message['user'])
+        const sig = await wallet.signTypedData(domain, types, message['user'])
 
         const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${Base64.encode(sig)}` },

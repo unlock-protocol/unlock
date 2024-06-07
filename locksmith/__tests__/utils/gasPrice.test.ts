@@ -1,6 +1,5 @@
-import { BigNumber } from 'ethers'
 import GasPrice from '../../src/utils/gasPrice'
-import { vi } from 'vitest'
+import { vi, expect } from 'vitest'
 
 vi.mock('../../src/operations/pricingOperations', () => {
   return {
@@ -16,15 +15,13 @@ vi.mock('../../src/operations/pricingOperations', () => {
 vi.mock('ethers', async () => {
   const original = await vi.importActual<any>('ethers')
   const provider = vi.fn(() => ({
-    getGasPrice: () => Promise.resolve(BigNumber.from(1e12).toString()),
+    getFeeData: () => Promise.resolve({ gasPrice: BigInt(1e12) }),
   }))
   const item = {
     ...original,
     ethers: {
-      providers: {
-        JsonRpcProvider: provider,
-        JsonRpcBatchProvider: provider,
-      },
+      ...original.ethers,
+      JsonRpcProvider: provider,
       Wallet: vi.fn(),
     },
   }

@@ -58,10 +58,10 @@ const KeyRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <KeyItem label="Renewals">
         Your balance of {balance.amount} {balance.symbol} is too low to renew
@@ -69,15 +69,15 @@ const KeyRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return <KeyItem label="Renewals">No renewals approved</KeyItem>
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">{approved.toString()} times</KeyItem>
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">Renews unlimited times</KeyItem>
   }
 
@@ -130,7 +130,7 @@ export const KeyInfo = ({
           getErc20TokenSymbol(lock.tokenAddress, provider),
           getErc20Decimals(lock.tokenAddress, provider),
         ])
-        const amount = ethers.utils.formatUnits(lock.price, decimals)
+        const amount = ethers.formatUnits(lock.price, decimals)
         return {
           amount,
           symbol,
@@ -139,10 +139,7 @@ export const KeyInfo = ({
       } else {
         const native = config.networks[network]?.nativeCurrency
         const decimals = native.decimals
-        const amount = ethers.utils.formatUnits(
-          lock.price,
-          native.decimals || 18
-        )
+        const amount = ethers.formatUnits(lock.price, native.decimals || 18)
         const symbol = native.symbol || ''
         return {
           amount,

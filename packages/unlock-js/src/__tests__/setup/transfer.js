@@ -8,7 +8,7 @@ const { ethers } = require('hardhat')
 async function transfer(provider, signer, recipient, amount) {
   const transaction = await signer.sendTransaction({
     to: recipient,
-    value: ethers.utils.parseEther(amount),
+    value: ethers.parseEther(amount),
   })
   return await transaction.wait()
 }

@@ -56,7 +56,7 @@ export const getSubscriptionsForLockByOwner = async ({
   // If no key is found or not erc20 or version < 11 which we don't fully support, return nothing.
   if (
     !key ||
-    key.lock.tokenAddress === ethers.constants.AddressZero ||
+    key.lock.tokenAddress === ethers.ZeroAddress ||
     parseInt(key.lock.version) < 11
   ) {
     return []
@@ -71,12 +71,12 @@ export const getSubscriptionsForLockByOwner = async ({
     getErc20TokenSymbol(key.lock.tokenAddress, provider),
   ])
 
-  const balance = ethers.utils.formatUnits(userBalance, decimals)
+  const balance = ethers.formatUnits(userBalance, decimals)
 
   const price = key.lock.price
 
   const next =
-    key.expiration === ethers.constants.MaxUint256.toString()
+    key.expiration === ethers.MaxUint256.toString()
       ? null
       : dayjs.unix(key.expiration).isBefore(dayjs())
         ? null
@@ -84,9 +84,9 @@ export const getSubscriptionsForLockByOwner = async ({
 
   // Approved renewals
   const numberOfRenewalsApprovedValue =
-    userAllowance.gt(0) && parseFloat(price) > 0
-      ? userAllowance.div(price)
-      : ethers.BigNumber.from(0)
+    userAllowance > 0 && parseFloat(price) > 0
+      ? userAllowance / price
+      : BigInt(0)
 
   const numberOfRenewalsApproved = numberOfRenewalsApprovedValue.toString()
 
@@ -98,7 +98,7 @@ export const getSubscriptionsForLockByOwner = async ({
       symbol,
     },
     price: {
-      amount: ethers.utils.formatUnits(price, decimals),
+      amount: ethers.formatUnits(price, decimals),
       decimals,
       symbol,
     },
@@ -132,15 +132,13 @@ export const getSubscriptionsForLockByOwner = async ({
 
   const possibleRenewals =
     // https://links.ethers.org/v5-errors-NUMERIC_FAULT-division-by-zero
-    ethers.BigNumber.from(price).gt(0)
-      ? ethers.BigNumber.from(userBalance).div(price).toString()
-      : ethers.BigNumber.from(0).toString()
+    BigInt(price) > 0 ? BigInt(userBalance) / price : BigInt(0)
 
   // Add the default crypto subscription details.
   const cryptoSubscription: Subscription = {
     ...info,
     approvedRenewals: numberOfRenewalsApproved,
-    possibleRenewals,
+    possibleRenewals: possibleRenewals.toString(),
     type: 'Crypto',
   }
 

@@ -19,7 +19,7 @@ export default async function (lockAddress, owner, network) {
     network
   )
   const expiration = await lockContract.keyExpirationTimestampFor(tokenId)
-  if (expiration.eq(ETHERS_MAX_UINT)) {
+  if (expiration === ETHERS_MAX_UINT) {
     return -1
   }
   return parseInt(expiration, 10)

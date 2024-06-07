@@ -31,7 +31,7 @@ export default async function (lockAddress, lockVersion, callback) {
         return
       return parser.parseLog(log)
     })
-    .filter((event) => event && event.name === 'LockUpgraded')[0]
+    .find(({ fragment }) => fragment && fragment.name === 'LockUpgraded')
 
   if (upgradeLockEvent) {
     return upgradeLockEvent.args.version

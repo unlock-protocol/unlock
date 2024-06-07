@@ -40,7 +40,7 @@ export async function isSoldOut(
 ): Promise<boolean> {
   const web3Service = new Web3Service(networks)
   const keysAvailable = await web3Service.keysAvailable(address, chain)
-  return keysAvailable.lt(keysNeeded) // true of keysAvailable smaller than keysNeeded
+  return keysAvailable < keysNeeded // true of keysAvailable smaller than keysNeeded
 }
 
 export const getGeneratedLockIcon = (lockAddress: string): IconType => {

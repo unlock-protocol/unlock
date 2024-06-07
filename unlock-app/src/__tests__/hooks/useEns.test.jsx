@@ -16,8 +16,8 @@ describe('getNameOrAddressForAddress', () => {
         },
       }
     })
-    ethers.providers.JsonRpcProvider = fn
-    ethers.providers.JsonRpcBatchProvider = fn
+    ethers.JsonRpcProvider = fn
+    ethers.JsonRpcProvider = fn
   })
 
   it('should yield the name if there is one', async () => {
@@ -39,8 +39,8 @@ describe('getAddressForName', () => {
       }
     })
 
-    ethers.providers.JsonRpcProvider = fn
-    ethers.providers.JsonRpcBatchProvider = fn
+    ethers.JsonRpcProvider = fn
+    ethers.JsonRpcProvider = fn
   })
 
   it('should yield the name if there is one', async () => {

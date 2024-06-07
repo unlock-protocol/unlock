@@ -40,10 +40,7 @@ export default class KeyData {
       let keyExpiration = key?.expiration
 
       // If max uint, then there is no expiration
-      if (
-        keyExpiration &&
-        keyExpiration === ethers.constants.MaxUint256.toString()
-      ) {
+      if (keyExpiration && keyExpiration === ethers.MaxUint256.toString()) {
         keyExpiration = undefined
       }
 
