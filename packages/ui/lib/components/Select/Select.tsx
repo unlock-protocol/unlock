@@ -285,12 +285,12 @@ export const Select = <T extends unknown>({
                   moreOptions.showMoreAfter > 0 &&
                   options.length > moreOptions.showMoreAfter && (
                     <button
-                      className="w-full"
+                      className="w-full italic"
                       type="button"
                       onClick={() => setIsOtherSelected(true)}
                     >
                       <SelectOption
-                        option={{ label: 'Show more', value: CUSTOM_VALUE }}
+                        option={{ label: 'Show more...', value: CUSTOM_VALUE }}
                       />
                     </button>
                   )}
