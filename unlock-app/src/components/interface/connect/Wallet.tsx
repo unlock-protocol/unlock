@@ -9,6 +9,7 @@ import { MouseEventHandler, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './UnlockAccount'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -90,6 +91,8 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
 
+  const { isUnlockAccount } = useAuth()
+
   const createOnConnectHandler = (provider: any) => {
     const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {
       event.preventDefault()
@@ -102,7 +105,7 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
 
   return (
     <div className="space-y-4">
-      {!useUnlockAccount && (
+      {!useUnlockAccount && !isUnlockAccount && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -149,7 +152,7 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
           </div>
         </>
       )}
-      {useUnlockAccount && (
+      {(useUnlockAccount || isUnlockAccount) && (
         <ConnectUnlockAccount
           defaultEmail={useUnlockAccount}
           useIcon={false}

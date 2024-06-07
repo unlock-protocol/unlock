@@ -232,6 +232,8 @@ export const ConnectUnlockAccount = ({
   const { signOut } = useSIWE()
   const storageService = useStorageService()
 
+  const { isUnlockAccount, encryptedPrivateKey } = useAuth()
+
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
     await authenticateWithProvider('UNLOCK', unlockProvider)
@@ -271,7 +273,9 @@ export const ConnectUnlockAccount = ({
     onEmail({ email: defaultEmail })
   }, [defaultEmail, onEmail])
 
-  if (isLoadingUserExists) {
+  // If isUserAccount and there is a pk, then we are signing the user
+  // If isUserAccount and there is no pk, then the user has to retrivi pk from the server
+  if (isLoadingUserExists || (isUnlockAccount && encryptedPrivateKey)) {
     return (
       <div className="px-6">
         <Placeholder.Root className="grid w-full">

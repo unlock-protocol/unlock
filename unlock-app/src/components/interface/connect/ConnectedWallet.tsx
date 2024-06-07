@@ -11,7 +11,7 @@ interface ConnectedWalletProps {
 
 export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
-  const { session, signIn, signOut } = useSIWE()
+  const { session, signIn, signOut, status } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
   const { isUnlockAccount } = useAuth()
@@ -78,6 +78,16 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
             </Button>
           </div>
         )}
+        {!session &&
+          !isDisconnecting &&
+          isUnlockAccount &&
+          status === 'loading' && (
+            <div className="flex flex-col gap-4">
+              <h3 className="text-gray-700">
+                Setting up your account, please wait...
+              </h3>
+            </div>
+          )}
         <div className="w-full flex items-center justify-end px-6 py-4">
           <button
             onClick={onSignOut}
