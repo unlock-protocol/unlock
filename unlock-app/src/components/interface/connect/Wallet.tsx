@@ -96,7 +96,6 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
   const [useUnlockAccount, setUseUnlockAccount] = useState<string | undefined>(
     email || undefined
   )
-  console.log('useUnlockAccount', useUnlockAccount)
   const [isExistingUser, setIsExistingUser] = useState<boolean>(
     useUnlockAccount !== ''
   )
