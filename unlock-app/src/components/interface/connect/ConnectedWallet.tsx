@@ -41,7 +41,7 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   return (
     <div className="grid">
       <div className="flex flex-col items-center justify-center gap-6 p-6">
-        <BlockiesSvg address={connected!} size={14} className="rounded-full" />
+        <BlockiesSvg address={connected!} size={7} className="rounded-full" />
         <div className="inline-flex items-center gap-2 text-lg font-bold">
           <button
             onClick={(event) => {

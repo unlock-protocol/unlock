@@ -194,9 +194,6 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
           defaultEmail={useUnlockAccount}
           isExistingUser={isExistingUser}
           useIcon={false}
-          onExit={() => {
-            setUseUnlockAccount('')
-          }}
         />
       )}
     </div>
