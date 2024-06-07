@@ -48,9 +48,10 @@ export default async function (
     .map((log) => {
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event.signature === 'PriceChanged(uint256,uint256)'
-    })[0]
+    .filter(
+      ({ fragment }) =>
+        fragment && fragment.signature === 'PriceChanged(uint256,uint256)'
+    )[0]
   if (priceChangedEvent) {
     return utils.fromDecimal(priceChangedEvent.args.keyPrice, decimals)
   }

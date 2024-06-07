@@ -96,7 +96,7 @@ describe('user creation', () => {
       const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .post('/users')

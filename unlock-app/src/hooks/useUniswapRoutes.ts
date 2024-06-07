@@ -80,7 +80,7 @@ export const useUniswapRoutes = ({
           )
         : nativeOnChain(network)
 
-      const amountOut = ethers.utils
+      const amountOut = ethers
         .parseUnits(price.toString(), lock.currencyDecimals || 18)
         .toString()
 

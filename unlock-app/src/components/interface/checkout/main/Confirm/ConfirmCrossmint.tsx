@@ -139,7 +139,7 @@ export function ConfirmCrossmint({
 
   const values = pricingData
     ? [
-        ethers.utils.parseUnits(
+        ethers.parseUnits(
           pricingData.prices[0].amount.toString(),
           pricingData.prices[0].decimals
         ),

@@ -73,7 +73,7 @@ export const useCrossChainRoutes = ({
           null,
           route.network
         )
-        if (ethers.utils.parseEther(userBalance).gte(route?.tx.value)) {
+        if (ethers.parseEther(userBalance) >= route?.tx.value) {
           return [...(await filteredRoutes), ...[route]]
         }
         return filteredRoutes

@@ -16,7 +16,7 @@ export default async function (
   const supply = await lockContract.totalSupply()
   const transactionPromise = lockContract.updateLockConfig(
     expirationDuration,
-    supply.lt(maxNumberOfKeys) ? maxNumberOfKeys : supply,
+    supply < maxNumberOfKeys ? maxNumberOfKeys : supply,
     maxKeysPerAddress
   )
   const hash = await this._handleMethodCall(transactionPromise)
