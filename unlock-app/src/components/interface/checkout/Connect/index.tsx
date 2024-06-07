@@ -1,27 +1,30 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './ConfirmConnect'
-import { connectMachine } from './connectMachine'
 import { TopNavigation } from '../Shell'
-import { useMachine } from '@xstate/react'
 import { Step, StepButton, StepTitle } from '../Stepper'
 import { ConnectPage } from '../main/ConnectPage'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   oauthConfig: OAuthConfig
   injectedProvider: unknown
-  communication: ReturnType<typeof useCheckoutCommunication>
 }
 
 interface StepperProps {
-  onChange: (step: string) => void
   state: string
 }
 
-export const Stepper = ({ onChange, state }: StepperProps) => {
+export const Stepper = ({ state }: StepperProps) => {
   const steps = ['connect', 'confirm']
+  const { deAuthenticate } = useAuth()
+
   const [currentState, setCurentState] = useState(steps.indexOf(state))
+
+  useEffect(() => {
+    setCurentState(steps.indexOf(state))
+  }, [state, setCurentState])
 
   return (
     <div className="flex items-center gap-1.5">
@@ -39,8 +42,8 @@ export const Stepper = ({ onChange, state }: StepperProps) => {
             <StepButton
               key={idx}
               onClick={() => {
-                setCurentState(step)
-                onChange(step)
+                setCurentState(idx)
+                deAuthenticate()
               }}
             >
               {idx + 1}
@@ -54,9 +57,10 @@ export const Stepper = ({ onChange, state }: StepperProps) => {
   )
 }
 
-export function Connect({ oauthConfig, communication }: Props) {
-  const [isConnected, setIsConnected] = React.useState(false)
-
+export function Connect({ oauthConfig }: Props) {
+  const communication = useCheckoutCommunication()
+  const { account } = useAuth()
+  const [state, setState] = useState('connect')
   const onClose = useCallback(
     (params: Record<string, string> = {}) => {
       // Reset the Paywall State!
@@ -74,47 +78,33 @@ export function Connect({ oauthConfig, communication }: Props) {
         communication.emitCloseModal()
       }
     },
-    [oauthConfig.redirectUri, communication, connectService]
+    [oauthConfig.redirectUri, communication]
   )
 
-  const onBack = useMemo(() => {
-    const unlockAccount = state.children?.unlockAccount
-    const canBackInUnlockAccountService = unlockAccount
-      ?.getSnapshot()
-      .can({ type: 'BACK' })
-    const canBack = state.can({ type: 'BACK' })
-    if (canBackInUnlockAccountService) {
-      return () => unlockAccount.send({ type: 'BACK' })
+  useEffect(() => {
+    if (!account) {
+      return setState('connect')
+    } else {
+      return setState('confirm')
     }
-    if (canBack) {
-      return () => connectService.send({ type: 'BACK' })
-    }
-    return undefined
-  }, [state, connectService])
+  }, [account])
 
   return (
     <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
-      <TopNavigation onClose={onClose} onBack={onBack} />
+      <TopNavigation onClose={onClose} />
       <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
         <div className="flex items-center gap-1.5">
-          <Stepper onChange={console.log} />
+          <Stepper state={state} />
         </div>
       </div>
-      {!isConnected && (
-        <ConnectPage
-          style="h-full mt-4 space-y-5"
-          onNext={() => {
-            console.log('connected! ')
-            setIsConnected(true)
-            // onConfirm()
-          }}
+      {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
+      {account && (
+        <ConfirmConnect
+          communication={communication}
+          onClose={onClose}
+          oauthConfig={oauthConfig}
         />
       )}
-      <ConfirmConnect
-        communication={communication}
-        onClose={onClose}
-        oauthConfig={oauthConfig}
-      />
     </div>
   )
 }

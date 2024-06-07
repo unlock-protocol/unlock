@@ -5,7 +5,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useSIWE } from '~/hooks/useSIWE'
 import { generateNonce } from 'siwe'
-import { ConnectPage } from '../main/ConnectPage'
 
 interface Props {
   paywallConfig?: PaywallConfigType
@@ -20,7 +19,6 @@ export function ConfirmConnect({
   onClose,
   communication,
 }: Props) {
-  const [isConnected, setIsConnected] = React.useState(false)
   const { siweSign, signature, message } = useSIWE()
   const { account } = useAuth()
 
@@ -58,21 +56,9 @@ export function ConfirmConnect({
       }
     }
   }
-  if (!isConnected) {
-    return (
-      <ConnectPage
-        style="h-full mt-4 space-y-5"
-        onNext={() => {
-          console.log('connected! ')
-          setIsConnected(true)
-          // onConfirm()
-        }}
-      />
-    )
-  }
 
   return (
-    <h1 className="text-xl text-center font-medium p-1">
+    <h1 className="text-xl mt-4 px-4 font-medium">
       <span className="font-bold text-brand-ui-primary">
         {oauthConfig.clientId.length > 20
           ? oauthConfig.clientId.slice(0, 17) + '...'
