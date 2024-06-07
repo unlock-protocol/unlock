@@ -207,6 +207,7 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 
 export interface Props {
   defaultEmail: string | undefined
+  setDefaultEmail: (email: string | undefined) => void
   isExistingUser: boolean
   onSignIn?(): void
   useIcon?: boolean
@@ -216,6 +217,7 @@ export const ConnectUnlockAccount = ({
   onSignIn,
   useIcon = true,
   defaultEmail,
+  setDefaultEmail,
   isExistingUser,
 }: Props) => {
   const { retrieveUserAccount, createUserAccount } = useAccount('')
@@ -271,6 +273,7 @@ export const ConnectUnlockAccount = ({
           onReturn={() => {
             signOut()
             deAuthenticate()
+            setDefaultEmail(undefined)
           }}
         />
       ) : (
@@ -281,6 +284,7 @@ export const ConnectUnlockAccount = ({
           onReturn={() => {
             signOut()
             deAuthenticate()
+            setDefaultEmail(undefined)
           }}
         />
       )}

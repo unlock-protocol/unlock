@@ -192,6 +192,7 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
       {(useUnlockAccount != undefined || isUnlockAccount) && (
         <ConnectUnlockAccount
           defaultEmail={useUnlockAccount}
+          setDefaultEmail={setUseUnlockAccount}
           isExistingUser={isExistingUser}
           useIcon={false}
         />
