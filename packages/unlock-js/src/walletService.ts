@@ -99,7 +99,7 @@ export default class WalletService extends UnlockService {
     if (signer) {
       this.signer = signer
     } else {
-      this.signer = this.provider.getSigner(0)
+      this.signer = await this.provider.getSigner()
     }
     const { chainId: networkId } = await this.provider.getNetwork()
 
@@ -117,14 +117,14 @@ export default class WalletService extends UnlockService {
    * Function which yields the address of the account on the provider
    */
   async getAccount() {
-    const account = await this.provider.getSigner()
+    const account = await this.provider.getSigner(0)
 
-    if (!account.length) {
+    if (!account.address) {
       // We do not have an account, can't do anything until we have one.
       return null
     }
 
-    return account
+    return account.address
   }
 
   /**
