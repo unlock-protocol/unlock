@@ -1537,6 +1537,39 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+    get:
+      operationId: getUserMetadata
+      security:
+        - User: ['user']
+
+      description: get user metadata for a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+      responses:
+        200:
+          description: Returns user metadata if authenticated for a lock.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserMetadata'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/metadata/users:
     put:
       operationId: updateUsersMetadata
