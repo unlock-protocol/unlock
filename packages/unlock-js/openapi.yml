@@ -1555,17 +1555,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserMetadata'
 
-        400:
-          $ref: '#/components/responses/400.Invalid'
-
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
 
         404:
           $ref: '#/components/responses/404.NotFound'
-
-        409:
-          $ref: '#/components/responses/409.Conflict'
 
         500:
           $ref: '#/components/responses/500.InternalError'
