@@ -119,12 +119,14 @@ export default class WalletService extends UnlockService {
   async getAccount() {
     const account = await this.provider.getSigner(0)
 
-    if (!account.address) {
+    const address = await account.getAddress()
+
+    if (!address) {
       // We do not have an account, can't do anything until we have one.
       return null
     }
 
-    return account.address
+    return address
   }
 
   /**
