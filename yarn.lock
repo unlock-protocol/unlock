@@ -6066,6 +6066,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.20.13":
+  version: 7.24.7
+  resolution: "@babel/runtime@npm:7.24.7"
+  dependencies:
+    regenerator-runtime: "npm:^0.14.0"
+  checksum: 10/7b77f566165dee62db3db0296e71d08cafda3f34e1b0dcefcd68427272e17c1704f4e4369bff76651b07b6e49d3ea5a0ce344818af9116e9292e4381e0918c76
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.22.6, @babel/runtime@npm:^7.23.2":
   version: 7.23.7
   resolution: "@babel/runtime@npm:7.23.7"
@@ -6389,7 +6398,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bugsnag/js@npm:^7.0.0, @bugsnag/js@npm:^7.20.0":
+"@bugsnag/js@npm:^7.0.0, @bugsnag/js@npm:^7.20.0, @bugsnag/js@npm:^7.22.3":
   version: 7.23.0
   resolution: "@bugsnag/js@npm:7.23.0"
   dependencies:
@@ -6468,6 +6477,48 @@ __metadata:
   version: 4.20240603.0
   resolution: "@cloudflare/workers-types@npm:4.20240603.0"
   checksum: 10/97776b3417e3eab20dd90506ffc08058b5dd8cdd736a8824b47c6611c99cd0ebbd6208b7c07ae8a75fe2d620b582e09df29c5f8553d44270df27c48a73003f4d
+  languageName: node
+  linkType: hard
+
+"@coinbase/cbpay-js@npm:^1.10.0":
+  version: 1.10.0
+  resolution: "@coinbase/cbpay-js@npm:1.10.0"
+  peerDependencies:
+    regenerator-runtime: ^0.13.9
+  peerDependenciesMeta:
+    regenerator-runtime:
+      optional: true
+  checksum: 10/f011abeac07b5dc9028ed6d766632874135c2182e9bcc6636e5cd026ddcfbe6f8c29432efe36cf2bdaf5df2197a56ccccde6c95b590964a80ef9b741f022b1f4
+  languageName: node
+  linkType: hard
+
+"@coinbase/corekms@npm:0.1.12":
+  version: 0.1.12
+  resolution: "@coinbase/corekms@npm:0.1.12"
+  checksum: 10/d8d828141d40a523a4dc693a2c01aba9423ea4b1eefca6bc5461c759cce9ae688cacfea872515639476b0d12a0a865bfcfb2399c40423d51511fa97f3cf7cffe
+  languageName: node
+  linkType: hard
+
+"@coinbase/sandbox-rpc@npm:1.1.6":
+  version: 1.1.6
+  resolution: "@coinbase/sandbox-rpc@npm:1.1.6"
+  checksum: 10/af8ff89016459260f2b144fecce39258dbeb15ddf79dc96e934ff45fce1daf72c9255fac2fdee87fb88b012f493cbf52000dadd95b20f1790d9b8725e811540c
+  languageName: node
+  linkType: hard
+
+"@coinbase/waas-sdk-web@npm:3.3.2":
+  version: 3.3.2
+  resolution: "@coinbase/waas-sdk-web@npm:3.3.2"
+  dependencies:
+    "@bugsnag/js": "npm:^7.22.3"
+    "@coinbase/cbpay-js": "npm:^1.10.0"
+    "@coinbase/corekms": "npm:0.1.12"
+    "@coinbase/sandbox-rpc": "npm:1.1.6"
+    client-analytics: "npm:0.0.8"
+  dependenciesMeta:
+    "@coinbase/cbpay-js":
+      optional: true
+  checksum: 10/3f4252a273be5d84d0302810c33ca7cad106e0e2ad4dd98bb14a753a7e2499659d63363f829ed2d2b71b270cc5b62738bf1bde02ac7bce549d549a7529ce07ca
   languageName: node
   linkType: hard
 
@@ -13265,6 +13316,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@panva/hkdf@npm:^1.0.2":
+  version: 1.1.1
+  resolution: "@panva/hkdf@npm:1.1.1"
+  checksum: 10/f0dd12903751d8792420353f809ed3c7de860cf506399759fff5f59f7acfef8a77e2b64012898cee7e5b047708fa0bd91dff5ef55a502bf8ea11aad9842160da
+  languageName: node
+  linkType: hard
+
 "@parcel/watcher-android-arm64@npm:2.4.1":
   version: 2.4.1
   resolution: "@parcel/watcher-android-arm64@npm:2.4.1"
@@ -18820,7 +18878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-router@npm:*, @types/react-router@npm:^5.1.0":
+"@types/react-router@npm:*, @types/react-router@npm:^5.1.0, @types/react-router@npm:^5.1.20":
   version: 5.1.20
   resolution: "@types/react-router@npm:5.1.20"
   dependencies:
@@ -20391,6 +20449,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
     "@airstack/airstack-react": "npm:0.6.3"
+    "@coinbase/waas-sdk-web": "npm:3.3.2"
     "@crossmint/client-sdk-react-ui": "npm:1.1.9"
     "@decent.xyz/box-common": "npm:2.1.3"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
@@ -20448,6 +20507,7 @@ __metadata:
     jsdom: "npm:24.1.0"
     lottie-react: "npm:2.4.0"
     next: "npm:14.2.3"
+    next-auth: "npm:4.24.7"
     next-seo: "npm:6.5.0"
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.38"
@@ -20481,6 +20541,7 @@ __metadata:
     vitest: "npm:1.6.0"
     vitest-fetch-mock: "npm:0.2.2"
     vitest-localstorage-mock: "npm:0.1.2"
+    waas-sdk-ethers: "https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz"
     walletlink: "npm:2.5.0"
     xstate: "npm:5.13.1"
     zod: "npm:3.23.8"
@@ -25257,7 +25318,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"charenc@npm:>= 0.0.1":
+"charenc@npm:0.0.2, charenc@npm:>= 0.0.1":
   version: 0.0.2
   resolution: "charenc@npm:0.0.2"
   checksum: 10/81dcadbe57e861d527faf6dd3855dc857395a1c4d6781f4847288ab23cffb7b3ee80d57c15bba7252ffe3e5e8019db767757ee7975663ad2ca0939bb8fcaf2e5
@@ -25656,6 +25717,17 @@ __metadata:
   version: 3.0.0
   resolution: "cli-width@npm:3.0.0"
   checksum: 10/8730848b04fb189666ab037a35888d191c8f05b630b1d770b0b0e4c920b47bb5cc14bddf6b8ffe5bfc66cee97c8211d4d18e756c1ffcc75d7dbe7e1186cd7826
+  languageName: node
+  linkType: hard
+
+"client-analytics@npm:0.0.8":
+  version: 0.0.8
+  resolution: "client-analytics@npm:0.0.8"
+  dependencies:
+    "@types/react-router": "npm:^5.1.20"
+    md5: "npm:^2.3.0"
+    perfume.js: "npm:^9.2.0"
+  checksum: 10/684d56459332dbf079ea6175efd8aed7781b4408db5468e3692f110bde4fe0b59857c2f84a7c60d7faa020b93fc724d78ed860c3b522dd865f28d29275b39623
   languageName: node
   linkType: hard
 
@@ -26873,7 +26945,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypt@npm:>= 0.0.1":
+"crypt@npm:0.0.2, crypt@npm:>= 0.0.1":
   version: 0.0.2
   resolution: "crypt@npm:0.0.2"
   checksum: 10/2c72768de3d28278c7c9ffd81a298b26f87ecdfe94415084f339e6632f089b43fe039f2c93f612bcb5ffe447238373d93b2e8c90894cba6cfb0ac7a74616f8b9
@@ -35903,7 +35975,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-buffer@npm:^1.1.5":
+"is-buffer@npm:^1.1.5, is-buffer@npm:~1.1.6":
   version: 1.1.6
   resolution: "is-buffer@npm:1.1.6"
   checksum: 10/f63da109e74bbe8947036ed529d43e4ae0c5fcd0909921dce4917ad3ea212c6a87c29f525ba1d17c0858c18331cf1046d4fc69ef59ed26896b25c8288a627133
@@ -37112,6 +37184,13 @@ __metadata:
     "@sideway/formula": "npm:^3.0.1"
     "@sideway/pinpoint": "npm:^2.0.0"
   checksum: 10/9e34f93afbb490e12d7ec4aa05803788cd9ff4de00af30389c9d0f4af193ae85941365f80cb0ac38d0d04a45b85ee3a8b78cb0c10b5efeccce8922d68719603c
+  languageName: node
+  linkType: hard
+
+"jose@npm:^4.15.5":
+  version: 4.15.5
+  resolution: "jose@npm:4.15.5"
+  checksum: 10/17944fcc0d9afa07387eef23127c30ecfcc77eafddc4b4f1a349a8eee0536bee9b08ecd745406eaa0af65d531f738b94d2467976479cbfe8b3b60f8fc8082b8d
   languageName: node
   linkType: hard
 
@@ -39193,6 +39272,17 @@ __metadata:
     inherits: "npm:^2.0.1"
     safe-buffer: "npm:^5.1.2"
   checksum: 10/098494d885684bcc4f92294b18ba61b7bd353c23147fbc4688c75b45cb8590f5a95fd4584d742415dcc52487f7a1ef6ea611cfa1543b0dc4492fe026357f3f0c
+  languageName: node
+  linkType: hard
+
+"md5@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "md5@npm:2.3.0"
+  dependencies:
+    charenc: "npm:0.0.2"
+    crypt: "npm:0.0.2"
+    is-buffer: "npm:~1.1.6"
+  checksum: 10/88dce9fb8df1a084c2385726dcc18c7f54e0b64c261b5def7cdfe4928c4ee1cd68695c34108b4fab7ecceb05838c938aa411c6143df9fdc0026c4ddb4e4e72fa
   languageName: node
   linkType: hard
 
@@ -41506,6 +41596,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-auth@npm:4.24.7":
+  version: 4.24.7
+  resolution: "next-auth@npm:4.24.7"
+  dependencies:
+    "@babel/runtime": "npm:^7.20.13"
+    "@panva/hkdf": "npm:^1.0.2"
+    cookie: "npm:^0.5.0"
+    jose: "npm:^4.15.5"
+    oauth: "npm:^0.9.15"
+    openid-client: "npm:^5.4.0"
+    preact: "npm:^10.6.3"
+    preact-render-to-string: "npm:^5.1.19"
+    uuid: "npm:^8.3.2"
+  peerDependencies:
+    next: ^12.2.5 || ^13 || ^14
+    nodemailer: ^6.6.5
+    react: ^17.0.2 || ^18
+    react-dom: ^17.0.2 || ^18
+  peerDependenciesMeta:
+    nodemailer:
+      optional: true
+  checksum: 10/f226254dac02e31dc28589344ca077fc975261242cc8484f2d9b7c5916f29f29877d75a213168403fbf75d0c84b324c19d68c5a3283cbc683d720a6ea6f3872d
+  languageName: node
+  linkType: hard
+
 "next-seo@npm:6.5.0":
   version: 6.5.0
   resolution: "next-seo@npm:6.5.0"
@@ -42206,6 +42321,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"oauth@npm:^0.9.15":
+  version: 0.9.15
+  resolution: "oauth@npm:0.9.15"
+  checksum: 10/6b0b10be19a461da417a37ea2821a773ef74dd667563291e1e83b2024b88e6571b0323a0a6887f2390fbaf28cc6ce5bfe0484fc22162b975305b1e19b76f5597
+  languageName: node
+  linkType: hard
+
 "object-assign@npm:^4, object-assign@npm:^4.0.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
   version: 4.1.1
   resolution: "object-assign@npm:4.1.1"
@@ -42221,6 +42343,13 @@ __metadata:
     define-property: "npm:^0.2.5"
     kind-of: "npm:^3.0.3"
   checksum: 10/a9e35f07e3a2c882a7e979090360d1a20ab51d1fa19dfdac3aa8873b328a7c4c7683946ee97c824ae40079d848d6740a3788fa14f2185155dab7ed970a72c783
+  languageName: node
+  linkType: hard
+
+"object-hash@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "object-hash@npm:2.2.0"
+  checksum: 10/dee06b6271bf5769ae5f1a7386fdd52c1f18aae9fcb0b8d4bb1232f2d743d06cb5b662be42378b60a1c11829f96f3f86834a16bbaa57a085763295fff8b93e27
   languageName: node
   linkType: hard
 
@@ -42416,6 +42545,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"oidc-token-hash@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "oidc-token-hash@npm:5.0.3"
+  checksum: 10/35fa19aea9ff2c509029ec569d74b778c8a215b92bd5e6e9bc4ebbd7ab035f44304ff02430a6397c3fb7c1d15ebfa467807ca0bcd31d06ba610b47798287d303
+  languageName: node
+  linkType: hard
+
 "omit.js@npm:^2.0.2":
   version: 2.0.2
   resolution: "omit.js@npm:2.0.2"
@@ -42553,6 +42689,18 @@ __metadata:
   bin:
     opener: bin/opener-bin.js
   checksum: 10/0504efcd6546e14c016a261f58a68acf9f2e5c23d84865d7d5470d5169788327ceaa5386253682f533b3fba4821748aa37ecb395f3dae7acb3261b9b22e36814
+  languageName: node
+  linkType: hard
+
+"openid-client@npm:^5.4.0":
+  version: 5.6.5
+  resolution: "openid-client@npm:5.6.5"
+  dependencies:
+    jose: "npm:^4.15.5"
+    lru-cache: "npm:^6.0.0"
+    object-hash: "npm:^2.2.0"
+    oidc-token-hash: "npm:^5.0.3"
+  checksum: 10/e843f39b3eac07d9a415d8524745d722df0298708e58ac4e13b2642a34b2211591d2c9a58d6f4e29826b678856965454bcfa5148a030c7eef53178ceff48d8ee
   languageName: node
   linkType: hard
 
@@ -43520,6 +43668,15 @@ __metadata:
   version: 2.1.0
   resolution: "performance-now@npm:2.1.0"
   checksum: 10/534e641aa8f7cba160f0afec0599b6cecefbb516a2e837b512be0adbe6c1da5550e89c78059c7fabc5c9ffdf6627edabe23eb7c518c4500067a898fa65c2b550
+  languageName: node
+  linkType: hard
+
+"perfume.js@npm:^9.2.0":
+  version: 9.4.0
+  resolution: "perfume.js@npm:9.4.0"
+  dependencies:
+    web-vitals: "npm:^3.5.0"
+  checksum: 10/92e80e9a50700e289bdd01a11e867bd960eb0155f976655b096cf9a32a0c33c3b7ae7561f7bb89e0bf400e19820cfe932d354db4e8011ff3f4b250c60dfc1e46
   languageName: node
   linkType: hard
 
@@ -44671,10 +44828,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"preact-render-to-string@npm:^5.1.19":
+  version: 5.2.6
+  resolution: "preact-render-to-string@npm:5.2.6"
+  dependencies:
+    pretty-format: "npm:^3.8.0"
+  peerDependencies:
+    preact: ">=10"
+  checksum: 10/356519f7640d1c49e11b4837b41a83b307f3f237f93de153b9dde833a701e3ce5cf1d45cb18e37a3ec9c568555e2f5373c128d8b5f6ef79de7658f3c400d3e70
+  languageName: node
+  linkType: hard
+
 "preact@npm:^10.5.9":
   version: 10.21.0
   resolution: "preact@npm:10.21.0"
   checksum: 10/2c5fd23460f0de4a18e6707bf0d7aa0e0a4447b94708098a549fb243fa8ba00c978da1d5914ff50b32cc27c8b69dcdd6234f28f6462f912d89b963efb8e1a410
+  languageName: node
+  linkType: hard
+
+"preact@npm:^10.6.3":
+  version: 10.22.0
+  resolution: "preact@npm:10.22.0"
+  checksum: 10/0f3092916a538fa47d205d603bb5c513f9368a59bcbf881b457641ea6b88470b6a07960da8727db1287c232cb0f3a6292963917fa5cf09864be5eb50bf2a294e
   languageName: node
   linkType: hard
 
@@ -44808,6 +44983,13 @@ __metadata:
     ansi-styles: "npm:^5.0.0"
     react-is: "npm:^18.0.0"
   checksum: 10/dea96bc83c83cd91b2bfc55757b6b2747edcaac45b568e46de29deee80742f17bc76fe8898135a70d904f4928eafd8bb693cd1da4896e8bdd3c5e82cadf1d2bb
+  languageName: node
+  linkType: hard
+
+"pretty-format@npm:^3.8.0":
+  version: 3.8.0
+  resolution: "pretty-format@npm:3.8.0"
+  checksum: 10/c80009217dea7fc8f6006f644cbefc3ec57833c1f1f325158d83a5bcbc3ccc15d1e2cc658cd7d87b9c196a43f15d6d9125a2415c5ec4357882643534e25e9829
   languageName: node
   linkType: hard
 
@@ -53353,6 +53535,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"waas-sdk-ethers@https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz":
+  version: 3.0.0
+  resolution: "waas-sdk-ethers@https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz"
+  peerDependencies:
+    "@coinbase/waas-sdk-web": ^3.0.0
+    ethers: ^5.7.2
+  checksum: 10/38815b5dee2043cd1eaf019ed0009e072954ec292e6c954c3422002a9bebad676a544a1e677269806fdad7c830e5e59799ab3c0dd68ceb5d39cec2ff11794e02
+  languageName: node
+  linkType: hard
+
 "wabt@npm:1.0.24":
   version: 1.0.24
   resolution: "wabt@npm:1.0.24"
@@ -53443,6 +53635,13 @@ __metadata:
   version: 3.3.3
   resolution: "web-streams-polyfill@npm:3.3.3"
   checksum: 10/8e7e13501b3834094a50abe7c0b6456155a55d7571312b89570012ef47ec2a46d766934768c50aabad10a9c30dd764a407623e8bfcc74fcb58495c29130edea9
+  languageName: node
+  linkType: hard
+
+"web-vitals@npm:^3.5.0":
+  version: 3.5.2
+  resolution: "web-vitals@npm:3.5.2"
+  checksum: 10/59c5d7775c32977eb9156d186113f4de66c235cfea7a113d2f430ef25db25a5efe1980d2ba466f7ceefc7b1a3847764933dc1567b6d9b8f340d12e75209e3f79
   languageName: node
   linkType: hard
 

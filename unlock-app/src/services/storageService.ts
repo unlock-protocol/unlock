@@ -4,6 +4,7 @@ import {
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
+import { UserAccountType } from '~/utils/userAccountType'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -250,6 +251,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
+  // TODO: Depracate after NextAuth is fully implemented
   async userExist(emailAddress: string) {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
@@ -260,6 +262,58 @@ export class StorageService extends EventEmitter {
       return response.status === 200
     } catch (error) {
       return false
+    }
+  }
+
+  /**
+   * Given a user's email address, retrieves their WAAS UUID. In the case of failure a rejected promise
+   * is returned to the caller.
+   * @param {*} emailAddress
+   * @returns {Promise<*>}
+   */
+  async getUserWaasUuid(emailAddress: string, provider: string, token: string) {
+    let selectedProvider
+
+    switch (provider) {
+      case 'google':
+        selectedProvider = UserAccountType.GoogleAccount
+        break
+      default:
+        selectedProvider = ''
+        break
+    }
+
+    try {
+      const response = await fetch(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/${encodeURIComponent(selectedProvider as string)}/waas`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ token }),
+        }
+      )
+      const data = await response.json()
+
+      return data.token
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async getUserAccountType(emailAddress: string): Promise<UserAccountType[]> {
+    try {
+      const endpoint = `${this.host}/users/${emailAddress}`
+
+      const response = await fetch(endpoint, {
+        method: 'GET',
+      })
+
+      const data = await response.json()
+      return data.userAccountType
+    } catch (error) {
+      return []
     }
   }
 }
