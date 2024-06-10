@@ -20,7 +20,6 @@ export const SelectComponent = {
     ),
     description: <>description example</>,
     customOption: true,
-    moreOptions: { showMoreAfter: 6 },
     options: [
       {
         label: 'Test 1',
@@ -52,6 +51,8 @@ export const SelectComponent = {
         value: 3,
         disabled: true,
       },
+    ],
+    moreOptions: [
       {
         label: 'Test 5',
         value: 3,
