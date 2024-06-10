@@ -31,6 +31,8 @@ import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
+import ConnectingWaas from '../../connect/ConnectingWaas'
+import { useSession } from 'next-auth/react'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -299,6 +301,13 @@ export function Select({ checkoutService }: Props) {
 
   const [isSigning, setSigning] = useState(false)
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
+  const { data: session } = useSession()
+  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -307,7 +316,8 @@ export function Select({ checkoutService }: Props) {
     (lock?.isSoldOut && !(membership?.member || membership?.expired)) ||
     isNotExpectedAddress ||
     isLoadingHook ||
-    isSigning
+    isSigning ||
+    !!isLoadingWaas
 
   useEffect(() => {
     if (locks?.length) {
@@ -318,10 +328,6 @@ export function Select({ checkoutService }: Props) {
   }, [locks])
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
-
-  const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
-  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
     const signToSignIn = async () => {
@@ -386,6 +392,37 @@ export function Select({ checkoutService }: Props) {
       recipients: account ? [account] : [],
       hook: hookType,
     })
+  }
+
+  if (isLoadingWaas) {
+    return (
+      <Fragment>
+        <Stepper
+          service={checkoutService}
+          hookType={hookType}
+          existingMember={!!membership?.member}
+          isRenew={!!membership?.expired}
+        />
+        <main className="h-full mt-4 space-y-5">
+          <ConnectingWaas shouldReloadOnTimeout={true} />
+        </main>
+        <footer className="grid items-center px-6 pt-6 border-t">
+          <div className="grid">
+            {isNotExpectedAddress && (
+              <p className="mb-2 text-sm text-center">
+                Switch to wallet address {minifyAddress(expectedAddress)} to
+                continue.
+              </p>
+            )}
+            <Button disabled={isDisabled} onClick={selectLock}>
+              {!isSignedIn && useDelegatedProvider ? 'Confirm' : 'Next'}
+            </Button>
+          </div>
+          <Disconnect service={checkoutService} />
+          <PoweredByUnlock />
+        </footer>
+      </Fragment>
+    )
   }
 
   return (

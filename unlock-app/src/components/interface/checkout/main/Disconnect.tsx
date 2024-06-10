@@ -5,6 +5,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import { addressMinify } from '~/utils/strings'
 import { CheckoutService } from './checkoutMachine'
 import { useSelector } from '@xstate/react'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 interface DisconnectProps {
   service: CheckoutService
@@ -20,7 +21,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
   let userText: string
   let signOutText: string
 
-  if (isUnlockAccount && email) {
+  if (email) {
     userText = `User: ${email}`
     signOutText = 'Sign out'
   } else {
@@ -32,6 +33,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
+    await nextSignOut()
     service.send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }
