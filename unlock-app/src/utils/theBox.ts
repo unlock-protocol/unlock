@@ -74,15 +74,12 @@ export const getCrossChainRoutes = async ({
 
       cost: {
         isNative: true,
-        amount: prices
-          .reduce(
-            (acc, current) =>
-              acc.add(
-                ethers.parseUnits(current.amount.toString(), current.decimals)
-              ),
-            BigInt('0')
-          )
-          .toBigInt(),
+        amount: prices.reduce(
+          (acc, current) =>
+            acc +
+            ethers.parseUnits(current.amount.toString(), current.decimals),
+          BigInt('0')
+        ),
       },
 
       signature: encodeURIComponent(
