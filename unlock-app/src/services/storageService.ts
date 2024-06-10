@@ -266,9 +266,11 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a user's email address, retrieves their WAAS UUID. In the case of failure a rejected promise
+   * Given a user's email address, used provide and token retrieves their WAAS UUID. In the case of failure a rejected promise
    * is returned to the caller.
    * @param {*} emailAddress
+   * @param {*} provider
+   * @param {*} token
    * @returns {Promise<*>}
    */
   async getUserWaasUuid(emailAddress: string, provider: string, token: string) {

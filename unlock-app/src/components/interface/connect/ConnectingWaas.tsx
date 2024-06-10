@@ -56,31 +56,26 @@ export const ConnectingWaas = ({
   }, [])
 
   useEffect(() => {
-    // @ts-expect-error - selectedProvider is not in the type definition
-    if (!session || !session?.selectedProvider) return
+    if (!session || !session?.user?.selectedProvider) return
 
     const connectWaasProvider = async () => {
       try {
         const waasProvider = new WaasProvider({
           ...config.networks[1],
           email: session.user?.email as string,
-          // @ts-expect-error - selectedProvider is not in the type definition
-          selectedLoginProvider: session.selectedProvider,
-          // @ts-expect-error - token is not in the type definition
-          token: session.token,
+          selectedLoginProvider: session.user.selectedProvider as string,
+          token: session.user.token as string,
         })
         await waasProvider.connect()
         await authenticateWithProvider('WAAS', waasProvider)
-        // @ts-expect-error - selectedProvider is not in the type definition
-        session.selectedProvider = null
+        session.user.selectedProvider = null
       } catch (err) {
         console.error(err)
       }
     }
 
     connectWaasProvider()
-    // @ts-expect-error - selectedProvider is not in the type definition
-  }, [session?.selectedProvider])
+  }, [session?.user.selectedProvider])
 
   useEffect(() => {
     if (!connected && !isSignedIn) return
