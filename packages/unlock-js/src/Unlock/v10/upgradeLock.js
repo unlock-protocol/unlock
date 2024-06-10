@@ -6,8 +6,8 @@
  * @param {function} callback invoked with the upgrade transaction hash
  */
 export default async function (lockAddress, lockVersion, callback) {
-  if (typeof lockVersion !== 'number')
-    throw Error('lockVersion should be a number')
+  if (typeof lockVersion !== 'bigint')
+    throw Error('lockVersion should be a bigint')
 
   const unlockContract = await this.getUnlockContract()
 

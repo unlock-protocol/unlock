@@ -948,7 +948,7 @@ export default class WalletService extends UnlockService {
   async upgradeLock(
     params: {
       lockAddress: string
-      lockVersion: number
+      lockVersion: bigint
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
