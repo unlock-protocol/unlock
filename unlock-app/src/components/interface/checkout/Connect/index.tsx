@@ -10,11 +10,14 @@ import { useMachine } from '@xstate/react'
 interface Props {
   oauthConfig: OAuthConfig
   injectedProvider: unknown
+  communication: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Connect({ injectedProvider, oauthConfig }: Props) {
-  const communication = useCheckoutCommunication()
-
+export function Connect({
+  injectedProvider,
+  oauthConfig,
+  communication,
+}: Props) {
   // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, connectService] = useMachine(connectMachine)
   const matched = state.value.toString()

@@ -26,7 +26,7 @@ import Disconnect from '../Disconnect'
 
 interface Props {
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, network: number, hash?: string) => void
+  onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
 }
 
@@ -264,7 +264,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
       paymentIntent: paymentIntent.id,
     })
       .then((transactionHash) => {
-        onConfirmed(lockAddress, lockNetwork, transactionHash)
+        onConfirmed(lockAddress, transactionHash)
         setIsConfirming(false)
       })
       .catch((error) => {

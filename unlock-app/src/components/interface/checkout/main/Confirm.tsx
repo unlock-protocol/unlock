@@ -1,7 +1,7 @@
 import { CheckoutService } from './checkoutMachine'
 import { Fragment } from 'react'
 import { useSelector } from '@xstate/react'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
@@ -14,10 +14,10 @@ import { ConfirmCrossChainPurchase } from './Confirm/ConfirmCrossChainPurchase'
 
 interface Props {
   checkoutService: CheckoutService
+  communication?: CheckoutCommunication
 }
 
-export function Confirm({ checkoutService }: Props) {
-  const communication = useCheckoutCommunication()
+export function Confirm({ checkoutService, communication }: Props) {
   const { payment, paywallConfig, messageToSign, metadata } = useSelector(
     checkoutService,
     (state) => state.context
@@ -28,7 +28,7 @@ export function Confirm({ checkoutService }: Props) {
     ToastHelper.error(message)
   }
 
-  const onConfirmed = (lock: string, network: number, hash?: string) => {
+  const onConfirmed = (lock: string, hash?: string, network?: number) => {
     // If not pessimistic, we can emit the transaction info right away
     // and pass the signed message as well
     if (!paywallConfig.pessimistic && hash) {

@@ -24,7 +24,7 @@ import Disconnect from '../Disconnect'
 
 interface Props {
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, network: number, hash?: string) => void
+  onConfirmed: (lock: string, hash?: string) => void
   onError: (message: string) => void
 }
 
@@ -168,7 +168,7 @@ export function ConfirmCrypto({
             transactionHash: hash!,
           })
         } else if (hash) {
-          onConfirmed(lockAddress, lockNetwork, hash)
+          onConfirmed(lockAddress, hash)
         }
       }
 

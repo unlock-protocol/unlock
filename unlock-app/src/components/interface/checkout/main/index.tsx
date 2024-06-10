@@ -22,15 +22,21 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { Connected } from '../Connected'
-
 interface Props {
+  injectedProvider: any
   paywallConfig: PaywallConfigType
+  communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
   handleClose?: (params: Record<string, string>) => void
 }
 
-export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
-  const communication = useCheckoutCommunication()
+export function Checkout({
+  paywallConfig,
+  injectedProvider,
+  communication,
+  redirectURI,
+  handleClose,
+}: Props) {
   // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, checkoutService] = useMachine(checkoutMachine, {
     input: {
@@ -143,13 +149,29 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
         return <Metadata checkoutService={checkoutService} />
       }
       case 'CONFIRM': {
-        return <Confirm checkoutService={checkoutService} />
+        return (
+          <Confirm
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
       }
       case 'MESSAGE_TO_SIGN': {
-        return <MessageToSign checkoutService={checkoutService} />
+        return (
+          <MessageToSign
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
       }
       case 'MINTING': {
-        return <Minting onClose={onClose} checkoutService={checkoutService} />
+        return (
+          <Minting
+            onClose={onClose}
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
       }
       case 'UNLOCK_ACCOUNT': {
         return <UnlockAccountSignIn checkoutService={checkoutService} />
@@ -163,6 +185,7 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
       case 'PASSWORD': {
         return <Password checkoutService={checkoutService} />
       }
+
       case 'PROMO': {
         return <Promo checkoutService={checkoutService} />
       }
@@ -170,13 +193,19 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
         return <Gitcoin checkoutService={checkoutService} />
       }
       case 'RETURNING': {
-        return <Returning onClose={onClose} checkoutService={checkoutService} />
+        return (
+          <Returning
+            communication={communication}
+            onClose={onClose}
+            checkoutService={checkoutService}
+          />
+        )
       }
       default: {
         return null
       }
     }
-  }, [onClose, matched])
+  }, [injectedProvider, onClose, checkoutService, matched, communication])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

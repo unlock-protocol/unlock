@@ -89,7 +89,6 @@ const WalletlessRegistrationClaiming = ({
         <div className="m-auto mt-20 h-72 mb-36">
           <MintingScreen
             mint={{
-              network: network,
               status: transactionStatus,
               transactionHash: claimResult.hash,
             }}
