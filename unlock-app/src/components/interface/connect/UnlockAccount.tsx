@@ -7,6 +7,7 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface UserDetails {
   email: string
@@ -26,7 +27,7 @@ export interface SignInProps {
   useIcon?: boolean
 }
 
-const SignIn = ({
+const SignInUnlockAccount = ({
   email,
   onReturn,
   signIn,
@@ -206,25 +207,26 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
-  defaultEmail: string | undefined
+  email: string
   setDefaultEmail: (email: string | undefined) => void
-  isExistingUser: boolean
   onSignIn?(): void
   useIcon?: boolean
+  accountType: UserAccountType
+  shouldRedirect: boolean
 }
 
 export const ConnectUnlockAccount = ({
   onSignIn,
   useIcon = true,
-  defaultEmail,
+  email,
   setDefaultEmail,
-  isExistingUser,
+  accountType,
+  shouldRedirect,
 }: Props) => {
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const { deAuthenticate } = useAuth()
 
-  // TODO: Consider adding a way to set the email address to Auth context
   const config = useConfig()
   const { signOut } = useSIWE()
 
@@ -262,11 +264,12 @@ export const ConnectUnlockAccount = ({
       </div>
     )
   }
-  return (
-    <div className="space-y-6 divide-y divide-gray-100">
-      {isExistingUser && defaultEmail != undefined ? (
-        <SignIn
-          email={defaultEmail}
+
+  switch (accountType) {
+    case UserAccountType.UnlockAccount:
+      return (
+        <SignInUnlockAccount
+          email={email}
           signIn={signIn}
           onSignIn={onSignIn}
           useIcon={useIcon}
@@ -276,7 +279,16 @@ export const ConnectUnlockAccount = ({
             setDefaultEmail(undefined)
           }}
         />
-      ) : (
+      )
+      break
+    case UserAccountType.GoogleAccount:
+      break
+    case UserAccountType.PasskeyAccount:
+      break
+    case UserAccountType.EmailCodeAccount:
+      break
+    default:
+      return (
         <SignUp
           email={defaultEmail!}
           signUp={signUp}
@@ -287,7 +299,9 @@ export const ConnectUnlockAccount = ({
             setDefaultEmail(undefined)
           }}
         />
-      )}
-    </div>
-  )
+      )
+      break
+  }
+
+  return <div className="space-y-6 divide-y divide-gray-100"></div>
 }

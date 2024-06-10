@@ -5,13 +5,14 @@ import {
 import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
-import { MouseEventHandler, useState } from 'react'
+import { MouseEventHandler, use, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
+import { get, useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './UnlockAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -93,12 +94,23 @@ export const ConnectViaEmail = ({
 
 export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
   const { email, isUnlockAccount } = useAuth()
-  const [useUnlockAccount, setUseUnlockAccount] = useState<string | undefined>(
+  const [userEmail, setUserEmail] = useState<string | undefined>(
     email || undefined
   )
-  const [isExistingUser, setIsExistingUser] = useState<boolean>(
-    useUnlockAccount !== ''
-  )
+  const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
+
+  useEffect(() => {
+    const getUserAccountType = async () => {
+      if (!userEmail) return
+
+      setIsLoadingUserExists(true)
+      const userType = await storageService.getUserAccountType(userEmail)
+      setUserAccountType(userType)
+      setIsLoadingUserExists(false)
+    }
+
+    getUserAccountType()
+  }, [userEmail])
 
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
@@ -118,28 +130,19 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
   }
 
   const verifyAndSetEmail = async (email: string) => {
-    setIsLoadingUserExists(true)
+    setUserEmail(email)
     try {
-      const existingUser = await storageService.userExist(email)
-      if (existingUser) {
-        setUseUnlockAccount(email)
-        setIsExistingUser(true)
-        setIsLoadingUserExists(false)
-        return
-      }
+      // Get user account type
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(`Email Error: ${error.message}`)
       }
     }
-    setUseUnlockAccount(email)
-    setIsLoadingUserExists(false)
-    setIsExistingUser(false)
   }
 
   return (
     <div className="space-y-4">
-      {useUnlockAccount === undefined && !isUnlockAccount && (
+      {!userEmail && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -188,11 +191,10 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
           </div>
         </>
       )}
-      {(useUnlockAccount != undefined || isUnlockAccount) && (
+      {userEmail && (
         <ConnectUnlockAccount
-          defaultEmail={useUnlockAccount}
+          email={userEmail}
           setDefaultEmail={setUseUnlockAccount}
-          isExistingUser={isExistingUser}
           useIcon={false}
         />
       )}
