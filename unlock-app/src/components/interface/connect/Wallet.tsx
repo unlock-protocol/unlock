@@ -5,17 +5,19 @@ import {
 import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
-import { MouseEventHandler, use, useEffect, useState } from 'react'
+import { MouseEventHandler, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
-import { get, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './UnlockAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { UserAccountType } from '~/utils/userAccountType'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
+  shouldRedirect?: boolean
+  checkoutService?: CheckoutService
 }
 
 interface ConnectViaEmailProps {
@@ -92,8 +94,12 @@ export const ConnectViaEmail = ({
   )
 }
 
-export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
-  const { email, isUnlockAccount } = useAuth()
+export const ConnectWallet = ({
+  injectedProvider,
+  shouldRedirect = false,
+  checkoutService,
+}: ConnectWalletProps) => {
+  const { email } = useAuth()
   const [userEmail, setUserEmail] = useState<string | undefined>(
     email || undefined
   )
@@ -194,7 +200,8 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
           setEmail={setUserEmail}
           accountType={userAccountType}
           useIcon={false}
-          shouldRedirect={false}
+          shouldRedirect={shouldRedirect}
+          checkoutService={checkoutService}
         />
       )}
     </div>

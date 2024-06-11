@@ -1,13 +1,17 @@
 import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
-import { useConfig } from '~/utils/withConfig'
-import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
 import { UserAccountType } from '~/utils/userAccountType'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
+import { useRouter } from 'next/router'
+import { ConnectButton } from './Custom'
+import { signIn } from 'next-auth/react'
+import { popupCenter } from '~/utils/popup'
+import SvgComponents from '../svg'
 
 interface UserDetails {
   email: string
@@ -19,7 +23,7 @@ export type SignUpForm = Record<
   string
 >
 
-export interface SignInProps {
+export interface SignInUnlockAccountProps {
   email: string
   onReturn(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
@@ -33,7 +37,7 @@ const SignInUnlockAccount = ({
   signIn,
   onSignIn,
   useIcon = true,
-}: SignInProps) => {
+}: SignInUnlockAccountProps) => {
   const {
     register,
     handleSubmit,
@@ -111,97 +115,124 @@ const SignInUnlockAccount = ({
   )
 }
 
-export interface SignUpProps {
+export interface SignInProps {
   email: string
+  accountType: UserAccountType[]
   onReturn(): void
-  signUp: (details: UserDetails) => Promise<unknown> | unknown
+  signIn: (details: UserDetails) => Promise<unknown> | unknown
   onSignIn?(): void
+  useIcon?: boolean
+  shouldRedirect?: boolean
+  checkoutService?: CheckoutService
 }
 
-const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
-  const {
-    register,
-    getValues,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<SignUpForm>()
-
-  const onSubmit = async ({ password }: SignUpForm) => {
-    try {
-      await signUp({ email, password })
-      if (onSignIn) {
-        onSignIn()
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        setError(
-          'confirmPassword',
-          {
-            type: 'value',
-            message: error.message,
-          },
-          {
-            shouldFocus: true,
-          }
-        )
-      }
-    }
-  }
+const SignIn = ({
+  email,
+  accountType,
+  onReturn,
+  signIn,
+  onSignIn,
+  useIcon = true,
+  shouldRedirect = false,
+  checkoutService,
+}: SignInProps) => {
   return (
-    <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          label="Password"
-          type="password"
-          placeholder="Password"
-          {...register('password', {
-            required: {
-              value: true,
-              message: 'Password is required',
-            },
-            minLength: {
-              value: 8,
-              message: 'Password must be at least 8 characters',
-            },
-          })}
-          error={errors.password?.message}
-        />
-        <Input
-          label="Confirm Password"
-          type="password"
-          placeholder="Re-type your password"
-          {...register('confirmPassword', {
-            required: {
-              value: true,
-              message: 'Password confirmation is required',
-            },
-            validate: (value) => {
-              if (value !== getValues('password')) {
-                return 'Passwords do not match'
-              }
-              return true
-            },
-          })}
-          error={errors.confirmPassword?.message}
-        />
-        <Button type="submit" loading={isSubmitting} className="p-2.5">
-          <div className="flex justify-center items-center gap-2">
-            Create an account
+    <div className="grid gap-2 px-6">
+      <div className="grid gap-4">
+        {accountType.includes(UserAccountType.UnlockAccount) && (
+          <SignInUnlockAccount
+            email={email}
+            onReturn={onReturn}
+            signIn={signIn}
+            onSignIn={onSignIn}
+            useIcon={useIcon}
+          />
+        )}
+        {accountType.includes(UserAccountType.GoogleAccount) && (
+          <SignWithGoogle shouldRedirect={false} checkoutService={undefined} />
+        )}
+        {accountType.includes(UserAccountType.PasskeyAccount) && (
+          <div>Passkey Account</div>
+        )}
+        {accountType.includes(UserAccountType.EmailCodeAccount) && (
+          <div>Email Code Account</div>
+        )}
+        {accountType.length === 0 && (
+          <div className="w-full grid gap-4">
+            <SignWithGoogle
+              shouldRedirect={shouldRedirect}
+              checkoutService={checkoutService}
+            />
+            <div>Passkey Account</div>
+            <div>Email Code Account</div>
           </div>
-        </Button>
-      </form>
-      <div className="flex items-center justify-end px-6">
-        <button
-          onClick={(event) => {
-            event.preventDefault()
-            onReturn()
-          }}
-          className="hover:text-ui-main-600 underline"
-        >
-          Back
-        </button>
+        )}
+        <div className="w-full flex items-center justify-end px-6 py-4">
+          <button
+            onClick={() => onReturn()}
+            className="hover:text-ui-main-600 underline"
+          >
+            Back
+          </button>
+        </div>
       </div>
+    </div>
+  )
+}
+
+export interface SignWithGoogleProps {
+  shouldRedirect: boolean
+  checkoutService?: CheckoutService
+}
+
+const SignWithGoogle = ({
+  shouldRedirect,
+  checkoutService,
+}: SignWithGoogleProps) => {
+  const router = useRouter()
+  const state = JSON.stringify({
+    redirectUrl: shouldRedirect ? router.asPath : undefined,
+  })
+
+  let redirectUrl
+
+  if (shouldRedirect) {
+    redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.protocol}//${window.location.host}/connecting`
+        : ''
+  } else {
+    redirectUrl =
+      typeof window !== 'undefined'
+        ? `${window.location.protocol}//${window.location.host}${router.asPath}`
+        : ''
+  }
+
+  const callbackUrl = shouldRedirect
+    ? `${redirectUrl}/?state=${encodeURIComponent(state)}`
+    : redirectUrl
+
+  const signWithGoogle = () => {
+    if (window !== window.parent) {
+      popupCenter('/google', 'Sample Sign In')
+      checkoutService?.send({ type: 'SELECT' })
+      return
+    }
+
+    signIn('google', { callbackUrl: callbackUrl })
+  }
+
+  return (
+    <div className="w-full">
+      <ConnectButton
+        className="w-full"
+        icon={<SvgComponents.Unlock width={40} height={40} />}
+        onClick={() => {
+          signWithGoogle()
+        }}
+      >
+        Sign in with Google
+      </ConnectButton>
     </div>
   )
 }
@@ -213,6 +244,7 @@ export interface Props {
   useIcon?: boolean
   accountType: UserAccountType[]
   shouldRedirect: boolean
+  checkoutService?: CheckoutService
 }
 
 export const ConnectUnlockAccount = ({
@@ -222,32 +254,18 @@ export const ConnectUnlockAccount = ({
   setEmail,
   accountType,
   shouldRedirect,
+  checkoutService,
 }: Props) => {
-  const { retrieveUserAccount, createUserAccount } = useAccount('')
+  const { retrieveUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
   const { deAuthenticate } = useAuth()
 
-  const config = useConfig()
   const { signOut } = useSIWE()
 
   const { isUnlockAccount, encryptedPrivateKey } = useAuth()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
-    await authenticateWithProvider('UNLOCK', unlockProvider)
-  }
-
-  const signUp = async ({ email, password }: UserDetails) => {
-    const { passwordEncryptedPrivateKey } = await createUserAccount(
-      email,
-      password
-    )
-    const unlockProvider = new UnlockProvider(config.networks[1])
-    await unlockProvider.connect({
-      key: passwordEncryptedPrivateKey,
-      emailAddress: email,
-      password,
-    })
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
@@ -265,44 +283,22 @@ export const ConnectUnlockAccount = ({
     )
   }
 
-  switch (accountType[0]) {
-    case UserAccountType.UnlockAccount:
-      return (
-        <SignInUnlockAccount
-          email={email}
-          signIn={signIn}
-          onSignIn={onSignIn}
-          useIcon={useIcon}
-          onReturn={() => {
-            signOut()
-            deAuthenticate()
-            setEmail('')
-          }}
-        />
-      )
-      break
-    case UserAccountType.GoogleAccount:
-      return <div>Google Account</div>
-      break
-    case UserAccountType.PasskeyAccount:
-      break
-    case UserAccountType.EmailCodeAccount:
-      break
-    default:
-      return (
-        <SignUp
-          email={email}
-          signUp={signUp}
-          onSignIn={onSignIn}
-          onReturn={() => {
-            signOut()
-            deAuthenticate()
-            setEmail('')
-          }}
-        />
-      )
-      break
-  }
-
-  return <div className="space-y-6 divide-y divide-gray-100"></div>
+  return (
+    <div className="space-y-6 divide-y divide-gray-100">
+      <SignIn
+        email={email}
+        accountType={accountType}
+        onReturn={() => {
+          signOut()
+          deAuthenticate()
+          setEmail('')
+        }}
+        signIn={signIn}
+        onSignIn={onSignIn}
+        useIcon={useIcon}
+        shouldRedirect={shouldRedirect}
+        checkoutService={checkoutService}
+      />
+    </div>
+  )
 }
