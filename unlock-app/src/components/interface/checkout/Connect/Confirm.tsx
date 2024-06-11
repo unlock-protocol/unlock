@@ -78,11 +78,5 @@ export function ConfirmConnect({
     )
   }
 
-  return (
-    <ConnectPage
-      style="h-full mt-4 space-y-5"
-      connected={connected}
-      onNext={onSignIn}
-    />
-  )
+  return <ConnectPage style="h-full mt-4 space-y-5" onNext={onSignIn} />
 }
