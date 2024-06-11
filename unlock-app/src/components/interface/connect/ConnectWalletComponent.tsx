@@ -11,7 +11,7 @@ interface ConnectWalletComponentProps {
 
 const ConnectWalletComponent = ({
   onNext,
-  shouldRedirect,
+  shouldRedirect = true,
   checkoutService,
 }: ConnectWalletComponentProps) => {
   const { connected } = useAuth()

@@ -133,7 +133,7 @@ const SignIn = ({
   signIn,
   onSignIn,
   useIcon = true,
-  shouldRedirect = false,
+  shouldRedirect = true,
   checkoutService,
 }: SignInProps) => {
   return (
@@ -149,7 +149,10 @@ const SignIn = ({
           />
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
-          <SignWithGoogle shouldRedirect={false} checkoutService={undefined} />
+          <SignWithGoogle
+            shouldRedirect={shouldRedirect}
+            checkoutService={checkoutService}
+          />
         )}
         {accountType.includes(UserAccountType.PasskeyAccount) && (
           <div>Passkey Account</div>
@@ -253,7 +256,7 @@ export const ConnectUnlockAccount = ({
   email,
   setEmail,
   accountType,
-  shouldRedirect,
+  shouldRedirect = true,
   checkoutService,
 }: Props) => {
   const { retrieveUserAccount } = useAccount('')

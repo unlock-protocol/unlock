@@ -66,7 +66,7 @@ export const ConnectModal = () => {
                   </div>
                 </div>
               </header>
-              <ConnectWalletComponent />
+              <ConnectWalletComponent shouldRedirect={true} />
             </div>
           </Transition.Child>
         </div>

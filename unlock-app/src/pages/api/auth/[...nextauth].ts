@@ -20,16 +20,14 @@ export const authOptions = {
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.selectedProvider = user.selectedProvider
-        token.nextAuthLoginToken = user.nextAuthLoginToken
         token.idToken = user.idToken
       }
 
       return token
     },
     async session({ session, token }: { session: any; token: any }) {
-      session.selectedProvider = token.selectedProvider
-      session.nextAuthLoginToken = token.nextAuthLoginToken
-      session.token = token.idToken
+      session.user.selectedProvider = token.selectedProvider
+      session.user.token = token.idToken
 
       return session
     },

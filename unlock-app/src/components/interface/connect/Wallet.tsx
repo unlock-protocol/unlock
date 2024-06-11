@@ -96,7 +96,7 @@ export const ConnectViaEmail = ({
 
 export const ConnectWallet = ({
   injectedProvider,
-  shouldRedirect = false,
+  shouldRedirect = true,
   checkoutService,
 }: ConnectWalletProps) => {
   const { email } = useAuth()

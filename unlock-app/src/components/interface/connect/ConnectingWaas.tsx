@@ -16,6 +16,7 @@ export const ConnectingWaas = ({
   shouldReloadOnTimeout = false,
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
+  console.log(session)
   const { authenticateWithProvider } = useAuthenticate()
   const { signIn: siweSignIn, isSignedIn } = useSIWE()
 

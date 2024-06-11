@@ -20,6 +20,7 @@ export const ConnectPage = ({
         <ConnectWalletComponent
           onNext={onNext}
           checkoutService={checkoutService}
+          shouldRedirect={false}
         />
       </main>
       <footer className="grid items-center px-6 pt-2 border-t">
