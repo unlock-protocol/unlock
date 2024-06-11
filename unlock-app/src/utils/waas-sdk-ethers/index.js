@@ -1,11 +1,9 @@
-import { ethers, Signer, Transaction, utils } from 'ethers'
-export class WaasEthersSigner extends Signer {
+import { ethers, Transaction, JsonRpcSigner, Signer } from 'ethers'
+export class WaasEthersSigner extends JsonRpcSigner {
   waasAddress
-  provider
   constructor(address, provider) {
-    super()
+    super(provider, address.address)
     this.waasAddress = address
-    this.provider = provider
   }
   connect(provider) {
     return new WaasEthersSigner(this.waasAddress, provider)

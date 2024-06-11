@@ -81,7 +81,6 @@
     "typescript": "5.4.5",
     "unified": "11.0.4",
     "validator": "13.12.0",
-    "waas-sdk-ethers": "https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz",
     "walletlink": "2.5.0",
     "xstate": "5.13.1",
     "zod": "3.23.8",

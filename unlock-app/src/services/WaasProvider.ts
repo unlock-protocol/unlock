@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { WaasEthersSigner } from 'waas-sdk-ethers'
 import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
 import { StorageService } from './storageService'
 import { config } from '~/config/app'
@@ -7,9 +6,10 @@ import UnlockUser from '~/structured_data/unlockUser'
 import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
 import EjectionRequest from '~/structured_data/ejectionRequest'
+import { WaasEthersSigner } from '~/utils/waas-sdk-ethers'
 
 interface WaasProviderOptions {
-  provider: ethers.utils.ConnectionInfo | string
+  provider: ethers.FetchRequest | string
   email: string
   selectedLoginProvider: string
   token: string
@@ -18,8 +18,7 @@ interface WaasProviderOptions {
 // WaasProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
-export default class WaasProvider extends ethers.providers
-  .JsonRpcBatchProvider {
+export default class WaasProvider extends ethers.JsonRpcProvider {
   public wallet: WaasEthersSigner | null
 
   public emailAddress: string
@@ -52,8 +51,6 @@ export default class WaasProvider extends ethers.providers
         provideAuthToken: this.getWaasUuid,
       })
 
-      console.log('User logged in', user)
-
       let wallet: Wallet
 
       if (waas.wallets.wallet) {
@@ -66,8 +63,6 @@ export default class WaasProvider extends ethers.providers
         // Creating wallet
         wallet = await waas.wallets.create()
       }
-
-      console.log('Wallet created', wallet)
 
       const address = await wallet.addresses.for(ProtocolFamily.EVM)
 
@@ -104,12 +99,12 @@ export default class WaasProvider extends ethers.providers
   }
 
   // Overriding this method to return the address of the wallet
-  async listAccounts() {
+  /*async listAccounts() {
     if (this.wallet) {
       return [await this.wallet.getAddress()]
     }
     return []
-  }
+  }*/
 
   getSigner(): any {
     if (this.wallet) {
@@ -138,7 +133,7 @@ export default class WaasProvider extends ethers.providers
    */
   // eslint-disable-next-line no-unused-vars
   async personal_sign([data, _]: any[]) {
-    const content = ethers.utils.arrayify(data)
+    const content = ethers.getBytes(data)
     const signature = await this.wallet?.signMessage(content)
     return signature
   }
