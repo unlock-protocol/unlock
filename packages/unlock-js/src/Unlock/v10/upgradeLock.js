@@ -6,8 +6,8 @@
  * @param {function} callback invoked with the upgrade transaction hash
  */
 export default async function (lockAddress, lockVersion, callback) {
-  if (typeof lockVersion !== 'number')
-    throw Error('lockVersion should be a number')
+  if (typeof lockVersion !== 'bigint')
+    throw Error('lockVersion should be a bigint')
 
   const unlockContract = await this.getUnlockContract()
 
@@ -25,13 +25,14 @@ export default async function (lockAddress, lockVersion, callback) {
   // Let's now wait for the lock to be upgraded
   const receipt = await this.provider.waitForTransaction(hash)
   const parser = unlockContract.interface
-  const upgradeLockEvent = receipt.logs
-    .map((log) => {
-      if (log.address.toLowerCase() !== unlockContract.address.toLowerCase())
-        return
-      return parser.parseLog(log)
-    })
-    .find(({ fragment }) => fragment && fragment.name === 'LockUpgraded')
+  const unlockAddress = await unlockContract.getAddress()
+  const logs = receipt.logs.map((log) => {
+    if (log.address.toLowerCase() !== unlockAddress.toLowerCase()) return
+    return parser.parseLog(log)
+  })
+  const upgradeLockEvent = logs.find(
+    (event) => event?.fragment && event.fragment.name === 'LockUpgraded'
+  )
 
   if (upgradeLockEvent) {
     return upgradeLockEvent.args.version
