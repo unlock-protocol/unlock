@@ -12,6 +12,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 interface Props {
   oauthConfig: OAuthConfig
   paywallConfig: PaywallConfigType
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
 interface StepperProps {
@@ -59,8 +60,7 @@ export const Stepper = ({ state }: StepperProps) => {
   )
 }
 
-export function Connect({ oauthConfig }: Props) {
-  const communication = useCheckoutCommunication()
+export function Connect({ oauthConfig, communication }: Props) {
   const { account } = useAuth()
   const [state, setState] = useState('connect')
 

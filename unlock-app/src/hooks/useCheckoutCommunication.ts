@@ -125,13 +125,23 @@ export const useCheckoutCommunication = () => {
   const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
 
-  const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+  // If the page is not inside an iframe, window and window.top will be identical
+  let insideIframe = false
+  if (typeof window !== 'undefined') {
+    insideIframe = window.top !== window
+  }
+
+  const pushOrEmit = useCallback((kind: CheckoutEvents, payload?: Payload) => {
+    if (!insideIframe) {
+      // Not in an iframe? don't emit!
+      return
+    }
     if (!parent) {
       setOutgoingBuffer([...outgoingBuffer, { kind, payload }])
     } else {
       parent.emit(kind, payload)
     }
-  }
+  }, [])
 
   // Handler for messages from the parent
   const handleMethodCallEvent = useCallback(
@@ -197,8 +207,10 @@ export const useCheckoutCommunication = () => {
 
   // Once parent is available, we flush the outgoingBuffer
   useEffect(() => {
+    console.log({ parent })
     if (parent && outgoingBuffer.length > 0) {
       outgoingBuffer.forEach((event) => {
+        console.log('flush', event.kind, event.payload)
         parent.emit(event.kind, event.payload)
       })
       setOutgoingBuffer([])
@@ -246,12 +258,6 @@ export const useCheckoutCommunication = () => {
 
   const emitOnEvent = (eventName: string) => {
     pushOrEmit(CheckoutEvents.onEvent, eventName)
-  }
-
-  // If the page is not inside an iframe, window and window.top will be identical
-  let insideIframe = false
-  if (typeof window !== 'undefined') {
-    insideIframe = window.top !== window
   }
 
   const useDelegatedProvider =
@@ -305,6 +311,8 @@ export const useCheckoutCommunication = () => {
       },
     })
   }
+
+  console.log('RERENDER>')
 
   return {
     emitUserInfo,
