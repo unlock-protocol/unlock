@@ -20,7 +20,7 @@ interface UpdateHooksFormProps {
   network: number
   isManager: boolean
   disabled: boolean
-  version?: number
+  version?: bigint
 }
 
 interface FormProps {

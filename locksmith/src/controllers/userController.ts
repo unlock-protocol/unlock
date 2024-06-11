@@ -48,6 +48,33 @@ const userCreationStatus = async (user: any): Promise<any> => {
   return { status, recoveryPhrase }
 }
 
+async function getJSONWallet(wallet: ethers.HDNodeWallet | ethers.Wallet) {
+  const address = await wallet.getAddress()
+  const { privateKey } = wallet
+
+  const account = {
+    address,
+    privateKey,
+  }
+
+  let accountMnemonic
+  if (
+    'mnemonic' in wallet &&
+    wallet.mnemonic &&
+    wallet.mnemonic.wordlist.locale === 'en' &&
+    wallet.mnemonic.password === '' &&
+    wallet.path
+  ) {
+    accountMnemonic = {
+      path: wallet.path,
+      locale: 'en',
+      entropy: wallet.mnemonic.entropy,
+    }
+  }
+
+  return { ...account, mnemonic: accountMnemonic }
+}
+
 export const retrieveEncryptedPrivatekey = async (
   req: Request,
   res: Response
@@ -68,7 +95,10 @@ export const retrieveEncryptedPrivatekey = async (
     let passwordEncryptedPrivateKey =
       decoyUserCache.retrieveItemValue(emailAddress)
     if (!passwordEncryptedPrivateKey) {
-      passwordEncryptedPrivateKey = await ethers.Wallet.createRandom().encrypt(
+      const randomWallet = await ethers.Wallet.createRandom()
+      const jsonWallet = await getJSONWallet(randomWallet)
+      passwordEncryptedPrivateKey = await ethers.encryptKeystoreJson(
+        jsonWallet,
         (Math.random() + 1).toString(36),
         {
           scrypt: {

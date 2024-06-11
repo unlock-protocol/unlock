@@ -11,11 +11,11 @@ export default async function (lockAddress, owner, network) {
 
   const validTokens = []
   const allTokens = []
-  const balanceOfTokens = (await lockContract.totalKeys(owner)).toNumber()
+  const balanceOfTokens = await lockContract.totalKeys(owner)
 
   let i = 0
   while (i < balanceOfTokens) {
-    let tokenId = (await lockContract.tokenOfOwnerByIndex(owner, i)).toNumber()
+    let tokenId = await lockContract.tokenOfOwnerByIndex(owner, i)
     if (tokenId) {
       allTokens.push(tokenId)
       let expiration = await lockContract.keyExpirationTimestampFor(tokenId)

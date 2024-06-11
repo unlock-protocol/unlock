@@ -23,7 +23,7 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
           attendeeRefund!.network
         ),
       ])
-      return `${ethers.utils.formatUnits(attendeeRefund!.amount, decimals)} ${symbol}`
+      return `${ethers.formatUnits(attendeeRefund!.amount, decimals)} ${symbol}`
     },
     {
       enabled: !!attendeeRefund,

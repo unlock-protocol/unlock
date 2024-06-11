@@ -16,14 +16,14 @@ export default async (version, transactionOptions = {}, callback) => {
   const { abi, bytecode } = abis[`UnlockV${versionNumber}`]
   const Factory = await ethers.getContractFactory(abi, bytecode)
   const impl = await Factory.deploy()
+
   if (callback) {
-    callback(null, impl.deployTransaction.hash)
+    callback(null, impl.deploymentTransaction().hash)
   }
-  await impl.deployTransaction.wait()
 
   // encode initializer data
   const fragment = impl.interface.getFunction('initialize')
-  const initializerArguments = [signer.address]
+  const initializerArguments = [await signer.getAddress()]
   const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
 
   // deploy proxy
@@ -31,13 +31,12 @@ export default async (version, transactionOptions = {}, callback) => {
     path.join(__dirname, 'abis', 'ERC1967Proxy.json')
   )
   const ERC1967Proxy = await ethers.getContractFactory(proxyAbi, proxyBytecode)
-  const proxy = await ERC1967Proxy.deploy(impl.address, data)
+  const proxy = await ERC1967Proxy.deploy(await impl.getAddress(), data)
 
+  const deployTx = proxy.deploymentTransaction()
   if (callback) {
-    callback(null, proxy.deployTransaction.hash)
+    callback(null, deployTx.hash)
   }
-  // wait for proxy deployment
-  await proxy.deployTransaction.wait()
 
-  return proxy.address
+  return await proxy.getAddress()
 }

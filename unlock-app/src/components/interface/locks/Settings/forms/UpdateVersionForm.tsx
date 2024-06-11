@@ -9,9 +9,9 @@ interface UpdateVersionFormProps {
   network: number
   isManager: boolean
   disabled: boolean
-  version: number
+  version: bigint
   isLastVersion: boolean
-  onUpdatedVersion: (version: number) => void
+  onUpdatedVersion: (version: bigint) => void
 }
 
 const UpgradeHooksAlert = () => {
@@ -37,7 +37,7 @@ export const UpdateVersionForm = ({
   network,
   onUpdatedVersion,
 }: UpdateVersionFormProps) => {
-  const nextVersion = version + 1
+  const nextVersion = version + BigInt(1)
   const { getWalletService } = useAuth()
   const upgradeLockVersion = async () => {
     const walletService = await getWalletService(network)

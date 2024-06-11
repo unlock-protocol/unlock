@@ -5,7 +5,7 @@ import { ethers } from 'ethers'
 
 import Dispatcher from '../../fulfillment/dispatcher'
 
-const MAX_LIMIT = ethers.constants.MaxUint256.toString()
+const MAX_LIMIT = ethers.MaxUint256.toString()
 
 const LockContractOptions = z.object({
   expirationDuration: z.string().optional().default(MAX_LIMIT),

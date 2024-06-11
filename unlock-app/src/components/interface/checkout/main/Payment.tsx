@@ -429,7 +429,7 @@ export function Payment({ checkoutService }: Props) {
                       </h3>
                       <AmountBadge
                         amount={formatNumber(
-                          Number(ethers.utils.formatEther(route.tx.value))
+                          Number(ethers.formatEther(route.tx.value))
                         )}
                         symbol={route.symbol}
                       />
@@ -438,7 +438,7 @@ export function Payment({ checkoutService }: Props) {
                       <div className="flex items-center w-full text-sm text-left text-gray-500">
                         Pay{' '}
                         {formatNumber(
-                          Number(ethers.utils.formatEther(route.tx.value))
+                          Number(ethers.formatEther(route.tx.value))
                         )}{' '}
                         {route.currency} on {route.networkName} through{' '}
                         <Link
