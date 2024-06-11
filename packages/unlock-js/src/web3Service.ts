@@ -692,7 +692,7 @@ export default class Web3Service extends UnlockService {
     )
     const totalKeys = await lockContract.totalKeys(owner)
     if (totalKeys > 0) {
-      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys - 1)
+      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys - 1n)
       return id
     }
     return null

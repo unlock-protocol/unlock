@@ -6,6 +6,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { SettingCardDetail } from '../elements/SettingCard'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { ethers } from 'ethers'
 
 interface CancellationFormProps {
   lockAddress: string
@@ -148,7 +149,8 @@ export const CancellationForm = ({
 
   useEffect(() => {
     const cancelPenalty = refundPenaltyBasisPoints > 0
-    const refundPenaltyPercentage = (refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
+    const refundPenaltyPercentage =
+      ethers.toNumber(refundPenaltyBasisPoints ?? 0) / 100 // convert basis points to percentage
     setCancelPenalty(cancelPenalty)
 
     setValue(

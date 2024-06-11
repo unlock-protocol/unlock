@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
+import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -71,7 +72,8 @@ export const UpdateTransferFee = ({
     async () => getTransferFeeBasisPoints()
   )
 
-  const transferFeePercentage = (transferFeeBasisPoints ?? 0) / 100
+  const transferFeePercentage =
+    ethers.toNumber(transferFeeBasisPoints ?? 0) / 100
   const isTransferAllowed = transferFeePercentage < 100
 
   useEffect(() => {
