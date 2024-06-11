@@ -8,6 +8,7 @@ import { ConnectPage } from '../main/ConnectPage'
 import { TopNavigation } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { isInIframe } from '~/utils/iframe'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -73,7 +74,7 @@ export function Connect({ oauthConfig, communication }: Props) {
           redirectURI.searchParams.append(key, value)
         }
         return window.location.assign(redirectURI)
-      } else if (!communication?.insideIframe) {
+      } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
         communication.emitCloseModal()

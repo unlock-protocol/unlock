@@ -4,6 +4,8 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { config as AppConfig } from '~/config/app'
+import { isInIframe } from '~/utils/iframe'
+
 export interface UserInfo {
   address?: string
   signedMessage?: string
@@ -125,14 +127,8 @@ export const useCheckoutCommunication = () => {
   const { provider } = useProvider(AppConfig)
   const [user, setUser] = useState<string | undefined>(undefined)
 
-  // If the page is not inside an iframe, window and window.top will be identical
-  let insideIframe = false
-  if (typeof window !== 'undefined') {
-    insideIframe = window.top !== window
-  }
-
-  const pushOrEmit = useCallback((kind: CheckoutEvents, payload?: Payload) => {
-    if (!insideIframe) {
+  const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+    if (!isInIframe()) {
       // Not in an iframe? don't emit!
       return
     }
@@ -141,7 +137,7 @@ export const useCheckoutCommunication = () => {
     } else {
       parent.emit(kind, payload)
     }
-  }, [])
+  }
 
   // Handler for messages from the parent
   const handleMethodCallEvent = useCallback(
@@ -207,10 +203,8 @@ export const useCheckoutCommunication = () => {
 
   // Once parent is available, we flush the outgoingBuffer
   useEffect(() => {
-    console.log({ parent })
     if (parent && outgoingBuffer.length > 0) {
       outgoingBuffer.forEach((event) => {
-        console.log('flush', event.kind, event.payload)
         parent.emit(event.kind, event.payload)
       })
       setOutgoingBuffer([])
@@ -312,8 +306,6 @@ export const useCheckoutCommunication = () => {
     })
   }
 
-  console.log('RERENDER>')
-
   return {
     emitUserInfo,
     emitCloseModal,
@@ -323,7 +315,6 @@ export const useCheckoutCommunication = () => {
     paywallConfig,
     oauthConfig,
     providerAdapter,
-    insideIframe,
     // `ready` is primarily provided as an aid for testing the buffer
     // implementation.
     ready: !!parent,

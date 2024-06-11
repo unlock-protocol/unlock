@@ -21,6 +21,7 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { Connected } from '../Connected'
+import { isInIframe } from '~/utils/iframe'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -65,7 +66,7 @@ export function Checkout({
 
   useEffect(() => {
     const user = account ? { address: account } : {}
-    if (communication?.insideIframe) {
+    if (isInIframe() && communication) {
       communication.emitUserInfo(user)
     }
   }, [account, communication])
@@ -94,7 +95,7 @@ export function Checkout({
           redirect.searchParams.append(key, value)
         }
         return window.location.assign(redirect)
-      } else if (!communication?.insideIframe) {
+      } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
         communication.emitCloseModal()
