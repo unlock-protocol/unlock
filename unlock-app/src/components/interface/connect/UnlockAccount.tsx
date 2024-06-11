@@ -208,10 +208,10 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 
 export interface Props {
   email: string
-  setDefaultEmail: (email: string | undefined) => void
+  setEmail: (email: string) => void
   onSignIn?(): void
   useIcon?: boolean
-  accountType: UserAccountType
+  accountType: UserAccountType[]
   shouldRedirect: boolean
 }
 
@@ -219,7 +219,7 @@ export const ConnectUnlockAccount = ({
   onSignIn,
   useIcon = true,
   email,
-  setDefaultEmail,
+  setEmail,
   accountType,
   shouldRedirect,
 }: Props) => {
@@ -265,7 +265,7 @@ export const ConnectUnlockAccount = ({
     )
   }
 
-  switch (accountType) {
+  switch (accountType[0]) {
     case UserAccountType.UnlockAccount:
       return (
         <SignInUnlockAccount
@@ -276,12 +276,13 @@ export const ConnectUnlockAccount = ({
           onReturn={() => {
             signOut()
             deAuthenticate()
-            setDefaultEmail(undefined)
+            setEmail('')
           }}
         />
       )
       break
     case UserAccountType.GoogleAccount:
+      return <div>Google Account</div>
       break
     case UserAccountType.PasskeyAccount:
       break
@@ -290,13 +291,13 @@ export const ConnectUnlockAccount = ({
     default:
       return (
         <SignUp
-          email={defaultEmail!}
+          email={email}
           signUp={signUp}
           onSignIn={onSignIn}
           onReturn={() => {
             signOut()
             deAuthenticate()
-            setDefaultEmail(undefined)
+            setEmail('')
           }}
         />
       )

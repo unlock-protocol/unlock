@@ -101,9 +101,11 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
 
   useEffect(() => {
     const getUserAccountType = async () => {
-      if (!userEmail) return
+      if (!userEmail) {
+        setIsLoadingUserExists(false)
+        return
+      }
 
-      setIsLoadingUserExists(true)
       const userType = await storageService.getUserAccountType(userEmail)
       setUserAccountType(userType)
       setIsLoadingUserExists(false)
@@ -130,19 +132,15 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
   }
 
   const verifyAndSetEmail = async (email: string) => {
-    setUserEmail(email)
-    try {
-      // Get user account type
-    } catch (error) {
-      if (error instanceof Error) {
-        ToastHelper.error(`Email Error: ${error.message}`)
-      }
+    if (email) {
+      setIsLoadingUserExists(true)
+      setUserEmail(email)
     }
   }
 
   return (
     <div className="space-y-4">
-      {!userEmail && (
+      {(!userEmail || isLoadingUserExists) && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -184,18 +182,19 @@ export const ConnectWallet = ({ injectedProvider }: ConnectWalletProps) => {
             <ConnectViaEmail
               isLoadingUserExists={isLoadingUserExists}
               onUnlockAccount={(email: string) => {
-                console.log('email', email)
                 verifyAndSetEmail(email)
               }}
             />
           </div>
         </>
       )}
-      {userEmail && (
+      {userEmail && !isLoadingUserExists && (
         <ConnectUnlockAccount
           email={userEmail}
-          setDefaultEmail={setUseUnlockAccount}
+          setEmail={setUserEmail}
+          accountType={userAccountType}
           useIcon={false}
+          shouldRedirect={false}
         />
       )}
     </div>
