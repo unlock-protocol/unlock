@@ -8,6 +8,9 @@ import { ConnectPage } from '../main/ConnectPage'
 import { TopNavigation } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { useSIWE } from '~/hooks/useSIWE'
+import { signOut, useSession } from 'next-auth/react'
+import ConnectingWaas from '../../connect/ConnectingWaas'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -72,6 +75,8 @@ export function Connect({ oauthConfig }: Props) {
         for (const [key, value] of Object.entries(params)) {
           redirectURI.searchParams.append(key, value)
         }
+        // Sign Out NexthAuth session and prevent page reload
+        signOut({ redirect: false })
         return window.location.assign(redirectURI)
       } else if (!communication?.insideIframe) {
         window.history.back()
@@ -90,6 +95,12 @@ export function Connect({ oauthConfig }: Props) {
     }
   }, [account])
 
+  const { connected } = useAuth()
+  const { isSignedIn } = useSIWE()
+
+  const { data: session } = useSession()
+  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
+
   return (
     <div className="bg-white z-10 shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">
       <TopNavigation onClose={onClose} />
@@ -98,14 +109,20 @@ export function Connect({ oauthConfig }: Props) {
           <Stepper state={state} />
         </div>
       </div>
-      {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
-      {account && (
-        <ConfirmConnect
-          className="h-full mt-4 space-y-5"
-          communication={communication}
-          onClose={onClose}
-          oauthConfig={oauthConfig}
-        />
+      {isLoadingWaas ? (
+        <ConnectingWaas shouldReloadOnTimeout={true} />
+      ) : (
+        <>
+          {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
+          {account && (
+            <ConfirmConnect
+              className="h-full mt-4 space-y-5"
+              communication={communication}
+              onClose={onClose}
+              oauthConfig={oauthConfig}
+            />
+          )}
+        </>
       )}
     </div>
   )
