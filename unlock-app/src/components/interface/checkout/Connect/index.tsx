@@ -111,7 +111,7 @@ export function Connect({ paywallConfig, oauthConfig }: Props) {
         <div className="border-t"></div>
       </header>
       <div className="h-full mt-4 space-y-5">
-        <ConnectWalletComponent onNext={onSignIn} />
+        <ConnectWalletComponent onNext={onSignIn} shouldRedirect={true} />
       </div>
     </div>
   )

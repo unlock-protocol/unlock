@@ -45,12 +45,14 @@ export default class WaasProvider extends ethers.providers
         collectAndReportMetrics: true,
         enableHostedBackups: true,
         prod: false,
-        projectId: '5402f17b-ad54-4984-9417-b7b111226080',
+        projectId: '36f395a8-9186-4a6a-9b3e-9d709fa64c86',
       })
 
       const user = await waas.auth.login({
         provideAuthToken: this.getWaasUuid,
       })
+
+      console.log('User logged in', user)
 
       let wallet: Wallet
 
@@ -65,6 +67,8 @@ export default class WaasProvider extends ethers.providers
         wallet = await waas.wallets.create()
       }
 
+      console.log('Wallet created', wallet)
+
       const address = await wallet.addresses.for(ProtocolFamily.EVM)
 
       this.wallet = new WaasEthersSigner(address)
@@ -73,6 +77,7 @@ export default class WaasProvider extends ethers.providers
 
       return true
     } catch (error) {
+      console.log(error)
       throw new Error('Error connecting to provider')
     }
 
