@@ -3,7 +3,6 @@ import {
   TypedDataDomain,
   TypedDataField,
   JsonRpcSigner,
-  Signer,
 } from 'ethers'
 import { Address, ProtocolFamily } from '@coinbase/waas-sdk-web'
 export declare class WaasEthersSigner extends JsonRpcSigner {

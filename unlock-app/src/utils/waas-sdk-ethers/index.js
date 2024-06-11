@@ -1,4 +1,4 @@
-import { ethers, Transaction, JsonRpcSigner, Signer } from 'ethers'
+import { ethers, Transaction, JsonRpcSigner } from 'ethers'
 export class WaasEthersSigner extends JsonRpcSigner {
   waasAddress
   constructor(address, provider) {
