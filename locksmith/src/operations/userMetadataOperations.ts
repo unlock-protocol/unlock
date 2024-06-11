@@ -71,6 +71,27 @@ export async function getMetadata(
   return result ? result.data : result
 }
 
+export async function getUserMetadataForChain(
+  tokenAddress: string,
+  userAddress: string,
+  network: number,
+  includeProtected = false
+) {
+  const result = await UserTokenMetadata.findOne({
+    where: {
+      tokenAddress: Normalizer.ethereumAddress(tokenAddress),
+      userAddress: Normalizer.ethereumAddress(userAddress),
+      chain: network,
+    },
+  })
+
+  if (result && !includeProtected) {
+    delete result.data.userMetadata.protected
+  }
+
+  return result ? result.data : result
+}
+
 export async function getUserEmailRecipient({
   lockAddress,
   ownerAddress,

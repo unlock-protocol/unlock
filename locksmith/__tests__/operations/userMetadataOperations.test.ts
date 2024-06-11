@@ -1,6 +1,7 @@
 import {
   addMetadata,
   getMetadata,
+  getUserMetadataForChain,
 } from '../../src/operations/userMetadataOperations'
 import { UserTokenMetadata } from '../../src/models'
 
@@ -107,6 +108,87 @@ describe('userMetadataOperations', () => {
             userMetadata: expect.anything(),
           })
         )
+      })
+    })
+  })
+  describe('getUserMetadataForChain', () => {
+    describe('when metadata for lockAddress and user address does not exist', () => {
+      it('returns null', async () => {
+        expect.assertions(1)
+
+        const metaData = await getUserMetadataForChain(
+          '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
+          '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+          chain
+        )
+        const result = await metaData
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('when metadata for chainid does not exist but address combinations does', () => {
+      it('returns null', async () => {
+        const metaData = getUserMetadataForChain(
+          '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
+          '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
+          100
+        )
+        const result = await metaData
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('When metadata exists for param combinations without protected flag', () => {
+      it('returns the metadata without protected data', async () => {
+        expect.assertions(1)
+
+        const metaData = getUserMetadataForChain(
+          '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
+          '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
+          chain
+        )
+        const result = await metaData
+
+        expect(result).toStrictEqual({
+          userMetadata: {
+            public: { name: 'Clark Kent' },
+          },
+        })
+      })
+    })
+
+    describe('When metadata exists for param combinations with protected flag', () => {
+      it('returns the metadata without protected data', async () => {
+        expect.assertions(1)
+        const metadataUpdate = addMetadata({
+          chain,
+          tokenAddress: '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
+          userAddress: '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
+          data: {
+            public: { name: 'Clark Kent' },
+            protected: {
+              email: 'clarkkent@email.com',
+            },
+          },
+        })
+        await metadataUpdate
+
+        const metaData = getUserMetadataForChain(
+          '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
+          '0xcFd35259E3A468E7bDF84a95bCddAc0B614A9212',
+          chain,
+          true
+        )
+        const result = await metaData
+
+        expect(result).toStrictEqual({
+          userMetadata: {
+            public: { name: 'Clark Kent' },
+            protected: {
+              email: 'clarkkent@email.com',
+            },
+          },
+        })
       })
     })
   })
