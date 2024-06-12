@@ -71,12 +71,12 @@ Object.values(networks).forEach((network) => {
 // For more details, visit: https://cloud.google.com/docs/authentication/application-default-credentials
 */
 
-const googleApplicationCredentials: Credentials = JSON.parse(
-  fs.readFileSync(
-    process.env.GOOGLE_APPLICATION_CREDENTIALS! as string,
-    'utf-8'
-  )
-)
+// Dummy Google API credentials
+const googleApplicationCredentials: Credentials = {
+  client_email: 'dummy-client-email@appspot.gserviceaccount.com',
+  private_key:
+    '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkq...\n-----END PRIVATE KEY-----\n',
+}
 
 const config = {
   isProduction,
