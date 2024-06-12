@@ -1,4 +1,3 @@
-import fs from 'fs'
 import '../utils/envLoader'
 import { Options } from 'sequelize'
 import networks from '@unlock-protocol/networks'
