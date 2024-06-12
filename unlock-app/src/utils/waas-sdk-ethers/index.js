@@ -50,7 +50,7 @@ export class WaasEthersSigner extends JsonRpcSigner {
     return hexSignature
   }
   async signTypedData(domain, types, value) {
-    const hashToSign = utils._TypedDataEncoder
+    const hashToSign = ethers._TypedDataEncoder
       .hash(domain, types, value)
       .slice(2)
     let res
