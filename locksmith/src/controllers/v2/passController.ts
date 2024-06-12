@@ -5,10 +5,7 @@ import networks from '@unlock-protocol/networks'
 import { createWalletPassObject } from '../../operations/generate-pass/android/createPassObject'
 import { generateQrCodeUrl } from '../../utils/qrcode'
 import logger from '../../logger'
-import {
-  getOrCreateWalletClass,
-  walletPassClass,
-} from '../../operations/generate-pass/android/passClassService'
+import { getOrCreateWalletClass } from '../../operations/generate-pass/android/passClassService'
 import config from '../../config/config'
 
 /**
@@ -32,6 +29,9 @@ export const generateGoogleWalletPass: RequestHandler = async (
     const lockAddress = normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
     const keyId = request.params.keyId
+
+    // Retrieve Google application credentials
+    const { client_email, private_key } = config.googleApplicationCredentials!
 
     // Retrieve Google wallet issuer ID and class ID from the configuration
     const { googleWalletIssuerID, googleWalletClass } = config
@@ -59,7 +59,7 @@ export const generateGoogleWalletPass: RequestHandler = async (
     })
 
     // Ensure the pass class exists or create a new one if it doesn't
-    await getOrCreateWalletClass(classID, walletPassClass)
+    await getOrCreateWalletClass(classID)
 
     // Create a new wallet pass object with the provided details
     const passObjectUrl = await createWalletPassObject(
@@ -68,7 +68,9 @@ export const generateGoogleWalletPass: RequestHandler = async (
       networkName,
       lockAddress,
       keyId,
-      verificationUrl
+      verificationUrl,
+      client_email,
+      private_key
     )
 
     // Send the pass object URL in the response
