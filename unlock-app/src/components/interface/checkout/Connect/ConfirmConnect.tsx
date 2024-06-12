@@ -13,7 +13,7 @@ interface Props {
   paywallConfig?: PaywallConfigType
   oauthConfig: OAuthConfig
   onClose(params?: Record<string, string>): void
-  communication: ReturnType<typeof useCheckoutCommunication>
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
 export function ConfirmConnect({
