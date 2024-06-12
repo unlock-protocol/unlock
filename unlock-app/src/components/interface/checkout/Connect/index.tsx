@@ -11,10 +11,12 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { useSIWE } from '~/hooks/useSIWE'
 import { signOut, useSession } from 'next-auth/react'
 import ConnectingWaas from '../../connect/ConnectingWaas'
+import { isInIframe } from '~/utils/iframe'
 
 interface Props {
   oauthConfig: OAuthConfig
   paywallConfig: PaywallConfigType
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
 interface StepperProps {
@@ -62,8 +64,7 @@ export const Stepper = ({ state }: StepperProps) => {
   )
 }
 
-export function Connect({ oauthConfig }: Props) {
-  const communication = useCheckoutCommunication()
+export function Connect({ oauthConfig, communication }: Props) {
   const { account } = useAuth()
   const [state, setState] = useState('connect')
 
@@ -78,7 +79,7 @@ export function Connect({ oauthConfig }: Props) {
         // Sign Out NexthAuth session and prevent page reload
         signOut({ redirect: false })
         return window.location.assign(redirectURI)
-      } else if (!communication?.insideIframe) {
+      } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
         communication.emitCloseModal()
