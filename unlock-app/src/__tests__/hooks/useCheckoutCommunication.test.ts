@@ -10,6 +10,12 @@ import { vi, expect, beforeEach, it, describe } from 'vitest'
 
 let emit = vi.fn()
 
+vi.mock('~/utils/iframe', async () => {
+  return {
+    isInIframe: () => true,
+  }
+})
+
 describe('useCheckoutCommunication', () => {
   beforeEach(() => {
     emit = vi.fn()

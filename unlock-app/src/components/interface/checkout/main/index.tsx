@@ -21,15 +21,21 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { Connected } from '../Connected'
+import { isInIframe } from '~/utils/iframe'
 
 interface Props {
   paywallConfig: PaywallConfigType
   redirectURI?: URL
   handleClose?: (params: Record<string, string>) => void
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
-  const communication = useCheckoutCommunication()
+export function Checkout({
+  paywallConfig,
+  redirectURI,
+  handleClose,
+  communication,
+}: Props) {
   // @ts-expect-error - The types returned by 'resolveState(...)' are incompatible between these types
   const [state, send, checkoutService] = useMachine(checkoutMachine, {
     input: {
@@ -60,7 +66,7 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
 
   useEffect(() => {
     const user = account ? { address: account } : {}
-    if (communication?.insideIframe) {
+    if (isInIframe() && communication) {
       communication.emitUserInfo(user)
     }
   }, [account, communication])
@@ -89,7 +95,7 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
           redirect.searchParams.append(key, value)
         }
         return window.location.assign(redirect)
-      } else if (!communication?.insideIframe) {
+      } else if (!isInIframe() || !communication) {
         window.history.back()
       } else {
         communication.emitCloseModal()
@@ -142,13 +148,29 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
         return <Metadata checkoutService={checkoutService} />
       }
       case 'CONFIRM': {
-        return <Confirm checkoutService={checkoutService} />
+        return (
+          <Confirm
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
       }
       case 'MESSAGE_TO_SIGN': {
-        return <MessageToSign checkoutService={checkoutService} />
+        return (
+          <MessageToSign
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
       }
       case 'MINTING': {
-        return <Minting onClose={onClose} checkoutService={checkoutService} />
+        return (
+          <Minting
+            onClose={onClose}
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
       }
       case 'CAPTCHA': {
         return <Captcha checkoutService={checkoutService} />
@@ -166,13 +188,19 @@ export function Checkout({ paywallConfig, redirectURI, handleClose }: Props) {
         return <Gitcoin checkoutService={checkoutService} />
       }
       case 'RETURNING': {
-        return <Returning onClose={onClose} checkoutService={checkoutService} />
+        return (
+          <Returning
+            onClose={onClose}
+            communication={communication}
+            checkoutService={checkoutService}
+          />
+        )
       }
       default: {
         return null
       }
     }
-  }, [onClose, matched])
+  }, [onClose, matched, communication])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

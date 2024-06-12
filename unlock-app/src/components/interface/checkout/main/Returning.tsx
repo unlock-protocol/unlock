@@ -21,11 +21,11 @@ import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
 interface Props {
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Returning({ checkoutService, onClose }: Props) {
+export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
-  const communication = useCheckoutCommunication()
   const {
     paywallConfig,
     lock,
