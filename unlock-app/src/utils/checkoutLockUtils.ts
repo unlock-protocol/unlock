@@ -121,7 +121,7 @@ export const formattedKeyPrice = (
   numberOfRecipients = 1
 ) => {
   const { keyPrice } = lock ?? {}
-  if (lock.keyPrice === '0') {
+  if (!lock.keyPrice || lock.keyPrice === '0') {
     return 'FREE'
   }
   const price = keyPrice ? parseFloat(keyPrice) * numberOfRecipients : null
