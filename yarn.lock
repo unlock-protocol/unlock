@@ -11794,6 +11794,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomicfoundation/hardhat-ethers@npm:3.0.6":
+  version: 3.0.6
+  resolution: "@nomicfoundation/hardhat-ethers@npm:3.0.6"
+  dependencies:
+    debug: "npm:^4.1.1"
+    lodash.isequal: "npm:^4.5.0"
+  peerDependencies:
+    ethers: ^6.1.0
+    hardhat: ^2.0.0
+  checksum: 10/2a8dffeeacd91d0f65315f81b01991533135b5a4fec36642710dc473f7b604fe30281be386461167c5b5da79aeda1fed8395cdb460c8e722ae4d788e2a25efd6
+  languageName: node
+  linkType: hard
+
 "@nomicfoundation/hardhat-ignition-ethers@npm:0.15.0":
   version: 0.15.0
   resolution: "@nomicfoundation/hardhat-ignition-ethers@npm:0.15.0"
@@ -20043,7 +20056,7 @@ __metadata:
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.4"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.4.1"
     "@matterlabs/hardhat-zksync-verify": "npm:1.4.3"
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.11"
     "@nomicfoundation/hardhat-verify": "npm:2.0.8"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
@@ -20100,7 +20113,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomicfoundation/hardhat-chai-matchers": "npm:2.0.0"
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@nomicfoundation/hardhat-ignition": "npm:0.15.1"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.0"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
@@ -20279,7 +20292,7 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@connext/interfaces": "npm:2.0.5"
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@nomicfoundation/hardhat-network-helpers": "npm:1.0.11"
     "@nomicfoundation/hardhat-verify": "npm:2.0.8"
     "@openzeppelin/contracts": "npm:5.0.2"
@@ -20535,7 +20548,7 @@ __metadata:
     "@graphql-codegen/typescript": "npm:4.0.7"
     "@graphql-codegen/typescript-graphql-request": "npm:6.2.0"
     "@graphql-codegen/typescript-operations": "npm:4.2.1"
-    "@nomicfoundation/hardhat-ethers": "npm:3.0.5"
+    "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@openapitools/openapi-generator-cli": "npm:2.13.4"
     "@uniswap/sdk-core": "npm:5.0.0"
     "@uniswap/smart-order-router": "npm:3.17.4"
