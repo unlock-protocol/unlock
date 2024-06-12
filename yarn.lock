@@ -20561,7 +20561,6 @@ __metadata:
     vitest: "npm:1.6.0"
     vitest-fetch-mock: "npm:0.2.2"
     vitest-localstorage-mock: "npm:0.1.2"
-    waas-sdk-ethers: "https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz"
     walletlink: "npm:2.5.0"
     xstate: "npm:5.13.1"
     zod: "npm:3.23.8"
@@ -53552,16 +53551,6 @@ __metadata:
   dependencies:
     xml-name-validator: "npm:^5.0.0"
   checksum: 10/d78f59e6b4f924aa53b6dfc56949959229cae7fe05ea9374eb38d11edcec01398b7f5d7a12576bd5acc57ff446abb5c9115cd83b9d882555015437cf858d42f0
-  languageName: node
-  linkType: hard
-
-"waas-sdk-ethers@https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz":
-  version: 3.0.0
-  resolution: "waas-sdk-ethers@https://api.developer.coinbase.com/waas/consumer/1994648a1fa8a282f1c3ca917a0379f1f79fbb06/waas-sdk-ethers/waas-sdk-ethers-3.0.0.tgz"
-  peerDependencies:
-    "@coinbase/waas-sdk-web": ^3.0.0
-    ethers: ^5.7.2
-  checksum: 10/38815b5dee2043cd1eaf019ed0009e072954ec292e6c954c3422002a9bebad676a544a1e677269806fdad7c830e5e59799ab3c0dd68ceb5d39cec2ff11794e02
   languageName: node
   linkType: hard
 

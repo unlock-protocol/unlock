@@ -229,7 +229,7 @@ const SignWithGoogle = ({
     <div className="w-full">
       <ConnectButton
         className="w-full"
-        icon={<SvgComponents.Unlock width={40} height={40} />}
+        icon={<SvgComponents.Google width={40} height={40} />}
         onClick={() => {
           signWithGoogle()
         }}
