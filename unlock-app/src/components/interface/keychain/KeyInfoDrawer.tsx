@@ -1,5 +1,5 @@
 import { Disclosure, Drawer, Tooltip } from '@unlock-protocol/ui'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Property } from '../locks/metadata/custom/AddProperty'
 import { Level } from '../locks/metadata/custom/AddLevel'
@@ -58,10 +58,10 @@ const KeyRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <KeyItem label="Renewals">
         Your balance of {balance.amount} {balance.symbol} is too low to renew
@@ -69,15 +69,15 @@ const KeyRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return <KeyItem label="Renewals">No renewals approved</KeyItem>
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">{approved.toString()} times</KeyItem>
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">Renews unlimited times</KeyItem>
   }
 
@@ -104,7 +104,11 @@ export const KeyInfo = ({
   const web3Service = useWeb3Service()
   const provider = web3Service.providerForNetwork(network)
   const config = useConfig()
+
   const isERC20 = lock.tokenAddress && lock.tokenAddress !== ADDRESS_ZERO
+  const videoRef = useRef(null)
+  const [canPlayImageAsVideo, setCanPlayImageAsVideo] = useState(false)
+
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
@@ -126,7 +130,7 @@ export const KeyInfo = ({
           getErc20TokenSymbol(lock.tokenAddress, provider),
           getErc20Decimals(lock.tokenAddress, provider),
         ])
-        const amount = ethers.utils.formatUnits(lock.price, decimals)
+        const amount = ethers.formatUnits(lock.price, decimals)
         return {
           amount,
           symbol,
@@ -135,10 +139,7 @@ export const KeyInfo = ({
       } else {
         const native = config.networks[network]?.nativeCurrency
         const decimals = native.decimals
-        const amount = ethers.utils.formatUnits(
-          lock.price,
-          native.decimals || 18
-        )
+        const amount = ethers.formatUnits(lock.price, native.decimals || 18)
         const symbol = native.symbol || ''
         return {
           amount,
@@ -171,6 +172,24 @@ export const KeyInfo = ({
 
   const isLoading =
     isKeyMetadataLoading && isKeyPriceLoading && isSubscriptionsLoading
+
+  const checkIfImageUrlIsVideo = async () => {
+    const video = videoRef.current
+    if (video) {
+      try {
+        await (video as HTMLVideoElement).play()
+        setCanPlayImageAsVideo(true)
+      } catch (error) {
+        setCanPlayImageAsVideo(false)
+      }
+    }
+  }
+
+  const onLoadingStatusChangeOfImage = useCallback((status: string) => {
+    if (status === 'error') {
+      checkIfImageUrlIsVideo()
+    }
+  }, [])
 
   if (isLoading) {
     return <LoadingIcon />
@@ -207,12 +226,21 @@ export const KeyInfo = ({
             src={imageURL || keyMetadata?.image}
             width={250}
             height={250}
+            onLoadingStatusChange={onLoadingStatusChangeOfImage}
           />
           <AvatarFallback
             className="w-80 h-80 aspect-1 rounded-xl"
             delayMs={100}
           >
-            <img src="/images/lock-placeholder.png" alt={name} />
+            {!canPlayImageAsVideo && <>{lock?.name?.slice(0, 2)}</>}
+            <video
+              className="w-full h-full rounded-xl aspect-1"
+              muted
+              playsInline
+              src={imageURL || keyMetadata?.image}
+              ref={videoRef}
+              style={{ display: canPlayImageAsVideo ? 'block' : 'none' }}
+            />
           </AvatarFallback>
         </Avatar>
         <h1 className="text-xl font-bold">{name}</h1>

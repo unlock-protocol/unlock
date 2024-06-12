@@ -1,15 +1,12 @@
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, Placeholder } from '@unlock-protocol/ui'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 import UnlockProvider from '~/services/unlockProvider'
 import { useForm } from 'react-hook-form'
-import { useCallback, useEffect, useState } from 'react'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import BlockiesSvg from 'blockies-react-svg'
-import { useStorageService } from '~/utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -42,7 +39,6 @@ const SignIn = ({
     setError,
     formState: { isSubmitting, errors },
   } = useForm<UserDetails>()
-
   const { account } = useAuth()
 
   const onSubmit = async (data: UserDetails) => {
@@ -52,7 +48,7 @@ const SignIn = ({
     try {
       await signIn(data)
       if (onSignIn) {
-        onSignIn()
+        await onSignIn()
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -70,8 +66,8 @@ const SignIn = ({
     }
   }
   return (
-    <div className="grid gap-2">
-      <form className="grid gap-4 px-6" onSubmit={handleSubmit(onSubmit)}>
+    <div className="grid gap-2 px-6">
+      <form className="grid gap-4 " onSubmit={handleSubmit(onSubmit)}>
         {useIcon && (
           <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
             <BlockiesSvg
@@ -82,7 +78,7 @@ const SignIn = ({
           </div>
         )}
         <Input
-          label={'Password'}
+          label={'Welcome back! '}
           type="password"
           placeholder="Password"
           {...register('password', {
@@ -92,13 +88,14 @@ const SignIn = ({
               message: 'Password must be at least 8 characters',
             },
           })}
+          description={`Enter the password for ${email}`}
           error={errors.password?.message}
         />
         <Button type="submit" loading={isSubmitting} className="p-2.5">
           <div className="flex justify-center items-center gap-2">Sign In</div>
         </Button>
       </form>
-      <div className="flex items-center justify-end px-6 py-4">
+      <div className="flex items-center justify-end py-4">
         <button
           onClick={(event) => {
             event.preventDefault()
@@ -106,7 +103,7 @@ const SignIn = ({
           }}
           className="hover:text-ui-main-600 underline"
         >
-          Sign Out
+          Sign out
         </button>
       </div>
     </div>
@@ -209,28 +206,29 @@ const SignUp = ({ email, onReturn, signUp, onSignIn }: SignUpProps) => {
 }
 
 export interface Props {
-  defaultEmail?: string
-  onExit(): void
+  defaultEmail: string | undefined
+  setDefaultEmail: (email: string | undefined) => void
+  isExistingUser: boolean
   onSignIn?(): void
   useIcon?: boolean
 }
 
 export const ConnectUnlockAccount = ({
-  onExit,
   onSignIn,
   useIcon = true,
-  defaultEmail = '',
+  defaultEmail,
+  setDefaultEmail,
+  isExistingUser,
 }: Props) => {
-  const [isValidEmail, setIsValidEmail] = useState(false)
-
   const { retrieveUserAccount, createUserAccount } = useAccount('')
   const { authenticateWithProvider } = useAuthenticate()
-  const { email, deAuthenticate } = useAuth()
+  const { deAuthenticate } = useAuth()
+
   // TODO: Consider adding a way to set the email address to Auth context
-  const [authEmail, setAuthEmail] = useState(email)
   const config = useConfig()
   const { signOut } = useSIWE()
-  const storageService = useStorageService()
+
+  const { isUnlockAccount, encryptedPrivateKey } = useAuth()
 
   const signIn = async ({ email, password }: UserDetails) => {
     const unlockProvider = await retrieveUserAccount(email, password)
@@ -251,64 +249,44 @@ export const ConnectUnlockAccount = ({
     await authenticateWithProvider('UNLOCK', unlockProvider)
   }
 
-  const onEmail = useCallback(
-    async ({ email }: { email: string }) => {
-      try {
-        const existingUser = await storageService.userExist(email)
-        setIsValidEmail(existingUser)
-      } catch (error) {
-        if (error instanceof Error) {
-          ToastHelper.error(`Email Error: ${error.message}`)
-        }
-      }
-    },
-    [storageService]
-  )
-
-  useEffect(() => {
-    onEmail({ email: defaultEmail })
-  }, [defaultEmail, onEmail])
-
+  // If isUserAccount and there is a pk, then we are signing the user
+  // If isUserAccount and there is no pk, then the user has to retrivi pk from the server
+  if (isUnlockAccount && encryptedPrivateKey) {
+    return (
+      <div className="px-6">
+        <Placeholder.Root className="grid w-full">
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+        </Placeholder.Root>
+      </div>
+    )
+  }
   return (
     <div className="space-y-6 divide-y divide-gray-100">
-      {authEmail ? (
+      {isExistingUser && defaultEmail != undefined ? (
         <SignIn
-          email={authEmail}
+          email={defaultEmail}
           signIn={signIn}
           onSignIn={onSignIn}
           useIcon={useIcon}
           onReturn={() => {
             signOut()
             deAuthenticate()
-            setAuthEmail('')
+            setDefaultEmail(undefined)
           }}
         />
       ) : (
-        <>
-          {isValidEmail && (
-            <SignIn
-              email={defaultEmail}
-              signIn={signIn}
-              onSignIn={onSignIn}
-              useIcon={useIcon}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-          {!isValidEmail && (
-            <SignUp
-              email={defaultEmail}
-              signUp={signUp}
-              onSignIn={onSignIn}
-              onReturn={() => {
-                onExit()
-                setIsValidEmail(false)
-              }}
-            />
-          )}
-        </>
+        <SignUp
+          email={defaultEmail!}
+          signUp={signUp}
+          onSignIn={onSignIn}
+          onReturn={() => {
+            signOut()
+            deAuthenticate()
+            setDefaultEmail(undefined)
+          }}
+        />
       )}
     </div>
   )

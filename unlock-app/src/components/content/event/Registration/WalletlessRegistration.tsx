@@ -52,7 +52,7 @@ const WalletlessRegistrationClaiming = ({
       return
     }
     const waitForConfirmation = async () => {
-      const provider = new ethers.providers.JsonRpcBatchProvider(
+      const provider = new ethers.JsonRpcProvider(
         config.networks[network].provider
       )
 
@@ -61,7 +61,7 @@ const WalletlessRegistrationClaiming = ({
         2
       )
 
-      if (transaction.status !== 1) {
+      if (!transaction || transaction.status !== 1) {
         setTransactionStatus('ERROR')
       } else {
         setTransactionStatus('FINISHED')
@@ -89,6 +89,7 @@ const WalletlessRegistrationClaiming = ({
         <div className="m-auto mt-20 h-72 mb-36">
           <MintingScreen
             mint={{
+              network: network,
               status: transactionStatus,
               transactionHash: claimResult.hash,
             }}
@@ -208,8 +209,8 @@ export const WalletlessRegistrationApply = ({
       <div className="flex rounded-md bg-[#FFF7E8] p-2">
         <IoWarningOutline size="32" className="w-24" />
         <p>
-          This event requires approval, once approved you will receive an email
-          with your ticket and location details!{' '}
+          This amount is a deposit to hold your reservation for the event. $XX
+          Will be refunded to you when you check in at the event
         </p>
       </div>
       <RegistrationForm metadataInputs={metadataInputs} onRSVP={onRSVP} />

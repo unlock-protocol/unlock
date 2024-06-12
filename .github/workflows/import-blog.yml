@@ -1,0 +1,31 @@
+name: Fetch and Create Blog Posts
+on:
+  schedule:
+    - cron: '0 0 * * *' # Run once per day at midnight
+  workflow_dispatch:
+
+jobs:
+  fetch_and_create_posts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Prepare repo
+        run: yarn && yarn build
+
+      - name: Run RSS Feed Script
+        run: node rss_feed.js
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Add new blog posts'
+          title: 'New blog posts from RSS feed'
+          body: 'Automatically generated PR to add new blog posts fetched from the RSS feed.'
+          branch: new-blog-posts

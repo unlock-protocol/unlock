@@ -28,7 +28,7 @@ export function Confirm({ checkoutService, communication }: Props) {
     ToastHelper.error(message)
   }
 
-  const onConfirmed = (lock: string, hash?: string, network?: number) => {
+  const onConfirmed = (lock: string, network: number, hash?: string) => {
     // If not pessimistic, we can emit the transaction info right away
     // and pass the signed message as well
     if (!paywallConfig.pessimistic && hash) {
@@ -46,7 +46,7 @@ export function Confirm({ checkoutService, communication }: Props) {
     }
     checkoutService.send({
       type: 'CONFIRM_MINT',
-      status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
+      status: 'PROCESSING',
       transactionHash: hash!,
       network,
     })

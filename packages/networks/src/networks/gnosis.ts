@@ -89,7 +89,7 @@ export const gnosis: NetworkConfig = {
     },
   ],
   provider: 'https://rpc.unlock-protocol.com/100',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://rpc.gnosischain.com',
   startBlock: 19338700,
   // This is used in llama pricing API so can't rename.

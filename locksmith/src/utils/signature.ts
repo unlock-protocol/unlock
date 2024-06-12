@@ -13,7 +13,7 @@ export const expiredSignature = (
 export const generateTypedSignature = async (privateKey: string, data: any) => {
   const wallet = new ethers.Wallet(privateKey)
   const { domain, types, message, messageKey } = data
-  const signature = await wallet._signTypedData(
+  const signature = await wallet.signTypedData(
     domain,
     types,
     message[messageKey]

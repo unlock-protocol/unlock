@@ -227,12 +227,12 @@ export const createOnRampSession: RequestHandler = async (
   }
 
   const providerUrl = networks[network].provider
-  const provider = new ethers.providers.JsonRpcBatchProvider(providerUrl)
+  const provider = new ethers.JsonRpcProvider(providerUrl)
 
   const recovered = await recoverTransferAuthorization(
     usdcContractAddress,
     transferMessage,
-    network,
+    BigInt(network),
     transferSignature,
     provider
   )
@@ -252,10 +252,7 @@ export const createOnRampSession: RequestHandler = async (
   })
 
   // Value is in 6 decimals (USDC)
-  const amount = ethers.utils.formatUnits(
-    ethers.BigNumber.from(transferMessage.value),
-    6
-  )
+  const amount = ethers.formatUnits(BigInt(transferMessage.value), 6)
 
   const session = await new OnrampSessionResource(stripe).create({
     transaction_details: {

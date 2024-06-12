@@ -27,7 +27,7 @@ export const useCrossChainRoutes = ({
   const { recipients, paywallConfig, keyManagers, renew } = context
 
   return useQuery(
-    ['crossChainRoutes', account, lock, recipients, purchaseData],
+    ['crossChainRoutes', account, lock.address, recipients, purchaseData],
     async (): Promise<CrossChainRoute[]> => {
       // TODO: support renewals
       if (!purchaseData || !account || !lock || !recipients || renew) {
@@ -73,7 +73,7 @@ export const useCrossChainRoutes = ({
           null,
           route.network
         )
-        if (ethers.utils.parseEther(userBalance).gte(route?.tx.value)) {
+        if (ethers.parseEther(userBalance) >= route?.tx.value) {
           return [...(await filteredRoutes), ...[route]]
         }
         return filteredRoutes

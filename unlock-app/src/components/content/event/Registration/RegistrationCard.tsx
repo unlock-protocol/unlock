@@ -6,6 +6,8 @@ import { useValidKeyBulk } from '~/hooks/useKey'
 import { HasTicket } from './HasTicket'
 import { EmbeddedCheckout } from './EmbeddedCheckout'
 import { useState } from 'react'
+import { AttendeeStaking } from './SingleLock/AttendeeStaking'
+import { AttendeeRefundType } from '@unlock-protocol/core'
 
 export interface RegistrationCardProps {
   checkoutConfig: {
@@ -14,12 +16,14 @@ export interface RegistrationCardProps {
   }
   requiresApproval: boolean
   hideRemaining: boolean
+  attendeeRefund?: AttendeeRefundType
 }
 
 export const RegistrationCard = ({
   requiresApproval,
   checkoutConfig,
   hideRemaining,
+  attendeeRefund,
 }: RegistrationCardProps) => {
   const [hasRefreshed, setHasRefreshed] = useState(false)
   // Check if the user has a key!
@@ -52,6 +56,7 @@ export const RegistrationCard = ({
           checkoutConfig={checkoutConfig}
           hideRemaining={hideRemaining}
         />
+        {attendeeRefund && <AttendeeStaking attendeeRefund={attendeeRefund} />}
       </Card>
     )
   }
