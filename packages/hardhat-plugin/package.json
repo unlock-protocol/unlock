@@ -67,6 +67,6 @@
     "ethers": "6"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-ethers": "3.0.5"
+    "@nomicfoundation/hardhat-ethers": "3.0.6"
   }
 }
