@@ -47,6 +47,111 @@ const bigintSerializer = (_key: string, value: unknown): unknown => {
   return value
 }
 
+interface getCrossChainRouteParams {
+  sender: string
+  lock: Lock
+  prices: any[]
+  recipients: string[]
+  keyManagers: string[]
+  referrers: string[]
+  purchaseData: string[]
+  srcToken: string
+  srcChainId: number
+}
+
+// Get a route for a given token and chain.
+export const getCrossChainRoute = async ({
+  sender,
+  lock,
+  prices,
+  recipients,
+  keyManagers,
+  referrers,
+  purchaseData,
+  srcToken,
+  srcChainId,
+}: getCrossChainRouteParams): Promise<CrossChainRoute | undefined> => {
+  const network = networks[srcChainId]
+
+  const baseUrl = 'https://box-v2.api.decent.xyz/api/getBoxAction'
+  const apiKey = '6477b3b3671589d81df0cba67ba9f3e6'
+  const actionRequest: BoxActionRequest = {
+    actionType: 'evm-function',
+    sender,
+
+    srcToken,
+    dstToken: lock.currencyContractAddress || ADDRESS_ZERO,
+    slippage: 1, // 1%
+
+    srcChainId,
+    dstChainId: lock.network,
+    actionConfig: {
+      chainId: lock.network,
+      contractAddress: lock.address,
+
+      cost: {
+        isNative: true,
+        amount: prices.reduce(
+          (acc, current) =>
+            acc +
+            ethers.parseUnits(current.amount.toString(), current.decimals),
+          BigInt('0')
+        ),
+      },
+
+      signature: encodeURIComponent(
+        'function purchase(uint256[] _values,address[] _recipients,address[] _referrers,address[] _keyManagers,bytes[] _data) payable returns (uint256[])'
+      ), // We need to get this from walletService!
+
+      args: [
+        prices.map((price) => {
+          const priceParsed = ethers.parseUnits(
+            price.amount.toString(),
+            price.decimals
+          )
+          return priceParsed
+        }),
+        recipients,
+        referrers,
+        keyManagers,
+        purchaseData,
+      ],
+    },
+  }
+
+  const query = JSON.stringify(
+    {
+      ...actionRequest,
+    },
+    bigintSerializer
+  )
+
+  const url = `${baseUrl}?arguments=${query}`
+  const response = await axios
+    .get(url, {
+      headers: {
+        'x-api-key': apiKey,
+      },
+    })
+    .catch(function (error) {
+      console.error(error)
+    })
+  if (response?.status === 200) {
+    const { data } = response
+    return {
+      ...data,
+      tx: {
+        ...data.tx,
+        value: BigInt(data.tx.value.slice(0, -1)),
+      },
+      network: network.id,
+      currency: network.nativeCurrency.name,
+      symbol: network.nativeCurrency.symbol,
+      networkName: network.name,
+    } as CrossChainRoute
+  }
+}
+
 export const getCrossChainRoutes = async ({
   sender,
   lock,
