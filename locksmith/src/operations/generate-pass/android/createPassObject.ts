@@ -1,9 +1,4 @@
 import jwt from 'jsonwebtoken'
-import config from '../../../config/config'
-import logger from '../../../logger'
-
-// Retrieve Google wallet application credentials from the configuration
-const googleApplicationCredentials = config.googleApplicationCredentials!
 
 export async function createWalletPassObject(
   classId: string,
@@ -11,12 +6,12 @@ export async function createWalletPassObject(
   networkName: string,
   lockAddress: string,
   keyId: string,
-  qrCodeUrl: string
+  qrCodeUrl: string,
+  client_email: string,
+  private_key: string
 ) {
   //   create a new wallet pass for the user
   const objectId = `${classId}.${keyId}`
-
-  console.log(objectId)
 
   const userWalletPassObject = {
     id: `${objectId}`,
@@ -77,7 +72,7 @@ export async function createWalletPassObject(
   }
 
   const claims = {
-    iss: googleApplicationCredentials.client_email,
+    iss: client_email,
     aud: 'google',
     origins: [],
     typ: 'savetowallet',
@@ -86,11 +81,9 @@ export async function createWalletPassObject(
     },
   }
 
-  const token = jwt.sign(claims, googleApplicationCredentials.private_key, {
+  const token = jwt.sign(claims, private_key, {
     algorithm: 'RS256',
   })
-
-  logger.info(token)
 
   const saveUrl = `https://pay.google.com/gp/v/save/${token}`
   return saveUrl
