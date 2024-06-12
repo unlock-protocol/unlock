@@ -2,21 +2,6 @@
 
 A standalone hardhat node, fully provisioned for Unlock local development and integration testing
 
-## Prepare for Unlock dev
-
-### Copy packages
-
-As this folder is NOT integrated into the yarn monorepo setup, we need to manually copy packages
-from the monorepo `packages` folder into a `./packages` in this directory.
-
-```shell
-# from the monorepo root folder
-source ./scripts/start/envs.sh
-
-# copy the packages
-./scripts/start/copy-eth-node-packages.sh
-```
-
 ### Start an ETH node
 
 ```
