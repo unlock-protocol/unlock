@@ -77,7 +77,8 @@ export const CreateLockForm = ({
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const { account } = useAuth()
-  const networkOptions = useAvailableNetworks()
+  const mainNetworkOptions = useAvailableNetworks()
+  const additionalNetworkOptions = useAvailableNetworks(true)
 
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     defaultValues?.unlimitedDuration ?? false
@@ -96,7 +97,7 @@ export const CreateLockForm = ({
     mode: 'onChange',
     defaultValues: {
       name: defaultValues.name || '',
-      network: defaultValues.network || networkOptions[0]?.value,
+      network: defaultValues.network || mainNetworkOptions[0]?.value,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
@@ -179,9 +180,12 @@ export const CreateLockForm = ({
                   </p>
                 }
                 defaultValue={selectedNetwork}
-                options={networkOptions}
+                options={mainNetworkOptions}
                 onChange={onChangeNetwork}
                 description={networkDescription(selectedNetwork!)}
+                moreOptions={additionalNetworkOptions.filter(
+                  (option) => !mainNetworkOptions.includes(option)
+                )}
               />
             )}
             <div className="relative">
