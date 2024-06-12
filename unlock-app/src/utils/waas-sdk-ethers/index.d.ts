@@ -1,11 +1,11 @@
 import {
-  Signer,
   providers as EthersProviders,
   TypedDataDomain,
   TypedDataField,
+  JsonRpcSigner,
 } from 'ethers'
 import { Address, ProtocolFamily } from '@coinbase/waas-sdk-web'
-export declare class WaasEthersSigner extends Signer {
+export declare class WaasEthersSigner extends JsonRpcSigner {
   waasAddress: Address<ProtocolFamily.EVM>
   provider?: EthersProviders.Provider
   constructor(

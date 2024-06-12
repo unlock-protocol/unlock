@@ -1,11 +1,9 @@
-import { ethers, Signer, Transaction, utils } from 'ethers'
-export class WaasEthersSigner extends Signer {
+import { ethers, Transaction, JsonRpcSigner } from 'ethers'
+export class WaasEthersSigner extends JsonRpcSigner {
   waasAddress
-  provider
   constructor(address, provider) {
-    super()
+    super(provider, address.address)
     this.waasAddress = address
-    this.provider = provider
   }
   connect(provider) {
     return new WaasEthersSigner(this.waasAddress, provider)
@@ -52,7 +50,7 @@ export class WaasEthersSigner extends Signer {
     return hexSignature
   }
   async signTypedData(domain, types, value) {
-    const hashToSign = utils._TypedDataEncoder
+    const hashToSign = ethers._TypedDataEncoder
       .hash(domain, types, value)
       .slice(2)
     let res
