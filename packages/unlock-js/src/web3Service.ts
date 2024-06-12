@@ -6,7 +6,7 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
 } from './erc20'
-import { ETHERS_MAX_UINT } from './constants'
+import { ETHERS_MAX_UINT, ZERO } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
@@ -432,8 +432,13 @@ export default class Web3Service extends UnlockService {
 
   async getTokenDecimals(contractAddress: string, network: number) {
     const provider = this.providerForNetwork(network)
-    const decimals = await getErc20Decimals(contractAddress, provider)
-    return decimals
+    if (contractAddress !== ZERO) {
+      const decimals = await getErc20Decimals(contractAddress, provider)
+      return decimals
+    } else {
+      // default for native tokens
+      return 18
+    }
   }
 
   /**
