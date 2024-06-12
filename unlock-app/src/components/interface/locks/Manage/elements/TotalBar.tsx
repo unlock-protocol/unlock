@@ -76,7 +76,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
         <div className="grid w-full grid-cols-1 divide-y md:gap-0 md:grid-cols-3 md:divide-y-0 md:divide-x divide-x-gray-500">
           <div className={wrapperClass}>
             <Detail label="Total members" loading={loading} valueSize="large">
-              {numberOfOwners}
+              {numberOfOwners?.toString()}
             </Detail>
           </div>
           <div className={wrapperClass}>
