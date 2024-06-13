@@ -85,6 +85,7 @@ export function PromoContent({
             signerAddress: privateKeyFromAccount.address,
           }
         )
+        promoCodeDetails.discount = Number(promoCodeDetails.discount)
         setPromoCodeDetails(promoCodeDetails)
         setPromoCodeLoading(false)
       }
