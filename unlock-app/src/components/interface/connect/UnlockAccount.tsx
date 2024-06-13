@@ -122,7 +122,7 @@ export interface SignInProps {
   signIn: (details: UserDetails) => Promise<unknown> | unknown
   onSignIn?(): void
   useIcon?: boolean
-  shouldRedirect?: boolean
+  shoudOpenConnectModal?: boolean
   checkoutService?: CheckoutService
 }
 
@@ -133,7 +133,7 @@ const SignIn = ({
   signIn,
   onSignIn,
   useIcon = true,
-  shouldRedirect = true,
+  shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
   return (
@@ -150,7 +150,7 @@ const SignIn = ({
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
           <SignWithGoogle
-            shouldRedirect={shouldRedirect}
+            shoudOpenConnectModal={shoudOpenConnectModal}
             checkoutService={checkoutService}
           />
         )}
@@ -163,7 +163,7 @@ const SignIn = ({
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <SignWithGoogle
-              shouldRedirect={shouldRedirect}
+              shoudOpenConnectModal={shoudOpenConnectModal}
               checkoutService={checkoutService}
             />
             <div>Passkey Account</div>
@@ -184,34 +184,22 @@ const SignIn = ({
 }
 
 export interface SignWithGoogleProps {
-  shouldRedirect: boolean
+  shoudOpenConnectModal: boolean
   checkoutService?: CheckoutService
 }
 
 const SignWithGoogle = ({
-  shouldRedirect,
+  shoudOpenConnectModal,
   checkoutService,
 }: SignWithGoogleProps) => {
   const router = useRouter()
   const state = JSON.stringify({
-    redirectUrl: shouldRedirect ? router.asPath : undefined,
+    shouldOpenConnectModal: shoudOpenConnectModal,
   })
 
-  let redirectUrl
+  const redirectUrl = `${window.location.protocol}//${window.location.host}${router.asPath}`
 
-  if (shouldRedirect) {
-    redirectUrl =
-      typeof window !== 'undefined'
-        ? `${window.location.protocol}//${window.location.host}/connecting`
-        : ''
-  } else {
-    redirectUrl =
-      typeof window !== 'undefined'
-        ? `${window.location.protocol}//${window.location.host}${router.asPath}`
-        : ''
-  }
-
-  const callbackUrl = shouldRedirect
+  const callbackUrl = shoudOpenConnectModal
     ? `${redirectUrl}/?state=${encodeURIComponent(state)}`
     : redirectUrl
 
@@ -229,7 +217,7 @@ const SignWithGoogle = ({
     <div className="w-full">
       <ConnectButton
         className="w-full"
-        icon={<SvgComponents.Google width={40} height={40} />}
+        icon={<SvgComponents.Unlock width={40} height={40} />}
         onClick={() => {
           signWithGoogle()
         }}
@@ -246,7 +234,7 @@ export interface Props {
   onSignIn?(): void
   useIcon?: boolean
   accountType: UserAccountType[]
-  shouldRedirect: boolean
+  shoudOpenConnectModal: boolean
   checkoutService?: CheckoutService
 }
 
@@ -256,7 +244,7 @@ export const ConnectUnlockAccount = ({
   email,
   setEmail,
   accountType,
-  shouldRedirect = true,
+  shoudOpenConnectModal = false,
   checkoutService,
 }: Props) => {
   const { retrieveUserAccount } = useAccount('')
@@ -299,7 +287,7 @@ export const ConnectUnlockAccount = ({
         signIn={signIn}
         onSignIn={onSignIn}
         useIcon={useIcon}
-        shouldRedirect={shouldRedirect}
+        shoudOpenConnectModal={shoudOpenConnectModal}
         checkoutService={checkoutService}
       />
     </div>

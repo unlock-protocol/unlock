@@ -1,10 +1,13 @@
 import {
   LocksmithService,
   LocksmithServiceConfiguration,
+  Web3Service,
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
+import { storage } from '~/config/storage'
 import { UserAccountType } from '~/utils/userAccountType'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -286,19 +289,17 @@ export class StorageService extends EventEmitter {
     }
 
     try {
-      const response = await fetch(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}/${encodeURIComponent(selectedProvider as string)}/waas`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ token }),
-        }
+      const response = await storage.getWaasToken(
+        emailAddress,
+        selectedProvider,
+        { token }
       )
-      const data = await response.json()
 
-      return data.token
+      console.log(response)
+
+      const waasToken = await response.data.token
+
+      return waasToken
     } catch (error) {
       console.log(error)
     }

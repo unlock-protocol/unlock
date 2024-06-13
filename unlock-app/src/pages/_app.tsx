@@ -16,6 +16,7 @@ import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
 
 import { Inter } from 'next/font/google'
+import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -46,6 +47,7 @@ const UnlockApp = ({
                 <ErrorBoundary
                   fallback={(props) => <ErrorFallback {...props} />}
                 >
+                  <ShouldOpenConnectModal />
                   <AirstackProvider
                     apiKey={'1ef6142a6b64e48dd9fd4df8e0f4da9e3'}
                   >

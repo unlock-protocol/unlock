@@ -1,19 +1,20 @@
 import { Placeholder } from '@unlock-protocol/ui'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useConnectModal } from '~/hooks/useConnectModal'
 import { useSIWE } from '~/hooks/useSIWE'
 import WaasProvider from '~/services/WaasProvider'
 
 export type ConnectingWaasProps = {
-  shouldReloadOnTimeout?: boolean
+  openConnectModalWindow?: boolean
 }
 
 export const ConnectingWaas = ({
-  shouldReloadOnTimeout = false,
+  openConnectModalWindow = false,
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
   const { authenticateWithProvider } = useAuthenticate()
@@ -26,8 +27,6 @@ export const ConnectingWaas = ({
     decodeURIComponent((router.query.state as string) || '{}')
   )
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
   const redirect = () => {
     if (restoredState.redirectUrl) {
       router.push(restoredState.redirectUrl)
@@ -35,28 +34,11 @@ export const ConnectingWaas = ({
   }
 
   useEffect(() => {
-    if (!timeoutRef.current) {
-      timeoutRef.current = setTimeout(async () => {
-        if (shouldReloadOnTimeout) {
-          await signOut()
-          timeoutRef.current = null
-          window.location.reload()
-        } else {
-          timeoutRef.current = null
-          router.push('/')
-        }
-      }, 10000)
-    }
-
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
     if (!session || !session?.user?.selectedProvider) return
+
+    if (openConnectModalWindow) {
+      openConnectModal()
+    }
 
     const connectWaasProvider = async () => {
       try {

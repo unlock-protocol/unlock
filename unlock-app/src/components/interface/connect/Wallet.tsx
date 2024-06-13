@@ -16,7 +16,7 @@ import { CheckoutService } from '../checkout/main/checkoutMachine'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
-  shouldRedirect?: boolean
+  shoudOpenConnectModal?: boolean
   checkoutService?: CheckoutService
 }
 
@@ -96,7 +96,7 @@ export const ConnectViaEmail = ({
 
 export const ConnectWallet = ({
   injectedProvider,
-  shouldRedirect = true,
+  shoudOpenConnectModal = false,
   checkoutService,
 }: ConnectWalletProps) => {
   const { email } = useAuth()
@@ -200,7 +200,7 @@ export const ConnectWallet = ({
           setEmail={setUserEmail}
           accountType={userAccountType}
           useIcon={false}
-          shouldRedirect={shouldRedirect}
+          shoudOpenConnectModal={shoudOpenConnectModal}
           checkoutService={checkoutService}
         />
       )}

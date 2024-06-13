@@ -2,25 +2,36 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectedWallet } from './ConnectedWallet'
 import { ConnectWallet } from './Wallet'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
+import { useSIWE } from '~/hooks/useSIWE'
+import { useSession } from 'next-auth/react'
+import ConnectingWaas from './ConnectingWaas'
 
 interface ConnectWalletComponentProps {
   onNext?: () => void
-  shouldRedirect?: boolean
   checkoutService?: CheckoutService
+  shoudOpenConnectModal?: boolean
 }
 
 const ConnectWalletComponent = ({
   onNext,
-  shouldRedirect = true,
   checkoutService,
+  shoudOpenConnectModal = false,
 }: ConnectWalletComponentProps) => {
-  const { connected } = useAuth()
+  const { account, connected } = useAuth()
+  const { isSignedIn } = useSIWE()
+
+  const { data: session } = useSession()
+  const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
+
+  if (isLoadingWaas) {
+    return <ConnectingWaas />
+  }
 
   return (
     <div>
       {!connected && (
         <ConnectWallet
-          shouldRedirect={shouldRedirect}
+          shoudOpenConnectModal={shoudOpenConnectModal}
           checkoutService={checkoutService}
         />
       )}
