@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { WaasEthersSigner } from 'waas-sdk-ethers'
 import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
 import { StorageService } from './storageService'
 import { config } from '~/config/app'
@@ -7,6 +6,7 @@ import UnlockUser from '~/structured_data/unlockUser'
 import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
 import EjectionRequest from '~/structured_data/ejectionRequest'
+import { WaasEthersSigner } from '~/utils/waas-sdk-ethers'
 
 interface WaasProviderOptions {
   provider: ethers.utils.ConnectionInfo | string
