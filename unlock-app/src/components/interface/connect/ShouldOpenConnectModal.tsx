@@ -4,24 +4,20 @@ import { useConnectModal } from '~/hooks/useConnectModal'
 
 const ShouldOpenConnectModal = () => {
   const router = useRouter()
-  const restoredState = JSON.parse(
-    decodeURIComponent((router.query.state as string) || '{}')
-  )
 
   const { account, connected } = useAuth()
 
   const { openConnectModal } = useConnectModal()
 
-  if (restoredState.shouldOpenConnectModal && !connected && !account) {
+  if (router.query.shouldOpenConnectModal && !connected && !account) {
     openConnectModal()
 
     // Remove the shouldOpenConnectModal from the query string
-    const { shouldOpenConnectModal, ...otherStateParams } = restoredState
-    const updatedState = encodeURIComponent(JSON.stringify(otherStateParams))
+    const { shouldOpenConnectModal, ...otherQueryParams } = router.query
     router.replace(
       {
         pathname: router.pathname,
-        query: { ...router.query, state: updatedState },
+        query: otherQueryParams,
       },
       undefined,
       { shallow: true }

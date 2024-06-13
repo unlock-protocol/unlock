@@ -193,15 +193,18 @@ const SignWithGoogle = ({
   checkoutService,
 }: SignWithGoogleProps) => {
   const router = useRouter()
-  const state = JSON.stringify({
-    shouldOpenConnectModal: shoudOpenConnectModal,
-  })
 
-  const redirectUrl = `${window.location.protocol}//${window.location.host}${router.asPath}`
+  const url = new URL(
+    `${window.location.protocol}//${window.location.host}${router.asPath}`
+  )
+  const params = new URLSearchParams(url.search)
+  params.append(
+    'shouldOpenConnectModal',
+    encodeURIComponent(shoudOpenConnectModal)
+  )
+  url.search = params.toString()
 
-  const callbackUrl = shoudOpenConnectModal
-    ? `${redirectUrl}/?state=${encodeURIComponent(state)}`
-    : redirectUrl
+  const callbackUrl = url.toString()
 
   const signWithGoogle = () => {
     if (window !== window.parent) {
