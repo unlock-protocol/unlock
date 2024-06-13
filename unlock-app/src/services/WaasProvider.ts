@@ -18,8 +18,7 @@ interface WaasProviderOptions {
 // WaasProvider implements a subset of Web3 provider functionality, sufficient
 // to allow us to use it as a stand-in for MetaMask or other Web3 integration in
 // the browser.
-export default class WaasProvider extends ethers.providers
-  .JsonRpcBatchProvider {
+export default class WaasProvider extends ethers.JsonRpcProvider {
   public wallet: WaasEthersSigner | null
 
   public emailAddress: string
@@ -45,7 +44,7 @@ export default class WaasProvider extends ethers.providers
         collectAndReportMetrics: true,
         enableHostedBackups: true,
         prod: false,
-        projectId: '5402f17b-ad54-4984-9417-b7b111226080',
+        projectId: '36f395a8-9186-4a6a-9b3e-9d709fa64c86',
       })
 
       const user = await waas.auth.login({
@@ -73,13 +72,14 @@ export default class WaasProvider extends ethers.providers
 
       return true
     } catch (error) {
+      console.log(error)
       throw new Error('Error connecting to provider')
     }
 
     return false
   }
 
-  getWaasUuid = async () => {
+  getWaasUuid = async (): Promise<string> => {
     const storageService = new StorageService(config.services.storage.host)
     const waasToken = await storageService.getUserWaasUuid(
       this.emailAddress,
@@ -87,7 +87,7 @@ export default class WaasProvider extends ethers.providers
       this.token
     )
 
-    return waasToken
+    return waasToken as string
   }
 
   async eth_accounts() {
@@ -99,12 +99,12 @@ export default class WaasProvider extends ethers.providers
   }
 
   // Overriding this method to return the address of the wallet
-  async listAccounts() {
+  /*async listAccounts() {
     if (this.wallet) {
       return [await this.wallet.getAddress()]
     }
     return []
-  }
+  }*/
 
   getSigner(): any {
     if (this.wallet) {
@@ -133,7 +133,7 @@ export default class WaasProvider extends ethers.providers
    */
   // eslint-disable-next-line no-unused-vars
   async personal_sign([data, _]: any[]) {
-    const content = ethers.utils.arrayify(data)
+    const content = ethers.getBytes(data)
     const signature = await this.wallet?.signMessage(content)
     return signature
   }
