@@ -15088,21 +15088,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.12.8":
-  version: 20.12.8
-  resolution: "@types/node@npm:20.12.8"
+"@types/node@npm:20.14.2":
+  version: 20.14.2
+  resolution: "@types/node@npm:20.14.2"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10/1feab4c8cb08588eea10811ed4d02485a5cde47fdf92e7b3193fc9f8ee39ea556f6e3124dc6d5378354466ed5f7e5fbe5e20f625908de40ea37560368a50f72c
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:20.14.1":
-  version: 20.14.1
-  resolution: "@types/node@npm:20.14.1"
-  dependencies:
-    undici-types: "npm:~5.26.4"
-  checksum: 10/1417d9768dccca9491fb5fc41ef0ee9044cef4c86eef413608dd983c30af19d5f0930b356791dde3aec238a6a47bbea42c47b69929b5fe822cf09cd543f6c52f
+  checksum: 10/c38e47b190fa0a8bdfde24b036dddcf9401551f2fb170a90ff33625c7d6f218907e81c74e0fa6e394804a32623c24c60c50e249badc951007830f0d02c48ee0f
   languageName: node
   linkType: hard
 
@@ -16542,7 +16533,7 @@ __metadata:
     "@typechain/ethers-v6": "npm:0.5.0"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.6"
-    "@types/node": "npm:20.14.1"
+    "@types/node": "npm:20.14.2"
     "@unlock-protocol/contracts": "workspace:^"
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -16586,7 +16577,7 @@ __metadata:
     "@types/multer": "npm:1.4.11"
     "@types/multer-s3": "npm:3.0.3"
     "@types/nock": "npm:11.1.0"
-    "@types/node": "npm:20.14.1"
+    "@types/node": "npm:20.14.2"
     "@types/node-cron": "npm:3.0.11"
     "@types/random-words": "npm:1.2.0"
     "@types/request-promise-native": "npm:1.0.21"
@@ -17004,7 +16995,7 @@ __metadata:
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:16.0.0"
     "@types/next": "npm:9.0.0"
-    "@types/node": "npm:20.12.8"
+    "@types/node": "npm:20.14.2"
     "@types/react": "npm:18.3.3"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -40900,7 +40891,7 @@ __metadata:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": "npm:4.20240603.0"
-    "@types/node": "npm:20.12.8"
+    "@types/node": "npm:20.14.2"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.12.1"
     toucan-js: "npm:3.4.0"
