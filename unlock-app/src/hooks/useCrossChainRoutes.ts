@@ -11,6 +11,7 @@ import { BoxEvmChains } from '@decent.xyz/box-common'
 import { Token } from '@unlock-protocol/types'
 
 interface CrossChainRouteWithBalance extends CrossChainRoute {
+  resolvedAt: number
   userTokenBalance: string
 }
 
@@ -182,6 +183,7 @@ export const useCrossChainRoutes = ({
                 return null
               }
               return {
+                resolvedAt: new Date().getTime(), // maintaining order
                 userTokenBalance,
                 ...route,
               } as CrossChainRouteWithBalance
@@ -193,17 +195,20 @@ export const useCrossChainRoutes = ({
       ),
   })
 
+  const routes = routeResults
+    .map((result: { data?: CrossChainRouteWithBalance | null }) => result.data)
+    .filter(
+      (data?: CrossChainRouteWithBalance | null) => !!data
+    ) as CrossChainRouteWithBalance[]
+
   return {
     isLoading:
       isLoadingPrices ||
       balanceResults.some((result) => result.isLoading) ||
       routeResults.some((result) => result.isLoading),
-    routes: routeResults
-      .map(
-        (result: { data?: CrossChainRouteWithBalance | null }) => result.data
-      )
-      .filter(
-        (data?: CrossChainRouteWithBalance | null) => !!data
-      ) as CrossChainRouteWithBalance[],
+    routes: routes.sort(
+      (a: CrossChainRouteWithBalance, b: CrossChainRouteWithBalance) =>
+        a!.resolvedAt - b!.resolvedAt
+    ),
   }
 }
