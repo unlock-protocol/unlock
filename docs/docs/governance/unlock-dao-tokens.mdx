@@ -102,4 +102,6 @@ As of Unlock version 13, the protocol includes a "fee switch" but the fee is cur
 
 If the fee amount is larger than 0%, on every transaction for which there is a payment ([`purchase`](/core-protocol/smart-contracts-api/PublicLock#purchase), [`extend`](/core-protocol/smart-contracts-api/PublicLock#extend) or [`renewMembershipFor`](/core-protocol/smart-contracts-api/PublicLock#renewmembershipfor)), the lock contract will send a portion of the payment to the Unlock contract.
 
-The Unlock Labs team will submit a DAO proposal to add a mechanism that lets anyone submit a transaction to the Unlock contract in order to swap some of the fees collected into UDT tokens and burn these tokens.
+### Swap and Burn
+
+At that point, the collected fees can be "swapped and burned" by calling the `swapAndBurn` function on the Unlock contract. This function will swap the collected fees for UDT tokens on a decentralized exchange and then burn them.

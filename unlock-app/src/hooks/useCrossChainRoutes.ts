@@ -1,13 +1,22 @@
-import { useQuery } from '@tanstack/react-query'
-import { ethers } from 'ethers'
+import { useQueries, useQuery } from '@tanstack/react-query'
+import { ZeroAddress, ethers } from 'ethers'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { purchasePriceFor } from './usePricing'
 import { getReferrer } from '~/utils/checkoutLockUtils'
-import { CrossChainRoute, getCrossChainRoutes } from '~/utils/theBox'
-import { getAccountTokenBalance } from './useAccount'
-import networks from '@unlock-protocol/networks'
+import { CrossChainRoute, getCrossChainRoute } from '~/utils/theBox'
+import { networks } from '@unlock-protocol/networks'
+import { BoxEvmChains } from '@decent.xyz/box-common'
+import { Token } from '@unlock-protocol/types'
+
+interface CrossChainRouteWithBalance extends CrossChainRoute {
+  userTokenBalance: string
+}
+
+// TheBox returns BigInts as strings with a trailing 'n'
+export const toBigInt = (str: string) =>
+  /[a-zA-Z]$/.test(str) ? str.slice(0, -1) : str
 
 interface CrossChainRoutesOption {
   lock: Lock
@@ -31,7 +40,7 @@ export const useCrossChainRoutes = ({
 
   const { data: prices, isLoading: isLoadingPrices } = useQuery(
     ['prices', account, lock, recipients, purchaseData],
-    async (): Promise => {
+    async () => {
       // TODO: support renewals
       if (!purchaseData || !account || !lock || !recipients || renew) {
         return []
@@ -53,61 +62,148 @@ export const useCrossChainRoutes = ({
         return []
       }
       return prices
+    },
+    {
+      staleTime: 1000 * 60 * 5,
     }
   )
-  // ok so now we have the prices, let's get the balances of the native currencies
 
-  const { data: balances, isLoading: isLoadingBalances } = useQuery(
-    ['balances', account, networks],
-    () => {}
-  )
+  const balanceResults = useQueries({
+    queries: BoxEvmChains.filter((network) => {
+      return networks[network.id]
+    }).map((network) => {
+      return {
+        queryKey: ['balance', account, network.id],
+        queryFn: async () => {
+          return {
+            network: network.id,
+            balance: await web3Service.getAddressBalance(account!, network.id),
+          }
+        },
+        staleTime: 1000 * 60 * 5, // 5 minutes
+        enabled,
+      }
+    }),
+  })
 
-  //     const routes = await getCrossChainRoutes({
-  //       sender: account!,
-  //       lock,
-  //       prices,
-  //       recipients,
-  //       keyManagers: keyManagers || recipients,
-  //       referrers: recipients.map(() =>
-  //         getReferrer(account!, paywallConfig, lock.address)
-  //       ),
-  //       purchaseData: purchaseData || recipients.map(() => '0x'),
-  //     })
+  const routeResults = useQueries({
+    queries: balanceResults
+      .filter((result) => !!result?.data?.balance)
+      .filter((result) => Number(result!.data!.balance) > 0)
+      .reduce<{ network: number; balance: string; token: Token }[]>(
+        (
+          previous: { network: number; balance: string; token: Token }[],
+          result
+        ) => {
+          const network = result.data!.network
+          const { tokens, nativeCurrency } = networks[network]
+          if (!tokens || !result.data) {
+            return previous
+          }
+          return [
+            ...previous,
+            ...tokens.map((token) => {
+              return { ...result.data, token }
+            }),
+            {
+              ...result.data,
+              token: {
+                address: ZeroAddress,
+                decimals: nativeCurrency.decimals,
+                name: nativeCurrency.name,
+                symbol: nativeCurrency.symbol,
+              },
+            },
+          ]
+        },
+        []
+      )
+      .map(
+        ({
+          token,
+          network,
+          balance: nativeBalance,
+        }: {
+          token: Token
+          network: number
+          balance: string
+        }) => {
+          return {
+            queryKey: [
+              'getCrossChainRoute',
+              account,
+              lock,
+              prices,
+              recipients,
+              token,
+              network,
+              nativeBalance,
+            ],
+            queryFn: async () => {
+              if (!prices) {
+                return null
+              }
+              const route = await getCrossChainRoute({
+                sender: account!,
+                lock,
+                prices,
+                recipients,
+                keyManagers: keyManagers || recipients,
+                referrers: recipients.map(() =>
+                  getReferrer(account!, paywallConfig, lock.address)
+                ),
+                purchaseData: purchaseData || recipients.map(() => '0x'),
+                srcToken: token.address,
+                srcChainId: network,
+              })
+              if (!route) {
+                console.info(
+                  `No route found from ${network} and ${token.address} to ${lock.network} and ${lock.currencyContractAddress}`
+                )
+                return null
+              }
+              const amount = BigInt(toBigInt(route.tokenPayment.amount))
+              let userTokenBalance
+              if (route.tokenPayment.tokenAddress === ZeroAddress) {
+                userTokenBalance = nativeBalance
+              } else {
+                userTokenBalance = await web3Service.getAddressBalance(
+                  account!,
+                  network,
+                  route.tokenPayment.tokenAddress
+                )
+              }
 
-  //     // Async filter function
-  //     const reduce = async (
-  //       filteredRoutes: CrossChainRoute[],
-  //       route: CrossChainRoute
-  //     ): Promise<CrossChainRoute[]> => {
-  //       const userBalance = await getAccountTokenBalance(
-  //         web3Service,
-  //         account!,
-  //         null,
-  //         route.network
-  //       )
-  //       if (ethers.parseEther(userBalance) >= route?.tx.value) {
-  //         return [...(await filteredRoutes), ...[route]]
-  //       }
-  //       return filteredRoutes
-  //     }
+              const cost = ethers.formatUnits(
+                amount,
+                route.tokenPayment.decimals
+              )
+              if (Number(cost) > Number(userTokenBalance)) {
+                return null
+              }
+              return {
+                userTokenBalance,
+                ...route,
+              } as CrossChainRouteWithBalance
+            },
+            enabled,
+            staleTime: 1000 * 60 * 5, // 5 minutes
+          }
+        }
+      ),
+  })
 
-  //     // @ts-expect-error For some reason Typescript does not like that the type of the accumulator and the currnet value are different
-  //     return routes
-  //       .map((route) => {
-  //         delete route.tx.gasLimit
-  //         delete route.tx.maxFeePerGas
-  //         delete route.tx.maxPriorityFeePerGas
-  //         delete route.tx.gasPrice
-  //         return route
-  //       })
-  //       .reduce<CrossChainRoute>(
-  //         // @ts-expect-error For some reason Typescript does not like that the type of the accumulator and the currnet value are different
-  //         reduce,
-  //         [] as CrossChainRoute[]
-  //       )
-  //   },
-  //   {
-  //     enabled,
-  //   }
-  // )
+  return {
+    isLoading:
+      isLoadingPrices ||
+      balanceResults.some((result) => result.isLoading) ||
+      routeResults.some((result) => result.isLoading),
+    routes: routeResults
+      .map(
+        (result: { data?: CrossChainRouteWithBalance | null }) => result.data
+      )
+      .filter(
+        (data?: CrossChainRouteWithBalance | null) => !!data
+      ) as CrossChainRouteWithBalance[],
+  }
 }

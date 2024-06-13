@@ -27,7 +27,7 @@ import { useCreditCardEnabled } from '~/hooks/useCreditCardEnabled'
 import { useCanClaim } from '~/hooks/useCanClaim'
 import { usePurchaseData } from '~/hooks/usePurchaseData'
 import { useCrossmintEnabled } from '~/hooks/useCrossmintEnabled'
-import { useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
+import { toBigInt, useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
 import Disconnect from './Disconnect'
@@ -164,7 +164,6 @@ export function Payment({ checkoutService }: Props) {
   )
 
   const canAfford = balance?.isGasPayable && balance?.isPayable
-
   const { data: uniswapRoutes, isInitialLoading: isUniswapRoutesLoading } =
     useUniswapRoutes({
       lock,
@@ -174,15 +173,13 @@ export function Payment({ checkoutService }: Props) {
       enabled: !enableClaim && recipients.length === 1, // Disabled swap and purchase for multiple recipients
     })
 
-  const {
-    data: crossChainRoutes,
-    isInitialLoading: isCrossChaingRoutesLoading,
-  } = useCrossChainRoutes({
-    lock,
-    purchaseData,
-    context: state.context,
-    enabled: !canAfford && !enableClaim,
-  })
+  const { routes: crossChainRoutes, isLoading: isCrossChaingRoutesLoading } =
+    useCrossChainRoutes({
+      lock,
+      purchaseData,
+      context: state.context,
+      enabled: !canAfford && !enableClaim,
+    })
 
   const isLoadingMoreRoutes =
     isUniswapRoutesLoading || isCrossChaingRoutesLoading
@@ -404,8 +401,7 @@ export function Payment({ checkoutService }: Props) {
               })}
 
             {/* Crosschain purchase */}
-            {!isCrossChaingRoutesLoading &&
-              !enableClaim &&
+            {!enableClaim &&
               paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
                 return (
@@ -425,22 +421,28 @@ export function Payment({ checkoutService }: Props) {
                   >
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold">
-                        Pay with {route.symbol} on {route.networkName}
+                        Pay with {route.tokenPayment.symbol} on{' '}
+                        {route.networkName}
                       </h3>
                       <AmountBadge
                         amount={formatNumber(
-                          Number(ethers.formatEther(route.tx.value))
+                          Number(
+                            ethers.formatUnits(
+                              toBigInt(route.tokenPayment.amount),
+                              route.tokenPayment.decimals
+                            )
+                          )
                         )}
-                        symbol={route.symbol}
+                        symbol={route.tokenPayment.symbol}
                       />
                     </div>
                     <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center w-full text-sm text-left text-gray-500">
-                        Pay{' '}
-                        {formatNumber(
-                          Number(ethers.formatEther(route.tx.value))
-                        )}{' '}
-                        {route.currency} on {route.networkName} through{' '}
+                      <div className="w-full text-sm text-left text-gray-500">
+                        Your balance of{' '}
+                        {route.tokenPayment.symbol.toUpperCase()} on{' '}
+                        {route.networkName}:{' ~'}
+                        {formatNumber(Number(route.userTokenBalance))}. Payment
+                        through
                         <Link
                           className="underline ml-1"
                           target="_blank"

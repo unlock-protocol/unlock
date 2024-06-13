@@ -39,8 +39,9 @@ export const useUniswapRoutes = ({
   const { account } = useAuth()
   const web3Service = useWeb3Service()
   return useQuery(
-    ['uniswapRoutes', account, lock, recipients, purchaseData],
+    ['uniswapRoutes', account, lock.address, recipients, purchaseData],
     async () => {
+      return []
       const networkConfig = networks[lock.network]
       if (!networkConfig || !networkConfig.swapPurchaser) {
         return []

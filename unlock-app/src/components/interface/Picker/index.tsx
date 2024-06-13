@@ -49,7 +49,7 @@ export function Picker({
   const currentNetwork = state.network || connectedNetwork || 1
 
   const { data: locks, isLoading: isLoadingLocks } = useQuery(
-    ['locks', userAddress, currentNetwork],
+    ['locks', userAddress.toString(), currentNetwork.toString()],
     async () => {
       const locks = await subgraph.locks(
         {
@@ -59,7 +59,7 @@ export function Picker({
           },
         },
         {
-          networks: [currentNetwork],
+          networks: [currentNetwork.toString()],
         }
       )
       return locks
