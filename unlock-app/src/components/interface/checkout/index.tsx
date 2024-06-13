@@ -13,6 +13,7 @@ import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
+import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -100,7 +101,7 @@ export function CheckoutPage() {
         <div className="flex items-center justify-end mx-4 mt-4">
           <CloseButton
             onClick={() => {
-              if (!communication.insideIframe) {
+              if (!isInIframe()) {
                 window.history.back()
               } else {
                 communication.emitCloseModal()
