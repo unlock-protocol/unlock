@@ -21,6 +21,7 @@ export const ConnectingWaas = ({
   const { signIn: siweSignIn, isSignedIn } = useSIWE()
 
   const { connected } = useAuth()
+  const { openConnectModal } = useConnectModal()
 
   const router = useRouter()
   const restoredState = JSON.parse(

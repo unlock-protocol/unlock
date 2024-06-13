@@ -1,13 +1,11 @@
 import {
   LocksmithService,
   LocksmithServiceConfiguration,
-  Web3Service,
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
 import { storage } from '~/config/storage'
 import { UserAccountType } from '~/utils/userAccountType'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of

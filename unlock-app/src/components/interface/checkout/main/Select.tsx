@@ -405,7 +405,7 @@ export function Select({ checkoutService }: Props) {
           isRenew={!!membership?.expired}
         />
         <main className="h-full mt-4 space-y-5">
-          <ConnectingWaas shouldReloadOnTimeout={true} />
+          <ConnectingWaas openConnectModalWindow={true} />
         </main>
         <footer className="grid items-center px-6 pt-6 border-t">
           <div className="grid">

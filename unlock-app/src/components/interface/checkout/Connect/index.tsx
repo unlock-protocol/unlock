@@ -111,7 +111,7 @@ export function Connect({ oauthConfig, communication }: Props) {
         </div>
       </div>
       {isLoadingWaas ? (
-        <ConnectingWaas shouldReloadOnTimeout={true} />
+        <ConnectingWaas openConnectModalWindow={false} />
       ) : (
         <>
           {!account && <ConnectPage style="h-full mt-4 space-y-5" />}
