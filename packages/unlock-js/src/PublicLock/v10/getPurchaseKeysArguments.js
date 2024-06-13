@@ -61,7 +61,7 @@ export default async function getPurchaseKeysArguments({
 
   if (!totalAmountToApprove) {
     // convert array values to BigInt
-    recurringPayments = recurringPayments.map(BigInt)
+    recurringPayments = recurringPayments ?? recurringPayments.map(BigInt)
     // total amount to approve
     totalAmountToApprove = recurringPayments
       ? keyPrices // for reccuring payments
