@@ -120,8 +120,9 @@ export const formattedKeyPrice = (
   baseCurrencySymbol: string,
   numberOfRecipients = 1
 ) => {
-  const { keyPrice } = lock ?? {}
-  if (lock.keyPrice === '0') {
+  const keyPrice = lock.keyPrice
+
+  if (parseFloat(keyPrice as string) == 0) {
     return 'FREE'
   }
   const price = keyPrice ? parseFloat(keyPrice) * numberOfRecipients : null
