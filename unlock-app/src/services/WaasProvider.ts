@@ -44,7 +44,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
         collectAndReportMetrics: true,
         enableHostedBackups: true,
         prod: false,
-        projectId: '36f395a8-9186-4a6a-9b3e-9d709fa64c86',
+        projectId: config.coinbaseProjectId,
       })
 
       const user = await waas.auth.login({
@@ -79,7 +79,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
     return false
   }
 
-  getWaasUuid = async () => {
+  getWaasUuid = async (): Promise<string> => {
     const storageService = new StorageService(config.services.storage.host)
     const waasToken = await storageService.getUserWaasUuid(
       this.emailAddress,
@@ -87,7 +87,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
       this.token
     )
 
-    return waasToken
+    return waasToken as string
   }
 
   async eth_accounts() {
