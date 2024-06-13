@@ -9,7 +9,7 @@ import EjectionRequest from '~/structured_data/ejectionRequest'
 import { WaasEthersSigner } from '~/utils/waas-sdk-ethers'
 
 interface WaasProviderOptions {
-  provider: ethers.utils.ConnectionInfo | string
+  provider: ethers.FetchRequest | string
   email: string
   selectedLoginProvider: string
   token: string
