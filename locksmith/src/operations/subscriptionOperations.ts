@@ -130,9 +130,9 @@ export const getSubscriptionsForLockByOwner = async ({
     })
   }
 
+  // https://links.ethers.org/v5-errors-NUMERIC_FAULT-division-by-zero
   const possibleRenewals =
-    // https://links.ethers.org/v5-errors-NUMERIC_FAULT-division-by-zero
-    BigInt(price) > 0 ? BigInt(userBalance) / price : BigInt(0)
+    BigInt(price) > BigInt(0) ? BigInt(userBalance) / BigInt(price) : BigInt(0)
 
   // Add the default crypto subscription details.
   const cryptoSubscription: Subscription = {

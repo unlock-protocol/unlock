@@ -9,6 +9,8 @@ export const UNLIMITED_KEYS_COUNT = -1
 
 export const ZERO = ethers.ZeroAddress
 
+export const DEFAULT_TOKEN_DECIMALS = 18
+
 export default {
   MAX_UINT,
   UNLIMITED_KEYS_COUNT,

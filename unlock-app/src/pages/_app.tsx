@@ -13,7 +13,7 @@ import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
-
+import '~/utils/bigint'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
