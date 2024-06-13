@@ -6,7 +6,7 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
 } from './erc20'
-import { ETHERS_MAX_UINT, ZERO } from './constants'
+import { ETHERS_MAX_UINT, ZERO, DEFAULT_TOKEN_DECIMALS } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
@@ -437,7 +437,7 @@ export default class Web3Service extends UnlockService {
       return decimals
     } else {
       // default for native tokens
-      return 18
+      return DEFAULT_TOKEN_DECIMALS
     }
   }
 
