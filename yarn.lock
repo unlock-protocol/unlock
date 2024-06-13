@@ -17812,20 +17812,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typechain/ethers-v6@npm:0.5.0":
-  version: 0.5.0
-  resolution: "@typechain/ethers-v6@npm:0.5.0"
-  dependencies:
-    lodash: "npm:^4.17.15"
-    ts-essentials: "npm:^7.0.1"
-  peerDependencies:
-    ethers: 6.x
-    typechain: ^8.3.1
-    typescript: ">=4.7.0"
-  checksum: 10/f804531f02dc335ec0c22576cfdd9c389aeb3b0f66752aae858c74fd23f45188c9adf663d29faa7bb23a9609a6e3f42378a6c5555d0012325802d0ff062c9081
-  languageName: node
-  linkType: hard
-
 "@typechain/ethers-v6@npm:0.5.1":
   version: 0.5.1
   resolution: "@typechain/ethers-v6@npm:0.5.1"
@@ -20131,7 +20117,7 @@ __metadata:
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.0"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
     "@nomicfoundation/ignition-core": "npm:0.15.1"
-    "@typechain/ethers-v6": "npm:0.5.0"
+    "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.6"
     "@types/node": "npm:20.14.1"
