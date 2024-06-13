@@ -1,6 +1,5 @@
 import { Placeholder } from '@unlock-protocol/ui'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -24,17 +23,6 @@ export const ConnectingWaas = ({
 
   const { connected, deAuthenticate } = useAuth()
   const { openConnectModal } = useConnectModal()
-
-  const router = useRouter()
-  const restoredState = JSON.parse(
-    decodeURIComponent((router.query.state as string) || '{}')
-  )
-
-  const redirect = () => {
-    if (restoredState.redirectUrl) {
-      router.push(restoredState.redirectUrl)
-    }
-  }
 
   const onSignOut = async () => {
     await siweSignOut()
@@ -87,8 +75,6 @@ export const ConnectingWaas = ({
     const connect = async () => {
       try {
         await siweSignIn()
-
-        redirect()
       } catch (err) {
         console.error(err)
         ToastHelper.error('Error signing with provider')
