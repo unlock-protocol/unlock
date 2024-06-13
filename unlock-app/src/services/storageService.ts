@@ -293,8 +293,6 @@ export class StorageService extends EventEmitter {
         { token }
       )
 
-      console.log(response)
-
       const waasToken = await response.data.token
 
       return waasToken
