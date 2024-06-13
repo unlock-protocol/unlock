@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import utils from './utils'
 import erc20abi from './erc20abi'
+import { DEFAULT_TOKEN_DECIMALS } from './constants'
 
 // The SAI contract does not have the symbol method implemented correctly
 const SAI_ADDRESS = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'.toLowerCase()
@@ -42,7 +43,7 @@ export async function getErc20Decimals(
   } catch (e) {
     console.error(e)
     /** Some ERC20 contracts do not have the right decimals method. Defaults to 18 */
-    return 18
+    return DEFAULT_TOKEN_DECIMALS
   }
   return utils.toNumber(decimals)
 }
