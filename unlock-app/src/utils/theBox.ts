@@ -74,18 +74,12 @@ export const getCrossChainRoutes = async ({
 
       cost: {
         isNative: true,
-        amount: prices
-          .reduce(
-            (acc, current) =>
-              acc.add(
-                ethers.utils.parseUnits(
-                  current.amount.toString(),
-                  current.decimals
-                )
-              ),
-            ethers.BigNumber.from('0')
-          )
-          .toBigInt(),
+        amount: prices.reduce(
+          (acc, current) =>
+            acc +
+            ethers.parseUnits(current.amount.toString(), current.decimals),
+          BigInt('0')
+        ),
       },
 
       signature: encodeURIComponent(
@@ -94,11 +88,11 @@ export const getCrossChainRoutes = async ({
 
       args: [
         prices.map((price) => {
-          const priceInBigNumber = ethers.utils.parseUnits(
+          const priceParsed = ethers.parseUnits(
             price.amount.toString(),
             price.decimals
           )
-          return priceInBigNumber.toBigInt()
+          return priceParsed
         }),
         recipients,
         referrers,
@@ -149,7 +143,7 @@ export const getCrossChainRoutes = async ({
               ...data,
               tx: {
                 ...data.tx,
-                value: ethers.BigNumber.from(data.tx.value.slice(0, -1)),
+                value: BigInt(data.tx.value.slice(0, -1)),
               },
               network: network.id,
               currency: network.nativeCurrency.name,

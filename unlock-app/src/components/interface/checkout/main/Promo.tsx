@@ -32,11 +32,11 @@ export const computePromoData = async (promo: string, recipients: string[]) => {
   const privateKeyAccount = await getEthersWalletFromPassword(promo)
   return Promise.all(
     recipients.map((address) => {
-      const messageHash = ethers.utils.solidityKeccak256(
+      const messageHash = ethers.solidityPackedKeccak256(
         ['string'],
         [address.toLowerCase()]
       )
-      const messageHashBinary = ethers.utils.arrayify(messageHash)
+      const messageHashBinary = ethers.getBytes(messageHash)
       return privateKeyAccount.signMessage(messageHashBinary)
     })
   )
@@ -85,6 +85,7 @@ export function PromoContent({
             signerAddress: privateKeyFromAccount.address,
           }
         )
+        promoCodeDetails.discount = Number(promoCodeDetails.discount)
         setPromoCodeDetails(promoCodeDetails)
         setPromoCodeLoading(false)
       }

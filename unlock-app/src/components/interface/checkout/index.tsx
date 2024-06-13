@@ -13,6 +13,7 @@ import { useCheckoutConfig } from '~/hooks/useCheckoutConfig'
 import { ethers } from 'ethers'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Connect } from './Connect'
+import { isInIframe } from '~/utils/iframe'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -36,11 +37,7 @@ export function CheckoutPage() {
     paywallConfigFromQuery
 
   // If the referrer address is valid, override the paywall config referrer with it.
-  if (
-    referrerAddress &&
-    paywallConfig &&
-    ethers.utils.isAddress(referrerAddress)
-  ) {
+  if (referrerAddress && paywallConfig && ethers.isAddress(referrerAddress)) {
     paywallConfig.referrer = referrerAddress
   }
 
@@ -104,7 +101,7 @@ export function CheckoutPage() {
         <div className="flex items-center justify-end mx-4 mt-4">
           <CloseButton
             onClick={() => {
-              if (!communication.insideIframe) {
+              if (!isInIframe()) {
                 window.history.back()
               } else {
                 communication.emitCloseModal()

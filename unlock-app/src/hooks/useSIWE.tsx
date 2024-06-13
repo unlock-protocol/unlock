@@ -11,6 +11,7 @@ import {
 } from '~/utils/session'
 import { config } from '~/config/app'
 import ProviderContext from '~/contexts/ProviderContext'
+import { isInIframe } from '~/utils/iframe'
 
 export type Status = 'loading' | 'error' | 'success' | 'rejected' | 'idle'
 
@@ -102,10 +103,9 @@ export const SIWEProvider = ({ children }: Props) => {
     try {
       const walletService = await getWalletService()
       const address = await walletService.signer.getAddress()
-      const insideIframe = window !== window.parent
 
       const parent = new URL(
-        insideIframe ? config.unlockApp : window.location.href
+        isInIframe() ? config.unlockApp : window.location.href
       )
 
       // We can't have an empty resources array... because the siwe library does not parse that correctly

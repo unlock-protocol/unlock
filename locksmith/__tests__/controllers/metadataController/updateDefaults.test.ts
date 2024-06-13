@@ -71,7 +71,7 @@ describe('updateDefaults', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(
+      const sig = await wallet.signTypedData(
         domain,
         types,
         message['LockMetaData']
@@ -96,7 +96,7 @@ describe('updateDefaults', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(
+      const sig = await wallet.signTypedData(
         domain,
         types,
         message['LockMetaData']
@@ -116,7 +116,7 @@ describe('updateDefaults', () => {
         expect.assertions(1)
 
         const { domain, types, message } = typedData
-        const sig = await wallet2._signTypedData(
+        const sig = await wallet2.signTypedData(
           domain,
           types,
           message['LockMetaData']

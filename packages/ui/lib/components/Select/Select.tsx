@@ -19,6 +19,10 @@ export interface Option {
   disabled?: boolean
 }
 
+export interface MoreOptions {
+  showMoreAfter: number
+}
+
 export interface SelectProps<T> {
   label?: string
   description?: ReactNode
@@ -30,6 +34,7 @@ export interface SelectProps<T> {
   customOption?: boolean // show custom option that will show a custom input
   disabled?: boolean
   loading?: boolean
+  moreOptions?: Option[]
 }
 
 const SIZE_STYLES: SizeStyleProp = {
@@ -102,14 +107,23 @@ export const Select = <T extends unknown>({
   customOption = false,
   disabled: fieldDisabled = false,
   loading = false,
+  moreOptions = [],
 }: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
   const [custom, setCustom] = useState<boolean>(false) // value that enables/disable custom field
   const [customValue, setCustomValue] = useState('')
   const [enableCustomConfirm, setEnableCustomConfirm] = useState(false)
 
+  const [isOtherSelected, setIsOtherSelected] = useState(false)
+
+  const visibleOptions = !isOtherSelected
+    ? options
+    : [...options, ...moreOptions]
+
   const onChangeOption = (value: Option['value']) => {
-    if (CUSTOM_VALUE !== value) {
+    if (value === 'other') {
+      setIsOtherSelected(true)
+    } else if (CUSTOM_VALUE !== value) {
       const currentItem = options?.find((option) => option.value == value)
       setSelected(currentItem || null)
       if (currentItem && typeof onChange === 'function') {
@@ -224,7 +238,7 @@ export const Select = <T extends unknown>({
                 </div>
               </Listbox.Button>
               <Listbox.Options className="absolute z-10 mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
-                {options?.map((option: Option) => {
+                {visibleOptions?.map((option: Option) => {
                   const hasAnyAppend = options?.some((option) => option.append)
                   const hasAnyPrepend = options?.some(
                     (option) => option.prepend
@@ -263,6 +277,17 @@ export const Select = <T extends unknown>({
                       disabled={fieldDisabled}
                     />
                   </Listbox.Option>
+                )}
+                {!isOtherSelected && moreOptions.length > 0 && (
+                  <button
+                    className="w-full italic"
+                    type="button"
+                    onClick={() => setIsOtherSelected(true)}
+                  >
+                    <SelectOption
+                      option={{ label: 'Show more...', value: CUSTOM_VALUE }}
+                    />
+                  </button>
                 )}
               </Listbox.Options>
             </>

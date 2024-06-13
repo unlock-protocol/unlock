@@ -38,7 +38,7 @@ export const createAddRenewalJobs = (start: number, end: number) => {
             }
           )
         }
-        if (key.lock.tokenAddress !== ethers.constants.AddressZero) {
+        if (key.lock.tokenAddress !== ethers.ZeroAddress) {
           await helper.addJob(
             'cryptoRenewalJob',
             {

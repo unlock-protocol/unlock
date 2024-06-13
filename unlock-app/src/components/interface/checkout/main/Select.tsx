@@ -212,6 +212,7 @@ export function Select({ checkoutService }: Props) {
             return {
               ...props,
               ...lockData,
+              keyPrice: Number(lockData.keyPrice),
               name: props.name || lockData.name,
               network: networkId,
               address: lock,

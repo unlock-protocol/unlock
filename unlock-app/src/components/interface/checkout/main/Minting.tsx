@@ -27,6 +27,7 @@ interface MintingScreenProps {
   lockAddress: string
   network: number
   states?: Record<string, { text: string }>
+  pessimistic?: boolean
 }
 
 const DEFAULT_STATES = {
@@ -48,6 +49,7 @@ export const MintingScreen = ({
   lockAddress,
   network,
   states = DEFAULT_STATES,
+  pessimistic = false,
 }: MintingScreenProps) => {
   const config = useConfig()
   const transactionNetwork = mint.network || network
@@ -60,9 +62,13 @@ export const MintingScreen = ({
     }
   )
   const hasTokenId = !!tokenId
+
+  const status =
+    mint?.status === 'PROCESSING' && !pessimistic ? 'FINISHED' : mint?.status
+
   return (
     <div className="flex flex-col items-center justify-evenly h-full space-y-2">
-      <TransactionAnimation status={mint?.status} />
+      <TransactionAnimation status={status} />
       {mint?.transactionHash && (
         <a
           href={config.networks[transactionNetwork].explorer.urls.transaction(
@@ -110,18 +116,20 @@ export const MintingScreen = ({
 interface MintingProps {
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Minting({ onClose, checkoutService }: MintingProps) {
-  const communication = useCheckoutCommunication()
+export function Minting({
+  onClose,
+  checkoutService,
+  communication,
+}: MintingProps) {
   const { account } = useAuth()
-  const { mint, lock, messageToSign, metadata, recipients } = useSelector(
-    checkoutService,
-    (state) => state.context
-  )
+  const { mint, lock, messageToSign, metadata, recipients, paywallConfig } =
+    useSelector(checkoutService, (state) => state.context)
 
   const config = useConfig()
-  const processing = mint?.status === 'PROCESSING'
+  const processing = mint?.status === 'PROCESSING' && paywallConfig.pessimistic
   const [doneWaiting, setDoneWaiting] = useState(false)
 
   useEffect(() => {
@@ -133,7 +141,7 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
     if (!network) {
       return
     }
-    const provider = new ethers.providers.JsonRpcBatchProvider(network.provider)
+    const provider = new ethers.JsonRpcProvider(network.provider)
 
     const waitForTokenIds = async (): Promise<string[]> => {
       const tokenIds = await Promise.all(
@@ -150,13 +158,15 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
         }, 1000)
       )
     }
+
     const waitForConfirmation = async () => {
       try {
         const transaction = await provider.waitForTransaction(
           mint!.transactionHash!,
           1
         )
-        if (transaction.status !== 1) {
+
+        if (!transaction || transaction.status !== 1) {
           throw new Error('Transaction failed.')
         }
         const tokenIds = await waitForTokenIds()
@@ -193,9 +203,12 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
       }
       setDoneWaiting(true)
     }
-    setTimeout(() => {
-      waitForConfirmation()
-    }, 1000)
+
+    if (mint.status === 'PROCESSING') {
+      setTimeout(() => {
+        waitForConfirmation()
+      }, 1000)
+    }
   }, [mint?.status])
 
   return (
@@ -208,6 +221,7 @@ export function Minting({ onClose, checkoutService }: MintingProps) {
           lockAddress={lock!.address}
           lockName={lock!.name}
           network={lock!.network}
+          pessimistic={!!paywallConfig.pessimistic}
         />
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
