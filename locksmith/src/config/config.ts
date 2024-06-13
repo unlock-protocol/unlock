@@ -86,6 +86,9 @@ const config = {
   */
   gitcoinApiKey: process.env.GITCOIN_API_KEY,
   gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
+  /* The Huddle API key is necessary to create token-gated rooms that are tied to events. To utilise this functionality, an API key has to be obtained and set it in the HUDDLE_API_KEY env variable. To obtain one, refer to the Huddle01 API documentation: https://docs.huddle01.com/docs/api-keys
+   */
+  huddleApiKey: process.env.HUDDLE_API_KEY,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
