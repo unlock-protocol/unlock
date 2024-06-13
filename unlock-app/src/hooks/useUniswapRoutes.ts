@@ -29,6 +29,7 @@ interface UniswapRoutesOption {
   paywallConfig: PaywallConfigType
 }
 
+// Not used anymore. Remove me + dependencies
 export const useUniswapRoutes = ({
   lock,
   recipients,
@@ -41,7 +42,6 @@ export const useUniswapRoutes = ({
   return useQuery(
     ['uniswapRoutes', account, lock.address, recipients, purchaseData],
     async () => {
-      return []
       const networkConfig = networks[lock.network]
       if (!networkConfig || !networkConfig.swapPurchaser) {
         return []
