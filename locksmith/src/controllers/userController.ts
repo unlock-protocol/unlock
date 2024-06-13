@@ -165,7 +165,7 @@ export const retrieveWaasUuid = async (
       error.message
     )
     return res
-      .send(400)
+      .status(400)
       .json({ message: 'Error issuing Coinbase WAAS token for user' })
   }
 }
