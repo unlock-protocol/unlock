@@ -20149,7 +20149,7 @@ __metadata:
     tslint: "npm:6.1.3"
     tslint-config-prettier: "npm:1.18.0"
     tslint-plugin-prettier: "npm:2.3.0"
-    typechain: "npm:8.3.0"
+    typechain: "npm:8.3.2"
     typescript: "npm:5.4.5"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
@@ -51854,9 +51854,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typechain@npm:8.3.0":
-  version: 8.3.0
-  resolution: "typechain@npm:8.3.0"
+"typechain@npm:8.3.2":
+  version: 8.3.2
+  resolution: "typechain@npm:8.3.2"
   dependencies:
     "@types/prettier": "npm:^2.1.1"
     debug: "npm:^4.3.1"
@@ -51872,7 +51872,7 @@ __metadata:
     typescript: ">=4.3.0"
   bin:
     typechain: dist/cli/cli.js
-  checksum: 10/9cdd2a83ef4e5df875a9b802560c7043b2fc4a45c9037d2bb4def37d461ae973b58e826cff84ed979d5a5d88f2df32a159e69c60ed3658a84002a1a6decabb1f
+  checksum: 10/d6dad2f70bb3914c56bac6758ba2a761a1592a8258aa9f84360fda410c27bfade0b2f49faa366df94ac3c2f567d40b3db17f4a32903ef52bc7f9a020545eeb7f
   languageName: node
   linkType: hard
 
