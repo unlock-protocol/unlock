@@ -44,7 +44,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
         collectAndReportMetrics: true,
         enableHostedBackups: true,
         prod: false,
-        projectId: '36f395a8-9186-4a6a-9b3e-9d709fa64c86',
+        projectId: config.coinbaseProjectId,
       })
 
       const user = await waas.auth.login({
