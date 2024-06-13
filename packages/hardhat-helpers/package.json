@@ -22,7 +22,7 @@
     "@uniswap/permit2-sdk": "1.2.1",
     "@uniswap/sdk-core": "5.0.0",
     "@uniswap/smart-order-router": "3.28.8",
-    "@uniswap/v3-sdk": "3.11.1",
+    "@uniswap/v3-sdk": "3.13.0",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:^",
