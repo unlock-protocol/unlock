@@ -7,6 +7,7 @@ import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
 import EjectionRequest from '~/structured_data/ejectionRequest'
 import { WaasEthersSigner } from '~/utils/waas-sdk-ethers'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface WaasProviderOptions {
   provider: ethers.FetchRequest | string
@@ -72,7 +73,10 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
 
       return true
     } catch (error) {
-      console.log(error)
+      ToastHelper.error('Error connecting to provider')
+
+      console.error('Error connecting to provider: ', error)
+
       throw new Error('Error connecting to provider')
     }
 
