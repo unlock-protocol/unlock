@@ -14,7 +14,7 @@ import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
 import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
-
+import '~/utils/bigint'
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
