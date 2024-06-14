@@ -168,6 +168,7 @@ export const getEvent: RequestHandler = async (request, response) => {
                   network: settings.network,
                 },
               },
+              referrer: request.user?.walletAddress,
             },
           }
 
