@@ -110,7 +110,6 @@ export const isWorthRenewing = async (
     // if gas refund is set, we use a a random signer to get estimate to prevent
     // tx to reverts with msg.sender `ERC20: transfer to address zero`
     let gasEstimate
-    console.log(lock)
     if (gasRefund !== BigInt(0)) {
       const randomWallet = await Wallet.createRandom(provider)
       gasEstimate = await lock
