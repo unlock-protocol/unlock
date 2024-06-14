@@ -85,6 +85,7 @@ router.get(
 )
 
 router.get('/:emailAddress', userController.exist)
+router.get('/:emailAddress/nextAuth', userController.existNextAuth)
 
 router.get(cardsPathRegex, (req, res) =>
   userController.getAddressPaymentDetails(req as unknown as SignedRequest, res)

@@ -396,6 +396,7 @@ const UserController = {
   cards,
   eject,
   exist,
+  existNextAuth,
 }
 
 export default UserController
