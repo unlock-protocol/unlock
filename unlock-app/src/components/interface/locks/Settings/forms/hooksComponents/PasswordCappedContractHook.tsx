@@ -209,7 +209,7 @@ export const Password = ({
     <tr>
       <td className="pl-2">{password}</td>
       <td className="pl-2">
-        {count}/{cap}
+        {Number(count)}/{Number(cap)}
       </td>
       <td className="pl-2 flex flex-col items-center">
         <TrashIcon
