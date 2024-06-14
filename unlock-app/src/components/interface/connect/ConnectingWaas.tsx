@@ -1,62 +1,54 @@
 import { Placeholder } from '@unlock-protocol/ui'
-import { signOut, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { useEffect, useRef } from 'react'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { useConnectModal } from '~/hooks/useConnectModal'
 import { useSIWE } from '~/hooks/useSIWE'
 import WaasProvider from '~/services/WaasProvider'
+import { signOut as nextSignOut } from 'next-auth/react'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export type ConnectingWaasProps = {
-  shouldReloadOnTimeout?: boolean
+  openConnectModalWindow?: boolean
 }
 
 export const ConnectingWaas = ({
-  shouldReloadOnTimeout = false,
+  openConnectModalWindow = false,
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
   const { authenticateWithProvider } = useAuthenticate()
-  const { signIn: siweSignIn, isSignedIn } = useSIWE()
+  const { signIn: siweSignIn, isSignedIn, signOut: siweSignOut } = useSIWE()
 
-  const { connected } = useAuth()
+  const { connected, deAuthenticate } = useAuth()
+  const { openConnectModal } = useConnectModal()
 
-  const router = useRouter()
-  const restoredState = JSON.parse(
-    decodeURIComponent((router.query.state as string) || '{}')
-  )
-
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-  const redirect = () => {
-    if (restoredState.redirectUrl) {
-      router.push(restoredState.redirectUrl)
-    }
+  const onSignOut = async () => {
+    await siweSignOut()
+    await deAuthenticate()
+    await nextSignOut({ redirect: false })
   }
 
+  const [error, setError] = useState<boolean>(false)
+
+  // If loading takes too long, show sign out button
   useEffect(() => {
-    if (!timeoutRef.current) {
-      timeoutRef.current = setTimeout(async () => {
-        if (shouldReloadOnTimeout) {
-          await signOut()
-          timeoutRef.current = null
-          window.location.reload()
-        } else {
-          timeoutRef.current = null
-          router.push('/')
-        }
-      }, 10000)
-    }
+    const errorTimeout = setTimeout(() => {
+      setError(true)
+    }, 10000)
 
     return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
+      clearTimeout(errorTimeout)
     }
   }, [])
 
   useEffect(() => {
     if (!session || !session?.user?.selectedProvider) return
+
+    if (openConnectModalWindow) {
+      openConnectModal()
+    }
 
     const connectWaasProvider = async () => {
       try {
@@ -70,7 +62,7 @@ export const ConnectingWaas = ({
         await authenticateWithProvider('WAAS', waasProvider)
         session.user.selectedProvider = null
       } catch (err) {
-        console.error(err)
+        await onSignOut()
       }
     }
 
@@ -83,10 +75,10 @@ export const ConnectingWaas = ({
     const connect = async () => {
       try {
         await siweSignIn()
-
-        redirect()
       } catch (err) {
         console.error(err)
+        ToastHelper.error('Error signing with provider')
+        await onSignOut()
       }
     }
 
@@ -106,6 +98,16 @@ export const ConnectingWaas = ({
           <Placeholder.Line />
         </Placeholder.Root>
       </div>
+      {error && (
+        <div className="w-full flex items-center justify-end px-6 py-4">
+          <button
+            onClick={onSignOut}
+            className="hover:text-ui-main-600 underline"
+          >
+            Sign out
+          </button>
+        </div>
+      )}
     </div>
   )
 }
