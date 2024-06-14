@@ -77,6 +77,10 @@ export function ConfirmCrossChainPurchase({
   const isPricingDataAvailable =
     !isPricingDataLoading && !isPricingDataError && !!pricingData
 
+  const symbol = route.tokenPayment.isNative
+    ? route.currency
+    : route.tokenPayment.symbol
+
   const isLoading = isPricingDataLoading || isInitialDataLoading
 
   const onError = (error: any, message?: string) => {
@@ -108,7 +112,7 @@ export function ConfirmCrossChainPurchase({
           account!
         )
         if (requiredAllowance > allowance) {
-          setButtonLabel(`Approving ${route.tokenPayment.symbol}...`)
+          setButtonLabel(`Approving ${symbol}...`)
           // If it's an ERC20 we need to approve first!
           const approveTx = await approveTransfer(
             route.tokenPayment.tokenAddress,
@@ -181,7 +185,7 @@ export function ConfirmCrossChainPurchase({
                   route.tokenPayment.decimals
                 )
               )
-            )} ${route.tokenPayment.symbol}`}
+            )} ${symbol}`}
           />
         )}
       </main>

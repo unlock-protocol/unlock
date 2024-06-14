@@ -348,6 +348,9 @@ export function Payment({ checkoutService }: Props) {
             {!enableClaim &&
               paymentMethods['crosschain'] &&
               crossChainRoutes?.map((route, index) => {
+                const symbol = route.tokenPayment.isNative
+                  ? route.currency
+                  : route.tokenPayment.symbol
                 return (
                   <button
                     key={index}
@@ -365,8 +368,7 @@ export function Payment({ checkoutService }: Props) {
                   >
                     <div className="flex justify-between w-full">
                       <h3 className="font-bold">
-                        Pay with {route.tokenPayment.symbol} on{' '}
-                        {route.networkName}
+                        Pay with {symbol} on {route.networkName}
                       </h3>
                       <AmountBadge
                         amount={formatNumber(
@@ -377,13 +379,12 @@ export function Payment({ checkoutService }: Props) {
                             )
                           )
                         )}
-                        symbol={route.tokenPayment.symbol}
+                        symbol={symbol}
                       />
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <div className="w-full text-sm text-left text-gray-500">
-                        Your balance of{' '}
-                        {route.tokenPayment.symbol.toUpperCase()} on{' '}
+                        Your balance of {symbol.toUpperCase()} on{' '}
                         {route.networkName}:{' ~'}
                         {formatNumber(Number(route.userTokenBalance))}. Payment
                         through
