@@ -361,6 +361,17 @@ export const eject = async (req: Request, res: Response) => {
 
 export const exist = async (request: Request, response: Response) => {
   const { emailAddress } = request.params
+  const user = await UserOperations.findByEmail(emailAddress)
+
+  if (!user) {
+    return response.sendStatus(404)
+  }
+  return response.sendStatus(200)
+}
+
+// Method used for nextAuth
+export const existNextAuth = async (request: Request, response: Response) => {
+  const { emailAddress } = request.params
   const userAccountType =
     await UserOperations.findLoginMethodsByEmail(emailAddress)
 

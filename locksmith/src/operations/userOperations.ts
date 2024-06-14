@@ -221,6 +221,15 @@ export const eject = async (publicKey: ethereumAddress): Promise<any> => {
   )
 }
 
+export const findByEmail = async (emailAddress: string) => {
+  const user = await UserReference.findOne({
+    where: {
+      emailAddress: Normalizer.emailAddress(emailAddress),
+    },
+  })
+  return user
+}
+
 export const findUserAccountByEmail = async (emailAddress: string) => {
   const user = await UserAccount.findOne({
     where: {
@@ -275,6 +284,7 @@ const UserOperations = {
   findLoginMethodsByEmail,
   findUserAccountByEmail,
   createUserAccount,
+  findByEmail,
 }
 
 export default UserOperations
