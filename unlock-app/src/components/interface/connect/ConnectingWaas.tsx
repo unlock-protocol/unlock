@@ -88,12 +88,10 @@ export const ConnectingWaas = ({
   return (
     <div className="h-full px-6 py-2">
       <span className="w-full max-w-lg text-base text-gray-700">
-        We are connecting to the Unlock Protocol, please be patient and do not
-        refresh the page.
+        Signing in...
       </span>
       <div>
         <Placeholder.Root className="mt-4">
-          <Placeholder.Line />
           <Placeholder.Line />
           <Placeholder.Line />
         </Placeholder.Root>
