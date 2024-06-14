@@ -5,9 +5,9 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 const options = [
   {
     image: {
-      src: '/images/illustrations/events/outmetaverse.svg',
-      width: 320,
-      height: 200,
+      src: '/images/illustrations/deploy-lock/event.png',
+      width: 250,
+      height: 250,
       alt: 'organize event',
     },
     cta: 'Organize an event and sell tickets',
@@ -15,13 +15,33 @@ const options = [
   },
   {
     image: {
-      src: '/images/illustrations/certifications/img-handoffDoc.svg',
+      src: '/images/illustrations/deploy-lock/certification.png',
       width: 250,
-      height: 200,
+      height: 250,
       alt: 'create certification',
     },
-    cta: 'Certify & Show the expertise on chain.',
+    cta: 'Certify the expertise onchain',
     href: '/certification/new',
+  },
+  {
+    image: {
+      src: '/images/illustrations/deploy-lock/subscription.png',
+      width: 250,
+      height: 250,
+      alt: 'create subscription',
+    },
+    cta: 'Create an onchain subscription',
+    href: '/subscription/new',
+  },
+  {
+    image: {
+      src: '/images/illustrations/deploy-lock/custom-membership.png',
+      width: 250,
+      height: 250,
+      alt: 'create a custom membership',
+    },
+    cta: 'Deploy a custom membership',
+    href: '/locks/create',
   },
 ]
 
@@ -36,11 +56,11 @@ export const Launcher = () => {
         <br />
         manageable steps for you to follow! 😊
       </h2>
-      <ul className="flex gap-4 mt-8 mb-12 flex-col md:flex-row">
+      <ul className="flex gap-4 mt-8 mb-12 flex-col md:flex-row flex-wrap justify-center ">
         {options.map(({ cta, image, href }) => (
           <li
             key={image.alt}
-            className="relative h-96 overflow-hidden bg-[#FFF7E8] w-96 rounded-lg duration-200 hover:drop-shadow-2xl"
+            className="relative h-80 w-80 overflow-hidden bg-[#FFF7E8]  rounded-lg duration-200 hover:drop-shadow-2xl"
           >
             <Link href={href}>
               <div className="flex flex-col items-center">
@@ -60,16 +80,6 @@ export const Launcher = () => {
           </li>
         ))}
       </ul>
-      <p className="mb-12">
-        I am not sure yet,{' '}
-        <Link
-          className="underline font-semibold text-brand-ui-primary"
-          href="/locks/create"
-        >
-          let me create my own membership contract
-        </Link>
-        .
-      </p>
     </div>
   )
 }
