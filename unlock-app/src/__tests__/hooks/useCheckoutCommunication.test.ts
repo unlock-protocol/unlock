@@ -10,6 +10,12 @@ import { vi, expect, beforeEach, it, describe } from 'vitest'
 
 let emit = vi.fn()
 
+vi.mock('~/utils/iframe', async () => {
+  return {
+    isInIframe: () => true,
+  }
+})
+
 describe('useCheckoutCommunication', () => {
   beforeEach(() => {
     emit = vi.fn()
@@ -68,7 +74,7 @@ describe('useCheckoutCommunication', () => {
 
     await waitFor(() => result.current.ready)
 
-    const methodCall = { method: 'net_version', id: 42, params: [] }
+    const methodCall = { method: 'net_version', id: '42', params: [] }
     result.current.emitMethodCall(methodCall)
 
     expect(emit).toHaveBeenCalledWith(CheckoutEvents.methodCall, methodCall)

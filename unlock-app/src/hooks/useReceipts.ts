@@ -64,7 +64,7 @@ export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
       try {
         const receiptResponse = await storage.getReceipt(
           network,
-          ethers.utils.getAddress(lockAddress),
+          ethers.getAddress(lockAddress),
           hash
         )
         return receiptResponse.data
@@ -113,7 +113,7 @@ export const useUpdateReceipt = ({
       try {
         const receiptResponse = await storage.saveReceipt(
           network,
-          ethers.utils.getAddress(lockAddress),
+          ethers.getAddress(lockAddress),
           hash,
           {
             data: {

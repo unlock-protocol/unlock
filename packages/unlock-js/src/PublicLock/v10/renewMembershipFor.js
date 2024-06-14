@@ -25,12 +25,12 @@ export default async function (
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions?.gasLimit) {
     try {
-      const gasLimit = await lockContract.estimateGas.renewMembershipFor(
+      const gasLimit = await lockContract.renewMembershipFor.estimateGas(
         tokenId,
         referrer,
         transactionOptions
       )
-      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      transactionOptions.gasLimit = (gasLimit * 13) / 10
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',

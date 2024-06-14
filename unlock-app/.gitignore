@@ -34,3 +34,6 @@ scripts/index.html
 .vercel
 
 certificates
+
+# tsbuild logs
+tsconfig.tsbuildinfo

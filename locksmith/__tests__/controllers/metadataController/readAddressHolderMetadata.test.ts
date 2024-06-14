@@ -46,7 +46,7 @@ describe('reading address holder metadata', () => {
     )
 
     const { domain, types, message } = typedData
-    const sig = await wallet._signTypedData(
+    const sig = await wallet.signTypedData(
       domain,
       types,
       message['UserMetaData']
@@ -84,7 +84,7 @@ describe('reading address holder metadata', () => {
     )
 
     const { domain, types, message } = typedData
-    const sig = await wallet._signTypedData(
+    const sig = await wallet.signTypedData(
       domain,
       types,
       message['UserMetaData']
@@ -120,7 +120,7 @@ describe('reading address holder metadata', () => {
       )
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(
+      const sig = await wallet.signTypedData(
         domain,
         types,
         message['UserMetaData']
