@@ -1,12 +1,12 @@
 import { ethers } from 'ethers'
 import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
-import { StorageService } from './storageService'
 import { config } from '~/config/app'
 import UnlockUser from '~/structured_data/unlockUser'
 import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
 import EjectionRequest from '~/structured_data/ejectionRequest'
 import { WaasEthersSigner } from '~/utils/waas-sdk-ethers'
+import { getUserWaasUuid } from '~/utils/getUserWaasUuid'
 
 interface WaasProviderOptions {
   provider: ethers.FetchRequest | string
@@ -80,8 +80,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
   }
 
   getWaasUuid = async (): Promise<string> => {
-    const storageService = new StorageService(config.services.storage.host)
-    const waasToken = await storageService.getUserWaasUuid(
+    const waasToken = await getUserWaasUuid(
       this.emailAddress,
       this.selectedLoginProvider,
       this.token
