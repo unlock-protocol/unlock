@@ -1586,6 +1586,50 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/api/users/{emailAddress}/{selectedProvider}/waas:
+    post:
+      operationId: getWaasToken
+      description: Gets Coinbase WAAS token for user by email and selected provider.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: selectedProvider
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: JSON object containing sign in token
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true
