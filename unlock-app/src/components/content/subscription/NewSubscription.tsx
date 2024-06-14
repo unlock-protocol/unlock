@@ -1,107 +1,139 @@
-import { networks } from '@unlock-protocol/networks'
-import { useState } from 'react'
-import { AppLayout } from '~/components/interface/layouts/AppLayout'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-
-import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
+import { useRouter } from 'next/router'
+import { useCallback, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
-import { useSaveLockSettings } from '~/hooks/useLockSettings'
-import { getSlugForName } from '~/utils/slugs'
+import {
+  ONE_DAY_IN_SECONDS,
+  UNLIMITED_KEYS_COUNT,
+  UNLIMITED_KEYS_DURATION,
+} from '~/constants'
+import networks from '@unlock-protocol/networks'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
+import { useCheckoutConfigUpdate } from '~/hooks/useCheckoutConfig'
+import { useMutation, useQuery } from '@tanstack/react-query'
+// import { Deployed } from './Deployed'
+import { CreateLockForm } from '~/components/interface/locks/Create/elements/CreateLockForm'
+import BrowserOnly from '~/components/helpers/BrowserOnly'
+import { AppLayout } from '~/components/interface/layouts/AppLayout'
 
-export interface TransactionDetails {
-  hash: string
-  network: number
-}
+export const Deploy: React.FC = () => {
+  const { query } = useRouter()
+  const { getWalletService, account } = useAuth()
+  const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
 
-export const NewSubscription = () => {
-  const [transactionDetails, setTransactionDetails] =
-    useState<TransactionDetails>()
-  const [lockAddress, setLockAddress] = useState<string>()
-  const { getWalletService } = useAuth()
-  const [slug, setSlug] = useState<string | undefined>(undefined)
+  const { mutateAsync: updateConfig } = useCheckoutConfigUpdate()
 
-  const { mutateAsync: saveSettingsMutation } = useSaveLockSettings()
+  const onLockDeployed = useCallback(
+    async ({
+      lockAddress,
+      network,
+    }: {
+      lockAddress: string
+      network: number
+    }) => {
+      await storage.updateLockMetadata(network, lockAddress, {
+        metadata: {
+          image: query.mediaUri?.toString(),
+        },
+      })
+      await updateConfig({
+        name: `Checkout Config for P00ls Membership for ${lockAddress}`,
+        config: {
+          title: `Buy a membership NFT!`,
+          image: query.mediaUri?.toString(),
+          locks: {
+            [lockAddress]: {
+              network,
+            },
+          },
+        },
+      })
+      setLockAddress(lockAddress)
+    },
+    [updateConfig, query.mediaUri]
+  )
 
-  const onSubmit = async (formData: any) => {
-    let lockAddress
-    const walletService = await getWalletService(formData.network)
-    try {
-      formData.metadata.slug = await getSlugForName(formData.lock.name)
-      const lockParams = {
-        ...formData.lock,
-        name: formData.lock.name,
-
-        publicLockVersion: networks[formData.network].publicLockVersionToDeploy,
-        maxNumberOfKeys: formData.unlimitedQuantity
-          ? UNLIMITED_KEYS_COUNT
-          : formData?.lock?.maxNumberOfKeys,
-        expirationDuration:
-          formData?.lock?.expirationDuration * 60 * 60 * 24 ||
-          UNLIMITED_KEYS_DURATION,
-      }
-      lockAddress = await walletService.createLock(
-        lockParams,
-        {} /** transactionParams */,
-        async (createLockError, transactionHash) => {
-          if (createLockError) {
-            throw createLockError
-          }
-          if (transactionHash) {
-            setTransactionDetails({
-              hash: transactionHash,
-              network: formData.network,
-            })
+  const deployLock = useCallback(
+    async (values: {
+      network: number
+      expirationDuration: number
+      name: string
+      unlimitedDuration: boolean
+      currencyContractAddress: string
+      keyPrice: string
+    }) => {
+      const walletService = await getWalletService(values.network)
+      const expirationInSeconds = values.expirationDuration * ONE_DAY_IN_SECONDS
+      const lockAddress = await walletService.createLock(
+        {
+          name: values.name,
+          expirationDuration: values.unlimitedDuration
+            ? UNLIMITED_KEYS_DURATION
+            : expirationInSeconds,
+          maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+          currencyContractAddress: values.currencyContractAddress,
+          keyPrice: values.keyPrice?.toString(),
+          publicLockVersion: networks[values.network].publicLockVersionToDeploy,
+        },
+        {},
+        (error: any) => {
+          if (error) {
+            console.error(error)
+            ToastHelper.error(
+              'Unexpected issue on lock creation, please try again'
+            )
+          } else {
+            ToastHelper.success('Transaction sent, waiting for confirmation...')
           }
         }
-      ) // Deploy the lock! and show the "waiting" screen + mention to *not* close!
-    } catch (error) {
-      console.error(error)
-      ToastHelper.error(`The contract could not be deployed. Please try again.`)
-    }
+      )
+      // ok great, we now have a lock Address! Let's update the metadata!
+      onLockDeployed({ lockAddress, network: values.network })
+    },
+    [getWalletService, onLockDeployed]
+  )
 
-    if (lockAddress) {
-      // Save this:
-      await storage.updateLockMetadata(formData.network, lockAddress!, {
-        metadata: formDataToMetadata({
-          name: formData.lock.name,
-          ...formData.metadata,
-        }),
-      })
-
-      // Save slug for URL if present
-      setSlug(formData?.metadata?.slug)
-
-      const slug = formData?.metadata.slug
-      if (slug) {
-        await saveSettingsMutation({
-          lockAddress,
-          network: formData.network,
-          slug,
-        })
-      }
-
-      // Finally
-      setLockAddress(lockAddress)
-    }
-  }
+  const onSubmitMutation = useMutation(deployLock)
 
   return (
-    <AppLayout showLinks={false} authRequired={true}>
-      <div className="grid max-w-3xl gap-6 pb-24 mx-auto">
-        Do it!
-        {/* {transactionDetails && (
-          <SubscriptionDeploying
-            transactionDetails={transactionDetails}
-            lockAddress={lockAddress}
-            slug={slug}
-          />
-        )} */}
-        {/* {!transactionDetails && <SubscriptionForm onSubmit={onSubmit} />} */}
-      </div>
-    </AppLayout>
+    <BrowserOnly>
+      <AppLayout>
+        <div>
+          <div className="grid gap-4 md:grid-cols-2 md:gap-28">
+            <div className="flex-col hidden mx-auto md:flex md:max-w-lg">
+              <h4 className="mb-4 text-5xl font-bold">
+                Deploy your onchain subscription
+              </h4>
+              <span className="text-xl font-normal">
+                For creators who want to monetize their work onchain, with
+                recurring payments!
+              </span>
+              <img
+                className="mt-9"
+                src="/images/svg/create-lock/members.svg"
+                alt="Create lock members"
+              />
+            </div>
+            <div className="md:max-w-lg">
+              <CreateLockForm
+                onSubmit={onSubmitMutation.mutate}
+                hideFields={['network', 'currency', 'quantity']}
+                defaultValues={{
+                  currencyContractAddress: query.address?.toString(),
+                  name: 'P00ls Membership',
+                  unlimitedQuantity: true,
+                  unlimitedDuration: false,
+                  isFree: false,
+                  network: Number(query.chainId?.toString()),
+                }}
+                isLoading={onSubmitMutation.isLoading}
+              />
+            </div>
+          </div>
+        </div>
+      </AppLayout>
+    </BrowserOnly>
   )
 }
 
-export default NewSubscription
+export default Deploy

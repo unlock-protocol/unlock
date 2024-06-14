@@ -5,6 +5,16 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 const options = [
   {
     image: {
+      src: '/images/illustrations/deploy-lock/subscription.png',
+      width: 250,
+      height: 250,
+      alt: 'create subscription',
+    },
+    cta: 'Create an onchain subscription',
+    href: '/subscription/new',
+  },
+  {
+    image: {
       src: '/images/illustrations/deploy-lock/event.png',
       width: 250,
       height: 250,
@@ -22,16 +32,6 @@ const options = [
     },
     cta: 'Certify the expertise onchain',
     href: '/certification/new',
-  },
-  {
-    image: {
-      src: '/images/illustrations/deploy-lock/subscription.png',
-      width: 250,
-      height: 250,
-      alt: 'create subscription',
-    },
-    cta: 'Create an onchain subscription',
-    href: '/subscription/new',
   },
   {
     image: {
