@@ -1,6 +1,6 @@
 import { Placeholder } from '@unlock-protocol/ui'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
