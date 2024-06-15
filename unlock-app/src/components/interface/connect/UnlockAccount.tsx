@@ -71,7 +71,7 @@ const SignInUnlockAccount = ({
     }
   }
   return (
-    <div className="grid gap-2 px-6">
+    <div className="grid gap-2">
       <form className="grid gap-4 " onSubmit={handleSubmit(onSubmit)}>
         {useIcon && (
           <div className="flex flex-col items-center justify-center gap-4 p-4 rounded-xl">
@@ -100,17 +100,6 @@ const SignInUnlockAccount = ({
           <div className="flex justify-center items-center gap-2">Sign In</div>
         </Button>
       </form>
-      <div className="flex items-center justify-end py-4">
-        <button
-          onClick={(event) => {
-            event.preventDefault()
-            onReturn()
-          }}
-          className="hover:text-ui-main-600 underline"
-        >
-          Sign out
-        </button>
-      </div>
     </div>
   )
 }
@@ -220,7 +209,7 @@ const SignWithGoogle = ({
     <div className="w-full">
       <ConnectButton
         className="w-full"
-        icon={<SvgComponents.Unlock width={40} height={40} />}
+        icon={<SvgComponents.Google width={40} height={40} />}
         onClick={() => {
           signWithGoogle()
         }}

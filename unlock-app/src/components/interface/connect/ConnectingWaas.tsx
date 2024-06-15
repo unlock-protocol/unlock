@@ -9,6 +9,7 @@ import { useSIWE } from '~/hooks/useSIWE'
 import WaasProvider from '~/services/WaasProvider'
 import { signOut as nextSignOut } from 'next-auth/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import SvgComponents from '../svg'
 
 export type ConnectingWaasProps = {
   openConnectModalWindow?: boolean
@@ -29,19 +30,6 @@ export const ConnectingWaas = ({
     await deAuthenticate()
     await nextSignOut({ redirect: false })
   }
-
-  const [error, setError] = useState<boolean>(false)
-
-  // If loading takes too long, show sign out button
-  useEffect(() => {
-    const errorTimeout = setTimeout(() => {
-      setError(true)
-    }, 10000)
-
-    return () => {
-      clearTimeout(errorTimeout)
-    }
-  }, [])
 
   useEffect(() => {
     if (!session || !session?.user?.selectedProvider) return
@@ -86,26 +74,32 @@ export const ConnectingWaas = ({
   }, [connected, isSignedIn])
 
   return (
-    <div className="h-full px-6 py-2">
-      <span className="w-full max-w-lg text-base text-gray-700">
-        Signing in...
-      </span>
-      <div>
-        <Placeholder.Root className="mt-4">
-          <Placeholder.Line />
-          <Placeholder.Line />
-        </Placeholder.Root>
-      </div>
-      {error && (
+    <div className="h-full px-6 pb-6">
+      <div className="grid">
+        <div className="flex flex-col items-center justify-center gap-6 pb-6">
+          <SvgComponents.Google width={40} height={40} />
+          <div className="inline-flex items-center gap-2 text-lg font-bold">
+            {session && session.user?.email}
+          </div>
+        </div>
+        <span className="flex w-full max-w-lg text-base text-gray-700 justify-center">
+          Signing in...
+        </span>
+        <div>
+          <Placeholder.Root className="mt-4">
+            <Placeholder.Line />
+            <Placeholder.Line />
+          </Placeholder.Root>
+        </div>
         <div className="w-full flex items-center justify-end px-6 py-4">
           <button
             onClick={onSignOut}
             className="hover:text-ui-main-600 underline"
           >
-            Sign out
+            Cancel
           </button>
         </div>
-      )}
+      </div>
     </div>
   )
 }

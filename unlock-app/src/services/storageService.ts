@@ -268,7 +268,7 @@ export class StorageService extends EventEmitter {
 
   async getUserAccountType(emailAddress: string): Promise<UserAccountType[]> {
     try {
-      const endpoint = `${this.host}/users/${emailAddress}`
+      const endpoint = `${this.host}/users/${emailAddress}/nextAuth`
 
       const response = await fetch(endpoint, {
         method: 'GET',
