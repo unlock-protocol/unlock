@@ -2,9 +2,7 @@ import {
   LocksmithService,
   LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
-
 import { EventEmitter } from 'events'
-import { storage } from '~/config/storage'
 import { UserAccountType } from '~/utils/userAccountType'
 
 // The goal of the success and failure objects is to act as a registry of events

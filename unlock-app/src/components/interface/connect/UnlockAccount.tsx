@@ -25,7 +25,6 @@ export type SignUpForm = Record<
 
 export interface SignInUnlockAccountProps {
   email: string
-  onReturn(): void
   signIn: (details: UserDetails) => Promise<unknown> | unknown
   onSignIn?(): void
   useIcon?: boolean
@@ -33,7 +32,6 @@ export interface SignInUnlockAccountProps {
 
 const SignInUnlockAccount = ({
   email,
-  onReturn,
   signIn,
   onSignIn,
   useIcon = true,
@@ -131,7 +129,6 @@ const SignIn = ({
         {accountType.includes(UserAccountType.UnlockAccount) && (
           <SignInUnlockAccount
             email={email}
-            onReturn={onReturn}
             signIn={signIn}
             onSignIn={onSignIn}
             useIcon={useIcon}
