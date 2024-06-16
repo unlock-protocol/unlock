@@ -13,7 +13,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 
-const MAX_SIZE = 50
+export const MAX_SIZE = 50
 
 interface Props {
   lock: Lock
@@ -106,8 +106,8 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
           })
         )
 
-        const filteredMembers = members
-          .reduce<AirdropMember[]>((filtered, member) => {
+        const filteredMembers = members.reduce<AirdropMember[]>(
+          (filtered, member) => {
             // filter null or undefined values
             if (!member) {
               return filtered
@@ -143,8 +143,9 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
             // push the item to array if new unique member found
             filtered.push(member)
             return filtered
-          }, [])
-          .slice(0, MAX_SIZE)
+          },
+          []
+        )
 
         // Notify how many loaded and discarded.
         ToastHelper.success(

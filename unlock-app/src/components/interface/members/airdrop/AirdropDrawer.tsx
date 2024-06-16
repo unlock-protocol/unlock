@@ -1,7 +1,7 @@
 import { Drawer, Placeholder } from '@unlock-protocol/ui'
 import { Tab } from '@headlessui/react'
 import { AirdropManualForm } from './AirdropManualForm'
-import { AirdropBulkForm } from './AirdropBulkForm'
+import { AirdropBulkForm, MAX_SIZE } from './AirdropBulkForm'
 import { AirdropMember } from './AirdropElements'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
@@ -72,109 +72,118 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
   const handleConfirm = async (items: AirdropMember[]) => {
-    // Create metadata
-    const users = items.map(({ wallet: userAddress, ...rest }) => {
-      const data = omit(rest, [
-        'manager',
-        'neverExpire',
-        'count',
-        'expiration',
-        'balance',
-        'line',
-      ])
-      const metadata = Object.entries(data).reduce<Metadata>(
-        (result, [key, value]) => {
-          const [name, designation] = key.split('.')
+    const numberOfTransactions = Math.ceil(items.length / MAX_SIZE)
+    const transactions: AirdropMember[][] = []
 
-          if (designation !== 'public') {
-            // @ts-expect-error
-            result.protected[name] = value
-          } else {
-            // @ts-expect-error
-            result.public[name] = value
-          }
-
-          return result
-        },
-        {
-          protected: {},
-          public: {},
-        }
-      )
-
-      const user = {
-        userAddress,
-        lockAddress: lock.address,
-        metadata,
-        network: lock.network,
-      } as const
-
-      return user
-    })
-
-    // Save metadata for users
-    await updateUsersMetadata(users)
-
-    const initialValue: Record<
-      'recipients' | 'keyManagers' | 'expirations',
-      string[]
-    > = {
-      recipients: [],
-      keyManagers: [],
-      expirations: [],
+    for (let i = 0; i < numberOfTransactions; i++) {
+      transactions.push(items.slice(i * MAX_SIZE, i * MAX_SIZE + MAX_SIZE))
     }
 
-    // Create options to pass to grant keys from the members
-    const options = items.reduce((prop, item) => {
-      let expiration
+    for (const newItems of transactions) {
+      // Create metadata
+      const users = newItems.map(({ wallet: userAddress, ...rest }) => {
+        const data = omit(rest, [
+          'manager',
+          'neverExpire',
+          'count',
+          'expiration',
+          'balance',
+          'line',
+        ])
+        const metadata = Object.entries(data).reduce<Metadata>(
+          (result, [key, value]) => {
+            const [name, designation] = key.split('.')
 
-      if (item.expiration) {
-        expiration = Math.floor(
-          new Date(item.expiration).getTime() / 1000
-        ).toString()
-      } else if (item.neverExpire) {
-        expiration = MAX_UINT
-      } else if (lock!.expirationDuration == -1) {
-        expiration = MAX_UINT
-      } else {
-        expiration = Math.floor(
-          new Date(formatDate(lock!.expirationDuration)).getTime() / 1000
-        ).toString()
-      }
+            if (designation !== 'public') {
+              // @ts-expect-error
+              result.protected[name] = value
+            } else {
+              // @ts-expect-error
+              result.public[name] = value
+            }
 
-      for (const _ of Array.from({ length: item.count })) {
-        prop.recipients.push(item.wallet)
-        prop.expirations.push(expiration!)
-        prop.keyManagers.push(item.manager || account!)
-      }
-
-      return prop
-    }, initialValue)
-
-    const walletService = await getWalletService(lock.network)
-
-    // Grant keys
-    await walletService
-      .grantKeys(
-        {
-          ...options,
-          lockAddress: lock.address,
-        },
-        {},
-        (error) => {
-          if (error) {
-            throw error
+            return result
+          },
+          {
+            protected: {},
+            public: {},
           }
-        }
-      )
-      .catch((error: any) => {
-        console.error(error)
-        throw new Error('We were unable to airdrop these memberships.')
+        )
+
+        const user = {
+          userAddress,
+          lockAddress: lock.address,
+          metadata,
+          network: lock.network,
+        } as const
+
+        return user
       })
 
-    ToastHelper.success(
-      `Successfully granted ${options.recipients.length} keys to ${items.length} recipients`
-    )
+      // Save metadata for users
+      await updateUsersMetadata(users)
+
+      const initialValue: Record<
+        'recipients' | 'keyManagers' | 'expirations',
+        string[]
+      > = {
+        recipients: [],
+        keyManagers: [],
+        expirations: [],
+      }
+
+      // Create options to pass to grant keys from the members
+      const options = newItems.reduce((prop, item) => {
+        let expiration
+
+        if (item.expiration) {
+          expiration = Math.floor(
+            new Date(item.expiration).getTime() / 1000
+          ).toString()
+        } else if (item.neverExpire) {
+          expiration = MAX_UINT
+        } else if (lock!.expirationDuration == -1) {
+          expiration = MAX_UINT
+        } else {
+          expiration = Math.floor(
+            new Date(formatDate(lock!.expirationDuration)).getTime() / 1000
+          ).toString()
+        }
+
+        for (const _ of Array.from({ length: item.count })) {
+          prop.recipients.push(item.wallet)
+          prop.expirations.push(expiration!)
+          prop.keyManagers.push(item.manager || account!)
+        }
+
+        return prop
+      }, initialValue)
+
+      const walletService = await getWalletService(lock.network)
+
+      // Grant keys
+      await walletService
+        .grantKeys(
+          {
+            ...options,
+            lockAddress: lock.address,
+          },
+          {},
+          (error) => {
+            if (error) {
+              throw error
+            }
+          }
+        )
+        .catch((error: any) => {
+          console.error(error)
+          throw new Error('We were unable to airdrop these memberships.')
+        })
+
+      ToastHelper.success(
+        `Successfully granted ${options.recipients.length} keys to ${newItems.length} recipients`
+      )
+    }
   }
 
   return (
