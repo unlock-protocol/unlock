@@ -36,6 +36,7 @@
   "license": "ISC",
   "dependencies": {
     "@aws-sdk/client-s3": "3.590.0",
+    "@coinbase/waas-server-auth": "3.1.2",
     "@logtail/node": "0.4.21",
     "@logtail/winston": "0.4.21",
     "@nuintun/qrcode": "4.1.2",
@@ -62,6 +63,7 @@
     "express-winston": "4.2.0",
     "fuse.js": "7.0.0",
     "geoip-country": "4.2.103",
+    "google-auth-library": "9.10.0",
     "graphile-worker": "0.16.6",
     "graphql": "16.8.1",
     "graphql-tag": "2.12.6",
