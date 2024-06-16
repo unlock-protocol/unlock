@@ -94,6 +94,10 @@ const config = {
   sentry: {
     dsn: 'https://30c5b6884872435f8cbda4978c349af9@o555569.ingest.sentry.io/5685514',
   },
+  // https://docs.cdp.coinbase.com/developer-platform/docs/cdp-keys/
+  coinbaseCloudApiKeyName: process.env.COINBASE_CLOUD_API_KEY_NAME,
+  coinbaseCloudPrivateKey: process.env.COINBASE_CLOUD_PRIVATE_KEY,
+  googleAuthClientId: process.env.GOOGLE_AUTH_CLIENT_ID,
 }
 
 if (process.env.ON_HEROKU) {
