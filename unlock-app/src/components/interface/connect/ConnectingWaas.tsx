@@ -50,6 +50,8 @@ export const ConnectingWaas = ({
         await authenticateWithProvider('WAAS', waasProvider)
         session.user.selectedProvider = null
       } catch (err) {
+        console.error(err)
+        ToastHelper.error('Error retrieving your wallet, please try again.')
         await onSignOut()
       }
     }
@@ -65,7 +67,7 @@ export const ConnectingWaas = ({
         await siweSignIn()
       } catch (err) {
         console.error(err)
-        ToastHelper.error('Error signing with provider')
+        ToastHelper.error('Error signing with provider, please try again.')
         await onSignOut()
       }
     }
