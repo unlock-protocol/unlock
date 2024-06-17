@@ -1630,7 +1630,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/users/{emailAddress}/nextAuth:
+  /v2/api/users/{emailAddress}/existNextAuth:
     get:
       operationId: getUserAccountType
       description: Gets User account type by email.
