@@ -5,8 +5,7 @@ import { config } from '~/config/app'
 export const authOptions = {
   providers: [
     GoogleProvider({
-      clientId:
-        '675014568942-01fiu2rsvaoscqq6ce21d3762hrupf4c.apps.googleusercontent.com',
+      clientId: config.googleClientId as string,
       clientSecret: config.googleClientSecret as string,
     }),
   ],

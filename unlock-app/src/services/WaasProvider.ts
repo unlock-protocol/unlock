@@ -1,5 +1,6 @@
 import { ethers } from 'ethers'
 import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
+import { config } from '~/config/app'
 import UnlockUser from '~/structured_data/unlockUser'
 import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
 import UnlockPurchaseRequest from '~/structured_data/unlockPurchaseRequest'
@@ -44,7 +45,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
         collectAndReportMetrics: true,
         enableHostedBackups: true,
         prod: false,
-        projectId: '36f395a8-9186-4a6a-9b3e-9d709fa64c86',
+        projectId: config.coinbaseProjectId,
       })
 
       const user = await waas.auth.login({

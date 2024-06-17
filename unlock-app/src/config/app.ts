@@ -19,6 +19,7 @@ const dev = {
     process.env.NEXT_PUBLIC_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
   wedlocksUri: process.env.NEXT_PUBLIC_WEDLOCKS_URI || staging.wedlocksUri,
   unlockApp: process.env.NEXT_PUBLIC_UNLOCK_APP_URI || staging.unlockApp,
+  NEXTAUTH_URL: process.env.NEXTAUTH_URL || staging.unlockApp,
 }
 
 const production = {
@@ -28,6 +29,7 @@ const production = {
   wedlocksUri:
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
   unlockApp: 'https://app.unlock-protocol.com',
+  NEXTAUTH_URL: 'https://app.unlock-protocol.com',
 }
 
 function getAppConfig(environment?: string) {
