@@ -7,7 +7,7 @@ export const getUserAccountType = async (
   try {
     const response = await storage.getUserAccountType(emailAddress)
 
-    return response.data as UserAccountType[]
+    return response.data.userAccountType as UserAccountType[]
   } catch (error) {
     return []
   }
