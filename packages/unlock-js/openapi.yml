@@ -1630,6 +1630,42 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/api/users/{emailAddress}/existNextAuth:
+    get:
+      operationId: getUserAccountType
+      description: Gets User account type by email.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userAccountType:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        [
+                          'UNLOCK_ACCOUNT',
+                          'GOOGLE_ACCOUNT',
+                          'PASSKEY_ACCOUNT',
+                          'EMAIL_CODE',
+                        ]
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        404:
+          $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true

@@ -78,7 +78,7 @@ const BurnableTokens = ({ network }) => {
         .map(({ token, balance }) => {
           return `${Number(formatUnits(balance, token.decimals)).toFixed(2)} ${token.symbol}`
         })
-        .map(',')}
+        .join(', ')}
     </li>
   )
 }
