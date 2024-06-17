@@ -98,7 +98,7 @@ const config = {
   coinbaseCloudApiKeyName: process.env.COINBASE_CLOUD_API_KEY_NAME,
   // https://docs.cdp.coinbase.com/developer-platform/docs/cdp-keys/
   coinbaseCloudPrivateKey: process.env.COINBASE_CLOUD_PRIVATE_KEY,
-  // https://portal.cdp.coinbase.com/
+  // https://console.cloud.google.com/apis/dashboard
   googleAuthClientId: process.env.GOOGLE_AUTH_CLIENT_ID,
 }
 
