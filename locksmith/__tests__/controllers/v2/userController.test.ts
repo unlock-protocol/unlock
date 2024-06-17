@@ -36,7 +36,7 @@ describe('Get UUID from Coinbase WAAS', () => {
   it('returns UUID from Coinbase Waas', async () => {
     expect.assertions(2)
     const retrieveWaasUuidRes = await request(app)
-      .post(`/users/${emailAddress}/${selectedProvider}/waas`)
+      .post(`/v2/api/users/${emailAddress}/${selectedProvider}/waas`)
       .send({ token: googleAuthToken })
 
     expect(retrieveWaasUuidRes.status).toBe(200)
@@ -46,7 +46,7 @@ describe('Get UUID from Coinbase WAAS', () => {
   it('returns error if googleAuthToken is invalid', async () => {
     expect.assertions(1)
     const retrieveWaasUuidRes = await request(app)
-      .post(`/users/${emailAddress}/${selectedProvider}/waas`)
+      .post(`/v2/api/users/${emailAddress}/${selectedProvider}/waas`)
       .send({ token: 'gsa' })
 
     expect(retrieveWaasUuidRes.status).toBe(401)
@@ -55,7 +55,7 @@ describe('Get UUID from Coinbase WAAS', () => {
   it('returns error if no token is provided', async () => {
     expect.assertions(1)
     const retrieveWaasUuidRes = await request(app)
-      .post(`/users/${emailAddress}/${selectedProvider}/waas`)
+      .post(`/v2/api/users/${emailAddress}/${selectedProvider}/waas`)
       .send({ token: '' })
 
     expect(retrieveWaasUuidRes.status).toBe(401)
@@ -64,7 +64,9 @@ describe('Get UUID from Coinbase WAAS', () => {
   it('should not create and login user with UnlockAccount', async () => {
     expect.assertions(1)
     const retrieveWaasUuidRes = await request(app)
-      .post(`/users/${emailAddress}/${UserAccountType.UnlockAccount}/waas`)
+      .post(
+        `/v2/api/users/${emailAddress}/${UserAccountType.UnlockAccount}/waas`
+      )
       .send({ token: googleAuthToken })
 
     expect(retrieveWaasUuidRes.status).toBe(500)
