@@ -264,19 +264,4 @@ export class StorageService extends EventEmitter {
       return false
     }
   }
-
-  async getUserAccountType(emailAddress: string): Promise<UserAccountType[]> {
-    try {
-      const endpoint = `${this.host}/users/${emailAddress}`
-
-      const response = await fetch(endpoint, {
-        method: 'GET',
-      })
-
-      const data = await response.json()
-      return data.userAccountType
-    } catch (error) {
-      return []
-    }
-  }
 }

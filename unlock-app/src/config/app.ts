@@ -54,6 +54,7 @@ export const config = {
   ethPassApiKey: 'sk_live_h0pHRAZ2E6WTkNIrXvEzbEQN39Ftrp1p',
   walletConnectApiKey: '1535029cc7500ace23802e2e990c58d7', // https://cloud.walletconnect.com/app/project?uuid=7920be27-1e19-43a8-8f7d-cafbb00d4b80
   googleMapsApiKey: 'AIzaSyDp0Y4yQn6WtYEFEgRZg52EiDSgLwxzVMA',
+  NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   googleClientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID, // https://console.cloud.google.com/apis/dashboard
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET, // https://console.cloud.google.com/apis/dashboard
   coinbaseProjectId: process.env.NEXT_PUBLIC_COINBASE_PROJECT_ID, // https://portal.cdp.coinbase.com/

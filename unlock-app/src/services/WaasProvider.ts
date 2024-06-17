@@ -44,7 +44,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
       const waas = await InitializeWaas({
         collectAndReportMetrics: true,
         enableHostedBackups: true,
-        prod: false,
+        prod: config.env === 'prod',
         projectId: config.coinbaseProjectId,
       })
 
@@ -73,7 +73,9 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
 
       return true
     } catch (error) {
-      ToastHelper.error('Error connecting to provider')
+      ToastHelper.error(
+        'We could not connect your account to your wallet. Please refresh and try again.'
+      )
 
       console.error('Error connecting to provider: ', error)
 
