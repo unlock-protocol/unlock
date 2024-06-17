@@ -44,6 +44,9 @@
     "provider",
     "docs"
   ],
+  "resolutions": {
+    "@openzeppelin/upgrades-core": "1.33.1"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "packages": "yarn workspaces foreach --recursive --from '{@unlock-protocol/types,@unlock-protocol/core,@unlock-protocol/eslint-config,@unlock-protocol/hardhat-helpers,@unlock-protocol/express,@unlock-protocol/contracts,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/crypto-icon,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin,@unlock-protocol/email-templates}'",

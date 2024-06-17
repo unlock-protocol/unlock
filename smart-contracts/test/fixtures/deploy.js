@@ -40,7 +40,6 @@ module.exports = async () => {
   const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
   const udt = await upgrades.deployProxy(UDTv3, [await minter.getAddress()], {
     initializer: 'initialize(address)',
-    unsafeAllow: ['internal-function-storage'],
   })
 
   return {
