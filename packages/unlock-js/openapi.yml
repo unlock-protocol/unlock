@@ -1648,7 +1648,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  accountType:
+                  userAccountType:
                     type: array
                     items:
                       type: string
