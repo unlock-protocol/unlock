@@ -5,7 +5,8 @@ import { config } from '~/config/app'
 export const authOptions = {
   providers: [
     GoogleProvider({
-      clientId: config.googleClientId as string,
+      clientId:
+        '675014568942-01fiu2rsvaoscqq6ce21d3762hrupf4c.apps.googleusercontent.com',
       clientSecret: config.googleClientSecret as string,
     }),
   ],
@@ -20,16 +21,14 @@ export const authOptions = {
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.selectedProvider = user.selectedProvider
-        token.nextAuthLoginToken = user.nextAuthLoginToken
         token.idToken = user.idToken
       }
 
       return token
     },
     async session({ session, token }: { session: any; token: any }) {
-      session.selectedProvider = token.selectedProvider
-      session.nextAuthLoginToken = token.nextAuthLoginToken
-      session.token = token.idToken
+      session.user.selectedProvider = token.selectedProvider
+      session.user.token = token.idToken
 
       return session
     },
