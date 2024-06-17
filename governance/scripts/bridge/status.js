@@ -22,7 +22,7 @@ const filepath = './xcalled.tmp.json'
 
 async function main({
   // TODO: pass this hash via cli
-  txId = '0xaa9c5da11ccb270ce2760ddcd64f2be8d56702c7aeaa32ef8da1536e7e7e4e98',
+  txId = '0x16b4e4d8608e469d89daed52d38edeb04158380d156d2f5ca6b4341a15b56430',
 } = {}) {
   const xCalls = await getXCalledEventsFromTx(txId)
 
