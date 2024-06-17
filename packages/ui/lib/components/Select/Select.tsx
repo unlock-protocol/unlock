@@ -118,7 +118,15 @@ export const Select = <T extends unknown>({
 
   const visibleOptions = !isOtherSelected
     ? options
-    : [...options, ...moreOptions]
+    : options
+        .concat(moreOptions)
+        .filter(
+          (option, index, self) =>
+            index ===
+            self.findIndex(
+              (t) => t.value === option.value && t.label === option.label
+            )
+        )
 
   const onChangeOption = (value: Option['value']) => {
     if (value === 'other') {
