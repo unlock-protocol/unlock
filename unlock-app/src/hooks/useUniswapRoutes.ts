@@ -29,6 +29,7 @@ interface UniswapRoutesOption {
   paywallConfig: PaywallConfigType
 }
 
+// Not used anymore. Remove me + dependencies
 export const useUniswapRoutes = ({
   lock,
   recipients,
