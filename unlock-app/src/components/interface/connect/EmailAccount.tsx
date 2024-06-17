@@ -152,8 +152,10 @@ const SignIn = ({
               shoudOpenConnectModal={shoudOpenConnectModal}
               checkoutService={checkoutService}
             />
+            {/*}
             <div>Passkey Account</div>
             <div>Email Code Account</div>
+            */}
           </div>
         )}
         <div className="w-full flex items-center justify-end px-6 py-4">
