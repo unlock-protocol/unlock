@@ -85,6 +85,15 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         })}
         error={errors.title?.message}
       />
+
+      <Input
+        label="Referrer Address"
+        size="small"
+        description={BasicPaywallConfigSchema.shape.referrer.description}
+        error={errors.referrer?.message}
+        {...register('referrer', {})}
+      />
+
       <Input
         label="Redirect URL"
         size="small"
@@ -105,13 +114,7 @@ export const BasicConfigForm = ({ onChange, defaultValues }: Props) => {
         })}
         error={errors.endingCallToAction?.message}
       />
-      <Input
-        label="Referrer Address"
-        size="small"
-        description={BasicPaywallConfigSchema.shape.referrer.description}
-        error={errors.referrer?.message}
-        {...register('referrer', {})}
-      />
+
       <TextBox
         label="Message to Sign"
         size="small"
