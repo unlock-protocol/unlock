@@ -10,9 +10,9 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './UnlockAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useStorageService } from '~/utils/withStorageService'
 import { UserAccountType } from '~/utils/userAccountType'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
+import { getUserAccountType } from '~/utils/getUserAccountType'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -106,26 +106,24 @@ export const ConnectWallet = ({
   const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
 
   useEffect(() => {
-    const getUserAccountType = async () => {
+    const userAccountType = async () => {
       if (!userEmail) {
         setIsLoadingUserExists(false)
         return
       }
 
-      const userType = await storageService.getUserAccountType(userEmail)
+      const userType = await getUserAccountType(userEmail)
       setUserAccountType(userType)
       setIsLoadingUserExists(false)
     }
 
-    getUserAccountType()
+    userAccountType()
   }, [userEmail])
 
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
   const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
-
-  const storageService = useStorageService()
 
   const createOnConnectHandler = (provider: any) => {
     const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {

@@ -3,7 +3,6 @@ import {
   LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
 import { EventEmitter } from 'events'
-import { UserAccountType } from '~/utils/userAccountType'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -261,21 +260,6 @@ export class StorageService extends EventEmitter {
       return response.status === 200
     } catch (error) {
       return false
-    }
-  }
-
-  async getUserAccountType(emailAddress: string): Promise<UserAccountType[]> {
-    try {
-      const endpoint = `${this.host}/users/${emailAddress}/nextAuth`
-
-      const response = await fetch(endpoint, {
-        method: 'GET',
-      })
-
-      const data = await response.json()
-      return data.userAccountType
-    } catch (error) {
-      return []
     }
   }
 }
