@@ -201,9 +201,9 @@ __metadata:
   linkType: hard
 
 "@eslint-community/regexpp@npm:^4.6.1":
-  version: 4.10.0
-  resolution: "@eslint-community/regexpp@npm:4.10.0"
-  checksum: 10/8c36169c815fc5d726078e8c71a5b592957ee60d08c6470f9ce0187c8046af1a00afbda0a065cc40ff18d5d83f82aed9793c6818f7304a74a7488dc9f3ecbd42
+  version: 4.10.1
+  resolution: "@eslint-community/regexpp@npm:4.10.1"
+  checksum: 10/54f13817caf90545502d7a19e1b61df79087aee9584342ffc558b6d067530764a47f1c484f493f43e2c70cfdff59ccfd5f26df2af298c4ad528469e599bd1d53
   languageName: node
   linkType: hard
 
@@ -724,96 +724,70 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.1"
-  conditions: os=darwin & cpu=arm64
+"@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-darwin-arm64@npm:0.1.2"
+  checksum: 10/cf241ad2577741ccaaf0e5f723409c3d6e005d46f7a6eeceff17dcdbef1bc3bf603f859b23f3adb827a7e221f55fec781efd6153b52c05e3a85ba7d9fa5121c0
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-darwin-x64@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-darwin-x64@npm:0.1.1"
-  conditions: os=darwin & cpu=x64
+"@nomicfoundation/solidity-analyzer-darwin-x64@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-darwin-x64@npm:0.1.2"
+  checksum: 10/ff85471f3c0a6463896b1da1d433c174bd1b5f09976a9f678ab063baabe883c4f7fdaadc69d46050bf9c50b596b0f1f38d05e689e703386644a533350a2439f0
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-freebsd-x64@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-freebsd-x64@npm:0.1.1"
-  conditions: os=freebsd & cpu=x64
+"@nomicfoundation/solidity-analyzer-linux-arm64-gnu@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-linux-arm64-gnu@npm:0.1.2"
+  checksum: 10/e0e0a8b7b5e81f002fd4e775bcb5035564c08b9c19cc2a99011d0ae691ec22278df343d054d76b9e2eff32b552defa3c63a6f9038996269e8f5b30ea9e07cb15
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-linux-arm64-gnu@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-linux-arm64-gnu@npm:0.1.1"
-  conditions: os=linux & cpu=arm64 & libc=glibc
+"@nomicfoundation/solidity-analyzer-linux-arm64-musl@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-linux-arm64-musl@npm:0.1.2"
+  checksum: 10/1e8371db027c379fc9c3470cfdfe0913b32371317052c082b3c1338a569f1171f243d5df999bc5416799c342dda62145dcbce21c8d56eb7033bb31c470af5418
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-linux-arm64-musl@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-linux-arm64-musl@npm:0.1.1"
-  conditions: os=linux & cpu=arm64 & libc=musl
+"@nomicfoundation/solidity-analyzer-linux-x64-gnu@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-linux-x64-gnu@npm:0.1.2"
+  checksum: 10/63e9703975b784ad1ff64a44415ae4ab8fef64b776b7235d5e9bcf756cd636cf95e305b74d14072ffb541f5605151933476784f1afbb1e65b081b33860e9fcde
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-linux-x64-gnu@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-linux-x64-gnu@npm:0.1.1"
-  conditions: os=linux & cpu=x64 & libc=glibc
+"@nomicfoundation/solidity-analyzer-linux-x64-musl@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-linux-x64-musl@npm:0.1.2"
+  checksum: 10/4c51615931ba8bd2ce144489f91fc0f1872def8f283253de50e6598945305f0b2655788ca03974e696046755c7db763c9457609908384ee91e649ee1899e4457
   languageName: node
   linkType: hard
 
-"@nomicfoundation/solidity-analyzer-linux-x64-musl@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-linux-x64-musl@npm:0.1.1"
-  conditions: os=linux & cpu=x64 & libc=musl
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/solidity-analyzer-win32-arm64-msvc@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-win32-arm64-msvc@npm:0.1.1"
-  conditions: os=win32 & cpu=arm64
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/solidity-analyzer-win32-ia32-msvc@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-win32-ia32-msvc@npm:0.1.1"
-  conditions: os=win32 & cpu=ia32
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/solidity-analyzer-win32-x64-msvc@npm:0.1.1":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer-win32-x64-msvc@npm:0.1.1"
-  conditions: os=win32 & cpu=x64
+"@nomicfoundation/solidity-analyzer-win32-x64-msvc@npm:0.1.2":
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer-win32-x64-msvc@npm:0.1.2"
+  checksum: 10/1a645168510776e469245e61e0139d6509632ba608806b78545b026725e423752987cd3f30b5924893260b9bf6fa106db1e5b69bf77e7e7133d1c3bef0fd1ffa
   languageName: node
   linkType: hard
 
 "@nomicfoundation/solidity-analyzer@npm:^0.1.0":
-  version: 0.1.1
-  resolution: "@nomicfoundation/solidity-analyzer@npm:0.1.1"
+  version: 0.1.2
+  resolution: "@nomicfoundation/solidity-analyzer@npm:0.1.2"
   dependencies:
-    "@nomicfoundation/solidity-analyzer-darwin-arm64": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-darwin-x64": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-freebsd-x64": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-linux-arm64-gnu": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-linux-arm64-musl": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-linux-x64-gnu": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-linux-x64-musl": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-win32-arm64-msvc": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-win32-ia32-msvc": "npm:0.1.1"
-    "@nomicfoundation/solidity-analyzer-win32-x64-msvc": "npm:0.1.1"
+    "@nomicfoundation/solidity-analyzer-darwin-arm64": "npm:0.1.2"
+    "@nomicfoundation/solidity-analyzer-darwin-x64": "npm:0.1.2"
+    "@nomicfoundation/solidity-analyzer-linux-arm64-gnu": "npm:0.1.2"
+    "@nomicfoundation/solidity-analyzer-linux-arm64-musl": "npm:0.1.2"
+    "@nomicfoundation/solidity-analyzer-linux-x64-gnu": "npm:0.1.2"
+    "@nomicfoundation/solidity-analyzer-linux-x64-musl": "npm:0.1.2"
+    "@nomicfoundation/solidity-analyzer-win32-x64-msvc": "npm:0.1.2"
   dependenciesMeta:
     "@nomicfoundation/solidity-analyzer-darwin-arm64":
       optional: true
     "@nomicfoundation/solidity-analyzer-darwin-x64":
-      optional: true
-    "@nomicfoundation/solidity-analyzer-freebsd-x64":
       optional: true
     "@nomicfoundation/solidity-analyzer-linux-arm64-gnu":
       optional: true
@@ -823,13 +797,9 @@ __metadata:
       optional: true
     "@nomicfoundation/solidity-analyzer-linux-x64-musl":
       optional: true
-    "@nomicfoundation/solidity-analyzer-win32-arm64-msvc":
-      optional: true
-    "@nomicfoundation/solidity-analyzer-win32-ia32-msvc":
-      optional: true
     "@nomicfoundation/solidity-analyzer-win32-x64-msvc":
       optional: true
-  checksum: 10/a3b3b557f911791b26a352d4e11abf5cbac427de33fda7d70fda043f1994a7f63f542c1752e6415a82c5452625470ba4fbf040e7d87dddd1aa3366e79b3dc2c6
+  checksum: 10/e86f4c82420e44b22bdf9419c944c0e64f199c71dd539e350dc80ecaf0a9852068a0701a11885f2e460abb731568e5f19949ac403383a5466d12625799237c4e
   languageName: node
   linkType: hard
 
@@ -863,9 +833,9 @@ __metadata:
   linkType: hard
 
 "@scure/base@npm:~1.1.0":
-  version: 1.1.6
-  resolution: "@scure/base@npm:1.1.6"
-  checksum: 10/814fd1cce24f1e152751fabca2853d26aaa96ff8a9349c43d9aebc3b3d8ca88dd902966e1c289590a37f35d4c4436c6aedb1b386924b2909072045af4c3e9fe4
+  version: 1.1.7
+  resolution: "@scure/base@npm:1.1.7"
+  checksum: 10/fc50ffaab36cb46ff9fa4dc5052a06089ab6a6707f63d596bb34aaaec76173c9a564ac312a0b981b5e7a5349d60097b8878673c75d6cbfc4da7012b63a82099b
   languageName: node
   linkType: hard
 
@@ -1026,11 +996,11 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.12.12
-  resolution: "@types/node@npm:20.12.12"
+  version: 20.14.2
+  resolution: "@types/node@npm:20.14.2"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 10/e3945da0a3017bdc1f88f15bdfb823f526b2a717bd58d4640082d6eb0bd2794b5c99bfb914b9e9324ec116dce36066990353ed1c777e8a7b0641f772575793c4
+  checksum: 10/c38e47b190fa0a8bdfde24b036dddcf9401551f2fb170a90ff33625c7d6f218907e81c74e0fa6e394804a32623c24c60c50e249badc951007830f0d02c48ee0f
   languageName: node
   linkType: hard
 
@@ -1132,9 +1102,11 @@ __metadata:
   linkType: hard
 
 "acorn-walk@npm:^8.1.1":
-  version: 8.3.2
-  resolution: "acorn-walk@npm:8.3.2"
-  checksum: 10/57dbe2fd8cf744f562431775741c5c087196cd7a65ce4ccb3f3981cdfad25cd24ad2bad404997b88464ac01e789a0a61e5e355b2a84876f13deef39fb39686ca
+  version: 8.3.3
+  resolution: "acorn-walk@npm:8.3.3"
+  dependencies:
+    acorn: "npm:^8.11.0"
+  checksum: 10/59701dcb7070679622ba8e9c7f37577b4935565747ca0fd7c1c3ad30b3f1b1b008276282664e323b5495eb49f77fa12d3816fd06dc68e18f90fbebe759f71450
   languageName: node
   linkType: hard
 
@@ -1147,12 +1119,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"acorn@npm:^8.4.1, acorn@npm:^8.9.0":
-  version: 8.11.3
-  resolution: "acorn@npm:8.11.3"
+"acorn@npm:^8.11.0, acorn@npm:^8.4.1, acorn@npm:^8.9.0":
+  version: 8.12.0
+  resolution: "acorn@npm:8.12.0"
   bin:
     acorn: bin/acorn
-  checksum: 10/b688e7e3c64d9bfb17b596e1b35e4da9d50553713b3b3630cf5690f2b023a84eac90c56851e6912b483fe60e8b4ea28b254c07e92f17ef83d72d78745a8352dd
+  checksum: 10/550cc5033184eb98f7fbe2e9ddadd0f47f065734cc682f25db7a244f52314eb816801b64dec7174effd978045bd1754892731a90b1102b0ede9d17a15cfde138
   languageName: node
   linkType: hard
 
@@ -1709,7 +1681,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"debug@npm:4, debug@npm:4.3.4, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
+"debug@npm:4, debug@npm:^4.1.1, debug@npm:^4.3.1, debug@npm:^4.3.2, debug@npm:^4.3.4":
+  version: 4.3.5
+  resolution: "debug@npm:4.3.5"
+  dependencies:
+    ms: "npm:2.1.2"
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 10/cb6eab424c410e07813ca1392888589972ce9a32b8829c6508f5e1f25f3c3e70a76731610ae55b4bbe58d1a2fffa1424b30e97fa8d394e49cd2656a9643aedd2
+  languageName: node
+  linkType: hard
+
+"debug@npm:4.3.4":
   version: 4.3.4
   resolution: "debug@npm:4.3.4"
   dependencies:
@@ -2311,12 +2295,12 @@ __metadata:
   linkType: hard
 
 "foreground-child@npm:^3.1.0":
-  version: 3.1.1
-  resolution: "foreground-child@npm:3.1.1"
+  version: 3.2.1
+  resolution: "foreground-child@npm:3.2.1"
   dependencies:
     cross-spawn: "npm:^7.0.0"
     signal-exit: "npm:^4.0.1"
-  checksum: 10/087edd44857d258c4f73ad84cb8df980826569656f2550c341b27adf5335354393eec24ea2fabd43a253233fb27cee177ebe46bd0b7ea129c77e87cb1e9936fb
+  checksum: 10/77b33b3c438a499201727ca84de39a66350ccd54a8805df712773e963cefb5c4632dbc4386109e97a0df8fb1585aee95fa35acb07587e3e04cfacabfc0ae15dc
   languageName: node
   linkType: hard
 
@@ -2475,17 +2459,17 @@ __metadata:
   linkType: hard
 
 "glob@npm:^10.2.2, glob@npm:^10.3.10":
-  version: 10.3.16
-  resolution: "glob@npm:10.3.16"
+  version: 10.4.1
+  resolution: "glob@npm:10.4.1"
   dependencies:
     foreground-child: "npm:^3.1.0"
     jackspeak: "npm:^3.1.2"
-    minimatch: "npm:^9.0.1"
-    minipass: "npm:^7.0.4"
-    path-scurry: "npm:^1.11.0"
+    minimatch: "npm:^9.0.4"
+    minipass: "npm:^7.1.2"
+    path-scurry: "npm:^1.11.1"
   bin:
     glob: dist/esm/bin.mjs
-  checksum: 10/77f126deac5e4cb8408c9fd1449aeb31ce1eca363a0ca1d0796a8912440af954d201f8658348a121a18d0363dcc4b09708be27fdaf922af667ae160826352a16
+  checksum: 10/d7bb49d2b413f77bdd59fea4ca86dcc12450deee221af0ca93e09534b81b9ef68fe341345751d8ff0c5b54bad422307e0e44266ff8ad7fbbd0c200e8ec258b16
   languageName: node
   linkType: hard
 
@@ -2882,15 +2866,15 @@ __metadata:
   linkType: hard
 
 "jackspeak@npm:^3.1.2":
-  version: 3.1.2
-  resolution: "jackspeak@npm:3.1.2"
+  version: 3.4.0
+  resolution: "jackspeak@npm:3.4.0"
   dependencies:
     "@isaacs/cliui": "npm:^8.0.2"
     "@pkgjs/parseargs": "npm:^0.11.0"
   dependenciesMeta:
     "@pkgjs/parseargs":
       optional: true
-  checksum: 10/7e6b94103e5fea5e6311aacf45fe80e98583df55c39b9d8478dd0ce02f1f8f0a11fc419311c277aca959b95635ec9a6be97445a31794254946c679dd0a19f007
+  checksum: 10/5032c43c0c1fb92e72846ce496df559214253bc6870c90399cbd7858571c53169d9494b7c152df04abcb75f2fb5e9cffe65651c67d573380adf3a482b150d84b
   languageName: node
   linkType: hard
 
@@ -3170,7 +3154,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimatch@npm:^9.0.1":
+"minimatch@npm:^9.0.4":
   version: 9.0.4
   resolution: "minimatch@npm:9.0.4"
   dependencies:
@@ -3246,10 +3230,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.0.4":
-  version: 7.1.1
-  resolution: "minipass@npm:7.1.1"
-  checksum: 10/6f4f920f1b5ea585d08fa3739b9bd81726cd85a0c972fb371c0fa6c1544d468813fb1694c7bc64ad81f138fd8abf665e2af0f406de9ba5741d8e4a377ed346b1
+"minipass@npm:^5.0.0 || ^6.0.2 || ^7.0.0, minipass@npm:^7.0.2, minipass@npm:^7.0.3, minipass@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "minipass@npm:7.1.2"
+  checksum: 10/c25f0ee8196d8e6036661104bacd743785b2599a21de5c516b32b3fa2b83113ac89a2358465bc04956baab37ffb956ae43be679b2262bf7be15fce467ccd7950
   languageName: node
   linkType: hard
 
@@ -3531,7 +3515,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"path-scurry@npm:^1.11.0":
+"path-scurry@npm:^1.11.1":
   version: 1.11.1
   resolution: "path-scurry@npm:1.11.1"
   dependencies:
@@ -4434,8 +4418,8 @@ __metadata:
   linkType: hard
 
 "ws@npm:^7.4.6":
-  version: 7.5.9
-  resolution: "ws@npm:7.5.9"
+  version: 7.5.10
+  resolution: "ws@npm:7.5.10"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ^5.0.2
@@ -4444,7 +4428,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 10/171e35012934bd8788150a7f46f963e50bac43a4dc524ee714c20f258693ac4d3ba2abadb00838fdac42a47af9e958c7ae7e6f4bc56db047ba897b8a2268cf7c
+  checksum: 10/9c796b84ba80ffc2c2adcdfc9c8e9a219ba99caa435c9a8d45f9ac593bba325563b3f83edc5eb067cc6d21b9a6bf2c930adf76dd40af5f58a5ca6859e81858f0
   languageName: node
   linkType: hard
 
