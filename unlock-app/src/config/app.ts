@@ -10,6 +10,7 @@ const staging = {
   wedlocksUri:
     'https://staging-wedlocks.unlock-protocol.com/.netlify/functions/handler',
   unlockApp: 'https://staging-app.unlock-protocol.com',
+  NEXTAUTH_URL: 'https://staging-app.unlock-protocol.com',
 }
 
 const dev = {
