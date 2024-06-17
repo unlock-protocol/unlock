@@ -183,9 +183,7 @@ export const CreateLockForm = ({
                 options={mainNetworkOptions}
                 onChange={onChangeNetwork}
                 description={networkDescription(selectedNetwork!)}
-                moreOptions={additionalNetworkOptions.filter(
-                  (option) => !mainNetworkOptions.includes(option)
-                )}
+                moreOptions={additionalNetworkOptions}
               />
             )}
             <div className="relative">
