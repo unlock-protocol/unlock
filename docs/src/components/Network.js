@@ -74,9 +74,11 @@ const BurnableTokens = ({ network }) => {
   return (
     <li>
       <a href="/governance/unlock-dao-tokens#swap-and-burn">Burnable tokens</a>:{' '}
-      {balances.map(({ token, balance }) => {
-        return `${Number(formatUnits(balance, token.decimals)).toFixed(2)} ${token.symbol}`
-      })}
+      {balances
+        .map(({ token, balance }) => {
+          return `${Number(formatUnits(balance, token.decimals)).toFixed(2)} ${token.symbol}`
+        })
+        .map(',')}
     </li>
   )
 }
