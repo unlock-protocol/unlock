@@ -102,7 +102,7 @@ export const CreateLockForm = ({
       network: defaultValues.network || mainNetworkOptions[0]?.value,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
-      keyPrice: undefined,
+      keyPrice: defaultValues.keyPrice,
       currencyContractAddress: defaultValues.currencyContractAddress,
       unlimitedDuration,
       unlimitedQuantity,
@@ -233,10 +233,12 @@ export const CreateLockForm = ({
               <div className="relative">
                 {defaultOptions.expirationDuration && (
                   <Select
-                    {...register('expirationDuration', {
-                      min: 0,
-                    })}
+                    {...register('expirationDuration')}
+                    defaultValue={defaultValues.expirationDuration}
                     options={defaultOptions.expirationDuration.values}
+                    onChange={(value: number) => {
+                      setValue('expirationDuration', value)
+                    }}
                   />
                 )}
                 {!defaultOptions.expirationDuration && (

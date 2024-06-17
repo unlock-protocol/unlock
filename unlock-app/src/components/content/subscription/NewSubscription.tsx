@@ -62,6 +62,7 @@ export const Deploy: React.FC = () => {
       currencyContractAddress: string
       keyPrice: string
     }) => {
+      console.log({ values })
       const walletService = await getWalletService(values.network)
       const expirationInSeconds = values.expirationDuration * ONE_DAY_IN_SECONDS
       const lockAddress = await walletService.createLock(
@@ -95,6 +96,9 @@ export const Deploy: React.FC = () => {
 
   const onSubmitMutation = useMutation(deployLock)
 
+  const currencies =
+    networks[network!].tokens?.filter((token) => token.featured) || []
+
   return (
     <BrowserOnly>
       <AppLayout>
@@ -123,31 +127,29 @@ export const Deploy: React.FC = () => {
                     label: 'Renew every',
                     values: [
                       {
-                        label: 'Weekly',
+                        label: 'Week',
                         value: 60 * 60 * 24 * 7,
                       },
                       {
-                        label: 'Monthly',
+                        label: 'Month',
                         value: 60 * 60 * 24 * 30,
                       },
                       {
-                        label: 'Quarterly',
+                        label: 'Quarter',
                         value: 60 * 60 * 24 * 91,
                       },
                     ],
                   },
-                  currencies: networks[network!].tokens?.filter(
-                    (token) => token.featured
-                  ),
+                  currencies,
                   notFree: true,
                   notUnlimited: true,
                 }}
                 defaultValues={{
                   name: 'My subscription',
                   unlimitedQuantity: true,
-                  unlimitedDuration: false,
-                  isFree: false,
-                  network: Number(query.chainId?.toString()),
+                  keyPrice: 5.0,
+                  expirationDuration: 60 * 60 * 24 * 30,
+                  currencyContractAddress: currencies[0]?.address,
                 }}
                 isLoading={onSubmitMutation.isLoading}
               />

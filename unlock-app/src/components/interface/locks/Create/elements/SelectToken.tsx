@@ -23,12 +23,14 @@ export const SelectToken = ({
   const [token, setToken] = useState(defaultToken)
 
   const onSelect = (token: Token) => {
+    console.log(token)
     onChange(token)
     setToken(token)
   }
 
   useEffect(() => {
     const initialize = async () => {
+      console.log('reset?')
       if (defaultToken?.address) {
         const web3Service = new Web3Service(networks)
 
@@ -40,14 +42,12 @@ export const SelectToken = ({
           ...defaultToken,
           symbol,
         })
-      } else if (options) {
-        setToken(options[0])
       } else {
-        setToken(networks[network]?.nativeCurrency ?? {})
+        setToken(undefined)
       }
     }
     initialize()
-  }, [defaultToken, network])
+  }, [defaultToken, network, options])
 
   return (
     <div className={twMerge('flex flex-col gap-1.5', className)}>
@@ -64,7 +64,7 @@ export const SelectToken = ({
         onClick={() => setIsOpen(true)}
         className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none px-3"
       >
-        <CryptoIcon symbol={token?.symbol || ''} />
+        {token && <CryptoIcon symbol={token?.symbol || ''} />}
         <span>{token?.symbol}</span>
       </div>
       <div className="pl-1"></div>
