@@ -1646,16 +1646,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  enum:
-                    [
-                      'UNLOCK_ACCOUNT',
-                      'GOOGLE_ACCOUNT',
-                      'PASSKEY_ACCOUNT',
-                      'EMAIL_CODE',
-                    ]
+                type: object
+                properties:
+                  accountType:
+                    type: array
+                    items:
+                      type: string
+                      enum:
+                        [
+                          'UNLOCK_ACCOUNT',
+                          'GOOGLE_ACCOUNT',
+                          'PASSKEY_ACCOUNT',
+                          'EMAIL_CODE',
+                        ]
         400:
           $ref: '#/components/responses/400.BadRequest'
         404:
