@@ -4,7 +4,6 @@ import {
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
-import { UserAccountType } from '~/utils/userAccountType'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
