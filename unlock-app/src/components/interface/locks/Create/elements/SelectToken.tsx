@@ -11,11 +11,13 @@ export const SelectToken = ({
   onChange,
   defaultToken,
   className,
+  options,
 }: {
   network: number
   defaultToken?: Partial<Token>
   onChange: (token: Token) => void
   className?: string
+  options?: Token[]
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [token, setToken] = useState(defaultToken)
@@ -38,6 +40,8 @@ export const SelectToken = ({
           ...defaultToken,
           symbol,
         })
+      } else if (options) {
+        setToken(options[0])
       } else {
         setToken(networks[network]?.nativeCurrency ?? {})
       }
@@ -53,6 +57,7 @@ export const SelectToken = ({
         network={network}
         onSelect={onSelect}
         defaultCurrencyAddress={token?.address}
+        options={options}
       />
 
       <div

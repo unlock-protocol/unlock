@@ -10,7 +10,7 @@ import networks from '@unlock-protocol/networks'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { storage } from '~/config/storage'
 import { useCheckoutConfigUpdate } from '~/hooks/useCheckoutConfig'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 // import { Deployed } from './Deployed'
 import { CreateLockForm } from '~/components/interface/locks/Create/elements/CreateLockForm'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
@@ -18,8 +18,8 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 
 export const Deploy: React.FC = () => {
   const { query } = useRouter()
-  const { getWalletService, account } = useAuth()
-  const [lockAddress, setLockAddress] = useState<string | undefined>(undefined)
+  const { getWalletService, network } = useAuth()
+  const [_, setLockAddress] = useState<string | undefined>(undefined)
 
   const { mutateAsync: updateConfig } = useCheckoutConfigUpdate()
 
@@ -117,10 +117,33 @@ export const Deploy: React.FC = () => {
             <div className="md:max-w-lg">
               <CreateLockForm
                 onSubmit={onSubmitMutation.mutate}
-                hideFields={['network', 'currency', 'quantity']}
+                hideFields={['quantity']}
+                defaultOptions={{
+                  expirationDuration: {
+                    label: 'Renew every',
+                    values: [
+                      {
+                        label: 'Weekly',
+                        value: 60 * 60 * 24 * 7,
+                      },
+                      {
+                        label: 'Monthly',
+                        value: 60 * 60 * 24 * 30,
+                      },
+                      {
+                        label: 'Quarterly',
+                        value: 60 * 60 * 24 * 91,
+                      },
+                    ],
+                  },
+                  currencies: networks[network!].tokens?.filter(
+                    (token) => token.featured
+                  ),
+                  notFree: true,
+                  notUnlimited: true,
+                }}
                 defaultValues={{
-                  currencyContractAddress: query.address?.toString(),
-                  name: 'P00ls Membership',
+                  name: 'My subscription',
                   unlimitedQuantity: true,
                   unlimitedDuration: false,
                   isFree: false,

@@ -17,6 +17,7 @@ interface SelectCurrencyModalProps {
   network: number
   onSelect: (token: Token) => void
   defaultCurrencyAddress?: string
+  options?: Token[]
 }
 
 export const SelectCurrencyModal = ({
@@ -25,6 +26,7 @@ export const SelectCurrencyModal = ({
   network,
   onSelect,
   defaultCurrencyAddress,
+  options,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -59,24 +61,33 @@ export const SelectCurrencyModal = ({
 
   useEffect(() => {
     const initializeTokens = async () => {
-      const { tokens: tokenItems = [] } = networks[network!] || {}
-      const nativeCurrency = networks[network]?.nativeCurrency ?? {}
-      const featuredTokens = [
-        nativeCurrency,
-        ...tokenItems.filter((token: Token) => !!token.featured),
-      ]
-
+      let featuredTokens
+      if (options) {
+        featuredTokens = [...options]
+      } else {
+        const { tokens: tokenItems = [] } = networks[network!] || {}
+        const nativeCurrency = networks[network]?.nativeCurrency ?? {}
+        featuredTokens = [
+          nativeCurrency,
+          ...tokenItems.filter((token: Token) => !!token.featured),
+        ]
+      }
       if (defaultCurrencyAddress) {
-        const defaultCurrencySymbol = await web3Service.getTokenSymbol(
-          defaultCurrencyAddress,
-          network
+        const inList = featuredTokens.find(
+          (token) => token.address === defaultCurrencyAddress
         )
-        if (defaultCurrencySymbol) {
-          featuredTokens.unshift({
-            name: defaultCurrencySymbol,
-            symbol: defaultCurrencySymbol,
-            address: defaultCurrencyAddress,
-          })
+        if (!inList) {
+          const defaultCurrencySymbol = await web3Service.getTokenSymbol(
+            defaultCurrencyAddress,
+            network
+          )
+          if (defaultCurrencySymbol) {
+            featuredTokens.unshift({
+              name: defaultCurrencySymbol,
+              symbol: defaultCurrencySymbol,
+              address: defaultCurrencyAddress,
+            })
+          }
         }
       }
       setTokens(featuredTokens)
