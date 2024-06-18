@@ -80,19 +80,19 @@ export const useProvider = (config: any) => {
 
   const getNetworkProvider = async (networkId?: number) => {
     const currentNetworkId = Number(network)
-    let pr = provider
+    let existingBrowserProvider = provider
     // If the user is not connected, we open the connect modal
     if (!connected) {
       const response = await openConnectModalAsync()
       await closeConnectModal()
-      pr = response?.provider
+      existingBrowserProvider = response?.provider
     }
-    let walletServiceProvider: ethers.BrowserProvider = pr
+    let walletServiceProvider: ethers.BrowserProvider = existingBrowserProvider
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
-      if (pr.isUnlock) {
+      if (existingBrowserProvider.isUnlock) {
         walletServiceProvider = (await UnlockProvider.reconnect(
-          pr,
+          existingBrowserProvider,
           networkConfig
         )) as unknown as ethers.BrowserProvider
       } else {
@@ -164,38 +164,34 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const connectProvider = async (provider: any) => {
+  const connectProvider = async (eip1193Provider: any) => {
     setLoading(true)
-    setEip1193(provider)
+    setEip1193(eip1193Provider)
     let auth
-    if (provider instanceof ethers.AbstractProvider) {
-      auth = await resetProvider(provider)
+    if (eip1193Provider instanceof ethers.AbstractProvider) {
+      auth = await resetProvider(eip1193Provider)
     } else {
-      if (provider.enable) {
+      if (eip1193Provider.enable) {
         try {
-          await provider.enable()
+          await eip1193Provider.enable()
         } catch {
           console.error('Please check your wallet and try again to connect.')
           setLoading(false)
           return
         }
       }
-      const ethersProvider = new ethers.BrowserProvider(provider)
 
-      if (provider.on) {
-        provider.on('accountsChanged', async () => {
-          await resetProvider(new ethers.BrowserProvider(provider))
+      if (eip1193Provider.on) {
+        eip1193Provider.on('accountsChanged', async () => {
+          await resetProvider(new ethers.BrowserProvider(eip1193Provider))
         })
 
-        provider.on('chainChanged', async () => {
-          if (getStorage('provider') === 'WALLET_CONNECT') {
-            await resetProvider(new ethers.BrowserProvider(eip1193))
-          } else {
-            await resetProvider(new ethers.BrowserProvider(window.ethereum!))
-          }
+        eip1193Provider.on('chainChanged', async () => {
+          await resetProvider(new ethers.BrowserProvider(eip1193Provider))
         })
       }
-      auth = await resetProvider(ethersProvider)
+
+      auth = await resetProvider(new ethers.BrowserProvider(eip1193Provider))
     }
 
     setLoading(false)
