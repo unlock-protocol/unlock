@@ -22,10 +22,9 @@ export const SelectToken = ({
   const [isOpen, setIsOpen] = useState(false)
   const [token, setToken] = useState(defaultToken)
 
-  const onSelect = (token: Token) => {
-    console.log(token)
-    onChange(token)
-    setToken(token)
+  const onSelect = (_token: Token) => {
+    onChange(_token)
+    setToken(_token)
   }
 
   useEffect(() => {
@@ -38,16 +37,20 @@ export const SelectToken = ({
           defaultToken.address,
           network
         )
-        setToken({
-          ...defaultToken,
-          symbol,
-        })
+        if (symbol) {
+          onSelect({
+            ...defaultToken,
+            symbol,
+          } as Token)
+        } else {
+          onSelect((networks[network]?.nativeCurrency as Token) ?? {})
+        }
       } else {
-        setToken(undefined)
+        onSelect((networks[network]?.nativeCurrency as Token) ?? {})
       }
     }
     initialize()
-  }, [defaultToken, network, options])
+  }, [defaultToken?.address, network])
 
   return (
     <div className={twMerge('flex flex-col gap-1.5', className)}>
@@ -64,8 +67,12 @@ export const SelectToken = ({
         onClick={() => setIsOpen(true)}
         className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none px-3"
       >
-        {token && <CryptoIcon symbol={token?.symbol || ''} />}
-        <span>{token?.symbol}</span>
+        {token?.symbol && (
+          <>
+            <CryptoIcon symbol={token?.symbol || ''} />
+            <span>{token?.symbol}</span>
+          </>
+        )}
       </div>
       <div className="pl-1"></div>
     </div>

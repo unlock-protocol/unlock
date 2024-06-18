@@ -144,6 +144,14 @@ export const useCrossChainRoutes = ({
               if (!prices) {
                 return null
               }
+              if (
+                network === lock.network &&
+                (token.address === lock.currencyContractAddress ||
+                  (!lock.currencyContractAddress &&
+                    token.address === ZeroAddress))
+              ) {
+                return null
+              }
               const route = await getCrossChainRoute({
                 sender: account!,
                 lock,
