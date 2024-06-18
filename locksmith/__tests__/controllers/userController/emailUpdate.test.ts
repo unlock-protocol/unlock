@@ -59,7 +59,7 @@ describe("updating a user's email address", () => {
       }
       await UserOperations.createUser(userCreationDetails)
 
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put('/users/user@example.com')
@@ -80,7 +80,7 @@ describe("updating a user's email address", () => {
     it('returns 400', async () => {
       expect.assertions(1)
 
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put('/users/non-existing@example.com')
@@ -105,7 +105,7 @@ describe("updating a user's email address", () => {
       await UserOperations.createUser(userCreationDetails)
       await UserOperations.eject(userCreationDetails.publicKey)
 
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put('/users/ejected_user@example.com')

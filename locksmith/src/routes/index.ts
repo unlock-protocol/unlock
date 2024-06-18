@@ -39,6 +39,7 @@ import emailSubscriptionRouter from './v2/emailSubscriptions'
 import { createCacheMiddleware } from '../utils/middlewares/cacheMiddleware'
 import magicEdenRouter from './v2/magicEden'
 import rsvpRouter from './v2/rsvp'
+import newUserRouter from './v2/user'
 
 const router = express.Router({ mergeParams: true })
 
@@ -108,6 +109,7 @@ router.use('/v2/hooks', hooksRooter)
 router.use('/v2/email-subscriptions', emailSubscriptionRouter)
 router.use('/v2/magic-eden', magicEdenRouter)
 router.use('/v2/rsvp', rsvpRouter)
+router.use('/v2/api/users', newUserRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

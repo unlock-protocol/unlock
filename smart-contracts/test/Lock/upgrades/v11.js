@@ -1,4 +1,4 @@
-const { assert } = require('chai')
+const assert = require('assert')
 const { ethers, upgrades } = require('hardhat')
 const path = require('path')
 const {

@@ -6,7 +6,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 interface GetHookValuesProps {
   lockAddress: string
   network: number
-  version?: number
+  version?: bigint
 }
 
 export function useCustomHook({

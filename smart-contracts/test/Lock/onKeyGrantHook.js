@@ -1,5 +1,5 @@
 const { deployLock } = require('../helpers')
-const { assert } = require('chai')
+const assert = require('assert')
 const { ADDRESS_ZERO, getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const { ethers } = require('hardhat')

@@ -63,7 +63,7 @@ export const celo: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/42220',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://forno.celo.org',
   startBlock: 13994123,
   subgraph: {

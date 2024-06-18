@@ -1,6 +1,5 @@
 /**
  * This is a helper to run a single test file against specific lock/unlock version
- * The easiest way to use it is throuhg the hardhat cli
  *
  * Usage:
  *
@@ -119,7 +118,7 @@ describe(`Unlock ${unlockVersion}`, () => {
 
       // lock tests
       const testDescribe = await import(testPath)
-      describe(testName, testDescribe.default(testSetupArgs))
+      describe(testName, () => testDescribe.default(testSetupArgs))
     })
   })
 })

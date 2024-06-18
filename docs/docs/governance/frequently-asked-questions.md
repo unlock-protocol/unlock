@@ -20,7 +20,7 @@ You can [earn UDT today by using the protocol](/governance/unlock-dao-tokens), o
 
 ## What are the tokenomics of ɄDT?
 
-When Unlock Inc. created the [UDT tokens](/governance/unlock-dao-tokens), a total of 1,000,000 tokens were premined. These tokens are kept in Unlock's multisig wallet and our goal is to use 800,000 of them to foster adoption of the protocol (the company will keep at least 200,000).
+When Unlock Inc. created the [UDT tokens](/governance/unlock-dao-tokens), a total of 1,000,000 tokens were premined. These tokens are kept in Unlock's multisig wallet and our goal is to distribute UDT to the DAO to foster adoption of the protocol (the company will keep at least 20% of the supply).
 
 Additionally, the protocol itself distributes tokens using a logarithmic curve, based on the usage of the protocol.
 

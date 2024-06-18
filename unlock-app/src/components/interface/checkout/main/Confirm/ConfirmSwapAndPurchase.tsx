@@ -22,7 +22,7 @@ import Disconnect from '../Disconnect'
 
 interface Props {
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string) => void
+  onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
 }
 
@@ -144,7 +144,7 @@ export function ConfirmSwapAndPurchase({
             transactionHash: hash!,
           })
         } else if (hash) {
-          onConfirmed(lockAddress, hash)
+          onConfirmed(lockAddress, lock!.network, hash)
         }
       }
       const swap = {
@@ -152,15 +152,14 @@ export function ConfirmSwapAndPurchase({
         uniswapRouter: route.swapRouter,
         swapCallData: route.swapCalldata,
         value: route.value,
-        amountInMax: ethers.utils
-          .parseUnits(
+        amountInMax:
+          (ethers.parseUnits(
             route!.quote.toFixed(),
             route.trade.inputAmount.currency.decimals
-          )
-          // 1% slippage buffer
-          .mul(101)
-          .div(100)
-          .toString(),
+          ) *
+            // 1% slippage buffer
+            BigInt(101)) /
+          BigInt(100),
       }
 
       const walletService = await getWalletService(lockNetwork)

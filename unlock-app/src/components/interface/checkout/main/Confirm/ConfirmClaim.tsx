@@ -18,7 +18,7 @@ import Disconnect from '../Disconnect'
 
 interface Props {
   checkoutService: CheckoutService
-  onConfirmed: (lock: string, hash?: string) => void
+  onConfirmed: (lock: string, network: number, hash?: string) => void
   onError: (message: string) => void
 }
 
@@ -82,7 +82,7 @@ export function ConfirmClaim({ checkoutService, onConfirmed, onError }: Props) {
     })
 
     if (hash) {
-      onConfirmed(lockAddress, hash)
+      onConfirmed(lockAddress, lockNetwork, hash)
     } else {
       onError('No transaction hash returned. Failed to claim membership.')
     }

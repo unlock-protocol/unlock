@@ -78,7 +78,7 @@ describe('Purchase Controller', () => {
         expect.assertions(1)
 
         const { domain, types } = typedData
-        const sig = await wallet._signTypedData(
+        const sig = await wallet.signTypedData(
           domain,
           types,
           message.purchaseRequest

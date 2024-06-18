@@ -62,7 +62,7 @@ describe("updating a user's password encrypted private key", () => {
 
       await UserOperations.createUser(userCreationDetails)
 
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(
@@ -103,7 +103,7 @@ describe("updating a user's password encrypted private key", () => {
       const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)
