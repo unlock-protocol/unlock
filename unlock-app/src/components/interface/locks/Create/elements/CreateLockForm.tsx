@@ -140,7 +140,6 @@ export const CreateLockForm = ({
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
-      setValue('currencyContractAddress', undefined)
       setValue('network', parseInt(`${network}`))
     },
     [setValue]
