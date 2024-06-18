@@ -1,5 +1,5 @@
 import { Listbox } from '@headlessui/react'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect, useMemo, useState } from 'react'
 import { BsCheck as CheckIcon } from 'react-icons/bs'
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
@@ -116,15 +116,29 @@ export const Select = <T extends unknown>({
 
   const [isOtherSelected, setIsOtherSelected] = useState(false)
 
-  const visibleOptions = !isOtherSelected
-    ? options
-    : [...options, ...moreOptions]
+  const visibleOptions = useMemo(() => {
+    if (!isOtherSelected) {
+      return options
+    }
+
+    return options
+      .concat(moreOptions)
+      .filter(
+        (option, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.value === option.value && t.label === option.label
+          )
+      )
+  }, [options, moreOptions, isOtherSelected])
 
   const onChangeOption = (value: Option['value']) => {
     if (value === 'other') {
       setIsOtherSelected(true)
     } else if (CUSTOM_VALUE !== value) {
-      const currentItem = options?.find((option) => option.value == value)
+      const currentItem = visibleOptions?.find(
+        (option) => option.value == value
+      )
       setSelected(currentItem || null)
       if (currentItem && typeof onChange === 'function') {
         onChange(currentItem?.value, false)
