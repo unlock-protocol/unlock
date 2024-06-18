@@ -74,12 +74,13 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
   const handleConfirm = async (items: AirdropMember[]) => {
     const numberOfTransactions = Math.ceil(items.length / MAX_SIZE)
     const transactions: AirdropMember[][] = []
+    const promises = []
 
     for (let i = 0; i < numberOfTransactions; i++) {
       transactions.push(items.slice(i * MAX_SIZE, i * MAX_SIZE + MAX_SIZE))
     }
 
-    for (const newItems of transactions) {
+    async function sendTransaction(newItems: AirdropMember[]): Promise<void> {
       // Create metadata
       const users = newItems.map(({ wallet: userAddress, ...rest }) => {
         const data = omit(rest, [
@@ -162,7 +163,7 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
       const walletService = await getWalletService(lock.network)
 
       // Grant keys
-      await walletService
+      walletService
         .grantKeys(
           {
             ...options,
@@ -175,15 +176,28 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
             }
           }
         )
+        .then(() => {
+          ToastHelper.success(
+            `Successfully granted ${options.recipients.length} keys to ${newItems.length} recipients`
+          )
+        })
         .catch((error: any) => {
           console.error(error)
           throw new Error('We were unable to airdrop these memberships.')
         })
-
-      ToastHelper.success(
-        `Successfully granted ${options.recipients.length} keys to ${newItems.length} recipients`
-      )
     }
+
+    for (const newItems of transactions) {
+      const promise = new Promise((resolve) => {
+        resolve(sendTransaction(newItems))
+      })
+      promises.push(promise)
+    }
+
+    Promise.allSettled(promises).catch((error: any) => {
+      console.error(error)
+      ToastHelper.error('We were unable to airdrop some memberships.')
+    })
   }
 
   return (
