@@ -93,7 +93,7 @@ export const UpdateDurationForm = ({
       <div className="flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <label className="block px-1 text-base" htmlFor="">
-            Membership duration:
+            Membership duration (in days):
           </label>
           <ToggleSwitch
             title="Unlimited"

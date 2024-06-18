@@ -55,7 +55,7 @@ describe('when ejecting an address', () => {
       const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const emailAddress = 'existing@example.com'
       const userCreationDetails = {
@@ -93,7 +93,7 @@ describe('when ejecting an address', () => {
       const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .post('/users/0xef49773e0d59f607cea8c8be4ce87bd26fd8e208/eject')
@@ -121,7 +121,7 @@ describe('when ejecting an address', () => {
       const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message['user'])
+      const sig = await wallet.signTypedData(domain, types, message['user'])
 
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {

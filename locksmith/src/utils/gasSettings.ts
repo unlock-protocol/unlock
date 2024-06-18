@@ -4,10 +4,10 @@ import networks from '@unlock-protocol/networks'
 import logger from '../logger'
 
 interface GasSettings {
-  maxFeePerGas?: ethers.BigNumber
-  maxPriorityFeePerGas?: ethers.BigNumber
-  gasPrice?: ethers.BigNumber
-  lastBaseFeePerGas?: ethers.BigNumber
+  maxFeePerGas?: bigint
+  maxPriorityFeePerGas?: bigint
+  gasPrice?: bigint
+  lastBaseFeePerGas?: bigint
 }
 
 /**
@@ -23,14 +23,14 @@ export const setMaxFeePerGas = ({
   if (maxPriorityFeePerGas && lastBaseFeePerGas) {
     // If maxPriorityFeePerGas is MUCH larger than GasPrice, then we just use GasPrice
     let ourMaxPriorityFee
-    if (gasPrice && maxPriorityFeePerGas.gt(gasPrice)) {
+    if (gasPrice && maxPriorityFeePerGas > gasPrice) {
       ourMaxPriorityFee = gasPrice
     } else {
-      ourMaxPriorityFee = maxPriorityFeePerGas.mul(2)
+      ourMaxPriorityFee = maxPriorityFeePerGas * BigInt(2)
     }
 
     // And we assume the base fee _could_ double
-    const maxFeePerGas = lastBaseFeePerGas.mul(2).add(ourMaxPriorityFee)
+    const maxFeePerGas = lastBaseFeePerGas * BigInt(2) + ourMaxPriorityFee
     return {
       maxPriorityFeePerGas: ourMaxPriorityFee,
       maxFeePerGas: maxFeePerGas,
@@ -49,12 +49,12 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
       const resp = await fetch('https://gasstation.polygon.technology/v2')
       const data = await resp.json()
 
-      const maxFeePerGas = ethers.utils.parseUnits(
+      const maxFeePerGas = ethers.parseUnits(
         `${Math.ceil(data.fast.maxFee)}`,
         'gwei'
       )
 
-      const maxPriorityFeePerGas = ethers.utils.parseUnits(
+      const maxPriorityFeePerGas = ethers.parseUnits(
         `${Math.ceil(data.fast.maxPriorityFee)}`,
         'gwei'
       )
@@ -69,9 +69,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   }
 
   // get fees from network provider
-  const provider = new ethers.providers.JsonRpcBatchProvider(
-    networks[network]?.provider
-  )
+  const provider = new ethers.JsonRpcProvider(networks[network]?.provider)
 
   let feedata
   try {
@@ -86,7 +84,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   }
 
   try {
-    const gasPrice = await provider.getGasPrice()
+    const { gasPrice } = await provider.getFeeData()
     if (gasPrice) {
       return {
         gasPrice,
@@ -102,6 +100,6 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   )
 
   return {
-    gasPrice: ethers.BigNumber.from(40000000000),
+    gasPrice: BigInt(40000000000),
   }
 }

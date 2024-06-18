@@ -77,7 +77,7 @@ export const UpdateReferralFee = ({
   const referralAddress = watch('referralAddress', '')
   const referralFeePercentage = watch('referralFeePercentage', 0)
 
-  const isValidAddress = ethers.utils.isAddress(referralAddress)
+  const isValidAddress = ethers.isAddress(referralAddress)
 
   const isDisabledReferrerInput = disabled || isLoading
 

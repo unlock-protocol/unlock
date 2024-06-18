@@ -88,7 +88,7 @@ export const arbitrum: NetworkConfig = {
   },
   previousDeploys: [],
   provider: 'https://rpc.unlock-protocol.com/42161',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://arb1.arbitrum.io/rpc',
   startBlock: 17429533,
   subgraph: {

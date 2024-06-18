@@ -6,7 +6,7 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
 } from './erc20'
-import { ETHERS_MAX_UINT } from './constants'
+import { ETHERS_MAX_UINT, ZERO, DEFAULT_TOKEN_DECIMALS } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
@@ -138,31 +138,29 @@ export default class Web3Service extends UnlockService {
       address,
       this.providerForNetwork(network)
     )
-
     const lock = await version.getLock.bind(this)(
       address,
       this.providerForNetwork(network),
       options
     )
+
     // Add the lock address
     lock.address = address
     lock.network = network
 
     // Add the unlock address
-    lock.unlockContractAddress = ethers.utils.getAddress(
-      lock.unlockContractAddress
-    )
+    lock.unlockContractAddress = ethers.getAddress(lock.unlockContractAddress)
 
     // Check that the Unlock address matches an "official one"
     const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
-      (d: any) => ethers.utils.getAddress(d.unlockAddress)
+      (d: any) => ethers.getAddress(d.unlockAddress)
     )
     const isPreviousUnlockContract = previousDeployAddresses.includes(
       lock.unlockContractAddress
     )
 
     const isUnlockContract =
-      ethers.utils.getAddress(networkConfig.unlockAddress) ===
+      ethers.getAddress(networkConfig.unlockAddress) ===
       lock.unlockContractAddress
 
     // Check that the Unlock address matches one of the configured ones
@@ -276,7 +274,7 @@ export default class Web3Service extends UnlockService {
         // this portion is probably unnecessary, will need to test against the app to be sure
         return 0
       }
-      if (expiration.eq(ETHERS_MAX_UINT)) {
+      if (expiration === ETHERS_MAX_UINT) {
         return -1
       }
       return parseInt(expiration, 10)
@@ -383,7 +381,7 @@ export default class Web3Service extends UnlockService {
    * @param signedData
    * @returns {Promise<*>}
    */
-  async recoverAccountFromSignedData<T extends string | ethers.Bytes>(
+  async recoverAccountFromSignedData<T extends string | ethers.BytesLike>(
     data: T,
     signedData: ethers.Signature
   ) {
@@ -434,8 +432,13 @@ export default class Web3Service extends UnlockService {
 
   async getTokenDecimals(contractAddress: string, network: number) {
     const provider = this.providerForNetwork(network)
-    const decimals = await getErc20Decimals(contractAddress, provider)
-    return decimals
+    if (contractAddress !== ZERO) {
+      const decimals = await getErc20Decimals(contractAddress, provider)
+      return decimals
+    } else {
+      // default for native tokens
+      return DEFAULT_TOKEN_DECIMALS
+    }
   }
 
   /**
@@ -528,7 +531,7 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-    return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
+    return await lockContract.numberOfOwners()
   }
 
   /**
@@ -547,9 +550,7 @@ export default class Web3Service extends UnlockService {
       throw new Error('Lock version is not supported')
     }
 
-    return ethers.BigNumber.from(
-      await lockContract.transferFeeBasisPoints()
-    ).toNumber()
+    return await lockContract.transferFeeBasisPoints()
   }
 
   /**
@@ -574,7 +575,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
 
-    return count.toNumber()
+    return count
   }
 
   /**
@@ -618,7 +619,7 @@ export default class Web3Service extends UnlockService {
       maxNumberOfKeysPromise,
     ])
 
-    return maxNumberOfKeys.sub(totalSupply)
+    return maxNumberOfKeys - totalSupply
   }
 
   /**
@@ -665,7 +666,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const balance = await lockContract.balanceOf(owner)
-    return balance.toNumber()
+    return balance
   }
 
   // Return key ID of owner at the specified index.
@@ -681,7 +682,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const id = await lockContract.tokenOfOwnerByIndex(owner, index)
-    return id.toNumber()
+    return id
   }
 
   // Return the latest key ID of owner.
@@ -695,9 +696,9 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const totalKeys = await lockContract.totalKeys(owner)
-    if (totalKeys.gt(0)) {
-      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys.sub(1))
-      return id.toNumber()
+    if (totalKeys > 0) {
+      const id = await lockContract.tokenOfOwnerByIndex(owner, totalKeys - 1n)
+      return id
     }
     return null
   }
@@ -759,7 +760,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const freeTrialLength = await lockContract.freeTrialLength()
-    return ethers.BigNumber.from(freeTrialLength).toNumber()
+    return freeTrialLength
   }
 
   /**
@@ -778,7 +779,7 @@ export default class Web3Service extends UnlockService {
     )
     const refundPenaltyBasisPoints =
       await lockContract.refundPenaltyBasisPoints()
-    return ethers.BigNumber.from(refundPenaltyBasisPoints).toNumber()
+    return refundPenaltyBasisPoints
   }
 
   /**
@@ -940,7 +941,7 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const referrerFees = await lockContract.referrerFees(address)
-    return ethers.BigNumber.from(referrerFees).toNumber()
+    return referrerFees
   }
 
   async getBaseTokenURI({
@@ -969,7 +970,7 @@ export default class Web3Service extends UnlockService {
 
     try {
       const address = addressOrEns.trim()
-      const isNotENS = ethers.utils.isAddress(address)
+      const isNotENS = ethers.isAddress(address)
 
       if (isNotENS) {
         // address is already valid and not an ENS
@@ -1018,7 +1019,7 @@ export default class Web3Service extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: passwordHookAbi,
+      abi: new ethers.Interface(passwordHookAbi),
     })
     return contract.signers(lockAddress)
   }
@@ -1102,25 +1103,24 @@ export default class Web3Service extends UnlockService {
     const provider = this.providerForNetwork(network)
     const lockContract = await this.getLockContract(lockAddress, provider)
     const txReceipt = await provider.getTransactionReceipt(hash)
-    const parser = lockContract.interface
-    const events = txReceipt.logs.map((log) => {
+    const events = txReceipt?.logs.map((log) => {
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Filter events not emitted by the lock contract
-      return parser.parseLog(log)
+      return lockContract.interface.parseLog(log)
     })
 
-    const purchaseItems = events.filter((event) => {
-      return event && event.name === 'Transfer'
-    })
+    const purchaseItems = events?.filter(
+      (event) => event?.fragment && event?.fragment.name === 'Transfer'
+    )
 
-    if (purchaseItems.length) {
+    if (purchaseItems?.length) {
       return purchaseItems.map((item) => item?.args?.tokenId?.toString())
     }
 
-    const extendItems = events.filter((event) => {
-      return event && event.name === 'KeyExtended'
-    })
+    const extendItems = events?.filter(
+      (event) => event?.fragment && event?.fragment.name === 'KeyExtended'
+    )
 
-    if (extendItems.length) {
+    if (extendItems?.length) {
       return extendItems.map((item) => item?.args?.tokenId?.toString())
     }
     return null
@@ -1141,10 +1141,10 @@ export default class Web3Service extends UnlockService {
     const gasRefund = await lockContract.gasRefundValue()
     let decimals = this.networks[network].nativeCurrency.decimals
     const erc20Address = await lockContract.tokenAddress()
-    if (erc20Address !== ethers.constants.AddressZero) {
+    if (erc20Address !== ethers.ZeroAddress) {
       decimals = await getErc20Decimals(erc20Address, provider)
     }
-    return ethers.utils.formatUnits(gasRefund, decimals)
+    return ethers.formatUnits(gasRefund, decimals)
   }
 
   /**
@@ -1161,13 +1161,13 @@ export default class Web3Service extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: discountCodeHookAbi,
+      abi: new ethers.Interface(discountCodeHookAbi),
     })
     const discountForSigner = await contract.discounts(
       lockAddress,
       signerAddress
     )
-    return ethers.BigNumber.from(discountForSigner).toNumber()
+    return discountForSigner
   }
 
   /**
@@ -1184,15 +1184,15 @@ export default class Web3Service extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: discountCodeWithCapHookAbi,
+      abi: new ethers.Interface(discountCodeWithCapHookAbi),
     })
     const discount = await contract.discounts(lockAddress, signerAddress)
     const cap = await contract.caps(lockAddress, signerAddress)
     const count = await contract.counters(lockAddress, signerAddress)
     return {
-      discount: ethers.BigNumber.from(discount).toNumber(),
-      cap: ethers.BigNumber.from(cap).toNumber(),
-      count: ethers.BigNumber.from(count).toNumber(),
+      discount,
+      cap,
+      count,
     }
   }
 
@@ -1210,13 +1210,13 @@ export default class Web3Service extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: passwordCapHookAbi,
+      abi: new ethers.Interface(passwordCapHookAbi),
     })
     const cap = await contract.signers(lockAddress, signerAddress)
     const count = await contract.counters(lockAddress, signerAddress)
     return {
-      cap: ethers.BigNumber.from(cap).toNumber(),
-      count: ethers.BigNumber.from(count).toNumber(),
+      cap,
+      count,
     }
   }
 }

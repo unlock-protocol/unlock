@@ -11,12 +11,12 @@ export default async function (
     // Let's get the expiration from the duration (+/- given that the transaction can take time to be mined!)
     const duration = await lockContract.expirationDuration()
 
-    if (ETHERS_MAX_UINT.eq(duration)) {
+    if (ETHERS_MAX_UINT === duration) {
       // Add equal number of expirations to recipients length
       expirations = new Array(recipients.length).fill(ETHERS_MAX_UINT)
     } else {
       expirations = new Array(recipients.length).fill(
-        Math.floor(new Date().getTime() / 1000 + duration.toNumber())
+        BigInt(Math.floor(new Date().getTime() / 1000)) + duration
       )
     }
   }
@@ -48,9 +48,7 @@ export default async function (
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event && event.name === 'Transfer'
-    })
+    .filter(({ fragment }) => fragment && fragment.name === 'Transfer')
 
   if (transferEvents.length) {
     return transferEvents.map((item) => item.args.tokenId.toString())

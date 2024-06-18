@@ -1,12 +1,46 @@
+import type { HDNodeWallet } from 'ethers'
+import { Wallet, encryptKeystoreJson } from 'ethers'
 import { WALLET_ENCRYPTION_OPTIONS } from '../constants'
-import { Wallet } from 'ethers'
+
+async function getJSONWallet(wallet: HDNodeWallet | Wallet) {
+  const address = await wallet.getAddress()
+  const { privateKey } = wallet
+
+  const account = {
+    address,
+    privateKey,
+  }
+
+  let accountMnemonic
+  if (
+    'mnemonic' in wallet &&
+    wallet.mnemonic &&
+    wallet.mnemonic.wordlist.locale === 'en' &&
+    wallet.mnemonic.password === '' &&
+    wallet.path
+  ) {
+    accountMnemonic = {
+      path: wallet.path,
+      locale: 'en',
+      entropy: wallet.mnemonic.entropy,
+    }
+  }
+
+  return { ...account, mnemonic: accountMnemonic }
+}
 
 export async function createAccountAndPasswordEncryptKey(password: string) {
   const newWallet = Wallet.createRandom()
-  const address = await newWallet.getAddress()
-  const passwordEncryptedPrivateKey = JSON.parse(
-    await newWallet.encrypt(password, WALLET_ENCRYPTION_OPTIONS)
+  // ethers v6 `wallet.encrypt` dont take options anymore so we convert our
+  // wallet to JSON and scnrypt it
+  const jsonWallet = await getJSONWallet(newWallet)
+  const encrypted = await encryptKeystoreJson(
+    jsonWallet,
+    password,
+    WALLET_ENCRYPTION_OPTIONS
   )
+  const passwordEncryptedPrivateKey = JSON.parse(encrypted)
+  const address = await newWallet.getAddress()
   return {
     address,
     passwordEncryptedPrivateKey,
@@ -28,6 +62,7 @@ export async function getAccountFromPrivateKey(
     JSON.stringify(encryptedPrivateKey),
     password
   )
+
   return wallet
 }
 
@@ -45,6 +80,11 @@ export async function reEncryptPrivateKey(
   newPassword: string
 ) {
   const wallet = await getAccountFromPrivateKey(encryptedPrivateKey, password)
-  const newWallet = await wallet.encrypt(newPassword, WALLET_ENCRYPTION_OPTIONS)
-  return JSON.parse(newWallet)
+  const jsonWallet = await getJSONWallet(wallet)
+  const encrypted = await encryptKeystoreJson(
+    jsonWallet,
+    newPassword,
+    WALLET_ENCRYPTION_OPTIONS
+  )
+  return JSON.parse(encrypted)
 }

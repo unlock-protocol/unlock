@@ -40,7 +40,7 @@ export default async function getPurchaseKeysArguments({
   )
   const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
   const referrers = (_referrers || defaultArray).map((km) => km || ZERO)
-  const data = (_data || defaultArray).map((d) => d || [])
+  const data = (_data || defaultArray).map((d) => d || '0x')
 
   if (
     !(
@@ -56,22 +56,15 @@ export default async function getPurchaseKeysArguments({
   }
 
   // calculate total price for all keys
-  const totalPrice = keyPrices.reduce(
-    (total, kp) => total.add(kp),
-    utils.bigNumberify(0)
-  )
-
+  const totalPrice = keyPrices.reduce((total, kp) => total + kp, BigInt(0))
   let totalAmountToApprove = totalApproval
 
   if (!totalAmountToApprove) {
     // total amount to approve
     totalAmountToApprove = recurringPayments
       ? keyPrices // for reccuring payments
-          .map((kp, i) => kp.mul(recurringPayments[i]))
-          .reduce(
-            (total, approval) => total.add(approval),
-            utils.bigNumberify(0)
-          )
+          .map((kp, i) => kp * recurringPayments.map(BigInt)[i])
+          .reduce((total, approval) => total + approval, BigInt(0))
       : totalPrice
   }
 

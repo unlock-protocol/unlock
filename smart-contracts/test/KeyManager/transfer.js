@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { setup } = require('./setup')
 const { reverts } = require('../helpers')
-const { assert } = require('chai')
+const assert = require('assert')
 
 let lock
 let keyManager, locksmith, grantee, attacker, realUser

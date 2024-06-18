@@ -101,7 +101,7 @@ export const TransferKeyDrawer = ({
   }
 
   const hasMaxNumberOfKeys = async () => {
-    if (ethers.utils.isAddress(newOwner) && !!lockAddress) {
+    if (ethers.isAddress(newOwner) && !!lockAddress) {
       const total = await web3Service.totalKeys(lockAddress, newOwner, network)
 
       return maxKeysPerAddress <= total

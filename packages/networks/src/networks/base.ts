@@ -93,7 +93,7 @@ export const base: NetworkConfig = {
 
   provider: 'https://rpc.unlock-protocol.com/8453',
 
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://mainnet.base.org',
 

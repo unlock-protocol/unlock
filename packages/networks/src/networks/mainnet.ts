@@ -66,7 +66,7 @@ export const mainnet: NetworkConfig = {
     },
   ],
   provider: 'https://rpc.unlock-protocol.com/1',
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
   publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
   startBlock: 16989000,
   subgraph: {

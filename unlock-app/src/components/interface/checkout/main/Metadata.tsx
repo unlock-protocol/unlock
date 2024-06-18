@@ -405,9 +405,9 @@ export function Metadata({ checkoutService }: Props) {
   return (
     <Fragment>
       <Stepper service={checkoutService} />
-      <main className="h-full px-6 py-2 overflow-auto">
+      <main className="h-full px-6 overflow-auto">
         {isMemberLoading ? (
-          <Placeholder.Root>
+          <Placeholder.Root className="py-6">
             <Placeholder.Line />
             <Placeholder.Line />
             <Placeholder.Line />

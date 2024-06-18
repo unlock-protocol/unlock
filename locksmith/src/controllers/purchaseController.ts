@@ -251,7 +251,7 @@ export class PurchaseController {
         })
       }
 
-      if (totalAmount.gt(0)) {
+      if (BigInt(totalAmount) > BigInt(0)) {
         return response.status(400).send({
           message: 'Lock is not free',
         })

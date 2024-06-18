@@ -1,4 +1,4 @@
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
 
 /**
  * Helper function which verifies that the signature matches the address and data
@@ -13,7 +13,7 @@ export const isSignatureValidForAddress = (
   locksmithSigners?: string[]
 ) => {
   try {
-    const signer = utils.verifyMessage(data, sig).toLowerCase().trim()
+    const signer = ethers.verifyMessage(data, sig).toLowerCase().trim()
     return !!(
       signer === address.toLowerCase() ||
       (locksmithSigners &&

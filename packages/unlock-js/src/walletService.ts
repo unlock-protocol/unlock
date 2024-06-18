@@ -94,12 +94,12 @@ export default class WalletService extends UnlockService {
   /**
    * This needs to be called with a ethers.providers which includes a signer or with a signer
    */
-  async connect(provider: ethers.providers.Provider, signer?: ethers.Signer) {
+  async connect(provider: ethers.JsonRpcProvider, signer?: ethers.Signer) {
     this.provider = provider
     if (signer) {
       this.signer = signer
     } else {
-      this.signer = this.provider.getSigner(0)
+      this.signer = await this.provider.getSigner()
     }
     const { chainId: networkId } = await this.provider.getNetwork()
 
@@ -117,14 +117,14 @@ export default class WalletService extends UnlockService {
    * Function which yields the address of the account on the provider
    */
   async getAccount() {
-    const accounts = await this.provider.listAccounts()
+    const account = await this.provider.getSigner(0)
 
-    if (!accounts.length) {
+    const address = await account.getAddress()
+
+    if (!address) {
       // We do not have an account, can't do anything until we have one.
       return null
     }
-
-    const address = accounts[0]
 
     return address
   }
@@ -206,12 +206,12 @@ export default class WalletService extends UnlockService {
       this.unlockAddress,
       this.provider
     )
-    return contract.connect(this.signer)
+    return contract.connect(this.signer) as ethers.Contract
   }
 
   async getLockContract(address: string) {
     const contract = await super.getLockContract(address, this.provider)
-    return contract.connect(this.signer)
+    return contract.connect(this.signer) as ethers.Contract
   }
 
   /**
@@ -322,7 +322,7 @@ export default class WalletService extends UnlockService {
     if (!version.extendKey) {
       const owner = params.owner
         ? params.owner
-        : lockContract.ownerOf(params.tokenId)
+        : await lockContract.ownerOf(params.tokenId)
 
       return this.purchaseKey.bind(this)(
         {
@@ -948,7 +948,7 @@ export default class WalletService extends UnlockService {
   async upgradeLock(
     params: {
       lockAddress: string
-      lockVersion: number
+      lockVersion: bigint
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
@@ -1001,18 +1001,19 @@ export default class WalletService extends UnlockService {
       contractAddress: string
       network: number
     },
-    signer: ethers.Wallet | ethers.providers.JsonRpcSigner
+    signer: ethers.Wallet | ethers.JsonRpcSigner
   ) {
     const { lockAddress, signerAddress, contractAddress, network } =
       params ?? {}
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: passwordHookAbi,
+      abi: new ethers.Interface(passwordHookAbi),
     })
-    const tx = await contract
-      .connect(this.signer)
-      .setSigner(lockAddress, signerAddress)
+    const tx = await contract.connect(this.signer).getFunction('setSigner')(
+      lockAddress,
+      signerAddress
+    )
     return tx
   }
 
@@ -1031,11 +1032,13 @@ export default class WalletService extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: passwordCapHookAbi,
+      abi: new ethers.Interface(passwordCapHookAbi),
     })
-    const tx = await contract
-      .connect(this.signer)
-      .setSigner(lockAddress, signerAddress, cap)
+    const tx = await contract.connect(this.signer).getFunction('setSigner')(
+      lockAddress,
+      signerAddress,
+      cap
+    )
     return tx.wait()
   }
 
@@ -1123,15 +1126,15 @@ export default class WalletService extends UnlockService {
 
     // first, get the authorization to spend USDC
     // 6 decimals for USDC - 2 as amount is in cents
-    const value = ethers.utils.parseUnits(amount, 4).toHexString()
+    const value = `0x${ethers.parseUnits(amount, 4).toString(16)}`
     const now = Math.floor(new Date().getTime() / 1000)
     const transferMessage = {
       from: await this.signer.getAddress(),
-      to: ethers.utils.getAddress(cardPurchaserAddress),
+      to: ethers.getAddress(cardPurchaserAddress),
       value,
       validAfter: 0,
       validBefore: now + 60 * 60 * 24, // Valid for 1 day (TODO: how do we handle funds when they are stuck?)
-      nonce: ethers.utils.hexlify(ethers.utils.randomBytes(32)), // 32 byte hex string
+      nonce: ethers.hexlify(ethers.randomBytes(32)), // 32 byte hex string
     }
 
     const transferSignature = await signTransferAuthorization(
@@ -1251,13 +1254,15 @@ export default class WalletService extends UnlockService {
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: discountCodeHookAbi,
+      abi: new ethers.Interface(discountCodeHookAbi),
     })
 
     const discountBasisPoints = discountPercentage * 100
-    return contract
-      .connect(this.signer)
-      .setDiscountForLock(lockAddress, signerAddress, discountBasisPoints)
+    return contract.connect(this.signer).getFunction('setDiscountForLock')(
+      lockAddress,
+      signerAddress,
+      discountBasisPoints
+    )
   }
 
   /**
@@ -1277,18 +1282,23 @@ export default class WalletService extends UnlockService {
       contractAddress,
       network,
       discountPercentage = 0,
-      cap = ethers.constants.MaxUint256,
+      cap = ethers.MaxUint256,
     } = params ?? {}
     const contract = await this.getHookContract({
       network,
       address: contractAddress,
-      abi: discountCodeWithCapHookAbi,
+      abi: new ethers.Interface(discountCodeWithCapHookAbi),
     })
 
     const discountBasisPoints = discountPercentage * 100
     const transaction = await contract
       .connect(this.signer)
-      .setSigner(lockAddress, signerAddress, discountBasisPoints, cap)
+      .getFunction('setSigner')(
+      lockAddress,
+      signerAddress,
+      discountBasisPoints,
+      cap
+    )
     return transaction.wait()
   }
 }
