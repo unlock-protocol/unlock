@@ -328,11 +328,11 @@ export const CreateLockForm = ({
                       setValue('currencyContractAddress', token.address)
                       setValue('symbol', token.symbol)
                     }}
-                    options={defaultOptions.currencies}
                     defaultToken={{
                       address: currencyContractAddress,
                     }}
                     network={selectedNetwork!}
+                    noNative={defaultOptions.noNative}
                   />
 
                   <Input

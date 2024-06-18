@@ -17,7 +17,7 @@ interface SelectCurrencyModalProps {
   network: number
   onSelect: (token: Token) => void
   defaultCurrencyAddress?: string
-  options?: Token[]
+  noNative?: boolean
 }
 
 export const SelectCurrencyModal = ({
@@ -26,7 +26,7 @@ export const SelectCurrencyModal = ({
   network,
   onSelect,
   defaultCurrencyAddress,
-  options,
+  noNative,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -61,16 +61,13 @@ export const SelectCurrencyModal = ({
 
   useEffect(() => {
     const initializeTokens = async () => {
-      let featuredTokens
-      if (options) {
-        featuredTokens = [...options]
-      } else {
-        const { tokens: tokenItems = [] } = networks[network!] || {}
-        const nativeCurrency = networks[network]?.nativeCurrency ?? {}
-        featuredTokens = [
-          nativeCurrency,
-          ...tokenItems.filter((token: Token) => !!token.featured),
-        ]
+      const { tokens: tokenItems = [] } = networks[network!] || {}
+      const nativeCurrency = networks[network]?.nativeCurrency ?? {}
+      const featuredTokens = [
+        ...tokenItems.filter((token: Token) => !!token.featured),
+      ]
+      if (!noNative) {
+        featuredTokens.unshift(nativeCurrency)
       }
       if (defaultCurrencyAddress) {
         const inList = featuredTokens.find(
@@ -93,7 +90,7 @@ export const SelectCurrencyModal = ({
       setTokens(featuredTokens)
     }
     initializeTokens()
-  }, [network, networks, defaultCurrencyAddress])
+  }, [network, networks, defaultCurrencyAddress, noNative])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
