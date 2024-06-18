@@ -34,6 +34,7 @@ export const useProvider = (config: any) => {
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
+  const [eip1193, setEip1193] = useState<any | undefined>()
   const { setStorage, clearStorage, getStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
@@ -96,7 +97,11 @@ export const useProvider = (config: any) => {
         )) as unknown as ethers.BrowserProvider
       } else {
         await switchBrowserProviderNetwork(networkId)
-        walletServiceProvider = new ethers.BrowserProvider(window.ethereum!)
+        if (getStorage('provider') === 'WALLET_CONNECT') {
+          walletServiceProvider = new ethers.BrowserProvider(eip1193)
+        } else {
+          walletServiceProvider = new ethers.BrowserProvider(window.ethereum!)
+        }
       }
     }
     return walletServiceProvider
@@ -161,6 +166,7 @@ export const useProvider = (config: any) => {
 
   const connectProvider = async (provider: any) => {
     setLoading(true)
+    setEip1193(provider)
     let auth
     if (provider instanceof ethers.AbstractProvider) {
       auth = await resetProvider(provider)
@@ -182,7 +188,11 @@ export const useProvider = (config: any) => {
         })
 
         provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.BrowserProvider(window.ethereum!))
+          if (getStorage('provider') === 'WALLET_CONNECT') {
+            await resetProvider(new ethers.BrowserProvider(eip1193))
+          } else {
+            await resetProvider(new ethers.BrowserProvider(window.ethereum!))
+          }
         })
       }
       auth = await resetProvider(ethersProvider)
