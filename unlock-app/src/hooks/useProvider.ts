@@ -96,7 +96,7 @@ export const useProvider = (config: any) => {
         )) as unknown as ethers.BrowserProvider
       } else {
         await switchBrowserProviderNetwork(networkId)
-        walletServiceProvider = new ethers.BrowserProvider(pr.provider, 'any')
+        walletServiceProvider = new ethers.BrowserProvider(window.ethereum!)
       }
     }
     return walletServiceProvider
@@ -182,7 +182,7 @@ export const useProvider = (config: any) => {
         })
 
         provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.BrowserProvider(provider))
+          await resetProvider(new ethers.BrowserProvider(window.ethereum!))
         })
       }
       auth = await resetProvider(ethersProvider)

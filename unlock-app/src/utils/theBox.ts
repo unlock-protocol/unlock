@@ -108,7 +108,6 @@ export const getCrossChainRoute = async ({
       ],
     },
   }
-  console.log(actionRequest)
 
   const query = JSON.stringify({
     ...actionRequest,
