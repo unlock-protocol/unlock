@@ -126,19 +126,12 @@ export function ConfirmCrossChainPurchase({
       }
       setButtonLabel(`Purchasing...`)
 
-      //parse gas values properly
-      const parsedTx = {
-        ...route.tx,
-        gasLimit: route.tx.gasLimit ? toBigInt(route.tx.gasLimit) : null,
-        maxFeePerGas: route.tx.maxFeePerGas
-          ? toBigInt(route.tx.maxFeePerGas)
-          : null,
-        maxPriorityFeePerGas: route.tx.maxPriorityFeePerGas
-          ? toBigInt(route.tx.maxPriorityFeePerGas)
-          : null,
-      }
+      // delete unwanted gas values
+      delete route.tx.gasLimit
+      delete route.tx.maxFeePerGas
+      delete route.tx.maxPriorityFeePerGas
 
-      const tx = await walletService.signer.sendTransaction(parsedTx)
+      const tx = await walletService.signer.sendTransaction(route.tx)
       onConfirmed(lockAddress, route.network, tx.hash)
     } catch (error: any) {
       setIsConfirming(false)
