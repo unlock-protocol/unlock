@@ -182,7 +182,7 @@ export const useProvider = (config: any) => {
         })
 
         provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.BrowserProvider(provider))
+          await resetProvider(new ethers.BrowserProvider(window.ethereum!))
         })
       }
       auth = await resetProvider(ethersProvider)
