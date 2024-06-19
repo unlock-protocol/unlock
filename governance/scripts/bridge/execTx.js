@@ -31,11 +31,8 @@ const getTxStatus = async (delayMod, nonce) => {
   }
 }
 
-async function main({ delayModuleAddress, bridgeTxHash, execute = true } = {}) {
+async function main({ delayModuleAddress, execute = true } = {}) {
   const { delayMod, currentNonce } = await getDelayModule(delayModuleAddress)
-  if (typeof bridgeTxHash) {
-    bridgeTxHash = [bridgeTxHash]
-  }
 
   console.log(`\n-------\n`)
 
