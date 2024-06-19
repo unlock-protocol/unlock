@@ -44,7 +44,7 @@ const getExpectedSigners = async (chainId) => {
 }
 
 const logError = (name, chainId, multisig, msg) =>
-  log(`[Multisig]: on ${name} (${chainId}) ${multisig}  ${msg}`)
+  log(`[Multisig]: on ${name} (${chainId}) ${multisig}  ${msg}`, 'error')
 
 const getSafeService = async (chainId) => {
   const txServiceUrl = safeServiceURLs[chainId] || null
