@@ -253,7 +253,7 @@ There is test DAO deployed with the entire cross-chain pipeline configured betwe
 
 ### Execute a cross-chain DAO proposal
 
-Once the proposal has been through the timelock embargo period and has been executed on the DAO, there are still a few steps for all calls to cross the bridges and get executed properly on all destination chains.
+Once the proposal has been through the timelock embargo period and has been executed on the DAO, there are still a few steps for all calls to cross the bridges and get executed properly on all destination chains. These steps can be executed by anyone.
 
 1. pay the Connext bridge fee for all the calls
 2. wait for the calls to cross the bridge (usually ~2-5h)
