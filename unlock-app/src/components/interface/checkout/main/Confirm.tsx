@@ -6,7 +6,6 @@ import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
-import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
 import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -57,13 +56,6 @@ export function Confirm({ checkoutService, communication }: Props) {
       <Stepper service={checkoutService} />
       {payment.method === 'card' && (
         <ConfirmCard
-          checkoutService={checkoutService}
-          onConfirmed={onConfirmed}
-          onError={onError}
-        />
-      )}
-      {payment.method === 'swap_and_purchase' && (
-        <ConfirmSwapAndPurchase
           checkoutService={checkoutService}
           onConfirmed={onConfirmed}
           onError={onError}
