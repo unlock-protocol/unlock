@@ -272,7 +272,7 @@ export PROPOSAL_EXECUTION_TX=<0x....>
 
 #### Pay bridge fees
 
-Calls for each chains are sent from the proposal separately to the bridge of the destination chain. A bridge fee needs to be paid on origin chain (mainnet) for the txs to proceed and cross to the other side.
+Calls for each chains are sent from the proposal separately to the bridge of the destination chain. A bridge fee needs to be paid on origin chain for the txs to proceed and cross to the other side.
 
 Instead of having to pay each fee separately, we batch all fee payments in a single multicall executed by a Safe. To create the batched call in a multisig, you can use the script below. Then you need to go the multisig and execute it.
 
