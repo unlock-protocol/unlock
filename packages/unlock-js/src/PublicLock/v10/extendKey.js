@@ -95,7 +95,7 @@ export default async function (
 
   if (!totalAmountToApprove) {
     totalAmountToApprove = recurringPayment
-      ? actualAmount * recurringPayment
+      ? actualAmount * BigInt(recurringPayment)
       : actualAmount
   }
 
