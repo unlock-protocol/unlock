@@ -43,17 +43,17 @@ export const zkevm: NetworkConfig = {
   },
   tokens: [
     {
+      address: '0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5',
+      decimals: 6,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+    {
       address: '0x4F9A0e7FD2Bf6067db6994CF12E4495Df938E6e9',
       decimals: 18,
       featured: true,
       name: 'Wrapped Ether',
       symbol: 'WETH',
-    },
-    {
-      address: '0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5',
-      decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
     },
     {
       address: '0x1E4a5963aBFD975d8c9021ce480b42188849D41d',

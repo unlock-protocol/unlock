@@ -100,11 +100,11 @@ export const arbitrum: NetworkConfig = {
   swapPurchaser: '0xE1a7Ec44fB4c5c88ebB3744A9Ba2A3cCA879A47d',
   tokens: [
     {
-      address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-      decimals: 18,
+      address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+      decimals: 6,
       featured: true,
-      name: 'Wrapped Ether',
-      symbol: 'WETH',
+      name: 'USD Coin',
+      symbol: 'USDC',
     },
     {
       address: '0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8',
@@ -113,11 +113,11 @@ export const arbitrum: NetworkConfig = {
       symbol: 'USDC',
     },
     {
-      address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
-      decimals: 6,
+      address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+      decimals: 18,
       featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
+      name: 'Wrapped Ether',
+      symbol: 'WETH',
     },
     {
       address: '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',

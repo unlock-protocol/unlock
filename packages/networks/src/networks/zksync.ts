@@ -46,6 +46,12 @@ export const zksync: NetworkConfig = {
   },
   tokens: [
     {
+      address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
+      decimals: 6,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+    {
       address: '0x000000000000000000000000000000000000800A',
       decimals: 18,
       name: 'Ether',
@@ -57,18 +63,11 @@ export const zksync: NetworkConfig = {
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
-
     {
       address: '0x493257fD37EDB34451f62EDf8D2a0C418852bA4C',
       decimals: 6,
       name: 'Tether USD',
       symbol: 'USDT',
-    },
-    {
-      address: '0x3355df6D4c9C3035724Fd0e3914dE96A5a83aaf4',
-      decimals: 6,
-      name: 'USD Coin',
-      symbol: 'USDC',
     },
     {
       address: '0xBBeB516fb02a01611cBBE0453Fe3c580D7281011',

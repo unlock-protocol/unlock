@@ -41,6 +41,13 @@ export const scroll: NetworkConfig = {
   },
   tokens: [
     {
+      address: '0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4',
+      decimals: 6,
+      featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
+    {
       address: '0x5300000000000000000000000000000000000004',
       decimals: 18,
       featured: true,
@@ -54,13 +61,7 @@ export const scroll: NetworkConfig = {
       name: 'Dai Stablecoin',
       symbol: 'DAI',
     },
-    {
-      address: '0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4',
-      decimals: 6,
-      featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
-    },
+
     {
       address: '0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df',
       decimals: 6,
