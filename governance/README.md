@@ -286,20 +286,20 @@ yarn hardhat run scripts/bridge/payFee.js --network mainnet
 
 #### Check status of the calls
 
-You can check the status of all calls on various chains manually with the [Connext explorer](https://connextscan.io/) or directly parse calls from the execution tx using the following script:
-
-NB: This will create a temporary JSON file named `xcalled.tmp.json` with the info and statuses of all tx.
+You can check the status of all calls on various chains manually with the [Connext explorer](https://connextscan.io/) or directly parse calls from the execution tx using the script below. You will need [an API key from The Graph](https://thegraph.com/studio/apikeys/) to query the Connext bridge subgraph and get the status of all transactions.
 
 ```
 # set the execution tx id
 export PROPOSAL_EXECUTION_TX=<0x....>
 
-# delete the tmp file containing info about the calls
-rm xcalled.tmp.json
+# export the subgraph api key
+export SUBGRAPH_QUERY_API_KEY=<...>
 
 # check the status of the calls on all bridges
 yarn hardhat run scripts/bridge/status.js --network mainnet
 ```
+
+NB: This will create a temporary JSON file named `xcalled.tmp.json` with the info and statuses of all tx.
 
 ### Execute all tx on destination chains
 
