@@ -30,11 +30,6 @@ export default async function (
   transactionOptions = {},
   callback
 ) {
-  console.log({
-    totalApproval,
-    recurringPayment,
-  })
-
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!tokenId) {

@@ -251,7 +251,6 @@ export default class WalletService extends UnlockService {
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
-    console.log(params)
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKey.bind(this)(params, transactionOptions, callback)
