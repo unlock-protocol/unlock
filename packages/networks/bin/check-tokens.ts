@@ -2,8 +2,11 @@ import { ethers } from 'ethers'
 import networks from '../src'
 import ERC20 from '../utils/erc20.abi.json'
 import { log } from './logger'
+import * as Sentry from '@sentry/node'
 
 const run = async () => {
+  const errors: string[] = []
+  const warnings: string[] = []
   for (const networkId in networks) {
     const network = networks[networkId]
     const provider = new ethers.JsonRpcProvider(network.provider)
@@ -21,21 +24,18 @@ const run = async () => {
           const name = await contract.name()
           const decimals = parseInt(await contract.decimals())
           if (decimals !== token.decimals) {
-            log(
-              `Decimals mismatch for ${token.address} on ${networkId}. It needs to be "${decimals}"`,
-              'error'
+            errors.push(
+              `Decimals mismatch for ${token.address} on ${networkId}. It needs to be "${decimals}"`
             )
           }
           if (name !== token.name) {
-            log(
-              `Name mismatch for ${token.address} on ${networkId}. It needs to be "${name}"`,
-              'error'
+            errors.push(
+              `Name mismatch for ${token.address} on ${networkId}. It needs to be "${name}"`
             )
           }
           if (symbol !== token.symbol) {
-            log(
-              `Symbol mismatch for ${token.address} on ${networkId}. It needs to be "${symbol}"`,
-              'error'
+            errors.push(
+              `Symbol mismatch for ${token.address} on ${networkId}. It needs to be "${symbol}"`
             )
           }
 
@@ -46,17 +46,24 @@ const run = async () => {
               ethers.ZeroAddress
 
             if (!isSetInUnlock) {
-              log(
+              warnings.push(
                 `Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${networkId}) is not set correctly`
               )
             }
           }
         } catch (error) {
-          log(`We could not verify ${token.address} on ${networkId}. ${error}`)
+          Sentry.captureException(error)
+          console.error(
+            `We could not verify ${token.address} on ${networkId}. ${error}`
+          )
         }
       }
     }
   }
+
+  // log it all
+  errors.forEach((error) => log(`[Networks/Tokens]: ${error}`, 'error'))
+  warnings.forEach((warning) => log(`[Networks/Tokens]: ${warning}`))
 }
 
 run()

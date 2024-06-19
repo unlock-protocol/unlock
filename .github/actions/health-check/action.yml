@@ -18,15 +18,15 @@ runs:
       shell: bash
     - name: Check networks package
       run: |
-        yarn workspace @unlock-protocol/networks check
+        yarn workspace @unlock-protocol/networks check:keys
       shell: bash
     - name: Check tokens in networks package
       run: |
-        yarn workspace @unlock-protocol/networks check-tokens
+        yarn workspace @unlock-protocol/networks check:tokens
       shell: bash
     - name: Check hooks in networks package
       run: |
-        yarn workspace @unlock-protocol/networks check-hooks
+        yarn workspace @unlock-protocol/networks check:hooks
       shell: bash
     - name: Check Unlock info
       run: |

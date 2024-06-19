@@ -19,5 +19,5 @@ export const log = (msg: string, level: SeverityLevel | undefined = 'info') => {
   console.log(`${symbols[level as string] || ''}[${level}]: ${msg}`)
 
   // send to sentry
-  Sentry.captureMessage(`[TOKENS]: ${msg}`, level)
+  Sentry.captureMessage(msg, level)
 }
