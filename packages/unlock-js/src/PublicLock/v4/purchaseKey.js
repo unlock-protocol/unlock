@@ -14,16 +14,11 @@ import approveAllowance from '../utils/approveAllowance'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, owner, keyPrice, erc20Address, decimals, swap },
+  { lockAddress, owner, keyPrice, erc20Address, decimals },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const unlockSwapPurchaserContract = swap
-    ? this.getUnlockSwapPurchaserContract({
-        params: this.networkId,
-      })
-    : null
 
   if (!owner) {
     owner = await this.signer.getAddress()
@@ -56,41 +51,19 @@ export default async function (
     transactionOptions.value = actualAmount
   }
 
-  // if swap is provided, we need to override the value
-  if (swap && swap?.value) {
-    transactionOptions.value = swap.value
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = {
+    erc20Address,
+    address: lockAddress,
+    totalAmountToApprove: actualAmount,
   }
 
-  // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = swap
-    ? {
-        erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove: swap.amountInMax,
-      }
-    : {
-        erc20Address,
-        address: lockAddress,
-        totalAmountToApprove: actualAmount,
-      }
-
-  // Only ask for approval if the lock or swap is priced in ERC20
+  // Only ask for approval if the lock is priced in ERC20
   if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
     await approveAllowance.bind(this)(approvalOptions)
   }
 
-  const transactionPromise = swap
-    ? unlockSwapPurchaserContract?.swapAndCall(
-        lockAddress,
-        swap.srcTokenAddress || ZERO,
-        actualAmount,
-        swap.amountInMax,
-        swap.uniswapRouter,
-        swap.swapCallData,
-        callData,
-        transactionOptions
-      )
-    : lockContract.purchaseFor(owner, transactionOptions)
+  const transactionPromise = lockContract.purchaseFor(owner, transactionOptions)
 
   const hash = await this._handleMethodCall(transactionPromise)
 

@@ -296,16 +296,4 @@ export interface UserMetadata {
   }
 }
 
-export interface UnlockUniswapRoute {
-  swapCalldata?: string
-  value: string
-  amountInMax: any
-  swapRouter: string
-  quote: any
-  trade: any
-  convertToQuoteToken: any
-  quoteGasAdjusted: any
-  estimatedGasUsedUSD: any
-}
-
 export type UnlockNetworks = number

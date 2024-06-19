@@ -56,7 +56,6 @@ const defaultPaymentMethods = {
   crypto: true,
   card: true,
   crossmint: true,
-  swap: true,
   crosschain: true,
   claim: true,
 }
