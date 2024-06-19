@@ -129,9 +129,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
             )
             const toBeAdded = member.count
             if (
-              Number(existingBalance) +
-                Number(alreadyToBeAdded) +
-                Number(toBeAdded) >
+              Number(existingBalance) + alreadyToBeAdded + toBeAdded >
               (lock.maxKeysPerAddress || 1)
             ) {
               console.warn(`Discarded duplicate`, member)

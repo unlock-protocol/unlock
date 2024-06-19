@@ -140,7 +140,6 @@ export const CreateLockForm = ({
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
-      setValue('currencyContractAddress', undefined)
       setValue('network', parseInt(`${network}`))
     },
     [setValue]
@@ -183,9 +182,7 @@ export const CreateLockForm = ({
                 options={mainNetworkOptions}
                 onChange={onChangeNetwork}
                 description={networkDescription(selectedNetwork!)}
-                moreOptions={additionalNetworkOptions.filter(
-                  (option) => !mainNetworkOptions.includes(option)
-                )}
+                moreOptions={additionalNetworkOptions}
               />
             )}
             <div className="relative">
