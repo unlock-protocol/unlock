@@ -21,7 +21,11 @@ import {
   TiArrowSortedUp as UpIcon,
   TiArrowSortedDown as DownIcon,
 } from 'react-icons/ti'
-import { FiTrash as DeleteIcon, FiPlus as PlusIcon } from 'react-icons/fi'
+import {
+  FiTrash as DeleteIcon,
+  FiPlus as PlusIcon,
+  FiEdit as EditIcon,
+} from 'react-icons/fi'
 import { BiCog as CogICon } from 'react-icons/bi'
 import { RiArrowGoBackLine as GoBackLineIcon } from 'react-icons/ri'
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -168,15 +172,19 @@ type RecurringByLock = Record<
   }
 >
 
+type MetadataInput = Omit<z.infer<typeof MetadataInput>, 'defaultValue'>
+
 interface LockMetadataProps {
-  onSubmit(data: Omit<z.infer<typeof MetadataInput>, 'defaultValue'>): void
+  onSubmit(data: MetadataInput): void
+  metadata?: MetadataInput
 }
 
-export const LockMetadataForm = ({ onSubmit }: LockMetadataProps) => {
+export const LockMetadataForm = ({ onSubmit, metadata }: LockMetadataProps) => {
   const {
     register,
     formState: { errors },
     handleSubmit,
+    setValue,
   } = useForm<Omit<z.infer<typeof MetadataInput>, 'defaultValue'>>({
     resolver: zodResolver(
       MetadataInput.omit({
@@ -184,6 +192,12 @@ export const LockMetadataForm = ({ onSubmit }: LockMetadataProps) => {
       })
     ),
   })
+
+  if (metadata) {
+    for (const [key, value] of Object.entries(metadata)) {
+      setValue(key as keyof MetadataInput, value)
+    }
+  }
 
   return (
     <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -276,6 +290,8 @@ export const LocksForm = ({
   const [recurring, setRecurring] = useState<string | number>('')
   const [recurringUnlimited, setRecurringUnlimited] = useState(false)
   const [lockRecurring, setLockRecurring] = useState<RecurringByLock>({})
+  const [isEditing, setIsEditing] = useState(false)
+  const [editIndex, setEditIndex] = useState<number>(-1)
 
   const { getIsRecurringPossible } = useLockSettings()
 
@@ -387,6 +403,23 @@ export const LocksForm = ({
     onChange(newObj)
   }
 
+  const handleEdit = (index: number) => {
+    setEditIndex(index)
+    setIsEditing(true)
+  }
+
+  const handleSubmit = (e: z.infer<typeof MetadataInput>) => {
+    const lock = locks[lockAddress]
+    lock.metadataInputs![editIndex] = e
+
+    const lockWithMetadata = {
+      ...locks,
+      [lockAddress]: lock,
+    }
+    setLocks(lockWithMetadata)
+    setIsEditing(false)
+  }
+
   const hasMinValue = network && lockAddress && lockAddress?.length > 0
 
   const MetadataList = () => {
@@ -396,7 +429,13 @@ export const LocksForm = ({
     return (
       <div className="flex flex-col gap-3">
         {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
-          return (
+          return isEditing && editIndex === index ? (
+            <LockMetadataForm
+              key={index}
+              onSubmit={handleSubmit}
+              metadata={metadata}
+            />
+          ) : (
             <div
               key={index}
               className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
@@ -413,14 +452,24 @@ export const LocksForm = ({
                     value={metadata?.required ? 'YES' : 'NO'}
                   />
                 </div>
-                <button
-                  type="button"
-                  onClick={() => onRemoveMetadata(metadata?.name)}
-                  aria-label="Remove metadata"
-                  className="mt-1 text-gray-500"
-                >
-                  <DeleteIcon size={20} />
-                </button>
+                <div className="flex justify-around items-center gap-2 w-1/5">
+                  <button
+                    type="button"
+                    onClick={() => onRemoveMetadata(metadata?.name)}
+                    aria-label="Remove metadata"
+                    className="mt-1 text-gray-500"
+                  >
+                    <DeleteIcon size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(index)}
+                    aria-label="Edit"
+                    className="mt-1 text-gray-500"
+                  >
+                    <EditIcon size={20} />
+                  </button>
+                </div>
               </div>
             </div>
           )
