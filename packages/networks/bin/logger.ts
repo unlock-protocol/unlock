@@ -11,10 +11,7 @@ const symbols = {
   warning: '⚠️ ',
 }
 
-export const log = (
-  msg: string,
-  level: SeverityLevel | undefined = 'debug'
-) => {
+export const log = (msg: string, level: SeverityLevel | undefined = 'info') => {
   console.log(`${symbols[level] || ''}[${level}]: ${msg}`)
   Sentry.captureMessage(msg, level)
 }
