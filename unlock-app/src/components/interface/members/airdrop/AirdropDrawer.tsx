@@ -71,7 +71,10 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
   const { account, getWalletService } = useAuth()
   const { mutateAsync: updateUsersMetadata } = useUpdateUsersMetadata()
 
-  const handleConfirm = async (items: AirdropMember[]) => {
+  const handleConfirm = async (
+    items: AirdropMember[],
+    setIsConfirming?: (a: boolean) => void
+  ) => {
     const numberOfTransactions = Math.ceil(items.length / MAX_SIZE)
     const transactions: AirdropMember[][] = []
     const promises = []
@@ -184,6 +187,9 @@ export const AirdropFormForLock = ({ lock }: { lock: Lock }) => {
         .catch((error: any) => {
           console.error(error)
           throw new Error('We were unable to airdrop these memberships.')
+        })
+        .finally(() => {
+          setIsConfirming && setIsConfirming(false)
         })
     }
 
