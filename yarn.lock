@@ -16590,7 +16590,7 @@ __metadata:
     ethers: "npm:6.13.0"
     hardhat: "npm:2.22.3"
     mocha: "npm:10.4.0"
-    prettier: "npm:3.3.0"
+    prettier: "npm:3.3.2"
     ts-mocha: "npm:10.0.0"
     ts-node: "npm:10.9.2"
     tslint: "npm:6.1.3"
@@ -16723,7 +16723,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     eslint: "npm:8.57.0"
     next: "npm:14.2.3"
-    prettier: "npm:3.3.0"
+    prettier: "npm:3.3.2"
     typescript: "npm:5.4.5"
     vite: "npm:5.2.12"
     vite-plugin-node-polyfills: "npm:0.22.0"
@@ -16788,7 +16788,7 @@ __metadata:
     hardhat-gas-reporter: "npm:2.2.0"
     hardhat-storage-layout: "npm:0.1.7"
     hardhat-tracer: "npm:3.0.1"
-    prettier: "npm:3.3.0"
+    prettier: "npm:3.3.2"
     prettier-plugin-solidity: "npm:1.3.1"
     solhint: "npm:4.5.4"
     solidity-coverage: "npm:0.8.12"
@@ -16947,7 +16947,7 @@ __metadata:
     node-forge: "npm:1.3.1"
     postcss: "npm:8.4.38"
     postmate: "npm:1.5.2"
-    prettier: "npm:3.3.0"
+    prettier: "npm:3.3.2"
     qr-scanner: "npm:1.4.2"
     qrcode.react: "npm:3.1.0"
     react-device-detect: "npm:2.2.3"
@@ -16993,7 +16993,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     ethers: "npm:5.7.2"
     passport-custom: "npm:1.1.1"
-    prettier: "npm:3.3.0"
+    prettier: "npm:3.3.2"
   peerDependencies:
     passport: 0.6 || 0.7
   languageName: unknown
@@ -17068,7 +17068,7 @@ __metadata:
     numeral: "npm:2.0.6"
     path-match: "npm:1.2.4"
     postcss: "npm:8.4.38"
-    prettier: "npm:3.2.5"
+    prettier: "npm:3.3.2"
     raw-loader: "npm:4.0.2"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
@@ -17108,7 +17108,7 @@ __metadata:
     netlify-cli: "npm:15.11.0"
     node-forge: "npm:1.3.1"
     nodemailer: "npm:6.9.13"
-    prettier: "npm:3.3.0"
+    prettier: "npm:3.3.2"
     regenerator-runtime: "npm:0.14.1"
     typescript: "npm:5.4.5"
     vitest: "npm:1.6.0"
@@ -40711,7 +40711,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-fallback@npm:prettier@^3, prettier@npm:^3.1.1":
+"prettier-fallback@npm:prettier@^3, prettier@npm:3.3.2, prettier@npm:^3.1.1":
   version: 3.3.2
   resolution: "prettier@npm:3.3.2"
   bin:
@@ -40757,15 +40757,6 @@ __metadata:
   bin:
     prettier: bin/prettier.cjs
   checksum: 10/d509f9da0b70e8cacc561a1911c0d99ec75117faed27b95cc8534cb2349667dee6351b0ca83fa9d5703f14127faa52b798de40f5705f02d843da133fc3aa416a
-  languageName: node
-  linkType: hard
-
-"prettier@npm:3.3.0":
-  version: 3.3.0
-  resolution: "prettier@npm:3.3.0"
-  bin:
-    prettier: bin/prettier.cjs
-  checksum: 10/e55233f8e4b5f96f52180dbfa424ae797a98a9b8a9a7a79de5004e522c02b423e71927ed99d855dbfcd00dc3b82e5f6fb304cfe117cc4e7c8477d883df2d8984
   languageName: node
   linkType: hard
 
@@ -48283,7 +48274,7 @@ __metadata:
     eslint-plugin-vitest: "npm:0.5.4"
     husky: "npm:9.0.11"
     lint-staged: "npm:15.2.5"
-    prettier: "npm:3.2.5"
+    prettier: "npm:3.3.2"
     prettier-plugin-solidity: "npm:1.3.1"
     typescript: "npm:5.4.5"
     vitest: "npm:1.6.0"
