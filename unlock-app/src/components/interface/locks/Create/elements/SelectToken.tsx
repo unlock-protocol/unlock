@@ -11,11 +11,13 @@ export const SelectToken = ({
   onChange,
   defaultToken,
   className,
+  noNative,
 }: {
   network: number
   defaultToken?: Partial<Token>
   onChange: (token: Token) => void
   className?: string
+  noNative?: boolean
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [token, setToken] = useState(defaultToken)
@@ -27,6 +29,10 @@ export const SelectToken = ({
 
   useEffect(() => {
     const initialize = async () => {
+      const defaultTokenFromList =
+        noNative && networks[network]?.tokens
+          ? networks[network]?.tokens![0]
+          : (networks[network]?.nativeCurrency as Token)
       if (defaultToken?.address) {
         const web3Service = new Web3Service(networks)
 
@@ -40,14 +46,14 @@ export const SelectToken = ({
             symbol,
           } as Token)
         } else {
-          onSelect((networks[network]?.nativeCurrency as Token) ?? {})
+          onSelect(defaultTokenFromList)
         }
       } else {
-        onSelect((networks[network]?.nativeCurrency as Token) ?? {})
+        onSelect(defaultTokenFromList)
       }
     }
     initialize()
-  }, [defaultToken?.address, network])
+  }, [defaultToken?.address, network, noNative])
 
   return (
     <div className={twMerge('flex flex-col gap-1.5', className)}>
@@ -57,6 +63,7 @@ export const SelectToken = ({
         network={network}
         onSelect={onSelect}
         defaultCurrencyAddress={token?.address}
+        noNative={noNative}
       />
 
       <div

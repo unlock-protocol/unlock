@@ -23,7 +23,7 @@ export const SettingGeneral = ({
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Contract name"
-        description="Customize the contract name on chain."
+        description="Customize the contract name onchain."
         isLoading={isLoading}
       >
         <UpdateNameForm
