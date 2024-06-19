@@ -59,6 +59,8 @@ export default async function getPurchaseKeysArguments({
   const totalPrice = keyPrices.reduce((total, kp) => total + kp, BigInt(0))
   let totalAmountToApprove = totalApproval
 
+  console.log({ totalApproval, recurringPayments })
+
   if (!totalAmountToApprove) {
     // total amount to approve
     totalAmountToApprove = recurringPayments
