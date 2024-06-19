@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import networks from '../src'
 import ERC20 from '../utils/erc20.abi.json'
+import { log } from './logger'
 
 const run = async () => {
   for (const networkId in networks) {
@@ -20,32 +21,38 @@ const run = async () => {
           const name = await contract.name()
           const decimals = parseInt(await contract.decimals())
           if (decimals !== token.decimals) {
-            console.error(
-              `❌ Decimals mismatch for ${token.address} on ${networkId}. It needs to be "${decimals}"`
+            log(
+              `Decimals mismatch for ${token.address} on ${networkId}. It needs to be "${decimals}"`,
+              'error'
             )
           }
           if (name !== token.name) {
-            console.error(
-              `❌ Name mismatch for ${token.address} on ${networkId}. It needs to be "${name}"`
+            log(
+              `Name mismatch for ${token.address} on ${networkId}. It needs to be "${name}"`,
+              'error'
             )
           }
           if (symbol !== token.symbol) {
-            console.error(
-              `❌ Symbol mismatch for ${token.address} on ${networkId}. It needs to be "${symbol}"`
+            log(
+              `Symbol mismatch for ${token.address} on ${networkId}. It needs to be "${symbol}"`,
+              'error'
             )
           }
 
           // check if oracle is set in Unlock
-          const isSetInUnlock = await unlock.uniswapOracles(token.address)
-          if (isSetInUnlock === ethers.ZeroAddress) {
-            console.error(
-              `❌ Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${networkId}) is not set correctly`
-            )
+          if (token.symbol !== 'WETH' && network.uniswapV3) {
+            const isSetInUnlock =
+              (await unlock.uniswapOracles(token.address)) !==
+              ethers.ZeroAddress
+
+            if (!isSetInUnlock) {
+              log(
+                `Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${networkId}) is not set correctly`
+              )
+            }
           }
         } catch (error) {
-          console.error(
-            `❌ We could not verify ${token.address} on ${networkId}. ${error}`
-          )
+          log(`We could not verify ${token.address} on ${networkId}. ${error}`)
         }
       }
     }
