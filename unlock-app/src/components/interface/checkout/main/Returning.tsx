@@ -24,7 +24,7 @@ interface Props {
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Returning({ checkoutService, communication, onClose }: Props) {
+export function Returning({ checkoutService, onClose, communication }: Props) {
   const config = useConfig()
   const {
     paywallConfig,

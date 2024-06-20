@@ -5,10 +5,21 @@ import UserOperations from '../operations/userOperations'
 import logger from '../logger'
 import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
+import { issueUserToken } from '@coinbase/waas-server-auth'
+import config from '../config/config'
+import { verifyToken } from '../utils/verifyGoogleToken'
+import { z } from 'zod'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
 const decoyUserCache = new MemoryCache<string, any>(cacheDuration / 5, 1000)
+
+export const enum UserAccountType {
+  UnlockAccount = 'UNLOCK_ACCOUNT',
+  GoogleAccount = 'GOOGLE_ACCOUNT',
+  PasskeyAccount = 'PASSKEY_ACCOUNT',
+  EmailCodeAccount = 'EMAIL_CODE',
+}
 
 export const createUser = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -48,6 +59,33 @@ const userCreationStatus = async (user: any): Promise<any> => {
   return { status, recoveryPhrase }
 }
 
+async function getJSONWallet(wallet: ethers.HDNodeWallet | ethers.Wallet) {
+  const address = await wallet.getAddress()
+  const { privateKey } = wallet
+
+  const account = {
+    address,
+    privateKey,
+  }
+
+  let accountMnemonic
+  if (
+    'mnemonic' in wallet &&
+    wallet.mnemonic &&
+    wallet.mnemonic.wordlist.locale === 'en' &&
+    wallet.mnemonic.password === '' &&
+    wallet.path
+  ) {
+    accountMnemonic = {
+      path: wallet.path,
+      locale: 'en',
+      entropy: wallet.mnemonic.entropy,
+    }
+  }
+
+  return { ...account, mnemonic: accountMnemonic }
+}
+
 export const retrieveEncryptedPrivatekey = async (
   req: Request,
   res: Response
@@ -68,7 +106,10 @@ export const retrieveEncryptedPrivatekey = async (
     let passwordEncryptedPrivateKey =
       decoyUserCache.retrieveItemValue(emailAddress)
     if (!passwordEncryptedPrivateKey) {
-      passwordEncryptedPrivateKey = await ethers.Wallet.createRandom().encrypt(
+      const randomWallet = await ethers.Wallet.createRandom()
+      const jsonWallet = await getJSONWallet(randomWallet)
+      passwordEncryptedPrivateKey = await ethers.encryptKeystoreJson(
+        jsonWallet,
         (Math.random() + 1).toString(36),
         {
           scrypt: {
@@ -88,6 +129,74 @@ export const retrieveEncryptedPrivatekey = async (
     return res.json({
       passwordEncryptedPrivateKey,
     })
+  }
+}
+
+const RetrieveWaasUuidBodySchema = z.object({
+  token: z.string(),
+})
+
+export const retrieveWaasUuid = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  const { emailAddress, selectedProvider } = req.params
+  const { token } = RetrieveWaasUuidBodySchema.parse(req.body)
+
+  if (!token) {
+    return res.sendStatus(401)
+  }
+
+  // Verify the JWT token
+  const isTokenValid = await verifyToken(emailAddress, token)
+  if (!isTokenValid) {
+    return res.status(401).json({ message: 'No google token provided' })
+  }
+
+  let userUUID
+
+  const user = await UserOperations.findUserAccountByEmail(
+    req.params.emailAddress
+  )
+
+  userUUID = user?.id
+
+  // If no user is found, create
+  if (!user) {
+    const userAccountType = selectedProvider as UserAccountType
+    if (!userAccountType) {
+      console.error('No selectedProvider provided')
+      return res.status(500).json({ message: 'No selectedProvider provided' })
+    }
+    if (userAccountType === UserAccountType.UnlockAccount) {
+      console.error('Creating a user with UnlockAccount type is not allowed')
+      return res.status(500).json({
+        message: 'Creating a user with UnlockAccount type is not allowed',
+      })
+    }
+    const newUserUUID = await UserOperations.createUserAccount(
+      emailAddress,
+      selectedProvider as UserAccountType
+    )
+    userUUID = newUserUUID
+  }
+
+  try {
+    const token = await issueUserToken({
+      apiKeyName: config.coinbaseCloudApiKeyName as string,
+      privateKey: config.coinbaseCloudPrivateKey as string,
+      userID: userUUID as string,
+    })
+    res.json({ token })
+  } catch (error) {
+    console.error(
+      'Error issuing Coinbase WAAS token for user',
+      userUUID,
+      error.message
+    )
+    return res
+      .status(400)
+      .json({ message: 'Error issuing Coinbase WAAS token for user' })
   }
 }
 
@@ -290,10 +399,23 @@ export const exist = async (request: Request, response: Response) => {
   return response.sendStatus(200)
 }
 
+// Method used for nextAuth
+export const existNextAuth = async (request: Request, response: Response) => {
+  const { emailAddress } = request.params
+  const userAccountType =
+    await UserOperations.findLoginMethodsByEmail(emailAddress)
+
+  if (!userAccountType) {
+    return response.sendStatus(404)
+  }
+  return response.status(200).json({ userAccountType })
+}
+
 const UserController = {
   createUser,
   userCreationStatus,
   retrieveEncryptedPrivatekey,
+  retrieveWaasUuid,
   retrieveRecoveryPhrase,
   updateUser,
   updatePaymentDetails,
@@ -304,6 +426,7 @@ const UserController = {
   cards,
   eject,
   exist,
+  existNextAuth,
 }
 
 export default UserController

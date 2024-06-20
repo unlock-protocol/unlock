@@ -39,19 +39,15 @@ export default async function (lock, transactionOptions = {}, callback) {
     callback(null, hash, await transactionPromise)
   }
   // Let's now wait for the lock to be deployed before we return its address
-  const receipt = await this.provider.waitForTransaction(hash)
+  const { logs } = await this.provider.waitForTransaction(hash)
+  const parsedLogs = logs
+    .map((log) => unlockContract.interface.parseLog(log))
+    .map((log) => log || {})
 
-  const parser = unlockContract.interface
-  const newLockEvent = receipt.logs
-    .map((log) => {
-      try {
-        // ignore events that we can not parse
-        return parser.parseLog(log)
-      } catch {
-        return {}
-      }
-    })
-    .filter((event) => event.signature === 'NewLock(address,address)')[0]
+  const newLockEvent = parsedLogs.find(
+    ({ fragment }) =>
+      fragment && fragment.signature === 'NewLock(address,address)'
+  )
 
   if (newLockEvent) {
     return newLockEvent.args.newLockAddress

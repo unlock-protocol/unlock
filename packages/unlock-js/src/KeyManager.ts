@@ -14,7 +14,7 @@ export interface TransferObject {
   deadline: number
 }
 
-type Signer = ethers.Signer | ethers.providers.JsonRpcSigner
+type Signer = ethers.Signer | ethers.JsonRpcSigner
 export interface CreateTransferSignatureOptions {
   signer: Signer
   params: TransferObject
@@ -68,17 +68,14 @@ export class KeyManager {
     const provider = this.providerForNetwork(network)
     const KeyManagerContract = this.getContract({ network })
 
-    return KeyManagerContract.locksmiths(signer)
+    return KeyManagerContract.getFunction('locksmiths')(signer)
   }
 
   providerForNetwork(network: number) {
     if (!this.networks[network]) {
       throw new Error(`Missing config for ${network}`)
     }
-    return new ethers.providers.JsonRpcBatchProvider(
-      this.networks[network].provider,
-      network
-    )
+    return new ethers.JsonRpcProvider(this.networks[network].provider, network)
   }
 
   getDomain(network: number) {
@@ -137,7 +134,7 @@ export class KeyManager {
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
 
-    const tx = await KeyManagerContract.transfer(
+    const tx = await KeyManagerContract.getFunction('transfer')(
       lock,
       token,
       owner,
@@ -157,7 +154,7 @@ export class KeyManager {
     signer,
   }: TransferOptions) {
     const KeyManagerContract = this.getContract({ network, signer })
-    const tx = await KeyManagerContract.callStatic.transfer(
+    const tx = await KeyManagerContract.getFunction('transfer').staticCall(
       lock,
       token,
       owner,
@@ -176,9 +173,7 @@ export class KeyManager {
       email: params.email.trim().toLowerCase(),
       lock: params.lockAddress.trim().toLowerCase(),
     }
-    return ethers.utils.getAddress(
-      ethers.utils.id(JSON.stringify(item)).slice(0, 42)
-    )
+    return ethers.getAddress(ethers.id(JSON.stringify(item)).slice(0, 42))
   }
 
   /**
@@ -189,7 +184,7 @@ export class KeyManager {
     network,
   }: Omit<TransferOptions, 'signer'>) {
     const domain = this.getDomain(network)
-    const recoveredAddress = ethers.utils.verifyTypedData(
+    const recoveredAddress = ethers.verifyTypedData(
       domain,
       TransferTypes,
       { lock, token, owner, deadline },

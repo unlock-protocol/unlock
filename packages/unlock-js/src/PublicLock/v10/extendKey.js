@@ -25,7 +25,6 @@ export default async function (
     data,
     totalApproval,
     recurringPayment,
-    swap,
   },
   transactionOptions = {},
   callback
@@ -41,7 +40,7 @@ export default async function (
   }
 
   if (!data) {
-    data = []
+    data = '0x'
   }
 
   // If erc20Address was not provided, get it
@@ -62,14 +61,6 @@ export default async function (
     )
   }
 
-  const unlockSwapPurchaserContract = swap
-    ? this.getUnlockSwapPurchaserContract({
-        params: {
-          network: this.networkId,
-        },
-      })
-    : null
-
   const extendArgs = [actualAmount, tokenId, referrer, data]
   const callData = lockContract.interface.encodeFunctionData(
     'extend',
@@ -81,33 +72,22 @@ export default async function (
     transactionOptions.value = actualAmount
   }
 
-  // if swap is provided, we need to override the value
-  if (swap && swap?.value) {
-    transactionOptions.value = swap.value
-  }
-
   let totalAmountToApprove = totalApproval
 
   if (!totalAmountToApprove) {
     totalAmountToApprove = recurringPayment
-      ? actualAmount.mul(recurringPayment)
+      ? actualAmount * BigInt(recurringPayment)
       : actualAmount
   }
 
   // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = swap
-    ? {
-        erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove: swap.amountInMax,
-      }
-    : {
-        erc20Address,
-        totalAmountToApprove,
-        address: lockAddress,
-      }
+  const approvalOptions = {
+    erc20Address,
+    totalAmountToApprove,
+    address: lockAddress,
+  }
 
-  // Only ask for approval if the lock or swap is priced in ERC20
+  // Only ask for approval if the lock is priced in ERC20
   if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
     await approveAllowance.bind(this)(approvalOptions)
   }
@@ -127,30 +107,19 @@ export default async function (
         transactionOptions.gasPrice = gasPrice
       }
 
-      const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
-            lockAddress,
-            swap.srcTokenAddress || ZERO,
-            actualAmount,
-            swap.amountInMax,
-            swap.uniswapRouter,
-            swap.swapCallData,
-            callData,
-            transactionOptions
-          )
-        : lockContract.estimateGas.extend(
-            actualAmount,
-            tokenId,
-            referrer,
-            data,
-            transactionOptions
-          )
+      const gasLimitPromise = lockContract.extend.estimateGas(
+        actualAmount,
+        tokenId,
+        referrer,
+        data,
+        transactionOptions
+      )
       const gasLimit = await gasLimitPromise
       // Remove the gas prices settings for the actual transaction (the wallet will set them)
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
-      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
@@ -162,37 +131,25 @@ export default async function (
     }
   }
 
-  const transactionRequestpromise = swap
-    ? unlockSwapPurchaserContract?.populateTransaction?.swapAndCall(
-        lockAddress,
-        swap.srcTokenAddress || ZERO,
-        actualAmount,
-        swap.amountInMax,
-        swap.uniswapRouter,
-        swap.swapCallData,
-        callData,
-        transactionOptions
-      )
-    : lockContract.populateTransaction.extend(
-        actualAmount,
-        tokenId,
-        referrer,
-        data,
-        transactionOptions
-      )
+  const transactionRequestpromise = lockContract.extend.populateTransaction(
+    actualAmount,
+    tokenId,
+    referrer,
+    data,
+    transactionOptions
+  )
 
   const transactionRequest = await transactionRequestpromise
 
   if (transactionOptions.runEstimate) {
-    const estimate = lockContract.signer.estimateGas(transactionRequest)
+    const estimate = this.signer.estimateGas(transactionRequest)
     return {
       transactionRequest,
       estimate,
     }
   }
 
-  const transactionPromise =
-    lockContract.signer.sendTransaction(transactionRequest)
+  const transactionPromise = this.signer.sendTransaction(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 

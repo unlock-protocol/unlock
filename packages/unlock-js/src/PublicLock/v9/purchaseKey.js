@@ -23,19 +23,11 @@ export default async function (
     decimals,
     referrer,
     data,
-    swap,
   },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  const unlockSwapPurchaserContract = swap
-    ? this.getUnlockSwapPurchaserContract({
-        params: {
-          network: this.networkId,
-        },
-      })
-    : null
 
   if (!owner) {
     owner = await this.signer.getAddress()
@@ -50,7 +42,7 @@ export default async function (
   }
 
   if (!data) {
-    data = []
+    data = '0x'
   }
 
   // If erc20Address was not provided, get it
@@ -82,25 +74,14 @@ export default async function (
     transactionOptions.value = actualAmount
   }
 
-  // if swap is provided, we need to override the value
-  if (swap && swap?.value) {
-    transactionOptions.value = swap.value
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = {
+    erc20Address,
+    totalAmountToApprove: actualAmount,
+    address: lockAddress,
   }
 
-  // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = swap
-    ? {
-        erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove: swap.amountInMax,
-      }
-    : {
-        erc20Address,
-        totalAmountToApprove: actualAmount,
-        address: lockAddress,
-      }
-
-  // Only ask for approval if the lock or swap is priced in ERC20
+  // Only ask for approval if the lock is priced in ERC20
   if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
     await approveAllowance.bind(this)(approvalOptions)
   }
@@ -120,25 +101,14 @@ export default async function (
         transactionOptions.gasPrice = gasPrice
       }
 
-      const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.estimateGas?.swapAndCall(
-            lockAddress,
-            swap.srcTokenAddress || ZERO,
-            actualAmount,
-            swap.amountInMax,
-            swap.uniswapRouter,
-            swap.swapCallData,
-            callData,
-            transactionOptions
-          )
-        : lockContract.estimateGas.purchase(
-            actualAmount,
-            owner,
-            referrer,
-            keyManager,
-            data,
-            transactionOptions
-          )
+      const gasLimitPromise = lockContract.purchase.estimateGas(
+        actualAmount,
+        owner,
+        referrer,
+        keyManager,
+        data,
+        transactionOptions
+      )
 
       const gasLimit = await gasLimitPromise
 
@@ -146,7 +116,7 @@ export default async function (
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
-      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      transactionOptions.gasLimit = (gasLimit * 13n) / 10n
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
@@ -158,25 +128,14 @@ export default async function (
     }
   }
 
-  const transactionRequestPromise = swap
-    ? unlockSwapPurchaserContract?.swapAndCall(
-        lockAddress,
-        swap.srcTokenAddress || ZERO,
-        actualAmount,
-        swap.amountInMax,
-        swap.uniswapRouter,
-        swap.swapCallData,
-        callData,
-        transactionOptions
-      )
-    : lockContract.purchase(
-        actualAmount,
-        owner,
-        referrer,
-        keyManager,
-        data,
-        transactionOptions
-      )
+  const transactionRequestPromise = lockContract.purchase(
+    actualAmount,
+    owner,
+    referrer,
+    keyManager,
+    data,
+    transactionOptions
+  )
 
   const hash = await this._handleMethodCall(transactionRequestPromise)
 
@@ -197,9 +156,7 @@ export default async function (
       if (log.address.toLowerCase() !== lockAddress.toLowerCase()) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
-    .filter((event) => {
-      return event && event.name === 'Transfer'
-    })[0]
+    .find((evt) => evt && evt?.fragment?.name === 'Transfer')
 
   if (transferEvent) {
     return transferEvent.args.tokenId.toString()

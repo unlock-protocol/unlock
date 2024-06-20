@@ -4,6 +4,8 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { OAuthConfig } from '~/unlockTypes'
 import { useProvider } from './useProvider'
 import { config as AppConfig } from '~/config/app'
+import { isInIframe } from '~/utils/iframe'
+
 export interface UserInfo {
   address?: string
   signedMessage?: string
@@ -126,6 +128,10 @@ export const useCheckoutCommunication = () => {
   const [user, setUser] = useState<string | undefined>(undefined)
 
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
+    if (!isInIframe()) {
+      // Not in an iframe? don't emit!
+      return
+    }
     if (!parent) {
       setOutgoingBuffer([...outgoingBuffer, { kind, payload }])
     } else {
@@ -248,12 +254,6 @@ export const useCheckoutCommunication = () => {
     pushOrEmit(CheckoutEvents.onEvent, eventName)
   }
 
-  // If the page is not inside an iframe, window and window.top will be identical
-  let insideIframe = false
-  if (typeof window !== 'undefined') {
-    insideIframe = window.top !== window
-  }
-
   const useDelegatedProvider =
     paywallConfig?.useDelegatedProvider || oauthConfig?.useDelegatedProvider
 
@@ -315,7 +315,6 @@ export const useCheckoutCommunication = () => {
     paywallConfig,
     oauthConfig,
     providerAdapter,
-    insideIframe,
     // `ready` is primarily provided as an aid for testing the buffer
     // implementation.
     ready: !!parent,

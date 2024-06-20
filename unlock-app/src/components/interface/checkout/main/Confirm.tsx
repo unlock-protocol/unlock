@@ -6,7 +6,6 @@ import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { ConfirmClaim } from './Confirm/ConfirmClaim'
 import { ConfirmCrypto } from './Confirm/ConfirmCrypto'
-import { ConfirmSwapAndPurchase } from './Confirm/ConfirmSwapAndPurchase'
 import { ConfirmCard } from './Confirm/ConfirmCard'
 import { ConfirmCrossmint } from './Confirm/ConfirmCrossmint'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -28,7 +27,7 @@ export function Confirm({ checkoutService, communication }: Props) {
     ToastHelper.error(message)
   }
 
-  const onConfirmed = (lock: string, hash?: string, network?: number) => {
+  const onConfirmed = (lock: string, network: number, hash?: string) => {
     // If not pessimistic, we can emit the transaction info right away
     // and pass the signed message as well
     if (!paywallConfig.pessimistic && hash) {
@@ -46,7 +45,7 @@ export function Confirm({ checkoutService, communication }: Props) {
     }
     checkoutService.send({
       type: 'CONFIRM_MINT',
-      status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
+      status: 'PROCESSING',
       transactionHash: hash!,
       network,
     })
@@ -57,13 +56,6 @@ export function Confirm({ checkoutService, communication }: Props) {
       <Stepper service={checkoutService} />
       {payment.method === 'card' && (
         <ConfirmCard
-          checkoutService={checkoutService}
-          onConfirmed={onConfirmed}
-          onError={onError}
-        />
-      )}
-      {payment.method === 'swap_and_purchase' && (
-        <ConfirmSwapAndPurchase
           checkoutService={checkoutService}
           onConfirmed={onConfirmed}
           onError={onError}

@@ -14,7 +14,7 @@ interface Props {
   communication?: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function MessageToSign({ communication, checkoutService }: Props) {
+export function MessageToSign({ checkoutService, communication }: Props) {
   const { messageToSign } = useSelector(
     checkoutService,
     (state) => state.context.paywallConfig

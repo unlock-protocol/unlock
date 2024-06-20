@@ -30,7 +30,6 @@ export const getEventDetailsByLock: RequestHandler = async (
 export const EventBody = z.object({
   id: z.number().optional(),
   data: z.any(),
-  // @ts-expect-error Type instantiation is excessively deep and possibly infinite
   checkoutConfig: z.object({
     config: PaywallConfig,
     id: z.string().optional(),
@@ -169,6 +168,7 @@ export const getEvent: RequestHandler = async (request, response) => {
                   network: settings.network,
                 },
               },
+              referrer: request.user?.walletAddress,
             },
           }
 

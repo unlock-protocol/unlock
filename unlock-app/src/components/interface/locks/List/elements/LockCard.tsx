@@ -86,7 +86,7 @@ export const LockCard = ({
 
   const getKeyPrice = async () => {
     const decimals = await web3service.getTokenDecimals(tokenAddress, network)
-    return ethers.utils.formatUnits(lock?.price, decimals)
+    return ethers.formatUnits(lock?.price, decimals)
   }
 
   const [

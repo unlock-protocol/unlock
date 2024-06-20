@@ -124,7 +124,7 @@ const parsedAbis = parseData(
   ({ contractName, signatures, deployedBytecode }) => ({
     contractName,
     abi: signatures,
-    bytecodeHash: ethers.utils.sha256(deployedBytecode),
+    bytecodeHash: ethers.sha256(deployedBytecode),
   })
 )
 
