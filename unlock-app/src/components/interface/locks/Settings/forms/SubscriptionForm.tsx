@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { Badge, Button, ToggleSwitch } from '@unlock-protocol/ui'
-import { useState, useEffect } from 'react'
-import { MAX_UINT } from '~/constants'
-import useLock from '~/hooks/useLock'
-import { useLockSettings } from '~/hooks/useLockSettings'
-import { useTabSettings } from '..'
+import networks from '@unlock-protocol/networks'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import { ZeroAddress } from 'ethers'
+import { UpdateGasRefundForm } from './UpdateGasRefundForm'
+import useGetGasRefund from '~/hooks/useGetGasRefund'
+import { Placeholder } from '@unlock-protocol/ui'
 
 interface SubscriptionFormProps {
   lockAddress: string
@@ -17,150 +17,88 @@ interface SubscriptionFormProps {
 export const SubscriptionForm = ({
   lockAddress,
   network,
-  isManager,
-  disabled,
-  lock,
 }: SubscriptionFormProps) => {
-  const [isLoading, setLoading] = useState(false)
-  const [recurring, setRecurring] = useState(false)
-  const [isRecurring, setIsRecurring] = useState(false)
-  const { setTab } = useTabSettings()
-  const { getIsRecurringPossible } = useLockSettings()
+  const { data: lock, isLoading: isLoadingLock } = useQuery(
+    ['getLock', lockAddress, network],
+    async () => {
+      const web3Service = new Web3Service(networks)
+      return web3Service.getLock(lockAddress, network)
+    }
+  )
 
   const {
-    data: { gasRefund = 0, isRecurringPossible = false } = {},
+    data: gasRefund,
     isLoading: isLoadingRefund,
-  } = useQuery(
-    ['getIsRecurringPossible', lockAddress, network],
-    async () => {
-      return await getIsRecurringPossible({ lockAddress, network })
-    },
-    {
-      enabled: lockAddress?.length > 0 && network != null,
-    }
-  )
+    refetch: refetchGasRefund,
+  } = useGetGasRefund(lockAddress, network)
 
-  const { updateSelfAllowance } = useLock(
-    {
-      address: lockAddress,
-      network,
-    },
-    network
-  )
+  const isFree = Number(lock?.keyPrice) === 0
+  const isNative =
+    !lock?.currencyContractAddress ||
+    lock.currencyContractAddress === ZeroAddress
+  const isExpiring =
+    lock?.expirationDuration !== -1 &&
+    lock?.expirationDuration < 60 * 60 * 24 * 365 * 100 // 100 years
+  const hasGasRefund = !isLoadingRefund && gasRefund && Number(gasRefund) > 0
 
-  useEffect(() => {
-    setRecurring(isRecurring)
-  }, [isRecurring])
-
-  useEffect(() => {
-    if (lock?.publicLockVersion >= 11) {
-      // TODO: check gas refund
-      setIsRecurring(isRecurringPossible)
-    } else {
-      setIsRecurring(isRecurringPossible && lock?.selfAllowance !== '0')
-    }
-  }, [lock?.publicLockVersion, lock?.selfAllowance, isRecurringPossible])
-
-  const handleApproveRecurring = () => {
-    if (!isManager) return null
-    // We only need to do this for older versions
-    if (lock?.publicLockVersion < 11) {
-      setLoading(true)
-      updateSelfAllowance(MAX_UINT, () => {
-        setIsRecurring(true)
-        setLoading(false)
-      })
-    } else {
-      setIsRecurring(true)
-    }
-  }
-
-  if (isRecurring) {
+  if (isLoadingLock || isLoadingRefund) {
     return (
-      <Badge variant="green" className="flex justify-center w-full md:w-1/3">
-        <span>Recurring enabled</span>
-      </Badge>
+      <Placeholder.Root>
+        <Placeholder.Line size="lg" />
+        <Placeholder.Line size="sm" />
+        <Placeholder.Line size="md" />
+      </Placeholder.Root>
     )
   }
 
-  const RecurringDescription = () => {
-    if (isLoading) return null
-    if (isRecurringPossible) return null
-
-    if (lock?.publicLockVersion >= 10) {
-      return (
-        <div className="grid  gap-1.5">
-          <small className="text-sm text-brand-dark">
-            Recurring memberships are only available for locks that are using an
-            ERC20 currency for which a gas refund value is set.
-          </small>
-          <ul className="ml-2 list-disc">
-            {gasRefund <= 0 && (
-              <li>
-                <span className="text-red-500">
-                  Gas refund value is not set. The gas refund is an incentive
-                  for network participants to execute the renewal transactions.
-                </span>
-              </li>
-            )}
-            {lock?.expirationDuration == -1 && (
-              <li>
-                <span className="text-red-500">
-                  The memberships on this lock do not expire, so they cannot be
-                  renewed. You can change it from{' '}
-                  <button
-                    onClick={(event) => {
-                      event.preventDefault()
-                      setTab(1)
-                    }}
-                    className="font-semibold text-brand-ui-primary hover:underline"
-                  >
-                    Membership terms settings.
-                  </button>
-                </span>
-              </li>
-            )}
-            {(lock?.currencyContractAddress ?? '')?.length === 0 && (
-              <li>
-                <span className="text-red-500">
-                  {`This lock uses the chain's default currency which cannot be used for recurring memberships. Please change to use an ERC20 current from the "Price" tab.`}
-                </span>
-              </li>
-            )}
-          </ul>
-        </div>
-      )
-    }
-
-    return null
+  if (isFree) {
+    return (
+      <p>
+        ❌ This lock is free. Free memberships cannot be set to be recurring.
+      </p>
+    )
+  }
+  if (isNative) {
+    return (
+      <p>
+        ❌ This lock is using a native currency. Recurring memberships are only
+        available if you use an ERC20 currency, because users need to approve
+        future payments.
+      </p>
+    )
+  }
+  if (!isExpiring) {
+    return (
+      <p>
+        ❌ This lock has non-expiring memberships, which means that they cannot
+        be renewed.
+      </p>
+    )
   }
 
-  const disabledInput =
-    isRecurring ||
-    !isRecurringPossible ||
-    disabled ||
-    isLoading ||
-    isLoadingRefund
-
   return (
-    <div className="flex flex-col gap-6">
-      <ToggleSwitch
-        title="Enable recurring"
-        description={<RecurringDescription />}
-        disabled={disabledInput}
-        enabled={recurring}
-        setEnabled={setRecurring}
+    <div className="flex flex-col gap-4">
+      <p>
+        {!hasGasRefund && (
+          <>
+            ⚠️ Renewals are enabled. However they are currently not
+            incentivized, which means that they may not be triggered if gas is
+            too high.
+          </>
+        )}
+        {hasGasRefund && (
+          <>
+            Renewals are enabled and you are incentivizing renewals with a gas
+            refund.
+          </>
+        )}
+      </p>
+
+      <UpdateGasRefundForm
+        lockAddress={lockAddress}
+        network={network}
+        onChanged={refetchGasRefund}
       />
-      {isManager && (
-        <Button
-          disabled={disabledInput}
-          className="w-full md:w-1/2"
-          onClick={handleApproveRecurring}
-          loading={isLoading}
-        >
-          Apply
-        </Button>
-      )}
     </div>
   )
 }
