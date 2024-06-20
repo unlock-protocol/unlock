@@ -77,4 +77,4 @@ jobs:
           service: unlock-app
           target-env: prod
         env:
-          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://app.unlock-protocol.com'
+          UNLOCK_APP_VERCEL_PROD_NEXTAUTH_URL: 'https://app.unlock-protocol.com'
