@@ -25,6 +25,7 @@ secrets:
 env:
   DOCKER_BUILDKIT: 1
   BUILDKIT_PROGRESS: plain
+  NEXTAUTH_URL: 'https://unlock-protocol.com'
 runs:
   using: 'composite'
   steps:
