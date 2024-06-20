@@ -89,6 +89,8 @@ jobs:
         with:
           service: unlock-app
           target-env: staging
+        env:
+          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://unlock-protocol.com'
 
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
