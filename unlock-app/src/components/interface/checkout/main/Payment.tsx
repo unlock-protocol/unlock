@@ -257,7 +257,7 @@ export function Payment({ checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance of {symbol.toUpperCase()} on{' '}
+                    Your balance of {symbol?.toUpperCase()} on{' '}
                     {networkConfig.name}:{' ~'}
                     {formatNumber(Number(balance?.balance))}{' '}
                   </div>
@@ -350,7 +350,13 @@ export function Payment({ checkoutService }: Props) {
               crossChainRoutes?.map((route, index) => {
                 const symbol = route.tokenPayment.isNative
                   ? route.currency
-                  : route.tokenPayment.symbol
+                  : route.tokenPayment.symbol || ''
+
+                if (!symbol) {
+                  // Some routes are returned with Decent without a token
+                  console.error('Missing symbol for route', route)
+                  return null
+                }
                 return (
                   <button
                     key={index}
@@ -384,7 +390,7 @@ export function Payment({ checkoutService }: Props) {
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <div className="w-full text-sm text-left text-gray-500">
-                        Your balance of {symbol.toUpperCase()} on{' '}
+                        Your balance of {symbol?.toUpperCase()} on{' '}
                         {route.networkName}:{' ~'}
                         {formatNumber(Number(route.userTokenBalance))}. Payment
                         through
