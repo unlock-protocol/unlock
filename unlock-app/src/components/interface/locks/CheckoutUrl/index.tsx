@@ -193,11 +193,11 @@ export const CheckoutUrlPage = () => {
         name: configName,
         config: DEFAULT_CONFIG.config,
       })
-    }
-
-    if (!checkoutConfig?.id) {
-      ToastHelper.error('Please select a configuration or create a new one.')
-      return Promise.reject() // no config selected, prevent skip to next step
+    } else {
+      if (!checkoutConfig?.id) {
+        ToastHelper.error('Please select a configuration or create a new one.')
+        return Promise.reject() // no config selected, prevent skip to next step
+      }
     }
   }
 
