@@ -30,6 +30,7 @@ if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID
   # And ship!
   export UNLOCK_ENV="$DEPLOY_ENV"
   export NEXT_PUBLIC_UNLOCK_ENV="$DEPLOY_ENV"
+  export NEXTAUTH_URL="https://unlock-protocol.com"
   # move to root directory
   cd ..
   npx -y vercel build -y --cwd . --token $VERCEL_TOKEN $PROD
