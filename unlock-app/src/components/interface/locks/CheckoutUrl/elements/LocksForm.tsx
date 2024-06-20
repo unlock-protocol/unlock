@@ -110,12 +110,6 @@ export const BasicConfigForm: React.FC<Props> = ({
         {...register('dataBuilder')}
       />
       <Checkbox
-        label="Skip Recipient"
-        description={PaywallLockConfig.shape.skipRecipient?.description}
-        error={errors.skipRecipient?.message}
-        {...register('skipRecipient')}
-      />
-      <Checkbox
         label="Collect Email"
         description={PaywallLockConfig.shape.emailRequired?.description}
         error={errors.emailRequired?.message}
@@ -539,6 +533,7 @@ export const LocksForm = ({
     setLocks(locksByAddress)
     onChange(locksByAddress)
     setAddMetadata(false)
+    onEditLock(lockAddress)
   }
 
   const addLockMutation = useMutation(onAddLock)
