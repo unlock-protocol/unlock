@@ -111,8 +111,9 @@ function logLocks({
   )
 }
 
-async function main() {
-  const timeLimit = new Date('2022-01-01').getTime() / 1000
+async function main({ deadline = '2022-01-01' } = {}) {
+  console.log(`Before ${deadline}`)
+  const timeLimit = new Date(deadline).getTime() / 1000
 
   const chains = Object.keys(networks).filter(
     (id) => !isNaN(parseInt(id)) && !networks[id].isTestNetwork
