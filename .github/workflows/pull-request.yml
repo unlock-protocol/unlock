@@ -66,9 +66,6 @@ jobs:
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
   deploy-unlock-app-vercel:
-    needs:
-      - check-changes
-      - run-tests
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
     runs-on: ubuntu-22.04
     steps:
@@ -85,7 +82,8 @@ jobs:
           UNLOCK_APP_VERCEL_STAGING_VERCEL_ORG_ID: op://secrets/vercel/org-id
           UNLOCK_APP_VERCEL_STAGING_VERCEL_TOKEN: op://secrets/vercel/deployment-token
           UNLOCK_APP_VERCEL_STAGING_NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY: op://secrets/wedlocks/public-key
-          GOOGLE_CLIENT_SECRET: op://secrets/google/staging-secret
+          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://unlock-protocol.com'
+          UNLOCK_APP_VERCEL_STAGING_GOOGLE_CLIENT_SECRET: op://secrets/google/staging-secret
       - uses: ./.github/actions/vercel
         with:
           service: unlock-app
