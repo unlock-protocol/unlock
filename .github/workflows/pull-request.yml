@@ -92,7 +92,7 @@ jobs:
           service: unlock-app
           target-env: staging
         env:
-          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: $ {{ env.UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL }}
+          UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: ${{ env.UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL }}
 
   deploy-docs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
