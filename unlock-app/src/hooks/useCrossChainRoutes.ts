@@ -69,6 +69,8 @@ export const useCrossChainRoutes = ({
     }
   )
 
+  const hasPrices = Array.isArray(prices) && prices.length > 0
+
   const balanceResults = useQueries({
     queries: BoxEvmChains.filter((network) => {
       return networks[network.id]
@@ -82,7 +84,7 @@ export const useCrossChainRoutes = ({
           }
         },
         staleTime: 1000 * 60 * 5, // 5 minutes
-        enabled,
+        enabled: enabled && hasPrices,
       }
     }),
   })
@@ -144,6 +146,14 @@ export const useCrossChainRoutes = ({
               if (!prices) {
                 return null
               }
+              if (
+                network === lock.network &&
+                (token.address === lock.currencyContractAddress ||
+                  (!lock.currencyContractAddress &&
+                    token.address === ZeroAddress))
+              ) {
+                return null
+              }
               const route = await getCrossChainRoute({
                 sender: account!,
                 lock,
@@ -188,7 +198,7 @@ export const useCrossChainRoutes = ({
                 ...route,
               } as CrossChainRouteWithBalance
             },
-            enabled,
+            enabled: enabled && hasPrices,
             staleTime: 1000 * 60 * 5, // 5 minutes
           }
         }
@@ -204,8 +214,8 @@ export const useCrossChainRoutes = ({
   return {
     isLoading:
       isLoadingPrices ||
-      balanceResults.some((result) => result.isLoading) ||
-      routeResults.some((result) => result.isLoading),
+      (hasPrices && balanceResults.some((result) => result.isLoading)) ||
+      (hasPrices && routeResults.some((result) => result.isLoading)),
     routes: routes.sort(
       (a: CrossChainRouteWithBalance, b: CrossChainRouteWithBalance) =>
         a!.resolvedAt - b!.resolvedAt

@@ -71,7 +71,10 @@ jobs:
           UNLOCK_APP_VERCEL_PROD_NEXT_PUBLIC_STRIPE_KEY: op://secrets/stripe/publishable-key-prod
           UNLOCK_APP_VERCEL_PROD_NEXT_PUBLIC_ETHPASS_KEY: op://secrets/ethpass/username
           UNLOCK_APP_VERCEL_PROD_NEXT_PUBLIC_UNLOCK_ENV: prod
+          UNLOCK_APP_VERCEL_PROD_GOOGLE_CLIENT_SECRET: op://secrets/google/prod-secret
       - uses: ./.github/actions/vercel
         with:
           service: unlock-app
           target-env: prod
+        env:
+          UNLOCK_APP_VERCEL_PROD_NEXTAUTH_URL: 'https://app.unlock-protocol.com'

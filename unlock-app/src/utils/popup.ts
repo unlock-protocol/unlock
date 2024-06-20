@@ -1,3 +1,4 @@
+// Used for NextAuth google sign in
 export const popupCenter = (url: string, title: string) => {
   const dualScreenLeft = window.screenLeft ?? window.screenX
   const dualScreenTop = window.screenTop ?? window.screenY
