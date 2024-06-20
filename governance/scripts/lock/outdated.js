@@ -103,7 +103,7 @@ function logLocks({
     - receipts: ${receipts.length}
     - locks: ${lockAddresses.length} unique lock addresses
     - earliest version ${earliest} 
-    - earliest ${earliestLocks.length} locks
+    - earliest ${earliestLocks.length} locks (${parseInt(earliest) < 9 ? earliestLocks.map(({ address }) => address).join(',') : ''})
     - versions: ${Object.keys(count)
       .map((v) => `v${v}:${count[v]}`)
       .join(',')}
