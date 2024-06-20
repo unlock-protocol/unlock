@@ -4,8 +4,6 @@ import { ReceiptBaseForm } from '../forms/ReceiptBaseForm'
 import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { SettingCard } from './SettingCard'
-import Link from 'next/link'
-import { CrossmintSettingsForm } from '../forms/CrossmintSetting'
 
 interface SettingPaymentsProps {
   lockAddress: string
@@ -44,32 +42,6 @@ export const SettingPayments = ({
         isLoading={isLoading}
       >
         <CreditCardWithStripeForm
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-          disabled={!isManager}
-        />
-      </SettingCard>
-
-      <SettingCard
-        label="Payments with Crossmint"
-        description={
-          <>
-            Enabling payment with{' '}
-            <Link
-              href="https://www.crossmint.com/products/nft-checkout"
-              target="_blank"
-              className="underline"
-            >
-              Crossmint
-            </Link>{' '}
-            will allow your members to pay with by card while you receive funds
-            on your lock contract directly.
-          </>
-        }
-        isLoading={isLoading}
-      >
-        <CrossmintSettingsForm
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
