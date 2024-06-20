@@ -91,7 +91,6 @@ jobs:
           target-env: staging
         env:
           UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://staging-app.unlock-protocol.com'
-
   deploy-docs-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }} # make sure we dont deploy from forks
     uses: ./.github/workflows/_netlify.yml
