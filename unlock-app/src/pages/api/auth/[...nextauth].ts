@@ -1,14 +1,7 @@
 import NextAuth from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
-import { config } from '~/config/app'
 
 export const authOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: config.googleClientId as string,
-      clientSecret: config.googleClientSecret as string,
-    }),
-  ],
+  providers: [],
   callbacks: {
     // We need to pass provider to the session so that we can use it in the WaasProvider
     async signIn({ user, account }: { user: any; account: any }) {
