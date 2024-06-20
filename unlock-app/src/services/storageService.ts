@@ -250,6 +250,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
+  // TODO: Depracate after NextAuth is fully implemented
   async userExist(emailAddress: string) {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
