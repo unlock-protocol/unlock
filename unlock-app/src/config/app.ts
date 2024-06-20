@@ -20,7 +20,7 @@ const dev = {
     process.env.NEXT_PUBLIC_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
   wedlocksUri: process.env.NEXT_PUBLIC_WEDLOCKS_URI || staging.wedlocksUri,
   unlockApp: process.env.NEXT_PUBLIC_UNLOCK_APP_URI || staging.unlockApp,
-  NEXTAUTH_URL: staging.unlockApp,
+  NEXTAUTH_URL: staging.NEXTAUTH_URL,
 }
 
 const production = {
