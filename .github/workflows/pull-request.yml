@@ -92,6 +92,7 @@ jobs:
           target-env: staging
         env:
           UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_URL: 'https://staging-app.unlock-protocol.com'
+
   deploy-docs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     uses: ./.github/workflows/_netlify.yml
