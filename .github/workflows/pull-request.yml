@@ -66,6 +66,9 @@ jobs:
       AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
 
   deploy-unlock-app-vercel:
+    needs:
+      - check-changes
+      - run-tests
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository && needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'unlock-app')  }}
     runs-on: ubuntu-22.04
     steps:
