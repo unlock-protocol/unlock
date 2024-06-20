@@ -11,16 +11,6 @@ import { TransactionOptions, WalletServiceCallback } from './types'
 import { passwordHookAbi } from './abis/passwordHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
-
-import {
-  CurrencyAmount,
-  NativeCurrency,
-  Percent,
-  Token,
-  TradeType,
-} from '@uniswap/sdk-core'
-import { AlphaRouter, SwapType } from '@uniswap/smart-order-router'
-import { UnlockUniswapRoute } from '@unlock-protocol/types'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
 
 /**
@@ -1022,73 +1012,6 @@ export default class Web3Service extends UnlockService {
       abi: new ethers.Interface(passwordHookAbi),
     })
     return contract.signers(lockAddress)
-  }
-
-  async getUniswapRoute({
-    params: { tokenOut, amountOut, recipient, tokenIn, network },
-  }: {
-    params: {
-      tokenIn: Token | NativeCurrency
-      tokenOut: Token | NativeCurrency
-      amountOut: string
-      recipient: string
-      network: number
-    }
-  }): Promise<UnlockUniswapRoute> {
-    const provider: any = this.providerForNetwork(network)
-    const networkConfig = this.networks[network]
-    const router = new AlphaRouter({
-      chainId: network,
-      provider,
-    })
-    const outputAmount = CurrencyAmount.fromRawAmount(tokenOut, amountOut)
-    const routeArgs = [
-      outputAmount,
-      tokenIn,
-      TradeType.EXACT_OUTPUT,
-      {
-        type: SwapType.UNIVERSAL_ROUTER,
-        recipient,
-        slippageTolerance: new Percent(15, 100),
-        deadline: Math.floor(new Date().getTime() / 1000 + 60 * 60), // 1 hour
-      },
-    ] as const
-    // call router
-    const swapResponse = await router.route(...routeArgs)
-
-    if (!swapResponse) {
-      throw new Error('No route found')
-    }
-
-    const {
-      methodParameters,
-      quote,
-      quoteGasAdjusted,
-      estimatedGasUsedUSD,
-      trade,
-    } = swapResponse
-    // parse quote as BigNumber
-    const amountInMax = utils.currencyAmountToBigNumber(quote)
-    const { calldata: swapCalldata, value, to: swapRouter } = methodParameters!
-    const ratio = 1 / Number(trade.executionPrice.toFixed(6))
-
-    const convertToQuoteToken = (value: string) => {
-      return Number(value) * ratio
-    }
-
-    return {
-      swapCalldata,
-      value,
-      amountInMax,
-      swapRouter:
-        // use hard coded router when available
-        networkConfig?.uniswapV3?.universalRouterAddress || swapRouter,
-      quote,
-      trade,
-      convertToQuoteToken,
-      quoteGasAdjusted,
-      estimatedGasUsedUSD,
-    }
   }
 
   async getTokenIdsFromTx({
