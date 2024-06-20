@@ -125,6 +125,12 @@ export function ConfirmCrossChainPurchase({
         }
       }
       setButtonLabel(`Purchasing...`)
+
+      // delete unwanted gas values
+      delete route.tx.gasLimit
+      delete route.tx.maxFeePerGas
+      delete route.tx.maxPriorityFeePerGas
+
       const tx = await walletService.signer.sendTransaction(route.tx)
       onConfirmed(lockAddress, route.network, tx.hash)
     } catch (error: any) {

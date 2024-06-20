@@ -6,8 +6,6 @@ import { passwordHookAbi } from './abis/passwordHookAbi'
 import { passwordCapHookAbi } from './abis/passwordCapHookAbi'
 import { discountCodeHookAbi } from './abis/discountCodeHookAbi'
 import { discountCodeWithCapHookAbi } from './abis/discountCodeWithCapHookAbi'
-import UnlockSwapPurchaser from '@unlock-protocol/contracts/dist/abis/utils/UnlockSwapPurchaser.json'
-const UnlockSwapPurchaserABI = UnlockSwapPurchaser.abi
 import { signTransferAuthorization } from './erc20'
 import { CardPurchaser } from './CardPurchaser'
 
@@ -32,7 +30,6 @@ interface PurchaseKeyParams {
   referrer?: string
   totalApproval?: string
   keyManager?: string
-  swap?: Omit<SwapOptions, 'callData'>
 }
 
 interface PurchaseKeysParams {
@@ -46,16 +43,6 @@ interface PurchaseKeysParams {
   recurringPayments?: number[] | string[]
   totalApproval?: string
   keyManagers?: string[]
-  swap?: Omit<SwapOptions, 'callData'>
-}
-
-interface SwapOptions {
-  srcTokenAddress?: string
-  amountInMax: ethers.BigNumberish
-  uniswapRouter: string
-  swapCallData: string
-  callData: string
-  value: ethers.BigNumberish
 }
 
 interface ExtendKeyParams {
@@ -69,7 +56,6 @@ interface ExtendKeyParams {
   keyPrice?: string
   recurringPayment?: string | number
   totalApproval?: string
-  swap?: Omit<SwapOptions, 'callData'>
 }
 
 interface GetAndSignAuthorizationsForTransferAndPurchaseParams {
@@ -1067,30 +1053,6 @@ export default class WalletService extends UnlockService {
       transactionOptions,
       callback
     )
-  }
-
-  /**
-   * Returns the ethers contract object for the UnlockSwapPurchaser contract
-   * @param param0
-   * @returns
-   */
-  getUnlockSwapPurchaserContract({
-    params: { network },
-  }: {
-    params: { network: number }
-  }) {
-    const networkConfig = this.networks[network]
-    const unlockSwapPurchaserAddress = networkConfig?.swapPurchaser
-    if (!unlockSwapPurchaserAddress) {
-      throw new Error('SwapPurchaser not available for this network')
-    }
-    const provider = this.providerForNetwork(network)
-    const swapPurchaserContract = new ethers.Contract(
-      unlockSwapPurchaserAddress,
-      UnlockSwapPurchaserABI,
-      provider
-    )
-    return swapPurchaserContract.connect(this.signer)
   }
 
   /**
