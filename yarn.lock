@@ -10626,9 +10626,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades-core@npm:1.33.1":
-  version: 1.33.1
-  resolution: "@openzeppelin/upgrades-core@npm:1.33.1"
+"@openzeppelin/upgrades-core@npm:1.34.1, @openzeppelin/upgrades-core@npm:^1.31.3, @openzeppelin/upgrades-core@npm:^1.32.0, @openzeppelin/upgrades-core@npm:^1.32.2":
+  version: 1.34.1
+  resolution: "@openzeppelin/upgrades-core@npm:1.34.1"
   dependencies:
     cbor: "npm:^9.0.0"
     chalk: "npm:^4.1.0"
@@ -10640,7 +10640,7 @@ __metadata:
     solidity-ast: "npm:^0.4.51"
   bin:
     openzeppelin-upgrades-core: dist/cli/cli.js
-  checksum: 10/09a145ab9ca79237231daa2dc984d3257db10557ec48ced70e5862822a29a2011407b4761d1cd1ac17e1637a0ac64e5541c9a112f1b35d01f4313873aaa8514f
+  checksum: 10/c9872b6393949ad189ebe436f2ecaaa1938d7b5ade1cfe18436fcf1495d7ee0507ece50f1fd94dedae5767baf70e0e6e2a8ceca727a9bac78f7f2dc2cf781c33
   languageName: node
   linkType: hard
 
@@ -15109,6 +15109,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jsonwebtoken@npm:9.0.2":
+  version: 9.0.2
+  resolution: "@types/jsonwebtoken@npm:9.0.2"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10/ec76ece45b38e4a23d358e0264c802810d8e40bdb3166fc80a5ef4b0000c647662bff525227f8d4521bc5647d0924e0e69b509a7485c6f536283aaad78f14079
+  languageName: node
+  linkType: hard
+
 "@types/keyv@npm:^3.1.4":
   version: 3.1.4
   resolution: "@types/keyv@npm:3.1.4"
@@ -16142,7 +16151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/default-token-list@npm:^11.13.0, @uniswap/default-token-list@npm:^11.2.0":
+"@uniswap/default-token-list@npm:^11.13.0":
   version: 11.19.0
   resolution: "@uniswap/default-token-list@npm:11.19.0"
   checksum: 10/74ebc1d3850f265342bc629a26007919f5e92e62bed28efedb6218f58418906cbb80bb3add4986eea1ddee1099e848ec918da7c0a0ce8277b183d4e5513907e0
@@ -16173,7 +16182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/permit2-sdk@npm:^1.2.0, @uniswap/permit2-sdk@npm:^1.3.0":
+"@uniswap/permit2-sdk@npm:^1.2.0":
   version: 1.3.0
   resolution: "@uniswap/permit2-sdk@npm:1.3.0"
   dependencies:
@@ -16183,7 +16192,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/router-sdk@npm:^1.6.0, @uniswap/router-sdk@npm:^1.9.0, @uniswap/router-sdk@npm:^1.9.2":
+"@uniswap/router-sdk@npm:^1.9.0":
   version: 1.9.2
   resolution: "@uniswap/router-sdk@npm:1.9.2"
   dependencies:
@@ -16210,7 +16219,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/sdk-core@npm:^4.0.7, @uniswap/sdk-core@npm:^4.2.0, @uniswap/sdk-core@npm:^4.2.1":
+"@uniswap/sdk-core@npm:^4.2.0, @uniswap/sdk-core@npm:^4.2.1":
   version: 4.2.1
   resolution: "@uniswap/sdk-core@npm:4.2.1"
   dependencies:
@@ -16238,38 +16247,6 @@ __metadata:
     tiny-invariant: "npm:^1.1.0"
     toformat: "npm:^2.0.0"
   checksum: 10/621ad230a585f301c033620995b1ed34d43cc731592e8983961535c7f079726342bc5e2fc35e117e4d946d704a787a0626877115594a236a5a76ca86baa8873d
-  languageName: node
-  linkType: hard
-
-"@uniswap/smart-order-router@npm:3.17.4":
-  version: 3.17.4
-  resolution: "@uniswap/smart-order-router@npm:3.17.4"
-  dependencies:
-    "@uniswap/default-token-list": "npm:^11.2.0"
-    "@uniswap/permit2-sdk": "npm:^1.2.0"
-    "@uniswap/router-sdk": "npm:^1.6.0"
-    "@uniswap/sdk-core": "npm:^4.0.7"
-    "@uniswap/swap-router-contracts": "npm:^1.3.0"
-    "@uniswap/token-lists": "npm:^1.0.0-beta.31"
-    "@uniswap/universal-router": "npm:^1.0.1"
-    "@uniswap/universal-router-sdk": "npm:^1.5.8"
-    "@uniswap/v2-sdk": "npm:^3.2.3"
-    "@uniswap/v3-sdk": "npm:^3.10.0"
-    async-retry: "npm:^1.3.1"
-    await-timeout: "npm:^1.1.1"
-    axios: "npm:^0.21.1"
-    bunyan: "npm:^1.8.15"
-    bunyan-blackhole: "npm:^1.1.1"
-    ethers: "npm:^5.7.2"
-    graphql: "npm:^15.5.0"
-    graphql-request: "npm:^3.4.0"
-    lodash: "npm:^4.17.21"
-    mnemonist: "npm:^0.38.3"
-    node-cache: "npm:^5.1.2"
-    stats-lite: "npm:^2.2.0"
-  peerDependencies:
-    jsbi: ^3.2.0
-  checksum: 10/616138daee6f5df6effbed01113ec3c063b832f53c07add594a6b9b950419c0ae14d89cf89401d495257cabda0d934c380a1c00dba8c5c45e3f37f92af22acbc
   languageName: node
   linkType: hard
 
@@ -16308,41 +16285,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/smart-order-router@npm:3.33.1":
-  version: 3.33.1
-  resolution: "@uniswap/smart-order-router@npm:3.33.1"
-  dependencies:
-    "@eth-optimism/sdk": "npm:^3.2.2"
-    "@types/brotli": "npm:^1.3.4"
-    "@uniswap/default-token-list": "npm:^11.13.0"
-    "@uniswap/permit2-sdk": "npm:^1.2.0"
-    "@uniswap/router-sdk": "npm:^1.9.2"
-    "@uniswap/sdk-core": "npm:^5.0.0"
-    "@uniswap/swap-router-contracts": "npm:^1.3.1"
-    "@uniswap/token-lists": "npm:^1.0.0-beta.31"
-    "@uniswap/universal-router": "npm:^1.6.0"
-    "@uniswap/universal-router-sdk": "npm:^2.1.0"
-    "@uniswap/v2-sdk": "npm:^4.3.2"
-    "@uniswap/v3-sdk": "npm:^3.11.2"
-    async-retry: "npm:^1.3.1"
-    await-timeout: "npm:^1.1.1"
-    axios: "npm:^0.21.1"
-    brotli: "npm:^1.3.3"
-    bunyan: "npm:^1.8.15"
-    bunyan-blackhole: "npm:^1.1.1"
-    ethers: "npm:^5.7.2"
-    graphql: "npm:^15.5.0"
-    graphql-request: "npm:^3.4.0"
-    lodash: "npm:^4.17.21"
-    mnemonist: "npm:^0.38.3"
-    node-cache: "npm:^5.1.2"
-    stats-lite: "npm:^2.2.0"
-  peerDependencies:
-    jsbi: ^3.2.0
-  checksum: 10/18ea2cf0a42ed9b4b90d2c8bba9623a0379c10fa4db52ce6f839a3c10877c11ad7e8ae25a9cd0488ab3d8af11fe044b0d8435a4ac6e95bd5c7ba2771c3f22592
-  languageName: node
-  linkType: hard
-
 "@uniswap/swap-router-contracts@npm:^1.3.0, @uniswap/swap-router-contracts@npm:^1.3.1":
   version: 1.3.1
   resolution: "@uniswap/swap-router-contracts@npm:1.3.1"
@@ -16364,7 +16306,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/universal-router-sdk@npm:^1.5.8, @uniswap/universal-router-sdk@npm:^1.8.2":
+"@uniswap/universal-router-sdk@npm:^1.8.2":
   version: 1.9.0
   resolution: "@uniswap/universal-router-sdk@npm:1.9.0"
   dependencies:
@@ -16380,23 +16322,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/universal-router-sdk@npm:^2.1.0":
-  version: 2.2.0
-  resolution: "@uniswap/universal-router-sdk@npm:2.2.0"
-  dependencies:
-    "@uniswap/permit2-sdk": "npm:^1.3.0"
-    "@uniswap/router-sdk": "npm:^1.9.2"
-    "@uniswap/sdk-core": "npm:^5.3.0"
-    "@uniswap/universal-router": "npm:1.6.0"
-    "@uniswap/v2-sdk": "npm:^4.3.2"
-    "@uniswap/v3-sdk": "npm:^3.13.0"
-    bignumber.js: "npm:^9.0.2"
-    ethers: "npm:^5.7.0"
-  checksum: 10/b5af8519171df0e5b35b021fdf58d714711b2acad94ab3515e998e461fc10bb5df25f3ccf2e6691df4a005f377030b436dc1462940d8d20ab793d0a89f81c410
-  languageName: node
-  linkType: hard
-
-"@uniswap/universal-router@npm:1.6.0, @uniswap/universal-router@npm:^1.0.1, @uniswap/universal-router@npm:^1.6.0":
+"@uniswap/universal-router@npm:1.6.0, @uniswap/universal-router@npm:^1.6.0":
   version: 1.6.0
   resolution: "@uniswap/universal-router@npm:1.6.0"
   dependencies:
@@ -16428,19 +16354,6 @@ __metadata:
     "@uniswap/lib": "npm:1.1.1"
     "@uniswap/v2-core": "npm:1.0.0"
   checksum: 10/dc72a1de8b7cd9e50a5c7ffb976922185c1be65c161fdd204c1d1b8eb3bb432cb33399c7f1def81145f1a711c9ccd91978d63d7d2e925a9632df3b1fb81c747c
-  languageName: node
-  linkType: hard
-
-"@uniswap/v2-sdk@npm:^3.2.3":
-  version: 3.3.0
-  resolution: "@uniswap/v2-sdk@npm:3.3.0"
-  dependencies:
-    "@ethersproject/address": "npm:^5.0.0"
-    "@ethersproject/solidity": "npm:^5.0.0"
-    "@uniswap/sdk-core": "npm:^4.0.7"
-    tiny-invariant: "npm:^1.1.0"
-    tiny-warning: "npm:^1.0.3"
-  checksum: 10/b83b6c3df0e7f25e470ef2c0bf73c1f1a1cc3eb27a6a8a59b4ffba8aabe5fb22d3ca8fd1f8c36d552795096854edfabaf8bd14ef5a4ca9a3709cea1edcc5b755
   languageName: node
   linkType: hard
 
@@ -16500,7 +16413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-sdk@npm:^3.10.0, @uniswap/v3-sdk@npm:^3.11.0, @uniswap/v3-sdk@npm:^3.11.2, @uniswap/v3-sdk@npm:^3.13.0":
+"@uniswap/v3-sdk@npm:^3.11.0, @uniswap/v3-sdk@npm:^3.11.2":
   version: 3.13.0
   resolution: "@uniswap/v3-sdk@npm:3.13.0"
   dependencies:
@@ -16657,7 +16570,7 @@ __metadata:
     "@nomicfoundation/hardhat-verify": "npm:2.0.8"
     "@nomiclabs/hardhat-ethers": "npm:2.2.3"
     "@openzeppelin/hardhat-upgrades": "npm:3.1.1"
-    "@openzeppelin/upgrades-core": "npm:1.33.1"
+    "@openzeppelin/upgrades-core": "npm:1.34.1"
     "@safe-global/api-kit": "npm:2.3.1"
     "@safe-global/protocol-kit": "npm:3.1.1"
     "@tenderly/hardhat-tenderly": "npm:2.2.2"
@@ -16759,6 +16672,7 @@ __metadata:
     "@types/cors": "npm:2.8.17"
     "@types/geoip-country": "npm:4.0.2"
     "@types/isomorphic-fetch": "npm:0.0.39"
+    "@types/jsonwebtoken": "npm:9.0.2"
     "@types/multer": "npm:1.4.11"
     "@types/multer-s3": "npm:3.0.3"
     "@types/nock": "npm:11.1.0"
@@ -16796,6 +16710,7 @@ __metadata:
     html-template-tag: "npm:4.0.1"
     ics: "npm:3.7.2"
     isomorphic-fetch: "npm:3.0.0"
+    jsonwebtoken: "npm:9.0.2"
     lodash.isequal: "npm:4.5.0"
     memory-cache-node: "npm:1.4.0"
     multer: "npm:1.4.5-lts.1"
@@ -16817,7 +16732,7 @@ __metadata:
     sequelize: "npm:6.37.3"
     sequelize-cli: "npm:6.6.2"
     siwe: "npm:2.3.2"
-    stripe: "npm:12.18.0"
+    stripe: "npm:15.10.0"
     supertest: "npm:7.0.0"
     tsx: "npm:4.11.0"
     typescript: "npm:5.4.5"
@@ -16898,7 +16813,7 @@ __metadata:
     "@openzeppelin/contracts-upgradeable5": "npm:@openzeppelin/contracts-upgradeable@5.0.2"
     "@openzeppelin/contracts5": "npm:@openzeppelin/contracts@5.0.2"
     "@openzeppelin/hardhat-upgrades": "npm:3.1.1"
-    "@openzeppelin/upgrades-core": "npm:1.33.1"
+    "@openzeppelin/upgrades-core": "npm:1.34.1"
     "@safe-global/safe-core-sdk": "npm:3.3.5"
     "@safe-global/safe-ethers-lib": "npm:1.9.3"
     "@safe-global/safe-service-client": "npm:2.0.3"
@@ -17047,8 +16962,6 @@ __metadata:
     "@types/react-google-recaptcha": "npm:2.1.9"
     "@types/react-gtm-module": "npm:2.0.3"
     "@types/remove-markdown": "npm:0.3.4"
-    "@uniswap/sdk-core": "npm:5.0.0"
-    "@uniswap/smart-order-router": "npm:3.33.1"
     "@unlock-protocol/core": "workspace:./packages/core"
     "@unlock-protocol/crypto-icon": "workspace:./packages/crypto-icon"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -17150,8 +17063,6 @@ __metadata:
     "@graphql-codegen/typescript-operations": "npm:4.2.1"
     "@nomicfoundation/hardhat-ethers": "npm:3.0.6"
     "@openapitools/openapi-generator-cli": "npm:2.13.4"
-    "@uniswap/sdk-core": "npm:5.0.0"
-    "@uniswap/smart-order-router": "npm:3.17.4"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -33772,6 +33683,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jsonwebtoken@npm:9.0.2":
+  version: 9.0.2
+  resolution: "jsonwebtoken@npm:9.0.2"
+  dependencies:
+    jws: "npm:^3.2.2"
+    lodash.includes: "npm:^4.3.0"
+    lodash.isboolean: "npm:^3.0.3"
+    lodash.isinteger: "npm:^4.0.4"
+    lodash.isnumber: "npm:^3.0.3"
+    lodash.isplainobject: "npm:^4.0.6"
+    lodash.isstring: "npm:^4.0.1"
+    lodash.once: "npm:^4.0.0"
+    ms: "npm:^2.1.1"
+    semver: "npm:^7.5.4"
+  checksum: 10/6e9b6d879cec2b27f2f3a88a0c0973edc7ba956a5d9356b2626c4fddfda969e34a3832deaf79c3e1c6c9a525bc2c4f2c2447fa477f8ac660f0017c31a59ae96b
+  languageName: node
+  linkType: hard
+
 "jsprim@npm:^1.2.2":
   version: 1.4.2
   resolution: "jsprim@npm:1.4.2"
@@ -34622,6 +34551,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.includes@npm:^4.3.0":
+  version: 4.3.0
+  resolution: "lodash.includes@npm:4.3.0"
+  checksum: 10/45e0a7c7838c931732cbfede6327da321b2b10482d5063ed21c020fa72b09ca3a4aa3bda4073906ab3f436cf36eb85a52ea3f08b7bab1e0baca8235b0e08fe51
+  languageName: node
+  linkType: hard
+
+"lodash.isboolean@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "lodash.isboolean@npm:3.0.3"
+  checksum: 10/b70068b4a8b8837912b54052557b21fc4774174e3512ed3c5b94621e5aff5eb6c68089d0a386b7e801d679cd105d2e35417978a5e99071750aa2ed90bffd0250
+  languageName: node
+  linkType: hard
+
 "lodash.isempty@npm:^4.4.0":
   version: 4.4.0
   resolution: "lodash.isempty@npm:4.4.0"
@@ -34633,6 +34576,20 @@ __metadata:
   version: 4.5.0
   resolution: "lodash.isequal@npm:4.5.0"
   checksum: 10/82fc58a83a1555f8df34ca9a2cd300995ff94018ac12cc47c349655f0ae1d4d92ba346db4c19bbfc90510764e0c00ddcc985a358bdcd4b3b965abf8f2a48a214
+  languageName: node
+  linkType: hard
+
+"lodash.isinteger@npm:^4.0.4":
+  version: 4.0.4
+  resolution: "lodash.isinteger@npm:4.0.4"
+  checksum: 10/c971f5a2d67384f429892715550c67bac9f285604a0dd79275fd19fef7717aec7f2a6a33d60769686e436ceb9771fd95fe7fcb68ad030fc907d568d5a3b65f70
+  languageName: node
+  linkType: hard
+
+"lodash.isnumber@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "lodash.isnumber@npm:3.0.3"
+  checksum: 10/913784275b565346255e6ae6a6e30b760a0da70abc29f3e1f409081585875105138cda4a429ff02577e1bc0a7ae2a90e0a3079a37f3a04c3d6c5aaa532f4cab2
   languageName: node
   linkType: hard
 
@@ -34696,6 +34653,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.mergewith@npm:4.6.2"
   checksum: 10/aea75a4492541a4902ac7e551dc6c54b722da0c187f84385d02e8fc33a7ae3454b837822446e5f63fcd5ad1671534ea408740b776670ea4d9c7890b10105fce0
+  languageName: node
+  linkType: hard
+
+"lodash.once@npm:^4.0.0":
+  version: 4.1.1
+  resolution: "lodash.once@npm:4.1.1"
+  checksum: 10/202f2c8c3d45e401b148a96de228e50ea6951ee5a9315ca5e15733d5a07a6b1a02d9da1e7fdf6950679e17e8ca8f7190ec33cae47beb249b0c50019d753f38f3
   languageName: node
   linkType: hard
 
@@ -46017,13 +45981,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stripe@npm:12.18.0":
-  version: 12.18.0
-  resolution: "stripe@npm:12.18.0"
+"stripe@npm:15.10.0":
+  version: 15.10.0
+  resolution: "stripe@npm:15.10.0"
   dependencies:
     "@types/node": "npm:>=8.1.0"
     qs: "npm:^6.11.0"
-  checksum: 10/c2fa3e05851746293cde3a50812c229ec3a1918397198cffe43aa3ec21bd269c2588cb7fbd7a4d33c249a5708fa08cb9116ae6d2b41a3cd3c4b6da22370fa8d5
+  checksum: 10/20c7db091d5f7ddeeb33b03a6c70edaaf849838a26848a6fcce8c4fe2d6e964e4605b98f02e471d89590b8a2489a5992c2a7af31b4df6fc360d9015dd97e168e
   languageName: node
   linkType: hard
 

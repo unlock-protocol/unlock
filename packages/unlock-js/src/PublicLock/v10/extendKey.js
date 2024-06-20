@@ -25,7 +25,6 @@ export default async function (
     data,
     totalApproval,
     recurringPayment,
-    swap,
   },
   transactionOptions = {},
   callback
@@ -62,14 +61,6 @@ export default async function (
     )
   }
 
-  const unlockSwapPurchaserContract = swap
-    ? this.getUnlockSwapPurchaserContract({
-        params: {
-          network: this.networkId,
-        },
-      })
-    : null
-
   const extendArgs = [actualAmount, tokenId, referrer, data]
   const callData = lockContract.interface.encodeFunctionData(
     'extend',
@@ -81,33 +72,22 @@ export default async function (
     transactionOptions.value = actualAmount
   }
 
-  // if swap is provided, we need to override the value
-  if (swap && swap?.value) {
-    transactionOptions.value = swap.value
-  }
-
   let totalAmountToApprove = totalApproval
 
   if (!totalAmountToApprove) {
     totalAmountToApprove = recurringPayment
-      ? actualAmount * recurringPayment
+      ? actualAmount * BigInt(recurringPayment)
       : actualAmount
   }
 
   // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = swap
-    ? {
-        erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove: swap.amountInMax,
-      }
-    : {
-        erc20Address,
-        totalAmountToApprove,
-        address: lockAddress,
-      }
+  const approvalOptions = {
+    erc20Address,
+    totalAmountToApprove,
+    address: lockAddress,
+  }
 
-  // Only ask for approval if the lock or swap is priced in ERC20
+  // Only ask for approval if the lock is priced in ERC20
   if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
     await approveAllowance.bind(this)(approvalOptions)
   }
@@ -127,24 +107,13 @@ export default async function (
         transactionOptions.gasPrice = gasPrice
       }
 
-      const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.swapAndCall.estimateGas(
-            lockAddress,
-            swap.srcTokenAddress || ZERO,
-            actualAmount,
-            swap.amountInMax,
-            swap.uniswapRouter,
-            swap.swapCallData,
-            callData,
-            transactionOptions
-          )
-        : lockContract.extend.estimateGas(
-            actualAmount,
-            tokenId,
-            referrer,
-            data,
-            transactionOptions
-          )
+      const gasLimitPromise = lockContract.extend.estimateGas(
+        actualAmount,
+        tokenId,
+        referrer,
+        data,
+        transactionOptions
+      )
       const gasLimit = await gasLimitPromise
       // Remove the gas prices settings for the actual transaction (the wallet will set them)
       delete transactionOptions.maxFeePerGas
@@ -162,24 +131,13 @@ export default async function (
     }
   }
 
-  const transactionRequestpromise = swap
-    ? unlockSwapPurchaserContract?.swapAndCall.populateTransaction(
-        lockAddress,
-        swap.srcTokenAddress || ZERO,
-        actualAmount,
-        swap.amountInMax,
-        swap.uniswapRouter,
-        swap.swapCallData,
-        callData,
-        transactionOptions
-      )
-    : lockContract.extend.populateTransaction(
-        actualAmount,
-        tokenId,
-        referrer,
-        data,
-        transactionOptions
-      )
+  const transactionRequestpromise = lockContract.extend.populateTransaction(
+    actualAmount,
+    tokenId,
+    referrer,
+    data,
+    transactionOptions
+  )
 
   const transactionRequest = await transactionRequestpromise
 
