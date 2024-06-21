@@ -76,9 +76,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
       ToastHelper.error(
         'We could not connect your account to your wallet. Please refresh and try again.'
       )
-
       console.error('Error connecting to provider: ', error)
-
       throw new Error('Error connecting to provider')
     }
 
