@@ -1093,6 +1093,27 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/{slug}/approve-refunds:
+    put:
+      operationId: approveRefunds
+      security:
+        - User: ['lockManager']
+      description: Approves refunds for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        201:
+          description: Approves refunds for an event.
+          content:
+            application/json:
+              schema:
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/sign:
     get:
       operationId: signTicket

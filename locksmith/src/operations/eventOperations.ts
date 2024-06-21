@@ -277,21 +277,21 @@ export const getCheckedInAttendees = async (slug: string) => {
   })
   const filteredKeys = allKeys.filter((key) => !!key.data.metadata?.checkedInAt)
   // And now filter out the ones that have been checked in!
-  console.log(filteredKeys.length)
+  console.log(filteredKeys)
 
   // And finally let's get their owners!
-  // const locks = await subgraph.locksKeys(
-  //   {
-  //     first,
-  //     skip,
-  //     where: lockFilter,
-  //     keyFilter,
-  //     keyOrderBy: KeyOrderBy.TokenId,
-  //     orderDirection: OrderDirection.Asc,
-  //   },
-  //   {
-  //     networks: [network],
-  //   }
-  // )
+  const locks = await subgraph.keys(
+    {
+      first,
+      skip,
+      where: lockFilter,
+      keyFilter,
+      keyOrderBy: KeyOrderBy.TokenId,
+      orderDirection: OrderDirection.Asc,
+    },
+    {
+      networks: [network],
+    }
+  )
   return []
 }
