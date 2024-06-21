@@ -33,7 +33,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
     setIsDisconnecting(true)
     await signOut()
     await deAuthenticate()
-    await nextSignOut()
+    await nextSignOut({ redirect: false })
     service.send({ type: 'DISCONNECT' })
     setIsDisconnecting(false)
   }

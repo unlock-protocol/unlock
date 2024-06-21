@@ -25,7 +25,7 @@ export const SelectWithLoader = ({
       <Fragment>
         <Stepper service={checkoutService} />
         <main className="h-full mt-4 space-y-5">
-          <ConnectingWaas openConnectModalWindow={true} />
+          <ConnectingWaas openConnectModalWindow={false} />
         </main>
         <footer className="grid items-center px-6 pt-6 border-t">
           <PoweredByUnlock />
