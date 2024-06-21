@@ -37,7 +37,7 @@ export const purchase = async (request: Request, response: Response) => {
     _values: [keyPrice],
     _recipients: [recipient],
     _referrers: [referrer],
-    _keyManagers: [ethers.constants.AddressZero],
+    _keyManagers: [ethers.ZeroAddress],
     _data: [[]],
   }
 

@@ -41,8 +41,7 @@ export const getLockKeyPricing = async ({
     lockContract.tokenAddress(),
   ])
   const decimals =
-    currencyContractAddress &&
-    currencyContractAddress !== ethers.constants.AddressZero
+    currencyContractAddress && currencyContractAddress !== ethers.ZeroAddress
       ? await getErc20Decimals(currencyContractAddress, provider)
       : networks[network].nativeCurrency?.decimals || 18
 

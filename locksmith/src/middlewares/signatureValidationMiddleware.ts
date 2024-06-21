@@ -14,7 +14,7 @@ const extractTypeDataSignee = (header: string, body: any) => {
   const decodedSignature = Base64.decode(header)
   const { domain, types, message, messageKey } = body
   try {
-    return ethers.utils.verifyTypedData(
+    return ethers.verifyTypedData(
       domain,
       types,
       message[messageKey],
@@ -30,7 +30,7 @@ const extractPersonalSignSignee = (header: string, data: string) => {
   const decodedSignature = Base64.decode(header)
 
   try {
-    return ethers.utils.verifyMessage(data, decodedSignature)
+    return ethers.verifyMessage(data, decodedSignature)
   } catch (error) {
     logger.error('Failed to extractPersonalSignSignee', error)
     return null

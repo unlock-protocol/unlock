@@ -74,8 +74,8 @@ vi.mock('@unlock-protocol/networks', () => ({
 vi.mock('../../src/utils/gasSettings', () => ({
   getGasSettings: vi.fn(() => {
     return {
-      maxFeePerGas: BigNumber.from(40000000000),
-      maxPriorityFeePerGas: BigNumber.from(40000000000),
+      maxFeePerGas: BigInt(40000000000),
+      maxPriorityFeePerGas: BigInt(40000000000),
     }
   }),
 }))
@@ -100,8 +100,8 @@ describe('Dispatcher', () => {
           recipients: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
         },
         {
-          maxFeePerGas: BigNumber.from(40000000000),
-          maxPriorityFeePerGas: BigNumber.from(40000000000),
+          maxFeePerGas: BigInt(40000000000),
+          maxPriorityFeePerGas: BigInt(40000000000),
         },
         callback
       )
@@ -121,8 +121,8 @@ describe('Dispatcher', () => {
           tokenId: keyId,
         },
         {
-          maxFeePerGas: BigNumber.from(40000000000),
-          maxPriorityFeePerGas: BigNumber.from(40000000000),
+          maxFeePerGas: BigInt(40000000000),
+          maxPriorityFeePerGas: BigInt(40000000000),
         }
       )
     })

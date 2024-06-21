@@ -9,7 +9,7 @@ export default async function getPurchaseKeysArguments({
   keyManagers = [],
   keyPrices = [],
   referrers = [],
-  data = [],
+  data = '0x',
 }) {
   // If erc20Address was not provided, get it
   const lockContract = await this.getLockContract(lockAddress)
@@ -30,7 +30,7 @@ export default async function getPurchaseKeysArguments({
 
   // calculate total price for all keys
   const totalPrice = prices.reduce(
-    (total, kp) => total.add(kp),
+    (total, kp) => total + kp,
     utils.bigNumberify(0)
   )
 
