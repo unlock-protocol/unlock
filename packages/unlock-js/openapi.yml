@@ -2059,6 +2059,7 @@ paths:
                       type: string
         500:
           $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/price:
     get:
       operationId: price

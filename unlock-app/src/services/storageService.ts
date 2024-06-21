@@ -66,28 +66,6 @@ export class StorageService extends EventEmitter {
     })
   }
 
-  async getKeyGranter(network: number) {
-    try {
-      const url = `${this.host}/purchase`
-
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: options.headers,
-      })
-      const data = await response.json()
-
-      return data[network].address
-    } catch (error) {
-      console.error(error)
-      return ''
-    }
-  }
-
   // TODO: Depracate after NextAuth is fully implemented
   async userExist(emailAddress: string) {
     try {
