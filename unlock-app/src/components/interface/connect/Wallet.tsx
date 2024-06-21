@@ -5,14 +5,15 @@ import {
 import SvgComponents from '../svg'
 import { ConnectButton } from './Custom'
 import { useLocalStorage } from '@rehooks/local-storage'
-import { MouseEventHandler, useEffect, useState } from 'react'
+import { MouseEventHandler, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './EmailAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
-import { getUserAccountType } from '~/utils/getUserAccountType'
 import { useQuery } from '@tanstack/react-query'
+import { storage } from '~/config/storage'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -117,10 +118,11 @@ export const ConnectWallet = ({
     ['userAccountType', userEmail],
     async () => {
       setIsEmailLoading(true)
-      const result = await getUserAccountType(userEmail as string)
+      const result = await storage.getUserAccountType(userEmail as string)
+      const userAccountType = result.data.userAccountType as UserAccountType[]
       setIsEmailLoading(false)
 
-      return result
+      return userAccountType
     },
     {
       enabled: !!userEmail,
