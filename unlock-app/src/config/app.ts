@@ -12,8 +12,8 @@ const staging = {
   unlockApp: 'https://staging-app.unlock-protocol.com',
   googleClientId:
     '801850414021-kk4m4gqm7imtggonhl57tfsj512on6s6.apps.googleusercontent.com',
-  coinbaseProjectId:
-    'organizations/84d8b485-5433-4902-9765-3e5f11bf16d6/apiKeys/740902e7-eaee-4d60-a316-20690272e7e8',
+  // https://portal.cdp.coinbase.com/projects
+  coinbaseProjectId: '4e90fd0f-bb62-4e1c-91a4-f08c76d1b09e',
 }
 
 const dev = {
@@ -38,8 +38,8 @@ const production = {
   unlockApp: 'https://app.unlock-protocol.com',
   googleClientId:
     '801850414021-kk4m4gqm7imtggonhl57tfsj512on6s6.apps.googleusercontent.com',
-  coinbaseProjectId:
-    'organizations/84d8b485-5433-4902-9765-3e5f11bf16d6/apiKeys/f2f8200c-77fc-4474-b5ec-fc5251f19bd8',
+  // https://portal.cdp.coinbase.com/projects
+  coinbaseProjectId: '4e90fd0f-bb62-4e1c-91a4-f08c76d1b09e',
 }
 
 function getAppConfig(environment?: string) {
