@@ -13,6 +13,7 @@ import ProviderContext from '../../contexts/ProviderContext'
 import {} from '../interface/Authenticate'
 import { Badge } from '@unlock-protocol/ui'
 import { AppLayout } from '../interface/layouts/AppLayout'
+import { locksmith } from '~/config/storage'
 
 interface RestoreAccountProps {
   config: any
@@ -78,7 +79,7 @@ export const RestoreAccount = ({
       const { data, signature } = await provider.signUserData({
         passwordEncryptedPrivateKey,
       })
-      await storageService.updateUserEncryptedPrivateKey(email, data, signature)
+      await locksmith.updateUserEncryptedPrivateKey(email, data, signature)
       setSuccess(true)
       // TODO: send email for confirmation
       // TODO: create new recovery key

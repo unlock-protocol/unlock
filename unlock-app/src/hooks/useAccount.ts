@@ -10,6 +10,7 @@ import {
 } from '../utils/accounts'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useSIWE } from './useSIWE'
+import { locksmith } from '~/config/storage'
 
 export const getAccountTokenBalance = async (
   web3Service: any,
@@ -93,12 +94,11 @@ export const useAccount = (address: string) => {
   }
 
   const retrieveUserAccount = async (email: string, password: string) => {
-    const storageService = new StorageService(config.services.storage.host)
-    const encryptedKey = await storageService.getUserPrivateKey(email)
+    const encryptedKey = await locksmith.getUserPrivateKey(email)
     const unlockProvider = new UnlockProvider(config.networks[1])
 
     await unlockProvider.connect({
-      key: encryptedKey,
+      key: encryptedKey.data.passwordEncryptedPrivateKey as string,
       emailAddress: email,
       password,
     })
