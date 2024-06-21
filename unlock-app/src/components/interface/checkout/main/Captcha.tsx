@@ -10,6 +10,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import Disconnect from './Disconnect'
+import { locksmith } from '~/config/storage'
 
 interface Props {
   checkoutService: CheckoutService
@@ -22,7 +23,6 @@ export function Captcha({ checkoutService }: Props) {
   )
   const config = useConfig()
   const { account } = useAuth()
-  const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const [isContinuing, setIsContinuing] = useState(false)
   const users = recipients.length > 0 ? recipients : [account!]
@@ -33,17 +33,17 @@ export function Captcha({ checkoutService }: Props) {
       if (!recaptchaValue) {
         return
       }
-      const response = await storage.getDataForRecipientsAndCaptcha(
+      const response = await locksmith.getDataForRecipientsAndCaptcha(
         users,
         recaptchaValue!,
         lock!.address,
         lock!.network
       )
 
-      if (response.error) {
-        throw new Error(response.error)
+      if (response.status != 200) {
+        throw new Error(response.statusText)
       }
-      const data: string[] = response.signatures
+      const data: string[] = response.data.signatures as string[]
       setIsContinuing(false)
       checkoutService.send({
         type: 'SUBMIT_DATA',

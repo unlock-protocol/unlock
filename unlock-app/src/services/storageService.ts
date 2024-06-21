@@ -66,42 +66,6 @@ export class StorageService extends EventEmitter {
     })
   }
 
-  async getDataForRecipientsAndCaptcha(
-    recipients: string[],
-    captchaValue: string,
-    lockAddress: string,
-    network: number
-  ) {
-    try {
-      const url = new URL(`${this.host}/api/captcha`)
-      const rs = recipients.map((r) => r.toLowerCase())
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-
-      for (const r of rs) {
-        url.searchParams.append('recipients[]', r)
-      }
-
-      url.searchParams.append('captchaValue', captchaValue)
-      url.searchParams.append('lockAddress', lockAddress)
-      url.searchParams.append('network', network.toString())
-
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: options.headers,
-      })
-
-      const json = await response.json()
-      return json
-    } catch (error) {
-      console.error(error)
-      return {}
-    }
-  }
-
   async getKeyGranter(network: number) {
     try {
       const url = `${this.host}/purchase`

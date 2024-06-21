@@ -1762,6 +1762,58 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /api/captcha:
+    get:
+      operationId: getDataForRecipientsAndCaptcha
+      security:
+        - User: []
+      description: Retrieves data for recipients and captcha.
+      parameters:
+        - name: recipients[]
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: captchaValue
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lockAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: network
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: string
+                  signer:
+                    type: string
+                  signatures:
+                    type: array
+                    items:
+                      type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true
