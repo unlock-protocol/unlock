@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface ReceiptProps {
   network: number
@@ -62,7 +62,7 @@ export const useGetReceipt = ({ lockAddress, network, hash }: ReceiptProps) => {
     ['getReceiptsDetails', network, lockAddress, hash],
     async (): Promise<any> => {
       try {
-        const receiptResponse = await storage.getReceipt(
+        const receiptResponse = await locksmith.getReceipt(
           network,
           ethers.getAddress(lockAddress),
           hash
@@ -86,7 +86,7 @@ export const useGetReceiptsBase = ({
   return useQuery(
     ['getReceiptsBase', network, lockAddress],
     async (): Promise<Partial<any>> => {
-      const supplier = await storage.getReceiptsBase(network, lockAddress)
+      const supplier = await locksmith.getReceiptsBase(network, lockAddress)
       // convert basis points to percentage
       const vatRatePercentage: number | null =
         (supplier?.data?.vatBasisPointsRate ?? 0) / 100 || null
@@ -111,7 +111,7 @@ export const useUpdateReceipt = ({
     ['updateReceipt', lockAddress, network, hash],
     async (purchaser: any) => {
       try {
-        const receiptResponse = await storage.saveReceipt(
+        const receiptResponse = await locksmith.saveReceipt(
           network,
           ethers.getAddress(lockAddress),
           hash,
@@ -143,7 +143,7 @@ export const useUpdateReceiptsBase = ({
           ? supplier?.vatRatePercentage * 100
           : null
 
-        const supplierResponse = await storage.saveReceiptsBase(
+        const supplierResponse = await locksmith.saveReceiptsBase(
           network,
           lockAddress,
           {

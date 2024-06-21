@@ -31,7 +31,7 @@ storageClient.interceptors.request.use((request) => {
   return request
 })
 
-export const storage = new LocksmithService(
+export const locksmith = new LocksmithService(
   new LocksmithServiceConfiguration(),
   config.locksmithHost,
   storageClient

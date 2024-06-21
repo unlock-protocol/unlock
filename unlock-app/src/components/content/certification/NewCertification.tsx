@@ -10,7 +10,7 @@ import { CertificationDeploying } from './CertificationDeploying'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 import { getSlugForName } from '~/utils/slugs'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 export interface TransactionDetails {
   hash: string
@@ -65,7 +65,7 @@ export const NewCertification = () => {
 
     if (lockAddress) {
       // Save this:
-      await storage.updateLockMetadata(formData.network, lockAddress!, {
+      await locksmith.updateLockMetadata(formData.network, lockAddress!, {
         metadata: formDataToMetadata({
           name: formData.lock.name,
           ...formData.metadata,

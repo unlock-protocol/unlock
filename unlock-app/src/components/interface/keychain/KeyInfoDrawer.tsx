@@ -25,7 +25,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { getEventDate, getEventEndDate } from '~/components/content/event/utils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -112,7 +112,11 @@ export const KeyInfo = ({
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
-      const response = await storage.keyMetadata(network, lock.address, tokenId)
+      const response = await locksmith.keyMetadata(
+        network,
+        lock.address,
+        tokenId
+      )
       return response.data || {}
     },
     {
@@ -154,7 +158,7 @@ export const KeyInfo = ({
     useQuery(
       ['subscriptions', lock.address, tokenId, network],
       async () => {
-        const response = await storage.getSubscription(
+        const response = await locksmith.getSubscription(
           network,
           lock.address,
           tokenId

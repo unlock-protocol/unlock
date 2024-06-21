@@ -19,7 +19,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useForm } from 'react-hook-form'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import {
   usePaymentMethodList,
   useRemovePaymentMethods,
@@ -128,7 +128,7 @@ export function SetupForm({
 }: SetupFormProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const fetchSetupIntent = useCallback(async () => {
-    const response = await storage.setupPayment()
+    const response = await locksmith.setupPayment()
     const secret = response.data.clientSecret
     if (secret) {
       setClientSecret(secret)

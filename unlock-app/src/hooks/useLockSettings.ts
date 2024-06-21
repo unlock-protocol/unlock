@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { ADDRESS_ZERO } from '~/constants'
 import { secondsAsDays } from '~/utils/durations'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -57,7 +57,7 @@ export function useLockSettings() {
 export function useGetLockSettingsBySlug(slug = '') {
   return useQuery(['getLockSettingsBySlug', slug], async () => {
     if (slug) {
-      return (await storage.getLockSettingsBySlug(slug)).data
+      return (await locksmith.getLockSettingsBySlug(slug)).data
     }
     return null
   })
@@ -68,7 +68,7 @@ export function useGetLockSettings({
   network,
 }: LockSettingsProps) {
   return useQuery(['getLockSettings', lockAddress, network], async () => {
-    const response = await storage.getLockSettings(network, lockAddress)
+    const response = await locksmith.getLockSettings(network, lockAddress)
     return response?.data
   })
 }
@@ -94,7 +94,7 @@ interface SaveLockProps {
 export function useSaveLockSettings() {
   return useMutation(async (config: SaveLockProps) => {
     const { lockAddress, network } = config
-    return storage.saveLockSetting(network, lockAddress, {
+    return locksmith.saveLockSetting(network, lockAddress, {
       ...config,
     })
   })

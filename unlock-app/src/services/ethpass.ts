@@ -1,7 +1,7 @@
 import { networks } from '@unlock-protocol/networks'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { config } from '~/config/app'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 export enum Platform {
   APPLE = 'apple',
@@ -36,9 +36,9 @@ export const createWalletPass = async ({
 }: any) => {
   const [keyMetadataResponse, lockMetadataResponse, verificationResponse] =
     await Promise.all([
-      storage.keyMetadata(network!, lockAddress!, tokenId),
-      storage.lockMetadata(network, lockAddress),
-      storage.ticketVerificationUrl(network, lockAddress, tokenId),
+      locksmith.keyMetadata(network!, lockAddress!, tokenId),
+      locksmith.lockMetadata(network, lockAddress),
+      locksmith.ticketVerificationUrl(network, lockAddress, tokenId),
     ])
 
   const keyMetadata = keyMetadataResponse.data

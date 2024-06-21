@@ -1,4 +1,4 @@
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Button, Input } from '@unlock-protocol/ui'
 import { formDataToMetadata } from '@unlock-protocol/core'
@@ -21,7 +21,7 @@ export const SenderSettings = ({ checkoutConfig, event }: EmailsProps) => {
   })
   const save = async (values: { replyTo: string; emailSender: string }) => {
     await ToastHelper.promise(
-      storage.saveEventData({
+      locksmith.saveEventData({
         data: {
           ...formDataToMetadata({
             ...event,

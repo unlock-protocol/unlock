@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface CreditCardUnlockFeeProps {
@@ -22,7 +22,7 @@ export default function CreditCardUnlockFee({
   const { isLoading } = useQuery(
     ['getLockSettings', lockAddress, network],
     async () => {
-      return (await storage.getLockSettings(network, lockAddress)).data
+      return (await locksmith.getLockSettings(network, lockAddress)).data
     },
     {
       onSuccess: ({ unlockFeeChargedToUser }) => {

@@ -1,5 +1,5 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { AxiosError } from 'axios'
 import { getAccessToken, getCurrentAccount } from '~/utils/session'
 import { ReactNode, createContext, useContext } from 'react'
@@ -12,7 +12,7 @@ export const useSessionUser = () => {
       const address = getCurrentAccount()
       try {
         if (!accessToken) return ''
-        const response = await storage.user()
+        const response = await locksmith.user()
         return response.data!.walletAddress || ''
       } catch (error) {
         if (error instanceof AxiosError) {

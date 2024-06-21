@@ -3,7 +3,7 @@ import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
 
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 export interface ServerSidePropsParams {
   params: {
@@ -12,7 +12,7 @@ export interface ServerSidePropsParams {
 }
 
 export const getServerSidePropsForEventPage = async (slug: string) => {
-  const { data: eventMetadata } = await storage
+  const { data: eventMetadata } = await locksmith
     .getEvent(slug)
     .catch((error) => {
       if (error.response?.status === 404) {

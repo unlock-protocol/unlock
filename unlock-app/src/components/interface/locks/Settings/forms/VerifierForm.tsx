@@ -13,7 +13,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns, { getAddressForName } from '~/hooks/useEns'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { onResolveName } from '~/utils/resolvers'
 import { Verifier } from '@unlock-protocol/unlock-js'
 
@@ -92,7 +92,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
   }) => {
     const resolvedAddress = await getAddressForName(address)
 
-    const response = await storage.addEventVerifier(
+    const response = await locksmith.addEventVerifier(
       event.slug,
       resolvedAddress,
       {
@@ -124,7 +124,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
 
   const deleteVerifierMutation = useMutation(
     async (address: string) => {
-      storage.deleteEventVerifier(event.slug, address)
+      locksmith.deleteEventVerifier(event.slug, address)
     },
     {
       onSuccess: (res: any, verifier: string) => {
@@ -145,7 +145,7 @@ export const VerifierForm = ({ event }: VerifierFormProps) => {
   } = useQuery(
     ['eventVerifiers', event.slug],
     async () => {
-      const response = await storage.eventVerifiers(event.slug)
+      const response = await locksmith.eventVerifiers(event.slug)
       return response.data.results || []
     },
     {

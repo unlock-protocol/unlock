@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -31,7 +31,7 @@ export const useGetPrice = ({
     const decimals = await getErc20Decimals(tokenAddress ?? '', provider)
     const total = ethers.formatUnits(`${amount}`, decimals)
 
-    const response = await storage.price(
+    const response = await locksmith.price(
       network,
       parseFloat(total),
       tokenAddress
@@ -64,7 +64,7 @@ export const useGetTotalCharges = ({
   return useQuery(
     ['getTotalChargesForLock', lockAddress, network],
     async () => {
-      const pricing = await storage.getChargesForLock(
+      const pricing = await locksmith.getChargesForLock(
         network,
         lockAddress,
         purchaseData,
