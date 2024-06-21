@@ -21,6 +21,7 @@ interface ConnectWalletProps {
 }
 
 interface ConnectViaEmailProps {
+  email: string | undefined
   isLoadingUserExists: boolean
   onUnlockAccount: (email: string) => void
 }
@@ -30,6 +31,7 @@ interface UserDetails {
 }
 
 export const ConnectViaEmail = ({
+  email,
   isLoadingUserExists,
   onUnlockAccount,
 }: ConnectViaEmailProps) => {
@@ -39,7 +41,12 @@ export const ConnectViaEmail = ({
     setError,
     formState: { errors, isSubmitting },
     watch,
+    setValue,
   } = useForm<UserDetails>()
+
+  if (email) {
+    setValue('email', email)
+  }
 
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
@@ -104,9 +111,17 @@ export const ConnectWallet = ({
     email || undefined
   )
 
-  const { data: userType, isLoading: isLoadingUserExists } = useQuery(
+  const [isEmailLoading, setIsEmailLoading] = useState<boolean>(false)
+
+  const { data: userType } = useQuery(
     ['userAccountType', userEmail],
-    () => getUserAccountType(userEmail as string),
+    async () => {
+      setIsEmailLoading(true)
+      const result = await getUserAccountType(userEmail as string)
+      setIsEmailLoading(false)
+
+      return result
+    },
     {
       enabled: !!userEmail,
     }
@@ -115,10 +130,6 @@ export const ConnectWallet = ({
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
-
-  const [isEmailDefined, setIsEmailDefined] = useState(false)
-
-  const isLoading = isEmailDefined && isLoadingUserExists
 
   const createOnConnectHandler = (provider: any) => {
     const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {
@@ -130,10 +141,6 @@ export const ConnectWallet = ({
     return handler
   }
 
-  useEffect(() => {
-    setIsEmailDefined(!!userEmail)
-  }, [userEmail])
-
   const verifyAndSetEmail = async (email: string) => {
     if (email) {
       setUserEmail(email)
@@ -142,7 +149,7 @@ export const ConnectWallet = ({
 
   return (
     <div className="space-y-4">
-      {(!userEmail || isLoading) && (
+      {(!userEmail || isEmailLoading) && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -182,7 +189,8 @@ export const ConnectWallet = ({
               Otherwise, enter your email address:
             </div>
             <ConnectViaEmail
-              isLoadingUserExists={isLoading}
+              email={userEmail}
+              isLoadingUserExists={isEmailLoading}
               onUnlockAccount={(email: string) => {
                 verifyAndSetEmail(email)
               }}
@@ -190,7 +198,7 @@ export const ConnectWallet = ({
           </div>
         </>
       )}
-      {userEmail && !isLoading && (
+      {userEmail && !isEmailLoading && (
         <ConnectUnlockAccount
           email={userEmail}
           setEmail={setUserEmail}
