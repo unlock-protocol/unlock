@@ -25,7 +25,8 @@ const dev = {
   unlockApp: process.env.NEXT_PUBLIC_UNLOCK_APP_URI || staging.unlockApp,
   googleClientId:
     process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || staging.googleClientId,
-  coinbaseProjectId: staging.coinbaseProjectId,
+  coinbaseProjectId:
+    process.env.NEXT_PUBLIC_COINBASE_PROJECT_ID || staging.coinbaseProjectId,
 }
 
 const production = {
