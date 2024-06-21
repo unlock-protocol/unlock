@@ -2,6 +2,7 @@ const { ethers } = require('ethers')
 const { networks } = require('@unlock-protocol/networks')
 const isVerified = require('./check')
 const { getProvider } = require('../../helpers/multisig')
+const { log } = require('../../helpers/logger')
 
 const logError = ({
   name,
@@ -11,8 +12,9 @@ const logError = ({
   result,
   message,
 }) =>
-  console.log(
-    `[${name} (${chainId})]: ${contractName} at ${contractAddress}: ${result} (${message})`
+  log(
+    `[Verification]: ${contractName}  on ${name} (${chainId}) at ${contractAddress}: ${result} (${message})`,
+    'error'
   )
 
 const queryLockAddress = async (subgraph, lockVersion) => {
