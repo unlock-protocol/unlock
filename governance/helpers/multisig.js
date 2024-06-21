@@ -1,15 +1,15 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
-const { getNetwork, ADDRESS_ZERO } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig2.json')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const SafeApiKit = require('@safe-global/api-kit').default
-const {
-  EthersAdapter,
-  encodeMultiSendData,
-} = require('@safe-global/protocol-kit')
+const { EthersAdapter } = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
 const { decodeMulti, encodeMulti } = require('ethers-multisend')
+
+// sentry
+const { log } = require('./logger')
 
 // custom services URL for network not supported by Safe
 const safeServiceURLs = {
@@ -44,7 +44,7 @@ const getExpectedSigners = async (chainId) => {
 }
 
 const logError = (name, chainId, multisig, msg) =>
-  console.log(`[${name} (${chainId})]: ${multisig} ${msg}`)
+  log(`[Multisig]: on ${name} (${chainId}) ${multisig}  ${msg}`, 'error')
 
 const getSafeService = async (chainId) => {
   const txServiceUrl = safeServiceURLs[chainId] || null

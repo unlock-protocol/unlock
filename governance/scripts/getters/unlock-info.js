@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
 const { getNetwork, getUnlock } = require('@unlock-protocol/hardhat-helpers')
+const { log } = require('../../helpers/logger')
 const {
   abi: proxyAdminABI,
 } = require('@unlock-protocol/hardhat-helpers/dist/ABIs/ProxyAdmin.json')
@@ -13,7 +14,7 @@ async function main({ unlockAddress, quiet = false }) {
     ;({ unlockAddress, multisig: safeAddress } = await getNetwork())
   }
 
-  const errorLog = (txt) => console.log(`[${name}]: ⚠️  ${txt}`)
+  const errorLog = (txt) => log(`[${name}]: ⚠️  ${txt}`, 'warning')
 
   const unlock = await getUnlock(unlockAddress)
   const unlockOwner = await unlock.owner()

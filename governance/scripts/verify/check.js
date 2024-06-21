@@ -3,6 +3,10 @@ const {
   builtinChains,
 } = require('@nomicfoundation/hardhat-verify/internal/chain-config')
 
+// init sentry
+require('../../helpers/logger')
+const Sentry = require('@sentry/node')
+
 function isSuccessStatusCode(statusCode) {
   return statusCode >= 200 && statusCode <= 299
 }
@@ -43,6 +47,7 @@ async function main({ contractAddress, chainId } = {}) {
     return { isVerified, status, result, message }
   } catch (e) {
     console.log(`Failed verification API call`, e)
+    Sentry.captureException(e)
   }
 }
 
