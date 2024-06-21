@@ -3,7 +3,6 @@ import { Button, Badge, Select, Placeholder } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useStorageService } from '~/utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
 import { SettingCardDetail } from '../elements/SettingCard'
@@ -385,7 +384,7 @@ export const CreditCardWithStripeForm = ({
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
-          keyGranter={keyGranter}
+          keyGranter={keyGranter as string}
           disabled={disabled || connectStripeMutation.isLoading}
         />
       )
