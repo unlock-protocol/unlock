@@ -1666,6 +1666,44 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/api/users/{emailAddress}/passwordEncryptedPrivateKey:
+    put:
+      operationId: updateUserEncryptedPrivateKey
+      description: Updates a user's private key, using their email address as key. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                token:
+                  type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailAddress:
+                    type: string
+                  user:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true
