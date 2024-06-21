@@ -52,7 +52,7 @@ router.put(
 )
 
 router.get(
-  '/:network/locks/:lockAddress/users/:userAddress',
+  '/locks/:lockAddress/users/:userAddress',
   authenticatedMiddleware,
   readUserMetadata
 )

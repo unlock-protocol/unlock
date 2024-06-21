@@ -1544,7 +1544,6 @@ paths:
 
       description: get user metadata for a lock.
       parameters:
-        - $ref: '#/components/parameters/Network'
         - $ref: '#/components/parameters/LockAddress'
         - $ref: '#/components/parameters/UserAddress'
       responses:
@@ -1557,6 +1556,9 @@ paths:
 
         401:
           $ref: '#/components/responses/401.NotAuthenticated'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
 
         404:
           $ref: '#/components/responses/404.NotFound'
