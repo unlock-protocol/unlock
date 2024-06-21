@@ -67,39 +67,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise
-   * is returned to the caller.
-   * @param {*} emailAddress
-   * @param {*} token
-   * @returns {Promise<*>}
-   */
-  async getUserRecoveryPhrase(emailAddress: string) {
-    const opts = {}
-    try {
-      const response = await fetch(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
-        { method: 'GET', headers: opts }
-      )
-      const data = await response.json()
-
-      if (data && data.recoveryPhrase) {
-        const { recoveryPhrase } = data
-        this.emit(success.getUserRecoveryPhrase, {
-          emailAddress,
-          recoveryPhrase,
-        })
-        return {
-          emailAddress,
-          recoveryPhrase,
-        }
-      }
-    } catch (error) {
-      this.emit(failure.getUserRecoveryPhrase, { emailAddress, error })
-      return {}
-    }
-  }
-
-  /**
    * Ejects a user
    *
    * @param {*} publicKey

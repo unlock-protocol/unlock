@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { pageTitle } from '../../constants'
 import { SetPassword } from '../interface/SetPassword'
 import Loading from '../interface/Loading'
-import { StorageService } from '../../services/storageService'
 import { reEncryptPrivateKey } from '../../utils/accounts'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockProvider from '../../services/unlockProvider'
@@ -33,13 +32,12 @@ export const RestoreAccount = ({
   const [recoveryPhrase, setRecoveryPhrase] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const storageService = new StorageService(config.services.storage.host)
   useEffect(() => {
     setLoading(true)
     const getRecoveryPhrase = async () => {
       if (email) {
-        const result = await storageService.getUserRecoveryPhrase(email)
-        const { recoveryPhrase } = result!
+        const result = await locksmith.getUserRecoveryPhrase(email)
+        const { recoveryPhrase } = result.data
         if (!recoveryPhrase) {
           setError('We do not have a valid recovery phrase for your user')
           setLoading(false)
