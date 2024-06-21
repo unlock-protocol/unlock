@@ -10,9 +10,9 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { ConnectUnlockAccount } from './EmailAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { UserAccountType } from '~/utils/userAccountType'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
 import { getUserAccountType } from '~/utils/getUserAccountType'
+import { useQuery } from '@tanstack/react-query'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -103,27 +103,22 @@ export const ConnectWallet = ({
   const [userEmail, setUserEmail] = useState<string | undefined>(
     email || undefined
   )
-  const [userAccountType, setUserAccountType] = useState<UserAccountType[]>([])
 
-  useEffect(() => {
-    const userAccountType = async () => {
-      if (!userEmail) {
-        setIsLoadingUserExists(false)
-        return
-      }
-
-      const userType = await getUserAccountType(userEmail)
-      setUserAccountType(userType)
-      setIsLoadingUserExists(false)
+  const { data: userType, isLoading: isLoadingUserExists } = useQuery(
+    ['userAccountType', userEmail],
+    () => getUserAccountType(userEmail as string),
+    {
+      enabled: !!userEmail,
     }
-
-    userAccountType()
-  }, [userEmail])
+  )
 
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
-  const [isLoadingUserExists, setIsLoadingUserExists] = useState(false)
+
+  const [isEmailDefined, setIsEmailDefined] = useState(false)
+
+  const isLoading = isEmailDefined && isLoadingUserExists
 
   const createOnConnectHandler = (provider: any) => {
     const handler: MouseEventHandler<HTMLButtonElement> = async (event) => {
@@ -135,16 +130,19 @@ export const ConnectWallet = ({
     return handler
   }
 
+  useEffect(() => {
+    setIsEmailDefined(!!userEmail)
+  }, [userEmail])
+
   const verifyAndSetEmail = async (email: string) => {
     if (email) {
-      setIsLoadingUserExists(true)
       setUserEmail(email)
     }
   }
 
   return (
     <div className="space-y-4">
-      {(!userEmail || isLoadingUserExists) && (
+      {(!userEmail || isLoading) && (
         <>
           <div className="grid gap-4 px-6">
             <div className=" text-sm text-gray-600">
@@ -184,7 +182,7 @@ export const ConnectWallet = ({
               Otherwise, enter your email address:
             </div>
             <ConnectViaEmail
-              isLoadingUserExists={isLoadingUserExists}
+              isLoadingUserExists={isLoading}
               onUnlockAccount={(email: string) => {
                 verifyAndSetEmail(email)
               }}
@@ -192,11 +190,11 @@ export const ConnectWallet = ({
           </div>
         </>
       )}
-      {userEmail && !isLoadingUserExists && (
+      {userEmail && !isLoading && (
         <ConnectUnlockAccount
           email={userEmail}
           setEmail={setUserEmail}
-          accountType={userAccountType}
+          accountType={userType || []}
           useIcon={false}
           shoudOpenConnectModal={shoudOpenConnectModal}
           checkoutService={checkoutService}
