@@ -290,7 +290,7 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
   }
 }
 
-// handle OpenZeppelin `RoleRevoked` event.
+// handles OpenZeppelin `RoleRevoked` event.
 export function handleRoleRevoked(event: RoleRevokedEvent): void {
   if (
     event.params.role.toHexString() ==
