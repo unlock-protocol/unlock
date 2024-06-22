@@ -6,6 +6,7 @@ import {
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
   RoleGranted as RoleGrantedEvent,
+  RoleRevoked as RoleRevokedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
@@ -284,6 +285,26 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
       } else {
         lock.lockManagers = [event.params.account]
       }
+      lock.save()
+    }
+  }
+}
+
+export function handleRoleRevoked(event: RoleRevokedEvent): void {
+  if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(LOCK_MANAGER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock && lock.lockManagers) {
+      const newManagers: Bytes[] = []
+      for (let i = 0; i < lock.lockManagers.length; i++) {
+        const managerAddress = lock.lockManagers[i]
+        if (managerAddress != event.params.account) {
+          newManagers.push(managerAddress)
+        }
+      }
+      lock.lockManagers = newManagers
       lock.save()
     }
   }

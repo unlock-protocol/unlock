@@ -115,4 +115,10 @@ templates:
         - event: ReferrerFee(indexed address,uint256)
           handler: handleReferrerFees
           receipt: true
+        - event: RoleGranted(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleGranted
+          receipt: true
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+          receipt: true
       file: ./src/public-lock.ts
