@@ -13,7 +13,7 @@ import { Controller, useForm, useWatch } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import useEns, { getAddressForName } from '~/hooks/useEns'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { onResolveName } from '~/utils/resolvers'
 import { Verifier } from '@unlock-protocol/unlock-js'
 

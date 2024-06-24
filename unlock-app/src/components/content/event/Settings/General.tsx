@@ -7,7 +7,7 @@ import {
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import {
   Button,
   ImageUpload,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean

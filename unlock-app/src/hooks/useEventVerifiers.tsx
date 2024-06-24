@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface useEventVerifiersProps {
   event: any

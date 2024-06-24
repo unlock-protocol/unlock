@@ -1,7 +1,7 @@
 import { networks } from '@unlock-protocol/networks'
 import { minifyAddress } from '@unlock-protocol/ui'
 import { config } from '~/config/app'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 export enum Platform {
   APPLE = 'apple',

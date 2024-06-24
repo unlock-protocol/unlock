@@ -4,7 +4,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean

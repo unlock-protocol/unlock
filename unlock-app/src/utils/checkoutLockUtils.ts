@@ -5,7 +5,7 @@
 
 import { Lock } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { getCurrencySymbol } from './currency'
 import { PaywallConfigType } from '@unlock-protocol/core'
 

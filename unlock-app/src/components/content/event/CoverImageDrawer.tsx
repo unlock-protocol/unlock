@@ -7,7 +7,7 @@ import {
 import { useState } from 'react'
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { useEventOrganizer } from '~/hooks/useEventOrganizer'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface CoverImageDrawerProps {
   image: string

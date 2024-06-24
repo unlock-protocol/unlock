@@ -5,7 +5,7 @@ import {
   useGetLockSettings,
   useSaveLockSettings,
 } from '~/hooks/useLockSettings'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import Link from 'next/link'
 import { useMetadata } from '~/hooks/metadata'
 import { useRouter } from 'next/router'

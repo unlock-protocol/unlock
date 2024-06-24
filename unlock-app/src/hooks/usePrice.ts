@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { ethers } from 'ethers'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { DEFAULT_USER_ACCOUNT_ADDRESS } from '~/constants'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 

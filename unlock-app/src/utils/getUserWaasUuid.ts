@@ -1,4 +1,4 @@
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { UserAccountType } from './userAccountType'
 
 /**

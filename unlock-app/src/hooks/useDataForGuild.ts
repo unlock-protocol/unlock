@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 const getDataForGuild = async (

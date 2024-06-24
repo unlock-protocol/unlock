@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 /**
  * recusively creates slugs for names

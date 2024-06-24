@@ -6,7 +6,7 @@ import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 

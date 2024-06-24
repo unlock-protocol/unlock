@@ -1,4 +1,4 @@
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Button, Input } from '@unlock-protocol/ui'
 import { formDataToMetadata } from '@unlock-protocol/core'

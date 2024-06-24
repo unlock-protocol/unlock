@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { TransferObject } from '@unlock-protocol/unlock-js'
 
 interface Options {

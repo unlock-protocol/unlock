@@ -25,7 +25,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { getEventDate, getEventEndDate } from '~/components/content/event/utils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 

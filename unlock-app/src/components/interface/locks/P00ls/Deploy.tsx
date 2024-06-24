@@ -9,7 +9,7 @@ import {
 } from '~/constants'
 import networks from '@unlock-protocol/networks'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useCheckoutConfigUpdate } from '~/hooks/useCheckoutConfig'
 import { subgraph } from '~/config/subgraph'
 import { useMutation, useQuery } from '@tanstack/react-query'

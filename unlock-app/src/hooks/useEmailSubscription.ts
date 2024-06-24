@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string

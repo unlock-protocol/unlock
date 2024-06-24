@@ -12,7 +12,7 @@ import { ConnectUnlockAccount } from './EmailAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { UserAccountType } from '~/utils/userAccountType'
 
 interface ConnectWalletProps {

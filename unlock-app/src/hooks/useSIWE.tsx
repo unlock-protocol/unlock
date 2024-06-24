@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   getAccessToken,

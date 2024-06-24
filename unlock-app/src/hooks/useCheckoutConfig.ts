@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { PaywallConfigType } from '@unlock-protocol/core'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface CheckoutConfigOptions {

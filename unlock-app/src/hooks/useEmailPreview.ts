@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { config } from '~/config/app'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import remarkParse from 'remark-parse'
 import remarkHtml from 'remark-html'
 import { unified } from 'unified'

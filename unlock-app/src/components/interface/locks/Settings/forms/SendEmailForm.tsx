@@ -1,4 +1,4 @@
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import { useState } from 'react'

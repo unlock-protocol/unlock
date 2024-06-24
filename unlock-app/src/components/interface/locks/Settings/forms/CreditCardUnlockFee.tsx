@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useSaveLockSettings } from '~/hooks/useLockSettings'
 
 interface CreditCardUnlockFeeProps {

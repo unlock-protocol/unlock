@@ -20,7 +20,7 @@ import {
 } from '@unlock-protocol/core'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'

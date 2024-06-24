@@ -18,7 +18,7 @@ import {
 } from '~/hooks/useLockSettings'
 import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 
 interface CreditCardFormSchema {

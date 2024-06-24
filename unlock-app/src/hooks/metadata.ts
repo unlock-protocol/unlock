@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string

@@ -1,5 +1,5 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { AxiosError } from 'axios'
 import { getAccessToken, getCurrentAccount } from '~/utils/session'
 import { ReactNode, createContext, useContext } from 'react'

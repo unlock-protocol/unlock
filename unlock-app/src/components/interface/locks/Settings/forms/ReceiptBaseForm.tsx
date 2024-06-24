@@ -7,7 +7,7 @@ import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/useReceipts'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { downloadAsCSV } from '../../Manage'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
 
 const SupplierSchema = z.object({

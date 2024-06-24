@@ -13,7 +13,7 @@ import {
   useStripeConnect,
   useStripeDisconnect,
 } from '~/hooks/useStripeConnect'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'

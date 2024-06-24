@@ -3,7 +3,7 @@ import React from 'react'
 import { EventContentWithProps } from '~/components/content/EventContent'
 
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 export interface ServerSidePropsParams {
   params: {

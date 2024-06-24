@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { toFormData } from '~/components/interface/locks/metadata/utils'
-import { locksmith } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface useEventProps {
   slug: string
