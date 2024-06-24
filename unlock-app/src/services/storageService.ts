@@ -2,7 +2,6 @@ import {
   LocksmithService,
   LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
-
 import { EventEmitter } from 'events'
 
 // Will be deprecated with NextAuth

@@ -33,6 +33,7 @@ export const useAccount = (address: string) => {
   const wedlockService = useWedlockService()
   const { signIn } = useSIWE()
 
+  // TODO: deprecate this method
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
 

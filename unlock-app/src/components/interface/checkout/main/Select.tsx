@@ -304,6 +304,10 @@ export function Select({ checkoutService }: Props) {
 
   const [isSigning, setSigning] = useState(false)
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -323,10 +327,6 @@ export function Select({ checkoutService }: Props) {
   }, [locks])
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
-
-  const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
-  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
     const signToSignIn = async () => {
