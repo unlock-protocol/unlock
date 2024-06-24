@@ -71,7 +71,6 @@ export const celo: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-celo/version/latest',
     studioName: 'unlock-protocol-celo',
   },
-  swapPurchaser: '0x440d9D4E66d39bb28FB58729Cb4D3ead2A595591',
   tokens: [
     {
       address: '0xef4229c8c3250C675F21BCefa42f58EfbfF6002a',

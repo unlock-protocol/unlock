@@ -117,7 +117,6 @@ export interface NetworkConfig {
     universalRouterAddress: string
     positionManager: string
   }>
-  swapPurchaser?: string
   unlockOwner?: string
   unlockDaoToken?: {
     address: string

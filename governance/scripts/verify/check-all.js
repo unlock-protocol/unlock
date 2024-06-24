@@ -69,7 +69,6 @@ async function main() {
         name,
         hooks,
         keyManagerAddress,
-        swapPurchaser,
         unlockDaoToken,
         unlockOwner,
         subgraph,
@@ -126,9 +125,6 @@ async function main() {
       // get lock proxy
       if (keyManagerAddress) {
         toVerify.KeyManager = keyManagerAddress
-      }
-      if (swapPurchaser) {
-        toVerify.SwapPurchaser = swapPurchaser
       }
       if (unlockDaoToken) {
         toVerify.UDT = unlockDaoToken.address
