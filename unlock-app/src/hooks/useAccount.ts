@@ -1,15 +1,6 @@
 import UnlockProvider from '../services/unlockProvider'
 import { useConfig } from '../utils/withConfig'
-import { StorageService } from '../services/storageService'
-import UnlockUser from '../structured_data/unlockUser'
-import { useWedlockService } from '../contexts/WedlocksContext'
 import { captureCharge } from './useCards'
-import {
-  createAccountAndPasswordEncryptKey,
-  reEncryptPrivateKey,
-} from '../utils/accounts'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useSIWE } from './useSIWE'
 import { locksmith } from '~/config/storage'
 
 export const getAccountTokenBalance = async (
@@ -30,69 +21,6 @@ export const getAccountTokenBalance = async (
  */
 export const useAccount = (address: string) => {
   const config = useConfig()
-  const wedlockService = useWedlockService()
-  const { signIn } = useSIWE()
-
-  // TODO: deprecate this method
-  const createUserAccount = async (emailAddress: string, password: string) => {
-    const storageService = new StorageService(config.services.storage.host)
-
-    const { address, passwordEncryptedPrivateKey } =
-      await createAccountAndPasswordEncryptKey(password)
-
-    const { origin } = window.location
-
-    let recoveryKey
-
-    try {
-      const data = await storageService.createUser(
-        UnlockUser.build({
-          emailAddress,
-          publicKey: address,
-          passwordEncryptedPrivateKey,
-        })
-      )
-      const result = await data.json()
-      if (!data.ok) {
-        ToastHelper.error(result[0]?.message ?? 'Ops, something went wrong')
-        return { address: '', passwordEncryptedPrivateKey: '' }
-      } else {
-        // Sign the user in (sign siwe message)
-        await signIn()
-
-        // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
-        recoveryKey = await reEncryptPrivateKey(
-          passwordEncryptedPrivateKey,
-          password,
-          result.recoveryPhrase
-        )
-        ToastHelper.success('Account successfully created')
-      }
-    } catch (error: any) {
-      console.error(error)
-      const details = error?.response?.data[0]
-      if (
-        details?.validatorKey === 'not_unique' &&
-        details?.path === 'emailAddress'
-      ) {
-        throw new Error('ACCOUNT_ALREADY_EXISTS')
-      } else {
-        throw new Error('ACCOUNT_CREATION_FAILURE')
-      }
-    }
-
-    await wedlockService.welcomeEmail(
-      emailAddress,
-      `${origin}/recover/?email=${encodeURIComponent(
-        emailAddress
-      )}&recoveryKey=${encodeURIComponent(JSON.stringify(recoveryKey))}`
-    )
-
-    return {
-      address,
-      passwordEncryptedPrivateKey,
-    }
-  }
 
   const retrieveUserAccount = async (email: string, password: string) => {
     const encryptedKey = await locksmith.getUserPrivateKey(email)
@@ -134,7 +62,6 @@ export const useAccount = (address: string) => {
 
   return {
     captureChargeForCard,
-    createUserAccount,
     retrieveUserAccount,
   }
 }
