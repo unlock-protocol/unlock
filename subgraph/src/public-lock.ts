@@ -72,6 +72,7 @@ function newKey(event: TransferEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.lastKeyMintedAt = event.block.timestamp
     lock.save()
   }
 
