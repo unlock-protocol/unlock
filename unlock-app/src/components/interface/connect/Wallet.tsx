@@ -12,8 +12,8 @@ import { ConnectUnlockAccount } from './EmailAccount'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from '../checkout/main/checkoutMachine'
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
 import { UserAccountType } from '~/utils/userAccountType'
+import { locksmith } from '~/config/storage'
 
 interface ConnectWalletProps {
   injectedProvider?: unknown
@@ -118,7 +118,7 @@ export const ConnectWallet = ({
     ['userAccountType', userEmail],
     async () => {
       setIsEmailLoading(true)
-      const result = await storage.getUserAccountType(userEmail as string)
+      const result = await locksmith.getUserAccountType(userEmail as string)
       const userAccountType = result.data.userAccountType as UserAccountType[]
       setIsEmailLoading(false)
 
