@@ -280,18 +280,18 @@ export const getCheckedInAttendees = async (slug: string) => {
   console.log(filteredKeys)
 
   // And finally let's get their owners!
-  const locks = await subgraph.keys(
-    {
-      first,
-      skip,
-      where: lockFilter,
-      keyFilter,
-      keyOrderBy: KeyOrderBy.TokenId,
-      orderDirection: OrderDirection.Asc,
-    },
-    {
-      networks: [network],
-    }
-  )
+  // const locks = await subgraph.keys(
+  //   {
+  //     first,
+  //     skip,
+  //     where: lockFilter,
+  //     keyFilter,
+  //     keyOrderBy: KeyOrderBy.TokenId,
+  //     orderDirection: OrderDirection.Asc,
+  //   },
+  //   {
+  //     networks: [network],
+  //   }
+  // )
   return []
 }

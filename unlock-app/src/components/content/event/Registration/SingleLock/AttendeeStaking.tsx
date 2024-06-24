@@ -13,17 +13,12 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
     ['attendeeRefund', attendeeRefund],
     async () => {
       const web3Service = new Web3Service(networks)
-      const [decimals, symbol] = await Promise.all([
-        web3Service.getTokenDecimals(
-          attendeeRefund!.currency,
-          attendeeRefund!.network
-        ),
-        web3Service.getTokenSymbol(
-          attendeeRefund!.currency,
-          attendeeRefund!.network
-        ),
-      ])
-      return `${ethers.formatUnits(attendeeRefund!.amount, decimals)} ${symbol}`
+      const symbol = await web3Service.getTokenSymbol(
+        attendeeRefund!.currency,
+        attendeeRefund!.network
+      )
+
+      return `${ethers.formatUnits(attendeeRefund!.amount, 0)} ${symbol}`
     },
     {
       enabled: !!attendeeRefund,
