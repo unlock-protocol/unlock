@@ -72,6 +72,7 @@ jobs:
           UNLOCK_APP_VERCEL_PROD_NEXT_PUBLIC_ETHPASS_KEY: op://secrets/ethpass/username
           UNLOCK_APP_VERCEL_PROD_NEXT_PUBLIC_UNLOCK_ENV: prod
           UNLOCK_APP_VERCEL_PROD_GOOGLE_CLIENT_SECRET: op://secrets/google/prod-secret
+          UNLOCK_APP_VERCEL_PROD_NEXTAUTH_SECRET: op://secrets/nextauth/prod-secret
       - uses: ./.github/actions/vercel
         with:
           service: unlock-app
