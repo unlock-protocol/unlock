@@ -40,7 +40,7 @@
     "@nomicfoundation/hardhat-ignition-ethers": "0.15.0",
     "@nomicfoundation/hardhat-toolbox": "5.0.0",
     "@nomicfoundation/ignition-core": "0.15.1",
-    "@typechain/ethers-v6": "0.5.0",
+    "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "9.1.0",
     "@types/mocha": "10.0.6",
     "@types/node": "20.14.2",
