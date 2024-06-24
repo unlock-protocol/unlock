@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface Options {
   lockAddress: string
@@ -15,7 +15,7 @@ export const useStripeConnect = ({ lockAddress, network, backTo }: Options) => {
   return useMutation<any, any, useStripeConnectMutationArgs>(
     ['stripeConnect', network, lockAddress, backTo],
     async ({ stripeAccount }) => {
-      const response = await storage.connectStripeAccount(
+      const response = await locksmith.connectStripeAccount(
         network,
         lockAddress,
         {
@@ -35,7 +35,7 @@ export const useStripeDisconnect = ({ lockAddress, network }: Options) => {
   return useMutation(
     ['stripeDisconnect', network, lockAddress],
     async () => {
-      const response = await storage.disconnectStripe(network, lockAddress)
+      const response = await locksmith.disconnectStripe(network, lockAddress)
       return response.data
     },
     {
@@ -51,7 +51,7 @@ export const useGetLockStripeConnectionDetails = ({
   return useQuery(
     ['getLockStripeConnectionDetails', lockAddress, network],
     async () => {
-      const response = await storage.getLockStripeConnectionDetails(
+      const response = await locksmith.getLockStripeConnectionDetails(
         lockAddress,
         network
       )

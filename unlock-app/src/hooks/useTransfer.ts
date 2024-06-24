@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { TransferObject } from '@unlock-protocol/unlock-js'
 
 interface Options {
@@ -20,7 +20,7 @@ export const useTransferCode = ({ network, lockAddress, keyId }: Options) => {
   } = useMutation(
     ['transferCode', network, lockAddress, keyId],
     async ({ captcha }: { captcha: string }): Promise<KeyTransferData> => {
-      const response = await storage.createTransferCode(
+      const response = await locksmith.createTransferCode(
         network!,
         lockAddress!,
         keyId!,
@@ -66,7 +66,7 @@ export const useTransferDone = () => {
     async (
       option: TransferObject & { transferSignature: string; network: number }
     ): Promise<void> => {
-      await storage.transferDone(option)
+      await locksmith.transferDone(option)
     },
     {
       retry: 3,

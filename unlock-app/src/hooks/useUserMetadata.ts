@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface User {
   userAddress: string
@@ -10,7 +10,7 @@ interface User {
 
 export const useUpdateUsersMetadata = () => {
   return useMutation(['updateUserMetadata'], async (users: User[]) => {
-    const response = await storage.updateUsersMetadata({
+    const response = await locksmith.updateUsersMetadata({
       users,
     })
     return response.data
@@ -25,7 +25,7 @@ export const useUpdateUserMetadata = ({
   return useMutation(
     ['updateUserMetadata', network, lockAddress, userAddress],
     async (metadata: Record<string, any>) => {
-      const response = await storage.updateUserMetadata(
+      const response = await locksmith.updateUserMetadata(
         network,
         lockAddress,
         userAddress,

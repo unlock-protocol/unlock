@@ -18,7 +18,7 @@ import {
 } from '~/hooks/useLockSettings'
 import { SettingCardDetail } from '../elements/SettingCard'
 import { formatNumber } from '~/utils/formatter'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 
 interface CreditCardFormSchema {
@@ -55,7 +55,8 @@ export default function CreditCardCustomPrice({
   } = useGetLockSettings({ lockAddress, network })
 
   const getDefaultValues = async (): Promise<CreditCardFormSchema> => {
-    const settings = (await storage.getLockSettings(network, lockAddress)).data
+    const settings = (await locksmith.getLockSettings(network, lockAddress))
+      .data
     const {
       creditCardPrice: price,
       creditCardCurrency = connectedStripeAccount.default_currency,

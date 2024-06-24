@@ -1,4 +1,4 @@
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { Button, Placeholder, ToggleSwitch } from '@unlock-protocol/ui'
 import { useState } from 'react'
@@ -39,7 +39,7 @@ export const SendEmailForm = ({
 
   const { isLoading, data: { data: lockSettings } = {} } = useQuery(
     ['getLockSettings', lockAddress, network, updateSettingsMutation.isSuccess],
-    async () => await storage.getLockSettings(network, lockAddress),
+    async () => await locksmith.getLockSettings(network, lockAddress),
     {
       enabled: lockAddress?.length > 0 && !!network && isManager,
       onSuccess: (res: any) => {

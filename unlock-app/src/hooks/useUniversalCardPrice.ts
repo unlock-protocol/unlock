@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface Options {
   network: number
@@ -19,7 +19,7 @@ export const useUniversalCardPrice = ({
   return useQuery(
     ['useUniversalCardPrice', network, lockAddress, purchaseData, recipients],
     async () => {
-      const response = await storage.getUniversalCardPrice(
+      const response = await locksmith.getUniversalCardPrice(
         network,
         lockAddress,
         purchaseData,

@@ -2,7 +2,7 @@ import { ReactNode, createContext, useContext, useState } from 'react'
 import { useSession } from './useSession'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { SiweMessage } from 'siwe'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   getAccessToken,
@@ -34,7 +34,7 @@ const signOutToken = async () => {
   const session = getAccessToken()
   if (session) {
     // First, revoke the session on the server with the token
-    await storage.revoke().catch(console.error)
+    await locksmith.revoke().catch(console.error)
     // Then remove token locally
     return removeAccessToken()
   }
@@ -156,13 +156,13 @@ export const SIWEProvider = ({ children }: Props) => {
         throw new Error('No wallet connected.')
       }
 
-      const { data: nonce } = await storage.nonce()
+      const { data: nonce } = await locksmith.nonce()
       const siweResult = await siweSign(nonce, '')
 
       if (siweResult) {
         setSiweResult(siweResult)
         const { message, signature } = siweResult
-        const response = await storage.login({
+        const response = await locksmith.login({
           message,
           signature,
         })

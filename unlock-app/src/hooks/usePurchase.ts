@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface Options {
   lockAddress: string
@@ -24,7 +24,7 @@ export const usePurchase = ({ lockAddress, network }: Options) => {
       data,
       referrers,
     }: PurchaseOptions) => {
-      const response = await storage.purchase(network, lockAddress, {
+      const response = await locksmith.purchase(network, lockAddress, {
         stripeTokenId,
         pricing,
         recipients,

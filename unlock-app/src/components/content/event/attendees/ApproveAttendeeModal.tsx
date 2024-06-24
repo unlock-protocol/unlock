@@ -4,7 +4,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { MAX_UINT } from '~/constants'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean
@@ -51,7 +51,7 @@ export const ApproveAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
       }
       // Mark all as approved!
       if (airdropRecipients.length === 0) {
-        await storage.approveAttendeesRsvp(network, lockAddress, {
+        await locksmith.approveAttendeesRsvp(network, lockAddress, {
           recipients: attendees.map((a) => a.keyholderAddress),
         })
       }
@@ -68,7 +68,7 @@ export const ApproveAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
               throw error
             }
             if (hash) {
-              await storage.approveAttendeesRsvp(network, lockAddress, {
+              await locksmith.approveAttendeesRsvp(network, lockAddress, {
                 recipients: attendees.map((a) => a.keyholderAddress),
               })
             }

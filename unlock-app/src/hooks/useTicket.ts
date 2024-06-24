@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { Event } from '@unlock-protocol/core'
 
 export const useLocksmithGranterAddress = () => {
   const query = useQuery(
     ['keyGranters'],
     async () => {
-      const response = await storage.balance()
+      const response = await locksmith.balance()
       return response.data[1].address!
     },
     {
@@ -38,10 +38,10 @@ export const useEventTicket = ({
     ['ticket', network, lockAddress, keyId],
     async () => {
       if (!eventProp) {
-        const response = await storage.getTicket(network, lockAddress, keyId)
+        const response = await locksmith.getTicket(network, lockAddress, keyId)
         return response.data
       } else {
-        const response = await storage.getEventTicket(
+        const response = await locksmith.getEventTicket(
           eventProp.slug,
           network,
           lockAddress,

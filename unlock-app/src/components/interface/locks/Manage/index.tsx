@@ -34,7 +34,7 @@ import { BiRightArrow as RightArrowIcon } from 'react-icons/bi'
 import { TbPlant as PlantIcon } from 'react-icons/tb'
 import { IconType } from 'react-icons'
 import { Picker } from '../../Picker'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { useMetadata } from '~/hooks/metadata'
 import { getLockTypeByMetadata } from '@unlock-protocol/core'
 import { ImageBar } from './elements/ImageBar'
@@ -87,7 +87,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
       ToastHelper.success(
         `It may take a few minutes for the file to be generated. Please do not close this page`
       )
-      const response = await storage.exportKeys(
+      const response = await locksmith.exportKeys(
         network,
         lockAddress,
         '',
@@ -121,7 +121,7 @@ export const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
     const fetchKeysJob = async () => {
       if (!keysJobId) return
 
-      const response = await storage.getExportedKeys(
+      const response = await locksmith.getExportedKeys(
         network,
         lockAddress,
         keysJobId
@@ -393,7 +393,7 @@ export const ManageLockPage = () => {
   const { data: eventData } = useQuery(
     ['getEventForLock', lockAddress, network],
     async () => {
-      const { data: eventDetails } = await storage.getEventDetails(
+      const { data: eventDetails } = await locksmith.getEventDetails(
         Number(network),
         lockAddress
       )

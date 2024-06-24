@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import guildClient from '~/config/guild'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 export const getLockGuild = async (lockAddress: string, network: number) => {
-  const response = await storage.getLockSettings(network, lockAddress)
+  const response = await locksmith.getLockSettings(network, lockAddress)
   if (response?.data?.hookGuildId) {
     return guildClient.guild.get(response?.data?.hookGuildId)
   }

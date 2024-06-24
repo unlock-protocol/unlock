@@ -1,4 +1,4 @@
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { UserAccountType } from './userAccountType'
 
 /**
@@ -26,7 +26,7 @@ export const getUserWaasUuid = async (
   }
 
   try {
-    const response = await storage.getWaasToken(
+    const response = await locksmith.getWaasToken(
       emailAddress,
       selectedProvider,
       { token }

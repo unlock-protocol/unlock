@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 
 interface useEventVerifiersProps {
   event: any
@@ -17,7 +17,7 @@ export const useEventVerifiers = ({ event }: useEventVerifiersProps) => {
       if (!account) {
         return false
       }
-      const response = await storage.eventVerifiers(event.slug)
+      const response = await locksmith.eventVerifiers(event.slug)
       let isVerifier = false
       response.data.results?.forEach((item) => {
         if (item.address.toLowerCase() === account.toLowerCase()) {

@@ -7,7 +7,7 @@ import { useGetReceiptsBase, useUpdateReceiptsBase } from '~/hooks/useReceipts'
 import { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import { downloadAsCSV } from '../../Manage'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/storage'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
 
 const SupplierSchema = z.object({
@@ -86,7 +86,7 @@ export const ReceiptBaseForm = ({
 
   const onDownloadReceiptsMutation = useMutation(
     async () => {
-      const response = await storage.getReceipts(network, lockAddress)
+      const response = await locksmith.getReceipts(network, lockAddress)
       const cols: string[] = []
       response?.data?.items?.map((item) => {
         Object.keys(item).map((key: string) => {
