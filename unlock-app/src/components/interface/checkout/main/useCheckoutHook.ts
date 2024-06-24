@@ -22,10 +22,12 @@ export function useCheckoutHook(service: CheckoutService) {
 
   let lockHookMapping: LockHookProps = {}
 
+  const defaultNetwork = paywallConfig.network || 1
+
   const queries = useQueries({
     queries: [
       ...Object.entries(paywallConfig.locks).map(
-        ([lockAddress, { network = 1 }]) => {
+        ([lockAddress, { network = defaultNetwork }]) => {
           return {
             queryKey: ['getKeyPurchaseHook', lockAddress, network],
             queryFn: async (): Promise<LockHookProps> => {
