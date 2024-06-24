@@ -65,6 +65,7 @@ export const config = {
   walletConnectApiKey: '1535029cc7500ace23802e2e990c58d7', // https://cloud.walletconnect.com/app/project?uuid=7920be27-1e19-43a8-8f7d-cafbb00d4b80
   googleMapsApiKey: 'AIzaSyDp0Y4yQn6WtYEFEgRZg52EiDSgLwxzVMA',
   googleClientSecret: process.env.GOOGLE_CLIENT_SECRET, // https://console.cloud.google.com/apis/dashboard
+  nexthAuthSecret: process.env.NEXTAUTH_SECRET,
   httpProvider: process.env.NEXT_PUBLIC_HTTP_PROVIDER || 'localhost',
   locksmithSigners: [
     '0x58b5CeDE554a39666091F96C8058920dF5906581',
