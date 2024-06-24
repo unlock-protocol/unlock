@@ -3,6 +3,7 @@ import GoogleProvider from 'next-auth/providers/google'
 import { config } from '~/config/app'
 
 export const authOptions = {
+  secret: config.nexthAuthSecret as string,
   providers: [
     GoogleProvider({
       clientId: config.googleClientId as string,
