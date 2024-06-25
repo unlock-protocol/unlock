@@ -319,7 +319,7 @@ export const CreditCardWithStripeForm = ({
     stripeConnectionDetails?.countrySpec?.supported_payment_currencies ?? []
 
   const getKeyGranter = async () => {
-    return await storageService.getKeyGranter(network)
+    return (await locksmith.balance()).data[network].address
   }
 
   const disconnectStipeMutation = useStripeDisconnect({
