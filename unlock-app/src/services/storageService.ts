@@ -2,7 +2,6 @@ import {
   LocksmithService,
   LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
-
 import { EventEmitter } from 'events'
 
 // The goal of the success and failure objects is to act as a registry of events
@@ -25,7 +24,7 @@ export const failure = {
   ejectUser: 'ejectUser.failure',
 }
 
-// This approach is deprecated and we should move to using '~/config/storage'
+// This approach is deprecated and we should move to using '~/config/locksmith'
 export class StorageService extends EventEmitter {
   public host: string
 
@@ -250,6 +249,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
+  // TODO: Depracate after NextAuth is fully implemented
   async userExist(emailAddress: string) {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`

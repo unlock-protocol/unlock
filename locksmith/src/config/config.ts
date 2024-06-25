@@ -42,6 +42,12 @@ interface DefenderRelayCredentials {
   }
 }
 
+// Interface for Google API credentials
+interface Credentials {
+  client_email: string
+  private_key: string
+}
+
 const defenderRelayCredentials: DefenderRelayCredentials = {}
 Object.values(networks).forEach((network) => {
   defenderRelayCredentials[network.id] = {
@@ -49,6 +55,27 @@ Object.values(networks).forEach((network) => {
     apiSecret: process.env[`DEFENDER_RELAY_SECRET_${network.id}`] || '',
   }
 })
+
+/* Load and parse the Google application credentials from the environment variable GOOGLE_APPLICATION_CREDENTIALS.
+
+// To obtain the GOOGLE_APPLICATION_CREDENTIALS, follow these steps:
+// 1. Go to the Google Cloud Console: https://console.cloud.google.com/
+// 2. Create or select a Google Cloud project.
+// 3. Enable the Google Wallet API.
+// 4. Navigate to IAM & Admin > Service Accounts.
+// 5. Click "Create Service Account", enter a name and description, then click "Create" and "Continue".
+// 7. Go to the "Keys" tab, click "Add Key" > "Create New Key", choose "JSON", and click "Create" to download the key file.
+// 8. Set the environment variable to point to the key file:
+//    export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-file.json"
+// For more details, visit: https://cloud.google.com/docs/authentication/application-default-credentials
+*/
+
+// Dummy Google API credentials
+const googleApplicationCredentials: Credentials = {
+  client_email: 'dummy-client-email@appspot.gserviceaccount.com',
+  private_key:
+    '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkq...\n-----END PRIVATE KEY-----\n',
+}
 
 const config = {
   isProduction,
@@ -86,6 +113,16 @@ const config = {
   */
   gitcoinApiKey: process.env.GITCOIN_API_KEY,
   gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
+  googleApplicationCredentials,
+  // Google wallet Issuer ID
+  /* 1. Visit the Google Pay & Wallet Console: https://pay.google.com/gp/w/home/settings
+  2. Sign in with your Google account and complete the registration process.
+  3. Your Issuer ID will be displayed under "Issuer Info" in the console settings.
+  For more details, visit: https://codelabs.developers.google.com/add-to-wallet-web#3
+  */
+  googleWalletIssuerID: process.env.GOOGLE_WALLET_API_ISSUER_ID,
+  // Google wallet class
+  googleWalletClass: process.env.GOOGLE_WALLET_API_CLASS,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
@@ -96,7 +133,9 @@ const config = {
   },
   // https://docs.cdp.coinbase.com/developer-platform/docs/cdp-keys/
   coinbaseCloudApiKeyName: process.env.COINBASE_CLOUD_API_KEY_NAME,
+  // https://docs.cdp.coinbase.com/developer-platform/docs/cdp-keys/
   coinbaseCloudPrivateKey: process.env.COINBASE_CLOUD_PRIVATE_KEY,
+  // https://console.cloud.google.com/apis/dashboard
   googleAuthClientId: process.env.GOOGLE_AUTH_CLIENT_ID,
 }
 

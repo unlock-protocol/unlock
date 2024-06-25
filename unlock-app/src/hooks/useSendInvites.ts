@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   recipients: string[]
@@ -8,7 +8,7 @@ interface Options {
 
 export const useSendInvites = () => {
   const mutation = useMutation(async ({ slug, recipients }: Options) => {
-    const response = await storage.sendEventInvites(slug, {
+    const response = await locksmith.sendEventInvites(slug, {
       recipients,
     })
     return response.data.sent

@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
-import { Select } from './Select'
 import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
 import { Confirm } from './Confirm'
@@ -22,6 +21,7 @@ import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { Connected } from '../Connected'
 import { isInIframe } from '~/utils/iframe'
+import { SelectWithLoader } from './SelectWithLoader'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -133,7 +133,7 @@ export function Checkout({
         return <Connected service={checkoutService} />
       }
       case 'SELECT': {
-        return <Select checkoutService={checkoutService} />
+        return <SelectWithLoader checkoutService={checkoutService} />
       }
       case 'QUANTITY': {
         return <Quantity checkoutService={checkoutService} />
