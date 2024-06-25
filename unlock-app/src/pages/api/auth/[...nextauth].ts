@@ -16,6 +16,8 @@ export const authOptions = {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
+      console.log('GOOGLE', config.googleClientSecret as string)
+
       return true
     },
     async jwt({ token, user }: { token: any; user: any }) {
