@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   network: number
@@ -22,7 +22,7 @@ export const useFiatChargePrice = ({
   return useQuery(
     ['purchasePrice', network, tokenAddress, amount],
     async () => {
-      const response = await storage.getTotalPrice(
+      const response = await locksmith.getTotalPrice(
         network,
         amount,
         tokenAddress ?? undefined

@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.45.0",
+  "version": "0.46.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "yarn clean && yarn build:abis && yarn build:lib && vitest",
-    "test:single": "hardhat test:single",
+    "test:single": "cd src/__tests__/integration && cp single.js single.test.js && yarn vitest single",
     "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
@@ -29,37 +29,34 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "axios": "1.4.0",
+    "axios": "1.7.2",
     "ethers": "5.7.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.22.9",
-    "@babel/core": "7.22.9",
-    "@babel/preset-env": "7.22.9",
+    "@babel/cli": "7.24.6",
+    "@babel/core": "7.24.6",
+    "@babel/preset-env": "7.24.6",
     "@graphql-codegen/cli": "5.0.2",
-    "@graphql-codegen/typescript": "4.0.6",
+    "@graphql-codegen/typescript": "4.0.7",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
-    "@graphql-codegen/typescript-operations": "4.0.1",
-    "@nomiclabs/hardhat-ethers": "2.2.3",
-    "@openapitools/openapi-generator-cli": "2.7.0",
+    "@graphql-codegen/typescript-operations": "4.2.1",
+    "@nomicfoundation/hardhat-ethers": "3.0.6",
+    "@openapitools/openapi-generator-cli": "2.13.4",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "eslint": "8.46.0",
-    "ethers": "5.7.2",
+    "eslint": "8.57.0",
+    "ethers": "6.13.0",
     "hardhat": "2.20.1",
     "prettier": "3.2.5",
     "tsup": "8.0.2",
-    "typescript": "5.3.3",
+    "typescript": "5.4.5",
     "vitest": "1.6.0"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "4.2.1",
-    "@uniswap/smart-order-router": "3.17.4",
     "graphql": "16.8.1",
     "graphql-request": "6.1.0",
-    "react-to-print": "2.14.15",
-    "siwe": "2.1.4"
+    "siwe": "2.3.2"
   }
 }

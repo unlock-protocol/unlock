@@ -3,7 +3,7 @@ import { Token } from '@unlock-protocol/types'
 import { Button, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
-import { utils } from 'ethers'
+import { ethers } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { addressMinify } from '~/utils/strings'
@@ -17,6 +17,7 @@ interface SelectCurrencyModalProps {
   network: number
   onSelect: (token: Token) => void
   defaultCurrencyAddress?: string
+  noNative?: boolean
 }
 
 export const SelectCurrencyModal = ({
@@ -25,6 +26,7 @@ export const SelectCurrencyModal = ({
   network,
   onSelect,
   defaultCurrencyAddress,
+  noNative,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
@@ -34,8 +36,8 @@ export const SelectCurrencyModal = ({
   const [_isReady] = useDebounce(
     () => {
       try {
-        if (utils.isAddress(query)) {
-          const address = utils.getAddress(query)
+        if (ethers.isAddress(query)) {
+          const address = ethers.getAddress(query)
           setContractAddress(address)
         } else {
           setContractAddress(query)
@@ -62,27 +64,33 @@ export const SelectCurrencyModal = ({
       const { tokens: tokenItems = [] } = networks[network!] || {}
       const nativeCurrency = networks[network]?.nativeCurrency ?? {}
       const featuredTokens = [
-        nativeCurrency,
         ...tokenItems.filter((token: Token) => !!token.featured),
       ]
-
+      if (!noNative) {
+        featuredTokens.unshift(nativeCurrency)
+      }
       if (defaultCurrencyAddress) {
-        const defaultCurrencySymbol = await web3Service.getTokenSymbol(
-          defaultCurrencyAddress,
-          network
+        const inList = featuredTokens.find(
+          (token) => token.address === defaultCurrencyAddress
         )
-        if (defaultCurrencySymbol) {
-          featuredTokens.unshift({
-            name: defaultCurrencySymbol,
-            symbol: defaultCurrencySymbol,
-            address: defaultCurrencyAddress,
-          })
+        if (!inList) {
+          const defaultCurrencySymbol = await web3Service.getTokenSymbol(
+            defaultCurrencyAddress,
+            network
+          )
+          if (defaultCurrencySymbol) {
+            featuredTokens.unshift({
+              name: defaultCurrencySymbol,
+              symbol: defaultCurrencySymbol,
+              address: defaultCurrencyAddress,
+            })
+          }
         }
       }
       setTokens(featuredTokens)
     }
     initializeTokens()
-  }, [network, networks, defaultCurrencyAddress])
+  }, [network, networks, defaultCurrencyAddress, noNative])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
@@ -126,7 +134,7 @@ export const SelectCurrencyModal = ({
     setContractAddress('')
   }
 
-  const isValidAddress = utils.isAddress(contractAddress)
+  const isValidAddress = ethers.isAddress(contractAddress)
 
   const noItems =
     tokens?.length === 0 &&

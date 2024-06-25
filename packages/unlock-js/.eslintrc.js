@@ -21,9 +21,6 @@ const rulesToIgnore = [
 
 module.exports = {
   extends: ['@unlock-protocol/eslint-config'],
-  env: {
-    es2020: true,
-  },
   rules: {
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }

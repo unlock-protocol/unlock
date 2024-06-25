@@ -8,7 +8,7 @@ export function ethereumAddress(input?: string): string {
   if (!input) {
     return ''
   }
-  return ethers.utils.getAddress(input.trim())
+  return ethers.getAddress(input.trim())
 }
 
 export const getValidNumber = (value: string | number): number | undefined => {

@@ -2,7 +2,9 @@
 
 Unlock-js is an npm module that provides a wrapper around the Unlock smart contract ABIs to simplify interactions with the protocols smart contracts (both Unlock and PublicLock).
 
-It is used in production by the Unlock front-end applications and can be deployed both on server side (node.js) applications and front end applications (using your favorite JavaScript framework).
+It also provides ways to interact with the Unlock Labs provided backend called "locksmith". That API lets you interact with all offchain aspects of a contract: token metadata, user accounts, credit card purchases... etc.
+
+It is used in production by the Unlock front-end applications and can be deployed both on server-side (node.js) applications and front-end applications (using your favorite JavaScript framework).
 
 One of the core goals of this library is to abstract the complexity of the multiple Unlock and PublicLock versions with a single library. It covers some of the data type conversions so that API calls are more user-friendly (strings instead of BigInts).
 
@@ -51,8 +53,10 @@ yarn test
 
 Run a single test
 
+You can edit `testPath` and versions values in `./src/__integrations__/single.js` to test for specific functions on specific versions of the protocol.
+
 ```
-yarn test:single --file src/__tests__/utils.test.js
+yarn test:single
 ```
 
 Run a single integration test with specific versions

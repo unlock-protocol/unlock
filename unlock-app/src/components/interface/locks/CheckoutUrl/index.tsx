@@ -21,6 +21,7 @@ import { ChooseConfiguration } from './ChooseConfiguration'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDebounce } from 'react-use'
 import { getCheckoutUrl } from '~/components/content/event/utils'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 export type Configuration = 'new' | 'existing'
 interface ConfigurationFormProps {
@@ -41,6 +42,7 @@ const Header = () => {
 
 export const CheckoutUrlPage = () => {
   const router = useRouter()
+  const { account } = useAuth()
   const query = router.query
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const [isDeleteConfirmation, setDeleteConfirmation] = useState(false)
@@ -59,10 +61,11 @@ export const CheckoutUrlPage = () => {
       id: null,
       config: {
         locks: {},
+        referrer: account,
         icon: '',
       },
     }),
-    []
+    [account]
   ) as CheckoutConfig
 
   const [checkoutConfig, setCheckoutConfig] = useState(DEFAULT_CONFIG)
@@ -193,11 +196,11 @@ export const CheckoutUrlPage = () => {
         name: configName,
         config: DEFAULT_CONFIG.config,
       })
-    }
-
-    if (!checkoutConfig?.id) {
-      ToastHelper.error('Please select a configuration or create a new one.')
-      return Promise.reject() // no config selected, prevent skip to next step
+    } else {
+      if (!checkoutConfig?.id) {
+        ToastHelper.error('Please select a configuration or create a new one.')
+        return Promise.reject() // no config selected, prevent skip to next step
+      }
     }
   }
 

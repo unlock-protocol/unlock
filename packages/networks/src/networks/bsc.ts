@@ -96,7 +96,7 @@ export const bsc: NetworkConfig = {
 
   provider: 'https://rpc.unlock-protocol.com/56',
 
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://bsc-dataseed.binance.org/',
 
@@ -108,22 +108,20 @@ export const bsc: NetworkConfig = {
     studioName: 'unlock-protocol-bsc',
   },
 
-  swapPurchaser: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
-
   tokens: [
-    {
-      address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
-      decimals: 18,
-      featured: true,
-      name: 'Ethereum Token',
-      symbol: 'ETH',
-    },
     {
       address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
       decimals: 18,
       featured: true,
       name: 'USD Coin',
       symbol: 'USDC',
+    },
+    {
+      address: '0x2170Ed0880ac9A755fd29B2688956BD959F933F8',
+      decimals: 18,
+      featured: true,
+      name: 'Ethereum Token',
+      symbol: 'ETH',
     },
     {
       address: '0x55d398326f99059fF775485246999027B3197955',

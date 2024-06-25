@@ -3,21 +3,16 @@ import { Button, Placeholder, minifyAddress } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
-import { useConnectModal } from '~/hooks/useConnectModal'
 import BlockiesSvg from 'blockies-react-svg'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 interface ConnectedWalletProps {
-  showIcon?: boolean
   onNext?: () => void
 }
 
-export const ConnectedWallet = ({
-  showIcon = true,
-  onNext,
-}: ConnectedWalletProps) => {
+export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
   const { deAuthenticate, displayAccount, connected } = useAuth()
-  const { closeConnectModal } = useConnectModal()
-  const { session, signIn, signOut } = useSIWE()
+  const { session, signIn, signOut, status } = useSIWE()
   const [isDisconnecting, setIsDisconnecting] = useState(false)
   const [isSigningIn, setIsSigningIn] = useState(false)
   const { isUnlockAccount } = useAuth()
@@ -29,16 +24,15 @@ export const ConnectedWallet = ({
     setIsSigningIn(true)
     await signIn()
     setIsSigningIn(false)
-    closeConnectModal()
-  }, [setIsSigningIn, signIn, closeConnectModal])
+  }, [setIsSigningIn, signIn])
 
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
     await signOut()
-    deAuthenticate()
-    closeConnectModal()
+    await deAuthenticate()
+    await nextSignOut()
     setIsDisconnecting(false)
-  }, [signOut, deAuthenticate, setIsDisconnecting, closeConnectModal])
+  }, [signOut, deAuthenticate, setIsDisconnecting])
 
   useEffect(() => {
     if (connected && !session && isUnlockAccount) {
@@ -47,15 +41,9 @@ export const ConnectedWallet = ({
   }, [connected, session, isUnlockAccount])
 
   return (
-    <div className="grid divide-y divide-gray-100">
+    <div className="grid">
       <div className="flex flex-col items-center justify-center gap-6 p-6">
-        {showIcon && (
-          <BlockiesSvg
-            address={connected!}
-            size={14}
-            className="rounded-full"
-          />
-        )}
+        <BlockiesSvg address={connected!} size={7} className="rounded-full" />
         <div className="inline-flex items-center gap-2 text-lg font-bold">
           <button
             onClick={(event) => {
@@ -92,12 +80,22 @@ export const ConnectedWallet = ({
             </Button>
           </div>
         )}
+        {!session &&
+          !isDisconnecting &&
+          isUnlockAccount &&
+          status === 'loading' && (
+            <div className="flex flex-col gap-4">
+              <h3 className="text-gray-700">
+                Setting up your account, please wait...
+              </h3>
+            </div>
+          )}
         <div className="w-full flex items-center justify-end px-6 py-4">
           <button
             onClick={onSignOut}
             className="hover:text-ui-main-600 underline"
           >
-            Sign Out
+            Sign out
           </button>
         </div>
       </div>

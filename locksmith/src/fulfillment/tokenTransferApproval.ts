@@ -1,12 +1,12 @@
 import { ethers } from 'ethers'
 
 export default class TokenTransferApproval {
-  provider: ethers.providers.Provider
+  provider: ethers.Provider
 
   privateKey: string
 
   constructor(provider: string, privateKey: string) {
-    this.provider = new ethers.providers.JsonRpcBatchProvider(provider)
+    this.provider = new ethers.JsonRpcProvider(provider)
     this.privateKey = privateKey
   }
 

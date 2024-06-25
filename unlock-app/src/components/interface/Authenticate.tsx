@@ -9,7 +9,6 @@ import { useProvider } from '../../hooks/useProvider'
 import { ConfigContext } from '../../utils/withConfig'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
 import { SIWEProvider } from '~/hooks/useSIWE'
-import { ConnectModal } from './connect'
 import { config } from '~/config/app'
 import { networks } from '@unlock-protocol/networks'
 
@@ -108,10 +107,7 @@ export const Authenticate = ({
     >
       <WalletServiceContext.Provider value={walletService}>
         <Providers>
-          <SIWEProvider>
-            {children}
-            <ConnectModal />
-          </SIWEProvider>
+          <SIWEProvider>{children}</SIWEProvider>
         </Providers>
       </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>

@@ -91,7 +91,7 @@ export const sepolia: NetworkConfig = {
 
   provider: 'https://rpc.unlock-protocol.com/11155111',
 
-  publicLockVersionToDeploy: 13,
+  publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://rpc2.sepolia.org/',
 
@@ -102,8 +102,14 @@ export const sepolia: NetworkConfig = {
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },
-  swapPurchaser: '0x692EFe2b44a531013A558E595C5dCf37DB2e4B94',
   tokens: [
+    {
+      address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
+      decimals: 6,
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
+    },
     {
       address: '0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9',
       decimals: 18,
@@ -111,13 +117,6 @@ export const sepolia: NetworkConfig = {
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       name: 'Wrapped Ether',
       symbol: 'WETH',
-    },
-    {
-      address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',
-      decimals: 6,
-      featured: true,
-      name: 'USDC',
-      symbol: 'USDC',
     },
     {
       address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',

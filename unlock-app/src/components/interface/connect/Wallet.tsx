@@ -8,28 +8,46 @@ import { useLocalStorage } from '@rehooks/local-storage'
 import { MouseEventHandler, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
+import { ConnectUnlockAccount } from './EmailAccount'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { CheckoutService } from '../checkout/main/checkoutMachine'
+import { useQuery } from '@tanstack/react-query'
+import { locksmith } from '~/config/locksmith'
+import { UserAccountType } from '~/utils/userAccountType'
 
 interface ConnectWalletProps {
-  onUnlockAccount: (email?: string) => void
-  // Optional, but required for Checkout
   injectedProvider?: unknown
+  shoudOpenConnectModal?: boolean
+  checkoutService?: CheckoutService
 }
 
 interface ConnectViaEmailProps {
-  onUnlockAccount: (email?: string) => void
+  email: string | undefined
+  isLoadingUserExists: boolean
+  onUnlockAccount: (email: string) => void
 }
 
 interface UserDetails {
   email: string
 }
 
-export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
+export const ConnectViaEmail = ({
+  email,
+  isLoadingUserExists,
+  onUnlockAccount,
+}: ConnectViaEmailProps) => {
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, isSubmitting },
+    watch,
+    setValue,
   } = useForm<UserDetails>()
+
+  if (email) {
+    setValue('email', email)
+  }
 
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
@@ -58,6 +76,7 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
       <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="email"
+          autoComplete="email"
           placeholder="your@email.com"
           error={errors.email?.message}
           {...register('email', {
@@ -66,19 +85,50 @@ export const ConnectViaEmail = ({ onUnlockAccount }: ConnectViaEmailProps) => {
               message: 'Email is required',
             },
           })}
+          actions={
+            <Button
+              type="submit"
+              disabled={!watch('email')}
+              variant="borderless"
+              loading={isSubmitting || isLoadingUserExists}
+              className="p-2.5"
+            >
+              Continue
+            </Button>
+          }
         />
-        <Button type="submit" loading={isSubmitting} className="p-2.5">
-          Continue with Email
-        </Button>
       </form>
     </div>
   )
 }
 
 export const ConnectWallet = ({
-  onUnlockAccount,
   injectedProvider,
+  shoudOpenConnectModal = false,
+  checkoutService,
 }: ConnectWalletProps) => {
+  const { email } = useAuth()
+  const [userEmail, setUserEmail] = useState<string | undefined>(
+    email || undefined
+  )
+
+  const [isEmailLoading, setIsEmailLoading] = useState<boolean>(false)
+
+  const { data: userType } = useQuery(
+    ['userAccountType', userEmail],
+    async () => {
+      setIsEmailLoading(true)
+      const result = await locksmith.getUserAccountType(userEmail as string)
+      const userAccountType = result.data.userAccountType as UserAccountType[]
+      setIsEmailLoading(false)
+
+      return userAccountType
+    },
+    {
+      enabled: !!userEmail,
+    }
+  )
+
   const { authenticateWithProvider } = useAuthenticate({ injectedProvider })
   const [recentlyUsedProvider] = useLocalStorage(RECENTLY_USED_PROVIDER, null)
   const [isConnecting, setIsConnecting] = useState('')
@@ -93,45 +143,73 @@ export const ConnectWallet = ({
     return handler
   }
 
+  const verifyAndSetEmail = async (email: string) => {
+    if (email) {
+      setUserEmail(email)
+    }
+  }
+
   return (
-    <div className="space-y-6 divide-y divide-gray-100">
-      <div className="grid gap-4 px-6">
-        {window.ethereum && (
-          <ConnectButton
-            icon={<SvgComponents.Metamask width={40} height={40} />}
-            highlight={recentlyUsedProvider === 'METAMASK'}
-            loading={isConnecting === 'METAMASK'}
-            onClick={createOnConnectHandler('METAMASK')}
-          >
-            Metamask
-          </ConnectButton>
-        )}
+    <div className="space-y-4">
+      {(!userEmail || isEmailLoading) && (
+        <>
+          <div className="grid gap-4 px-6">
+            <div className=" text-sm text-gray-600">
+              If you have a wallet, connect it now:
+            </div>
+            {window.ethereum && (
+              <ConnectButton
+                icon={<SvgComponents.Metamask width={40} height={40} />}
+                highlight={recentlyUsedProvider === 'METAMASK'}
+                loading={isConnecting === 'METAMASK'}
+                onClick={createOnConnectHandler('METAMASK')}
+              >
+                Metamask
+              </ConnectButton>
+            )}
 
-        <ConnectButton
-          icon={<SvgComponents.WalletConnect width={40} height={40} />}
-          highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
-          loading={isConnecting === 'WALLET_CONNECT'}
-          onClick={createOnConnectHandler('WALLET_CONNECT')}
-        >
-          WalletConnect
-        </ConnectButton>
+            <ConnectButton
+              icon={<SvgComponents.WalletConnect width={40} height={40} />}
+              highlight={recentlyUsedProvider === 'WALLET_CONNECT'}
+              loading={isConnecting === 'WALLET_CONNECT'}
+              onClick={createOnConnectHandler('WALLET_CONNECT')}
+            >
+              WalletConnect
+            </ConnectButton>
 
-        <ConnectButton
-          icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
-          highlight={recentlyUsedProvider === 'COINBASE'}
-          loading={isConnecting === 'COINBASE'}
-          onClick={createOnConnectHandler('COINBASE')}
-        >
-          Coinbase Wallet
-        </ConnectButton>
-      </div>
-      <div className="grid gap-2 pt-6 px-6 pb-1">
-        <div className="px-2 text-sm text-center text-gray-600">
-          If you previously created an unlock account or do not have a wallet,
-          use this option.
-        </div>
-        <ConnectViaEmail onUnlockAccount={onUnlockAccount} />
-      </div>
+            <ConnectButton
+              icon={<SvgComponents.CoinbaseWallet width={40} height={40} />}
+              highlight={recentlyUsedProvider === 'COINBASE'}
+              loading={isConnecting === 'COINBASE'}
+              onClick={createOnConnectHandler('COINBASE')}
+            >
+              Coinbase Wallet
+            </ConnectButton>
+          </div>
+          <div className="grid gap-4 pt-2 px-6">
+            <div className="text-sm text-gray-600">
+              Otherwise, enter your email address:
+            </div>
+            <ConnectViaEmail
+              email={userEmail}
+              isLoadingUserExists={isEmailLoading}
+              onUnlockAccount={(email: string) => {
+                verifyAndSetEmail(email)
+              }}
+            />
+          </div>
+        </>
+      )}
+      {userEmail && !isEmailLoading && (
+        <ConnectUnlockAccount
+          email={userEmail}
+          setEmail={setUserEmail}
+          accountType={userType || []}
+          useIcon={false}
+          shoudOpenConnectModal={shoudOpenConnectModal}
+          checkoutService={checkoutService}
+        />
+      )}
     </div>
   )
 }

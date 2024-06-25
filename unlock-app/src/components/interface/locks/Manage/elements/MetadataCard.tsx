@@ -15,10 +15,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useLockManager } from '~/hooks/useLockManager'
 import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
-import { ethers } from 'ethers'
 import { ADDRESS_ZERO, MAX_UINT, UNLIMITED_RENEWAL_LIMIT } from '~/constants'
 import { durationAsText } from '~/utils/durations'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { AxiosError } from 'axios'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
 import Link from 'next/link'
@@ -65,10 +64,10 @@ const MembershipRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <Detail className="py-2" label="Renewals:" inline justify={false}>
         User balance of {balance.amount} {balance.symbol} is too low to renew
@@ -76,7 +75,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         No renewals approved
@@ -84,7 +83,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         {approved.toString()} times
@@ -92,7 +91,7 @@ const MembershipRenewal = ({
     )
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return (
       <Detail className="py-2" label="Renewals" inline justify={false}>
         Renews unlimited times
@@ -309,7 +308,7 @@ export const MetadataCard = ({
   const { data: subscription, isLoading: isSubscriptionLoading } = useQuery(
     ['subscription', lockAddress, tokenId, network],
     async () => {
-      const response = await storage.getSubscription(
+      const response = await locksmith.getSubscription(
         network,
         lockAddress,
         tokenId
@@ -324,7 +323,7 @@ export const MetadataCard = ({
   )
 
   const sendEmail = async () => {
-    return storage.emailTicket(network, lockAddress, tokenId)
+    return locksmith.emailTicket(network, lockAddress, tokenId)
   }
 
   const sendEmailMutation = useMutation(sendEmail)
@@ -354,7 +353,7 @@ export const MetadataCard = ({
 
   const onMarkAsCheckIn = async () => {
     const { lockAddress, token: keyId } = data
-    return storage.checkTicket(network, lockAddress, keyId)
+    return locksmith.checkTicket(network, lockAddress, keyId)
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {

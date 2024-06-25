@@ -25,7 +25,8 @@ export const processTransaction = async (
   network: number
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
-  if (!transaction || (transaction?.confirmations || 0) <= 12) {
+  const confirmations = transaction ? await transaction.confirmations() : 0
+  if (!transaction || confirmations <= 12) {
     // Polling if the transaction is not confirmed
     setTimeout(async () => {
       processTransaction(

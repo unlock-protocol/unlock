@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import utils from './utils'
 import erc20abi from './erc20abi'
+import { DEFAULT_TOKEN_DECIMALS } from './constants'
 
 // The SAI contract does not have the symbol method implemented correctly
 const SAI_ADDRESS = '0x89d24A6b4CcB1B6fAA2625fE562bDD9a23260359'.toLowerCase()
@@ -19,7 +20,7 @@ export const TransferWithAuthorizationTypes = {
 export async function getErc20BalanceForAddress(
   erc20ContractAddress: string,
   address: string,
-  provider: ethers.providers.Provider
+  provider: ethers.Provider
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   const balance = await contract.balanceOf(address)
@@ -33,7 +34,7 @@ export async function getErc20BalanceForAddress(
  */
 export async function getErc20Decimals(
   erc20ContractAddress: string,
-  provider: ethers.providers.Provider
+  provider: ethers.Provider
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   let decimals
@@ -42,7 +43,7 @@ export async function getErc20Decimals(
   } catch (e) {
     console.error(e)
     /** Some ERC20 contracts do not have the right decimals method. Defaults to 18 */
-    return 18
+    return DEFAULT_TOKEN_DECIMALS
   }
   return utils.toNumber(decimals)
 }
@@ -54,7 +55,7 @@ export async function getErc20Decimals(
  */
 export async function getErc20TokenSymbol(
   erc20ContractAddress: string,
-  provider: ethers.providers.Provider
+  provider: ethers.Provider
 ) {
   // The SAI contract has its symbol not implemented
   if (erc20ContractAddress.toLowerCase() === SAI_ADDRESS) {
@@ -81,11 +82,11 @@ export async function getErc20TokenSymbol(
 export async function getAllowance(
   erc20ContractAddress: string,
   lockContractAddress: string,
-  provider: ethers.providers.Provider,
+  provider: ethers.Provider,
   spenderAddress: string
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
-  let amount = ethers.BigNumber.from(0)
+  let amount = BigInt(0)
   try {
     amount = await contract.allowance(spenderAddress, lockContractAddress)
   } catch (e) {
@@ -98,7 +99,7 @@ export async function approveTransfer(
   erc20ContractAddress: string,
   lockContractAddress: string,
   value: unknown,
-  provider: ethers.providers.Provider,
+  provider: ethers.Provider,
   signer: ethers.Signer
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
@@ -123,9 +124,9 @@ interface TransferAuthorizationMessage {
  * @returns
  */
 const getDomain = async (
-  chainId: number,
+  chainId: bigint,
   erc20ContractAddress: string,
-  provider: ethers.providers.Provider
+  provider: ethers.Provider
 ) => {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
 
@@ -141,26 +142,29 @@ const getDomain = async (
   const name = await contract.name()
 
   // On Polygon, the typehash is ... different.
-  if (chainId === 137) {
+  if (chainId === 137n) {
     return {
       name,
       version,
-      salt: ethers.utils.zeroPad(ethers.utils.arrayify(137), 32),
-      verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+      salt: ethers.zeroPadValue(
+        ethers.getBytes(ethers.solidityPackedKeccak256(['uint'], [137n])),
+        32
+      ),
+      verifyingContract: ethers.getAddress(erc20ContractAddress),
     }
   }
   return {
     name,
     version,
     chainId,
-    verifyingContract: ethers.utils.getAddress(erc20ContractAddress),
+    verifyingContract: ethers.getAddress(erc20ContractAddress),
   }
 }
 
 export async function signTransferAuthorization(
   erc20ContractAddress: string,
   message: TransferAuthorizationMessage,
-  provider: ethers.providers.Provider,
+  provider: ethers.Provider,
   signer: ethers.Signer
 ) {
   const { chainId } = await provider.getNetwork()
@@ -172,12 +176,12 @@ export async function signTransferAuthorization(
 export async function recoverTransferAuthorization(
   erc20ContractAddress: string,
   message: TransferAuthorizationMessage,
-  chainId: number,
+  chainId: bigint,
   signature: string,
   provider: any
 ) {
   const domain = await getDomain(chainId, erc20ContractAddress, provider)
-  return ethers.utils.verifyTypedData(
+  return ethers.verifyTypedData(
     domain,
     TransferWithAuthorizationTypes,
     message,
@@ -192,7 +196,7 @@ export async function transferWithAuthorization(
   signer: ethers.Signer
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
-  const { v, r, s } = ethers.utils.splitSignature(signature)
+  const { v, r, s } = ethers.Signature.from(signature)
 
   return contract.transferWithAuthorization(
     message.from,

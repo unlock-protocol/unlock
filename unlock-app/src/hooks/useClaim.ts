@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface ClaimOption {
   data?: string
@@ -18,7 +18,7 @@ export const useClaim = ({ lockAddress, network }: Options) => {
     ['claim', network, lockAddress],
     async ({ data, recipient, captcha, email, metadata }: ClaimOption) => {
       try {
-        const response = await storage.claim(network, lockAddress, captcha, {
+        const response = await locksmith.claim(network, lockAddress, captcha, {
           recipient,
           data,
           email,

@@ -13,8 +13,10 @@ import { ErrorFallback } from '~/components/interface/ErrorFallback'
 import { queryClient } from '~/config/queryClient'
 import { SessionProvider } from '~/hooks/useSession'
 import { ConnectModalProvider } from '~/hooks/useConnectModal'
-
+import { SessionProvider as NextAuthSessionProvider } from 'next-auth/react'
+import '~/utils/bigint'
 import { Inter } from 'next/font/google'
+import ShouldOpenConnectModal from '~/components/interface/connect/ShouldOpenConnectModal'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,7 +25,10 @@ const inter = Inter({
   weight: ['400', '500', '600', '700'],
 })
 
-const UnlockApp = ({ Component, pageProps }: AppProps) => {
+const UnlockApp = ({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps) => {
   useEffect(() => {
     if (!config.isServer) {
       if (config.env === 'prod' && config.tagManagerArgs) {
@@ -36,16 +41,23 @@ const UnlockApp = ({ Component, pageProps }: AppProps) => {
     <div className={inter.className}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider>
-          <ConnectModalProvider>
-            <GlobalWrapper>
-              <ErrorBoundary fallback={(props) => <ErrorFallback {...props} />}>
-                <AirstackProvider apiKey={'1ef6142a6b64e48dd9fd4df8e0f4da9e3'}>
-                  <Component pageProps={pageProps} />
-                </AirstackProvider>
-              </ErrorBoundary>
-              <Toaster />
-            </GlobalWrapper>
-          </ConnectModalProvider>
+          <NextAuthSessionProvider>
+            <ConnectModalProvider>
+              <GlobalWrapper>
+                <ErrorBoundary
+                  fallback={(props) => <ErrorFallback {...props} />}
+                >
+                  <ShouldOpenConnectModal />
+                  <AirstackProvider
+                    apiKey={'1ef6142a6b64e48dd9fd4df8e0f4da9e3'}
+                  >
+                    <Component pageProps={pageProps} />
+                  </AirstackProvider>
+                </ErrorBoundary>
+                <Toaster />
+              </GlobalWrapper>
+            </ConnectModalProvider>
+          </NextAuthSessionProvider>
         </SessionProvider>
       </QueryClientProvider>
       <SpeedInsights />

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface CreditCardEnabledProps {
   lockAddress: string
@@ -11,7 +11,7 @@ export const useCreditCardEnabled = ({
   network,
 }: CreditCardEnabledProps) => {
   return useQuery(['useCreditCardEnabled', lockAddress, network], async () => {
-    const response = await storage.isCardPaymentEnabledForLock(
+    const response = await locksmith.isCardPaymentEnabledForLock(
       network,
       lockAddress
     )

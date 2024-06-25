@@ -28,7 +28,7 @@ export default async function (
     const blockNumber = await this.provider.getBlockNumber()
     const { timestamp } = await this.provider.getBlock(blockNumber)
     const expiration = await lockContract.keyExpirationTimestampFor(tokenIdFrom)
-    amount = utils.bigNumberify(expiration).sub(timestamp + 3) // add 3 blocks so it doesnt revert
+    amount = utils.bigNumberify(expiration) - BigInt(timestamp + 3) // add 3 blocks so it doesnt revert
   }
   const transactionPromise = lockContract.mergeKeys(
     tokenIdFrom,
