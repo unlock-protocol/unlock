@@ -55,6 +55,8 @@ function getAppConfig(environment?: string) {
 
 const app = getAppConfig(env)
 
+console.log('Unlock App GOOGLE_CLIENT_SECRET', process.env.GOOGLE_CLIENT_SECRET)
+
 export const config = {
   env,
   wedlocksPublicKey:

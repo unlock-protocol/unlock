@@ -36,7 +36,7 @@ if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID
   # move to root directory
   cd ..
   npx -y vercel build -y --cwd . --token $VERCEL_TOKEN $PROD
-  npx -y vercel deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD
+  npx -y vercel deploy --cwd . --prebuilt --token $VERCEL_TOKEN $PROD --env GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET
 else
   echo "Failed to deploy to Vercel because we're missing VERCEL_TOKEN, VERCEL_PROJECT_ID and/or VERCEL_ORG_ID"
   exit 1
