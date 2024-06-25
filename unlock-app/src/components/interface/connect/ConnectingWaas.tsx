@@ -29,10 +29,10 @@ export const ConnectingWaas = ({
 
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
 
-  const onSignOut = async () => {
+  const onSignOut = async (redirect = false) => {
     await siweSignOut()
     await deAuthenticate()
-    await nextSignOut({ redirect: false })
+    await nextSignOut({ redirect: redirect })
   }
 
   useEffect(() => {
@@ -107,7 +107,9 @@ export const ConnectingWaas = ({
         </div>
         <div className="w-full flex items-center justify-end px-6 py-4">
           <button
-            onClick={onSignOut}
+            onClick={() => {
+              onSignOut(true)
+            }}
             className="hover:text-ui-main-600 underline"
           >
             Cancel
