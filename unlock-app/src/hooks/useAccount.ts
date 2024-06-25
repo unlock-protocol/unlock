@@ -1,6 +1,5 @@
 import UnlockProvider from '../services/unlockProvider'
 import { useConfig } from '../utils/withConfig'
-import { StorageService } from '../services/storageService'
 import { captureCharge } from './useCards'
 import { locksmith } from '~/config/locksmith'
 
@@ -24,12 +23,11 @@ export const useAccount = (address: string) => {
   const config = useConfig()
 
   const retrieveUserAccount = async (email: string, password: string) => {
-    const storageService = new StorageService(config.services.storage.host)
     const encryptedKey = await locksmith.getUserPrivateKey(email)
     const unlockProvider = new UnlockProvider(config.networks[1])
 
     await unlockProvider.connect({
-      key: encryptedKey,
+      key: encryptedKey.data.passwordEncryptedPrivateKey as string,
       emailAddress: email,
       password,
     })
