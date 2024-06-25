@@ -1,5 +1,5 @@
 import { useQuery, UseQueryOptions } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string
@@ -19,7 +19,7 @@ export const useCanClaim = (
     ['canClaim', network, lockAddress, recipients, data],
     async () => {
       try {
-        const response = await storage.checkClaim(network, lockAddress, {
+        const response = await locksmith.checkClaim(network, lockAddress, {
           recipients,
           data,
         })

@@ -6,7 +6,7 @@ import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import { ApprovalStatus, ExpirationStatus } from './FilterBar'
 import { subgraph } from '~/config/subgraph'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { Placeholder } from '@unlock-protocol/ui'
 import { PAGE_SIZE } from '@unlock-protocol/core'
 
@@ -69,7 +69,7 @@ export const Members = ({
 }: MembersProps) => {
   const getMembers = async () => {
     const { query, filterKey, expiration, approval } = filters
-    const response = await storage.keysByPage(
+    const response = await locksmith.keysByPage(
       network,
       lockAddress,
       query,
@@ -83,7 +83,7 @@ export const Members = ({
   }
 
   const getLockSettings = async () => {
-    return await storage.getLockSettings(network, lockAddress)
+    return await locksmith.getLockSettings(network, lockAddress)
   }
 
   const [

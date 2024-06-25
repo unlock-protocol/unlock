@@ -1,5 +1,5 @@
 import { kebabCase } from 'lodash'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 /**
  * recusively creates slugs for names
@@ -12,7 +12,7 @@ export const getSlugForName = async (
   number?: number
 ): Promise<string> => {
   const slug = kebabCase([name, number].join('-'))
-  const data = (await storage.getLockSettingsBySlug(slug)).data
+  const data = (await locksmith.getLockSettingsBySlug(slug)).data
   if (data) {
     return getSlugForName(name, number ? number + 1 : 1)
   }

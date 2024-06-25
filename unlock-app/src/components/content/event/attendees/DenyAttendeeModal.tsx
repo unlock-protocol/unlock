@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface ApproveAttendeeModalProps {
   isOpen: boolean
@@ -30,7 +30,7 @@ export const DenyAttendeeModal: React.FC<ApproveAttendeeModalProps> = ({
   const confirm = async () => {
     try {
       setLoading(true)
-      await storage.denyAttendeesRsvp(network, lockAddress, {
+      await locksmith.denyAttendeesRsvp(network, lockAddress, {
         recipients: attendees.map((a) => a.keyholderAddress),
       })
       setLoading(false)

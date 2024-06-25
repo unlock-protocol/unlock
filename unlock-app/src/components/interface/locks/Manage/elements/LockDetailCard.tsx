@@ -13,7 +13,7 @@ import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import useLock from '~/hooks/useLock'
 import Link from 'next/link'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useLockManager } from '~/hooks/useLockManager'
 import { PriceFormatter } from '@unlock-protocol/ui'
@@ -165,7 +165,7 @@ export const LockDetailCard = ({
     useQuery<Record<string, any>>(
       ['lockMetadata', lockAddress, network],
       async () => {
-        const response = await storage.lockMetadata(network, lockAddress)
+        const response = await locksmith.lockMetadata(network, lockAddress)
         return response.data
       },
       {

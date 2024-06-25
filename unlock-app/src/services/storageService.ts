@@ -24,7 +24,7 @@ export const failure = {
   ejectUser: 'ejectUser.failure',
 }
 
-// This approach is deprecated and we should move to using '~/config/storage'
+// This approach is deprecated and we should move to using '~/config/locksmith'
 export class StorageService extends EventEmitter {
   public host: string
 

@@ -6,10 +6,10 @@ import {
 import { config } from './app'
 import { getAccessToken, getCurrentAccount } from '~/utils/session'
 
-export const storageClient = axios.create()
+export const locksmithClient = axios.create()
 
 // Use interceptor to inject the token to requests
-storageClient.interceptors.request.use((request) => {
+locksmithClient.interceptors.request.use((request) => {
   const currentAccountAddress = getCurrentAccount()
   if (!currentAccountAddress) {
     return request
@@ -31,8 +31,8 @@ storageClient.interceptors.request.use((request) => {
   return request
 })
 
-export const storage = new LocksmithService(
+export const locksmith = new LocksmithService(
   new LocksmithServiceConfiguration(),
   config.locksmithHost,
-  storageClient
+  locksmithClient
 )

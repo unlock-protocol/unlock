@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Metadata } from '~/components/interface/locks/metadata/utils'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string
@@ -19,7 +19,7 @@ export const useUpdateMetadata = ({
     ['updateMetadata', network, lockAddress, keyId],
     async (metadata: Metadata): Promise<Partial<Metadata>> => {
       if (keyId) {
-        const keyResponse = await storage.updateKeyMetadata(
+        const keyResponse = await locksmith.updateKeyMetadata(
           network!,
           lockAddress!,
           keyId,
@@ -29,7 +29,7 @@ export const useUpdateMetadata = ({
         )
         return keyResponse.data as Metadata
       } else {
-        const lockResponse = await storage.updateLockMetadata(
+        const lockResponse = await locksmith.updateLockMetadata(
           network!,
           lockAddress!,
           {
@@ -61,14 +61,14 @@ export const getMetadata = async (
 ): Promise<Partial<Metadata>> => {
   try {
     if (keyId) {
-      const keyResponse = await storage.keyMetadata(
+      const keyResponse = await locksmith.keyMetadata(
         network!,
         lockAddress!,
         keyId
       )
       return keyResponse.data as Metadata
     } else {
-      const lockResponse = await storage.lockMetadata(network!, lockAddress!)
+      const lockResponse = await locksmith.lockMetadata(network!, lockAddress!)
       return lockResponse.data as Metadata
     }
   } catch (error) {
