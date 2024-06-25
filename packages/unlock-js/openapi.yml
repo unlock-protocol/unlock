@@ -1626,6 +1626,12 @@ paths:
       operationId: getWaasToken
       description: Gets Coinbase WAAS token for user by email and selected provider.
       parameters:
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
         - name: emailAddress
           in: path
           required: true
