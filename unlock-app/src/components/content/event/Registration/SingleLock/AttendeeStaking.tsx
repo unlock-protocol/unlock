@@ -12,6 +12,9 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
   const { data: refund } = useQuery(
     ['attendeeRefund', attendeeRefund],
     async () => {
+      if (!attendeeRefund!.currency) {
+        return `${attendeeRefund!.amount} ${networks[attendeeRefund!.network].nativeCurrency.symbol}`
+      }
       const web3Service = new Web3Service(networks)
       let symbol = networks[attendeeRefund!.network].nativeCurrency.symbol
       if (attendeeRefund?.currency) {
@@ -32,7 +35,7 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
     return null
   }
   return (
-    <p>
+    <p className="px-6">
       This event requires attendees to stake when they register, and they will
       be refunded {refund} if they joined!
     </p>
