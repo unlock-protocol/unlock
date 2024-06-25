@@ -243,8 +243,6 @@ export const approveRefunds: RequestHandler = async (request, response) => {
     list.map((recipient) => [recipient, refundAmount.toString()]),
     ['address', 'uint256']
   )
-  console.log('SO FAR SO GOOD')
-  console.log(tree.dump())
 
   // Then, store the tree (at <slug>.json)
   await uploadJsonToS3(
@@ -252,7 +250,6 @@ export const approveRefunds: RequestHandler = async (request, response) => {
     `${slug}.json`,
     tree.dump()
   )
-  console.log('SO FAT TWORK?')
 
   return response.status(200).send({
     root: tree.root,

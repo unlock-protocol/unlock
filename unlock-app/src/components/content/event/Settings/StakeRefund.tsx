@@ -8,13 +8,33 @@ export interface StakeRefundProps {
 }
 
 export const StakeRefund = ({ event }: StakeRefundProps) => {
-  const updateTransferFeeMutation = useMutation(async () => {
-    console.log(event.attendeeRefund)
-    locksmith.approveRefunds(event.slug, event.attendeeRefund!) // This is a mock function to approve refunds. It will be replaced with the actual function to approve refunds in
+  const {
+    isLoading: isLoadingRefunds,
+    mutate: approveRefunds,
+    data: refundsToApprove,
+  } = useMutation(async () => {
+    const response = await locksmith.approveRefunds(
+      event.slug,
+      event.attendeeRefund!
+    ) // This is a mock function to approve refunds. It will be replaced with the actual function to approve refunds in
+    console.log(response)
+    return response.data
   })
 
+  console.log(refundsToApprove)
+  if (refundsToApprove) {
+    return (
+      <>
+        <p>Cool you now have to approve refunds. 2 transactions will be sent</p>
+        <ul>
+          <li>first, you need to set the refund contract to be a manager</li>
+          <li>then, you need to "save" the merkle proof for the refunds</li>
+        </ul>
+      </>
+    )
+  }
   return (
-    <Button onClick={() => updateTransferFeeMutation.mutateAsync()}>
+    <Button loading={isLoadingRefunds} onClick={() => approveRefunds()}>
       Prepare Refund
     </Button>
   )
