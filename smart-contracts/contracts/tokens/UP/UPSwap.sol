@@ -60,13 +60,9 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     up = IERC20(msg.sender);
   }
 
-  function swapUDTForUP(
-    address spender,
-    uint amountUDT,
-    address recipient
-  ) public {
+  function swapUDTForUP(uint amountUDT, address recipient) public {
     // get the UDT from spender
-    bool UDTSent = udt.transferFrom(spender, address(this), amountUDT);
+    bool UDTSent = udt.transferFrom(msg.sender, address(this), amountUDT);
     if (!UDTSent) {
       revert TransferFailed(address(udt));
     }
@@ -80,14 +76,10 @@ contract UPSwap is Initializable, OwnableUpgradeable {
       revert TransferFailed(address(up));
     }
 
-    emit UDTSwappedForUP(spender, amountUDT, amountUP, recipient);
+    emit UDTSwappedForUP(msg.sender, amountUDT, amountUP, recipient);
   }
 
-  function swapUPForUDT(
-    address spender,
-    uint amountUP,
-    address recipient
-  ) public {
+  function swapUPForUDT(uint amountUP, address recipient) public {
     // check contract UDT balance
     uint amountUDT = amountUP / RATE;
     if (udt.balanceOf(address(this)) < amountUDT) {
@@ -95,7 +87,7 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     }
 
     // get UP token from spender
-    bool UPSent = up.transferFrom(spender, address(this), amountUP);
+    bool UPSent = up.transferFrom(msg.sender, address(this), amountUP);
     if (!UPSent) {
       revert TransferFailed(address(up));
     }
@@ -106,6 +98,6 @@ contract UPSwap is Initializable, OwnableUpgradeable {
       revert TransferFailed(address(udt));
     }
 
-    emit UPSwappedForUDT(spender, amountUDT, amountUP, recipient);
+    emit UPSwappedForUDT(msg.sender, amountUDT, amountUP, recipient);
   }
 }

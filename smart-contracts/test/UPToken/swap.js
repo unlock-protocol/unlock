@@ -65,22 +65,18 @@ describe('Swapper UP / UDT', () => {
     describe('reverts', () => {
       it('when UDT balance is too low', async () => {
         await reverts(
-          swap.swapUDTForUP(
-            await spender.getAddress(),
-            amountUDT,
-            await recipient.getAddress()
-          ),
+          swap
+            .connect(spender)
+            .swapUDTForUP(amountUDT, await recipient.getAddress()),
           `ERC20: transfer amount exceeds balance`
         )
       })
       it('when UDT allowance is not properly set', async () => {
         await udt.connect(udtMinter).mint(await spender.getAddress(), amountUDT)
         await reverts(
-          swap.swapUDTForUP(
-            await spender.getAddress(),
-            amountUDT,
-            await recipient.getAddress()
-          ),
+          swap
+            .connect(spender)
+            .swapUDTForUP(amountUDT, await recipient.getAddress()),
           'ERC20: transfer amount exceeds allowance'
         )
       })
@@ -100,11 +96,9 @@ describe('Swapper UP / UDT', () => {
         swapBalanceBefore = await udt.balanceOf(await swap.getAddress())
 
         // do the swap
-        const tx = await swap.swapUDTForUP(
-          await spender.getAddress(),
-          amountUDT,
-          await recipient.getAddress()
-        )
+        const tx = await swap
+          .connect(spender)
+          .swapUDTForUP(amountUDT, await recipient.getAddress())
 
         // parse receipt
         receipt = await tx.wait()
@@ -164,22 +158,18 @@ describe('Swapper UP / UDT', () => {
     describe('reverts', () => {
       it('when UP allowance is not properly set', async () => {
         await reverts(
-          swap.swapUPForUDT(
-            await spender.getAddress(),
-            amountUP,
-            await recipient.getAddress()
-          ),
+          swap
+            .connect(spender)
+            .swapUPForUDT(amountUP, await recipient.getAddress()),
           `ERC20InsufficientAllowance("${await swap.getAddress()}", 0, ${amountUP.toString()})`
         )
       })
       it('when spender UP balance is too low', async () => {
         await up.connect(random).approve(await swap.getAddress(), amountUP)
         await reverts(
-          swap.swapUPForUDT(
-            await random.getAddress(),
-            amountUP,
-            await recipient.getAddress()
-          ),
+          swap
+            .connect(random)
+            .swapUPForUDT(amountUP, await recipient.getAddress()),
           `ERC20InsufficientBalance("${await random.getAddress()}", 0, ${amountUP.toString()})`
         )
       })
@@ -196,11 +186,9 @@ describe('Swapper UP / UDT', () => {
         await udt.connect(spender).approve(await swap.getAddress(), amountUDT)
 
         // spender swap UDT for UP
-        await swap.swapUDTForUP(
-          await spender.getAddress(),
-          amountUDT,
-          await spender.getAddress()
-        )
+        await swap
+          .connect(spender)
+          .swapUDTForUP(amountUDT, await spender.getAddress())
         assert.equal(await up.balanceOf(await spender.getAddress()), amountUP)
 
         // prepare allowance
@@ -211,11 +199,9 @@ describe('Swapper UP / UDT', () => {
         swapBalanceBefore = await up.balanceOf(await swap.getAddress())
 
         // do the swap
-        const tx = await swap.swapUPForUDT(
-          await spender.getAddress(),
-          amountUP,
-          await recipient.getAddress()
-        )
+        const tx = await swap
+          .connect(spender)
+          .swapUPForUDT(amountUP, await recipient.getAddress())
 
         // parse receipt
         receipt = await tx.wait()
