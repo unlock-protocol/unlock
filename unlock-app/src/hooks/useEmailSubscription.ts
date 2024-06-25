@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface Options {
   lockAddress: string
@@ -10,7 +10,7 @@ export const useEmailListUnSubscribe = ({ lockAddress, network }: Options) => {
   const mutation = useMutation(
     ['unsubscribe', lockAddress, network],
     async () => {
-      const response = await storage.unsubscribeEmail(network, lockAddress)
+      const response = await locksmith.unsubscribeEmail(network, lockAddress)
       return response.data.success
     }
   )
@@ -21,7 +21,7 @@ export const useEmailListReSubscribe = ({ lockAddress, network }: Options) => {
   const mutation = useMutation(
     ['resubscribe', lockAddress, network],
     async () => {
-      const response = await storage.reSubscribeEmail(network, lockAddress)
+      const response = await locksmith.reSubscribeEmail(network, lockAddress)
       return response.data.success
     }
   )
