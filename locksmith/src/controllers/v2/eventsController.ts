@@ -240,7 +240,7 @@ export const approveRefunds: RequestHandler = async (request, response) => {
 
   // then, create the merkel tree using the OZ library
   const tree = StandardMerkleTree.of(
-    list.map((recipient) => [recipient, refundAmount]),
+    list.map((recipient) => [recipient, refundAmount.toString()]),
     ['address', 'uint256']
   )
   console.log('SO FAR SO GOOD')
