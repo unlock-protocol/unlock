@@ -37,7 +37,7 @@ export const RestoreAccount = ({
     const getRecoveryPhrase = async () => {
       if (email) {
         const result = await locksmith.getUserRecoveryPhrase(email)
-        const { recoveryPhrase } = result!
+        const { recoveryPhrase } = result.data
         if (!recoveryPhrase) {
           setError('We do not have a valid recovery phrase for your user')
           setLoading(false)
