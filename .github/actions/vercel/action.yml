@@ -33,8 +33,8 @@ runs:
     - name: Deploy to Vercel
       shell: bash
       run: |
-        echo "UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_SECRET"
-        echo $UNLOCK_APP_VERCEL_STAGING_NEXTAUTH_SECRET
+        echo "UNLOCK_APP_VERCEL_STAGING_GOOGLE_CLIENT_SECRET"
+        echo $UNLOCK_APP_VERCEL_STAGING_GOOGLE_CLIENT_SECRET
         # show args
         echo "${{ inputs.target-env }} ${{ inputs.service }} vercel (project-id: $VERCEL_PROJECT_ID) $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
         # run command

@@ -26,6 +26,9 @@ fi
 
 echo "READY TO DEPLOY $APP_PATH $DEPLOY_ENV $PROD (commit $COMMIT)  TO VERCEL $VERCEL_PROJECT_ID $VERCEL_ORG_ID"
 
+echo "GOOGLE_CLIENT_SECRET Vercel"
+echo $GOOGLE_CLIENT_SECRET
+
 if [ -n "$VERCEL_PROJECT_ID" ] && [ -n "$VERCEL_TOKEN" ] && [ -n "$VERCEL_ORG_ID" ]; then
   # And ship!
   export UNLOCK_ENV="$DEPLOY_ENV"

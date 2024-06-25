@@ -47,6 +47,9 @@ fi
 # Deploy options
 OPTS="$SERVICE $ENV_TARGET $COMMIT $PUBLISH"
 
+echo "GOOGLE_CLIENT_SECRET"
+echo $GOOGLE_CLIENT_SECRET
+
 # First we need to build
 docker compose -f $BASE_DOCKER_COMPOSE -f $DOCKER_COMPOSE_FILE build $SERVICE
 
