@@ -1762,6 +1762,43 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /users/{publicKey}/eject:
+    post:
+      operationId: ejectUser
+      security:
+        - User: []
+      description: Ejects a user given their public key. In the case of failure, a rejected promise is returned to the caller.
+      parameters:
+        - name: publicKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Structured data used to generate the signature
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        401:
+          $ref: '#/components/responses/401.Unauthorized'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true
