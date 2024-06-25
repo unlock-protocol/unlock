@@ -1,5 +1,8 @@
+import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
+
 import { RequestHandler } from 'express'
 import {
+  getCheckedInAttendees,
   getEventBySlug,
   getEventMetadataForLock,
   saveEvent,
@@ -9,12 +12,17 @@ import { CheckoutConfig, EventData } from '../../models'
 import { z } from 'zod'
 import { getLockSettingsBySlug } from '../../operations/lockSettingOperations'
 import { getLockMetadata } from '../../operations/metadataOperations'
-import { PaywallConfig, PaywallConfigType } from '@unlock-protocol/core'
+import {
+  PaywallConfig,
+  PaywallConfigType,
+  AttendeeRefund,
+} from '@unlock-protocol/core'
 import listManagers from '../../utils/lockManagers'
 import { removeProtectedAttributesFromObject } from '../../utils/protectedAttributes'
 import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMiddleware'
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { getEventUrl } from '../../utils/eventHelpers'
+import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -199,11 +207,33 @@ export const getEvent: RequestHandler = async (request, response) => {
 
 // API endpoint that a manager can call to approve refunds for attendees
 // This will create a a Merkle proof for the refunds and store it
+
 export const approveRefunds: RequestHandler = async (request, response) => {
+  const { amount, network, currency } = await AttendeeRefund.parseAsync(
+    request.body
+  )
+  let refundAmount = ''
+  if (currency) {
+    const web3Service = new Web3Service(networks)
+    const provider = web3Service.providerForNetwork(network)
+
+    // Get the decimals
+    const decimals = await getErc20Decimals(currency, provider)
+    refundAmount = ethers.parseUnits(amount, decimals)
+  } else {
+    refundAmount = ethers.parseUnits(amount, 18)
+  }
+
   const slug = request.params.slug.toLowerCase().trim()
   // Then, get the list of all attendees that attendees!
+  const list = await getCheckedInAttendees(slug)
   // then, create the merkel tree using the OZ library
+  const tree = StandardMerkleTree.of(
+    list.map((recipient) => [recipient, refundAmount]),
+    ['address', 'uint256']
+  )
+  console.log(tree)
   // Then, store the tree (at <root>.json), and save the root hash in the event's data
 
-  return response.status(200).send(event.toJSON())
+  return response.status(200).send(list)
 }

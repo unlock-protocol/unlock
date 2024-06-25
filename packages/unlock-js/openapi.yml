@@ -1094,7 +1094,7 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/events/{slug}/approve-refunds:
-    put:
+    post:
       operationId: approveRefunds
       security:
         - User: ['lockManager']
@@ -1107,6 +1107,20 @@ paths:
           content:
             application/json:
               schema:
+                type: object
+                required:
+                  - amount
+                  - currency
+                  - network
+                properties:
+                  amount:
+                    type: number
+                    nullable: false
+                  currency:
+                    type: string
+                  network:
+                    type: number
+                    nullable: false
 
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'

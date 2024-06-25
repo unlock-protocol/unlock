@@ -13,10 +13,13 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
     ['attendeeRefund', attendeeRefund],
     async () => {
       const web3Service = new Web3Service(networks)
-      const symbol = await web3Service.getTokenSymbol(
-        attendeeRefund!.currency,
-        attendeeRefund!.network
-      )
+      let symbol = networks[attendeeRefund!.network].nativeCurrency.symbol
+      if (attendeeRefund?.currency) {
+        symbol = await web3Service.getTokenSymbol(
+          attendeeRefund!.currency,
+          attendeeRefund!.network
+        )
+      }
 
       return `${ethers.formatUnits(attendeeRefund!.amount, 0)} ${symbol}`
     },
