@@ -9,7 +9,8 @@ export interface StakeRefundProps {
 
 export const StakeRefund = ({ event }: StakeRefundProps) => {
   const updateTransferFeeMutation = useMutation(async () => {
-    locksmith.approveRefunds(event.slug, event.attendeeRefund) // This is a mock function to approve refunds. It will be replaced with the actual function to approve refunds in
+    console.log(event.attendeeRefund)
+    locksmith.approveRefunds(event.slug, event.attendeeRefund!) // This is a mock function to approve refunds. It will be replaced with the actual function to approve refunds in
   })
 
   return (

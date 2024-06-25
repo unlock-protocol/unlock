@@ -1,5 +1,6 @@
 import { StandardMerkleTree } from '@openzeppelin/merkle-tree'
-
+import { ethers } from 'ethers'
+import networks from '@unlock-protocol/networks'
 import { RequestHandler } from 'express'
 import {
   getCheckedInAttendees,
@@ -23,6 +24,8 @@ import { isVerifierOrManagerForLock } from '../../utils/middlewares/isVerifierMi
 import { sendEmail } from '../../operations/wedlocksOperations'
 import { getEventUrl } from '../../utils/eventHelpers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
+import { uploadJsonToS3 } from '../../utils/uploadJsonToS3'
+import config from '../../config/config'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -212,28 +215,48 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   const { amount, network, currency } = await AttendeeRefund.parseAsync(
     request.body
   )
-  let refundAmount = ''
+
+  let decimals = 18
+
   if (currency) {
     const web3Service = new Web3Service(networks)
     const provider = web3Service.providerForNetwork(network)
 
     // Get the decimals
-    const decimals = await getErc20Decimals(currency, provider)
-    refundAmount = ethers.parseUnits(amount, decimals)
-  } else {
-    refundAmount = ethers.parseUnits(amount, 18)
+    decimals = await getErc20Decimals(currency, provider)
   }
 
+  const refundAmount = ethers.parseUnits(amount.toString(), decimals)
   const slug = request.params.slug.toLowerCase().trim()
+
   // Then, get the list of all attendees that attendees!
   const list = await getCheckedInAttendees(slug)
+
+  // Compute total refund amount
+  const totalRefund = ethers.formatUnits(
+    refundAmount * BigInt(list.length),
+    decimals
+  )
+
   // then, create the merkel tree using the OZ library
   const tree = StandardMerkleTree.of(
     list.map((recipient) => [recipient, refundAmount]),
     ['address', 'uint256']
   )
-  console.log(tree)
-  // Then, store the tree (at <root>.json), and save the root hash in the event's data
+  console.log('SO FAR SO GOOD')
+  console.log(tree.dump())
 
-  return response.status(200).send(list)
+  // Then, store the tree (at <slug>.json)
+  await uploadJsonToS3(
+    config.storage.merkleTreesBucket,
+    `${slug}.json`,
+    tree.dump()
+  )
+  console.log('SO FAT TWORK?')
+
+  return response.status(200).send({
+    root: tree.root,
+    totalRefund,
+    list,
+  })
 }

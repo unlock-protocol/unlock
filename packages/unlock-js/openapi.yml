@@ -1101,26 +1101,46 @@ paths:
       description: Approves refunds for an event.
       parameters:
         - $ref: '#/components/parameters/Slug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+                - network
+              properties:
+                amount:
+                  type: number
+                  nullable: false
+                currency:
+                  type: string
+                network:
+                  type: number
+                  nullable: false
+
       responses:
         201:
           description: Approves refunds for an event.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - amount
-                  - currency
-                  - network
-                properties:
-                  amount:
-                    type: number
-                    nullable: false
-                  currency:
-                    type: string
-                  network:
-                    type: number
-                    nullable: false
+          # content:
+          #   application/json:
+          #     schema:
+          #       type: object
+          #       required:
+          #         - amount
+          #         - currency
+          #         - network
+          #       properties:
+          #         amount:
+          #           type: number
+          #           nullable: false
+          #         currency:
+          #           type: string
+          #         network:
+          #           type: number
+          #           nullable: false
 
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
