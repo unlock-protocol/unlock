@@ -114,7 +114,7 @@ export const Deploy: React.FC = () => {
                     name: 'My subscription',
                     unlimitedQuantity: true,
                     keyPrice: 5.0,
-                    expirationDuration: 60 * 60 * 24 * 30,
+                    expirationDuration: 30,
                   }}
                   isLoading={onSubmitMutation.isLoading}
                 />
