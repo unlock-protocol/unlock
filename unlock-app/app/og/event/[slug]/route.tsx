@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og'
 import React from 'react'
-import { storage } from '../../../../src/config/storage'
+import { locksmith } from '../../../../src/config/locksmith'
 import { DefaultImage } from '../../../frames/event/Components/DefaultImage'
 
 export async function GET(
@@ -15,7 +15,7 @@ export async function GET(
     new URL('/fonts/inter-700.woff', request.url)
   ).then((res) => res.arrayBuffer())
 
-  const { data: eventMetadata } = await storage
+  const { data: eventMetadata } = await locksmith
     .getEvent(params.slug)
     .catch((error) => {
       console.error(error)

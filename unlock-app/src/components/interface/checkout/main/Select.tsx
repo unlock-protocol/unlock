@@ -54,6 +54,15 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
       baseCurrencySymbol: config.networks[lock.network].nativeCurrency.symbol,
     })
 
+  const showRenewalLabel =
+    lock.recurringPayments === 'forever' ||
+    typeof lock.recurringPayments === 'number'
+
+  const numberOfRenewals =
+    typeof lock.recurringPayments === 'number'
+      ? `${lock.recurringPayments} times`
+      : ''
+
   return (
     <RadioGroup.Option
       disabled={disabled}
@@ -112,18 +121,13 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                         icon={DurationIcon}
                         value={formattedData?.formattedDuration}
                       />
-                      {!!lock.recurringPayments &&
-                        parseInt(lock.recurringPayments.toString()) > 1 && (
-                          <LabeledItem
-                            label="Renew"
-                            icon={RecurringIcon}
-                            value={
-                              typeof lock.recurringPayments === 'number'
-                                ? `${lock.recurringPayments} times`
-                                : lock.recurringPayments
-                            }
-                          />
-                        )}
+                      {showRenewalLabel && (
+                        <LabeledItem
+                          label="Auto-renewal"
+                          icon={RecurringIcon}
+                          value={numberOfRenewals}
+                        />
+                      )}
                     </>
                   )}
                   {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
@@ -300,6 +304,10 @@ export function Select({ checkoutService }: Props) {
 
   const [isSigning, setSigning] = useState(false)
 
+  const { connected } = useAuth()
+  const { signIn, isSignedIn } = useSIWE()
+  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
+
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
@@ -319,10 +327,6 @@ export function Select({ checkoutService }: Props) {
   }, [locks])
 
   const isLoading = isLocksLoading || isLoadingHook || isMembershipsLoading
-
-  const { connected } = useAuth()
-  const { signIn, isSignedIn } = useSIWE()
-  const useDelegatedProvider = paywallConfig?.useDelegatedProvider
 
   useEffect(() => {
     const signToSignIn = async () => {

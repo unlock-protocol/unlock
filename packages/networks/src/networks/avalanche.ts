@@ -77,8 +77,14 @@ export const avalanche: NetworkConfig = {
       'https://api.studio.thegraph.com/query/65299/unlock-protocol-avalanche/version/latest',
     studioName: 'unlock-protocol-avalanche',
   },
-  swapPurchaser: '0xc9F29DdBD4D828cFb2EB491E9d48013a9c0E3C89',
   tokens: [
+    {
+      address: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
+      decimals: 6,
+      featured: true,
+      name: 'USD Coin',
+      symbol: 'USDC',
+    },
     {
       address: '0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',
       decimals: 18,
@@ -91,13 +97,6 @@ export const avalanche: NetworkConfig = {
       decimals: 6,
       name: 'USD Coin',
       symbol: 'USDC.e',
-    },
-    {
-      address: '0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',
-      decimals: 6,
-      featured: true,
-      name: 'USD Coin',
-      symbol: 'USDC',
     },
     {
       address: '0xc7198437980c041c805A1EDcbA50c1Ce5db95118',

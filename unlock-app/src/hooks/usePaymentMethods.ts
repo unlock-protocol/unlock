@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 export const useRemovePaymentMethods = () => {
@@ -7,7 +7,7 @@ export const useRemovePaymentMethods = () => {
   return useMutation(
     ['removePaymentMethods', account],
     async () => {
-      const response = await storage.removePaymentMethods()
+      const response = await locksmith.removePaymentMethods()
       return response.data.success
     },
     {
@@ -21,7 +21,7 @@ export const usePaymentMethodList = () => {
   return useQuery(
     ['listPaymentMethods', account],
     async () => {
-      const response = await storage.listPaymentMethods()
+      const response = await locksmith.listPaymentMethods()
       return response.data.methods || []
     },
     {
