@@ -1,9 +1,11 @@
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "../interfaces/IPublicLock.sol";
 
-contract Kickback {
-  mapping(address => mapping(address => uint)) issuedRefunds;
-  mapping(address => bytes32) roots;
+ RefundsApproved(address lockAddress, bytes32 root);
+  event Refunded(address lockAddress, address recipient, uint256 amount);
+
+  mapping(address => mapping(address => uint)) public issuedRefunds;
+  mapping(address => bytes32) public roots;
 
   function approveRefunds(address lockAddress, bytes32 root) public {
     IPublicLock lock = IPublicLock(lockAddress);
@@ -16,6 +18,7 @@ contract Kickback {
       "You must be a lock manager to approve refunds."
     );
     roots[lockAddress] = root;
+    emit RefundsApproved(lockAddress, root);
   }
 
   function refund(
@@ -36,9 +39,11 @@ contract Kickback {
       issuedRefunds[lockAddress][msg.sender] > 0,
       "Refund already issued"
     );
-    issuedRefunds[lockAddress][msg.sender] = amount;
+    
+    issuedRefunds[lockAddresblicLock lock = IPublicLock(lockAddress);
+    
 
-    IPublicLock lock = IPublicLock(lockAddress);
-    lock.withdraw(lock.tokenAddress(), payable(msg.sender), amount);
+    lock.withdraw(lock.tokenAddress(), payable(msg.sender), dress, msg.sender, amount);
+    
   }
 }
