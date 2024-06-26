@@ -22,8 +22,16 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   `)
 
   // Use Safe v1+ with SDK
-
-  const safeSdk = await Safe.init({ provider, signer, safeAddress })
+  if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw new Error(
+      `The DEPLOYER_PRIVATE_KEY needs to be exported to shell to add a new owner`
+    )
+  }
+  const safeSdk = await Safe.init({
+    provider,
+    signer: process.env.DEPLOYER_PRIVATE_KEY,
+    safeAddress,
+  })
   const safeService = new SafeApiKit({
     chainId: id,
   })
@@ -43,7 +51,7 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   console.log(`submitting tx with  hash : ${safeTransactionHash} ...`)
 
   // get signature
-  const senderSignature = await safeSdk.signTransactionHash(safeTransactionHash)
+  const senderSignature = await safeSdk.signHash(safeTransactionHash)
 
   // Propose the transaction
   const txParams = {

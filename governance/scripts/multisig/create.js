@@ -16,10 +16,14 @@ async function main({ owners, threshold = 4 }) {
     owners = await getExpectedSigners()
   }
 
-  const [deployer] = await ethers.getSigners()
+  if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw Error(
+      `The DEPLOYER_PRIVATE_KEY needs to be exported to create a safe`
+    )
+  }
   const { provider } = await getNetwork()
   const safeFactory = await SafeFactory.init({
-    signer: deployer,
+    signer: process.env.DEPLOYER_PRIVATE_KEY,
     provider,
   })
 

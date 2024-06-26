@@ -27,7 +27,16 @@ async function main({ safeAddress, tx, signer }) {
   const safeService = await getSafeService(chainId)
 
   // create tx
-  const safeSdk = await Safe.init({ signer, safeAddress, provider })
+  if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw new Error(
+      `The DEPLOYER_PRIVATE_KEY needs to be exported to shell to add a new owner`
+    )
+  }
+  const safeSdk = await Safe.init({
+    signer: process.env.DEPLOYER_PRIVATE_KEY,
+    safeAddress,
+    provider,
+  })
   const txs = !Array.isArray(tx) ? [tx] : tx
 
   let explainer = ''
