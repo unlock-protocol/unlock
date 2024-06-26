@@ -30,7 +30,7 @@
     "ethers-multisend": "3.1.0",
     "ethers5": "npm:ethers@5.7.2",
     "fs-extra": "11.2.0",
-    "hardhat": "2.22.3",
+    "hardhat": "2.22.5",
     "zksync-ethers": "6.7.1"
   },
   "scripts": {
