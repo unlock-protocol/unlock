@@ -139,9 +139,16 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
    */
   // eslint-disable-next-line no-unused-vars
   async personal_sign([data, _]: any[]) {
-    const content = ethers.getBytes(data)
-    const signature = await this.wallet?.signMessage(content)
-    return signature
+    try {
+      const content = ethers.getBytes(data)
+      const signature = await this.wallet?.signMessage(content)
+      return signature
+    } catch (error) {
+      console.error('Error signing message: ', error)
+      ToastHelper.error(
+        'Error signing message, please wait a moment and try again.'
+      )
+    }
   }
 
   // TODO: this almost certainly doesn't work
