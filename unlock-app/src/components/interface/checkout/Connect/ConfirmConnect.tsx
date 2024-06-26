@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { OAuthConfig } from '~/unlockTypes'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -26,6 +26,8 @@ export function ConfirmConnect({
   const { siweSign, signature, message } = useSIWE()
   const { account } = useAuth()
 
+  const [isLoading, setIsLoading] = useState(false)
+
   const onSuccess = (signature: string, message: string) => {
     const code = Buffer.from(
       JSON.stringify({
@@ -48,6 +50,7 @@ export function ConfirmConnect({
     if (signature && message) {
       onSuccess(signature, message)
     } else {
+      setIsLoading(true)
       const result = await siweSign(
         generateNonce(),
         paywallConfig?.messageToSign || '',
@@ -58,6 +61,7 @@ export function ConfirmConnect({
       if (result) {
         onSuccess(result.signature, result.message)
       }
+      setIsLoading(false)
     }
   }
 
@@ -101,7 +105,11 @@ export function ConfirmConnect({
             >
               Deny
             </Button>
-            <Button onClick={() => onConfirm()} className="w-full">
+            <Button
+              loading={isLoading}
+              onClick={() => onConfirm()}
+              className="w-full"
+            >
               Approve
             </Button>
           </div>
