@@ -12513,24 +12513,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomicfoundation/ignition-core@npm:0.15.1":
-  version: 0.15.1
-  resolution: "@nomicfoundation/ignition-core@npm:0.15.1"
-  dependencies:
-    "@ethersproject/address": "npm:5.6.1"
-    "@nomicfoundation/solidity-analyzer": "npm:^0.1.1"
-    cbor: "npm:^9.0.0"
-    debug: "npm:^4.3.2"
-    ethers: "npm:^6.7.0"
-    fs-extra: "npm:^10.0.0"
-    immer: "npm:10.0.2"
-    lodash: "npm:4.17.21"
-    ndjson: "npm:2.0.0"
-  checksum: 10/8332b2311a4c368cbcc4e527df1c1215bc70994b8a96f60098ee628d92f5142656f9dadd342dfc62b1e42e5936962390be7437ed8acdac286bea6fd28b418cc7
-  languageName: node
-  linkType: hard
-
-"@nomicfoundation/ignition-core@npm:^0.15.5":
+"@nomicfoundation/ignition-core@npm:0.15.5, @nomicfoundation/ignition-core@npm:^0.15.5":
   version: 0.15.5
   resolution: "@nomicfoundation/ignition-core@npm:0.15.5"
   dependencies:
@@ -20090,7 +20073,7 @@ __metadata:
     "@nomicfoundation/hardhat-ignition": "npm:0.15.5"
     "@nomicfoundation/hardhat-ignition-ethers": "npm:0.15.0"
     "@nomicfoundation/hardhat-toolbox": "npm:5.0.0"
-    "@nomicfoundation/ignition-core": "npm:0.15.1"
+    "@nomicfoundation/ignition-core": "npm:0.15.5"
     "@typechain/ethers-v6": "npm:0.5.1"
     "@typechain/hardhat": "npm:9.1.0"
     "@types/mocha": "npm:10.0.6"
