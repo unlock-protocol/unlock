@@ -8,11 +8,10 @@ const {
 } = require('../../helpers/multisig')
 const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
-const { EthersAdapter } = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
 
 async function main({ safeAddress, tx, signer }) {
-  const { id: chainId } = await getNetwork()
+  const { id: chainId, provider } = await getNetwork()
   if (!safeAddress) {
     safeAddress = await getSafeAddress(chainId)
   }
@@ -24,17 +23,20 @@ async function main({ safeAddress, tx, signer }) {
     throw Error(`Can not send multisig tx on a forked network`)
   }
 
-  // Use Safe v1+ with SDK
-  const ethAdapter = new EthersAdapter({
-    ethers,
-    signerOrProvider: signer,
-  })
-
   // get Safe service URL if not default
   const safeService = await getSafeService(chainId)
 
   // create tx
-  const safeSdk = await Safe.create({ ethAdapter, safeAddress })
+  if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw new Error(
+      `The DEPLOYER_PRIVATE_KEY needs to be exported to shell to add a new owner`
+    )
+  }
+  const safeSdk = await Safe.init({
+    signer: process.env.DEPLOYER_PRIVATE_KEY,
+    safeAddress,
+    provider,
+  })
   const txs = !Array.isArray(tx) ? [tx] : tx
 
   let explainer = ''
