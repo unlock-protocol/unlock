@@ -1,6 +1,7 @@
 const { ethers } = require('hardhat')
-const { SafeFactory, EthersAdapter } = require('@safe-global/protocol-kit')
+const { SafeFactory } = require('@safe-global/protocol-kit')
 const { getExpectedSigners } = require('../../helpers/multisig')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ owners, threshold = 4 }) {
   if (owners && owners.length % 2 == 0) {
@@ -16,8 +17,11 @@ async function main({ owners, threshold = 4 }) {
   }
 
   const [deployer] = await ethers.getSigners()
-  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: deployer })
-  const safeFactory = await SafeFactory.create({ ethAdapter })
+  const { provider } = await getNetwork()
+  const safeFactory = await SafeFactory.init({
+    signer: deployer,
+    provider,
+  })
 
   const safeAccountConfig = {
     owners,

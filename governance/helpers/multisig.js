@@ -4,7 +4,6 @@ const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const multisigABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig2.json')
 const multisigOldABI = require('@unlock-protocol/hardhat-helpers/dist/ABIs/multisig.json')
 const SafeApiKit = require('@safe-global/api-kit').default
-const { EthersAdapter } = require('@safe-global/protocol-kit')
 const Safe = require('@safe-global/protocol-kit').default
 const { decodeMulti, encodeMulti } = require('ethers-multisend')
 
@@ -208,11 +207,9 @@ const parseSafeMulticall = async ({ calls, chainId, options }) => {
   )
 
   // init safe lib with correct provider
-  const { provider } = await getProvider(chainId)
-  const { multisig } = await getNetwork(chainId)
-  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: provider })
-  const safe = await Safe.create({
-    ethAdapter,
+  const { multisig, provider } = await getNetwork(chainId)
+  const safe = await Safe.init({
+    provider,
     safeAddress: multisig,
   })
 

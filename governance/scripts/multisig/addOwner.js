@@ -1,11 +1,10 @@
 const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const Safe = require('@safe-global/protocol-kit').default
-const { EthersAdapter } = require('@safe-global/protocol-kit')
 const SafeApiKit = require('@safe-global/api-kit').default
 
 async function main({ newOwner, safeAddress, threshold } = {}) {
-  const { id, multisig, name } = await getNetwork()
+  const { id, multisig, name, provider } = await getNetwork()
   let [signer] = await ethers.getSigners()
 
   if (!safeAddress) {
@@ -23,12 +22,8 @@ async function main({ newOwner, safeAddress, threshold } = {}) {
   `)
 
   // Use Safe v1+ with SDK
-  const ethAdapter = new EthersAdapter({
-    ethers,
-    signerOrProvider: signer,
-  })
 
-  const safeSdk = await Safe.create({ ethAdapter, safeAddress })
+  const safeSdk = await Safe.init({ provider, signer, safeAddress })
   const safeService = new SafeApiKit({
     chainId: id,
   })
