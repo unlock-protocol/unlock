@@ -131,7 +131,7 @@ export const CreateLockFormSummary = ({
 
   const currentStatus: DeployStatus = hasError
     ? 'txError'
-    : isDeployed
+    : isDeployed && !!lockAddress
       ? 'deployed'
       : 'progress'
 
