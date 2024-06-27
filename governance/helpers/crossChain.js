@@ -2,6 +2,43 @@ const { default: networks } = require('@unlock-protocol/networks')
 const { ethers, Contract } = require('ethers')
 const { createFork } = require('./tenderly')
 const { delayABI } = require('./bridge')
+const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { IConnext } = require('../helpers/bridge')
+
+const parseBridgeCall = async ({ destChainId, moduleData }) => {
+  const { governanceBridge } = await getNetwork(destChainId)
+
+  // get bridge info on receiving chain
+  const {
+    domainId: destDomainId,
+    modules: { connextMod: destAddress },
+  } = governanceBridge
+
+  // get bridge address on mainnet
+  const {
+    governanceBridge: { connext: bridgeAddress },
+  } = await getNetwork(1)
+
+  if (!destDomainId || !destAddress) {
+    throw Error('Missing bridge information')
+  }
+
+  // parse call for bridge
+  return {
+    contractAddress: bridgeAddress,
+    contractNameOrAbi: IConnext,
+    functionName: 'xcall',
+    functionArgs: [
+      destDomainId,
+      destAddress, // destMultisigAddress,
+      ADDRESS_ZERO, // asset
+      ADDRESS_ZERO, // delegate
+      0, // amount
+      30, // slippage
+      moduleData, // calldata
+    ],
+  }
+}
 
 async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   const {
@@ -136,6 +173,7 @@ async function simulateDestCalls(xCalls) {
 }
 
 module.exports = {
+  parseBridgeCall,
   simulateDestCalls,
   simulateDelayCall,
 }
