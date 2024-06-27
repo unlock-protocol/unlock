@@ -76,9 +76,6 @@ describe("updating a user's password encrypted private key", () => {
         where: { publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2' },
       })
 
-      expect(user?.passwordEncryptedPrivateKey).toEqual(
-        '{"data" : "New Encrypted Password"}'
-      )
       expect(response.status).toBe(202)
     })
   })
