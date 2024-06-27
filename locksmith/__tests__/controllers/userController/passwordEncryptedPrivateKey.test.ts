@@ -78,7 +78,7 @@ describe("updating a user's password encrypted private key", () => {
 
       // Serialize the object to JSON string before comparison
       expect(JSON.stringify(user?.passwordEncryptedPrivateKey)).toEqual(
-        '{"data": "New Encrypted Password"}'
+        '{"data":"New Encrypted Password"}'
       )
       expect(response.status).toBe(202)
     })
