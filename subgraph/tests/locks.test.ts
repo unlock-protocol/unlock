@@ -15,6 +15,7 @@ import {
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
+  handleTransfer,
 } from '../src/public-lock'
 
 import {
@@ -26,7 +27,11 @@ import {
   createLockMetadata,
   mockDataSourceV8,
 } from './locks-utils'
-import { createLockManagerAddedEvent } from './keys-utils'
+import {
+  createLockManagerAddedEvent,
+  createTransferEvent,
+  mockDataSourceV11,
+} from './keys-utils'
 
 import {
   duration,
@@ -43,6 +48,7 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockAddressV8,
+  tokenId,
 } from './constants'
 
 // mock contract functions
@@ -85,6 +91,23 @@ describe('Describe Locks events', () => {
       'maxKeysPerAddress',
       `${maxKeysPerAddress}`
     )
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', 'null')
+  })
+
+  test('lock is updated when a key is added', () => {
+    mockDataSourceV11()
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', 'null')
+    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
+
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(lockAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', '1')
+    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '1')
   })
 
   test('Lock manager added (using `RoleGranted`)', () => {
