@@ -106,7 +106,7 @@ describe('Describe Locks events', () => {
     )
     handleTransfer(newTransferEvent)
 
-    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', '1')
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', newTransferEvent.block.timestamp.toString())
     assert.fieldEquals('Lock', lockAddress, 'totalKeys', '1')
   })
 
