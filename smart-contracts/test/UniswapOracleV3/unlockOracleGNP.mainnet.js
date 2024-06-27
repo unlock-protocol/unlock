@@ -15,7 +15,8 @@ const {
   uniswapV3: { factoryAddress },
 } = mainnet
 const keyPriceUSDC = ethers.parseUnits('50', 6)
-const FEE = 500n
+const FEE = 300n
+
 describe('Unlock GNP conversion', () => {
   let unlock
   let oracle
@@ -99,7 +100,7 @@ describe('Unlock GNP conversion', () => {
 
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
-
+      console.log({ rate })
       // purchase some keys
       const [, payer] = await ethers.getSigners()
       await purchaseKeys(lock, NUMBER_OF_KEYS, true, payer)
