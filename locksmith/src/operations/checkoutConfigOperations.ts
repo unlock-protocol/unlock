@@ -16,6 +16,12 @@ export const saveCheckoutConfig = async ({
   config,
 }: SaveCheckoutConfigArgs) => {
   const generatedId = randomUUID()
+
+  // Forcing the referrer to exist and be set to the creator of the config
+  if (!config.referrer) {
+    config.referrer = createdBy
+  }
+
   const [createdConfig] = await CheckoutConfig.upsert(
     {
       name,

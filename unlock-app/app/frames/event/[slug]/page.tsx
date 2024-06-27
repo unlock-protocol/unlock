@@ -1,4 +1,4 @@
-import { storage } from '../../../../src/config/storage'
+import { locksmith } from '../../../../src/config/locksmith'
 import React from 'react'
 import { useFramesReducer, getPreviousFrame } from 'frames.js/next/server'
 import { DefaultFrame } from '../Components/DefaultFrame'
@@ -30,7 +30,7 @@ export default async function Frame(props: HomeProps) {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const [state] = useFramesReducer(reducer, { view: 'default' }, previousFrame)
 
-  const { data: event } = await storage.getEvent(slug)
+  const { data: event } = await locksmith.getEvent(slug)
   if (!event?.data) {
     return new Response('Event not found', { status: 404 })
   }

@@ -5,7 +5,7 @@
 
 import { Lock } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { getCurrencySymbol } from './currency'
 import { PaywallConfigType } from '@unlock-protocol/core'
 
@@ -93,7 +93,7 @@ export const convertedKeyPrice = async (
   numberOfRecipients = 1
 ) => {
   const { creditCardPrice, creditCardCurrency = 'usd' } = (
-    await storage.getLockSettings(lock.network, lock.address)
+    await locksmith.getLockSettings(lock.network, lock.address)
   ).data
 
   const creditCardCurrencySymbol = getCurrencySymbol(creditCardCurrency)

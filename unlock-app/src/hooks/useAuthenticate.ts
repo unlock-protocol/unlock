@@ -52,6 +52,7 @@ export enum WALLET_PROVIDER {
   WALLET_CONNECT,
   COINBASE,
   UNLOCK,
+  WAAS,
 }
 
 export type WalletProvider = keyof typeof WALLET_PROVIDER
@@ -70,6 +71,13 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
   }, [authenticate, injectedOrDefaultProvider])
 
   const handleUnlockProvider = useCallback(
+    async (provider: any) => {
+      return authenticate(provider)
+    },
+    [authenticate]
+  )
+
+  const handleWaasProvider = useCallback(
     async (provider: any) => {
       return authenticate(provider)
     },
@@ -133,6 +141,7 @@ export function useAuthenticate(options: AuthenticateProps = {}) {
     WALLET_CONNECT: handleWalletConnectProvider,
     COINBASE: handleCoinbaseWalletProvider,
     UNLOCK: handleUnlockProvider,
+    WAAS: handleWaasProvider,
   }
 
   const authenticateWithProvider = useCallback(

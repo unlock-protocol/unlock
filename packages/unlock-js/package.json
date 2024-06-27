@@ -33,9 +33,9 @@
     "ethers": "5.7.2"
   },
   "devDependencies": {
-    "@babel/cli": "7.24.6",
-    "@babel/core": "7.24.6",
-    "@babel/preset-env": "7.24.6",
+    "@babel/cli": "7.24.7",
+    "@babel/core": "7.24.7",
+    "@babel/preset-env": "7.24.7",
     "@graphql-codegen/cli": "5.0.2",
     "@graphql-codegen/typescript": "4.0.7",
     "@graphql-codegen/typescript-graphql-request": "6.2.0",
@@ -55,8 +55,6 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
-    "@uniswap/sdk-core": "5.0.0",
-    "@uniswap/smart-order-router": "3.17.4",
     "graphql": "16.8.1",
     "graphql-request": "6.1.0",
     "siwe": "2.3.2"

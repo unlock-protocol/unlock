@@ -83,6 +83,13 @@ export const linea: NetworkConfig = {
   },
   tokens: [
     {
+      address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
+      decimals: 6,
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
+    },
+    {
       address: '0xe5D7C2a44FfDDf6b295A15c148167daaAf5Cf34f',
       decimals: 18,
       featured: true,
@@ -102,13 +109,6 @@ export const linea: NetworkConfig = {
       featured: true,
       name: 'Tether USD',
       symbol: 'USDT',
-    },
-    {
-      address: '0x176211869cA2b568f2A7D4EE941E073a821EE1ff',
-      decimals: 6,
-      featured: true,
-      name: 'USDC',
-      symbol: 'USDC',
     },
     {
       address: '0x3aAB2285ddcDdaD8edf438C1bAB47e1a9D05a9b4',

@@ -13,7 +13,7 @@ import {
   useStripeConnect,
   useStripeDisconnect,
 } from '~/hooks/useStripeConnect'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useUSDPricing } from '~/hooks/useUSDPricing'
 import { useLockData } from '~/hooks/useLockData'
 import CreditCardCustomPrice from './CreditCardCustomPrice'
@@ -103,7 +103,7 @@ const ConnectStripe = ({
     data: stripeConnections = [],
     isLoading: isLoadingStripeConnections,
   } = useQuery(['stripeConnections', account], async () => {
-    const response = await storage.getStripeConnections()
+    const response = await locksmith.getStripeConnections()
     if (response.data.error) {
       throw new Error(response.data.error)
     }

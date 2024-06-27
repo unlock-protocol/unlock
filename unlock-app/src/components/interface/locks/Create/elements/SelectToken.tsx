@@ -11,22 +11,28 @@ export const SelectToken = ({
   onChange,
   defaultToken,
   className,
+  noNative,
 }: {
   network: number
   defaultToken?: Partial<Token>
   onChange: (token: Token) => void
   className?: string
+  noNative?: boolean
 }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [token, setToken] = useState(defaultToken)
 
-  const onSelect = (token: Token) => {
-    onChange(token)
-    setToken(token)
+  const onSelect = (_token: Token) => {
+    onChange(_token)
+    setToken(_token)
   }
 
   useEffect(() => {
     const initialize = async () => {
+      const defaultTokenFromList =
+        noNative && networks[network]?.tokens
+          ? networks[network]?.tokens![0]
+          : (networks[network]?.nativeCurrency as Token)
       if (defaultToken?.address) {
         const web3Service = new Web3Service(networks)
 
@@ -34,16 +40,20 @@ export const SelectToken = ({
           defaultToken.address,
           network
         )
-        setToken({
-          ...defaultToken,
-          symbol,
-        })
+        if (symbol) {
+          onSelect({
+            ...defaultToken,
+            symbol,
+          } as Token)
+        } else {
+          onSelect(defaultTokenFromList)
+        }
       } else {
-        setToken(networks[network]?.nativeCurrency ?? {})
+        onSelect(defaultTokenFromList)
       }
     }
     initialize()
-  }, [defaultToken, network])
+  }, [defaultToken?.address, network, noNative])
 
   return (
     <div className={twMerge('flex flex-col gap-1.5', className)}>
@@ -53,14 +63,19 @@ export const SelectToken = ({
         network={network}
         onSelect={onSelect}
         defaultCurrencyAddress={token?.address}
+        noNative={noNative}
       />
 
       <div
         onClick={() => setIsOpen(true)}
         className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none px-3"
       >
-        <CryptoIcon symbol={token?.symbol || ''} />
-        <span>{token?.symbol}</span>
+        {token?.symbol && (
+          <>
+            <CryptoIcon symbol={token?.symbol || ''} />
+            <span>{token?.symbol}</span>
+          </>
+        )}
       </div>
       <div className="pl-1"></div>
     </div>

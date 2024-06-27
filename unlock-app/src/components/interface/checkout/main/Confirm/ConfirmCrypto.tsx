@@ -180,6 +180,10 @@ export function ConfirmCrypto({
             owner: recipients?.[0],
             referrer: getReferrer(account!, paywallConfig, lockAddress),
             data: purchaseData?.[0],
+            recurringPayment: recurringPayments
+              ? recurringPayments[0]
+              : undefined,
+            totalApproval,
           },
           {} /** Transaction params */,
           onErrorCallback

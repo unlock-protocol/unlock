@@ -1,6 +1,7 @@
 const { ethers } = require('hardhat')
-const { SafeFactory, EthersAdapter } = require('@safe-global/protocol-kit')
+const { SafeFactory } = require('@safe-global/protocol-kit')
 const { getExpectedSigners } = require('../../helpers/multisig')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ owners, threshold = 4 }) {
   if (owners && owners.length % 2 == 0) {
@@ -15,9 +16,16 @@ async function main({ owners, threshold = 4 }) {
     owners = await getExpectedSigners()
   }
 
-  const [deployer] = await ethers.getSigners()
-  const ethAdapter = new EthersAdapter({ ethers, signerOrProvider: deployer })
-  const safeFactory = await SafeFactory.create({ ethAdapter })
+  if (!process.env.DEPLOYER_PRIVATE_KEY) {
+    throw Error(
+      `The DEPLOYER_PRIVATE_KEY needs to be exported to create a safe`
+    )
+  }
+  const { provider } = await getNetwork()
+  const safeFactory = await SafeFactory.init({
+    signer: process.env.DEPLOYER_PRIVATE_KEY,
+    provider,
+  })
 
   const safeAccountConfig = {
     owners,

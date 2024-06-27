@@ -117,7 +117,6 @@ export interface NetworkConfig {
     universalRouterAddress: string
     positionManager: string
   }>
-  swapPurchaser?: string
   unlockOwner?: string
   unlockDaoToken?: {
     address: string
@@ -294,18 +293,6 @@ export interface UserMetadata {
   protectedData?: {
     [key: string]: string
   }
-}
-
-export interface UnlockUniswapRoute {
-  swapCalldata?: string
-  value: string
-  amountInMax: any
-  swapRouter: string
-  quote: any
-  trade: any
-  convertToQuoteToken: any
-  quoteGasAdjusted: any
-  estimatedGasUsedUSD: any
 }
 
 export type UnlockNetworks = number

@@ -9,7 +9,7 @@ import { MembershipVerificationConfig } from '~/utils/verification'
 import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
 import { isSignatureValidForAddress } from '~/utils/signatures'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { AxiosError } from 'axios'
 import { useEventTicket, useLocksmithGranterAddress } from '~/hooks/useTicket'
 import { Dialog, Transition } from '@headlessui/react'
@@ -135,14 +135,14 @@ export const VerificationStatus = ({
     try {
       setIsCheckingIn(true)
       if (eventProp) {
-        await storage.checkEventTicket(
+        await locksmith.checkEventTicket(
           eventProp.slug,
           network,
           lockAddress,
           tokenId!
         )
       } else {
-        await storage.checkTicket(network, lockAddress, tokenId!)
+        await locksmith.checkTicket(network, lockAddress, tokenId!)
       }
       await refetchTicket()
       setIsCheckingIn(false)

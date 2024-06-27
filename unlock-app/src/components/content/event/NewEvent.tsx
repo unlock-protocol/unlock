@@ -3,7 +3,7 @@ import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { Form, NewEventForm } from './Form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { LockDeploying } from './LockDeploying'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { networks } from '@unlock-protocol/networks'
 
 import { formDataToMetadata } from '~/components/interface/locks/metadata/utils'
@@ -83,13 +83,13 @@ export const NewEvent = () => {
       ToastHelper.error(`The contract could not be deployed. Please try again.`)
     }
     if (lockAddress) {
-      await storage.updateLockMetadata(formData.network, lockAddress, {
+      await locksmith.updateLockMetadata(formData.network, lockAddress, {
         metadata: {
           name: `Ticket for ${formData.lock.name}`,
           image: formData.metadata.image,
         },
       })
-      const { data: event } = await storage.saveEventData({
+      const { data: event } = await locksmith.saveEventData({
         data: {
           ...formDataToMetadata({
             name: formData.lock.name,

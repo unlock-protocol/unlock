@@ -7,7 +7,7 @@ import {
   PaywallConfigType,
   formDataToMetadata,
 } from '@unlock-protocol/core'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import {
   Button,
   ImageUpload,
@@ -71,7 +71,7 @@ export const General = ({ event, checkoutConfig }: GeneralProps) => {
     image: string
   }) => {
     await ToastHelper.promise(
-      storage.saveEventData({
+      locksmith.saveEventData({
         data: formDataToMetadata({
           ...event,
           ...values,

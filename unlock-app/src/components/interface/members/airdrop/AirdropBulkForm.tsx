@@ -13,11 +13,14 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { KeyManager } from '@unlock-protocol/unlock-js'
 import { useConfig } from '~/utils/withConfig'
 
-const MAX_SIZE = 50
+export const MAX_SIZE = 50
 
 interface Props {
   lock: Lock
-  onConfirm(members: AirdropMember[]): void | Promise<void>
+  onConfirm(
+    members: AirdropMember[],
+    setIsConfirming: (a: boolean) => void
+  ): void | Promise<void>
   emailRequired?: boolean
 }
 
@@ -106,8 +109,8 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
           })
         )
 
-        const filteredMembers = members
-          .reduce<AirdropMember[]>((filtered, member) => {
+        const filteredMembers = members.reduce<AirdropMember[]>(
+          (filtered, member) => {
             // filter null or undefined values
             if (!member) {
               return filtered
@@ -126,7 +129,7 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
             )
             const toBeAdded = member.count
             if (
-              existingBalance + alreadyToBeAdded + toBeAdded >
+              Number(existingBalance) + alreadyToBeAdded + toBeAdded >
               (lock.maxKeysPerAddress || 1)
             ) {
               console.warn(`Discarded duplicate`, member)
@@ -143,8 +146,9 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
             // push the item to array if new unique member found
             filtered.push(member)
             return filtered
-          }, [])
-          .slice(0, MAX_SIZE)
+          },
+          []
+        )
 
         // Notify how many loaded and discarded.
         ToastHelper.success(
@@ -215,9 +219,10 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
                 </p>
                 <p>
                   Due to block size limit, you can only airdrop at most{' '}
-                  {MAX_SIZE} NFT at once, but you can re-upload the same file
-                  multiple times and the duplicates will automatically
-                  discarded.
+                  {MAX_SIZE} NFT at once, so if your list is longer than that,
+                  you will be prompted to approve multiple transactions. You can
+                  also easily restart the process at any point, as addresses who
+                  already have one NFT will be discarded.
                 </p>
                 <p>
                   If you don&apos;t have wallet address of the user, leave the
@@ -235,22 +240,27 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
                   </a>
                 </div>
               </div>
-
-              <div
-                className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
-                {...getRootProps()}
-              >
-                <input {...getInputProps()} />
-                <div className="max-w-xs space-y-2 text-center">
-                  <h3 className="text-lg font-medium">
-                    Drop your CSV file here
-                  </h3>
-                  <p className="text-sm text-gray-600">
-                    Download the template file and fill out the values in the
-                    format.
-                  </p>
+              {isConfirming ? (
+                <Button loading={isConfirming} disabled>
+                  Processing your transactions...
+                </Button>
+              ) : (
+                <div
+                  className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
+                  {...getRootProps()}
+                >
+                  <input {...getInputProps()} />
+                  <div className="max-w-xs space-y-2 text-center">
+                    <h3 className="text-lg font-medium">
+                      Drop your CSV file here
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Download the template file and fill out the values in the
+                      format.
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           )}
         </div>
@@ -288,14 +298,13 @@ export function AirdropBulkForm({ lock, onConfirm, emailRequired }: Props) {
               event.preventDefault()
               setIsConfirming(true)
               try {
-                await onConfirm(list)
+                onConfirm(list, setIsConfirming)
                 clear()
               } catch (error) {
                 if (error instanceof Error) {
                   ToastHelper.error(error.message)
                 }
               }
-              setIsConfirming(false)
             }}
           >
             Confirm aidrop

@@ -91,6 +91,7 @@ export function CheckoutPage() {
           redirectURI={
             checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
           }
+          communication={communication}
         />
       </Container>
     )

@@ -122,8 +122,8 @@ describe(`CardPurchaser / purchase (mainnet only)`, function () {
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
     // deploy CardPurchaser
-    const UnlockSwapPurchaser = await ethers.getContractFactory('CardPurchaser')
-    cardPurchaser = await UnlockSwapPurchaser.deploy(
+    const UnlockCardPurchaser = await ethers.getContractFactory('CardPurchaser')
+    cardPurchaser = await UnlockCardPurchaser.deploy(
       await signer.getAddress(),
       unlockAddress,
       USDC

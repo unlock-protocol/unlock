@@ -66,7 +66,7 @@ export const ConnectModal = () => {
                   </div>
                 </div>
               </header>
-              <ConnectWalletComponent />
+              <ConnectWalletComponent shoudOpenConnectModal={true} />
             </div>
           </Transition.Child>
         </div>

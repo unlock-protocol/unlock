@@ -63,8 +63,14 @@ export const baseSepolia: NetworkConfig = {
     networkName: 'base-sepolia',
     studioName: 'unlock-protocol-base-sepolia',
   },
-  swapPurchaser: '',
   tokens: [
+    {
+      address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
+      decimals: 6,
+      featured: true,
+      name: 'USDC',
+      symbol: 'USDC',
+    },
     {
       address: '0x4200000000000000000000000000000000000006',
       decimals: 18,
@@ -72,13 +78,6 @@ export const baseSepolia: NetworkConfig = {
       mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       name: 'Wrapped Ether',
       symbol: 'WETH',
-    },
-    {
-      address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
-      decimals: 6,
-      featured: true,
-      name: 'USDC',
-      symbol: 'USDC',
     },
   ],
   unlockAddress: '0x259813B665C8f6074391028ef782e27B65840d89',

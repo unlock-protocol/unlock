@@ -16,7 +16,7 @@ import approveAllowance from '../utils/approveAllowance'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (options, transactionOptions = {}, callback) {
-  const { lockAddress, swap } = options
+  const { lockAddress } = options
   const lockContract = await this.getLockContract(lockAddress)
   const {
     owners,
@@ -29,14 +29,6 @@ export default async function (options, transactionOptions = {}, callback) {
     totalAmountToApprove,
   } = await getPurchaseKeysArguments.bind(this)(options)
 
-  const unlockSwapPurchaserContract = swap
-    ? this.getUnlockSwapPurchaserContract({
-        params: {
-          network: this.networkId,
-        },
-      })
-    : null
-
   const purchaseArgs = [keyPrices, owners, referrers, keyManagers, data]
   const callData = lockContract.interface.encodeFunctionData(
     'purchase',
@@ -48,25 +40,14 @@ export default async function (options, transactionOptions = {}, callback) {
     transactionOptions.value = totalPrice
   }
 
-  // if swap is provided, we need to override the value
-  if (swap && swap?.value) {
-    transactionOptions.value = swap.value
+  // If the lock is priced in ERC20, we need to approve the transfer
+  const approvalOptions = {
+    erc20Address,
+    totalAmountToApprove,
+    address: lockAddress,
   }
 
-  // If the lock is priced in ERC20, we need to approve the transfer
-  const approvalOptions = swap
-    ? {
-        erc20Address: swap.srcTokenAddress,
-        address: unlockSwapPurchaserContract?.address,
-        totalAmountToApprove: swap.amountInMax,
-      }
-    : {
-        erc20Address,
-        totalAmountToApprove,
-        address: lockAddress,
-      }
-
-  // Only ask for approval if the lock or swap is priced in ERC20
+  // Only ask for approval if the lock is priced in ERC20
   if (approvalOptions.erc20Address && approvalOptions.erc20Address !== ZERO) {
     await approveAllowance.bind(this)(approvalOptions)
   }
@@ -90,25 +71,14 @@ export default async function (options, transactionOptions = {}, callback) {
         }
       }
 
-      const gasLimitPromise = swap
-        ? unlockSwapPurchaserContract?.swapAndCall.estimateGas(
-            lockAddress,
-            swap.srcTokenAddress || ZERO,
-            totalPrice,
-            swap.amountInMax,
-            swap.uniswapRouter,
-            swap.swapCallData,
-            callData,
-            transactionOptions
-          )
-        : lockContract.purchase.estimateGas(
-            keyPrices,
-            owners,
-            referrers,
-            keyManagers,
-            data,
-            transactionOptions
-          )
+      const gasLimitPromise = lockContract.purchase.estimateGas(
+        keyPrices,
+        owners,
+        referrers,
+        keyManagers,
+        data,
+        transactionOptions
+      )
 
       const gasLimit = await gasLimitPromise
       transactionOptions.gasLimit = (gasLimit * 13n) / 10n
@@ -125,25 +95,14 @@ export default async function (options, transactionOptions = {}, callback) {
     }
   }
 
-  const transactionRequestPromise = swap
-    ? unlockSwapPurchaserContract?.swapAndCall.populateTransaction(
-        lockAddress,
-        swap.srcTokenAddress || ZERO,
-        totalPrice,
-        swap.amountInMax,
-        swap.uniswapRouter,
-        swap.swapCallData,
-        callData,
-        transactionOptions
-      )
-    : lockContract.purchase.populateTransaction(
-        keyPrices,
-        owners,
-        referrers,
-        keyManagers,
-        data,
-        transactionOptions
-      )
+  const transactionRequestPromise = lockContract.purchase.populateTransaction(
+    keyPrices,
+    owners,
+    referrers,
+    keyManagers,
+    data,
+    transactionOptions
+  )
 
   const transactionRequest = await transactionRequestPromise
   if (transactionOptions.runEstimate) {

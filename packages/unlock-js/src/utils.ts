@@ -1,4 +1,3 @@
-import { CurrencyAmount } from '@uniswap/sdk-core'
 import { ethers } from 'ethers'
 
 // this allows us to flexibly upgrade web3 and fix bugs as they surface
@@ -40,18 +39,6 @@ export default {
     ethers.hexlify(ethers.toUtf8Bytes(str.length ? str : '0x')),
   sha3: ethers.keccak256,
   verifyMessage: ethers.verifyMessage,
-
-  currencyAmountToBigNumber: (amount: CurrencyAmount<any>) => {
-    const { decimals } = amount.currency
-    const fixed = ethers.FixedNumber.fromString(amount.toExact())
-    const tokenScale = ethers.FixedNumber.fromString(
-      (10n ** BigInt(decimals)).toString()
-    )
-    return BigInt(
-      // have to remove trailing .0 "manually" :/
-      fixed.mulUnsafe(tokenScale).floor().toString().split('.')[0]
-    )
-  },
 }
 
 export class FetchError extends Error {

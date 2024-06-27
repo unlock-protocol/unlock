@@ -156,10 +156,6 @@ type Payment =
       method: 'claim'
     }
   | {
-      method: 'swap_and_purchase'
-      route?: any
-    }
-  | {
       method: 'crosschain_purchase'
       route?: any
     }

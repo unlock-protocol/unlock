@@ -32,16 +32,21 @@ describe('UPToken / Votes', () => {
     ;({ address: holder } = holderSigner)
     ;({ address: recipient } = recipientSigner)
 
+    // mock swap
+    const MockUPSwap = await ethers.getContractFactory('MockUPSwap')
+    const swap = await MockUPSwap.deploy()
+
+    // helper function to transfer from mock swap contract
+    transferToken = async (receiver, amount) => {
+      return await swap.transfer(receiver, amount)
+    }
+
+    // deploy UP token
     const UnlockProtocolToken = await ethers.getContractFactory('UPToken')
     up = await upgrades.deployProxy(UnlockProtocolToken, [
       owner,
-      await minter.getAddress(),
+      await swap.getAddress(),
     ])
-
-    // helper
-    transferToken = async (receiver, amount) => {
-      return await up.connect(minter).transfer(receiver, amount)
-    }
   })
 
   describe('Supply', () => {
