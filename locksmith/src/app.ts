@@ -1,9 +1,9 @@
+import './instrument'
 import cors from 'cors'
 import express from 'express'
 import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
-import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
 import router from './routes'
 import { errorHandler } from './utils/middlewares/error'
@@ -23,21 +23,6 @@ app.enable('trust proxy')
 // Enable extended query parser
 app.set('query parser', 'extended')
 
-Sentry.init({
-  ...config.sentry,
-  integrations: [
-    // enable HTTP calls tracing
-    new Sentry.Integrations.Http({ tracing: true }),
-    // enable Express.js middleware tracing
-    new Tracing.Integrations.Express({ app }),
-  ],
-  enabled: process.env.NODE_ENV === 'production',
-  environment: process.env.NODE_ENV,
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
-  tracesSampleRate: 0.5,
-})
 // RequestHandler creates a separate execution context using domains, so that every
 // transaction/span/breadcrumb is attached to its own Hub instance
 app.use(
