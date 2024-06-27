@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 
 interface USDPricingOptions {
   network: number
@@ -15,7 +15,7 @@ export const getLockUsdPrice = async ({
   amount,
 }: Omit<USDPricingOptions, 'enabled' | 'lockAddress'>) => {
   try {
-    const response = await storage.price(
+    const response = await locksmith.price(
       network,
       amount,
       currencyContractAddress ?? undefined

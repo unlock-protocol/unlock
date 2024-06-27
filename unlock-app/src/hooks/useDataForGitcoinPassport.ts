@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 
 const getDataForGitcoinPassport = async (
@@ -8,7 +8,7 @@ const getDataForGitcoinPassport = async (
   recipients: string[]
 ) => {
   try {
-    const response = await storage.getDataForRecipientsAndGitcoinPassport(
+    const response = await locksmith.getDataForRecipientsAndGitcoinPassport(
       network,
       lockAddress,
       recipients

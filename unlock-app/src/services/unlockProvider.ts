@@ -129,9 +129,9 @@ export default class UnlockProvider extends ethers.JsonRpcProvider {
     const user = { ...input }
     user.emailAddress = user.emailAddress || this.emailAddress
     user.publicKey = user.publicKey || this.wallet!.address
-    user.passwordEncryptedPrivateKey = (
+    user.passwordEncryptedPrivateKey = JSON.stringify(
       user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
-    ).toString()
+    )
     const data = UnlockUser.build(user)
     return await this.signData(data)
   }

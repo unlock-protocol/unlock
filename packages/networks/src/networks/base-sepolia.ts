@@ -63,7 +63,6 @@ export const baseSepolia: NetworkConfig = {
     networkName: 'base-sepolia',
     studioName: 'unlock-protocol-base-sepolia',
   },
-  swapPurchaser: '',
   tokens: [
     {
       address: '0x036CbD53842c5426634e7929541eC2318f3dCF7e',
