@@ -1712,6 +1712,33 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /users/{emailAddress}/privatekey:
+    get:
+      operationId: getUserPrivateKey
+      security:
+        - User: []
+      description: Given a user's email address, retrieves their private key. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passwordEncryptedPrivateKey:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true
