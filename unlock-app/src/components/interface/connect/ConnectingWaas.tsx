@@ -10,6 +10,8 @@ import WaasProvider from '~/services/WaasProvider'
 import { signOut as nextSignOut } from 'next-auth/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import SvgComponents from '../svg'
+import { useCaptcha } from '~/hooks/useCaptcha'
+import ReCaptcha from 'react-google-recaptcha'
 
 export type ConnectingWaasProps = {
   openConnectModalWindow?: boolean
@@ -25,10 +27,12 @@ export const ConnectingWaas = ({
   const { connected, deAuthenticate } = useAuth()
   const { openConnectModal } = useConnectModal()
 
-  const onSignOut = async () => {
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+
+  const onSignOut = async (redirect = false) => {
     await siweSignOut()
     await deAuthenticate()
-    await nextSignOut({ redirect: false })
+    await nextSignOut({ redirect: redirect })
   }
 
   useEffect(() => {
@@ -39,6 +43,8 @@ export const ConnectingWaas = ({
     }
 
     const connectWaasProvider = async () => {
+      const captcha = await getCaptchaValue()
+
       try {
         const waasProvider = new WaasProvider({
           ...config.networks[1],
@@ -46,7 +52,7 @@ export const ConnectingWaas = ({
           selectedLoginProvider: session.user.selectedProvider as string,
           token: session.user.token as string,
         })
-        await waasProvider.connect()
+        await waasProvider.connect(captcha)
         await authenticateWithProvider('WAAS', waasProvider)
         session.user.selectedProvider = null
       } catch (err) {
@@ -77,6 +83,12 @@ export const ConnectingWaas = ({
 
   return (
     <div className="h-full px-6 pb-6">
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <div className="grid">
         <div className="flex flex-col items-center justify-center gap-6 pb-6">
           <SvgComponents.Google width={40} height={40} />
@@ -95,7 +107,9 @@ export const ConnectingWaas = ({
         </div>
         <div className="w-full flex items-center justify-end px-6 py-4">
           <button
-            onClick={onSignOut}
+            onClick={() => {
+              onSignOut(true)
+            }}
             className="hover:text-ui-main-600 underline"
           >
             Cancel
