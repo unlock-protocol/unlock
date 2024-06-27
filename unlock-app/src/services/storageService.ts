@@ -44,7 +44,7 @@ export class StorageService extends EventEmitter {
     return { Authorization: ` Bearer ${token}` }
   }
 
-  /**
+  /*
    * Given a user's email address, retrieves their private key. In the case of failure a rejected promise
    * is returned to the caller.
    * @param {*} emailAddress
