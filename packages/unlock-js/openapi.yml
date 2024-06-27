@@ -1118,7 +1118,6 @@ paths:
                 currency:
                   type: string
                   nullable: true
-                  optional: true
                 network:
                   type: number
                   nullable: false

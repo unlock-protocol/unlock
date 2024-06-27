@@ -1,6 +1,11 @@
 # CHANGELOG
 
+## 0.0.27
+
+- Adding the `Kickback.sol` contract used to create refunds for event attendees.
+
 ## 0.0.26
+
 - update `UniswapOracleV3` to allow pool fee to be passed in constructor
 
 ## 0.0.25
