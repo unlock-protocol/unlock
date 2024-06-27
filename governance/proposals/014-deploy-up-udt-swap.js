@@ -4,6 +4,7 @@ const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { parseBridgeCall } = require('../helpers/crossChain')
 
 // TODO : change to base
+const srcChainId = 100
 const destChainId = 137 // polygon
 
 module.exports = async () => {
@@ -45,7 +46,11 @@ module.exports = async () => {
     ]
   )
 
-  const crossChainCall = await parseBridgeCall({ moduleData, destChainId })
+  const crossChainCall = await parseBridgeCall({
+    moduleData,
+    srcChainId,
+    destChainId,
+  })
 
   // parse calls for Safe
   return {
