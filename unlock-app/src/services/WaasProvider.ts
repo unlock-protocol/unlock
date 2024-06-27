@@ -39,7 +39,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
     this.token = token
   }
 
-  async connect() {
+  async connect(captcha: string) {
     try {
       const waas = await InitializeWaas({
         collectAndReportMetrics: true,
@@ -49,7 +49,9 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
       })
 
       const user = await waas.auth.login({
-        provideAuthToken: this.getWaasUuid,
+        provideAuthToken: async () => {
+          return this.getWaasUuid(captcha)
+        },
       })
 
       let wallet: Wallet
@@ -83,8 +85,9 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
     return false
   }
 
-  getWaasUuid = async (): Promise<string> => {
+  getWaasUuid = async (captcha: string): Promise<string> => {
     const waasToken = await getUserWaasUuid(
+      captcha,
       this.emailAddress,
       this.selectedLoginProvider,
       this.token
@@ -136,9 +139,16 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
    */
   // eslint-disable-next-line no-unused-vars
   async personal_sign([data, _]: any[]) {
-    const content = ethers.getBytes(data)
-    const signature = await this.wallet?.signMessage(content)
-    return signature
+    try {
+      const content = ethers.getBytes(data)
+      const signature = await this.wallet?.signMessage(content)
+      return signature
+    } catch (error) {
+      console.error('Error signing message: ', error)
+      ToastHelper.error(
+        'Error signing message, please wait a moment and try again.'
+      )
+    }
   }
 
   // TODO: this almost certainly doesn't work
