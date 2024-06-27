@@ -48,9 +48,7 @@ export class HookController {
     if (!network) {
       return response.status(404).send('Unsupported Network')
     }
-    const result =
-      await // TODO(sentry): Could not automatically migrate - see https://github.com/getsentry/sentry-javascript/blob/develop/MIGRATION.md#deprecate-hub
-      Hub.safeParseAsync(hub)
+    const result = await Hub.safeParseAsync(hub)
     if (!result.success) {
       return response.status(400).send(result.error.flatten())
     } else {
