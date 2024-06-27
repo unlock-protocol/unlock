@@ -44,7 +44,7 @@ export class StorageService extends EventEmitter {
     return { Authorization: ` Bearer ${token}` }
   }
 
-  /**
+  /*
    * Ejects a user
    *
    * @param {*} publicKey
