@@ -94,7 +94,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', 'null')
   })
 
-  test('lock is updated when a key is added', () => {
+  test('Lock updated when a key is added', () => {
     mockDataSourceV11()
     assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', 'null')
     assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
