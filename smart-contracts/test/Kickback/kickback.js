@@ -26,7 +26,9 @@ describe('Kickback contract', () => {
     keyOwners = result.keyOwners
 
     // Deploy upgradable KeyManager
-    const Kickback = await ethers.getContractFactory('Kickback')
+    const Kickback = await ethers.getContractFactory(
+      'contracts/utils/Kickback.sol:Kickback'
+    )
     kickback = await upgrades.deployProxy(Kickback, [])
 
     refundAmount = await lock.keyPrice()
