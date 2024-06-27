@@ -43,7 +43,7 @@ export class StorageService extends EventEmitter {
   genAuthorizationHeader(token: string) {
     return { Authorization: ` Bearer ${token}` }
   }
-  
+
   async getKeyGranter(network: number) {
     try {
       const url = `${this.host}/purchase`
