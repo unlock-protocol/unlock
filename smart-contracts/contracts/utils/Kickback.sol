@@ -1,7 +1,10 @@
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "../interfaces/IPublicLock.sol";
 
- RefundsApproved(address lockAddress, bytes32 root);
+// import "hardhat/console.sol";
+
+contract Kickback {
+  event RefundsApproved(address lockAddress, bytes32 root);
   event Refunded(address lockAddress, address recipient, uint256 amount);
 
   mapping(address => mapping(address => uint)) public issuedRefunds;
@@ -39,11 +42,12 @@ import "../interfaces/IPublicLock.sol";
       issuedRefunds[lockAddress][msg.sender] > 0,
       "Refund already issued"
     );
-    
-    issuedRefunds[lockAddresblicLock lock = IPublicLock(lockAddress);
-    
+    issuedRefunds[lockAddress][msg.sender] = amount;
 
-    lock.withdraw(lock.tokenAddress(), payable(msg.sender), dress, msg.sender, amount);
-    
+    IPublicLock lock = IPublicLock(lockAddress);
+
+    lock.withdraw(lock.tokenAddress(), payable(msg.sender), amount);
+
+    emit Refunded(lockAddress, msg.sender, amount);
   }
 }
