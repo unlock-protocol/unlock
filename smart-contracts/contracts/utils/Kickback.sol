@@ -1,8 +1,6 @@
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 import "../interfaces/IPublicLock.sol";
 
-// import "hardhat/console.sol";
-
 contract Kickback {
   event RefundsApproved(address lockAddress, bytes32 root);
   event Refunded(address lockAddress, address recipient, uint256 amount);
@@ -37,9 +35,8 @@ contract Kickback {
       MerkleProof.verify(proof, roots[lockAddress], leaf),
       "Invalid proof"
     );
-
     require(
-      issuedRefunds[lockAddress][msg.sender] > 0,
+      issuedRefunds[lockAddress][msg.sender] == 0,
       "Refund already issued"
     );
     issuedRefunds[lockAddress][msg.sender] = amount;
