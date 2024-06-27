@@ -10,6 +10,7 @@ import { UserAccountType } from './userAccountType'
  * @returns {Promise<*>}
  */
 export const getUserWaasUuid = async (
+  captcha: string,
   emailAddress: string,
   provider: string,
   token: string
@@ -27,6 +28,7 @@ export const getUserWaasUuid = async (
 
   try {
     const response = await locksmith.getWaasToken(
+      captcha,
       emailAddress,
       selectedProvider,
       { token }
