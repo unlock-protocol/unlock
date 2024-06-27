@@ -1,4 +1,5 @@
 import { Placeholder } from '@unlock-protocol/ui'
+import LoadingIcon from '~/components/interface/Loading'
 
 export const LoadingRegistrationCard = () => {
   return (
@@ -13,6 +14,10 @@ export const LoadingRegistrationCard = () => {
         <Placeholder.Line width="sm" />
         <Placeholder.Line width="lg" />
       </Placeholder.Root>
+      <div className="flex flex-row align-middle gap-2">
+        <LoadingIcon size={24} />
+        <p className="text-gray-600">Loading ticket options...</p>
+      </div>
     </>
   )
 }
