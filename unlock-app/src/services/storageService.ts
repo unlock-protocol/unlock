@@ -44,68 +44,6 @@ export class StorageService extends EventEmitter {
     return { Authorization: ` Bearer ${token}` }
   }
 
-  /*
-   * Ejects a user
-   *
-   * @param {*} publicKey
-   * @param {*} data structured_data used to generate signature
-   * @param {*} token
-   */
-  async ejectUser(publicKey: string, data: any, token: string) {
-    const opts = {
-      headers: {
-        ...this.genAuthorizationHeader(token),
-        ...{ 'Content-Type': 'application/json' },
-      },
-    }
-    try {
-      await fetch(`${this.host}/users/${publicKey}/eject`, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: { ...opts.headers, ...{ 'Content-Type': 'application/json' } },
-      })
-      this.emit(success.ejectUser, { publicKey })
-    } catch (error) {
-      this.emit(failure.ejectUser, { publicKey })
-    }
-  }
-
-  async getDataForRecipientsAndCaptcha(
-    recipients: string[],
-    captchaValue: string,
-    lockAddress: string,
-    network: number
-  ) {
-    try {
-      const url = new URL(`${this.host}/api/captcha`)
-      const rs = recipients.map((r) => r.toLowerCase())
-      const options = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-
-      for (const r of rs) {
-        url.searchParams.append('recipients[]', r)
-      }
-
-      url.searchParams.append('captchaValue', captchaValue)
-      url.searchParams.append('lockAddress', lockAddress)
-      url.searchParams.append('network', network.toString())
-
-      const response = await fetch(url.toString(), {
-        method: 'GET',
-        headers: options.headers,
-      })
-
-      const json = await response.json()
-      return json
-    } catch (error) {
-      console.error(error)
-      return {}
-    }
-  }
-
   async getKeyGranter(network: number) {
     try {
       const url = `${this.host}/purchase`
