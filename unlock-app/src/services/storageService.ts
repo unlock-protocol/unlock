@@ -44,44 +44,7 @@ export class StorageService extends EventEmitter {
     return { Authorization: ` Bearer ${token}` }
   }
 
-  /**
-   * Updates a user's private key, using their email address as key. In the case
-   * of failure a rejected promise is returned to the caller.
-   *
-   * @param {*} email
-   * @param {*} user
-   * @param {*} token
-   * @returns {Promise<*>}
-   */
-  async updateUserEncryptedPrivateKey(
-    emailAddress: string,
-    user: string,
-    token: string
-  ) {
-    const opts = {
-      headers: {
-        ...this.genAuthorizationHeader(token),
-        ...{ 'Content-Type': 'application/json' },
-      },
-    }
-    try {
-      await fetch(
-        `${this.host}/users/${encodeURIComponent(
-          emailAddress
-        )}/passwordEncryptedPrivateKey`,
-        {
-          method: 'PUT',
-          body: JSON.stringify(user),
-          headers: opts.headers,
-        }
-      )
-      this.emit(success.updateUser, { emailAddress, user })
-    } catch (error) {
-      this.emit(failure.updateUser, { emailAddress, error })
-    }
-  }
-
-  /**
+  /*
    * Given a user's email address, retrieves their private key. In the case of failure a rejected promise
    * is returned to the caller.
    * @param {*} emailAddress
