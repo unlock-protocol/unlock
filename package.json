@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.24.5",
+    "@babel/core": "7.24.7",
     "@typescript-eslint/eslint-plugin": "7.8.0",
     "@typescript-eslint/parser": "7.8.0",
     "babel-plugin-polyfill-corejs2": "0.4.11",
