@@ -32,19 +32,17 @@ router.delete(
 router.get('/:network/:lockAddress', getEventDetailsByLock)
 router.get('/:slug', getEvent)
 router.get('/', getAllEvents)
-
+router.post(
+  '/:slug/approve-refunds',
+  authenticatedMiddleware,
+  eventOrganizerMiddleware,
+  approveRefunds
+)
 router.post(
   '/save',
   authenticatedMiddleware,
   eventOrganizerMiddleware,
   saveEventDetails
-)
-
-router.post(
-  '/approve-refunds',
-  authenticatedMiddleware,
-  eventOrganizerMiddleware,
-  approveRefunds
 )
 
 export default router

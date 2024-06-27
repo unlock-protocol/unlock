@@ -1,3 +1,5 @@
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+
 import dayjs from '../config/dayjs'
 import { kebabCase, defaultsDeep } from 'lodash'
 import * as metadataOperations from './metadataOperations'
@@ -277,21 +279,30 @@ export const getCheckedInAttendees = async (slug: string) => {
   })
   const filteredKeys = allKeys.filter((key) => !!key.data.metadata?.checkedInAt)
   // And now filter out the ones that have been checked in!
-  console.log(filteredKeys)
+
+  const networks: number[] = checkout.config.network
+    ? [checkout.config.network]
+    : ([] as number[])
+  for (let i = 0; i < locks.length; i++) {
+    const network = checkout.config.locks[locks[i]].network
+    if (network && networks.indexOf(network) === -1) {
+      networks.push(network)
+    }
+  }
+  const subgraph = new SubgraphService()
 
   // And finally let's get their owners!
-  const locks = await subgraph.keys(
+  const keys = await subgraph.keys(
     {
-      first,
-      skip,
-      where: lockFilter,
-      keyFilter,
-      keyOrderBy: KeyOrderBy.TokenId,
-      orderDirection: OrderDirection.Asc,
+      first: 1000, // How do we handle when there is more than 1000 atten
+      where: {
+        lock_in: locks.map((lock) => lock.toLowerCase()), // Subgraph are lowercase..
+        tokenId_in: filteredKeys.map((key) => key.id),
+      },
     },
     {
-      networks: [network],
+      networks,
     }
   )
-  return []
+  return keys.map((key) => key.owner)
 }
