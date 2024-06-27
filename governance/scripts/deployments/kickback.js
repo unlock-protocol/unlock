@@ -11,6 +11,10 @@ async function main() {
 
   const kickback = await deployUpgradeableContract(qualifiedPath, [])
   console.log(`  kickback deployed at ${kickback.address}`)
+
+  const transferOwnership = require('../scripts/setters/transferOwnership')
+  await transferOwnership({ contractAddress: kickback.address })
+  console.log(`  kickback proxy ownership transfered`)
 }
 
 // execute as standalone
