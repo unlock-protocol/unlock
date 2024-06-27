@@ -45,27 +45,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Creates a user. In the case of failure a rejected promise is returned to
-   * the caller.  On success, the encrypted key payload and the credentials are
-   * emitted so that the user can automatically be signed in.
-   *
-   * @param {*} user
-   * @param {string} emailAddress (do not send to locksmith)
-   * @param {string} password (do not send to locksmith)
-   * @returns {Promise<*>}
-   */
-
-  async createUser(user: any): Promise<any> {
-    return fetch(`${this.host}/users/`, {
-      method: 'POST',
-      body: JSON.stringify(user),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-  }
-
-  /**
    * Updates a user's private key, using their email address as key. In the case
    * of failure a rejected promise is returned to the caller.
    *
