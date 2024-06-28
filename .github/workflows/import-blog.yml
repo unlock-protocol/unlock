@@ -18,6 +18,9 @@ jobs:
       - name: Prepare repo
         run: yarn && yarn build
 
+      - name: show current path!
+        run: pwd
+
       - name: Run RSS Feed Script
         run: node rss_feed.js
 
