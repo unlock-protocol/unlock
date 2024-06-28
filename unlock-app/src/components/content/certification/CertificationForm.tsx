@@ -44,6 +44,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { networks } = useConfig()
   const { account } = useAuth()
   const networkOptions = useAvailableNetworks()
+  const moreNetworkOption = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
 
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(true)
@@ -276,6 +277,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                   )
                 }}
                 options={networkOptions}
+                moreOptions={moreNetworkOption}
                 label="Network"
                 defaultValue={network}
                 description={<NetworkDescription />}
