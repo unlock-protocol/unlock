@@ -29,6 +29,14 @@ NB: all the contracts have been flattened and exist mostly for archiving.
 import '@unlock-protocol/contracts/Unlock/UnlockV0.sol';
 ```
 
+## Adding a contract
+
+You can add a contract from the `smart-contracts` folder (which is used for development/testing) with the following command:
+
+```bash
+yarn hardhat release --contract contracts/<contract>.sol
+```
+
 ## Build the package
 
 After adding a contract, you need to append the file to the index by running:
