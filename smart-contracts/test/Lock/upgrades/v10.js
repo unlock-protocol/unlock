@@ -69,24 +69,22 @@ describe('PublicLock upgrade  v9 > v10', () => {
       const signers = await ethers.getSigners()
       buyers = signers.slice(1, 11)
 
-      // purchase many keys
-      await Promise.all(
-        buyers.map(async (keyOwner) => {
-          await lock
-            .connect(keyOwner)
-            .purchase(
-              0,
-              await keyOwner.getAddress(),
-              ADDRESS_ZERO,
-              ADDRESS_ZERO,
-              '0x',
-              {
-                value: keyPrice,
-              }
-            )
-        })
-      )
-
+      // purchase many keys (in the correct order to make sure we can check them later)
+      for (let i = 0; i < buyers.length; i++) {
+        const keyOwner = buyers[i]
+        await lock
+          .connect(keyOwner)
+          .purchase(
+            0,
+            await keyOwner.getAddress(),
+            ADDRESS_ZERO,
+            ADDRESS_ZERO,
+            '0x',
+            {
+              value: keyPrice,
+            }
+          )
+      }
       tokenIds = await Promise.all(
         buyers.map(async (b) => lock.getTokenIdFor(await b.getAddress()))
       )
