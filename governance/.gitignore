@@ -11,3 +11,4 @@ cache-zk
 
 .openzeppelin
 xcalled.tmp.json
+*.log
