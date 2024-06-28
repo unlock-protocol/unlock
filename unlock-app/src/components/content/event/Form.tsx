@@ -95,6 +95,7 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const today = dayjs().format('YYYY-MM-DD')
   const networkOptions = useAvailableNetworks()
+  const moreNetworkOptions = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
 
   const methods = useForm<NewEventForm>({
@@ -291,6 +292,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     )
                   }}
                   options={networkOptions}
+                  moreOptions={moreNetworkOptions}
                   label="Network"
                   defaultValue={network}
                   description={

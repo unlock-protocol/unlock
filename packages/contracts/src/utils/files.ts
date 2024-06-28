@@ -35,6 +35,7 @@ export const getAbiPaths = async () => {
     'abis/PublicLock',
     'abis/Unlock',
     'abis/UnlockDiscountToken',
+    'abis/UP',
     'abis/Governor',
     'abis/utils',
   ]
