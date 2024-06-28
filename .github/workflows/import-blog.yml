@@ -15,17 +15,11 @@ jobs:
         with:
           node-version: 20
 
-      - name: show current path!
-        run: pwd
-
-      - name: show current path!
-        run: ls -la
-
-      - name: show current path!
-        run: cd .github/actions/blog && ls -la
+      - name: move to blog action
+        run: cd .github/actions/blog
 
       - name: Prepare repo
-        run: yarn && yarn build
+        run: yarn install feedparser-promised
 
       - name: Run RSS Feed Script
         run: node rss_feed.js
