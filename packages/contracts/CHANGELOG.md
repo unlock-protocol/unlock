@@ -1,8 +1,12 @@
 # CHANGELOG
 
-## 0.0.27
+## 0.0.28
 
 - Adding the `Kickback.sol` contract used to create refunds for event attendees.
+
+## 0.0.27
+
+- add `UPToken`, `UPGovernor`, `UPTimelock` and `UPSwap` contracts
 
 ## 0.0.26
 
