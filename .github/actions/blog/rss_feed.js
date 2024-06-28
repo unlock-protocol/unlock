@@ -3,6 +3,10 @@ const path = require('path')
 const fetch = require('node-fetch')
 const feedparser = require('feedparser-promised')
 
+function escapeMarkdown(str) {
+  return str.replace(/(["\\])/g, '\\$1');
+}
+
 // Fetch the RSS feed
 const rssUrl = 'https://paragraph.xyz/api/blogs/rss/@unlockprotocol'
 
@@ -106,11 +110,11 @@ feedparser
         })
         .then((updatedContent) => {
           const postContent = `---
-title: "${title}"
-subtitle: "${subtitle}"
-authorName: "${authorName}"
+title: "${escapeMarkdown(title)}"
+subtitle: "${escapeMarkdown(subtitle)}"
+authorName: "${escapeMarkdown(authorName)}"
 publishDate: "${publishDate}"
-description: "${description}"
+description: "${escapeMarkdown(description)}"
 image: "/images/blog/${slug}/${path.basename(
             imageUrl
           )}"
