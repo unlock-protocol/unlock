@@ -16,13 +16,7 @@ jobs:
           node-version: 20
 
       - name: move to blog action
-        run: cd .github/actions/blog
-
-      - name: Prepare repo
-        run: yarn add feedparser-promised
-
-      - name: Run RSS Feed Script
-        run: node rss_feed.js
+        run: cd .github/actions/blog && npm -i feedparser-promised && rss_feed.js
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
