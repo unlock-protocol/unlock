@@ -242,8 +242,6 @@ export function Select({ checkoutService }: Props) {
 
   // This should be executed only if router is defined
   useEffect(() => {
-    console.log('Router query', router.query)
-
     if (locks && router.query.lock) {
       const autoSelectedLock = locks?.find(
         (lock) => lock.address === router.query.lock
@@ -265,7 +263,21 @@ export function Select({ checkoutService }: Props) {
   }, [router, locks])
 
   useEffect(() => {
-    autoSelectLock(autoSelectedLock)
+    if (!lock) {
+      console.log('No lock to auto select')
+      return
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: lock.isMember,
+      expiredMember: lock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
   }, [autoSelectedLock])
 
   const locksGroupedByNetwork = useMemo(
@@ -423,24 +435,6 @@ export function Select({ checkoutService }: Props) {
     url.search = params.toString()
 
     router.push(url)
-
-    checkoutService.send({
-      type: 'CONNECT',
-      lock,
-      existingMember: lock.isMember,
-      expiredMember: lock.isExpired,
-      skipQuantity,
-      skipRecipient,
-      recipients: account ? [account] : [],
-      hook: hookType,
-    })
-  }
-
-  const autoSelectLock = async (lock: any) => {
-    if (!lock) {
-      console.log('No lock to auto select')
-      return
-    }
 
     checkoutService.send({
       type: 'CONNECT',
