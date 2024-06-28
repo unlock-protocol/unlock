@@ -7,17 +7,16 @@ const { purchaseKeys, deployLock } = require('../helpers')
 const {
   addSomeETH,
   impersonate,
-  getUniswapTokens,
+  getNetwork,
 } = require('@unlock-protocol/hardhat-helpers')
-
-// get unlock address on mainnet
 
 const {
   unlockAddress,
   uniswapV3: { factoryAddress },
 } = mainnet
 const keyPriceUSDC = ethers.parseUnits('50', 6)
-const FEE = 500
+const FEE = 300n
+
 describe('Unlock GNP conversion', () => {
   let unlock
   let oracle
@@ -30,10 +29,9 @@ describe('Unlock GNP conversion', () => {
     }
 
     // get token addresses
-    ;({
-      usdc: { address: USDC },
-      weth: { address: WETH },
-    } = await getUniswapTokens(1))
+    const { tokens } = await getNetwork(1)
+    ;({ address: USDC } = tokens.find(({ symbol }) => symbol === 'USDC'))
+    ;({ address: WETH } = tokens.find(({ symbol }) => symbol === 'WETH'))
 
     const [deployer] = await ethers.getSigners()
     await addSomeETH(await deployer.getAddress())
@@ -82,7 +80,7 @@ describe('Unlock GNP conversion', () => {
       assert.equal(await lock.keyPrice(), keyPriceUSDC)
     })
     it('updates GNP correctly a value correctly ', async () => {
-      const NUMBER_OF_KEYS = 5
+      const NUMBER_OF_KEYS = 5n
       const totalPrice = keyPriceUSDC * NUMBER_OF_KEYS
 
       const usdc = await ethers.getContractAt(USDCabi, USDC)
@@ -102,15 +100,16 @@ describe('Unlock GNP conversion', () => {
 
       // consult our oracle independently for 1 USDC
       const rate = await oracle.consult(USDC, ethers.parseUnits('1', 6), WETH)
-
+      console.log({ rate })
       // purchase some keys
-      await purchaseKeys(lock, NUMBER_OF_KEYS, keyPriceUSDC, true)
+      const [, payer] = await ethers.getSigners()
+      await purchaseKeys(lock, NUMBER_OF_KEYS, true, payer)
 
       // check GNP
       const GNP = await unlock.grossNetworkProduct()
-      assert.notEqual(GNP, '0')
+      assert.notEqual(GNP, 0n)
       // 5 keys at 50 USDC at oracle rate
-      assert.equal(GNP / 1000, (rate * 250) / 1000)
+      assert.equal(GNP / 1000n, (rate * 250n) / 1000n)
 
       // show value in ETH to approx
       console.log(`250 USDC =~ ${ethers.formatUnits(GNP)} ETH`)

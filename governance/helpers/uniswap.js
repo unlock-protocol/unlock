@@ -1,15 +1,10 @@
 const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
-const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk')
-const { Token } = require('@uniswap/sdk-core')
 const { networks } = require('@unlock-protocol/networks')
 const {
   ADDRESS_ZERO,
-  BASIS_POINTS,
-  MAX_UINT,
   WETH,
   UDT,
-  getERC20Contract,
   getTokenInfo,
 } = require('@unlock-protocol/hardhat-helpers')
 
@@ -69,141 +64,6 @@ async function getPoolState(poolContract) {
   }
 
   return PoolState
-}
-
-const getToken = async (tokenAddress) => {
-  const { chainId } = await ethers.provider.getNetwork()
-  const token0 = await getTokenInfo(tokenAddress)
-  const Token0 = new Token(
-    chainId,
-    tokenAddress,
-    token0.decimals,
-    token0.symbol
-  )
-  return Token0
-}
-
-const getMinTick = (tickSpacing) =>
-  Math.ceil(-887272 / tickSpacing) * tickSpacing
-const getMaxTick = (tickSpacing) =>
-  Math.floor(887272 / tickSpacing) * tickSpacing
-
-const addLiquidity = async (
-  poolContract,
-  [tokenAddressA, amountA],
-  [tokenAddressB, amountB]
-) => {
-  // parse tokens for uniswap SDK
-  const [tokenA, tokenB] = await Promise.all([
-    getToken(tokenAddressA),
-    getToken(tokenAddressB),
-  ])
-  console.log(
-    `adding position for ${tokenA.symbol}/${tokenB.symbol} on pool ${poolContract.address} \n`,
-    ` amount ${tokenA.symbol} : ${amountA} \n`,
-    ` amount ${tokenB.symbol} : ${amountB}`
-  )
-
-  //
-  const { positionManager } = await getUniswapV3Contracts()
-
-  // tokens
-  const tokenAContract = await getERC20Contract(tokenA.address)
-  const tokenBContract = await getERC20Contract(tokenB.address)
-
-  // approve spending
-  await tokenAContract.approve(positionManager.address, MAX_UINT)
-  await tokenBContract.approve(positionManager.address, MAX_UINT)
-
-  // Pool setup
-  const { fee: poolFee, tickSpacing } = await getPoolImmutables(poolContract)
-
-  // Pool Price
-  const {
-    liquidity,
-    sqrtPriceX96, // slot[0]
-    tick, // slot[1]
-  } = await getPoolState(poolContract)
-
-  // Get the nearest index
-  const nearestIndex = Math.floor(tick / tickSpacing) * tickSpacing
-
-  // Create a tick index
-  const tickLowerIndex = nearestIndex - 60 * 100
-  const tickUpperIndex = nearestIndex + 60 * 100
-
-  // Tick Data
-  const tickLowerData = await poolContract.ticks(tickLowerIndex)
-  const tickUpperData = await poolContract.ticks(tickUpperIndex)
-
-  // Tick Instance
-  const tickLower = new Tick({
-    index: tickLowerIndex,
-    liquidityGross: tickLowerData.liquidityGross,
-    liquidityNet: tickLowerData.liquidityNet,
-  })
-
-  const tickUpper = new Tick({
-    index: tickUpperIndex,
-    liquidityGross: tickUpperData.liquidityGross,
-    liquidityNet: tickUpperData.liquidityNet,
-  })
-
-  // Tick List
-  const tickList = new TickListDataProvider([tickLower, tickUpper], tickSpacing)
-  const pool = new Pool(
-    tokenA,
-    tokenB,
-    poolFee,
-    sqrtPriceX96,
-    liquidity,
-    tick,
-    tickList
-  )
-
-  const [signer] = await ethers.getSigners()
-  const deadline = Math.floor(Date.now() / 1000) + 60 * 20
-  const mintParams = {
-    token0: tokenA.address,
-    token1: tokenB.address,
-    fee: pool.fee,
-    // use min/max ticks to provide liquidity across the whole range of the pool
-    tickLower: getMinTick(tickSpacing),
-    tickUpper: getMaxTick(tickSpacing),
-    // trade a 1:1
-    amount0Desired: amountA,
-    amount1Desired: amountB,
-    // TODO: no slippage protection, bad in prod!
-    amount0Min: 0,
-    amount1Min: 0,
-    recipient: signer.address,
-    deadline: deadline,
-  }
-
-  // mint!
-  const mintTransaction = await positionManager.mint(mintParams, {
-    gasPrice: 20e9, // cap gas price
-  })
-
-  // parse tokenURI of the position NFT
-  const { events } = await mintTransaction.wait()
-  const {
-    args: { tokenId, liquidity: addedLiquidity, amount0, amount1 },
-  } = events.find(({ event }) => event === 'IncreaseLiquidity')
-
-  const tokenURI = await positionManager.tokenURI(tokenId)
-  const decoded = Buffer.from(
-    tokenURI.substr('data:application/json;base64,'.length),
-    'base64'
-  ).toString('utf8')
-
-  return {
-    tokenId,
-    liquidity: addedLiquidity,
-    amount0,
-    amount1,
-    tokenURI: JSON.parse(decoded),
-  }
 }
 
 const getUniswapV3Contracts = async function () {
@@ -301,10 +161,6 @@ const deployUniswapV3Oracle = async function () {
 }
 
 module.exports = {
-  getMinTick,
-  getMaxTick,
-  addLiquidity,
-  encodePriceSqrt,
   createOrGetUniswapV3Pool: createOrGetPool,
   deployUniswapV3Oracle,
   getTokenInfo,
