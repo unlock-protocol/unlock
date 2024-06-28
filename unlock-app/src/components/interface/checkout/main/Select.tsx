@@ -263,7 +263,7 @@ export function Select({ checkoutService }: Props) {
   }, [router, locks])
 
   useEffect(() => {
-    if (!lock) {
+    if (!autoSelectedLock) {
       console.log('No lock to auto select')
       return
     }
