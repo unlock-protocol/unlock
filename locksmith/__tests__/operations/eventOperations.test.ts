@@ -16,6 +16,25 @@ vi.mock('../../src/operations/wedlocksOperations', () => {
   }
 })
 
+vi.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    SubgraphService: vi.fn().mockImplementation(() => {
+      return {
+        keys: (filter: any, opts: any) => {
+          return [
+            {
+              owner: '0x123',
+            },
+            {
+              owner: '0x456',
+            },
+          ]
+        },
+      }
+    }),
+  }
+})
+
 describe('eventOperations', () => {
   beforeEach(async () => {
     await EventData.truncate()
@@ -262,7 +281,7 @@ describe('eventOperations', () => {
     })
     it('should return the list of checked in attendees', async () => {
       const list = await getCheckedInAttendees(slug)
-      expect(list).toEqual(['1', '2'])
+      expect(list).toEqual(['0x123', '0x456'])
     })
   })
 })

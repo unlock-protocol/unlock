@@ -35,19 +35,6 @@ contract Kickback {
       MerkleProof.verify(proof, roots[lockAddress], leaf),
       "Invalid proof"
     );
-<<<<<<< HEAD
-
-    require(
-      issuedRefunds[lockAddress][msg.sender] > 0,
-      "Refund already issued"
-    );
-    
-    issuedRefunds[lockAddresblicLock lock = IPublicLock(lockAddress);
-    
-
-    lock.withdraw(lock.tokenAddress(), payable(msg.sender), dress, msg.sender, amount);
-    
-=======
     require(
       issuedRefunds[lockAddress][msg.sender] == 0,
       "Refund already issued"
@@ -59,6 +46,5 @@ contract Kickback {
     lock.withdraw(lock.tokenAddress(), payable(msg.sender), amount);
 
     emit Refunded(lockAddress, msg.sender, amount);
->>>>>>> kickback-contract
   }
 }
