@@ -8,7 +8,8 @@ const srcChainId = 100
 const destChainId = 137 // polygon
 
 module.exports = async () => {
-  const { name, provider, multisig } = await getNetwork(destChainId)
+  const { name, provider } = await getNetwork(destChainId)
+  const multisig = '0x6ff837695B120A8f533498584249131F1c6fC4a8'
 
   console.log(`Deploying to ${name} (${destChainId}) using safe ${multisig}`)
 
