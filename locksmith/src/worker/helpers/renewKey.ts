@@ -121,7 +121,6 @@ export const isWorthRenewing = async (
         .getFunction('renewMembershipFor')
         .estimateGas(keyId, ethers.ZeroAddress)
     }
-    console.log(gasEstimate)
 
     // estimate gas for the renewMembership function (check if reverts).
     // we bump by 20%, just to cover temporary changes
