@@ -5,7 +5,6 @@ const feedparser = require('feedparser-promised')
 
 // Fetch the RSS feed
 const rssUrl = 'https://paragraph.xyz/api/blogs/rss/@unlockprotocol'
-//const rssUrl = 'https://gist.githubusercontent.com/njokuScript/49c95765a21de9a7cf01c72f06149769/raw/5f62f27fc2a9c37e992d7834e86361a72cbfeeca/mock_rss_feed.xml'
 
 // Create the base directory for storing blog posts
 const blogDir = '../../../unlock-protocol-com/blog'
