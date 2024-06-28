@@ -19,7 +19,7 @@ jobs:
         run: cd .github/actions/blog
 
       - name: Prepare repo
-        run: yarn install feedparser-promised
+        run: yarn add feedparser-promised
 
       - name: Run RSS Feed Script
         run: node rss_feed.js
