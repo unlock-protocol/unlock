@@ -240,6 +240,13 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.expiration = event.params.newTimestamp
     key.cancelled = false
     key.save()
+
+    const lock = Lock.load(key.lock)
+    if (lock) {
+      lock.lastKeyRenewalAt = event.block.timestamp
+      lock.save()
+    }
+
     // create receipt
     createReceipt(event)
   }
@@ -260,6 +267,12 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
     key.expiration = event.params.newExpiration
     key.cancelled = false
     key.save()
+
+    const lock = Lock.load(key.lock)
+    if (lock) {
+      lock.lastKeyRenewalAt = event.block.timestamp
+      lock.save()
+    }
   }
 
   // create receipt
