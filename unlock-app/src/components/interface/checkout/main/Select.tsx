@@ -271,8 +271,8 @@ export function Select({ checkoutService }: Props) {
     checkoutService.send({
       type: 'CONNECT',
       lock,
-      existingMember: lock.isMember,
-      expiredMember: lock.isExpired,
+      existingMember: autoSelectedLock.isMember,
+      expiredMember: autoSelectedLock.isExpired,
       skipQuantity,
       skipRecipient,
       recipients: account ? [account] : [],
