@@ -49,7 +49,7 @@ const UnlockApp = ({
                 >
                   <ShouldOpenConnectModal />
                   <AirstackProvider
-                    apiKey={'1ef6142a6b64e48dd9fd4df8e0f4da9e3'}
+                    apiKey={'162b7c4dda5c44afdb0857b6b04454f99'}
                   >
                     <Component pageProps={pageProps} />
                   </AirstackProvider>
