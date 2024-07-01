@@ -92,6 +92,7 @@ export interface NetworkConfig {
   unlockAddress: string
   multisig?: string
   keyManagerAddress?: string
+  kickbackAddress?: string
   universalCard?: {
     cardPurchaserAddress: string
     stripeDestinationNetwork: string

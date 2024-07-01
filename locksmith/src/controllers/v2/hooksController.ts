@@ -56,7 +56,6 @@ export const guildHook: RequestHandler = async (request, response) => {
     recipients.map(async (recipient: string) => {
       const { user: userClient } = guildClient
       const userMemberships = await userClient.getMemberships(recipient)
-      console.log(userMemberships)
       const hasAtLeastOne = userMemberships.some(
         (role) => role.guildId === hookGuildId
       )

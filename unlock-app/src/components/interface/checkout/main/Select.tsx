@@ -31,6 +31,7 @@ import { useGetLockProps } from '~/hooks/useGetLockProps'
 import Disconnect from './Disconnect'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useMembership } from '~/hooks/useMembership'
+import { useRouter } from 'next/router'
 interface Props {
   checkoutService: CheckoutService
 }
@@ -130,17 +131,29 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                       )}
                     </>
                   )}
-                  {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
+                  {formattedData?.formattedKeysAvailable === '0' && (
                     <LabeledItem
-                      label="Left"
                       icon={QuantityIcon}
-                      value={
-                        formattedData?.isSoldOut
-                          ? 'Sold out'
-                          : formattedData?.formattedKeysAvailable
-                      }
+                      label="Coming soon"
+                      value={''}
                     />
                   )}
+                  {formattedData?.formattedKeysAvailable !== '0' &&
+                    formattedData?.isSoldOut && (
+                      <LabeledItem
+                        icon={QuantityIcon}
+                        label="Sold out"
+                        value={''}
+                      />
+                    )}
+                  {formattedData?.formattedKeysAvailable !== 'Unlimited' &&
+                    !formattedData?.isSoldOut && (
+                      <LabeledItem
+                        label="Left ?"
+                        icon={QuantityIcon}
+                        value={formattedData?.formattedKeysAvailable}
+                      />
+                    )}
                 </div>
                 <div>
                   {checked ? (
@@ -193,6 +206,11 @@ export function Select({ checkoutService }: Props) {
     (state) => state.context
   )
   const [lock, setLock] = useState<LockState | undefined>(selectedLock)
+  const [autoSelectedLock, setAutoSelectedLock] = useState<
+    LockState | undefined
+  >(undefined)
+
+  const router = useRouter()
 
   const { isLoading: isLocksLoading, data: locks } = useQuery(
     ['locks', JSON.stringify(paywallConfig)],
@@ -233,6 +251,46 @@ export function Select({ checkoutService }: Props) {
       return locks
     }
   )
+
+  // This should be executed only if router is defined
+  useEffect(() => {
+    if (locks && router.query.lock) {
+      const autoSelectedLock = locks?.find(
+        (lock) => lock.address === router.query.lock
+      )
+
+      // Remove the lock from the query string
+      const { lock, ...otherQueryParams } = router.query
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: otherQueryParams,
+        },
+        undefined,
+        { shallow: true }
+      )
+
+      setAutoSelectedLock(autoSelectedLock)
+    }
+  }, [router, locks])
+
+  useEffect(() => {
+    if (!autoSelectedLock) {
+      console.log('No lock to auto select')
+      return
+    }
+
+    checkoutService.send({
+      type: 'CONNECT',
+      lock,
+      existingMember: autoSelectedLock.isMember,
+      expiredMember: autoSelectedLock.isExpired,
+      skipQuantity,
+      skipRecipient,
+      recipients: account ? [account] : [],
+      hook: hookType,
+    })
+  }, [autoSelectedLock])
 
   const locksGroupedByNetwork = useMemo(
     () =>
@@ -380,6 +438,15 @@ export function Select({ checkoutService }: Props) {
       await signIn()
       return
     }
+
+    const url = new URL(
+      `${window.location.protocol}//${window.location.host}${router.asPath}`
+    )
+    const params = new URLSearchParams(url.search)
+    params.set('lock', encodeURIComponent(lock.address))
+    url.search = params.toString()
+
+    router.push(url)
 
     checkoutService.send({
       type: 'CONNECT',

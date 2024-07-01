@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { Select } from './Select'
 import { CheckoutService } from './checkoutMachine'
 import { Stepper } from '../Stepper'
 import ConnectingWaas from '../../connect/ConnectingWaas'
@@ -7,8 +6,9 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useSession } from 'next-auth/react'
+import { Connected } from '../Connected'
 
-export const SelectWithLoader = ({
+export const ConnectWithLoader = ({
   checkoutService,
 }: {
   checkoutService: CheckoutService
@@ -34,5 +34,5 @@ export const SelectWithLoader = ({
     )
   }
 
-  return <Select checkoutService={checkoutService} />
+  return <Connected service={checkoutService} />
 }

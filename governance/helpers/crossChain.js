@@ -2,6 +2,67 @@ const { default: networks } = require('@unlock-protocol/networks')
 const { ethers, Contract } = require('ethers')
 const { createFork } = require('./tenderly')
 const { delayABI } = require('./bridge')
+const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { IConnext } = require('../helpers/bridge')
+
+const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
+  const res = await fetch(
+    'https://sdk-server.mainnet.connext.ninja/estimateRelayerFee',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        originDomain: originDomain.toString(),
+        destinationDomain: destinationDomain.toString(),
+      }),
+    }
+  )
+  const { hex } = await res.json()
+  return BigInt(hex)
+}
+
+const parseBridgeCall = async ({ srcChainId = 1, destChainId, moduleData }) => {
+  const { governanceBridge } = await getNetwork(destChainId)
+
+  // get bridge info on receiving chain
+  const {
+    domainId: destDomainId,
+    modules: { connextMod: destAddress },
+  } = governanceBridge
+
+  // get bridge address on mainnet
+  const {
+    governanceBridge: { connext: bridgeAddress, domainId: srcDomainId },
+  } = await getNetwork(srcChainId)
+
+  if (!destDomainId || !destAddress) {
+    throw Error('Missing bridge information')
+  }
+
+  // get bridge fee from Connext api
+  const fee = await fetchRelayerFee({
+    destinationDomain: destDomainId,
+    originDomain: srcDomainId,
+  })
+
+  // parse call for bridge
+  return {
+    contractAddress: bridgeAddress,
+    contractNameOrAbi: IConnext,
+    functionName: 'xcall',
+    functionArgs: [
+      destDomainId,
+      destAddress, // destMultisigAddress,
+      ADDRESS_ZERO, // asset
+      ADDRESS_ZERO, // delegate
+      0, // amount
+      30, // slippage
+      moduleData, // calldata
+    ],
+    // pay the bridge fee
+    value: fee,
+  }
+}
 
 async function simulateDelayCall({ rpcUrl, projectURL, network, moduleCall }) {
   const {
@@ -136,6 +197,8 @@ async function simulateDestCalls(xCalls) {
 }
 
 module.exports = {
+  fetchRelayerFee,
+  parseBridgeCall,
   simulateDestCalls,
   simulateDelayCall,
 }

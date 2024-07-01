@@ -19,9 +19,10 @@ import { CheckoutHead, TopNavigation } from '../Shell'
 import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
-import { Connected } from '../Connected'
 import { isInIframe } from '~/utils/iframe'
-import { SelectWithLoader } from './SelectWithLoader'
+import { ConnectWithLoader } from './ConnectWithLoader'
+import { useRouter } from 'next/router'
+import { Select } from './Select'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -50,6 +51,8 @@ export function Checkout({
     paywallConfig,
     state.context.paywallConfig
   )
+
+  const router = useRouter()
 
   useEffect(() => {
     console.debug('Unlock paywall config', paywallConfig)
@@ -127,13 +130,28 @@ export function Checkout({
     return undefined
   }, [state, checkoutService])
 
+  useEffect(() => {
+    if (matched !== 'SELECT' && matched != 'CONNECT' && router.query.lock) {
+      // Remove the lock from the query string
+      const { lock, ...otherQueryParams } = router.query
+      router.replace(
+        {
+          pathname: router.pathname,
+          query: otherQueryParams,
+        },
+        undefined,
+        { shallow: true }
+      )
+    }
+  }, [router])
+
   const Content = useCallback(() => {
     switch (matched) {
       case 'CONNECT': {
-        return <Connected service={checkoutService} />
+        return <ConnectWithLoader checkoutService={checkoutService} />
       }
       case 'SELECT': {
-        return <SelectWithLoader checkoutService={checkoutService} />
+        return <Select checkoutService={checkoutService} />
       }
       case 'QUANTITY': {
         return <Quantity checkoutService={checkoutService} />

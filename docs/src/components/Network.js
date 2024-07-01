@@ -84,7 +84,6 @@ const BurnableTokens = ({ network }) => {
 }
 
 const Network = ({ network }) => {
-  console.log(network)
   const provider = new JsonRpcProvider(network.publicProvider)
   const { data: udtBalance } = useQuery({
     queryKey: [
@@ -112,7 +111,6 @@ const Network = ({ network }) => {
   if (network.name === 'localhost') {
     return null
   }
-  console.log({ udtBalance })
   return (
     <div key={network.id} style={{ 'margin-bottom': '30px' }}>
       <h2>{network.name}</h2>

@@ -114,7 +114,10 @@ const checkHealth = async ({ id, name, subgraph }) => {
     console.log(`${name} (${id}) -- ${subgraphType}`)
     console.log(errors.join('\n'))
     console.log(`------ \n`)
-    log(`[SUBGRAPH] ${name} (${id}) -- ${subgraphType} - errors.join('\n')`, 'error')
+    log(
+      `[SUBGRAPH] ${name} (${id}) -- ${subgraphType} - errors.join('\n')`,
+      'error'
+    )
   }
 }
 

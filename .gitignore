@@ -43,3 +43,6 @@ nohup.out
 
 #locksmith
 locksmith/uploads
+
+# blog importer cache
+.github/actions/blog/.yarn
