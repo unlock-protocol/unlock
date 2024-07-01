@@ -5634,9 +5634,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@crossmint/client-sdk-react-ui@npm:1.1.9":
-  version: 1.1.9
-  resolution: "@crossmint/client-sdk-react-ui@npm:1.1.9"
+"@crossmint/client-sdk-react-ui@npm:1.1.10":
+  version: 1.1.10
+  resolution: "@crossmint/client-sdk-react-ui@npm:1.1.10"
   dependencies:
     "@crossmint/client-sdk-base": "npm:1.1.12"
     "@crossmint/common-sdk-base": "npm:0.0.11"
@@ -5648,7 +5648,7 @@ __metadata:
   peerDependencies:
     react: ">=17.0.2"
     react-dom: ">=17.0.2"
-  checksum: 10/754847771973b44fda9dc4ccdd05915f413fe3c3576d47240755b2bdab053856b4e20c6d508b1a5e1b6f1769fd984c959c431ff4c2e62bd4eed515db00dcb24e
+  checksum: 10/7af5c20d22110930038c878d06ca97ffe089af521d2e58f5be0394d112eeab68b3e57c711ddf8a57952310b1f15c89c6c3d10892becc1b5255eca809bfa9d124
   languageName: node
   linkType: hard
 
@@ -19076,7 +19076,7 @@ __metadata:
   dependencies:
     "@airstack/airstack-react": "npm:0.6.3"
     "@coinbase/waas-sdk-web": "npm:3.3.2"
-    "@crossmint/client-sdk-react-ui": "npm:1.1.9"
+    "@crossmint/client-sdk-react-ui": "npm:1.1.10"
     "@decent.xyz/box-common": "npm:2.2.1"
     "@enzoferey/ethers-error-parser": "npm:0.2.3"
     "@guildxyz/sdk": "npm:2.5.0"
