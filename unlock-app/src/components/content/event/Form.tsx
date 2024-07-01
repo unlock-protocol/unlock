@@ -1,3 +1,4 @@
+import { FaRegLightbulb } from 'react-icons/fa'
 import { usePlacesWidget } from 'react-google-autocomplete'
 import { config } from '~/config/app'
 import { useState } from 'react'
@@ -95,6 +96,7 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const today = dayjs().format('YYYY-MM-DD')
   const networkOptions = useAvailableNetworks()
+  const moreNetworkOptions = useAvailableNetworks(true)
   const network = networkOptions[0]?.value
 
   const methods = useForm<NewEventForm>({
@@ -291,6 +293,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                     )
                   }}
                   options={networkOptions}
+                  moreOptions={moreNetworkOptions}
                   label="Network"
                   defaultValue={network}
                   description={
@@ -555,9 +558,11 @@ export const Form = ({ onSubmit }: FormProps) => {
           {!screeningEnabled && (
             <Disclosure label="Tickets" defaultOpen>
               <div className="grid gap-4">
-                <p>
-                  These settings can also be changed, but only by sending
-                  on-chain transactions.
+                <p className="">
+                  <FaRegLightbulb size={18} className="inline mr-1" />
+                  <i>Did you know?</i> If tickets are free, or if you enable
+                  credit cards for payments, attendees do not need to have their
+                  own crypto wallet to get a ticket.
                 </p>
 
                 <div className="relative flex flex-col mt-4">
@@ -617,7 +622,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                   <div className="text-sm mt-1 flex items-center justify-between">
                     <Checkbox
                       disabled={isFree || !details.lock?.keyPrice}
-                      label="Treat the price as a deposit which will be refunded when attendees check in at the event."
+                      label="Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards)."
                       checked={attendeeRefund}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>

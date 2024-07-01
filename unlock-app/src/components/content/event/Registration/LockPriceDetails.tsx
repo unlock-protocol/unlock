@@ -74,6 +74,7 @@ interface LockPriceDetailsProps {
   lockCheckoutConfig: PaywallLockConfigType
   hideRemaining: boolean
 }
+
 export const LockPriceDetails = ({
   lockAddress,
   network,
