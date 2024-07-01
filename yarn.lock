@@ -18581,7 +18581,7 @@ __metadata:
     graphql: "npm:16.8.1"
     graphql-tag: "npm:2.12.6"
     html-template-tag: "npm:4.0.1"
-    ics: "npm:3.7.2"
+    ics: "npm:3.7.6"
     isomorphic-fetch: "npm:3.0.0"
     jsonwebtoken: "npm:9.0.2"
     lodash.isequal: "npm:4.5.0"
@@ -33589,14 +33589,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ics@npm:3.7.2":
-  version: 3.7.2
-  resolution: "ics@npm:3.7.2"
+"ics@npm:3.7.6":
+  version: 3.7.6
+  resolution: "ics@npm:3.7.6"
   dependencies:
     nanoid: "npm:^3.1.23"
     runes2: "npm:^1.1.2"
     yup: "npm:^1.2.0"
-  checksum: 10/a0e6e939496449bbc252a3ad100b157ed0fdf94677dc4572396f3564df1471f51b0139e527b1784efef969bbb56259e44c7e658c9fe303ee499e5b49a9199fc2
+  checksum: 10/aeb64f562649801292f48786a3cce60201dfe524437cbf8224fc5f679234e2226ded5105c47c0c80302e770a9109262c25ce7cc75010e1f0b1a75f3297f866eb
   languageName: node
   linkType: hard
 
