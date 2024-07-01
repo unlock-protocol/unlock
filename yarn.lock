@@ -19405,7 +19405,7 @@ __metadata:
     "@babel/node": "npm:7.24.7"
     "@babel/plugin-transform-runtime": "npm:7.24.7"
     "@babel/preset-env": "npm:7.24.7"
-    "@typescript-eslint/parser": "npm:7.14.1"
+    "@typescript-eslint/parser": "npm:7.15.0"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-loader: "npm:9.1.3"
     babel-plugin-wildcard: "npm:7.0.0"
