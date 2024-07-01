@@ -1,5 +1,14 @@
-// https://github.com/pcaversaccio/create2deployer
+/**
+ * This will deploy a proxied contract and a proxy admin using CREATE2
+ *
+ * Relies on https://github.com/pcaversaccio/create2deployer
+ */
+
 const { ethers } = require('hardhat')
+const {
+  getNetwork,
+  copyAndBuildContractsAtVersion,
+} = require('@unlock-protocol/hardhat-helpers')
 const {
   abi: TransparentUpgradeableProxynAbi,
   bytecode: TransparentUpgradeableProxyBytecode,
@@ -9,7 +18,9 @@ const {
   bytecode: ProxyAdminBytecode,
 } = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts-v5/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
 
-const create2Addr = '0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2' // same on all chains
+// same on all chains
+const CREATE2_DEPLOYER_ADDRESS = '0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'
+const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
 
 const create2DeployerAbi = [
   {
@@ -57,7 +68,16 @@ const create2DeployerAbi = [
   { stateMutability: 'payable', type: 'receive' },
 ]
 
-async function main() {
+async function main({
+  contractName = 'UPToken',
+  subfolder = 'UP',
+  deploy = true,
+  salt = ethers.id('Unlock Salt 0'),
+} = {}) {
+  const { name, id } = await getNetwork()
+  console.log(`Deploying ${contractName} using CREATE2 on ${name} (${id})...`)
+
+  // get contract factories
   const ProxyAdmin = await ethers.getContractFactory(
     ProxyAdminAbi,
     ProxyAdminBytecode
@@ -67,53 +87,57 @@ async function main() {
     TransparentUpgradeableProxyBytecode
   )
 
-  const Implementation = await ethers.getContractFactory('Dummy')
+  // get token implementations
+  const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName, subfolder },
+  ])
+  const Implementation = await ethers.getContractFactory(qualifiedPath)
 
-  const salt = ethers.id('Unlock Salt 0')
-  const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
-
-  // get contract
+  // get CREATE2 deployer
   const create2Deployer = await ethers.getContractAt(
     create2DeployerAbi,
-    create2Addr
+    CREATE2_DEPLOYER_ADDRESS
   )
 
-  // deploy implementation
-  const implCreationBytecode = await Implementation.getDeployTransaction(12n)
+  // implementation
+  const implArgs = []
+  const implCreationBytecode = await Implementation.getDeployTransaction(
+    ...implArgs
+  )
   const implInitCodehash = ethers.keccak256(implCreationBytecode.data)
 
-  // get impl address
-  console.log({ salt, implInitCodehash })
+  // compute impl address
   const implComputedAddress = await create2Deployer.computeAddress(
     salt,
     implInitCodehash
   )
 
-  // deploy a proxy admin
+  // proxy admin
   const proxyAdminCreationBytecode =
     await ProxyAdmin.getDeployTransaction(initialOwner)
   const proxyAdminInitCodehash = ethers.keccak256(
     proxyAdminCreationBytecode.data
   )
-  console.log({ salt, proxyAdminInitCodehash })
 
-  // get proxy admin address
+  // compute proxy admin address
   const proxyAdminComputedAddress = await create2Deployer.computeAddress(
     salt,
     proxyAdminInitCodehash
   )
 
-  // actual proxy deployment
+  // actual proxy
+  const proxyArgs = [
+    implComputedAddress, // logic
+    proxyAdminComputedAddress, //admin
+    '0x', // data if necessary
+  ]
   const transparentProxyCreationBytecode =
-    await TransparentUpgradeableProxy.getDeployTransaction(
-      implComputedAddress, // logic
-      proxyAdminComputedAddress, //admin
-      '0x' // data if necessary
-    )
+    await TransparentUpgradeableProxy.getDeployTransaction(...proxyArgs)
   const transparentProxyInitCodehash = ethers.keccak256(
     transparentProxyCreationBytecode.data
   )
 
+  // compute transparent proxy address
   const transparentProxyComputedAddress = await create2Deployer.computeAddress(
     salt,
     transparentProxyInitCodehash
@@ -124,11 +148,32 @@ async function main() {
     proxyAdminComputedAddress,
     transparentProxyComputedAddress,
   })
-  return transparentProxyComputedAddress
 
-  // const tx = await create2Deployer.deploy(0, salt, creationBytecode.data)
-  // const receipt = await tx.wait()
-  // console.log(receipt)
+  if (deploy) {
+    const txProxyAdmin = await create2Deployer.deploy(
+      0,
+      salt,
+      proxyAdminCreationBytecode.data
+    )
+    const receiptProxyAdmin = await txProxyAdmin.wait()
+    console.log(`ProxyAdmin: ${receiptProxyAdmin.hash}`)
+
+    const txImpl = await create2Deployer.deploy(
+      0,
+      salt,
+      implCreationBytecode.data
+    )
+    const receiptImpl = await txImpl.wait()
+    console.log(`Impl: ${receiptImpl.hash}`)
+
+    const txProxy = await create2Deployer.deploy(
+      0,
+      salt,
+      transparentProxyCreationBytecode.data
+    )
+    const receiptProxy = await txProxy.wait()
+    console.log(`Transparent: ${receiptProxy.hash}`)
+  }
 }
 
 // execute as standalone
