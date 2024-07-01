@@ -18509,7 +18509,7 @@ __metadata:
     ethers: "npm:6.13.0"
     hardhat: "npm:2.22.5"
     hardhat-gas-reporter: "npm:1.0.8"
-    mocha: "npm:10.4.0"
+    mocha: "npm:10.5.2"
     prettier: "npm:3.3.2"
     solidity-coverage: "npm:0.8.1"
     ts-mocha: "npm:10.0.0"
@@ -18518,7 +18518,7 @@ __metadata:
     tslint-config-prettier: "npm:1.18.0"
     tslint-plugin-prettier: "npm:2.3.0"
     typechain: "npm:8.3.2"
-    typescript: "npm:5.4.5"
+    typescript: "npm:5.5.2"
   peerDependencies:
     "@unlock-protocol/contracts": "*"
     "@unlock-protocol/networks": "*"
@@ -39134,13 +39134,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mocha@npm:10.4.0":
-  version: 10.4.0
-  resolution: "mocha@npm:10.4.0"
+"mocha@npm:10.5.2":
+  version: 10.5.2
+  resolution: "mocha@npm:10.5.2"
   dependencies:
     ansi-colors: "npm:4.1.1"
     browser-stdout: "npm:1.3.1"
-    chokidar: "npm:3.5.3"
+    chokidar: "npm:^3.5.3"
     debug: "npm:4.3.4"
     diff: "npm:5.0.0"
     escape-string-regexp: "npm:4.0.0"
@@ -39161,7 +39161,7 @@ __metadata:
   bin:
     _mocha: bin/_mocha
     mocha: bin/mocha.js
-  checksum: 10/0147b2a86c8a3b134b3bda949006aa5f2b08db606b9394e38eb3fa0d97dd2f54f06eb4afb270d4ae08aa6fb7674282737ed556b9a8bc407f9b8488380852eca4
+  checksum: 10/5d14c91597d2eaa86b2b900b53babcfa351b9efdeb8d84fd6f953a7d270bf7f387718f25cbd31dd7b72c626001c56ef3caf8aeb87f04fa0ea8e499db5f7905bf
   languageName: node
   linkType: hard
 
@@ -50290,6 +50290,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:5.5.2":
+  version: 5.5.2
+  resolution: "typescript@npm:5.5.2"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/9118b20f248e76b0dbff8737fef65dfa89d02668d4e633d2c5ceac99033a0ca5e8a1c1a53bc94da68e8f67677a88f318663dde859c9e9a09c1e116415daec2ba
+  languageName: node
+  linkType: hard
+
 "typescript@npm:^5.0.0, typescript@npm:^5.4.4":
   version: 5.4.4
   resolution: "typescript@npm:5.4.4"
@@ -50327,6 +50337,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10/760f7d92fb383dbf7dee2443bf902f4365db2117f96f875cf809167f6103d55064de973db9f78fe8f31ec08fff52b2c969aee0d310939c0a3798ec75d0bca2e1
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>":
+  version: 5.5.2
+  resolution: "typescript@patch:typescript@npm%3A5.5.2#optional!builtin<compat/typescript>::version=5.5.2&hash=b45daf"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10/28b3de2ddaf63a7620e7ddbe5d377af71ce93ecc558c41bf0e3d88661d8e6e7aa6c7739164fef98055f69819e41faca49252938ef3633a3dff2734cca6a9042e
   languageName: node
   linkType: hard
 
