@@ -112,6 +112,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
     }
   )
 
+  const noBalance = balance && parseFloat(balance) === 0 && !isLoadingBalance
+
   const NetworkDescription = () => {
     return (
       <div className="flex flex-col gap-2">
@@ -249,6 +251,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
               </div>
             </div>
           </Disclosure>
+
           <Disclosure label="Network" defaultOpen>
             <div className="grid gap-6">
               <p>
@@ -279,19 +282,17 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                 description={<NetworkDescription />}
               />
               <NetworkWarning network={details.network} />
-              {
-                // TODO: Add this back when we have a working way to check balance
-                /*parseFloat(balance) === 0 && !isLoadingBalance && (
+              {noBalance && (
                 <div className="mb-4">
                   <BalanceWarning
                     network={details.network!}
                     balance={parseFloat(balance)}
                   />
                 </div>
-              )*/
-              }
+              )}
             </div>
           </Disclosure>
+
           <Disclosure label="Price & Quantity" defaultOpen>
             <div className="grid gap-6">
               <p>These settings can also be changed later.</p>
