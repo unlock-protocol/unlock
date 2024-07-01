@@ -13007,29 +13007,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-avatar@npm:1.0.4":
-  version: 1.0.4
-  resolution: "@radix-ui/react-avatar@npm:1.0.4"
-  dependencies:
-    "@babel/runtime": "npm:^7.13.10"
-    "@radix-ui/react-context": "npm:1.0.1"
-    "@radix-ui/react-primitive": "npm:1.0.3"
-    "@radix-ui/react-use-callback-ref": "npm:1.0.1"
-    "@radix-ui/react-use-layout-effect": "npm:1.0.1"
-  peerDependencies:
-    "@types/react": "*"
-    "@types/react-dom": "*"
-    react: ^16.8 || ^17.0 || ^18.0
-    react-dom: ^16.8 || ^17.0 || ^18.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-    "@types/react-dom":
-      optional: true
-  checksum: 10/6c5898dbc5021dd584c429708a540134b5a8d776fa81c221c94ca98e6c107f9b1b22cab4c58b397127a81c4b544718ab1c06be5ee964ee38ed260756bf92e519
-  languageName: node
-  linkType: hard
-
 "@radix-ui/react-avatar@npm:1.1.0":
   version: 1.1.0
   resolution: "@radix-ui/react-avatar@npm:1.1.0"
@@ -19346,7 +19323,7 @@ __metadata:
     "@babel/core": "npm:7.24.7"
     "@headlessui/react": "npm:1.7.19"
     "@observablehq/plot": "npm:0.6.15"
-    "@radix-ui/react-avatar": "npm:1.0.4"
+    "@radix-ui/react-avatar": "npm:1.1.0"
     "@tanstack/react-query": "npm:4.36.1"
     "@testing-library/react": "npm:16.0.0"
     "@types/next": "npm:9.0.0"
