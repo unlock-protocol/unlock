@@ -48,7 +48,7 @@ export default class KeyData {
         expiration: keyExpiration ? parseInt(keyExpiration) : undefined,
         tokenId: key?.tokenId,
         owner: key?.owner,
-        minted: key?.createdAt ? parseInt(key.createdAt) : undefined,
+        minted: key?.createdAtBlock ? parseInt(key.createdAtBlock) : undefined,
       }
 
       return data
