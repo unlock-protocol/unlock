@@ -15,6 +15,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Checkbox,
+  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -172,6 +173,8 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const router = useRouter()
 
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+
   register('metadata.image', {
     required: {
       value: true,
@@ -290,6 +293,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       'currencySymbol',
                       networks[newValue].nativeCurrency.symbol
                     )
+                    setCurrencyNetwork(networks[newValue].name)
                   }}
                   options={networkOptions}
                   moreOptions={moreNetworkOptions}
@@ -628,6 +632,8 @@ export const Form = ({ onSubmit }: FormProps) => {
                     />
                   </div>
                 </div>
+
+                <CurrencyHint network={currencyNetwork as string} />
 
                 <div>
                   <div className="flex items-center justify-between">

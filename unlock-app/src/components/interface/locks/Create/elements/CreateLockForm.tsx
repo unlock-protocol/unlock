@@ -1,5 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  Select,
+  ToggleSwitch,
+  CurrencyHint,
+} from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -91,7 +97,6 @@ export const CreateLockForm = ({
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
 
   const [currencyNetwork, setCurrencyNetwork] = useState<string>()
-  const [currencySymbol, setCurrencySymbol] = useState<string>()
 
   const {
     register,
@@ -332,7 +337,6 @@ export const CreateLockForm = ({
                     onChange={(token: Token) => {
                       setValue('currencyContractAddress', token.address)
                       setValue('symbol', token.symbol)
-                      setCurrencySymbol(token.symbol)
                     }}
                     defaultToken={{
                       address: currencyContractAddress,
@@ -359,17 +363,7 @@ export const CreateLockForm = ({
                   </span>
                 )}
               </div>
-              <span className="text-sm text-gray-600">
-                You can select either {currencySymbol} or any ERC20 currency
-                deployed on {currencyNetwork}.{' '}
-                <Link
-                  href="https://unlock-protocol.com/guides/using-a-custom-currency/"
-                  target="_blank"
-                  className="underline"
-                >
-                  Learn more
-                </Link>
-              </span>
+              <CurrencyHint network={currencyNetwork as string} />
             </div>
             <Button
               className="mt-8 md:mt-0"

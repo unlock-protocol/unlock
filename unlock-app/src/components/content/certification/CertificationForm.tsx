@@ -11,6 +11,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
+  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -53,6 +54,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
   const router = useRouter()
+
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
 
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
@@ -275,6 +278,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     'currencySymbol',
                     networks[newValue].nativeCurrency.symbol
                   )
+                  setCurrencyNetwork(networks[newValue].name)
                 }}
                 options={networkOptions}
                 moreOptions={moreNetworkOption}
@@ -379,8 +383,10 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
+                      <CurrencyHint network={currencyNetwork as string} />
                     </div>
                   </div>
+
                   <div>
                     <div className="flex items-center justify-between">
                       <label className="px-1 mb-2 text-base" htmlFor="">
