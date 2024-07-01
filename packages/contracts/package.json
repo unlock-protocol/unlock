@@ -34,7 +34,7 @@
     "eslint": "8.57.0",
     "fs-extra": "11.2.0",
     "hardhat": "2.22.5",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "files": [
     "dist"
