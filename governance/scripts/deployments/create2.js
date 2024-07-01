@@ -78,12 +78,17 @@ async function main({
     id,
     unlockDaoToken: { address: udtAddress },
   } = await getNetwork()
-  console.log(`Deploying ${contractName} using CREATE2 on ${name} (${id})...`)
+  console.log(
+    `Computing address for ${contractName} using CREATE2 on ${name} (${id})...`
+  )
 
   // get address
   const [signer] = await ethers.getSigners()
   const initialOwner = await signer.getAddress()
   // const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
+  console.log(
+    `Deploying from ${await signer.getAddress()}, setting initial owner to ${initialOwner}`
+  )
 
   // get contract factories
   const ProxyAdmin = await ethers.getContractFactory(
@@ -94,8 +99,6 @@ async function main({
     TransparentUpgradeableProxyAbi,
     TransparentUpgradeableProxyBytecode
   )
-
-  // get token implementations
   const [qualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
     { contractName, subfolder },
   ])
@@ -151,7 +154,7 @@ async function main({
     transparentProxyInitCodehash
   )
 
-  console.log({
+  console.table({
     implComputedAddress,
     proxyAdminComputedAddress,
     transparentProxyComputedAddress,
@@ -160,6 +163,7 @@ async function main({
 
   // launch deployment process
   if (deploy) {
+    console.log(`Deploying all contracts using CREATE2...`)
     const txProxyAdmin = await create2Deployer.deploy(
       0,
       salt,
@@ -183,7 +187,7 @@ async function main({
     console.log(`Transparent deployed. (tx:  ${receiptProxy.hash})`)
 
     // verify swap contracts
-    console.log(`Verify Swap contract`)
+    console.log(`Verifying contracts`)
     try {
       await run('verify:verify', {
         address: transparentProxyComputedAddress,
@@ -203,7 +207,7 @@ async function main({
     console.log(`Swap contract deployed at ${swapAddress}`)
 
     // verify swap contracts
-    console.log(`Verify Swap contract...`)
+    console.log(`Verifying Swap contract...`)
     try {
       await run('verify:verify', {
         address: swapAddress,
@@ -213,7 +217,7 @@ async function main({
     }
 
     // // initialize proxy
-    console.log(`Initialize proxy.`)
+    console.log(`Initialize proxy...`)
     const proxy = Implementation.attach(transparentProxyComputedAddress)
     const tx = await proxy.initialize(initialOwner, swapAddress)
     const { hash } = await tx.wait()
