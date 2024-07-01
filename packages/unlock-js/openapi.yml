@@ -1093,6 +1093,62 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/{slug}/approve-refunds:
+    post:
+      operationId: approveRefunds
+      security:
+        - User: ['lockManager']
+      description: Approves refunds for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+                - network
+              properties:
+                amount:
+                  type: number
+                  nullable: false
+                currency:
+                  type: string
+                  nullable: true
+                network:
+                  type: number
+                  nullable: false
+
+      responses:
+        201:
+          description: Approves refunds for an event.
+          # content:
+          #   application/json:
+          #     schema:
+          #       type: object
+          #       required:
+          #         - amount
+          #         - currency
+          #         - network
+          #       properties:
+          #         amount:
+          #           type: number
+          #           nullable: false
+          #         currency:
+          #           type: string
+          #         network:
+          #           type: number
+          #           nullable: false
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/sign:
     get:
       operationId: signTicket
@@ -1856,7 +1912,7 @@ paths:
           $ref: '#/components/responses/400.BadRequest'
         500:
           $ref: '#/components/responses/500.InternalError'
-          
+
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
       deprecated: true

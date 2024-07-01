@@ -352,7 +352,7 @@ export const updatePasswordEncryptedPrivateKey = async (
 
   const result = await UserOperations.updatePasswordEncryptedPrivateKey(
     publicKey,
-    passwordEncryptedPrivateKey
+    JSON.parse(passwordEncryptedPrivateKey)
   )
 
   if (result[0] != 0) {
