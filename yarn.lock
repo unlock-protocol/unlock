@@ -18890,7 +18890,7 @@ __metadata:
     eslint: "npm:8.57.0"
     ethers: "npm:6.13.0"
     hardhat: "npm:2.22.5"
-    hardhat-gas-reporter: "npm:1.0.8"
+    hardhat-gas-reporter: "npm:2.2.0"
     mocha: "npm:10.5.2"
     prettier: "npm:3.3.2"
     solidity-coverage: "npm:0.8.1"
