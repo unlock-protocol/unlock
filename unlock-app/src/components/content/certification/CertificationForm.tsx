@@ -54,6 +54,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
   const router = useRouter()
 
+  const [selectedNetwork, setSelectedNetwork] = useState<number>()
+
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
     shouldUnregister: false,
@@ -107,9 +109,16 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   )
 
   const { data: balance, isLoading: isLoadingBalance } = useQuery(
-    ['getBalance', account, network],
+    ['getBalance', account, network, selectedNetwork],
     async () => {
-      return await getAccountTokenBalance(Web3Service, account!, null, network!)
+      const web3Service = new Web3Service(networks)
+
+      return await getAccountTokenBalance(
+        web3Service,
+        account!,
+        null,
+        selectedNetwork as number
+      )
     }
   )
 
@@ -269,6 +278,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
               </p>
               <Select
                 onChange={(newValue) => {
+                  setSelectedNetwork(Number(newValue))
                   setValue('network', Number(newValue))
                   setValue('lock.currencyContractAddress', null)
                   setValue(
