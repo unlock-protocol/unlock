@@ -43,7 +43,7 @@
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "9.1.0",
     "@types/mocha": "10.0.6",
-    "@types/node": "20.14.2",
+    "@types/node": "20.14.9",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:^",
@@ -51,7 +51,7 @@
     "eslint": "8.57.0",
     "ethers": "6.13.0",
     "hardhat": "2.22.5",
-    "mocha": "10.4.0",
+    "mocha": "10.5.2",
     "prettier": "3.3.2",
     "ts-mocha": "10.0.0",
     "ts-node": "10.9.2",
@@ -59,7 +59,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-prettier": "2.3.0",
     "typechain": "8.3.2",
-    "typescript": "5.4.5"
+    "typescript": "5.5.2"
   },
   "peerDependencies": {
     "@unlock-protocol/contracts": "*",
