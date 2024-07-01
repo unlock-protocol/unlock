@@ -95,7 +95,7 @@
     "@types/react-gtm-module": "2.0.3",
     "@types/remove-markdown": "0.3.4",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "@vitejs/plugin-react": "4.3.0",
+    "@vitejs/plugin-react": "4.3.1",
     "autoprefixer": "10.4.19",
     "jsdom": "24.1.0",
     "postcss": "8.4.39",
