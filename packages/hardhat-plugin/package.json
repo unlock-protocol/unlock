@@ -42,7 +42,7 @@
     "@nomicfoundation/ignition-core": "0.15.5",
     "@typechain/ethers-v6": "0.5.1",
     "@typechain/hardhat": "9.1.0",
-    "@types/mocha": "10.0.6",
+    "@types/mocha": "10.0.7",
     "@types/node": "20.14.9",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/eslint-config": "workspace:^",
