@@ -134,3 +134,17 @@ type ReferrerFee @entity {
   "In the Unlock ecosystem, a “Lock” is a smart contract that creates (or “mints”) NFTs"
   lock: Lock!
 }
+
+type RoleGranted @entity {
+  id: ID!
+  role: Bytes!
+  account: Bytes! # address
+  sender: Bytes! # address
+}
+
+type RoleRevoked @entity {
+  id: ID!
+  role: Bytes!
+  account: Bytes! # address
+  sender: Bytes! # address
+}
