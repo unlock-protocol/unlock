@@ -13,7 +13,7 @@
     "@decent.xyz/box-common": "2.2.1",
     "@enzoferey/ethers-error-parser": "0.2.3",
     "@guildxyz/sdk": "2.5.0",
-    "@headlessui/react": "1.7.19",
+    "@headlessui/react": "2.1.1",
     "@hookform/error-message": "2.0.1",
     "@hookform/resolvers": "3.6.0",
     "@radix-ui/react-avatar": "1.1.0",
