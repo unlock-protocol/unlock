@@ -8,7 +8,7 @@
     "vitest": "1.6.0"
   },
   "dependencies": {
-    "ethers": "6.12.1",
+    "ethers": "6.13.1",
     "toucan-js": "3.4.0",
     "wrangler": "3.59.0"
   },
