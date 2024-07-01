@@ -5544,10 +5544,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:4.20240603.0":
-  version: 4.20240603.0
-  resolution: "@cloudflare/workers-types@npm:4.20240603.0"
-  checksum: 10/97776b3417e3eab20dd90506ffc08058b5dd8cdd736a8824b47c6611c99cd0ebbd6208b7c07ae8a75fe2d620b582e09df29c5f8553d44270df27c48a73003f4d
+"@cloudflare/workers-types@npm:4.20240620.0":
+  version: 4.20240620.0
+  resolution: "@cloudflare/workers-types@npm:4.20240620.0"
+  checksum: 10/8292d02668b46777d43bdb94316a41ac4c78afa2687083d8c6749d187c3ded79b52a683265e38876fc358b4fb327fe59d5f728cf8ea898d06f8f3546e871d9c6
   languageName: node
   linkType: hard
 
@@ -43888,7 +43888,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": "npm:4.20240603.0"
+    "@cloudflare/workers-types": "npm:4.20240620.0"
     "@types/node": "npm:20.14.9"
     "@unlock-protocol/networks": "workspace:^"
     ethers: "npm:6.12.1"
