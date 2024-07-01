@@ -11,22 +11,7 @@ const { ethers } = require('hardhat')
 const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const submitTx = require('../multisig/submitTx')
 const { getXCalledEventsFromTx } = require('../../helpers/bridge')
-
-const fetchRelayerFee = async ({ originDomain, destinationDomain }) => {
-  const res = await fetch(
-    'https://sdk-server.mainnet.connext.ninja/estimateRelayerFee',
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        originDomain: originDomain.toString(),
-        destinationDomain: destinationDomain.toString(),
-      }),
-    }
-  )
-  const { hex } = await res.json()
-  return BigInt(hex)
-}
+const { fetchRelayerFee } = require('../../helpers/crossChain')
 
 async function main({
   // if of the tx from the DAO proposal execution
@@ -79,7 +64,7 @@ ${transferIds.map((transferId) => `- ${transferId}`).join('\n')}`)
     functionArgs: [transferId],
     calldata: interface.encodeFunctionData('bumpTransfer', [transferId]),
     contractAddress: bridgeAddress,
-    value: fees[i],
+    value: fees[i].toString(),
   }))
 
   // submit the calls to the multisig

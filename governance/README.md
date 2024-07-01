@@ -249,7 +249,9 @@ Read the explanations and follow the template in [`./proposals/006-cross-bridge-
 
 To make sure all calls can be executed properly, you can use Tenderly forks to test execution of calls on each destination chains.
 
-There is test DAO deployed with the entire cross-chain pipeline configured between Gnosis chain and Polygon mainnet - available at [0x530ff2daed410ca7d70c25f18dc770f106201151](https://www.tally.xyz/gov/unlock-cross-chain-test-dao-on-gnosis/proposals). A test version of the Unlock factory contract is deployed on Polygon at [0x2411336105D4451713d23B5156038A48569EcE3a](https://polygonscan.com/address/0x2411336105d4451713d23b5156038a48569ece3a) and can be used for testing cross-chain proposals execution.
+There is test DAO deployed with the entire cross-chain pipeline configured between Gnosis chain and Polygon mainnet - available at [0x530ff2daed410ca7d70c25f18dc770f106201151](https://www.tally.xyz/gov/unlock-cross-chain-test-dao-on-gnosis/proposals). The address of the multisig on destination (Polygon) is [0x6ff837695B120A8f533498584249131F1c6fC4a8](https://app.safe.global/transactions/history?safe=matic:0x6ff837695B120A8f533498584249131F1c6fC4a8)
+
+A test version of the Unlock factory contract is deployed on Polygon at [0x2411336105D4451713d23B5156038A48569EcE3a](https://polygonscan.com/address/0x2411336105d4451713d23b5156038a48569ece3a) and can be used for testing cross-chain proposals execution.
 
 ### Execute a cross-chain DAO proposal
 

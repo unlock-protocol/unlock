@@ -2,10 +2,11 @@
  * This proposal send calls accross the bridge to enable protocol fees
  * on all supported networks.
  */
-const { ADDRESS_ZERO, getNetwork } = require('@unlock-protocol/hardhat-helpers')
+const { getNetwork } = require('@unlock-protocol/hardhat-helpers')
 const { Unlock } = require('@unlock-protocol/contracts')
-const { IConnext, targetChains } = require('../helpers/bridge')
+const { targetChains } = require('../helpers/bridge')
 const { ethers } = require('hardhat')
+const { parseBridgeCall } = require('../helpers/crossChain')
 const PROTOCOL_FEE_IN_BASIS_POINTS = '100' // 1% in basis points
 
 const parseSetProtocolFeeCalls = async (destChainId) => {
@@ -52,41 +53,6 @@ const parseSetProtocolFeeCalls = async (destChainId) => {
     calls,
     explainers,
     moduleData,
-  }
-}
-
-const parseBridgeCall = async ({ destChainId, moduleData }) => {
-  const { governanceBridge } = await getNetwork(destChainId)
-
-  // get bridge info on receiving chain
-  const {
-    domainId: destDomainId,
-    modules: { connextMod: destAddress },
-  } = governanceBridge
-
-  // get bridge address on mainnet
-  const {
-    governanceBridge: { connext: bridgeAddress },
-  } = await getNetwork(1)
-
-  if (!destDomainId || !destAddress) {
-    throw Error('Missing bridge information')
-  }
-
-  // parse call for bridge
-  return {
-    contractAddress: bridgeAddress,
-    contractNameOrAbi: IConnext,
-    functionName: 'xcall',
-    functionArgs: [
-      destDomainId,
-      destAddress, // destMultisigAddress,
-      ADDRESS_ZERO, // asset
-      ADDRESS_ZERO, // delegate
-      0, // amount
-      30, // slippage
-      moduleData, // calldata
-    ],
   }
 }
 
