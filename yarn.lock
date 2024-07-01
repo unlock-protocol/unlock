@@ -7383,7 +7383,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eth-optimism/core-utils@npm:0.13.2":
+"@eth-optimism/core-utils@npm:^0.13.2":
   version: 0.13.2
   resolution: "@eth-optimism/core-utils@npm:0.13.2"
   dependencies:
@@ -7405,19 +7405,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eth-optimism/sdk@npm:3.3.1":
-  version: 3.3.1
-  resolution: "@eth-optimism/sdk@npm:3.3.1"
+"@eth-optimism/sdk@npm:3.3.2":
+  version: 3.3.2
+  resolution: "@eth-optimism/sdk@npm:3.3.2"
   dependencies:
     "@eth-optimism/contracts": "npm:0.6.0"
-    "@eth-optimism/core-utils": "npm:0.13.2"
+    "@eth-optimism/core-utils": "npm:^0.13.2"
     lodash: "npm:^4.17.21"
     merkletreejs: "npm:^0.3.11"
     rlp: "npm:^2.2.7"
     semver: "npm:^7.6.0"
   peerDependencies:
     ethers: ^5
-  checksum: 10/4cfcfa7755bace0dfb03abf0e61f55c952d4ac64b4f6fd50c5445d38f6fc75425625bc320e5753214193b9ed6660317dc7d847b8fe04b7e1b36aac3b89883b27
+  checksum: 10/980619792b5be44407d26dc102d95074c4a385055ccf1cfb6d03d557028f3ee45fb2338a63e09b44a5ff9c16dd14d6e9b906644a4559d98aa66867209de45b62
   languageName: node
   linkType: hard
 
@@ -18701,7 +18701,7 @@ __metadata:
   dependencies:
     "@arbitrum/nitro-contracts": "npm:1.2.1"
     "@arbitrum/sdk": "npm:3.4.1"
-    "@eth-optimism/sdk": "npm:3.3.1"
+    "@eth-optimism/sdk": "npm:3.3.2"
     "@matterlabs/hardhat-zksync-deploy": "npm:1.4.0"
     "@matterlabs/hardhat-zksync-solc": "npm:1.1.4"
     "@matterlabs/hardhat-zksync-upgradable": "npm:1.4.1"
