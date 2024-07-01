@@ -131,17 +131,29 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                       )}
                     </>
                   )}
-                  {formattedData?.formattedKeysAvailable !== 'Unlimited' && (
+                  {formattedData?.formattedKeysAvailable === '0' && (
                     <LabeledItem
-                      label="Left"
                       icon={QuantityIcon}
-                      value={
-                        formattedData?.isSoldOut
-                          ? 'Sold out'
-                          : formattedData?.formattedKeysAvailable
-                      }
+                      label="Coming soon"
+                      value={''}
                     />
                   )}
+                  {formattedData?.formattedKeysAvailable !== '0' &&
+                    formattedData?.isSoldOut && (
+                      <LabeledItem
+                        icon={QuantityIcon}
+                        label="Sold out"
+                        value={''}
+                      />
+                    )}
+                  {formattedData?.formattedKeysAvailable !== 'Unlimited' &&
+                    !formattedData?.isSoldOut && (
+                      <LabeledItem
+                        label="Left ?"
+                        icon={QuantityIcon}
+                        value={formattedData?.formattedKeysAvailable}
+                      />
+                    )}
                 </div>
                 <div>
                   {checked ? (
