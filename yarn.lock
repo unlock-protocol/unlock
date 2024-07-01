@@ -18872,8 +18872,8 @@ __metadata:
     ethers: "npm:6.13.0"
     fs-extra: "npm:11.2.0"
     tsup: "npm:8.1.0"
-    tsx: "npm:4.11.0"
-    typescript: "npm:5.4.5"
+    tsx: "npm:4.16.0"
+    typescript: "npm:5.5.2"
   languageName: unknown
   linkType: soft
 
@@ -28428,7 +28428,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.21.3":
+"esbuild@npm:^0.21.3, esbuild@npm:~0.21.5":
   version: 0.21.5
   resolution: "esbuild@npm:0.21.5"
   dependencies:
@@ -50257,6 +50257,22 @@ __metadata:
   bin:
     tsx: dist/cli.mjs
   checksum: 10/231ca3d80fe83a286160b43d02d1cbf6fc163ecbbf101d907a0ea614b2876668cc2e490c15dbf8f29c99f7f78f2417d328cf92cf95ba28dd725b5bf9a132cf5e
+  languageName: node
+  linkType: hard
+
+"tsx@npm:4.16.0":
+  version: 4.16.0
+  resolution: "tsx@npm:4.16.0"
+  dependencies:
+    esbuild: "npm:~0.21.5"
+    fsevents: "npm:~2.3.3"
+    get-tsconfig: "npm:^4.7.5"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10/6a81423bd63d80185079d4ac390325066ddc5e7d057a810ba6c7071e8b7535fa6a6bb0fd2494da68e6f61480ec0fb9f1f204f8655f0cfe40480896992748c46d
   languageName: node
   linkType: hard
 
