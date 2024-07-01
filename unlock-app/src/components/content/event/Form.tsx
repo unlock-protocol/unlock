@@ -615,7 +615,6 @@ export const Form = ({ onSubmit }: FormProps) => {
                       />
                     </div>
                   </div>
-
                   <div className="text-sm mt-1 flex items-center justify-between">
                     <Checkbox
                       disabled={isFree || !details.lock?.keyPrice}

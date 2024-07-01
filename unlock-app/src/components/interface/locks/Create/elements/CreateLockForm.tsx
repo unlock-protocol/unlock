@@ -89,6 +89,10 @@ export const CreateLockForm = ({
     defaultValues?.unlimitedQuantity
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
+
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+  const [currencySymbol, setCurrencySymbol] = useState<string>()
+
   const {
     register,
     handleSubmit,
@@ -143,6 +147,7 @@ export const CreateLockForm = ({
   const onChangeNetwork = useCallback(
     (network: number | string) => {
       setValue('network', parseInt(`${network}`))
+      setCurrencyNetwork(networks[network].name)
     },
     [setValue]
   )
@@ -327,6 +332,7 @@ export const CreateLockForm = ({
                     onChange={(token: Token) => {
                       setValue('currencyContractAddress', token.address)
                       setValue('symbol', token.symbol)
+                      setCurrencySymbol(token.symbol)
                     }}
                     defaultToken={{
                       address: currencyContractAddress,
@@ -353,6 +359,17 @@ export const CreateLockForm = ({
                   </span>
                 )}
               </div>
+              <span className="text-sm text-gray-600">
+                You can select either {currencySymbol} or any ERC20 currency
+                deployed on {currencyNetwork}.{' '}
+                <Link
+                  href="https://unlock-protocol.com/guides/using-a-custom-currency/"
+                  target="_blank"
+                  className="underline"
+                >
+                  Learn more
+                </Link>
+              </span>
             </div>
             <Button
               className="mt-8 md:mt-0"
