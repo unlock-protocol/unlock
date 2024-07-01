@@ -11290,12 +11290,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:4.1.2":
-  version: 4.1.2
-  resolution: "@nuintun/qrcode@npm:4.1.2"
+"@nuintun/qrcode@npm:4.1.4":
+  version: 4.1.4
+  resolution: "@nuintun/qrcode@npm:4.1.4"
   dependencies:
-    tslib: "npm:^2.6.2"
-  checksum: 10/97c6eeb0815db29e542ff537fdcedab38022dbc9a76caa861bcd677751bbd52accce5b81b24c35e87f02774feec80dcd32175f14723157adfa28e36ef3161b72
+    tslib: "npm:^2.6.3"
+  checksum: 10/967131575f9ad6c5c2be34f823b8d415048d944f41f5de75c077214943b234f5b57c1f437e043e09c2f8bfb402053be0699e0af6375e7759f342343d24ddbbd1
   languageName: node
   linkType: hard
 
@@ -18801,7 +18801,7 @@ __metadata:
     "@coinbase/waas-server-auth": "npm:3.1.2"
     "@logtail/node": "npm:0.4.21"
     "@logtail/winston": "npm:0.4.21"
-    "@nuintun/qrcode": "npm:4.1.2"
+    "@nuintun/qrcode": "npm:4.1.4"
     "@openzeppelin/defender-relay-client": "npm:1.54.6"
     "@openzeppelin/merkle-tree": "npm:1.0.6"
     "@resvg/resvg-js": "npm:2.6.2"
@@ -49984,7 +49984,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2, tslib@npm:~2.6.0":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.0, tslib@npm:^2.6.1, tslib@npm:^2.6.2, tslib@npm:^2.6.3, tslib@npm:~2.6.0":
   version: 2.6.3
   resolution: "tslib@npm:2.6.3"
   checksum: 10/52109bb681f8133a2e58142f11a50e05476de4f075ca906d13b596ae5f7f12d30c482feb0bff167ae01cfc84c5803e575a307d47938999246f5a49d174fc558c
