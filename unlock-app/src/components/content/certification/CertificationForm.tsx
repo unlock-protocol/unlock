@@ -25,6 +25,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
