@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "graphql": "16.8.1",
-    "graphql-request": "6.1.0",
+    "graphql-request": "7.1.0",
     "siwe": "2.3.2"
   }
 }
