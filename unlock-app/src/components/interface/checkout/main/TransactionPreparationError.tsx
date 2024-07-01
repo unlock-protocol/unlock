@@ -29,7 +29,7 @@ export const TransactionPreparationError = ({
     return (
       <div className="text-sm flex flex-col gap-2">
         <p className="">
-          ❌ Your wallet is not approved to purchase a ticket for this event.
+          ❌ Your wallet is not yet approved to purchase a ticket.
         </p>
         <p className="">
           At this point, sales are restricted to{' '}
@@ -40,7 +40,7 @@ export const TransactionPreparationError = ({
           >
             Coinbase Wallet
           </Link>{' '}
-          users.
+          users. <strong>General Public ticket sales begin 7/12.</strong>
         </p>
         <Button
           onClick={() => {
