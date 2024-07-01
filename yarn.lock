@@ -18844,7 +18844,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vercel/og": "npm:0.6.2"
-    "@vercel/speed-insights": "npm:1.0.11"
+    "@vercel/speed-insights": "npm:1.0.12"
     "@vitejs/plugin-react": "npm:4.3.0"
     "@walletconnect/client": "npm:1.8.0"
     "@walletconnect/ethereum-provider": "npm:2.13.1"
@@ -19095,9 +19095,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vercel/speed-insights@npm:1.0.11":
-  version: 1.0.11
-  resolution: "@vercel/speed-insights@npm:1.0.11"
+"@vercel/speed-insights@npm:1.0.12":
+  version: 1.0.12
+  resolution: "@vercel/speed-insights@npm:1.0.12"
   peerDependencies:
     "@sveltejs/kit": ^1 || ^2
     next: ">= 13"
@@ -19118,7 +19118,7 @@ __metadata:
       optional: true
     vue-router:
       optional: true
-  checksum: 10/22d6d3d89e30594ce03f7a96c2f74f02bc65aad2781cb2d69b9914e4a275e43e04d4b5a0d6cfae91ef4b3add81920c9fb40876fd89d4ec6867c8a63d47bfcca2
+  checksum: 10/eb8ab819afa32fd0a9f32fc292e24f2f70742e874e606fcbd8f21008ffa349841c90a2146fe1251d5c812872c557b12958b4a9fb88eb874b4ad446f3af8b9cc1
   languageName: node
   linkType: hard
 
