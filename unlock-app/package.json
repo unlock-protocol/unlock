@@ -82,7 +82,7 @@
     "walletlink": "2.5.0",
     "xstate": "5.14.0",
     "zod": "3.23.8",
-    "zod-to-json-schema": "3.23.0"
+    "zod-to-json-schema": "3.23.1"
   },
   "devDependencies": {
     "@testing-library/react": "16.0.0",
