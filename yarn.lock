@@ -18622,7 +18622,7 @@ __metadata:
     "@storybook/react-vite": "npm:8.1.1"
     "@types/react": "npm:18.3.3"
     "@types/react-dom": "npm:18.3.0"
-    "@vitejs/plugin-react": "npm:4.3.0"
+    "@vitejs/plugin-react": "npm:4.3.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     storybook: "npm:8.1.1"
@@ -19041,7 +19041,7 @@ __metadata:
     "@types/react-dom": "npm:18.3.0"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
-    "@vitejs/plugin-react": "npm:4.3.0"
+    "@vitejs/plugin-react": "npm:4.3.1"
     autoprefixer: "npm:10.4.19"
     ethers: "npm:6.13.0"
     postcss: "npm:8.4.39"
@@ -19109,7 +19109,7 @@ __metadata:
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@vercel/og": "npm:0.6.2"
     "@vercel/speed-insights": "npm:1.0.12"
-    "@vitejs/plugin-react": "npm:4.3.0"
+    "@vitejs/plugin-react": "npm:4.3.1"
     "@walletconnect/client": "npm:1.8.0"
     "@walletconnect/ethereum-provider": "npm:2.13.3"
     "@walletconnect/modal": "npm:2.6.2"
@@ -19386,9 +19386,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitejs/plugin-react@npm:4.3.0":
-  version: 4.3.0
-  resolution: "@vitejs/plugin-react@npm:4.3.0"
+"@vitejs/plugin-react@npm:4.3.1":
+  version: 4.3.1
+  resolution: "@vitejs/plugin-react@npm:4.3.1"
   dependencies:
     "@babel/core": "npm:^7.24.5"
     "@babel/plugin-transform-react-jsx-self": "npm:^7.24.5"
@@ -19397,7 +19397,7 @@ __metadata:
     react-refresh: "npm:^0.14.2"
   peerDependencies:
     vite: ^4.2.0 || ^5.0.0
-  checksum: 10/b96cfcfef10a7bb9a27cc4678c3828acd05522ce31793679d414300f29902f55d6dd88054e5801b5e67c34817a610a7fcb350a4896ac719320777653c98ca7a9
+  checksum: 10/a9d1eb30c968bf719a3277067211493746579aee14a7af8c0edb2cde38e8e5bbd461e62a41c3590e2c6eb04a047114eb3e97dcd591967625fbbc7aead8dfaf90
   languageName: node
   linkType: hard
 
