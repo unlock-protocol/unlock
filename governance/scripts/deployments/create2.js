@@ -82,8 +82,10 @@ async function main({
     `Computing address for ${contractName} using CREATE2 on ${name} (${id})...`
   )
 
-  // get address
+  // signer address will send the tx (changing it does not change the computed addresses)
   const [signer] = await ethers.getSigners()
+
+  // initial owner of the proxy admin and UP token
   const initialOwner = await signer.getAddress()
   // const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
   console.log(
@@ -217,7 +219,7 @@ async function main({
     }
 
     // // initialize proxy
-    console.log(`Initialize proxy...`)
+    console.log(`Initialize proxy.`)
     const proxy = Implementation.attach(transparentProxyComputedAddress)
     const tx = await proxy.initialize(initialOwner, swapAddress)
     const { hash } = await tx.wait()
