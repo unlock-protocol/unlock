@@ -43,7 +43,7 @@
     "@openzeppelin/defender-relay-client": "1.54.6",
     "@openzeppelin/merkle-tree": "1.0.6",
     "@resvg/resvg-js": "2.6.2",
-    "@sentry/node": "7.116.0",
+    "@sentry/node": "8.9.2",
     "@sentry/tracing": "7.114.0",
     "@types/connect-timeout": "0.0.39",
     "@types/random-words": "1.2.0",

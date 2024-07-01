@@ -30,11 +30,6 @@ for (const [key, value] of Object.entries(requiredEnvs)) {
 
 const config = {
   productionBrowserSourceMaps: true,
-  sentry: {
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-    hideSourceMaps: true,
-  },
   images: {
     unoptimized: true,
   },
@@ -45,4 +40,8 @@ const config = {
   },
 }
 
-module.exports = withSentryConfig(withTM(config))
+module.exports = withSentryConfig(withTM(config), {
+  disableServerWebpackPlugin: true,
+  disableClientWebpackPlugin: true,
+  hideSourceMaps: true,
+})

@@ -7,7 +7,7 @@ import {
 } from 'react-icons/si'
 
 interface Props {
-  error: Error
+  error: any
   componentStack: string | null
   eventId: string | null
   resetError(): void
