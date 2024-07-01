@@ -4,13 +4,13 @@
  * Relies on https://github.com/pcaversaccio/create2deployer
  */
 
-const { ethers } = require('hardhat')
+const { ethers, run, upgrades } = require('hardhat')
 const {
   getNetwork,
   copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
 const {
-  abi: TransparentUpgradeableProxynAbi,
+  abi: TransparentUpgradeableProxyAbi,
   bytecode: TransparentUpgradeableProxyBytecode,
 } = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts-v5/proxy/transparent/TransparentUpgradeableProxy.sol/TransparentUpgradeableProxy.json')
 const {
@@ -20,7 +20,6 @@ const {
 
 // same on all chains
 const CREATE2_DEPLOYER_ADDRESS = '0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'
-const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
 
 const create2DeployerAbi = [
   {
@@ -72,10 +71,19 @@ async function main({
   contractName = 'UPToken',
   subfolder = 'UP',
   deploy = true,
-  salt = ethers.id('Unlock Salt 0'),
+  salt = ethers.id('Unlock Salt z'),
 } = {}) {
-  const { name, id } = await getNetwork()
+  const {
+    name,
+    id,
+    unlockDaoToken: { address: udtAddress },
+  } = await getNetwork()
   console.log(`Deploying ${contractName} using CREATE2 on ${name} (${id})...`)
+
+  // get address
+  const [signer] = await ethers.getSigners()
+  const initialOwner = await signer.getAddress()
+  // const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
 
   // get contract factories
   const ProxyAdmin = await ethers.getContractFactory(
@@ -83,7 +91,7 @@ async function main({
     ProxyAdminBytecode
   )
   const TransparentUpgradeableProxy = await ethers.getContractFactory(
-    TransparentUpgradeableProxynAbi,
+    TransparentUpgradeableProxyAbi,
     TransparentUpgradeableProxyBytecode
   )
 
@@ -147,8 +155,10 @@ async function main({
     implComputedAddress,
     proxyAdminComputedAddress,
     transparentProxyComputedAddress,
+    udtAddress,
   })
 
+  // launch deployment process
   if (deploy) {
     const txProxyAdmin = await create2Deployer.deploy(
       0,
@@ -156,23 +166,58 @@ async function main({
       proxyAdminCreationBytecode.data
     )
     const receiptProxyAdmin = await txProxyAdmin.wait()
-    console.log(`ProxyAdmin: ${receiptProxyAdmin.hash}`)
-
+    console.log(`ProxyAdmin deployed. (tx: ${receiptProxyAdmin.hash})`)
     const txImpl = await create2Deployer.deploy(
       0,
       salt,
       implCreationBytecode.data
     )
     const receiptImpl = await txImpl.wait()
-    console.log(`Impl: ${receiptImpl.hash}`)
-
+    console.log(`Impl deployed. (tx: ${receiptImpl.hash})`)
     const txProxy = await create2Deployer.deploy(
       0,
       salt,
       transparentProxyCreationBytecode.data
     )
     const receiptProxy = await txProxy.wait()
-    console.log(`Transparent: ${receiptProxy.hash}`)
+    console.log(`Transparent deployed. (tx:  ${receiptProxy.hash})`)
+
+    // verify swap contracts
+    console.log(`Verify Swap contract`)
+    try {
+      await run('verify:verify', {
+        address: transparentProxyComputedAddress,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
+    // deploy UP Swap contract
+    const [swapQualifiedPath] = await copyAndBuildContractsAtVersion(
+      __dirname,
+      [{ contractName: 'UPSwap', subfolder: 'UP' }]
+    )
+    const UPSwap = await ethers.getContractFactory(swapQualifiedPath)
+    const swap = await upgrades.deployProxy(UPSwap, [udtAddress, initialOwner])
+    const swapAddress = await swap.getAddress()
+    console.log(`Swap contract deployed at ${swapAddress}`)
+
+    // verify swap contracts
+    console.log(`Verify Swap contract...`)
+    try {
+      await run('verify:verify', {
+        address: swapAddress,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
+    // // initialize proxy
+    console.log(`Initialize proxy.`)
+    const proxy = Implementation.attach(transparentProxyComputedAddress)
+    const tx = await proxy.initialize(initialOwner, swapAddress)
+    const { hash } = await tx.wait()
+    console.log(`Proxy initialized (tx: ${hash})`)
   }
 }
 
