@@ -18,7 +18,6 @@ import { networkDescription } from '~/components/interface/locks/Create/elements
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -26,6 +25,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
