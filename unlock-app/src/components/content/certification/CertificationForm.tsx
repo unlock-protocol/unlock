@@ -55,7 +55,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
   const router = useRouter()
 
-  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
   const [selectedNetwork, setSelectedNetwork] = useState<number>()
 
   const methods = useForm<NewCertificationForm>({
@@ -287,7 +286,6 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                     'currencySymbol',
                     networks[newValue].nativeCurrency.symbol
                   )
-                  setCurrencyNetwork(networks[newValue].name)
                 }}
                 options={networkOptions}
                 moreOptions={moreNetworkOption}
@@ -392,7 +390,9 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
-                      <CurrencyHint network={currencyNetwork as string} />
+                      <CurrencyHint
+                        network={networks[selectedNetwork as number].name}
+                      />
                     </div>
                   </div>
 
