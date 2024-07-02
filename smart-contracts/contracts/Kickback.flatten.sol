@@ -1,3 +1,4 @@
+/* solhint-disable no-inline-assembly */
 // Sources flattened with hardhat v2.22.3 https://hardhat.org
 
 // SPDX-License-Identifier: MIT
@@ -260,6 +261,7 @@ library MerkleProof {
 
 // Original license: SPDX_License_Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
+
 // Original pragma directive: pragma experimental ABIEncoderV2
 
 /**

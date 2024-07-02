@@ -281,6 +281,7 @@ describe('eventOperations', () => {
     })
     it('should return the list of checked in attendees', async () => {
       const list = await getCheckedInAttendees(slug)
+
       expect(list).toEqual(['0x123', '0x456'])
     })
   })
