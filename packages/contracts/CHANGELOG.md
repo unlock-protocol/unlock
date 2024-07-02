@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.0.29
+
+- Adding `EmptyImpl` in `utils` to allow deploymeny of empty proxy
+- Update `UPToken` and `UPSwap` initialization logic
+
 ## 0.0.28
 
 - Adding the `Kickback.sol` contract used to create refunds for event attendees.

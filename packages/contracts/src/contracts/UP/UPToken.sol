@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.22.5 https://hardhat.org
+// Sources flattened with hardhat v2.22.3 https://hardhat.org
 
 // SPDX-License-Identifier: MIT
 
@@ -4727,20 +4727,18 @@ contract UPToken is
     _disableInitializers();
   }
 
-  function initialize(
-    address initialOwner,
-    address preMinter
-  ) public initializer {
+  function initialize(address initialOwner) public initializer {
     __ERC20_init("UnlockProtocolToken", "UP");
     __ERC20Permit_init("UnlockProtocolToken");
     __ERC20Votes_init();
     __Ownable_init(initialOwner);
+  }
 
-    // premint the supply
-    _mint(preMinter, TOTAL_SUPPLY * 10 ** decimals());
-
-    // notify swap/preminter contract of the token address
-    IUPSwap(preMinter).setUp();
+  function mint(address upSwap) public onlyOwner {
+    if (balanceOf(upSwap) == 0) {
+      // premint the supply
+      _mint(upSwap, TOTAL_SUPPLY * 10 ** decimals());
+    }
   }
 
   // required to base votes on timestamp instead of blocks

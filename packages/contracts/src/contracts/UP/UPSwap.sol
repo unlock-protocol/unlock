@@ -1,4 +1,4 @@
-// Sources flattened with hardhat v2.22.5 https://hardhat.org
+// Sources flattened with hardhat v2.22.3 https://hardhat.org
 
 // SPDX-License-Identifier: MIT
 
@@ -498,7 +498,6 @@ contract UPSwap is Initializable, OwnableUpgradeable {
   );
   error TransferFailed(address tokenAddress);
   error InvalidSpender();
-  error UpAlreadySet();
 
   // events
   event UPSwappedForUDT(
@@ -519,22 +518,20 @@ contract UPSwap is Initializable, OwnableUpgradeable {
     _disableInitializers();
   }
 
-  function initialize(address _udt, address initialOwner) public initializer {
+  function initialize(
+    address _udt,
+    address _up,
+    address initialOwner
+  ) public initializer {
     __Ownable_init(initialOwner);
 
     // store UDT address
     udt = IERC20(_udt);
+    up = IERC20(_up);
   }
 
-  /**
-   * This function is called by the UP ERC20 initializer
-   * to set directly the token address when pre-mint supply is sent
-   */
-  function setUp() public {
-    if (address(up) != address(0)) {
-      revert UpAlreadySet();
-    }
-    up = IERC20(msg.sender);
+  function setUp(address _up) public onlyOwner {
+    up = IERC20(_up);
   }
 
   function swapUDTForUP(uint amountUDT, address recipient) public {
