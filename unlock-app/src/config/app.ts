@@ -37,7 +37,7 @@ const production = {
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
   unlockApp: 'https://app.unlock-protocol.com',
   googleClientId:
-    '801850414021-kk4m4gqm7imtggonhl57tfsj512on6s6.apps.googleusercontent.com',
+    '801850414021-sonqmfqhulumuoj4oab1it3e15ntsk04.apps.googleusercontent.com',
   // https://portal.cdp.coinbase.com/projects
   coinbaseProjectId: '4e90fd0f-bb62-4e1c-91a4-f08c76d1b09e',
 }
