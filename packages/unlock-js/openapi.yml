@@ -1093,6 +1093,62 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/events/{slug}/approve-refunds:
+    post:
+      operationId: approveRefunds
+      security:
+        - User: ['lockManager']
+      description: Approves refunds for an event.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+                - currency
+                - network
+              properties:
+                amount:
+                  type: number
+                  nullable: false
+                currency:
+                  type: string
+                  nullable: true
+                network:
+                  type: number
+                  nullable: false
+
+      responses:
+        201:
+          description: Approves refunds for an event.
+          # content:
+          #   application/json:
+          #     schema:
+          #       type: object
+          #       required:
+          #         - amount
+          #         - currency
+          #         - network
+          #       properties:
+          #         amount:
+          #           type: number
+          #           nullable: false
+          #         currency:
+          #           type: string
+          #         network:
+          #           type: number
+          #           nullable: false
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/ticket/{network}/{lockAddress}/{keyId}/sign:
     get:
       operationId: signTicket
@@ -1591,6 +1647,12 @@ paths:
       operationId: getWaasToken
       description: Gets Coinbase WAAS token for user by email and selected provider.
       parameters:
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
         - name: emailAddress
           in: path
           required: true
@@ -1663,6 +1725,191 @@ paths:
           $ref: '#/components/responses/400.BadRequest'
         404:
           $ref: '#/components/responses/404.NotFound'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{emailAddress}/passwordEncryptedPrivateKey:
+    put:
+      operationId: updateUserEncryptedPrivateKey
+      security:
+        - User: []
+      description: Updates a user's private key, using their email address as key. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: string
+                token:
+                  type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailAddress:
+                    type: string
+                  user:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{emailAddress}/privatekey:
+    get:
+      operationId: getUserPrivateKey
+      security:
+        - User: []
+      description: Given a user's email address, retrieves their private key. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passwordEncryptedPrivateKey:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{emailAddress}/recoveryphrase:
+    get:
+      operationId: getUserRecoveryPhrase
+      security:
+        - User: []
+      description: Given a user's email address, retrieves their recovery phrase. In the case of failure a rejected promise is returned to the caller.
+      parameters:
+        - name: emailAddress
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  emailAddress:
+                    type: string
+                  recoveryPhrase:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /users/{publicKey}/eject:
+    post:
+      operationId: ejectUser
+      security:
+        - User: []
+      description: Ejects a user given their public key. In the case of failure, a rejected promise is returned to the caller.
+      parameters:
+        - name: publicKey
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Structured data used to generate the signature
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  publicKey:
+                    type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
+        401:
+          $ref: '#/components/responses/401.Unauthorized'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /api/captcha:
+    get:
+      operationId: getDataForRecipientsAndCaptcha
+      security:
+        - User: []
+      description: Retrieves data for recipients and captcha.
+      parameters:
+        - name: recipients[]
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: captchaValue
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: lockAddress
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: network
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      type: string
+                  signer:
+                    type: string
+                  signatures:
+                    type: array
+                    items:
+                      type: string
+        400:
+          $ref: '#/components/responses/400.BadRequest'
         500:
           $ref: '#/components/responses/500.InternalError'
 
