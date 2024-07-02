@@ -115,4 +115,10 @@ templates:
         - event: ReferrerFee(indexed address,uint256)
           handler: handleReferrerFees
           receipt: true
+        - event: KeyGranterAdded(indexed address)
+          handler: handleKeyGranterAdded
+          receipt: true
+        - event: KeyGranterRemoved(indexed address)
+          handler: handleKeyGranterRemoved
+          receipt: true
       file: ./src/public-lock.ts
