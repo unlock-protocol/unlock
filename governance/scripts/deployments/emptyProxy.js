@@ -1,6 +1,7 @@
-const { ethers } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 
 const {
+  getNetwork,
   deployContract,
   deployUpgradeableContract,
   copyAndBuildContractsAtVersion,
@@ -14,6 +15,10 @@ async function main() {
   ])
   const EmptyImpl = await ethers.getContractFactory(emptyQualifiedPath)
   const { address: proxy } = await deployUpgradeableContract(EmptyImpl)
+
+  // 2. transfer proxy admin ownership to DAO multisig
+  const { multisig } = await getNetwork()
+  await upgrades.admin.transferProxyAdminOwnership(proxy, multisig)
 
   // 2. deploys the UP swap implementation
   console.log(`Deploying UPSwap implementation...`)
