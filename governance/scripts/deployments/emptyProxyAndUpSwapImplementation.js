@@ -28,6 +28,7 @@ async function main() {
   )
   const { address: impl } = await deployContract(upSwapQualifiedPath)
 
+console.log('Please submit a proposal to the DAO that would upgrade the proxy to the right implementation')
   console.log({
     upSwapProxyAddress: proxy,
     upSwapImplAddress: impl,
