@@ -20,6 +20,7 @@ const {
 
 // same on all chains
 const CREATE2_DEPLOYER_ADDRESS = '0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'
+const UP_DEPLOYER_BVI = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
 
 const create2DeployerAbi = [
   {
@@ -70,7 +71,7 @@ const create2DeployerAbi = [
 async function main({
   contractName = 'UPToken',
   subfolder = 'UP',
-  deploy = true,
+  deploy = false,
   salt = ethers.id('Unlock Salt z'),
 } = {}) {
   const {
@@ -87,7 +88,6 @@ async function main({
 
   // initial owner of the proxy admin and UP token
   const initialOwner = await signer.getAddress()
-  // const initialOwner = '0xD0867C37C7Fc80b2394d4E3f5050D1ed2d0EC03e'
   console.log(
     `Deploying from ${await signer.getAddress()}, setting initial owner to ${initialOwner}`
   )
@@ -198,32 +198,32 @@ async function main({
       console.log(error)
     }
 
-    // deploy UP Swap contract
-    const [swapQualifiedPath] = await copyAndBuildContractsAtVersion(
-      __dirname,
-      [{ contractName: 'UPSwap', subfolder: 'UP' }]
-    )
-    const UPSwap = await ethers.getContractFactory(swapQualifiedPath)
-    const swap = await upgrades.deployProxy(UPSwap, [udtAddress, initialOwner])
-    const swapAddress = await swap.getAddress()
-    console.log(`Swap contract deployed at ${swapAddress}`)
+    // // deploy UP Swap contract
+    // const [swapQualifiedPath] = await copyAndBuildContractsAtVersion(
+    //   __dirname,
+    //   [{ contractName: 'UPSwap', subfolder: 'UP' }]
+    // )
+    // const UPSwap = await ethers.getContractFactory(swapQualifiedPath)
+    // const swap = await upgrades.deployProxy(UPSwap, [udtAddress, initialOwner])
+    // const swapAddress = await swap.getAddress()
+    // console.log(`Swap contract deployed at ${swapAddress}`)
 
-    // verify swap contracts
-    console.log(`Verifying Swap contract...`)
-    try {
-      await run('verify:verify', {
-        address: swapAddress,
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    // // verify swap contracts
+    // console.log(`Verifying Swap contract...`)
+    // try {
+    //   await run('verify:verify', {
+    //     address: swapAddress,
+    //   })
+    // } catch (error) {
+    //   console.log(error)
+    // }
 
-    // // initialize proxy
-    console.log(`Initialize proxy.`)
-    const proxy = Implementation.attach(transparentProxyComputedAddress)
-    const tx = await proxy.initialize(initialOwner, swapAddress)
-    const { hash } = await tx.wait()
-    console.log(`Proxy initialized (tx: ${hash})`)
+    // // // initialize proxy
+    // console.log(`Initialize proxy.`)
+    // const up = Implementation.attach(transparentProxyComputedAddress)
+    // const tx = await up.initialize(UP_DEPLOYER_BVI)
+    // const { hash } = await tx.wait()
+    // console.log(`Proxy initialized (tx: ${hash})`)
   }
 }
 
