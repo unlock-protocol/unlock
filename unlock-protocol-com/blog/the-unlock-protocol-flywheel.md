@@ -1,10 +1,10 @@
 ---
-title: 'The Unlock Protocol Flywheel'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Fri Jun 14 2024 15:09:28 GMT+0000 (Coordinated Universal Time)'
-description: 'In mechanical systems, a flywheel is a rotating disk that is used to store energy. In onchain systems, the term flywheel is used in a similar manner to capture the essence of a sustainable onchain economic model.'
-image: '/images/blog/the-unlock-protocol-flywheel/89f55bc3130ee99402af9999e59289e6.jpg'
+title: "The Unlock Protocol Flywheel"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Fri Jun 14 2024 15:09:28 GMT+0000 (Coordinated Universal Time)"
+description: "In mechanical systems, a flywheel is a rotating disk that is used to store energy. In onchain systems, the term flywheel is used in a similar manner to capture the essence of a sustainable onchain economic model."
+image: "/images/blog/the-unlock-protocol-flywheel/89f55bc3130ee99402af9999e59289e6.jpg"
 ---
 
 ![The Unlock Protocol Flywheel](https://storage.googleapis.com/papyrus_images/89f55bc3130ee99402af9999e59289e6.jpg)

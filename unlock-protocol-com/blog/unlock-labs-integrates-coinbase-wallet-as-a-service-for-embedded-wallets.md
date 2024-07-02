@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Integrates Coinbase Wallet as a Service for Embedded Wallets'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Thu Jun 27 2024 13:05:23 GMT+0000 (Coordinated Universal Time)'
-description: 'Unlock Labs has significantly updated its wallet creation process, simplifying access management for users and creating a more streamlined experience.'
-image: '/images/blog/unlock-labs-integrates-coinbase-wallet-as-a-service-for-embedded-wallets/0cc9d512ae803f1dd088f14fe8d4a804.jpg'
+title: "Unlock Labs Integrates Coinbase Wallet as a Service for Embedded Wallets"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Thu Jun 27 2024 13:05:23 GMT+0000 (Coordinated Universal Time)"
+description: "Unlock Labs has significantly updated its wallet creation process, simplifying access management for users and creating a more streamlined experience."
+image: "/images/blog/unlock-labs-integrates-coinbase-wallet-as-a-service-for-embedded-wallets/0cc9d512ae803f1dd088f14fe8d4a804.jpg"
 ---
 
 ![Unlock Labs Integrates Coinbase Wallet as a Service for Embedded Wallets](https://storage.googleapis.com/papyrus_images/0cc9d512ae803f1dd088f14fe8d4a804.jpg)

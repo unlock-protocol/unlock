@@ -1,10 +1,10 @@
 ---
-title: 'tokenproof and Unlock Labs Bring Events Onchain Together'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Wed May 08 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'You can now check-in onchain tickets powered by Unlock Protocol with the tokenproof verifier app.'
-image: '/images/blog/tokenproof-and-unlock-labs-bring-events-onchain-together/c57b6b2cbf9309a93484633b4559070d.jpg'
+title: "tokenproof and Unlock Labs Bring Events Onchain Together"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Wed May 08 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "You can now check-in onchain tickets powered by Unlock Protocol with the tokenproof verifier app."
+image: "/images/blog/tokenproof-and-unlock-labs-bring-events-onchain-together/c57b6b2cbf9309a93484633b4559070d.jpg"
 ---
 
 ![tokenproof and Unlock Labs Bring Events Onchain Together](https://storage.googleapis.com/papyrus_images/c57b6b2cbf9309a93484633b4559070d.jpg)

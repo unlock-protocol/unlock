@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Onchain Events Airdrop 1'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Thu Mar 28 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Unlock Labs will airdrop a pool of 2500 OP tokens to event organizers who retroactively bring their ETHDenver 2024 events onchain.'
-image: '/images/blog/unlock-labs-onchain-events-airdrop-1/7b3e434e8f8955b57e428c95b3f12cb1.jpg'
+title: "Unlock Labs Onchain Events Airdrop 1"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Thu Mar 28 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Unlock Labs will airdrop a pool of 2500 OP tokens to event organizers who retroactively bring their ETHDenver 2024 events onchain."
+image: "/images/blog/unlock-labs-onchain-events-airdrop-1/7b3e434e8f8955b57e428c95b3f12cb1.jpg"
 ---
 
 ![Unlock Labs Onchain Events Airdrop 1](https://storage.googleapis.com/papyrus_images/7b3e434e8f8955b57e428c95b3f12cb1.jpg)

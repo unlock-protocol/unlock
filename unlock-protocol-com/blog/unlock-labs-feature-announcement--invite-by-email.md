@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Invite by Email'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Sun Apr 28 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Event organizers can now invite attendees by email address.'
-image: '/images/blog/unlock-labs-feature-announcement--invite-by-email/04af031d4f9c586083c1d22c198b4c1c.jpg'
+title: "Unlock Labs Feature Announcement: Invite by Email"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Sun Apr 28 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Event organizers can now invite attendees by email address."
+image: "/images/blog/unlock-labs-feature-announcement--invite-by-email/04af031d4f9c586083c1d22c198b4c1c.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Invite by Email](https://storage.googleapis.com/papyrus_images/04af031d4f9c586083c1d22c198b4c1c.jpg)

@@ -1,10 +1,10 @@
 ---
-title: 'Unlock the Potential: Grab Your Share of 7,000 ARB in the Unlock Protocol RetroQF Grant Round 2!'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Tue Jun 25 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Hey there, builders and creators! Ready for an opportunity that not only celebrates your groundbreaking work but also fills your project’s treasury?'
-image: '/images/blog/unlock-the-potential--grab-your-share-of-7-000-arb-in-the-unlock-protocol-retroqf-grant-round-2-/f8ca91875fc434d448abc446ac8618e4.png'
+title: "Unlock the Potential: Grab Your Share of 7,000 ARB in the Unlock Protocol RetroQF Grant Round 2!"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Tue Jun 25 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Hey there, builders and creators! Ready for an opportunity that not only celebrates your groundbreaking work but also fills your project’s treasury?"
+image: "/images/blog/unlock-the-potential--grab-your-share-of-7-000-arb-in-the-unlock-protocol-retroqf-grant-round-2-/f8ca91875fc434d448abc446ac8618e4.png"
 ---
 
 ![Unlock the Potential: Grab Your Share of 7,000 ARB in the Unlock Protocol RetroQF Grant Round 2!](https://storage.googleapis.com/papyrus_images/f8ca91875fc434d448abc446ac8618e4.png)

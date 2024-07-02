@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Creator Subscriptions Using P00LS Creator Tokens'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Fri Jun 14 2024 14:18:20 GMT+0000 (Coordinated Universal Time)'
-description: 'Creators are building their own economies and bringing their communities onchain. With P00LS and Unlock Protocol, they now have a mechanism through which they can co-create sustainable economies with their fans.'
-image: '/images/blog/unlock-labs-feature-announcement--creator-subscriptions-using-p00ls-creator-tokens/d723ca3ba7cea3ca271766c5a4604be1.jpg'
+title: "Unlock Labs Feature Announcement: Creator Subscriptions Using P00LS Creator Tokens"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Fri Jun 14 2024 14:18:20 GMT+0000 (Coordinated Universal Time)"
+description: "Creators are building their own economies and bringing their communities onchain. With P00LS and Unlock Protocol, they now have a mechanism through which they can co-create sustainable economies with their fans."
+image: "/images/blog/unlock-labs-feature-announcement--creator-subscriptions-using-p00ls-creator-tokens/d723ca3ba7cea3ca271766c5a4604be1.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Creator Subscriptions Using P00LS Creator Tokens](https://storage.googleapis.com/papyrus_images/d723ca3ba7cea3ca271766c5a4604be1.jpg)

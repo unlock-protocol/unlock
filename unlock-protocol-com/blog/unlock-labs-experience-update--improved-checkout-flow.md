@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Experience Update: Improved Checkout Flow'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Mon May 13 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Simplify, simplify, simplify.'
-image: '/images/blog/unlock-labs-experience-update--improved-checkout-flow/4710becc5e075847f054a4ca5a41824c.jpg'
+title: "Unlock Labs Experience Update: Improved Checkout Flow"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Mon May 13 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Simplify, simplify, simplify."
+image: "/images/blog/unlock-labs-experience-update--improved-checkout-flow/4710becc5e075847f054a4ca5a41824c.jpg"
 ---
 
 ![Unlock Labs Experience Update: Improved Checkout Flow](https://storage.googleapis.com/papyrus_images/4710becc5e075847f054a4ca5a41824c.jpg)

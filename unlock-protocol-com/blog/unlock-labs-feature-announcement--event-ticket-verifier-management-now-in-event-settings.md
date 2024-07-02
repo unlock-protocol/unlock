@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Event Ticket Verifier Management Now in Event Settings'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Tue Jun 04 2024 04:05:17 GMT+0000 (Coordinated Universal Time)'
-description: 'Adding event verifiers for checking tickets in at events has been integrated into the event settings page of an event itself.'
-image: '/images/blog/unlock-labs-feature-announcement--event-ticket-verifier-management-now-in-event-settings/412ff11cbae1c9c2429a6ceee9475d76.jpg'
+title: "Unlock Labs Feature Announcement: Event Ticket Verifier Management Now in Event Settings"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Tue Jun 04 2024 04:05:17 GMT+0000 (Coordinated Universal Time)"
+description: "Adding event verifiers for checking tickets in at events has been integrated into the event settings page of an event itself."
+image: "/images/blog/unlock-labs-feature-announcement--event-ticket-verifier-management-now-in-event-settings/412ff11cbae1c9c2429a6ceee9475d76.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Event Ticket Verifier Management Now in Event Settings](https://storage.googleapis.com/papyrus_images/412ff11cbae1c9c2429a6ceee9475d76.jpg)

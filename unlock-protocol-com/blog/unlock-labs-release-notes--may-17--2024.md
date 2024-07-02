@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Release Notes: May 17, 2024'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Fri May 17 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Unlock Labs app release notes'
-image: '/images/blog/unlock-labs-release-notes--may-17--2024/72388ea32d7e9400d8ce8a70f8192bc7.jpg'
+title: "Unlock Labs Release Notes: May 17, 2024"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Fri May 17 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Unlock Labs app release notes"
+image: "/images/blog/unlock-labs-release-notes--may-17--2024/72388ea32d7e9400d8ce8a70f8192bc7.jpg"
 ---
 
 ![Unlock Labs Release Notes: May 17, 2024](https://storage.googleapis.com/papyrus_images/72388ea32d7e9400d8ce8a70f8192bc7.jpg)

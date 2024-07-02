@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Gitcoin Passport Hook'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Tue Apr 16 2024 23:56:52 GMT+0000 (Coordinated Universal Time)'
-description: 'Unlock Labs integrates Gitcoin Passport scores to enhance trust and sybil resistance.'
-image: '/images/blog/unlock-labs-feature-announcement--gitcoin-passport-hook/30955e598e1ddc85d4b1a8a3bfeb5b68.jpg'
+title: "Unlock Labs Feature Announcement: Gitcoin Passport Hook"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Tue Apr 16 2024 23:56:52 GMT+0000 (Coordinated Universal Time)"
+description: "Unlock Labs integrates Gitcoin Passport scores to enhance trust and sybil resistance."
+image: "/images/blog/unlock-labs-feature-announcement--gitcoin-passport-hook/30955e598e1ddc85d4b1a8a3bfeb5b68.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Gitcoin Passport Hook](https://storage.googleapis.com/papyrus_images/30955e598e1ddc85d4b1a8a3bfeb5b68.jpg)

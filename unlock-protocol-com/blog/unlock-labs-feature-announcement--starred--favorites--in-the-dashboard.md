@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Starred "Favorites" in the Dashboard'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Thu May 09 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Admins now save time and clicks in the dashboard.'
-image: '/images/blog/unlock-labs-feature-announcement--starred--favorites--in-the-dashboard/9f37179cc2e68db53eb382cc9b720e45.jpg'
+title: "Unlock Labs Feature Announcement: Starred \"Favorites\" in the Dashboard"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Thu May 09 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Admins now save time and clicks in the dashboard."
+image: "/images/blog/unlock-labs-feature-announcement--starred--favorites--in-the-dashboard/9f37179cc2e68db53eb382cc9b720e45.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Starred "Favorites" in the Dashboard](https://storage.googleapis.com/papyrus_images/9f37179cc2e68db53eb382cc9b720e45.jpg)

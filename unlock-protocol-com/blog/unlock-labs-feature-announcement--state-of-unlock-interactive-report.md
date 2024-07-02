@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: State of Unlock Interactive Report'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Wed Apr 03 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Unlock Labs has made interactivity improvements and significant visual enhancements to the State of Unlock Interactive Report.'
-image: '/images/blog/unlock-labs-feature-announcement--state-of-unlock-interactive-report/b24fc7aee5bb4d90402308bc036067df.png'
+title: "Unlock Labs Feature Announcement: State of Unlock Interactive Report"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Wed Apr 03 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Unlock Labs has made interactivity improvements and significant visual enhancements to the State of Unlock Interactive Report."
+image: "/images/blog/unlock-labs-feature-announcement--state-of-unlock-interactive-report/b24fc7aee5bb4d90402308bc036067df.png"
 ---
 
 ![Unlock Labs Feature Announcement: State of Unlock Interactive Report](https://storage.googleapis.com/papyrus_images/b24fc7aee5bb4d90402308bc036067df.png)

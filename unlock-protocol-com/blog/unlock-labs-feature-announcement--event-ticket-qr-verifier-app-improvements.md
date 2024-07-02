@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Event Ticket QR Verifier App Improvements'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Tue Jun 04 2024 14:24:48 GMT+0000 (Coordinated Universal Time)'
-description: 'Ticket verification QR code scanning and check-in now available from event pages.'
-image: '/images/blog/unlock-labs-feature-announcement--event-ticket-qr-verifier-app-improvements/1ff9f244716ac2f1c7fb99975cda0656.jpg'
+title: "Unlock Labs Feature Announcement: Event Ticket QR Verifier App Improvements"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Tue Jun 04 2024 14:24:48 GMT+0000 (Coordinated Universal Time)"
+description: "Ticket verification QR code scanning and check-in now available from event pages."
+image: "/images/blog/unlock-labs-feature-announcement--event-ticket-qr-verifier-app-improvements/1ff9f244716ac2f1c7fb99975cda0656.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Event Ticket QR Verifier App Improvements](https://storage.googleapis.com/papyrus_images/1ff9f244716ac2f1c7fb99975cda0656.jpg)

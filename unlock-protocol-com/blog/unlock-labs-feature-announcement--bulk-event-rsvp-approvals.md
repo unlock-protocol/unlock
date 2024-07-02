@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Bulk Event RSVP Approvals'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Wed Jun 05 2024 16:09:22 GMT+0000 (Coordinated Universal Time)'
-description: 'Event hosts can now quickly select and approve attendees in batches at a time as opposed to one by one in the Unlock Labs EVENTS app.'
-image: '/images/blog/unlock-labs-feature-announcement--bulk-event-rsvp-approvals/76e210da1a13106dd21900d9197e84b7.jpg'
+title: "Unlock Labs Feature Announcement: Bulk Event RSVP Approvals"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Wed Jun 05 2024 16:09:22 GMT+0000 (Coordinated Universal Time)"
+description: "Event hosts can now quickly select and approve attendees in batches at a time as opposed to one by one in the Unlock Labs EVENTS app."
+image: "/images/blog/unlock-labs-feature-announcement--bulk-event-rsvp-approvals/76e210da1a13106dd21900d9197e84b7.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Bulk Event RSVP Approvals](https://storage.googleapis.com/papyrus_images/76e210da1a13106dd21900d9197e84b7.jpg)

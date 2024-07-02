@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Release Notes: June 27, 2024'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Thu Jun 27 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Unlock Labs app release notes.'
-image: '/images/blog/unlock-labs-release-notes--june-27--2024/c3ac89366ee03da8c4ed874855ac01cf.jpg'
+title: "Unlock Labs Release Notes: June 27, 2024"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Thu Jun 27 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Unlock Labs app release notes."
+image: "/images/blog/unlock-labs-release-notes--june-27--2024/c3ac89366ee03da8c4ed874855ac01cf.jpg"
 ---
 
 ![Unlock Labs Release Notes: June 27, 2024](https://storage.googleapis.com/papyrus_images/c3ac89366ee03da8c4ed874855ac01cf.jpg)

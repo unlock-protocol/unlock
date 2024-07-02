@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Protocol Adds Support for $DEGEN 🎩'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Fri Mar 29 2024 00:00:00 GMT+0000 (Coordinated Universal Time)'
-description: 'Receive payments for subscriptions, memberships, tickets and more in $DEGEN.'
-image: '/images/blog/unlock-protocol-adds-support-for--degen---/baaa0b13a54abeff9edec94b47ee54c7.png'
+title: "Unlock Protocol Adds Support for $DEGEN 🎩"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Fri Mar 29 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Receive payments for subscriptions, memberships, tickets and more in $DEGEN."
+image: "/images/blog/unlock-protocol-adds-support-for--degen---/baaa0b13a54abeff9edec94b47ee54c7.png"
 ---
 
 ![Unlock Protocol Adds Support for $DEGEN 🎩](https://storage.googleapis.com/papyrus_images/baaa0b13a54abeff9edec94b47ee54c7.png)

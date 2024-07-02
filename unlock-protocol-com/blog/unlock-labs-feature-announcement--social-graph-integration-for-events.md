@@ -1,10 +1,10 @@
 ---
-title: 'Unlock Labs Feature Announcement: Social Graph Integration for Events'
-subtitle: ''
-authorName: 'Unlock Labs team'
-publishDate: 'Wed May 01 2024 14:33:49 GMT+0000 (Coordinated Universal Time)'
-description: 'EVENTS by Unlock Labs now integrates with Farcaster and Lens Protocol.'
-image: '/images/blog/unlock-labs-feature-announcement--social-graph-integration-for-events/e9f588232491735931bdf7363d4ca8a8.jpg'
+title: "Unlock Labs Feature Announcement: Social Graph Integration for Events"
+subtitle: ""
+authorName: "Unlock Labs team"
+publishDate: "Wed May 01 2024 14:33:49 GMT+0000 (Coordinated Universal Time)"
+description: "EVENTS by Unlock Labs now integrates with Farcaster and Lens Protocol."
+image: "/images/blog/unlock-labs-feature-announcement--social-graph-integration-for-events/e9f588232491735931bdf7363d4ca8a8.jpg"
 ---
 
 ![Unlock Labs Feature Announcement: Social Graph Integration for Events](https://storage.googleapis.com/papyrus_images/e9f588232491735931bdf7363d4ca8a8.jpg)
