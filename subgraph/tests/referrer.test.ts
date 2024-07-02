@@ -20,6 +20,7 @@ describe('Referrer', () => {
     lock.tokenAddress = Bytes.fromHexString(nullAddress)
     lock.price = BigInt.fromU32(keyPrice)
     lock.lockManagers = [Bytes.fromHexString(lockManagers[0])]
+    lock.keyGranters = [Bytes.fromHexString(lockManagers[0])]
     lock.version = BigInt.fromU32(12)
     lock.totalKeys = BigInt.fromU32(0)
     lock.deployer = Bytes.fromHexString(lockManagers[0])

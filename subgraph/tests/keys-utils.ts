@@ -10,6 +10,7 @@ import {
   DataSourceContext,
   Value,
   dataSource,
+  Bytes,
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey,
@@ -20,8 +21,11 @@ import {
   KeyManagerChanged,
   LockManagerAdded,
   LockManagerRemoved,
+  KeyGranterAdded,
+  KeyGranterRemoved,
   Transfer,
   RenewKeyPurchase,
+  RoleGranted,
 } from '../generated/templates/PublicLock/PublicLock'
 import { GNPChanged } from '../generated/Unlock/Unlock'
 
@@ -35,6 +39,7 @@ import {
   nullAddress,
 } from './constants'
 import { newCancelKeyTransactionReceipt } from './mockTxReceipt'
+import { KEY_GRANTER } from '../src/helpers'
 
 export function mockDataSourceV8(): void {
   const v8context = new DataSourceContext()
@@ -86,9 +91,8 @@ export function createExpirationChangedEventUntilV11(
   _amount: BigInt,
   _timeAdded: boolean
 ): ExpirationChangedUntilV11 {
-  const expirationChangedEvent = changetype<ExpirationChangedUntilV11>(
-    newMockEvent()
-  )
+  const expirationChangedEvent =
+    changetype<ExpirationChangedUntilV11>(newMockEvent())
 
   expirationChangedEvent.address = dataSource.address()
 
@@ -317,16 +321,60 @@ export function createLockManagerAddedEvent(
   return lockManagerAddedEvent
 }
 
-export function createLockManagerRemovedEvent(
-  account: Address
-): LockManagerRemoved {
-  const lockManagerRemovedEvent = changetype<LockManagerRemoved>(newMockEvent())
+export function createKeyGranterAddedEvent(account: Address): KeyGranterAdded {
+  const keyGranterAddedEvent = changetype<KeyGranterAdded>(newMockEvent())
 
-  lockManagerRemovedEvent.parameters = []
+  keyGranterAddedEvent.address = dataSource.address()
+  keyGranterAddedEvent.parameters = []
 
-  lockManagerRemovedEvent.parameters.push(
+  keyGranterAddedEvent.parameters.push(
     new ethereum.EventParam('account', ethereum.Value.fromAddress(account))
   )
 
-  return lockManagerRemovedEvent
+  return keyGranterAddedEvent
+}
+
+export function createKeyGranterRemovedEvent(
+  account: Address
+): KeyGranterRemoved {
+  const keyGranterRemovedEvent = changetype<KeyGranterRemoved>(newMockEvent())
+
+  // set existing lock address
+  keyGranterRemovedEvent.address = Address.fromString(lockAddress)
+
+  keyGranterRemovedEvent.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(account))
+  )
+
+  return keyGranterRemovedEvent
+}
+
+export function createRoleGrantedKeyGranterAddedEvent(
+  newKeyGranter: Address
+): RoleGranted {
+  const newRoleGranted = changetype<RoleGranted>(newMockEvent())
+
+  // set existing lock address
+  newRoleGranted.address = Address.fromString(lockAddress)
+
+  newRoleGranted.parameters = []
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(KEY_GRANTER))
+    )
+  )
+
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam(
+      'account',
+      ethereum.Value.fromAddress(newKeyGranter)
+    )
+  )
+
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newRoleGranted
 }

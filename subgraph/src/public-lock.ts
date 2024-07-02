@@ -15,6 +15,8 @@ import {
   LockMetadata as LockMetadataEvent,
   LockConfig as LockConfigEvent,
   ReferrerFee as ReferrerFeeEvent,
+  KeyGranterAdded as KeyGranterAddedEvent,
+  KeyGranterRemoved as KeyGranterRemovedEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
@@ -33,6 +35,7 @@ import {
   getKeyManagerOf,
   LOCK_MANAGER,
   addTransactionHashToKey,
+  KEY_GRANTER,
 } from './helpers'
 import { tryCreateCancelReceipt, createReceipt } from './receipt'
 
@@ -265,8 +268,8 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   createReceipt(event)
 }
 
-// NB: Up to PublicLock v8, we handle the addition of a new lock managers
-// with our custom event `LockManagerAdded`. Starting from v9,
+// NB: Up to PublicLock v8, we handle the addition of a new lock managers and key granters
+// with our custom events `LockManagerAdded` and `KeyGranterAdded`. Starting from v9,
 // we use OpenZeppelin native `RoleGranted` event.
 export function handleRoleGranted(event: RoleGrantedEvent): void {
   if (
@@ -286,6 +289,53 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
       }
       lock.save()
     }
+  } else if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(KEY_GRANTER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      const keyGranters = lock.keyGranters
+      if (keyGranters && keyGranters.length) {
+        if (!keyGranters.includes(event.params.account)) {
+          keyGranters.push(event.params.account)
+          lock.keyGranters = keyGranters
+        }
+      } else {
+        lock.keyGranters = [event.params.account]
+      }
+      lock.save()
+    }
+  }
+}
+
+export function handleKeyGranterAdded(event: KeyGranterAddedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+
+  if (lock && lock.keyGranters) {
+    const keyGranters = lock.keyGranters
+    keyGranters.push(event.params.account)
+    lock.keyGranters = keyGranters
+    lock.save()
+    log.debug('Key Manager {} added to {}', [
+      event.params.account.toHexString(),
+      event.address.toHexString(),
+    ])
+  }
+}
+
+export function handleKeyGranterRemoved(event: KeyGranterRemovedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock && lock.keyGranters) {
+    const newKeyGranters: Bytes[] = []
+    for (let i = 0; i < lock.keyGranters.length; i++) {
+      const keyGranterAddress = lock.keyGranters[i]
+      if (keyGranterAddress != event.params.account) {
+        newKeyGranters.push(keyGranterAddress)
+      }
+    }
+    lock.keyGranters = newKeyGranters
+    lock.save()
   }
 }
 
