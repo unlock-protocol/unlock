@@ -36,7 +36,6 @@ contract UPToken is
   }
 
   function mint(address upSwap) public onlyOwner {
-    // TODO: raise exception here ?
     if (balanceOf(upSwap) == 0) {
       // premint the supply
       _mint(upSwap, TOTAL_SUPPLY * 10 ** decimals());
