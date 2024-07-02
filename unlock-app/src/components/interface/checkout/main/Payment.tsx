@@ -2,10 +2,7 @@ import Image from 'next/image'
 import { ethers } from 'ethers'
 import { CheckoutService } from './checkoutMachine'
 
-import {
-  RiExternalLinkLine as ExternalLinkIcon,
-  RiErrorWarningFill as ErrorIcon,
-} from 'react-icons/ri'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { useSelector } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -30,6 +27,7 @@ import { toBigInt, useCrossChainRoutes } from '~/hooks/useCrossChainRoutes'
 import { usePricing } from '~/hooks/usePricing'
 import Link from 'next/link'
 import Disconnect from './Disconnect'
+import { TransactionPreparationError } from './TransactionPreparationError'
 
 interface Props {
   checkoutService: CheckoutService
@@ -106,6 +104,7 @@ export function Payment({ checkoutService }: Props) {
     data: pricingData,
     isInitialLoading: isPricingDataLoading,
     isError: isPricingDataError,
+    refetch: refetchPricingData,
   } = usePricing({
     lockAddress: lock!.address,
     network: lock!.network,
@@ -190,12 +189,11 @@ export function Payment({ checkoutService }: Props) {
             <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
           </div>
         ) : isPricingDataError ? (
-          <div>
-            <p className="text-sm font-bold">
-              <ErrorIcon className="inline" />
-              There was an error when preparing the transaction.
-            </p>
-          </div>
+          <TransactionPreparationError
+            refetch={refetchPricingData}
+            lockAddress={lock.address}
+            network={lock.network}
+          />
         ) : (
           <div className="space-y-6">
             {/* Card Payment via Stripe! */}
