@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { reverts } = require('../helpers')
+const { reverts, deployERC20 } = require('../helpers')
 const { getEvent } = require('@unlock-protocol/hardhat-helpers')
 
 const amountUDT = ethers.parseEther('1')
@@ -24,17 +24,18 @@ describe('Swapper UP / UDT', () => {
       initializer: 'initialize(address)',
     })
 
+    const UP = await ethers.getContractFactory('UPToken')
+    up = await upgrades.deployProxy(UP, [await owner.getAddress()])
+
     const UPSwap = await ethers.getContractFactory('UPSwap')
     swap = await upgrades.deployProxy(UPSwap, [
       await udt.getAddress(),
+      await up.getAddress(),
       await owner.getAddress(),
     ])
 
-    const UP = await ethers.getContractFactory('UPToken')
-    up = await upgrades.deployProxy(UP, [
-      await owner.getAddress(),
-      await swap.getAddress(),
-    ])
+    // mint the entire supply to swap
+    await up.mint(await swap.getAddress())
   })
 
   describe('initialization', () => {
@@ -253,6 +254,20 @@ describe('Swapper UP / UDT', () => {
         assert.equal(amountUDT, args.amountUDT)
         assert.equal(amountUP, args.amountUP)
       })
+    })
+  })
+  describe('setUp', () => {
+    it('update the address of the UP token', async () => {
+      const erc20 = await deployERC20(await owner.getAddress)
+      await swap.setUp(await erc20.getAddress)
+      assert.equal(await swap.up(), await erc20.getAddress)
+    })
+    it('can be called only by owner', async () => {
+      const [, attacker] = await ethers.getSigners()
+      await reverts(
+        swap.connect(attacker).setUp(await attacker.getAddress()),
+        `OwnableUnauthorizedAccount("${await attacker.getAddress()}")`
+      )
     })
   })
 })

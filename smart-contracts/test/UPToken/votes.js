@@ -43,10 +43,8 @@ describe('UPToken / Votes', () => {
 
     // deploy UP token
     const UnlockProtocolToken = await ethers.getContractFactory('UPToken')
-    up = await upgrades.deployProxy(UnlockProtocolToken, [
-      owner,
-      await swap.getAddress(),
-    ])
+    up = await upgrades.deployProxy(UnlockProtocolToken, [owner])
+    await up.mint(await swap.getAddress())
   })
 
   describe('Supply', () => {
