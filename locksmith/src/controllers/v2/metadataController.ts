@@ -11,6 +11,7 @@ import {
   upsertUsersMetadata,
   upsertUserMetadata,
   UserMetadataInputs,
+  getMetadata,
 } from '../../operations/userMetadataOperations'
 import { networks } from '@unlock-protocol/networks'
 
@@ -244,5 +245,31 @@ export const updateUsersMetadata: RequestHandler = async (
       }
     }),
     error,
+  })
+}
+
+export const readUserMetadata: RequestHandler = async (request, response) => {
+  const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
+  const tokenAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+  const loggedInUser = request.user!.walletAddress
+  const normalisedLoggedInAddress = Normalizer.ethereumAddress(loggedInUser)
+  if (normalisedLoggedInAddress !== userAddress) {
+    return response.status(403).send({
+      message: `Signee ${normalisedLoggedInAddress} and requested data for ${userAddress} are different`,
+    })
+  }
+
+  const user = await getMetadata(
+    tokenAddress,
+    userAddress,
+    true /* includeProtected */,
+    true /* inclideNetwork */
+  )
+
+  return response.status(200).send({
+    metadata: user?.userMetadata || {},
+    userAddress,
+    lockAddress: tokenAddress,
+    network: user?.network,
   })
 }

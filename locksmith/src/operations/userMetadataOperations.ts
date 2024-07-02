@@ -55,7 +55,8 @@ export function isMetadataEmpty(data: Record<string, any>) {
 export async function getMetadata(
   tokenAddress: string,
   userAddress: string,
-  includeProtected = false
+  includeProtected = false,
+  includeNetwork = false
 ) {
   const result = await UserTokenMetadata.findOne({
     where: {
@@ -66,6 +67,15 @@ export async function getMetadata(
 
   if (result && !includeProtected) {
     delete result.data.userMetadata.protected
+  }
+
+  if (result && includeNetwork) {
+    return result
+      ? {
+          userMetadata: result.data.userMetadata,
+          network: result.dataValues.chain,
+        }
+      : result
   }
 
   return result ? result.data : result
