@@ -1,4 +1,4 @@
-import { Log, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import {
   InitializeWaas,
   Logout,
