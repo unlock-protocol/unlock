@@ -14,17 +14,17 @@ const destChainId = 137 // TODO: change to Base
 
 module.exports = async ({
   // UP token address
-  upTokenExpectedAddress = '0x...',
+  upTokenExpectedAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187',
   // empty proxy
-  upSwapProxyAddress = '0x7588337Bb4c5a8b374CC5d27111cEaE66d53fA6A',
+  upSwapProxyAddress = '0x..',
   // actual swap impl
-  upSwapImplAddress = '0x2Ea27712EaB8574088A824147eC4c0f108aacE78',
+  upSwapImplAddress = '0x...',
 } = {}) => {
   const { id, name, multisig, unlockDaoToken } = await getNetwork(destChainId)
   // const multisig = '0x6ff837695B120A8f533498584249131F1c6fC4a8'
   console.log(`Submitting proposal on ${name} (${destChainId})`)
 
-  // 3. parse UP token upgrade + initialization call
+  // parse UP token upgrade + initialization call
   const [upTokenQualifiedPath] = await copyAndBuildContractsAtVersion(
     __dirname,
     [{ contractName: 'UPSwap', subfolder: 'UP' }]

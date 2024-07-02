@@ -15,13 +15,13 @@ async function main() {
   const EmptyImpl = await ethers.getContractFactory(emptyQualifiedPath)
   const { address: proxy } = await deployUpgradeableContract(EmptyImpl)
 
-  // 2. deploys the UP token implementation
-  console.log(`Deploying UPToken implementation...`)
-  const [upTokenQualifiedPath] = await copyAndBuildContractsAtVersion(
+  // 2. deploys the UP swap implementation
+  console.log(`Deploying UPSwap implementation...`)
+  const [upSwapQualifiedPath] = await copyAndBuildContractsAtVersion(
     __dirname,
     [{ contractName: 'UPSwap', subfolder: 'UP' }]
   )
-  const { address: impl } = await deployContract(upTokenQualifiedPath)
+  const { address: impl } = await deployContract(upSwapQualifiedPath)
 
   console.log({
     upSwapProxyAddress: proxy,
