@@ -16,14 +16,12 @@ export interface RegistrationCardProps {
   }
   requiresApproval: boolean
   hideRemaining: boolean
-  attendeeRefund?: AttendeeRefundType
 }
 
 export const RegistrationCard = ({
   requiresApproval,
   checkoutConfig,
   hideRemaining,
-  attendeeRefund,
 }: RegistrationCardProps) => {
   const [hasRefreshed, setHasRefreshed] = useState(false)
   // Check if the user has a key!
@@ -56,7 +54,6 @@ export const RegistrationCard = ({
           checkoutConfig={checkoutConfig}
           hideRemaining={hideRemaining}
         />
-        {attendeeRefund && <AttendeeStaking attendeeRefund={attendeeRefund} />}
       </Card>
     )
   }
