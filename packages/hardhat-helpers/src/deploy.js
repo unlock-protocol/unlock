@@ -76,6 +76,7 @@ export const deployUpgradeableContract = async (
   if (!(await isLocalhost())) {
     await verify({ address, deployArgs })
   }
+  console.log(` > contract deployed w proxy at : ${address} (tx: ${hash})`)
 
   return {
     contract,
