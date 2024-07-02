@@ -31,6 +31,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
   private selectedLoginProvider: string
   private token: string
 
+  // @ts-expect-error Type error: 'isWaas' is declared but its value is never read.
   private isWaas: boolean
 
   constructor({
