@@ -4,6 +4,7 @@ const {
   deployUpgradeableContract,
 } = require('@unlock-protocol/hardhat-helpers')
 
+// This script will be called by the BVI Foundation UP issuer.
 async function main() {
   const [signer] = await ethers.getSigners()
   const initialOwner = await signer.getAddress()
