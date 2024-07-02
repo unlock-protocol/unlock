@@ -321,8 +321,8 @@ export const PaywallLocksConfig = z.record(z.string(), PaywallLockConfig)
 export type PaywallLocksConfigType = z.infer<typeof PaywallLocksConfig>
 
 export const AttendeeRefund = z.object({
-  amount: z.string(),
-  currency: z.string(),
+  amount: z.number().positive(),
+  currency: z.string().optional().nullable(), // undefined/null for native currency
   network: z.number().int().positive(),
 })
 export type AttendeeRefundType = z.infer<typeof AttendeeRefund>
