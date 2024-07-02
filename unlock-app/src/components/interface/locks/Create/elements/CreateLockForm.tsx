@@ -1,5 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  Select,
+  ToggleSwitch,
+  CurrencyHint,
+} from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -89,6 +95,9 @@ export const CreateLockForm = ({
     defaultValues?.unlimitedQuantity
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
+
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+
   const {
     register,
     handleSubmit,
@@ -143,6 +152,7 @@ export const CreateLockForm = ({
   const onChangeNetwork = useCallback(
     (network: number | string) => {
       setValue('network', parseInt(`${network}`))
+      setCurrencyNetwork(networks[network].name)
     },
     [setValue]
   )
@@ -353,6 +363,7 @@ export const CreateLockForm = ({
                   </span>
                 )}
               </div>
+              <CurrencyHint network={currencyNetwork as string} />
             </div>
             <Button
               className="mt-8 md:mt-0"

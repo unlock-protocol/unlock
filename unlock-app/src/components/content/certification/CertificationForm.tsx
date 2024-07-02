@@ -11,6 +11,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
+  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -389,8 +390,12 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
+                      <CurrencyHint
+                        network={networks[selectedNetwork as number].name}
+                      />
                     </div>
                   </div>
+
                   <div>
                     <div className="flex items-center justify-between">
                       <label className="px-1 mb-2 text-base" htmlFor="">
