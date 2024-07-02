@@ -72,6 +72,7 @@ function newKey(event: TransferEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.lastKeyMintedAt = event.block.timestamp
     lock.save()
   }
 
@@ -239,6 +240,13 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.expiration = event.params.newTimestamp
     key.cancelled = false
     key.save()
+
+    const lock = Lock.load(key.lock)
+    if (lock) {
+      lock.lastKeyRenewalAt = event.block.timestamp
+      lock.save()
+    }
+
     // create receipt
     createReceipt(event)
   }
@@ -259,6 +267,12 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
     key.expiration = event.params.newExpiration
     key.cancelled = false
     key.save()
+
+    const lock = Lock.load(key.lock)
+    if (lock) {
+      lock.lastKeyRenewalAt = event.block.timestamp
+      lock.save()
+    }
   }
 
   // create receipt
