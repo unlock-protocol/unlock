@@ -1,10 +1,8 @@
 const { ethers } = require('hardhat')
 const {
   getNetwork,
-  copyAndBuildContractsAtVersion,
-  deployContract,
-  deployUpgradeableContract,
   getProxyAdminAddress,
+  copyAndBuildContractsAtVersion,
 } = require('@unlock-protocol/hardhat-helpers')
 const { parseBridgeCall } = require('../helpers/crossChain')
 const {
@@ -26,25 +24,11 @@ module.exports = async ({
   // const multisig = '0x6ff837695B120A8f533498584249131F1c6fC4a8'
   console.log(`Submitting proposal on ${name} (${destChainId})`)
 
-  // 1. deploys a proxy contract with an empty implementation
-  console.log(`Deploying proxy with empty impl...`)
-  const EmptyImpl = await ethers.getContractFactory('EmptyImpl')
-  const { address: proxy } = await deployUpgradeableContract(EmptyImpl)
-
-  // 2. deploys the UP token implementation
-  console.log(`Deploying UPToken implementation...`)
+  // 3. parse UP token upgrade + initialization call
   const [upTokenQualifiedPath] = await copyAndBuildContractsAtVersion(
     __dirname,
     [{ contractName: 'UPSwap', subfolder: 'UP' }]
   )
-  const { address: impl } = await deployContract(upTokenQualifiedPath)
-
-  console.log({
-    proxy,
-    impl,
-  })
-
-  // 3. parse UP token initialization call
   const UPToken = await ethers.getContractFactory(upTokenQualifiedPath)
   const initializeCall = UPToken.interface.encodeFunctionData('initialize', [
     unlockDaoToken.address, // udt,
@@ -65,7 +49,7 @@ module.exports = async ({
     upgradeArgs
   )
 
-  // encode instructions to be executed by the SAFE
+  // 4. encode instructions to be executed by the SAFE on the other side of the bridge
   const abiCoder = ethers.AbiCoder.defaultAbiCoder()
   const moduleData = await abiCoder.encode(
     ['address', 'uint256', 'bytes', 'bool'],
