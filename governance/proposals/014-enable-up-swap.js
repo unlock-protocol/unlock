@@ -20,7 +20,8 @@ module.exports = async ({
   // actual swap impl
   upSwapImplAddress = '0x...',
 } = {}) => {
-  const { id, name, multisig, unlockDaoToken } = await getNetwork(destChainId)
+  const { id, name, multisig, unlockDaoToken, explorer } =
+    await getNetwork(destChainId)
   // const multisig = '0x6ff837695B120A8f533498584249131F1c6fC4a8'
   console.log(`Submitting proposal on ${name} (${destChainId})`)
 
@@ -70,21 +71,24 @@ module.exports = async ({
 
   // parse calls for Safe
   return {
-    proposalName: `# Activate UP/UDT Swap
+    proposalName: `# Activate UDT/UP Swap Contract
     
-This proposal will activate the contract that allow to swap between UDT and the forthcoming UP Token.
+This proposal will activate the swap contract that lets anyone swap between UDT and the upcoming UP Token.
+
+As a reminder, every UDT can be swapped for 1,000 UP, and vice versa.
 
 In technical terms, the goal of the proposal is to set the correct implementation of the UPSwap contract 
-to the existing proxy.
+to the existing proxy. We are using [OpenZeppelin's Transparent Upgradable Proxy pattern](https://docs.openzeppelin.com/upgrades). 
+This upgrade can only be triggered by the Unlock DAO.
 
-The \`UPSwap\` contract has been reviewed by Code Arena.
+The \`UPSwap\` contract ([source code](https://github.com/unlock-protocol/unlock/blob/master/smart-contracts/contracts/tokens/UP/UPSwap.sol)) has been reviewed by [Code4rena](https://code4rena.com/).
 
-The contracts:
+The contracts on Base::
 
-- UDT address on Base: ${unlockDaoToken.address}
-- The UPToken contract will be located at ${upTokenExpectedAddress}
-- The UPSwap contract proxy is deployed at ${upSwapProxyAddress}
-- The UPSwap implementation ${upSwapImplAddress}
+- [UDT address on Base: ${unlockDaoToken.address}](${explorer.urls.address(unlockDaoToken.address)})
+- [The UPToken contract will be deployed at ${upTokenExpectedAddress}](${explorer.urls.address(upTokenExpectedAddress)}). This is empty for now, as the UP Token has not yet been deployed.
+- [The UPSwap contract proxy is deployed at ${upSwapProxyAddress}](${explorer.urls.address(upSwapProxyAddress)})
+- [The UPSwap implementation ${upSwapImplAddress}](${explorer.urls.address(upSwapImplAddress)})
     `,
     calls: [crossChainCall],
   }
