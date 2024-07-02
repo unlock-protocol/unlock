@@ -1,5 +1,10 @@
-import { ethers } from 'ethers'
-import { InitializeWaas, ProtocolFamily, Wallet } from '@coinbase/waas-sdk-web'
+import { Log, ethers } from 'ethers'
+import {
+  InitializeWaas,
+  Logout,
+  ProtocolFamily,
+  Wallet,
+} from '@coinbase/waas-sdk-web'
 import { config } from '~/config/app'
 import UnlockUser from '~/structured_data/unlockUser'
 import UnlockPaymentDetails from '~/structured_data/unlockPaymentDetails'
@@ -26,6 +31,8 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
   private selectedLoginProvider: string
   private token: string
 
+  private isWaas: boolean
+
   constructor({
     provider,
     email,
@@ -37,6 +44,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
     this.emailAddress = email
     this.selectedLoginProvider = selectedLoginProvider
     this.token = token
+    this.isWaas = true
   }
 
   async connect(captcha: string) {
@@ -83,6 +91,10 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
     }
 
     return false
+  }
+
+  async disconnect() {
+    await Logout()
   }
 
   getWaasUuid = async (captcha: string): Promise<string> => {
@@ -145,6 +157,8 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
       return signature
     } catch (error) {
       console.error('Error signing message: ', error)
+
+      await Logout()
       ToastHelper.error(
         'Error signing message, please wait a moment and try again.'
       )
