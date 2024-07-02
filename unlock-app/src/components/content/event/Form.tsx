@@ -622,7 +622,10 @@ export const Form = ({ onSubmit }: FormProps) => {
                       />
                     </div>
                   </div>
-                  <div className="text-sm mt-1 flex items-center justify-between">
+
+                  <CurrencyHint network={currencyNetwork as string} />
+
+                  <div className="text-sm mt-2 flex items-center justify-between">
                     <Checkbox
                       disabled={isFree || !details.lock?.keyPrice}
                       label="Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards)."
@@ -635,8 +638,6 @@ export const Form = ({ onSubmit }: FormProps) => {
                     />
                   </div>
                 </div>
-
-                <CurrencyHint network={currencyNetwork as string} />
 
                 <div>
                   <div className="flex items-center justify-between">
