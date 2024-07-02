@@ -10,10 +10,10 @@ const {
 } = require('@unlock-protocol/hardhat-helpers')
 
 async function main({ contractName = 'UPSwap', subfolder = 'UP' } = {}) {
-  // deploys an empty UP contract to be filled later by actual implementation
+  // deploys a proxy contract with an empty implementation
   console.log(`Deploying proxy with empty impl...`)
   const EmptyImpl = await ethers.getContractFactory('EmptyImpl')
-  await deployUpgradeableContract(EmptyImpl)
+  const { address: proxy } = await deployUpgradeableContract(EmptyImpl)
 
   // deploys the UP token implementation
   console.log(`Deploying UPToken implementation...`)
@@ -21,7 +21,12 @@ async function main({ contractName = 'UPSwap', subfolder = 'UP' } = {}) {
     __dirname,
     [{ contractName, subfolder }]
   )
-  await deployContract(upTokenQualifiedPath)
+  const { address: impl } = await deployContract(upTokenQualifiedPath)
+
+  console.log({
+    proxy,
+    impl,
+  })
 }
 
 // execute as standalone
