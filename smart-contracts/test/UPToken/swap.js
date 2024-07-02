@@ -259,7 +259,7 @@ describe('Swapper UP / UDT', () => {
   describe('setUp', () => {
     it('update the address of the UP token', async () => {
       const erc20 = await deployERC20(await owner.getAddress())
-      await swap.setUp(await erc20.getAddress)
+      await swap.setUp(await erc20.getAddress())
       assert.equal(await swap.up(), await erc20.getAddress())
     })
     it('can be called only by owner', async () => {
