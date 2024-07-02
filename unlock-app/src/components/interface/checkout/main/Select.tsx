@@ -123,7 +123,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                       />
                       {showRenewalLabel && (
                         <LabeledItem
-                          label="Auto-renewal"
+                          label="Auto-renew"
                           icon={RecurringIcon}
                           value={numberOfRenewals}
                         />
@@ -148,7 +148,7 @@ const LockOption = ({ disabled, lock }: LockOptionProps) => {
                   {formattedData?.formattedKeysAvailable !== 'Unlimited' &&
                     !formattedData?.isSoldOut && (
                       <LabeledItem
-                        label="Left ?"
+                        label="Left"
                         icon={QuantityIcon}
                         value={formattedData?.formattedKeysAvailable}
                       />
