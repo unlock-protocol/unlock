@@ -2,6 +2,8 @@ const { ethers } = require('hardhat')
 const {
   getNetwork,
   copyAndBuildContractsAtVersion,
+  deployContract,
+  deployUpgradeableContract,
   getProxyAdminAddress,
 } = require('@unlock-protocol/hardhat-helpers')
 const { parseBridgeCall } = require('../helpers/crossChain')
@@ -22,13 +24,27 @@ module.exports = async ({
 } = {}) => {
   const { id, name, multisig, unlockDaoToken } = await getNetwork(destChainId)
   // const multisig = '0x6ff837695B120A8f533498584249131F1c6fC4a8'
-  console.log(`Deploying to ${name} (${destChainId}) using safe ${multisig}`)
+  console.log(`Submitting proposal on ${name} (${destChainId})`)
 
-  // parse UP token initialization call
+  // 1. deploys a proxy contract with an empty implementation
+  console.log(`Deploying proxy with empty impl...`)
+  const EmptyImpl = await ethers.getContractFactory('EmptyImpl')
+  const { address: proxy } = await deployUpgradeableContract(EmptyImpl)
+
+  // 2. deploys the UP token implementation
+  console.log(`Deploying UPToken implementation...`)
   const [upTokenQualifiedPath] = await copyAndBuildContractsAtVersion(
     __dirname,
     [{ contractName: 'UPSwap', subfolder: 'UP' }]
   )
+  const { address: impl } = await deployContract(upTokenQualifiedPath)
+
+  console.log({
+    proxy,
+    impl,
+  })
+
+  // 3. parse UP token initialization call
   const UPToken = await ethers.getContractFactory(upTokenQualifiedPath)
   const initializeCall = UPToken.interface.encodeFunctionData('initialize', [
     unlockDaoToken.address, // udt,
