@@ -1125,23 +1125,24 @@ paths:
       responses:
         201:
           description: Approves refunds for an event.
-          # content:
-          #   application/json:
-          #     schema:
-          #       type: object
-          #       required:
-          #         - amount
-          #         - currency
-          #         - network
-          #       properties:
-          #         amount:
-          #           type: number
-          #           nullable: false
-          #         currency:
-          #           type: string
-          #         network:
-          #           type: number
-          #           nullable: false
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - root
+                  - totalRefunds
+                  - list
+                properties:
+                  root:
+                    type: string
+                    nullable: false
+                  totalRefunds:
+                    type: string
+                  list:
+                    type: array
+                    items:
+                      type: string
 
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'

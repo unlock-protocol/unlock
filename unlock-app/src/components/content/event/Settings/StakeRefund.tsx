@@ -2,9 +2,41 @@ import { locksmith } from '~/config/locksmith'
 import { useMutation } from '@tanstack/react-query'
 import { Button } from '@unlock-protocol/ui'
 import { Event } from '@unlock-protocol/core'
+import { config } from '~/config/app'
+import { useLockManager } from '~/hooks/useLockManager'
 
 export interface StakeRefundProps {
   event: Event
+  refundsToApprove: any
+}
+
+export const SetKickbackContractAsLockManager = ({
+  event,
+  refundsToApprove,
+}: StakeRefundProps) => {
+  console.log(refundsToApprove)
+
+  const { kickbackAddress } = config.networks[event.attendeeRefund!.network]
+
+  const x = useLockManager({
+    lockAddress,
+    network,
+    lockManagerAddress: kickbackAddress,
+  })
+
+  return (
+    <>
+      <Button>Set as Manager</Button>
+    </>
+  )
+}
+
+export const SaveRootForRefunds = ({ refundsToApprove }: StakeRefundProps) => {
+  return (
+    <>
+      <Button>Save Root</Button>
+    </>
+  )
 }
 
 export const StakeRefund = ({ event }: StakeRefundProps) => {
@@ -16,19 +48,30 @@ export const StakeRefund = ({ event }: StakeRefundProps) => {
     const response = await locksmith.approveRefunds(
       event.slug,
       event.attendeeRefund!
-    ) // This is a mock function to approve refunds. It will be replaced with the actual function to approve refunds in
-    console.log(response)
+    )
     return response.data
   })
 
-  console.log(refundsToApprove)
   if (refundsToApprove) {
     return (
       <>
-        <p>Cool you now have to approve refunds. 2 transactions will be sent</p>
-        <ul>
-          <li>first, you need to set the refund contract to be a manager</li>
-          <li>then, you need to "save" the merkle proof for the refunds</li>
+        <p>
+          At this point, {refundsToApprove.list.length} attendees have been
+          checked-in and could claim a refund, if you approve them.
+        </p>
+        <ul className="flex">
+          <li>
+            <SetKickbackContractAsLockManager
+              event={event}
+              refundsToApprove={refundsToApprove}
+            />
+          </li>
+          <li>
+            <SaveRootForRefunds
+              event={event}
+              refundsToApprove={refundsToApprove}
+            />
+          </li>
         </ul>
       </>
     )
