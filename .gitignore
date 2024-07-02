@@ -46,3 +46,4 @@ locksmith/uploads
 
 # blog importer cache
 .github/actions/blog/.yarn
+.github/actions/blog/.yarn/install-state.gz
