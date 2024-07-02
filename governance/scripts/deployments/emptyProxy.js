@@ -9,7 +9,10 @@ const {
 async function main() {
   // 1. deploys a proxy contract with an empty implementation
   console.log(`Deploying proxy with empty impl...`)
-  const EmptyImpl = await ethers.getContractFactory('EmptyImpl')
+  const [emptyQualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
+    { contractName: 'EmptyImpl', subfolder: 'utils' },
+  ])
+  const EmptyImpl = await ethers.getContractFactory(emptyQualifiedPath)
   const { address: proxy } = await deployUpgradeableContract(EmptyImpl)
 
   // 2. deploys the UP token implementation
