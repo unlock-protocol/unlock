@@ -7,7 +7,6 @@ module.exports = {
       token: {
         primaryKey: true,
         type: Sequelize.STRING,
-        unique: true,
       },
       identifier: {
         allowNull: false,

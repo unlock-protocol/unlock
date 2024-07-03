@@ -4,6 +4,8 @@ import { config } from '~/config/app'
 import NextAuth from 'next-auth'
 import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
 import { Sequelize } from 'sequelize'
+import nodemailer from 'nodemailer'
+import { generateAuthToken } from '~/utils/generateAuthToken'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
 
@@ -47,6 +49,41 @@ export const authOptions = {
     EmailProvider({
       server: process.env.SMTP_SERVER,
       from: process.env.EMAIL_FROM,
+
+      generateVerificationToken: async () => {
+        const token = await generateAuthToken()
+        return token
+      },
+      sendVerificationRequest: ({
+        identifier: email,
+        url,
+        token,
+        provider,
+      }) => {
+        return new Promise((resolve, reject) => {
+          const { server, from } = provider
+          // Strip protocol from URL and use domain as site name
+          nodemailer.createTransport(server).sendMail(
+            {
+              to: email,
+              from,
+              subject: `Authentication code: ${token}`,
+              text: 'Authentication code',
+              html: '<b>Authentication code</b>',
+            },
+            (error: any) => {
+              if (error) {
+                // logger.error('SEND_VERIFICATION_EMAIL_ERROR', email, error);
+                console.error('SEND_VERIFICATION_EMAIL_ERROR', email, error)
+                return reject(
+                  new Error(`SEND_VERIFICATION_EMAIL_ERROR ${error}`)
+                )
+              }
+              return resolve()
+            }
+          )
+        })
+      },
     }),
   ],
   callbacks: {
