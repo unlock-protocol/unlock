@@ -1,5 +1,6 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3'
 import { storageClient } from '../config/storage'
+import logger from '../logger'
 
 export async function uploadJsonToS3(
   bucketName: string,
@@ -18,9 +19,9 @@ export async function uploadJsonToS3(
       })
     )
 
-    console.log(`JSON uploaded successfully to ${bucketName}/${key}`)
+    logger.info(`JSON uploaded successfully to ${bucketName}/${key}`)
   } catch (error) {
-    console.error(`Error uploading JSON to S3: ${error}`)
+    logger.error(`Error uploading JSON to S3: ${error}`)
     throw error
   }
 }
