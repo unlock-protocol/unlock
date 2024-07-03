@@ -21,7 +21,11 @@ export const useLockManager = ({
 }: UseLocKManagerProps) => {
   const { account } = useAuth()
   const addressToCheck = lockManagerAddress || account
-  const { data: isManager = false, isLoading } = useQuery(
+  const {
+    data: isManager = false,
+    isLoading,
+    refetch,
+  } = useQuery(
     ['getLockManagerStatus', network, lockAddress, addressToCheck],
     async () => {
       if (!addressToCheck || !lockAddress || !network) {
@@ -37,6 +41,7 @@ export const useLockManager = ({
   )
 
   return {
+    refetch,
     isManager,
     isLoading,
   }

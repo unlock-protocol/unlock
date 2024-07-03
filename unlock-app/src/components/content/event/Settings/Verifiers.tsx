@@ -43,7 +43,7 @@ export const Verifiers = ({ event, checkoutConfig }: VerifiersProps) => {
         label="Refund attendees"
         description="With Events  by Unlock, you can choose to refund attendees when they actually show up!"
       >
-        <StakeRefund event={event} />
+        <StakeRefund event={event} checkoutConfig={checkoutConfig} />
       </SettingCard>
     </div>
   )

@@ -1130,22 +1130,60 @@ paths:
               schema:
                 type: object
                 required:
-                  - root
-                  - totalRefunds
-                  - list
+                  - format
+                  - tree
+                  - values
                 properties:
-                  root:
+                  format:
                     type: string
                     nullable: false
-                  totalRefunds:
-                    type: string
-                  list:
+                  values:
+                    type: array
+                    items:
+                      type: object
+                  tree:
                     type: array
                     items:
                       type: string
 
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/events/approved-refunds/{slug}:
+    get:
+      operationId: approvedRefunds
+      description: Returns the merkle proof of an approved refund.
+      parameters:
+        - $ref: '#/components/parameters/Slug'
+      responses:
+        200:
+          description: The merkle proof of an approved refund.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - format
+                  - tree
+                  - values
+                properties:
+                  format:
+                    type: string
+                    nullable: false
+                  values:
+                    type: array
+                    items:
+                      type: object
+                  tree:
+                    type: array
+                    items:
+                      type: string
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
 
         500:
           $ref: '#/components/responses/500.InternalError'

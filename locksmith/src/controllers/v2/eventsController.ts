@@ -26,6 +26,8 @@ import { getEventUrl } from '../../utils/eventHelpers'
 import { Web3Service, getErc20Decimals } from '@unlock-protocol/unlock-js'
 import { uploadJsonToS3 } from '../../utils/uploadJsonToS3'
 import config from '../../config/config'
+import { downloadJsonFromS3 } from '../../utils/downloadJsonFromS3'
+import logger from '../../logger'
 
 // DEPRECATED!
 export const getEventDetailsByLock: RequestHandler = async (
@@ -210,7 +212,6 @@ export const getEvent: RequestHandler = async (request, response) => {
 
 // API endpoint that a manager can call to approve refunds for attendees
 // This will create a a Merkle proof for the refunds and store it
-
 export const approveRefunds: RequestHandler = async (request, response) => {
   const { amount, network, currency } = await AttendeeRefund.parseAsync(
     request.body
@@ -232,28 +233,42 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   // Then, get the list of all attendees that attendees!
   const list = await getCheckedInAttendees(slug)
 
-  // Compute total refund amount
-  const totalRefund = ethers.formatUnits(
-    refundAmount * BigInt(list.length),
-    decimals
-  )
-
   // then, create the merkel tree using the OZ library
   const tree = StandardMerkleTree.of(
     list.map((recipient) => [recipient, refundAmount.toString()]),
     ['address', 'uint256']
   )
 
+  // dump the tree
+  const fullTree = tree.dump()
+
   // Then, store the tree (at <slug>.json)
   await uploadJsonToS3(
     config.storage.merkleTreesBucket,
     `${slug}.json`,
-    tree.dump()
+    fullTree
   )
 
-  return response.status(200).send({
-    root: tree.root,
-    totalRefund,
-    list,
-  })
+  return response.status(200).send(fullTree)
+}
+
+export const approvedRefunds: RequestHandler = async (request, response) => {
+  const slug = request.params.slug.toLowerCase().trim()
+  let file
+  try {
+    file = await downloadJsonFromS3(
+      config.storage.merkleTreesBucket,
+      `${slug}.json`
+    )
+  } catch (error) {
+    if (error.message !== 'NoSuchKey') {
+      logger.error('Error downloading file from S3', error)
+    }
+  }
+
+  if (!file) {
+    return response.status(404).send({ error: 'Not found' })
+  }
+
+  return response.status(200).send(file)
 }

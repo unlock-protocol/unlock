@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { ethers } from 'ethers'
+import { ZeroAddress, ethers } from 'ethers'
 import { AttendeeRefundType } from '@unlock-protocol/core'
 
 interface AttendeeStakingProps {
@@ -12,19 +12,27 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
   const { data: refund } = useQuery(
     ['attendeeRefund', attendeeRefund],
     async () => {
-      if (!attendeeRefund!.currency) {
-        return `${attendeeRefund!.amount} ${networks[attendeeRefund!.network].nativeCurrency.symbol}`
-      }
       const web3Service = new Web3Service(networks)
-      let symbol = networks[attendeeRefund!.network].nativeCurrency.symbol
-      if (attendeeRefund?.currency) {
-        symbol = await web3Service.getTokenSymbol(
-          attendeeRefund!.currency,
-          attendeeRefund!.network
-        )
+      const networkConfig = networks[attendeeRefund!.network]
+
+      if (
+        !attendeeRefund!.currency ||
+        attendeeRefund!.currency === ZeroAddress
+      ) {
+        return `${ethers.formatUnits(attendeeRefund!.amount, networkConfig.nativeCurrency.decimals)} ${networkConfig.nativeCurrency.symbol}`
       }
 
-      return `${ethers.formatUnits(attendeeRefund!.amount, 0)} ${symbol}`
+      const [decimals, symbol] = await Promise.all([
+        web3Service.getTokenDecimals(
+          attendeeRefund!.currency,
+          attendeeRefund!.network
+        ),
+        web3Service.getTokenSymbol(
+          attendeeRefund!.currency,
+          attendeeRefund!.network
+        ),
+      ])
+      return `${ethers.formatUnits(attendeeRefund!.amount, decimals)} ${symbol}`
     },
     {
       enabled: !!attendeeRefund,
@@ -35,7 +43,7 @@ export const AttendeeStaking = ({ attendeeRefund }: AttendeeStakingProps) => {
     return null
   }
   return (
-    <p className="px-6">
+    <p>
       This event requires attendees to stake when they register, and they will
       be refunded {refund} if they joined!
     </p>
