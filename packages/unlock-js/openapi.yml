@@ -1109,7 +1109,6 @@ paths:
               type: object
               required:
                 - amount
-                - currency
                 - network
               properties:
                 amount:

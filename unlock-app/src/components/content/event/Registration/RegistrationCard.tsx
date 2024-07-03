@@ -6,8 +6,6 @@ import { useValidKeyBulk } from '~/hooks/useKey'
 import { HasTicket } from './HasTicket'
 import { EmbeddedCheckout } from './EmbeddedCheckout'
 import { useState } from 'react'
-import { AttendeeStaking } from './SingleLock/AttendeeStaking'
-import { AttendeeRefundType } from '@unlock-protocol/core'
 
 export interface RegistrationCardProps {
   checkoutConfig: {
