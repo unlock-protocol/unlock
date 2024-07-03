@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@airstack/airstack-react": "0.6.3",
+    "@auth/sequelize-adapter": "2.4.1",
     "@coinbase/waas-sdk-web": "3.3.2",
     "@crossmint/client-sdk-react-ui": "1.1.10",
     "@decent.xyz/box-common": "2.2.1",
@@ -74,6 +75,7 @@
     "remark-html": "16.0.1",
     "remark-parse": "11.0.0",
     "remove-markdown": "0.5.0",
+    "sequelize": "6.37.3",
     "siwe": "2.3.2",
     "tailwind-merge": "2.3.0",
     "typescript": "5.5.2",

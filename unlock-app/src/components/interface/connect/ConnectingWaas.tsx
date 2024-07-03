@@ -21,6 +21,9 @@ export const ConnectingWaas = ({
   openConnectModalWindow = false,
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
+
+  console.log('ConnectingWaas', session)
+
   const { authenticateWithProvider } = useAuthenticate()
   const { signIn: siweSignIn, isSignedIn, signOut: siweSignOut } = useSIWE()
 

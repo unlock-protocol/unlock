@@ -148,12 +148,21 @@ const SignIn = ({
           <div>Passkey Account</div>
         )}
         {accountType.includes(UserAccountType.EmailCodeAccount) && (
-          <div>Email Code Account</div>
+          <SignWithEmail
+            shoudOpenConnectModal={shoudOpenConnectModal}
+            checkoutService={checkoutService}
+            isSignUp={false}
+          />
         )}
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
             <SignWithGoogle
+              shoudOpenConnectModal={shoudOpenConnectModal}
+              checkoutService={checkoutService}
+              isSignUp={true}
+            />
+            <SignWithEmail
               shoudOpenConnectModal={shoudOpenConnectModal}
               checkoutService={checkoutService}
               isSignUp={true}
@@ -222,6 +231,36 @@ const SignWithGoogle = ({
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
+      </ConnectButton>
+    </div>
+  )
+}
+
+export interface SignWithEmail {
+  shoudOpenConnectModal: boolean
+  checkoutService?: CheckoutService
+  isSignUp: boolean
+}
+
+const SignWithEmail = ({
+  shoudOpenConnectModal,
+  checkoutService,
+  isSignUp,
+}: SignWithGoogleProps) => {
+  const signWithGoogle = () => {
+    signIn()
+  }
+
+  return (
+    <div className="w-full">
+      <ConnectButton
+        className="w-full"
+        icon={<SvgComponents.Google width={40} height={40} />}
+        onClick={() => {
+          signWithGoogle()
+        }}
+      >
+        {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
       </ConnectButton>
     </div>
   )
