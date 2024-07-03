@@ -6,6 +6,7 @@ import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
 import { Sequelize } from 'sequelize'
 import nodemailer from 'nodemailer'
 import { generateAuthToken } from '~/utils/generateAuthToken'
+import { preview } from '@unlock-protocol/wedlocks/src/route'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
 
@@ -54,13 +55,24 @@ export const authOptions = {
         const token = await generateAuthToken()
         return token
       },
-      sendVerificationRequest: ({
+      sendVerificationRequest: async ({
         identifier: email,
         url,
         token,
         provider,
       }) => {
-        return new Promise((resolve, reject) => {
+        const template = await preview({
+          template: 'inviteEvent',
+          params: {
+            eventName: '',
+            eventDate: '',
+            eventTime: '',
+            eventUrl: '',
+          },
+        })
+        console.log('Email', template)
+
+        return new Promise(async (resolve, reject) => {
           const { server, from } = provider
           // Strip protocol from URL and use domain as site name
           nodemailer.createTransport(server).sendMail(
@@ -69,7 +81,7 @@ export const authOptions = {
               from,
               subject: `Authentication code: ${token}`,
               text: `Authentication code: ${token}`,
-              html: '<b>Authentication code</b>',
+              html: '',
             },
             (error: any) => {
               if (error) {
@@ -89,6 +101,9 @@ export const authOptions = {
   callbacks: {
     // We need to pass provider to the session so that we can use it in the WaasProvider
     async signIn({ user, account }: { user: any; account: any }) {
+      console.log('user', user)
+      console.log('account', account)
+
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
@@ -112,6 +127,7 @@ export const authOptions = {
       token: any
       user: any
     }) {
+      console.log('session user', user)
       if (token) {
         session.user.selectedProvider = token.selectedProvider
         session.user.token = token.idToken

@@ -11,7 +11,7 @@ import { prepareAll } from './templates/prepare'
  * @param {*} args
  * @returns
  */
-const getTemplateAndParams = async (args, opts) => {
+export const getTemplateAndParams = async (args, opts) => {
   let template = templates[args.template.toLowerCase()]
 
   if (!template && args.failoverTemplate) {
@@ -34,6 +34,8 @@ const getTemplateAndParams = async (args, opts) => {
       templateParams[key] = param
     }
   })
+
+  return [template, templateParams]
 
   if (template.nowrap) {
     return [template, templateParams]

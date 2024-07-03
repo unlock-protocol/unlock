@@ -13,6 +13,7 @@ import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
 import { useState } from 'react'
+import { EnterCode } from './EnterCode'
 
 interface UserDetails {
   email: string
@@ -103,10 +104,6 @@ const SignInUnlockAccount = ({
   )
 }
 
-interface UserDetails {
-  code: string
-}
-
 export interface SignInProps {
   email: string
   accountType: UserAccountType[]
@@ -130,78 +127,23 @@ const SignIn = ({
 }: SignInProps) => {
   const [isEmailCodeSent, setEmailCodeSent] = useState(false)
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-    setValue,
-  } = useForm<UserDetails>()
+  const router = useRouter()
 
-  if (email) {
-    setValue('email', email)
-  }
+  const url = new URL(
+    `${window.location.protocol}//${window.location.host}${router.asPath}`
+  )
+  const params = new URLSearchParams(url.search)
+  params.append(
+    'shouldOpenConnectModal',
+    encodeURIComponent(shoudOpenConnectModal)
+  )
+  url.search = params.toString()
 
-  const onSubmit = async (data: UserDetails) => {
-    if (!data.email) return
-    try {
-      const currentUrl = window.location.href
-      console.log(
-        `/api/auth/callback/email?email=${encodeURIComponent(
-          email
-        )}&token=${data.code}&callbackUrl=${encodeURIComponent(currentUrl)}`
-      )
-      window.location.href = `/api/auth/callback/email?email=${encodeURIComponent(
-        email
-      )}&token=${data.code}&callbackUrl=${encodeURIComponent(currentUrl)}`
-    } catch (error) {
-      if (error instanceof Error) {
-        if (error instanceof Error) {
-          setError(
-            'code',
-            {
-              type: 'value',
-              message: error.message,
-            },
-            {
-              shouldFocus: true,
-            }
-          )
-        }
-      }
-    }
-  }
+  const callbackUrl = url.toString()
 
   if (isEmailCodeSent) {
     return (
-      <div className="grid gap-2 px-6">
-        <div className="grid gap-4">
-          <div className="text-sm text-gray-600">Enter code below:</div>
-          <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              type="number"
-              autoComplete="number"
-              error={errors.email?.message}
-              {...register('code', {
-                required: {
-                  value: true,
-                  message: 'Code is required',
-                },
-              })}
-              actions={
-                <Button
-                  type="submit"
-                  variant="borderless"
-                  loading={isSubmitting}
-                  className="p-2.5"
-                >
-                  Continue
-                </Button>
-              }
-            />
-          </form>
-        </div>
-      </div>
+      <EnterCode email={email} callbackUrl={callbackUrl} onReturn={onReturn} />
     )
   }
 
@@ -221,7 +163,7 @@ const SignIn = ({
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
           <SignWithGoogle
-            shoudOpenConnectModal={shoudOpenConnectModal}
+            callbackUrl={callbackUrl}
             checkoutService={checkoutService}
             isSignUp={false}
           />
@@ -242,7 +184,7 @@ const SignIn = ({
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
             <SignWithGoogle
-              shoudOpenConnectModal={shoudOpenConnectModal}
+              callbackUrl={callbackUrl}
               checkoutService={checkoutService}
               isSignUp={true}
             />
@@ -273,30 +215,16 @@ const SignIn = ({
 }
 
 export interface SignWithGoogleProps {
-  shoudOpenConnectModal: boolean
+  callbackUrl: string
   checkoutService?: CheckoutService
   isSignUp: boolean
 }
 
 const SignWithGoogle = ({
-  shoudOpenConnectModal,
+  callbackUrl,
   checkoutService,
   isSignUp,
 }: SignWithGoogleProps) => {
-  const router = useRouter()
-
-  const url = new URL(
-    `${window.location.protocol}//${window.location.host}${router.asPath}`
-  )
-  const params = new URLSearchParams(url.search)
-  params.append(
-    'shouldOpenConnectModal',
-    encodeURIComponent(shoudOpenConnectModal)
-  )
-  url.search = params.toString()
-
-  const callbackUrl = url.toString()
-
   const signWithGoogle = () => {
     if (window !== window.parent) {
       popupCenter('/google', 'Sample Sign In')
