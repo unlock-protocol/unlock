@@ -55,7 +55,7 @@ const CertificationManagerOptions = ({
     async () => getTransferFeeBasisPoints()
   )
 
-  const certificationIsTransferable = transferFeeBasisPoints !== 10_000
+  const certificationIsTransferable = Number(transferFeeBasisPoints) !== 10000
 
   if (!isManager) return null
 
