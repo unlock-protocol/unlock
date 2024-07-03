@@ -9,6 +9,10 @@ import "@openzeppelin/contracts-upgradeable5/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable5/proxy/utils/Initializable.sol";
 import {NoncesUpgradeable} from "@openzeppelin/contracts-upgradeable5/utils/NoncesUpgradeable.sol";
 
+interface IUPSwap {
+  function setUp() external;
+}
+
 /// @custom:security-contact hello@unlock-protocol.com
 contract UPToken is
   Initializable,
@@ -35,6 +39,9 @@ contract UPToken is
 
     // premint the supply
     _mint(preMinter, TOTAL_SUPPLY * 10 ** decimals());
+
+    // notify swap/preminter contract of the token address
+    IUPSwap(preMinter).setUp();
   }
 
   // required to base votes on timestamp instead of blocks

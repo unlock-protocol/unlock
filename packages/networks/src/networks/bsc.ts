@@ -108,8 +108,6 @@ export const bsc: NetworkConfig = {
     studioName: 'unlock-protocol-bsc',
   },
 
-  swapPurchaser: '0xe49f5FD63cD7ec130B07dad30f068CC08F201e1e',
-
   tokens: [
     {
       address: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',

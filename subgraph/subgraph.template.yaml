@@ -120,5 +120,10 @@ templates:
           receipt: true
         - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
           handler: handleRoleRevoked
+        - event: KeyGranterAdded(indexed address)
+          handler: handleKeyGranterAdded
+          receipt: true
+        - event: KeyGranterRemoved(indexed address)
+          handler: handleKeyGranterRemoved
           receipt: true
       file: ./src/public-lock.ts

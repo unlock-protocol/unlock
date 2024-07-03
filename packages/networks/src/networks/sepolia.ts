@@ -69,6 +69,7 @@ export const sepolia: NetworkConfig = {
   id: 11155111,
   isTestNetwork: true,
   keyManagerAddress: '0x338b1f296217485bf4df6CE9f93ab4C73F72b57D',
+  kickbackAddress: '0x4D2aAeE1F34a9b4dfA57e8A4041BE82C939278dD',
   maxFreeClaimCost: 1000,
   multisig: '0x95fE514fe7F60722AFF0FD009ebeE4Ba2013924c',
   name: 'Sepolia',
@@ -94,7 +95,6 @@ export const sepolia: NetworkConfig = {
   publicLockVersionToDeploy: 14,
 
   publicProvider: 'https://rpc2.sepolia.org/',
-
   startBlock: 4381710,
   subgraph: {
     endpoint:
@@ -102,7 +102,6 @@ export const sepolia: NetworkConfig = {
     networkName: 'sepolia',
     studioName: 'unlock-protocol-sepolia',
   },
-  swapPurchaser: '0x692EFe2b44a531013A558E595C5dCf37DB2e4B94',
   tokens: [
     {
       address: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238',

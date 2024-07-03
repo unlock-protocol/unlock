@@ -92,6 +92,7 @@ export interface NetworkConfig {
   unlockAddress: string
   multisig?: string
   keyManagerAddress?: string
+  kickbackAddress?: string
   universalCard?: {
     cardPurchaserAddress: string
     stripeDestinationNetwork: string
@@ -117,7 +118,6 @@ export interface NetworkConfig {
     universalRouterAddress: string
     positionManager: string
   }>
-  swapPurchaser?: string
   unlockOwner?: string
   unlockDaoToken?: {
     address: string

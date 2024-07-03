@@ -8,6 +8,8 @@ import { CreateLockForm } from '~/components/interface/locks/Create/elements/Cre
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 import { AppLayout } from '~/components/interface/layouts/AppLayout'
 import { CreateLockFormSummary } from '~/components/interface/locks/Create/elements/CreateLockFormSummary'
+import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
+import { useRouter } from 'next/router'
 
 export const Deploy: React.FC = () => {
   const { getWalletService } = useAuth()
@@ -64,12 +66,34 @@ export const Deploy: React.FC = () => {
 
   const onSubmitMutation = useMutation(deployLock)
 
+  const router = useRouter()
+
+  const onBack = () => {
+    router?.back()
+  }
+
   return (
     <BrowserOnly>
       <AppLayout>
         <div>
           {!transactionHash && (
-            <div className="grid gap-4 md:grid-cols-2 md:gap-28">
+            <div className="grid items-center grid-cols-6 md:grid-cols-3">
+              <div className="col-auto">
+                <ArrowBack
+                  size={20}
+                  className="cursor-pointer"
+                  onClick={onBack}
+                />
+              </div>
+              <h1 className="col-span-4 text-lg font-semibold text-center md:col-auto md:text-xl">
+                Deploy Subscription
+              </h1>
+            </div>
+          )}
+        </div>
+        <div>
+          {!transactionHash && (
+            <div className="grid gap-4 md:grid-cols-2 md:gap-28 pt-8 md:pt-14">
               <div className="flex-col hidden mx-auto md:flex md:max-w-lg">
                 <h4 className="mb-4 text-5xl font-bold">
                   Deploy your onchain subscription
@@ -114,7 +138,7 @@ export const Deploy: React.FC = () => {
                     name: 'My subscription',
                     unlimitedQuantity: true,
                     keyPrice: 5.0,
-                    expirationDuration: 60 * 60 * 24 * 30,
+                    expirationDuration: 30,
                   }}
                   isLoading={onSubmitMutation.isLoading}
                 />

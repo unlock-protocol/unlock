@@ -97,7 +97,6 @@ export const arbitrum: NetworkConfig = {
     networkName: 'arbitrum-one',
     studioName: 'unlock-protocol-arbitrum',
   },
-  swapPurchaser: '0xE1a7Ec44fB4c5c88ebB3744A9Ba2A3cCA879A47d',
   tokens: [
     {
       address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
