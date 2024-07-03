@@ -12,6 +12,7 @@ import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
+import { useState } from 'react'
 
 interface UserDetails {
   email: string
@@ -102,6 +103,10 @@ const SignInUnlockAccount = ({
   )
 }
 
+interface UserDetails {
+  code: string
+}
+
 export interface SignInProps {
   email: string
   accountType: UserAccountType[]
@@ -123,6 +128,83 @@ const SignIn = ({
   shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
+  const [isEmailCodeSent, setEmailCodeSent] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+    setValue,
+  } = useForm<UserDetails>()
+
+  if (email) {
+    setValue('email', email)
+  }
+
+  const onSubmit = async (data: UserDetails) => {
+    if (!data.email) return
+    try {
+      const currentUrl = window.location.href
+      console.log(
+        `/api/auth/callback/email?email=${encodeURIComponent(
+          email
+        )}&token=${data.code}&callbackUrl=${encodeURIComponent(currentUrl)}`
+      )
+      window.location.href = `/api/auth/callback/email?email=${encodeURIComponent(
+        email
+      )}&token=${data.code}&callbackUrl=${encodeURIComponent(currentUrl)}`
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error instanceof Error) {
+          setError(
+            'code',
+            {
+              type: 'value',
+              message: error.message,
+            },
+            {
+              shouldFocus: true,
+            }
+          )
+        }
+      }
+    }
+  }
+
+  if (isEmailCodeSent) {
+    return (
+      <div className="grid gap-2 px-6">
+        <div className="grid gap-4">
+          <div className="text-sm text-gray-600">Enter code below:</div>
+          <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
+            <Input
+              type="number"
+              autoComplete="number"
+              error={errors.email?.message}
+              {...register('code', {
+                required: {
+                  value: true,
+                  message: 'Code is required',
+                },
+              })}
+              actions={
+                <Button
+                  type="submit"
+                  variant="borderless"
+                  loading={isSubmitting}
+                  className="p-2.5"
+                >
+                  Continue
+                </Button>
+              }
+            />
+          </form>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
@@ -152,6 +234,8 @@ const SignIn = ({
             shoudOpenConnectModal={shoudOpenConnectModal}
             checkoutService={checkoutService}
             isSignUp={false}
+            email={email}
+            setEmailCodeSent={setEmailCodeSent}
           />
         )}
         {accountType.length === 0 && (
@@ -166,6 +250,8 @@ const SignIn = ({
               shoudOpenConnectModal={shoudOpenConnectModal}
               checkoutService={checkoutService}
               isSignUp={true}
+              email={email}
+              setEmailCodeSent={setEmailCodeSent}
             />
             {/*}
             <div>Passkey Account</div>
@@ -240,15 +326,24 @@ export interface SignWithEmail {
   shoudOpenConnectModal: boolean
   checkoutService?: CheckoutService
   isSignUp: boolean
+  email: string
+  setEmailCodeSent: (isEmailCodeSent: boolean) => void
 }
 
 const SignWithEmail = ({
   shoudOpenConnectModal,
   checkoutService,
   isSignUp,
-}: SignWithGoogleProps) => {
-  const signWithGoogle = () => {
-    signIn()
+  email,
+  setEmailCodeSent,
+}: SignWithEmail) => {
+  const signWithEmail = () => {
+    signIn('email', {
+      email: email,
+      redirect: false,
+    })
+
+    setEmailCodeSent(true)
   }
 
   return (
@@ -257,7 +352,7 @@ const SignWithEmail = ({
         className="w-full"
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={() => {
-          signWithGoogle()
+          signWithEmail()
         }}
       >
         {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}

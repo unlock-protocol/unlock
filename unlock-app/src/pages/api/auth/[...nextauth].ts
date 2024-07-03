@@ -68,7 +68,7 @@ export const authOptions = {
               to: email,
               from,
               subject: `Authentication code: ${token}`,
-              text: 'Authentication code',
+              text: `Authentication code: ${token}`,
               html: '<b>Authentication code</b>',
             },
             (error: any) => {
