@@ -48,6 +48,8 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
         projectId: config.coinbaseProjectId,
       })
 
+      console.log('Waas initialized')
+
       const user = await waas.auth.login({
         provideAuthToken: async () => {
           return this.getWaasUuid(captcha)

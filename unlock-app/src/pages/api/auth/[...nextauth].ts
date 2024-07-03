@@ -92,9 +92,6 @@ export const authOptions = {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
-      console.log('signIn', user)
-      console.log('signIn', user)
-
       return true
     },
     // This is not called in case of Email Login
@@ -104,19 +101,25 @@ export const authOptions = {
         token.idToken = user.idToken
       }
 
-      console.log('jwt', token)
-      console.log('jwt', token)
-
       return token
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({
+      session,
+      token,
+      user,
+    }: {
+      session: any
+      token: any
+      user: any
+    }) {
       if (token) {
         session.user.selectedProvider = token.selectedProvider
         session.user.token = token.idToken
+      } else if (user) {
+        // There is no way to pass provider type here form signIn, so if there is no token, we assume it is email
+        session.user.selectedProvider = 'email'
+        session.user.token = user.id
       }
-
-      console.log('session', session)
-      console.log('session', session)
 
       return session
     },
