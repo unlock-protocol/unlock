@@ -17,6 +17,7 @@ import {
   handleLockMetadata,
   handleKeyGranterAdded,
   handleKeyGranterRemoved,
+  handleRoleRevoked,
 } from '../src/public-lock'
 
 import {
@@ -27,6 +28,7 @@ import {
   createLockUpgradedEvent,
   createLockMetadata,
   mockDataSourceV8,
+  createRoleRevokedKeyGranterRemovedEvent,
 } from './locks-utils'
 import {
   createKeyGranterAddedEvent,
@@ -262,6 +264,28 @@ describe('Describe Locks events', () => {
       lockAddress,
       'keyGranters',
       `[${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+  })
+
+  test('key granter removed (using `RoleRevoked`)', () => {
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+
+    // support existing granters
+    handleRoleRevoked(
+      createRoleRevokedKeyGranterRemovedEvent(
+        Address.fromString(keyGranters[1])
+      )
+    )
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[2]}]`
     )
   })
 
