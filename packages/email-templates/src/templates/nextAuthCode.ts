@@ -13,7 +13,7 @@ export default {
 
     {{verificationCode code}}
 
-    <p>This code is only valid for a short period of time for security reasons. Please enter it promptly on the login page.</p>
+    <p>This code expires in 10 minutes. Do not share this code with anyone. Please enter it promptly on the login page.</p>
 
     <p>If you did not attempt to log in to your Unlock account, please ignore this email or contact support if you believe this is an unauthorized attempt.</p>
 
