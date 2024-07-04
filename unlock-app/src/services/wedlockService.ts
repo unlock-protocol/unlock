@@ -67,9 +67,9 @@ export default class WedlockService {
     })
   }
 
-  nextAuthCodeEmail = (recipient: string, verificationCode: string) => {
+  nextAuthCodeEmail = (recipient: string, code: string) => {
     return this.sendEmail(emailTemplate.nextAuthCode, recipient, {
-      verificationCode,
+      code,
     })
   }
 

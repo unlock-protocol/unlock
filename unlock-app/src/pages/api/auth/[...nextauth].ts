@@ -4,9 +4,7 @@ import { config } from '~/config/app'
 import NextAuth from 'next-auth'
 import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
 import { Sequelize } from 'sequelize'
-import nodemailer from 'nodemailer'
 import { generateAuthToken } from '~/utils/generateAuthToken'
-import { preview } from '@unlock-protocol/wedlocks/src/route'
 import WedlockService from '~/services/wedlockService'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
@@ -56,26 +54,15 @@ export const authOptions = {
         const token = await generateAuthToken()
         return token
       },
-      sendVerificationRequest: async ({
-        identifier: email,
-        url,
-        token,
-        provider,
-      }) => {
-        // const wedlockService = new WedlockService(config.services.wedlocks.host)
-        const wedlockService = new WedlockService(
-          'http://localhost:9999/.netlify/functions/handler'
-        )
-        wedlockService.nextAuthCodeEmail('obivan49@gmail.com', token)
+      sendVerificationRequest: async ({ identifier: email, token }) => {
+        const wedlockService = new WedlockService(config.services.wedlocks.host)
+        wedlockService.nextAuthCodeEmail(email, token)
       },
     }),
   ],
   callbacks: {
     // We need to pass provider to the session so that we can use it in the WaasProvider
     async signIn({ user, account }: { user: any; account: any }) {
-      console.log('user', user)
-      console.log('account', account)
-
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
@@ -99,7 +86,6 @@ export const authOptions = {
       token: any
       user: any
     }) {
-      console.log('session user', user)
       if (token) {
         session.user.selectedProvider = token.selectedProvider
         session.user.token = token.idToken
@@ -114,4 +100,5 @@ export const authOptions = {
   },
 }
 
+// @ts-expect-error The types of 'adapter.createUser' are incompatible between these types.
 export default NextAuth(authOptions)
