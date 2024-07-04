@@ -5,16 +5,20 @@ import { IssueUserTokenOptions } from '@coinbase/waas-server-auth'
 import { UserAccountType } from '../../../src/controllers/userController'
 import { UserAccount } from '../../../src/models/userAccount'
 
-const googleAuthToken = 'token'
+const nextAuthToken = 'token'
 const coinbaseAuthToken = 'coinbase'
 const emailAddress = 'test@test.com'
 const selectedProvider = 'GOOGLE_ACCOUNT'
 
-vi.mock('../../../src/utils/verifyGoogleToken', () => {
+vi.mock('../../../src/utils/verifyNextAuthToken', () => {
   return {
-    verifyToken: vi.fn().mockImplementation((email: string, token: string) => {
-      return googleAuthToken === token
-    }),
+    verifyToken: vi
+      .fn()
+      .mockImplementation(
+        (selectedProvider: UserAccountType, email: string, token: string) => {
+          return nextAuthToken === token
+        }
+      ),
   }
 })
 
@@ -37,13 +41,13 @@ describe('Get UUID from Coinbase WAAS', () => {
     expect.assertions(2)
     const retrieveWaasUuidRes = await request(app)
       .post(`/v2/api/users/${emailAddress}/${selectedProvider}/waas`)
-      .send({ token: googleAuthToken })
+      .send({ token: nextAuthToken })
 
     expect(retrieveWaasUuidRes.status).toBe(200)
     expect(retrieveWaasUuidRes.body).toEqual({ token: coinbaseAuthToken })
   })
 
-  it('returns error if googleAuthToken is invalid', async () => {
+  it('returns error if nextAuthToken is invalid', async () => {
     expect.assertions(1)
     const retrieveWaasUuidRes = await request(app)
       .post(`/v2/api/users/${emailAddress}/${selectedProvider}/waas`)
@@ -67,7 +71,7 @@ describe('Get UUID from Coinbase WAAS', () => {
       .post(
         `/v2/api/users/${emailAddress}/${UserAccountType.UnlockAccount}/waas`
       )
-      .send({ token: googleAuthToken })
+      .send({ token: nextAuthToken })
 
     expect(retrieveWaasUuidRes.status).toBe(500)
   })
