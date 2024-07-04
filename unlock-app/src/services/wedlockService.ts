@@ -61,7 +61,7 @@ export default class WedlockService {
   }
 
   welcomeEmail = (recipient: string, recoveryLink: string) => {
-    return this.sendEmail(emailTemplate.nextAuthCode, recipient, {
+    return this.sendEmail(emailTemplate.welcome, recipient, {
       email: encodeURIComponent(recipient),
       recoveryLink,
     })
