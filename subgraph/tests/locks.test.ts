@@ -275,7 +275,6 @@ describe('Describe Locks events', () => {
       `[${keyGranters[1]}, ${keyGranters[2]}]`
     )
 
-    // support existing granters
     handleRoleRevoked(
       createRoleRevokedKeyGranterRemovedEvent(
         Address.fromString(keyGranters[1])
