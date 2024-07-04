@@ -7,6 +7,7 @@ import { Sequelize } from 'sequelize'
 import nodemailer from 'nodemailer'
 import { generateAuthToken } from '~/utils/generateAuthToken'
 import { preview } from '@unlock-protocol/wedlocks/src/route'
+import WedlockService from '~/services/wedlockService'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
 
@@ -61,40 +62,11 @@ export const authOptions = {
         token,
         provider,
       }) => {
-        const template = await preview({
-          template: 'inviteEvent',
-          params: {
-            eventName: '',
-            eventDate: '',
-            eventTime: '',
-            eventUrl: '',
-          },
-        })
-        console.log('Email', template)
-
-        return new Promise(async (resolve, reject) => {
-          const { server, from } = provider
-          // Strip protocol from URL and use domain as site name
-          nodemailer.createTransport(server).sendMail(
-            {
-              to: email,
-              from,
-              subject: `Authentication code: ${token}`,
-              text: `Authentication code: ${token}`,
-              html: '',
-            },
-            (error: any) => {
-              if (error) {
-                // logger.error('SEND_VERIFICATION_EMAIL_ERROR', email, error);
-                console.error('SEND_VERIFICATION_EMAIL_ERROR', email, error)
-                return reject(
-                  new Error(`SEND_VERIFICATION_EMAIL_ERROR ${error}`)
-                )
-              }
-              return resolve()
-            }
-          )
-        })
+        // const wedlockService = new WedlockService(config.services.wedlocks.host)
+        const wedlockService = new WedlockService(
+          'http://localhost:9999/.netlify/functions/handler'
+        )
+        wedlockService.nextAuthCodeEmail('obivan49@gmail.com', token)
       },
     }),
   ],

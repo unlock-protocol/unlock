@@ -59,9 +59,10 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
         </div>
         <form className="grid gap-4" onSubmit={handleSubmit(onSubmit)}>
           <Input
-            type="number"
-            autoComplete="number"
-            error={errors.email?.message}
+            type="text"
+            autoComplete="text"
+            placeholder="Code"
+            error={errors.code?.message}
             {...register('code', {
               required: {
                 value: true,

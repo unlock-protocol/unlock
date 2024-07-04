@@ -173,8 +173,6 @@ const SignIn = ({
         )}
         {accountType.includes(UserAccountType.EmailCodeAccount) && (
           <SignWithEmail
-            shoudOpenConnectModal={shoudOpenConnectModal}
-            checkoutService={checkoutService}
             isSignUp={false}
             email={email}
             setEmailCodeSent={setEmailCodeSent}
@@ -189,8 +187,6 @@ const SignIn = ({
               isSignUp={true}
             />
             <SignWithEmail
-              shoudOpenConnectModal={shoudOpenConnectModal}
-              checkoutService={checkoutService}
               isSignUp={true}
               email={email}
               setEmailCodeSent={setEmailCodeSent}
@@ -251,16 +247,12 @@ const SignWithGoogle = ({
 }
 
 export interface SignWithEmail {
-  shoudOpenConnectModal: boolean
-  checkoutService?: CheckoutService
   isSignUp: boolean
   email: string
   setEmailCodeSent: (isEmailCodeSent: boolean) => void
 }
 
 const SignWithEmail = ({
-  shoudOpenConnectModal,
-  checkoutService,
   isSignUp,
   email,
   setEmailCodeSent,
@@ -278,7 +270,7 @@ const SignWithEmail = ({
     <div className="w-full">
       <ConnectButton
         className="w-full"
-        icon={<SvgComponents.Google width={40} height={40} />}
+        icon={<SvgComponents.Email width={40} height={40} />}
         onClick={() => {
           signWithEmail()
         }}
