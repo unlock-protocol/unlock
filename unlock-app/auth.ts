@@ -11,6 +11,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL as string, {
   dialectModule: require('pg'),
 })
 
+// @ts-ignore Type error: The inferred type of 'signIn' cannot be named without a reference
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: SequelizeAdapter(sequelize, {
     models: {
