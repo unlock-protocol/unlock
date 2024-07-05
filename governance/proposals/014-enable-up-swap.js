@@ -15,11 +15,11 @@ module.exports = async ({
   // UP token address
   upTokenExpectedAddress = '0xaC27fa800955849d6D17cC8952Ba9dD6EAA66187',
   // admin of the empty proxy
-  upSwapProxyAddress = '0xcD225bd33bF94edfA5D0B9C5adeF4B11D8a68c7a',
+  proxyAdminAddress = '0x8527385a22a92c6081A73dF72E6314530C739028',
   // empty proxy
-  proxyAdminAddress = '0xf75163cf9df7b0FA106d3c48F6499cC704B11Cb8',
+  upSwapProxyAddress = '0x12be7322070cFA75E2f001C6B3d6Ac8C2efEF5Ea',
   // actual swap impl
-  upSwapImplAddress = '0x3e3A5339E73a89FB764bE1910AC07946A724713d',
+  upSwapImplAddress = '0x59DD472b1b6f4D777DbbeE1592D12C7BF85edc51',
 } = {}) => {
   const { id, name, multisig, unlockDaoToken, explorer } =
     await getNetwork(destChainId)
