@@ -15,9 +15,12 @@ import {
   LockManagerRemoved,
   LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress, lockAddressV8 } from './constants'
+import { lockAddress, lockAddressV8, lockOwner } from './constants'
 import { LOCK_MANAGER } from '../src/helpers'
-import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
+import {
+  PricingChanged,
+  RoleRevoked,
+} from '../generated/templates/PublicLock/PublicLock'
 
 export function mockDataSourceV8(): void {
   const v8context = new DataSourceContext()
@@ -77,6 +80,27 @@ export function createRoleGrantedLockManagerAddedEvent(
   )
 
   return newRoleGranted
+}
+
+export function createRoleRevokedEvent(account: Address): RoleRevoked {
+  const roleRevokedEvent = changetype<RoleRevoked>(newMockEvent())
+  roleRevokedEvent.parameters = []
+  roleRevokedEvent.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(LOCK_MANAGER))
+    )
+  )
+  roleRevokedEvent.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(account))
+  )
+  roleRevokedEvent.parameters.push(
+    new ethereum.EventParam(
+      'sender',
+      ethereum.Value.fromAddress(Address.fromString(lockOwner))
+    )
+  )
+  return roleRevokedEvent
 }
 
 export function createLockManagerRemovedEvent(

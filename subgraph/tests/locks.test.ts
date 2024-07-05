@@ -10,6 +10,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { handleNewLock, handleLockUpgraded } from '../src/unlock'
 import {
+  handleRoleRevoked,
   handleRoleGranted,
   handleLockManagerAdded,
   handleLockManagerRemoved,
@@ -27,6 +28,7 @@ import {
   createLockUpgradedEvent,
   createLockMetadata,
   mockDataSourceV8,
+  createRoleRevokedEvent,
 } from './locks-utils'
 import {
   createKeyGranterAddedEvent,
@@ -220,6 +222,73 @@ describe('Describe Locks events', () => {
       lockAddress,
       'keyGranters',
       `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+  })
+
+  test('Role revoked', () => {
+    // Setup: First grant a role
+    const roleGrantedEvent = createRoleGrantedLockManagerAddedEvent(
+      Address.fromString(lockManagers[0])
+    )
+    handleRoleGranted(roleGrantedEvent)
+
+    // Verify the role was granted
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lockManagers',
+      `[${lockManagers[0]}]`
+    )
+
+    // Create and handle the RoleRevoked event
+    const roleRevokedEvent = createRoleRevokedEvent(
+      Address.fromString(lockManagers[0])
+    )
+    handleRoleRevoked(roleRevokedEvent)
+
+    // Verify the role was revoked
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', '[]')
+  })
+
+  test('Role revoked - multiple roles', () => {
+    // Grant multiple roles
+    handleRoleGranted(
+      createRoleGrantedLockManagerAddedEvent(
+        Address.fromString(lockManagers[0])
+      )
+    )
+    handleRoleGranted(
+      createRoleGrantedLockManagerAddedEvent(
+        Address.fromString(lockManagers[1])
+      )
+    )
+
+    // Revoke one role
+    handleRoleRevoked(
+      createRoleRevokedEvent(Address.fromString(lockManagers[0]))
+    )
+
+    // Verify only one role was revoked
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lockManagers',
+      `[${lockManagers[1]}]`
+    )
+  })
+
+  test('Role revoked - non-existent role', () => {
+    // Attempt to revoke a role that doesn't exist
+    handleRoleRevoked(
+      createRoleRevokedEvent(Address.fromString(lockManagers[2]))
+    )
+
+    // Verify no changes occurred
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lockManagers',
+      `[${lockManagers[1]}]`
     )
   })
 
