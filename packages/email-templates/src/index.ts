@@ -17,6 +17,7 @@ import eventDeployed from './templates/eventDeployed'
 import LockTemplates from './templates/locks'
 import bases from './templates/base/index'
 import custom from './templates/custom'
+import nextAuthCode from './templates/nextAuthCode'
 export interface EmailTemplateProps {
   nowrap?: boolean
   subject: string
@@ -41,6 +42,7 @@ type Template =
   | 'certificationKeyMined'
   | 'certificationKeyAirdropped'
   | 'custom'
+  | 'nextAuthCode'
 
 export const EmailTemplates: Record<string, EmailTemplateProps> = {
   confirmEmail,
@@ -60,6 +62,7 @@ export const EmailTemplates: Record<string, EmailTemplateProps> = {
   custom,
   inviteEvent,
   eventDeployed,
+  nextAuthCode,
 }
 
 const templates: Record<string, EmailTemplateProps> = {}

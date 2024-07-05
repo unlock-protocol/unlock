@@ -210,8 +210,11 @@ export const useProvider = (config: any) => {
       true
     )
     try {
+      if (provider && provider?.isWaas) {
+        await provider.disconnect()
+      }
       // unlock provider does not support removing listeners or closing.
-      if (provider && !provider?.isUnlock) {
+      else if (provider && !provider?.isUnlock) {
         provider.provider.removeAllListeners()
         // metamask does not support disconnect
         if (provider?.connection?.url !== 'metamask') {
