@@ -3,11 +3,14 @@
 // type so that it at least includes as optional all possible
 // properties on a lock. These are all compatible with RawLock insofar
 
+import { isEns } from '@unlock-protocol/ui'
+
 import { Lock } from '~/unlockTypes'
 import { isAccount } from '../utils/checkoutValidators'
 import { locksmith } from '~/config/locksmith'
 import { getCurrencySymbol } from './currency'
 import { PaywallConfigType } from '@unlock-protocol/core'
+import { onResolveName } from './resolvers'
 
 // as they only extend it with properties that may be undefined.
 interface LockKeysAvailableLock {
@@ -152,11 +155,11 @@ export const inClaimDisallowList = (address: string) => {
  * @param lockAddress
  * @returns
  */
-export const getReferrer = (
+export const getReferrer = async (
   recipient: string,
   paywallConfig?: PaywallConfigType,
   lockAddress?: string
-): string => {
+): Promise<string> => {
   if (paywallConfig) {
     if (
       lockAddress &&
@@ -167,6 +170,17 @@ export const getReferrer = (
     }
     if (paywallConfig.referrer && isAccount(paywallConfig.referrer)) {
       return paywallConfig.referrer
+    }
+    if (paywallConfig.referrer && isEns(paywallConfig.referrer)) {
+      let response
+      try {
+        response = await onResolveName(paywallConfig.referrer)
+        if (response && response.address) {
+          return response.address
+        }
+      } catch (e) {
+        console.log('Error resolving referrer ENS', e)
+      }
     }
   }
   return recipient

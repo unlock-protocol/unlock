@@ -155,9 +155,11 @@ export function ConfirmCrypto({
         pricingData?.prices.map((item) => item.amount.toString()) ||
         new Array(recipients!.length).fill(keyPrice)
 
-      const referrers: string[] = recipients.map((recipient) => {
-        return getReferrer(recipient, paywallConfig, lockAddress)
-      })
+      const referrers: string[] = await Promise.all(
+        recipients.map(async (recipient) => {
+          return await getReferrer(recipient, paywallConfig, lockAddress)
+        })
+      )
 
       const onErrorCallback = (error: Error | null, hash: string | null) => {
         setIsConfirming(false)
@@ -174,11 +176,12 @@ export function ConfirmCrypto({
 
       const walletService = await getWalletService(lockNetwork)
       if (renew) {
+        const referrer = await getReferrer(account!, paywallConfig, lockAddress)
         await walletService.extendKey(
           {
             lockAddress,
             owner: recipients?.[0],
-            referrer: getReferrer(account!, paywallConfig, lockAddress),
+            referrer,
             data: purchaseData?.[0],
             recurringPayment: recurringPayments
               ? recurringPayments[0]

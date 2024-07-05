@@ -154,15 +154,19 @@ export const useCrossChainRoutes = ({
               ) {
                 return null
               }
+              const referrer = await getReferrer(
+                account!,
+                paywallConfig,
+                lock.address
+              )
+              const referrers = recipients.map(() => referrer)
               const route = await getCrossChainRoute({
                 sender: account!,
                 lock,
                 prices,
                 recipients,
                 keyManagers: keyManagers || recipients,
-                referrers: recipients.map(() =>
-                  getReferrer(account!, paywallConfig, lock.address)
-                ),
+                referrers,
                 purchaseData: purchaseData || recipients.map(() => '0x'),
                 srcToken: token.address,
                 srcChainId: network,

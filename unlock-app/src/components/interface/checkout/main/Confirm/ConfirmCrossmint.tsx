@@ -3,7 +3,7 @@ import {
   useCrossmintEvents,
 } from '@crossmint/client-sdk-react-ui'
 import { CheckoutService } from './../checkoutMachine'
-import { Fragment, useCallback, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
 import { Pricing } from '../../Lock'
@@ -46,7 +46,7 @@ export function ConfirmCrossmint({
     useSelector(checkoutService, (state) => state.context)
   const [isConfirming, setIsConfirming] = useState(false)
   const [quote, setQuote] = useState<CrossmintQuote | null>(null)
-
+  const [referrers, setReferrers] = useState<string[]>([])
   const crossmintEnv = config.env === 'prod' ? 'production' : 'staging'
 
   const {
@@ -72,6 +72,18 @@ export function ConfirmCrossmint({
   const { listenToMintingEvents } = useCrossmintEvents({
     environment: crossmintEnv,
   })
+
+  useEffect(() => {
+    const fetchReferrers = async () => {
+      const referrers: string[] = await Promise.all(
+        recipients.map(async (recipient) => {
+          return await getReferrer(recipient, paywallConfig, lock!.address)
+        })
+      )
+      setReferrers(referrers)
+    }
+    fetchReferrers()
+  }, [lock, paywallConfig, recipients])
 
   // Handling payment events
   const onCrossmintPaymentEvent = useCallback(
@@ -132,10 +144,6 @@ export function ConfirmCrossmint({
       isPricingDataLoading ||
       crossmintLoading ||
       (!tokenId && renew))
-
-  const referrers: string[] = recipients.map((recipient) => {
-    return getReferrer(recipient, paywallConfig, lock!.address)
-  })
 
   const values = pricingData
     ? [

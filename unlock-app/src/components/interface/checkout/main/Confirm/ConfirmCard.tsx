@@ -2,7 +2,7 @@ import { CheckoutService } from './../checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Button, Detail } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { useSelector } from '@xstate/react'
 import { PoweredByUnlock } from '../../PoweredByUnlock'
@@ -114,6 +114,7 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
     useSelector(checkoutService, (state) => state.context)
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
+  const [referrers, setReferrers] = useState<string[]>([])
 
   const { address: lockAddress, network: lockNetwork } = lock!
 
@@ -193,13 +194,23 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
   // show gas cost only when custom credit card price is present
   const gasCosts = creditCardPrice ? undefined : totalPricing?.gasCost
 
+  useEffect(() => {
+    const fetchReferrers = async () => {
+      const referrers: string[] = await Promise.all(
+        recipients.map(async (recipient) => {
+          return await getReferrer(recipient, paywallConfig, lock!.address)
+        })
+      )
+      setReferrers(referrers)
+    }
+    fetchReferrers()
+  }, [lock, paywallConfig, recipients])
+
   const { mutateAsync: capturePayment } = useCapturePayment({
     network: lock!.network,
     lockAddress: lock!.address,
     data: purchaseData,
-    referrers: recipients.map((recipient: string) =>
-      getReferrer(recipient, paywallConfig, lockAddress)
-    ),
+    referrers,
     recipients,
     purchaseType: renew ? 'extend' : 'purchase',
   })
@@ -212,9 +223,6 @@ export function ConfirmCard({ checkoutService, onConfirmed, onError }: Props) {
 
   const onConfirmCard = async () => {
     setIsConfirming(true)
-    const referrers: string[] = recipients.map((recipient) => {
-      return getReferrer(recipient, paywallConfig, lockAddress)
-    })
 
     const stripeIntent = await createPurchaseIntent({
       pricing: totalPricing!.total,
