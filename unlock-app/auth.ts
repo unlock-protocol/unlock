@@ -1,15 +1,17 @@
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
-import { config } from '~/config/app'
+import { config } from './src//config/app'
 import NextAuth from 'next-auth'
 import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
 import { Sequelize } from 'sequelize'
-import { generateAuthToken } from '~/utils/generateAuthToken'
-import WedlockService from '~/services/wedlockService'
+import { generateAuthToken } from './src/utils/generateAuthToken'
+import WedlockService from './src/services/wedlockService'
 
-const sequelize = new Sequelize(process.env.DATABASE_URL as string)
+const sequelize = new Sequelize(process.env.DATABASE_URL as string, {
+  dialectModule: require('pg'),
+})
 
-export const authOptions = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: SequelizeAdapter(sequelize, {
     models: {
       Account: sequelize.define(
@@ -66,6 +68,8 @@ export const authOptions = {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
+      console.log('SIGN identifier')
+
       return true
     },
     // This is not called in case of Email Login
@@ -74,6 +78,8 @@ export const authOptions = {
         token.selectedProvider = user.selectedProvider
         token.idToken = user.idToken
       }
+
+      console.log('JWT identifier')
 
       return token
     },
@@ -95,10 +101,9 @@ export const authOptions = {
         session.user.token = user.id
       }
 
+      console.log('SESSION identifier')
+
       return session
     },
   },
-}
-
-// @ts-expect-error The types of 'adapter.createUser' are incompatible between these types.
-export default NextAuth(authOptions)
+})
