@@ -2,6 +2,18 @@ import { ethers } from 'ethers'
 import networks from '../src'
 import ERC20 from '../utils/erc20.abi.json'
 
+const expectedKeys = Object.keys(networks['1'])
+
+export const validateKeys = (network) => {
+  const missingProperties: string[] = []
+  expectedKeys.forEach((key) => {
+    if (!(key in network)) {
+      missingProperties.push(key as string)
+    }
+  })
+  return missingProperties
+}
+
 export const validateERC20 = async ({ token, chainId }) => {
   const errors: string[] = []
   const warnings: string[] = []
