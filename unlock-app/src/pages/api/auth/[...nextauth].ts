@@ -6,7 +6,6 @@ import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
 import { Sequelize } from 'sequelize'
 import { generateAuthToken } from '~/utils/generateAuthToken'
 import WedlockService from '~/services/wedlockService'
-import { signOut } from 'next-auth/react'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
 
@@ -65,49 +64,22 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // We need to pass provider to the session so that we can use it in the WaasProvider
     async signIn({ user, account }: { user: any; account: any }) {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
-      console.log('Sign In')
-      console.log(user)
-      console.log(account)
-
       return true
     },
-    // This is not called in case of Email Login
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.selectedProvider = user.selectedProvider
         token.idToken = user.idToken
       }
 
-      console.log('jwt')
-      console.log(token)
-      console.log(user)
-
       return token
     },
-    async session({
-      session,
-      token,
-      user,
-    }: {
-      session: any
-      token: any
-      user: any
-    }) {
-      console.log('session')
-      console.log('session', session)
-      console.log('user', user)
-      console.log('token', token)
-      if (token) {
-        session.user.selectedProvider = token.selectedProvider
-        session.user.token = token.idToken
-      } else if (user) {
-        // There is no way to pass provider type here form signIn, so if there is no token, we assume it is email
-        session.user.selectedProvider = 'email'
+    async session({ session, user }: { session: any; token: any; user: any }) {
+      if (user) {
         session.user.token = user.id
       }
 

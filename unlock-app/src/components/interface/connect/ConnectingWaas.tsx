@@ -73,7 +73,6 @@ export const ConnectingWaas = ({
     if (!connected && !isSignedIn) return
 
     const connect = async () => {
-      console.log('Connecting with SIWE')
       try {
         await siweSignIn()
       } catch (err) {
