@@ -18,6 +18,12 @@ module.exports = {
       UserId: {
         type: Sequelize.UUID,
       },
+      type: {
+        type: Sequelize.STRING,
+      },
+      provider: {
+        type: Sequelize.STRING,
+      },
       providerType: {
         type: Sequelize.STRING,
       },
@@ -27,14 +33,29 @@ module.exports = {
       providerAccountId: {
         type: Sequelize.STRING,
       },
-      refreshToken: {
+      refresh_token: {
         type: Sequelize.STRING,
       },
-      accessToken: {
+      access_token: {
         type: Sequelize.STRING,
+      },
+      token_type: {
+        type: Sequelize.STRING,
+      },
+      scope: {
+        type: Sequelize.STRING,
+      },
+      id_token: {
+        type: Sequelize.TEXT,
+      },
+      expires_at: {
+        type: Sequelize.INTEGER,
       },
       accessTokenExpires: {
         type: Sequelize.DATE,
+      },
+      session_state: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

@@ -13,6 +13,7 @@ export const verifyToken = async (
     case UserAccountType.GoogleAccount:
       return await verifyGoogleToken(email, token)
     case UserAccountType.EmailCodeAccount:
+      console.log('email code account')
       return await verifyEmailToken(token)
     default:
       return false
