@@ -37,6 +37,8 @@ export const ConnectingWaas = ({
   }
 
   useEffect(() => {
+    if (!session || !session?.user?.selectedProvider) return
+
     if (openConnectModalWindow) {
       openConnectModal()
     }
