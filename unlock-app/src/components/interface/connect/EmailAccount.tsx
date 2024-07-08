@@ -10,6 +10,7 @@ import { CheckoutService } from '../checkout/main/checkoutMachine'
 import { useRouter } from 'next/router'
 import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
+import { signIn as passkeysSignIn } from 'next-auth/webauthn'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
 import { useState } from 'react'
@@ -258,6 +259,8 @@ const SignWithEmail = ({
   setEmailCodeSent,
 }: SignWithEmail) => {
   const signWithEmail = () => {
+    passkeysSignIn('passkey')
+    return
     signIn('email', {
       email: email,
       redirect: false,

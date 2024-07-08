@@ -8971,6 +8971,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hexagon/base64@npm:^1.1.27":
+  version: 1.1.28
+  resolution: "@hexagon/base64@npm:1.1.28"
+  checksum: 10/e002644dfdcc932dfbfe95ff188e83b24520d179d77019506429ff77be1c76562e7d9eafbbcf539264da34cfd7a8a8b99fb9ba3ab4ae126716af57ccd8e641f7
+  languageName: node
+  linkType: hard
+
 "@honeycombio/opentelemetry-node@npm:^0.4.0":
   version: 0.4.0
   resolution: "@honeycombio/opentelemetry-node@npm:0.4.0"
@@ -9240,6 +9247,13 @@ __metadata:
   version: 2.0.5
   resolution: "@leichtgewicht/ip-codec@npm:2.0.5"
   checksum: 10/cb98c608392abe59457a14e00134e7dfa57c0c9b459871730cd4e907bb12b834cbd03e08ad8663fea9e486f260da7f1293ccd9af0376bf5524dd8536192f248c
+  languageName: node
+  linkType: hard
+
+"@levischuck/tiny-cbor@npm:^0.2.2":
+  version: 0.2.2
+  resolution: "@levischuck/tiny-cbor@npm:0.2.2"
+  checksum: 10/edf03428ec17bc4939b6bb2f7d22067daaae2efff6f8fa3e4be59538ea3a4136c40add8fdce083ef68123d7b021bd198982447aec9d310e1d8d032f2a435e039
   languageName: node
   linkType: hard
 
@@ -12888,6 +12902,41 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@peculiar/asn1-android@npm:^2.3.10":
+  version: 2.3.10
+  resolution: "@peculiar/asn1-android@npm:2.3.10"
+  dependencies:
+    "@peculiar/asn1-schema": "npm:^2.3.8"
+    asn1js: "npm:^3.0.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10/b202b72710c9425f408cc1a6ad2b079eed33d76aa074a1610adf698288625405d2daf40b773e031a795ec0eea97fc3ccae3750256d45a3127d3f9f8af41116a7
+  languageName: node
+  linkType: hard
+
+"@peculiar/asn1-ecc@npm:^2.3.8":
+  version: 2.3.8
+  resolution: "@peculiar/asn1-ecc@npm:2.3.8"
+  dependencies:
+    "@peculiar/asn1-schema": "npm:^2.3.8"
+    "@peculiar/asn1-x509": "npm:^2.3.8"
+    asn1js: "npm:^3.0.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10/d60c34be9ed4648f1f862e294da47f8a8d25b0e8dd0d926f0fe0018f2f89ab2e138c4879464c51ca7cb8146d87492d03c925bd32de40e3ce5c6ee309abc1a2c8
+  languageName: node
+  linkType: hard
+
+"@peculiar/asn1-rsa@npm:^2.3.8":
+  version: 2.3.8
+  resolution: "@peculiar/asn1-rsa@npm:2.3.8"
+  dependencies:
+    "@peculiar/asn1-schema": "npm:^2.3.8"
+    "@peculiar/asn1-x509": "npm:^2.3.8"
+    asn1js: "npm:^3.0.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10/59e8b8abf0105513b75ff9586b7c2a93fbe9de2c492c664bed2ba7ce4cefca88fee044241b46d2d56aa1995b00af037012541dcc0acd96b12fd8eb774bd3d3cb
+  languageName: node
+  linkType: hard
+
 "@peculiar/asn1-schema@npm:^2.3.8":
   version: 2.3.8
   resolution: "@peculiar/asn1-schema@npm:2.3.8"
@@ -12896,6 +12945,19 @@ __metadata:
     pvtsutils: "npm:^1.3.5"
     tslib: "npm:^2.6.2"
   checksum: 10/da349985cff73ae7ea52b6b66c6b4b339a768d5eb9164ad03e73c30985ec0a1c94849b323a826b00a049d7de3840368f77bebe84193205a77565cdfdac6ed524
+  languageName: node
+  linkType: hard
+
+"@peculiar/asn1-x509@npm:^2.3.8":
+  version: 2.3.8
+  resolution: "@peculiar/asn1-x509@npm:2.3.8"
+  dependencies:
+    "@peculiar/asn1-schema": "npm:^2.3.8"
+    asn1js: "npm:^3.0.5"
+    ipaddr.js: "npm:^2.1.0"
+    pvtsutils: "npm:^1.3.5"
+    tslib: "npm:^2.6.2"
+  checksum: 10/d81df638cb5c59015ae872d69776c942e99eb3767013c0d489c9cb72cb195d0a8807bc40350d123306cc932fc8daf5d01a0613756a6e3814dfe7f540c8541e55
   languageName: node
   linkType: hard
 
@@ -14826,6 +14888,39 @@ __metadata:
   version: 2.0.0
   resolution: "@sideway/pinpoint@npm:2.0.0"
   checksum: 10/1ed21800128b2b23280ba4c9db26c8ff6142b97a8683f17639fd7f2128aa09046461574800b30fb407afc5b663c2331795ccf3b654d4b38fa096e41a5c786bf8
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/browser@npm:9.0.1":
+  version: 9.0.1
+  resolution: "@simplewebauthn/browser@npm:9.0.1"
+  dependencies:
+    "@simplewebauthn/types": "npm:^9.0.1"
+  checksum: 10/dda1f37d4e57bdf3fab611a716b5f54b29eb21c04981557cf236ee39ae8131b9ce6c8ea302d84cce4353a507f202cfbfa568691566f04e5328b80f95d65873ec
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/server@npm:9.0.3":
+  version: 9.0.3
+  resolution: "@simplewebauthn/server@npm:9.0.3"
+  dependencies:
+    "@hexagon/base64": "npm:^1.1.27"
+    "@levischuck/tiny-cbor": "npm:^0.2.2"
+    "@peculiar/asn1-android": "npm:^2.3.10"
+    "@peculiar/asn1-ecc": "npm:^2.3.8"
+    "@peculiar/asn1-rsa": "npm:^2.3.8"
+    "@peculiar/asn1-schema": "npm:^2.3.8"
+    "@peculiar/asn1-x509": "npm:^2.3.8"
+    "@simplewebauthn/types": "npm:^9.0.1"
+    cross-fetch: "npm:^4.0.0"
+  checksum: 10/bc52098c3010b2d3098c06e97c1000ab9b10a57521ba559dc36722182bd4a7755fae67236ebf044962006b803a0afa112566394f991fbcc051cf5ecda1333fab
+  languageName: node
+  linkType: hard
+
+"@simplewebauthn/types@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@simplewebauthn/types@npm:9.0.1"
+  checksum: 10/23c494b1db2d66027e87fe9047ddb86cdf026221e58f0bc1861395eb28f30f92a96e9cfb491d26b32334ff8cf34c60708290c1b68b56f6b81fd14bb7927346f2
   languageName: node
   linkType: hard
 
@@ -19174,6 +19269,8 @@ __metadata:
     "@radix-ui/react-avatar": "npm:1.1.0"
     "@rehooks/local-storage": "npm:2.4.5"
     "@sentry/nextjs": "npm:7.118.0"
+    "@simplewebauthn/browser": "npm:9.0.1"
+    "@simplewebauthn/server": "npm:9.0.3"
     "@stripe/react-stripe-js": "npm:2.7.2"
     "@stripe/stripe-js": "npm:3.5.0"
     "@tanstack/react-query": "npm:4.36.1"
@@ -34361,7 +34458,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ipaddr.js@npm:^2.0.1":
+"ipaddr.js@npm:^2.0.1, ipaddr.js@npm:^2.1.0":
   version: 2.2.0
   resolution: "ipaddr.js@npm:2.2.0"
   checksum: 10/9e1cdd9110b3bca5d910ab70d7fb1933e9c485d9b92cb14ef39f30c412ba3fe02a553921bf696efc7149cc653453c48ccf173adb996ec27d925f1f340f872986

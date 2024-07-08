@@ -1,5 +1,6 @@
 import GoogleProvider from 'next-auth/providers/google'
 import EmailProvider from 'next-auth/providers/email'
+import Passkey from 'next-auth/providers/passkey'
 import { config } from './src//config/app'
 import NextAuth from 'next-auth'
 import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
@@ -62,7 +63,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         wedlockService.nextAuthCodeEmail(email, token)
       },
     }),
+    Passkey,
   ],
+  experimental: { enableWebAuthn: true },
   callbacks: {
     // We need to pass provider to the session so that we can use it in the WaasProvider
     async signIn({ user, account }: { user: any; account: any }) {
