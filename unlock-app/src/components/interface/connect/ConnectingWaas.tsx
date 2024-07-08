@@ -22,8 +22,6 @@ export const ConnectingWaas = ({
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
 
-  console.log('ConnectingWaas', session)
-
   const { authenticateWithProvider } = useAuthenticate()
   const { signIn: siweSignIn, isSignedIn, signOut: siweSignOut } = useSIWE()
 
@@ -39,9 +37,6 @@ export const ConnectingWaas = ({
   }
 
   useEffect(() => {
-    console.log('ConnectingWaas', session)
-    if (!session || !session?.user?.selectedProvider) return
-
     if (openConnectModalWindow) {
       openConnectModal()
     }

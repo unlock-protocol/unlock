@@ -21,7 +21,6 @@ const ConnectWalletComponent = ({
   const { isSignedIn } = useSIWE()
 
   const { data: session } = useSession()
-  console.log('ConnectWalletComponent', session)
   const isLoadingWaas = session && (!connected || !isSignedIn || account === '')
 
   if (isLoadingWaas) {
