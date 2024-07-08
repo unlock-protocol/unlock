@@ -125,7 +125,7 @@ const SignIn = ({
   shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
-  const [isEmailCodeSent, setEmailCodeSent] = useState(false)
+  const [isEmailCodeStatus, setEmailCodeStatus] = useState('none')
 
   const router = useRouter()
 
@@ -141,9 +141,22 @@ const SignIn = ({
 
   const callbackUrl = url.toString()
 
-  if (isEmailCodeSent) {
+  if (isEmailCodeStatus === 'sent') {
     return (
       <EnterCode email={email} callbackUrl={callbackUrl} onReturn={onReturn} />
+    )
+  } else if (isEmailCodeStatus === 'window') {
+    return (
+      <div className="px-6">
+        <div className="text-sm text-gray-600 mb-4">
+          <p>A new window has been opened. Please check there to continue.</p>
+        </div>
+        <Placeholder.Root className="grid w-full">
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+        </Placeholder.Root>
+      </div>
     )
   }
 
@@ -175,7 +188,8 @@ const SignIn = ({
           <SignWithEmail
             isSignUp={false}
             email={email}
-            setEmailCodeSent={setEmailCodeSent}
+            setEmailCodeSent={setEmailCodeStatus}
+            callbackUrl={callbackUrl}
           />
         )}
         {accountType.length === 0 && (
@@ -189,7 +203,8 @@ const SignIn = ({
             <SignWithEmail
               isSignUp={true}
               email={email}
-              setEmailCodeSent={setEmailCodeSent}
+              setEmailCodeSent={setEmailCodeStatus}
+              callbackUrl={callbackUrl}
             />
             {/*}
             <div>Passkey Account</div>
@@ -223,7 +238,7 @@ const SignWithGoogle = ({
 }: SignWithGoogleProps) => {
   const signWithGoogle = () => {
     if (window !== window.parent) {
-      popupCenter('/google', 'Sample Sign In')
+      popupCenter('/google', 'Google Sign In')
       checkoutService?.send({ type: 'SELECT' })
       return
     }
@@ -249,7 +264,8 @@ const SignWithGoogle = ({
 export interface SignWithEmail {
   isSignUp: boolean
   email: string
-  setEmailCodeSent: (isEmailCodeSent: boolean) => void
+  setEmailCodeSent: (isEmailCodeSent: string) => void
+  callbackUrl: string
 }
 
 const SignWithEmail = ({
@@ -258,12 +274,22 @@ const SignWithEmail = ({
   setEmailCodeSent,
 }: SignWithEmail) => {
   const signWithEmail = () => {
+    if (window !== window.parent) {
+      popupCenter(`/email?email=${encodeURIComponent(email)}`, 'Google Sign In')
+      signIn('email', {
+        email: email,
+        redirect: false,
+      })
+      setEmailCodeSent('window')
+      return
+    }
+
     signIn('email', {
       email: email,
       redirect: false,
     })
 
-    setEmailCodeSent(true)
+    setEmailCodeSent('sent')
   }
 
   return (

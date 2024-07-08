@@ -9,7 +9,7 @@ interface UserDetails {
 export interface EnterCodeProps {
   email: string
   callbackUrl: string
-  onReturn(): void
+  onReturn?(): void
 }
 
 export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
@@ -81,14 +81,16 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
             }
           />
         </form>
-        <div className="w-full flex items-center justify-end px-6 py-4">
-          <button
-            onClick={() => onReturn()}
-            className="hover:text-ui-main-600 underline"
-          >
-            Back
-          </button>
-        </div>
+        {onReturn && (
+          <div className="w-full flex items-center justify-end px-6 py-4">
+            <button
+              onClick={() => onReturn()}
+              className="hover:text-ui-main-600 underline"
+            >
+              Back
+            </button>
+          </div>
+        )}
       </div>
     </div>
   )
