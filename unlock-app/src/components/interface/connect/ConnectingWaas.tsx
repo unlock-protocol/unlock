@@ -1,6 +1,6 @@
 import { Placeholder } from '@unlock-protocol/ui'
 import { useSession } from 'next-auth/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -22,10 +22,14 @@ export const ConnectingWaas = ({
 }: ConnectingWaasProps) => {
   const { data: session } = useSession()
 
+  const [selectedProvider, _] = useState(
+    localStorage.getItem('nextAuthProvider')
+  )
+
   const { authenticateWithProvider } = useAuthenticate()
   const { signIn: siweSignIn, isSignedIn, signOut: siweSignOut } = useSIWE()
 
-  const { connected, deAuthenticate } = useAuth()
+  const { account, connected, deAuthenticate } = useAuth()
   const { openConnectModal } = useConnectModal()
 
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
@@ -37,7 +41,7 @@ export const ConnectingWaas = ({
   }
 
   useEffect(() => {
-    if (!session || !session?.user?.selectedProvider) return
+    if (!session || !selectedProvider) return
 
     if (openConnectModalWindow) {
       openConnectModal()
@@ -50,12 +54,11 @@ export const ConnectingWaas = ({
         const waasProvider = new WaasProvider({
           ...config.networks[1],
           email: session.user?.email as string,
-          selectedLoginProvider: session.user.selectedProvider as string,
+          selectedLoginProvider: selectedProvider,
           token: session.user.token as string,
         })
         await waasProvider.connect(captcha)
         await authenticateWithProvider('WAAS', waasProvider)
-        session.user.selectedProvider = null
       } catch (err) {
         console.error(err)
         ToastHelper.error('Error retrieving your wallet, please try again.')
@@ -64,12 +67,13 @@ export const ConnectingWaas = ({
     }
 
     connectWaasProvider()
-  }, [session?.user.selectedProvider])
+  }, [selectedProvider])
 
   useEffect(() => {
     if (!connected && !isSignedIn) return
 
     const connect = async () => {
+      console.log('Connecting with SIWE')
       try {
         await siweSignIn()
       } catch (err) {
@@ -80,7 +84,7 @@ export const ConnectingWaas = ({
     }
 
     connect()
-  }, [connected, isSignedIn])
+  }, [connected, isSignedIn, account])
 
   return (
     <div className="h-full px-6 pb-6">
@@ -92,7 +96,12 @@ export const ConnectingWaas = ({
       />
       <div className="grid">
         <div className="flex flex-col items-center justify-center gap-6 pb-6">
-          <SvgComponents.Google width={40} height={40} />
+          {selectedProvider === 'google' && (
+            <SvgComponents.Google width={40} height={40} />
+          )}
+          {selectedProvider === 'email' && (
+            <SvgComponents.Email width={40} height={40} />
+          )}
           <div className="inline-flex items-center gap-2 text-lg font-bold">
             {session && session.user?.email}
           </div>

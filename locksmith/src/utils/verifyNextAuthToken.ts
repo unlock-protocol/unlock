@@ -3,6 +3,7 @@ import config from '../config/config'
 import { UserAccountType } from '../controllers/userController'
 import { NextAuthSession } from '../models/nextAuthSession'
 import { Op } from 'sequelize'
+import { NextAuthAccount } from '../models/nextAuthAccount'
 
 export const verifyToken = async (
   selectedProvider: UserAccountType,
@@ -21,9 +22,15 @@ export const verifyToken = async (
 }
 
 const verifyGoogleToken = async (email: string, token: string) => {
+  const googleToken = await NextAuthAccount.findOne({
+    where: {
+      userId: token,
+    },
+  })
+
   const client = new OAuth2Client()
   const ticket = await client.verifyIdToken({
-    idToken: token,
+    idToken: googleToken?.id_token as string,
     audience: config.googleAuthClientId,
   })
 

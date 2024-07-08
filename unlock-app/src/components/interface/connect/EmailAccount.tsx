@@ -237,6 +237,8 @@ const SignWithGoogle = ({
   isSignUp,
 }: SignWithGoogleProps) => {
   const signWithGoogle = () => {
+    localStorage.setItem('nextAuthProvider', 'google')
+
     if (window !== window.parent) {
       popupCenter('/google', 'Google Sign In')
       checkoutService?.send({ type: 'SELECT' })
@@ -274,6 +276,8 @@ const SignWithEmail = ({
   setEmailCodeSent,
 }: SignWithEmail) => {
   const signWithEmail = () => {
+    localStorage.setItem('nextAuthProvider', 'email')
+
     if (window !== window.parent) {
       popupCenter(`/email?email=${encodeURIComponent(email)}`, 'Google Sign In')
       signIn('email', {

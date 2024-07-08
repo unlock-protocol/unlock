@@ -6,6 +6,7 @@ import SequelizeAdapter, { models } from '@auth/sequelize-adapter'
 import { Sequelize } from 'sequelize'
 import { generateAuthToken } from '~/utils/generateAuthToken'
 import WedlockService from '~/services/wedlockService'
+import { signOut } from 'next-auth/react'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
 
@@ -69,6 +70,10 @@ export const authOptions = {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
+      console.log('Sign In')
+      console.log(user)
+      console.log(account)
+
       return true
     },
     // This is not called in case of Email Login
@@ -77,6 +82,10 @@ export const authOptions = {
         token.selectedProvider = user.selectedProvider
         token.idToken = user.idToken
       }
+
+      console.log('jwt')
+      console.log(token)
+      console.log(user)
 
       return token
     },
@@ -89,6 +98,10 @@ export const authOptions = {
       token: any
       user: any
     }) {
+      console.log('session')
+      console.log('session', session)
+      console.log('user', user)
+      console.log('token', token)
       if (token) {
         session.user.selectedProvider = token.selectedProvider
         session.user.token = token.idToken
