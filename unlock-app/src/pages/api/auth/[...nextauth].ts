@@ -41,6 +41,9 @@ export const authOptions = {
     },
   }),
   secret: config.nexthAuthSecret as string,
+  pages: {
+    error: '/authError',
+  },
   providers: [
     GoogleProvider({
       clientId: config.googleClientId as string,
