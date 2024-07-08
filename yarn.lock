@@ -18601,7 +18601,7 @@ __metadata:
     eslint: "npm:8.57.0"
     ethers: "npm:6.13.0"
     hardhat: "npm:2.22.6"
-    hardhat-gas-reporter: "npm:1.0.10"
+    hardhat-gas-reporter: "npm:2.2.0"
     mocha: "npm:10.5.2"
     prettier: "npm:3.3.2"
     solidity-coverage: "npm:0.8.12"
@@ -29144,7 +29144,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-gas-reporter@npm:0.2.27, eth-gas-reporter@npm:^0.2.24, eth-gas-reporter@npm:^0.2.25":
+"eth-gas-reporter@npm:0.2.27, eth-gas-reporter@npm:^0.2.24":
   version: 0.2.27
   resolution: "eth-gas-reporter@npm:0.2.27"
   dependencies:
@@ -32306,19 +32306,6 @@ __metadata:
   peerDependencies:
     hardhat: ^2.0.0
   checksum: 10/648d5fd980d84a2ddbd9039a831133fa1cbd4ebeb2a851835997cbd75db10433a4124b58795da313127c410200813b2a25244ff9f3672f5705aeadd93a900c4b
-  languageName: node
-  linkType: hard
-
-"hardhat-gas-reporter@npm:1.0.10":
-  version: 1.0.10
-  resolution: "hardhat-gas-reporter@npm:1.0.10"
-  dependencies:
-    array-uniq: "npm:1.0.3"
-    eth-gas-reporter: "npm:^0.2.25"
-    sha1: "npm:^1.1.1"
-  peerDependencies:
-    hardhat: ^2.0.2
-  checksum: 10/ad6df4f87ebddea967d02243a728f824cd02a486bc400a0b5fb0bfc55b24eb08d445d4c2650e8d53fa622050f6f4a971e954179bb2ac02f2bbaba97f4464d33f
   languageName: node
   linkType: hard
 
