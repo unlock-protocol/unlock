@@ -4,7 +4,7 @@ export const gnosis: NetworkConfig = {
   blockScan: {
     url: (address: string) => `https://blockscan.com/address/${address}`,
   },
-  chain: 'xdai',
+  chain: 'gnosis',
   description:
     'Gnosis Chain is one of the first Ethereum sidechains and has stayed true to its values.',
   explorer: {
