@@ -148,11 +148,15 @@ export const generateAppleWalletPass: RequestHandler = async (
 
     // Pipe the pass data stream directly to the response object
     stream.pipe(response)
+    return new Promise((resolve, reject) => {
+      stream.on('end', resolve)
+      stream.on('error', reject)
+    })
   } catch (error) {
     // Log errors that occur and send a 500 Internal Server Error response
     logger.error('Error in generating apple wallet pass:', error)
     return response.status(500).send({
-      message: 'Internal Server Error',
+      message: 'Error in generating apple wallet pass',
     })
   }
 }
