@@ -8,7 +8,7 @@ export const getLock = async (lockAddress) => {
     throw Error(`Missing lock address`)
   }
   // get unlock instance (TODO: do not use code version but packaged version)
-  const { abi } = contracts['PublicLockV13']
+  const { abi } = contracts['PublicLockV14']
   const lock = await ethers.getContractAt(abi, lockAddress)
   return lock
 }
