@@ -1,62 +1,51 @@
-import { ethers } from 'ethers'
 import networks from '../src'
-import ERC20 from '../utils/erc20.abi.json'
+import path from 'path'
+import fs from 'fs-extra'
+import { validateKeys } from './helpers'
+import * as ts from 'typescript'
+import tsconfig from '../tsconfig.json'
 
-const expectedKeys = Object.keys(networks['1'])
-
-export const validateKeys = (network) => {
-  const missingProperties: string[] = []
-  expectedKeys.forEach((key) => {
-    if (!(key in network)) {
-      missingProperties.push(key as string)
+// validate ts types
+const validateTypes = async (filePath) => {
+  const program = ts.createProgram([filePath], tsconfig.compilerOptions)
+  const diagnostics = ts.getPreEmitDiagnostics(program)
+  for (const diagnostic of diagnostics) {
+    if (diagnostic.file?.fileName === filePath) {
+      console.log(diagnostic)
+      const message = diagnostic.messageText
+      console.log(`(${filePath}) ${message}`)
     }
-  })
-  return missingProperties
+  }
 }
 
-export const validateERC20 = async ({ token, chainId }) => {
-  const errors: string[] = []
-  const warnings: string[] = []
-  const network = networks[chainId]
-  // unlock contract
-  const provider = new ethers.JsonRpcProvider(network.provider)
-  const unlock = new ethers.Contract(
-    network.unlockAddress,
-    ['function uniswapOracles(address) view returns (address)'],
-    provider
+const validateNewNetwork = async (networkFilePath) => {
+  const networkSlug = path.basename(
+    networkFilePath,
+    path.extname(networkFilePath)
   )
-
-  const contract = new ethers.Contract(token.address, ERC20, provider)
-
-  const symbol = await contract.symbol()
-  const name = await contract.name()
-  const decimals = parseInt(await contract.decimals())
-  if (decimals !== token.decimals) {
-    errors.push(
-      `Decimals mismatch for ${token.address} on ${chainId}. It needs to be "${decimals}"`
-    )
+  const networkId = Object.keys(networks).find(
+    (id) => networks[id].chain === networkSlug
+  )
+  if (networkId) {
+    const missingProperties = validateKeys(networks[networkId])
+    console.log(missingProperties)
   }
-  if (name !== token.name) {
-    errors.push(
-      `Name mismatch for ${token.address} on ${chainId}. It needs to be "${name}"`
-    )
-  }
-  if (symbol !== token.symbol) {
-    errors.push(
-      `Symbol mismatch for ${token.address} on ${chainId}. It needs to be "${symbol}"`
-    )
-  }
-
-  // check if oracle is set in Unlock
-  if (token.symbol !== 'WETH' && network.uniswapV3) {
-    const isSetInUnlock =
-      (await unlock.uniswapOracles(token.address)) !== ethers.ZeroAddress
-
-    if (!isSetInUnlock) {
-      warnings.push(
-        `Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${chainId}) is not set correctly`
-      )
-    }
-  }
-  return { errors, warnings }
 }
+
+const run = async () => {
+  // fs
+  // const [filePath] = process.argv.slice(2)
+  //
+  const fileList = await fs.readdir('./src/networks')
+  for (const filePath of fileList) {
+    console.log(path.resolve('src/networks', filePath))
+    await validateTypes(filePath)
+  }
+  // await validateNewNetwork(path.resolve(filePath))
+}
+
+run()
+  .then(() => console.log('Done'))
+  .catch((err) => {
+    throw Error(err)
+  })

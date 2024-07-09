@@ -1,6 +1,6 @@
 import networks from '../src'
 import { log } from './logger'
-import { validateKeys } from './validate'
+import { validateKeys } from './helpers'
 
 Object.keys(networks).forEach((network) => {
   if (network !== '31337') {

@@ -19,7 +19,7 @@
     "check:keys": "tsx ./bin/check-keys",
     "check:tokens": "tsx ./bin/check-tokens",
     "check:hooks": "tsx ./bin/check-hooks",
-    "validate": "tsx ./bin/validate-new-network.ts",
+    "validate": "tsx ./bin/validate.ts",
     "create-localhost": "tsx ./bin/localhost",
     "clean": "rm -rf ./dist",
     "unlock-address": "tsx ./bin/readSubgraphInfo",
