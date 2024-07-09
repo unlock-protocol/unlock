@@ -7,15 +7,16 @@ import tsconfig from '../tsconfig.json'
 
 // validate ts types
 const validateTypes = async (filePath) => {
+  let errors: string[] = []
   const program = ts.createProgram([filePath], tsconfig.compilerOptions)
   const diagnostics = ts.getPreEmitDiagnostics(program)
   for (const diagnostic of diagnostics) {
     if (diagnostic.file?.fileName === filePath) {
-      console.log(diagnostic)
       const message = diagnostic.messageText
-      console.log(`(${filePath}) ${message}`)
+      errors = [...errors, `(${diagnostic.file?.fileName}) ${message}`]
     }
   }
+  return errors
 }
 
 const validateNewNetwork = async (networkFilePath) => {
@@ -36,12 +37,26 @@ const run = async () => {
   // fs
   // const [filePath] = process.argv.slice(2)
   //
+  let errors: string[] = []
   const fileList = await fs.readdir('./src/networks')
   for (const filePath of fileList) {
-    console.log(path.resolve('src/networks', filePath))
-    await validateTypes(filePath)
+    if (filePath.includes('test.ts')) {
+      // check mandatory keys using ts
+      const typeErrors = await validateTypes(
+        path.resolve('src/networks', filePath)
+      )
+      errors = [...errors, ...typeErrors]
+
+      // validate bytecode
+
+      // validate subgraph URL
+
+      // validate tokens
+
+      // check other missing keys
+      await validateNewNetwork(path.resolve(filePath))
+    }
   }
-  // await validateNewNetwork(path.resolve(filePath))
 }
 
 run()
