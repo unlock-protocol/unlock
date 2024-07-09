@@ -6,6 +6,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 interface UseLocKManagerProps {
   lockAddress: string
   network: number
+  lockManagerAddress?: string
 }
 /**
  * Check if currently authenticated user is manager and manager could give us the manager object for that lock if we need it.
@@ -16,21 +17,31 @@ interface UseLocKManagerProps {
 export const useLockManager = ({
   lockAddress,
   network,
+  lockManagerAddress,
 }: UseLocKManagerProps) => {
   const { account } = useAuth()
-  const { data: isManager = false, isLoading } = useQuery(
-    ['getLockManagerStatus', network, lockAddress, account],
+  const addressToCheck = lockManagerAddress || account
+  const {
+    data: isManager = false,
+    isLoading,
+    refetch,
+  } = useQuery(
+    ['getLockManagerStatus', network, lockAddress, addressToCheck],
     async () => {
-      if (!account || !lockAddress || !network) {
+      if (!addressToCheck || !lockAddress || !network) {
         return false
       }
       const web3Service = new Web3Service(networks)
-      return web3Service.isLockManager(lockAddress, account, network)
+      return web3Service.isLockManager(lockAddress, addressToCheck, network)
     },
-    { staleTime: 1000 * 60 } // Cached for 1 minute!
+    {
+      staleTime: 1000 * 60,
+      enabled: !!addressToCheck && !!lockAddress && !!network,
+    } // Cached for 1 minute!
   )
 
   return {
+    refetch,
     isManager,
     isLoading,
   }

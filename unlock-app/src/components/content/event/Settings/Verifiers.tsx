@@ -2,6 +2,7 @@ import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import Link from 'next/link'
 import { SettingCard } from '~/components/interface/locks/Settings/elements/SettingCard'
 import { VerifierForm } from '~/components/interface/locks/Settings/forms/VerifierForm'
+import { StakeRefund } from './StakeRefund'
 
 export interface VerifiersProps {
   event: Event
@@ -36,6 +37,13 @@ export const Verifiers = ({ event, checkoutConfig }: VerifiersProps) => {
           </Link>
           .
         </p>
+      </SettingCard>
+
+      <SettingCard
+        label="Refund attendees"
+        description="With Events  by Unlock, you can choose to refund attendees when they actually show up!"
+      >
+        <StakeRefund event={event} checkoutConfig={checkoutConfig} />
       </SettingCard>
     </div>
   )

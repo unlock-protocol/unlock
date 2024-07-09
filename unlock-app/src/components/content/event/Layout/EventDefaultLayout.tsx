@@ -14,6 +14,7 @@ import { Card } from '@unlock-protocol/ui'
 import { MdAssignmentLate } from 'react-icons/md'
 import { AttendeeCues } from '../Registration/AttendeeCues'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
+import { AttendeeStaking } from '../Registration/SingleLock/AttendeeStaking'
 
 type EventDefaultLayoutProps = {
   event: Event
@@ -141,12 +142,16 @@ export const EventDefaultLayout = ({
         </div>
         <div className="flex flex-col gap-4">
           {!hasPassed && (
-            <RegistrationCard
-              requiresApproval={event.requiresApproval}
-              checkoutConfig={checkoutConfig}
-              hideRemaining={!!event.hideRemaining}
-              attendeeRefund={event.attendeeRefund}
-            />
+            <>
+              <RegistrationCard
+                requiresApproval={event.requiresApproval}
+                checkoutConfig={checkoutConfig}
+                hideRemaining={!!event.hideRemaining}
+              />
+              {event.attendeeRefund && (
+                <AttendeeStaking attendeeRefund={event.attendeeRefund} />
+              )}
+            </>
           )}
           {hasPassed && (
             <Card className="grid gap-4 mt-10 md:mt-0">

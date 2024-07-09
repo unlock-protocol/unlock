@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 import { onResolveName } from '~/utils/resolvers'
 import useEns from '~/hooks/useEns'
+import { useAddLockManager } from '~/hooks/useAddLockManager'
 interface LockManagerFormProps {
   lockAddress: string
   network: number
@@ -214,7 +215,6 @@ export const LockManagerForm = ({
   const localForm = useForm<{ manager: string }>()
 
   const { handleSubmit, control, setValue } = localForm
-  const { getWalletService } = useAuth()
 
   const { manager } = useWatch({
     control,
@@ -234,25 +234,7 @@ export const LockManagerForm = ({
     )
   }
 
-  const addLockManager = async (address: string) => {
-    const managerAddress = minifyAddress(address)
-    const walletService = await getWalletService(network)
-    const addManagerPromise = walletService.addLockManager({
-      lockAddress,
-      userAddress: address,
-    })
-    await ToastHelper.promise(addManagerPromise, {
-      loading: `Adding ${managerAddress} as Lock Manager.`,
-      success: `${managerAddress} added as Lock Manager.`,
-      error: ` Impossible to add ${managerAddress} as Lock Manager, please try again.`,
-    })
-  }
-
-  const addLockManagerMutation = useMutation(addLockManager, {
-    onSuccess: () => {
-      setValue('manager', '')
-    },
-  })
+  const addLockManagerMutation = useAddLockManager(lockAddress, network)
 
   const { isLoading, data: lockSubgraph } = useQuery(
     [
@@ -263,12 +245,15 @@ export const LockManagerForm = ({
     ],
     async () => getLock(),
     {
-      refetchInterval: 2000,
+      refetchInterval: 1000,
     }
   )
 
   const onAddLockManager = async ({ manager = '' }: any) => {
-    if (manager !== '') await addLockManagerMutation.mutateAsync(manager)
+    if (manager !== '') {
+      await addLockManagerMutation.mutateAsync(manager)
+      setValue('manager', '')
+    }
   }
 
   const managers = lockSubgraph?.lockManagers ?? []

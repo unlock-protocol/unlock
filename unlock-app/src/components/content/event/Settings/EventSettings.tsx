@@ -54,7 +54,7 @@ export const EventSettings = ({ slug, checkoutConfig }: EventSettingsProps) => {
     {
       id: 'verifiers',
       label: 'Verifiers',
-      description: `Add verifiers!`,
+      description: `Verify ticket validity and handle attendees who have checked-in`,
       children: <Verifiers event={event} checkoutConfig={checkoutConfig} />,
     },
     // {
