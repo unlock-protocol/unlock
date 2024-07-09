@@ -1,7 +1,12 @@
 import networks from '../src'
 import path from 'path'
 import fs from 'fs-extra'
-import { validateKeys } from './helpers'
+import {
+  validateKeys,
+  validateERC20,
+  validateBytecode,
+  checkSubgraph,
+} from './helpers'
 import * as ts from 'typescript'
 import tsconfig from '../tsconfig.json'
 
@@ -13,33 +18,20 @@ const validateTypes = async (filePath) => {
   for (const diagnostic of diagnostics) {
     if (diagnostic.file?.fileName === filePath) {
       const message = diagnostic.messageText
-      errors = [...errors, `(${diagnostic.file?.fileName}) ${message}`]
+      errors = [
+        ...errors,
+        `❌ Syntax Error: (${diagnostic.file?.fileName}) ${message}`,
+      ]
     }
   }
   return errors
 }
 
-const validateNewNetwork = async (networkFilePath) => {
-  const networkSlug = path.basename(
-    networkFilePath,
-    path.extname(networkFilePath)
-  )
-  const networkId = Object.keys(networks).find(
-    (id) => networks[id].chain === networkSlug
-  )
-  if (networkId) {
-    const missingProperties = validateKeys(networks[networkId])
-    console.log(missingProperties)
-  }
-}
-
 const run = async () => {
-  // fs
-  // const [filePath] = process.argv.slice(2)
-  //
   let errors: string[] = []
   const fileList = await fs.readdir('./src/networks')
   for (const filePath of fileList) {
+    // TODO: remove that test file check
     if (filePath.includes('test.ts')) {
       // check mandatory keys using ts
       const typeErrors = await validateTypes(
@@ -47,20 +39,59 @@ const run = async () => {
       )
       errors = [...errors, ...typeErrors]
 
-      // validate bytecode
+      // import file
+      const { default: network } = await import(
+        path.resolve('src/networks', filePath)
+      )
 
-      // validate subgraph URL
+      // TODO: validate template bytecode
+      // validate Unlock bytecode
+      const contractName = 'UnlockV13'
+      try {
+        const isUnlockValid = await validateBytecode({
+          contractAddress: network.unlockAddress,
+          contractName,
+          providerURL: network.provider,
+        })
+        if (!isUnlockValid) {
+          errors.push(`❌ Unlock bytecode does not match ${contractName}`)
+        }
+      } catch (error) {
+        errors.push(`❌ Could not fetch Unlock bytecode`)
+      }
+
+      // check subgraph endpoint status
+      if (network.subgraph?.endpoint) {
+        // make test query
+        const subgraphErrors = await checkSubgraph(network.subgraph?.endpoint)
+        errors = [...errors, ...subgraphErrors]
+      }
 
       // validate tokens
+      if (network.tokens) {
+        for (const token of network.tokens) {
+          const tokenErrors = await validateERC20(token)
+          errors = [...errors, ...tokenErrors.errors, ...tokenErrors.warnings]
+        }
+      }
 
       // check other missing keys
-      await validateNewNetwork(path.resolve(filePath))
+      // const missingKeys = await validateKeys(path.resolve(filePath))
+      // errors = [...errors, ...missingKeys]
     }
   }
+  return { errors }
 }
 
 run()
-  .then(() => console.log('Done'))
+  .then(({ errors }) => {
+    if (errors.length === 0) console.log(errors)
+    else {
+      console.log(`The following errors have been found:
+${errors.map((error) => `- ${error}`).join('\n')}
+`)
+    }
+  })
   .catch((err) => {
     throw Error(err)
   })

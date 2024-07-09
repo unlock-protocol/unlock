@@ -10,13 +10,13 @@ export const test: NetworkConfig = {
     name: 'Test ETH',
     symbol: 'ETH',
   },
-  provider: 'http://localhost:8545',
+  provider: 'https://rpc2.sepolia.org/',
   // publicLockVersionToDeploy: 14,
   publicProvider: 'http://localhost:8545',
   subgraph: {
     endpoint: 'hah',
   },
-  unlockAddress: '',
+  unlockAddress: '0x36b34e10295cCE69B652eEB5a8046041074515Da',
 }
 
 export default test

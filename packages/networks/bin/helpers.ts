@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import networks from '../src'
 import ERC20 from '../utils/erc20.abi.json'
+import { contracts } from '@unlock-protocol/contracts'
 
 const expectedKeys = Object.keys(networks['1'])
 
@@ -59,4 +60,94 @@ export const validateERC20 = async ({ token, chainId }) => {
     }
   }
   return { errors, warnings }
+}
+
+export const validateBytecode = async ({
+  contractAddress,
+  providerURL,
+  contractName = 'UnlockV13',
+}) => {
+  const { bytecode } = contracts[contractName]
+  const provider = new ethers.JsonRpcProvider(providerURL)
+  const deployedByteCode = await provider.getCode(contractAddress)
+  return deployedByteCode === bytecode
+}
+
+const fetchGraph = async (query, url) => {
+  const req = await fetch(url, {
+    body: JSON.stringify({ query }),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  })
+
+  return await req.json()
+}
+
+const getLatestSubgraphDeployment = async (url) => {
+  const query = `{
+    _meta{
+      deployment
+    }
+  }`
+  const { data } = await fetchGraph(query, url)
+  if (!data._meta) console.log(data, url)
+  const { deployment } = data._meta
+  return deployment
+}
+
+export const checkSubgraph = async (endpoint: string) => {
+  const errors: string[] = []
+  // get latest deployment id
+  let deploymentId
+  try {
+    deploymentId = await getLatestSubgraphDeployment(endpoint)
+  } catch (error) {
+    errors.push(
+      `❌ failed to fetch latest deployment from The Graph (${endpoint})! (${error})`
+    )
+    return errors
+  }
+
+  let status
+  if (deploymentId) {
+    const query = `{
+      indexingStatuses(subgraphs: ["${deploymentId}"]) {
+        synced
+        health
+        fatalError {
+          message
+          block {
+            number
+            hash
+          }
+          handler
+        }
+        chains {
+          network
+        }
+      }
+    }`
+
+    const {
+      data: { indexingStatuses },
+    } = await fetchGraph(query, endpoint)
+    ;[status] = indexingStatuses
+  }
+
+  // parse errors
+  if (status) {
+    if (!status.synced) {
+      errors.push(`❌ Subgraph is out of sync!`)
+    }
+    if (status.health !== 'healthy') {
+      errors.push(`❌ Subgraph is failing: ${status.fatalError?.message}`)
+    }
+  } else {
+    errors.push(`⚠️: Missing health status for subgraph `)
+  }
+
+  return errors
 }
