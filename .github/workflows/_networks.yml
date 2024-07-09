@@ -29,4 +29,7 @@ jobs:
         if: ${{ steps.check.outputs.issues != '[]' }}
         uses: mshick/add-pr-comment@v2.8.2
         with:
-          message: ${{ steps.check.outputs.issues }}
+          message: |
+            The following errors have been found:
+
+            ${{ join(fromJson(steps.check.outputs.issues), '\n\n')}}

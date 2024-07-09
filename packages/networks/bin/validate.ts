@@ -85,12 +85,7 @@ const run = async () => {
 
 run()
   .then(({ errors }) => {
-    if (errors.length === 0) console.log(errors)
-    else {
-      console.log(`The following errors have been found:
-${errors.map((error) => `- ${error}`).join('\n')}
-`)
-    }
+    console.log(JSON.stringify(errors))
   })
   .catch((err) => {
     throw Error(err)
