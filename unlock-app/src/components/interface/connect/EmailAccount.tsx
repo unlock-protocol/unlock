@@ -12,6 +12,7 @@ import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
+import { useSelector } from '@xstate/react'
 
 interface UserDetails {
   email: string
@@ -190,14 +191,20 @@ const SignWithGoogle = ({
 }: SignWithGoogleProps) => {
   const router = useRouter()
 
+  const context = useSelector(checkoutService, (state) => state?.context)
   const url = new URL(
     `${window.location.protocol}//${window.location.host}${router.asPath}`
   )
+
   const params = new URLSearchParams(url.search)
   params.append(
     'shouldOpenConnectModal',
     encodeURIComponent(shoudOpenConnectModal)
   )
+  if (context?.lock) {
+    params.set('lock', encodeURIComponent(context.lock.address))
+  }
+
   url.search = params.toString()
 
   const callbackUrl = url.toString()
