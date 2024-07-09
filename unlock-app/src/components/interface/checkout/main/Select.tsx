@@ -446,7 +446,7 @@ export function Select({ checkoutService }: Props) {
     params.set('lock', encodeURIComponent(lock.address))
     url.search = params.toString()
 
-    router.push(url)
+    router.push(url, undefined, { shallow: true })
 
     checkoutService.send({
       type: 'CONNECT',
