@@ -1,0 +1,17 @@
+---
+title: "Unlock Labs Feature Announcement: Starred \"Favorites\" in the Dashboard"
+subtitle: ""
+authorName: "Unlock Protocol"
+publishDate: "Thu May 09 2024 00:00:00 GMT+0000 (Coordinated Universal Time)"
+description: "Admins now save time and clicks in the dashboard."
+image: "/images/blog/unlock-labs-feature-announcement--starred--favorites--in-the-dashboard/9f37179cc2e68db53eb382cc9b720e45.jpg"
+---
+
+![Unlock Labs Feature Announcement: Starred "Favorites" in the Dashboard](https://storage.googleapis.com/papyrus_images/9f37179cc2e68db53eb382cc9b720e45.jpg)
+
+<p>We’re listening. We heard from users of the Unlock Labs Dashboard that administrators (“Lock Managers”) who manage multiple Unlock Protocol smart contracts for memberships, subscriptions, or tickets; and developers who are working across many test instances, did not have an easy way to navigate through extensive lists to find specific smart contracts.</p><p>This task became increasingly daunting as the number of smart contract instances spanned across different networks including Base, Optimism, Arbitrum, Polygon, and other blockchains.</p><p>The Unlock Labs Dashboard now has “Favorites.” This enables users to prioritize the smart contracts on their dashboard with a single click.</p><div class="relative header-and-anchor"><h2 id="h-the-necessity-of-the-favorites-feature">The necessity of the "Favorites" feature</h2></div><p>Based on feedback from users (and as users of the dashboard ourselves!), the Unlock Labs team recognized the need for improved navigation and prioritization and an improved dashboard experience for power users.</p><p>The “Favorites” functionality allows administrators to mark certain smart contracts with a star (<span data-name="star" class="emoji" data-type="emoji">⭐</span>), similar to bookmarking web pages in a browser. We believe this simple affordance will improve the experience of users who manage a large array of Unlock Protocol smart contracts, enabling them to access their most important or most used contracts quickly.</p><div data-type="youtube" videoid="y4J4LVUSGS4">
+      <div class="youtube-player" data-id="y4J4LVUSGS4" style="background-image: url('https://i.ytimg.com/vi/y4J4LVUSGS4/hqdefault.jpg'); background-size: cover; background-position: center">
+        <a href="https://www.youtube.com/watch?v=y4J4LVUSGS4">
+          <img src="/images/blog/unlock-labs-feature-announcement--starred--favorites--in-the-dashboard/play.png" class="play">
+        </a>
+      </div></div><div class="relative header-and-anchor"><h2 id="h-how-it-works">How it works</h2></div><p>The implementation of the "Favorites" feature in Unlock Protocol mirrors functionality seen in platforms like Google Drive or Spotify, where users can star or highlight important content (or favorite track!)&nbsp; for quick access.&nbsp;</p><p>In the context of the Unlock Labs Dashboard, once an administrator marks a smart contract as a favorite, it appears in a dedicated section at the top of the dashboard. This section acts as a quick-access panel to all starred contracts, streamlining the management process.</p><div class="relative header-and-anchor"><h2 id="h-availability">Availability</h2></div><p>Favoriting is available in the Unlock Labs Dashboard effective immediately.</p><p></p><p></p><p></p><p></p><p></p>
