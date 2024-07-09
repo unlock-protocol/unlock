@@ -95,8 +95,6 @@ export const authOptions = {
         session.user.token = user.id
       }
 
-      console.log('Session', session)
-
       return session
     },
   },
