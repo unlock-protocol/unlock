@@ -11,6 +11,7 @@ jobs:
       targets: '[
         "locksmith",
         "packages/contracts",
+        "packages/networks",
         "packages/hardhat-plugin",
         "packages/unlock-js",
         "packages/paywall",
