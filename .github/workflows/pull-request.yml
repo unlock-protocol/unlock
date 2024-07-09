@@ -44,7 +44,7 @@ jobs:
 
   networks-changed:
     needs: check-changes
-    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'networks') }}
+    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'packages/networks') }}
     uses: ./.github/workflows/_networks.yml
 
   # Netlify Deployments (run as drafts, unpublished to main URL)
