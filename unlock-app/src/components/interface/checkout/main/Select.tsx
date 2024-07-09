@@ -439,15 +439,6 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    // const url = new URL(
-    //   `${window.location.protocol}//${window.location.host}${router.asPath}`
-    // )
-    // const params = new URLSearchParams(url.search)
-    // params.set('lock', encodeURIComponent(lock.address))
-    // url.search = params.toString()
-
-    // router.push(url, undefined, { shallow: true })
-
     checkoutService.send({
       type: 'CONNECT',
       lock,
