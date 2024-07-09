@@ -280,16 +280,16 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    checkoutService.send({
-      type: 'CONNECT',
-      lock,
-      existingMember: autoSelectedLock.isMember,
-      expiredMember: autoSelectedLock.isExpired,
-      skipQuantity,
-      skipRecipient,
-      recipients: account ? [account] : [],
-      hook: hookType,
-    })
+    // checkoutService.send({
+    //   type: 'CONNECT',
+    //   lock,
+    //   existingMember: autoSelectedLock.isMember,
+    //   expiredMember: autoSelectedLock.isExpired,
+    //   skipQuantity,
+    //   skipRecipient,
+    //   recipients: account ? [account] : [],
+    //   hook: hookType,
+    // })
   }, [autoSelectedLock])
 
   const locksGroupedByNetwork = useMemo(
@@ -439,14 +439,14 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    const url = new URL(
-      `${window.location.protocol}//${window.location.host}${router.asPath}`
-    )
-    const params = new URLSearchParams(url.search)
-    params.set('lock', encodeURIComponent(lock.address))
-    url.search = params.toString()
+    // const url = new URL(
+    //   `${window.location.protocol}//${window.location.host}${router.asPath}`
+    // )
+    // const params = new URLSearchParams(url.search)
+    // params.set('lock', encodeURIComponent(lock.address))
+    // url.search = params.toString()
 
-    router.push(url)
+    // router.push(url, undefined, { shallow: true })
 
     checkoutService.send({
       type: 'CONNECT',
