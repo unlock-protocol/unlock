@@ -25,10 +25,7 @@ task('safe:address', 'Get the address of a safe')
 
 task('safe:version', 'Get the address of a safe').setAction(
   async (_, { ethers }) => {
-    const {
-      getSafeVersion,
-      getSafeAddress,
-    } = require('../scripts/multisig/_helpers')
+    const { getSafeVersion, getSafeAddress } = require('../helpers/multisig')
     const { chainId } = await ethers.provider.getNetwork()
     const safeAddress = await getSafeAddress(chainId)
     const safeVersion = await getSafeVersion(safeAddress)
