@@ -73,7 +73,7 @@ export const Authenticate = ({
     return connectProvider(provider)
   }
 
-  const deAuthenticate = () => {
+  const deAuthenticate = async () => {
     return disconnectProvider()
   }
 
