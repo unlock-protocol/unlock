@@ -16,6 +16,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Checkbox,
+  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -173,6 +174,8 @@ export const Form = ({ onSubmit }: FormProps) => {
 
   const router = useRouter()
 
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+
   register('metadata.image', {
     required: {
       value: true,
@@ -291,6 +294,7 @@ export const Form = ({ onSubmit }: FormProps) => {
                       'currencySymbol',
                       networks[newValue].nativeCurrency.symbol
                     )
+                    setCurrencyNetwork(networks[newValue].name)
                   }}
                   options={networkOptions}
                   moreOptions={moreNetworkOptions}
@@ -619,7 +623,9 @@ export const Form = ({ onSubmit }: FormProps) => {
                     </div>
                   </div>
 
-                  <div className="text-sm mt-1 flex items-center justify-between">
+                  <CurrencyHint network={currencyNetwork as string} />
+
+                  <div className="text-sm mt-2 flex items-center justify-between">
                     <Checkbox
                       disabled={isFree || !details.lock?.keyPrice}
                       label="Treat the price as a deposit which will be refunded when attendees check in at the event (not applicable to credit cards)."
