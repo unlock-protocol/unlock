@@ -9,37 +9,39 @@ import WedlockService from '~/services/wedlockService'
 
 const sequelize = new Sequelize(process.env.DATABASE_URL as string)
 
+const adapter = SequelizeAdapter(sequelize, {
+  models: {
+    Account: sequelize.define(
+      'Account',
+      { ...models.Account },
+      { tableName: 'NextAuthAccount' }
+    ),
+    User: sequelize.define(
+      'User',
+      {
+        ...models.User,
+      },
+      { tableName: 'NextAuthUser' }
+    ),
+    Session: sequelize.define(
+      'Session',
+      {
+        ...models.Session,
+      },
+      { tableName: 'NextAuthSession' }
+    ),
+    VerificationToken: sequelize.define(
+      'VerificationToken',
+      {
+        ...models.VerificationToken,
+      },
+      { tableName: 'NextAuthVerificationToken' }
+    ),
+  },
+})
+
 export const authOptions = {
-  adapter: SequelizeAdapter(sequelize, {
-    models: {
-      Account: sequelize.define(
-        'Account',
-        { ...models.Account },
-        { tableName: 'NextAuthAccount' }
-      ),
-      User: sequelize.define(
-        'User',
-        {
-          ...models.User,
-        },
-        { tableName: 'NextAuthUser' }
-      ),
-      Session: sequelize.define(
-        'Session',
-        {
-          ...models.Session,
-        },
-        { tableName: 'NextAuthSession' }
-      ),
-      VerificationToken: sequelize.define(
-        'VerificationToken',
-        {
-          ...models.VerificationToken,
-        },
-        { tableName: 'NextAuthVerificationToken' }
-      ),
-    },
-  }),
+  adapter: adapter,
   secret: config.nexthAuthSecret as string,
   pages: {
     error: '/authError',
@@ -68,6 +70,16 @@ export const authOptions = {
       user.selectedProvider = account.provider
       user.idToken = account.id_token
 
+      // Update google token in the DB if the user is already signed in
+      if (user.id) {
+        const nextAuthAccount = await sequelize.models.Account.findOne({
+          where: { userId: user.id },
+        })
+        if (nextAuthAccount) {
+          await nextAuthAccount.update({ id_token: account.id_token })
+        }
+      }
+
       return true
     },
     async jwt({ token, user }: { token: any; user: any }) {
@@ -82,6 +94,8 @@ export const authOptions = {
       if (user) {
         session.user.token = user.id
       }
+
+      console.log('Session', session)
 
       return session
     },
