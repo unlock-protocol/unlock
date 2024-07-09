@@ -280,16 +280,16 @@ export function Select({ checkoutService }: Props) {
       return
     }
 
-    checkoutService.send({
-      type: 'CONNECT',
-      lock,
-      existingMember: autoSelectedLock.isMember,
-      expiredMember: autoSelectedLock.isExpired,
-      skipQuantity,
-      skipRecipient,
-      recipients: account ? [account] : [],
-      hook: hookType,
-    })
+    // checkoutService.send({
+    //   type: 'CONNECT',
+    //   lock,
+    //   existingMember: autoSelectedLock.isMember,
+    //   expiredMember: autoSelectedLock.isExpired,
+    //   skipQuantity,
+    //   skipRecipient,
+    //   recipients: account ? [account] : [],
+    //   hook: hookType,
+    // })
   }, [autoSelectedLock])
 
   const locksGroupedByNetwork = useMemo(
