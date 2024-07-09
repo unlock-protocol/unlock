@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer'
 import config from '../../../config/config'
+import logger from '../../../logger'
 
 // Interface to define the structure of the certificates.
 interface Certificates {
@@ -22,16 +23,23 @@ export function getCertificates(): Certificates {
   const { signerCertBase64, signerKeyBase64, wwdrBase64, signerKeyPassphrase } =
     config
 
-  // Check if any configuration values are undefined and handle the situation.
+  // Check if any configuration values are undefined and handle gracefully
   if (
     !signerCertBase64 ||
     !signerKeyBase64 ||
     !wwdrBase64 ||
     !signerKeyPassphrase
   ) {
-    throw new Error(
-      'One or more certificate configuration values are undefined.'
+    logger.warn(
+      'Certificate configuration values are not fully set. Using dummy certificates.'
     )
+
+    return {
+      signerCert: Buffer.from('default_dummy_certificate', 'utf-8'),
+      signerKey: Buffer.from('default_dummy_key', 'utf-8'),
+      wwdr: Buffer.from('default_dummy_wwdr', 'utf-8'),
+      signerKeyPassphrase: 'dummy_passphrase',
+    }
   }
 
   // Decode base64-encoded certificates from the config into buffers.
