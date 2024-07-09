@@ -1,0 +1,25 @@
+name: Check networks package
+
+on:
+  workflow_call:
+
+jobs:
+  coverage:
+    name: Run checks for the networks package
+    runs-on: ubuntu-22.04
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/checkout@v4
+      - run: yarn
+        shell: bash
+      - run: yarn build
+        shell: bash
+      - name: Check networks package
+        run: |
+          yarn workspace @unlock-protocol/networks validate
+        shell: bash

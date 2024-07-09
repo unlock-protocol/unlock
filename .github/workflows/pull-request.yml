@@ -42,6 +42,11 @@ jobs:
     with:
       service: smart-contracts
 
+  networks-changed:
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'networks') }}
+    uses: ./.github/workflows/_networks.yml
+
   # Netlify Deployments (run as drafts, unpublished to main URL)
   deploy-unlock-protocol-com:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
