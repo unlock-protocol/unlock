@@ -19,7 +19,15 @@ jobs:
         shell: bash
       - run: yarn build
         shell: bash
-      - name: Check networks package
+      - id: check
+        name: Check networks package
         run: |
-          yarn workspace @unlock-protocol/networks validate
+          issues=$(yarn workspace @unlock-protocol/networks validate)
+          echo "issues=$issues" >>$GITHUB_OUTPUT
         shell: bash
+      - name: Add PR Comment
+        uses: mshick/add-pr-comment@v2.8.2
+        with:
+          message:  ${{ steps.check.outputs.issues }}
+          
+    
