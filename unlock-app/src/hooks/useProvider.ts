@@ -9,6 +9,7 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import { useSession } from './useSession'
 import { getCurrentNetwork } from '~/utils/session'
 import { useConnectModal } from './useConnectModal'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -210,8 +211,12 @@ export const useProvider = (config: any) => {
       true
     )
     try {
+      if (provider && provider?.isWaas) {
+        await nextSignOut({ redirect: false })
+        await provider.disconnect()
+      }
       // unlock provider does not support removing listeners or closing.
-      if (provider && !provider?.isUnlock) {
+      else if (provider && !provider?.isUnlock) {
         provider.provider.removeAllListeners()
         // metamask does not support disconnect
         if (provider?.connection?.url !== 'metamask') {

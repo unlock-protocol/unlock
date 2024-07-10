@@ -11,6 +11,7 @@ import {
   ToggleSwitch,
   ImageUpload,
   Select,
+  CurrencyHint,
 } from '@unlock-protocol/ui'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -18,7 +19,6 @@ import { networkDescription } from '~/components/interface/locks/Create/elements
 import { SelectCurrencyModal } from '~/components/interface/locks/Create/modals/SelectCurrencyModal'
 import { CryptoIcon } from '@unlock-protocol/crypto-icon'
 import { useImageUpload } from '~/hooks/useImageUpload'
-import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 import { NetworkWarning } from '~/components/interface/locks/Create/elements/NetworkWarning'
 import { getAccountTokenBalance } from '~/hooks/useAccount'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -26,6 +26,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { useAvailableNetworks } from '~/utils/networks'
 import Link from 'next/link'
+import { BalanceWarning } from '~/components/interface/locks/Create/elements/BalanceWarning'
 
 // TODO replace with zod, but only once we have replaced Lock and MetadataFormData as well
 export interface NewCertificationForm {
@@ -53,6 +54,8 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   const [isCurrencyModalOpen, setCurrencyModalOpen] = useState(false)
   const { mutateAsync: uploadImage, isLoading: isUploading } = useImageUpload()
   const router = useRouter()
+
+  const [selectedNetwork, setSelectedNetwork] = useState<number>()
 
   const methods = useForm<NewCertificationForm>({
     mode: 'onChange',
@@ -107,9 +110,16 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
   )
 
   const { data: balance, isLoading: isLoadingBalance } = useQuery(
-    ['getBalance', account, network],
+    ['getBalance', account, network, selectedNetwork],
     async () => {
-      return await getAccountTokenBalance(Web3Service, account!, null, network!)
+      const web3Service = new Web3Service(networks)
+
+      return await getAccountTokenBalance(
+        web3Service,
+        account!,
+        null,
+        selectedNetwork as number
+      )
     }
   )
 
@@ -269,6 +279,7 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
               </p>
               <Select
                 onChange={(newValue) => {
+                  setSelectedNetwork(Number(newValue))
                   setValue('network', Number(newValue))
                   setValue('lock.currencyContractAddress', null)
                   setValue(
@@ -379,8 +390,12 @@ export const CertificationForm = ({ onSubmit }: FormProps) => {
                           )}
                         </div>
                       </div>
+                      <CurrencyHint
+                        network={networks[selectedNetwork as number].name}
+                      />
                     </div>
                   </div>
+
                   <div>
                     <div className="flex items-center justify-between">
                       <label className="px-1 mb-2 text-base" htmlFor="">
