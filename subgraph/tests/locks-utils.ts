@@ -14,9 +14,10 @@ import {
   RoleGranted,
   LockManagerRemoved,
   LockMetadata,
+  RoleRevoked,
 } from '../generated/templates/PublicLock/PublicLock'
 import { lockAddress, lockAddressV8 } from './constants'
-import { LOCK_MANAGER } from '../src/helpers'
+import { KEY_GRANTER, LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
 export function mockDataSourceV8(): void {
@@ -185,4 +186,31 @@ export function createLockMetadata(
   )
 
   return LockMetadataEvent
+}
+
+export function createRoleRevokedKeyGranterRemovedEvent(
+  keyGranter: Address
+): RoleRevoked {
+  const newRoleRevokedEvent = changetype<RoleRevoked>(newMockEvent())
+
+  // set existing lock address
+  newRoleRevokedEvent.address = Address.fromString(lockAddress)
+
+  newRoleRevokedEvent.parameters = []
+  newRoleRevokedEvent.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromHexString(KEY_GRANTER))
+    )
+  )
+
+  newRoleRevokedEvent.parameters.push(
+    new ethereum.EventParam('account', ethereum.Value.fromAddress(keyGranter))
+  )
+
+  newRoleRevokedEvent.parameters.push(
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
+  )
+
+  return newRoleRevokedEvent
 }
