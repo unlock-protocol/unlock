@@ -14,6 +14,7 @@ import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
 import { useState } from 'react'
 import { EnterCode } from './EnterCode'
+import { useSelector } from '@xstate/react'
 
 interface UserDetails {
   email: string
@@ -236,6 +237,26 @@ const SignWithGoogle = ({
   checkoutService,
   isSignUp,
 }: SignWithGoogleProps) => {
+  const router = useRouter()
+
+  const context = useSelector(checkoutService, (state) => state?.context)
+  const url = new URL(
+    `${window.location.protocol}//${window.location.host}${router.asPath}`
+  )
+
+  const params = new URLSearchParams(url.search)
+  params.append(
+    'shouldOpenConnectModal',
+    encodeURIComponent(shoudOpenConnectModal)
+  )
+  if (context?.lock) {
+    params.set('lock', encodeURIComponent(context.lock.address))
+  }
+
+  url.search = params.toString()
+
+  const callbackUrl = url.toString()
+
   const signWithGoogle = () => {
     localStorage.setItem('nextAuthProvider', 'google')
 

@@ -7,7 +7,6 @@ import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useConnectModal } from '~/hooks/useConnectModal'
 import { useSIWE } from '~/hooks/useSIWE'
 import WaasProvider from '~/services/WaasProvider'
-import { signOut as nextSignOut } from 'next-auth/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import SvgComponents from '../svg'
 import { useCaptcha } from '~/hooks/useCaptcha'
@@ -34,10 +33,9 @@ export const ConnectingWaas = ({
 
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
 
-  const onSignOut = async (redirect = false) => {
+  const onSignOut = async () => {
     await siweSignOut()
     await deAuthenticate()
-    await nextSignOut({ redirect: redirect })
   }
 
   useEffect(() => {
@@ -117,7 +115,7 @@ export const ConnectingWaas = ({
         <div className="w-full flex items-center justify-end px-6 py-4">
           <button
             onClick={() => {
-              onSignOut(true)
+              onSignOut()
             }}
             className="hover:text-ui-main-600 underline"
           >
