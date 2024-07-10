@@ -60,6 +60,8 @@ const run = async () => {
         errors.push(`❌ Could not fetch Unlock bytecode`)
       }
 
+      // TODO: make sure the contracts are verified on Etherscan.
+
       // check subgraph endpoint status
       if (network.subgraph?.endpoint) {
         // make test query
@@ -86,6 +88,10 @@ const run = async () => {
 run()
   .then(({ errors }) => {
     console.log(JSON.stringify(errors))
+    if (errors.length > 0) {
+      // Exit with error code so CI fails
+      process.exit(1)
+    }
   })
   .catch((err) => {
     throw Error(err)
