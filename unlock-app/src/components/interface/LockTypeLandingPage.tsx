@@ -128,7 +128,7 @@ export const LockTypeLandingPage = ({
                     <Image
                       width={120}
                       height={120}
-                      className="object-contain w-full h-full mx-auto max-h-32"
+                      className={`object-contain w-full h-full mx-auto ${customers!.items!.length < 5 ? 'max-h-64' : 'max-h-32'}`}
                       src={image}
                       alt={name}
                     />
