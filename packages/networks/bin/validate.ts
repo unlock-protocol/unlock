@@ -87,11 +87,13 @@ const run = async () => {
 
 run()
   .then(({ errors }) => {
-    console.log(JSON.stringify(errors))
     if (errors.length > 0) {
+      console.error(`We have found the followig errors :\n`)
+      errors.forEach((error) => console.error(error, '\n'))
       // Exit with error code so CI fails
       process.exit(1)
     }
+    console.log('Everything looks fine.')
   })
   .catch((err) => {
     throw Error(err)
