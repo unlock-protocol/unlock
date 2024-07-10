@@ -10,7 +10,11 @@ const {
   etherscan,
   networks,
   parseForkUrl,
+  initializeTasks,
 } = require('@unlock-protocol/hardhat-helpers')
+
+// add default tasks to CLI
+initializeTasks()
 
 // zksync
 if (process.env.ZK_SYNC) {
