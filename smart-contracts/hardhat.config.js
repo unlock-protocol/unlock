@@ -3,9 +3,13 @@ const {
   networks,
   etherscan,
   parseForkUrl,
+  initializeTasks,
 } = require('@unlock-protocol/hardhat-helpers')
 
 require('@nomicfoundation/hardhat-ethers')
+
+//
+initializeTasks()
 
 // full stack trace if needed
 // require('hardhat-tracer')
