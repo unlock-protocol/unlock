@@ -6,7 +6,7 @@ import fork from './fork'
 import lock from './lock'
 import networks from './networks'
 import proxy from './proxy'
-const tasks = require('./tasks')
+import tasks from './tasks'
 import tokens from './tokens'
 import uniswap from './uniswap'
 import unlock from './unlock'
@@ -24,7 +24,7 @@ module.exports = {
   ...lock,
   networks,
   ...proxy,
-  tasks,
+  ...tasks,
   ...tokens,
   ...uniswap,
   ...unlock,
