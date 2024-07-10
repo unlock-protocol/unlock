@@ -8,7 +8,7 @@
  */
 
 const { networks } = require('@unlock-protocol/networks')
-
+const { log } = require('./utils/logger')
 const THE_GRAPH_URL = `https://api.thegraph.com/index-node/graphql`
 
 const fetchGraph = async (query, url = THE_GRAPH_URL) => {
@@ -114,6 +114,10 @@ const checkHealth = async ({ id, name, subgraph }) => {
     console.log(`${name} (${id}) -- ${subgraphType}`)
     console.log(errors.join('\n'))
     console.log(`------ \n`)
+    log(
+      `[SUBGRAPH] ${name} (${id}) -- ${subgraphType} - errors.join('\n')`,
+      'error'
+    )
   }
 }
 

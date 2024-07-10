@@ -94,6 +94,9 @@ templates:
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
           handler: handleRoleGranted
           receipt: true
+        - event: RoleRevoked(indexed bytes32,indexed address,indexed address)
+          handler: handleRoleRevoked
+          receipt: true
         - event: LockManagerAdded(indexed address)
           handler: handleLockManagerAdded
           receipt: true
@@ -114,5 +117,11 @@ templates:
           receipt: true
         - event: ReferrerFee(indexed address,uint256)
           handler: handleReferrerFees
+          receipt: true
+        - event: KeyGranterAdded(indexed address)
+          handler: handleKeyGranterAdded
+          receipt: true
+        - event: KeyGranterRemoved(indexed address)
+          handler: handleKeyGranterRemoved
           receipt: true
       file: ./src/public-lock.ts

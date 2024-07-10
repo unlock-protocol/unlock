@@ -13,6 +13,7 @@ import deployErrorAnimation from '~/animations/deploy-error.json'
 import { durationsAsTextFromSeconds } from '~/utils/durations'
 import { ONE_DAY_IN_SECONDS } from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { subgraph } from '~/config/subgraph'
 
 interface DeployStatusProps {
   title: string
@@ -34,7 +35,8 @@ export type DeployStatus = 'progress' | 'deployed' | 'txError'
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
     title: 'This will take few seconds...',
-    description: 'Feel free to wait here or return to main page.',
+    description:
+      'Feel free to wait here or return to main page. Your contract will appear there once it has been deployed!',
     status: 'In progress...',
     nextNext: 'Return to Lock list',
     nextUrl: () => '/locks',
@@ -109,7 +111,9 @@ export const CreateLockFormSummary = ({
     : null
 
   const getTransactionDetails = async (hash: string) => {
-    return await web3Service.getTransaction(hash, formData.network)
+    const tx = await web3Service.getTransaction(hash, formData.network)
+    const confirmations = tx ? await tx?.confirmations() : 0
+    return { ...tx, confirmations }
   }
 
   const { data, isError } = useQuery(
@@ -125,16 +129,8 @@ export const CreateLockFormSummary = ({
 
   const hasError = isError && data
   const isDeployed =
-    (data?.confirmations || 0) > requiredConfirmations && !isError
+    data && data.confirmations > requiredConfirmations && !isError
 
-  const currentStatus: DeployStatus = hasError
-    ? 'txError'
-    : isDeployed
-      ? 'deployed'
-      : 'progress'
-
-  const { title, description, status, nextNext, nextUrl } =
-    DEPLOY_STATUS_MAPPING[currentStatus]
   const symbol = formData?.symbol || nativeCurrency.symbol
 
   const durationAsText = formData?.expirationDuration
@@ -142,6 +138,36 @@ export const CreateLockFormSummary = ({
         formData.expirationDuration * ONE_DAY_IN_SECONDS
       )
     : null
+
+  const { data: subgraphLock } = useQuery(
+    ['getLockFromSubgraph', transactionHash, lockAddress, network],
+    () => {
+      const subgraphLock = subgraph.lock(
+        {
+          where: {
+            address: lockAddress,
+          },
+        },
+        { network: network! }
+      )
+      if (subgraphLock) {
+        return subgraphLock
+      }
+      return null
+    },
+    {
+      enabled: !!lockAddress && !!network,
+      refetchInterval: 1000,
+    }
+  )
+
+  const currentStatus: DeployStatus = hasError
+    ? 'txError'
+    : isDeployed && !!lockAddress && subgraphLock
+      ? 'deployed'
+      : 'progress'
+  const { title, description, status, nextNext, nextUrl } =
+    DEPLOY_STATUS_MAPPING[currentStatus]
 
   return (
     <div>

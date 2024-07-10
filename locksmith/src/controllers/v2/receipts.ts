@@ -8,7 +8,7 @@ import { addJob } from '../../worker/worker'
 
 export const allReceipts: RequestHandler = async (request, response) => {
   const network = Number(request.params.network)
-  const lockAddress = ethers.utils.getAddress(request.params.lockAddress)
+  const lockAddress = ethers.getAddress(request.params.lockAddress)
   const [receipts, receiptsData, receiptBaseData] = await Promise.all([
     getAllReceipts({
       network,

@@ -52,6 +52,6 @@ export default () => () => {
       }
     )
     expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-    expect(receipt.transactionHash).toEqual(transactionHash)
+    expect(receipt.hash).toEqual(transactionHash)
   })
 }

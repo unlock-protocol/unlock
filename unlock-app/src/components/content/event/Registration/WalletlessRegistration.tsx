@@ -52,7 +52,7 @@ const WalletlessRegistrationClaiming = ({
       return
     }
     const waitForConfirmation = async () => {
-      const provider = new ethers.providers.JsonRpcBatchProvider(
+      const provider = new ethers.JsonRpcProvider(
         config.networks[network].provider
       )
 
@@ -61,7 +61,7 @@ const WalletlessRegistrationClaiming = ({
         2
       )
 
-      if (transaction.status !== 1) {
+      if (!transaction || transaction.status !== 1) {
         setTransactionStatus('ERROR')
       } else {
         setTransactionStatus('FINISHED')
@@ -89,6 +89,7 @@ const WalletlessRegistrationClaiming = ({
         <div className="m-auto mt-20 h-72 mb-36">
           <MintingScreen
             mint={{
+              network: network,
               status: transactionStatus,
               transactionHash: claimResult.hash,
             }}
@@ -235,7 +236,16 @@ export const RegistrationForm = ({
   const config = useConfig()
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
   const [loading, setLoading] = useState<boolean>(false)
-  const { account } = useAuth()
+  const { account, email } = useAuth()
+
+  // If there is an email, we pre-fill the email field
+  if (email) {
+    metadataInputs?.map((input) => {
+      if (input.name === 'email') {
+        input.defaultValue = email
+      }
+    })
+  }
 
   const localForm = useForm<any>({
     mode: 'onChange',

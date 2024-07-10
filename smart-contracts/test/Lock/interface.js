@@ -14,7 +14,7 @@ describe('Lock / interface', () => {
     ;({ interface: lockContract } =
       await ethers.getContractFactory('PublicLock'))
     ;({ interface: lockInterface } = await ethers.getContractAt(
-      'IPublicLock',
+      'contracts/interfaces/IPublicLock.sol:IPublicLock',
       ADDRESS_ZERO
     ))
   })

@@ -1,5 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  Select,
+  ToggleSwitch,
+  CurrencyHint,
+} from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm, useWatch } from 'react-hook-form'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -32,6 +38,7 @@ interface CreateLockFormProps {
   defaultValues?: Partial<LockFormProps>
   hideFields?: string[]
   isLoading?: boolean
+  defaultOptions?: any
 }
 
 export const networkDescription = (network: number) => {
@@ -73,11 +80,13 @@ export const CreateLockForm = ({
   defaultValues = {},
   hideFields = [],
   isLoading = false,
+  defaultOptions = {},
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const { account } = useAuth()
-  const networkOptions = useAvailableNetworks()
+  const mainNetworkOptions = useAvailableNetworks()
+  const additionalNetworkOptions = useAvailableNetworks(true)
 
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     defaultValues?.unlimitedDuration ?? false
@@ -86,6 +95,9 @@ export const CreateLockForm = ({
     defaultValues?.unlimitedQuantity
   )
   const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
+
+  const [currencyNetwork, setCurrencyNetwork] = useState<string>()
+
   const {
     register,
     handleSubmit,
@@ -96,10 +108,10 @@ export const CreateLockForm = ({
     mode: 'onChange',
     defaultValues: {
       name: defaultValues.name || '',
-      network: defaultValues.network || networkOptions[0]?.value,
+      network: defaultValues.network || mainNetworkOptions[0]?.value,
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
-      keyPrice: undefined,
+      keyPrice: defaultValues.keyPrice,
       currencyContractAddress: defaultValues.currencyContractAddress,
       unlimitedDuration,
       unlimitedQuantity,
@@ -139,8 +151,8 @@ export const CreateLockForm = ({
 
   const onChangeNetwork = useCallback(
     (network: number | string) => {
-      setValue('currencyContractAddress', undefined)
       setValue('network', parseInt(`${network}`))
+      setCurrencyNetwork(networks[network].name)
     },
     [setValue]
   )
@@ -179,9 +191,10 @@ export const CreateLockForm = ({
                   </p>
                 }
                 defaultValue={selectedNetwork}
-                options={networkOptions}
+                options={mainNetworkOptions}
                 onChange={onChangeNetwork}
                 description={networkDescription(selectedNetwork!)}
+                moreOptions={additionalNetworkOptions}
               />
             )}
             <div className="relative">
@@ -203,35 +216,52 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  Membership duration:
+                  {defaultOptions.expirationDuration?.label
+                    ? defaultOptions.expirationDuration.label
+                    : 'Membership duration'}
+                  :
                 </label>
-                <ToggleSwitch
-                  title="Unlimited"
-                  enabled={unlimitedDuration}
-                  setEnabled={setUnlimitedDuration}
-                  onChange={(enable: boolean) => {
-                    if (enable) {
-                      setValue('expirationDuration', undefined)
-                    }
-                    setValue('unlimitedDuration', enable, {
-                      shouldValidate: true,
-                    })
-                  }}
-                />
+                {!defaultOptions.notUnlimited && (
+                  <ToggleSwitch
+                    title="Unlimited"
+                    enabled={unlimitedDuration}
+                    setEnabled={setUnlimitedDuration}
+                    onChange={(enable: boolean) => {
+                      if (enable) {
+                        setValue('expirationDuration', undefined)
+                      }
+                      setValue('unlimitedDuration', enable, {
+                        shouldValidate: true,
+                      })
+                    }}
+                  />
+                )}
               </div>
               <div className="relative">
-                <Input
-                  tabIndex={-1}
-                  autoComplete="off"
-                  step="any"
-                  disabled={unlimitedDuration}
-                  {...register('expirationDuration', {
-                    min: 0,
-                    required: !unlimitedDuration,
-                  })}
-                  placeholder="In days"
-                  type="number"
-                />
+                {defaultOptions.expirationDuration && (
+                  <Select
+                    {...register('expirationDuration')}
+                    defaultValue={defaultValues.expirationDuration}
+                    options={defaultOptions.expirationDuration.values}
+                    onChange={(value: number) => {
+                      setValue('expirationDuration', value)
+                    }}
+                  />
+                )}
+                {!defaultOptions.expirationDuration && (
+                  <Input
+                    tabIndex={-1}
+                    autoComplete="off"
+                    step="any"
+                    disabled={unlimitedDuration}
+                    {...register('expirationDuration', {
+                      min: 0,
+                      required: !unlimitedDuration,
+                    })}
+                    placeholder="In days"
+                    type="number"
+                  />
+                )}
                 {errors?.expirationDuration && (
                   <span className="absolute mt-1 text-xs text-red-700">
                     Please enter amount of days.
@@ -286,17 +316,19 @@ export const CreateLockForm = ({
                 <label className="px-1 mb-2 text-base" htmlFor="">
                   Membership price:
                 </label>
-                <ToggleSwitch
-                  title="Free"
-                  enabled={isFree}
-                  setEnabled={setIsFree}
-                  onChange={(enable: boolean) => {
-                    setValue('keyPrice', enable ? 0 : undefined)
-                    setValue('isFree', enable, {
-                      shouldValidate: true,
-                    })
-                  }}
-                />
+                {!defaultOptions.notFree && (
+                  <ToggleSwitch
+                    title="Free"
+                    enabled={isFree}
+                    setEnabled={setIsFree}
+                    onChange={(enable: boolean) => {
+                      setValue('keyPrice', enable ? 0 : undefined)
+                      setValue('isFree', enable, {
+                        shouldValidate: true,
+                      })
+                    }}
+                  />
+                )}
               </div>
               <div className="relative">
                 <div className="flex gap-2 ">
@@ -310,6 +342,7 @@ export const CreateLockForm = ({
                       address: currencyContractAddress,
                     }}
                     network={selectedNetwork!}
+                    noNative={defaultOptions.noNative}
                   />
 
                   <Input
@@ -330,6 +363,7 @@ export const CreateLockForm = ({
                   </span>
                 )}
               </div>
+              <CurrencyHint network={currencyNetwork as string} />
             </div>
             <Button
               className="mt-8 md:mt-0"

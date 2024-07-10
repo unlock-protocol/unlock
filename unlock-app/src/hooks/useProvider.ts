@@ -9,6 +9,7 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import { useSession } from './useSession'
 import { getCurrentNetwork } from '~/utils/session'
 import { useConnectModal } from './useConnectModal'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -34,6 +35,7 @@ export const useProvider = (config: any) => {
     getCurrentNetwork() || 1
   )
   const [connected, setConnected] = useState<string | undefined>()
+  const [eip1193, setEip1193] = useState<any | undefined>()
   const { setStorage, clearStorage, getStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(connected)
   const { session: account, refetchSession } = useSession()
@@ -57,7 +59,7 @@ export const useProvider = (config: any) => {
 
   const displayAccount = email || connected
 
-  const switchWeb3ProviderNetwork = async (id: number) => {
+  const switchBrowserProviderNetwork = async (id: number) => {
     try {
       await provider.send(
         'wallet_switchEthereumChain',
@@ -79,27 +81,28 @@ export const useProvider = (config: any) => {
 
   const getNetworkProvider = async (networkId?: number) => {
     const currentNetworkId = Number(network)
-    let pr = provider
+    let existingBrowserProvider = provider
     // If the user is not connected, we open the connect modal
     if (!connected) {
       const response = await openConnectModalAsync()
       await closeConnectModal()
-      pr = response?.provider
+      existingBrowserProvider = response?.provider
     }
-    let walletServiceProvider: ethers.providers.Web3Provider = pr
+    let walletServiceProvider: ethers.BrowserProvider = existingBrowserProvider
     if (networkId && networkId !== currentNetworkId) {
       const networkConfig = config.networks[networkId]
-      if (pr.isUnlock) {
+      if (existingBrowserProvider.isUnlock) {
         walletServiceProvider = (await UnlockProvider.reconnect(
-          pr,
+          existingBrowserProvider,
           networkConfig
-        )) as unknown as ethers.providers.Web3Provider
+        )) as unknown as ethers.BrowserProvider
       } else {
-        await switchWeb3ProviderNetwork(networkId)
-        walletServiceProvider = new ethers.providers.Web3Provider(
-          pr.provider,
-          'any'
-        )
+        await switchBrowserProviderNetwork(networkId)
+        if (getStorage('provider') === 'WALLET_CONNECT') {
+          walletServiceProvider = new ethers.BrowserProvider(eip1193)
+        } else {
+          walletServiceProvider = new ethers.BrowserProvider(window.ethereum!)
+        }
       }
     }
     return walletServiceProvider
@@ -112,7 +115,7 @@ export const useProvider = (config: any) => {
     return _walletService
   }
 
-  const resetProvider = async (provider: ethers.providers.Provider) => {
+  const resetProvider = async (provider: ethers.AbstractProvider) => {
     try {
       setProvider(provider)
       const {
@@ -162,33 +165,34 @@ export const useProvider = (config: any) => {
     }
   }
 
-  const connectProvider = async (provider: any) => {
+  const connectProvider = async (eip1193Provider: any) => {
     setLoading(true)
+    setEip1193(eip1193Provider)
     let auth
-    if (provider instanceof ethers.providers.Provider) {
-      auth = await resetProvider(provider)
+    if (eip1193Provider instanceof ethers.AbstractProvider) {
+      auth = await resetProvider(eip1193Provider)
     } else {
-      if (provider.enable) {
+      if (eip1193Provider.enable) {
         try {
-          await provider.enable()
+          await eip1193Provider.enable()
         } catch {
           console.error('Please check your wallet and try again to connect.')
           setLoading(false)
           return
         }
       }
-      const ethersProvider = new ethers.providers.Web3Provider(provider)
 
-      if (provider.on) {
-        provider.on('accountsChanged', async () => {
-          await resetProvider(new ethers.providers.Web3Provider(provider))
+      if (eip1193Provider.on) {
+        eip1193Provider.on('accountsChanged', async () => {
+          await resetProvider(new ethers.BrowserProvider(eip1193Provider))
         })
 
-        provider.on('chainChanged', async () => {
-          await resetProvider(new ethers.providers.Web3Provider(provider))
+        eip1193Provider.on('chainChanged', async () => {
+          await resetProvider(new ethers.BrowserProvider(eip1193Provider))
         })
       }
-      auth = await resetProvider(ethersProvider)
+
+      auth = await resetProvider(new ethers.BrowserProvider(eip1193Provider))
     }
 
     setLoading(false)
@@ -207,8 +211,12 @@ export const useProvider = (config: any) => {
       true
     )
     try {
+      if (provider && provider?.isWaas) {
+        await nextSignOut({ redirect: false })
+        await provider.disconnect()
+      }
       // unlock provider does not support removing listeners or closing.
-      if (provider && !provider?.isUnlock) {
+      else if (provider && !provider?.isUnlock) {
         provider.provider.removeAllListeners()
         // metamask does not support disconnect
         if (provider?.connection?.url !== 'metamask') {
@@ -231,7 +239,7 @@ export const useProvider = (config: any) => {
     network,
     tokenId,
   }: WatchAssetInterface) => {
-    await switchWeb3ProviderNetwork(network)
+    await switchBrowserProviderNetwork(network)
     await provider.send('wallet_watchAsset', {
       type: 'ERC721',
       options: {

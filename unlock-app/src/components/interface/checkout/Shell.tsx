@@ -72,10 +72,8 @@ interface NavigationProps {
   onBack?(): void
 }
 
-export function TopNavigation({ onClose, onBack }: NavigationProps) {
-  const navigationClass = `flex items-center p-6 ${
-    onBack ? 'justify-between' : 'justify-end'
-  }`
+export function TopNavigation({ onClose }: NavigationProps) {
+  const navigationClass = `flex items-center p-6 justify-end`
   return (
     <div className={navigationClass}>
       {onClose && <CloseButton onClick={() => onClose()} />}

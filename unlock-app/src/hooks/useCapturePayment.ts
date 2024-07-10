@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Options {
@@ -32,7 +32,7 @@ export const useCapturePayment = ({
       purchaseType,
     ],
     async ({ paymentIntent }: Record<'paymentIntent', string>) => {
-      const response = await storage.capturePurchase({
+      const response = await locksmith.capturePurchase({
         data: data as string[],
         referrers: referrers as string[],
         userAddress: account!,

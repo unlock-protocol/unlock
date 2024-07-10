@@ -25,7 +25,7 @@ import relative from 'dayjs/plugin/relativeTime'
 import duration from 'dayjs/plugin/duration'
 import custom from 'dayjs/plugin/customParseFormat'
 import { durationAsText } from '~/utils/durations'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { getEventDate, getEventEndDate } from '~/components/content/event/utils'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
@@ -58,10 +58,10 @@ const KeyRenewal = ({
   approvedRenewals,
   balance,
 }: KeyRenewalProps) => {
-  const possible = ethers.BigNumber.from(possibleRenewals)
-  const approved = ethers.BigNumber.from(approvedRenewals)
+  const possible = BigInt(possibleRenewals)
+  const approved = BigInt(approvedRenewals)
 
-  if (possible.lte(0)) {
+  if (possible >= 0) {
     return (
       <KeyItem label="Renewals">
         Your balance of {balance.amount} {balance.symbol} is too low to renew
@@ -69,15 +69,15 @@ const KeyRenewal = ({
     )
   }
 
-  if (approved.lte(0)) {
+  if (approved >= 0) {
     return <KeyItem label="Renewals">No renewals approved</KeyItem>
   }
 
-  if (approved.gt(0) && approved.lte(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > 0 && approved >= UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">{approved.toString()} times</KeyItem>
   }
 
-  if (approved.gt(UNLIMITED_RENEWAL_LIMIT)) {
+  if (approved > UNLIMITED_RENEWAL_LIMIT) {
     return <KeyItem label="Renewals">Renews unlimited times</KeyItem>
   }
 
@@ -112,7 +112,11 @@ export const KeyInfo = ({
   const { data: keyMetadata, isLoading: isKeyMetadataLoading } = useQuery(
     ['keyMetadata', lock, tokenId, network],
     async () => {
-      const response = await storage.keyMetadata(network, lock.address, tokenId)
+      const response = await locksmith.keyMetadata(
+        network,
+        lock.address,
+        tokenId
+      )
       return response.data || {}
     },
     {
@@ -130,7 +134,7 @@ export const KeyInfo = ({
           getErc20TokenSymbol(lock.tokenAddress, provider),
           getErc20Decimals(lock.tokenAddress, provider),
         ])
-        const amount = ethers.utils.formatUnits(lock.price, decimals)
+        const amount = ethers.formatUnits(lock.price, decimals)
         return {
           amount,
           symbol,
@@ -139,10 +143,7 @@ export const KeyInfo = ({
       } else {
         const native = config.networks[network]?.nativeCurrency
         const decimals = native.decimals
-        const amount = ethers.utils.formatUnits(
-          lock.price,
-          native.decimals || 18
-        )
+        const amount = ethers.formatUnits(lock.price, native.decimals || 18)
         const symbol = native.symbol || ''
         return {
           amount,
@@ -157,7 +158,7 @@ export const KeyInfo = ({
     useQuery(
       ['subscriptions', lock.address, tokenId, network],
       async () => {
-        const response = await storage.getSubscription(
+        const response = await locksmith.getSubscription(
           network,
           lock.address,
           tokenId

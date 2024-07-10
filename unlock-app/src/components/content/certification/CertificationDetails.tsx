@@ -25,8 +25,6 @@ import LinkedinShareButton from './LinkedInShareButton'
 import { useCertification } from '~/hooks/useCertification'
 import { useState } from 'react'
 import { Checkout } from '~/components/interface/checkout/main'
-import { selectProvider } from '~/hooks/useAuthenticate'
-import { useConfig } from '~/utils/withConfig'
 import { useValidKey } from '~/hooks/useKey'
 import { useTransferFee } from '~/hooks/useTransferFee'
 import { useQuery } from '@tanstack/react-query'
@@ -57,7 +55,7 @@ const CertificationManagerOptions = ({
     async () => getTransferFeeBasisPoints()
   )
 
-  const certificationIsTransferable = transferFeeBasisPoints !== 10_000
+  const certificationIsTransferable = Number(transferFeeBasisPoints) !== 10000
 
   if (!isManager) return null
 
@@ -128,7 +126,6 @@ export const CertificationDetails = ({
   tokenId,
 }: CertificationDetailsProps) => {
   const { account } = useAuth()
-  const config = useConfig()
   const [isCheckoutOpen, setCheckoutOpen] = useState(false)
 
   const { lock, isLockLoading: isLockDataLoading } = useLockData({
@@ -324,7 +321,6 @@ export const CertificationDetails = ({
 
   const showCertification = key || (tokenId && key)
 
-  const injectedProvider = selectProvider(config)
   const paywallConfig = {
     locks: {
       [lockAddress]: {
@@ -346,7 +342,6 @@ export const CertificationDetails = ({
     <main className="mt-8">
       <Modal isOpen={isCheckoutOpen} setIsOpen={setCheckoutOpen} empty={true}>
         <Checkout
-          injectedProvider={injectedProvider as any}
           paywallConfig={paywallConfig}
           handleClose={() => setCheckoutOpen(false)}
         />

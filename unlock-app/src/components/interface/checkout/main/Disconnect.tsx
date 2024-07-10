@@ -20,7 +20,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
   let userText: string
   let signOutText: string
 
-  if (isUnlockAccount && email) {
+  if (email) {
     userText = `User: ${email}`
     signOutText = 'Sign out'
   } else {
@@ -59,7 +59,7 @@ const Disconnect = ({ service }: DisconnectProps) => {
           }}
           type="button"
         >
-          ⤫ {signOutText}
+          {signOutText}
         </Button>
       </Tooltip>
     </div>

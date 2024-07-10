@@ -1,8 +1,8 @@
 {
   "name": "provider",
   "devDependencies": {
-    "@cloudflare/workers-types": "4.20240603.0",
-    "@types/node": "20.12.8",
+    "@cloudflare/workers-types": "4.20240620.0",
+    "@types/node": "20.14.9",
     "@unlock-protocol/networks": "workspace:^",
     "typescript": "5.4.5",
     "vitest": "1.6.0"
@@ -10,7 +10,7 @@
   "dependencies": {
     "ethers": "6.12.1",
     "toucan-js": "3.4.0",
-    "wrangler": "3.59.0"
+    "wrangler": "3.62.0"
   },
   "scripts": {
     "dev": "yarn wrangler dev",
