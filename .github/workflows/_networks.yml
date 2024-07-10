@@ -11,25 +11,49 @@ jobs:
       DOCKER_BUILDKIT: 1
       BUILDKIT_PROGRESS: plain
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: actions/checkout@v4
+
       - run: yarn
         shell: bash
+
       - run: yarn build
         shell: bash
-      - id: check
-        name: Check networks package
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          dir_names: true
+          files: |
+            packages/networks/src/networks/**
+      
+      - name: List all changed networks
+        id: changed_networks
         run: |
-          issues=$(yarn workspace @unlock-protocol/networks validate)
-          echo "issues=$issues" >>$GITHUB_OUTPUT
+          networks=""
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            network=$(echo -e "$file" | sed -nr "s|^packages/networks/src/networks/([^/]*/?).*|\1|p")
+            networks+="${network},"
+          done
+          echo "result=${networks%,*}" >> $GITHUB_OUTPUT
+      
+      - name: Validate networks
+        id: validate
+        if: ${{ steps.changed_networks.outputs.result != '' }}
+        run: |
+          yarn workspace @unlock-protocol/networks validate 2> err.txt 1> std.txt
         shell: bash
+      
       - name: Add PR Comment
-        if: ${{ steps.check.outputs.issues != '[]' }}
+        if: ${{ steps.changed_networks.outputs.result != '' }}
         uses: mshick/add-pr-comment@v2.8.2
         with:
-          message: |
-            The following errors have been found:
+          preformatted: true
+          message-id: errors
+          message-path: err.txt
 
-            ${{ join(fromJson(steps.check.outputs.issues), '\n\n')}}
