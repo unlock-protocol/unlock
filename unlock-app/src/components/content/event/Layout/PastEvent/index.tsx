@@ -23,9 +23,7 @@ export const ClaimRefund = ({
   lockAddress: string
   network: number
 }) => {
-  // Get the tree!
-  // Check if balance on lock is enough, show error if not!
-  // If they have not, show a button to claim a refund.
+  // TODO: Check if balance on lock is enough, show error if not!
   const { getWalletService } = useAuth()
   const { kickbackAddress } = config.networks[network]
 
