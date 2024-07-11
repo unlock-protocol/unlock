@@ -3,13 +3,25 @@ import { getAllNetworks } from './utils/loop'
 import { getAllAddresses } from './utils/contracts'
 import { log } from './utils/logger'
 
+export const logError = ({
+  name,
+  chainId,
+  contractName,
+  contractAddress,
+  result,
+  message,
+}) =>
+  log(
+    `[Verification]: ${contractName}  on ${name} (${chainId}) at ${contractAddress}: ${result} (${message})`,
+    'error'
+  )
+
 async function main() {
-  const networks = await getAllNetworks()
+  // ignore zksync bcz of their custom veriffier
+  const networks = await getAllNetworks({ exclude: [324] })
   for (const { network } of networks) {
     const { id: chainId, name } = network
     const addresses = await getAllAddresses({ network })
-    console.log(addresses)
-
     // api calls
     for (const contractName in addresses) {
       const contractAddress = addresses[contractName]
@@ -21,12 +33,13 @@ async function main() {
 
       // log results
       if (!verified?.isVerified) {
-        log({
+        logError({
           chainId,
           contractAddress,
           contractName,
+          message: verified?.message,
           name,
-          ...verified,
+          result: verified?.result,
         })
       }
     }

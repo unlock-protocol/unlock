@@ -1,7 +1,11 @@
 import path from 'path'
 import fs from 'fs-extra'
 
-export const getAllNetworks = async () => {
+export const getAllNetworks = async ({
+  exclude = [],
+}: {
+  exclude: number[]
+}) => {
   const fileList = await fs.readdir('./src/networks')
   const networks = await Promise.all(
     fileList
@@ -17,5 +21,5 @@ export const getAllNetworks = async () => {
         }
       })
   )
-  return networks
+  return networks.filter((network) => !exclude.includes(network.id))
 }
