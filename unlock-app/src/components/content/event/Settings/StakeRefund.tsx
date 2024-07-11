@@ -1,9 +1,11 @@
 import { locksmith } from '~/config/locksmith'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Placeholder } from '@unlock-protocol/ui'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { SetKickbackContractAsLockManager } from './Components/Kickback/SetKickbackContractAsLockManager'
 import { SaveRootForRefunds } from './Components/Kickback/SaveRootForRefunds'
+import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 export interface StakeRefundProps {
   event: Event
@@ -20,21 +22,25 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
     checkoutConfig.config.network)!
 
   const approveRefundsMutation = useMutation(async () => {
-    const response = await locksmith.approveRefunds(
-      event.slug,
-      event.attendeeRefund!
-    )
-    return response.data
+    try {
+      const response = await locksmith.approveRefunds(
+        event.slug,
+        event.attendeeRefund!
+      )
+      return response.data
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error(
+        'Failed to approve refunds. Please make sure you have checked-in attendees.'
+      )
+    }
   })
 
   const {
     data: approvedRefunds,
     isLoading,
     refetch: refetchApprovedRefunds,
-  } = useQuery(['getRefunds', event.slug], async () => {
-    const response = await locksmith.approvedRefunds(event.slug)
-    return response.data
-  })
+  } = useGetApprovedRefunds(event)
 
   const refundsToApprove = approvedRefunds || approveRefundsMutation.data
 
@@ -76,11 +82,17 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
     )
   }
   return (
-    <Button
-      loading={approveRefundsMutation.isLoading}
-      onClick={() => approveRefundsMutation.mutateAsync()}
-    >
-      Prepare Refunds
-    </Button>
+    <div className="flex flex-col gap-4">
+      <p>
+        If your event is over and you have checked-in attendees, you can issue
+        refunds for them only.
+      </p>
+      <Button
+        loading={approveRefundsMutation.isLoading}
+        onClick={() => approveRefundsMutation.mutateAsync()}
+      >
+        Prepare Refunds
+      </Button>
+    </div>
   )
 }
