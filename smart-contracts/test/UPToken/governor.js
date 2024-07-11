@@ -79,21 +79,21 @@ describe('UPToken Governor & Timelock', () => {
   before(async () => {
     ;[admin, delegater, voter, resetter] = await ethers.getSigners()
 
+    // deploy UP
+    const UP = await ethers.getContractFactory('UPToken')
+    up = await upgrades.deployProxy(UP, [await admin.getAddress()])
+
     // mock swap
     const MockUPSwap = await ethers.getContractFactory('MockUPSwap')
-    const swap = await MockUPSwap.deploy()
+    const swap = await MockUPSwap.deploy(await up.getAddress())
+
+    // premint tokens to swap
+    await up.mint(await swap.getAddress())
 
     // helper function to transfer from mock swap contract
     transferToken = async (receiver, amount) => {
       return await swap.transfer(receiver, amount)
     }
-
-    // deploy UP
-    const UP = await ethers.getContractFactory('UPToken')
-    up = await upgrades.deployProxy(UP, [
-      await admin.getAddress(),
-      await swap.getAddress(),
-    ])
 
     // deploying timelock with a proxy
     const UPTimelock = await ethers.getContractFactory('UPTimelock')

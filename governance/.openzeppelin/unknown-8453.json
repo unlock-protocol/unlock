@@ -14,6 +14,11 @@
       "address": "0xD26c05a33349a6DeD02DD9360e1ef303d1246fb6",
       "txHash": "0x285ca2b5b2df3ff0d120e0709c4a388f8cfda3736bbbafaa3fe9f86825ba962c",
       "kind": "transparent"
+    },
+    {
+      "address": "0x12be7322070cFA75E2f001C6B3d6Ac8C2efEF5Ea",
+      "txHash": "0x5e456000e6a19ec063046e8c60ea1bf2e4a58d2645e41cf188c7cec6038c3b46",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -683,6 +688,16 @@
             "numberOfBytes": "32"
           }
         },
+        "namespaces": {}
+      }
+    },
+    "ac0db523ddc3e330f735df7b3b0b24460531c71290a891170e840f8f67d5ff6b": {
+      "address": "0xbb1C4D79a98f745f40aC741215A04D4d33717Be8",
+      "txHash": "0x5fc3dad1922249cfaf7771501f93d69e12f3803b029e6d6da27c3b449c40d51d",
+      "layout": {
+        "solcVersion": "0.8.21",
+        "storage": [],
+        "types": {},
         "namespaces": {}
       }
     }
