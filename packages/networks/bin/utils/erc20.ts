@@ -2,10 +2,10 @@ import ERC20 from './abi/erc20.abi.json'
 import { ethers } from 'ethers'
 import networks from '../../src'
 
-export const validateERC20 = async ({ token, chainId }) => {
+export const validateERC20 = async ({ token, network }) => {
   const errors: string[] = []
   const warnings: string[] = []
-  const network = networks[chainId]
+
   // unlock contract
   const provider = new ethers.JsonRpcProvider(network.provider)
   const unlock = new ethers.Contract(
@@ -21,17 +21,17 @@ export const validateERC20 = async ({ token, chainId }) => {
   const decimals = parseInt(await contract.decimals())
   if (decimals !== token.decimals) {
     errors.push(
-      `Decimals mismatch for ${token.address} on ${chainId}. It needs to be "${decimals}"`
+      `Decimals mismatch for ${token.address} on ${network.id}. It needs to be "${decimals}"`
     )
   }
   if (name !== token.name) {
     errors.push(
-      `Name mismatch for ${token.address} on ${chainId}. It needs to be "${name}"`
+      `Name mismatch for ${token.address} on ${network.id}. It needs to be "${name}"`
     )
   }
   if (symbol !== token.symbol) {
     errors.push(
-      `Symbol mismatch for ${token.address} on ${chainId}. It needs to be "${symbol}"`
+      `Symbol mismatch for ${token.address} on ${network.id}. It needs to be "${symbol}"`
     )
   }
 
@@ -42,7 +42,7 @@ export const validateERC20 = async ({ token, chainId }) => {
 
     if (!isSetInUnlock) {
       warnings.push(
-        `Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${chainId}) is not set correctly`
+        `Oracle for token ${name} (${symbol}) at ${token.address} on ${network.name} (${network.id}) is not set correctly`
       )
     }
   }

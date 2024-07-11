@@ -12,7 +12,7 @@ const run = async () => {
       for (const token of network.tokens) {
         try {
           const { warnings: tokenWarnings, errors: tokenErrors } =
-            await validateERC20({ chainId, token })
+            await validateERC20({ network, token })
           errors = [...errors, ...tokenWarnings]
           warnings = [...warnings, ...tokenErrors]
         } catch (error) {

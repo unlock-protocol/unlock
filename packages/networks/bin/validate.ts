@@ -1,11 +1,12 @@
-import networks from '../src'
 import path from 'path'
-import fs from 'fs-extra'
 import {
+  wait,
+  isVerified,
   validateKeys,
   validateERC20,
   validateBytecode,
   checkSubgraphHealth,
+  getAllAddresses,
 } from './utils'
 import * as ts from 'typescript'
 import tsconfig from '../tsconfig.json'
@@ -28,22 +29,21 @@ const validateTypes = async (filePath) => {
 }
 
 const run = async () => {
-  let errors: string[] = []
+  const errors = {}
 
   const fileList = process.env.ALL_CHANGED_FILES
     ? process.env.ALL_CHANGED_FILES.split(' ')
     : []
 
   for (const filePath of fileList) {
+    let networkErrors: string[] = []
     // check mandatory keys using ts
     const resolvedPath = path.resolve('..', '..', filePath)
-    console.log(resolvedPath)
     const typeErrors = await validateTypes(resolvedPath)
-    errors = [...errors, ...typeErrors]
+    networkErrors = [...networkErrors, ...typeErrors]
 
     // import file
     const { default: network } = await import(resolvedPath)
-    console.log(network)
 
     // TODO: validate template bytecode
     // validate Unlock bytecode
@@ -55,13 +55,41 @@ const run = async () => {
         providerURL: network.provider,
       })
       if (!isUnlockValid) {
-        errors.push(`❌ Unlock bytecode does not match ${contractName}`)
+        networkErrors.push(
+          `❌ Unlock bytecode at ${network.unlockAddress} does not match ${contractName}`
+        )
       }
     } catch (error) {
-      errors.push(`❌ Could not fetch Unlock bytecode`)
+      networkErrors.push(
+        `❌ Could not fetch Unlock bytecode, ${error.messageText}`
+      )
     }
 
-    // TODO: make sure the contracts are verified on Etherscan.
+    // make sure the contracts are verified on Etherscan.
+    const addresses = await getAllAddresses({ network })
+
+    // api calls
+    for (const contractName in addresses) {
+      const contractAddress = addresses[contractName]
+      await wait(100)
+      try {
+        const verified = await isVerified({
+          chainId: network.id,
+          contractAddress,
+        })
+        // log results
+        if (!verified?.isVerified) {
+          networkErrors.push(
+            `❌ Contract ${contractName} at ${contractAddress} is not verified`
+          )
+        }
+      } catch (error) {
+        networkErrors.push(
+          `❌ Failed to check verification for contract ${contractName} at ${contractAddress}
+(did you add block explorer verification and API in \`@unlock-protocol/hardhat-helpers\` package ?)`
+        )
+      }
+    }
 
     // check subgraph endpoint status
     if (network.subgraph?.endpoint) {
@@ -69,20 +97,28 @@ const run = async () => {
       const subgraphErrors = await checkSubgraphHealth(
         network.subgraph?.endpoint
       )
-      errors = [...errors, ...subgraphErrors]
+      networkErrors = [...networkErrors, ...subgraphErrors]
     }
 
     // validate tokens
     if (network.tokens) {
       for (const token of network.tokens) {
-        const tokenErrors = await validateERC20(token)
-        errors = [...errors, ...tokenErrors.errors, ...tokenErrors.warnings]
+        const tokenErrors = await validateERC20({ network, token })
+        networkErrors = [
+          ...networkErrors,
+          ...tokenErrors.errors,
+          // ...tokenErrors.warnings,
+        ]
       }
     }
 
-    // check other missing keys
+    // TODO: check other missing keys
     // const missingKeys = await validateKeys(path.resolve(filePath))
-    // errors = [...errors, ...missingKeys]
+    // warnings = [...errors, ...missingKeys]
+
+    // store network prefix
+    const networkName = `${filePath}`
+    errors[networkName] = networkErrors
   }
 
   return { errors }
@@ -90,14 +126,23 @@ const run = async () => {
 
 run()
   .then(({ errors }) => {
-    if (errors.length > 0) {
+    if (Object.keys(errors).length > 0) {
       console.error(`We have found the followig errors :\n`)
-      errors.forEach((error) => console.error(error, '\n'))
+      Object.keys(errors).forEach((networkName) =>
+        console.error(
+          `
+### ${networkName}
+
+${errors[networkName].map((error) => `- ${error}`).join('\n')}`
+        )
+      )
       // Exit with error code so CI fails
       process.exit(1)
     }
     console.log('Everything looks fine.')
   })
   .catch((err) => {
-    throw Error(err)
+    console.log(err)
+    console.error(`Could not process the file: ${err.message}`)
+    process.exit(1)
   })

@@ -24,9 +24,13 @@ export const getAllAddresses = async ({ network }) => {
 
   // get latest lock proxy
   // TODO: fetch lock proxy status from previous versions
-  const lockAddress = await getLockAddress(subgraph.endpoint, lockVersion)
-  if (lockAddress) {
-    addresses[`LockProxyV${lockVersion}`] = lockAddress
+  try {
+    const lockAddress = await getLockAddress(subgraph.endpoint, lockVersion)
+    if (lockAddress) {
+      addresses[`LockProxyV${lockVersion}`] = lockAddress
+    }
+  } catch (error) {
+    // missing lock address
   }
 
   // add other addresses
