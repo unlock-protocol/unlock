@@ -35,29 +35,22 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
+          echo ${ALL_CHANGED_FILES}
           for file in ${ALL_CHANGED_FILES}; do
             echo "$file was changed"
           done
-
-      - name: List all changed networks
-        id: changed_networks
-        run: |
-          networks=""
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            network=$(echo -e "$file" | sed -nr "s|^packages/networks/src/networks/([^/]*/?).*|\1|p")
-            networks+="${network},"
-          done
-          echo "result=${networks%,*}" >> $GITHUB_OUTPUT
       
       - name: Validate networks
         id: validate
-        if: ${{ steps.changed_networks.outputs.result != '' }}
+        if: steps.changed-files.outputs.any_changed == 'true'  
+        env: 
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           yarn workspace @unlock-protocol/networks validate 2> err.txt 1> std.txt
         shell: bash
       
       - name: Add PR Comment
-        if: ${{ steps.changed_networks.outputs.result != '' }}
+        if: ${{ always() && steps.changed-files.outputs.any_changed == 'true' }}  
         uses: mshick/add-pr-comment@v2.8.2
         with:
           preformatted: true

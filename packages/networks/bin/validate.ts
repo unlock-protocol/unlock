@@ -29,61 +29,62 @@ const validateTypes = async (filePath) => {
 
 const run = async () => {
   let errors: string[] = []
-  const fileList = await fs.readdir('./src/networks')
+  const fileList = process.env.ALL_CHANGED_FILES
+    ? process.env.ALL_CHANGED_FILES.split('\n')
+    : []
+  console.log(fileList)
   for (const filePath of fileList) {
-    // TODO: remove that test file check
-    if (filePath.includes('test.ts')) {
-      // check mandatory keys using ts
-      const typeErrors = await validateTypes(
-        path.resolve('src/networks', filePath)
-      )
-      errors = [...errors, ...typeErrors]
+    // check mandatory keys using ts
+    const typeErrors = await validateTypes(
+      path.resolve('src/networks', filePath)
+    )
+    errors = [...errors, ...typeErrors]
 
-      // import file
-      const { default: network } = await import(
-        path.resolve('src/networks', filePath)
-      )
+    // import file
+    const { default: network } = await import(
+      path.resolve('src/networks', filePath)
+    )
 
-      // TODO: validate template bytecode
-      // validate Unlock bytecode
-      const contractName = 'UnlockV13'
-      try {
-        const isUnlockValid = await validateBytecode({
-          contractAddress: network.unlockAddress,
-          contractName,
-          providerURL: network.provider,
-        })
-        if (!isUnlockValid) {
-          errors.push(`❌ Unlock bytecode does not match ${contractName}`)
-        }
-      } catch (error) {
-        errors.push(`❌ Could not fetch Unlock bytecode`)
+    // TODO: validate template bytecode
+    // validate Unlock bytecode
+    const contractName = 'UnlockV13'
+    try {
+      const isUnlockValid = await validateBytecode({
+        contractAddress: network.unlockAddress,
+        contractName,
+        providerURL: network.provider,
+      })
+      if (!isUnlockValid) {
+        errors.push(`❌ Unlock bytecode does not match ${contractName}`)
       }
-
-      // TODO: make sure the contracts are verified on Etherscan.
-
-      // check subgraph endpoint status
-      if (network.subgraph?.endpoint) {
-        // make test query
-        const subgraphErrors = await checkSubgraphHealth(
-          network.subgraph?.endpoint
-        )
-        errors = [...errors, ...subgraphErrors]
-      }
-
-      // validate tokens
-      if (network.tokens) {
-        for (const token of network.tokens) {
-          const tokenErrors = await validateERC20(token)
-          errors = [...errors, ...tokenErrors.errors, ...tokenErrors.warnings]
-        }
-      }
-
-      // check other missing keys
-      // const missingKeys = await validateKeys(path.resolve(filePath))
-      // errors = [...errors, ...missingKeys]
+    } catch (error) {
+      errors.push(`❌ Could not fetch Unlock bytecode`)
     }
+
+    // TODO: make sure the contracts are verified on Etherscan.
+
+    // check subgraph endpoint status
+    if (network.subgraph?.endpoint) {
+      // make test query
+      const subgraphErrors = await checkSubgraphHealth(
+        network.subgraph?.endpoint
+      )
+      errors = [...errors, ...subgraphErrors]
+    }
+
+    // validate tokens
+    if (network.tokens) {
+      for (const token of network.tokens) {
+        const tokenErrors = await validateERC20(token)
+        errors = [...errors, ...tokenErrors.errors, ...tokenErrors.warnings]
+      }
+    }
+
+    // check other missing keys
+    // const missingKeys = await validateKeys(path.resolve(filePath))
+    // errors = [...errors, ...missingKeys]
   }
+
   return { errors }
 }
 
