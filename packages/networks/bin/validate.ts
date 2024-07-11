@@ -29,21 +29,21 @@ const validateTypes = async (filePath) => {
 
 const run = async () => {
   let errors: string[] = []
+
   const fileList = process.env.ALL_CHANGED_FILES
-    ? process.env.ALL_CHANGED_FILES.split('\n')
+    ? process.env.ALL_CHANGED_FILES.split(' ')
     : []
-  console.log(fileList)
+
   for (const filePath of fileList) {
     // check mandatory keys using ts
-    const typeErrors = await validateTypes(
-      path.resolve('src/networks', filePath)
-    )
+    const resolvedPath = path.resolve('..', '..', filePath)
+    console.log(resolvedPath)
+    const typeErrors = await validateTypes(resolvedPath)
     errors = [...errors, ...typeErrors]
 
     // import file
-    const { default: network } = await import(
-      path.resolve('src/networks', filePath)
-    )
+    const { default: network } = await import(resolvedPath)
+    console.log(network)
 
     // TODO: validate template bytecode
     // validate Unlock bytecode

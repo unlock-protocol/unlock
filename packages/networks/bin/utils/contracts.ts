@@ -88,7 +88,7 @@ export const getLockAddress = async (subgraphEndpoint, lockVersion) => {
     }
   `
 
-  const { data, success } = await queryGraph(subgraphEndpoint, query)
+  const { data, success } = await queryGraph({ query, subgraphEndpoint })
 
   if (success) {
     // get the first lock
