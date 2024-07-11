@@ -119,8 +119,7 @@ export class KeyManager {
     network,
   }: CreateTransferSignatureOptions) {
     const domain = this.getDomain(network)
-    // @ts-expect-error Property '_signTypedData' does not exist on type 'Signer'. (https://docs.ethers.org/v5/api/signer/#Signer-signTypedData)
-    const signature = await signer._signTypedData(domain, TransferTypes, params)
+    const signature = await signer.signTypedData(domain, TransferTypes, params)
     return signature
   }
 

@@ -14,9 +14,9 @@
   },
   "dependencies": {
     "@matterlabs/hardhat-zksync-deploy": "1.5.0",
-    "@matterlabs/hardhat-zksync-solc": "1.1.4",
-    "@matterlabs/hardhat-zksync-upgradable": "1.4.1",
-    "@matterlabs/hardhat-zksync-verify": "1.4.3",
+    "@matterlabs/hardhat-zksync-solc": "1.2.0",
+    "@matterlabs/hardhat-zksync-upgradable": "1.5.1",
+    "@matterlabs/hardhat-zksync-verify": "1.5.0",
     "@nomiclabs/hardhat-ethers": "2.2.3",
     "@nomiclabs/hardhat-waffle": "2.0.6",
     "@unlock-protocol/contracts": "workspace:^",
@@ -26,7 +26,7 @@
     "ethers": "6.12.1",
     "hardhat": "2.22.6",
     "typescript": "5.4.5",
-    "zksync-ethers": "6.7.1"
+    "zksync-ethers": "6.9.0"
   },
   "devDependencies": {
     "copyfiles": "2.4.1",
