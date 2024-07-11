@@ -2,9 +2,6 @@ const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 
 async function main({ lockAddress }) {
-  const PublicLock = await ethers.getContractFactory('PublicLock')
-  const lock = PublicLock.attach(lockAddress)
-
   const { chainId } = await ethers.provider.getNetwork()
   const { subgraph } = networks[chainId]
 
@@ -20,9 +17,7 @@ async function main({ lockAddress }) {
       locks(where:{
         address: "${lockAddress}"
       }) {
-        LockManagers {
-          address
-        }
+        lockManagers 
       }
     }
   `
@@ -42,13 +37,12 @@ async function main({ lockAddress }) {
   }
 
   const {
-    locks: [{ LockManagers }],
+    locks: [{ lockManagers }],
   } = data
-  const managers = LockManagers.map((m) => m.address)
+  console.log(lockManagers)
+  const managers = lockManagers.map((address) => address)
 
-  console.log(
-    `LOCK > managers for the lock '${await lock.name()}' (${lockAddress}):`
-  )
+  console.log(`LOCK > managers for the lock (${lockAddress}):`)
   managers.forEach((account, i) => {
     console.log(`[${i}]: ${account}`)
   })
