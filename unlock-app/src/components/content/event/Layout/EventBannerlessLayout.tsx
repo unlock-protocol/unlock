@@ -85,7 +85,9 @@ export const EventBannerlessLayout = ({
             )}
           </>
         )}
-        {hasPassed && <PastEvent event={event} />}
+        {hasPassed && (
+          <PastEvent event={event} checkoutConfig={checkoutConfig} />
+        )}
         <AttendeeCues checkoutConfig={checkoutConfig} />
       </section>
       <div className="flex flex-col col-span-3 gap-4 md:col-span-2">

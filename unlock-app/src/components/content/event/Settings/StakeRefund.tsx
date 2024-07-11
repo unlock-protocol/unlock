@@ -1,9 +1,10 @@
 import { locksmith } from '~/config/locksmith'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { Button, Placeholder } from '@unlock-protocol/ui'
 import { Event, PaywallConfigType } from '@unlock-protocol/core'
 import { SetKickbackContractAsLockManager } from './Components/Kickback/SetKickbackContractAsLockManager'
 import { SaveRootForRefunds } from './Components/Kickback/SaveRootForRefunds'
+import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 
 export interface StakeRefundProps {
   event: Event
@@ -31,10 +32,7 @@ export const StakeRefund = ({ event, checkoutConfig }: StakeRefundProps) => {
     data: approvedRefunds,
     isLoading,
     refetch: refetchApprovedRefunds,
-  } = useQuery(['getRefunds', event.slug], async () => {
-    const response = await locksmith.approvedRefunds(event.slug)
-    return response.data
-  })
+  } = useGetApprovedRefunds(event)
 
   const refundsToApprove = approvedRefunds || approveRefundsMutation.data
 

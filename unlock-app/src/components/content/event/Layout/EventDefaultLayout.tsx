@@ -152,7 +152,9 @@ export const EventDefaultLayout = ({
               )}
             </>
           )}
-          {hasPassed && <PastEvent event={event} />}
+          {hasPassed && (
+            <PastEvent event={event} checkoutConfig={checkoutConfig} />
+          )}
           <AttendeeCues checkoutConfig={checkoutConfig} />
         </div>
       </section>
