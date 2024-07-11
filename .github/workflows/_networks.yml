@@ -28,11 +28,10 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v44
         with:
-          dir_names: true
           files: |
             packages/networks/src/networks/**
       
-      - name: List all changed networks
+      - name: List all changed files
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
