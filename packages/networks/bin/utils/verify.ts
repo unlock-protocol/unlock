@@ -1,19 +1,29 @@
-const { config } = require('hardhat')
 const {
   builtinChains,
 } = require('@nomicfoundation/hardhat-verify/internal/chain-config')
+const { etherscan } = require('@unlock-protocol/hardhat-helpers')
 
 // init sentry
-require('../../helpers/logger')
-const Sentry = require('@sentry/node')
+// require('../../helpers/logger')
+// const Sentry = require('@sentry/node')
+
+export function wait(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds))
+}
 
 function isSuccessStatusCode(statusCode) {
   return statusCode >= 200 && statusCode <= 299
 }
 
-async function main({ contractAddress, chainId } = {}) {
+export const isVerified = async ({
+  contractAddress,
+  chainId,
+}: {
+  contractAddress: string
+  chainId: string | number | bigint
+}) => {
   // get etherscan API URLs and keys
-  const { apiKey: apiKeys, customChains } = config.etherscan
+  const { apiKey: apiKeys, customChains } = etherscan
   const chains = [...builtinChains, ...customChains]
 
   const { urls, network } = chains.find((chain) => chain.chainId == chainId)
@@ -21,10 +31,10 @@ async function main({ contractAddress, chainId } = {}) {
 
   // parse URL
   const parameters = new URLSearchParams({
-    apikey: apiKey,
-    module: 'contract',
     action: 'getabi',
     address: contractAddress,
+    apikey: apiKey,
+    module: 'contract',
   })
   const url = new URL(urls.apiURL)
   url.search = parameters.toString()
@@ -35,30 +45,17 @@ async function main({ contractAddress, chainId } = {}) {
     const json = await response.json()
     if (!isSuccessStatusCode(response.status)) {
       throw new Error(
-        `Failed verification`,
-        url.toString(),
-        response.statusCode,
-        JSON.stringify(json)
+        `Failed verification
+  (${response.status}) ${url.toString()},
+  ${JSON.stringify(json)}`
       )
     }
 
     const { status, result, message } = json
     const isVerified = status === '1'
-    return { isVerified, status, result, message }
+    return { isVerified, message, result, status }
   } catch (e) {
-    console.log(`Failed verification API call`, e)
-    Sentry.captureException(e)
+    console.error(`Failed verification API call`, e)
+    // Sentry.captureException(e)
   }
 }
-
-// execute as standalone
-if (require.main === module) {
-  main()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error)
-      process.exit(1)
-    })
-}
-
-module.exports = main
