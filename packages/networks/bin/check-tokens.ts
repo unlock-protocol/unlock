@@ -1,7 +1,7 @@
 import { log } from './logger'
 import * as Sentry from '@sentry/node'
 import networks from '../src'
-import { validateERC20 } from './helpers'
+import { validateERC20 } from './utils/erc20'
 
 const run = async () => {
   let errors: string[] = []

@@ -5,8 +5,8 @@ import {
   validateKeys,
   validateERC20,
   validateBytecode,
-  checkSubgraph,
-} from './helpers'
+  checkSubgraphHealth,
+} from './utils'
 import * as ts from 'typescript'
 import tsconfig from '../tsconfig.json'
 
@@ -65,7 +65,9 @@ const run = async () => {
       // check subgraph endpoint status
       if (network.subgraph?.endpoint) {
         // make test query
-        const subgraphErrors = await checkSubgraph(network.subgraph?.endpoint)
+        const subgraphErrors = await checkSubgraphHealth(
+          network.subgraph?.endpoint
+        )
         errors = [...errors, ...subgraphErrors]
       }
 
