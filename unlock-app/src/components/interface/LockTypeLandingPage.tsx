@@ -13,6 +13,7 @@ interface Customer {
   link?: string
   image: string
   name: string
+  children?: ReactNode
 }
 interface Feature {
   image: string
@@ -93,7 +94,7 @@ export const LockTypeLandingPage = ({
   problemSection,
 }: LockTypeLandingPageProps) => {
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-12 md:gap-24">
       <section className="relative gap-2 my-8 md:grid md:grid-cols-3 ">
         {/* masthead */}
         <div className="block col-span-1 py-0 md:flex md:flex-col md:col-span-2">
@@ -106,16 +107,18 @@ export const LockTypeLandingPage = ({
             </div>
           )}
         </div>
-        <div className="relative col-span-1 md:block">{illustration}</div>
+        <div className="relative col-span-1 hidden md:block">
+          {illustration}
+        </div>
       </section>
 
-      <section className="flex flex-col items-center content-center justify-center pt-8 mt-40 text-whit justify-items-center">
+      <section className="flex flex-col items-center content-center justify-center text-whit justify-items-center">
         <div className="flex flex-col gap-10 text-center">
           <span className="font-bold text-gray-700">
             {customers?.title || 'Used by'}
           </span>
           <ul className="flex flex-row flex-wrap justify-around gap-4 md:mx-10">
-            {customers?.items?.map(({ image, name }, index) => {
+            {customers?.items?.map(({ image, name, children }, index) => {
               return (
                 <li
                   key={index}
@@ -123,12 +126,13 @@ export const LockTypeLandingPage = ({
                 >
                   <div>
                     <Image
-                      width={60}
-                      height={60}
-                      className="object-contain w-full h-full mx-auto max-h-24"
+                      width={120}
+                      height={120}
+                      className={`object-contain w-full h-full mx-auto ${customers!.items!.length < 5 ? 'max-h-64' : 'max-h-32'}`}
                       src={image}
                       alt={name}
                     />
+                    {children}
                   </div>
                 </li>
               )
@@ -138,7 +142,7 @@ export const LockTypeLandingPage = ({
       </section>
 
       {problemSection && (
-        <section className="flex flex-col items-center content-center justify-center mt-60 justify-items-center">
+        <section className="flex flex-col items-center content-center justify-center justify-items-center">
           <div className="flex flex-col justify-center">
             <div className="flex flex-col gap-4 text-center">
               <span className="text-3xl font-semibold text-brand-ui-primary">
@@ -168,7 +172,7 @@ export const LockTypeLandingPage = ({
         </section>
       )}
 
-      <section className="flex flex-col items-center content-center justify-center mt-60 justify-items-center">
+      <section className="flex flex-col items-center content-center justify-center justify-items-center">
         <h3 className="text-5xl font-semibold text-center md:w-2/3">
           {callToAction?.title}
         </h3>
@@ -194,7 +198,7 @@ export const LockTypeLandingPage = ({
         </ul>
       </section>
 
-      <section className="flex flex-col items-center content-center justify-center mt-8 justify-items-center">
+      <section className="flex flex-col items-center content-center justify-center justify-items-center">
         {callToAction?.actions}
         <div className="text-xs text-center md:w-1/3">
           {callToAction?.description}
@@ -202,7 +206,7 @@ export const LockTypeLandingPage = ({
       </section>
 
       {(faqs || [])?.length > 0 && (
-        <section className="my-32">
+        <section>
           <h3 className="my-12 text-3xl font-bold text-center">
             Frequently Asked Questions
           </h3>
