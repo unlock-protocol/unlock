@@ -19,6 +19,7 @@
     "check:keys": "tsx ./bin/check-keys",
     "check:tokens": "tsx ./bin/check-tokens",
     "check:hooks": "tsx ./bin/check-hooks",
+    "check:verify": "tsx ./bin/check-verify",
     "validate": "tsx ./bin/validate.ts",
     "create-localhost": "tsx ./bin/localhost",
     "clean": "rm -rf ./dist",
