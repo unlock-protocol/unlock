@@ -11,7 +11,6 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
 import Link from 'next/link'
-import { isEthPassSupported } from '~/services/ethpass'
 import type { Transaction } from './checkoutMachine'
 import { ReturningButton } from '../ReturningButton'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -101,7 +100,7 @@ export const MintingScreen = ({
           <Icon icon={ExternalLinkIcon} size="small" />
         </Link>
       )}
-      {hasTokenId && isEthPassSupported(transactionNetwork) && (
+      {hasTokenId && (
         <AddToWallet
           network={network}
           lockAddress={lockAddress}
