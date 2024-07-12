@@ -3,7 +3,7 @@ const {
   copyAndBuildContractsAtVersion,
   deployUpgradeableContract,
   getNetwork,
-  ZERO_ADDRESS,
+  ADDRESS_ZERO,
 } = require('@unlock-protocol/hardhat-helpers')
 
 const TIMELOCK_ADMIN_ROLE = ethers.keccak256(
@@ -16,7 +16,7 @@ async function main({ upAddress, timelockAddress, testing = false } = {}) {
   const deployerAddress = await deployer.getAddress()
 
   // fetch chain info
-  const { id, name, multisig } = await getNetwork()
+  const { id, name } = await getNetwork()
   console.log(
     `Deploying Governor on ${name} (${id}) with the account ${deployerAddress}...`
   )
@@ -37,19 +37,17 @@ async function main({ upAddress, timelockAddress, testing = false } = {}) {
     ;({ address: timelockAddress } = await deployUpgradeableContract(
       UPTimelock,
       [
-        [
-          MINDELAY,
-          [], // proposers list is empty as anyone can propose
-          [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
-          multisig, // name team multisig as timelock admin (TODO: is this a good idea?)
-        ],
+        MINDELAY,
+        [], // proposers list is empty as anyone can propose
+        [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
+        deployerAddress, // tmp timelock admin (removed in next step)
       ]
     ))
   }
 
   // get governor factory
   const [govQualifiedPath] = await copyAndBuildContractsAtVersion(__dirname, [
-    { contractName: 'UPTimelock', subfolder: 'UP' },
+    { contractName: 'UPGovernor', subfolder: 'UP' },
   ])
   const UPGovernor = await ethers.getContractFactory(govQualifiedPath)
 
@@ -80,7 +78,7 @@ async function main({ upAddress, timelockAddress, testing = false } = {}) {
     )} `
   )
 
-  // deployer should renounced the Admin role after setup (leaving only Timelock as Admin)
+  // deployer should renounced the Admin role after setup (leaving only Timelock as admin of itself)
   await timelock.renounceRole(TIMELOCK_ADMIN_ROLE, deployerAddress)
 
   // eslint-disable-next-line no-console
