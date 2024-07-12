@@ -19,6 +19,7 @@
     "check:keys": "tsx ./bin/check-keys",
     "check:tokens": "tsx ./bin/check-tokens",
     "check:hooks": "tsx ./bin/check-hooks",
+    "check:verify": "tsx ./bin/check-verify",
     "create-localhost": "tsx ./bin/localhost",
     "clean": "rm -rf ./dist",
     "unlock-address": "tsx ./bin/readSubgraphInfo",
@@ -37,7 +38,7 @@
     "eslint": "8.57.0",
     "fs-extra": "11.2.0",
     "tsup": "8.1.0",
-    "typescript": "5.5.2"
+    "typescript": "5.5.3"
   },
   "files": [
     "dist"
