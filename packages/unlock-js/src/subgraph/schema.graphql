@@ -69,6 +69,7 @@ query AllKeys(
     manager
     expiration
     tokenURI
+    createdAt
     createdAtBlock
     cancelled
     transactionsHash
@@ -132,6 +133,7 @@ query allLocksWithKeys(
       manager
       expiration
       tokenURI
+      createdAt
       createdAtBlock
       cancelled
       transactionsHash
