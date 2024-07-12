@@ -19,11 +19,11 @@ const networks = require('@unlock-protocol/networks')
 const { DEPLOYER_PRIVATE_KEY } = process.env
 
 if (!DEPLOYER_PRIVATE_KEY) {
-  console.warn(
+  console.log(
     `⚠️ Missing DEPLOYER_PRIVATE_KEY environment variable. Please set one. In the meantime, we will use default settings`
   )
 } else {
-  console.warn(
+  console.log(
     `⚠️ Using account from DEPLOYER_PRIVATE_KEY environment variable.`
   )
 }
