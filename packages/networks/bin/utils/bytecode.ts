@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-
+import fs from 'fs-extra'
 import { contracts } from '@unlock-protocol/contracts'
 
 export const validateBytecode = async ({
@@ -18,8 +18,13 @@ export const validateBytecode = async ({
     const implAddress = ethers.stripZerosLeft(hex)
     contractAddress = implAddress
   }
-  const { bytecode } = contracts[contractName]
 
+  // TODO: get the data used in the creation tx to match the bytecode
+  // we can get that tx id using etherscan
+  const { bytecode } = contracts[contractName]
   const deployedByteCode = await provider.getCode(contractAddress)
-  return deployedByteCode === bytecode
+
+  await fs.writeFile('bytecode.txt', bytecode)
+  await fs.writeFile('deployedByteCode.txt', deployedByteCode)
+  return deployedByteCode === `0x${bytecode}`
 }

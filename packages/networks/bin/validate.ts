@@ -45,8 +45,9 @@ const run = async () => {
     // import file
     const { default: network } = await import(resolvedPath)
 
-    // TODO: validate template bytecode
-    // validate Unlock bytecode
+    // TODO: validate Unlock + template bytecode
+    // need to check the contract creation tx
+    /*
     const contractName = 'UnlockV13'
     try {
       const isUnlockValid = await validateBytecode({
@@ -64,6 +65,7 @@ const run = async () => {
         `❌ Could not fetch Unlock bytecode, ${error.messageText}`
       )
     }
+      */
 
     // make sure the contracts are verified on Etherscan.
     const addresses = await getAllAddresses({ network })
