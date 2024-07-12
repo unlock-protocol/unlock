@@ -1,8 +1,11 @@
 import { Box, Modal, Size } from '@unlock-protocol/ui'
 import QRCode from 'qrcode.react'
-import { createWalletPass, Platform } from '../../../services/ethpass'
-import { useAuth } from '~/contexts/AuthenticationContext'
+import {
+  generateAppleWalletPass,
+  generateGoogleWalletPass,
+} from '../../../services/passService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import Image from 'next/image'
 
 interface ApplePassModalProps {
   isOpen: boolean
@@ -10,11 +13,6 @@ interface ApplePassModalProps {
   applePassUrl?: string
 }
 
-/**
- * Apple needs a modal to show a QR code
- * @param param0
- * @returns
- */
 export const ApplePassModal = ({
   isOpen,
   setIsOpen,
@@ -22,10 +20,10 @@ export const ApplePassModal = ({
 }: ApplePassModalProps) => {
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      {applePassUrl && (
+      {applePassUrl ? (
         <div className="flex flex-col items-center">
           <p>
-            Please scan this device with your phone or{' '}
+            Please scan this QR code with your phone or{' '}
             <a href={applePassUrl} className="underline">
               click here to download it
             </a>
@@ -33,67 +31,108 @@ export const ApplePassModal = ({
           </p>
           <QRCode value={applePassUrl} size={256} includeMargin />
         </div>
+      ) : (
+        <p>Generating your pass...</p>
       )}
-      {!applePassUrl && <p>Generating your pass...</p>}
     </Modal>
   )
 }
 
 interface AddToWalletProps {
-  children: React.ReactNode
   as: React.ElementType
   network: number
   lockAddress: string
   tokenId: string
-  platform: Platform
   handlePassUrl: (url: string) => void
   disabled?: boolean
   active?: boolean
-  name: string
+  minimised?: boolean
   iconLeft?: JSX.Element
   size?: Size
   variant?: string
   className?: string
 }
 
-export const AddToDeviceWallet = ({
-  children,
+// Add to Apple wallet
+export const AddToAppleWallet = ({
   as,
   lockAddress,
   tokenId,
   network,
-  name,
   handlePassUrl,
-  platform,
+  minimised,
   ...rest
 }: AddToWalletProps) => {
-  const { account } = useAuth()
   const handleClick = async () => {
     const generate = async () => {
-      const passUrl = await createWalletPass({
+      const passUrl = await generateAppleWalletPass(
         lockAddress,
-        tokenId,
         network,
-        signedByOwner: true,
-        platform,
-        name,
-        owner: account,
-      })
+        tokenId
+      )
       if (passUrl) {
         handlePassUrl(passUrl)
       }
     }
 
     await ToastHelper.promise(generate(), {
-      loading: 'Generating a pass. This takes a few seconds.',
+      loading: 'Generating your Apple Wallet pass. This takes a few seconds.',
       success: 'Successfully generated!',
-      error: `The pass could not generated. Please try again.`,
+      error: 'Failed to generate your Apple Wallet pass. Please try again.',
     })
   }
 
   return (
     <Box as={as} {...rest} onClick={handleClick}>
-      {children}
+      <Image
+        width="16"
+        height="16"
+        alt="Google Wallet"
+        src={`/images/illustrations/apple-wallet.svg`}
+      />
+      {!minimised && 'Add to my Apple Wallet'}
+    </Box>
+  )
+}
+
+// Add to Google wallet
+export const AddToGoogleWallet = ({
+  as,
+  lockAddress,
+  tokenId,
+  network,
+  handlePassUrl,
+  minimised,
+  ...rest
+}: AddToWalletProps) => {
+  const handleClick = async () => {
+    const generate = async () => {
+      const passUrl = await generateGoogleWalletPass(
+        lockAddress,
+        network,
+        tokenId
+      )
+      if (passUrl) {
+        handlePassUrl(passUrl)
+      }
+    }
+
+    await ToastHelper.promise(generate(), {
+      loading: 'Generating your Google Wallet pass. This takes a few seconds.',
+      success: 'Successfully generated!',
+      error: 'Failed to generate your Google Wallet pass. Please try again.',
+    })
+  }
+
+  return (
+    <Box as={as} {...rest} onClick={handleClick}>
+      <Image
+        width="16"
+        height="16"
+        alt="Google Wallet"
+        src={`/images/illustrations/google-wallet.svg`}
+      />
+      {!minimised && 'Add to my Google Wallet'}
     </Box>
   )
 }
