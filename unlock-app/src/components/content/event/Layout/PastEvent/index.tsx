@@ -58,7 +58,7 @@ export const ClaimRefund = ({
 
   return (
     <>
-      <p>You attended this event are your wallet is elligible for a refund!</p>
+      <p>You attended this event are your wallet is eligible for a refund!</p>
       <Button onClick={claim} loading={claimRefund.isLoading}>
         Claim Refund
       </Button>
@@ -108,7 +108,7 @@ export const ClaimRefundInfo = ({
     return (
       <p>
         This event is configured to refund its attendees! Please connect your
-        wallet to check if you are elligible!
+        wallet to check if you are eligible!
       </p>
     )
   }
@@ -134,7 +134,7 @@ export const ClaimRefundInfo = ({
     return (
       <>
         <p>
-          It looks like your wallet is <strong>not elligible</strong> for a
+          It looks like your wallet is <strong>not eligible</strong> for a
           refund.
         </p>
         <p>

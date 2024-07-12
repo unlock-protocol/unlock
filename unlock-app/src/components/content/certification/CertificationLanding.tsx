@@ -80,7 +80,7 @@ export const CertificationLanding = ({
             backgroundImage:
               'linear-gradient(85.7deg, #603DEB 3.25%, #27C1D6 90.24%)',
           }}
-          className="text-4xl font-extrabold text-transparent uppercase md:text-8xl bg-clip-text"
+          className="text-4xl font-extrabold text-transparent uppercase md:text-7xl bg-clip-text"
         >
           Certifications
           <br />
@@ -90,15 +90,13 @@ export const CertificationLanding = ({
       }
       faqs={faqs}
       illustration={
-        <div className="items-start justify-center hidden w-96 md:flex justify-items-center shrink-0">
-          <Image
-            className=""
-            width="486"
-            height="652"
-            alt="Hand off doc"
-            src="/images/illustrations/certifications/img-handoffDoc.svg"
-          />
-        </div>
+        <Image
+          className=""
+          width="324"
+          height="434"
+          alt="Hand off doc"
+          src="/images/illustrations/certifications/img-handoffDoc.svg"
+        />
       }
       coverImage="/images/illustrations/certifications/img-professionals.svg"
       subtitle="Bring your certification or credentialing program onchain with Unlock."
