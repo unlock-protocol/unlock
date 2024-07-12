@@ -105,7 +105,6 @@ export const MintingScreen = ({
           network={network}
           lockAddress={lockAddress}
           tokenId={tokenId.toString()}
-          tokenName={lockName}
         />
       )}
     </div>

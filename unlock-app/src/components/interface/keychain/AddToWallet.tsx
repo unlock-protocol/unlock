@@ -9,15 +9,9 @@ interface AddToWallet {
   network: number
   lockAddress: string
   tokenId: string
-  tokenName: string
 }
 
-export const AddToWallet = ({
-  network,
-  lockAddress,
-  tokenId,
-  tokenName,
-}: AddToWallet) => {
+export const AddToWallet = ({ network, lockAddress, tokenId }: AddToWallet) => {
   const { watchAsset } = useAuth()
 
   const addToWallet = () => {
