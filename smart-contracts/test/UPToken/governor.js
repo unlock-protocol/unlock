@@ -20,7 +20,8 @@ const defaultQuorumDenominator = 1000n
 describe('UPToken Governor & Timelock', () => {
   let gov
   let up
-  let admin, minter, delegater, voter, resetter
+  let transferToken
+  let admin, delegater, voter, resetter
   let expectedQuorum
 
   // helper to recreate voting process
@@ -76,14 +77,23 @@ describe('UPToken Governor & Timelock', () => {
   }
 
   before(async () => {
-    ;[admin, minter, delegater, voter, resetter] = await ethers.getSigners()
+    ;[admin, delegater, voter, resetter] = await ethers.getSigners()
 
-    //
+    // deploy UP
     const UP = await ethers.getContractFactory('UPToken')
-    up = await upgrades.deployProxy(UP, [
-      await admin.getAddress(),
-      await minter.getAddress(),
-    ])
+    up = await upgrades.deployProxy(UP, [await admin.getAddress()])
+
+    // mock swap
+    const MockUPSwap = await ethers.getContractFactory('MockUPSwap')
+    const swap = await MockUPSwap.deploy(await up.getAddress())
+
+    // premint tokens to swap
+    await up.mint(await swap.getAddress())
+
+    // helper function to transfer from mock swap contract
+    transferToken = async (receiver, amount) => {
+      return await swap.transfer(receiver, amount)
+    }
 
     // deploying timelock with a proxy
     const UPTimelock = await ethers.getContractFactory('UPTimelock')
@@ -136,9 +146,7 @@ describe('UPToken Governor & Timelock', () => {
   describe('Update voting params', () => {
     before(async () => {
       // transfer and delegate anout tokens for voter to reach quorum alone
-      await up
-        .connect(minter)
-        .transfer(await delegater.getAddress(), expectedQuorum + 1n)
+      await transferToken(await delegater.getAddress(), expectedQuorum + 1n)
       await up.connect(delegater).delegate(await voter.getAddress())
 
       const { timestamp } = await ethers.provider.getBlock()
@@ -259,9 +267,7 @@ describe('UPToken Governor & Timelock', () => {
 
       // transfer and delegate anout tokens for voter to reach quorum alone
       if (quorum > expectedQuorum) {
-        await up
-          .connect(minter)
-          .transfer(await resetter.getAddress(), quorum + 1n)
+        await transferToken(await resetter.getAddress(), quorum + 1n)
         await up.connect(resetter).delegate(await resetter.getAddress())
         await increaseTime()
 

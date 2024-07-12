@@ -19,6 +19,7 @@
     "check:keys": "tsx ./bin/check-keys",
     "check:tokens": "tsx ./bin/check-tokens",
     "check:hooks": "tsx ./bin/check-hooks",
+    "check:verify": "tsx ./bin/check-verify",
     "create-localhost": "tsx ./bin/localhost",
     "clean": "rm -rf ./dist",
     "unlock-address": "tsx ./bin/readSubgraphInfo",
@@ -37,7 +38,7 @@
     "eslint": "8.57.0",
     "fs-extra": "11.2.0",
     "tsup": "8.1.0",
-    "typescript": "5.4.5"
+    "typescript": "5.5.3"
   },
   "files": [
     "dist"
@@ -45,6 +46,6 @@
   "dependencies": {
     "eslint-plugin-sort-keys-fix": "1.1.2",
     "ethers": "6.13.0",
-    "tsx": "4.11.0"
+    "tsx": "4.16.0"
   }
 }

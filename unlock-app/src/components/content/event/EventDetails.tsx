@@ -20,7 +20,7 @@ import {
 } from '@unlock-protocol/core'
 import { useEvent } from '~/hooks/useEvent'
 import { SettingEmail } from '~/components/interface/locks/Settings/elements/SettingEmail'
-import { storage } from '~/config/storage'
+import { locksmith } from '~/config/locksmith'
 import { FaUsers } from 'react-icons/fa'
 import { TbSettings } from 'react-icons/tb'
 import { config } from '~/config/app'
@@ -80,7 +80,7 @@ export const EventDetails = ({
         if (event.slug) {
           router.push(eventUrl)
         } else {
-          const { data: savedEvent } = await storage.saveEventData({
+          const { data: savedEvent } = await locksmith.saveEventData({
             data: formDataToMetadata(event),
             // @ts-expect-error Property ''name'' is missing in type
             checkoutConfig,

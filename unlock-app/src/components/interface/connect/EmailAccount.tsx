@@ -12,6 +12,7 @@ import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
+import { useSelector } from '@xstate/react'
 
 interface UserDetails {
   email: string
@@ -126,6 +127,9 @@ const SignIn = ({
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
+        {accountType.length > 0 && (
+          <div className="text-sm text-gray-600">Sign in to your account:</div>
+        )}
         {accountType.includes(UserAccountType.UnlockAccount) && (
           <SignInUnlockAccount
             email={email}
@@ -138,6 +142,7 @@ const SignIn = ({
           <SignWithGoogle
             shoudOpenConnectModal={shoudOpenConnectModal}
             checkoutService={checkoutService}
+            isSignUp={false}
           />
         )}
         {accountType.includes(UserAccountType.PasskeyAccount) && (
@@ -148,9 +153,11 @@ const SignIn = ({
         )}
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
+            <div className="text-sm text-gray-600">Create a new account:</div>
             <SignWithGoogle
               shoudOpenConnectModal={shoudOpenConnectModal}
               checkoutService={checkoutService}
+              isSignUp={true}
             />
             {/*}
             <div>Passkey Account</div>
@@ -174,22 +181,30 @@ const SignIn = ({
 export interface SignWithGoogleProps {
   shoudOpenConnectModal: boolean
   checkoutService?: CheckoutService
+  isSignUp: boolean
 }
 
 const SignWithGoogle = ({
   shoudOpenConnectModal,
   checkoutService,
+  isSignUp,
 }: SignWithGoogleProps) => {
   const router = useRouter()
 
+  const context = useSelector(checkoutService, (state) => state?.context)
   const url = new URL(
     `${window.location.protocol}//${window.location.host}${router.asPath}`
   )
+
   const params = new URLSearchParams(url.search)
   params.append(
     'shouldOpenConnectModal',
     encodeURIComponent(shoudOpenConnectModal)
   )
+  if (context?.lock) {
+    params.set('lock', encodeURIComponent(context.lock.address))
+  }
+
   url.search = params.toString()
 
   const callbackUrl = url.toString()
@@ -213,7 +228,7 @@ const SignWithGoogle = ({
           signWithGoogle()
         }}
       >
-        Sign in with Google
+        {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
       </ConnectButton>
     </div>
   )

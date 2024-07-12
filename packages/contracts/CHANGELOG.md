@@ -1,6 +1,20 @@
 # CHANGELOG
 
+## 0.0.29
+
+- Adding `EmptyImpl` in `utils` to allow deploymeny of empty proxy
+- Update `UPToken` and `UPSwap` initialization logic
+
+## 0.0.28
+
+- Adding the `Kickback.sol` contract used to create refunds for event attendees.
+
+## 0.0.27
+
+- add `UPToken`, `UPGovernor`, `UPTimelock` and `UPSwap` contracts
+
 ## 0.0.26
+
 - update `UniswapOracleV3` to allow pool fee to be passed in constructor
 
 ## 0.0.25

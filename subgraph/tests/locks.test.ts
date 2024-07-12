@@ -17,6 +17,9 @@ import {
   handleLockMetadata,
   handleTransfer,
   handleKeyExtended,
+  handleKeyGranterAdded,
+  handleKeyGranterRemoved,
+  handleRoleRevoked,
 } from '../src/public-lock'
 
 import {
@@ -27,6 +30,7 @@ import {
   createLockUpgradedEvent,
   createLockMetadata,
   mockDataSourceV8,
+  createRoleRevokedKeyGranterRemovedEvent,
 } from './locks-utils'
 import {
   createKeyExtendedEvent,
@@ -34,6 +38,10 @@ import {
   createTransferEvent,
   mockDataSourceV11 as mockKeyDataSourceV11,
   updateExpiration,
+  createKeyGranterAddedEvent,
+  createKeyGranterRemovedEvent,
+  createLockManagerAddedEvent,
+  createRoleGrantedKeyGranterAddedEvent,
 } from './keys-utils'
 
 import {
@@ -53,6 +61,8 @@ import {
   lockAddressV8,
   tokenId,
   expiration,
+  keyGranters,
+  keyOwnerAddress,
 } from './constants'
 
 // mock contract functions
@@ -83,6 +93,8 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
     assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
     assert.fieldEquals('Lock', lockAddress, 'numberOfReceipts', '0')
+    assert.fieldEquals('Lock', lockAddress, 'keyGranters', `[]`)
+
     assert.fieldEquals(
       'Lock',
       lockAddress,
@@ -224,6 +236,108 @@ describe('Describe Locks events', () => {
     )
   })
 
+  test('key granter added (using `RoleGranted`)', () => {
+    assert.fieldEquals('Lock', lockAddress, 'keyGranters', `[]`)
+    const newKeyGranterAdded = createRoleGrantedKeyGranterAddedEvent(
+      Address.fromString(keyGranters[0])
+    )
+    handleRoleGranted(newKeyGranterAdded)
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[0]}]`
+    )
+
+    // support existing granters
+    handleRoleGranted(
+      createRoleGrantedKeyGranterAddedEvent(Address.fromString(keyGranters[1]))
+    )
+    handleRoleGranted(
+      createRoleGrantedKeyGranterAddedEvent(Address.fromString(keyGranters[2]))
+    )
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+
+    // avoid duplicate granters
+    handleRoleGranted(
+      createRoleGrantedKeyGranterAddedEvent(Address.fromString(keyGranters[1]))
+    )
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+  })
+
+  // event should be ignored in v11 as we use `RoleGranted` instead
+  test('Key granter added (using `KeyGranterAdded`)', () => {
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+    const newKeyGranterAdded = createKeyGranterAddedEvent(
+      Address.fromString(keyOwnerAddress)
+    )
+
+    handleKeyGranterAdded(newKeyGranterAdded)
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+  })
+
+  test('Key granter removed', () => {
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[0]}, ${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+
+    const newKeyGranterRemoved = createKeyGranterRemovedEvent(
+      Address.fromString(keyGranters[0])
+    )
+    handleKeyGranterRemoved(newKeyGranterRemoved)
+
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+  })
+
+  test('key granter removed (using `RoleRevoked`)', () => {
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[1]}, ${keyGranters[2]}]`
+    )
+
+    handleRoleRevoked(
+      createRoleRevokedKeyGranterRemovedEvent(
+        Address.fromString(keyGranters[1])
+      )
+    )
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'keyGranters',
+      `[${keyGranters[2]}]`
+    )
+  })
+
   test('Price changed', () => {
     assert.fieldEquals('Lock', lockAddress, 'price', `${keyPrice}`)
     assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
@@ -286,6 +400,8 @@ describe('Describe Locks events (v8)', () => {
     )
     assert.fieldEquals('Lock', lockAddressV8, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddressV8, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddressV8, 'keyGranters', `[${lockOwner}]`)
+
     assert.fieldEquals('Lock', lockAddressV8, 'totalKeys', '0')
     assert.fieldEquals('Lock', lockAddressV8, 'numberOfReceipts', '0')
     assert.fieldEquals(
@@ -310,6 +426,22 @@ describe('Describe Locks events (v8)', () => {
       lockAddressV8,
       'lockManagers',
       `[${lockOwner}, ${lockManagers[0]}]`
+    )
+  })
+
+  test('Key granter added (v8)', () => {
+    mockDataSourceV8()
+    assert.fieldEquals('Lock', lockAddressV8, 'keyGranters', `[${lockOwner}]`)
+    const newKeyGranterAdded = createKeyGranterAddedEvent(
+      Address.fromString(keyGranters[0])
+    )
+    handleKeyGranterAdded(newKeyGranterAdded)
+
+    assert.fieldEquals(
+      'Lock',
+      lockAddressV8,
+      'keyGranters',
+      `[${lockOwner}, ${keyGranters[0]}]`
     )
   })
 
