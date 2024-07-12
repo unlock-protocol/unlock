@@ -38,6 +38,7 @@ const storage =
         },
       })
     : multerS3({
+        // @ts-ignore the types for these are often out of sync
         s3: storageClient,
         // Cloudflare R2 does not support other ACLs schemes. See: https://developers.cloudflare.com/r2/data-access/s3-api/api/
         // That said, we only require public-read.
