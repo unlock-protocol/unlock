@@ -4496,3 +4496,48 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /v2/pass/{network}/{lockAddress}/{keyId}/ios:
+    get:
+      operationId: generateAppleWalletPass
+      security:
+        - User: ['keyOwner']
+      description: Generate and return an Apple Wallet pass for a specified key associated with a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns the streamable generated Apple Wallet pass file.
+          content:
+            application/vnd.apple.pkpass:
+              schema:
+                type: string
+                format: binary
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/pass/{network}/{lockAddress}/{keyId}/android:
+    get:
+      operationId: generateGoogleWalletPass
+      security:
+        - User: ['keyOwner']
+      description: Generate and return a Google Wallet pass for a specified key associated with a lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns the URL to the created wallet pass object.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  passObjectUrl:
+                    type: string
+                    nullable: false
+        500:
+          $ref: '#/components/responses/500.InternalError'
