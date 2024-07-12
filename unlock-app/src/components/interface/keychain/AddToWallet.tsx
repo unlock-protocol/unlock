@@ -1,9 +1,7 @@
 import { Button } from '@unlock-protocol/ui'
-import { AddToDeviceWallet } from './AddToPhoneWallet'
-import Image from 'next/image'
+import { AddToAppleWallet, AddToGoogleWallet } from './AddToPhoneWallet'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Platform } from '~/services/ethpass'
 import { isAndroid, isIOS } from 'react-device-detect'
 import * as Tooltip from '@radix-ui/react-tooltip'
 
@@ -58,28 +56,19 @@ export const AddToWallet = ({
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
                 <div>
-                  <AddToDeviceWallet
+                  <AddToGoogleWallet
+                    minimised
                     className="p-2 w-10 h-10 text-xs rounded-full bg-white"
                     size="medium"
                     variant="secondary"
-                    platform={Platform.GOOGLE}
                     as={Button}
                     network={network}
                     lockAddress={lockAddress}
                     tokenId={tokenId}
-                    name={tokenName}
                     handlePassUrl={(url: string) => {
                       window.location.assign(url)
                     }}
-                  >
-                    <Image
-                      className="w-full h-full"
-                      width="20"
-                      height="20"
-                      alt="Google Wallet"
-                      src={`/images/illustrations/google-wallet.svg`}
-                    />
-                  </AddToDeviceWallet>
+                  />
                 </div>
               </Tooltip.Trigger>
               <Tooltip.Portal>
@@ -97,28 +86,19 @@ export const AddToWallet = ({
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
                 <div>
-                  <AddToDeviceWallet
+                  <AddToAppleWallet
+                    minimised
                     className="p-2  w-10 h-10 text-xs rounded-full bg-white"
-                    platform={Platform.APPLE}
                     size="medium"
                     variant="secondary"
                     as={Button}
                     network={network}
                     lockAddress={lockAddress}
                     tokenId={tokenId}
-                    name={tokenName}
                     handlePassUrl={(url: string) => {
                       window.location.assign(url)
                     }}
-                  >
-                    <Image
-                      className="w-full h-full"
-                      width="20"
-                      height="20"
-                      alt="Apple Wallet"
-                      src={`/images/illustrations/apple-wallet.svg`}
-                    />
-                  </AddToDeviceWallet>
+                  />
                 </div>
               </Tooltip.Trigger>
               <Tooltip.Portal>
