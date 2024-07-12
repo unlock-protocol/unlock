@@ -42,7 +42,6 @@ const DEFAULT_STATES = {
 }
 
 export const MintingScreen = ({
-  lockName,
   mint,
   owner,
   lockAddress,
