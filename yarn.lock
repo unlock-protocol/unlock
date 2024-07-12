@@ -19009,7 +19009,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-express@workspace:packages/unlock-express"
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    ethers: "npm:5.7.2"
+    ethers: "npm:6.13.1"
     passport-custom: "npm:1.1.1"
     prettier: "npm:3.3.2"
   peerDependencies:
@@ -19046,7 +19046,6 @@ __metadata:
     vitest: "npm:1.6.0"
   peerDependencies:
     axios: 1.7.2
-    ethers: 5.7.2
   languageName: unknown
   linkType: soft
 
@@ -29453,7 +29452,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.12.2, ethers@npm:^6.13.1":
+"ethers@npm:6.13.1, ethers@npm:^6.12.2, ethers@npm:^6.13.1":
   version: 6.13.1
   resolution: "ethers@npm:6.13.1"
   dependencies:

@@ -29,8 +29,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "axios": "1.7.2",
-    "ethers": "5.7.2"
+    "axios": "1.7.2"
   },
   "devDependencies": {
     "@babel/cli": "7.24.7",
