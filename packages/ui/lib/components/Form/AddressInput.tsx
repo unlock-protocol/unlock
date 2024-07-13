@@ -3,7 +3,7 @@ import { ForwardedRef, useState, useEffect } from 'react'
 import { forwardRef } from 'react'
 import { FaWallet, FaSpinner } from 'react-icons/fa'
 import { IconBaseProps } from 'react-icons'
-import { isAddress, isEns, minifyAddress } from '../../utils'
+import { isAddress, isValidEnsName, minifyAddress } from '../../utils'
 import {
   useMutation,
   QueryClient,
@@ -130,7 +130,7 @@ export const WrappedAddressInput = ({
           if (typeof onChange === 'function') {
             onChange(value as any)
           }
-        } else if (isEns(value)) {
+        } else if (isValidEnsName(value)) {
           try {
             const res = await handleResolver(value)
             if (typeof onChange === 'function' && res) {
