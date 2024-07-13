@@ -10,7 +10,6 @@ import {
 } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import { useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
 
 import { useImageUpload } from '~/hooks/useImageUpload'
 import { onResolveName } from '~/utils/resolvers'
