@@ -40,7 +40,6 @@ import {
   updateExpiration,
   createKeyGranterAddedEvent,
   createKeyGranterRemovedEvent,
-  createLockManagerAddedEvent,
   createRoleGrantedKeyGranterAddedEvent,
 } from './keys-utils'
 
@@ -133,7 +132,7 @@ describe('Describe Locks events', () => {
   })
 
   test('Lock updated when a key is renewed', () => {
-    assert.fieldEquals('Lock', lockAddress, 'lastKeyRenewalAt', 'null')
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyRenewedAt', 'null')
 
     updateExpiration(BigInt.fromU64(expiration + 5000))
     const newKeyExtended = createKeyExtendedEvent(
@@ -145,7 +144,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals(
       'Lock',
       lockAddress,
-      'lastKeyRenewalAt',
+      'lastKeyRenewedAt',
       newKeyExtended.block.timestamp.toString()
     )
   })

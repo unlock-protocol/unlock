@@ -247,7 +247,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
 
     const lock = Lock.load(key.lock)
     if (lock) {
-      lock.lastKeyRenewalAt = event.block.timestamp
+      lock.lastKeyRenewedAt = event.block.timestamp
       lock.save()
     }
 
@@ -274,7 +274,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
 
     const lock = Lock.load(key.lock)
     if (lock) {
-      lock.lastKeyRenewalAt = event.block.timestamp
+      lock.lastKeyRenewedAt = event.block.timestamp
       lock.save()
     }
   }

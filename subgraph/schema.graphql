@@ -30,7 +30,7 @@ type Lock @entity {
   "The timestamp of the block in which the last key was minted"
   lastKeyMintedAt: BigInt
   "The timestamp of the block in which the last key was renewed"
-  lastKeyRenewalAt: BigInt
+  lastKeyRenewedAt: BigInt
   "Address of the lock deployer"
   deployer: Bytes!
   "Number of receipts of lock"
