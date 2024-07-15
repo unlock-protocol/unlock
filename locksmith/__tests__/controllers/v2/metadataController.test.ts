@@ -80,7 +80,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     })
 
     const getUserMetadataResponse = await request(app)
-      .get(`/v2/api/metadata/locks/${lockAddress}/users/${address}`)
+      .get(`/v2/api/metadata/100/locks/${lockAddress}/users/${address}`)
       .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send()
     expect(getUserMetadataResponse.status).toBe(200)
