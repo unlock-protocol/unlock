@@ -52,8 +52,6 @@ export const authOptions = {
       clientSecret: config.googleClientSecret as string,
     }),
     EmailProvider({
-      server: process.env.SMTP_SERVER,
-      from: process.env.EMAIL_FROM,
       maxAge: 10 * 60, // 10 minutes
       generateVerificationToken: async () => {
         const token = await generateAuthToken()
