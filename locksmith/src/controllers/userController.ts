@@ -9,6 +9,12 @@ import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
 import { verifyToken } from '../utils/verifyGoogleToken'
 import { z } from 'zod'
+import { generateVerificationCode } from '../utils/generateVerificationCode'
+import VerificationCodes from '../models/verificationCodes'
+import {
+  emailTemplate,
+  sendSimpleEmail,
+} from '../operations/wedlocksOperations'
 
 // Decoy users are cached for 15 minutes
 const cacheDuration = 60 * 15
@@ -411,6 +417,81 @@ export const existNextAuth = async (request: Request, response: Response) => {
   return response.status(200).json({ userAccountType })
 }
 
+export const sendVerificationCode = async (
+  request: Request,
+  response: Response
+) => {
+  const { emailAddress } = request.params
+  const currentTime = new Date()
+
+  try {
+    let verificationEntry = await VerificationCodes.findOne({
+      where: { emailAddress },
+    })
+
+    if (!verificationEntry || verificationEntry.codeExpiration < currentTime) {
+      const { code, expiration } = generateVerificationCode()
+
+      if (verificationEntry) {
+        await verificationEntry.update({ code, codeExpiration: expiration })
+      } else {
+        verificationEntry = await VerificationCodes.create({
+          emailAddress,
+          code,
+          codeExpiration: expiration,
+        })
+      }
+    }
+
+    sendSimpleEmail(emailTemplate.verificationCode, emailAddress, {
+      code: verificationEntry.code,
+    })
+
+    return response.status(200).json({ message: 'Email code sent' })
+  } catch (error) {
+    console.error('Error sending verification code:', error)
+    return response.status(500).send('Error sending verification code')
+  }
+}
+
+export const verifyEmailCode = async (request: Request, response: Response) => {
+  const { emailAddress } = request.params
+  const { code } = request.body.message
+
+  if (!emailAddress || !code) {
+    return response.sendStatus(400).json({ message: 'Missing parameters' })
+  }
+
+  try {
+    const verificationEntry = await VerificationCodes.findOne({
+      where: { emailAddress },
+    })
+
+    if (!verificationEntry) {
+      return response
+        .status(404)
+        .json({ message: 'Verification code not found' })
+    }
+
+    const currentTime = new Date()
+    if (
+      verificationEntry.code === code &&
+      verificationEntry.codeExpiration > currentTime
+    ) {
+      return response.status(200).json({ message: 'Verification successful' })
+    } else if (verificationEntry.codeExpiration <= currentTime) {
+      return response
+        .status(400)
+        .json({ message: 'Verification code has expired' })
+    } else {
+      return response.status(400).json({ message: 'Invalid verification code' })
+    }
+  } catch (error) {
+    console.error('Error verifying email code:', error)
+    return response.status(500).json({ message: 'Error verifying email code' })
+  }
+}
+
 const UserController = {
   createUser,
   userCreationStatus,
@@ -427,6 +508,7 @@ const UserController = {
   eject,
   exist,
   existNextAuth,
+  sendVerificationCode,
 }
 
 export default UserController

@@ -11,5 +11,9 @@ router.post(
 )
 
 router.get('/:emailAddress/existNextAuth', userController.existNextAuth)
+router.get(
+  '/:emailAddress/sendVerificationCode',
+  userController.sendVerificationCode
+)
 
 export default router
