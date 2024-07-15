@@ -452,7 +452,8 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const { address, loginResponse } = await loginRandomUser(app)
 
     const getUserMetadataResponse = await request(app)
-      .get(`/v2/api/metadata/locks/${lockAddress}/users/${walletAddress}`)
+      .get(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      
       .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send()
 
