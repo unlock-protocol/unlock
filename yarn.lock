@@ -19191,7 +19191,6 @@ __metadata:
     vitest: "npm:1.6.0"
   peerDependencies:
     axios: 1.7.2
-    ethers: 5.7.2
   languageName: unknown
   linkType: soft
 
