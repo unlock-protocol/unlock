@@ -69,15 +69,6 @@ export async function getMetadata(
     delete result.data.userMetadata.protected
   }
 
-  if (result && includeNetwork) {
-    return result
-      ? {
-          userMetadata: result.data.userMetadata,
-          network: result.dataValues.chain,
-        }
-      : result
-  }
-
   return result ? result.data : result
 }
 
