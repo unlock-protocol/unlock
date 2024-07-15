@@ -7,7 +7,7 @@ import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
-import { verifyToken } from '../utils/verifyGoogleToken'
+import { verifyToken } from '../utils/verifyNextAuthToken'
 import { z } from 'zod'
 
 // Decoy users are cached for 15 minutes
@@ -147,10 +147,14 @@ export const retrieveWaasUuid = async (
     return res.sendStatus(401)
   }
 
-  // Verify the JWT token
-  const isTokenValid = await verifyToken(emailAddress, token)
+  // Verify NextAuth token
+  const isTokenValid = await verifyToken(
+    selectedProvider as UserAccountType,
+    emailAddress,
+    token
+  )
   if (!isTokenValid) {
-    return res.status(401).json({ message: 'No google token provided' })
+    return res.status(401).json({ message: 'Token is not valid' })
   }
 
   let userUUID
