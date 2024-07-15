@@ -262,7 +262,7 @@ export const readUserMetadata: RequestHandler = async (request, response) => {
   const user = await getMetadata(
     tokenAddress,
     userAddress,
-    true /* includeProtected */,
+    normalisedLoggedInAddress === userAddress /* includeProtected */,
     true /* inclideNetwork */
   )
 
