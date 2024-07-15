@@ -1,34 +1,26 @@
 import {
   afterAll,
   assert,
-  beforeAll,
   clearStore,
   dataSourceMock,
   describe,
   test,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
-  handleCancelKey,
   handleExpireKey,
-  handleExpirationChanged,
   handleExpirationChangedUntilV11,
-  handleKeyExtended,
   handleKeyManagerChanged,
   handleRenewKeyPurchase,
 } from '../src/public-lock'
 import {
   createTransferEvent,
-  createCancelKeyEvent,
-  createExpirationChangedEvent,
   createExpirationChangedEventUntilV11,
   createExpireKeyEvent,
-  createKeyExtendedEvent,
   createKeyManagerChangedEvent,
   createRenewKeyPurchaseEvent,
   mockDataSourceV8,
-  updateExpiration,
   updateExpirationV8,
 } from './keys-utils'
 import {
@@ -38,7 +30,6 @@ import {
   tokenId,
   tokenURI,
   expiration,
-  lockAddress,
   lockAddressV8,
   lockManagers,
 } from './constants'
