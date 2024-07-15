@@ -11,6 +11,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import SvgComponents from '../svg'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import ReCaptcha from 'react-google-recaptcha'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 export type ConnectingWaasProps = {
   openConnectModalWindow?: boolean
@@ -29,8 +30,10 @@ export const ConnectingWaas = ({
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
 
   const onSignOut = async () => {
-    await siweSignOut()
     await deAuthenticate()
+    await siweSignOut()
+    // This sign out is needed with redirect enabled to ensure that there will be no session left
+    await nextSignOut({ redirect: true })
   }
 
   useEffect(() => {
