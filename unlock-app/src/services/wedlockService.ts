@@ -2,6 +2,7 @@ export enum emailTemplate {
   signupConfirmation = 'confirmEmail',
   welcome = 'welcome',
   keyOwnership = 'keyOwnership',
+  nextAuthCode = 'nextAuthCode',
 }
 
 type Params = {
@@ -63,6 +64,12 @@ export default class WedlockService {
     return this.sendEmail(emailTemplate.welcome, recipient, {
       email: encodeURIComponent(recipient),
       recoveryLink,
+    })
+  }
+
+  nextAuthCodeEmail = (recipient: string, code: string) => {
+    return this.sendEmail(emailTemplate.nextAuthCode, recipient, {
+      code,
     })
   }
 

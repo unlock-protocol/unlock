@@ -20,9 +20,9 @@ import { PaywallConfigType } from '@unlock-protocol/core'
 import { Guild } from './Guild'
 import { Gitcoin } from './Gitcoin'
 import { isInIframe } from '~/utils/iframe'
-import { ConnectWithLoader } from './ConnectWithLoader'
 import { useRouter } from 'next/router'
 import { Select } from './Select'
+import { Connected } from '../Connected'
 
 interface Props {
   paywallConfig: PaywallConfigType
@@ -148,7 +148,7 @@ export function Checkout({
   const Content = useCallback(() => {
     switch (matched) {
       case 'CONNECT': {
-        return <ConnectWithLoader checkoutService={checkoutService} />
+        return <Connected service={checkoutService} />
       }
       case 'SELECT': {
         return <Select checkoutService={checkoutService} />
@@ -218,7 +218,7 @@ export function Checkout({
         return null
       }
     }
-  }, [onClose, matched, communication])
+  }, [matched])
 
   return (
     <div className="bg-white z-10  shadow-xl max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] min-h-[32rem] max-h-[42rem]">

@@ -12,6 +12,8 @@ import { ConnectButton } from './Custom'
 import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
+import { useState } from 'react'
+import { EnterCode } from './EnterCode'
 import { useSelector } from '@xstate/react'
 
 interface UserDetails {
@@ -124,6 +126,41 @@ const SignIn = ({
   shoudOpenConnectModal = false,
   checkoutService,
 }: SignInProps) => {
+  const [isEmailCodeStatus, setEmailCodeStatus] = useState('none')
+
+  const router = useRouter()
+
+  const url = new URL(
+    `${window.location.protocol}//${window.location.host}${router.asPath}`
+  )
+  const params = new URLSearchParams(url.search)
+  params.append(
+    'shouldOpenConnectModal',
+    encodeURIComponent(shoudOpenConnectModal)
+  )
+  url.search = params.toString()
+
+  const callbackUrl = url.toString()
+
+  if (isEmailCodeStatus === 'sent') {
+    return (
+      <EnterCode email={email} callbackUrl={callbackUrl} onReturn={onReturn} />
+    )
+  } else if (isEmailCodeStatus === 'window') {
+    return (
+      <div className="px-6">
+        <div className="text-sm text-gray-600 mb-4">
+          <p>A new window has been opened. Please check there to continue.</p>
+        </div>
+        <Placeholder.Root className="grid w-full">
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+          <Placeholder.Line className="w-1/2" />
+        </Placeholder.Root>
+      </div>
+    )
+  }
+
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
@@ -140,7 +177,7 @@ const SignIn = ({
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
           <SignWithGoogle
-            shoudOpenConnectModal={shoudOpenConnectModal}
+            callbackUrl={callbackUrl}
             checkoutService={checkoutService}
             isSignUp={false}
           />
@@ -149,15 +186,26 @@ const SignIn = ({
           <div>Passkey Account</div>
         )}
         {accountType.includes(UserAccountType.EmailCodeAccount) && (
-          <div>Email Code Account</div>
+          <SignWithEmail
+            isSignUp={false}
+            email={email}
+            setEmailCodeSent={setEmailCodeStatus}
+            callbackUrl={callbackUrl}
+          />
         )}
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
             <SignWithGoogle
-              shoudOpenConnectModal={shoudOpenConnectModal}
+              callbackUrl={callbackUrl}
               checkoutService={checkoutService}
               isSignUp={true}
+            />
+            <SignWithEmail
+              isSignUp={true}
+              email={email}
+              setEmailCodeSent={setEmailCodeStatus}
+              callbackUrl={callbackUrl}
             />
             {/*}
             <div>Passkey Account</div>
@@ -179,13 +227,13 @@ const SignIn = ({
 }
 
 export interface SignWithGoogleProps {
-  shoudOpenConnectModal: boolean
+  callbackUrl: string
   checkoutService?: CheckoutService
   isSignUp: boolean
 }
 
 const SignWithGoogle = ({
-  shoudOpenConnectModal,
+  callbackUrl,
   checkoutService,
   isSignUp,
 }: SignWithGoogleProps) => {
@@ -210,8 +258,10 @@ const SignWithGoogle = ({
   const callbackUrl = url.toString()
 
   const signWithGoogle = () => {
+    localStorage.setItem('nextAuthProvider', 'google')
+
     if (window !== window.parent) {
-      popupCenter('/google', 'Sample Sign In')
+      popupCenter('/google', 'Google Sign In')
       checkoutService?.send({ type: 'SELECT' })
       return
     }
@@ -229,6 +279,54 @@ const SignWithGoogle = ({
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
+      </ConnectButton>
+    </div>
+  )
+}
+
+export interface SignWithEmail {
+  isSignUp: boolean
+  email: string
+  setEmailCodeSent: (isEmailCodeSent: string) => void
+  callbackUrl: string
+}
+
+const SignWithEmail = ({
+  isSignUp,
+  email,
+  setEmailCodeSent,
+}: SignWithEmail) => {
+  const signWithEmail = () => {
+    localStorage.setItem('nextAuthProvider', 'email')
+
+    if (window !== window.parent) {
+      popupCenter(`/email?email=${encodeURIComponent(email)}`, 'Google Sign In')
+      signIn('email', {
+        email: email,
+        redirect: false,
+      })
+      setEmailCodeSent('window')
+      return
+    }
+
+    signIn('email', {
+      email: email,
+      redirect: false,
+    })
+
+    setEmailCodeSent('sent')
+  }
+
+  return (
+    <div className="w-full">
+      <ConnectButton
+        className="w-full"
+        icon={<SvgComponents.Email width={40} height={40} />}
+        onClick={() => {
+          signWithEmail()
+        }}
+      >
+        {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
       </ConnectButton>
     </div>
   )

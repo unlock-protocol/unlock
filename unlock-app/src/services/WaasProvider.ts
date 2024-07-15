@@ -95,6 +95,7 @@ export default class WaasProvider extends ethers.JsonRpcProvider {
   }
 
   async disconnect() {
+    localStorage.removeItem('nextAuthProvider')
     await Logout()
   }
 
