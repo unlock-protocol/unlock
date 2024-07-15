@@ -130,6 +130,8 @@ const SignIn = ({
 
   const router = useRouter()
 
+  const context = useSelector(checkoutService, (state) => state?.context)
+
   const url = new URL(
     `${window.location.protocol}//${window.location.host}${router.asPath}`
   )
@@ -138,6 +140,9 @@ const SignIn = ({
     'shouldOpenConnectModal',
     encodeURIComponent(shoudOpenConnectModal)
   )
+  if (context?.lock) {
+    params.set('lock', encodeURIComponent(context.lock.address))
+  }
   url.search = params.toString()
 
   const callbackUrl = url.toString()
@@ -237,26 +242,6 @@ const SignWithGoogle = ({
   checkoutService,
   isSignUp,
 }: SignWithGoogleProps) => {
-  const router = useRouter()
-
-  const context = useSelector(checkoutService, (state) => state?.context)
-  const url = new URL(
-    `${window.location.protocol}//${window.location.host}${router.asPath}`
-  )
-
-  const params = new URLSearchParams(url.search)
-  params.append(
-    'shouldOpenConnectModal',
-    encodeURIComponent(shoudOpenConnectModal)
-  )
-  if (context?.lock) {
-    params.set('lock', encodeURIComponent(context.lock.address))
-  }
-
-  url.search = params.toString()
-
-  const callbackUrl = url.toString()
-
   const signWithGoogle = () => {
     localStorage.setItem('nextAuthProvider', 'google')
 
