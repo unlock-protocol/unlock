@@ -34,7 +34,7 @@ runs:
       shell: bash
     - name: Check Contract Verification
       run: |
-        yarn workspace @unlock-protocol/governance check:verify
+        yarn workspace @unlock-protocol/networks check:verify
       shell: bash
     - name: Check Subgraphs
       run: |

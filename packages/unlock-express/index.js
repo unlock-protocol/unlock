@@ -97,7 +97,7 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
           return done(null, null)
         }
 
-        userAddress = ethers.utils.verifyMessage(messageToSign, signature)
+        userAddress = ethers.verifyMessage(messageToSign, signature)
       } else {
         userAddress = req.user.address
       }

@@ -233,6 +233,10 @@ export const approveRefunds: RequestHandler = async (request, response) => {
   // Then, get the list of all attendees that attendees!
   const list = await getCheckedInAttendees(slug)
 
+  if (list.length === 0) {
+    return response.status(404).send({ error: 'No attendees found' })
+  }
+
   // then, create the merkel tree using the OZ library
   const tree = StandardMerkleTree.of(
     list.map((recipient) => [recipient, refundAmount.toString()]),

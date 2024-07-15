@@ -385,9 +385,7 @@ const NavSectionMobile = ({
 
   return (
     <div className="flex flex-col gap-4 pt-6">
-      {menuSections?.map((menu, index) => (
-        <MenuItem key={index} {...menu} />
-      ))}
+      {menuSections?.map((menu, index) => <MenuItem key={index} {...menu} />)}
     </div>
   )
 }
@@ -443,7 +441,7 @@ export const HeaderNav = ({
                   <img
                     src={logoImageSrc}
                     alt="logo"
-                    className="h-5 lg:h-6"
+                    className=""
                     style={{
                       height: logo.size ? `${logo.size}px` : undefined,
                     }}

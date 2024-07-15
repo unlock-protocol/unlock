@@ -1171,11 +1171,24 @@ paths:
                 properties:
                   format:
                     type: string
+                    enum: ['standard-v1']
+                    nullable: false
+                  leafEncoding:
+                    type: array
+                    items:
+                      type: string
                     nullable: false
                   values:
                     type: array
                     items:
                       type: object
+                      properties:
+                        value:
+                          type: array
+                          items: {}
+                          nullable: false
+                        treeIndex:
+                          type: number
                   tree:
                     type: array
                     items:
