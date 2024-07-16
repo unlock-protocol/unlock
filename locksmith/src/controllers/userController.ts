@@ -7,7 +7,7 @@ import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
-import { verifyToken } from '../utils/verifyGoogleToken'
+import { verifyToken } from '../utils/verifyToken'
 import { z } from 'zod'
 import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
@@ -154,9 +154,13 @@ export const retrieveWaasUuid = async (
   }
 
   // Verify the JWT token
-  const isTokenValid = await verifyToken(emailAddress, token)
+  const isTokenValid = await verifyToken(
+    selectedProvider as UserAccountType,
+    emailAddress,
+    token
+  )
   if (!isTokenValid) {
-    return res.status(401).json({ message: 'No google token provided' })
+    return res.status(401).json({ message: 'Verification token is not valid' })
   }
 
   let userUUID
@@ -456,7 +460,7 @@ export const sendVerificationCode = async (
 
 export const verifyEmailCode = async (request: Request, response: Response) => {
   const { emailAddress } = request.params
-  const { code } = request.body.message
+  const { code } = request.body
 
   if (!emailAddress || !code) {
     return response.sendStatus(400).json({ message: 'Missing parameters' })
@@ -509,6 +513,7 @@ const UserController = {
   exist,
   existNextAuth,
   sendVerificationCode,
+  verifyEmailCode,
 }
 
 export default UserController

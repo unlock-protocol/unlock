@@ -15,5 +15,6 @@ router.get(
   '/:emailAddress/sendVerificationCode',
   userController.sendVerificationCode
 )
+router.post('/:emailAddress/verifyEmailCode', userController.verifyEmailCode)
 
 export default router
