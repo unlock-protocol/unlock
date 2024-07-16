@@ -11,7 +11,7 @@ import KickbackAbi from '../../Settings/Components/Kickback/KickbackAbi'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useGetApprovedRefunds } from '~/hooks/useGetApprovedRefunds'
 import { useMemo } from 'react'
-import { ExplorerLink } from '~/components/interface/AddressLink'
+import { LockExplorerLink } from './LockExplorerLink'
 
 export const ClaimRefund = ({
   refundProofAndValue,
@@ -165,9 +165,6 @@ export const PastEvent = ({
     config: PaywallConfigType
   }
 }) => {
-  const lockAddress = Object.keys(checkoutConfig.config.locks)[0]
-  const network = (checkoutConfig.config.locks[lockAddress].network ||
-    checkoutConfig.config.network)!
   if (event.attendeeRefund) {
     return (
       <Card className="grid gap-4 mt-5 md:mt-0">
@@ -177,9 +174,27 @@ export const PastEvent = ({
   }
   return (
     <Card className="grid gap-4 mt-5 md:mt-0">
-      <div className="flex gap-2 flex-row text-brand-gray">
-        {event.name} <ExplorerLink address={lockAddress} network={network} />
-      </div>
+      {Object.keys(checkoutConfig.config.locks)
+        ?.sort((l, m) => {
+          return (
+            (checkoutConfig.config.locks[l].order || 0) -
+            (checkoutConfig.config.locks[m].order || 0)
+          )
+        })
+        ?.map((lockAddress: string) => {
+          return (
+            <LockExplorerLink
+              key={lockAddress}
+              lockAddress={lockAddress}
+              network={
+                (checkoutConfig.config.locks[
+                  Object.keys(checkoutConfig.config.locks)[0]
+                ].network || checkoutConfig.config.network)!
+              }
+              lockCheckoutConfig={checkoutConfig.config.locks[lockAddress]}
+            />
+          )
+        })}
       <p className="text-lg">
         <MdAssignmentLate className="inline" />
         This event is over. It is not possible to register for it anymore.
