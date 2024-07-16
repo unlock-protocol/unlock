@@ -32,17 +32,21 @@ export const useCheckoutConfigsByUserAndLock = ({
   lockAddress: string
 }) => {
   const { account } = useAuth()
-  return useQuery(['checkoutConfigsByUser', account!], async () => {
-    const response = await locksmith.listCheckoutConfigs()
-    const locks = response.data.results?.filter((config) => {
-      const configLocks = Object.keys(config.config.locks || {}).map(
-        (lockAddress: string) => lockAddress.toLowerCase()
-      )
-      return configLocks.includes(lockAddress.toLowerCase())
-    })
+  return useQuery(
+    ['checkoutConfigsByUser', account!],
+    async () => {
+      const response = await locksmith.listCheckoutConfigs()
+      const locks = response.data.results?.filter((config) => {
+        const configLocks = Object.keys(config.config.locks || {}).map(
+          (lockAddress: string) => lockAddress.toLowerCase()
+        )
+        return configLocks.includes(lockAddress.toLowerCase())
+      })
 
-    return locks
-  })
+      return locks
+    },
+    { enabled: !!account }
+  )
 }
 
 export const useCheckoutConfigsByUser = () => {

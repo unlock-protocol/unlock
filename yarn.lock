@@ -19229,9 +19229,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-js@workspace:packages/unlock-js"
   dependencies:
-    "@babel/cli": "npm:7.24.7"
-    "@babel/core": "npm:7.24.7"
-    "@babel/preset-env": "npm:7.24.7"
     "@graphql-codegen/cli": "npm:5.0.2"
     "@graphql-codegen/typescript": "npm:4.0.8"
     "@graphql-codegen/typescript-graphql-request": "npm:6.2.0"
