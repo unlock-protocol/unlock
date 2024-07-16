@@ -15,6 +15,8 @@ import SvgComponents from '../svg'
 import { useState } from 'react'
 import { EnterCode } from './EnterCode'
 import { useSelector } from '@xstate/react'
+import { locksmith } from '~/config/locksmith'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -281,23 +283,22 @@ const SignWithEmail = ({
   email,
   setEmailCodeSent,
 }: SignWithEmail) => {
-  const signWithEmail = () => {
+  const signWithEmail = async () => {
     localStorage.setItem('nextAuthProvider', 'email')
+
+    try {
+      await locksmith.sendVerificationCode(email)
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error('Error sending email code, try again later')
+    }
 
     if (window !== window.parent) {
       popupCenter(`/email?email=${encodeURIComponent(email)}`, 'Google Sign In')
-      signIn('email', {
-        email: email,
-        redirect: false,
-      })
+
       setEmailCodeSent('window')
       return
     }
-
-    signIn('email', {
-      email: email,
-      redirect: false,
-    })
 
     setEmailCodeSent('sent')
   }
