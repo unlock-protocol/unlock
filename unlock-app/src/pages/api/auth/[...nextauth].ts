@@ -27,8 +27,10 @@ export const authOptions = {
           code: credentials.code,
         })
 
+        console.log('res', res)
+
         if (res.status == 200) {
-          return { id: credentials.code, email: credentials.email }
+          return { id: res.data.token as string, email: credentials.email }
         }
         return null
       },

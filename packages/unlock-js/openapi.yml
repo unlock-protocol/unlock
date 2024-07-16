@@ -1833,6 +1833,8 @@ paths:
                 properties:
                   message:
                     type: string
+                  token:
+                    type: string
         400:
           description: Missing parameters or invalid/expired verification code.
           content:
