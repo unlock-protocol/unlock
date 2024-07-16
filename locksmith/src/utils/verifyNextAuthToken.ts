@@ -3,7 +3,7 @@ import config from '../config/config'
 import { UserAccountType } from '../controllers/userController'
 import VerificationCodes from '../models/verificationCodes'
 
-export const verifyToken = async (
+export const verifyNextAuthToken = async (
   selectedProvider: UserAccountType,
   email: string,
   token: string

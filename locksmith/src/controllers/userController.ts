@@ -7,7 +7,7 @@ import { ethers } from 'ethers'
 import { MemoryCache } from 'memory-cache-node'
 import { issueUserToken } from '@coinbase/waas-server-auth'
 import config from '../config/config'
-import { verifyToken } from '../utils/verifyToken'
+import { verifyNextAuthToken } from '../utils/verifyNextAuthToken'
 import { z } from 'zod'
 import { generateVerificationCode } from '../utils/generateVerificationCode'
 import VerificationCodes from '../models/verificationCodes'
@@ -154,7 +154,7 @@ export const retrieveWaasUuid = async (
   }
 
   // Verify the JWT token
-  const isTokenValid = await verifyToken(
+  const isTokenValid = await verifyNextAuthToken(
     selectedProvider as UserAccountType,
     emailAddress,
     token
@@ -433,11 +433,19 @@ export const sendVerificationCode = async (
       where: { emailAddress },
     })
 
-    if (!verificationEntry || verificationEntry.codeExpiration < currentTime) {
+    if (
+      !verificationEntry ||
+      verificationEntry.codeExpiration < currentTime ||
+      verificationEntry.isCodeUsed
+    ) {
       const { code, expiration } = generateVerificationCode()
 
       if (verificationEntry) {
-        await verificationEntry.update({ code, codeExpiration: expiration })
+        await verificationEntry.update({
+          code,
+          codeExpiration: expiration,
+          isCodeUsed: false,
+        })
       } else {
         verificationEntry = await VerificationCodes.create({
           emailAddress,
@@ -480,13 +488,19 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
     const currentTime = new Date()
     if (
       verificationEntry.code === code &&
-      verificationEntry.codeExpiration > currentTime
+      verificationEntry.codeExpiration > currentTime &&
+      !verificationEntry.isCodeUsed
     ) {
+      verificationEntry.update({ isCodeUsed: true })
       return response.status(200).json({ message: 'Verification successful' })
     } else if (verificationEntry.codeExpiration <= currentTime) {
       return response
         .status(400)
         .json({ message: 'Verification code has expired' })
+    } else if (verificationEntry.isCodeUsed) {
+      return response
+        .status(400)
+        .json({ message: 'Verification code has already been used' })
     } else {
       return response.status(400).json({ message: 'Invalid verification code' })
     }

@@ -5,6 +5,7 @@ class VerificationCodes extends Model {
   declare id: string
   declare emailAddress: string
   declare code: string
+  declare isCodeUsed: boolean
   declare codeExpiration: Date
   declare createdAt: Date
   declare updatedAt: Date
@@ -26,6 +27,11 @@ VerificationCodes.init(
     code: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    isCodeUsed: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
     },
     codeExpiration: {
       type: DataTypes.DATE,
