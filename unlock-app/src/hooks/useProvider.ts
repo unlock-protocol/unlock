@@ -212,6 +212,7 @@ export const useProvider = (config: any) => {
     )
     try {
       if (provider && provider?.isWaas) {
+        localStorage.removeItem('nextAuthProvider')
         await nextSignOut({ redirect: false })
         await provider.disconnect()
       }

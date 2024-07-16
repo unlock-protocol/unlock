@@ -1,4 +1,5 @@
 import { Button, Input } from '@unlock-protocol/ui'
+import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
 interface UserDetails {
@@ -28,9 +29,12 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
     try {
-      window.location.href = `/api/auth/callback/email?email=${encodeURIComponent(
-        email
-      )}&token=${data.code}&callbackUrl=${encodeURIComponent(callbackUrl)}`
+      signIn('credentials', {
+        callbackUrl: callbackUrl,
+        email: email,
+        code: data.code,
+      })
+      return
     } catch (error) {
       if (error instanceof Error) {
         if (error instanceof Error) {
