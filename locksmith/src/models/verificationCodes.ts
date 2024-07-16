@@ -7,6 +7,8 @@ class VerificationCodes extends Model {
   declare code: string
   declare isCodeUsed: boolean
   declare codeExpiration: Date
+  declare token: string
+  declare tokenExpiration: Date
   declare createdAt: Date
   declare updatedAt: Date
 }
@@ -34,6 +36,15 @@ VerificationCodes.init(
       defaultValue: false,
     },
     codeExpiration: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    token: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+    },
+    tokenExpiration: {
       type: DataTypes.DATE,
       allowNull: false,
     },

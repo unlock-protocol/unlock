@@ -36,7 +36,7 @@ export const verifyGoogleToken = async (email: string, token: string) => {
 
 export const verifyEmailToken = async (email: string, token: string) => {
   const verificationEntry = await VerificationCodes.findOne({
-    where: { emailAddress: email, code: token },
+    where: { emailAddress: email, token: token },
   })
 
   if (!verificationEntry) {
@@ -44,10 +44,7 @@ export const verifyEmailToken = async (email: string, token: string) => {
   }
 
   const currentTime = new Date()
-  const expiration = new Date(Date.now() + 60 * 60 * 1000) // Expires in 1 hour
-  if (verificationEntry.codeExpiration > currentTime) {
-    // On login prolong the expiration time of the token
-    verificationEntry.update({ codeExpiration: expiration })
+  if (verificationEntry.tokenExpiration > currentTime) {
     return true
   } else {
     return false

@@ -445,12 +445,16 @@ export const sendVerificationCode = async (
           code,
           codeExpiration: expiration,
           isCodeUsed: false,
+          token: crypto.randomUUID(),
+          tokenExpiration: new Date(Date.now() + 60 * 60 * 1000),
         })
       } else {
         verificationEntry = await VerificationCodes.create({
           emailAddress,
           code,
           codeExpiration: expiration,
+          token: crypto.randomUUID(),
+          tokenExpiration: new Date(Date.now() + 60 * 60 * 1000),
         })
       }
     }
@@ -459,7 +463,9 @@ export const sendVerificationCode = async (
       code: verificationEntry.code,
     })
 
-    return response.status(200).json({ message: 'Email code sent' })
+    return response.status(200).json({
+      message: 'Email code sent',
+    })
   } catch (error) {
     console.error('Error sending verification code:', error)
     return response.status(500).send('Error sending verification code')
@@ -492,7 +498,10 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
       !verificationEntry.isCodeUsed
     ) {
       verificationEntry.update({ isCodeUsed: true })
-      return response.status(200).json({ message: 'Verification successful' })
+      return response.status(200).json({
+        message: 'Verification successful',
+        token: verificationEntry.token,
+      })
     } else if (verificationEntry.codeExpiration <= currentTime) {
       return response
         .status(400)

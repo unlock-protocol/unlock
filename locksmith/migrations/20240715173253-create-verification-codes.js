@@ -28,6 +28,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
+      token: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        defaultValue: Sequelize.UUIDV4,
+      },
+      tokenExpiration: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
