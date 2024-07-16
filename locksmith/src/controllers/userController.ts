@@ -504,14 +504,14 @@ export const verifyEmailCode = async (request: Request, response: Response) => {
       })
     } else if (verificationEntry.codeExpiration <= currentTime) {
       return response
-        .status(400)
+        .status(401)
         .json({ message: 'Verification code has expired' })
     } else if (verificationEntry.isCodeUsed) {
       return response
-        .status(400)
+        .status(402)
         .json({ message: 'Verification code has already been used' })
     } else {
-      return response.status(400).json({ message: 'Invalid verification code' })
+      return response.status(403).json({ message: 'Invalid verification code' })
     }
   } catch (error) {
     console.error('Error verifying email code:', error)
