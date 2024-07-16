@@ -95,9 +95,9 @@ describe('Email verification code', async () => {
     await VerificationCodes.create({
       emailAddress: emailAddress,
       code: emailCode,
-      codeExpiration: new Date(Date.now() + 60 * 60 * 1000),
+      codeExpiration: new Date(Date.now() + 600 * 60 * 1000),
       token: token,
-      tokenExpiration: new Date(Date.now() + 60 * 60 * 1000),
+      tokenExpiration: new Date(Date.now() + 600 * 60 * 1000),
     })
   })
 
