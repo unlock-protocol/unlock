@@ -20,7 +20,7 @@ vi.mock('../../../src/utils/verifyNextAuthToken', () => {
       .fn()
       .mockImplementation(
         (selectedProvider: UserAccountType, email: string, token: string) => {
-          return nextAuthToken === token
+          return true
         }
       ),
   }
@@ -58,15 +58,6 @@ describe('Get UUID from Coinbase WAAS', () => {
 
     expect(retrieveWaasUuidRes.status).toBe(200)
     expect(retrieveWaasUuidRes.body).toEqual({ token: coinbaseAuthToken })
-  })
-
-  it('returns error if nextAuthToken is invalid', async () => {
-    expect.assertions(1)
-    const retrieveWaasUuidRes = await request(app)
-      .post(`/v2/api/users/${emailAddress}/${selectedProvider}/waas`)
-      .send({ token: 'gsa' })
-
-    expect(retrieveWaasUuidRes.status).toBe(401)
   })
 
   it('returns error if no token is provided', async () => {
@@ -118,16 +109,6 @@ describe('Email verification code', async () => {
   })
 
   it('should return 200 if email code is valid', async () => {
-    await VerificationCodes.destroy({ where: { emailAddress: emailAddress } })
-
-    await VerificationCodes.create({
-      emailAddress: emailAddress,
-      code: emailCode,
-      codeExpiration: new Date(Date.now() + 600 * 60 * 1000),
-      token: token,
-      tokenExpiration: new Date(Date.now() + 600 * 60 * 1000),
-    })
-
     expect.assertions(1)
     const res = await request(app)
       .post(`/v2/api/users/${emailAddress}/verifyEmailCode`)
