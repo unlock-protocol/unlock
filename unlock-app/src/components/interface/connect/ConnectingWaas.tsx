@@ -1,5 +1,5 @@
 import { Placeholder } from '@unlock-protocol/ui'
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { config } from '~/config/app'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -11,6 +11,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import SvgComponents from '../svg'
 import { useCaptcha } from '~/hooks/useCaptcha'
 import ReCaptcha from 'react-google-recaptcha'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 export type ConnectingWaasProps = {
   openConnectModalWindow?: boolean
@@ -34,6 +35,8 @@ export const ConnectingWaas = ({
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
 
   const onSignOut = async () => {
+    // Provider might have not been created yet, so we need to sign out here too
+    await nextSignOut()
     await siweSignOut()
     await deAuthenticate()
   }
