@@ -153,19 +153,6 @@ const SignIn = ({
     return (
       <EnterCode email={email} callbackUrl={callbackUrl} onReturn={onReturn} />
     )
-  } else if (isEmailCodeStatus === 'window') {
-    return (
-      <div className="px-6">
-        <div className="text-sm text-gray-600 mb-4">
-          <p>A new window has been opened. Please check there to continue.</p>
-        </div>
-        <Placeholder.Root className="grid w-full">
-          <Placeholder.Line className="w-1/2" />
-          <Placeholder.Line className="w-1/2" />
-          <Placeholder.Line className="w-1/2" />
-        </Placeholder.Root>
-      </div>
-    )
   }
 
   return (
@@ -291,13 +278,6 @@ const SignWithEmail = ({
     } catch (error) {
       console.error(error)
       ToastHelper.error('Error sending email code, try again later')
-    }
-
-    if (window !== window.parent) {
-      popupCenter(`/email?email=${encodeURIComponent(email)}`, 'Google Sign In')
-
-      setEmailCodeSent('window')
-      return
     }
 
     setEmailCodeSent('sent')

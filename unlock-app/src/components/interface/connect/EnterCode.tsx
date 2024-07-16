@@ -1,6 +1,7 @@
 import { Button, Input } from '@unlock-protocol/ui'
 import { signIn } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface UserDetails {
   email: string
@@ -29,11 +30,17 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
   const onSubmit = async (data: UserDetails) => {
     if (!data.email) return
     try {
-      signIn('credentials', {
+      const value = await signIn('credentials', {
         callbackUrl: callbackUrl,
         email: email,
         code: data.code,
+        redirect: false,
       })
+
+      if (value?.error) {
+        ToastHelper.error('Invalid code')
+      }
+
       return
     } catch (error) {
       if (error instanceof Error) {
