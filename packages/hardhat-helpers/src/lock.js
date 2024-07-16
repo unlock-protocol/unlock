@@ -1,5 +1,17 @@
+const contracts = require('@unlock-protocol/contracts')
 const { ethers, Interface } = require('ethers')
 const { ADDRESS_ZERO } = require('./constants')
+
+export const getLock = async (lockAddress) => {
+  const { ethers } = require('hardhat')
+  if (!lockAddress) {
+    throw Error(`Missing lock address`)
+  }
+  // get unlock instance (TODO: do not use code version but packaged version)
+  const { abi } = contracts['PublicLockV14']
+  const lock = await ethers.getContractAt(abi, lockAddress)
+  return lock
+}
 
 export const createLockCalldata = async ({
   args, // func args to unpack
@@ -12,4 +24,4 @@ export const createLockCalldata = async ({
   return calldata
 }
 
-export default { createLockCalldata }
+export default { createLockCalldata, getLock }

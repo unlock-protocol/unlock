@@ -177,7 +177,7 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
               backgroundImage:
                 'linear-gradient(85.7deg, #603DEB 3.25%, #F19077 90.24%)',
             }}
-            className="text-5xl font-extrabold text-transparent uppercase break-words md:text-8xl bg-clip-text"
+            className="text-5xl font-extrabold text-transparent uppercase md:text-7xl bg-clip-text"
           >
             Easy-peasy event tickets and registration
           </h1>
@@ -190,10 +190,9 @@ export const EventLandingPage = ({ handleCreateEvent }: LandingPageProps) => {
         }
         illustration={
           <Image
-            width="2004"
-            height="1236"
+            width="501"
+            height="309"
             alt="Farcon uses Events by Unlock"
-            className="w-full 4xl:right-0 md:absolute md:top-0"
             src="/images/illustrations/events/farcon-hero.png"
           />
         }
