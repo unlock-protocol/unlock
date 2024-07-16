@@ -118,6 +118,16 @@ describe('Email verification code', async () => {
   })
 
   it('should return 200 if email code is valid', async () => {
+    await VerificationCodes.destroy({ where: { emailAddress: emailAddress } })
+
+    await VerificationCodes.create({
+      emailAddress: emailAddress,
+      code: emailCode,
+      codeExpiration: new Date(Date.now() + 600 * 60 * 1000),
+      token: token,
+      tokenExpiration: new Date(Date.now() + 600 * 60 * 1000),
+    })
+
     expect.assertions(1)
     const res = await request(app)
       .post(`/v2/api/users/${emailAddress}/verifyEmailCode`)
