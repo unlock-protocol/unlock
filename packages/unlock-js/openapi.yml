@@ -1784,6 +1784,12 @@ paths:
       operationId: sendVerificationCode
       description: Sends a verification code to the user's email if the current code is expired or does not exist.
       parameters:
+        - name: captcha
+          in: header
+          required: true
+          description: Recaptcha value to pass.
+          schema:
+            type: string
         - name: emailAddress
           in: path
           required: true

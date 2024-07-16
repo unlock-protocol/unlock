@@ -23,10 +23,11 @@ export const EnterCode = ({ email, callbackUrl, onReturn }: EnterCodeProps) => {
     setValue,
   } = useForm<UserDetails>()
 
+  if (email) {
+    setValue('email', email)
+  }
+
   const onSubmit = async (data: UserDetails) => {
-    if (email) {
-      setValue('email', email)
-    }
     if (!data.email) return
     try {
       const value = await signIn('credentials', {

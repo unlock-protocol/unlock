@@ -17,6 +17,9 @@ import { EnterCode } from './EnterCode'
 import { useSelector } from '@xstate/react'
 import { locksmith } from '~/config/locksmith'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useCaptcha } from '~/hooks/useCaptcha'
+import { config } from '~/config/app'
+import ReCaptcha from 'react-google-recaptcha'
 
 interface UserDetails {
   email: string
@@ -270,11 +273,14 @@ const SignWithEmail = ({
   email,
   setEmailCodeSent,
 }: SignWithEmail) => {
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+
   const signWithEmail = async () => {
     localStorage.setItem('nextAuthProvider', 'email')
 
     try {
-      await locksmith.sendVerificationCode(email)
+      const captcha = await getCaptchaValue()
+      await locksmith.sendVerificationCode(captcha, email)
     } catch (error) {
       console.error(error)
       ToastHelper.error('Error sending email code, try again later')
@@ -285,6 +291,12 @@ const SignWithEmail = ({
 
   return (
     <div className="w-full">
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
       <ConnectButton
         className="w-full"
         icon={<SvgComponents.Email width={40} height={40} />}
