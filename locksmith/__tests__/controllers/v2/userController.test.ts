@@ -7,6 +7,7 @@ import { UserAccount } from '../../../src/models/userAccount'
 import VerificationCodes from '../../../src/models/verificationCodes'
 
 const nextAuthToken = 'token'
+const token = crypto.randomUUID()
 const coinbaseAuthToken = 'coinbase'
 const emailAddress = 'test@test.com'
 const emailAddress2 = 'test2@test.com'
@@ -95,6 +96,8 @@ describe('Email verification code', async () => {
       emailAddress: emailAddress,
       code: emailCode,
       codeExpiration: new Date(Date.now() + 60 * 60 * 1000),
+      token: token,
+      tokenExpiration: new Date(Date.now() + 60 * 60 * 1000),
     })
   })
 
