@@ -76,7 +76,7 @@ export const ConnectViaEmail = ({
         <Input
           type="email"
           autoComplete="email"
-          placeholder="your@email.com"
+          placeholder={email ? email : 'your@email.com'}
           error={errors.email?.message}
           {...register('email', {
             required: {
