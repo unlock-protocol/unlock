@@ -1,16 +1,3 @@
 [build]
   base = "."
   command = "yarn workspace @unlock-protocol/unlock-protocol-com deploy"
-  publish = "unlock-protocol-com/out"
-
-[build.environment]
-  # We do not use the next plugin and deploy as static files!
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
-  publish = "unlock-protocol-com/out"
-
-[context.production]
-  publish = "unlock-protocol-com/out"
-
-[context.deploy-preview]
-  publish = "unlock-protocol-com/out"
-
