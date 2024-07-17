@@ -56,25 +56,25 @@ Object.values(networks).forEach((network) => {
   }
 })
 
-/* Load and parse the Google application credentials from the environment variable GOOGLE_APPLICATION_CREDENTIALS.
-
-// To obtain the GOOGLE_APPLICATION_CREDENTIALS, follow these steps:
-// 1. Go to the Google Cloud Console: https://console.cloud.google.com/
-// 2. Create or select a Google Cloud project.
-// 3. Enable the Google Wallet API.
-// 4. Navigate to IAM & Admin > Service Accounts.
-// 5. Click "Create Service Account", enter a name and description, then click "Create" and "Continue".
-// 7. Go to the "Keys" tab, click "Add Key" > "Create New Key", choose "JSON", and click "Create" to download the key file.
-// 8. Set the environment variable to point to the key file:
-//    export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-file.json"
-// For more details, visit: https://cloud.google.com/docs/authentication/application-default-credentials
+/*
+  To obtain and set up your Google application credentials, follow these steps:
+  1. Go to the Google Cloud Console: https://console.cloud.google.com
+  2. Create or select a Google Cloud project.
+  3. Enable the Google Wallet API.
+  4. Navigate to IAM & Admin > Service Accounts.
+  5. Click "Create Service Account", enter a name and description, then click       "Create" and "Continue".
+  6. Go to the "Keys" tab, click "Add Key" > "Create New Key", choose "JSON", and click "Create" to download the key file.
+  7. Open the downloaded JSON key file, and manually copy the `client_email` and `private_key` values and set them accordingly:
+      GOOGLE_WALLET_SERVICES_EMAIL
+      GOOGLE_WALLET_SERVICES_KEY
 */
-
-// Dummy Google API credentials
 const googleApplicationCredentials: Credentials = {
-  client_email: 'dummy-client-email@appspot.gserviceaccount.com',
+  client_email:
+    process.env.GOOGLE_WALLET_SERVICES_EMAIL ||
+    'dummy-client-email@appspot.gserviceaccount.com',
   private_key:
-    '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkq...\n-----END PRIVATE KEY-----\n',
+    process.env.GOOGLE_WALLET_SERVICES_KEY ||
+    '-----BEGIN PRIVATE KEY-----\nA1B2C3D4E5...dummy-private-key...\n-----END PRIVATE KEY-----\n',
 }
 
 const config = {
