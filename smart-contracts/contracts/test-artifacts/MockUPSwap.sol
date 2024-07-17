@@ -6,10 +6,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 contract MockUPSwap {
   address public tokenAddress;
 
-  constructor() {}
-
-  function setUp() public {
-    tokenAddress = msg.sender;
+  constructor(address up) {
+    tokenAddress = up;
   }
 
   // test helper to help transfer tokens without swap
