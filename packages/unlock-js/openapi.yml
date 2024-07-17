@@ -1779,7 +1779,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/users/{emailAddress}/sendVerificationCode:
+  /v2/api/users/{emailAddress}/send-verification-code:
     get:
       operationId: sendVerificationCode
       description: Sends a verification code to the user's email if the current code is expired or does not exist.
@@ -1810,7 +1810,7 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
-  /v2/api/users/{emailAddress}/verifyEmailCode:
+  /v2/api/users/{emailAddress}/verify-email-code:
     post:
       operationId: verifyEmailCode
       description: Verifies the email code sent to the users email address.
