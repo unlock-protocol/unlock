@@ -30,10 +30,10 @@ export const ConnectingWaas = ({
   const { recaptchaRef, getCaptchaValue } = useCaptcha()
 
   const onSignOut = async () => {
+    // This sign out is needed with redirect enabled to ensure that there will be no session left
+    await nextSignOut()
     await deAuthenticate()
     await siweSignOut()
-    // This sign out is needed with redirect enabled to ensure that there will be no session left
-    await nextSignOut({ redirect: true })
   }
 
   useEffect(() => {
