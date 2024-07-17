@@ -15,6 +15,8 @@ import {
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
+  handleTransfer,
+  handleKeyExtended,
   handleKeyGranterAdded,
   handleKeyGranterRemoved,
   handleRoleRevoked,
@@ -31,9 +33,13 @@ import {
   createRoleRevokedKeyGranterRemovedEvent,
 } from './locks-utils'
 import {
+  createKeyExtendedEvent,
+  createLockManagerAddedEvent,
+  createTransferEvent,
+  mockDataSourceV11 as mockKeyDataSourceV11,
+  updateExpiration,
   createKeyGranterAddedEvent,
   createKeyGranterRemovedEvent,
-  createLockManagerAddedEvent,
   createRoleGrantedKeyGranterAddedEvent,
 } from './keys-utils'
 
@@ -52,6 +58,8 @@ import {
   maxNumberOfKeys,
   maxKeysPerAddress,
   lockAddressV8,
+  tokenId,
+  expiration,
   keyGranters,
   keyOwnerAddress,
 } from './constants'
@@ -98,6 +106,7 @@ describe('Describe Locks events', () => {
       'maxKeysPerAddress',
       `${maxKeysPerAddress}`
     )
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', 'null')
   })
 
   test('Lock manager added (using `RoleGranted`)', () => {
@@ -323,6 +332,46 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'name', name)
     assert.fieldEquals('Lock', lockAddress, 'symbol', symbol)
     // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
+  })
+
+  test('Lock updated when a new key is added', () => {
+    mockKeyDataSourceV11()
+
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyMintedAt', 'null')
+    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
+
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(lockAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lastKeyMintedAt',
+      newTransferEvent.block.timestamp.toString()
+    )
+    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '1')
+  })
+
+  test('Lock updated when a key is renewed', () => {
+    assert.fieldEquals('Lock', lockAddress, 'lastKeyRenewedAt', 'null')
+
+    updateExpiration(BigInt.fromU64(expiration + 5000))
+    const newKeyExtended = createKeyExtendedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU64(expiration + 5000)
+    )
+    handleKeyExtended(newKeyExtended)
+
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lastKeyRenewedAt',
+      newKeyExtended.block.timestamp.toString()
+    )
   })
 })
 
