@@ -106,8 +106,8 @@ export function Checkout({
     },
     [
       handleClose,
-      communication,
       redirectURI,
+      communication,
       mint,
       messageToSign,
       paywallConfig.messageToSign,

@@ -37,8 +37,8 @@ export const ConnectingWaas = ({
   const onSignOut = async () => {
     // Provider might have not been created yet, so we need to sign out here too
     await nextSignOut()
-    await siweSignOut()
     await deAuthenticate()
+    await siweSignOut()
   }
 
   useEffect(() => {
