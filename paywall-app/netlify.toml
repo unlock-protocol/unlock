@@ -1,3 +1,0 @@
-[build]
-  base = "."
-  command = "yarn workspace @unlock-protocol/paywall-app deploy"
