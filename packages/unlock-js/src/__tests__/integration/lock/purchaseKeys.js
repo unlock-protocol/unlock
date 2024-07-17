@@ -68,15 +68,9 @@ export default ({ publicLockVersion }) =>
         }
       )
 
-      const items = transactionHashes
-        .map((hash) => {
-          return web3Service.getTokenIdsFromTx({
-            params: {
-              network: chainId,
-              lockAddress,
-              hash,
-            },
-          })
+      const items = keyOwners
+        .map((owner) => {
+          return web3Service.getTokenIdForOwner(lockAddress, owner, chainId)
         })
         .flat()
 
