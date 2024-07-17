@@ -17808,15 +17808,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/random-words@npm:1.2.0":
-  version: 1.2.0
-  resolution: "@types/random-words@npm:1.2.0"
-  dependencies:
-    random-words: "npm:*"
-  checksum: 10/419d186fe8836df5d4c9db296b72a5c9b3e9ef1054aa948782d0a0eb3483157a0cc617fff24912014a22fa9751590092259e6767a140dab0c10648d56716d9d5
-  languageName: node
-  linkType: hard
-
 "@types/range-parser@npm:*":
   version: 1.2.7
   resolution: "@types/range-parser@npm:1.2.7"
@@ -18778,7 +18769,6 @@ __metadata:
     "@types/nock": "npm:11.1.0"
     "@types/node": "npm:20.14.9"
     "@types/node-cron": "npm:3.0.11"
-    "@types/random-words": "npm:1.2.0"
     "@types/request-promise-native": "npm:1.0.21"
     "@types/supertest": "npm:6.0.2"
     "@unlock-protocol/contracts": "workspace:^"
@@ -43661,15 +43651,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"random-words@npm:*":
-  version: 2.0.1
-  resolution: "random-words@npm:2.0.1"
-  dependencies:
-    seedrandom: "npm:^3.0.5"
-  checksum: 10/13385e573d91e64b898b9dd81df416718c3e2fa9ddb56181c5ed407732eacace2da8914d1d1da1d4b70f3c97d787f0b19280602d4352bf55ce1e81f5ddcd2982
-  languageName: node
-  linkType: hard
-
 "randombytes@npm:^2.0.0, randombytes@npm:^2.0.1, randombytes@npm:^2.0.5, randombytes@npm:^2.1.0":
   version: 2.1.0
   resolution: "randombytes@npm:2.1.0"
@@ -46126,13 +46107,6 @@ __metadata:
   version: 2.7.0
   resolution: "secure-json-parse@npm:2.7.0"
   checksum: 10/974386587060b6fc5b1ac06481b2f9dbbb0d63c860cc73dc7533f27835fdb67b0ef08762dbfef25625c15bc0a0c366899e00076cb0d556af06b71e22f1dede4c
-  languageName: node
-  linkType: hard
-
-"seedrandom@npm:^3.0.5":
-  version: 3.0.5
-  resolution: "seedrandom@npm:3.0.5"
-  checksum: 10/acad5e516c04289f61c2fb9848f449b95f58362b75406b79ec51e101ec885293fc57e3675d2f39f49716336559d7190f7273415d185fead8cd27b171ebf7d8fb
   languageName: node
   linkType: hard
 
