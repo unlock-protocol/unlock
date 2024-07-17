@@ -61,6 +61,19 @@ interface SendEmailProps {
   replyTo?: string
   emailSender?: string
 }
+
+export enum emailTemplate {
+  verificationCode = 'nextAuthCode',
+}
+
+type SimpleParams = {
+  [key: string]: any
+}
+
+type SimpleAttachment = {
+  path: string
+}
+
 /**
  * Function to send an email with the Wedlocks service
  * Pass a template, a recipient, some params and attachments
@@ -130,6 +143,36 @@ export const sendEmail = async ({
   } catch (error: any) {
     logger.error(`Sending email to ${config.services.wedlocks} failed`, error)
     return `Sending email to ${config.services.wedlocks} failed`
+  }
+}
+
+export const sendSimpleEmail = async (
+  template: emailTemplate,
+  recipient: string,
+  params: SimpleParams = {},
+  attachments: SimpleAttachment[] = [],
+  replyTo?: string | null,
+  emailSender?: string | null
+) => {
+  try {
+    const payload = {
+      template,
+      recipient,
+      params,
+      attachments,
+      replyTo,
+      emailSender,
+    }
+    return await fetch(config.services.wedlocks, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  } catch (error) {
+    logger.error(`Sending email to ${config.services.wedlocks} failed`, error)
+    return null
   }
 }
 
