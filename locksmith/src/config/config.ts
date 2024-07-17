@@ -115,11 +115,11 @@ const config = {
   gitcoinApiKey: process.env.GITCOIN_API_KEY,
   gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
   googleApplicationCredentials,
-  // Google wallet Issuer ID
-  /* 1. Visit the Google Pay & Wallet Console: https://pay.google.com/gp/w/home/settings
-  2. Sign in with your Google account and complete the registration process.
-  3. Your Issuer ID will be displayed under "Issuer Info" in the console settings.
-  For more details, visit: https://codelabs.developers.google.com/add-to-wallet-web#3
+  // Google Wallet Issuer ID
+  /*
+    1. Visit the Google Pay & Wallet Console: https://pay.google.com/business/console
+    2. Sign in with your Google account and complete the registration process.
+    3. Navigate to the "Google Wallet API" menu on the sidebar in the console. Your Issuer ID will be displayed at the top of this section.
   */
   googleWalletIssuerID: process.env.GOOGLE_WALLET_API_ISSUER_ID,
   // Google wallet class
