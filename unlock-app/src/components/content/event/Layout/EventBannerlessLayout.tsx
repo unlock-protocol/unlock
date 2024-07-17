@@ -9,11 +9,10 @@ import { EventDetail } from '../EventDetail'
 import { EventLocation } from '../EventLocation'
 import ReactMarkdown from 'react-markdown'
 import { RegistrationCard } from '../Registration/RegistrationCard'
-import { Card } from '@unlock-protocol/ui'
-import { MdAssignmentLate } from 'react-icons/md'
 import { AttendeeCues } from '../Registration/AttendeeCues'
 import { AiOutlineCalendar as CalendarIcon } from 'react-icons/ai'
 import { AttendeeStaking } from '../Registration/SingleLock/AttendeeStaking'
+import PastEvent from './PastEvent'
 
 type EventBannerlessProps = {
   event: Event
@@ -87,12 +86,7 @@ export const EventBannerlessLayout = ({
           </>
         )}
         {hasPassed && (
-          <Card className="grid gap-4 mt-5 md:mt-0">
-            <p className="text-lg">
-              <MdAssignmentLate />
-              This event is over. It is not possible to register for it anymore.
-            </p>
-          </Card>
+          <PastEvent event={event} checkoutConfig={checkoutConfig} />
         )}
         <AttendeeCues checkoutConfig={checkoutConfig} />
       </section>
