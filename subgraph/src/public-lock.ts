@@ -6,6 +6,7 @@ import {
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
   RoleGranted as RoleGrantedEvent,
+  RoleRevoked as RoleRevokedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
@@ -75,6 +76,7 @@ function newKey(event: TransferEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.lastKeyMintedAt = event.block.timestamp
     lock.save()
   }
 
@@ -242,6 +244,13 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
     key.expiration = event.params.newTimestamp
     key.cancelled = false
     key.save()
+
+    const lock = Lock.load(key.lock)
+    if (lock) {
+      lock.lastKeyRenewedAt = event.block.timestamp
+      lock.save()
+    }
+
     // create receipt
     createReceipt(event)
   }
@@ -262,6 +271,12 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
     key.expiration = event.params.newExpiration
     key.cancelled = false
     key.save()
+
+    const lock = Lock.load(key.lock)
+    if (lock) {
+      lock.lastKeyRenewedAt = event.block.timestamp
+      lock.save()
+    }
   }
 
   // create receipt
@@ -304,6 +319,26 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
       } else {
         lock.keyGranters = [event.params.account]
       }
+      lock.save()
+    }
+  }
+}
+
+export function handleRoleRevoked(event: RoleRevokedEvent): void {
+  if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(KEY_GRANTER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock && lock.keyGranters) {
+      const newKeyGranters: Bytes[] = []
+      for (let i = 0; i < lock.keyGranters.length; i++) {
+        const keyGranter = lock.keyGranters[i]
+        if (keyGranter != event.params.account) {
+          newKeyGranters.push(keyGranter)
+        }
+      }
+      lock.keyGranters = newKeyGranters
       lock.save()
     }
   }
