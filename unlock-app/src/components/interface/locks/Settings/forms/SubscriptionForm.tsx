@@ -9,6 +9,7 @@ import { Placeholder } from '@unlock-protocol/ui'
 interface SubscriptionFormProps {
   lockAddress: string
   network: number
+  price: number
   isManager: boolean
   disabled: boolean
   lock?: any
@@ -17,6 +18,7 @@ interface SubscriptionFormProps {
 export const SubscriptionForm = ({
   lockAddress,
   network,
+  price,
 }: SubscriptionFormProps) => {
   const { data: lock, isLoading: isLoadingLock } = useQuery(
     ['getLock', lockAddress, network],
@@ -97,6 +99,7 @@ export const SubscriptionForm = ({
       <UpdateGasRefundForm
         lockAddress={lockAddress}
         network={network}
+        price={price}
         onChanged={refetchGasRefund}
       />
     </div>
