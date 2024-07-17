@@ -9,7 +9,7 @@ import { useCallback } from 'react'
 import networks from '@unlock-protocol/networks'
 
 export interface EthereumWindow extends Window {
-  ethereum?: any
+  ethereum: any
 }
 
 interface RpcType {
