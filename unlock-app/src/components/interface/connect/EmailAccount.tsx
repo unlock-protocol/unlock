@@ -12,6 +12,11 @@ import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
 import useSignInCallbackUrl from '~/hooks/useSignInCallbackUrl'
+import { locksmith } from '~/config/locksmith'
+import { useCaptcha } from '~/hooks/useCaptcha'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { config } from '~/config/app'
+import ReCaptcha from 'react-google-recaptcha'
 
 interface UserDetails {
   email: string
@@ -128,6 +133,12 @@ const SignIn = ({
     checkoutService
   )
 
+  const handleSignIn = async (signInMethod: string, handler: () => void) => {
+    localStorage.setItem('nextAuthProvider', signInMethod)
+
+    await handler()
+  }
+
   return (
     <div className="grid gap-2 px-6">
       <div className="grid gap-4">
@@ -143,7 +154,11 @@ const SignIn = ({
           />
         )}
         {accountType.includes(UserAccountType.GoogleAccount) && (
-          <SignWithGoogle callbackUrl={callbackUrl} isSignUp={false} />
+          <SignWithGoogle
+            callbackUrl={callbackUrl}
+            isSignUp={false}
+            handleSignIn={handleSignIn}
+          />
         )}
         {accountType.includes(UserAccountType.PasskeyAccount) && (
           <div>Passkey Account</div>
@@ -154,7 +169,11 @@ const SignIn = ({
         {accountType.length === 0 && (
           <div className="w-full grid gap-4">
             <div className="text-sm text-gray-600">Create a new account:</div>
-            <SignWithGoogle callbackUrl={callbackUrl} isSignUp={true} />
+            <SignWithGoogle
+              callbackUrl={callbackUrl}
+              isSignUp={true}
+              handleSignIn={handleSignIn}
+            />
             {/*}
             <div>Passkey Account</div>
             <div>Email Code Account</div>
@@ -177,9 +196,14 @@ const SignIn = ({
 export interface SignWithGoogleProps {
   callbackUrl: string
   isSignUp: boolean
+  handleSignIn: (signInMethod: string, handler: () => void) => void
 }
 
-const SignWithGoogle = ({ callbackUrl, isSignUp }: SignWithGoogleProps) => {
+const SignWithGoogle = ({
+  callbackUrl,
+  isSignUp,
+  handleSignIn,
+}: SignWithGoogleProps) => {
   const signWithGoogle = () => {
     if (window !== window.parent) {
       popupCenter('/google', 'Google Sign In')
@@ -195,10 +219,59 @@ const SignWithGoogle = ({ callbackUrl, isSignUp }: SignWithGoogleProps) => {
         className="w-full"
         icon={<SvgComponents.Google width={40} height={40} />}
         onClick={() => {
-          signWithGoogle()
+          handleSignIn(UserAccountType.GoogleAccount, signWithGoogle)
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
+      </ConnectButton>
+    </div>
+  )
+}
+
+export interface SignWithEmail {
+  isSignUp: boolean
+  email: string
+  setEmailCodeSent: (isEmailCodeSent: string) => void
+  callbackUrl: string
+  handleSignIn: (signInMethod: string, handler: () => void) => void
+}
+
+const SignWithEmail = ({
+  isSignUp,
+  email,
+  setEmailCodeSent,
+  handleSignIn,
+}: SignWithEmail) => {
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+
+  const signWithEmail = async () => {
+    try {
+      const captcha = await getCaptchaValue()
+      await locksmith.sendVerificationCode(captcha, email)
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error('Error sending email code, try again later')
+    }
+
+    setEmailCodeSent('sent')
+  }
+
+  return (
+    <div className="w-full">
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
+      <ConnectButton
+        className="w-full"
+        icon={<SvgComponents.Email width={40} height={40} />}
+        onClick={async () => {
+          await handleSignIn(UserAccountType.EmailCodeAccount, signWithEmail)
+        }}
+      >
+        {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
       </ConnectButton>
     </div>
   )
