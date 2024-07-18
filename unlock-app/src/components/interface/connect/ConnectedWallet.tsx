@@ -4,6 +4,7 @@ import useClipboard from 'react-use-clipboard'
 import { useSIWE } from '~/hooks/useSIWE'
 import { useCallback, useEffect, useState } from 'react'
 import BlockiesSvg from 'blockies-react-svg'
+import { signOut as nextSignOut } from 'next-auth/react'
 
 interface ConnectedWalletProps {
   onNext?: () => void
@@ -27,8 +28,8 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
 
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
-    await signOut()
     await deAuthenticate()
+    await signOut()
     setIsDisconnecting(false)
   }, [signOut, deAuthenticate, setIsDisconnecting])
 
