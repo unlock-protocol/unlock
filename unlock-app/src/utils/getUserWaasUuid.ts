@@ -21,6 +21,9 @@ export const getUserWaasUuid = async (
     case 'google':
       selectedProvider = UserAccountType.GoogleAccount
       break
+    case 'email':
+      selectedProvider = UserAccountType.EmailCodeAccount
+      break
     default:
       selectedProvider = ''
       break
