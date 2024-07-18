@@ -12,6 +12,11 @@ import { signIn } from 'next-auth/react'
 import { popupCenter } from '~/utils/popup'
 import SvgComponents from '../svg'
 import useSignInCallbackUrl from '~/hooks/useSignInCallbackUrl'
+import { locksmith } from '~/config/locksmith'
+import { useCaptcha } from '~/hooks/useCaptcha'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { config } from '~/config/app'
+import ReCaptcha from 'react-google-recaptcha'
 
 interface UserDetails {
   email: string
@@ -194,6 +199,8 @@ const SignWithGoogle = ({
   isSignUp,
 }: SignWithGoogleProps) => {
   const signWithGoogle = () => {
+    localStorage.setItem('nextAuthProvider', 'google')
+
     if (window !== window.parent) {
       popupCenter('/google', 'Google Sign In')
       checkoutService?.send({ type: 'SELECT' })
@@ -213,6 +220,55 @@ const SignWithGoogle = ({
         }}
       >
         {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
+      </ConnectButton>
+    </div>
+  )
+}
+
+export interface SignWithEmail {
+  isSignUp: boolean
+  email: string
+  setEmailCodeSent: (isEmailCodeSent: string) => void
+  callbackUrl: string
+}
+
+const SignWithEmail = ({
+  isSignUp,
+  email,
+  setEmailCodeSent,
+}: SignWithEmail) => {
+  const { recaptchaRef, getCaptchaValue } = useCaptcha()
+
+  const signWithEmail = async () => {
+    localStorage.setItem('nextAuthProvider', 'email')
+
+    try {
+      const captcha = await getCaptchaValue()
+      await locksmith.sendVerificationCode(captcha, email)
+    } catch (error) {
+      console.error(error)
+      ToastHelper.error('Error sending email code, try again later')
+    }
+
+    setEmailCodeSent('sent')
+  }
+
+  return (
+    <div className="w-full">
+      <ReCaptcha
+        ref={recaptchaRef}
+        sitekey={config.recaptchaKey}
+        size="invisible"
+        badge="bottomleft"
+      />
+      <ConnectButton
+        className="w-full"
+        icon={<SvgComponents.Email width={40} height={40} />}
+        onClick={() => {
+          signWithEmail()
+        }}
+      >
+        {isSignUp ? 'Sign up with Email' : 'Sign in with Email'}
       </ConnectButton>
     </div>
   )
