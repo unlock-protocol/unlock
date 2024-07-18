@@ -27,8 +27,9 @@ export const ConnectedWallet = ({ onNext }: ConnectedWalletProps) => {
 
   const onSignOut = useCallback(async () => {
     setIsDisconnecting(true)
-    await deAuthenticate()
+
     await signOut()
+    await deAuthenticate()
     setIsDisconnecting(false)
   }, [signOut, deAuthenticate, setIsDisconnecting])
 
