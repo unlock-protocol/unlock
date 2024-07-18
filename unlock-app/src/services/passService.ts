@@ -1,8 +1,8 @@
 import { locksmith } from '~/config/locksmith'
 
 export enum Platform {
-  Apple = 'apple',
-  Google = 'google',
+  APPLE = 'apple',
+  GOOGLE = 'google',
 }
 
 /**
