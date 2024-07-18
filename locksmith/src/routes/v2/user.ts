@@ -12,10 +12,10 @@ router.post(
 
 router.get('/:emailAddress/existNextAuth', userController.existNextAuth)
 router.get(
-  '/:emailAddress/sendVerificationCode',
+  '/:emailAddress/send-verification-code',
   captchaMiddleware,
   userController.sendVerificationCode
 )
-router.post('/:emailAddress/verifyEmailCode', userController.verifyEmailCode)
+router.post('/:emailAddress/verify-email-code', userController.verifyEmailCode)
 
 export default router
