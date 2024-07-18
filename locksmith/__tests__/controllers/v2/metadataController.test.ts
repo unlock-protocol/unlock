@@ -57,8 +57,8 @@ const lockPayload = {
 }
 
 describe('Metadata v2 endpoints for locksmith', () => {
-  it('Add metadata to user', async () => {
-    expect.assertions(2)
+  it('Add and get metadata to user', async () => {
+    expect.assertions(4)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const metadata = {
       public: {
@@ -77,6 +77,18 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(userMetadataResponse.status).toBe(200)
     expect(userMetadataResponse.body).toStrictEqual({
       metadata,
+    })
+
+    const getUserMetadataResponse = await request(app)
+      .get(`/v2/api/metadata/100/locks/${lockAddress}/users/${address}`)
+      .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send()
+    expect(getUserMetadataResponse.status).toBe(200)
+    expect(getUserMetadataResponse.body).toStrictEqual({
+      metadata,
+      userAddress: address,
+      lockAddress,
+      network: 100,
     })
   })
 
@@ -430,5 +442,25 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .send(lockPayload.keys)
 
     expect(lockAddressMetadataResponse.status).toBe(400)
+  })
+
+  it('Should not return metadata when requested userAddress and loggedIn are different', async () => {
+    expect.assertions(1)
+
+    const walletAddress = await ethers.Wallet.createRandom().getAddress()
+
+    const { loginResponse } = await loginRandomUser(app)
+
+    const getUserMetadataResponse = await request(app)
+      .get(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send()
+
+    expect(getUserMetadataResponse.body).toStrictEqual({
+      metadata: {},
+      userAddress: walletAddress,
+      lockAddress,
+      network: 100,
+    })
   })
 })

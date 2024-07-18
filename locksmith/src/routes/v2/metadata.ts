@@ -7,6 +7,7 @@ import {
   getBulkKeysMetadata,
   updateUsersMetadata,
   updateUserMetadata,
+  readUserMetadata,
 } from '../../controllers/v2/metadataController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
@@ -48,6 +49,12 @@ router.put(
   '/:network/locks/:lockAddress/users/:userAddress',
   authenticatedMiddleware,
   updateUserMetadata
+)
+
+router.get(
+  '/:network/locks/:lockAddress/users/:userAddress',
+  authenticatedMiddleware,
+  readUserMetadata
 )
 
 export default router
