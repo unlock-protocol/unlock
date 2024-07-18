@@ -43,7 +43,7 @@ interface DefenderRelayCredentials {
 }
 
 // Interface for Google API credentials
-interface Credentials {
+interface GoogleWalletCredentials {
   client_email: string
   private_key: string
 }
@@ -71,9 +71,12 @@ Object.values(networks).forEach((network) => {
 */
 
 // Dummy Google API credentials
-const googleApplicationCredentials: Credentials = {
-  client_email: 'dummy-client-email@appspot.gserviceaccount.com',
+const googleWalletApplicationCredentials: GoogleWalletCredentials = {
+  client_email:
+    process.env.GOOGLE_WALLET_CLIENT_EMAIL ||
+    'dummy-client-email@appspot.gserviceaccount.com',
   private_key:
+    process.env.GOOGLE_WALLET_PRIVATE_KEY ||
     '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkq...\n-----END PRIVATE KEY-----\n',
 }
 
@@ -114,7 +117,7 @@ const config = {
   */
   gitcoinApiKey: process.env.GITCOIN_API_KEY,
   gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
-  googleApplicationCredentials,
+  googleWalletApplicationCredentials,
   // Google wallet Issuer ID
   /* 1. Visit the Google Pay & Wallet Console: https://pay.google.com/gp/w/home/settings
   2. Sign in with your Google account and complete the registration process.
