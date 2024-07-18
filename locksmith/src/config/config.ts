@@ -125,10 +125,10 @@ const config = {
   // Google wallet class
   googleWalletClass: process.env.GOOGLE_WALLET_API_CLASS,
   // Base 64 encoded certificates to sign and validate Apple Wallet passes
-  signerCertBase64: process.env.SIGNER_CERT,
-  signerKeyBase64: process.env.SIGNER_KEY,
-  wwdrBase64: process.env.WWDR_CERT,
-  signerKeyPassphrase: process.env.SIGNER_KEY_PASSPHRASE,
+  signerCertBase64: process.env.APPLE_WALLET_SIGNER_CERT,
+  signerKeyBase64: process.env.APPLE_WALLET_SIGNER_KEY,
+  wwdrBase64: process.env.APPLE_WALLET_WWDR_CERT,
+  signerKeyPassphrase: process.env.APPLE_WALLET_SIGNER_KEY_PASSPHRASE,
   logtailSourceToken: process.env.LOGTAIL,
   sessionDuration: Number(process.env.SESSION_DURATION || 86400 * 60), // 60 days
   requestTimeout: '25s',
