@@ -10,14 +10,12 @@ import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import {
-  AddToAppleWallet,
-  AddToGoogleWallet,
-} from '../../keychain/AddToPhoneWallet'
+import { AddToPhoneWallet } from '../../keychain/AddToPhoneWallet'
 import { isAndroid, isIOS } from 'react-device-detect'
 import { ReturningButton } from '../ReturningButton'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useGetTokenIdForOwner } from '~/hooks/useGetTokenIdForOwner'
+import { Platform } from '~/services/passService'
 
 interface Props {
   checkoutService: CheckoutService
@@ -101,7 +99,8 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
               {!isIOS && tokenId && (
                 <li>
-                  <AddToGoogleWallet
+                  <AddToPhoneWallet
+                    platform={Platform.GOOGLE}
                     className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
                     size="small"
                     variant="secondary"
@@ -117,7 +116,8 @@ export function Returning({ checkoutService, onClose, communication }: Props) {
               )}
               {!isAndroid && tokenId && (
                 <li>
-                  <AddToAppleWallet
+                  <AddToPhoneWallet
+                    platform={Platform.APPLE}
                     className="w-full px-2 py-2 text-xs flex items-center justify-center gap-2 rounded-md bg-black text-white"
                     size="small"
                     variant="secondary"

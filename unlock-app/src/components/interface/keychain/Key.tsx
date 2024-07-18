@@ -48,13 +48,10 @@ import { ExtendMembershipModal } from './Extend'
 import { Key as HookKey } from '~/hooks/useKeys'
 import { TbReceipt as ReceiptIcon } from 'react-icons/tb'
 import { useGetReceiptsPageUrl } from '~/hooks/useReceipts'
-import {
-  AddToAppleWallet,
-  AddToGoogleWallet,
-  ApplePassModal,
-} from './AddToPhoneWallet'
+import { AddToPhoneWallet, ApplePassModal } from './AddToPhoneWallet'
 import { isIOS } from 'react-device-detect'
 import { useRouter } from 'next/router'
+import { Platform } from '~/services/passService'
 
 export const MenuButton = tw.button(
   'group flex gap-2 w-full font-semibold items-center rounded-md px-2 py-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed',
@@ -355,7 +352,8 @@ function Key({ ownedKey, owner, network }: Props) {
                     <>
                       <Menu.Item>
                         {({ active, disabled }) => (
-                          <AddToGoogleWallet
+                          <AddToPhoneWallet
+                            platform={Platform.GOOGLE}
                             disabled={disabled}
                             active={active}
                             as={MenuButton}
@@ -370,7 +368,8 @@ function Key({ ownedKey, owner, network }: Props) {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active, disabled }) => (
-                          <AddToAppleWallet
+                          <AddToPhoneWallet
+                            platform={Platform.APPLE}
                             disabled={disabled}
                             active={active}
                             as={MenuButton}

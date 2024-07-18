@@ -1,9 +1,10 @@
 import { Button } from '@unlock-protocol/ui'
-import { AddToAppleWallet, AddToGoogleWallet } from './AddToPhoneWallet'
+import { AddToPhoneWallet } from './AddToPhoneWallet'
 import { FaWallet as WalletIcon } from 'react-icons/fa'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isAndroid, isIOS } from 'react-device-detect'
 import * as Tooltip from '@radix-ui/react-tooltip'
+import { Platform } from '~/services/passService'
 
 interface AddToWallet {
   network: number
@@ -50,7 +51,8 @@ export const AddToWallet = ({ network, lockAddress, tokenId }: AddToWallet) => {
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
                 <div>
-                  <AddToGoogleWallet
+                  <AddToPhoneWallet
+                    platform={Platform.GOOGLE}
                     minimised
                     className="p-2 w-10 h-10 text-xs rounded-full bg-white"
                     size="medium"
@@ -80,7 +82,8 @@ export const AddToWallet = ({ network, lockAddress, tokenId }: AddToWallet) => {
             <Tooltip.Root>
               <Tooltip.Trigger asChild>
                 <div>
-                  <AddToAppleWallet
+                  <AddToPhoneWallet
+                    platform={Platform.APPLE}
                     minimised
                     className="p-2  w-10 h-10 text-xs rounded-full bg-white"
                     size="medium"
