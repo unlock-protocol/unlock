@@ -56,7 +56,6 @@ export async function getMetadata(
   tokenAddress: string,
   userAddress: string,
   includeProtected = false
-  includeNetwork = false
 ) {
   const result = await UserTokenMetadata.findOne({
     where: {
