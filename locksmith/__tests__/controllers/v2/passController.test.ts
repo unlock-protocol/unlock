@@ -10,7 +10,7 @@ const keyId = '1'
 
 // Mock configuration specific to Google Wallet API interaction
 const mockGoogleConfig = {
-  googleApplicationCredentials: {
+  googleWalletApplicationCredentials: {
     client_email: 'test@example.com',
     private_key: 'test_private_key',
   },
@@ -19,8 +19,8 @@ const mockGoogleConfig = {
 }
 
 // config with Google Wallet specifics
-config.googleApplicationCredentials =
-  mockGoogleConfig.googleApplicationCredentials
+config.googleWalletApplicationCredentials =
+  mockGoogleConfig.googleWalletApplicationCredentials
 config.googleWalletIssuerID = mockGoogleConfig.googleWalletIssuerID
 config.googleWalletClass = mockGoogleConfig.googleWalletClass
 

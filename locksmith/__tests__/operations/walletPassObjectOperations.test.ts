@@ -10,15 +10,15 @@ vi.mock('../../../logger')
 describe('createWalletPassObject', () => {
   // define mock configuration
   const mockConfig = {
-    googleApplicationCredentials: {
+    googleWalletApplicationCredentials: {
       client_email: 'test@example.com',
       private_key: 'test_private_key',
     },
   }
 
   beforeEach(() => {
-    config.googleApplicationCredentials =
-      mockConfig.googleApplicationCredentials
+    config.googleWalletApplicationCredentials =
+      mockConfig.googleWalletApplicationCredentials
     // Mock the jwt.sign method to return a fixed token
     vi.mocked(jwt.sign).mockImplementation(() => 'mocked_token')
   })
@@ -39,8 +39,8 @@ describe('createWalletPassObject', () => {
       lockAddress,
       keyId,
       qrCodeUrl,
-      mockConfig.googleApplicationCredentials.client_email,
-      mockConfig.googleApplicationCredentials.private_key
+      mockConfig.googleWalletApplicationCredentials.client_email,
+      mockConfig.googleWalletApplicationCredentials.private_key
     )
 
     // Assert that the returned save URL matches the expected URL
@@ -49,7 +49,7 @@ describe('createWalletPassObject', () => {
     // Ensure jwt.sign was called with the correct parameters
     expect(jwt.sign).toHaveBeenCalledWith(
       {
-        iss: mockConfig.googleApplicationCredentials.client_email,
+        iss: mockConfig.googleWalletApplicationCredentials.client_email,
         aud: 'google',
         origins: [],
         typ: 'savetowallet',

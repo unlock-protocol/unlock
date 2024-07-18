@@ -43,7 +43,7 @@ interface DefenderRelayCredentials {
 }
 
 // Interface for Google API credentials
-interface Credentials {
+interface GoogleWalletCredentials {
   client_email: string
   private_key: string
 }
@@ -68,7 +68,7 @@ Object.values(networks).forEach((network) => {
       GOOGLE_WALLET_SERVICES_EMAIL
       GOOGLE_WALLET_SERVICES_KEY
 */
-const googleApplicationCredentials: Credentials = {
+const googleWalletApplicationCredentials: GoogleWalletCredentials = {
   client_email:
     process.env.GOOGLE_WALLET_SERVICES_EMAIL ||
     'dummy-client-email@appspot.gserviceaccount.com',
@@ -114,7 +114,7 @@ const config = {
   */
   gitcoinApiKey: process.env.GITCOIN_API_KEY,
   gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
-  googleApplicationCredentials,
+  googleWalletApplicationCredentials,
   // Google Wallet Issuer ID
   /*
     1. Visit the Google Pay & Wallet Console: https://pay.google.com/business/console
