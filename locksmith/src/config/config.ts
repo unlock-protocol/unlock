@@ -56,28 +56,25 @@ Object.values(networks).forEach((network) => {
   }
 })
 
-/* Load and parse the Google application credentials from the environment variable GOOGLE_APPLICATION_CREDENTIALS.
-
-// To obtain the GOOGLE_APPLICATION_CREDENTIALS, follow these steps:
-// 1. Go to the Google Cloud Console: https://console.cloud.google.com/
-// 2. Create or select a Google Cloud project.
-// 3. Enable the Google Wallet API.
-// 4. Navigate to IAM & Admin > Service Accounts.
-// 5. Click "Create Service Account", enter a name and description, then click "Create" and "Continue".
-// 7. Go to the "Keys" tab, click "Add Key" > "Create New Key", choose "JSON", and click "Create" to download the key file.
-// 8. Set the environment variable to point to the key file:
-//    export GOOGLE_APPLICATION_CREDENTIALS="/path/to/your/service-account-file.json"
-// For more details, visit: https://cloud.google.com/docs/authentication/application-default-credentials
+/*
+  To obtain and set up your Google application credentials, follow these steps:
+  1. Go to the Google Cloud Console: https://console.cloud.google.com
+  2. Create or select a Google Cloud project.
+  3. Enable the Google Wallet API.
+  4. Navigate to IAM & Admin > Service Accounts.
+  5. Click "Create Service Account", enter a name and description, then click       "Create" and "Continue".
+  6. Go to the "Keys" tab, click "Add Key" > "Create New Key", choose "JSON", and click "Create" to download the key file.
+  7. Open the downloaded JSON key file, and manually copy the `client_email` and `private_key` values and set them accordingly:
+      GOOGLE_WALLET_SERVICES_EMAIL
+      GOOGLE_WALLET_SERVICES_KEY
 */
-
-// Dummy Google API credentials
-const googleWalletApplicationCredentials: GoogleWalletCredentials = {
+const googleApplicationCredentials: GoogleWalletCredentials = {
   client_email:
-    process.env.GOOGLE_WALLET_CLIENT_EMAIL ||
+    process.env.GOOGLE_WALLET_SERVICES_EMAIL ||
     'dummy-client-email@appspot.gserviceaccount.com',
   private_key:
-    process.env.GOOGLE_WALLET_PRIVATE_KEY ||
-    '-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkq...\n-----END PRIVATE KEY-----\n',
+    process.env.GOOGLE_WALLET_SERVICES_KEY ||
+    '-----BEGIN PRIVATE KEY-----\nA1B2C3D4E5...dummy-private-key...\n-----END PRIVATE KEY-----\n',
 }
 
 const config = {
@@ -117,12 +114,12 @@ const config = {
   */
   gitcoinApiKey: process.env.GITCOIN_API_KEY,
   gitcoinScorerId: process.env.GITCOIN_SCORER_ID,
-  googleWalletApplicationCredentials,
-  // Google wallet Issuer ID
-  /* 1. Visit the Google Pay & Wallet Console: https://pay.google.com/gp/w/home/settings
-  2. Sign in with your Google account and complete the registration process.
-  3. Your Issuer ID will be displayed under "Issuer Info" in the console settings.
-  For more details, visit: https://codelabs.developers.google.com/add-to-wallet-web#3
+  googleApplicationCredentials,
+  // Google Wallet Issuer ID
+  /*
+    1. Visit the Google Pay & Wallet Console: https://pay.google.com/business/console
+    2. Sign in with your Google account and complete the registration process.
+    3. Navigate to the "Google Wallet API" menu on the sidebar in the console. Your Issuer ID will be displayed at the top of this section.
   */
   googleWalletIssuerID: process.env.GOOGLE_WALLET_API_ISSUER_ID,
   // Google wallet class
